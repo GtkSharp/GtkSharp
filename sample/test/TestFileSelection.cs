@@ -39,7 +39,6 @@ namespace WidgetViewer {
 
 		static void file_selection_ok (object o, EventArgs args)
 		{
-			Console.WriteLine (window.Selections);
 		}
 
 		static void show_fileops (object o, EventArgs args)

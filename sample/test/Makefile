@@ -7,4 +7,4 @@ all:
 	TestDialog.cs TestFlipping.cs TestMenus.cs TestSizeGroup.cs \
 	WidgetViewer.cs
 clean:
-	rm -f *.exe *~
+	rm -f *.exe

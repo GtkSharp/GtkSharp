@@ -30,13 +30,11 @@ namespace WidgetViewer {
 			box1.PackStart (menubar, false, false, 0);
 
 			Menu menu = Create_Menu (2, true);
-
-			MenuItem menuitem = new MenuItem ("test\nline2");
-
+			MenuItem menuitem = new MenuItem ("foo");
 			menuitem.Submenu = menu;
 			menubar.Append (menuitem);
 
-			menuitem = new MenuItem ("foo");
+			menuitem = new MenuItem ("bar");
 			menuitem.Submenu = Create_Menu (3, true);
 			menubar.Append (menuitem);
 			
@@ -59,7 +57,7 @@ namespace WidgetViewer {
 
 			VBox box2 = new VBox (false, 10);
 			box2.BorderWidth = 10;
-			box1.PackStart (box1, true, true, 0);
+			box1.PackStart (box2, true, true, 0);
 			
 			menu = Create_Menu (1, false);
 			menu.AccelGroup = accel_group;
@@ -103,14 +101,13 @@ namespace WidgetViewer {
 
 		static Menu Create_Menu (int depth, bool tearoff)
 		{
-			Console.WriteLine ("Depth: " + depth);
 			if (depth < 1)
 				return null;
 
 			Menu menu = new Menu ();
 			MenuItem menuitem = null;
 			string label = null;
-			GLib.SList group = null;
+			GLib.SList group = new GLib.SList (IntPtr.Zero);
 
 			if (tearoff) {
 				menuitem = new TearoffMenuItem ();
@@ -121,12 +118,9 @@ namespace WidgetViewer {
 			for (int i = 0, j = 1; i < 5; i++, j++) {
 
 				label = String.Format ("item {0} - {1}", depth, j);
-				Console.WriteLine ("label: " + label);
-				menuitem = RadioMenuItem.NewWithLabel (group, label);
-
-
-				group = ((RadioMenuItem) menuitem).Group;
-				Console.WriteLine ("Pass");
+// 				menuitem = RadioMenuItem.NewWithLabel (group, label);
+// 				group = ((RadioMenuItem) menuitem).Group;
+				menuitem = new MenuItem (label);
 				menu.Append (menuitem);
 				
 				if (i == 3)

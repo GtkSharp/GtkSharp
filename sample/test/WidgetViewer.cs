@@ -28,10 +28,15 @@ namespace WidgetViewer {
 			
 			VBox box1 = new VBox (false, 0);
 			window.Add (box1);
-
+			
 			box2 = new VBox (false, 5);
 			box2.BorderWidth = 10;
-			box1.PackStart (box2, true, true, 0);
+			
+			Frame frame = new Frame ("Select a widget");
+			frame.BorderWidth = 5;
+			frame.Add (box2);
+			
+			box1.PackStart (frame, true, true, 0);
 
 			AddButton ("Bi-directional flipping", new EventHandler (Flipping));
 			AddButton ("Check Buttons", new EventHandler (Check_Buttons));
@@ -82,6 +87,7 @@ namespace WidgetViewer {
 		static void Viewer_Delete (object o, DeleteEventArgs args)
 		{
 			viewer.Destroy ();
+			viewer = null;
 			args.RetVal = true;
 		}
 
