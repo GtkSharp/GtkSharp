@@ -1,5 +1,5 @@
 <Type Name="Canvas" FullName="Gnome.Canvas">
-  <TypeSignature Language="C#" Value="public class Canvas : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Canvas : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,102 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Main canvas widget</summary>
+    <remarks>
+      <para>
+        The GnomeCanvas is an engine for structured graphics that
+        offers a rich imaging model, high performance rendering, and a
+        powerful, high level API. It offers a choice of two rendering
+        back-ends, one based on Xlib for extremely fast display, and
+        another based on Libart, a sophisticated, antialiased,
+        alpha-compositing engine. This widget can be used for flexible
+        display of graphics and for creating interactive user
+        interface elements.
+      </para>
+
+      <para>
+        To create a new GnomeCanvas widget call
+        <see cref="C:Gnome.Canvas" /> or
+        <see cref="M:Gnome.Canvas.NewAa" /> for an anti-aliased mode canvas.
+      </para>
+      <para>
+        A <see cref="T:Gnome.Canvas" /> widget contains one or more
+        <see cref="T:Gnome.CanvasItem" />
+        objects. Items consist of graphing elements like lines,
+        ellipses, polygons, images, text, and curves. These items are
+        organized using <see cref="T:Gnome.CanvasGroup" /> objects, which are themselves
+        derived from <see cref="T:Gnome.CanvasItem" />. Since a group is an item it can
+        be contained within other groups, forming a tree of canvas
+        items. Certain operations, like translating and scaling, can
+        be performed on all items in a group.
+      </para>
+      <para>
+        There is a special root group created by a GnomeCanvas. This
+        is the top level group under which all items in a canvas are
+        contained. To get the root group from a canvas, use
+        <see cref="P:Gnome.Canvas.Root" /> property.
+      </para>
+      <para>
+        There are several different coordinate systems used by
+        <see cref="T:Gnome.Canvas" /> widgets. The primary system is a logical, abstract
+        coordinate space called world coordinates. World coordinates
+        are expressed as unbounded double floating point numbers. When
+        it comes to rendering to a screen the canvas pixel coordinate
+        system (also referred to as just canvas coordinates) is
+        used. This system uses integers to specify screen pixel
+        positions. A user defined scaling factor and offset are used
+        to convert between world coordinates and canvas
+        coordinates. Each item in a canvas has its own coordinate
+        system called item coordinates. This system is specified in
+        world coordinates but they are relative to an item (0.0, 0.0
+        would be the top left corner of the item). The final
+        coordinate system of interest is window coordinates. These are
+        like canvas coordinates but are offsets from within a window a
+        canvas is displayed in. This last system is rarely used, but
+        is useful when manually handling GDK events (such as drag and
+        drop) which are specified in window coordinates (the events
+        processed by the canvas are already converted for you).
+      </para>
+      <para>
+        Along with different coordinate systems comes functions
+        to convert between them. <see cref="M:Gnome.Canvas.W2c" /> converts world to
+        canvas pixel coordinates and <see cref="M:Gnome.Canvas.C2w" /> from
+        canvas to world. <see cref="M:Gnome.Canvas.W2cD() " /> is like
+        <see cref="M:Gnome.Canvas.W2c" /> but returns the pixel coordinates as
+        doubles which is useful to avoid precision loss from integer
+        rounding. To get the affine transform matrix for converting
+        from world coordinates to canvas coordinates call
+        <see cref="M:Gnome.Canvas.W2cAffine" />.
+        <see cref="M:Gnome.Canvas.WindowToWorld" />
+        converts from window to world coordinates and
+        <see cref="M:Gnome.Canvas.World.ToWindow" /> converts in the other
+        direction. There are no functions for converting between
+        canvas and window coordinates, since this is just a matter of
+        subtracting the canvas scrolling offset. To convert to/from
+        item coordinates use the functions defined for
+        <see cref="T:Gnome.CanvasItem" /> objects.
+      </para>
+      <para>
+        To set the canvas zoom factor (canvas pixels per world unit,
+        the scaling factor) use the <see cref="P:Gnome.Canvas.PixelsPerUnit" />
+        property, setting this to 1.0 will cause the two coordinate systems to
+        correspond (e.g., [5, 6] in pixel units would be [5.0, 6.0] in
+        world units).
+      </para>
+      <para>
+        Defining the scrollable area of a canvas widget is done by
+        calling <see cref="M:Gnomecanvas.SetScrollRegion" /> and to get the
+        current region <see cref="M:Gnome.Canvas.GetScrollRegion" /> can be
+        used. If the window is larger than the canvas scrolling region
+        it can optionally be centered in the window. Use the 
+        <see cref="P:Gnome.Canvas.CenterScrollRegion" /> property to enable or disable
+        this behavior. To scroll to a particular canvas pixel
+        coordinate use <see cref="M:Gnome.Canvas.ScrollTo" /> (typically not used
+        since scrollbars are usually set up to handle the scrolling),
+        and to get the current canvas pixel scroll offset call
+        <see cref="M:Gnome.Canvas.GetScrollOffsets" />.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Layout</BaseTypeName>
@@ -36,20 +130,20 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="item" Type="Gnome.CanvasItem" />
-		<Parameter Name="x1" Type="System.Int32" />
-		<Parameter Name="y1" Type="System.Int32" />
-		<Parameter Name="x2" Type="System.Int32" />
-		<Parameter Name="y2" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="item" Type="Gnome.CanvasItem" />
+        <Parameter Name="x1" Type="System.Int32" />
+        <Parameter Name="y1" Type="System.Int32" />
+        <Parameter Name="x2" Type="System.Int32" />
+        <Parameter Name="y2" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="item">To be added: an object of type 'Gnome.CanvasItem'</param>
-        <param name="x1">To be added: an object of type 'int'</param>
-        <param name="y1">To be added: an object of type 'int'</param>
-        <param name="x2">To be added: an object of type 'int'</param>
-        <param name="y2">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the bounding box to the new value, requesting full repaint.</summary>
+        <param name="item">The canvas item needing update</param>
+        <param name="x1">Left coordinate of the new bounding box</param>
+        <param name="y1">Top coordinate of the new bounding box</param>
+        <param name="x2">Right coordinate of the new bounding box</param>
+        <param name="y2">Bottom coordinate of the new bounding box</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetButtPoints">
@@ -59,66 +153,76 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Double" />
-		<Parameter Name="y1" Type="System.Double" />
-		<Parameter Name="x2" Type="System.Double" />
-		<Parameter Name="y2" Type="System.Double" />
-		<Parameter Name="width" Type="System.Double" />
-		<Parameter Name="project" Type="System.Int32" />
-		<Parameter Name="bx1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="by1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="bx2" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="by2" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Double" />
+        <Parameter Name="y1" Type="System.Double" />
+        <Parameter Name="x2" Type="System.Double" />
+        <Parameter Name="y2" Type="System.Double" />
+        <Parameter Name="width" Type="System.Double" />
+        <Parameter Name="project" Type="System.Int32" />
+        <Parameter Name="bx1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="by1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="bx2" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="by2" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'double'</param>
-        <param name="y1">To be added: an object of type 'double'</param>
-        <param name="x2">To be added: an object of type 'double'</param>
-        <param name="y2">To be added: an object of type 'double'</param>
-        <param name="width">To be added: an object of type 'double'</param>
-        <param name="project">To be added: an object of type 'int'</param>
-        <param name="bx1">To be added: an object of type 'double&amp;'</param>
-        <param name="by1">To be added: an object of type 'double&amp;'</param>
-        <param name="bx2">To be added: an object of type 'double&amp;'</param>
-        <param name="by2">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Computes the butt points of a line segment.</summary>
+        <param name="x1">X coordinate of first point in the line</param>
+        <param name="y1">Y cooordinate of first point in the line</param>
+        <param name="x2">X coordinate of second point (endpoint) of the line</param>
+        <param name="y2">Y coordinate of second point (endpoint) of the line</param>
+        <param name="width">Width of the line</param>
+        <param name="project"> Whether the butt points should project out by width/2 distance</param>
+        <param name="bx1">Return value of the X coordinate of first butt point</param>
+        <param name="by1">Return value of the Y coordinate of first butt point</param>
+        <param name="bx2">Return value of the X coordinate of second butt point</param>
+        <param name="by2">Return value of the Y coordinate of second butt point</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMiterPoints">
-      <MemberSignature Language="C#" Value="public static int GetMiterPoints (double x1, double y1, double x2, double y2, double x3, double y3, double width, out double mx1, out double my1, out double mx2, out double my2);" />
+      <MemberSignature Language="C#" Value="public static bool GetMiterPoints (double x1, double y1, double x2, double y2, double x3, double y3, double width, out double mx1, out double my1, out double mx2, out double my2);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Double" />
-		<Parameter Name="y1" Type="System.Double" />
-		<Parameter Name="x2" Type="System.Double" />
-		<Parameter Name="y2" Type="System.Double" />
-		<Parameter Name="x3" Type="System.Double" />
-		<Parameter Name="y3" Type="System.Double" />
-		<Parameter Name="width" Type="System.Double" />
-		<Parameter Name="mx1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="my1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="mx2" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="my2" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Double" />
+        <Parameter Name="y1" Type="System.Double" />
+        <Parameter Name="x2" Type="System.Double" />
+        <Parameter Name="y2" Type="System.Double" />
+        <Parameter Name="x3" Type="System.Double" />
+        <Parameter Name="y3" Type="System.Double" />
+        <Parameter Name="width" Type="System.Double" />
+        <Parameter Name="mx1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="my1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="mx2" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="my2" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'double'</param>
-        <param name="y1">To be added: an object of type 'double'</param>
-        <param name="x2">To be added: an object of type 'double'</param>
-        <param name="y2">To be added: an object of type 'double'</param>
-        <param name="x3">To be added: an object of type 'double'</param>
-        <param name="y3">To be added: an object of type 'double'</param>
-        <param name="width">To be added: an object of type 'double'</param>
-        <param name="mx1">To be added: an object of type 'double&amp;'</param>
-        <param name="my1">To be added: an object of type 'double&amp;'</param>
-        <param name="mx2">To be added: an object of type 'double&amp;'</param>
-        <param name="my2">To be added: an object of type 'double&amp;'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Given three points forming an angle, computes the
+          coordinates of the inside and outside points of the mitered
+          corner formed by a line of a given width at that
+          angle.
+        </summary>
+        <param name="x1">X coordinate of the first point</param>
+        <param name="y1">Y coordinate of the first point</param>
+        <param name="x2">X coordinate of the second (angle) point</param>
+        <param name="y2">Y coordinate of the second (angle) point</param>
+        <param name="x3">X coordinate of the third point</param>
+        <param name="y3">Y coordinate of the third point</param>
+        <param name="width"> Width of the line</param>
+        <param name="mx1"> The return value of the X coordinate of the first miter point</param>
+        <param name="my1"> The return value of the Y coordinate of the first miter point</param>
+        <param name="mx2"> The return value of the X coordinate of the second miter point</param>
+        <param name="my2"> The return value of the Y coordinate of the second miter point</param>
+        <returns>
+          <see langword="false" /> if the angle is less than 11
+          degrees (this is the same threshold as X uses. If this
+          occurs, the return points are not modified. Otherwise,
+          returns <see langword="true" />.
+        </returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="JoinGdkToArt">
@@ -128,13 +232,13 @@
         <ReturnType>Art.PathStrokeJoinType</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="gdk_join" Type="Gdk.JoinStyle" />
-	</Parameters>
+        <Parameter Name="gdk_join" Type="Gdk.JoinStyle" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gdk_join">To be added: an object of type 'Gdk.JoinStyle'</param>
-        <returns>To be added: an object of type 'Art.PathStrokeJoinType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Convert from GDK line join specifier to libart.</summary>
+        <param name="gdk_join">a join type, represented in GDK format</param>
+        <returns>The line join specifier in libart format.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderSvp">
@@ -144,16 +248,18 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="buf" Type="Gnome.CanvasBuf" />
-		<Parameter Name="svp" Type="Art.SVP" />
-		<Parameter Name="rgba" Type="System.UInt32" />
-	</Parameters>
+        <Parameter Name="buf" Type="Gnome.CanvasBuf" />
+        <Parameter Name="svp" Type="Art.SVP" />
+        <Parameter Name="rgba" Type="System.UInt32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buf">To be added: an object of type 'Gnome.CanvasBuf'</param>
-        <param name="svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="rgba">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Render the <see paramref="svp" /> over the <see paramref="buf" />.
+        </summary>
+        <param name="buf">the canvas buffer to render over</param>
+        <param name="svp">the vector path to render</param>
+        <param name="rgba">the rgba color to render</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CapGdkToArt">
@@ -163,13 +269,13 @@
         <ReturnType>Art.PathStrokeCapType</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="gdk_cap" Type="Gdk.CapStyle" />
-	</Parameters>
+        <Parameter Name="gdk_cap" Type="Gdk.CapStyle" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gdk_cap">To be added: an object of type 'Gdk.CapStyle'</param>
-        <returns>To be added: an object of type 'Art.PathStrokeCapType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Convert from GDK line cap specifier to the libart format.</summary>
+        <param name="gdk_cap">a cap type, represented in GDK format</param>
+        <returns>The line cap specifier in libart format.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="NewAa">
@@ -180,26 +286,39 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.Canvas'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Creates a new empty canvas in antialiased mode. You should
+          push the <see cref="T:Gdk.RGB" /> visual and colormap before calling this
+          functions, and they can be popped afterwards.
+        </summary>
+        <returns>A newly-created antialiased canvas.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetColor">
-      <MemberSignature Language="C#" Value="public int GetColor (string spec, out Gdk.Color color);" />
+      <MemberSignature Language="C#" Value="public bool GetColor (string spec, out Gdk.Color color);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="spec" Type="System.String" />
-		<Parameter Name="color" Type="Gdk.Color&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="spec" Type="System.String" />
+        <Parameter Name="color" Type="Gdk.Color&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="spec">To be added: an object of type 'string'</param>
-        <param name="color">To be added: an object of type 'Gdk.Color&amp;'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <summary>Allocates a color based on the specified X color specification.</summary>
+        <param name="spec">
+          X color specification, or <see langword="null" />
+          for"transparent".
+        </param>
+        <param name="color">
+           Return value the allocated color.
+        </param>
+        <returns>
+          <see langword="true" /> if spec is non-NULL and the color is
+          allocated. If spec is <see langwod="null" />, then returns
+          <see langword="false" />.
+        </returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -210,14 +329,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="p_svp" Type="Art.SVP" />
-		<Parameter Name="new_svp" Type="Art.SVP" />
-	</Parameters>
+        <Parameter Name="p_svp" Type="Art.SVP" />
+        <Parameter Name="new_svp" Type="Art.SVP" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="p_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="new_svp">To be added: an object of type 'Art.SVP'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the svp to the new value, requesting repaint on what's changed.</summary>
+        <param name="p_svp">The existing svp</param>
+        <param name="new_svp">The new svp</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetItemAt">
@@ -227,15 +346,15 @@
         <ReturnType>Gnome.CanvasItem</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x" Type="System.Double" />
-		<Parameter Name="y" Type="System.Double" />
-	</Parameters>
+        <Parameter Name="x" Type="System.Double" />
+        <Parameter Name="y" Type="System.Double" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'double'</param>
-        <param name="y">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'Gnome.CanvasItem'</returns>
-        <remarks>To be added</remarks>
+        <summary>Looks for the item that is under the specified position.</summary>
+        <param name="x">X position in world coordinates.</param>
+        <param name="y">Y position in world coordinates.</param>
+        <returns>The requested item, or <see langword="null" /> if no item is at the specified coordinates.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Root">
@@ -246,9 +365,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.CanvasGroup'</returns>
-        <remarks>To be added</remarks>
+        <summary>Queries the root group of a canvas.</summary>
+        <returns>The root group of the specified canvas.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WorldToWindow">
@@ -258,18 +377,18 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="worldx" Type="System.Double" />
-		<Parameter Name="worldy" Type="System.Double" />
-		<Parameter Name="winx" Type="System.Double" />
-		<Parameter Name="winy" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="worldx" Type="System.Double" />
+        <Parameter Name="worldy" Type="System.Double" />
+        <Parameter Name="winx" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="winy" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="worldx">To be added: an object of type 'double'</param>
-        <param name="worldy">To be added: an object of type 'double'</param>
-        <param name="winx">To be added: an object of type 'double'</param>
-        <param name="winy">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts world coordinates into window-relative coordinates.</summary>
+        <param name="worldx">World X coordinate.</param>
+        <param name="worldy">World Y coordinate.</param>
+        <param name="winx">Return value for the X window-relative coordinate.</param>
+        <param name="winy">Return value for the Y window-relative coordinate.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateSvpClip">
@@ -279,31 +398,35 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="p_svp" Type="Art.SVP" />
-		<Parameter Name="new_svp" Type="Art.SVP" />
-		<Parameter Name="clip_svp" Type="Art.SVP" />
-	</Parameters>
+        <Parameter Name="p_svp" Type="Art.SVP" />
+        <Parameter Name="new_svp" Type="Art.SVP" />
+        <Parameter Name="clip_svp" Type="Art.SVP" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="p_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="new_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="clip_svp">To be added: an object of type 'Art.SVP'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Sets the svp to the new value, clipping if necessary, and
+          requesting repaint on what's changed.
+        </summary>
+        <param name="p_svp">the existing svp</param>
+        <param name="new_svp">the new svp</param>
+        <param name="clip_svp">a clip path</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="W2cAffine">
-      <MemberSignature Language="C#" Value="public void W2cAffine (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void W2cAffine (out double [] affine);" />
+
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="affine" Type="System.Double []" />
-	</Parameters>
+        <Parameter Name="affine" Type="System.Double []" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="affine">To be added: an object of type 'double []'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the affine transform that converts from world coordinates to canvas pixel coordinates.</summary>
+        <param name="affine">An affine transformation matrix (return value).</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestRedraw">
@@ -313,18 +436,28 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Int32" />
-		<Parameter Name="y1" Type="System.Int32" />
-		<Parameter Name="x2" Type="System.Int32" />
-		<Parameter Name="y2" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Int32" />
+        <Parameter Name="y1" Type="System.Int32" />
+        <Parameter Name="x2" Type="System.Int32" />
+        <Parameter Name="y2" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'int'</param>
-        <param name="y1">To be added: an object of type 'int'</param>
-        <param name="x2">To be added: an object of type 'int'</param>
-        <param name="y2">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Convenience function that informs a canvas that the specified rectangle needs to be repainted.</summary>
+        <param name="x1">Leftmost coordinate of the rectangle to be redrawn.</param>
+        <param name="y1">Upper coordinate of the rectangle to be redrawn.</param>
+        <param name="x2">Rightmost coordinate of the rectangle to be redrawn, plus 1.</param>
+        <param name="y2">Lower coordinate of the rectangle to be redrawn, plus 1.</param>
+        <remarks>
+          <para>
+            Convenience function that informs a canvas that the
+            specified rectangle needs to be repainted. This function
+            converts the rectangle to a microtile array and feeds it
+            to <see cref="M:Gnome.Canvas.RequestRedrawUta" />. The rectangle
+            includes <see paramref="x1" /> and <see paramref="y1" />,
+            but not <see paramref="x2" /> and <see paramref="y2" />. To be used only by
+            item implementations.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetScrollOffsets">
@@ -334,14 +467,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="cx" Type="System.Int32&amp;" RefType="out" />
-		<Parameter Name="cy" Type="System.Int32&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="cx" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="cy" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="cx">To be added: an object of type 'int&amp;'</param>
-        <param name="cy">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Queries the scrolling offsets of a canvas. The values are returned in canvas pixel units.</summary>
+        <param name="cx">Return value for the horizontal scrolling offset</param>
+        <param name="cy">Return value for the vertical scrolling offset</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateNow">
@@ -352,29 +485,40 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Forces an immediate update and redraw of a canvas.</summary>
+        <remarks>
+          <para>
+            Forces an immediate update and redraw of a canvas. If the
+            canvas does not have any pending update or redraw
+            requests, then no action is taken. This is typically only
+            used by applications that need explicit control of when
+            the display is updated, like games. It is not needed by
+            normal applications.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetScrollRegion">
-      <MemberSignature Language="C#" Value="public void GetScrollRegion (out double x1, out double y1, out double x2, out double y2);" />
+      <MemberSignature Language="C#" Value="public void
+      GetScrollRegion (out double x1, out double y1, out double x2,
+      out double y2);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="y1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="x2" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="y2" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="x2" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y2" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'double&amp;'</param>
-        <param name="y1">To be added: an object of type 'double&amp;'</param>
-        <param name="x2">To be added: an object of type 'double&amp;'</param>
-        <param name="y2">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Queries the scrolling region of a canvas.</summary>
+        <param name="x1">Return value for the leftmost limit of the scrolling region</param>
+        <param name="y1">Return value for the upper limit of the scrolling region</param>
+        <param name="x2">Return value for the rightmost limit of the scrolling region</param>
+        <param name="y2">Return value for the lower limit of the scrolling region</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="W2cD">
@@ -384,18 +528,22 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="wx" Type="System.Double" />
-		<Parameter Name="wy" Type="System.Double" />
-		<Parameter Name="cx" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="cy" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="wx" Type="System.Double" />
+        <Parameter Name="wy" Type="System.Double" />
+        <Parameter Name="cx" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="cy" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="wx">To be added: an object of type 'double'</param>
-        <param name="wy">To be added: an object of type 'double'</param>
-        <param name="cx">To be added: an object of type 'double&amp;'</param>
-        <param name="cy">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Converts world coordinates into canvas pixel
+          coordinates. This version returns coordinates in floating
+          point coordinates, for greater precision.
+        </summary>
+        <param name="wx">World X coordinate.</param>
+        <param name="wy">World Y coordinate.</param>
+        <param name="cx">Return value for the X pixel coordinate</param>
+        <param name="cy">Return value for the Y pixel coordinate</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetScrollRegion">
@@ -405,17 +553,17 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Double" />
-		<Parameter Name="y1" Type="System.Double" />
-		<Parameter Name="x2" Type="System.Double" />
-		<Parameter Name="y2" Type="System.Double" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Double" />
+        <Parameter Name="y1" Type="System.Double" />
+        <Parameter Name="x2" Type="System.Double" />
+        <Parameter Name="y2" Type="System.Double" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'double'</param>
-        <param name="y1">To be added: an object of type 'double'</param>
-        <param name="x2">To be added: an object of type 'double'</param>
-        <param name="y2">To be added: an object of type 'double'</param>
+        <summary>Sets the scrolling region of a canvas to the specified rectangle.</summary>
+        <param name="x1">Leftmost limit of the scrolling region.</param>
+        <param name="y1">Upper limit of the scrolling region.</param>
+        <param name="x2">Rightmost limit of the scrolling region.</param>
+        <param name="y2">Lower limit of the scrolling region.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -426,12 +574,16 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="uta" Type="Art.Uta" />
-	</Parameters>
+        <Parameter Name="uta" Type="Art.Uta" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uta">To be added: an object of type 'Art.Uta'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Informs a canvas that the specified area, given as a
+          microtile array, needs to be repainted. To be used only by
+          item implementations.
+        </summary>
+        <param name="uta">Microtile array that specifies the area to be redrawn.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowToWorld">
@@ -441,18 +593,18 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="winx" Type="System.Double" />
-		<Parameter Name="winy" Type="System.Double" />
-		<Parameter Name="worldx" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="worldy" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="winx" Type="System.Double" />
+        <Parameter Name="winy" Type="System.Double" />
+        <Parameter Name="worldx" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="worldy" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="winx">To be added: an object of type 'double'</param>
-        <param name="winy">To be added: an object of type 'double'</param>
-        <param name="worldx">To be added: an object of type 'double&amp;'</param>
-        <param name="worldy">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts world coordinates into window-relative coordinates.</summary>
+        <param name="winx">World X coordinate.</param>
+        <param name="winy">World Y coordinate.</param>
+        <param name="worldx">Return value for the X window-relative coordinate.</param>
+        <param name="worldy">Return value for the Y window-relative coordinate.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="W2c">
@@ -462,18 +614,18 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="wx" Type="System.Double" />
-		<Parameter Name="wy" Type="System.Double" />
-		<Parameter Name="cx" Type="System.Int32&amp;" RefType="out" />
-		<Parameter Name="cy" Type="System.Int32&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="wx" Type="System.Double" />
+        <Parameter Name="wy" Type="System.Double" />
+        <Parameter Name="cx" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="cy" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="wx">To be added: an object of type 'double'</param>
-        <param name="wy">To be added: an object of type 'double'</param>
-        <param name="cx">To be added: an object of type 'int&amp;'</param>
-        <param name="cy">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts world coordinates into canvas pixel coordinates.</summary>
+        <param name="wx">World X coordinate.</param>
+        <param name="wy">World Y coordinate.</param>
+        <param name="cx">Return value for the X pixel coordinate</param>
+        <param name="cy">Return value for the Y pixel coordinate</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollTo">
@@ -483,14 +635,22 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="cx" Type="System.Int32" />
-		<Parameter Name="cy" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="cx" Type="System.Int32" />
+        <Parameter Name="cy" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="cx">To be added: an object of type 'int'</param>
-        <param name="cy">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Makes a canvas scroll to the specified offsets, given in canvas pixel units.</summary>
+        <param name="cx">Horizontal scrolling offset in canvas pixel units.</param>
+        <param name="cy">Vertical scrolling offset in canvas pixel units.</param>
+        <remarks>
+          <para>
+            Makes a canvas scroll to the specified offsets, given in
+            canvas pixel units. The canvas will adjust the view so
+            that it is not outside the scrolling region. This function
+            is typically not used, as it is better to hook scrollbars
+            to the canvas layout's scrolling adjusments.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetColorPixel">
@@ -500,13 +660,19 @@
         <ReturnType>System.UInt64</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="rgba" Type="System.UInt32" />
-	</Parameters>
+        <Parameter Name="rgba" Type="System.UInt32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rgba">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'ulong'</returns>
-        <remarks>To be added</remarks>
+        <summary>Allocates a color from the RGBA value passed into this function.</summary>
+        <param name="rgba">RGBA color specification.</param>
+        <returns>Allocated pixel value corresponding to the specified color.</returns>
+        <remarks>
+          <para>
+            Allocates a color from <see paramref="rgba" />, the RGBA
+            value passed into this function. The alpha opacity value
+            is discarded, since normal X colors do not support it.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="C2w">
@@ -516,18 +682,18 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="cx" Type="System.Int32" />
-		<Parameter Name="cy" Type="System.Int32" />
-		<Parameter Name="wx" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="wy" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="cx" Type="System.Int32" />
+        <Parameter Name="cy" Type="System.Int32" />
+        <Parameter Name="wx" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="wy" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="cx">To be added: an object of type 'int'</param>
-        <param name="cy">To be added: an object of type 'int'</param>
-        <param name="wx">To be added: an object of type 'double&amp;'</param>
-        <param name="wy">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts canvas pixel coordinates to world coordinates.</summary>
+        <param name="cx">Canvas pixel X coordinate.</param>
+        <param name="cy">Canvas pixel Y coordinate.</param>
+        <param name="wx">Return value for the X world coordinate</param>
+        <param name="wy">Return value for the Y world coordinate</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -547,8 +713,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -564,9 +730,17 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.Canvas'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new empty canvas in non-antialiased mode.</summary>
+        <returns>A newly-created canvas.</returns>
+        <remarks>
+          <para>
+            Creates a new empty canvas in non-antialiased mode. If you
+            wish to use the <see cref="T:Gnome.CanvasImage" /> item inside this canvas,
+            then you must push the gdk_imlib visual and colormap
+            before calling this function, and they can be popped
+            afterwards.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -587,13 +761,23 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the zooming factor of a canvas by specifying the number of pixels that correspond to one canvas unit.</summary>
+        <param name="value">The number of pixels that correspond to one canvas unit.</param>
+        <remarks>
+          <para>
+            The anchor point for zooming, i.e. the point that stays
+            fixed and all others zoom inwards or outwards from it,
+            depends on whether the canvas is set to center the
+            scrolling region or not. You can control this using the
+            <see cref="P:Gnome.CanvasCenterScrollRegion" /> function. If the
+            canvas is set to center the scroll region, then the center
+            of the canvas window is used as the anchor point for
+            zooming. Otherwise, the upper-left corner of the canvas
+            window is used as the anchor point.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dither">
@@ -602,13 +786,16 @@
       <ReturnValue>
         <ReturnType>Gdk.RgbDither</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.RgbDither'</param>
-        <returns>To be added: an object of type 'Gdk.RgbDither'</returns>
-        <remarks>To be added</remarks>
+        <summary>The type of dithering used to render an antialiased canvas.</summary>
+        <param name="value">
+          The value of dither should be <see cref="F:Gdk.RgbDither.None" />,
+          <see cref="F:Gdk.RgbDither.Normal" />, or <see cref="F:Gdk.RGBDither.Max" />.
+          The default canvas setting is <see cref="F:Gdk.RgbDither.Normal" />
+        </param>
+        <returns>The type of dithering used to render an antialiased canvas.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CenterScrollRegion">
@@ -617,13 +804,25 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Whether the canvas is set to center the scrolling region in
+          the window if the former is smaller than the canvas'
+          allocation.
+        </summary>
+        <param name="value">
+          Whether to center the scrolling region in the canvas window when it is smaller than the canvas' allocation.
+        </param>
+        <returns>Whether the scroll region is being centered in the canvas window.</returns>
+        <remarks>
+          <para>
+            When the scrolling region of the canvas is smaller than
+            the canvas window, e.g. the allocation of the canvas, it
+            can be either centered on the window or simply made to be
+            on the upper-left corner on the window.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StippleOrigin">
@@ -632,13 +831,17 @@
       <ReturnValue>
         <ReturnType>Gdk.GC</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.GC'</param>
-        <returns>To be added: an object of type 'Gdk.GC'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Sets the stipple origin of the specified GC as is
+          appropriate for the canvas, so that it will be aligned with
+          other stipple patterns used by canvas items.
+        </summary>
+        <param name="value"><see cref="T:Gdk.GC" /> on which to set the stipple origin.</param>
+        <remarks>
+          <para>This is typically only needed by item implementations.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Aa">
@@ -648,29 +851,49 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether to enable anti-aliasing mode</summary>
+        <returns><see langword="true" /> to enable anti-aliasing</returns>
+        <remarks>
+          <para>
+            Note that this parameter can only be set at the time of
+            object construction. The same effect can be achieved by
+            calling <see cref="C:Gnome.Canvas" /> to create new non-aa canvas or
+            <see cref="M:Gnome.Canvas.NewAa" /> for an anti-aliased canvas.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawBackground">
       <MemberSignature Language="C#" Value="public event GnomeSharp.DrawBackgroundHandler DrawBackground;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GnomeSharp.DrawBackgroundHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GnomeSharp.DrawBackgroundHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+          Emitted to draw the background for non-antialiased mode
+          canvas widgets. The default method uses the canvas widget's
+          style to draw the background.
+        </summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderBackground">
       <MemberSignature Language="C#" Value="public event GnomeSharp.RenderBackgroundHandler RenderBackground;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GnomeSharp.RenderBackgroundHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GnomeSharp.RenderBackgroundHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+          This signal is emitted for antialiased mode canvas widgets
+          to render the background. The buf data structure contains
+          both a pointer to a packed 24-bit RGB array and the
+          coordinates.
+        </summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -678,8 +901,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>

@@ -7,8 +7,78 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Base class for all canvas items</summary>
+    <remarks>
+      <para>
+        This is the base class for all canvas items. Canvas items are
+        the drawing elements of a GnomeCanvas. Example items include
+        lines, ellipses, polygons, images, text, curves and even
+        arbitrary GTK+ widgets.
+      </para>
+      <para>
+        Canvas items use the GObject property system to query and set
+        parameters. Properties are inherited so, for example, a
+        <see cref="P:Gnome.CanvasPolygon" /> has a
+        <see cref="P:Gnome.CanvasPolygon.FillColor" /> property that is
+        inherited from its parent class object
+        <see cref="P:Gnome.CanvasShape" />. So be
+        sure to check the parent classes of
+        <see cref="T:Gnome.CanvasItem" /> objects
+        when looking for item properties.
+      </para>
+      <para>
+        To create a new canvas item use the
+        <see cref="C:Gnome.CanvasItem" /> constructor which
+        takes a parent <see cref="T:Gnome.CanvasGroup" />,
+        <see cref="T:GLib.Type" /> of the item to create,
+        and a <see langword="null" /> terminated list of name/value GObject properties to
+        set for the new item.
+      </para>
+      <para>
+        There are several methods to change the drawing stacking
+        order of an item. Call <see cref="M:Gnome.CanvasItem.Raise" /> to raise an
+        item a specified number of positions or
+        <see cref="M:Gnome.CanvasItem.Lower" /> to lower it. To raise an item to the
+        top call <see cref="M:Gnome.CanvasItem.RaiseToTop" />. The
+        <see cref="M:Gnome.CanvasItem.LowerToBottom" /> methods will put it at
+        the bottom.
+      </para>
+      <para>
+        To show an item call <see cref="M:Gnome.CanvasItem.Show" />. Note that
+        canvas item's are shown by default and so do not need to be
+        explicitly shown after creation (contrary to GTK+ widget
+        behavior). Call <see cref="M:Gnome.CanvasItem.Hide" /> to hide an item.
+      </para>
+      <para>
+        To move an item relative to its current position (item
+        coordinates) call <see cref="M:Gnome.CanvasItem.Move" /> or
+        <see cref="M:Gnome.CanvasItem.AffineRelative" /> for more complex
+        transforms. <see cref="M:Gnome.CanvasItem.AffineAbsolute" /> can be used to
+        set an item's transform to specific values (not offsets).
+      </para>
+      <para>
+        To convert between world and item coordinate systems call
+        <see cref="M:Gnome.CanvasItem.W2i" />, and to convert in the other direction
+        call <see cref="M:Gnome.CanvasItem.I2w" />. To get the transform for
+        converting from item to world coordinates use
+        <see cref="M:M:Gnome.CanvasItem.I2wAffine" /> or for converting item to
+        canvas coordinates, <see cref="M:Gnome.CanvasItem.I2cAffine" />.
+      </para>
+      <para>
+        Handling user input for interactive items is accomplished
+        through a few functions and the "event" signals. To grab the
+        mouse cursor call <see cref="M:Gnome.CanvasItem.Grab" />, it can be
+        ungrabbed with <see cref="M:Gnome.CanvasItem.Ungrab" /> (see
+        <see cref="M:Gdk.Pointer.Grab" /> of the GTK+ library for details). To grab
+        keyboard focus call <see cref="M:Gnome.CanvasItem.GrabFocus" />. Received
+        events will be signaled via the "event" signal.
+      </para>
+      <para>
+        Some other useful functions include a reparenting routine,
+        <see cref="M:Gnome.CanvasItem.Reparent" />, and a function to query the
+        bounding box of an item (a minumum rectangular area containing
+        all parts of the item), <see cref="M:Gnome.CanvasItem.Getbounds" /></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
@@ -24,18 +94,21 @@
   <Attributes />
   <Members>
     <Member MemberName="AffineRelative">
-      <MemberSignature Language="C#" Value="public void AffineRelative (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void AffineRelative (out double [] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="affine" Type="System.Double []" />
-	</Parameters>
+        <Parameter Name="affine" Type="System.Double []&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="affine">To be added: an object of type 'double []'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Combines the specified affine transformation matrix with the
+          item's current transformation.
+        </summary>
+        <param name="affine">Return value for an affine transformation matrix.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Lower">
@@ -45,12 +118,17 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="positions" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="positions" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="positions">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Lowers the item in its parent's stack by the specified
+          number of positions. If the number of positions is greater
+          than the distance to the bottom of the stack, then the item
+          is put at the bottom.
+        </summary>
+        <param name="positions">Number of steps to lower the item.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Show">
@@ -61,8 +139,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Shows a canvas item. If the item was already shown, then no action is taken.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestRedrawSvp">
@@ -72,12 +150,16 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="svp" Type="Art.SVP" />
-	</Parameters>
+        <Parameter Name="svp" Type="Art.SVP" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="svp">To be added: an object of type 'Art.SVP'</param>
-        <remarks>To be added</remarks>
+        <summary>Request redraw of <see paramref="svp" /> if in aa mode, or the entire item in in xlib mode.</summary>
+        <param name="svp">The svp that needs to be redrawn</param>
+        <remarks>
+          <para>
+            This item must contain <see paramref="svp" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GrabFocus">
@@ -88,8 +170,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+          Makes the specified item take the keyboard focus, so all
+          keyboard events will be sent to it. If the canvas widget
+          itself did not have the focus, it grabs it as well.
+        </summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LowerToBottom">
@@ -100,8 +186,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Lowers an item to the bottom of its parent's stack.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Hide">
@@ -112,8 +198,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Hides a canvas item. If the item was already hidden, then no action is taken.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RaiseToTop">
@@ -124,25 +210,30 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Raises an item to the top of its parent's stack.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="W2i">
-      <MemberSignature Language="C#" Value="public void W2i (double x, double y);" />
+      <MemberSignature Language="C#" Value="public void W2i (ref double x, ref double y);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x" Type="System.Double" />
-		<Parameter Name="y" Type="System.Double" />
-	</Parameters>
+        <Parameter Name="x" Type="System.Double&amp;" RefType="ref" />
+        <Parameter Name="y" Type="System.Double&amp;" RefType="ref" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'double'</param>
-        <param name="y">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts a coordinate pair from world coordinates to item-relative coordinates.</summary>
+        <param name="x">X coordinate to convert (input/output value).</param>
+        <param name="y">Y coordinate to convert (input/output value).</param>
+        <remarks>
+          <para>
+            The parameters <see paramref="x" /> and <see paramref="y" />
+            are used as both in and out parameters.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateSvp">
@@ -152,50 +243,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="p_svp" Type="Art.SVP" />
-		<Parameter Name="new_svp" Type="Art.SVP" />
-	</Parameters>
+        <Parameter Name="p_svp" Type="Art.SVP" />
+        <Parameter Name="new_svp" Type="Art.SVP" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="p_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="new_svp">To be added: an object of type 'Art.SVP'</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValist">
-      <MemberSignature Language="C#" Value="public void SetValist (string first_arg_name, IntPtr args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-		<Parameter Name="first_arg_name" Type="System.String" />
-		<Parameter Name="args" Type="System.IntPtr" />
-	</Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="first_arg_name">To be added: an object of type 'string'</param>
-        <param name="args">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Construct">
-      <MemberSignature Language="C#" Value="public void Construct (Gnome.CanvasGroup parent, string first_arg_name, IntPtr args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-		<Parameter Name="parent" Type="Gnome.CanvasGroup" />
-		<Parameter Name="first_arg_name" Type="System.String" />
-		<Parameter Name="args" Type="System.IntPtr" />
-	</Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="parent">To be added: an object of type 'Gnome.CanvasGroup'</param>
-        <param name="first_arg_name">To be added: an object of type 'string'</param>
-        <param name="args">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the svp to the new value, requesting repaint on what's changed</summary>
+        <param name="p_svp">the existing SVP</param>
+        <param name="new_svp">the new SVP</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateSvpClip">
@@ -205,16 +260,16 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="p_svp" Type="Art.SVP" />
-		<Parameter Name="new_svp" Type="Art.SVP" />
-		<Parameter Name="clip_svp" Type="Art.SVP" />
-	</Parameters>
+        <Parameter Name="p_svp" Type="Art.SVP" />
+        <Parameter Name="new_svp" Type="Art.SVP" />
+        <Parameter Name="clip_svp" Type="Art.SVP" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="p_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="new_svp">To be added: an object of type 'Art.SVP'</param>
-        <param name="clip_svp">To be added: an object of type 'Art.SVP'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the svp to the new value, clipping if necessary, and requesting repaint on what's changed.</summary>
+        <param name="p_svp">the old SVP</param>
+        <param name="new_svp">the new SVP</param>
+        <param name="clip_svp">a clip path</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBounds">
@@ -224,33 +279,40 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="y1" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="x2" Type="System.Double&amp;" RefType="out" />
-		<Parameter Name="y2" Type="System.Double&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="x1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y1" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="x2" Type="System.Double&amp;" RefType="out" />
+        <Parameter Name="y2" Type="System.Double&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x1">To be added: an object of type 'double&amp;'</param>
-        <param name="y1">To be added: an object of type 'double&amp;'</param>
-        <param name="x2">To be added: an object of type 'double&amp;'</param>
-        <param name="y2">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Queries the bounding box of a canvas item. The bounds are
+          returned in the coordinate system of the item's
+          parent.
+        </summary>
+        <param name="x1">Return value for the leftmost edge of the bounding box</param>
+        <param name="y1">Return value for the upper edge of the bounding box</param>
+        <param name="x2">Return value for the rightmost edge of the bounding box</param>
+        <param name="y2">Return value for the lower edge of the bounding box</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AffineAbsolute">
-      <MemberSignature Language="C#" Value="public void AffineAbsolute (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void AffineAbsolute (out double [] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="affine" Type="System.Double []" />
-	</Parameters>
+        <Parameter Name="affine" Type="System.Double []&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="affine">To be added: an object of type 'double []'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Makes the item's affine transformation matrix be equal to
+          the specified matrix.
+        </summary>
+        <param name="affine">Return value for an affine transformation matrix.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Reparent">
@@ -260,27 +322,32 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="new_group" Type="Gnome.CanvasGroup" />
-	</Parameters>
+        <Parameter Name="new_group" Type="Gnome.CanvasGroup" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="new_group">To be added: an object of type 'Gnome.CanvasGroup'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Changes the parent of the specified item to be the new
+          group. The item keeps its group-relative coordinates as for
+          its old parent, so the item may change its absolute position
+          within the canvas.
+        </summary>
+        <param name="new_group">A canvas group.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="I2wAffine">
-      <MemberSignature Language="C#" Value="public void I2wAffine (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void I2wAffine (out double [] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="affine" Type="System.Double []" />
-	</Parameters>
+        <Parameter Name="affine" Type="System.Double []&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="affine">To be added: an object of type 'double []'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the affine transform that converts from the item's coordinate system to world coordinates.</summary>
+        <param name="affine">Return value for an affine transformation matrix</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Ungrab">
@@ -290,28 +357,26 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="etime" Type="System.UInt32" />
-	</Parameters>
+        <Parameter Name="etime" Type="System.UInt32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="etime">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Ungrabs the item, which must have been grabbed in the canvas, and ungrabs the mouse.</summary>
+        <param name="etime">The timestamp for ungrabbing the mouse.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="I2cAffine">
-      <MemberSignature Language="C#" Value="public void I2cAffine (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void I2cAffine (out double [] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="affine" Type="System.Double []" />
-	</Parameters>
+        <Parameter Name="affine" Type="System.Double []&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="affine">To be added: an object of type 'double []'</param>
-        <remarks>To be added</remarks>
-      </Docs>
+        <summary>Gets the affine transform that converts from item-relative coordinates to canvas pixel coordinates.</summary>/
+        <param name="affine">Return value for an affine transformation matrix (return value).</param><remarks></remarks></Docs>
     </Member>
     <Member MemberName="Raise">
       <MemberSignature Language="C#" Value="public void Raise (int positions);" />
@@ -320,29 +385,39 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="positions" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="positions" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="positions">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Raises the item in its parent's stack by the specified
+          number of positions. If the number of positions is greater
+          than the distance to the top of the stack, then the item is
+          put at the top.
+        </summary>
+        <param name="positions">Number of steps to raise the item.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="I2w">
-      <MemberSignature Language="C#" Value="public void I2w (double x, double y);" />
+      <MemberSignature Language="C#" Value="public void I2w (ref double x, ref double y);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x" Type="System.Double" />
-		<Parameter Name="y" Type="System.Double" />
-	</Parameters>
+        <Parameter Name="x" Type="System.Double&amp;" RefType="ref" />
+        <Parameter Name="y" Type="System.Double&amp;" RefType="ref" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'double'</param>
-        <param name="y">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts a coordinate pair from item-relative coordinates to world coordinates.</summary>
+        <param name="x">X coordinate to convert (input/output value).</param>
+        <param name="y">Y coordinate to convert (input/output value).</param>
+        <remarks>
+          <para>
+            The parameters <see paramref="x" /> and <see paramref="y" />
+            are used as both in and out parameters.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Move">
@@ -352,14 +427,20 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="dx" Type="System.Double" />
-		<Parameter Name="dy" Type="System.Double" />
-	</Parameters>
+        <Parameter Name="dx" Type="System.Double" />
+        <Parameter Name="dy" Type="System.Double" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dx">To be added: an object of type 'double'</param>
-        <param name="dy">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Moves a canvas item by creating an affine transformation
+          matrix for translation by using the specified values. This
+          happens in item local coordinate system, so if you have
+          nontrivial transform, it most probably does not do, what you
+          want.
+        </summary>
+        <param name="dx">Horizontal offset.</param>
+        <param name="dy">Vertical offset.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestUpdate">
@@ -370,8 +451,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>To be used only by item implementations. Requests that the canvas queue an update for the specified item.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ResetBounds">
@@ -382,8 +463,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Resets the bounding box of a canvas item to an empty rectangle.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -403,8 +484,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -421,22 +502,6 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.CanvasItem'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CanvasItem (Gnome.CanvasGroup group, uint type);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-		<Parameter Name="group" Type="Gnome.CanvasGroup" />
-		<Parameter Name="type" Type="System.UInt32" />
-	</Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="group">To be added: an object of type 'Gnome.CanvasGroup'</param>
-        <param name="type">To be added: an object of type 'uint'</param>
         <returns>To be added: an object of type 'Gnome.CanvasItem'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -471,23 +536,30 @@
       <ReturnValue>
         <ReturnType>Gnome.CanvasItem</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gnome.CanvasItem'</param>
-        <returns>To be added: an object of type 'Gnome.CanvasItem'</returns>
-        <remarks>To be added</remarks>
+        <summary>The parent item</summary>
+        <param name="value">the parent item</param>
+        <returns>the parent item</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CanvasEvent">
       <MemberSignature Language="C#" Value="public event GnomeSharp.CanvasEventHandler CanvasEvent;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GnomeSharp.CanvasEventHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GnomeSharp.CanvasEventHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+          Signals mouse button clicks, motion, enter/leave, and key
+          press events on canvas items. Use this to create user
+          interactive items. The x and y coordinates in the
+          <see cref="F:GtkSharp.CanvasEventArgs.Event" />
+          field have been converted to canvas world coordinates.
+        </summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -495,8 +567,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
