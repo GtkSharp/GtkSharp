@@ -104,13 +104,14 @@ in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>
-	  Sets the visible function used when filtering to be <paramref name="func" />.
-	</summary>
+        <summary>Sets the visible function used when filtering to be <paramref name="func" />.</summary>
         <param name="func">a <see cref="T:Gtk.TreeModelFilterVisibleFunc" /></param>
         <param name="data">a <see cref="T:System.IntPtr" /></param>
         <param name="destroy">a <see cref="T:Gtk.DestroyNotify" /></param>
         <remarks>
+	  Note: this overload of the function is obsolete and requires you to manage the persistence
+          of func manually so it isn't garbage collected.  The method has been replaced by a single parameter
+          overload which manages delegate persistence internally.
 	  The function should return TRUE if the given row should be visible and
 	  FALSE otherwise.
 	</remarks>
@@ -150,37 +151,6 @@ in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
 	  all unreffed iterators will be invalid.</para>
           <para>Added in GTK 2.4.</para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetModifyFunc">
-      <MemberSignature Language="C#" Value="public void SetModifyFunc (int n_columns, GLib.GType types, Gtk.TreeModelFilterModifyFunc func, IntPtr data, Gtk.DestroyNotify destroy);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="n_columns" Type="System.Int32" />
-        <Parameter Name="types" Type="GLib.GType" />
-        <Parameter Name="func" Type="Gtk.TreeModelFilterModifyFunc" />
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
-      </Parameters>
-      <Docs>
-        <summary>Sets a function to modify the display of the model.</summary>
-        <param name="n_columns">a <see cref="T:System.Int32" /></param>
-        <param name="types">a <see cref="T:GLib.GType" /></param>
-        <param name="func">a <see cref="T:Gtk.TreeModelFilterModifyFunc" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>
-	  With the <paramref name="n_columns" /> and  <paramref name="types" /> parameters, you give an array of column
-	  types for this model (which will be exposed to the parent model/view).
-	  The <paramref name="func" />, <paramref name="data" /> and <paramref name="destroy" /> parameters are for specifying the modify
-	  function. The modify function will get called for each
-	  data access; the goal of the modify function is to return the data which 
-	  should be displayed at the location specified using the parameters of the 
-	  modify function.
-	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConvertPathToChildPath">
@@ -1109,6 +1079,49 @@ in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
         <summary>Child tree data model.</summary>
         <returns>a <see cref="T:Gtk.TreeModel" /></returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetVisibleFunc">
+      <MemberSignature Language="C#" Value="public void SetVisibleFunc (Gtk.TreeModelFilterVisibleFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Gtk.TreeModelFilterVisibleFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Sets the visible function used when filtering to be <paramref name="func" />.</summary>
+        <param name="func">a <see cref="T:Gtk.TreeModelFilterVisibleFunc" /></param>
+        <remarks>
+	  The function should return <see langword="true"/> if the given row should be visible.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetModifyFunc">
+      <MemberSignature Language="C#" Value="public void SetModifyFunc (int n_columns, GLib.GType[] types, Gtk.TreeModelFilterModifyFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="n_columns" Type="System.Int32" />
+        <Parameter Name="types" Type="GLib.GType[]" />
+        <Parameter Name="func" Type="Gtk.TreeModelFilterModifyFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Sets a function to modify the display of the model.</summary>
+        <param name="n_columns">a <see cref="T:System.Int32" /></param>
+        <param name="types">an array of <see cref="T:GLib.GType" /></param>
+        <param name="func">a <see cref="T:Gtk.TreeModelFilterModifyFunc" /></param>
+        <remarks>
+	  With the <paramref name="n_columns" /> and  <paramref name="types" /> parameters, you give an array of column
+	  types for this model (which will be exposed to the parent model/view).
+	  The modify function, <paramref name="func" />, will get called for each
+	  data access; the goal of the modify function is to return the data which 
+	  should be displayed at the location specified using the parameters of the 
+	  modify function.
+	</remarks>
       </Docs>
     </Member>
   </Members>
