@@ -13,7 +13,7 @@
 		// keep this around so it doesn't get GC'd
 		static GladeSharp.XMLCustomWidgetHandlerWrapper callback_wrapper = null;
 
-		[DllImport("glade-2.0")]
+		[DllImport("libglade-2.0-0.dll")]
 		static extern void glade_set_custom_handler (GladeSharp.XMLCustomWidgetHandlerNative handler, IntPtr user_data);
 
 		static public void SetCustomHandler (Glade.XMLCustomWidgetHandler handler)
@@ -43,7 +43,7 @@
 			}
 		}
 
-		[DllImport("glade-2.0")]
+		[DllImport("libglade-2.0-0.dll")]
 		static extern string glade_get_widget_name (IntPtr widget);
 
 		static public string GetWidgetName (Gtk.Widget w) {
@@ -51,7 +51,7 @@
 			return ret;
 		}
 
-		[DllImport("glade-2.0")]
+		[DllImport("libglade-2.0-0.dll")]
 		static extern IntPtr glade_get_widget_tree (IntPtr widget);
 
 		static public Glade.XML GetWidgetTree (Gtk.Widget w) {
@@ -62,7 +62,7 @@
 
 		/* a constructor that reads the XML from a Stream */
 
-		[DllImport("glade-2.0")]
+		[DllImport("libglade-2.0-0.dll")]
 		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, string root, string domain);
 
 		/// <summary>Creates a Glade.XML object from a Stream</summary>
@@ -152,7 +152,7 @@
 						         string signal_name, string signal_data, 
 						         IntPtr connect_object, int after, IntPtr user_data);
 			
-			[DllImport("glade-2.0")]
+			[DllImport("libglade-2.0-0.dll")]
 			static extern void glade_xml_signal_autoconnect_full (IntPtr raw, RawXMLConnectFunc func,
 									      IntPtr user_data);
 			
