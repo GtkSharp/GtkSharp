@@ -306,7 +306,7 @@ public class TestDnd {
 
 		Atom [] targets = args.Context.Targets;
 		foreach (Atom a in targets)
-			Console.WriteLine (a.Name ()); // FIXME shouldn't Name be a property?
+			Console.WriteLine (a.Name); 
 
 		Gdk.Drag.Status (args.Context, args.Context.SuggestedAction, args.Time);
 		args.RetVal = true;

@@ -39,6 +39,7 @@ sources = 			\
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
 customs = 			\
+	Atom.custom		\
 	Color.custom		\
 	DeviceAxis.custom	\
 	Display.custom		\

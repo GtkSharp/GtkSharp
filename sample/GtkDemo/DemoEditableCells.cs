@@ -195,7 +195,7 @@ namespace GtkDemo
  			if (treeView.Selection.GetSelected (out model, out iter))
 			{
  				TreePath path = store.GetPath (iter);
- 				store.Remove (out iter);
+ 				store.Remove (ref iter);
 				//articles.RemoveAt (path.Indices[0]);
 
 			}
