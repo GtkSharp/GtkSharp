@@ -55,13 +55,15 @@ namespace GLib {
 
 		[DllImport("gobject-2.0")]
 		static extern void g_object_unref (IntPtr raw);
-
+		
 		protected virtual void DisposeNative ()
 		{
 			if (_obj == IntPtr.Zero)
 				return;
 
+			GC.SuppressFinalize (this);
 			g_object_unref (_obj);
+			_obj = IntPtr.Zero;
 		}
 
 		[DllImport("gobject-2.0")]
