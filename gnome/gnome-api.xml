@@ -4130,6 +4130,22 @@
     </object>
     <struct name="AppBarMsg" cname="GnomeAppBarMsg" opaque="true" />
     <struct name="GdkPixbufAsyncHandle" cname="GnomeGdkPixbufAsyncHandle" opaque="true" />
+    <struct name="IconData" cname="GnomeIconData">
+      <field cname="has_embedded_rect" type="gboolean" />
+      <field cname="x0" type="int" />
+      <field cname="y0" type="int" />
+      <field cname="x1" type="int" />
+      <field cname="y1" type="int" />
+      <field cname="attach_points" type="GnomeIconDataPoint*" />
+      <field cname="n_attach_points" type="int" />
+      <field cname="display_name" type="char*" />
+      <method name="Dup" cname="gnome_icon_data_dup">
+        <return-type type="GnomeIconData*" />
+      </method>
+      <method name="Free" cname="gnome_icon_data_free">
+        <return-type type="void" />
+      </method>
+    </struct>
     <struct name="IconDataPoint" cname="GnomeIconDataPoint">
       <field cname="x" type="int" />
       <field cname="y" type="int" />
@@ -4281,18 +4297,6 @@
       </method>
     </class>
     <class name="Icon" cname="GnomeIcon_">
-      <method name="DataDup" cname="gnome_icon_data_dup" shared="true">
-        <return-type type="GnomeIconData*" />
-        <parameters>
-          <parameter type="const-GnomeIconData*" name="icon_data" />
-        </parameters>
-      </method>
-      <method name="DataFree" cname="gnome_icon_data_free" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="GnomeIconData*" name="icon_data" />
-        </parameters>
-      </method>
       <method name="Lookup" cname="gnome_icon_lookup" shared="true">
         <return-type type="char*" />
         <parameters>

@@ -55,6 +55,15 @@ while ($line = <STDIN>) {
 		# fixme: siiigh
 		$2 = "GdkDrawable" if ($1 eq "_GdkDrawable");
 		$types{$2} = $1;
+	} elsif ($line =~ /typedef\s+struct/) {
+		$sdef = $line;
+		while ($line = <STDIN>) {
+			$sdef .= $line;
+			last if ($line =~ /^}/);
+		}
+		$sdef =~ s!/\*.*?(\*/|\n)!!g;
+		$sdef =~ s/\n\s*//g;
+		$types{$1} = $sdef if ($sdef =~ /.*\}\s*(\w+);/);
 	} elsif ($line =~ /typedef\s+(\w+)\s+(\**)(\w+);/) {
 		$types{$3} = $1 . $2;
 	} elsif ($line =~ /typedef\s+enum\s+(\w+)\s+(\w+);/) {
@@ -329,19 +338,19 @@ foreach $key (sort (keys (%types))) {
 
 	if ($types{$type} =~ /struct\s+(\w+)/) {
 		$type = $1;
+		if (exists($sdefs{$type})) {
+			$def = $sdefs{$type};
+		} else {
+			$def = "privatestruct";
+		}
+	} elsif ($types{$type} =~ /struct/ && $type =~ /^$ns/) {
+		$def = $types{$type};
 	} else {
 		$elem = addNameElem($ns_elem, 'alias', $key, $ns);
 		$elem->setAttribute('type', $lasttype);
 		warn "alias $key to $lasttype\n" if $debug;
 		next;
 	}
-		
-	if (exists($sdefs{$type})) {
-		$def = $sdefs{$type};
-	} else {
-		$def = "privatestruct";
-	}
-
 
 	# fixme: hack
 	if ($key eq "GdkBitmap") {
