@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Global API elements for <see cref="N:Gtk" /></summary>
+    <remarks>This class contains all the methods which are not directly attributable to a specific type.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -27,8 +27,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disables automatic user locale usage.</summary>
+        <remarks>Only use this if you want to set a specific locale for your program other than the default user locale, or if you want to set different values for different locale categories.  Most applications will not need to use this.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEventWidget">
@@ -41,10 +41,10 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the widget associated with an event.</summary>
         <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <returns>the <see cref="T:Gtk.Widget" /> that originally received <paramref name="evnt" />, or <see langword="null" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CheckVersion">
@@ -59,12 +59,13 @@
         <Parameter Name="required_micro" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Check if a version is compatible with the currently loaded Gtk library.</summary>
         <param name="required_major">a <see cref="T:System.UInt32" /></param>
         <param name="required_minor">a <see cref="T:System.UInt32" /></param>
         <param name="required_micro">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <returns>
+          <see langword="null" /> if the version is supported, or an error string describing the mismatch.</returns>
+        <remarks>This is typically only used by modules which want to check if they are compatible with the currently loaded version of Gtk+.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PropagateEvent">
@@ -98,12 +99,12 @@
         <Parameter Name="modifiers" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="objekt">a <see cref="T:Gtk.Object" /></param>
-        <param name="keyval">a <see cref="T:System.UInt32" /></param>
-        <param name="modifiers">a <see cref="T:Gdk.ModifierType" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Activates a registered key binding.</summary>
+        <param name="objekt">the <see cref="T:Gtk.Object" /> to activate bindings on.</param>
+        <param name="keyval">a <see cref="T:System.UInt32" /> representing the <see cref="N:Gdk" /> key value to activate.</param>
+        <param name="modifiers">a <see cref="T:Gdk.ModifierType" /> representing any Ctrl, Meta, or Shift modifiers to the key value.</param>
+        <returns>a <see cref="T:System.Boolean" /> indicating whether a binding was activated.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetLocale">
@@ -114,9 +115,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the current locale according to the application environment.</summary>
+        <returns>a <see cref="T:System.String" /> corresponding to the locale set.</returns>
+        <remarks>This is equivalent to the C standard library call - setlocale (LC_ALL, ""), but also takes care of setup of the windowing environment used by <see cref="N:Gdk" />. <see cref="M:Gtk.Application.Init" /> automatically does this, so it is not normally necessary for applications to call this method.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -125,9 +126,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:Gtk.Global" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>There are no instance members for this class.  This constructor will be marked Obsolete and possibly removed in future versions.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultLanguage">
@@ -137,9 +138,9 @@
         <ReturnType>Pango.Language</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The current default language for this application.</summary>
         <returns>a <see cref="T:Pango.Language" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This value can change during the life of a program, and is based on the current locale.  It contains information such as the text direction of the current language.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentEvent">
@@ -181,14 +182,14 @@
         <Parameter Name="v" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="r">a <see cref="T:System.Double" /></param>
-        <param name="g">a <see cref="T:System.Double" /></param>
-        <param name="b">a <see cref="T:System.Double" /></param>
-        <param name="h">a <see cref="T:System.Double&amp;" /></param>
-        <param name="s">a <see cref="T:System.Double&amp;" /></param>
-        <param name="v">a <see cref="T:System.Double&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Converts a Red/Green/Blue color value to a Hue/Saturation/Value color value.</summary>
+        <param name="r">the red component of the color as a <see cref="T:System.Double" /></param>
+        <param name="g">the green component of the color as a <see cref="T:System.Double" /></param>
+        <param name="b">the blue component of the color as a <see cref="T:System.Double" /></param>
+        <param name="h">the resulting hue of the color as a <see cref="T:System.Double&amp;" /></param>
+        <param name="s">the resulting saturation of the color as a <see cref="T:System.Double&amp;" /></param>
+        <param name="v">the resulting value of the color as a <see cref="T:System.Double&amp;" /></param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetCurrentEventState">
@@ -201,10 +202,11 @@
         <Parameter Name="state" Type="Gdk.ModifierType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="state">a <see cref="T:Gdk.ModifierType&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the state field of the current event.</summary>
+        <param name="state">a <see cref="T:Gdk.ModifierType&amp;" /> to store the state in if one exists.</param>
+        <returns>
+          <see langword="true" /> if there is a current <see cref="T:Gdk.Event" /> and it has a state field, otherwise <see langword="false" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PrivateFlagsGetType">
@@ -215,9 +217,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SignalRunTypeGetType">
@@ -228,9 +230,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CellTypeGetType">
@@ -241,9 +243,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is internal api and will be obsoleted in the future.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IdentifierGetType">
@@ -254,9 +256,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PreviewTypeGetType">
@@ -267,9 +269,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SideTypeGetType">
@@ -280,9 +282,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ClistDragPosGetType">
@@ -293,9 +295,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This method will likely be obsoleted or removed in future versions.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MatchTypeGetType">
@@ -306,9 +308,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EventsPending">
@@ -347,10 +349,10 @@
         <Parameter Name="type" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Do not use.</summary>
         <param name="type">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
   </Members>
