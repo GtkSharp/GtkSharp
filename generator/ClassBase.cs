@@ -41,6 +41,8 @@ namespace GtkSharp.Generation {
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
+				if (member.HasAttribute ("hidden"))
+					continue;
 
 				switch (node.Name) {
 				case "method":
@@ -55,7 +57,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "signal":
-					sigs.Add (member.GetAttribute ("name"), new Signal (member));
+					sigs.Add (member.GetAttribute ("name"), new Signal (member, this));
 					break;
 
 				case "implements":
@@ -89,12 +91,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public String CallByName (String var_name)
+		public virtual String CallByName (String var_name)
 		{
 			return var_name + ".Handle";
 		}
 
-		public String FromNative(String var)
+		public virtual String FromNative(String var)
 		{
 			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
@@ -112,14 +114,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void GenSignals (StreamWriter sw, bool gen_docs)
+		public void GenSignals (StreamWriter sw, ClassBase implementor, bool gen_docs)
 		{		
 			if (sigs == null)
 				return;
 
 			foreach (Signal sig in sigs.Values) {
 				if (sig.Validate ())
-					sig.Generate (sw, gen_docs);
+					sig.Generate (sw, implementor, gen_docs);
 				else
 					Console.WriteLine(" in Object " + Name);
 			}
@@ -146,7 +148,7 @@ namespace GtkSharp.Generation {
 				     (props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
-		public void GenMethods (StreamWriter sw, Hashtable collisions, bool gen_docs)
+		public void GenMethods (StreamWriter sw, Hashtable collisions, ClassBase implementor, bool gen_docs)
 		{		
 			if (methods == null)
 				return;
@@ -165,7 +167,7 @@ namespace GtkSharp.Generation {
 						method.Name = Name + "." + method.Name;
 						method.Protection = "";
 					}
-					method.Generate (sw, gen_docs);
+					method.Generate (sw, implementor, gen_docs);
 					if (oname != null)
 					{
 						method.Name = oname;
@@ -187,16 +189,34 @@ namespace GtkSharp.Generation {
 			return (Property) props[name];
 		}
 
-		public virtual Method GetMethodRecursively (string name)
+		public Signal GetSignal (string name)
 		{
-			ClassBase klass = this;
-			Method m = null;
-			while (klass != null && m == null) {
-				m = (Method) klass.GetMethod (name);
-				klass = klass.Parent;
+			return (Signal) sigs[name];
+		}
+
+		public Method GetMethodRecursively (string name)
+		{
+			return GetMethodRecursively (name, false);
+		}
+		
+		public virtual Method GetMethodRecursively (string name, bool check_self)
+		{
+			Method p = null;
+			if (check_self)
+				p = GetMethod (name);
+			if (p == null && Parent != null) 
+				p = Parent.GetMethodRecursively (name, true);
+			
+			if (check_self && p == null && interfaces != null) {
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.GetClassGen (iface);
+					p = igen.GetMethodRecursively (name, true);
+					if (p != null)
+						break;
+				}
 			}
 
-			return m;
+			return p;
 		}
 
 		public virtual Property GetPropertyRecursively (string name)
@@ -211,5 +231,37 @@ namespace GtkSharp.Generation {
 			return p;
 		}
 
+		public Signal GetSignalRecursively (string name)
+		{
+			return GetSignalRecursively (name, false);
+		}
+		
+		public virtual Signal GetSignalRecursively (string name, bool check_self)
+		{
+			Signal p = null;
+			if (check_self)
+				p = GetSignal (name);
+			if (p == null && Parent != null) 
+				p = Parent.GetSignalRecursively (name, true);
+			
+			if (check_self && p == null && interfaces != null) {
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.GetClassGen (iface);
+					p = igen.GetSignalRecursively (name, true);
+					if (p != null)
+						break;
+				}
+			}
+
+			return p;
+		}
+
+		public bool Implements (string iface)
+		{
+			if (interfaces != null)
+				return interfaces.Contains (iface);
+			else
+				return false;
+		}
 	}
 }

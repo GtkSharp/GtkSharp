@@ -15,12 +15,7 @@ namespace GtkSharp.Generation {
 		
 		public BoxedGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public String CallByName (String var_name)
-		{
-			return var_name + ".Handle";
-		}
-
-		public String FromNative(String var)
+		public override String FromNative(String var)
 		{
 			return "(" + QualifiedName + ") GLib.Boxed.FromNative(" + var + ")";
 		}
@@ -68,9 +63,7 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "method":
-					if (!GenMethod(member, sw)) {
-						Console.WriteLine(" in boxed " + CName);
-					}
+					//Console.WriteLine ("HIYA {0}", ((Method) member).Name);
 					break;
 					
 				default:
@@ -78,7 +71,8 @@ namespace GtkSharp.Generation {
 					break;
 				}		
 			}
-			
+
+			GenMethods (sw, null, null, false);
 			AppendCustom(sw);
 			sw.WriteLine ("\t}");
 			CloseWriter (sw);

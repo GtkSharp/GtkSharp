@@ -1,3 +1,36 @@
+2002-07-13  Rachel Hestilow  <hestilow@ximian.com>
+
+	* parser/Gnome.metadata, Gtk.metadata: More conflict
+	fixes.
+	* parser/build.pl: Fully qualify all lib names. (Gtk+ packages
+	are now LFS-compliant in Debian...)
+	* parser/gapi2xml.pl: Fix for whitespace in fields, defines,
+	and docs.
+
+	* generator/BoxedGen.cs: Remove extraneous CallByName definition,
+	add "override" keyword to FromNative.
+	(Generate): Generate methods after fields.
+	* generator/ClassBase.cs: Change CallByName, FromNative to virtual.
+	(.ctor): Ignore "hidden" nodes. Set container on signal.
+	(GenSignals, GenMethods): Add "implementor" argument for interface
+	use.
+	(Get(Method|Signal|Property)Recursively): Rework to correctly
+	recurse interfaces.
+	(Implements): Added.
+	* generator/Ctor.cs (Initialize): Move clash initialization completely
+	out of Generate, so we can check for collisions.
+	* generator/Method.cs (GenerateDeclCommon): Check for duplicates,
+	for "new" keyword.
+	(Generate): Add "implementor" argument.
+	* generator/ObjectGen.cs (Generate): Initialize ctor clashes on
+	this and all parents, before generating.
+	(Ctors, InitializeCtors): Added.
+	* generator/Signal.cs: Store the container_type, check for
+	collisions.
+	* generator/StructGen.cs: Add "override" keyword to overriden methods.
+	
+	* gtk/FileSelection.custom (ActionArea): Add "new" keyword.
+	
 2002-07-11  Mike Kestner <mkestner@speakeasy.net>
 
 	* glib/SList.cs : fix a couple DllImports

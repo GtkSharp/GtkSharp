@@ -15,6 +15,8 @@ namespace GtkSharp.Generation {
 
 		private ArrayList ctors = new ArrayList();
 		private ArrayList strings = new ArrayList();
+		private bool ctors_initted = false;
+		private Hashtable clash_map;
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
@@ -30,7 +32,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "constructor":
-					ctors.Add (new Ctor (LibraryName, member));
+					ctors.Add (new Ctor (LibraryName, member, this));
 					break;
 					
 				case "static-string":
@@ -63,6 +65,8 @@ namespace GtkSharp.Generation {
 				sw.Write (" : " + cs_parent);
 			if (interfaces != null) {
 				foreach (string iface in interfaces) {
+					if (Parent != null && Parent.Implements (iface))
+						continue;
 					sw.Write (", " + SymbolTable.GetCSType (iface));
 				}
 			}
@@ -86,10 +90,10 @@ namespace GtkSharp.Generation {
 			if (has_sigs && Elem.HasAttribute("parent"))
 			{
 				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-				GenSignals (sw, true);
+				GenSignals (sw, null, true);
 			}
 
-			GenMethods (sw, null, true);
+			GenMethods (sw, null, null, true);
 			
 			if (interfaces != null) {
 				Hashtable all_methods = new Hashtable ();
@@ -105,9 +109,11 @@ namespace GtkSharp.Generation {
 				}
 					
 				foreach (string iface in interfaces) {
+					if (Parent != null && Parent.Implements (iface))
+						continue;
 					ClassBase igen = SymbolTable.GetClassGen (iface);
-					igen.GenMethods (sw, collisions, false);
-					igen.GenSignals (sw, false);
+					igen.GenMethods (sw, collisions, this, false);
+					igen.GenSignals (sw, this, false);
 				}
 			}
 
@@ -159,14 +165,14 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		private void GenCtors (StreamWriter sw)
-		{
-			if (!Elem.HasAttribute("parent"))
-				return;
-			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
-			sw.WriteLine();
+		public ArrayList Ctors { get { return ctors; } }
 
-			Hashtable clash_map = new Hashtable();
+		private void InitializeCtors ()
+		{
+			if (ctors_initted)
+				return;
+			
+			clash_map = new Hashtable();
 
 			if (ctors != null) {
 				bool has_preferred = false;
@@ -182,10 +188,33 @@ namespace GtkSharp.Generation {
 				
 				if (!has_preferred && ctors.Count > 0)
 					((Ctor) ctors[0]).Preferred = true;
-					
+
+				foreach (Ctor ctor in ctors) 
+					if (ctor.Validate ()) {
+						ctor.Initialize (clash_map);
+					}
+			}
+
+			ctors_initted = true;
+		}
+
+		private void GenCtors (StreamWriter sw)
+		{
+			if (!Elem.HasAttribute("parent"))
+				return;
+			ObjectGen klass = this;
+			while (klass != null) {
+				klass.InitializeCtors ();
+				klass = (ObjectGen) klass.Parent;
+			}
+			
+			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			sw.WriteLine();
+
+			if (ctors != null) {
 				foreach (Ctor ctor in ctors) {
 					if (ctor.Validate ())
-						ctor.Generate (sw, clash_map);
+						ctor.Generate (sw);
 				}
 			}
 

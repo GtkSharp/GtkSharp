@@ -385,6 +385,9 @@ sub addFieldElems
 		next if ($field !~ /\S/);
 		$field =~ s/\s+(\*+)/\1 /g;
 		$field =~ s/const /const\-/g;
+		$field =~ s/.*\*\///g;
+		next if ($field !~ /\S/);
+
 		if ($field =~ /(\S+\s+\*?)\(\*\s*(.+)\)\s*\((.*)\)/) {
 			$elem = addNameElem($parent, 'callback', $2);
 			addReturnElem($elem, $1);
@@ -539,7 +542,7 @@ sub addPropElem
 	if ($defines{$name}) {
 		$name = $defines{$name};
 	} else {
-		$name =~ s/\"//g;
+		$name =~ s/\s*\"//g;
 	}
 
 	while ($params[2] !~ /(\"|NULL)\s*\)?$/) {
@@ -548,7 +551,7 @@ sub addPropElem
 		@params = (@params[0..2],@params[4..$#params]);
 	}
 	$docs = $params[2];
-	$docs =~ s/\"//g;
+	$docs =~ s/\s*\"//g;
 	$docs =~ s/\s+/ /g;
 	$mode = $params[$#params];
 

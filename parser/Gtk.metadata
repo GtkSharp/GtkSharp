@@ -239,6 +239,17 @@
 </rule>
 <rule>
   <class name="GtkWidget">
+    <signal>Focus</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Focused</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
     <signal>SizeAllocate</signal>
   </class>
   <data>
@@ -596,6 +607,15 @@
 </rule>
 <rule>
   <class name="GtkMenuItem">
+    <signal>Activate</signal>
+  </class>
+  <class name="GtkButton">
+    <signal>Activate</signal>
+  </class>
+  <class name="GtkOldEditable">
+    <signal>Activate</signal>
+  </class>
+  <class name="GtkEntry">
     <signal>Activate</signal>
   </class>
   <data>
@@ -1069,6 +1089,32 @@
   </data>
 </rule>
 <rule>
+  <class name="GtkCList">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <class name="GtkLayout">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <class name="GtkText">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <class name="GtkTextView">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <class name="GtkTreeView">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <class name="GtkViewport">
+    <signal>SetScrollAdjustments</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ScrollAdjustmentsSet</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
   <class name="GtkHTML">
     <signal>Command</signal>
   </class>
@@ -1079,6 +1125,21 @@
     </attribute>
   </data>
 </rule>
+
+<!-- hides -->
+<rule>
+  <class name="GtkWidget">
+    <method>Destroyed</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>hidden</name>
+      <value>1</value>
+    </attribute>
+  </data>
+</rule>
+
+<!-- overloads -->
 <rule>
   <class name="GtkBox">
     <method>PackStartDefaults</method>

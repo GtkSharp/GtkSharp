@@ -21,12 +21,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String CallByName (String var_name)
+		public override String CallByName (String var_name)
 		{
 			return var_name;
 		}
 		
-		public String FromNative(String var)
+		public override String FromNative(String var)
 		{
 			return var;
 		}

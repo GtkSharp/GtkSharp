@@ -16,11 +16,13 @@ namespace GtkSharp.Generation {
 		private string marsh;
 		private string name;
 		private XmlElement elem;
+		private ClassBase container_type;
 
-		public Signal (XmlElement elem) 
+		public Signal (XmlElement elem, ClassBase container_type)
 		{
 			this.elem = elem;
 			this.name = elem.GetAttribute ("name");
+			this.container_type = container_type;
 		}
 
 		public string Name {
@@ -47,8 +49,9 @@ namespace GtkSharp.Generation {
 		public void GenerateDecl (StreamWriter sw)
 		{
 			GenComments (sw);
-			if (elem.HasAttribute("new_flag"))
+			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null))
 				sw.Write("new ");
+
 			sw.WriteLine ("\t\tevent EventHandler " + Name + ";");
 		}
 
@@ -61,7 +64,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t/// </remarks>");
 		}
 		
-		public void Generate (StreamWriter sw, bool gen_docs)
+		public void Generate (StreamWriter sw, ClassBase implementor, bool gen_docs)
 		{
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 			marsh = "GtkSharp." + marsh;
@@ -69,7 +72,7 @@ namespace GtkSharp.Generation {
 			if (gen_docs)
 				GenComments (sw);
 			sw.Write("\t\tpublic ");
-			if (elem.HasAttribute("new_flag"))
+			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null) || (implementor != null && implementor.GetSignalRecursively (Name) != null))
 				sw.Write("new ");
 			sw.WriteLine("event EventHandler " + Name + " {");
 			sw.WriteLine("\t\t\tadd {");
