@@ -22,7 +22,7 @@
 
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern IntPtr gtk_button_new_from_stock(string stock_id);
+static extern IntPtr gtk_button_new_from_stock(IntPtr stock_id);
 
 public Button (string stock_id) : base (IntPtr.Zero)
 {
@@ -36,7 +36,9 @@ public Button (string stock_id) : base (IntPtr.Zero)
 		CreateNativeObject (names, vals);
 		return;
 	}
-	Raw = gtk_button_new_from_stock(stock_id);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+	Raw = gtk_button_new_from_stock (native);
+	GLib.Marshaller.Free (native);
 }
 
 [DllImport("gtksharpglue-2")]

@@ -40,7 +40,7 @@
 		private static extern IntPtr gtk_selection_data_get_text (IntPtr selection_data);
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		private static extern void gtk_selection_data_set_text (IntPtr selection_data, string str, int len);
+		private static extern void gtk_selection_data_set_text (IntPtr selection_data, IntPtr str, int len);
 
 		public string Text {
 			get {
@@ -50,7 +50,9 @@
 				return GLib.Marshaller.PtrToStringGFree (text);
 			}
 			set {
-				gtk_selection_data_set_text (Handle, value, value.Length);
+				IntPtr native = GLib.Marshaller.StringToPtrGStrdup (value);
+				gtk_selection_data_set_text (Handle, native, -1);
+				GLib.Marshaller.Free (native);
 			}
 		}
 

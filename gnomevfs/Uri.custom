@@ -95,26 +95,34 @@
 		}
 
 		[DllImport("gnomevfs-2")]
-		static extern string gnome_vfs_get_local_path_from_uri (string uri);
+		static extern IntPtr gnome_vfs_get_local_path_from_uri (IntPtr uri);
 
 		public static string GetLocalPathFromUri (string uri)
 		{
-			return gnome_vfs_get_local_path_from_uri (uri);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (uri);
+			IntPtr result = gnome_vfs_get_local_path_from_uri (native);
+			GLib.Marshaller.Free (native);
+			return GLib.Marshaller.PtrToStringGFree (result);
 		}
 		
 		[DllImport("gnomevfs-2")]
-		static extern string gnome_vfs_get_uri_from_local_path (string path);
+		static extern IntPtr gnome_vfs_get_uri_from_local_path (IntPtr path);
 
 		public static string GetUriFromLocalPath (string path)
 		{
-			return gnome_vfs_get_uri_from_local_path (path);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr result = gnome_vfs_get_uri_from_local_path (native);
+			GLib.Marshaller.Free (native);
+			return GLib.Marshaller.PtrToStringGFree (result);
 		}
 
 		[DllImport("gnomevfs-2")]
-		static extern IntPtr gnome_vfs_uri_list_parse(string uri_list);
+		static extern IntPtr gnome_vfs_uri_list_parse(IntPtr uri_list);
 
 		public static Uri[] ParseList (string uri_list) {
-			IntPtr raw_ret = gnome_vfs_uri_list_parse(uri_list);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (uri_list);
+			IntPtr raw_ret = gnome_vfs_uri_list_parse(native);
+			GLib.Marshaller.Free (native);
 			GLib.List list = new GLib.List(raw_ret);
 			Uri[] uris = new Uri [list.Count];
 			for (int i = 0; i < list.Count; i++)

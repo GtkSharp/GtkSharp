@@ -15,7 +15,7 @@
 // Boston, MA 02111-1307, USA.
 
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_scores_new(uint n_scores, string names, out float scores, IntPtr times, bool clear);
+		static extern IntPtr gnome_scores_new(uint n_scores, IntPtr names, out float scores, IntPtr times, bool clear);
                 
 		public Scores (uint n_scores, string names, out float scores, System.DateTime times, bool clear) : base (IntPtr.Zero)
 		{
@@ -24,5 +24,7 @@
 				scores = Construct (n_scores, names, times, clear);
 				return;
 			}
-			Raw = gnome_scores_new(n_scores, names, out scores, GLib.Marshaller.DateTimeTotime_t (times), clear);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (names);
+			Raw = gnome_scores_new(n_scores, native, out scores, GLib.Marshaller.DateTimeTotime_t (times), clear);
+			GLib.Marshaller.Free (native);
 		}

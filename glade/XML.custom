@@ -87,7 +87,7 @@
 		/* a constructor that reads the XML from a Stream */
 
 		[DllImport("libglade-2.0-0.dll")]
-		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, string root, string domain);
+		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, IntPtr root, IntPtr domain);
 
 		public XML (System.IO.Stream s, string root, string domain) : base (IntPtr.Zero)
 		{
@@ -100,7 +100,11 @@
 			int size = (int) s.Length;
 			byte[] buffer = new byte[size];
 			s.Read (buffer, 0, size);
-			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
+			IntPtr nroot = GLib.Marshaller.StringToPtrGStrdup (root);
+			IntPtr ndomain = GLib.Marshaller.StringToPtrGStrdup (domain);
+			Raw = glade_xml_new_from_buffer(buffer, size, nroot, ndomain);
+			GLib.Marshaller.Free (nroot);
+			GLib.Marshaller.Free (ndomain);
 		}
 
 		public XML (string resource_name, string root) : this (System.Reflection.Assembly.GetEntryAssembly (), resource_name, root, null)
@@ -124,7 +128,11 @@
 			byte[] buffer = new byte[size];
 			s.Read (buffer, 0, size);
 			s.Close ();
-			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
+			IntPtr nroot = GLib.Marshaller.StringToPtrGStrdup (root);
+			IntPtr ndomain = GLib.Marshaller.StringToPtrGStrdup (domain);
+			Raw = glade_xml_new_from_buffer(buffer, size, nroot, ndomain);
+			GLib.Marshaller.Free (nroot);
+			GLib.Marshaller.Free (ndomain);
 		}
 
 		/* signal autoconnection using reflection */
@@ -167,8 +175,8 @@
 				this.handler_type = type;
 			}
 			
-			delegate void RawXMLConnectFunc (string handler_name, IntPtr objekt, 
-						         string signal_name, string signal_data, 
+			delegate void RawXMLConnectFunc (IntPtr handler_name, IntPtr objekt, 
+						         IntPtr signal_name, IntPtr signal_data, 
 						         IntPtr connect_object, int after, IntPtr user_data);
 			
 			[DllImport("libglade-2.0-0.dll")]
@@ -180,12 +188,16 @@
 				glade_xml_signal_autoconnect_full (gxml.Handle, cf, IntPtr.Zero);
 			}
 			
-			void ConnectFunc (string handler_name, IntPtr objekt_ptr, 
-					  string signal_name, string signal_data, 
+			void ConnectFunc (IntPtr native_handler_name, IntPtr objekt_ptr, 
+					  IntPtr native_signal_name, IntPtr native_signal_data, 
 					  IntPtr connect_object_ptr, int after, IntPtr user_data) {
 				
 				GLib.Object objekt = GLib.Object.GetObject (objekt_ptr, false);
 	
+				string handler_name = GLib.Marshaller.Utf8PtrToString (native_handler_name);
+				string signal_name = GLib.Marshaller.Utf8PtrToString (native_signal_name);
+				//string signal_data = GLib.Marshaller.Utf8PtrToString (native_signal_data);
+
 				/* if an connect_object_ptr is provided, use that as handler */
 				object connect_object = 
 					connect_object_ptr == IntPtr.Zero 
@@ -332,11 +344,13 @@
                 }
 
 		[DllImport("libglade-2.0-0.dll")]
-		static extern IntPtr glade_xml_get_widget_prefix(IntPtr raw, string name);
+		static extern IntPtr glade_xml_get_widget_prefix(IntPtr raw, IntPtr name);
 
 		public Gtk.Widget[] GetWidgetPrefix(string name) 
 		{
-			IntPtr raw_ret = glade_xml_get_widget_prefix(Handle, name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr raw_ret = glade_xml_get_widget_prefix(Handle, native);
+			GLib.Marshaller.Free (native);
 			if (raw_ret == IntPtr.Zero)
 				return new Gtk.Widget [0];
 			GLib.List list = new GLib.List (raw_ret);

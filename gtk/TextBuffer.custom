@@ -20,14 +20,16 @@
 
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern void gtk_text_buffer_set_text (IntPtr raw, string text, int len);
+static extern void gtk_text_buffer_set_text (IntPtr raw, IntPtr text, int len);
 
 public string Text {
 	get {
 		return GetText (StartIter, EndIter, false);
 	}
 	set {
-		gtk_text_buffer_set_text (Handle, value, -1);
+		IntPtr native = GLib.Marshaller.StringToPtrGStrdup (value);
+		gtk_text_buffer_set_text (Handle, native, -1);
+		GLib.Marshaller.Free (native);
 	}
 }
 
@@ -47,11 +49,13 @@ public void PasteClipboard (Gtk.Clipboard clipboard)
 }
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, string text, int len);
+static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
 
 public void Insert (ref Gtk.TextIter iter, string text)
 {
-	gtk_text_buffer_insert (Handle, ref iter, text, -1);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+	gtk_text_buffer_insert (Handle, ref iter, native, -1);
+	GLib.Marshaller.Free (native);
 }
 
 public void InsertWithTags (ref TextIter iter, string text, params TextTag[] tags)
@@ -90,26 +94,34 @@ public void SetText (string text)
 }
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, string text, int len, bool default_editable);
+static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len, bool default_editable);
 
 public bool InsertInteractive(ref Gtk.TextIter iter, string text, bool default_editable)
 {
-	return gtk_text_buffer_insert_interactive(Handle, ref iter, text, -1, default_editable);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+	bool result = gtk_text_buffer_insert_interactive(Handle, ref iter, native, -1, default_editable);
+	GLib.Marshaller.Free (native);
+	return result;
 }
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern bool gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, string text, int len, bool default_editable);
+static extern bool gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, IntPtr text, int len, bool default_editable);
 
 public bool InsertInteractiveAtCursor(string text, bool default_editable) 
 {
-	return gtk_text_buffer_insert_interactive_at_cursor(Handle, text, -1, default_editable);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+	bool result = gtk_text_buffer_insert_interactive_at_cursor(Handle, native, -1, default_editable);
+	GLib.Marshaller.Free (native);
+	return result;
 }
 
 [DllImport("libgtk-win32-2.0-0.dll")]
-static extern void gtk_text_buffer_insert_at_cursor(IntPtr raw, string text, int len);
+static extern void gtk_text_buffer_insert_at_cursor(IntPtr raw, IntPtr text, int len);
 
 public void InsertAtCursor(string text) 
 {
-  gtk_text_buffer_insert_at_cursor(Handle, text, -1);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+	gtk_text_buffer_insert_at_cursor(Handle, native, -1);
+	GLib.Marshaller.Free (native);
 }
 

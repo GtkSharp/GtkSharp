@@ -98,16 +98,16 @@
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_cellrenderer_override_start_editing (GLib.GType gtype, StartEditingDelegate cb);
 
-		delegate IntPtr StartEditingDelegate (IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags);
+		delegate IntPtr StartEditingDelegate (IntPtr raw, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags);
 
 		static StartEditingDelegate StartEditingCallback;
 
-		static IntPtr StartEditing_cb (IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags)
+		static IntPtr StartEditing_cb (IntPtr raw, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags)
 		{
 			CellRenderer obj = GLib.Object.GetObject (raw, false) as CellRenderer;
 			Gdk.Event _event = new Gdk.Event (evnt);
 			Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
-			CellEditable retval = obj.StartEditing (_event, widg, path, background_area, cell_area, flags);
+			CellEditable retval = obj.StartEditing (_event, widg, GLib.Marshaller.Utf8PtrToString (path), background_area, cell_area, flags);
 			if (retval == null)
 				return IntPtr.Zero;
 			return retval.Handle;
@@ -121,11 +121,13 @@
 		}
 
 		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_cellrenderer_base_start_editing(IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, int flags);
+		static extern IntPtr gtksharp_cellrenderer_base_start_editing(IntPtr raw, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, int flags);
 
 		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideStartEditing")]
 		public virtual Gtk.CellEditable StartEditing(Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags) {
-			IntPtr raw_ret = gtksharp_cellrenderer_base_start_editing(Handle, evnt.Handle, widget.Handle, path, ref background_area, ref cell_area, (int) flags);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (path);
+			IntPtr raw_ret = gtksharp_cellrenderer_base_start_editing(Handle, evnt.Handle, widget.Handle, native, ref background_area, ref cell_area, (int) flags);
+			GLib.Marshaller.Free (native);
 			Gtk.CellEditable ret = (Gtk.CellEditable) GLib.Object.GetObject(raw_ret);
 			return ret;
 		}

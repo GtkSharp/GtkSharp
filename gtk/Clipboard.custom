@@ -22,7 +22,7 @@
 		static extern bool gtk_clipboard_set_with_data(IntPtr raw, IntPtr targets, int n_targets, GtkSharp.GtkClipboardGetFuncNative get_func, GtkSharp.GtkClipboardClearFuncNative clear_func, uint id);
 
 		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_clipboard_target_list_add (IntPtr list, string name, uint flags, uint info);
+		static extern IntPtr gtksharp_clipboard_target_list_add (IntPtr list, IntPtr name, uint flags, uint info);
 
 		[DllImport("gtksharpglue-2")]
 		static extern IntPtr gtksharp_clipboard_target_list_to_array (IntPtr list);
@@ -54,7 +54,9 @@
 			IntPtr list = IntPtr.Zero;
 
 			foreach (Gtk.TargetEntry t in targets) {
-				list = gtksharp_clipboard_target_list_add (list, t.target, t.flags, t.info);
+				IntPtr native = GLib.Marshaller.StringToPtrGStrdup (t.target);
+				list = gtksharp_clipboard_target_list_add (list, native, t.flags, t.info);
+				GLib.Marshaller.Free (native);
 			}
 
 			IntPtr array = gtksharp_clipboard_target_list_to_array (list);

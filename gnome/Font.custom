@@ -37,11 +37,13 @@
 		}
 
 		[DllImport("gnomeprint-2-2")]
-		static extern IntPtr gnome_font_style_list (string family);
+		static extern IntPtr gnome_font_style_list (IntPtr family);
 
 		public static string[] StyleList (string family)
 		{
-			IntPtr list_ptr = gnome_font_style_list (family);
+			IntPtr nfamily = GLib.Marshaller.StringToPtrGStrdup (family);
+			IntPtr list_ptr = gnome_font_style_list (nfamily);
+			GLib.Marshaller.Free (nfamily);
 			if (list_ptr == IntPtr.Zero)
 				return new string [0];
 

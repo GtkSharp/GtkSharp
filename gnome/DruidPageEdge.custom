@@ -15,7 +15,7 @@
 // Boston, MA 02111-1307, USA.
 
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_druid_page_edge_new_with_vals(int position, bool antialiased, string title, string text, IntPtr logo, IntPtr watermark, IntPtr top_watermark);
+		static extern IntPtr gnome_druid_page_edge_new_with_vals(int position, bool antialiased, IntPtr title, IntPtr text, IntPtr logo, IntPtr watermark, IntPtr top_watermark);
 
 		public DruidPageEdge (Gnome.EdgePosition position) : this (position, false, String.Empty, String.Empty, null, null, null)
 		{
@@ -28,5 +28,9 @@
 				Construct (position, antialiased, title, text, logo, watermark, top_watermark);
 				return;
 			}
-			Raw = gnome_druid_page_edge_new_with_vals((int) position, antialiased, title, text, (logo != null) ? logo.Handle : IntPtr.Zero, (watermark != null) ? watermark.Handle : IntPtr.Zero, (top_watermark != null) ? top_watermark.Handle : IntPtr.Zero);
+			IntPtr ntitle = GLib.Marshaller.StringToPtrGStrdup (title);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			Raw = gnome_druid_page_edge_new_with_vals((int) position, antialiased, ntitle, ntext, (logo != null) ? logo.Handle : IntPtr.Zero, (watermark != null) ? watermark.Handle : IntPtr.Zero, (top_watermark != null) ? top_watermark.Handle : IntPtr.Zero);
+			GLib.Marshaller.Free (ntitle);
+			GLib.Marshaller.Free (ntext);
 		}

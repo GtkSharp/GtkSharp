@@ -29,12 +29,14 @@
 		}
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern bool gtk_color_selection_palette_from_string(string str, out IntPtr colors, out int n_colors);
+		static extern bool gtk_color_selection_palette_from_string(IntPtr str, out IntPtr colors, out int n_colors);
 
 		public static Gdk.Color[] PaletteFromString(string str) {
 			IntPtr parsedColors;
 			int n_colors;
-			bool raw_ret = gtk_color_selection_palette_from_string(str, out parsedColors, out n_colors);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (str);
+			bool raw_ret = gtk_color_selection_palette_from_string(native, out parsedColors, out n_colors);
+			GLib.Marshaller.Free (native);
 			
 			// If things failed, return silently
 			if (!raw_ret)

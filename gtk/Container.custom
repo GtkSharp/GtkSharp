@@ -20,12 +20,14 @@
 
 
 [DllImport("gtksharpglue-2")]
-static extern void gtksharp_container_child_get_property (IntPtr container, IntPtr child, string property, ref GLib.Value value);
+static extern void gtksharp_container_child_get_property (IntPtr container, IntPtr child, IntPtr property, ref GLib.Value value);
 
 public GLib.Value ChildGetProperty (Gtk.Widget child, string property_name) {
 	GLib.Value value = new GLib.Value ();
 
-	gtksharp_container_child_get_property (Handle, child.Handle, property_name, ref value);
+	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (property_name);
+	gtksharp_container_child_get_property (Handle, child.Handle, native, ref value);
+	GLib.Marshaller.Free (native);
 	return value;
 }
 

@@ -35,7 +35,7 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_image_new_from_stock(string stock_id, int size);
+		static extern IntPtr gtk_image_new_from_stock(IntPtr stock_id, int size);
 
 		public Image (string stock_id, Gtk.IconSize size) : base (IntPtr.Zero)
 		{
@@ -49,6 +49,8 @@
 				CreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));
 				return;
 			}
-			Raw = gtk_image_new_from_stock(stock_id, (int) size);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+			Raw = gtk_image_new_from_stock(native, (int) size);
+			GLib.Marshaller.Free (native);
 		}
 

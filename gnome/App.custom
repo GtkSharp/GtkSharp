@@ -16,7 +16,7 @@
 
 
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_app_new(string appname, string title);
+		static extern IntPtr gnome_app_new(IntPtr appname, IntPtr title);
                                                                 
 		public App (string appname, string title) : base (IntPtr.Zero)
 		{
@@ -25,5 +25,9 @@
 				Construct (appname, title);
 				return;
 			}
-			Raw = gnome_app_new(appname, title);
+			IntPtr nappname = GLib.Marshaller.StringToPtrGStrdup (appname);
+			IntPtr ntitle = GLib.Marshaller.StringToPtrGStrdup (title);
+			Raw = gnome_app_new(nappname, ntitle);
+			GLib.Marshaller.Free (nappname);
+			GLib.Marshaller.Free (ntitle);
 		}

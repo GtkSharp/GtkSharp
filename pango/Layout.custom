@@ -38,12 +38,14 @@ public LayoutLine[] Lines {
 }
 
 [DllImport("libpango-1.0-0.dll")]
-static extern void pango_layout_set_markup_with_accel (IntPtr raw, string markup, int length, uint accel_marker, out uint accel_char);
+static extern void pango_layout_set_markup_with_accel (IntPtr raw, IntPtr markup, int length, uint accel_marker, out uint accel_char);
 
 public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
 {
 	uint ucs4_accel_char;
-	pango_layout_set_markup_with_accel (Handle, markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out ucs4_accel_char);
+	IntPtr native_markup = GLib.Marshaller.StringToPtrGStrdup (markup);
+	pango_layout_set_markup_with_accel (Handle, native_markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out ucs4_accel_char);
+	GLib.Marshaller.Free (native_markup);
 	accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
 }
 

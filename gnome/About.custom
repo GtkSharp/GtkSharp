@@ -23,7 +23,26 @@
 	
 	
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_about_new(string name, string version, string copyright, string comments, string[] authors, string[] documenters, string translator_credits, IntPtr logo_pixbuf);
+		static extern IntPtr gnome_about_new(IntPtr name, IntPtr version, IntPtr copyright, IntPtr comments, IntPtr[] authors, IntPtr[] documenters, IntPtr translator_credits, IntPtr logo_pixbuf);
+
+		IntPtr[] NullTerm (string[] src)
+		{
+			if (src.Length == 0)
+				return null;
+			IntPtr[] result = new IntPtr [src.Length + 1];
+			for (int i = 0; i < src.Length; i++)
+				result [i] = GLib.Marshaller.StringToPtrGStrdup (src [i]);
+			result [src.Length] = IntPtr.Zero;
+			return result;
+		}
+
+		void ReleaseArray (IntPtr[] ptrs)
+		{
+			if (ptrs == null)
+				return;
+			foreach (IntPtr p in ptrs)
+				GLib.Marshaller.Free (p);
+		}
 
 		public About (string name, string version, string copyright, string comments, string[] authors, string[] documenters, string translator_credits, Gdk.Pixbuf logo_pixbuf) : base (IntPtr.Zero)
 		{
@@ -32,6 +51,20 @@
 				Construct (name, version, copyright, comments, authors, documenters,translator_credits, logo_pixbuf);
 				return;
 			}
-			Raw = gnome_about_new (name, version, copyright, comments, authors, documenters, translator_credits, (logo_pixbuf != null) ? logo_pixbuf.Handle : IntPtr.Zero);
+			IntPtr nname = GLib.Marshaller.StringToPtrGStrdup (name);
+			IntPtr nversion = GLib.Marshaller.StringToPtrGStrdup (version);
+			IntPtr ncopyright = GLib.Marshaller.StringToPtrGStrdup (copyright);
+			IntPtr ncomments = GLib.Marshaller.StringToPtrGStrdup (comments);
+			IntPtr ntranslator_credits = GLib.Marshaller.StringToPtrGStrdup (translator_credits);
+			IntPtr[] nauthors = NullTerm (authors);
+			IntPtr[] ndocumenters = NullTerm (documenters);
+			Raw = gnome_about_new (nname, nversion, ncopyright, ncomments, nauthors, ndocumenters, ntranslator_credits, (logo_pixbuf != null) ? logo_pixbuf.Handle : IntPtr.Zero);
+			GLib.Marshaller.Free (nname);
+			GLib.Marshaller.Free (nversion);
+			GLib.Marshaller.Free (ncopyright);
+			GLib.Marshaller.Free (ncomments);
+			GLib.Marshaller.Free (ntranslator_credits);
+			ReleaseArray (nauthors);
+			ReleaseArray (ndocumenters);
 		}
 

@@ -22,7 +22,7 @@
 
 		
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_check_menu_item_new_with_mnemonic (string label);
+		static extern IntPtr gtk_check_menu_item_new_with_mnemonic (IntPtr label);
 
 		public CheckMenuItem (string label) : base (IntPtr.Zero)
 		{
@@ -36,7 +36,9 @@
 				return;
 			}
 
-			Raw = gtk_check_menu_item_new_with_mnemonic (label);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (label);
+			Raw = gtk_check_menu_item_new_with_mnemonic (native);
+			GLib.Marshaller.Free (native);
 		}
 
 		public new void Toggle() {

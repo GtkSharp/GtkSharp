@@ -34,7 +34,7 @@
 		}
 
 		[DllImport("gtkhtml-3.0")]
-		static extern IntPtr gtk_html_new_from_string(string Astr, int len);
+		static extern IntPtr gtk_html_new_from_string(IntPtr Astr, int len);
 
 		public HTML (string Astr) : base (IntPtr.Zero)
 		{
@@ -45,7 +45,9 @@
 				return;
 			}
 
-			Raw = gtk_html_new_from_string(Astr, Astr.Length);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (Astr);
+			Raw = gtk_html_new_from_string (native, -1);
+			GLib.Marshaller.Free (native);
 		}
 
 		public void Write (HTMLStream handle, string buffer, int size)

@@ -13,7 +13,7 @@
 // Copyright (c) 2003 Ximian, Inc. (Duncan Mak)
 // Copyright (c) 2003 Ximian, Inc. (Gonzalo Paniagua Javier)
 // Copyright (c) 2003 Martin Willemoes Hansen
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2005 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -243,11 +243,15 @@
 		}
 
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern unsafe bool gdk_pixbuf_save(IntPtr raw, string filename, string type, out IntPtr error, IntPtr dummy);
+		static extern unsafe bool gdk_pixbuf_save(IntPtr raw, IntPtr filename, IntPtr type, out IntPtr error, IntPtr dummy);
 
 		public unsafe bool Save(string filename, string type) {
 			IntPtr error = IntPtr.Zero;
-			bool ret = gdk_pixbuf_save(Handle, filename, type, out error, IntPtr.Zero);
+			IntPtr nfilename = GLib.Marshaller.StringToPtrGStrdup (filename);
+			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
+			bool ret = gdk_pixbuf_save(Handle, nfilename, ntype, out error, IntPtr.Zero);
+			GLib.Marshaller.Free (nfilename);
+			GLib.Marshaller.Free (ntype);
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 			return ret;
 		}
@@ -256,15 +260,25 @@
 		static extern void g_free (IntPtr raw);
 
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out uint buffer_size, string type, string[] option_keys, string[] option_values, out IntPtr error);
+		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out uint buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
 
-		string[] NullTerm (string[] src)
+		IntPtr[] NullTerm (string[] src)
 		{
-			string[] result = new string [src.Length + 1];
+			if (src.Length == 0)
+				return null;
+			IntPtr[] result = new IntPtr [src.Length + 1];
 			for (int i = 0; i < src.Length; i++)
-				result [i] = src [i];
-			result [src.Length] = null;
+				result [i] = GLib.Marshaller.StringToPtrGStrdup (src [i]);
+			result [src.Length] = IntPtr.Zero;
 			return result;
+		}
+
+		void ReleaseArray (IntPtr[] ptrs)
+		{
+			if (ptrs == null)
+				return;
+			foreach (IntPtr p in ptrs)
+				GLib.Marshaller.Free (p);
 		}
 
 		public unsafe byte[] SaveToBuffer (string type)
@@ -277,9 +291,16 @@
 			IntPtr error = IntPtr.Zero;
 			IntPtr buffer;
 			uint buffer_size;
-			if (!gdk_pixbuf_save_to_bufferv (Handle, out buffer, out buffer_size, type, NullTerm (option_keys), NullTerm (option_values), out error))
-				throw new GLib.GException (error);
+			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
+			IntPtr[] nkeys = NullTerm (option_keys);
+			IntPtr[] nvals = NullTerm (option_values);
+			bool saved = gdk_pixbuf_save_to_bufferv (Handle, out buffer, out buffer_size, ntype, nkeys, nvals, out error);
+			GLib.Marshaller.Free (ntype);
+			ReleaseArray (nkeys);
+			ReleaseArray (nvals);
 
+			if (!saved)
+				throw new GLib.GException (error);
 			byte[] result = new byte [buffer_size];
 			Marshal.Copy (buffer, result, 0, (int) buffer_size);
 			g_free (buffer);
@@ -287,7 +308,7 @@
 		}
 
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern unsafe bool gdk_pixbuf_save_to_callbackv (IntPtr raw, GdkSharp.PixbufSaveFuncNative save_func, IntPtr user_data, string type, string[] option_keys, string[] option_values, out IntPtr error);
+		static extern unsafe bool gdk_pixbuf_save_to_callbackv (IntPtr raw, GdkSharp.PixbufSaveFuncNative save_func, IntPtr user_data, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
 
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type)
 		{
@@ -299,7 +320,15 @@
 			GdkSharp.PixbufSaveFuncWrapper save_func_wrapper = null;
 			save_func_wrapper = new GdkSharp.PixbufSaveFuncWrapper (save_func, this);
 			IntPtr error = IntPtr.Zero;
-			if(!gdk_pixbuf_save_to_callbackv (Handle, save_func_wrapper.NativeDelegate, IntPtr.Zero, type, NullTerm (option_keys), NullTerm (option_values), out error))
+			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
+			IntPtr[] nkeys = NullTerm (option_keys);
+			IntPtr[] nvals = NullTerm (option_values);
+			bool saved = gdk_pixbuf_save_to_callbackv (Handle, save_func_wrapper.NativeDelegate, IntPtr.Zero, ntype, nkeys, nvals, out error);
+			GLib.Marshaller.Free (ntype);
+			ReleaseArray (nkeys);
+			ReleaseArray (nvals);
+
+			if (!saved)
 				throw new GLib.GException (error);
 		}
 

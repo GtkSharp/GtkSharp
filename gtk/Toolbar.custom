@@ -41,14 +41,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_append_element (IntPtr raw, int type, IntPtr widget, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
+		static extern IntPtr gtk_toolbar_append_element (IntPtr raw, int type, IntPtr widget, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget AppendElement (Gtk.ToolbarChildType type, Gtk.Widget widget, string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_append_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_append_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -60,14 +66,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_insert_element (IntPtr raw, int type, IntPtr widget, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
+		static extern IntPtr gtk_toolbar_insert_element (IntPtr raw, int type, IntPtr widget, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget InsertElement (Gtk.ToolbarChildType type, Gtk.Widget widget, string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb, IntPtr user_data, int position) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_insert_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, user_data, position);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_insert_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, user_data, position);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -80,14 +92,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_prepend_element (IntPtr raw, int type, IntPtr widget, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
+		static extern IntPtr gtk_toolbar_prepend_element (IntPtr raw, int type, IntPtr widget, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget PrependElement (Gtk.ToolbarChildType type, Gtk.Widget widget, string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_prepend_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_prepend_element (Handle, (int) type, widget == null ? IntPtr.Zero : widget.Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -99,14 +117,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_append_item (IntPtr raw, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
+		static extern IntPtr gtk_toolbar_append_item (IntPtr raw, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget AppendItem (string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_append_item (Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_append_item (Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -118,14 +142,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_insert_item (IntPtr raw, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
+		static extern IntPtr gtk_toolbar_insert_item (IntPtr raw, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget InsertItem (string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb, IntPtr user_data, int position) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_insert_item (Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, user_data, position);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_insert_item (Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, user_data, position);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -137,14 +167,20 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_prepend_item (IntPtr raw, string text, string tooltip_text, string tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
+		static extern IntPtr gtk_toolbar_prepend_item (IntPtr raw, IntPtr text, IntPtr tooltip_text, IntPtr tooltip_private_text, IntPtr icon, GtkSharp.SignalFuncNative cb, IntPtr user_data);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget PrependItem (string text, string tooltip_text, string tooltip_private_text, Gtk.Widget icon, Gtk.SignalFunc cb) 
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_prepend_item (Handle, text, tooltip_text, tooltip_private_text, icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			IntPtr ntext = GLib.Marshaller.StringToPtrGStrdup (text);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_prepend_item (Handle, ntext, ntiptext, ntipprivtext, icon == null ? IntPtr.Zero : icon.Handle, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			GLib.Marshaller.Free (ntext);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;
@@ -156,7 +192,7 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_toolbar_insert_stock (IntPtr raw, string stock_id, string tooltip_text, string tooltip_private_text, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
+		static extern IntPtr gtk_toolbar_insert_stock (IntPtr raw, IntPtr stock_id, IntPtr tooltip_text, IntPtr tooltip_private_text, GtkSharp.SignalFuncNative cb, IntPtr user_data, int position);
 
 		[Obsolete ("Replaced by ToolItem API")]
 		public Gtk.Widget InsertStock (string stock_id, string tooltip_text, string tooltip_private_text, Gtk.SignalFunc cb, int position) 
@@ -169,7 +205,13 @@
 		{
 			GtkSharp.SignalFuncWrapper cb_wrapper = null;
 			cb_wrapper = new GtkSharp.SignalFuncWrapper (cb, this);
-			IntPtr raw_ret = gtk_toolbar_insert_stock (Handle, stock_id, tooltip_text, tooltip_private_text, cb_wrapper.NativeDelegate, user_data, position);
+			IntPtr nstock = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+			IntPtr ntiptext = GLib.Marshaller.StringToPtrGStrdup (tooltip_text);
+			IntPtr ntipprivtext = GLib.Marshaller.StringToPtrGStrdup (tooltip_private_text);
+			IntPtr raw_ret = gtk_toolbar_insert_stock (Handle, nstock, ntiptext, ntipprivtext, cb_wrapper.NativeDelegate, user_data, position);
+			GLib.Marshaller.Free (nstock);
+			GLib.Marshaller.Free (ntiptext);
+			GLib.Marshaller.Free (ntipprivtext);
 			Gtk.Widget ret;
 			if (raw_ret == IntPtr.Zero)
 				ret = null;

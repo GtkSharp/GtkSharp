@@ -1,8 +1,11 @@
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_beginpage (IntPtr raw, string name);
+		static extern int gnome_print_beginpage (IntPtr raw, IntPtr name);
 
                 public PrintReturnCode BeginPage (string name) {
-                	return (PrintReturnCode)gnome_print_beginpage (Handle, name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (name);
+                	int result = gnome_print_beginpage (Handle, native);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
                 }
                 
 		[DllImport("gnomeprint-2-2")]
@@ -213,41 +216,56 @@
 		}
 
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_show (IntPtr raw, string text);
+		static extern int gnome_print_show (IntPtr raw, IntPtr text);
 
 		public PrintReturnCode Show (string text) {
-			return (PrintReturnCode)gnome_print_show (Handle, text);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+                	int result = gnome_print_show (Handle, native);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
 		}
 		
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_show_sized (IntPtr raw, string text, int bytes);
+		static extern int gnome_print_show_sized (IntPtr raw, IntPtr text, int bytes);
 
 		public PrintReturnCode ShowSized (string text, int bytes) {
-			return (PrintReturnCode)gnome_print_show_sized (Handle, text, bytes);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
+                	int result = gnome_print_show_sized (Handle, native, bytes);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
 		}
 
 		[DllImport("gnomeprint-2-2")]
 		static extern int gnome_print_glyphlist (IntPtr raw, IntPtr glyphlist);
 
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_grayimage (IntPtr raw, string data, int width, int height, int rowstride);
+		static extern int gnome_print_grayimage (IntPtr raw, IntPtr data, int width, int height, int rowstride);
 
 		public PrintReturnCode GrayImage (string data, int width, int height, int rowstride) {
-			return (PrintReturnCode)gnome_print_grayimage (Handle, data, width, height, rowstride);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (data);
+                	int result = gnome_print_grayimage (Handle, native, width, height, rowstride);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
 		}
 
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_rgbimage (IntPtr raw, string data, int width, int height, int rowstride);
+		static extern int gnome_print_rgbimage (IntPtr raw, IntPtr data, int width, int height, int rowstride);
 
 		public PrintReturnCode RgbImage (string data, int width, int height, int rowstride) {
-			return (PrintReturnCode)gnome_print_rgbimage (Handle, data, width, height, rowstride);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (data);
+                	int result = gnome_print_rgbimage (Handle, native, width, height, rowstride);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
 		}
 
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_rgbaimage (IntPtr raw, string data, int width, int height, int rowstride);
+		static extern int gnome_print_rgbaimage (IntPtr raw, IntPtr data, int width, int height, int rowstride);
 
 		public PrintReturnCode RgbaImage (string data, int width, int height, int rowstride) {
-			return (PrintReturnCode)gnome_print_rgbaimage (Handle, data, width, height, rowstride);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (data);
+                	int result = gnome_print_rgbaimage (Handle, native, width, height, rowstride);
+			GLib.Marshaller.Free (native);
+                	return (PrintReturnCode) result;
 		}
 
 		[DllImport("gnomeprint-2-2")]

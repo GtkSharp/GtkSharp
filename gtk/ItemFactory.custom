@@ -22,7 +22,7 @@
 
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_item_factory_new(IntPtr container_type, string path, IntPtr accel_group);
+		static extern IntPtr gtk_item_factory_new(IntPtr container_type, IntPtr path, IntPtr accel_group);
 
 		public ItemFactory (GLib.GType container_type, string path, Gtk.AccelGroup accel_group) : base (IntPtr.Zero)
 		{
@@ -31,6 +31,8 @@
 				Construct (container_type, path, accel_group);
 				return;
 			}
-			Raw = gtk_item_factory_new(container_type.Val, path, (accel_group != null) ? accel_group.Handle : IntPtr.Zero);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (path);
+			Raw = gtk_item_factory_new(container_type.Val, native, (accel_group != null) ? accel_group.Handle : IntPtr.Zero);
+			GLib.Marshaller.Free (native);
 		}
 

@@ -47,7 +47,6 @@ customs =					\
 	FontFamily.custom			\
 	IconList.custom				\
 	IconTextItem.custom			\
-	IconTheme.custom			\
 	PanelApplet.custom			\
 	Print.custom				\
 	PrintContext.custom			\

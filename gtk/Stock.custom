@@ -44,12 +44,15 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern bool gtk_stock_lookup (string stock_id, out ConstStockItem item);
+		static extern bool gtk_stock_lookup (IntPtr stock_id, out ConstStockItem item);
 
 		public static Gtk.StockItem Lookup (string stock_id) {
 			ConstStockItem const_item;
 
-			if (!gtk_stock_lookup (stock_id, out const_item))
+			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+			bool result = gtk_stock_lookup (native_id, out const_item);
+			GLib.Marshaller.Free (native_id);
+			if (!result)
 				return Gtk.StockItem.Zero;
 
 			Gtk.StockItem item = new Gtk.StockItem ();

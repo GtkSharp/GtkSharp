@@ -197,11 +197,14 @@ public bool IsDrawable {
 }
 
 [DllImport("gtksharpglue-2")]
-static extern int gtksharp_gtk_widget_style_get_int (IntPtr raw, string name);
+static extern int gtksharp_gtk_widget_style_get_int (IntPtr raw, IntPtr name);
 
 public int FocusLineWidth {
 	get {
-		return gtksharp_gtk_widget_style_get_int (Handle, "focus-line-width");
+		IntPtr name = GLib.Marshaller.StringToPtrGStrdup ("focus-line-width");
+		int result = gtksharp_gtk_widget_style_get_int (Handle, name);
+		GLib.Marshaller.Free (name);
+		return result;
 	}
 }
 
@@ -267,10 +270,10 @@ static BindingHandler BindingDelegate {
 }
 
 [DllImport ("gtksharpglue-2")]
-static extern void gtksharp_widget_add_binding_signal (IntPtr gvalue, string name, BindingHandler handler);
+static extern void gtksharp_widget_add_binding_signal (IntPtr gvalue, IntPtr name, BindingHandler handler);
 
 [DllImport ("gtksharpglue-2")]
-static extern void gtksharp_widget_register_binding (IntPtr gvalue, string name, uint key, int mod, IntPtr data);
+static extern void gtksharp_widget_register_binding (IntPtr gvalue, IntPtr name, uint key, int mod, IntPtr data);
 
 [GLib.ClassInitializer]
 static void ClassInit (GLib.GType gtype, Type t)
@@ -280,7 +283,7 @@ static void ClassInit (GLib.GType gtype, Type t)
 	if (attrs.Length == 0)
 		return;
 
-	string signame = t.Name.Replace (".", "_") + "_bindings";
+	IntPtr signame = GLib.Marshaller.StringToPtrGStrdup (t.Name.Replace (".", "_") + "_bindings");
 
 	gtksharp_widget_add_binding_signal (gtype.Val, signame, BindingDelegate);
 
@@ -292,16 +295,19 @@ static void ClassInit (GLib.GType gtype, Type t)
 		BindingInvoker inv = new BindingInvoker (mi, attr.Parms);
 		gtksharp_widget_register_binding (gtype.Val, signame, (uint) attr.Key, (int) attr.Mod, (IntPtr) GCHandle.Alloc (inv));
 	}
+	GLib.Marshaller.Free (signame);
 }
 
 [DllImport("gtksharpglue-2")]
-static extern void gtksharp_widget_style_get_property (IntPtr widget, string property, ref GLib.Value value);
+static extern void gtksharp_widget_style_get_property (IntPtr widget, IntPtr property, ref GLib.Value value);
 
 public object StyleGetProperty (string property_name) {
 	GLib.Value value = new GLib.Value ();
 	object ret;
 
-	gtksharp_widget_style_get_property (Handle, property_name, ref value);
+	IntPtr name = GLib.Marshaller.StringToPtrGStrdup (property_name);
+	gtksharp_widget_style_get_property (Handle, name, ref value);
+	GLib.Marshaller.Free (name);
 	ret = value.Val;
 	value.Dispose ();
 	return ret;
