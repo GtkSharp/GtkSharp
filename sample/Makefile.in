@@ -2,7 +2,7 @@ MCS=mcs
 
 @ENABLE_GNOME_TRUE@ GNOME_PATH=-L ../gnome
 @ENABLE_GNOME_TRUE@ GNOME_ASSEMBLY=-r gnome-sharp.dll
-@ENABLE_GNOME_TRUE@ GNOME_TARGETS=gnome-hello-world.exe
+@ENABLE_GNOME_TRUE@ GNOME_TARGETS=gnome-hello-world.exe canvas-example.exe 
 
 local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk $(GNOME_PATH) 
 all_assemblies=-r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll $(GNOME_ASSEMBLY) -r System.Drawing
@@ -21,6 +21,9 @@ gtk-hello-world.exe: HelloWorld.cs
 
 gnome-hello-world.exe: GnomeHelloWorld.cs
 	$(MCS) --unsafe -o gnome-hello-world.exe $(local_paths) $(all_assemblies) GnomeHelloWorld.cs
+
+canvas-example.exe: CanvasExample.cs
+	$(MCS) --unsafe -o canvas-example.exe $(local_paths) $(all_assemblies) CanvasExample.cs
 
 button.exe: ButtonApp.cs
 	$(MCS) --unsafe -o button.exe $(local_paths) $(all_assemblies) ButtonApp.cs

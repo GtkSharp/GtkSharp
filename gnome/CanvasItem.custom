@@ -1,0 +1,19 @@
+//
+// Gnome.CanvasItem.custom - Gnome CanvasItem class customizations
+//
+// Author: Rachel Hestilow <hestilow@ximian.com>
+//
+// Copyright (C) 2002 Rachel Hestilow
+//
+// This code is inserted after the automatically generated code.
+//
+	
+
+[DllImport("gnomecanvas-2")]
+static extern System.IntPtr gnome_canvas_item_new (IntPtr group, int type, IntPtr null_terminator);
+
+public CanvasItem (Gnome.CanvasGroup group, int type)
+{
+	Raw = gnome_canvas_item_new (group.Handle, type, IntPtr.Zero);
+}
+
