@@ -126,12 +126,6 @@ namespace GtkSharp.Generation {
 				if (is_set)
 					name = "value";
 
-				if (is_get) {
-					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
-					if (p.PassAs != "out" && UsesHandle (gen))
-						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
-				}
-
 				if ((is_get || p.PassAs == "out") && UsesHandle (gen))
 					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
 

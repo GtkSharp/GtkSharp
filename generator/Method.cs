@@ -31,6 +31,7 @@ namespace GtkSharp.Generation {
 		
 		private string libname;
 		private XmlElement elem;
+		private ReturnValue retval;
 		private Parameters parms;
 		private Signature sig;
 		private ImportSignature isig;
@@ -39,9 +40,7 @@ namespace GtkSharp.Generation {
 
 		private bool initialized = false;
 		private string call;
-		private string rettype, m_ret, s_ret;
-		private string element_type = null;
-		private string name, cname, safety;
+		private string name;
 		private string protection = "public";
 		private bool is_get, is_set;
 		private bool needs_ref = false;
@@ -50,8 +49,10 @@ namespace GtkSharp.Generation {
 		public Method (string libname, XmlElement elem, ClassBase container_type) 
 		{
 			this.elem = elem;
+			this.retval = new ReturnValue (elem["return-type"]);
 			if (elem["parameters"] != null) {
 				parms = new Parameters (elem["parameters"], container_type.NS);
+				parms.Static = IsShared;
 			}
 			this.container_type = container_type;
 			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated"))
@@ -67,6 +68,12 @@ namespace GtkSharp.Generation {
 			// caller does not own reference?
 			if (elem.HasAttribute ("needs_ref"))
 				this.needs_ref = (elem.GetAttribute ("needs_ref") == "1");
+		}
+
+		public string CName {
+			get {
+				return elem.GetAttribute ("cname");
+			}
 		}
 
 		public bool IsDeprecated {
@@ -89,8 +96,7 @@ namespace GtkSharp.Generation {
 
 		private bool IsShared {
 			get {
-				return elem.HasAttribute("shared") &&
-				       (elem.GetAttribute("shared") == "true");
+				return elem.GetAttribute ("shared") == "true";
 			}
 		}
 
@@ -114,7 +120,16 @@ namespace GtkSharp.Generation {
 
 		public string ReturnType {
 			get {
-				return s_ret;
+				return retval.CSType;
+			}
+		}
+
+		string Safety {
+			get {
+				if (body.ThrowsException && !(container_type is InterfaceGen))
+					return "unsafe ";
+				else
+					return "";
 			}
 		}
 
@@ -148,47 +163,13 @@ namespace GtkSharp.Generation {
 			if (initialized)
 				return true;
 
-			if (parms != null && !parms.Validate ()) {
-				Console.Write ("in method " + Name + " ");
-				return false;
-			}
-
-			XmlElement ret_elem = elem["return-type"];
-			if (ret_elem == null) {
-				Console.Write("Missing return type in method " + Name + " ");
-				Statistics.ThrottledCount++;
-				return false;
-			}
+			is_get = (((parms != null && ((parms.IsAccessor && retval.CSType == "void") || (parms.Count == 0 && retval.CSType != "void"))) || (parms == null && retval.CSType != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
+			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && retval.CSType == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
-			SymbolTable table = SymbolTable.Table;
-
-			rettype = ret_elem.GetAttribute("type");
-			m_ret = table.GetMarshalReturnType(rettype);
-			s_ret = table.GetCSType(rettype);
-			cname = elem.GetAttribute("cname");
-			if (ret_elem.HasAttribute("element_type"))
-				element_type = ret_elem.GetAttribute("element_type");
-			
-			if (ret_elem.HasAttribute("array")) {
-					s_ret += "[]";
-					m_ret += "[]";
-				}
-
-			is_get = (((parms != null && ((parms.IsAccessor && s_ret == "void") || (parms.Count == 0 && s_ret != "void"))) || (parms == null && s_ret != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
-			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && s_ret == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
-			
-			if (parms != null)
-				parms.Static = IsShared;
-
 			sig = new Signature (parms);
 			isig = new ImportSignature (parms, container_type.NS);
 			body = new MethodBody (parms, container_type.NS);
 			call = "(" + (IsShared ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + body.GetCallString (is_set) + ")";
-
-			if (body.ThrowsException && !(container_type is InterfaceGen))
-				safety = "unsafe ";
-			else
-				safety = "";
 
 			initialized = true;
 			return true;
@@ -199,9 +180,13 @@ namespace GtkSharp.Generation {
 			if (!Initialize ())
 				return false;
 
-			if (m_ret == "" || s_ret == "") {
-				Console.Write("rettype: " + rettype + " in method " + Name + " ");
-				Statistics.ThrottledCount++;
+			if (parms != null && !parms.Validate ()) {
+				Console.Write ("in method " + Name + " ");
+				return false;
+			}
+
+			if (!retval.Validate ()) {
+				Console.Write(" in method " + Name + " ");
 				return false;
 			}
 			return true;
@@ -220,10 +205,9 @@ namespace GtkSharp.Generation {
 		
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
-			if (elem.HasAttribute("shared") &&
-			    (elem.GetAttribute("shared") == "true"))
+			if (elem.GetAttribute ("shared") == "true"))
 				sw.Write("static ");
-			sw.Write(safety);
+			sw.Write (Safety);
 			Method dup = null;
 			if (container_type != null)
 				dup = container_type.GetMethodRecursively (Name);
@@ -238,9 +222,10 @@ namespace GtkSharp.Generation {
 				sw.Write("new ");
 
 			if (is_get || is_set) {
-				if (s_ret == "void")
-					s_ret = parms.AccessorReturnType;
-				sw.Write(s_ret);
+				if (retval.CSType == "void")
+					sw.Write (parms.AccessorReturnType);
+				else
+					sw.Write(retval.CSType);
 				sw.Write(" ");
 				if (Name.StartsWith ("Get") || Name.StartsWith ("Set"))
 					sw.Write (Name.Substring (3));
@@ -250,7 +235,7 @@ namespace GtkSharp.Generation {
 			} else if (IsAccessor) {
 				sw.Write (sig.AccessorType + " " + Name + "(" + sig.AsAccessor + ")");
 			} else {
-				sw.Write(s_ret + " " + Name + "(" + (sig != null ? sig.ToString() : "") + ")");
+				sw.Write(retval.CSType + " " + Name + "(" + (sig != null ? sig.ToString() : "") + ")");
 			}
 		}
 
@@ -298,10 +283,10 @@ namespace GtkSharp.Generation {
 			import_sig += !IsShared && parms != null ? ", " : "";
 			import_sig += isig.ToString();
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
-			if (m_ret.StartsWith ("[return:"))
-				sw.WriteLine("\t\t" + m_ret + " static extern " + safety + s_ret + " " + cname + "(" + import_sig + ");");
+			if (retval.MarshalType.StartsWith ("[return:"))
+				sw.WriteLine("\t\t" + retval.MarshalType + " static extern " + Safety + retval.CSType + " " + CName + "(" + import_sig + ");");
 			else
-				sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + "(" + import_sig + ");");
+				sw.WriteLine("\t\tstatic extern " + Safety + retval.MarshalType + " " + CName + "(" + import_sig + ");");
 			sw.WriteLine();
 		}
 
@@ -322,9 +307,9 @@ namespace GtkSharp.Generation {
 				if (!elem.HasAttribute("new_flag") && container_type.GetPropertyRecursively (Name.Substring (3)) != null)
 					return;
 				comp = GetComplement ();
-				if (comp != null && comp.Validate () && is_set && parms.AccessorReturnType == comp.s_ret)
+				if (comp != null && comp.Validate () && is_set && parms.AccessorReturnType == comp.ReturnType)
 					return;
-				if (comp != null && is_set && parms.AccessorReturnType != comp.s_ret)
+				if (comp != null && is_set && parms.AccessorReturnType != comp.ReturnType)
 				{
 					is_set = false;
 					call = "(Handle, " + body.GetCallString (false) + ")";
@@ -336,7 +321,7 @@ namespace GtkSharp.Generation {
 			}
 			
 			GenerateImport (gen_info.Writer);
-			if (comp != null && s_ret == comp.parms.AccessorReturnType)
+			if (comp != null && retval.CSType == comp.parms.AccessorReturnType)
 				comp.GenerateImport (gen_info.Writer);
 
 			if (IsDeprecated)
@@ -357,7 +342,7 @@ namespace GtkSharp.Generation {
 			
 			if (is_get || is_set)
 			{
-				if (comp != null && s_ret == comp.parms.AccessorReturnType)
+				if (comp != null && retval.CSType == comp.parms.AccessorReturnType)
 				{
 					gen_info.Writer.WriteLine ();
 					gen_info.Writer.Write ("\t\t\tset");
@@ -383,27 +368,27 @@ namespace GtkSharp.Generation {
 			body.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
-			IGeneratable ret_igen = table [rettype];
+			IGeneratable ret_igen = table [retval.CType];
 
 			sw.Write(indent + "\t\t\t");
-			if (m_ret == "void") {
-				sw.WriteLine(cname + call + ";");
+			if (retval.MarshalType == "void") {
+				sw.WriteLine(CName + call + ";");
 			} else if (ret_igen is ObjectGen || ret_igen is OpaqueGen) {
-				sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-				sw.WriteLine(indent +"\t\t\t" + s_ret + " ret;");
+				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
+				sw.WriteLine(indent +"\t\t\t" + retval.CSType + " ret;");
 				sw.WriteLine(indent + "\t\t\tif (raw_ret == IntPtr.Zero)");
 				sw.WriteLine(indent + "\t\t\t\tret = null;");
 				sw.WriteLine(indent + "\t\t\telse");
-				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
+				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(retval.CType, "raw_ret") + ";");
 			} else if (ret_igen is CustomMarshalerGen) {
-				sw.WriteLine(s_ret + " ret = " + cname + call + ";");
+				sw.WriteLine(retval.CSType + " ret = " + CName + call + ";");
 			} else {
-				sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
+				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
 				sw.Write(indent + "\t\t\t");
 				string raw_parms = "raw_ret";
-				if (element_type != null)
-					raw_parms += ", typeof (" + element_type + ")";
-				sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
+				if (retval.ElementType != String.Empty)
+					raw_parms += ", typeof (" + retval.ElementType + ")";
+				sw.WriteLine(retval.CSType + " ret = " + table.FromNativeReturn(retval.CType, raw_parms) + ";");
 			}
 
 			body.Finish (sw, indent);
@@ -411,7 +396,7 @@ namespace GtkSharp.Generation {
 
 			if (is_get && parms != null) 
 				sw.WriteLine (indent + "\t\t\treturn " + parms.AccessorName + ";");
-			else if (m_ret != "void")
+			else if (retval.MarshalType != "void")
 				sw.WriteLine (indent + "\t\t\treturn ret;");
 			else if (IsAccessor)
 				body.FinishAccessor (sw, sig, indent);
@@ -421,7 +406,7 @@ namespace GtkSharp.Generation {
 
 		bool IsAccessor { 
 			get { 
-				return s_ret == "void" && sig.IsAccessor; 
+				return retval.CSType == "void" && sig.IsAccessor; 
 			} 
 		}
 	}

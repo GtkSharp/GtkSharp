@@ -31,6 +31,7 @@ namespace GtkSharp.Generation {
 
 		private string name;
 		private XmlElement elem;
+		private ReturnValue retval;
 		private Parameters parms;
 		private ClassBase container_type;
 		SignalHandler sig_handler;
@@ -39,6 +40,7 @@ namespace GtkSharp.Generation {
 		{
 			this.elem = elem;
 			this.name = elem.GetAttribute ("name");
+			this.retval = new ReturnValue (elem ["return-type"]);
 			if (elem["parameters"] != null)
 				parms = new Parameters (elem["parameters"], container_type.NS);
 			this.container_type = container_type;
@@ -63,6 +65,9 @@ namespace GtkSharp.Generation {
 			}
 			
 			if (parms != null && !parms.Validate ())
+				return false;
+
+			if (!retval.Validate ())
 				return false;
 
 			return true;
@@ -116,25 +121,18 @@ namespace GtkSharp.Generation {
 
 		private bool IsVoid {
 			get {
-				return ReturnType == "void";
-			}
-		}
-
-		private string MarshalReturnType {
-			get {
-				string ctype = elem ["return-type"].GetAttribute("type");
-				return SymbolTable.Table.GetMarshalType (ctype);
+				return retval.CSType == "void";
 			}
 		}
 
 		private string ReturnGType {
 			get {
-				ClassBase igen = SymbolTable.Table.GetClassGen (elem ["return-type"].GetAttribute("type"));
+				ClassBase igen = SymbolTable.Table.GetClassGen (retval.CType);
 
 				if (igen is ObjectGen)
 					return "GLib.GType.Object";
 
-				switch (ReturnType) {
+				switch (retval.CSType) {
 				case "bool":
 					return "GLib.GType.Boolean";
 				case "string":
@@ -142,15 +140,8 @@ namespace GtkSharp.Generation {
 				case "int":
 					return "GLib.GType.Int";
 				default:
-					throw new Exception (ReturnType);
+					throw new Exception (retval.CSType);
 				}
-			}
-		}
-
-		private string ReturnType {
-			get {
-				string ctype = elem ["return-type"].GetAttribute("type");
-				return SymbolTable.Table.GetCSType (ctype);
 			}
 		}
 
@@ -190,7 +181,7 @@ namespace GtkSharp.Generation {
 		{
 			VMSignature vmsig = new VMSignature (parms);
 			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
-			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", ReturnType, "On" + Name, vmsig.ToString ());
+			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", retval.CSType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
 			if (IsVoid)
 				sw.WriteLine ("\t\t\tGLib.Value ret = GLib.Value.Empty;");
@@ -218,7 +209,7 @@ namespace GtkSharp.Generation {
 			if (cleanup != "")
 				sw.WriteLine (cleanup);
 			if (!IsVoid)
-				sw.WriteLine ("\t\t\treturn (" + ReturnType + ") ret;");
+				sw.WriteLine ("\t\t\treturn (" + retval.CSType + ") ret;");
 			sw.WriteLine ("\t\t}\n");
 		}
 
@@ -226,9 +217,9 @@ namespace GtkSharp.Generation {
 		{
 			ImportSignature isig = new ImportSignature (parms, container_type.NS);
 			ManagedCallString call = new ManagedCallString (parms);
-			sw.WriteLine ("\t\tdelegate " + MarshalReturnType + " " + Name + "Delegate (" + isig.ToString () + ");\n");
+			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "Delegate (" + isig.ToString () + ");\n");
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "Delegate", Name + "Callback");
-			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
+			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
 			sw.Write ("\t\t\t{0}", IsVoid ? "" : "return ");

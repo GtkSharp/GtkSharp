@@ -36,6 +36,7 @@ sources = 				\
 	Parameters.cs			\
 	Parser.cs			\
 	Property.cs			\
+	ReturnValue.cs			\
 	Signal.cs			\
 	SignalHandler.cs		\
 	Signature.cs			\
