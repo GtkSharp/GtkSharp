@@ -10,7 +10,14 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>
+      <para>
+Gdk's <see cref="T:Gdk.Rgb" /> is a low-level module which renders RGB, grayscale, and indexed colormap images to a <see cref="T:Gdk.Drawable" />. It does this as efficiently as possible, handling issues such as colormaps, visuals, dithering, temporary buffers, and so on. Most code should use the higher-level GdkPixbuf features in place of this module; for example, gdk_pixbuf_render_to_drawable() uses GdkRGB in its implementation.
+</para>
+      <para>
+GdkRGB allocates a color cube to use when rendering images. You can set the threshold for installing colormaps with the Gdk.<see cref="M:Gdk.Rgb.MinColors" /> property. The default is 5x5x5 (125). If a colorcube of this size or larger can be allocated in the default colormap, then that's done. Otherwise, GdkRGB creates its own private colormap. Setting it to 0 means that it always tries to use the default colormap, and setting it to 216 means that it always creates a private one if it cannot allocate the 6x6x6 colormap in the default. If you always want a private colormap (to avoid consuming too many colormap entries for other apps, say), you can use gdk_rgb_set_install(TRUE). Setting the value greater than 216 exercises a bug in older versions of GdkRGB. Note, however, that setting it to 0 doesn't let you get away with ignoring the colormap and visual - a colormap is always created in grayscale and direct color modes, and the visual is changed in cases where a "better" visual than the default is available. 
+</para>
+    </summary>
     <remarks />
   </Docs>
   <Base>
@@ -30,29 +37,14 @@
         <Parameter Name="color" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>
-          <p>
-            <paramref name="colormap" /> should be the colormap for the graphics context and
-	    drawable you're using to draw. If you're drawing to a <see cref="T:Gtk.Widget" />,
-	    call <see cref="M:Gtk.Widget.GetColormap" />.
-	  </p>
-          <p>
-            <paramref name="color" /> should have its red, green, and blue fields initialized;
-	    this method will fill in <paramref name="color" />'s pixel field with the best
-	    matching pixel from a color cube. The color is then ready to be
-	    used for drawing, e.g. you can call <see cref="M:Gdk.GC.SetForeground" /> which
-	    expects "pixel" to be initialized.
-	  </p>
-          <p>
-	    In many cases, you can avoid this whole issue by setting
-	    <see cref="P:Gdk.GC.RgbFgColor" /> or <see cref="P:Gdk.GC.RgbBgColor" />, which
-	    do not expect "pixel" to be initialized in advance. If you use those
-	    mutators, there's no need for calling this method.
-	  </p>
-        </summary>
-        <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
-        <param name="color">a <see cref="T:Gdk.Color" /></param>
-        <remarks />
+        <summary>Fetches a color to be used on the given colormap.</summary>
+        <param name="colormap">Tthe colormap for the graphics context and drawable you're using to draw. If you're drawing to a <see cref="T:Gtk.Widget" />, use the <see cref="P:Gtk.Widget.Colormap" /> property.</param>
+        <param name="color">Color should have its red, green, and blue fields initialized.</param>
+        <remarks>This routine will fill in the pixel field with the best matching pixel from a color cube. The color is then ready to be used for drawing, e.g. you can use <see cref="P:Gtk.GC.Foreground" /> which expects the pixel to be initialized.
+
+<para>
+In many cases, you can avoid this whole issue by setting the <see cref="P:Gdk.GC.RgbFgColor" /> or <see cref="P:Gdk.GC.RgbBgColor" />, which do not expect pixel to be initialized in advance. If you use those functions, there's no need for using FindColor.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Ditherable">
@@ -63,9 +55,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <summary>Whether the visual in use by GdkRGB is dithereable.</summary>
+        <returns>
+          <see langword="true" /> if the visual is ditherable.</returns>
+        <remarks>Determines whether the visual is ditherable. This function may be useful for presenting a user interface choice to the user about which dither mode is desired; if the display is not ditherable, it may make sense to gray out or hide the corresponding UI widget.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -89,9 +82,9 @@
       </Parameters>
       <Docs>
         <summary>The minimum number of colors for this colormap.</summary>
-        <param name="value">a <see cref="T:System.Int32" /></param>
+        <param name="value">The minimum number of colors accepted.</param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks />
+        <remarks>Sets the minimum number of colors for the color cube. Generally, GdkRGB tries to allocate the largest color cube it can. If it can't allocate a color cube at least as large as min_colors, it installs a private colormap.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Visual">
@@ -101,9 +94,9 @@
         <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The preferred visual for GdkRGB operations.</summary>
         <returns>a <see cref="T:Gdk.Visual" /></returns>
-        <remarks />
+        <remarks>Gets a "preferred visual" chosen by GdkRGB for rendering image data on the default screen. In previous versions of GDK, this was the only visual GdkRGB could use for rendering. In current versions, it's simply the visual GdkRGB would have chosen as the optimal one in those previous versions. GdkRGB can now render to drawables with any visual.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Install">
@@ -115,10 +108,13 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">a <see cref="T:System.Boolean" /></param>
+        <summary>Whether to install a private colormap for Gdk.RGB</summary>
+        <param name="value">If <see langword="true" /> it will install a private colormap.</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <remarks>If the value is <see langword="true" />, it directs GdkRGB to always install a new "private" colormap rather than trying to find a best fit with the colors already allocated. Ordinarily, GdkRGB will install a colormap only if a sufficient cube cannot be allocated.
+<para>
+A private colormap has more colors, leading to better quality display, but also leads to the dreaded "colormap flashing" effect. 
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Colormap">
@@ -128,9 +124,9 @@
         <ReturnType>Gdk.Colormap</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Colormap" /></returns>
-        <remarks />
+        <summary>Get preferred colormap for using Gdk.RGB</summary>
+        <returns>The preferred <see cref="T:Gdk.Colormap" />.</returns>
+        <remarks>Get the preferred colormap for rendering image data. Not a very useful function; historically, GDK could only render RGB image data to one colormap and visual, but in the current version it can render to any colormap and visual. So there's no need to call this function.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Verbose">

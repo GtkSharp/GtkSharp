@@ -1176,12 +1176,33 @@
         <Parameter Name="resource" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Makes a Pixbuf from a compiled resource.
-</summary>
-        <param name="assembly">Assembly with the resouce compiled <see cref="T:System.Reflection.Assembly" /></param>
-        <param name="resource">Name of resouce <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>Use null to reference the same assembly you are calling the contructor from.</remarks>
+        <summary>Constructor for images embedded in an assembly</summary>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly</param>
+        <returns>The <see cref="T:Gdk.Pixbuf" /> created from the resource stream</returns>
+        <remarks>
+          <para>
+   This method is used to construct a <see cref="T:Gdk.Pixbuf" /> from an embedded resource in an assembly. 
+</para>
+          <para>
+   Typically this is used when application developers want to distribute images in a single executable.
+</para>
+
+If the assembly parameter is <see langword="null" />,  the image will be looked up on the calling assembly.
+
+<para>
+For example:
+</para><example>
+            <code lang="C#">
+Gdk.Pixbuf p = new Pixbuf (null, "image.jpg");
+  </code>
+          </example><para>Compile with:</para><example>
+            <code lang="Compilation">
+mcs -resource:image.jpg sample.cs
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadFromResource">
@@ -1541,7 +1562,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <param name="option_keys">an array of option keys.</param>
         <param name="option_values">an array of option values.</param>
         <returns>a <see cref="T:System.Byte[]" /></returns>
-        <remarks>>The <paramref name="option_keys"/> and <paramref name="option_values"/> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save"/> for more details.  Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+        <remarks>&gt;The <paramref name="option_keys" /> and <paramref name="option_values" /> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save" /> for more details.  Throws a <see cref="T:GLib.GException" /> if the save is not successful.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToBuffer">
@@ -1557,7 +1578,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <summary>Saves to a buffer.</summary>
         <param name="type">an image type, such as png, jpeg, or ico</param>
         <returns>a <see cref="T:System.Byte[]" /></returns>
-        <remarks>Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+        <remarks>Throws a <see cref="T:GLib.GException" /> if the save is not successful.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToCallback">
@@ -1574,7 +1595,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <summary>Save using a callback delegate.</summary>
         <param name="save_func">a <see cref="T:Gdk.PixbufSaveFunc" /></param>
         <param name="type">an image type, such as png, jpeg, or ico</param>
-        <remarks>Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+        <remarks>Throws a <see cref="T:GLib.GException" /> if the save is not successful.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToCallback">
@@ -1595,7 +1616,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <param name="type">an image type, such as png, jpeg, or ico</param>
         <param name="option_keys">an array of option keys</param>
         <param name="option_values">an array of option values</param>
-        <remarks>The <paramref name="option_keys"/> and <paramref name="option_values"/> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save"/> for more details.  Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+        <remarks>The <paramref name="option_keys" /> and <paramref name="option_values" /> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save" /> for more details.  Throws a <see cref="T:GLib.GException" /> if the save is not successful.</remarks>
       </Docs>
     </Member>
   </Members>
