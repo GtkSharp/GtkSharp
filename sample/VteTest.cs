@@ -25,13 +25,23 @@ class T
 		ScrolledWindow sw = new ScrolledWindow ();
 		Terminal term = new Terminal ();
 		term.CursorBlinks = true;
-		term.ScrollOnOutput = true;
+		term.MouseAutohide = true;
+		term.ScrollOnKeystroke = true;
 		//term.BackgroundTransparent = true;
 		term.Encoding = "UTF-8";
 		
 		Console.WriteLine (term.UsingXft);
 		Console.WriteLine (term.Encoding);
 		Console.WriteLine (term.StatusLine);
+
+		string argv = Environment.GetCommandLineArgs () [0];
+
+		string envv = "";
+		// FIXME: send the env vars to ForkCommand
+		Console.WriteLine (Environment.GetEnvironmentVariables ().Count);
+		
+		int pid = term.ForkCommand ("/bin/bash", argv, envv, "/home/jluke", false, true, true);
+		Console.WriteLine ("Child pid: " + pid);
 		
 		sw.AddWithViewport (term);
 
