@@ -48,6 +48,7 @@ customs = 				\
 	IconFactory.custom		\
 	IconSet.custom			\
 	ImageMenuItem.custom		\
+	ItemFactory.custom		\
 	Label.custom			\
 	Layout.custom			\
 	ListStore.custom		\
@@ -56,6 +57,7 @@ customs = 				\
 	Notebook.custom			\
 	Object.custom			\
 	Paned.custom			\
+	Plug.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
 	ScrolledWindow.custom		\

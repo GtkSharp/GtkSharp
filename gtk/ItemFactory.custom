@@ -1,0 +1,21 @@
+// Gtk.ItemFactory.custom - Gtk ItemFactory class customizations
+//
+// Author: Mike Kestner <mkestner@ximian.com> 
+//
+// Copyright (C) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+		
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_item_factory_new(IntPtr container_type, string path, IntPtr accel_group);
+
+		public ItemFactory (GLib.GType container_type, string path, Gtk.AccelGroup accel_group) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (ItemFactory)) {
+				CreateNativeObject (new string [0], new GLib.Value [0]);
+				Construct (container_type, path, accel_group);
+				return;
+			}
+			Raw = gtk_item_factory_new(container_type.Val, path, (accel_group != null) ? accel_group.Handle : IntPtr.Zero);
+		}
+
