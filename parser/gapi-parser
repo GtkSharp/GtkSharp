@@ -13,7 +13,7 @@ die "Improperly formatted input file $ARGV[0].\n" if (!$root || $root->nodeName 
 for ($apinode = $root->firstChild; $apinode; $apinode = $apinode->nextSibling ()) {
 	next if ($apinode->nodeName ne "api");
 	@attrs = $apinode->attributes;
-	my ($outfile);
+	my $outfile = "";
 	foreach $attr (@attrs) {
 		if ($attr->name eq "filename") {
 			$outfile = $attr->value;

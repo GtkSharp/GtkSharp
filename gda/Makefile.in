@@ -9,7 +9,8 @@ ASSEMBLY=gda-sharp.dll
 
 all: $(ASSEMBLY)
 
-generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+generated-stamp: $(APIS) ../generator/gapi_codegen.exe Gda.metadata
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=gda-api.xml --metadata=Gda.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe 		\
 	--generate $(APIS) --outdir=generated --customdir=.	\
 	--assembly-name=gda-sharp && touch generated-stamp

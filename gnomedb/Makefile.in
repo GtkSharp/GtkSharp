@@ -17,7 +17,8 @@ ASSEMBLY=gnomedb-sharp.dll
 @ENABLE_GNOMEDB_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GNOMEDB_FALSE@ all: 
 
-generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+generated-stamp: $(APIS) ../generator/gapi_codegen.exe GnomeDb.metadata
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=gnomedb-api.xml --metadata=GnomeDb.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
 	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
 	--assembly-name=gnomedb-sharp && touch generated-stamp

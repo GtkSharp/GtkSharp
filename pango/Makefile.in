@@ -6,7 +6,8 @@ ASSEMBLY=pango-sharp.dll
 
 all: $(ASSEMBLY)
 
-generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe Pango.metadata
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=pango-api.xml --metadata=Pango.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
 	--outdir=generated --customdir=. --assembly-name=pango-sharp 	\
 	&& touch generated-stamp
