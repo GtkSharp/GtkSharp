@@ -10,6 +10,13 @@
 
 gint gtksharp_gtk_selection_data_get_length (GtkSelectionData *data);
 gint gtksharp_gtk_selection_data_get_format (GtkSelectionData *data);
+guchar *gtksharp_gtk_selection_data_get_data_pointer (GtkSelectionData *data);
+
+guchar *
+gtksharp_gtk_selection_data_get_data_pointer (GtkSelectionData *data)
+{
+	return data->data;
+}
 
 gint
 gtksharp_gtk_selection_data_get_length (GtkSelectionData *data)
