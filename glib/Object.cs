@@ -237,5 +237,12 @@ namespace GLib {
 			g_object_set_property (Raw, name, val.Handle);
 		}
 
+		[DllImport("gtksharpglue")]
+		static extern bool gtksharp_is_object (IntPtr obj);
+
+		internal static bool IsObject (IntPtr obj)
+		{
+			return gtksharp_is_object (obj);
+		}
 	}
 }

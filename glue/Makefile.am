@@ -13,6 +13,7 @@ BASESOURCES = \
 	style.c			\
 	type.c			\
 	widget.c		\
+	list.c			\
 	#
 
 GNOMESOURCES = \

@@ -1,4 +1,4 @@
-// SList.cs - GSList class wrapper implementation
+// List.cs - GList class wrapper implementation
 //
 // Authors: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -10,61 +10,61 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 
 	/// <summary>
-	///	SList Class
+	///	List Class
 	/// </summary>
 	///
 	/// <remarks>
-	///	Wrapper class for GSList.
+	///	Wrapper class for GList.
 	/// </remarks>
 
-	public class SList : ListBase {
+	public class List : ListBase {
 
 		[DllImport("glib-2.0")]
-		static extern IntPtr g_slist_copy (IntPtr l);
+		static extern IntPtr g_list_copy (IntPtr l);
 		
 		public override object Clone ()
 		{
-			return new SList (g_slist_copy (Handle));
+			return new List (g_list_copy (Handle));
 		}
 		
 		[DllImport("gtksharpglue")]
-		static extern IntPtr gtksharp_slist_get_data (IntPtr l);
+		static extern IntPtr gtksharp_list_get_data (IntPtr l);
 		
 		internal override IntPtr GetData (IntPtr current)
 		{
-			return gtksharp_slist_get_data (current);
+			return gtksharp_list_get_data (current);
 		}
 
 		[DllImport("gtksharpglue")]
-		static extern IntPtr gtksharp_slist_get_next (IntPtr l);
+		static extern IntPtr gtksharp_list_get_next (IntPtr l);
 		
 		internal override IntPtr Next (IntPtr current)
 		{
-			return gtksharp_slist_get_next (current);
+			return gtksharp_list_get_next (current);
 		}
 
 		[DllImport("glib-2.0")]
-		static extern int g_slist_length (IntPtr l);
+		static extern int g_list_length (IntPtr l);
 		
 		internal override int Length (IntPtr list)
 		{
-			return g_slist_length (list);
+			return g_list_length (list);
 		}
 		
 		[DllImport("glib-2.0")]
-		static extern void g_slist_free(IntPtr l);
+		static extern void g_list_free(IntPtr l);
 
 		internal override void Free (IntPtr list)
 		{
 			if (list != IntPtr.Zero)
-				g_slist_free (list);
+				g_list_free (list);
 		}
 
-		public SList (IntPtr raw) : base (raw)
+		public List (IntPtr raw) : base (raw)
 		{
 		}
 
-		public SList (IntPtr raw, Type element_type) : base (raw, element_type)
+		public List (IntPtr raw, Type element_type) : base (raw, element_type)
 		{
 		}
 	}

@@ -14,12 +14,6 @@ namespace GladeSamples {
 
 	public class GladeDemo {
 
-		// temporary hack until GList is wrapped
-		[DllImport("glib-2.0")]
-		static extern IntPtr g_list_nth_data (IntPtr l, int i);
-		[DllImport("glib-2.0")]
-		static extern int g_list_length (IntPtr l);
-
 		public static void Main (string[] args)
 		{
 			if (args.Length < 2) {
@@ -44,11 +38,8 @@ namespace GladeSamples {
 					   Glade.XML.GetWidgetTree (wid) != null);
 
 			Console.WriteLine ("\nList of created widgets:");
-			// this is a hack, until GList is wrapped
-			IntPtr l = gxml.GetWidgetPrefix ("");
-			int len = g_list_length (l);
-			for (int i = 0; i < len; ++i) {
-				Widget w = GLib.Object.GetObject (g_list_nth_data (l, i)) as Widget;
+			GLib.List l = gxml.GetWidgetPrefix ("");
+			foreach (Widget w in l) {
 				Console.WriteLine ("{0} {1}", 
 						   w.GetType (),
 						   Glade.XML.GetWidgetName (w));

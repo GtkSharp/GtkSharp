@@ -25,96 +25,96 @@ namespace WidgetViewer {
 
 			toolbar = new Toolbar ();
 			toolbar.InsertStock (Stock.New, "Stock icon: New", "Toolbar/New",
-					     new SignalFunc (set_small_icon), IntPtr.Zero, -1);
+					     new SignalFunc (set_small_icon), -1);
 
 			toolbar.InsertStock (Stock.Open, "Stock icon: Open", "Toolbar/Open",
-					     new SignalFunc (set_large_icon), IntPtr.Zero, -1);
+					     new SignalFunc (set_large_icon), -1);
 
 			toolbar.AppendSpace ();
 
 			toolbar.AppendItem ("Toggle tooltips", "toggle showing of tooltips", "Toolbar/Tooltips",
 					    new Image (Stock.DialogInfo, IconSize.LargeToolbar),
-					    new SignalFunc (toggle_tooltips), IntPtr.Zero);
+					    new SignalFunc (toggle_tooltips));
 			
 			toolbar.AppendSpace ();
 
 			toolbar.AppendItem ("Horizontal", "Horizontal layout", "Toolbar/Horizontal",
 					    new Image (Stock.GoForward, IconSize.LargeToolbar),
-					    new SignalFunc (set_horizontal), IntPtr.Zero);
+					    new SignalFunc (set_horizontal));
 
 			toolbar.AppendItem ("Vertical", "Vertical layout", "Toolbar/Vertical",
 					    new Image (Stock.GoUp, IconSize.LargeToolbar),
-					    new SignalFunc (set_vertical), IntPtr.Zero);
+					    new SignalFunc (set_vertical));
 			
 			toolbar.AppendSpace ();
 
 			toolbar.AppendItem ("Icons", "Only show icons", "Toolbar/IconsOnly",
 					    new Image (Stock.Home, IconSize.LargeToolbar),
-					    new SignalFunc (set_icon_only), IntPtr.Zero);
+					    new SignalFunc (set_icon_only));
 
 			toolbar.AppendItem ("Text", "Only show Text", "Toolbar/TextOnly",
 					    new Image (Stock.JustifyFill, IconSize.LargeToolbar),
-					    new SignalFunc (set_text_only), IntPtr.Zero);
+					    new SignalFunc (set_text_only));
 
 			toolbar.AppendItem ("Both", "Show both Icon & Text", "Toolbar/Both",
 					    new Image (Stock.Index, IconSize.LargeToolbar),
-					    new SignalFunc (set_both), IntPtr.Zero);
+					    new SignalFunc (set_both));
 
 			toolbar.AppendItem ("Both (Horizontal)", "Show Icon & Text horizontally", "Toolbar/BothHoriz",
 					    new Image (Stock.Index, IconSize.LargeToolbar),
-					    new SignalFunc (set_both_horiz), IntPtr.Zero);
+					    new SignalFunc (set_both_horiz));
 
 			toolbar.AppendSpace ();
 
 			toolbar.InsertStock (Stock.Close, "Stock icon: Close", "Toolbar/Close",
-					     new SignalFunc (Close_Button), IntPtr.Zero, -1);
+					     new SignalFunc (Close_Button), -1);
 
 			window.Add (toolbar);
 			window.ShowAll ();
 			return window;
 		}
 
-		static void set_small_icon ()
+		static void set_small_icon (Gtk.Object obj)
 		{
 			toolbar.IconSize = IconSize.SmallToolbar;
 		}
 
-		static void set_large_icon ()
+		static void set_large_icon (Gtk.Object obj)
 		{
 			toolbar.IconSize = IconSize.LargeToolbar;
 		}
 
-		static void set_icon_only ()
+		static void set_icon_only (Gtk.Object obj)
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Icons;
 		}
 
-		static void set_text_only ()
+		static void set_text_only (Gtk.Object obj)
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Text;
 		}
 
-		static void set_horizontal ()
+		static void set_horizontal (Gtk.Object obj)
 		{
 			toolbar.Orientation = Orientation.Horizontal;
 		}
 
-		static void set_vertical ()
+		static void set_vertical (Gtk.Object obj)
 		{
 			toolbar.Orientation = Orientation.Vertical;
 		}
 		
-		static void set_both ()
+		static void set_both (Gtk.Object obj)
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Both;
 		}
 
-		static void set_both_horiz ()
+		static void set_both_horiz (Gtk.Object obj)
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
 		}
 
-		static void toggle_tooltips ()
+		static void toggle_tooltips (Gtk.Object obj)
 		{
 			if (showTooltips == true)
 				showTooltips = false;
@@ -125,7 +125,7 @@ namespace WidgetViewer {
 			Console.WriteLine ("Show tooltips: " + showTooltips);
 		}
 
-		static void Close_Button ()
+		static void Close_Button (Gtk.Object obj)
 		{
 			window.Destroy ();
 		}

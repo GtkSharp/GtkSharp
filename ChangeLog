@@ -1,5 +1,32 @@
 2002-08-31  Rachel Hestilow  <hestilow@ximian.com>
 
+	Proper GList, GSList support. Read-only for now.
+
+	* glue/list.c: Added.
+	* glue/Makefile.am: Add list.c
+	* glue/type.c: Add function gtksharp_is_object.
+	
+	* glib/ListBase.cs, List.cs: Added.
+	* glib/SList.cs: Inherit from ListBase.
+	* glib/Object.cs: Add static method "IsObject".
+
+	* generator/Method.cs: Pass on element_type to constructor
+	if specified.
+	* generator/SymbolTable.cs: Move GList to manual types.
+	
+	* sample/GladeViewer.cs: Remove list hacks.
+	
+	* sources/Gnome.metadata: Specify element types for
+	CanvasPathDef.Split and IconList.GetSelection. Rename
+	CanvasPathDef *to methods to properly capitalized *To.
+	* sources/Gtk.metadata: Hide Widget.ListAccelClosures until
+	GClosure is handled properly.
+	* sources/Pango.metadata: Added.
+
+	* sample/test/TestToolbar.cs: Compile with recent delegate changes.
+	
+2002-08-31  Rachel Hestilow  <hestilow@ximian.com>
+
 	* glib/Idle.cs: Added.
 	* gtk/Application.cs: Add EventsPending, RunIteration.
 	

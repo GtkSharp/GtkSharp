@@ -60,7 +60,6 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("size_t", "int");
 			
 			// FIXME: These ought to be handled properly.
-			simple_types.Add ("GList", "System.IntPtr");
 			simple_types.Add ("GMemChunk", "System.IntPtr");
 			simple_types.Add ("GTimeVal", "System.IntPtr");
 			simple_types.Add ("GClosure", "System.IntPtr");
@@ -74,6 +73,7 @@ namespace GtkSharp.Generation {
 
 			manually_wrapped_types = new Hashtable ();
 			manually_wrapped_types.Add ("GSList", "GLib.SList");
+			manually_wrapped_types.Add ("GList", "GLib.List");
 			manually_wrapped_types.Add ("GValue", "GLib.Value");
 		}
 		

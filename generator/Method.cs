@@ -21,6 +21,7 @@ namespace GtkSharp.Generation {
 		private bool initialized = false;
 		private string sig, isig, call;
 		private string rettype, m_ret, s_ret;
+		private string element_type = null;
 		private string name, cname, safety;
 		private string protection = "public";
 		private bool is_get, is_set;
@@ -146,6 +147,8 @@ namespace GtkSharp.Generation {
 			m_ret = SymbolTable.GetMarshalReturnType(rettype);
 			s_ret = SymbolTable.GetCSType(rettype);
 			cname = elem.GetAttribute("cname");
+			if (ret_elem.HasAttribute("element_type"))
+				element_type = ret_elem.GetAttribute("element_type");
 			bool is_shared = elem.HasAttribute("shared");
 			
 			if (ret_elem.HasAttribute("array")) {
@@ -390,7 +393,10 @@ namespace GtkSharp.Generation {
 				else {
 					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
 					sw.Write(indent + "\t\t\t");
-					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
+					string raw_parms = "raw_ret";
+					if (element_type != null)
+						raw_parms += ", typeof (" + element_type + ")";
+					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, raw_parms) + ";");
 				}
 			}
 			
