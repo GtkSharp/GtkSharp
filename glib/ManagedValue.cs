@@ -66,6 +66,8 @@ namespace GLibSharp {
 		public static void Free (IntPtr ptr)
 		{
 			ValueHolder holder = (ValueHolder) pointers[ptr];
+			if (holder == null)
+				return;
 			holder.ref_count--;
 			if (holder.ref_count < 1)
 				pointers.Remove (ptr);

@@ -66,22 +66,21 @@ namespace GLib {
 		}
 
 		public void Dispose () {
-			if (_val != IntPtr.Zero) {
+			if (_val != IntPtr.Zero && needs_dispose) {
 				IntPtr rawtype = gtksharp_value_get_value_type (_val);
 				if (rawtype == ManagedValue.GType.Val) {
 					ManagedValue.Free (g_value_get_boxed (_val)); 
 				}
 			
-				if (needs_dispose)
-					lock (idle_queue) {
-						idle_queue.Enqueue (_val);
-						lock (typeof (Value)){
-							if (!idle_queued){
-								Idle.Add (new IdleHandler (DoDispose));
-								idle_queued = true;
-							}
+				lock (idle_queue) {
+					idle_queue.Enqueue (_val);
+					lock (typeof (Value)){
+						if (!idle_queued) {
+							Idle.Add (new IdleHandler (DoDispose));
+							idle_queued = true;
 						}
 					}
+				}
 				_val = IntPtr.Zero; 
 			}
 
@@ -354,9 +353,6 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
-
-		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
 
 		IntPtr buf = IntPtr.Zero;
@@ -382,7 +378,7 @@ namespace GLib {
 			}
 			
 			if (type == GType.None)
-				g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (obj));
+				g_value_set_boxed (_val, ManagedValue.WrapObject (obj));
 			else if (type == GType.String)
 				g_value_set_string (_val, (string) obj);
 			else if (type == GType.Boolean)
@@ -685,7 +681,7 @@ namespace GLib {
 			set {
 				GType type = GLibSharp.TypeConverter.LookupType (value.GetType());
 				if (type == GType.None)
-					g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (value));
+					g_value_set_boxed (_val, ManagedValue.WrapObject (value));
 				else if (type == GType.String)
 					g_value_set_string (_val, (string) value);
 				else if (type == GType.Boolean)
