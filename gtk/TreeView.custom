@@ -1,8 +1,11 @@
 // Gtk.TreeView.Custom - Gtk TreeView class customizations
 //
-// Author: Kristian Rietveld <kris@gtk.org>
+// Authors:
+//	Kristian Rietveld <kris@gtk.org>
+//	Gonzalo Paniagua Javier (gonzalo@ximian.com)
 //
 // (c) 2002 Kristian Rietveld
+// (c) 2003 Ximian, Inc. (http://www.ximian.com)
 //
 // This code is inserted after the automatically generated code.
 
@@ -27,3 +30,68 @@
 				gtk_tree_view_set_model (Handle, value.Handle);
 			}
 		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_tree_view_get_path_at_pos (IntPtr raw,
+								  int x,
+								  int y,
+								  out IntPtr path,
+								  IntPtr column,
+								  out int cell_x,
+								  out int cell_y);
+
+		[DllImport("libgtk-win32-2.0-0.dll", EntryPoint="gtk_tree_view_get_path_at_pos")]
+		static extern bool gtk_tree_view_get_path_at_pos_intptr (IntPtr raw,
+								  int x,
+								  int y,
+								  out IntPtr path,
+								  IntPtr column,
+								  IntPtr cell_x,
+								  IntPtr cell_y);
+
+		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
+		{
+			IntPtr col;
+			if (column == null)
+				col = IntPtr.Zero;
+			else
+				col = column.Handle;
+
+			IntPtr pathHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos (Handle, x, y, out pathHandle, col, out cell_x, out cell_y);
+			if (raw_ret)
+				path = new TreePath (pathHandle);
+			else
+				path = null;
+
+			return raw_ret;
+		}
+
+
+		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path)
+		{
+			IntPtr pathHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			if (raw_ret)
+				path = new TreePath (pathHandle);
+			else
+				path = null;
+
+			return raw_ret;
+		}
+
+		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, Gtk.TreeViewColumn column)
+		{
+			if (column == null)
+				return GetPathAtPos (x, y, out path);
+
+			IntPtr pathHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, column.Handle, IntPtr.Zero, IntPtr.Zero);
+			if (raw_ret)
+				path = new TreePath (pathHandle);
+			else
+				path = null;
+
+			return raw_ret;
+		}
+
