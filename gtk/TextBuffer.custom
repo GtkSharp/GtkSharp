@@ -1,3 +1,8 @@
+// TextBuffer.custom - customizations to Gtk.TextBuffer.
+// 
+// Authors:  Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004  Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -13,14 +18,16 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_text_buffer_set_text (IntPtr raw, string text, int len);
+
 public string Text {
 	get {
 		return GetText (StartIter, EndIter, false);
 	}
-
 	set {
-		gtk_text_buffer_set_text (Handle, value, 
-				System.Text.Encoding.UTF8.GetByteCount(value));
+		gtk_text_buffer_set_text (Handle, value, -1);
 	}
 }
 
@@ -32,9 +39,18 @@ public void Clear ()
 // overload to paste clipboard contents at cursor editable by default.
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern void gtk_text_buffer_paste_clipboard (IntPtr raw, IntPtr clip, IntPtr iter, bool default_edit);
+
 public void PasteClipboard (Gtk.Clipboard clipboard)
 {
 	gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);
+}
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, string text, int len);
+
+public void Insert (Gtk.TextIter iter, string text)
+{
+	gtk_text_buffer_insert (Handle, ref iter, text, -1);
 }
 
 public void InsertWithTags (TextIter iter, string text, params TextTag[] tags)
@@ -48,5 +64,10 @@ public void InsertWithTags (TextIter iter, string text, params TextTag[] tags)
 
 	foreach (TextTag t in tags)
 		this.ApplyTag (t, start, iter);
+}
+
+public void SetText (string text)
+{
+	gtk_text_buffer_set_text (Handle, text, -1);
 }
 
