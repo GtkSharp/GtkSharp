@@ -62,25 +62,35 @@ namespace WidgetViewer {
 
 		static void pop_clicked (object o, EventArgs args)
 		{
-			Console.WriteLine ("Pop");
+			if (counter < -1)
+				return;
+			
+			Console.WriteLine ("Pop: " + counter);
 			statusbar.Pop (context_id);
+
+			counter --;
 		}
 
 		static void statusbar_popped (object o, TextPoppedArgs args)
 		{
-			Console.WriteLine ("statusbar_popped signal");
-			Console.WriteLine (args.Text);
-			Console.WriteLine (args.ContextId);
+			Console.WriteLine ("Popped: " + counter);
 		}
 
 		static void statusbar_pushed (object o, EventArgs args)
 		{
-			string content = String.Format ("Push #{0}", counter);
+			string content = null;
+			
+			if (counter < 0) 
+				content = String.Empty;
+			else
+				content = String.Format ("Push #{0}", counter);
+
+			Console.WriteLine ("Push: " + counter);
+			
 			context_id = statusbar.GetContextId (content);
 			statusbar.Push (context_id, content);
 
 			counter ++;
-			return;
 		}
 
 		static void Close_Button (object o, EventArgs args)

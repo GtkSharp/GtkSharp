@@ -91,7 +91,7 @@ namespace WidgetViewer {
 		static void Add_Row (Table table, uint row, SizeGroup size_group,
 				     string label_text, string [] options)
 		{
-			Label label = new Label (label_text);
+			Label label = Label.NewWithMnemonic (label_text);
 			label.SetAlignment (0, 1);
 
 			table.Attach (label,
