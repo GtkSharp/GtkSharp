@@ -6,10 +6,8 @@
 
 namespace GtkSamples {
 	using System;
-	using System.Drawing;
 	using System.Reflection;
 
-	using GLib;
 	using Gtk;
 	using GtkSharp;
 
@@ -17,12 +15,39 @@ namespace GtkSamples {
 		private static TreeStore store = null;
 		private static Dialog dialog = null;
 		private static Label dialog_label = null;
+		
+		public TreeViewDemo ()
+		{
+			Application.Init ();
+			
+			PopulateStore ();
+
+			Window win = new Window ("TreeView demo");
+			win.DeleteEvent += new DeleteEventHandler (DeleteCB);
+			win.SetDefaultSize (640,480);
+
+			ScrolledWindow sw = new ScrolledWindow ();
+			win.Add (sw);
+
+			TreeView tv = new TreeView (store);
+			tv.HeadersVisible = true;
+
+			tv.AppendColumn ("Name", new CellRendererText (), "text", 0);
+			tv.AppendColumn ("Type", new CellRendererText (), "text", 1);
+
+			sw.Add (tv);
+			
+			dialog.Destroy ();
+			dialog = null;
+
+			win.ShowAll ();
+			
+			Application.Run ();
+		}
 
 		private static void ProcessType (TreeIter parent, System.Type t)
 		{
-			// .GetMembers() won't work due to unimplemented
-			// scary classes.
-			foreach (MemberInfo mi in t.GetMethods ()) {
+			foreach (MemberInfo mi in t.GetMembers ()) {
  				store.AppendValues (parent, mi.Name, mi.ToString ());
 			}
 		}
@@ -46,9 +71,6 @@ namespace GtkSamples {
 			store = new TreeStore (typeof (string), typeof (string));
 
 			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ()) {
-				// we can't show corlib due to some unimplemented
-				// stuff in some scary class.
-				if (asm.GetName ().Name == "mscorlib") continue;
 
 				UpdateDialog ("Loading {0}", asm.GetName ().Name);
 
@@ -59,37 +81,7 @@ namespace GtkSamples {
 
 		public static void Main (string[] args)
 		{
-			Application.Init ();
-
-			Idle.Add (new IdleHandler (IdleCB));
-
-			Application.Run ();
-		}
-
-		public static bool IdleCB ()
-		{
-			PopulateStore ();
-
-			Window win = new Window ("TreeView demo");
-			win.DeleteEvent += new DeleteEventHandler (DeleteCB);
-			win.DefaultSize = new Size (640,480);
-
-			ScrolledWindow sw = new ScrolledWindow ();
-			win.Add (sw);
-
-			TreeView tv = new TreeView (store);
-			tv.HeadersVisible = true;
-
-			tv.AppendColumn ("Name", new CellRendererText (), "text", 0);
-			tv.AppendColumn ("Type", new CellRendererText (), "text", 1);
-
-			sw.Add (tv);
-			
-			dialog.Destroy ();
-			dialog = null;
-
-			win.ShowAll ();
-			return false;
+			new TreeViewDemo ();	
 		}
 
 		private static void DeleteCB (System.Object o, DeleteEventArgs args)
@@ -107,7 +99,7 @@ namespace GtkSamples {
 				dialog.Title = "Loading data from assemblies...";
 				dialog.AddButton (Stock.Cancel, 1);
 				dialog.Response += new ResponseHandler (ResponseCB);
-				dialog.DefaultSize = new Size (480, 100);
+				dialog.SetDefaultSize (480, 100);
 					
 				VBox vbox = dialog.VBox;
 				HBox hbox = new HBox (false, 4);
