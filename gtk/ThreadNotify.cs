@@ -23,13 +23,13 @@ namespace Gtk {
 	/// </summary>
 	/// <remarks/>
 	///   
-	public class ThreadNotify {
+	public class ThreadNotify : IDisposable {
 
 		//
 		// DllImport functions from Gtk
 		//
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		private static extern int gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
+		private static extern uint gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
 		public delegate void GdkInputFunction (IntPtr data, int source, int cond);
 
 		//
@@ -44,9 +44,13 @@ namespace Gtk {
 		[DllImport ("libc.so.6")]
 		private static extern unsafe int write (int fd, byte *b, int count);
 
+		[DllImport ("libc.so.6")]
+		private static extern int close (int fd);
 		
 		GdkInputFunction notify_pipe;
 		int [] pipes;
+		bool disposed;
+		uint tag;
 
 		ReadyEvent re;
 
@@ -59,7 +63,7 @@ namespace Gtk {
 			notify_pipe = new GdkInputFunction (NotifyPipe);
 			pipes = new int [2];
 			pipe (pipes);
-			gdk_input_add (pipes [0], 1, notify_pipe, (IntPtr) 0);
+			tag = gdk_input_add (pipes [0], 1, notify_pipe, (IntPtr) 0);
 			this.re = re;
 		}
 		
@@ -95,6 +99,35 @@ namespace Gtk {
 					notified = true;
 				}
 			}
+		}
+
+		public void Close ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		~ThreadNotify ()
+		{
+			Dispose (false);
+		}
+
+		void IDisposable.Dispose ()
+		{
+			Close ();
+		}
+		
+		protected virtual void Dispose (bool disposing)
+		{
+			if (!disposed) {
+				disposed = true;
+				GLib.Source.Remove (tag);
+				close (pipes [1]);
+				close (pipes [0]);
+			}
+
+			pipes = null;
+			notify_pipe = null;
 		}
 	}
 }
