@@ -193,8 +193,12 @@ fi
 AC_SUBST(GTKHTML_VERSION)
 AC_SUBST(GTKHTML_SOVERSION)
 
+if test "x$enable_gnome" = "xyes"; then
 VTE_REQUIRED_VERSION=0.11.10
 PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
+else
+enable_vte=no
+fi
 
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
