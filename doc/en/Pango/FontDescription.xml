@@ -33,10 +33,23 @@
         <Parameter Name="str" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new font description from a string representation.</summary>
         <param name="str">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Pango.FontDescription'</returns>
-        <remarks>To be added</remarks>
+        <returns>The object of type <see cref="T:Pango.FontDescription" /> created.</returns>
+        <remarks>The form of the string representation is "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]", where:
+<list type="bullet">
+            <item>
+              <term>FAMILY-LIST is a comma separated list of families optionally terminated by a comma.</term>
+            </item>
+            <item>
+              <term>STYLE-OPTIONS is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch.</term>
+            </item>
+            <item>
+              <term>SIZE is a decimal number (size in points)</term>
+            </item>
+          </list><para>
+Any one of the options may be absent. If FAMILY-LIST is absent, then the family_name field of the resulting font description will be initialized to NULL. If STYLE-OPTIONS is missing, then all style options will be set to the default values. If SIZE is missing, the size in the resulting font description will be set to 0.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -325,9 +338,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a string representation of a font description.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>See <see cref="M:Pango.FontDescription.FromString()" /> for a description of the format of the string representation. The family list in the string description will only have a terminating comma if the last word of the list is a valid style option.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Hash">
