@@ -16,9 +16,19 @@
 [DllImport ("libgtk-win32-2.0-0.dll")]
 static extern IntPtr gtk_message_dialog_new (IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg, params object [] args);
 
-public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg)
-{
-	IntPtr p = (parent_window != null) ? parent_window.Handle : ((IntPtr) 0);
+[DllImport ("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_message_dialog_new_with_markup (IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg, params object [] args);
 
-	Raw = gtk_message_dialog_new (p, flags, type, bt, msg, null);
+public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, bool use_markup, string format, params object[] args)
+{
+	IntPtr p = (parent_window != null) ? parent_window.Handle : IntPtr.Zero;
+
+	if (format == null)
+		Raw = gtk_message_dialog_new (p, flags, type, bt, null, null);
+	else if (use_markup)
+		Raw = gtk_message_dialog_new_with_markup (p, flags, type, bt, GLib.Marshaller.StringFormat (format, args), null);
+	else
+		Raw = gtk_message_dialog_new (p, flags, type, bt, GLib.Marshaller.StringFormat (format, args), null);
 }
+
+public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string format, params object[] args) : this (parent_window, flags, type, bt, true, format, args) {}

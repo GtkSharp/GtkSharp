@@ -58,6 +58,14 @@ namespace GLib {
 			return g_strdup (str);
 		}
 
+		public static string StringFormat (string format, params object[] args) {
+			string ret = String.Format (format, args);
+			if (ret.IndexOf ('%') == -1)
+				return ret;
+			else
+				return ret.Replace ("%", "%%");
+		}
+
 		// Argv marshalling -- unpleasantly complex, but
 		// don't know of a better way to do it.
 		//

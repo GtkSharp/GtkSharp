@@ -138,7 +138,7 @@ namespace GtkDemo
 		{
 			Action action = sender as Action;
 
-			using (MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, String.Format ("You activated action: {0}", action.Name))) {
+			using (MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "You activated action: {0}", action.Name)) {
 				md.Run ();
 				md.Hide ();
 			}

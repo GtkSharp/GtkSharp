@@ -114,7 +114,7 @@ md.Modal = false;
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, string msg);" />
+      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, string format, object [] args);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -122,26 +122,54 @@ md.Modal = false;
         <Parameter Name="flags" Type="Gtk.DialogFlags" />
         <Parameter Name="type" Type="Gtk.MessageType" />
         <Parameter Name="bt" Type="Gtk.ButtonsType" />
-        <Parameter Name="msg" Type="System.String" />
+        <Parameter Name="format" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]" />
       </Parameters>
       <Docs>
         <summary>Creates an instance of <see cref="T:Gtk.MessageDialog" /></summary>
-        <param name="parent_window">an object of type <see cref="T:Gtk.Window" /></param>
-        <param name="flags">an object of type <see cref="T:Gtk.DialogFlags" /></param>
-        <param name="type">an object of type <see cref="T:Gtk.MessageType" /></param>
-        <param name="bt">an object of type <see cref="T:Gtk.ButtonsType" /></param>
-        <param name="msg">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:Gtk.MessageDialog" /></returns>
+        <param name="parent_window">the dialog's parent <see cref="T:Gtk.Window" /> (or <see langword="null" />)</param>
+        <param name="flags">the <see cref="T:Gtk.DialogFlags" /></param>
+        <param name="type">the type of message dialog to display</param>
+        <param name="bt">the buttons to display</param>
+        <param name="format">the message format string</param>
+        <param name="args">optional arguments for <paramref name="format" /></param>
+        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
         <remarks>
           <para>
-					Creates an instance of <see cref="T:Gtk.MessageDialog" /><example>
+	      Creates an instance of <see cref="T:Gtk.MessageDialog" /><example>
               <code lang="C#">
 MessageDialog md = new MessageDialog
 	(parent_window, Gtk.DialogFlags.DestroyWithParent,
-	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
-						</code>
+	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file '{0}'", filename);
+	      </code>
             </example></para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, bool use_markup, string format, object [] args);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="parent_window" Type="Gtk.Window" />
+        <Parameter Name="flags" Type="Gtk.DialogFlags" />
+        <Parameter Name="type" Type="Gtk.MessageType" />
+        <Parameter Name="bt" Type="Gtk.ButtonsType" />
+        <Parameter Name="use_markup" Type="System.Boolean" />
+        <Parameter Name="format" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]" />
+      </Parameters>
+      <Docs>
+        <summary>Creates an instance of <see cref="T:Gtk.MessageDialog" /></summary>
+        <param name="parent_window">the dialog's parent <see cref="T:Gtk.Window" /> (or <see langword="null" />)</param>
+        <param name="flags">the <see cref="T:Gtk.DialogFlags" /></param>
+        <param name="type">the type of message dialog to display</param>
+        <param name="bt">the buttons to display</param>
+        <param name="use_markup">whether or not <paramref name="format" /> uses Pango markup</param>
+        <param name="format">the message format string</param>
+        <param name="args">optional arguments for <paramref name="format" /></param>
+        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
+        <remarks>Like the other constructor, but allows you to pass a non-marked-up string.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MessageType">
@@ -193,6 +221,17 @@ MessageDialog md = new MessageDialog
         <summary>Markup for the message to display in the dialog.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>Markup should be in Pango markup format. (TODO: check this.)</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MessageDialog ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>

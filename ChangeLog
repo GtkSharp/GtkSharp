@@ -1,3 +1,20 @@
+2005-01-20  Dan Winship  <danw@novell.com>
+
+	* glib/Marshaller.cs (StringFormat): Calls String.Format and makes
+	sure the output has no unescaped "%"s. (For wrapping printf-style
+	unmanaged methods with String.Format-style managed ones.)
+
+	* gtk/MessageDialog.custom (MessageDialog): use it. #71405. Also,
+	use gtk_message_dialog_new_with_markup by default, and add an
+	overloaded ctor that lets you use the non-markup version.
+
+	* gtk/Gtk.metadata: hide the GtkMessageDialog ctors so we don't
+	get ellipsis warnings about them.
+
+	* sample/GtkDemo/DemoApplicationWindow.cs:
+	* sample/GtkDemo/DemoDialog.cs: simplify the MessageDialog usage;
+	don't need to call String.Format separately now.
+
 2005-01-18  Mike Kestner  <mkestner@novell.com>
 
 	* generator/Method.cs : deal with owned retvals.

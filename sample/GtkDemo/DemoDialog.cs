@@ -87,13 +87,12 @@ namespace GtkDemo
 		private int i = 1;
 		private void MessageDialogClicked (object o, EventArgs args)
 		{
-			string message = String.Format ("This message box has been popped up the following\n number of times:\n\n {0:D} ", i);
-
 			using (Dialog dialog = new MessageDialog (this, 
 					DialogFlags.Modal | DialogFlags.DestroyWithParent,
 					MessageType.Info,
 					ButtonsType.Ok,
-					message)) {
+					"This message box has been popped up the following\n number of times:\n\n {0:D} ",
+					i)) {
 				dialog.Run ();
 				dialog.Hide ();
 			}
