@@ -18,10 +18,10 @@ public class GstTest
 
 		/* create a disk reader */
 		Element filesrc = ElementFactory.Make ("filesrc", "disk_source");
-		filesrc.SetProperty ("location", new GLib.Value (args[0]));
+		filesrc.SetProperty ("location", args[0]);
 
 		/* now it's time to get the decoder */
-		Element decoder = ElementFactory.Make ("vorbisdec", "decode");
+		Element decoder = ElementFactory.Make ("vorbisfile", "decode");
 
 		/* and an audio sink */
 		Element osssink = ElementFactory.Make ("osssink", "play_audio");
@@ -32,8 +32,8 @@ public class GstTest
 		bin.Add (osssink);
 
 		/* connect the elements */
-		filesrc.Connect (decoder);
-		decoder.Connect (osssink);
+		filesrc.Link (decoder);
+		decoder.Link (osssink);
 
 		/* start playing */
 		bin.SetState (ElementState.Playing);
