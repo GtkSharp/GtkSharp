@@ -1,6 +1,10 @@
 EXTRA_DIST =				\
 	README				\
 	gtk-sharp-sources.xml		\
+	gda.patch			\
+	gnomedb.patch			\
+	atkhyperlink.patch		\
+	gtk_tree_model_signal_fix.patch \
 	gtkhtml-font-style-enum.patch
 
 
@@ -47,3 +51,5 @@ get-source-code: get-gtkhtml-code
 	ln -f -s gtkfilechooserprivate.h gtk+-2.4.1/gtk/gtkfilechooserpriv.h
 	patch -p0 atk-1.6.0/atk/atkhyperlink.h < atkhyperlink.patch
 	patch -p0 gtk+-2.4.1/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
+	patch -p0 libgnomedb-1.0.0/libgnomedb/gnome-db-list.c < gnomedb.patch
+	patch -p0 libgda-1.0.0/libgda/gda-export.c < gda.patch
