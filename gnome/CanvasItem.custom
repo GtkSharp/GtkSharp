@@ -182,15 +182,20 @@
 		[DllImport("gnomesharpglue")]
 		static extern void gnomesharp_canvas_item_override_update (GLib.GType gtype, UpdateDelegate cb);
 
-		delegate void UpdateDelegate (IntPtr item, IntPtr affine_ptr, ref Art.SVP clip_path, int flags);
+		delegate void UpdateDelegate (IntPtr item, IntPtr affine_ptr, IntPtr clip_path, int flags);
 
                 static UpdateDelegate UpdateCallback;
 
-                static void Update_cb (IntPtr item, IntPtr affine_ptr, ref Art.SVP clip_path, int flags)
+                static void Update_cb (IntPtr item, IntPtr affine_ptr, IntPtr clip_path_handle, int flags)
                 {
                         CanvasItem obj = GLib.Object.GetObject (item, false) as CanvasItem;
 			double[] affine = new double [6];
 			Marshal.Copy (affine_ptr, affine, 0, 6);
+			Art.SVP clip_path;
+			if (clip_path_handle == IntPtr.Zero)
+				clip_path = Art.SVP.Zero;
+			else
+				clip_path = (Art.SVP) Marshal.PtrToStructure (clip_path_handle, typeof(Art.SVP));
                         obj.OnUpdate (affine, ref clip_path, flags);
                 }
 
