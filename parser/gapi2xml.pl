@@ -4,7 +4,7 @@
 #
 # Author: Mike Kestner <mkestner@speakeasy.net>
 #
-# <c> 2001-2003 Mike Kestner
+# <c> 2001-2003 Mike Kestner, <c> 2003 Novell, Inc.
 ##############################################################
 
 $debug=0;
@@ -655,7 +655,7 @@ sub addParamsElem
 	foreach $parm (@params) {
 		$parm_num++;
 		$parm =~ s/\s+(\*+)/\1 /g;
-		$parm =~ s/(\*+)\s*const/\1/g;
+		$parm =~ s/(\*+)\s*const\s+/\1 /g;
 		$parm =~ s/const\s+/const-/g;
 		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
 			my $ret = $1; my $cbn = $2; my $params = $3;
