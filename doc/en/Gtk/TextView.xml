@@ -1056,10 +1056,10 @@ class TextViewSample
       </Parameters>
       <Docs>
         <summary>This method should be fixed</summary>
-        <param name="target_iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="line_top">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <param name="target_iter">a <see cref="T:Gtk.TextIter" /></param>
+        <param name="y"> a y coordinate</param>
+        <param name="line_top"> return location for top coordinate of the line</param>
+        <remarks>Gets the <see cref="T:Gtk.TextIter" /> at the start of the line containing the coordinate <paramref name="y" />. <paramref name="y" /> is in buffer coordinates, convert from window coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />. If non-<see langword="null" />, <paramref name="line_top" /> will be filled with the coordinate of the top edge of the line.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveChild">
@@ -1074,11 +1074,11 @@ class TextViewSample
         <Parameter Name="ypos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /></param>
-        <param name="xpos">a <see cref="T:System.Int32" /></param>
-        <param name="ypos">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Updates the position of a child</summary>
+        <param name="child"> child widget already added to the text view</param>
+        <param name="xpos"> new X position in window coordinates</param>
+        <param name="ypos"> new Y position in window coordinates</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddChildInWindow">
@@ -1094,12 +1094,12 @@ class TextViewSample
         <Parameter Name="ypos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a child at fixed coordinates in one of the text widget's windows.</summary>
         <param name="child">a <see cref="T:Gtk.Widget" /></param>
         <param name="which_window">a <see cref="T:Gtk.TextWindowType" /></param>
         <param name="xpos">a <see cref="T:System.Int32" /></param>
         <param name="ypos">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The window must have non-zero size (see <see cref="M:Gtk.TextView.SetBorderWindowSize()" />). Note that the child coordinates are given relative to the <see cref="T:Gdk.Window" /> in question, and that these coordinates have no sane relationship to scrolling. When placing a child in GTK_TEXT_WINDOW_WIDGET, scrolling is irrelevant, the child floats above all scrollable areas. But when placing a child in one of the scrollable windows (border windows or text window), you will need to compute the child's correct position in buffer coordinates any time scrolling occurs or buffer changes occur, and then call <see cref="M:Gtk.TextView.MoveChild()" /> to update the child's position. Unfortunately there is no good way to detect that scrolling has occurred, using the current API; a possible hack would be to update all child positions when the scroll adjustments change or the text buffer changes. See bug 64518 on bugzilla.gnome.org for status of fixing this issue.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -1315,11 +1315,11 @@ class TextViewSample
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
+        <summary>Retrieves the iterator at buffer coordinates <paramref name="x" /> and <paramref name="y" />.</summary>
+        <param name="x"> x position, in buffer coordinates</param>
+        <param name="y"> y position, in buffer coordinates</param>
         <returns>a <see cref="T:Gtk.TextIter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Buffer coordinates are coordinates for the entire buffer, not just the currently-displayed portion. If you have coordinates from an event, you have to convert those to buffer coordinates with <see cref="M:Gtk.TextView.WindowToBufferCoords()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterLocation">
@@ -1332,10 +1332,10 @@ class TextViewSample
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets a rectangle which roughly contains the character at iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
-        <returns>a <see cref="T:Gdk.Rectangle" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gdk.Rectangle" />, which is the bounds of the character at <paramref name="iter" /></returns>
+        <remarks>The rectangle position is in buffer coordinates; use <see cref="M:Gtk.TextView.BufferToWindowCoords()" /> to convert these coordinates to coordinates for one of the windows in the text view.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Text buffer iterator</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -27,8 +27,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Returns an empty <see cref="T:Gtk.TextIter" /></summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="New">
@@ -41,10 +41,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gtk.TextIter'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal method</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <returns>a new <see cref="T:Gtk.TextIter" /></returns>
+        <remarks>This is an internal method and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardToTagToggle">
@@ -57,10 +57,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves backward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <returns> whether we found a tag toggle before iter</returns>
+        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles before iter. Sets iter to the location of the toggle, or the start of the buffer if no toggle is found.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -71,9 +71,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextIter'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a dynamically-allocated copy of an iterator.</summary>
+        <returns>a <see cref="T:Gtk.TextIter" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardWordStart">
@@ -84,9 +84,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves backward to the previous word start.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>(If iter is currently on a word start, moves backward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardSentenceEnd">
@@ -97,9 +98,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves forward to the next sentence end.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If iter is at the end of a sentence, moves to the next end of sentence. Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="Order">
@@ -112,9 +114,9 @@
         <Parameter Name="second" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="second">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Swaps the value of first and second if second comes before first in the buffer.</summary>
+        <param name="second">another <see cref="T:Gtk.TextIter" /></param>
+        <remarks>That is, ensures that first and second are in sequence. Most text buffer functions that take a range call this automatically on your behalf, so there's no real reason to call it yourself in those cases. There are some exceptions, such as <see cref="M:Gtk.TextIter.InRange()" />, that expect a pre-sorted range.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardCursorPositions">
@@ -127,10 +129,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves back <paramref name="count" /> cursor positions.</summary>
+        <param name="count"> number of positions to move</param>
+        <returns>
+          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardLine">
@@ -143,7 +146,7 @@
       <Docs>
         <summary>Moves the iterator backward one line</summary>
         <returns>true if the operation succeeded.</returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns <see langword="true" /> if iter could be moved; i.e. if iter was at character offset 0, this function returns <see langword="false" />. Therefore if iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetVisibleSlice">
@@ -156,10 +159,10 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Like <see cref="M:Gtk.TextIter.GetSlice()" />, but invisible text is not included.</summary>
+        <param name="end"> iterator at end of range</param>
+        <returns> slice of text from the buffer</returns>
+        <remarks> Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSlice">
@@ -172,10 +175,10 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the text in the given range.</summary>
+        <param name="end"> iterator at end of a range</param>
+        <returns> slice of text from the buffer</returns>
+        <remarks>A "slice" is an array of characters encoded in UTF-8 format, including the Unicode "unknown" character 0xFFFC for iterable non-character elements in the buffer, such as images. Because images are encoded in the slice, byte and character offsets in the returned array will correspond to byte offsets in the text buffer. Note that 0xFFFC can occur in normal text as well, so it is not a reliable indicator that a pixbuf or widget is in the buffer.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardWordEnd">
@@ -186,9 +189,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves forward to the next word end.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>(If iter is currently on a word end, moves forward to the next one after that.) Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardFindChar">
@@ -203,12 +207,12 @@
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pred">To be added: an object of type 'Gtk.TextCharPredicate'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="limit">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Advances iter, calling pred on each character.</summary>
+        <param name="pred"> a function to be called on each character</param>
+        <param name="user_data"> user data for pred</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <returns> whether a match was found</returns>
+        <remarks>If pred returns <see langword="true" />, returns <see langword="true" /> and stops scanning. If pred never returns <see langword="true" />, iter is set to limit if limit is non-<see langword="null" />, otherwise to the end iterator.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EndsWord">
@@ -219,9 +223,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter ends a natural-language word.</summary>
+        <returns>
+          <see langword="true" /> if iter is at the end of a word</returns>
+        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="Editable">
@@ -234,10 +239,18 @@
         <Parameter Name="default_setting" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="default_setting">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns whether the character at iter is within an editable region of text.</summary>
+        <param name="default_setting">
+          <see langword="true" /> if text is editable by default</param>
+        <returns> whether iter is inside an editable range</returns>
+        <remarks>
+          <para>
+Non-editable text is "locked" and cannot be changed by the user via <see cref="T:Gtk.TextView" />. This function is simply a convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />. If no tags applied to this text effect editability, <paramref name="default_setting" /> will be returned.
+</para>
+          <para>
+You do not want to use this function to decide whether text can be inserted at iter, because for insertion you do not want to know whether the char at iter is inside an editable range, you want to know whether a new character inserted at iter would be inside an editable range. Use <see cref="M:Gtk.TextIter.CanInsert()" /> to handle this case.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardChar">
@@ -248,9 +261,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves iter forward by one character offset.</summary>
         <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <remarks>Note that images embedded in the buffer occupy 1 character slot, so this may actually move onto an image instead of a character, if you have images in your buffer. If iter is the end iterator or one character before it, iter will now point at the end iterator, and return <see langword="false" /> for convenience when writing loops.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardLines">
@@ -266,7 +279,7 @@
         <summary>Moves the iterator back a number of lines.</summary>
         <param name="count">number of lines to move backwards.</param>
         <returns>true if the operation succeeded.</returns>
-        <remarks>To be added</remarks>
+        <remarks>Moves count lines backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves forward by 0 - count lines.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EndsLine">
@@ -279,7 +292,7 @@
       <Docs>
         <summary>Returns true if the iterator is at the end of a line.</summary>
         <returns>true if the iterator is at the end of a line.</returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns <see langword="true" /> if iter points to the start of the paragraph delimiter characters for a line (delimiters will be either a newline, a carriage return, a carriage return followed by a newline, or a Unicode paragraph separator character). Note that an iterator pointing to the \n of a \r\n pair will not be counted as the end of a line, the line ends before the \r. The end iterator is considered to be at the end of a line, even though there are no paragraph delimiter chars there.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -290,8 +303,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disposes of resources held by the iter.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardSentenceStarts">
@@ -304,10 +317,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardSentenceStart()" /> up to <paramref name="count" /> times, or until it returns <see langword="false" />.</summary>
+        <param name="count"> number of sentences to move</param>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If <paramref name="count" /> is negative, moves forward instead of backward.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardToEnd">
@@ -318,8 +332,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Moves iter forward to the "end iterator," which points one past the last valid character in the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardFindChar">
@@ -334,12 +348,12 @@
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pred">To be added: an object of type 'Gtk.TextCharPredicate'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="limit">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Same as <see cref="M:Gtk.TextIter.ForwardFindChar()" />, but goes backward from iter.</summary>
+        <param name="pred"> function to be called on each character</param>
+        <param name="user_data"> user data for pred</param>
+        <param name="limit"> search limit, or <see langword="null" /> for none</param>
+        <returns> whether a match was found</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ForwardCursorPositions">
@@ -352,10 +366,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves up <paramref name="count" /> cursor positions.</summary>
+        <param name="count"> number of positions to move</param>
+        <returns>
+          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.ForwardCursorPosition()" /> for details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Equal">
@@ -368,10 +383,11 @@
         <Parameter Name="rhs" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rhs">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Tests whether two iterators are equal, using the fastest possible mechanism.</summary>
+        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
+        <returns>
+          <see langword="true" /> if the iterators point to the same place in the buffer</returns>
+        <remarks>This function is very fast; you can expect it to perform better than e.g. getting the character offset for each iterator and comparing the offsets yourself. Also, it's a bit faster than <see cref="M:Gtk.TextIter.Compare()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TogglesTag">
@@ -384,10 +400,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary> whether tag is either toggled on or off at iter</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <returns> whether tag is toggled on or off at iter</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="StartsSentence">
@@ -398,9 +414,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter begins a sentence.</summary>
+        <returns>
+          <see langword="true" /> if iter is at the start of a sentence.</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardToTagToggle">
@@ -413,10 +430,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves forward to the next toggle (on or off) of the <see cref="T:Gtk.TextTag" /> tag, or to the next toggle of any tag if tag is <see langword="null" />.</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <returns> whether we found a tag toggle after iter</returns>
+        <remarks>If no matching tag toggles are found, returns <see langword="false" />, otherwise <see langword="true" />. Does not return toggles located at iter, only toggles after iter. Sets iter to the location of the toggle, or to the end of the buffer if no toggle is found.</remarks>
       </Docs>
     </Member>
     <Member MemberName="StartsLine">
@@ -427,9 +444,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if iter begins a paragraph.</summary>
+        <returns> whether iter begins a line</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardCursorPosition">
@@ -440,9 +457,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Like <see cref="M:Gtk.TextIter.ForwardCursorPosition()" />, but moves backward.</summary>
+        <returns>
+          <see langword="true" /> if we moved</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetAttributes">
@@ -455,10 +473,18 @@
         <Parameter Name="values" Type="Gtk.TextAttributes" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="values">To be added: an object of type 'Gtk.TextAttributes'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Computes the effect of any tags applied to this spot in the text.</summary>
+        <param name="values">a <see cref="T:Gtk.TextAttribute" />s</param>
+        <returns>
+          <see langword="true" /> if values was modified</returns>
+        <remarks>
+          <para>
+The values parameter should be initialized to the default settings you wish to use if no tags are in effect. You would typically obtain the defaults from <see cref="M:Gtk.TextView.GetDefaultAttributes()" />.
+</para>
+          <para>
+            <see cref="M:Gtk.TextIter.GetAttributes()" /> will modify values, applying the effects of any tags present at iter. If any tags affected values, the function returns <see langword="true" />.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetText">
@@ -471,10 +497,10 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns text in the given range.</summary>
+        <param name="end"> iterator at end of a range</param>
+        <returns> the string from the buffer</returns>
+        <remarks>If the range contains non-text elements such as images, the character and byte offsets in the returned string will not correspond to character and byte offsets in the buffer. If you want offsets to correspond, see <see cref="M:Gtk.TextIter.GetSlice()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardCursorPosition">
@@ -485,9 +511,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves iter forward by a single cursor position.</summary>
+        <returns>
+          <see langword="true" /> if we moved and the new position is dereferenceable</returns>
+        <remarks>Cursor positions are (unsurprisingly) positions where the cursor can appear. Perhaps surprisingly, there may not be a cursor position between all characters. The most common example for European languages would be a carriage return/newline sequence. For some Unicode characters, the equivalent of say the letter "a" with an accent mark will be represented as two characters, first the letter then a "combining mark" that causes the accent to be rendered; so the cursor cannot go between those two characters.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardLines">
@@ -500,10 +527,10 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves count lines forward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
+        <param name="count"> number of lines to move forward</param>
+        <returns> whether iter moved and is dereferenceable</returns>
+        <remarks>The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, moves backward by 0 - count lines.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardLine">
@@ -514,9 +541,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves iter to the start of the next line.</summary>
         <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if iter was simply moved to the end of the buffer and is now not dereferenceable, or if iter was already at the end of the buffer.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardChars">
@@ -532,7 +559,7 @@
         <summary>Moves the iterator back a number of characters.</summary>
         <param name="count">number of characters to move backwards.</param>
         <returns>true if the operation succeeded</returns>
-        <remarks>To be added</remarks>
+        <remarks>Moves count characters backward, if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer). The return value indicates whether the iterator moved onto a dereferenceable position; if the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="HasTag">
@@ -545,10 +572,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if iter is within a range tagged with tag.</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /></param>
+        <returns> whether iter is tagged with tag</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardSentenceStart">
@@ -559,9 +586,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves backward to the previous sentence start; if iter is already at the start of a sentence, moves backward to the next one.</summary>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="StartsWord">
@@ -572,9 +600,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter begins a natural-language word.</summary>
+        <returns>
+          <see langword="true" /> if iter is at the start of a word</returns>
+        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginsTag">
@@ -587,10 +616,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if tag is toggled on at exactly this point.</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <returns> whether iter is the start of a range tagged with tag</returns>
+        <remarks>If tag is <see langword="null" />, returns <see langword="true" /> if any tag is toggled on at this point. Note that the <see cref="M:Gtk.TextIter.BeginsTag()" /> returns <see langword="true" /> if iter is the start of the tagged range; <see cref="M:Gtk.TextIter.HasTag()" /> tells you whether an iterator is within a tagged range.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetVisibleText">
@@ -603,10 +632,10 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Like <see cref="M:Gtk.TextIter.GetText()" />, but invisible text is not included.</summary>
+        <param name="end"> iterator at end of range</param>
+        <returns> string containing visible text in the range</returns>
+        <remarks>Invisible text is usually invisible because a <see cref="T:Gtk.TextTag" /> with the "invisible" attribute turned on has been applied to it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardToLineEnd">
@@ -617,9 +646,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the iterator to point to the paragraph delimiter characters, which will be either a newline, a carriage return, a carriage return/newline in sequence, or the Unicode paragraph separator character.</summary>
+        <returns>
+          <see langword="true" /> if we moved and the new location is not the end iterator</returns>
+        <remarks> If the iterator is already at the paragraph delimiter characters, moves to the paragraph delimiter characters for the next line. If iter is on the last line in the buffer, which does not end in paragraph delimiters, moves to the end iterator (end of the last line), and returns <see langword="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EndsSentence">
@@ -630,9 +660,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter ends a sentence.</summary>
+        <returns>
+          <see langword="true" /> if iter is at the end of a sentence.</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardSentenceEnds">
@@ -645,10 +676,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Calls <see cref="M:Gtk.TextIter.ForwardSentenceEnd()" /><paramref name="count" /> times (or until it returns <see langword="false" />).</summary>
+        <param name="count"> number of sentences to move</param>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks>If <paramref name="count" /> is negative, moves backward instead of forward.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsideSentence">
@@ -659,9 +691,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter is inside a sentence (as opposed to in between two sentences, e.g. after a period and before the first letter of the next sentence).</summary>
+        <returns>
+          <see langword="true" /> if iter is inside a sentence.</returns>
+        <remarks>Sentence boundaries are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango text boundary algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardWordEnds">
@@ -674,10 +707,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Calls <see cref="M:Gtk.TextIter.ForwardWordEnd()" /> up to <paramref name="count" /> times.</summary>
+        <param name="count"> number of times to move</param>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardChar">
@@ -690,7 +724,7 @@
       <Docs>
         <summary>Moves the iterator back one character</summary>
         <returns>true if the operation succeeded</returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns <see langword="true" /> if movement was possible; if iter was the first in the buffer (character offset 0), this returns <see langword="false" /> for convenience when writing loops.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EndsTag">
@@ -703,10 +737,10 @@
         <Parameter Name="tag" Type="Gtk.TextTag" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if tag is toggled off at exactly this point.</summary>
+        <param name="tag">a <see cref="T:Gtk.TextTag" /> or <see langword="null" /></param>
+        <returns> whether iter is the end of a range tagged with tag</returns>
+        <remarks>If tag is <see langword="null" />, returns <see langword="true" /> if any tag is toggled off at this point. Note that the <see cref="T:Gtk.TextIter.EndsTag()" /> returns <see langword="true" /> if iter is the end of the tagged range; <see cref="T:Gtk.TextIter.HasTag()" /> tells you whether an iterator is within a tagged range.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardChars">
@@ -719,10 +753,10 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves count characters if possible (if count would move past the start or end of the buffer, moves to the start or end of the buffer).</summary>
+        <param name="count"> number of characters to move, may be negative</param>
+        <returns> whether iter moved and is dereferenceable</returns>
+        <remarks>The return value indicates whether the new position of iter is different from its original position, and dereferenceable (the last iterator in the buffer is not dereferenceable). If count is 0, the function does nothing and returns <see langword="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanInsert">
@@ -735,10 +769,11 @@
         <Parameter Name="default_editability" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="default_editability">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Considering the default editability of the buffer, and tags that affect editability, determines whether text inserted at iter would be editable.</summary>
+        <param name="default_editability">
+          <see langword="true" /> if text is editable by default</param>
+        <returns> whether text inserted at iter would be editable</returns>
+        <remarks>If text inserted at iter would be editable then the user should be allowed to insert text at iter. <see cref="T:Gtk.TextBuffer.InsertInteractive()" /> uses this function to decide whether insertions are allowed at a given position.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Compare">
@@ -751,10 +786,10 @@
         <Parameter Name="rhs" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rhs">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>A qsort()-style function that returns negative if lhs is less than rhs, positive if lhs is greater than rhs, and 0 if they are equal.</summary>
+        <param name="rhs">another <see cref="T:Gtk.TextIter" /></param>
+        <returns> -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are equal</returns>
+        <remarks>Ordering is in character offset order, i.e. the first character in the buffer is less than the second character in the buffer.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsideWord">
@@ -765,9 +800,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter is inside a natural-language word (as opposed to say inside some whitespace).</summary>
+        <returns>
+          <see langword="true" /> if iter is inside a word</returns>
+        <remarks>Word breaks are determined by Pango and should be correct for nearly any language (if not, the correct fix would be to the Pango word break algorithms).</remarks>
       </Docs>
     </Member>
     <Member MemberName="InRange">
@@ -781,11 +817,13 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Checks whether iter falls in the range (start, end).</summary>
+        <param name="start"> start of range</param>
+        <param name="end"> end of range</param>
+        <returns>
+          <see langword="true" /> if iter is in the range</returns>
+        <remarks>
+          <paramref name="start" /> and <paramref name="end" /> must be in ascending order.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardWordStarts">
@@ -798,10 +836,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardWordStart()" /> up to <paramref name="count" /> times.</summary>
+        <param name="count"> number of times to move</param>
+        <returns>
+          <see langword="true" /> if iter moved and is not the end iterator</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="VisibleLineIndex">
@@ -813,10 +852,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the number of bytes from the start of the line to the given iter, not counting bytes that are invisible due to tags with the "invisible" flag toggled on.</summary>
+        <param name="value">a <see cref="T:System.Int32" /></param>
+        <returns> byte index of iter with respect to the start of the line</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ChildAnchor">
@@ -826,9 +865,9 @@
         <ReturnType>Gtk.TextChildAnchor</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextChildAnchor'</returns>
-        <remarks>To be added</remarks>
+        <summary>If the location at iter contains a child anchor, the anchor is returned. Otherwise, <see langword="null" /> is returned.</summary>
+        <returns> the anchor at iter</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CharsInLine">
@@ -839,7 +878,7 @@
       </ReturnValue>
       <Docs>
         <summary>Number of characters in the TextIter's line.</summary>
-        <returns>Returns the number of characters in the TextIter's current line.</returns>
+        <returns>Returns the number of characters in the TextIter's current line, including the paragraph delimiters.</returns>
         <remarks>None.</remarks>
       </Docs>
     </Member>
@@ -855,7 +894,7 @@
         <summary>Line number the iterator is currently on.</summary>
         <param name="value">Moves the iterator to this line number.</param>
         <returns>The line number the iterator is currently on.</returns>
-        <remarks>To be added</remarks>
+        <remarks>Lines in a <see cref="T:Gtk.TextBuffer" /> are numbered beginning with 0 for the first line in the buffer.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BytesInLine">
@@ -865,9 +904,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the number of bytes in the line containing iter, including the paragraph delimiters.</summary>
+        <returns> number of bytes in the line</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Char">
@@ -904,9 +943,9 @@
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>return the pixbuf at this iter, if it is one.</summary>
+        <returns> the pixbuf at iter</returns>
+        <remarks>If the element at iter is a <see cref="T:Gdk.Pixbuf" />, the Pixbuf is returned. Otherwise, <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Language">
@@ -916,9 +955,9 @@
         <ReturnType>Pango.Language</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Pango.Language'</returns>
-        <remarks>To be added</remarks>
+        <summary>A convenience wrapper around <see cref="M:Gtk.TextIter.GetAttributes()" />, which returns the language in effect at iter.</summary>
+        <returns> language in effect at iter</returns>
+        <remarks>If no tags affecting language apply to iter, the return value is identical to that of <see cref="P:Gtk.Global.DefaultLanguage" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LineIndex">
@@ -930,10 +969,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the byte index of the iterator, counting from the start of a newline-terminated line.</summary>
+        <param name="value">a <see cref="T:System.Int32" /></param>
+        <returns> distance from start of line, in bytes</returns>
+        <remarks>Remember that <see cref="T:Gtk.TextBuffer" /> encodes text in UTF-8, and that characters can require a variable number of bytes to represent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LineOffset">
@@ -945,10 +984,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the character offset of the iterator, counting from the start of a newline-terminated line.</summary>
+        <param name="value">a <see cref="T:System.Int32" /></param>
+        <returns> offset from start of line</returns>
+        <remarks>The first character on the line has offset 0.</remarks>
       </Docs>
     </Member>
     <Member MemberName="VisibleLineOffset">
@@ -960,10 +999,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the offset in characters from the start of the line to the given iter, not counting characters that are invisible due to tags with the "invisible" flag toggled on.</summary>
+        <param name="value">a <see cref="T:System.Int32" /></param>
+        <returns> offset in visible characters from the start of the line</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Buffer">
@@ -975,7 +1014,7 @@
       <Docs>
         <summary>Obtains the buffer the iter is in</summary>
         <returns>containing buffer</returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardSearch">
@@ -992,14 +1031,14 @@
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">To be added: an object of type 'string'</param>
-        <param name="flags">To be added: an object of type 'Gtk.TextSearchFlags'</param>
-        <param name="match_start">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="match_end">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="limit">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Same as <see cref="M:Gtk.TextIter.ForwardSearch()" />, but moves backward.</summary>
+        <param name="str"> search string</param>
+        <param name="flags"> bitmask of flags affecting the search</param>
+        <param name="match_start"> return location for start of match, or <see langword="null" /></param>
+        <param name="match_end"> return location for end of match, or <see langword="null" /></param>
+        <param name="limit"> location of last possible match_start, or <see langword="null" /> for start of buffer</param>
+        <returns> whether a match was found</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ForwardSearch">
@@ -1016,14 +1055,21 @@
         <Parameter Name="limit" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">To be added: an object of type 'string'</param>
-        <param name="flags">To be added: an object of type 'Gtk.TextSearchFlags'</param>
-        <param name="match_start">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="match_end">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="limit">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Searches forward for <paramref name="str" />.</summary>
+        <param name="str"> a search string</param>
+        <param name="flags"> flags affecting how the search is done</param>
+        <param name="match_start"> return location for start of match, or <see langword="null" /></param>
+        <param name="match_end"> return location for end of match, or <see langword="null" /></param>
+        <param name="limit"> bound for the search, or <see langword="null" /> for the end of the buffer</param>
+        <returns> whether a match was found</returns>
+        <remarks>
+          <para>
+Any match is returned by setting <paramref name="match_start" /> to the first character of the match and <paramref name="match_end" /> to the first character after the match. The search will not continue past limit. Note that a search is a linear or O(n) operation, so you may wish to use limit to avoid locking up your UI on large buffers.
+</para>
+          <para>
+If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisible text interspersed in str. i.e. str will be a possibly-noncontiguous subsequence of the matched range. similarly, if you specify GTK_TEXT_SEARCH_TEXT_ONLY, the match may have pixbufs or child widgets mixed inside the matched range. If these flags are not given, the match must be exact; the special 0xFFFC character in str will match embedded pixbufs or child widgets.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsEnd">
@@ -1036,7 +1082,7 @@
       <Docs>
         <summary>Returns true if the iterator is at the end of the parent <see cref="T:Gtk.TextBuffer" /></summary>
         <returns>true if the iterator is equal to Buffer.EndIter</returns>
-        <remarks>To be added</remarks>
+        <remarks>The most efficient way to check whether an iterator is the end iterator.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsStart">
@@ -1047,9 +1093,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if iter is the first iterator in the buffer, that is if iter has a character offset of 0.</summary>
+        <returns> whether iter is the first in the buffer</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IsCursorPosition">
@@ -1062,7 +1108,7 @@
       <Docs>
         <summary>returns true if the iter is at the caret</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>returns true if this iterator equals the iterator returned by Buffer.GetIterAtMark (Buffer.InsertMark)</remarks>
+        <remarks>returns true if this iterator equals the iterator returned by <see cref="M:Gtk.TextBuffer.GetIterAtMark(Buffer.InsertMark)" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -1086,9 +1132,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns an array of <see cref="T:Gtk.TextMark" /> at this location.</summary>
         <returns>a <see cref="T:Gtk.TextMark[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Because marks are not iterable (they do not take up any "space" in the buffer, they are just marks in between iterable locations), multiple marks can exist in the same place. The returned list is not in any meaningful order.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Tags">
@@ -1099,9 +1145,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns an array of tags that apply to iter, in ascending order of priority (highest-priority tags are last).</summary>
         <returns>a <see cref="T:Gtk.TextTag[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetToggledTags">
@@ -1114,10 +1160,10 @@
         <Parameter Name="toggled_on" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns an array of <see cref="T:Gtk.TextTag" /> that are toggled on or off at this point.</summary>
         <param name="toggled_on">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:Gtk.TextTag[]" /></returns>
-        <remarks>To be added</remarks>
+        <returns>tags toggled at this point</returns>
+        <remarks>(If toggled_on is <see langword="true" />, the list contains tags that are toggled on.) If a tag is toggled on at iter, then some non-empty range of characters following iter has that tag applied to it. If a tag is toggled off, then some non-empty range following iter does not have the tag applied to it.</remarks>
       </Docs>
     </Member>
   </Members>
