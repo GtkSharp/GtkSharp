@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>This class manages, in a persist way, the configuration information of the application.</summary>
+    <remarks>The handling is done in a independent way of the selected locale.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -207,11 +207,11 @@
         <Parameter Name="priv" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:System.String" /></param>
+        <summary>Flushes all the configuration data to disk, for a given file.</summary>
+        <param name="path">The path of the target file.</param>
         <param name="priv">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>Returns <see cref="T:True" /> if its able to write to disk, otherwise its <see cref="T:False" />.</returns>
+        <remarks>Nothing is saved on disk till this method gets invoked, or Sync().</remarks>
       </Docs>
     </Member>
     <Member MemberName="CleanSection_">
@@ -258,8 +258,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clears any cached information, including any information that has not been written to file.</summary>
+        <remarks>All non saved configuration data is lost.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CleanKey_">
@@ -342,9 +342,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Flushes all the configuration data to disk.</summary>
+        <returns>Returns <see cref="T:True" /> if its able to write to disk, otherwise its <see cref="T:False" />.</returns>
+        <remarks>Nothing is saved on disk till this method gets invoked, or SyncFile_.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InitIterator_">
@@ -471,11 +471,11 @@
         <Parameter Name="priv" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <param name="def">a <see cref="T:System.Boolean&amp;" /></param>
+        <summary>Gets the value associated with the path as a <see cref="T:System.String" />, if its not present, the default value will be used.</summary>
+        <param name="path">The path to the required item.</param>
+        <param name="def">If the default value for the item is returned its set to a <see cref="T:True" /> otherwise its a <see cref="T:False" />.</param>
         <param name="priv">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
+        <returns>Returns the value in the configuration path or the default value if its not present, as a <see cref="T:System.String" />. </returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
