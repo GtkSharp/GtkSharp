@@ -399,11 +399,17 @@ namespace Gtk {
 			return node;
 		}
 
-		public ITreeNode GetNode (TreePath path) {
+		public ITreeNode GetNode (TreePath path)
+		{
 			if (path == null)
 				throw new ArgumentNullException ();
 
 			return GetNodeAtPath (path);
+		}
+
+		internal ITreeNode GetNode (TreeIter iter)
+		{
+			return node_hash [(int) iter.UserData] as ITreeNode;
 		}
 
 		internal TreePath GetPath (ITreeNode node)

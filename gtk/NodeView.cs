@@ -60,5 +60,17 @@ namespace Gtk {
 				return new NodeSelection (Selection);
 			}
 		}
+
+		public Gtk.TreeViewColumn AppendColumn (string title, Gtk.CellRenderer cell, Gtk.NodeCellDataFunc cell_data) 
+		{
+			Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
+			col.Title = title;
+			col.PackStart (cell, true);
+			col.SetCellDataFunc (cell, cell_data);
+			
+			AppendColumn (col);
+			return col;
+		}
 	}
 }
+

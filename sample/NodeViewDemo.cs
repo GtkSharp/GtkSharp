@@ -57,12 +57,17 @@ namespace GtkSamples {
 			NodeView view = new NodeView (Store);
 			view.HeadersVisible = true;
 			view.AppendColumn ("Name", new CellRendererText (), "text", 0);
-			view.AppendColumn ("Type", new CellRendererText (), "text", 1);
+			view.AppendColumn ("Type", new CellRendererText (), new NodeCellDataFunc (DataCallback));
 
 			sw.Add (view);
 			
 			dialog.Destroy ();
 			dialog = null;
+		}
+
+		private void DataCallback (TreeViewColumn col, CellRenderer cell, ITreeNode node)
+		{
+			(cell as CellRendererText).Text = (node as DemoTreeNode).Description;
 		}
 
 		StatusDialog Dialog {

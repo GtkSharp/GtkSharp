@@ -22,12 +22,6 @@
 
 
 
-		public void SetCellDataFunc(Gtk.CellRenderer cell_renderer, Gtk.TreeCellDataFunc func) {
-			GtkSharp.TreeCellDataFuncWrapper func_wrapper = null;
-			func_wrapper = new GtkSharp.TreeCellDataFuncWrapper (func, this);
-			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, func_wrapper.NativeDelegate, IntPtr.Zero, null);
-		}
-
 		private void _NewWithAttributes (string title, Gtk.CellRenderer cell, Array attrs) {
 			Title = title;
 			PackStart (cell, true);
@@ -60,5 +54,51 @@
 					result [i] = list [i] as CellRenderer;
 				return result;
 			}
+		}
+
+		Hashtable cell_data_funcs;
+
+		Hashtable CellDataFuncs {
+			get {
+				if (cell_data_funcs == null)
+					cell_data_funcs = new Hashtable ();
+				return cell_data_funcs;
+			}
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, IntPtr func, IntPtr func_data, IntPtr destroy);
+
+		private void ReleaseDataFunc (CellRenderer cell)
+		{
+			CellDataFuncs [cell.Handle] = null;
+			gtk_tree_view_column_set_cell_data_func(Handle, cell.Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.TreeCellDataFuncNative func, IntPtr func_data, IntPtr destroy);
+
+		public void SetCellDataFunc (CellRenderer cell_renderer, TreeCellDataFunc func) 
+		{
+			if (func == null) {
+				ReleaseDataFunc (cell_renderer);
+				return;
+			}
+;
+			GtkSharp.TreeCellDataFuncWrapper wrapper = new GtkSharp.TreeCellDataFuncWrapper (func, this);
+			CellDataFuncs [cell_renderer.Handle] = wrapper;
+			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
+		}
+
+		public void SetCellDataFunc (CellRenderer cell_renderer, NodeCellDataFunc func) 
+		{
+			if (func == null) {
+				ReleaseDataFunc (cell_renderer);
+				return;
+			}
+;
+			NodeCellDataFuncWrapper wrapper = new NodeCellDataFuncWrapper (func, this);
+			CellDataFuncs [cell_renderer.Handle] = wrapper;
+			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
 		}
 

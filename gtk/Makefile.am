@@ -21,6 +21,7 @@ sources = 				\
 	Application.cs			\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
+	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\
 	NodeStore.cs			\
 	NodeView.cs			\
