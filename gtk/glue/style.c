@@ -35,6 +35,14 @@ GdkGC *gtksharp_gtk_style_get_base_gc (GtkStyle *style, int i);
 
 GdkGC *gtksharp_gtk_style_get_text_gc (GtkStyle *style, int i);
 
+GdkGC *gtksharp_gtk_style_get_text_aa_gc (GtkStyle *style, int i);
+
+GdkGC *gtksharp_gtk_style_get_light_gc (GtkStyle *style, int i);
+
+GdkGC *gtksharp_gtk_style_get_dark_gc (GtkStyle *style, int i);
+
+GdkGC *gtksharp_gtk_style_get_mid_gc (GtkStyle *style, int i);
+
 void gtksharp_gtk_style_set_fg_gc (GtkStyle *style, int i, GdkGC *gc);
 
 void gtksharp_gtk_style_set_bg_gc (GtkStyle *style, int i, GdkGC *gc);
@@ -42,6 +50,14 @@ void gtksharp_gtk_style_set_bg_gc (GtkStyle *style, int i, GdkGC *gc);
 void gtksharp_gtk_style_set_base_gc (GtkStyle *style, int i, GdkGC *gc);
 
 void gtksharp_gtk_style_set_text_gc (GtkStyle *style, int i, GdkGC *gc);
+
+void gtksharp_gtk_style_set_text_aa_gc (GtkStyle *style, int i, GdkGC *gc);
+
+void gtksharp_gtk_style_set_light_gc (GtkStyle *style, int i, GdkGC *gc);
+
+void gtksharp_gtk_style_set_dark_gc (GtkStyle *style, int i, GdkGC *gc);
+
+void gtksharp_gtk_style_set_mid_gc (GtkStyle *style, int i, GdkGC *gc);
 
 GdkColor *gtksharp_gtk_style_get_white (GtkStyle *style);
 
@@ -106,6 +122,34 @@ gtksharp_gtk_style_get_text_gc (GtkStyle *style, int i)
 	return style->text_gc[i];
 }
 
+GdkGC*
+gtksharp_gtk_style_get_text_aa_gc (GtkStyle *style, int i)
+{
+	g_object_ref (G_OBJECT (style->text_aa_gc[i]));
+	return style->text_aa_gc[i];
+}
+
+GdkGC*
+gtksharp_gtk_style_get_light_gc (GtkStyle *style, int i)
+{
+	g_object_ref (G_OBJECT (style->light_gc[i]));
+	return style->light_gc[i];
+}
+
+GdkGC*
+gtksharp_gtk_style_get_dark_gc (GtkStyle *style, int i)
+{
+	g_object_ref (G_OBJECT (style->dark_gc[i]));
+	return style->dark_gc[i];
+}
+
+GdkGC*
+gtksharp_gtk_style_get_mid_gc (GtkStyle *style, int i)
+{
+	g_object_ref (G_OBJECT (style->mid_gc[i]));
+	return style->mid_gc[i];
+}
+
 void
 gtksharp_gtk_style_set_fg_gc (GtkStyle *style, int i, GdkGC *gc)
 {
@@ -134,6 +178,27 @@ gtksharp_gtk_style_set_text_gc (GtkStyle *style, int i, GdkGC *gc)
 	style->text_gc[i] = gc;
 }
 
+void
+gtksharp_gtk_style_set_text_aa_gc (GtkStyle *style, int i, GdkGC *gc)
+{
+	g_object_ref (G_OBJECT (gc));
+	style->text_aa_gc[i] = gc;
+}
+
+void
+gtksharp_gtk_style_set_light_gc (GtkStyle *style, int i, GdkGC *gc)
+{
+	g_object_ref (G_OBJECT (gc));
+	style->light_gc[i] = gc;
+}
+
+void
+gtksharp_gtk_style_set_dark_gc (GtkStyle *style, int i, GdkGC *gc)
+{
+	g_object_ref (G_OBJECT (gc));
+	style->dark_gc[i] = gc;
+}
+
 GdkColor*
 gtksharp_gtk_style_get_white (GtkStyle *style)
 {
@@ -159,9 +224,9 @@ gtksharp_gtk_style_get_bg (GtkStyle *style, int i)
 }
 
 GdkColor*
-gtksharp_gtk_style_get_text (GtkStyle *style, int i)
+gtksharp_gtk_style_get_mid (GtkStyle *style, int i)
 {
-	return &style->text[i];
+	return &style->mid[i];
 }
 
 GdkColor*
