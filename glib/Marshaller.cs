@@ -171,7 +171,7 @@ namespace GLib {
 		}
 
 		static DateTime local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
-		static int utc_offset = (int) (DateTime.Now.Subtract (DateTime.UtcNow).TotalSeconds);
+		static int utc_offset = (int) (TimeZone.CurrentTimeZone.GetUtcOffset (DateTime.Now)).TotalSeconds;
 
 		public static IntPtr DateTimeTotime_t (DateTime time)
 		{
