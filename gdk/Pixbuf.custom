@@ -167,3 +167,13 @@
 			}
 		}
 
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
+		static extern unsafe bool gdk_pixbuf_save(IntPtr raw, string filename, string type, out IntPtr error, IntPtr dummy);
+
+		public unsafe bool Save(string filename, string type) {
+			IntPtr error = IntPtr.Zero;
+			bool ret = gdk_pixbuf_save(Handle, filename, type, out error, IntPtr.Zero);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+			return ret;
+		}
+
