@@ -7,6 +7,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.Collections;
 	using System.IO;
 	using System.Xml;
 
@@ -47,6 +48,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsEllipsis {
+			get {
+				return elem.HasAttribute("ellipsis");
+			}
+		}
+
 		public bool IsLength {
 			get {
 				
@@ -59,10 +66,8 @@ namespace GtkSharp.Generation {
 					case "short":
 					case "ushort": 
 						return true;
-						break;
 					default:
 						return false;
-						break;
 					}
 				else
 					return false;
@@ -125,12 +130,13 @@ namespace GtkSharp.Generation {
 
 	public class Parameters  {
 		
+		private ArrayList param_list;
 		private XmlElement elem;
 		private string impl_ns;
-		private string import_sig;
-		private string call_string;
-		private string signature;
-		private string signature_types;
+		private string import_sig = "";
+		private string call_string = "";
+		private string signature = "";
+		private string signature_types = "";
 		private bool hide_data;
 		private bool is_static;
 
@@ -138,6 +144,12 @@ namespace GtkSharp.Generation {
 			
 			this.elem = elem;
 			this.impl_ns = impl_ns;
+			param_list = new ArrayList ();
+			foreach (XmlNode node in elem.ChildNodes) {
+				XmlElement parm = node as XmlElement;
+				if (parm != null && parm.Name == "parameter")
+					param_list.Add (new Parameter (parm));
+			}
 		}
 
 		public string CallString {
@@ -146,14 +158,15 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public int Count {
+			get {
+				return param_list.Count;
+			}
+		}
+
 		public Parameter this [int idx] {
 			get {
-				int count = 0;
-				foreach (XmlNode node in elem.ChildNodes) {
-					if ((node is XmlElement) && (idx == count++))
-						return new Parameter ((XmlElement) node);
-				}
-				return null;
+				return param_list [idx] as Parameter;
 			}
 		}
 
@@ -186,20 +199,13 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (!(parm is XmlElement) || parm.Name != "parameter") {
-					continue;
-				}
-
-				XmlElement p_elem = (XmlElement) parm;
-
-				if (p_elem.HasAttribute("ellipsis")) {
+			foreach (Parameter p in param_list) {
+				
+				if (p.IsEllipsis) {
 					Console.Write("Ellipsis parameter ");
 					return false;
 				}
 
-				Parameter p = new Parameter (p_elem);
-				
 				if ((p.CSType == "") || (p.Name == "") || 
 				    (p.MarshalType == "") || (SymbolTable.Table.CallByName(p.CType, p.Name) == "")) {
 					Console.Write("Name: " + p.Name + " Type: " + p.CType + " ");
@@ -212,7 +218,7 @@ namespace GtkSharp.Generation {
 
 		public void CreateSignature (bool is_set)
 		{
-			signature_types = signature = import_sig = call_string = "";
+			import_sig = call_string = signature = signature_types = "";	
 			bool need_sep = false;
 			bool has_callback = hide_data;
 			bool last_was_user_data = false;
@@ -387,11 +393,7 @@ namespace GtkSharp.Generation {
 
 		public void Finish (StreamWriter sw, string indent)
 		{
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter")
-					continue;
-				
-				Parameter p = new Parameter ((XmlElement) parm);
+			foreach (Parameter p in param_list) {
 
 				if (p.PassAs == "out" && p.Generatable is EnumGen) {
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_int;");
@@ -407,54 +409,18 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (indent + "\t\t\tif (error != IntPtr.Zero) throw new GLib.GException (error);");
 		}
 		
-		public int Count {
-			get {
-				int length = 0;
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (parm.Name != "parameter") {
-						continue;
-					}
-	
-					length++;
-				}
-				return length;
-			}
-		}
-
 		public bool IsAccessor {
 			get {
-				int length = 0;
-				string pass_as = "";
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (!(parm is XmlElement) || parm.Name != "parameter") {
-						continue;
-					}
-	
-					XmlElement p_elem = (XmlElement) parm;
-					length++;
-					if (length > 1)
-						return false;
-					if (p_elem.HasAttribute("pass_as"))
-						pass_as = p_elem.GetAttribute("pass_as");
-				}
-
-				return (length == 1 && pass_as == "out");
+				return Count == 1 && this [0].PassAs == "out";
 			}
 		}
 
 		public bool ThrowsException {
 			get {
-				if ((elem.ChildNodes == null) || (elem.ChildNodes.Count < 1))
+				if (Count < 1)
 					return false;
 
-				XmlElement p_elem = null;
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (!(parm is XmlElement) || parm.Name != "parameter")
-						continue;
-					p_elem = (XmlElement) parm;
-				}
-				string type = p_elem.GetAttribute("type");
-				return (type == "GError**");
+				return this [Count - 1].CType == "GError**";
 			}
 		}
 
@@ -472,26 +438,19 @@ namespace GtkSharp.Generation {
 
 		public string AccessorReturnType {
 			get {
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (parm.Name != "parameter") 
-						continue;
-					XmlElement p_elem = (XmlElement) parm;
-					return SymbolTable.Table.GetCSType(p_elem.GetAttribute ("type"));
-				}
-				return null;
+				if (Count > 0)
+					return this [0].CSType;
+				else
+					return null;
 			}
 		}
 
 		public string AccessorName {
 			get {
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (parm.Name != "parameter") 
-						continue;
-					XmlElement p_elem = (XmlElement) parm;
-					Parameter p = new Parameter (p_elem);
-					return p.Name;
-				}
-				return null;
+				if (Count > 0)
+					return this [0].Name;
+				else
+					return null;
 			}
 		}
 
