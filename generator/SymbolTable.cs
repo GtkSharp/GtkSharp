@@ -46,9 +46,17 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("double", "double");
 			simple_types.Add ("gunichar", "String");
 			simple_types.Add ("uint1", "bool");
+			simple_types.Add ("GPtrArray", "IntPtr[]");
+			simple_types.Add ("GType", "int");
 			
 			// FIXME: These ought to be handled properly.
 			simple_types.Add ("GList", "IntPtr");
+			simple_types.Add ("GMemChunk", "IntPtr");
+			simple_types.Add ("GTimeVal", "IntPtr");
+			simple_types.Add ("GClosure", "IntPtr");
+			simple_types.Add ("GArray", "IntPtr");
+			simple_types.Add ("GData", "IntPtr");
+			simple_types.Add ("GTypeModule", "IntPtr");
 			simple_types.Add ("GSList", "IntPtr");
 			simple_types.Add ("GHashTable", "IntPtr");
 			simple_types.Add ("va_list", "IntPtr");

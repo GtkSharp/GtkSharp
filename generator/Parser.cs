@@ -74,6 +74,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "callback":
+					table.AddType (new CallbackGen (ns_name, elem));
 					break;
 
 				case "enum":
@@ -81,6 +82,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "interface":
+					table.AddType (new InterfaceGen (ns_name, elem));
 					break;
 
 				case "object":
