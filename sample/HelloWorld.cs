@@ -17,9 +17,13 @@ namespace GtkSamples {
 		public static int Main (string[] args)
 		{
 			Application.Init (ref args);
-			Gtk.Window win = new Gtk.Window ("Gtk# Hello World");
-			win.Deleted += new EventHandler (Window_Delete);
-			win.Show ();
+			Console.WriteLine("Creating Window");
+			Gtk.Window win = new Gtk.Window (Gtk.WindowType.Toplevel);
+			Console.WriteLine("Setting Title");
+			win.Title = "Gtk# Hello World";
+			// win.Deleted += new EventHandler (Window_Delete);
+			// win.Show ();
+			Console.WriteLine("Entering event loop");
 			Application.Run ();
 			return 0;
 		}

@@ -115,11 +115,25 @@ namespace GtkSharp.Generation {
 		
 		public String GetMarshalType(String c_type)
 		{
+			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return (String) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.MarshalType;
+			} else {
+				return "";
+			}
+		}
+		
+		public String CallByName(String c_type, String var_name)
+		{
+			c_type = Trim(c_type);
+			if (simple_types.ContainsKey(c_type)) {
+				return var_name;
+			} else if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				return gen.CallByName(var_name);
 			} else {
 				return "";
 			}

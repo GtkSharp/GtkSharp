@@ -17,7 +17,7 @@ namespace GtkSharp.Generation {
 		public String MarshalType {
 			get
 			{
-				return "IntPtr";
+				return QualifiedName;
 			}
 		}
 		

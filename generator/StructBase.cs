@@ -131,6 +131,22 @@ namespace GtkSharp.Generation {
 				}
 
 				XmlElement elem = (XmlElement) parm;
+				String type = elem.GetAttribute("type");
+				String name = elem.GetAttribute("name");
+				name = MangleName(name);
+				String call_parm = table.CallByName(type, name);
+				
+				if (call_parm == "") {
+					Console.Write("Name: " + name + " Type: " + type + " ");
+					return false;
+				}
+				
+				if (need_comma) {
+					call += ", ";
+				} else {
+					need_comma = true;
+				}
+				call += call_parm;
 			}
 			
 			call += ")";
@@ -141,12 +157,34 @@ namespace GtkSharp.Generation {
 		{
 			isig = "(";
 			
+			bool need_comma = false;
+			
 			foreach (XmlNode parm in parms.ChildNodes) {
-				if (parm.Name != "namespace") {
+				if (parm.Name != "parameter") {
 					continue;
 				}
 
 				XmlElement elem = (XmlElement) parm;
+				String type = elem.GetAttribute("type");
+				String m_type = table.GetMarshalType(type);
+				String name = elem.GetAttribute("name");
+				name = MangleName(name);
+				
+				if ((m_type == "") || (name == "")) {
+					Console.Write("Name: " + name + " Type: " + type + " ");
+					return false;
+				}
+				
+				if (elem.HasAttribute("array")) {
+					m_type += "[]";
+				}
+				
+				if (need_comma) {
+					isig += ", ";
+				} else {
+					need_comma = true;
+				}
+				isig += (m_type + " " + name);
 			}
 			
 			isig += ");";

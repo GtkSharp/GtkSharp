@@ -24,7 +24,7 @@ namespace GtkSharp.Generation {
 		
 		public String CallByName (String var_name)
 		{
-			return var_name + ".RawObject";
+			return var_name + ".Handle";
 		}
 		
 		public void Generate (SymbolTable table)
