@@ -42,7 +42,6 @@ namespace Gdk {
 			object r = mi.Invoke (null, args);
 			System.Drawing.Graphics g = (System.Drawing.Graphics) r;
 
-			Console.WriteLine ("-> {0} / {1}", x_off, y_off);
 			g.TranslateTransform (-x_off, -y_off);
 
 			return g;
