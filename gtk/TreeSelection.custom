@@ -20,6 +20,22 @@
 
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_tree_selection_get_selected_rows (IntPtr raw, IntPtr model);
+
+		public TreePath[] GetSelectedRows ()
+		{
+			IntPtr list_ptr = gtk_tree_selection_get_selected_rows (Handle, IntPtr.Zero);
+			if (list_ptr == IntPtr.Zero)
+				return new TreePath [0];
+
+			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
+			TreePath[] result = new TreePath [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = (TreePath) list [i];
+			return result;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_tree_selection_get_selected_rows (IntPtr raw, out IntPtr model);
 
 		public TreePath[] GetSelectedRows (out TreeModel model)

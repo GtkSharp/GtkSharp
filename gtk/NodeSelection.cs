@@ -119,8 +119,7 @@ namespace Gtk {
 
 		public ITreeNode[] SelectedNodes {
 			get {
-				TreeModel model;
-				TreePath [] paths = selection.GetSelectedRows (out model);
+				TreePath [] paths = selection.GetSelectedRows ();
 				int length = paths.Length;
 
 				ITreeNode [] results = new ITreeNode [length];
