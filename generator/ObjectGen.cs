@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
 			sw.Write ("\tpublic class " + Name);
 			if (cs_parent == "") {
 				sw.WriteLine (" {");
-				Console.WriteLine ("Unknown type " + parent);
+				Console.WriteLine ("Object " + Name + " Unknown parent " + parent);
 			} else {
 				sw.WriteLine (" : " + cs_parent + " {");
 			}

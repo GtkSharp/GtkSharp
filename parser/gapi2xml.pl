@@ -108,6 +108,8 @@ while ($line = <STDIN>) {
 		$objects{$1} = $2 . $objects{$1};
 	} elsif ($line =~ /GTK_CHECK_CLASS_CAST.*,\s*(\w+),\s*(\w+)/) {
 		$objects{$1} .= ":$2";
+	} elsif ($line =~ /INSTANCE_GET_INTERFACE.*,\s*(\w+),\s*(\w+)/) {
+		$ifaces{$1} = $2;
 	} else {
 		print $line;
 	}
@@ -180,6 +182,23 @@ foreach $cbname (sort(keys(%fpdefs))) {
 	if ($params && ($params ne "void")) {
 		addParamsElem($cb_elem, split(/,/, $params));
 	}
+}
+
+
+##############################################################
+# Parse the interfaces list.   
+##############################################################
+
+foreach $type (sort(keys(%ifaces))) {
+
+	$iface = $ifaces{$type};
+	($inst, $dontcare) = split(/:/, delete $objects{$type});
+	$ifacetype = delete $types{$iface};
+	delete $types{$inst};
+
+	$ifacecnt++;
+	$iface_el = addNameElem($ns_elem, 'interface', $inst, $ns);
+	addFuncElems($iface_el, $inst);
 }
 
 

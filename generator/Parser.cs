@@ -80,6 +80,9 @@ namespace GtkSharp.Generation {
 					table.AddType (new EnumGen (ns_name, elem));
 					break;
 
+				case "interface":
+					break;
+
 				case "object":
 					table.AddType (new ObjectGen (ns_name, elem));
 					break;

@@ -15,7 +15,11 @@ foreach $dir (@ARGV) {
 }
 
 foreach $fname (@hdrs) {
-	next if ($fname =~ /test|private|internals|gtktextlayout/);
+
+	if ($fname =~ /test|private|internals|gtktextlayout/) {
+		@privhdrs = (@privhdrs, $fname);
+		next;
+	}
 
 	open(INFILE, $fname) || die "Could open $fname\n";
 
@@ -27,7 +31,7 @@ foreach $fname (@hdrs) {
 		if ($line =~ /#\s*define\s+\w+\s*\D+/) {
 			$def = $line;
 			while ($line =~ /\\\n/) {$def .= ($line = <INFILE>);}
-			if ($def =~ /_CHECK_\w*CAST/) {
+			if ($def =~ /_CHECK_\w*CAST|INSTANCE_GET_INTERFACE/) {
 				$def =~ s/\\\n//g;
 				print $def;
 			}
@@ -49,7 +53,7 @@ foreach $fname (@hdrs) {
 	}
 }
 
-foreach $fname (`ls $ARGV[0]/*.c`) {
+foreach $fname (`ls $ARGV[0]/*.c`, @privhdrs) {
 
 	open(INFILE, $fname) || die "Could open $fname\n";
 
