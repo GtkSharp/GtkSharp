@@ -88,9 +88,9 @@
         <returns>a <see cref="T:System.Collections.Hashtable" /></returns>
         <remarks>
 	  This property is obsolete and should not be used unless you explicitly retain a reference to the
-	  <see cref="T:GLib.Object"/>.  Otherwise the Data hashtable will be lost when the Garbage Collector
+	  <see cref="T:GLib.Object" />.  Otherwise the Data hashtable will be lost when the Garbage Collector
 	  releases your managed object wrapper.  There are much better alternatives to this anyway.  Consider
-	  using a Hashtable on your class that is keyed by <see cref="T:GLib.Object"/> or a subclass with
+	  using a Hashtable on your class that is keyed by <see cref="T:GLib.Object" /> or a subclass with
 	  an object property for the data you want to store instead.  There are many better ways to accompish
 	  the role of this property.
         </remarks>
@@ -185,9 +185,15 @@
       </Parameters>
       <Docs>
         <summary>Creates a new <see cref="T:GLib.Object" /> instance, using the GLib-provided type.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <param name="gtype">The <see cref="T:GLib.GType" /> to register with the GLib type system.</param>
         <returns>a <see cref="T:GLib.Object" /></returns>
-        <remarks>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.
+</para>
+          <para>
+    This is typically used to construct a new object that must be registered with the C-based GObject type system.  An <see cref="T:GLib.GType" /> is usually registered from the static constructor for the class.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TypeName">
@@ -335,10 +341,10 @@
         <Parameter Name="vals" Type="GLib.Value[]" />
       </Parameters>
       <Docs>
-        <summary>Creates the GObject underlying a managed <see cref="T:GLib.Object"/> subclass</summary>
+        <summary>Creates the GObject underlying a managed <see cref="T:GLib.Object" /> subclass</summary>
         <param name="names">an array of (GObject) property names</param>
-        <param name="vals">the values for the properties identified by <paramref name="names"/></param>
-        <remarks>This is the method used by managed <see cref="T:GLib.Object"/> subclasses (as opposed to classes that are just wrappers around C-based objects) to create their underlying GObject. It will be invoked for you automatically by when you chain to your subclass's base class constructor.</remarks>
+        <param name="vals">the values for the properties identified by <paramref name="names" /></param>
+        <remarks>This is the method used by managed <see cref="T:GLib.Object" /> subclasses (as opposed to classes that are just wrappers around C-based objects) to create their underlying GObject. It will be invoked for you automatically by when you chain to your subclass's base class constructor.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProperty">
@@ -382,10 +388,17 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Constructs the object from a C-based pointer to the GLib object.</summary>
+        <param name="raw">The pointer to the native C object.</param>
         <returns>a <see cref="T:GLib.Object" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+This constructor is used to associate a C-based GLib object with its equivalent object in the managed world.   
+</para>
+          <para>
+This method is called by the generated classes by the Gtk# framework.
+</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
