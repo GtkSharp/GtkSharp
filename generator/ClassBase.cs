@@ -151,7 +151,7 @@ namespace GtkSharp.Generation {
 				if (prop.Validate ())
 					prop.Generate (sw);
 				else
-					Console.WriteLine(" in Object " + Name);
+					Console.WriteLine(" in Object " + QualifiedName);
 			}
 		}
 
@@ -164,7 +164,7 @@ namespace GtkSharp.Generation {
 				if (sig.Validate ())
 					sig.Generate (sw, implementor);
 				else
-					Console.WriteLine(" in Object " + Name);
+					Console.WriteLine(" in Object " + QualifiedName);
 			}
 		}
 
@@ -216,7 +216,7 @@ namespace GtkSharp.Generation {
 					}
 				}
 				else
-					Console.WriteLine(" in Object " + Name);
+					Console.WriteLine(" in Object " + QualifiedName);
 			}
 		}
 
@@ -323,7 +323,7 @@ namespace GtkSharp.Generation {
 							has_preferred = true;
 					}
 					else
-						Console.WriteLine(" in Object " + Name);
+						Console.WriteLine(" in Object " + QualifiedName);
 				}
 				
 				if (!has_preferred && ctors.Count > 0)
