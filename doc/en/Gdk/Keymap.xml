@@ -1,14 +1,22 @@
 <Type Name="Keymap" FullName="Gdk.Keymap">
-  <TypeSignature Language="C#" Value="public class Keymap : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Keymap : GLib.Object, IWrapper, IDisposable" Maintainer="ct" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Not thread safe</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Object for keyboard code manipulation</summary>
+    <remarks>
+    <para>
+    Defines translations from keyboard states to a `keyval`. Two phase translation: determine keyboard group and level 
+    for keyboard state, then lookup the keycode/group/level triplet in the keymap and get the corresponding keyval.
+    Keycode is the hardware/keyboard code for that key. Keygroup is used for language and horizontal tracking [ "group 1" is english, 
+    "group 2" is hebrew]. Keylevel is used to track letter case/alternate representation and vertical movement [ level 0 is "a", 
+    level 1 is "A" ; alternately, level 0 is "1" and level 1 is "!" ].
+    </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -35,12 +43,21 @@
         <Parameter Name="n_keys" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="keyval">To be added: an object of type 'uint'</param>
-        <param name="keys">To be added: an object of type 'Gdk.KeymapKey'</param>
-        <param name="n_keys">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Gets a list of keycode/group/level combinations that generate a `keyval`. 
+        The returned list is stored in the `Gdk.KeymapKey keys` parameter/reference. 
+        `uint keyval` is the final value for the combinations being collected.
+        `int n_keys` is the total number of combinations found and returned in `Gdk.KeymapKey keys`.
+        Level determining the top/bottom symbol and group determining the left/right symbol. 
+        On US keyboards, shift changes level and there are no groups. Group can determine language mode, for example, Hebrew/English.
+        </summary>
+        <param name="keyval">An object of type 'uint', such as GDK_a, GDK_up, GDK_RETURN, etc.</param>
+        <param name="keys">An object of type 'Gdk.KeymapKey', the list of key sequences.</param>
+        <param name="n_keys">An object of type 'int', number of elements returned.</param>
+        <returns>An object of type 'bool', returns true if keys were found and returned.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEntriesForKeycode">
@@ -56,13 +73,18 @@
         <Parameter Name="n_entries" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hardware_keycode">To be added: an object of type 'uint'</param>
-        <param name="keys">To be added: an object of type 'Gdk.KeymapKey'</param>
-        <param name="keyvals">To be added: an object of type 'uint'</param>
-        <param name="n_entries">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Stores in `Gdk.KeymapKey keys` a reference to a list of the keys bound to `hardware_keycode`. The nth Gdk.KeymapKey in `keys` is associated
+        with the nth keyval in `keyvals`. When a keycode is pressed by the user, the keyval from `keys` is selected.
+        </summary>
+        <param name="hardware_keycode">An object of type 'uint', a keyboard code</param>
+        <param name="keys">An object of type 'Gdk.KeymapKey', return reference for the list of keys</param>
+        <param name="keyvals">An object of type 'uint', return reference for the list of corresponding keyvals for `keys`</param>
+        <param name="n_entries">An object of type 'int', number of values stored in `keys` and `keyvals`</param>
+        <returns>An object of type 'bool', true if entries were found.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LookupKey">
@@ -75,10 +97,14 @@
         <Parameter Name="key" Type="Gdk.KeymapKey" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="key">To be added: an object of type 'Gdk.KeymapKey'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Looks up a keyval mapped to a keycode/group/level triplet. If no keyval is bound to `key`, the method returns 0.
+        </summary>
+        <param name="key">An object of type 'Gdk.KeymapKey', initalized keycode/group/level triplet.</param>
+        <returns>An object of type 'uint', a keyval or 0 if none was found.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TranslateKeyboardState">
@@ -97,16 +123,21 @@
         <Parameter Name="consumed_modifiers" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hardware_keycode">To be added: an object of type 'uint'</param>
-        <param name="state">To be added: an object of type 'Gdk.ModifierType'</param>
-        <param name="group">To be added: an object of type 'int'</param>
-        <param name="keyval">To be added: an object of type 'uint'</param>
-        <param name="effective_group">To be added: an object of type 'int'</param>
-        <param name="level">To be added: an object of type 'int'</param>
-        <param name="consumed_modifiers">To be added: an object of type 'Gdk.ModifierType'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Translates the contents of a Gdk.KeymapKey into a keyval/group/level. Modifiers affecting the translation are returned 
+        in `consumed_modifiers`. `effective_group` is the group used in translation. Key level is determined by `state`.
+        </summary>
+        <param name="hardware_keycode">An object of type 'uint', a keyboard code.</param>
+        <param name="state">An object of type 'Gdk.ModifierType', a modifier state.</param>
+        <param name="group">An object of type 'int', active keyboard group.</param>
+        <param name="keyval">An object of type 'uint', return reference for `keyval`.</param>
+        <param name="effective_group">An object of type 'int', return reference for `effective group`.</param>
+        <param name="level">An object of type 'int', return reference for the new level.</param>
+        <param name="consumed_modifiers">An object of type 'Gdk.ModifierType', return reference for modifiers used to determine group/level.</param>
+        <returns>An object of type 'bool', return `true` if keys were found and returned.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -117,8 +148,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+        To be added
+        </summary>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -129,10 +164,14 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Keymap'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Creates a Keymap based upon the GLib type.
+        </summary>
+        <param name="gtype">An object of type 'uint', the GLib type.</param>
+        <returns>An object of type 'Gdk.Keymap', and gtype.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -143,10 +182,15 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gdk.Keymap'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        This is an internal constructor, and should not be used by
+        user code. 
+        </summary>
+        <param name="raw">An object of type 'IntPtr', pointer to a C object.</param>
+        <returns>An object of type 'Gdk.Keymap'</returns>
+        <remarks>
+        Wrapper for the C object.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -155,9 +199,11 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Keymap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>An object of type 'Gdk.Keymap'</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -191,9 +237,13 @@
         <ReturnType>Pango.Direction</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Pango.Direction'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Member that represents the current direction of the keymap.
+        </summary>
+        <returns>An object of type 'Pango.Direction', current keymap direction.</returns>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DirectionChanged">
@@ -202,8 +252,12 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+        An event handler that fires when the direction of a keymap has been changed.
+        </summary>
+        <remarks>
+        None
+        </remarks>
       </Docs>
     </Member>
   </Members>
