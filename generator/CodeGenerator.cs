@@ -29,6 +29,7 @@ namespace GtkSharp.Generation {
 				gen.Generate (table);
 			}
 
+			Statistics.Report();
 			return 0;
 		}
 

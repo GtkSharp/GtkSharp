@@ -62,6 +62,7 @@ namespace GtkSharp.Generation {
 				call = "(" + call + ")";
 			} else {
 				Console.Write("ctor ");
+				Statistics.ThrottledCount++;
 				return false;       	
 			}
 			
@@ -99,6 +100,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			
+			Statistics.CtorCount++;
 			return true;
 		}
 
@@ -117,6 +119,7 @@ namespace GtkSharp.Generation {
 			
 			if (cs_type == "") {
 				Console.WriteLine ("Field has unknown Type {0}", c_type);
+				Statistics.ThrottledCount++;
 				return false;
 			}
 			
@@ -146,12 +149,14 @@ namespace GtkSharp.Generation {
 				call = "(Handle, " + call + ")";
 			} else {
 				Console.Write("method ");
+				Statistics.ThrottledCount++;
 				return false;       	
 			}
 			
 			XmlElement ret_elem = method["return-type"];
 			if (ret_elem == null) {
 				Console.Write("Missing return type in method ");
+				Statistics.ThrottledCount++;
 				return false;
 			}
 			
@@ -161,6 +166,7 @@ namespace GtkSharp.Generation {
 			String s_ret = table.GetCSType(rettype);
 			if (m_ret == "" || s_ret == "") {
 				Console.Write("rettype: " + rettype + " method ");
+				Statistics.ThrottledCount++;
 				return false;
 			}
 			
@@ -184,6 +190,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			
+			Statistics.MethodCount++;
 			return true;
 		}
 

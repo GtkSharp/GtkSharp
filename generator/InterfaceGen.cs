@@ -95,6 +95,7 @@ namespace GtkSharp.Generation {
 			
 			sw.Flush();
 			sw.Close();
+			Statistics.IFaceCount++;
 		}
 		
 	}

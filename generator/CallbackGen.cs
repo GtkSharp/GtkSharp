@@ -86,13 +86,14 @@ namespace GtkSharp.Generation {
 				if (node.Name != "member") {
 					continue;
 				}
-				//FIXME: Generate the methods.
+				//FIXME: Generate the method.
 				XmlElement member = (XmlElement) node;
 			}
 			
 			sw.WriteLine ("}");
 			sw.Flush();
 			sw.Close();
+			Statistics.CBCount++;
 		}
 		
 	}

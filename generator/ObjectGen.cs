@@ -80,12 +80,14 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "field":
+					Statistics.IgnoreCount++;
 					//if (!GenField(member, table, sw)) {
 					//	Console.WriteLine("in object " + CName);
 					//}
 					break;
 					
 				case "callback":
+					Statistics.IgnoreCount++;
 					break;
 					
 				case "constructor":
@@ -150,6 +152,7 @@ namespace GtkSharp.Generation {
 			
 			sw.Flush();
 			sw.Close();
+			Statistics.ObjectCount++;
 		}
 		
 		public bool GenProperty (XmlElement prop, SymbolTable table, StreamWriter sw, out String name)
@@ -174,6 +177,7 @@ namespace GtkSharp.Generation {
 			} else if (table.IsInterface(c_type)) {
 				// FIXME: Handle interface props properly.
 				Console.Write("Interface property detected ");
+				Statistics.ThrottledCount++;
 				return true;
 			} else {
 				m_type = table.GetMarshalType(c_type);
@@ -181,6 +185,7 @@ namespace GtkSharp.Generation {
 			
 			if ((cs_type == "") || (m_type == "")) {
 				Console.Write("Property has unknown Type {0} ", c_type);
+				Statistics.ThrottledCount++;
 				return false;
 			}
 			
@@ -210,6 +215,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			
+			Statistics.PropCount++;
 			return true;
 		}
 
@@ -220,6 +226,7 @@ namespace GtkSharp.Generation {
 
 			String marsh = SignalHandler.GetName(sig, table);
 			if (marsh == "") {
+				Statistics.ThrottledCount++;
 				return false;
 			}
 			
@@ -245,6 +252,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			
+			Statistics.SignalCount++;
 			return true;
 		}
 	}

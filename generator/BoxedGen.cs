@@ -63,16 +63,20 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "field":
+					Statistics.IgnoreCount++;
 					// GenField(member, table, sw);
 					break;
 					
 				case "callback":
+					Statistics.IgnoreCount++;
 					break;
 					
 				case "constructor":
+					Statistics.IgnoreCount++;
 					break;
 					
 				case "method":
+					Statistics.IgnoreCount++;
 					break;
 					
 				default:
@@ -87,6 +91,7 @@ namespace GtkSharp.Generation {
 			
 			sw.Flush();
 			sw.Close();
+			Statistics.BoxedCount++;
 		}		
 	}
 }
