@@ -50,8 +50,8 @@ treeviewdemo.exe: TreeViewDemo.cs
 glade-viewer.exe: GladeViewer.cs
 	$(MCS) --unsafe -o glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs
 
-glade-test.exe: GladeTest.cs
-	$(MCS) --unsafe -o glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
+glade-test.exe: GladeTest.cs test.glade
+	$(MCS) --unsafe -resource:test.glade -o glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
 
 clean:
 	rm -f *.exe

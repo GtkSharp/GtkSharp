@@ -45,6 +45,41 @@
 			return ret;
 		}
 
+		/* a constructor that reads the XML from a Stream */
+
+		[DllImport("glade-2.0")]
+		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, string root, string domain);
+
+		/// <summary>Creates a Glade.XML object from a Stream</sumary>
+		/// <remarks>Reads the contents of the stream and parses it. It must be in 
+		/// correct Glade format</remarks>
+		public XML (System.IO.Stream s, string root, string domain)
+		{
+			int size = (int) s.Length;
+			byte[] buffer = new byte[size];
+			s.Read (buffer, 0, size);
+			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
+		}
+
+		/// <summary>Creates a Glade.XML object from a resource</sumary>
+		/// <remarks>Reads the contents of the resource in the
+		/// given assembly and parses it. If the assembly is null,
+		/// the current assembly will be used. It must be in
+		/// correct Glade format</remarks>
+		public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain)
+		{
+			if (assembly == null)
+			{
+				assembly = System.Reflection.Assembly.GetCallingAssembly ();
+			}
+			System.IO.Stream s = assembly.GetManifestResourceStream (resource_name);
+			int size = (int) s.Length;
+			byte[] buffer = new byte[size];
+			s.Read (buffer, 0, size);
+			s.Close ();
+			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
+		}
+
 		/* signal autoconnection using reflection */
 
 		/// <summary>Automatically connect signals</summary>

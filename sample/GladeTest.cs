@@ -11,6 +11,8 @@ namespace GladeSamples {
 	using Gnome;
 	using Glade;
 	using GtkSharp;
+	using System.IO;
+	using System.Reflection;
 
 	public class GladeTest : Program
 	{
@@ -21,9 +23,12 @@ namespace GladeSamples {
 		public GladeTest (string[] args, params object[] props) 
 			: base ("GladeTest", "0.1", Modules.UI, args, props)
 		{
-			Glade.XML gxml = new Glade.XML ("test.glade", "main_window", null);
+			/* Note that we load the XML info from the assembly instead of using 
+			   an external file. You don't have to distribute the .glade file if 
+			   you don't want */
+			Glade.XML gxml = new Glade.XML (null, "test.glade", "main_window", null);
 			gxml.Autoconnect (this);
-		}
+       		}
 
 		public void OnWindowDeleteEvent (object o, DeleteEventArgs args) 
 		{
