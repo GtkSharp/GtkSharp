@@ -70,6 +70,9 @@
 		/// correct Glade format</remarks>
 		public XML (System.IO.Stream s, string root, string domain)
 		{
+			if (s == null)
+				throw new ArgumentNullException ("s");
+
 			int size = (int) s.Length;
 			byte[] buffer = new byte[size];
 			s.Read (buffer, 0, size);
@@ -84,10 +87,13 @@
 		public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain)
 		{
 			if (assembly == null)
-			{
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
-			}
+
 			System.IO.Stream s = assembly.GetManifestResourceStream (resource_name);
+			if (s == null)
+				throw new ArgumentException ("Cannot get resource file '" + resource_name + "'",
+							     "resource_name");
+
 			int size = (int) s.Length;
 			byte[] buffer = new byte[size];
 			s.Read (buffer, 0, size);
