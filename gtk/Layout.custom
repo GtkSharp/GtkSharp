@@ -1,0 +1,27 @@
+//
+// Gtk.Widget.custom - Gtk Widget class customizations
+//
+// Author: Ettore Perazzoli <ettore@perazzoli.org>
+// 	   Rachel Hestilow <hestilow@ximian.com>
+//
+// Copyright (C) 2003 Ettore Perazzoli, Rachel Hestilow
+//
+// This code is inserted after the automatically generated code.
+//
+		
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_layout_get_bin_window (IntPtr layout);
+
+public Gdk.Window BinWindow {
+	get {
+		IntPtr raw = gtksharp_gtk_layout_get_bin_window (Handle);
+
+		if (raw != (IntPtr) 0) {
+	 		Gdk.Window ret = (Gdk.Window) GLib.Object.GetObject (raw);
+			ret.Ref ();
+			return ret;
+		}
+
+		return null;
+	}
+}

@@ -1,23 +1,24 @@
 lib_LTLIBRARIES = libgtksharpglue.la
 
-BASESOURCES = \
+BASESOURCES = 			\
 	adjustment.c		\
-	value.c			\
-	fileselection.c		\
+	clipboard.c		\
+	colorseldialog.c        \
 	combo.c			\
 	dialog.c		\
-	colorseldialog.c        \
 	error.c			\
 	event.c			\
-	slist.c			\
+	fileselection.c		\
+	layout.c		\
+	list.c			\
 	object.c		\
 	paned.c			\
+	slist.c			\
 	style.c			\
 	type.c			\
-	widget.c		\
-	list.c			\
-	clipboard.c		\
-	#
+	value.c			\
+	widget.c
+
 
 GNOMESOURCES = \
 	canvasitem.c \
