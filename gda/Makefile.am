@@ -40,7 +40,7 @@ EXTRA_DIST =			\
 	$(sources)		\
 	gda-sharp.pc.in
 
-$(API): $(srcdir)/$(srcdir)/$(METADATA)
+$(API): $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
