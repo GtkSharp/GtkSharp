@@ -157,15 +157,74 @@ public class MenuApp {
         <param name="activate_time">The time at which the activation event occurred.</param>
         <remarks>
           <para>
-          Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, <paramref name="func" /> and <paramref name="data" /> parameters. The default menu positioning function will position the menu at the current mouse cursor position.
+          Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, and <paramref name="func" /> parameters, and <see cref="F:System.IntPtr.Zero" /> for <paramref name="data" /> parameter. The default menu positioning function will position the menu at the current mouse cursor position.
          </para>
           <para>
           The <paramref name="button" /> parameter should be the mouse button pressed to initiate the menu popup. If the menu popup was initiated by something other than a mouse button press, such as a mouse button release or a keypress, button should be zero(0).
          </para>
           <para>
-          The <paramref name="activate_time" /> parameter should be the time stamp of the event that initiated the popup. If such an event is not available, use <see cref="P:Gtk.Application.CurrentEvent" /> instead.
+          The <paramref name="activate_time" /> parameter should be the time stamp of the event that initiated the popup. If such an event is not available, use <see cref="P:Gtk.Global.CurrentEventTime" /> instead.
          </para>
         </remarks>
+        <example>
+          <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class PopupSample
+{
+	Window win;
+	Menu menu;
+	
+	static void Main (string[] args)
+	{
+		new PopupSample (args);
+	}
+	
+	PopupSample (string[] args)
+	{
+		Application.Init ();
+		
+		win = new Window ("Menu.Popup sample");
+		win.SetDefaultSize (400, 300);
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		
+		menu = new Menu ();
+		MenuItem hello = new MenuItem ("Hello");
+		hello.Activated += new EventHandler (OnHelloActivated);
+		hello.Show ();
+		menu.Append (hello);
+		
+		Label label = new Label ("Right Click me");
+		EventBox eventbox = new EventBox ();
+		eventbox.ButtonPressEvent += new ButtonPressEventHandler (OnEventBoxPressed);
+		eventbox.Add (label);
+		
+		win.Add (eventbox);
+		
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	private void OnEventBoxPressed (object o, ButtonPressEventArgs args)
+	{
+		if (args.Event.button == 3)
+			menu.Popup (null, null, null, IntPtr.Zero, 3, Gtk.Global.CurrentEventTime);
+	}
+	
+	private void OnHelloActivated (object o, EventArgs args)
+	{
+		Console.WriteLine ("Hello Activated");
+	}
+	
+	private void OnWinDelete (object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+          </code>
+        </example>
       </Docs>
     </Member>
     <Member MemberName="Reposition">

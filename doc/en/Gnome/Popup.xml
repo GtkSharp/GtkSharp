@@ -1,5 +1,5 @@
 <Type Name="Popup" FullName="Gnome.Popup">
-  <TypeSignature Language="C#" Value="public class Popup" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Popup" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey />
@@ -9,8 +9,62 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Create and display popup and context menus.</summary>
+    <remarks></remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+using Gnome;
+
+class PopupSample
+{
+	Program program;
+	
+	static void Main (string[] args)
+	{
+		new PopupSample (args);
+	}
+	
+	PopupSample (string[] args)
+	{
+		program = new Program ("PopupSample", "0.0", Modules.UI, args);
+		
+		App app = new App ("PopupSample", "Gnome.Popup sample");
+		app.SetDefaultSize (400, 300);
+		app.DeleteEvent += new DeleteEventHandler (OnAppDelete);
+		
+		Menu menu = new Menu ();
+		MenuItem hello = new MenuItem ("Hello");
+		hello.Activated += new EventHandler (OnHelloActivated);
+		hello.Show ();
+		menu.Append (hello);
+		
+		Label label = new Label ("Right Click me");
+		EventBox eventbox = new EventBox ();
+		eventbox.Add (label);
+		
+		app.Contents = eventbox;
+		
+		Popup.MenuAttach (menu, eventbox, IntPtr.Zero);
+		
+		app.ShowAll ();
+		program.Run ();
+	}
+	
+	private void OnHelloActivated (object o, EventArgs args)
+	{
+		Console.WriteLine ("Hello Activated");
+	}
+	
+	private void OnAppDelete (object o, DeleteEventArgs args)
+	{
+		program.Quit ();
+	}
+}
+	  </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -28,10 +82,10 @@
         <Parameter Name="uiinfo" Type="Gnome.UIInfo" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a popup menu out of the specified <paramref name="uiinfo" /> array.</summary>
         <param name="uiinfo">a <see cref="T:Gnome.UIInfo" /></param>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This method behaves just like <see cref="M:Gnome.Popup.MenuNewWithAccelgroup()" />, except that it creates an <see cref="T:Gtk.AccelGroup" /> for you and attaches it to the menu object. Use <see cref="M:Gnome.Popup.MenuGetAccelGroup(Gtk.Menu)" /> to get the <see cref="T:Gtk.AccelGroup" /> that is created.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuDoPopup">
@@ -49,14 +103,18 @@
         <Parameter Name="for_widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>You can use this function to pop up a menu.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
         <param name="pos_data">a <see cref="T:System.IntPtr" /></param>
         <param name="evnt">a <see cref="T:Gdk.EventButton" /></param>
         <param name="user_data">a <see cref="T:System.IntPtr" /></param>
         <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>When a menu item callback is invoked, the specified user_data will be passed to it.</para>
+          <para>The <paramref name="pos_func" /> and <paramref name="pos_data" /> parameters are the same as for <see cref="M:Gtk.Menu.Popup(Gtk.Widget,Gtk.MenuPositionFunc,System.IntPtr,Gdk.EventButton,System.IntPtr,Gtk.Widget)" />, i.e. you can use them to specify a function to position the menu explicitly. If you want the default position (near the mouse), pass <see langword="null" /> for these parameters.</para>
+          <para>The event parameter is needed to figure out the mouse button that activated the menu and the time at which this happened. If you pass in <see langword="null" />, then no button and the current time will be used as defaults.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuNewWithAccelgroup">
@@ -70,11 +128,11 @@
         <Parameter Name="accelgroup" Type="Gtk.AccelGroup" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a popup menu out of the specified <paramref name="uiinfo" /> array.</summary>
         <param name="uiinfo">a <see cref="T:Gnome.UIInfo" /></param>
         <param name="accelgroup">a <see cref="T:Gtk.AccelGroup" /></param>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Use <see cref="M:Gnome.Popup.MenuDoPopup(Gtk.Widget,Gtk.MenuPositionFunc, System.IntPtr,Gdk.EventButton,System.IntPtr,Gtk.Widget)" /> to pop the menu up, or attach it to a window with <see cref="M:Gnome.Popup.MenuAttach(Gtk.Widget,Gtk.Widget,System.IntPtr)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuGetAccelGroup">
@@ -87,10 +145,10 @@
         <Parameter Name="menu" Type="Gtk.Menu" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This function is used to retrieve the accelgroup that was created by <see cref="M:Gnome.Popup.MenuNew(Gnome.UIInfo)" />.</summary>
         <param name="menu">a <see cref="T:Gtk.Menu" /></param>
         <returns>a <see cref="T:Gtk.AccelGroup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If you want to specify the accelgroup that the popup menu accelerators use, then use <see cref="M:Gnome.Popup.MenuNewWithAccelgroup(Gnome.UIInfo,Gtk.AccelGroup)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuAppend">
@@ -104,10 +162,10 @@
         <Parameter Name="uiinfo" Type="Gnome.UIInfo" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Appends the menu items in <paramref name="uiinfo" /> to the <paramref name="popup" /> menu.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="uiinfo">a <see cref="T:Gnome.UIInfo" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuAttach">
@@ -122,11 +180,16 @@
         <Parameter Name="user_data" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Attaches the specified <paramref name="popup" /> menu to the specified <paramref name="widget" />.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <param name="user_data">a <see cref="T:System.IntPtr" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>The menu can then be activated by pressing mouse button 3 over the widget. When a menu item callback is invoked, the specified <paramref name="user_data" /> will be passed to it.</para>
+          <para>This function requires the widget to have its own window (i.e. <see cref="F:Gtk.WidgetFlags.NoWindow" />), This function will try to set the <see cref="F:Gdk.EventMask.ButtonPressMask" /> flag on the event mask for the widget if it does not have it yet.  If this is the case, then the widget must not be realized for it to work.</para>
+          <para>The popup menu can be attached to different widgets at the same time. A reference count is kept on the popup menu; when all the widgets it is attached to are destroyed, the popup menu will be destroyed as well.</para>
+          <para>Under the current implementation, setting a popup menu for a <see cref="F:Gtk.WidgetFlags.NoWindow" /> widget and then reparenting that widget will cause Bad Things to happen.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuDoPopupModal">
@@ -144,7 +207,7 @@
         <Parameter Name="for_widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>You can use this function to pop up a menu modally.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
         <param name="pos_data">a <see cref="T:System.IntPtr" /></param>
@@ -152,7 +215,7 @@
         <param name="user_data">a <see cref="T:System.IntPtr" /></param>
         <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Same as <see cref="M:Gnome.Popup.MenuDoPopup()" />, but modal.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -161,9 +224,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new <see cref="T:Gnome.Popup" /> instance.</summary>
         <returns>a <see cref="T:Gnome.Popup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The default constructor for <see cref="T:Gnome.Popup" />.</remarks>
       </Docs>
     </Member>
   </Members>
