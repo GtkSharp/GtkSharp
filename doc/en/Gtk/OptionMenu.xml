@@ -1,5 +1,5 @@
 <Type Name="OptionMenu" FullName="Gtk.OptionMenu">
-  <TypeSignature Language="C#" Value="public class OptionMenu : Gtk.Button, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class OptionMenu : Gtk.Button, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,77 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A widget used to choose from a list of valid choices.</summary>
+    <remarks>
+	  <para>
+		A <see cref="T:Gtk.OptionMenu"/> is a widget that allows the user to choose from a list of valid choices.
+		The <see cref="T:Gtk.OptionMenu"/> displays the selected choice.
+		When activated the <see cref="T:Gtk.OptionMenu"/> displays a popup <see cref="T:Gtk.Menu"/> which allows the user to make a new choice.    
+	  </para>
+	  <para>
+	    Using a <see cref="T:Gtk.OptionMenu"/> is simple; build a <see cref="T:Gtk.Menu"/>, by calling <see cref="C:Gtk.Menu()"/>, then appending <see cref="T:Gtk.MenuItem"/>s to it with <see cref="M:Gtk.MenuShell.Append()"/>.
+		Set that menu on the <see cref="T:Gtk.OptionMenu"/> with <see cref="P:Gtk.OptionMenu.Menu"/>.
+		Set the selected <see cref="T:Gtk.MenuItem"/> with <see cref="M:Gtk.OptionMenu.SetHistory(System.UInt32)"/>; connect to the event <see cref="E:Gtk.OptionMenu.Changed"/>; when the <see cref="E:Gtk.OptionMenu.Changed"/> event occurs, check the new selected <see cref="T:Gtk.MenuItem"/> with <see cref="P:Gtk.OptionMenu.History"/>.
+	  </para>
+	</remarks>
+	<example>
+	  <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class OptionMenuSample
+{
+	OptionMenu opt;
+	
+	static void Main ()
+	{
+		new OptionMenuSample ();
+	}
+	
+	OptionMenuSample ()
+	{
+		Application.Init ();
+		
+		Window win = new Window ("OptionMenuSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		
+		// set up the OptionMenu
+		opt = new OptionMenu ();
+		opt.Changed += new EventHandler (OnOptionChanged);
+		Menu m = new Menu ();
+		MenuItem miOne = new MenuItem ("One");
+		m.Append (miOne);
+		MenuItem miTwo = new MenuItem ("Two");
+		m.Append (miTwo);
+		MenuItem miThree = new MenuItem ("Three");
+		m.Append (miThree);
+		
+		// add children widgets to their parents
+		opt.Menu = m;
+		win.Add (opt);
+		
+		
+		// set the OptionMenu to a value
+		opt.SetHistory (2);
+		
+		win.ShowAll ();
+		
+		Application.Run ();
+	}
+	
+	void OnOptionChanged (object o, EventArgs args)
+	{
+		Console.WriteLine (opt.History);
+	}
+	
+	void OnWinDelete (object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+	  </code>
+	</example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Button</BaseTypeName>
@@ -37,8 +106,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes the menu from the <see cref="T:Gtk.OptionMenu"/>.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -63,7 +132,7 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of OptionMenu, wrapping the C object.</returns>
+        <returns>An instance of <see cref="T:Gtk.OptionMenu"/>, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -75,9 +144,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.OptionMenu'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gtk.OptionMenu"/></summary>
+        <returns>an object of type <see cref="T:Gtk.OptionMenu"/></returns>
+        <remarks>This is the default constructor for <see cref="T:Gtk.OptionMenu"/></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -87,8 +156,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.OptionMenu</summary>
-        <returns>The GLib Type for the Gtk.OptionMenu class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.OptionMenu"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.OptionMenu"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -99,9 +168,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the index of the currently selected <see cref="T:Gtk.MenuItem"/>.</summary>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
+        <remarks>The <see cref="T:Gtk.MenuItem"/>s are numbered from top to bottom, starting with 0.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Menu">
@@ -114,10 +183,10 @@
         <Parameter Name="value" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>The menu of options.</summary>
+        <param name="value">an object of type <see cref="T:Gtk.Widget"/></param>
+        <returns>an object of type <see cref="T:Gtk.Widget"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -126,8 +195,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the <see cref="T:Gtk.OptionMenu"/> selection is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -156,9 +225,9 @@
         <Parameter Name="index_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Selects the menu item specified by <paramref name="index_"/> making it the newly selected value for the <see cref="T:Gtk.OptionMenu" />.</summary>
         <param name="index_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
   </Members>
