@@ -1,5 +1,5 @@
 <Type Name="Window" FullName="Gtk.Window">
-  <TypeSignature Language="C#" Value="public class Window : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Window : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Toplevel widget that can contain other widgets</summary>
-    <remarks>Toplevel widget that can contain other widgets</remarks>
+    <summary>Toplevel widget which can contain other widgets.</summary>
+    <remarks>Toplevel widget which can contain other widgets.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -37,9 +37,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>an object of type <see cref="T:GLib.List"/></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns a list of all existing toplevel windows.</summary>
+        <returns>List of toplevel widgets.</returns>
+        <remarks>
+         <para>
+          The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, <see langword="null" />) first, and then unref all the widgets afterwards.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginMoveDrag">
@@ -55,12 +59,16 @@
         <Parameter Name="timestamp" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="button">an object of type <see cref="T:System.Int32"/></param>
-        <param name="root_x">an object of type <see cref="T:System.Int32"/></param>
-        <param name="root_y">an object of type <see cref="T:System.Int32"/></param>
-        <param name="timestamp">an object of type <see cref="T:System.UInt32"/></param>
-        <remarks>To be added</remarks>
+        <summary>Starts moving a window.</summary>
+        <param name="button">Mouse button that initiated the drag.</param>
+        <param name="root_x">X position where the user clicked to initiate the drag, in root window coordinates.</param>
+        <param name="root_y">Y position where the user clicked to initiate the drag.</param>
+        <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
+        <remarks>
+         <para>
+          This method is used if an application has window movement grips. When GDK can support it, the window movement will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window movement, potentially not all that well, depending on the windowing system.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFrameDimensions">
@@ -76,12 +84,19 @@
         <Parameter Name="bottom" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="left">an object of type <see cref="T:System.Int32"/></param>
-        <param name="top">an object of type <see cref="T:System.Int32"/></param>
-        <param name="right">an object of type <see cref="T:System.Int32"/></param>
-        <param name="bottom">an object of type <see cref="T:System.Int32"/></param>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the dimensions of the frame window for this toplevel.</summary>
+        <param name="left">Location to store the width of the frame at the left, or <see langword="null" />.</param>
+        <param name="top">Location to store the height of the frame at the top, or <see langword="null" />.</param>
+        <param name="right">Location to store the width of the frame at the returns, or <see langword="null" />.</param>
+        <param name="bottom">Location to store the height of the frame at the bottom, or <see langword="null" />.</param>
+        <remarks>
+         <para>
+            It will not return the size of the window border drawn by the window manager, which is the normal case when using a windowing system. See <see cref="M:Gdk.Window.GetFrameExtents" /> to get the standard window border extents.) See also <see cref="P:Gtk.Window.HasFrame" />, <see cref="M:Gtk.Window.SetFrameDimensions" />.
+         </para>
+         <para>
+          Note: this is a special-purpose function intended for the framebuffer port; see <see cref="M:Gtk.Window.SetFrameDimensions" />.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Iconify">
@@ -92,8 +107,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Asks to iconify (i.e. minimize) the specified <paramref name="window" />.</summary>
+        <remarks>
+         <para>
+          Note that you shouldn't assume the window is definitely iconified afterward, because other entities (e.g. the user or window manager) could deiconify it again, or there may not be a window manager in which case iconification isn't possible, etc. But normally the window will end up iconified. Just do not write code that crashes if not.
+         </para>
+         <para>
+          You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> signal on <see cref="T:Gtk.Widget" />.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Unstick">
@@ -104,8 +126,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Asks to unstick window, which means that it will appear on only one of the user's desktops.</summary>
+        <remarks>
+         <para>
+          Note that you shouldn't assume the window is definitely unstuck afterward, because other entities (e.g. the user or window manager) could stick it again. But normally the window will end up stuck. Just do not write code that crashes if not.
+         </para>
+         <para>
+          You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> signal on <see cref="T:Gtk.Widget" />.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Unmaximize">
@@ -116,8 +145,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Asks to unmaximize <paramref name="window" />.</summary>
+        <remarks>
+         <para>
+          Note that you shouldn't assume the window is definitely unmaximized afterward, because other entities (e.g. the user or window manager) could maximize it again, and not all window managers honor requests to unmaximize. But normally the window will end up unmaximized. Just don't write code that crashes if not.
+         </para>
+         <para>
+          You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> signal on <see cref="T:Gtk.Widget" />.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSize">
@@ -131,10 +167,17 @@
         <Parameter Name="height" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">an object of type <see cref="T:System.Int32"/></param>
-        <param name="height">an object of type <see cref="T:System.Int32"/></param>
-        <remarks>To be added</remarks>
+        <summary>Obtains the current size of <paramref name="window" />.</summary>
+        <param name="width">Return location for width, or <see langword="null" />.</param>
+        <param name="height">Return location for height, or <see langword="null" />.</param>
+        <remarks>
+         <para>
+          If window is not onscreen, it returns the size GTK+ will suggest to the window manager for the initial window size (but this is not reliably the same as the size the window manager will actually select). The size obtained by <see cref="M:Gtk.Window.GetSize" /> is the last size received in a GdkEventConfigure, that is, GTK+ uses its locally-stored size, rather than querying the X server for the size. As a result, if you call <see cref="M:Gtk.Window.Resize" /> then immediately call <see cref="M:Gtk.Window.GetSize" />, the size would not have taken effect yet. After the window manager processes the resize request, GTK+ receives notification that the size has changed via a configure event, and the size of the window gets updated.
+         </para>
+         <para>
+          Note 1: Nearly any use of this function creates a race condition, because the size of the window may change between the time that you get the size and the time that you perform some action assuming that size is the current size. To avoid race conditions, connect to <see cref="F:Gtk.Widget.ConfigureEvent" /> on the window and adjust your size-dependent state to match the size delivered in the GdkEventConfigure.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDefaultSize">
@@ -148,10 +191,14 @@
         <Parameter Name="height" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">an object of type <see cref="T:System.Int32"/></param>
-        <param name="height">an object of type <see cref="T:System.Int32"/></param>
-        <remarks>To be added</remarks>
+        <summary>Gets the default size of the window.</summary>
+        <param name="width">Location to store the default width, or <see langword="null" />.</param>
+        <param name="height">Location to store the default height, or <see langword="null" />.</param>
+        <remarks>
+         <para>
+          A value of -1 for the width or height indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the window will be used.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Resize">
