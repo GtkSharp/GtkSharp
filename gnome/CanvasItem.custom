@@ -7,22 +7,53 @@
 //
 // This code is inserted after the automatically generated code.
 //
-	
+                [DllImport("gnomecanvas-2")]
+                static extern System.IntPtr gnome_canvas_item_new (IntPtr group, uint type, IntPtr null_terminator);
+                
+                [DllImport("libgobject-2.0-0.dll")]
+                static extern void g_object_ref (IntPtr raw);
+                
+                public CanvasItem (Gnome.CanvasGroup group, uint type)
+                	: base (gnome_canvas_item_new (group.Handle, type, IntPtr.Zero))
+                {
+                	g_object_ref (Handle);
+                }
+                
+                [DllImport("gtksharpglue")]
+                static extern IntPtr gtksharp_gnome_canvas_item_get_canvas (IntPtr i);
+                public Canvas Canvas {
+                	get { return GLib.Object.GetObject (gtksharp_gnome_canvas_item_get_canvas (this.Handle), false) as Canvas; }
+                }
 
-[DllImport("gnomecanvas-2")]
-static extern System.IntPtr gnome_canvas_item_new (IntPtr group, uint type, IntPtr null_terminator);
+		[DllImport("gnomecanvas-2")]
+		static extern void gnome_canvas_item_affine_relative(IntPtr raw, double[] affine);
 
-[DllImport("libgobject-2.0-0.dll")]
-static extern void g_object_ref (IntPtr raw);
+		public void AffineRelative (out double[] affine) {
+                        affine = new double [6];
+			gnome_canvas_item_affine_relative(Handle, affine);
+		}
 
-public CanvasItem (Gnome.CanvasGroup group, uint type)
-	: base (gnome_canvas_item_new (group.Handle, type, IntPtr.Zero))
-{
-	g_object_ref (Handle);
-}
+		[DllImport("gnomecanvas-2")]
+		static extern void gnome_canvas_item_affine_absolute(IntPtr raw, double[] affine);
 
-[DllImport("gtksharpglue")]
-static extern IntPtr gtksharp_gnome_canvas_item_get_canvas (IntPtr i);
-public Canvas Canvas {
-	get { return GLib.Object.GetObject (gtksharp_gnome_canvas_item_get_canvas (this.Handle), false) as Canvas; }
-}
+		public void AffineAbsolute (out double[] affine) {
+                        affine = new double [6];
+			gnome_canvas_item_affine_absolute(Handle, affine);
+		}
+
+		[DllImport("gnomecanvas-2")]
+		static extern void gnome_canvas_item_i2c_affine(IntPtr raw, double[] affine);
+
+		public void I2cAffine(out double[] affine) {
+                        affine = new double [6];
+			gnome_canvas_item_i2c_affine(Handle, affine);
+		}
+
+		[DllImport("gnomecanvas-2")]
+		static extern void gnome_canvas_item_i2w_affine(IntPtr raw, double[] affine);
+
+		public void I2wAffine(out double[] affine) {
+                        affine = new double [6];
+			gnome_canvas_item_i2w_affine(Handle, affine);
+		}
+

@@ -1,0 +1,17 @@
+//
+// Gnome.Canvas.custom - Gnome Canvas class customizations
+//
+// Author: Duncan Mak (duncan@ximian.com)
+//
+// Copyright (C) 2003 Duncan Mak
+//
+// This code is inserted after the automatically generated code.
+//
+	
+		[DllImport("gnomecanvas-2")]
+		static extern void gnome_canvas_w2c_affine(IntPtr raw, double[] affine);
+
+		public void W2cAffine(out double[] affine) {
+                        affine = new double [6];
+			gnome_canvas_w2c_affine(Handle, affine);
+		}

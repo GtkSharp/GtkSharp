@@ -1,3 +1,35 @@
+2003-07-30  Duncan Mak  <duncan@ximian.com>
+
+	* sources/Gnome.metadata:
+	(CanvasItem.SetValist):
+	(CanvasItem.Construct): Hidden, because we don't support va_list
+	params.
+
+	(CanvasItem): Hid the constructor, as each subclass has their own
+	contsructor and we don't support va_list params.
+
+	(CanvasItem.W2i):
+	(CanvasItem.I2w): Marked parameters as ref, so they can be used as
+	in/out parameters.
+
+	(Canvas.GetMiterPoints):
+	(Canvas.GetColor): Fixed return type to be 'bool' instead of 'int'.
+
+	(CanvasClipgroup.Wind): Fixed property type. It should be an
+	Art.WindRule enum, not a UInt.
+
+	(Canvas.W2cAffine):
+	(CanvasItem.AffineAbsolute):
+	(CanvasItem.AffineRelative):
+	(CanvasItem.I2wAffine):
+	(CanvasItem.I2cAffine): Hidden, use the impl. in the custom file
+	instead.
+
+	* gnome/Canvas.custom: Added for W2cAffine.	
+	* gnome/CanvasItem.custom: Reformatted. Added AffineRelative,
+	AffineAbsolute, I2wAffine, I2cAffine. These are needed because of
+	the 'const double affine[6]' parameter.
+
 2003-07-29  Duncan Mak  <duncan@ximian.com>
 
 	* sources/Gtk.metadata:

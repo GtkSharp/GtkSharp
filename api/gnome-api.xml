@@ -753,7 +753,7 @@
         <return-type type="gboolean"/>
       </method>
       <method name="GetColor" cname="gnome_canvas_get_color">
-        <return-type type="int"/>
+        <return-type type="gboolean"/>
         <parameters>
           <parameter type="const-char*" name="spec"/>
           <parameter type="GdkColor*" name="color" pass_as="out"/>
@@ -776,7 +776,7 @@
         </parameters>
       </method>
       <method name="GetMiterPoints" cname="gnome_canvas_get_miter_points" shared="true">
-        <return-type type="int"/>
+        <return-type type="gboolean"/>
         <parameters>
           <parameter type="double" name="x1"/>
           <parameter type="double" name="y1"/>
@@ -921,7 +921,7 @@
           <parameter type="int*" name="cy" pass_as="out"/>
         </parameters>
       </method>
-      <method name="W2cAffine" cname="gnome_canvas_w2c_affine">
+      <method name="W2cAffine" cname="gnome_canvas_w2c_affine" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="double" array="true" name="affine"/>
@@ -950,7 +950,7 @@
         <parameters>
           <parameter type="double" name="worldx"/>
           <parameter type="double" name="worldy"/>
-          <parameter type="double*" name="winx"/>
+          <parameter type="double*" name="winx" pass_as="out"/>
           <parameter type="double*" name="winy" pass_as="out"/>
         </parameters>
       </method>
@@ -966,7 +966,7 @@
       <field cname="wind" type="ArtWindRule"/>
       <field cname="svp" type="ArtSVP*"/>
       <property name="Path" cname="path" type="gpointer" readable="true" writeable="true"/>
-      <property name="Wind" cname="wind" type="guint" readable="true" writeable="true"/>
+      <property name="Wind" cname="wind" type="ArtWindRule" readable="true" writeable="true"/>
       <method name="GetType" cname="gnome_canvas_clipgroup_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -1001,19 +1001,19 @@
           <parameter type="GdkEvent*" name="event"/>
         </parameters>
       </signal>
-      <method name="AffineAbsolute" cname="gnome_canvas_item_affine_absolute">
+      <method name="AffineAbsolute" cname="gnome_canvas_item_affine_absolute" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="const-double" array="true" name="affine"/>
         </parameters>
       </method>
-      <method name="AffineRelative" cname="gnome_canvas_item_affine_relative">
+      <method name="AffineRelative" cname="gnome_canvas_item_affine_relative" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="const-double" array="true" name="affine"/>
         </parameters>
       </method>
-      <method name="Construct" cname="gnome_canvas_item_construct">
+      <method name="Construct" cname="gnome_canvas_item_construct" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="GnomeCanvasGroup*" name="parent"/>
@@ -1047,7 +1047,7 @@
       <method name="Hide" cname="gnome_canvas_item_hide">
         <return-type type="void"/>
       </method>
-      <method name="I2cAffine" cname="gnome_canvas_item_i2c_affine">
+      <method name="I2cAffine" cname="gnome_canvas_item_i2c_affine" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="double" array="true" name="affine"/>
@@ -1056,11 +1056,11 @@
       <method name="I2w" cname="gnome_canvas_item_i2w">
         <return-type type="void"/>
         <parameters>
-          <parameter type="double*" name="x"/>
-          <parameter type="double*" name="y"/>
+          <parameter type="double*" name="x" pass_as="ref"/>
+          <parameter type="double*" name="y" pass_as="ref"/>
         </parameters>
       </method>
-      <method name="I2wAffine" cname="gnome_canvas_item_i2w_affine">
+      <method name="I2wAffine" cname="gnome_canvas_item_i2w_affine" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="double" array="true" name="affine"/>
@@ -1124,7 +1124,7 @@
           <parameter ellipsis="true"/>
         </parameters>
       </method>
-      <method name="SetValist" cname="gnome_canvas_item_set_valist">
+      <method name="SetValist" cname="gnome_canvas_item_set_valist" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="const-gchar*" name="first_arg_name"/>
@@ -1158,8 +1158,8 @@
       <method name="W2i" cname="gnome_canvas_item_w2i">
         <return-type type="void"/>
         <parameters>
-          <parameter type="double*" name="x"/>
-          <parameter type="double*" name="y"/>
+          <parameter type="double*" name="x" pass_as="ref"/>
+          <parameter type="double*" name="y" pass_as="ref"/>
         </parameters>
       </method>
     </object>

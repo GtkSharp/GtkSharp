@@ -250,6 +250,44 @@
     </attribute>
   </data>
 </rule>
+<rule>
+  <class name="GnomeCanvas">
+    <method>W2cAffine</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>hidden</name>
+      <value>1</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GnomeCanvasItem">
+    <method>AffineRelative</method>
+    <method>AffineAbsolute</method>
+    <method>I2wAffine</method>
+    <method>I2cAffine</method>
+    <method>SetValist</method>
+    <method>Construct</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>hidden</name>
+      <value>1</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GnomeCanvasItem">
+    <constructor>gnome_canvas_item_new</constructor>
+  </class>
+  <data>
+    <attribute target="constructor">
+      <name>hidden</name>
+      <value>1</value>
+    </attribute>
+  </data>
+</rule>
 
 <!-- misc -->
 <rule>
@@ -312,6 +350,21 @@
     <attribute target="return">
       <name>element_type</name>
       <value>int</value>
+    </attribute>
+  </data>
+</rule>
+
+<!-- ref parameters -->
+<rule>
+  <class name="GnomeCanvasItem">
+    <method>W2i</method>
+    <method>I2w</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="type">double*</filter>
+      <name>pass_as</name>
+      <value>ref</value>
     </attribute>
   </data>
 </rule>
@@ -390,8 +443,6 @@
       <name>pass_as</name>
       <value>out</value>
     </attribute>
-  </data>
-  <data>
     <attribute target="param">
       <filter level="name">winy</filter>
       <name>pass_as</name>
@@ -490,4 +541,28 @@
   </data>
 </rule>
 
+<!-- fix return values -->
+<rule>
+  <class name="GnomeCanvas">
+    <method>GetMiterPoints</method>
+    <method>GetColor</method>
+  </class>
+  <data>
+    <attribute target="return">
+      <name>type</name>
+      <value>gboolean</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GnomeCanvasClipgroup">
+    <property>Wind</property>
+  </class>
+  <data>
+    <attribute target="property">
+      <name>type</name>
+      <value>ArtWindRule</value>
+    </attribute>
+  </data>
+</rule>
 </metadata>
