@@ -4,7 +4,7 @@ FILES = 		\
 
 SCHEMA = $(srcdir)/sample.schema
 RESOURCES = /resource:$(srcdir)/sample.glade
-REFERENCES = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../../atk/atk-sharp.dll /r:../../art/art-sharp.dll /r:../../gdk/gdk-sharp.dll /r:$(GCONFDIR)/GConf/gconf-sharp.dll /r:../../gtk/gtk-sharp.dll /r:../../gnome/gnome-sharp.dll /r:../../glade/glade-sharp.dll /r:$(GCONFDIR)/GConf.PropertyEditors/gconf-sharp-peditors.dll /r:System.Drawing
+REFERENCES = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../../atk/atk-sharp.dll /r:../../art/art-sharp.dll /r:../../gdk/gdk-sharp.dll /r:$(GCONFDIR)/GConf/gconf-sharp.dll /r:../../gtk/gtk-sharp.dll /r:../../gnome/gnome-sharp.dll /r:../../glade/glade-sharp.dll /r:$(GCONFDIR)/GConf.PropertyEditors/gconf-sharp-peditors.dll
 
 top_builddir=../..
 GCONFDIR=$(top_builddir)/gconf

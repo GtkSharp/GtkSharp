@@ -55,11 +55,9 @@ namespace Sample
 			gxml.Autoconnect (new X ());
 
 			Settings.Changed += new NotifyEventHandler (Changed);
-			Settings.TheColorChanged += new NotifyEventHandler (ColorChanged);
 
 			EditorShell shell = new EditorShell (gxml);
 			shell.Add (SettingKeys.Enable, "enable");
-			shell.Add (SettingKeys.TheColor, "colorpicker");
 			shell.Add (SettingKeys.TheFilename, "fileentry");
 			shell.Add (SettingKeys.TheInteger, "spinbutton_int");
 			shell.Add (SettingKeys.TheFloat, "spinbutton_float");
