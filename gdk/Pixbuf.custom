@@ -46,7 +46,7 @@
 		}
 
 		
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_scale_simple(IntPtr raw, int dest_width, int dest_height, int interp_type);
 
 		public Gdk.Pixbuf ScaleSimple(int dest_width, int dest_height, Gdk.InterpType interp_type) {
@@ -55,7 +55,7 @@
 			return ret;
 		}
 
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_composite_color_simple(IntPtr raw, int dest_width, int dest_height, int interp_type, int overall_alpha, int check_size, uint color1, uint color2);
 
 		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, uint color1, uint color2) {
@@ -64,7 +64,7 @@
 			return ret;
 		}
 
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_add_alpha(IntPtr raw, bool substitute_color, byte r, byte g, byte b);
 
 		public Gdk.Pixbuf AddAlpha(bool substitute_color, byte r, byte g, byte b) {
@@ -78,7 +78,7 @@
 // are currently miss-generated.
 //
 
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_new_from_data(
 					byte [] data, int colorspace, bool has_alpha, 
 					int bits_per_sample, int width, int height, int rowstride, 
@@ -92,7 +92,7 @@
 		}
 
 
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, byte [] data, bool copy_pixels, out IntPtr error);
 
 		public unsafe Pixbuf(byte[] data, bool copy_pixels)
@@ -102,7 +102,7 @@
 			if (error != IntPtr.Zero) throw new GLib.GException (error);
 		}
 
-		[DllImport("gdk_pixbuf-2.0")]
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
 		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels)
 		{
@@ -126,12 +126,6 @@
 // the process by reducing the number of steps required.  Here a single 
 // operation will create the Pixbuf instead of two
 //
-
-                [DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern IntPtr gdk_pixbuf_get_from_drawable (
-                              IntPtr nullpointer, IntPtr src, IntPtr cmap, 
-			      int src_x, int src_y, int dest_x, int dest_y, 
-			      int width, int height);
 
 		public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
 			IntPtr raw_ret = gdk_pixbuf_get_from_drawable((IntPtr) 0, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);

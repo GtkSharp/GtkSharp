@@ -21,7 +21,7 @@ namespace Gtk {
 	/// <summary>
 	///   Utility class to help writting multi-threaded Gtk applications
 	/// </summary>
-	/// <remarks>
+	/// <remarks/>
 	///   
 	public class ThreadNotify {
 

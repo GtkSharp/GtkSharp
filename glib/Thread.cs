@@ -11,7 +11,7 @@ namespace GLib
 
 	public class Thread
 	{
-		[DllImport("gthread-2.0")]
+		[DllImport("libgthread-2.0-0.dll")]
 		static extern void g_thread_init (IntPtr i);
 
 		public static void Init ()
