@@ -132,7 +132,7 @@ namespace GtkSharp.Generation {
 			else
 				ns = implementor.NS;
 
-			sig_handler.Generate (ns);
+			sig_handler.Generate (ns, gen_info);
 			string qual_marsh = ns + "Sharp." + sig_handler.Name;
 
 			string argsname;
@@ -148,7 +148,7 @@ namespace GtkSharp.Generation {
 			sw.Write("\t\t\t\t\tSignals[" + cname + "] = new " + qual_marsh);
 			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + argsname);
 			if (argsname != "System.EventArgs")
-				sw.Write("," + container_type.NS.ToLower() + "-sharp");
+				sw.Write("," + gen_info.AssemblyName);
 			sw.WriteLine("\"));\n\t\t\t\telse");
 			sw.WriteLine("\t\t\t\t\t((GtkSharp.SignalCallback) Signals [{0}]).AddDelegate (value);", cname);
 			sw.WriteLine("\t\t\t\tEventList.AddHandler(" + cname + ", value);");

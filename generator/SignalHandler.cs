@@ -85,35 +85,30 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string CallbackName {
+			get {
+				return BaseName + "Callback";
+			}
+		}
+
+		public string DelegateName {
+			get {
+				return BaseName + "Delegate";
+			}
+		}
+
 		public string Name {
 			get {
 				return BaseName + "Signal";
 			}
 		}
 
-		public void Generate (string implementor_ns)
+		public void Generate (string implementor_ns, GenerationInfo gen_info)
 		{
 			SymbolTable table = SymbolTable.Table;
 
-			string sname = Name;
-			string dname = BaseName + "Delegate";
-			string cbname = BaseName + "Callback";
-
-			char sep = Path.DirectorySeparatorChar;
-			String dir = ".." + sep + implementor_ns.ToLower() + sep + "generated";
-
-			if (!Directory.Exists(dir)) {
-				Directory.CreateDirectory(dir);
-			}
-
-			String filename = dir + sep + implementor_ns + "Sharp." + sname + ".cs";
-
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
+			StreamWriter sw = gen_info.OpenStream (implementor_ns + "Sharp." + Name);
 			
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
-			sw.WriteLine ();
 			sw.WriteLine("namespace " + implementor_ns + "Sharp {");
 			sw.WriteLine();
 			sw.WriteLine("\tusing System;");
@@ -121,22 +116,22 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\tusing GtkSharp;");
 			sw.WriteLine();
 			sw.Write("\tinternal delegate " + p_ret + " ");
-			sw.WriteLine(dname + "(" + ISig + ", int key);");
+			sw.WriteLine(DelegateName + "(" + ISig + ", int key);");
 			sw.WriteLine();
-			sw.WriteLine("\tinternal class " + sname + " : SignalCallback {");
+			sw.WriteLine("\tinternal class " + Name + " : SignalCallback {");
 			sw.WriteLine();
-			sw.WriteLine("\t\tprivate static " + dname + " _Delegate;");
+			sw.WriteLine("\t\tprivate static " + DelegateName + " _Delegate;");
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate IntPtr _raw;");
 			sw.WriteLine("\t\tprivate uint _HandlerID;");
 			sw.WriteLine();
 			sw.Write("\t\tprivate static " + p_ret + " ");
-			sw.WriteLine(cbname + "(" + ISig + ", int key)");
+			sw.WriteLine(CallbackName + "(" + ISig + ", int key)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (!_Instances.Contains(key))");
 			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unexpected signal key \" + key);");
 			sw.WriteLine();
-			sw.WriteLine("\t\t\t" + sname + " inst = (" + sname + ") _Instances[key];");
+			sw.WriteLine("\t\t\t" + Name + " inst = (" + Name + ") _Instances[key];");
 			if ((s_ret == "void") && (parms.Count == 1)) {
 				sw.WriteLine("\t\t\tEventHandler h = (EventHandler) inst._handler;");
 				sw.WriteLine("\t\t\th (inst._obj, new EventArgs ());");
@@ -148,7 +143,6 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
-					// sw.WriteLine("\t\t\tConsole.WriteLine (\"" + sname + " arg{0}: \" + arg{0});", idx);
 					string ctype = parms[idx].CType;
 					ClassBase wrapper = table.GetClassGen (ctype);
 					if ((wrapper != null && !(wrapper is StructBase)) || table.IsManuallyWrapped (ctype)) {
@@ -186,14 +180,14 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
 			sw.Write("\t\tstatic extern uint g_signal_connect_data(");
-			sw.Write("IntPtr obj, String name, " + dname + " cb, int key, IntPtr p,");
+			sw.Write("IntPtr obj, String name, " + DelegateName + " cb, int key, IntPtr p,");
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
-			sw.Write("\t\tpublic " + sname + "(GLib.Object obj, IntPtr raw, ");
+			sw.Write("\t\tpublic " + Name + "(GLib.Object obj, IntPtr raw, ");
 			sw.WriteLine("String name, Delegate eh, Type argstype) : base(obj, eh, argstype)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
-			sw.WriteLine("\t\t\t\t_Delegate = new " + dname + "(" + cbname + ");");
+			sw.WriteLine("\t\t\t\t_Delegate = new " + DelegateName + "(" + CallbackName + ");");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\t_raw = raw;");
 			sw.Write("\t\t\t_HandlerID = g_signal_connect_data(raw, name, ");
