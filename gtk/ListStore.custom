@@ -23,7 +23,8 @@
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
-		public bool IterChildren (out Gtk.TreeIter iter) {
+		public bool IterChildren (out Gtk.TreeIter iter) 
+		{
 			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
 			bool ret = raw_ret;
 			return ret;
@@ -31,7 +32,8 @@
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern int gtk_tree_model_iter_n_children (IntPtr raw, IntPtr iter);
-		public int IterNChildren () {
+		public int IterNChildren () 
+		{
 			int raw_ret = gtk_tree_model_iter_n_children (Handle, IntPtr.Zero);
 			int ret = raw_ret;
 			return ret;
@@ -39,43 +41,64 @@
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
-		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
+		public bool IterNthChild (out Gtk.TreeIter iter, int n) 
+		{
 			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
 			bool ret = raw_ret;
 			return ret;
 		}
 
-		public void SetValue (Gtk.TreeIter iter, int column, bool value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-
-		public void SetValue (Gtk.TreeIter iter, int column, double value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-
-		public void SetValue (Gtk.TreeIter iter, int column, int value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-
-		public void SetValue (Gtk.TreeIter iter, int column, string value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-
-		public void SetValue (Gtk.TreeIter iter, int column, float value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-
-		public void SetValue (Gtk.TreeIter iter, int column, uint value) {
-			SetValue (iter, column, new GLib.Value (value));
-		}
-		
-		public void SetValue (Gtk.TreeIter iter, int column, object value) {
+		public void SetValue (Gtk.TreeIter iter, int column, bool value) 
+		{
 			GLib.Value val = new GLib.Value (value);
 			SetValue (iter, column, val);
 			val.Dispose ();
 		}
 
-		public Gtk.TreeIter AppendValues (Array values) {
+		public void SetValue (Gtk.TreeIter iter, int column, double value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, int value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, string value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, float value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, uint value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+		
+		public void SetValue (Gtk.TreeIter iter, int column, object value) 
+		{
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public Gtk.TreeIter AppendValues (Array values) 
+		{
 			Gtk.TreeIter iter = Append();
 
 			int col = 0;
@@ -91,7 +114,8 @@
 			return iter;
 		}
 		
-		public Gtk.TreeIter AppendValues (params object[] values) {
+		public Gtk.TreeIter AppendValues (params object[] values) 
+		{
 			return AppendValues ((Array) values);
 		}
 
@@ -117,13 +141,12 @@
 			SetColumnTypes (gtypes);
 		}
 
-		public object GetValue(Gtk.TreeIter iter, int column) {
+		public object GetValue(Gtk.TreeIter iter, int column) 
+		{
 			GLib.Value val = GLib.Value.Empty;
 			GetValue (iter, column, ref val);
 			object ret = val.Val;
 			val.Dispose ();
 			return ret;
 		}
-
-
 
