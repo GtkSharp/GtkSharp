@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Type Name="Window" FullName="Gtk.Window">
   <TypeSignature Language="C#" Value="public class Window : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
@@ -1637,9 +1638,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets an icon to be used as fallback for windows that have not had <see cref="M:Gtk.Window.SetIcon()" /> called on them from a pixbuf.</summary>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AcceptFocus">
@@ -1650,9 +1652,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Windows may set a hint asking the desktop environment not to receive the input focus.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <see langword="true" /> to let this window receive input focus</remarks>
       </Docs>
     </Member>
     <Member MemberName="KeepBelow">
@@ -1662,9 +1665,15 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Asks to keep window below, so that it stays in bottom.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just do not write code that crashes if not.</para>
+          <para>It is permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.</para>
+          <para>You can track the below state via <see cref="E:Gtk.Widget.WindowStateEvent" /> event.</para>
+          <para>Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="KeepAbove">
@@ -1674,9 +1683,15 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Asks to keep window above, so that it stays on top.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it above, and not all window managers support putting windows below. But normally the window will be kept above. Just do not write code that crashes if not.</para>
+          <para>It is permitted to call this function before showing a window, in which case the window will be kept above when it appears onscreen initially.</para>
+          <para>You can track the below state via <see cref="E:Gtk.Widget.WindowStateEvent" /> event.</para>
+          <para>Note that, according to the Extended Window Manager Hints specification, the above state is mainly meant for user preferences and should not be used by applications e.g. for drawing attention to their dialogs.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ActivateKey">
@@ -1689,10 +1704,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <Parameter Name="evnt" Type="Gdk.EventKey" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Activates mnemonics and accelerators for this window.</summary>
         <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is normally called by the default KeyPressEvent handler for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetPolicy">
@@ -1707,11 +1722,23 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <Parameter Name="auto_shrink" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Changes how a toplevel window deals with its size request and user resize attempts.</summary>
         <param name="allow_shrink">a <see cref="T:System.Int32" /></param>
         <param name="allow_grow">a <see cref="T:System.Int32" /></param>
         <param name="auto_shrink">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The first policy is the default, that is, by default windows are designed to be resized by users.
+<para>
+            <see cref="M:Gtk.Window.SetPolicy()" /> is deprecated and should not be used in newly-written code. Use <see cref="M:Gtk.Window.SetResizable()" /> instead.
+</para><para>
+If set to <see langword="true" />, the allow_grow parameter allows the user to expand the window beyond the size request of its child widgets. If allow_grow is <see langword="true" />, be sure to check that your child widgets work properly as the window is resized.
+</para><para>
+A toplevel window will always change size to ensure its child widgets receive their requested size. This means that if you add child widgets, the toplevel window will expand to contain them. However, normally the toplevel will not shrink to fit the size request of its children if it's too large; the auto_shrink parameter causes the window to shrink when child widgets have too much space. auto_shrink is normally used with the second of the two window policies mentioned above. That is, set auto_shrink to <see langword="true" /> if you want the window to have a fixed, always-optimal size determined by your program.
+</para><para>
+Note that auto_shrink does not do anything if allow_shrink and allow_grow are both set to <see langword="false" />.
+</para><para>
+Neither of the two suggested window policies set the allow_shrink parameter to <see langword="true" />. If allow_shrink is <see langword="true" />, the user can shrink the window so that its children do not receive their full size request; this is basically a bad thing, because most widgets will look wrong if this happens. Furthermore Gtk has a tendency to re-expand the window if size is recalculated for any reason. The upshot is that allow_shrink should always be set to <see langword="false" />.
+</para><para>
+Sometimes when you think you want to use allow_shrink, the real problem is that some specific child widget is requesting too much space, so the user can't shrink the window sufficiently. Perhaps you are calling gtk_widget_set_size_request() on a child widget, and forcing its size request to be too large. Instead of setting the child's usize, consider using gtk_window_set_default_size() so that the child gets a larger allocation than it requests.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="PropagateKeyEvent">
@@ -1724,10 +1751,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <Parameter Name="evnt" Type="Gdk.EventKey" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Propagate a key press or release event to the focus widget and up the focus container chain until a widget handles <paramref name="evnt" />.</summary>
         <param name="evnt">a <see cref="T:Gdk.EventKey" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is normally called by the default KeyPressEvent and KeyReleaseEvent handlers for toplevel windows, however in some cases it may be useful to call this directly when overriding the standard key handling for a toplevel window.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Destroy">
