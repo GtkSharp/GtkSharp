@@ -29,20 +29,20 @@ namespace Gtk {
 		// DllImport functions from Gtk
 		//
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		public static extern int gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
+		private static extern int gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
 		public delegate void GdkInputFunction (IntPtr data, int source, int cond);
 
 		//
 		// Libc stuff
 		//
 		[DllImport ("libc.so.6")]
-		public static extern int pipe (int [] fd);
+		private static extern int pipe (int [] fd);
 		
 		[DllImport ("libc.so.6")]
-		public static extern unsafe int read (int fd, byte *b, int count);
+		private static extern unsafe int read (int fd, byte *b, int count);
 		
 		[DllImport ("libc.so.6")]
-		public static extern unsafe int write (int fd, byte *b, int count);
+		private static extern unsafe int write (int fd, byte *b, int count);
 
 		
 		GdkInputFunction notify_pipe;
