@@ -1,8 +1,10 @@
 // Gtk.TreeStore.Custom - Gtk TreeStore class customizations
 //
-// Author: Kristian Rietveld <kris@gtk.org>
+// Authors: Kristian Rietveld <kris@gtk.org>
+//          Mike Kestner <mkestner@ximian.com>
 //
-// (c) 2002 Kristian Rietveld
+// Copyright (c) 2002 Kristian Rietveld
+// Copyright (c) 2004 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 
@@ -125,26 +127,30 @@
 			return AppendValues ((Array) values);
 		}
 
+		public TreeStore (params GLib.GType[] types) : base (IntPtr.Zero)
+		{
+			CreateNativeObject (new string [0], new GLib.Value [0]);
+			SetColumnTypes (types);
+		}
+
 		public TreeStore (params Type[] types) : base (IntPtr.Zero)
 		{
-			if (GetType() != typeof (TreeStore))
-				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
-
-			IntPtr[] ctypes = new IntPtr[types.Length];
+			GLib.GType[] gtypes = new GLib.GType[types.Length];
 			int i = 0;
 			foreach (Type type in types) {
 				GLib.GType ctype = GLibSharp.TypeConverter.LookupType (type);
 				if (ctype == GLib.GType.None) {
-					ctypes[i] = GLibSharp.ManagedValue.GType.Val;
+					gtypes[i] = GLibSharp.ManagedValue.GType;
 				} else if (ctype == GLib.GType.Invalid) {
 					throw new Exception ("Unknown type");
 				} else {
-					ctypes[i] = ctype.Val;
+					gtypes[i] = ctype;
 				}
 				i++;
 			}
 			
-			Raw = gtk_tree_store_newv (ctypes.Length, ctypes);
+			CreateNativeObject (new string [0], new GLib.Value [0]);
+			SetColumnTypes (gtypes);
 		}
 
 		public object GetValue (Gtk.TreeIter iter, int column) {
