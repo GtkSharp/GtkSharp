@@ -1,3 +1,37 @@
+2003-05-29  Rachel Hestilow  <rachel@nullenvoid.com>
+
+	* gconf/Value.cs: Update to use new string marshalling.
+
+	* generator/StringGen.cs, ConstStringGen.cs: Added.
+	* generator/IGeneratable.cs: Add new method ToNativeReturn.
+	* generator/CallbackGen.cs: Implement ToNativeReturn. Call
+	ToNativeReturn for the return statement. Fix a couple of
+	places where s_ret was being used incorrectly for m_ret.
+	* generator/ClassGen.cs, EnumGen.cs, ManualGen.cs,
+	SimpleGen.cs, StructBase.cs: Implement ToNativeReturn.
+	* generator/SignalHandler.cs: Call ToNativeReturn for the
+	return statement, instead of CallByName.
+	* generator/SymbolTable.cs: Use StringGen for gchar, char,
+	and gunichar, and ConstStringGen for their const variants.
+	Add a new method wrapper for ToNativeReturn.
+	(Trim): Add a special-case for const strings so that the
+	const is not stripped. Otherwise there is no way of
+	resolving the const case.
+
+	* glade/XML.custom: Update to use new string marshalling.
+
+	* glib/Marshaller.cs: Added.
+	* glib/GException.cs, Markup.cs, ObjectManager.cs,
+	Value.cs: Update to use new string marshalling.
+	* glib/Object.cs: Remove old g_type_name DllImport
+	as it is no longer used.
+
+	* glue/fileselection.c (gtksharp_file_selection_get_fileop_entry):
+	Mark this as const return.
+
+	* gtk/ColorSelection.custom, FileSelection.custom,
+	SelectionData.custom: Update to use new string marshalling.
+
 2003-06-07  Martin Willemoes Hansen <mwh@sysrq.dk>
 	* generator/SymbolTable.cs: Added ulong
 

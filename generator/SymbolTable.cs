@@ -39,9 +39,11 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gushort", "ushort"));
 			AddType (new SimpleGen ("guint32", "uint"));
 			AddType (new SimpleGen ("guint64", "ulong"));
-			AddType (new SimpleGen ("const-gchar", "string"));
-			AddType (new SimpleGen ("const-char", "string"));
-			AddType (new SimpleGen ("gchar", "string"));
+			// Const returned strings must be generated 
+			// differently from memory-managed strings
+			AddType (new ConstStringGen ("const-gchar"));
+			AddType (new ConstStringGen ("const-char"));
+			AddType (new StringGen ("gchar"));
 			AddType (new SimpleGen ("gfloat", "float"));
 			AddType (new SimpleGen ("gdouble", "double"));
 			AddType (new SimpleGen ("gint8", "sbyte"));
@@ -58,10 +60,10 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gulong", "ulong"));
 			AddType (new SimpleGen ("GQuark", "int"));
 			AddType (new SimpleGen ("int", "int"));
-			AddType (new SimpleGen ("char", "string"));
+			AddType (new StringGen ("char"));
 			AddType (new SimpleGen ("double", "double"));
 			AddType (new SimpleGen ("float", "float"));
-			AddType (new SimpleGen ("gunichar", "string"));
+			AddType (new StringGen ("gunichar"));
 			AddType (new SimpleGen ("uint1", "bool"));
 			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
 			AddType (new SimpleGen ("GType", "uint"));
@@ -128,6 +130,10 @@ namespace GtkSharp.Generation {
 			if (type == "void*" || type == "const-void*") return "gpointer";
 
 			string trim_type = type.TrimEnd('*');
+
+			// HACK: Similar to above, but for const strings
+			if (trim_type == "const-gchar" || trim_type == "const-char") return trim_type;
+			
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
 		}
@@ -147,6 +153,14 @@ namespace GtkSharp.Generation {
 			if (gen == null)
 				return "";
 			return gen.FromNativeReturn (val);
+		}
+		
+		public string ToNativeReturn(string c_type, string val)
+		{
+			IGeneratable gen = this[c_type];
+			if (gen == null)
+				return "";
+			return gen.ToNativeReturn (val);
 		}
 
 		public string FromNative(string c_type, string val)

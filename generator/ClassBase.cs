@@ -142,6 +142,11 @@ namespace GtkSharp.Generation {
 			return FromNative (var);
 		}
 		
+		public virtual String ToNativeReturn(String var)
+		{
+			return CallByName (var);
+		}
+		
 		protected void GenProperties (StreamWriter sw)
 		{		
 			if (props == null)

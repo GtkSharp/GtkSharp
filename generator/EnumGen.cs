@@ -42,6 +42,11 @@ namespace GtkSharp.Generation {
 			return FromNative (var);
 		}
 
+		public virtual String ToNativeReturn(String var)
+		{
+			return CallByName (var);
+		}
+		
 		public void Generate ()
 		{
 			if (!DoGenerate)

@@ -68,6 +68,11 @@ namespace GtkSharp.Generation {
 			return var;
 		}
 
+		public String ToNativeReturn(String var)
+		{
+			return var;
+		}
+
 		public bool DoGenerate {
 			get {
 				return false;

@@ -13,14 +13,14 @@ namespace GtkSharp {
 		private static Hashtable types = new Hashtable ();
 
 		[DllImport("gtksharpglue")]
-		static extern string gtksharp_get_type_name (IntPtr raw);
+		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
 		public static GLib.Object CreateObject (IntPtr raw)
 		{
 			if (raw == IntPtr.Zero)
 				return null;
 
-			string typename = gtksharp_get_type_name (raw);
+			string typename = Marshal.PtrToStringAnsi (gtksharp_get_type_name (raw));
 			string mangled;
 			if (types.ContainsKey(typename)) 
 				mangled = (string)types[typename];
@@ -88,7 +88,7 @@ namespace GtkSharp {
 		static extern int gtksharp_get_parent_type (int typ);
 
 		[DllImport("gtksharpglue")]
-		static extern string gtksharp_get_type_name_for_id (int typ);
+		static extern IntPtr gtksharp_get_type_name_for_id (int typ);
 
 		static Type GetValidParentType (IntPtr raw)
 		{
@@ -99,7 +99,7 @@ namespace GtkSharp {
 			// We will always end up at GObject and will break this loop
 			while (true) {
 				type_id = gtksharp_get_parent_type (type_id);
-				typename = gtksharp_get_type_name_for_id (type_id);
+				typename = Marshal.PtrToStringAnsi (gtksharp_get_type_name_for_id (type_id));
 				if (types.ContainsKey (typename))
 					mangled = (string)types[typename];
 				else

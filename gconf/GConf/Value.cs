@@ -88,7 +88,7 @@ namespace GConf
 		}
 
 		[DllImport("gconf-2")]
-		static extern string gconf_value_get_string (IntPtr value);
+		static extern IntPtr gconf_value_get_string (IntPtr value);
 		
 		[DllImport("gconf-2")]
 		static extern int gconf_value_get_int (IntPtr value);
@@ -104,7 +104,7 @@ namespace GConf
 			switch (val_type)
 			{
 				case ValueType.String:
-					return gconf_value_get_string (Raw);
+					return Marshal.PtrToStringAnsi (gconf_value_get_string (Raw));
 				case ValueType.Int:
 					return gconf_value_get_int (Raw);
 				case ValueType.Float:

@@ -26,6 +26,8 @@ namespace GtkSharp.Generation {
 
 		String FromNativeReturn (String var);
 
+		String ToNativeReturn (String var);
+
 		bool DoGenerate {get;set;}
 
 		void Generate ();

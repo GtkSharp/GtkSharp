@@ -236,9 +236,6 @@ namespace GLib {
 		///	Handle property.
 		/// </remarks>
 
-		[DllImport("libgobject-2.0.so")]
-		private static extern string g_type_name (uint gtype);
-
 		protected virtual IntPtr Raw {
 			get {
 				return _obj;

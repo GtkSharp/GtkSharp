@@ -3,13 +3,13 @@
 // Author: Justin Malcolm
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern string gtk_color_selection_palette_to_string(Gdk.Color[] colors, int n_colors);
+		static extern IntPtr gtk_color_selection_palette_to_string(Gdk.Color[] colors, int n_colors);
 
 		/// <summary> PaletteToString Method </summary>
 		public static string PaletteToString(Gdk.Color[] colors) {
 			int n_colors = colors.Length;
-			string raw_ret = gtk_color_selection_palette_to_string(colors, n_colors);
-			string ret = raw_ret;
+			IntPtr raw_ret = gtk_color_selection_palette_to_string(colors, n_colors);
+			string ret = GLibSharp.Marshaller.PtrToStringGFree (raw_ret);
 			return ret;
 		}
 		

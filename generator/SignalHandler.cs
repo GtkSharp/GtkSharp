@@ -162,7 +162,7 @@ namespace GtkSharp.Generation {
 					else
 						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
 
-					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + table.CallByName (retval, "((" + s_ret + ")args.RetVal)") + ";");
+					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + table.ToNativeReturn (retval, "((" + s_ret + ")args.RetVal)") + ";");
 				}
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();

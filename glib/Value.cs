@@ -517,7 +517,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern string g_value_get_string (IntPtr val);
+		static extern IntPtr g_value_get_string (IntPtr val);
 
 		/// <summary>
 		///	Value to String Conversion
@@ -533,7 +533,7 @@ namespace GLib {
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return g_value_get_string (val._val);
+			return Marshal.PtrToStringAnsi (g_value_get_string (val._val));
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]

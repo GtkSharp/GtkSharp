@@ -49,6 +49,11 @@ namespace GtkSharp.Generation {
 			return FromNative (var);
 		}
 
+		public virtual String ToNativeReturn(String var)
+		{
+			return CallByName (var);
+		}
+		
 		public void GenWrapper (string ns)
 		{
 			char sep = Path.DirectorySeparatorChar;
@@ -101,7 +106,7 @@ namespace GtkSharp.Generation {
 				} else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen)) {
 					// Do nothing
 				} else if (!table.IsStruct (rettype) && !table.IsBoxed (rettype)) {
-					sw.WriteLine ("\t\tstatic {0} _dummy;", s_ret);
+					sw.WriteLine ("\t\tstatic {0} _dummy;", m_ret);
 				}
 			}
 			
@@ -162,7 +167,7 @@ namespace GtkSharp.Generation {
 					else if (table.IsEnum (rettype))
 						sw.WriteLine ("return (int) {0};", invoke);
 					else
-						sw.WriteLine ("return ({0}) {1};", s_ret, invoke);
+						sw.WriteLine ("return ({0}) {1};", m_ret, table.ToNativeReturn (rettype, invoke));
 			}
 			else
 				sw.WriteLine (invoke + ";");

@@ -88,10 +88,10 @@ public Gtk.Entry FileopEntry {
 }
 
 [DllImport("gtksharpglue", CallingConvention=CallingConvention.Cdecl)]
-static extern string gtksharp_file_selection_get_fileop_file (IntPtr i);
+static extern IntPtr gtksharp_file_selection_get_fileop_file (IntPtr i);
 public string FileopFile {
 	get {
-		return gtksharp_file_selection_get_fileop_file (this.Handle);
+		return Marshal.PtrToStringAnsi (gtksharp_file_selection_get_fileop_file (this.Handle));
 	}
 }
 

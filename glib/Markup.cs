@@ -14,14 +14,14 @@ namespace GLib {
 
 	public class Markup {
 		[DllImport("libglib-2.0-0.dll")]
-		static extern string g_markup_escape_text (string text, int len);
+		static extern IntPtr g_markup_escape_text (string text, int len);
 		
 		static public string EscapeText (string s)
 		{
 			if (s == null)
 				return "";
 
-			return g_markup_escape_text (s, s.Length);
+			return GLibSharp.Marshaller.PtrToStringGFree (g_markup_escape_text (s, s.Length));
 		}
 	}
 }

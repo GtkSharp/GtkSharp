@@ -23,14 +23,14 @@
 		}
 
 		[DllImport("gtksharpglue")]
-		static extern string gtksharp_glade_xml_get_filename (IntPtr raw);
+		static extern IntPtr gtksharp_glade_xml_get_filename (IntPtr raw);
 
 		/// <summary>Filename Property</summary>
 		/// <remarks>Gets the filename used to create this GladeXML object
 		/// </remarks>
 		public string Filename {
 			get {
-				string ret = gtksharp_glade_xml_get_filename (Handle);
+				string ret = Marshal.PtrToStringAnsi (gtksharp_glade_xml_get_filename (Handle));
 				return ret;
 			}
 		}
@@ -44,10 +44,10 @@
 		}
 
 		[DllImport("libglade-2.0-0.dll")]
-		static extern string glade_get_widget_name (IntPtr widget);
+		static extern IntPtr glade_get_widget_name (IntPtr widget);
 
 		static public string GetWidgetName (Gtk.Widget w) {
-			string ret = glade_get_widget_name (w.Handle);
+			string ret = Marshal.PtrToStringAnsi (glade_get_widget_name (w.Handle));
 			return ret;
 		}
 

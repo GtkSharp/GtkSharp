@@ -81,6 +81,12 @@ namespace GtkSharp.Generation {
 			return QualifiedName + ".New (" + var + ")";
 		}
 
+		public override String ToNativeReturn(String var)
+		{
+			// FIXME
+			return var;
+		}
+
 		bool IsBit (XmlElement field)
 		{
 			return (field.HasAttribute("bits") && (field.GetAttribute("bits") == "1"));

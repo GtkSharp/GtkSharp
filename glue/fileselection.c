@@ -32,7 +32,7 @@ GtkWidget *gtksharp_file_selection_get_fileop_dialog (GtkFileSelection *file);
 
 GtkWidget *gtksharp_file_selection_get_fileop_entry (GtkFileSelection *file);
 
-gchar     *gtksharp_file_selection_get_fileop_file (GtkFileSelection *file);
+const gchar *gtksharp_file_selection_get_fileop_file (GtkFileSelection *file);
 
 GtkWidget *gtksharp_file_selection_get_fileop_c_dir (GtkFileSelection *file);
 
@@ -117,7 +117,7 @@ gtksharp_file_selection_get_fileop_entry (GtkFileSelection *file)
 	return file->fileop_entry;
 }
 
-gchar*
+const gchar*
 gtksharp_file_selection_get_fileop_file (GtkFileSelection *file)
 {
 	return file->fileop_file;

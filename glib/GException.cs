@@ -19,10 +19,10 @@ namespace GLib {
 		}
 
 		[DllImport("gtksharpglue")]
-		static extern string gtksharp_error_get_message (IntPtr errptr);
+		static extern IntPtr gtksharp_error_get_message (IntPtr errptr);
 		public override string Message {
 			get {
-				return gtksharp_error_get_message (errptr);
+				return Marshal.PtrToStringAnsi (gtksharp_error_get_message (errptr));
 			}
 		}
 
