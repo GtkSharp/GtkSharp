@@ -37,7 +37,7 @@ get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.8.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
 	patch -p0 < gtkhtml-font-style-enum.patch
 	
-get-source-code: get-gtkhtml-code get-gst-code
+get-source-code: get-gtkhtml-code
 	for i in $(DOWNLOADS); do                          \
 		wget $$i --output-document=- | tar -xz ;   \
 	done;
