@@ -60,6 +60,7 @@ customs = 				\
 	RadioMenuItem.custom		\
 	ScrolledWindow.custom		\
 	SelectionData.custom		\
+	SpinButton.custom		\
 	Stock.custom			\
 	Style.custom			\
 	Table.custom			\
