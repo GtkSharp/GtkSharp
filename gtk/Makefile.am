@@ -33,6 +33,7 @@ customs = 				\
 	Adjustment.custom		\
 	Button.custom			\
 	Calendar.custom			\
+	CellRenderer.custom		\
 	CheckMenuItem.custom		\
 	Clipboard.custom		\
 	ColorSelection.custom		\
