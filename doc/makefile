@@ -8,7 +8,7 @@ all: tree
 b:
 	mono --debug $(BROWSER)
 tree:
-	mono $(ASSEMBLER) --ecma /home/duncan/Mono/gtk-sharp/doc/en/ -o documentation
+	mono $(ASSEMBLER) --ecma en -o documentation
 
 docs: glib pango atk gtk gdk gnome glade
 
