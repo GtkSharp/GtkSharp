@@ -63,29 +63,18 @@ namespace GtkDemo
 
 		}
 
-		//FIXME: Finish implementing this function
 		private void ItemToggled (object o, ToggledArgs args)
 		{
-			Console.WriteLine("toggled {0} with value", args.Path);
-
 			GLib.Object cellRendererToggle = (GLib.Object) o;
-			Console.WriteLine("Column {0}",cellRendererToggle.Data["column"]);
-			//GLib.Value columnValue = new GLib.Value();
-			//column.GetProperty("column", columnValue);
-			//Console.WriteLine("toggled {0} with value", columnValue.Val);
-
-			CellRenderer cellRenderer = (CellRenderer) o;
-
-			//Value value = new Value(); 
-			//cellRenderer.GetProperty("column", value);
-			//Console.WriteLine( value.Val );
-// 			Gtk.TreeIter iter;
-// 			if (store.GetIterFromString(out iter, args.Path))
-// 			{
-// 				bool val = (bool) store.GetValue(iter, 0);
-// 				Console.WriteLine("toggled {0} with value {1}", args.Path, val);
-// 				store.SetValue(iter, 2, !val);
-// 			}
+			int column = (int) cellRendererToggle.Data["column"];
+			
+ 			Gtk.TreeIter iter;
+ 			if (store.GetIterFromString(out iter, args.Path))
+ 			{
+ 				bool val = (bool) store.GetValue(iter, column);
+ 				Console.WriteLine("toggled {0} with value {1}", args.Path, !val);
+ 				store.SetValue(iter, column, !val);
+ 			}
 		}
 
 		private void AddColumns (TreeView treeView)
