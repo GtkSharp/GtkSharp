@@ -2,7 +2,7 @@ MCS=mcs
 
 @ENABLE_GNOME_TRUE@ GNOME_PATH=-L ../art -L ../gnome
 @ENABLE_GNOME_TRUE@ GNOME_ASSEMBLY=-r art-sharp.dll -r gnome-sharp.dll
-@ENABLE_GNOME_TRUE@ GNOME_TARGETS=gnome-hello-world.exe canvas-example.exe fifteen.exe 
+@ENABLE_GNOME_TRUE@ GNOME_TARGETS=gnome-hello-world.exe canvas-example.exe fifteen.exe print.exe
 
 @ENABLE_GLADE_TRUE@ GLADE_PATH=-L ../glade
 @ENABLE_GLADE_TRUE@ GLADE_ASSEMBLY=-r glade-sharp.dll
@@ -33,6 +33,9 @@ canvas-example.exe: CanvasExample.cs
 
 fifteen.exe: Fifteen.cs
 	$(MCS) --unsafe -o fifteen.exe $(local_paths) $(all_assemblies) Fifteen.cs
+	
+print.exe: PrintSample.cs
+	$(MCS) --unsafe -o print.exe $(local_paths) $(all_assemblies) PrintSample.cs
 
 button.exe: ButtonApp.cs
 	$(MCS) --unsafe -o button.exe $(local_paths) $(all_assemblies) ButtonApp.cs
