@@ -6,6 +6,7 @@ METADATA = Atk.metadata
 ASSEMBLY_NAME = atk-sharp
 references = /r:../glib/glib-sharp.dll
 
+TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 gapidir = $(datadir)/gapi
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
@@ -48,10 +49,14 @@ $(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.pub
 	$(CSC) --unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) generated/*.cs
 
 install-data-local:
-	echo "$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir)";	\
-	$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir) || exit 1;
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
 
 uninstall-local:
-	echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir)";	\
-	$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir) || exit 1;
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
 

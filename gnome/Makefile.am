@@ -95,13 +95,13 @@ $(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.pub
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir)";	\
-	  $(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir) || exit 1;	\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
 	fi
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir)";	\
-	  $(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir) || exit 1;	\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
 	fi
 
