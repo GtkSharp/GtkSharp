@@ -1,4 +1,4 @@
-/* value.c : Glue to allocate GValues on the heap.
+/* type.c : GType utilities
  *
  * Author: Mike Kestner <mkestner@speakeasy.net>
  *

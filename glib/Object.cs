@@ -24,6 +24,7 @@ namespace GLib {
 
 		// Private class and instance members
 		IntPtr _obj;
+		protected bool needs_ref = true;
 		EventHandlerList _events;
 		bool disposed = false;
 		Hashtable Data;
@@ -87,6 +88,24 @@ namespace GLib {
 
 			g_object_ref (_obj);
 		}
+
+		/// <summary>
+		///   Unref Method
+		/// </summary>
+		///
+		/// <remarks>
+		///   Decreases the reference count on the native object.
+		///   This method is used by generated classes and structs,
+		///   and should not be used in user code.
+		/// </remarks>
+		protected virtual void Unref ()
+		{
+			if (_obj == IntPtr.Zero)
+				return;
+
+			g_object_unref (_obj);
+		}
+		
 		
 		/// <summary>
 		///	GetObject Shared Method 
@@ -121,6 +140,7 @@ namespace GLib {
 		/// </remarks>
 
 		public Object () {
+			needs_ref = false;
 		}
 
 		/// <summary>
@@ -147,15 +167,20 @@ namespace GLib {
 		///	Handle property.
 		/// </remarks>
 
-		protected IntPtr Raw {
+		[DllImport("libgobject-2.0.so")]
+		private static extern string g_type_name (uint gtype);
+
+		protected virtual IntPtr Raw {
 			get {
 				return _obj;
 			}
 			set {
+				if (needs_ref)
+					g_object_ref (value);
 				Objects [value] = new WeakReference (this);
 				_obj = value;
 			}
-		}       
+		}	
 
 		/// <summary>
 		///	GType Property
@@ -164,6 +189,9 @@ namespace GLib {
 		/// <remarks>
 		///	The type associated with this object class.
 		/// </remarks>
+
+		[DllImport("libgtksharpglue.so")]
+		private static extern uint gtksharp_get_type_id (IntPtr obj);
 
 		public static int GType {
 			get {
@@ -289,6 +317,15 @@ namespace GLib {
 		internal static bool IsObject (IntPtr obj)
 		{
 			return gtksharp_is_object (obj);
+		}
+
+		[DllImport("gtksharpglue")]
+		static extern int gtksharp_object_get_ref_count (IntPtr obj);
+
+		public int RefCount {
+			get {
+				return gtksharp_object_get_ref_count (Handle);
+			}
 		}
 	}
 }

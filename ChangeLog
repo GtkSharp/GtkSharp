@@ -1,5 +1,22 @@
 2002-11-10  Vladimir Vukicevic  <vladimir@pobox.com>
 
+	* glib/Object.cs: add needs_ref boolean that controls whether
+	we need to ref this object once we have a pointer to it or not.
+	By default this is set to true -- constructors and other functions
+	where we do own the object need to set this to false before setting
+	the "Raw" property.  Also added Unref and RefCount methods.
+
+	* glue/object.c, glue/type.c: some utility functions for
+	refcounting support
+
+	* gdk/Pixbuf.custom: manually wrap a few functions so that
+	the refcount ends up being correct at the end (need an extra Unref)
+
+	* api/gdk-api.xml, sources/Gdk.metadata: metadata updates for
+	hiding manually-wrapped Pixbuf stuff
+
+2002-11-10  Vladimir Vukicevic  <vladimir@pobox.com>
+
 	* generator/StructBase.cs: create a Zero static member for
 	use when the IntPtr is NULL.
 

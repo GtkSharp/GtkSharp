@@ -15,3 +15,14 @@ gtksharp_object_unref_if_floating (GObject *obj)
 		g_object_unref (obj);
 }
 
+gboolean
+gtksharp_object_is_floating (GObject *obj)
+{
+	return GTK_OBJECT_FLOATING (obj);
+}
+
+int
+gtksharp_object_get_ref_count (GObject *obj)
+{
+	return obj->ref_count;
+}
