@@ -173,7 +173,7 @@ namespace GtkSharp.Generation {
 			
 			if (NullOk && !CSType.EndsWith ("IntPtr") && !(Generatable is StructBase))
 				call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, Generatable is CallbackGen ? "null" : "IntPtr.Zero");
-				
+
 			if (IsArray)
 				call_parm = call_parm.Replace ("ref ", "");
 

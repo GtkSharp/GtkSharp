@@ -111,7 +111,7 @@ namespace GtkSharp.Generation {
 
 				if (is_get) {
 					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
-					if (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value")
+					if (p.PassAs != "out" && (UsesHandle (gen) || p.CSType == "GLib.Value"))
 						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
 				}
 
