@@ -1,3 +1,20 @@
+2003-02-26  Gonzalo Paniagua Javier <gonzalo@ximian.com>
+
+	* generator/Parser.cs: use XmlDocument.Load (Stream). The one using
+	(String) expects an uri.
+
+	* generator/Signal.cs: always remove the delegate from the signal
+	callback (prior to this, the last handler was not being removed).
+	Dispose the callback (ie, disconnect from the signal) when there are
+	no registered delegates to handle it.
+
+	* generator/SignalHandler.cs: added 2 new fields to hold the instance
+	and the handler ID. The finalization is now done in Dispose and
+	disconnects the signal handler when no delegate will handle the signal.
+	Changed gobject-2.0 to libgobject-2.0-0.dll.
+
+	* glib/SignalCallback.cs: implemented IDisposable interface.
+
 2003-02-24  Mike Kestner  <mkestner@speakeasy.net>
 
 	* sample/TreeViewDemo.cs : fix Type ambiguities

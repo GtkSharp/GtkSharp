@@ -8,6 +8,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
+	using System.IO;
 	using System.Xml;
 
 	public class Parser  {
@@ -20,7 +21,9 @@ namespace GtkSharp.Generation {
 
 			try {
 
-				doc.Load (filename);
+				Stream stream = File.OpenRead (filename);
+				doc.Load (stream);
+				stream.Close ();
 
 			} catch (XmlException e) {
 

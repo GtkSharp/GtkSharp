@@ -109,6 +109,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate static " + dname + " _Delegate;");
 			sw.WriteLine();
+			sw.WriteLine("\t\tprivate IntPtr _raw;");
+			sw.WriteLine("\t\tprivate uint _HandlerID;");
+			sw.WriteLine();
 			sw.Write("\t\tprivate static " + p_ret + " ");
 			sw.WriteLine(cbname + "(" + pinv + ", int key)");
 			sw.WriteLine("\t\t{");
@@ -162,8 +165,8 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();
 			}
-			sw.Write("\t\t[DllImport(\"gobject-2.0\")]");
-			sw.Write("\t\tstatic extern void g_signal_connect_data(");
+			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
+			sw.Write("\t\tstatic extern uint g_signal_connect_data(");
 			sw.Write("IntPtr obj, String name, " + dname + " cb, int key, IntPtr p,");
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
@@ -173,14 +176,19 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
 			sw.WriteLine("\t\t\t\t_Delegate = new " + dname + "(" + cbname + ");");
 			sw.WriteLine("\t\t\t}");
-			sw.Write("\t\t\tg_signal_connect_data(raw, name, ");
+			sw.WriteLine("\t\t\t_raw = raw;");
+			sw.Write("\t\t\t_HandlerID = g_signal_connect_data(raw, name, ");
 			sw.WriteLine("_Delegate, _key, new IntPtr(0), 0);");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
-			sw.WriteLine("\t\t~" + sname + "()");
+			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
+			sw.WriteLine("\t\tstatic extern void g_signal_handler_disconnect (IntPtr instance, uint handler);");
+			sw.WriteLine();
+			sw.WriteLine("\t\tprotected override void Dispose (bool disposing)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\t_Instances.Remove(_key);");
 			sw.WriteLine("\t\t\tif(_Instances.Count == 0) {");
+			sw.WriteLine("\t\t\t\tg_signal_handler_disconnect (_raw, _HandlerID);");
 			sw.WriteLine("\t\t\t\t_Delegate = null;");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t}");

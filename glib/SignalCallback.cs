@@ -18,7 +18,7 @@ namespace GtkSharp {
 	///	Base Class for GSignal to C# event marshalling.
 	/// </remarks>
 
-	public abstract class SignalCallback {
+	public abstract class SignalCallback : IDisposable {
 
 		// A counter used to produce unique keys for instances.
 		protected static int _NextKey = 0;
@@ -58,5 +58,26 @@ namespace GtkSharp {
 		{
 			_handler = Delegate.Remove (_handler, d);
 		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		protected virtual void Dispose (bool disposing)
+		{
+			if (disposing) {
+				_obj = null;
+				_handler = null;
+				_argstype = null;
+			}
+		}
+
+		~SignalCallback ()
+		{
+			Dispose (false);
+		}
 	}
 }
+
