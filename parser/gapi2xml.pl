@@ -105,6 +105,7 @@ while ($line = <STDIN>) {
 			$line = <STDIN>;
 		}
 		$fdef .= $line;
+		$fdef =~ s/\n\s*//g;
 		$fdefs{$fname} = $fdef;
 	} elsif ($line =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)/) {
 		if ($1 eq "INSTANCE") {
@@ -381,9 +382,9 @@ sub addFuncElems
 
 		$mdef = delete $fdefs{$mname};
 
-		if (($mdef =~ /\(.*\)/) && ($1 ne "void")) {
+		if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
 			@parms = split(/,/, $1);
-			($dump, @parms) = @params if $dump_1st;
+			($dump, @parms) = @params if $drop_1st;
 			if (@parms > 0) {
 				addParamsElem($el, @parms);
 			}

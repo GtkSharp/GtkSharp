@@ -14,27 +14,6 @@ namespace GtkSharp.Generation {
 		
 		public BoxedGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
-		public String Name {
-			get
-			{
-				return elem.GetAttribute("name");
-			}
-		}
-		
-		public String QualifiedName {
-			get
-			{
-				return ns + "." + elem.GetAttribute("name");
-			}
-		}
-		
-		public String CName {
-			get
-			{
-				return elem.GetAttribute("cname");
-			}
-		}
-		
 		public String MarshalType {
 			get
 			{

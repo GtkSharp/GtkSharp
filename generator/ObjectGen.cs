@@ -14,27 +14,6 @@ namespace GtkSharp.Generation {
 		
 		public ObjectGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
-		public String Name {
-			get
-			{
-				return elem.GetAttribute("name");
-			}
-		}
-		
-		public String QualifiedName {
-			get
-			{
-				return ns + "." + elem.GetAttribute("name");
-			}
-		}
-		
-		public String CName {
-			get
-			{
-				return elem.GetAttribute("cname");
-			}
-		}
-		
 		public String MarshalType {
 			get
 			{
@@ -95,6 +74,9 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "constructor":
+					if (!GenCtor(member, table, sw)) {
+						Console.WriteLine("in object " + CName);
+					}
 					break;
 					
 				case "method":

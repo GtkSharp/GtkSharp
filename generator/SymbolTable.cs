@@ -13,6 +13,7 @@ namespace GtkSharp.Generation {
 		
 		private Hashtable complex_types = new Hashtable ();
 		private Hashtable simple_types;
+		private Hashtable dlls;
 		
 		public SymbolTable ()
 		{
@@ -62,6 +63,12 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GHashTable", "IntPtr");
 			simple_types.Add ("va_list", "IntPtr");
 			simple_types.Add ("GParamSpec", "IntPtr");
+			
+			dlls = new Hashtable();
+			dlls.Add("Atk", "atk.dll");
+			dlls.Add("Gdk", "gdk-1.3.dll");
+			dlls.Add("Gtk", "gtk-1.3.dll");
+			dlls.Add("Pango", "pango.dll");
 		}
 		
 		public void AddType (IGeneratable gen)
@@ -91,6 +98,11 @@ namespace GtkSharp.Generation {
 			} else {
 				return "";
 			}
+		}
+		
+		public String GetDllName(String ns)
+		{
+			return (String) dlls[ns];
 		}
 		
 		public String GetMarshalType(String c_type)
