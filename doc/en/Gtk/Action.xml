@@ -9,8 +9,47 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>An action which can be triggered by a menu or toolbar item.</summary>
+    <remarks>
+      <para>
+Actions represent operations that the user can be perform, along with some information how it should be presented in the interface. Each action provides methods to create icons, menu items and toolbar items representing itself.
+
+<para>
+As well as the callback that is called when the action gets activated, the following also gets associated with the action:
+<list type="bullet">
+            <item>
+              <term>a name (not translated, for path lookup)</term>
+            </item>
+            <item>
+              <term>a label (translated, for display)</term>
+            </item>
+            <item>
+              <term>an accelerator</term>
+            </item>
+            <item>
+              <term>whether label indicates a stock id</term>
+            </item>
+            <item>
+              <term>a tooltip (optional, translated)</term>
+            </item>
+            <item>
+              <term>a toolbar label (optional, shorter than label)</term>
+            </item>
+          </list></para><para>
+The action will also have some state information:
+<list type="bullet">
+            <item>
+              <term>visible (shown/hidden)</term>
+            </item>
+            <item>
+              <term>sensitive (enabled/disabled)</term>
+            </item>
+          </list></para><para>
+Apart from regular actions, there are toggle actions, which can be toggled between two states and radio actions, of which only one in a group can be in the "active" state. Other actions can be implemented as <see cref="T:Gtk.Action" /> subclasses.
+</para><para>
+Each action can have one or more proxy menu item, toolbar button or other proxy widgets. Proxies mirror the state of the action (text label, tooltip, icon, visible, sensitive, etc), and should change when the action's state changes. When the proxy is activated, it should activate its action.
+</para></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -59,9 +98,10 @@
         <Parameter Name="proxy" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Disables calls to the <see cref="M:Gtk.Action.Activate()" /> function by signals on the given proxy widget.</summary>
         <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This is used to break notification loops for things like check or radio actions.
+This function is intended for use by action implementations.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateMenuItem">
@@ -72,9 +112,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a menu item widget that proxies for the given action.</summary>
+        <returns>a <see cref="T:Gtk.Widget" /> that is a menu item connected to the action.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Activate">
@@ -85,8 +125,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits <see cref="E:Gtk.Action.Activated" /> on the specified action, if it is not insensitive.</summary>
+        <remarks>This gets called by the proxy widgets when they get activated.
+It can also be used to manually activate an action.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisconnectAccelerator">
@@ -97,8 +138,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Undoes the effect of one call to <see cref="M:Gtk.Action.ConnectAccelerator()" />.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UnblockActivateFrom">
@@ -111,9 +152,10 @@
         <Parameter Name="proxy" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Re-enables calls to the <see cref="M:Gtk.ActionActivate()" /> function by signals on the given proxy widget.</summary>
         <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This undoes the blocking done by <see cref="M:Gtk.Action.BlockActivateFrom()" />.
+This function is intended for use by action implementations.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateIcon">
@@ -126,10 +168,10 @@
         <Parameter Name="icon_size" Type="Gtk.IconSize" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_size">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>This function is intended for use by action implementations to create icons displayed in the proxy widgets.</summary>
+        <param name="icon_size">a <see cref="T:System.Int32" />, the size of the icon that should be created.</param>
+        <returns>a <see cref="T:Gtk.Widget" />  that displays the icon for this action.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ConnectAccelerator">
@@ -140,8 +182,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Installs the accelerator for action if action has an AccelPath and AccelGroup.</summary>
+        <remarks>See <see cref="P:Gtk.Action.AccelPath" /> and <see cref="P:Gtk.Action.AccelGroup" /><para>
+Since multiple proxies may independently trigger the installation of the accelerator, the action counts the number of times this function has been called and does not remove the accelerator until <see cref="M:Gtk.Action.DisconnectAccelerator()" /> has been called as many times.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateToolItem">
@@ -152,9 +196,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a toolbar item widget that proxies for the given action.</summary>
+        <returns>a <see cref="T:Gtk.Widget" /> that is a toolbar item connected to the action.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ConnectProxy">
@@ -167,9 +211,10 @@
         <Parameter Name="proxy" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Connects a widget to an action object as a proxy.</summary>
         <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Synchronises various properties of the action with the widget (such as label text, icon, tooltip, etc), and attaches a callback so that the action gets activated when the proxy widget does.
+If the widget is already connected to an action, it is disconnected first.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisconnectProxy">
@@ -182,9 +227,9 @@
         <Parameter Name="proxy" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Disconnects a proxy widget from an action.</summary>
         <param name="proxy">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Does not destroy the widget, however.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -195,10 +240,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.Action" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -209,10 +254,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.Action" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -226,13 +271,13 @@
         <Parameter Name="stock_id" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <param name="label">a <see cref="T:System.String" /></param>
-        <param name="tooltip">a <see cref="T:System.String" /></param>
-        <param name="stock_id">a <see cref="T:System.String" /></param>
+        <summary>Creates a new action from the <paramref name="name" />, <paramref name="label" />, <paramref name="tooltip" />, and <paramref name="stock_id" />.</summary>
+        <param name="name">A unique name for the action</param>
+        <param name="label"> the label displayed in menu items and on buttons</param>
+        <param name="tooltip">a tooltip for the action, or <see langword="null" /> for no tooltip</param>
+        <param name="stock_id">the stock icon to display in widgets representing the action, or <see langword="null" /></param>
         <returns>a <see cref="T:Gtk.Action" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -244,11 +289,11 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <param name="label">a <see cref="T:System.String" /></param>
+        <summary>Creates a new action from the <paramref name="name" /> and <paramref name="label" />.</summary>
+        <param name="name">A unique name for the action</param>
+        <param name="label"> the label displayed in menu items and on buttons</param>
         <returns>a <see cref="T:Gtk.Action" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Convenience constructor for <see cref="C:Gtk.Action(System.String,System.String.System.String,System.String)" /> passing in <see langword="null" /> for the last two parameters.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -272,9 +317,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the action is considered important.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>When <see langword="true" />, toolitem proxies for this action show text in <see cref="F:Gtk.ToolbarStyle.BothHoriz" /> mode.
+
+Default value: <see langword="false" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="VisibleVertical">
@@ -285,9 +332,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>When <see langword="true" />, toolitem proxies for this action are represented in the toolbar overflow menu.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="true" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="StockId">
@@ -298,9 +345,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The stock icon displayed in widgets representing this action.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="HideIfEmpty">
@@ -311,9 +358,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>When <see langword="true" />, empty menu proxies for this action are hidden.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value: <see langword="true" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -324,9 +371,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A unique name for the action.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ShortLabel">
@@ -337,9 +384,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A shorter label that may be used on toolbar buttons.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="VisibleHorizontal">
@@ -350,9 +397,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the toolbar item is visible when the toolbar is in a horizontal orientation.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="true" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="ActionGroup">
@@ -376,9 +423,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The label used for menu items and buttons that activate this action.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Tooltip">
@@ -389,9 +436,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A tooltip for this action.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Sensitive">
@@ -402,9 +449,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the action itself is sensitive.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>
+This does not necessarily mean effective sensitivity. See <see cref="P:Gtk.Action.IsSensitive" /> for that.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Visible">
@@ -415,9 +468,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the action itself is visible.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>
+This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action.IsVisible" /> for that.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AccelGroup">
@@ -427,9 +486,9 @@
         <ReturnType>Gtk.AccelGroup</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.AccelGroup" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.AccelGroup" /> in which the accelerator for this action will be installed.</summary>
+        <returns>a <see cref="T:Gtk.AccelGroup" /> or <see langword="null" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IsSensitive">
@@ -440,9 +499,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>whether the action is effectively sensitive.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <see langword="true" /> if the action and its associated action group are both sensitive. </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsVisible">
@@ -453,9 +513,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the action is effectively visible.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <see langword="true" /> if the action and its associated action group are both visible.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Proxies">
@@ -466,9 +527,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:GLib.SList" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the proxy widgets for an action.</summary>
+        <returns>a <see cref="T:GLib.SList" /> of proxy widgets.  The list is owned by the action and must not be modified.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AccelPath">
@@ -478,9 +539,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The accel path for this action.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>All proxy widgets associated with the action will have this accel path, so that their accelerators are consistent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Activated">
