@@ -8,7 +8,7 @@
 #
 # Copyright (c) 2001 Mike Kestner
 # Copyright (c) 2003 Martin Willemoes Hansen
-# Copyright (c) 2003 Novell, Inc.
+# Copyright (c) 2003-2004 Novell, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 2 of the GNU General Public
@@ -26,7 +26,7 @@
 
 $private_regex = "^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)";
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)";
-$ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
+$ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
 foreach $arg (@ARGV) {
 	if (-d $arg && -e $arg) {
@@ -79,6 +79,8 @@ foreach $fname (@hdrs) {
 			}
 		} elsif ($line =~ /^\s*\/\*/) {
 			while ($line !~ /\*\//) {$line = <INFILE>;}
+		} elsif ($line =~ /^extern/) {
+			while ($line !~ /;/) {$line = <INFILE>;}
 		} elsif ($line =~ /$private_regex/) {
 			$nested = 0;
 			while ($line = <INFILE>) {
