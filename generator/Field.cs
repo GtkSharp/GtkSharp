@@ -165,6 +165,8 @@ namespace GtkSharp.Generation {
 
 			string wrapped = table.GetCSType (CType);
 			string wrapped_name = SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
+			IGeneratable gen = table [CType];
+
 			if (IsArray) {
 				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (IsPadding) {
@@ -175,6 +177,16 @@ namespace GtkSharp.Generation {
 			} else if (table.IsCallback (CType)) {
 				// FIXME
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else if (gen is LPGen || gen is LPUGen) {
+				sw.WriteLine ("\t\tprivate " + gen.MarshalType + " " + Name + ";");
+				sw.WriteLine ("\t\tpublic " + CSType + " " + StudlyName + " {");
+				sw.WriteLine ("\t\t\tget {");
+				sw.WriteLine ("\t\t\t\treturn " + gen.FromNative (Name) + ";");
+				sw.WriteLine ("\t\t\t}");
+				sw.WriteLine ("\t\t\tset {");
+				sw.WriteLine ("\t\t\t\t" + Name + " = " + gen.CallByName ("value") + ";");
+				sw.WriteLine ("\t\t\t}");
+				sw.WriteLine ("\t\t}");
 			} else if (table.IsObject (CType) || table.IsOpaque (CType)) {
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 
