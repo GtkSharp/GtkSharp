@@ -17,7 +17,8 @@ namespace GLib {
 	/// </remarks>
 
 	public class Boxed {
-		object raw;
+		object obj;
+		IntPtr raw; 
 
 		/// <summary>
 		///	Boxed Constructor
@@ -29,7 +30,12 @@ namespace GLib {
 
 		public Boxed (object o)
 		{
-			this.raw = raw;
+			this.obj = obj;
+		}
+
+		public Boxed (IntPtr ptr)
+		{
+			this.raw = ptr;
 		}
 
 		/// <summary>
@@ -39,13 +45,25 @@ namespace GLib {
 		/// <remarks>
 		///	Gets a marshallable IntPtr.
 		/// </remarks>
-
-		public virtual object Obj {
+		public virtual IntPtr Handle {
 			get {
 				return raw;
 			}
 			set {
 				raw = value;
+			}
+		}
+
+		public static explicit operator System.IntPtr (Boxed boxed) {
+			return boxed.Handle;
+		}
+
+		public virtual object Obj {
+			get {
+				return obj;
+			}
+			set {
+				obj = value;
 			}
 		}
 	}

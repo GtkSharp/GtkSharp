@@ -19,12 +19,18 @@ namespace GtkSharp.Generation {
 		private bool preferred;
 		private String clashName = null;
 		private ClassBase container_type;
+		private bool force_static;
 
 		public bool Preferred {
 			get { return preferred; }
 			set { preferred = value; }
 		}
-		
+
+		public bool ForceStatic {
+			get { return force_static; }
+			set { force_static = value; }
+		}
+	
 		public Ctor (string libname, XmlElement elem, ClassBase container_type) {
 			this.libname = libname;
 			this.elem = elem;
@@ -71,7 +77,7 @@ namespace GtkSharp.Generation {
 			}
 			int clashes = (int) clash_map[sigtypes];
 			string cname = elem.GetAttribute("cname");
-			if (clashes > 0 && !Preferred) {
+			if (force_static || (clashes > 0 && !Preferred)) {
 				String mname = cname.Substring(cname.IndexOf("new"));
 				mname = mname.Substring(0,1).ToUpper() + mname.Substring(1);
 				int idx;
@@ -126,20 +132,26 @@ namespace GtkSharp.Generation {
 				
 				sw.WriteLine("\t\tpublic static " + safety + modifiers +  name + " " + clashName);
 				sw.WriteLine("\t\t{");
-				if (parms != null)
-					parms.Initialize(sw, false, "");
-				sw.WriteLine("\t\t\tIntPtr ret = " + cname + call + ";");
+
 				if (parms != null)
 					parms.HandleException (sw, "");
-				sw.WriteLine("\t\t\treturn new " + name + "(ret);");
+
+				sw.Write("\t\t\treturn ");
+				if (container_type is StructBase)
+					sw.Write ("{0}.New (", name);
+				else
+					sw.Write ("new {0} (", name);
+				sw.WriteLine (cname + call + ");");
 			} else {
 				sw.WriteLine("\t\tpublic " + safety + name + sig);
 				sw.WriteLine("\t\t{");
+
 				if (parms != null)
 					parms.Initialize(sw, false, ""); 
-				sw.WriteLine("\t\t\tRaw = " + cname + call + ";");
+				sw.WriteLine("\t\t\t{0} = {1}{2};", container_type.AssignToName, cname, call);
 				if (parms != null)
 					parms.HandleException (sw, "");
+			
 			}
 			
 			sw.WriteLine("\t\t}");

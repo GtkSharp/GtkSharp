@@ -1,3 +1,54 @@
+2002-07-30  Rachel Hestilow  <hestilow@ximian.com>
+
+	* generator/ClassBase.cs: Change hasDefaultConstructor to protected,
+	adjust now that it is an attr and not a subnode. Also add virtual
+	property AssignToName (for ctors).
+
+	* generator/Ctor.cs: Add property ForceStatic.
+	(Generate): Optimize return code a bit for the static case.
+
+	* generator/Method.cs: Assign to a "raw_ret" pointer before calling
+	FromNativeReturn.
+
+	* generator/Parameters.cs: Change "out ref" to "out", not "ref".
+
+	* generator/Property.cs: Fix to work correctly with all object and
+	struct types (mostly just some if-cases added).
+
+	* generator/SignalHandler.cs: Remove args_type and argfields (unused).
+	(Generate): Initialize struct if necessary.
+	
+	* generator/StructBase.cs: Massive reworking to support methods, ctors,
+	etc.
+
+	* generator/SymbolTable.cs: Add GdkAtom and gconstpointer simple types.
+
+	* glib/Boxed.cs: Accept both IntPtr and object ctors. Add access for both.
+
+	* glib/Opaque.cs: Fix copy/pasted copyright notice, remove data and event
+	fields. Fix docs.
+
+	* glib/Value.cs: Work correctly with boxed properties.
+
+	* gnome/Modules.cs: Use new struct ctors.
+
+	* gnome/Program.custom: Remove Get, this is being generated now.
+
+	* parser/Gdk.metadata: Fix the drawable classes to inherit correctly.
+
+	* parser/Metadata.pm: Change per-class attributes to actually be
+	attributes.
+	
+	* parser/Gtk.metadata: Add a dummy attribute value for disabledefaultctor.
+
+	* parser/gapi2xml.pl: Add hacks for the (broken) Drawable and Bitmap
+	typedefs.
+
+	* sample/test/TestColorSelection.cs: Display color string in hex format,
+	update to use IsNull instead of == null, and size dialog to look pretty.
+
+	* sample/Size.cs: Added.
+
 2002-07-25  Rachel Hestilow  <hestilow@ximian.com>
 
 	[about 60% of the marshalling patch that I lost.

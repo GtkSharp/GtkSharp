@@ -7,6 +7,7 @@
 //
 
 using System;
+using System.Text;
 
 using Gtk;
 using GtkSharp;
@@ -59,20 +60,38 @@ namespace WidgetViewer {
 			window.ColorSelection.HasPalette = ((ToggleButton )o).Active;
 		}
 
+		static string HexFormat (Gdk.Color color)
+		{
+			StringBuilder s = new StringBuilder ();
+			ushort[] vals = { color.red, color.green, color.blue };
+			char[] hexchars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+									 'A', 'B', 'C', 'D', 'E', 'F'};
+
+			s.Append ('#');
+			foreach (ushort val in vals) {
+				/* Convert to a range of 0-255, then lookup the
+				 * digit for each half-byte */
+				byte rounded = (byte) (val >> 8);
+				s.Append (hexchars[(rounded & 0xf0) >> 4]);
+				s.Append (hexchars[rounded & 0x0f]);
+			}
+
+			return s.ToString ();
+		}
+		
 		static void Color_Changed (object o, EventArgs args)
 		{
 			Gdk.Color color = window.ColorSelection.CurrentColor;
+			Console.WriteLine (HexFormat (color));
 		}
 
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
 			Gdk.Color selected = window.ColorSelection.CurrentColor;
-/*
-			if (selected == null) {
+			if (selected.IsNull) {
 				Console.WriteLine ("Color selection failed.");
 				return;
 			}
-*/			
 			Display_Result (selected);
 		}
 
@@ -85,20 +104,20 @@ namespace WidgetViewer {
 
 		static void Display_Result (Gdk.Color color)
 		{
-/*
-			if (color == null)
+			if (color.IsNull)
 				Console.WriteLine ("Null color");
-*/			
 			dialog = new Dialog ();
 			dialog.Title = "Selected Color";
+
+			dialog.VBox.PackStart (new Gtk.Label (HexFormat (color)),
+										  false, false, 0);
 
 			DrawingArea da = new DrawingArea ();
 
 			da.ModifyBg (StateType.Normal, color);
 
-			Console.WriteLine (da);
-
 			dialog.VBox.PackStart (da, true, true, 0);
+			dialog.SetDefaultSize (200, 200);
 
 			Button button = new Button ("OK");
 			button.Clicked += new EventHandler (Close_Button);

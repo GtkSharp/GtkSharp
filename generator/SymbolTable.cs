@@ -26,6 +26,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("guint", "uint");
 			simple_types.Add ("glong", "long");
 			simple_types.Add ("gshort", "short");
+			simple_types.Add ("gushort", "ushort");
 			simple_types.Add ("guint32", "uint");
 			simple_types.Add ("const-gchar", "string");
 			simple_types.Add ("const-char", "string");
@@ -71,6 +72,8 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GHashTable", "System.IntPtr");
 			simple_types.Add ("va_list", "System.IntPtr");
 			simple_types.Add ("GParamSpec", "System.IntPtr");
+			simple_types.Add ("GdkAtom", "System.IntPtr");
+			simple_types.Add ("gconstpointer", "System.IntPtr");
 
 			manually_wrapped_types = new Hashtable ();
 			manually_wrapped_types.Add ("GdkEvent", "Gdk.Event");

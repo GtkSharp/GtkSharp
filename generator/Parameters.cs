@@ -226,8 +226,8 @@ namespace GtkSharp.Generation {
 				}
 				import_sig += (m_type + " " + name);
 				// FIXME: lame
-				call_string = call_string.Replace ("out ref", "ref");
-				import_sig = import_sig.Replace ("out ref", "ref");
+				call_string = call_string.Replace ("out ref", "out");
+				import_sig = import_sig.Replace ("out ref", "out");
 
 				i++;
 			}

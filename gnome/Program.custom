@@ -64,17 +64,4 @@ public void Quit ()
 	Gtk.Application.Quit ();
 }
 
-[DllImport("libgnome-2.so.0")]
-static extern System.IntPtr gnome_program_get ();
-
-public static Program Get ()
-{
-	IntPtr raw = gnome_program_get ();
-	if (raw == IntPtr.Zero)
-		return null;
-	Program program = (Program) GLib.Object.GetObject (raw);
-	if (program == null)
-		program = new Program (raw);
-	return program;
-}
 

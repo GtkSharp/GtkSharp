@@ -2624,7 +2624,7 @@
         </parameters>
       </method>
     </object>
-    <object name="Pixmap" cname="GdkPixmap" parent="GObject">
+    <object name="Pixmap" cname="GdkPixmap" parent="GdkDrawable">
       <method name="ColormapCreateFromXpm" cname="gdk_pixmap_colormap_create_from_xpm" shared="true">
         <return-type type="GdkPixmap*"/>
         <parameters>
@@ -2752,7 +2752,7 @@
         <return-type type="GType"/>
       </method>
     </object>
-    <object name="Window" cname="GdkWindow" parent="GObject">
+    <object name="Window" cname="GdkWindow" parent="GdkDrawable">
       <method name="AddFilter" cname="gdk_window_add_filter">
         <return-type type="void"/>
         <parameters>
@@ -3254,7 +3254,7 @@
         <return-type type="void"/>
       </method>
     </object>
-    <struct name="Bitmap" cname="GdkBitmap">
+    <object name="Bitmap" cname="GdkBitmap" parent="GdkDrawable">
       <field cname="parent_instance" type="GObject"/>
       <method name="CreateFromData" cname="gdk_bitmap_create_from_data" shared="true">
         <return-type type="GdkBitmap*"/>
@@ -3265,7 +3265,7 @@
           <parameter type="gint" name="height"/>
         </parameters>
       </method>
-    </struct>
+    </object>
     <boxed name="Color" cname="GdkColor">
       <field cname="pixel" type="guint32"/>
       <field cname="red" type="guint16"/>
@@ -9051,7 +9051,7 @@
         <return-type type="GtkType"/>
       </method>
     </object>
-    <object name="ScrolledWindow" cname="GtkScrolledWindow" parent="GtkBin">
+    <object name="ScrolledWindow" cname="GtkScrolledWindow" parent="GtkBin" disabledefaultconstructor="1">
       <field cname="hscrollbar" type="GtkWidget*"/>
       <field cname="vscrollbar" type="GtkWidget*"/>
       <field cname="hscrollbar_policy" bits="2" type="guint"/>
@@ -9147,7 +9147,6 @@
           <parameter type="GtkAdjustment*" name="hadjustment"/>
         </parameters>
       </method>
-      <disabledefaultconstructor/>
     </object>
     <object name="Separator" cname="GtkSeparator" parent="GtkWidget">
       <method name="GetType" cname="gtk_separator_get_type" shared="true">

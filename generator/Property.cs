@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
 				Statistics.ThrottledCount++;
 				return;
 			} else if (SymbolTable.IsObject(c_type)) {
-				v_type = "(GLib.Object)";
+				v_type = "(GLib.UnwrappedObject)";
 			} else if (SymbolTable.IsBoxed (c_type)) {
 				v_type = "(GLib.Boxed)";
 			} else if (SymbolTable.IsOpaque (c_type)) {
@@ -95,21 +95,18 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
-				if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type)) {
-					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) (GLib.UnwrappedObject) val;");
+				if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type) || SymbolTable.IsBoxed (c_type)) {
+					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
 					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + SymbolTable.FromNativeReturn(c_type, "raw_ret") + ";");
-					sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
+					if (!SymbolTable.IsBoxed (c_type))
+						sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				} else {
 					sw.Write("\t\t\t\t" + cs_type + " ret = ");
-					if (SymbolTable.IsBoxed (c_type)) {
-						sw.WriteLine ("({0}) (({1} val).Obj);", cs_type, v_type);
-					} else {
-						sw.Write ("(" + cs_type + ") ");
-						if (v_type != "") {
-							sw.Write(v_type + " ");
-						}
-						sw.WriteLine("val;");
+					sw.Write ("(" + cs_type + ") ");
+					if (v_type != "") {
+						sw.Write(v_type + " ");
 					}
+					sw.WriteLine("val;");
 				}
 
 				sw.WriteLine("\t\t\t\treturn ret;");
@@ -124,7 +121,7 @@ namespace GtkSharp.Generation {
 				} else if (SymbolTable.IsBoxed (c_type)) {
 					sw.WriteLine("Handle, " + cname + ", new GLib.Boxed (value)));");
 				} else {
-					if (v_type != "") {
+					if (v_type != "" && !(SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type))) {
 						sw.Write(v_type + " ");
 					}
 					sw.WriteLine("value));");

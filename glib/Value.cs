@@ -288,10 +288,7 @@ namespace GLib {
 
 		public static explicit operator GLib.Boxed (Value val)
 		{
-			// FIXME: Insert an appropriate exception here if
-			// _val.type indicates an error.
-			// FIXME: Figure out how to wrap this boxed type
-			return null;
+			return new GLib.Boxed (g_value_get_boxed (val._val));
 		}
 
 		[DllImport("gobject-2.0")]

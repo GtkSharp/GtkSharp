@@ -349,8 +349,11 @@ namespace GtkSharp.Generation {
 					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
 					sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
 				}
-				else
-					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, cname + call) + ";");
+				else {
+					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
+					sw.Write(indent + "\t\t\t");
+					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
+				}
 			}
 			
 			if (parms != null)

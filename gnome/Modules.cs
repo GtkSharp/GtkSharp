@@ -11,11 +11,15 @@ namespace Gnome
 		static extern System.IntPtr libgnomeui_module_info_get ();
 
 		public static ModuleInfo LibGnome {
-			get { return new ModuleInfo (libgnome_module_info_get ()); }
+			get { 
+				return ModuleInfo.New (libgnome_module_info_get ());
+			}
 		}
 
 		public static ModuleInfo UI {
-			get { return new ModuleInfo (libgnomeui_module_info_get ()); }
+			get { 
+				return ModuleInfo.New (libgnomeui_module_info_get ());
+			}
 		}
 	}
 }

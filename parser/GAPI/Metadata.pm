@@ -150,8 +150,7 @@ sub addClassData {
 
 	    if (0 == scalar @nodes) {
 		print STDERR "DEBUG> $class $$data[0] $$data[1] $$data[2] $$data[3] $$data[4] $$data[5] $$data[6]\n";
-		my $new_node = $doc->createElement ($$data[5]);
-		$node->appendChild ($new_node);
+		$node->setAttribute ($$data[5], $$data[6]);
 	    }
 	    next;
 	}

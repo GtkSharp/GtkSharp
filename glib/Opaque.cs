@@ -1,9 +1,10 @@
-// Object.cs - GObject class wrapper implementation
+// Opaque .cs - Opaque struct wrapper implementation
 //
 // Authors: Bob Smith <bob@thestuff.net>
 //	    Mike Kestner <mkestner@speakeasy.net>
+//	    Rachel Hestilow <hestilow@ximian.com>
 //
-// (c) 2001 Bob Smith and Mike Kestner
+// (c) 2001 Bob Smith and Mike Kestner, 2002 Rachel Hestilow
 
 namespace GLib {
 
@@ -24,8 +25,6 @@ namespace GLib {
 
 		// Private class and instance members
 		IntPtr _obj;
-		EventHandlerList _events;
-		Hashtable Data;
 		static Hashtable Opaques = new Hashtable();
 
 		/// <summary>
@@ -37,7 +36,7 @@ namespace GLib {
 		///	given raw object pointer. This method is primarily
 		///	used to wrap object references that are returned 
 		///	by either the signal system or raw class methods that
-		///	return GObject references.
+		///	return opaque struct references.
 		/// </remarks>
 		///
 		/// <returns>
@@ -52,7 +51,7 @@ namespace GLib {
 		}
 
 		/// <summary>
-		///	Object Constructor
+		///	Opaque Constructor
 		/// </summary>
 		///
 		/// <remarks>
@@ -62,11 +61,11 @@ namespace GLib {
 		public Opaque () {}
 
 		/// <summary>
-		///	Object Constructor
+		///	Opaque Constructor
 		/// </summary>
 		///
 		/// <remarks>
-		///	Creates an object from a raw object reference.
+		///	Creates an opaque wrapper from a raw object reference.
 		/// </remarks>
 
 		public Opaque (IntPtr raw)
@@ -79,8 +78,8 @@ namespace GLib {
 		/// </summary>
 		///
 		/// <remarks>
-		///	The raw GObject reference associated with this wrapper.
-		///	Only subclasses of Object can access this read/write
+		///	The raw Opaque reference associated with this wrapper.
+		///	Only subclasses of Opaque can access this read/write
 		///	property.  For public read-only access, use the
 		///	Handle property.
 		/// </remarks>
@@ -100,7 +99,7 @@ namespace GLib {
 		/// </summary>
 		///
 		/// <remarks>
-		///	The raw GObject reference associated with this object.
+		///	The raw Opaque reference associated with this object.
 		///	Subclasses can use Raw property for read/write
 		///	access.
 		/// </remarks>
@@ -133,6 +132,10 @@ namespace GLib {
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();
+		}
+
+		public static explicit operator System.IntPtr (Opaque opaque) {
+			return opaque.Handle;
 		}
 	}
 }

@@ -50,6 +50,8 @@ while ($line = <STDIN>) {
 		$ptrs{$2} = $1;
 	} elsif ($line =~ /typedef\s+(struct\s+\w+)\s+(\w+);/) {
 		next if ($2 =~ /Private$/);
+		# fixme: siiigh
+		$2 = "GdkDrawable" if ($1 eq "_GdkDrawable");
 		$types{$2} = $1;
 	} elsif ($line =~ /typedef\s+(\w+\s+\**)(\w+);/) {
 		$types{$2} = $1;
@@ -324,7 +326,11 @@ foreach $key (sort (keys (%types))) {
 		$def = "privatestruct";
 	}
 
-	if (exists($boxdefs{$key})) {
+
+	# fixme: hack
+	if ($key eq "GdkBitmap") {
+		$struct_el = addNameElem($ns_elem, 'object', $key, $ns);
+	} elsif (exists($boxdefs{$key})) {
 		$struct_el = addNameElem($ns_elem, 'boxed', $key, $ns);
 	} else {
 		$struct_el = addNameElem($ns_elem, 'struct', $key, $ns);

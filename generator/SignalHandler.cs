@@ -14,7 +14,6 @@ namespace GtkSharp.Generation {
 	public class SignalHandler {
 		
 		private static Hashtable handlers = new Hashtable ();
-		private string args_type;
 		
 		public static String GetName(XmlElement sig)
 		{
@@ -40,7 +39,6 @@ namespace GtkSharp.Generation {
 			string key = retval;
 			string pinv = "";
 			string name = SymbolTable.GetName(retval);
-			string argfields = "";
 			int pcnt = 0;
 			
 			ArrayList parms = new ArrayList();
@@ -152,8 +150,11 @@ namespace GtkSharp.Generation {
 						sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
 					} else {
 						string ctype = (string) parms[idx];
-						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
 						ClassBase wrapper = SymbolTable.GetClassGen (ctype);
+						if (wrapper != null && (wrapper is StructBase)) {
+							sw.WriteLine("\t\t\targ{0}._Initialize ();", idx);
+						}
+						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
 						if ((wrapper != null && ((wrapper is ObjectGen) || (wrapper is OpaqueGen))) || SymbolTable.IsManuallyWrapped (ctype)) {
 							sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
 							sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);

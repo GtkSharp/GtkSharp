@@ -19,7 +19,7 @@ namespace GtkSharp.Generation {
 		protected ArrayList interfaces = null;
 		protected ArrayList ctors = new ArrayList();
 
-		private bool hasDefaultConstructor = true;
+		protected bool hasDefaultConstructor = true;
 		private bool ctors_initted = false;
 		private Hashtable clash_map;
 
@@ -43,6 +43,8 @@ namespace GtkSharp.Generation {
 		}
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
+			hasDefaultConstructor = !elem.HasAttribute ("disabledefaultconstructor");
+					
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
@@ -73,10 +75,6 @@ namespace GtkSharp.Generation {
 					ctors.Add (new Ctor (LibraryName, member, this));
 					break;
 
-				case "disabledefaultconstructor":
-					hasDefaultConstructor = false;
-					break;
-					
 				default:
 					break;
 				}
@@ -121,6 +119,10 @@ namespace GtkSharp.Generation {
 		public virtual String CallByName ()
 		{
 			return "Handle";
+		}
+
+		public virtual String AssignToName {
+			get { return "Raw"; }
 		}
 
 		public virtual String FromNative(String var)
