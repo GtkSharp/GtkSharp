@@ -30,6 +30,9 @@
 		
 		static public Pixbuf LoadResource (System.Reflection.Assembly assembly, string resource)
 		{
+			if (assembly == null)
+				return LoadResource (resource);
+
 			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
 			if (s == null)
 				return null;
