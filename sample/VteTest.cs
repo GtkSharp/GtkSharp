@@ -5,8 +5,6 @@ using Vte;
 
 class T
 {
-	Program program;
-	
 	static void Main (string[] args)
 	{
 		new T (args);
@@ -14,8 +12,8 @@ class T
 	
 	T (string[] args)
 	{
-		program = new Program ("test", "0.0", Modules.UI, args);
-		App app = new App ("test", "Test for vte widget");
+		Program program = new Program ("vte-sharp-test", "0.0", Modules.UI, args);
+		App app = new App ("vte-sharp-test", "Test for vte widget");
 		app.SetDefaultSize (600, 450);
 		app.DeleteEvent += new DeleteEventHandler (OnAppDelete);
 		
@@ -26,47 +24,42 @@ class T
 		term.MouseAutohide = true;
 		term.ScrollOnKeystroke = true;
 		term.DeleteBinding = TerminalEraseBinding.Auto;
+		term.BackspaceBinding = TerminalEraseBinding.Auto;
 		term.Encoding = "UTF-8";
-		term.FontFromString = "Monospace";
-		term.Commit += new Vte.CommitHandler (OnCommit);
+		term.FontFromString = "Monospace 12";
 		term.TextDeleted += new EventHandler (OnTextDeleted);
+		term.ChildExited += new EventHandler (OnChildExited);
 
 		Gdk.Color white = new Gdk.Color ();
 		Gdk.Color.Parse ("white", ref white);
-		term.ColorBackground = white;
+		// FIXME: following line is broken
+		//term.ColorBackground = white;
+
+		Gdk.Color black = new Gdk.Color ();
+		Gdk.Color.Parse ("black", ref black);
+		// FIXME: following line is broken
+		//term.ColorForeground = black;
+		term.SetColors (black, white, white, 16);
 		
 		Console.WriteLine (term.UsingXft);
 		Console.WriteLine (term.Encoding);
 		Console.WriteLine (term.StatusLine);
 
-		string argv = Environment.GetCommandLineArgs () [0];
+		string[] argv = Environment.GetCommandLineArgs ();
 
-		string envv = "";
+		string[] envv = new string[] {""};
 		// FIXME: send the env vars to ForkCommand
 		Console.WriteLine (Environment.GetEnvironmentVariables ().Count);
 		Console.WriteLine (Environment.CurrentDirectory);
 		
-		//int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
-		//Console.WriteLine ("Child pid: " + pid);
+		int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
+		Console.WriteLine ("Child pid: " + pid);
 
 		sw.AddWithViewport (term);
 
 		app.Contents = sw;
 		app.ShowAll ();
 		program.Run ();
-	}
-
-	private void OnCommit (object o, Vte.CommitArgs args)
-	{
-		Terminal term = (Terminal) o;
-		if (args.P0 == "\r")
-		{
-			//FIXME: maybe a setting somewhere
-			term.Feed ("\r\n");
-			return;
-		}
-
-		term.Feed (args.P0);
 	}
 
 	private void OnTextDeleted (object o, EventArgs args)
@@ -81,10 +74,18 @@ class T
 	
 	private void OnTextInserted (object o, EventArgs args)
 	{
+		Console.WriteLine ("text inserted");
+	}
+
+	private void OnChildExited (object o, EventArgs args)
+	{
+		// optionally we could just reset instead of quitting
+		Console.WriteLine ("child exited");
+		Application.Quit ();
 	}
 	
 	private void OnAppDelete (object o, DeleteEventArgs args)
 	{
-		program.Quit ();
+		Application.Quit ();
 	}
 }
