@@ -1,0 +1,58 @@
+// Gdk.Input.custom - Gdk Input class customizations
+//
+// Author: Mike Kestner <mkestner@ximian.com> 
+//
+// Copyright (C) 2005 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		[GLib.CDeclCallback]
+		delegate void DestroyNotify (IntPtr data);
+
+		static void ReleaseGCHandle (IntPtr data)
+		{
+			if (data == IntPtr.Zero)
+				return;
+
+			GCHandle gch = (GCHandle) data;
+			gch.Free ();
+		}
+
+		static DestroyNotify release_gchandle;
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern int gdk_input_add_full (int source, int condition, GdkSharp.InputFunctionNative function, IntPtr data, DestroyNotify destroy);
+
+		[Obsolete]
+		public static int AddFull (int source, Gdk.InputCondition condition, Gdk.InputFunction function, IntPtr data, Gdk.DestroyNotify destroy) 
+		{
+			if (release_gchandle == null)
+				release_gchandle = new DestroyNotify (ReleaseGCHandle);
+			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
+			GCHandle gch = GCHandle.Alloc (function_wrapper);
+			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
+		}
+
+		[Obsolete]
+		public static int Add (int source, Gdk.InputCondition condition, Gdk.InputFunction function) 
+		{
+			if (release_gchandle == null)
+				release_gchandle = new DestroyNotify (ReleaseGCHandle);
+			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
+			GCHandle gch = GCHandle.Alloc (function_wrapper);
+			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
+		}

@@ -38,6 +38,7 @@ customs = 			\
 	DragContext.custom	\
 	Drawable.custom		\
 	Global.custom		\
+	Input.custom		\
 	Keymap.custom		\
 	Pixmap.custom		\
 	Pixbuf.custom		\

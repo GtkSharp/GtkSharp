@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@ximian.com>
 //
-// Copyright (c) 2003 Ximian Inc.
+// Copyright (c) 2003-2005 Novell Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -125,6 +125,26 @@ namespace GtkSharp.Generation {
 		{
 			if (glue_sw != null)
 				glue_sw.Close ();
+		}
+
+		string member;
+		public string CurrentMember {
+			get {
+				return typename + "." + member;
+			}
+			set {
+				member = value;
+			}
+		}
+
+		string typename;
+		public string CurrentType {
+			get {
+				return typename;
+			}
+			set {
+				typename = value;
+			}
 		}
 
 		public StreamWriter OpenStream (string name) 

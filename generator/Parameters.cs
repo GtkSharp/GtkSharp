@@ -155,12 +155,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool NullOk {
-			get {
-				return elem.HasAttribute ("null_ok");
-			}
-		}
-
 		public string PropertyName {
 			get {
 				return elem.GetAttribute("property_name");
@@ -182,6 +176,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string Scope {
+			get {
+				return elem.GetAttribute ("scope");
+			}
+		}
+
 		public string CallByName (string call_parm_name)
 		{
 			string call_parm;
@@ -190,9 +190,6 @@ namespace GtkSharp.Generation {
 			else
 				call_parm = SymbolTable.Table.CallByName(CType, call_parm_name);
 			
-			if (NullOk && !CSType.EndsWith ("IntPtr") && !(Generatable is StructBase))
-				call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, Generatable is CallbackGen ? "null" : "IntPtr.Zero");
-
 			if (IsArray)
 				call_parm = call_parm.Replace ("ref ", "");
 

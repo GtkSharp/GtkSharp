@@ -31,6 +31,8 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
+			gen_info.CurrentType = Name;
+
 			if (!Validate ())
 				return;
 

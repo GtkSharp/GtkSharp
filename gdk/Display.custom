@@ -73,3 +73,16 @@
 			return result;
 		}
 
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_display_add_client_message_filter (IntPtr raw, IntPtr message_type, GdkSharp.FilterFuncNative func, IntPtr data);
+
+		public void AddClientMessageFilter (Gdk.Atom message_type, Gdk.FilterFunc func) 
+		{
+			GdkSharp.FilterFuncWrapper func_wrapper = new GdkSharp.FilterFuncWrapper (func);
+			if (!PersistentData.Contains ("client_message_filter_func_list"))
+				PersistentData ["client_message_filter_func_list"] = new ArrayList ();
+			ArrayList func_list = PersistentData ["client_message_filter_func_list"] as ArrayList;
+			func_list.Add (func_wrapper);
+			gdk_display_add_client_message_filter (Handle, message_type == null ? IntPtr.Zero : message_type.Handle, func_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+

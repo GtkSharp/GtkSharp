@@ -24,7 +24,6 @@
 
 	public Window (Gdk.Window parent, Gdk.WindowAttr attributes, Gdk.WindowAttributesType attributes_mask) : this (parent, attributes, (int)attributes_mask) {}
 
-
 	[DllImport("libgdk-win32-2.0-0.dll")]
 	static extern IntPtr gdk_window_get_children(IntPtr raw);
 
@@ -104,6 +103,12 @@
 		}
 	} 
 
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_add_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_remove_filter (IntPtr handle, GdkSharp.FilterFuncNative wrapper, IntPtr data);
+
 	static Hashtable filter_all_hash;
 	static Hashtable FilterAllHash {
 		get {
@@ -127,6 +132,26 @@
 			return;
 		FilterAllHash.Remove (func);
 		gdk_window_remove_filter (IntPtr.Zero, wrapper.NativeDelegate, IntPtr.Zero);
+	}
+
+	public void AddFilter (FilterFunc function)
+	{
+		if (!PersistentData.Contains ("filter_func_hash"))
+			PersistentData ["filter_func_hash"] = new Hashtable ();
+		Hashtable hash = PersistentData ["filter_func_hash"] as Hashtable;
+		GdkSharp.FilterFuncWrapper wrapper = new GdkSharp.FilterFuncWrapper (function);
+		hash [function] = wrapper;
+		gdk_window_add_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
+	}
+
+	public void RemoveFilter (FilterFunc function)
+	{
+		Hashtable hash = PersistentData ["filter_func_hash"] as Hashtable;
+		GdkSharp.FilterFuncWrapper wrapper = hash [function] as GdkSharp.FilterFuncWrapper;
+		if (wrapper == null)
+			return;
+		hash.Remove (function);
+		gdk_window_remove_filter (Handle, wrapper.NativeDelegate, IntPtr.Zero);
 	}
 
 #if MANLY_ENOUGH_TO_INCLUDE

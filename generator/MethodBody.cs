@@ -49,9 +49,9 @@ namespace GtkSharp.Generation {
 
 		private string CallArrayLength (Parameter array, Parameter length)
 		{
-			string result = array.NullOk ? array.Name + " != null ? " : "";
+			string result = array.Name + " != null ? ";
 			result += CastFromInt (length.CSType) + array.Name + ".Length";
-			result += array.NullOk ? ": 0" : "";
+			result += ": 0";
 			return length.Generatable.CallByName (result);
 		}
 
@@ -126,8 +126,9 @@ namespace GtkSharp.Generation {
 				if ((is_get || p.PassAs == "out") && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
 					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_native;");
 				else if (p.IsArray && p.MarshalType != p.CSType) {
-					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [{1}.Length];", p.MarshalType.TrimEnd('[', ']'), name);
-					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < {0}.Length; i++)", name);
+					sw.WriteLine(indent + "\t\t\tint cnt_" + p.Name + " = {0} == null ? 0 : {0}.Length;", name);
+					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [cnt_{1}];", p.MarshalType.TrimEnd('[', ']'), name);
+					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < cnt_{0}; i++)", name);
 					if (gen is IManualMarshaler)
 						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, (gen as IManualMarshaler).AllocNative (name + "[i]"));
 					else
@@ -137,14 +138,17 @@ namespace GtkSharp.Generation {
 
 
 				if (gen is CallbackGen) {
-					//Console.WriteLine ("***Callback parameter " + gen.Name + " generated in method***" );
 					CallbackGen cbgen = gen as CallbackGen;
 					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
-					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", wrapper, name);
-					sw.Write (indent + "\t\t\t");
-					if (p.NullOk)
-						sw.Write ("if ({0} != null) ", name);
-					sw.WriteLine ("{1}_wrapper = new {0} ({1});", wrapper, p.Name);
+					switch (p.Scope) {
+					case "call":
+					default:
+						if (p.Scope == String.Empty)
+							Console.WriteLine ("Defaulting " + gen.Name + " param to 'call' scope in method " + gen_info.CurrentMember);
+						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({2});", wrapper, name, p.Name);
+						break;
+					}
+						
 				}
 			}
 

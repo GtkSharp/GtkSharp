@@ -252,6 +252,7 @@ namespace GtkSharp.Generation {
 			if (!Initialize ()) 
 				return;
 
+			gen_info.CurrentMember = Name;
 			if (implementor != null && IsStatic)
 				return;
 

@@ -116,6 +116,8 @@ namespace GtkSharp.Generation {
  
 		public override void Generate (GenerationInfo gen_info)
 		{
+			gen_info.CurrentType = Name;
+
 			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, gen_info.AssemblyName);
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);

@@ -160,6 +160,7 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
+			gen_info.CurrentType = Name;
 			if (!retval.Validate ()) {
 				Console.WriteLine("rettype: " + retval.CType + " in callback " + CName);
 				Statistics.ThrottledCount++;

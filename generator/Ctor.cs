@@ -87,6 +87,7 @@ namespace GtkSharp.Generation {
 		public void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer;
+			gen_info.CurrentMember = CName;
 
 			SymbolTable table = SymbolTable.Table;
 

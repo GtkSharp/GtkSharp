@@ -133,13 +133,21 @@
 			return ret;
 		}
 
-		// overload to default the colorspace
-		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
+		static extern IntPtr gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkSharp.PixbufDestroyNotifyNative destroy_fn, IntPtr destroy_fn_data);
+
+		public Pixbuf (byte[] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
 		{
-			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
-			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
-			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
+			if (GetType () != typeof (Pixbuf)) {
+				throw new InvalidOperationException ("Can't override this constructor.");
+			}
+			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
+			Raw = gdk_pixbuf_new_from_data(data, (int) colorspace, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
+			PersistentData ["new_from_data_destroy_fn_wrapper"] = destroy_fn_wrapper;
 		}
+
+		// overload to default the colorspace
+		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : this (data, Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn) {}
 
 		public unsafe Pixbuf(byte[] data, bool copy_pixels) : base (IntPtr.Zero)
 		{
@@ -289,8 +297,7 @@
 
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type, string[] option_keys, string[] option_values) 
 		{
-			GdkSharp.PixbufSaveFuncWrapper save_func_wrapper = null;
-			save_func_wrapper = new GdkSharp.PixbufSaveFuncWrapper (save_func);
+			GdkSharp.PixbufSaveFuncWrapper save_func_wrapper = new GdkSharp.PixbufSaveFuncWrapper (save_func);
 			IntPtr error = IntPtr.Zero;
 			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
 			IntPtr[] nkeys = NullTerm (option_keys);
