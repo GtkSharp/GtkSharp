@@ -36,7 +36,7 @@ namespace GConf
 		[DllImport("gconf-2")]
 		static extern void gconf_change_set_set (IntPtr cs, string key, IntPtr val);
 		
-		protected override void SetValue (string key, Value val)
+		internal override void SetValue (string key, Value val)
 		{
 			gconf_change_set_set (Raw, key, val.Handle);
 		}

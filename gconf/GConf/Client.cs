@@ -28,7 +28,7 @@ namespace GConf
 		[DllImport("gconf-2")]
 		static extern void gconf_client_set (IntPtr client, string key, IntPtr val, out IntPtr err);
 
-		protected override void SetValue (string key, Value val)
+		internal override void SetValue (string key, Value val)
 		{
 			IntPtr err;
 			gconf_client_set (Raw, key, val.Handle, out err);
