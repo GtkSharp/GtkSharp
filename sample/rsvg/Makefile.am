@@ -1,4 +1,4 @@
-assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll ../../glade/glade-sharp.dll ../../art/art-sharp.dll ../../gnome/gnome-sharp.dll ../../rsvg/rsvg-sharp.dll
+assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll ../../rsvg/rsvg-sharp.dll
 references = $(addprefix /r:, $(assemblies))
 
 if ENABLE_RSVG

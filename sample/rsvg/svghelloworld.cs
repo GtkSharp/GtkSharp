@@ -3,48 +3,38 @@
 //
 // Author: Charles Iliya Krempeaux
 //
+using System;
+using Gtk;
 
     class SvgHelloWorld
     {
-            static void Main(string[] args)
+            static void Main (string[] args)
             {
-                    Gnome.Program program =
-                    new Gnome.Program("Hello World", "1.0", Gnome.Modules.UI, args);
-
-                    MyMainWindow app = new MyMainWindow(program);
-                    app.Show();
+		    Application.Init ();
+                    MyMainWindow app = new MyMainWindow ();
+                    app.ShowAll ();
  
-                    program.Run();
+                    Application.Run ();
             }
     }
 
-
-
-    class MyMainWindow
-            : Gnome.App
+    class MyMainWindow : Gtk.Window
     {
-            Gnome.Program program;
-
-            public MyMainWindow(Gnome.Program gnome_program)
-                    : base("SVG Hello World", "SVG Hello World")
+            public MyMainWindow () : base ("SVG Hello World")
             {
-                    this.program = gnome_program;
-
                     this.DeleteEvent += new Gtk.DeleteEventHandler(delete_event);
-
-
                     string svg_file_name = "sample.svg";
-                    Gdk.Pixbuf pixbuf = Rsvg.Tool.PixbufFromFile(svg_file_name);
+                    Gdk.Pixbuf pixbuf = Rsvg.Tool.PixbufFromFile (svg_file_name);
 
                     Gtk.Image  image = new Gtk.Image();
                     image.Pixbuf = pixbuf;
 
-                    this.Contents = image;
+                    this.Add (image);
             }
 
             private void delete_event(object obj, Gtk.DeleteEventArgs args)
             {
-                    this.program.Quit();
+                    Application.Quit();
             }
     }
 
