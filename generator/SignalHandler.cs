@@ -13,84 +13,100 @@ namespace GtkSharp.Generation {
 
 	public class SignalHandler {
 		
-		public static string GetName(XmlElement sig, string ns, bool generate)
+		XmlElement sig;
+		string ns;
+		string retval = "";
+		string s_ret = "";
+		string p_ret = "";
+		Parameters parms = null;
+
+		public SignalHandler (XmlElement sig, string ns)
+		{
+			this.sig = sig;
+			this.ns = ns;
+			XmlElement params_elem = sig["parameters"] as XmlElement;
+			if (params_elem != null)
+				parms = new Parameters (params_elem, ns);
+		}
+
+		public bool Validate ()
 		{
 			XmlElement ret_elem = sig["return-type"];
 			if (ret_elem == null) {
 				Console.Write("Missing return-type ");
-				return "";
+				return false;
 			}
 			
-			string retval = ret_elem.GetAttribute("type");
+			retval = ret_elem.GetAttribute("type");
 			if (retval == "") {
 				Console.Write("Invalid return-type ");
-				return "";
+				return false;
 			}
 			
-			SymbolTable table = SymbolTable.Table;
-
-			string s_ret = table.GetCSType(retval);
-			string p_ret = table.GetMarshalReturnType(retval);
+			s_ret = SymbolTable.Table.GetCSType(retval);
+			p_ret = SymbolTable.Table.GetMarshalReturnType(retval);
 			if ((s_ret == "") || (p_ret == "")) {
 				Console.Write("Funky type: " + retval);
-				return "";
+				return false;
 			}
 			
-			string key = retval;
-			string pinv = "";
-			string name = table.GetName(retval);
-			int pcnt = 0;
-			
-			ArrayList parms = new ArrayList();
-			
-			XmlElement params_elem = sig["parameters"];
-			if (params_elem == null) {
+			if (parms == null || !parms.Validate ()) {
 				Console.Write("Missing parameters ");
-				return "";
+				return false;
 			}
+
+			return true;
+		}
+
+		private string ISig {
+			get {
+				string result = "";
+				for (int i = 0; i < parms.Count; i++) {
+					if (i > 0)
+						result += ", ";
+
+					result += (parms[i].MarshalType + " arg" + i);
+				}
+				return result;
+			}
+		}
 				
-			foreach (XmlNode parm in params_elem.ChildNodes) {
-				if (!(parm is XmlElement) || parm.Name != "parameter") continue;
+		private string BaseName {
+			get {
+				string result = SymbolTable.Table.GetName (retval);
+				for (int i = 0; i < parms.Count; i++) {
+					if (parms[i].Generatable is ObjectGen || parms[i].Generatable is InterfaceGen) {
+						result += "Object";
+					} else {
+						result += SymbolTable.Table.GetName(parms[i].CType);
+					}
+				}		 
+				return result;
+			}
+		}
 
-				XmlElement elem = (XmlElement) parm;
-				string type = elem.GetAttribute("type");
-				string ptype = table.GetMarshalType(type);
-				if (ptype == "") {
-					Console.Write("Funky type: " + type);
-					return "";
-				}
-			
-				if (pcnt > 0) {
-					pinv += ", ";
-				}
+		public string Name {
+			get {
+				return BaseName + "Signal";
+			}
+		}
 
-				pinv += (ptype + " arg" + pcnt);
-				parms.Add(type);
-				if (table.IsObject(type) || table.IsInterface(type)) {
-					name += "Object";
-					key += "Object";
-				} else {
-					name += table.GetName(type);
-					key += type;
-				}
-				pcnt++;
-			}		 
+		public void Generate (string implementor_ns)
+		{
+			SymbolTable table = SymbolTable.Table;
 
-			String sname = name + "Signal";
-			String dname = name + "Delegate";
-			String cbname = name + "Callback";
-
-			if (!generate)
-				return ns + "." + sname;
+			string sname = Name;
+			string dname = BaseName + "Delegate";
+			string cbname = BaseName + "Callback";
 
 			char sep = Path.DirectorySeparatorChar;
-			String dir = ".." + sep + ns.ToLower() + sep + "generated";
+			String dir = ".." + sep + implementor_ns.ToLower() + sep + "generated";
 
 			if (!Directory.Exists(dir)) {
 				Directory.CreateDirectory(dir);
 			}
 
-			String filename = dir + sep + ns + "Sharp." + sname + ".cs";
+			String filename = dir + sep + implementor_ns + "Sharp." + sname + ".cs";
 
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -98,14 +114,14 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Generated File.  Do not modify.");
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
-			sw.WriteLine("namespace " + ns + "Sharp {");
+			sw.WriteLine("namespace " + implementor_ns + "Sharp {");
 			sw.WriteLine();
 			sw.WriteLine("\tusing System;");
 			sw.WriteLine("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine("\tusing GtkSharp;");
 			sw.WriteLine();
 			sw.Write("\tinternal delegate " + p_ret + " ");
-			sw.WriteLine(dname + "(" + pinv + ", int key);");
+			sw.WriteLine(dname + "(" + ISig + ", int key);");
 			sw.WriteLine();
 			sw.WriteLine("\tinternal class " + sname + " : SignalCallback {");
 			sw.WriteLine();
@@ -115,7 +131,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tprivate uint _HandlerID;");
 			sw.WriteLine();
 			sw.Write("\t\tprivate static " + p_ret + " ");
-			sw.WriteLine(cbname + "(" + pinv + ", int key)");
+			sw.WriteLine(cbname + "(" + ISig + ", int key)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (!_Instances.Contains(key))");
 			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unexpected signal key \" + key);");
@@ -133,7 +149,7 @@ namespace GtkSharp.Generation {
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
 					// sw.WriteLine("\t\t\tConsole.WriteLine (\"" + sname + " arg{0}: \" + arg{0});", idx);
-					string ctype = (string) parms[idx];
+					string ctype = parms[idx].CType;
 					ClassBase wrapper = table.GetClassGen (ctype);
 					if ((wrapper != null && !(wrapper is StructBase)) || table.IsManuallyWrapped (ctype)) {
 						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
@@ -199,8 +215,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t}");
 			sw.WriteLine("}");
 			sw.Close();
-
-			return ns + "Sharp." + sname;
 		}
 	}
 }

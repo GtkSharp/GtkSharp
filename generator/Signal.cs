@@ -13,11 +13,11 @@ namespace GtkSharp.Generation {
 
 	public class Signal {
 
-		private string marsh;
 		private string name;
 		private XmlElement elem;
 		private Parameters parms;
 		private ClassBase container_type;
+		SignalHandler sig_handler;
 
 		public Signal (XmlElement elem, ClassBase container_type)
 		{
@@ -26,6 +26,7 @@ namespace GtkSharp.Generation {
 			if (elem["parameters"] != null)
 				parms = new Parameters (elem["parameters"], container_type.NS);
 			this.container_type = container_type;
+			sig_handler = new SignalHandler (elem, container_type.NS);
 		}
 
 		public string Name {
@@ -39,8 +40,7 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			marsh = SignalHandler.GetName(elem, container_type.NS, false);
-			if ((Name == "") || (marsh == "")) {
+			if (Name == "" || !sig_handler.Validate ()) {
 				Console.Write ("bad signal " + Name);
 				Statistics.ThrottledCount++;
 				return false;
@@ -67,7 +67,7 @@ namespace GtkSharp.Generation {
 
 		private string GetHandlerName (out string argsname)
 		{
-			if (marsh.EndsWith (".voidObjectSignal")) {
+			if (sig_handler.Name == "voidObjectSignal") {
 				argsname = "System.EventArgs";
 				return "EventHandler";
 			}
@@ -131,7 +131,8 @@ namespace GtkSharp.Generation {
 			else
 				ns = implementor.NS;
 
-			string qual_marsh = SignalHandler.GetName(elem, ns, container_type.DoGenerate);
+			sig_handler.Generate (ns);
+			string qual_marsh = ns + "Sharp." + sig_handler.Name;
 
 			string argsname;
 			string handler = GenHandler (out argsname);
