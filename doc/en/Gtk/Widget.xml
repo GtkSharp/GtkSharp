@@ -3833,7 +3833,14 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>Gets or Sets the widget's allocation.</summary>
-        <returns>a <see cref="T:Gdk.Rectangle" /> representing the size of the widget's allocation.</returns>
+        <returns>a <see cref="T:Gdk.Rectangle" /> representing the size of the widget's allocation.
+<para>
+When the top-level widget has determined how much space its child would like to have, the second phase of the size negotiation, size allocation, begins. Depending on its configuration (see <see cref="P:Gtk.Window.Resizable" />), the top-level widget may be able to expand in order to satisfy the size request or it may have to ignore the size request and keep its fixed size. It then tells its child widget how much space it gets by calling <see cref="M:Gtk.Widget.SizeAllocate(Gdk.Rectangle)" />. The child widget divides the space among its children and tells each child how much space it got, and so on. Under normal circumstances, a <see cref="T:Gtk.Window" /> will always give its child the amount of space the child requested.
+</para><para>
+A child's size allocation is represented by a <see cref="T:Gtk.Allocation" />. This struct contains not only a width and height, but also a position (i.e. X and Y coordinates), so that containers can tell their children not only how much space they have gotten, but also where they are positioned inside the space available to the container.
+</para><para>
+Widgets are required to honor the size allocation they receive; a size request is only a request, and widgets must be able to cope with any size. 
+</para></returns>
         <remarks>None.</remarks>
       </Docs>
     </Member>
