@@ -491,8 +491,7 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tests if the node represented by the given path is open</summary>
-        <remarks>To be added</remarks>
+        <summary>Disables the TreeView as a drag-and-drop destination.</summary>
       </Docs>
     </Member>
     <Member MemberName="AppendColumn">
@@ -523,10 +522,10 @@ public class TreeViewDemo {
         <Parameter Name="pos" Type="Gtk.TreeViewDropPosition" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="pos">an object of type <see cref="T:Gtk.TreeViewDropPosition" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the row that is highlighted for drag-and-drop feedback.</summary>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" />, the path of the row to highlight, or null.</param>
+        <param name="pos">an object of type <see cref="T:Gtk.TreeViewDropPosition" />, specifying whether to drop before, after, or into the row.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UnsetRowsDragSource">
@@ -537,8 +536,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disables the TreeView as a drag source for automatic drag and drop actions.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CollapseRow">
@@ -581,9 +580,9 @@ public class TreeViewDemo {
         <Parameter Name="func" Type="Gtk.TreeViewMappingFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">an object of type <see cref="T:Gtk.TreeViewMappingFunc" /></param>
-        <remarks>To be added</remarks>
+        <summary>Calls the given function on all expanded rows.</summary>
+        <param name="func">a <see cref="T:Gtk.TreeViewMappingFunc" /> to execute on every expanded row.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollToPoint">
@@ -740,9 +739,9 @@ public class TreeViewDemo {
         <ReturnType>Gdk.Window</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The window that this TreeView renders to.</summary>
         <returns>an object of type <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This property is primarily used to confirm that events on the TreeView are executed within the correct window.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RulesHint">
@@ -896,8 +895,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever the scrollbar adjustment units are set.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RowExpanded">
@@ -908,8 +907,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever a row of the TreeView is expanded.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MoveCursor">
@@ -920,8 +919,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever the cursor is moved on this TreeView.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TestExpandRow">
@@ -956,8 +955,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever a row is collapsed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ColumnsChanged">
@@ -1094,8 +1093,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever all rows of the TreeView are selected.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SelectCursorParent">
@@ -1107,7 +1106,7 @@ public class TreeViewDemo {
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UnselectAll">
@@ -1118,8 +1117,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired whenever all rows of the TreeView are specifically deselected.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AppendColumn">
@@ -1165,12 +1164,12 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="cell_data" Type="Gtk.TreeCellDataFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a new  <see cref="T:Gtk.TreeViewColumn" /> to the TreeView and returns it.</summary>
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="cell_data">a <see cref="T:Gtk.TreeCellDataFunc" /></param>
         <returns>a <see cref="T:Gtk.TreeViewColumn" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This method actually creates the column, rather than relying on a column object to be passed in. There's an alternate invokation form if you'd like to pass in an existing column object.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCursorOnCell">
@@ -1186,12 +1185,15 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="start_editing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the current keyboard focus to be on the given <see cref="T:Gtk.TreePath" />. This is useful for getting the user's attention to a particular row.</summary>
         <param name="path">a <see cref="T:Gtk.TreePath" /></param>
         <param name="focus_column">a <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="focus_cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="start_editing">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  <para>If focus_column is not null, then focus is given to the column specified by it. If focus_column and focus_cell are not null, and focus_column contains 2 or more editable or activatable cells, then focus is given to the cell specified by focus_cell. Additionally, if focus_column is specified, and start_editing is null, then editing should be started in the specified cell.</para>
+	  <para>This function is often followed by<see cref="T:Gtk.Widget.GrabFocus" />(tree_view_obj) in order to give keyboard focus to the widget. Please note that editing can only happen when the widget is realized.</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExpandToPath">
@@ -1217,14 +1219,16 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="path" Type="Gtk.TreePath" RefType="out" />
         <Parameter Name="focus_column" Type="Gtk.TreeViewColumn&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath&amp;" /></param>
+        <summary>
+	  Fills in path and focus_column with the current path and focus column. If the cursor isn't currently set, then path will point to null. If no column currently has focus, then focus_column will be null.
+	  `</summary>
+        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
         <param name="focus_column">a <see cref="T:Gtk.TreeViewColumn&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The returned path must be freed with <see cref="T:Gtk.TreePath.Free" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDragDestRow">
@@ -1238,10 +1242,10 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="pos" Type="Gtk.TreeViewDropPosition&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath&amp;" /></param>
-        <param name="pos">a <see cref="T:Gtk.TreeViewDropPosition&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Gets information about the row that is highlighted for feedback.</summary>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> to put the highlighted path into.</param>
+        <param name="pos">a <see cref="T:Gtk.TreeViewDropPosition" /> to put the drop position into.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetDestRowAtPos">
@@ -1257,13 +1261,13 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="pos" Type="Gtk.TreeViewDropPosition&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="drag_x">a <see cref="T:System.Int32" /></param>
-        <param name="drag_y">a <see cref="T:System.Int32" /></param>
-        <param name="path">a <see cref="T:Gtk.TreePath&amp;" /></param>
-        <param name="pos">a <see cref="T:Gtk.TreeViewDropPosition&amp;" /></param>
+        <summary>Determines the destination row for a given XY position. This is used by drag-and-drop operations to determine the target rows for the action.</summary>
+        <param name="drag_x">a <see cref="T:System.Int32" />, the X coordinate</param>
+        <param name="drag_y">a <see cref="T:System.Int32" />, the Y coordinate</param>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> to put the resulting destination row into.</param>
+        <param name="pos">a <see cref="T:Gtk.TreeViewDropPosition&amp;" /> to indicate where to put the dragged object, relative to the <see cref="T:Gtk.TreePath" /> returned by this method.</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TreeToWidgetCoords">
@@ -1279,12 +1283,12 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="wy" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tx">a <see cref="T:System.Int32" /></param>
-        <param name="ty">a <see cref="T:System.Int32" /></param>
-        <param name="wx">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="wy">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Converts tree coordinates to widget coordinates. Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire scrollable area of the tree.</summary>
+        <param name="tx">a <see cref="T:System.Int32" />, the X coordinate of the tree location</param>
+        <param name="ty">a <see cref="T:System.Int32" />, the Y coordinate of the tree location</param>
+        <param name="wx">a <see cref="T:System.Int32&amp;" />, the X coordinate for the widget</param>
+        <param name="wy">a <see cref="T:System.Int32&amp;" />, the Y coordinate for the widget</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -1315,11 +1319,11 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="actions" Type="Gdk.DragAction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_button_mask">a <see cref="T:Gdk.ModifierType" /></param>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
-        <param name="actions">a <see cref="T:Gdk.DragAction" /></param>
-        <remarks>To be added</remarks>
+        <summary>Allows the TreeView to be used as a source for drag-and-drop actions.</summary>
+        <param name="start_button_mask">a <see cref="T:Gdk.ModifierType" />, the mask of the allowed buttons for starting a drag</param>
+        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" />, a table of supported targets for dragging to</param>
+        <param name="actions">a <see cref="T:Gdk.DragAction" />, what should be done with the dragged data.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EnableModelDragDest">
@@ -1333,10 +1337,10 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="actions" Type="Gdk.DragAction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" /></param>
-        <param name="actions">a <see cref="T:Gdk.DragAction" /></param>
-        <remarks>To be added</remarks>
+        <summary>Turns this TreeView object into a destination for automatic drag-and-drop.</summary>
+        <param name="targets">a <see cref="T:Gtk.TargetEntry[]" />, a table of targets this TreeView will support.</param>
+        <param name="actions">a <see cref="T:Gdk.DragAction" />, a bitmap of possible actions for a drag to this target</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -1634,9 +1638,9 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A list of all the columns currently in this TreeView.</summary>
         <returns>a <see cref="T:Gtk.TreeViewColumn[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetCellArea">
@@ -1699,14 +1703,17 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </Parameters>
       <Docs>
         <summary>Finds the path at the point (x, y), relative to widget coordinates.</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
-        <param name="column">a <see cref="T:Gtk.TreeViewColumn" /></param>
-        <param name="cell_x">a <see cref="T:System.Int32" /></param>
-        <param name="cell_y">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <param name="x">a <see cref="T:System.Int32" />, an x coordinate</param>
+        <param name="y">a <see cref="T:System.Int32" />, a y coordinate</param>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> to fill with the path at the (x,y) coordinate.</param>
+        <param name="column">a <see cref="T:Gtk.TreeViewColumn" /> to fill with the column at the (x,y) coordinate.</param>
+        <param name="cell_x">a <see cref="T:System.Int32" /> to fill with the x coordinate relative to the cell background.</param>
+        <param name="cell_y">a <see cref="T:System.Int32" /> to fill with the y coordinate relative to the cell background.</param>
+        <returns>a <see cref="T:System.Boolean" />, true if a row exists at (x,y).</returns>
+        <remarks>
+	  <para>x and y must come from an event on the tree_view only where the event's window is the same as the window this TreeView renders to. It is primarily for things like popup menus. If path is non-null, then it will be filled with the GtkTreePath at that point. This path should be freed with <see cref="T:Gtk.TreePath.Free" />. If column is non-NULL, then it will be filled with the column at that point.</para>
+	  <para>cell_x and cell_y return the coordinates relative to the cell background (i.e. the background_area passed to <see cref="T:Gtk.CellRenderer.Render" />). This function is only meaningful if the TreeView object is realized.</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPathAtPos">
@@ -1722,13 +1729,13 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="column" Type="Gtk.TreeViewColumn&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
-        <param name="column">a <see cref="T:Gtk.TreeViewColumn" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Finds the path at the point (x, y), relative to widget coordinates.</summary>
+        <param name="x">a <see cref="T:System.Int32" />, an x coordinate</param>
+        <param name="y">a <see cref="T:System.Int32" />, a y coordinate</param>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> to fill with the path at the (x,y) coordinate.</param>
+        <param name="column">a <see cref="T:Gtk.TreeViewColumn" /> to fill with the column at the (x,y) coordinate.</param>
+        <returns>a <see cref="T:System.Boolean" />, true if a row exists at (x,y)</returns>
+        <remarks>This is an alternate invocation form which doesn't return coordinates for the position relative to a cell's background.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>An object to represent the rows of a tree when one of them is dragged to another location.</summary>
+    <remarks />
   </Docs>
   <Base />
   <Interfaces>
@@ -32,11 +32,11 @@
         <Parameter Name="selection_data" Type="Gtk.SelectionData" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="selection_data">To be added: an object of type 'Gtk.SelectionData'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Asks the <see cref="M:Gtk.TreeDragSource" /> to fill in <paramref name="selection_data" /> with a representation of the row at <paramref name="path" />.  Should robustly handle a path no longer found in the model.</summary>
+        <param name="path">a <see cref="M:Gtk.TreePath"></param>
+        <param name="selection_data">a <see cref="M:Gtk.SelectionData"> object to fill with data</param>
+        <returns>A boolean; true if data of the required type was provided.</returns>
+        <remarks>FIXME: the original doc says, "selection_data->target gives the required type of the data.", but there doesn't seem to be a parallel in Gtk#. Check this.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RowDraggable">
@@ -49,10 +49,10 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Check whether the row at <paramref name="path" /> is draggable. If the source doesn't implement this method, the row is assumed to be draggable.</summary>
+        <param name="path">a <see cref="M:Gtk.TreePath"></param>
+        <returns>A boolean, true if this row can be dragged.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DragDataDelete">
@@ -65,10 +65,12 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Asks the TreeDragSource to delete the row at path, because it was moved somewhere else via drag-and-drop. Returns FALSE if the deletion fails because path no longer exists, or for some model-specific reason. Should robustly handle a path no longer found in the model.
+</summary>
+        <param name="path">a <see cref="M:Gtk.TreePath"> to delete</param>
+        <returns>A boolean for whether the deletion succeeded.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
