@@ -1,0 +1,31 @@
+using System;
+
+using Gtk;
+using GtkSharp;
+
+namespace WidgetViewer {
+	public class TestToolTip
+	{
+		static Window window = null;
+		static Tooltips tooltips = null;
+		
+		public Gtk.Window Create ()
+		{
+			window = new Window ("Tooltips");
+			window.Width = 200;
+			tooltips = new Tooltips ();
+
+			window.Data ("tooltips", tooltip);
+			
+			return window;
+		}
+
+		static void Window_Delete (object o, EventArgs args)
+		{
+			SignalArgs sa = (SignalArgs) args;
+			window.Destroy ();
+			sa.RetVal = true;
+		}
+	}
+}
+
