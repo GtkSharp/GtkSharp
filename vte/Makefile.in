@@ -17,9 +17,9 @@ generated-stamp: vte-api.xml
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=vte-sharp && touch generated-stamp
  
 vte-sharp.dll: generated-stamp
-	$(MCS) --unsafe --target library -L $(GTKSHARP_PREFIX)/lib \
-	-r glib-sharp.dll -r gtk-sharp.dll -r gdk-sharp.dll \
-	/r:atk-sharp.dll \
+	$(MCS) --unsafe --target library \
+	-r ../glib/glib-sharp.dll -r ../gtk/gtk-sharp.dll -r ../gdk/gdk-sharp.dll \
+	/r:../atk/atk-sharp.dll \
 	--recurse '@srcdir@/*.cs' -o vte-sharp.dll
  
 clean:
