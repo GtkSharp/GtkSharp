@@ -27,3 +27,6 @@ dist-hook:
 		cp $(srcdir)/en/$$i/*.xml $(distdir)/en/$$i;	\
 	done
 
+
+push:
+	scp gtk-sharp-docs* miguel@www.go-mono.com:/mono/lib/monodoc/sources
