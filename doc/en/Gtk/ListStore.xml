@@ -50,9 +50,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Returns the number of children that <paramref name="iter"/> has.  
+	</summary>
+        <returns>an object of type <see cref="T:System.Int32" />, the number of children of <paramref name="iter"/>.</returns>
+        <remarks>As a special case, if <paramref name="iter"/> is <see langword="null"/>, then the number
+	  of toplevel nodes is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
@@ -65,10 +68,23 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>  
+	  Sets <paramref name="iter"/> to point to the first child of <paramref name="parent"/>.  
+	</summary>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>an object of type <see cref="T:System.Boolean" />,
+        <see langword="true"/>, if <paramref name="child"/> has been set to the first child.</returns>
+        <remarks>
+	  <para>
+	  If <paramref name="parent"/> has no children,
+	  <see langword="false"/> is returned and <paramref name="iter"/> is set to be invalid.  <paramref name="parent"/> will remain a valid
+	  node after this function has been called.
+	  </para>
+	  <para>
+	    If <paramref name="parent"/> is <see langword="null"/> returns the first node, equivalent to
+	    <literal>gtk_tree_model_get_iter_first (tree_model, iter);</literal>
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeSortColumn">
@@ -1414,9 +1430,9 @@ The above example creates a new three columns list store. The types of the colum
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <returns>a <see cref="T:Gtk.ListStore" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
