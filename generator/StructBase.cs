@@ -129,8 +129,9 @@ namespace GtkSharp.Generation {
 			XmlElement parms = method["parameters"];
 			
 			if (parms == null) {
-				call = sig = "()";
-				isig = "();";
+				call = "(Handle)";
+				sig = "()";
+				isig = "(IntPtr raw);";
 				sigtypes = "";
 			} else if (GetSignature(parms, table, out sig, out sigtypes) &&
 			    	   GetImportSig(parms, table, out isig) &&
