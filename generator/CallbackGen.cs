@@ -55,9 +55,9 @@ namespace GtkSharp.Generation {
 			}
 
 			if ((parms != null) && !parms.Validate ()) {
-				Console.WriteLine(" in callback " + CName);
+				Console.WriteLine(" in callback " + CName + " **** Stubbing it out ****");
 				Statistics.ThrottledCount++;
-				return;
+				parms = null;
 			}
 
 			StreamWriter sw = CreateWriter ();
