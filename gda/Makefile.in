@@ -16,7 +16,7 @@ generated-stamp: $(APIS) ../generator/gapi_codegen.exe Gda.metadata
 	--assembly-name=gda-sharp && touch generated-stamp
 
 $(ASSEMBLY): generated-stamp *.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	$(MCS) --unsafe --target library 	\
 	-r ../glib/glib-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:

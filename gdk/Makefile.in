@@ -16,7 +16,7 @@ generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe Gdk.metadata
 	--assembly-name=gdk-sharp && touch generated-stamp
 
 $(ASSEMBLY): *.cs generated-stamp
-	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	$(MCS) --unsafe --target library 	\
 	-r System.Drawing -r ../glib/glib-sharp.dll 		\
 	-r ../pango/pango-sharp.dll -r ../atk/atk-sharp.dll 	\
 	-o $(ASSEMBLY) --recurse '*.cs'
