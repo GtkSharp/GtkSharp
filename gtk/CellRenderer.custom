@@ -42,7 +42,8 @@
 				GetSizeCallback = new GetSizeDelegate (GetSize_cb);
 			gtksharp_cellrenderer_override_get_size (gtype, GetSizeCallback);
 		}
-                
+               
+		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideGetSize")] 
 		public virtual void GetSize(Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height) {
 			gtksharp_cellrenderer_base_get_size(Handle, widget.Handle, ref cell_area, out x_offset, out y_offset, out width, out height);
 		}
@@ -73,6 +74,7 @@
 			gtksharp_cellrenderer_override_render (gtype, RenderCallback);
 		}
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideRender")]
 		protected virtual void Render (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags)
 		{
 			gtksharp_cellrenderer_base_render (Handle, window.Handle, widget.Handle, background_area, cell_area, expose_area, flags);
@@ -105,7 +107,8 @@
 
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_cellrenderer_base_start_editing(IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, int flags);
-		
+
+		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideStartEditing")]
 		public virtual Gtk.CellEditable StartEditing(Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags) {
 			IntPtr raw_ret = gtksharp_cellrenderer_base_start_editing(Handle, evnt.Handle, widget.Handle, path, ref background_area, ref cell_area, (int) flags);
 			Gtk.CellEditable ret = (Gtk.CellEditable) GLib.Object.GetObject(raw_ret);

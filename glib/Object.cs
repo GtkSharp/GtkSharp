@@ -102,7 +102,7 @@ namespace GLib {
 
 		private static void ConnectDefaultHandlers (GType gtype, System.Type t)
 		{
-			foreach (MethodInfo minfo in t.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
+			foreach (MethodInfo minfo in t.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
 				MethodInfo baseinfo = minfo.GetBaseDefinition ();
 				if (baseinfo == minfo)
 					continue;

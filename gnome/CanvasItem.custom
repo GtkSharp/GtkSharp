@@ -80,6 +80,7 @@
                         gnomesharp_canvas_item_override_realize (gtype, RealizeCallback);
                 }
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gnome.CanvasItem), ConnectionMethod="OverrideRealize")]
 		protected virtual void Realize ()
 		{
 			gnomesharp_canvas_item_base_realize (Handle);
@@ -111,6 +112,7 @@
                         gnomesharp_canvas_item_override_point (gtype, PointCallback);
                 }
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gnome.CanvasItem), ConnectionMethod="OverridePoint")]
 		protected virtual double Point (double x, double y, int cx, int cy, out CanvasItem actual_item)
 		{
 			IntPtr actual_item_handle;
@@ -143,6 +145,7 @@
                         gnomesharp_canvas_item_override_draw (gtype, DrawCallback);
                 }
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gnome.CanvasItem), ConnectionMethod="OverrideDraw")]
 		protected virtual void Draw (Gdk.Drawable drawable, int x, int y, int width, int height)
 		{
 			gnomesharp_canvas_item_base_draw (Handle, drawable.Handle, x, y, width, height);
@@ -164,6 +167,7 @@
                         obj.Render (ref buf);
                 }
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gnome.CanvasItem), ConnectionMethod="OverrideRender")]
                 protected static void OverrideRender (GLib.GType gtype)
                 {
                         if (RenderCallback == null)
@@ -206,6 +210,7 @@
                         gnomesharp_canvas_item_override_update (gtype, UpdateCallback);
                 }
 
+		[GLib.DefaultSignalHandler (Type=typeof(Gnome.CanvasItem), ConnectionMethod="OverrideUpdate")]
 		protected virtual void Update (double[] affine, ref Art.SVP clip_path, int flags)
 		{
 			gnomesharp_canvas_item_base_update (Handle, affine, ref clip_path, flags);

@@ -26,12 +26,6 @@ public class CustomCellRenderer : CellRenderer
 		}
 	}
 
-	static CustomCellRenderer ()
-	{
-		OverrideGetSize (GLib.Object.LookupGType (typeof (CustomCellRenderer)));
-		OverrideRender (GLib.Object.LookupGType (typeof (CustomCellRenderer)));
-	}
-
 	public override void GetSize (Widget widget, ref Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height)
 	{
 		int calc_width = (int) this.Xpad * 2 + 100;
