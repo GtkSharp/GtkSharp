@@ -123,9 +123,6 @@ namespace GLib {
 			get {
 				return _obj;
 			}
-			set {
-				_obj = value;
-			}
 		}
 
 		/// <summary>

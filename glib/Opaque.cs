@@ -108,9 +108,6 @@ namespace GLib {
 			get {
 				return _obj;
 			}
-			set {
-				_obj = value;
-			}
 		}
 
 		public override bool Equals (object o)

@@ -10,6 +10,6 @@ namespace GLib
 
 	public interface IWrapper
 	{
-		IntPtr Handle { get; set; }
+		IntPtr Handle { get; }
 	}
 }
