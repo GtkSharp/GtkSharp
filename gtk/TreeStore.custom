@@ -23,42 +23,175 @@
 // Boston, MA 02111-1307, USA.
 
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_append (IntPtr raw, out TreeIter iter, ref TreeIter parent);
 
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_store_append (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		static extern void gtk_tree_store_append (IntPtr raw, out TreeIter iter, IntPtr parent);
 
-		public void Append (out Gtk.TreeIter iter) {
+		[Obsolete ("Replaced by AppendNode")]
+		public TreeIter Append (TreeIter parent) 
+		{
+			TreeIter iter;
+			gtk_tree_store_append (Handle, out iter, ref parent);
+			return iter;
+		}
+
+		[Obsolete ("Replaced by AppendNode")]
+		public void Append (out TreeIter iter) 
+		{
 			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_store_insert (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int position);
+		public TreeIter AppendNode () 
+		{
+			TreeIter iter;
+			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
+			return iter;
+		}
 
-		public void Insert (out Gtk.TreeIter iter, int position) {
+		public TreeIter AppendNode (TreeIter parent) 
+		{
+			TreeIter iter;
+			gtk_tree_store_append (Handle, out iter, ref parent);
+			return iter;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert (IntPtr raw, out TreeIter iter, ref TreeIter parent, int position);
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert (IntPtr raw, out TreeIter iter, IntPtr parent, int position);
+
+		[Obsolete ("Replaced by InsertNode")]
+		public TreeIter Insert (TreeIter parent, int position) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert (Handle, out iter, ref parent, position);
+			return iter;
+		}
+
+		[Obsolete ("Replaced by InsertNode")]
+		public void Insert (out TreeIter iter, int position) 
+		{
 			gtk_tree_store_insert (Handle, out iter, IntPtr.Zero, position);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_store_prepend (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		public TreeIter InsertNode (TreeIter parent, int position) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert (Handle, out iter, ref parent, position);
+			return iter;
+		}
 
-		public void Prepend (out Gtk.TreeIter iter) {
+		public TreeIter InsertNode (int position) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert (Handle, out iter, IntPtr.Zero, position);
+			return iter;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_prepend (IntPtr raw, out TreeIter iter, ref TreeIter parent);
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_prepend (IntPtr raw, out TreeIter iter, IntPtr parent);
+
+		[Obsolete ("Replaced by PrependNode")]
+		public TreeIter Prepend(TreeIter parent) 
+		{
+			TreeIter iter;
+			gtk_tree_store_prepend (Handle, out iter, ref parent);
+			return iter;
+		}
+
+		[Obsolete ("Replaced by PrependNode")]
+		public void Prepend (out TreeIter iter) 
+		{
 			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_store_insert_before (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
+		public TreeIter PrependNode (TreeIter parent) 
+		{
+			TreeIter iter;
+			gtk_tree_store_prepend (Handle, out iter, ref parent);
+			return iter;
+		}
 
-		public void InsertBefore (out Gtk.TreeIter iter, Gtk.TreeIter sibling) {
+		public TreeIter PrependNode () 
+		{
+			TreeIter iter;
+			gtk_tree_store_prepend (Handle, out iter, IntPtr.Zero);
+			return iter;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert_before (IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert_before (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
+
+		[Obsolete ("Replaced by InsertNodeBefore")]
+		public TreeIter InsertBefore (TreeIter parent, TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_before (Handle, out iter, ref parent, ref sibling);
+			return iter;
+		}
+
+		[Obsolete ("Replaced by InsertNodeBefore")]
+		public void InsertBefore (out TreeIter iter, TreeIter sibling) 
+		{
 			gtk_tree_store_insert_before (Handle, out iter, IntPtr.Zero, ref sibling);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_store_insert_after (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
+		public TreeIter InsertNodeBefore (TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_before (Handle, out iter, IntPtr.Zero, ref sibling);
+			return iter;
+		}
 
-		public void InsertAfter (out Gtk.TreeIter iter, Gtk.TreeIter sibling) {
+		public TreeIter InsertNodeBefore (TreeIter parent, TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_before (Handle, out iter, ref parent, ref sibling);
+			return iter;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert_after (IntPtr raw, out TreeIter iter, ref TreeIter parent, ref TreeIter sibling);
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_store_insert_after (IntPtr raw, out TreeIter iter, IntPtr parent, ref TreeIter sibling);
+
+		[Obsolete ("Replaced by InsertNodeAfter")]
+		public TreeIter InsertAfter (TreeIter parent, TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_after (Handle, out iter, ref parent, ref sibling);
+			return iter;
+		}
+
+		[Obsolete ("Replaced by InsertNodeAfter")]
+		public void InsertAfter (out TreeIter iter, TreeIter sibling) 
+		{
 			gtk_tree_store_insert_after (Handle, out iter, IntPtr.Zero, ref sibling);
 		}
 
+		public TreeIter InsertNodeAfter (TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_after (Handle, out iter, IntPtr.Zero, ref sibling);
+			return iter;
+		}
+
+		public TreeIter InsertNodeAfter (TreeIter parent, TreeIter sibling) 
+		{
+			TreeIter iter;
+			gtk_tree_store_insert_after (Handle, out iter, ref parent, ref sibling);
+			return iter;
+		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
@@ -143,7 +276,7 @@
 		}
 
 		public Gtk.TreeIter AppendValues (Gtk.TreeIter parent, Array values) {
-			Gtk.TreeIter iter = Append (parent);
+			Gtk.TreeIter iter = AppendNode (parent);
 			_AppendValues (iter, values);
 			return iter;
 		}
@@ -153,8 +286,7 @@
 		}
 
 		public Gtk.TreeIter AppendValues (Array values) {
-			Gtk.TreeIter iter;
-			Append (out iter);
+			Gtk.TreeIter iter = AppendNode ();
 			_AppendValues (iter, values);
 			return iter;
 		}
