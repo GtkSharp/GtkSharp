@@ -50,6 +50,7 @@ customs = 			\
 	Global.custom		\
 	Pixbuf.custom		\
 	PixbufLoader.custom	\
+	Pixdata.custom		\
 	Point.custom		\
 	Rectangle.custom	\
 	Region.custom		\

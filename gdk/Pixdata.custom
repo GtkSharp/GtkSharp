@@ -1,0 +1,16 @@
+// Pixdata.Custom 
+//
+// (C) 2004 Novell, Inc.
+
+	[DllImport("libgdk_pixbuf-2.0-0.dll")]
+	static extern IntPtr gdk_pixdata_serialize (ref Gdk.Pixdata raw, out uint len);
+	
+	public byte [] Serialize () {
+		uint len;
+		IntPtr raw_ret = gdk_pixdata_serialize (ref this, out len);
+
+		byte [] data = new byte [len];
+		Marshal.Copy (raw_ret, data, 0, (int)len);
+		
+		return data;
+	}	
