@@ -319,6 +319,17 @@
   </data>
 </rule>
 
+<!-- disable default constructor -->
+<rule>
+  <class name="GnomePrintJob"/>
+  <data>
+    <attribute target="class">
+      <name>disabledefaultconstructor</name>
+      <value>1</value>
+    </attribute>
+  </data>
+</rule>
+
 <!-- misc -->
 <rule>
   <class name="GnomeAbout">
@@ -331,6 +342,18 @@
      <value>1</value>
     </attribute>
  </data>
+</rule>
+<rule>
+  <class name="GnomePrintDialog">
+    <method>gnome_print_dialog_new</method>
+  </class>
+  <data>
+    <attribute target="params">
+      <filter level="name">flags</filter>
+      <name>type</name>
+      <value>GnomePrintDialogFlags</value>
+    </attribute>
+  </data>
 </rule>
 
 <!-- Use const-gchar* instead of const-guchar*, when the value is realy a string -->
@@ -499,6 +522,18 @@
     <attribute target="return">
       <name>type</name>
       <value>const-gchar*</value>
+    </attribute>
+  </data>
+</rule>
+
+<rule>
+  <class name="GnomePrintConfig">
+    <method>Get</method>
+  </class>
+  <data>
+    <attribute target="return">
+      <name>type</name>
+      <value>gchar*</value>
     </attribute>
   </data>
 </rule>
