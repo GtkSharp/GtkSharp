@@ -1,0 +1,90 @@
+// Gtk.Input.custom - Gtk Input class customizations
+//
+// Author: Mike Kestner <mkestner@novell.com>
+//
+// Copyright (c) 2005 Novell, Inc. 
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern uint gtk_input_add_full(int source, int condition, InputFunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, NativeDestroyNotify destroy);
+
+		[GLib.CDeclCallback]
+		delegate void InputFunctionNative(IntPtr data, int source, int condition);
+
+		class InputFunctionWrapper {
+
+			public void NativeCallback (IntPtr data, int source, int condition)
+			{
+				IntPtr _arg0 = data;
+				int _arg1 = source;
+				Gdk.InputCondition _arg2 = (Gdk.InputCondition) condition;
+				managed ( _arg0,  _arg1,  _arg2);
+			}
+
+			internal InputFunctionNative NativeDelegate;
+			Gdk.InputFunction managed;
+
+			public InputFunctionWrapper (Gdk.InputFunction managed)
+			{
+				this.managed = managed;
+				if (managed != null)
+					NativeDelegate = new InputFunctionNative (NativeCallback);
+			}
+		}
+
+		class InputProxy {
+
+			InputFunctionWrapper function;
+			GtkSharp.CallbackMarshalWrapper marshal;
+			IntPtr data;
+			DestroyNotify destroy;
+			NativeDestroyNotify handler;
+
+			public InputProxy (InputFunctionWrapper function, GtkSharp.CallbackMarshalWrapper marshal, IntPtr data, DestroyNotify destroy)
+			{
+				this.marshal = marshal;
+				this.function = function;
+				this.destroy = destroy;
+				this.data = data;
+				handler = new NativeDestroyNotify (OnDestroy);
+			}
+
+			void OnDestroy (IntPtr data)
+			{
+				if (destroy != null)
+					destroy ();
+
+				GCHandle gch = (GCHandle) data;
+				gch.Free ();
+			}
+
+			public NativeDestroyNotify Handler {
+				get {
+					return handler;
+				}
+			}
+		}
+
+		[Obsolete]
+		public static uint AddFull(int source, Gdk.InputCondition condition, Gdk.InputFunction function, Gtk.CallbackMarshal marshal, IntPtr data, Gtk.DestroyNotify destroy) {
+			InputFunctionWrapper function_wrapper = new InputFunctionWrapper (function);
+			GtkSharp.CallbackMarshalWrapper marshal_wrapper = new GtkSharp.CallbackMarshalWrapper (marshal);
+			InputProxy proxy = new InputProxy (function_wrapper, marshal_wrapper, data, destroy);
+			GCHandle gch = GCHandle.Alloc (proxy);
+			return gtk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, marshal_wrapper.NativeDelegate, (IntPtr) gch, proxy.Handler);
+		}
+

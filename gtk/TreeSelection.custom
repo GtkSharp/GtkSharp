@@ -53,3 +53,23 @@
 			return result;
 		}
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_selection_set_select_function (IntPtr raw, GtkSharp.TreeSelectionFuncNative func, IntPtr data, NativeDestroyNotify destroy);
+
+		[Obsolete ("Replaced by SetSelectFunction (TreeSelectionFunc) overload.")]
+		public void SetSelectFunction (Gtk.TreeSelectionFunc func, IntPtr data, Gtk.DestroyNotify destroy) 
+		{
+			SetSelectFunction (func);
+		}
+
+		public void SetSelectFunction (Gtk.TreeSelectionFunc func) 
+		{
+			if (func == null) {
+				gtk_tree_selection_set_select_function(Handle, null, IntPtr.Zero, null);
+				return;
+			}
+			GtkSharp.TreeSelectionFuncWrapper func_wrapper = new GtkSharp.TreeSelectionFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_selection_set_select_function(Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}
+

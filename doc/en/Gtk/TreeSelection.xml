@@ -299,11 +299,9 @@ class TreeSelectionSample
       <Docs>
         <summary>Add a hook into selection and unselection.</summary>
         <param name="func">A delegate to invoke before a node is (un)selected.</param>
-        <param name="data">Raw data to pass to <paramref name="func" /> when it is called.</param>
-        <param name="destroy">A delegate to be notified when <paramref name="data" /> should be destroyed. Can be <see langword="null" />.</param>
-        <remarks>
-          <para> If set, <paramref name="func" /> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true" /> if the state of the node may be toggled, and <see langword="false" /> if the state of the node should be left unchanged.</para>
-        </remarks>
+        <param name="data">ignored</param>
+        <param name="destroy">ignored</param>
+        <remarks>This overload is obsolete.  New code should use the single parameter overload.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectIter">
@@ -538,6 +536,23 @@ class TreeSelectionSample
         <summary>Returns an array of <see cref="T:Gtk.TreePath" />s representing the selected rows.</summary>
         <returns>Selected rows in an array of <see cref="T:Gtk.TreePath" />s</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetSelectFunction">
+      <MemberSignature Language="C#" Value="public void SetSelectFunction (Gtk.TreeSelectionFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Gtk.TreeSelectionFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Add a hook into selection and unselection.</summary>
+        <param name="func">A delegate to invoke before a node is (un)selected.</param>
+        <remarks>
+          <para> If set, <paramref name="func" /> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true" /> if the state of the node may be toggled, and <see langword="false" /> if the state of the node should be left unchanged.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

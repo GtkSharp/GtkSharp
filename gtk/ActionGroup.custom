@@ -84,3 +84,17 @@
 				result [i] = list [i] as Gtk.Action;
 			return result;
 		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_action_group_set_translate_func (IntPtr raw, GtkSharp.TranslateFuncNative func, IntPtr data, NativeDestroyNotify notify);
+
+		public void SetTranslateFunc (Gtk.TranslateFunc func) 
+		{
+			if (func == null) {
+				gtk_action_group_set_translate_func (Handle, null, IntPtr.Zero, null);
+				return;
+			}
+			GtkSharp.TranslateFuncWrapper func_wrapper = new GtkSharp.TranslateFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_action_group_set_translate_func (Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}

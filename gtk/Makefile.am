@@ -24,6 +24,7 @@ sources = 				\
 	StockManager.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
+	Timeout.cs			\
 	TreeNodeAttribute.cs		\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
@@ -63,6 +64,7 @@ customs = 				\
 	Image.custom			\
 	ImageMenuItem.custom		\
 	Init.custom			\
+	Input.custom			\
 	InputDialog.custom		\
 	ItemFactory.custom		\
 	Label.custom			\
