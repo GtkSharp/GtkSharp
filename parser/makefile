@@ -13,6 +13,9 @@ gapi_format_xml: formatXml.c
 clean:
 	rm -f gapi_format_xml
 
+distclean:
+	rm -f gapi_format_xml
+
 prefix=/usr
 
 install: all

@@ -1,4 +1,4 @@
-EXTRA_DIRS =
+NATIVE_DIRS = glue parser
 
 DIRS=generator api glib pango atk gdk art gtk glade gnome sample
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
@@ -23,15 +23,19 @@ binding:
 	done;
 
 native:
-	(cd glue; make) || exit 1;
+	for i in $(NATIVE_DIRS); do \
+		(cd $$i; make) || exit 1;\
+	done
 
 clean:
-	for i in glue $(DIRS); do				\
+	for i in $(NATIVE_DIRS) $(DIRS); do	\
 		(cd $$i; make clean) || exit 1;	\
 	done;
 
 distclean: clean
-	(cd glue; make distclean) || exit 1;
+	for i in $(NATIVE_DIRS); do \
+		(cd $$i; make distclean) || exit 1;\
+	done
 	for i in $(DIRS); do				\
 		rm -f $$i/Makefile;			\
 	done
@@ -45,5 +49,7 @@ install-binding:
 	done;
 
 install-native:
-	(cd glue; make install) || exit 1;	\
+	for i in $(NATIVE_DIRS); do \
+		(cd $$i; make install) || exit 1;\
+	done
 

@@ -1,5 +1,1176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api>
+  <namespace name="Gnome" library="gnome-2">
+    <enum name="FileDomain" cname="GnomeFileDomain" type="enum">
+      <member cname="GNOME_FILE_DOMAIN_UNKNOWN" name="Unknown"/>
+      <member cname="GNOME_FILE_DOMAIN_LIBDIR" name="Libdir"/>
+      <member cname="GNOME_FILE_DOMAIN_DATADIR" name="Datadir"/>
+      <member cname="GNOME_FILE_DOMAIN_SOUND" name="Sound"/>
+      <member cname="GNOME_FILE_DOMAIN_PIXMAP" name="Pixmap"/>
+      <member cname="GNOME_FILE_DOMAIN_CONFIG" name="Config"/>
+      <member cname="GNOME_FILE_DOMAIN_HELP" name="Help"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_LIBDIR" name="AppLibdir"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_DATADIR" name="AppDatadir"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_SOUND" name="AppSound"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_PIXMAP" name="AppPixmap"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_CONFIG" name="AppConfig"/>
+      <member cname="GNOME_FILE_DOMAIN_APP_HELP" name="AppHelp"/>
+    </enum>
+    <enum name="HelpError" cname="GnomeHelpError" type="enum">
+      <member cname="GNOME_HELP_ERROR_INTERNAL" name="Internal"/>
+      <member cname="GNOME_HELP_ERROR_NOT_FOUND" name="NotFound"/>
+    </enum>
+    <enum name="TriggerType" cname="GnomeTriggerType" type="enum">
+      <member cname="GTRIG_NONE" name="None"/>
+      <member cname="GTRIG_FUNCTION" name="Function"/>
+      <member cname="GTRIG_COMMAND" name="Command"/>
+      <member cname="GTRIG_MEDIAPLAY" name="Mediaplay"/>
+    </enum>
+    <enum name="URLError" cname="GnomeURLError" type="enum">
+      <member cname="GNOME_URL_ERROR_PARSE" name="Parse"/>
+    </enum>
+    <callback name="ModuleClassInitHook" cname="GnomeModuleClassInitHook">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeProgramClass*" name="klass"/>
+        <parameter type="const-GnomeModuleInfo*" name="mod_info"/>
+      </parameters>
+    </callback>
+    <callback name="ModuleHook" cname="GnomeModuleHook">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeProgram*" name="program"/>
+        <parameter type="GnomeModuleInfo*" name="mod_info"/>
+      </parameters>
+    </callback>
+    <callback name="ModuleInitHook" cname="GnomeModuleInitHook">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="const-GnomeModuleInfo*" name="mod_info"/>
+      </parameters>
+    </callback>
+    <callback name="TriggerActionFunction" cname="GnomeTriggerActionFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="char*" name="msg"/>
+        <parameter type="char*" name="level"/>
+        <parameter type="char*" array="true" name="supinfo"/>
+      </parameters>
+    </callback>
+    <object name="Program" cname="GnomeProgram" parent="GObject">
+      <field cname="_priv" type="GnomeProgramPrivate*"/>
+      <property name="PoptTable" cname="popt-table" type="gpointer" doc-string=" _(The table of options for popt)" writeable="true" construct-only="true"/>
+      <property name="PoptFlags" cname="popt-flags" type="gint" doc-string=" _(The flags to use for popt)" writeable="true" construct-only="true"/>
+      <property name="PoptContext" cname="popt-context" type="gpointer" doc-string=" _(The popt context pointer that GnomeProgramis using)" readable="true"/>
+      <property name="HumanReadableName" cname="human-readable-name" type="gchar*" doc-string=" _(Human readable name of this application)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomePath" cname="gnome-path" type="gchar*" doc-string=" _(Path in which to look for installed files)" readable="true" writeable="true" construct-only="true"/>
+      <property name="AppId" cname="app-id" type="gchar*" doc-string=" _(ID string to use for this application)" readable="true"/>
+      <property name="AppVersion" cname="app-version" type="gchar*" doc-string=" _(Version of this application)" readable="true"/>
+      <property name="GnomePrefix" cname="gnome-prefix" type="gchar*" doc-string=" _(Prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeLibdir" cname="gnome-libdir" type="gchar*" doc-string=" _(Library prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeDatadir" cname="gnome-datadir" type="gchar*" doc-string=" _(Data prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeSysconfdir" cname="gnome-sysconfdir" type="gchar*" doc-string=" _(Configuration prefix where GNOMEwas installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="AppPrefix" cname="app-prefix" type="gchar*" doc-string=" _(Prefix where this application was installed)" readable="true" writeable="true"/>
+      <property name="AppLibdir" cname="app-libdir" type="gchar*" doc-string=" _(Library prefix where this applicationwas installed)" readable="true" writeable="true"/>
+      <property name="AppDatadir" cname="app-datadir" type="gchar*" doc-string=" _(Data prefix where this applicationwas installed)" readable="true" writeable="true"/>
+      <property name="AppSysconfdir" cname="app-sysconfdir" type="gchar*" doc-string=" _(Configuration prefix where this applicationwas installed)" readable="true" writeable="true"/>
+      <property name="CreateDirectories" cname="create-directories" type="gboolean" doc-string=" _(Create standard GNOME directories on startup)" readable="true" writeable="true" construct-only="true"/>
+      <property name="EnableSound" cname="enable-sound" type="gboolean" doc-string=" _(Enable sound on startup)" readable="true" writeable="true" construct-only="true"/>
+      <property name="Espeaker" cname="espeaker" type="gchar*" doc-string=" _(How to connect to esd)" readable="true" writeable="true" construct-only="true"/>
+      <method name="Get" cname="gnome_program_get" shared="true">
+        <return-type type="GnomeProgram*"/>
+      </method>
+      <method name="GetAppId" cname="gnome_program_get_app_id">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetAppVersion" cname="gnome_program_get_app_version">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetHumanReadableName" cname="gnome_program_get_human_readable_name">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="gnome_program_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Init" cname="gnome_program_init" shared="true">
+        <return-type type="GnomeProgram*"/>
+        <parameters>
+          <parameter type="const-char*" name="app_id"/>
+          <parameter type="const-char*" name="app_version"/>
+          <parameter type="const-GnomeModuleInfo*" name="module_info"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char**" name="argv"/>
+          <parameter type="const-char*" name="first_property_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Initv" cname="gnome_program_initv" shared="true">
+        <return-type type="GnomeProgram*"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-char*" name="app_id"/>
+          <parameter type="const-char*" name="app_version"/>
+          <parameter type="const-GnomeModuleInfo*" name="module_info"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char**" name="argv"/>
+          <parameter type="const-char*" name="first_property_name"/>
+          <parameter type="va_list" name="args"/>
+        </parameters>
+      </method>
+      <method name="InstallProperty" cname="gnome_program_install_property" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GnomeProgramClass*" name="pclass"/>
+          <parameter type="GObjectGetPropertyFunc" name="get_fn"/>
+          <parameter type="GObjectSetPropertyFunc" name="set_fn"/>
+          <parameter type="GParamSpec*" name="pspec"/>
+        </parameters>
+      </method>
+      <method name="LocateFile" cname="gnome_program_locate_file">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GnomeFileDomain" name="domain"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gboolean" name="only_if_exists"/>
+          <parameter type="GSList**" name="ret_locations"/>
+        </parameters>
+      </method>
+      <method name="ModuleLoad" cname="gnome_program_module_load" shared="true">
+        <return-type type="const-GnomeModuleInfo*"/>
+        <parameters>
+          <parameter type="const-char*" name="mod_name"/>
+        </parameters>
+      </method>
+      <method name="ModuleRegister" cname="gnome_program_module_register" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GnomeModuleInfo*" name="module_info"/>
+        </parameters>
+      </method>
+      <method name="ModuleRegistered" cname="gnome_program_module_registered" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GnomeModuleInfo*" name="module_info"/>
+        </parameters>
+      </method>
+      <method name="ParseArgs" cname="gnome_program_parse_args">
+        <return-type type="void"/>
+      </method>
+      <method name="Postinit" cname="gnome_program_postinit">
+        <return-type type="void"/>
+      </method>
+      <method name="Preinit" cname="gnome_program_preinit">
+        <return-type type="poptContext"/>
+        <parameters>
+          <parameter type="const-char*" name="app_id"/>
+          <parameter type="const-char*" name="app_version"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char**" name="argv"/>
+        </parameters>
+      </method>
+    </object>
+    <boxed name="ModuleInfo" cname="GnomeModuleInfo">
+      <field cname="name" type="const-char*"/>
+      <field cname="version" type="const-char*"/>
+      <field cname="description" type="const-char*"/>
+      <field cname="requirements" type="GnomeModuleRequirement*"/>
+      <field cname="instance_init" type="GnomeModuleHook"/>
+      <field cname="pre_args_parse" type="GnomeModuleHook"/>
+      <field cname="post_args_parse" type="GnomeModuleHook"/>
+      <field cname="options" type="struct-poptOption*"/>
+      <field cname="init_pass" type="GnomeModuleInitHook"/>
+      <field cname="class_init" type="GnomeModuleClassInitHook"/>
+      <field cname="opt_prefix" type="const-char*"/>
+      <field cname="expansion1" type="gpointer"/>
+      <method name="GetType" cname="gnome_module_info_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </boxed>
+    <struct name="ModuleRequirement" cname="GnomeModuleRequirement">
+      <field cname="required_version" type="const-char*"/>
+      <field cname="module_info" type="const-GnomeModuleInfo*"/>
+    </struct>
+    <struct name="Trigger" cname="GnomeTrigger">
+      <field cname="type" type="GnomeTriggerType"/>
+      <field cname="function" type="GnomeTriggerActionFunction"/>
+      <field cname="level" type="gchar*"/>
+      <method name="TypeGetType" cname="gnome_trigger_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </struct>
+    <struct name="TriggerList" cname="GnomeTriggerList">
+      <field cname="nodename" type="char*"/>
+      <field cname="subtrees" type="GnomeTriggerList**"/>
+      <field cname="actions" type="GnomeTrigger**"/>
+      <field cname="numsubtrees" type="gint"/>
+      <field cname="numactions" type="gint"/>
+    </struct>
+  </namespace>
+  <namespace name="Gnome" library="gnomecanvas-2">
+    <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
+      <field cname="root" type="GnomeCanvasItem*"/>
+      <field cname="redraw_area" type="ArtUta*"/>
+      <field cname="current_item" type="GnomeCanvasItem*"/>
+      <field cname="new_current_item" type="GnomeCanvasItem*"/>
+      <field cname="grabbed_item" type="GnomeCanvasItem*"/>
+      <field cname="focused_item" type="GnomeCanvasItem*"/>
+      <field cname="pixmap_gc" type="GdkGC*"/>
+      <field cname="pick_event" type="GdkEvent"/>
+      <field cname="scroll_x1" type="double"/>
+      <field cname="scroll_y1" type="double"/>
+      <field cname="scroll_x2" type="double"/>
+      <field cname="scroll_y2" type="double"/>
+      <field cname="pixels_per_unit" type="double"/>
+      <field cname="idle_id" type="guint"/>
+      <field cname="root_destroy_id" type="guint"/>
+      <field cname="redraw_x1" type="int"/>
+      <field cname="redraw_y1" type="int"/>
+      <field cname="redraw_x2" type="int"/>
+      <field cname="redraw_y2" type="int"/>
+      <field cname="draw_xofs" type="int"/>
+      <field cname="draw_yofs" type="int"/>
+      <field cname="zoom_xofs" type="int"/>
+      <field cname="zoom_yofs" type="int"/>
+      <field cname="state" type="int"/>
+      <field cname="grabbed_event_mask" type="guint"/>
+      <field cname="close_enough" type="int"/>
+      <field cname="center_scroll_region" bits="1" type="unsigned"/>
+      <field cname="need_update" bits="1" type="unsigned"/>
+      <field cname="need_redraw" bits="1" type="unsigned"/>
+      <field cname="need_repick" bits="1" type="unsigned"/>
+      <field cname="left_grabbed_item" bits="1" type="unsigned"/>
+      <field cname="in_repick" bits="1" type="unsigned"/>
+      <field cname="aa" bits="1" type="unsigned"/>
+      <field cname="dither" type="GdkRgbDither"/>
+      <property name="Aa" cname="aa" type="gboolean" doc-string=" _(The antialiasing mode of the canvas.)" readable="true" writeable="true" construct-only="true"/>
+      <signal name="DrawBackground" cname="draw_background" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvas*" name="canvas"/>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </signal>
+      <signal name="RenderBackground" cname="render_background" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvas*" name="canvas"/>
+          <parameter type="GnomeCanvasBuf*" name="buf"/>
+        </parameters>
+      </signal>
+      <method name="C2w" cname="gnome_canvas_c2w">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="cx"/>
+          <parameter type="int" name="cy"/>
+          <parameter type="double*" name="wx"/>
+          <parameter type="double*" name="wy"/>
+        </parameters>
+      </method>
+      <method name="CapGdkToArt" cname="gnome_canvas_cap_gdk_to_art" shared="true">
+        <return-type type="ArtPathStrokeCapType"/>
+        <parameters>
+          <parameter type="GdkCapStyle" name="gdk_cap"/>
+        </parameters>
+      </method>
+      <method name="GetButtPoints" cname="gnome_canvas_get_butt_points" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="double" name="x2"/>
+          <parameter type="double" name="y2"/>
+          <parameter type="double" name="width"/>
+          <parameter type="int" name="project"/>
+          <parameter type="double*" name="bx1"/>
+          <parameter type="double*" name="by1"/>
+          <parameter type="double*" name="bx2"/>
+          <parameter type="double*" name="by2"/>
+        </parameters>
+      </method>
+      <method name="GetCenterScrollRegion" cname="gnome_canvas_get_center_scroll_region">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetColor" cname="gnome_canvas_get_color">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="spec"/>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="GetColorPixel" cname="gnome_canvas_get_color_pixel">
+        <return-type type="gulong"/>
+        <parameters>
+          <parameter type="guint" name="rgba"/>
+        </parameters>
+      </method>
+      <method name="GetDither" cname="gnome_canvas_get_dither">
+        <return-type type="GdkRgbDither"/>
+      </method>
+      <method name="GetItemAt" cname="gnome_canvas_get_item_at">
+        <return-type type="GnomeCanvasItem*"/>
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <method name="GetMiterPoints" cname="gnome_canvas_get_miter_points" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="double" name="x2"/>
+          <parameter type="double" name="y2"/>
+          <parameter type="double" name="x3"/>
+          <parameter type="double" name="y3"/>
+          <parameter type="double" name="width"/>
+          <parameter type="double*" name="mx1"/>
+          <parameter type="double*" name="my1"/>
+          <parameter type="double*" name="mx2"/>
+          <parameter type="double*" name="my2"/>
+        </parameters>
+      </method>
+      <method name="GetScrollOffsets" cname="gnome_canvas_get_scroll_offsets">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="cx"/>
+          <parameter type="int*" name="cy"/>
+        </parameters>
+      </method>
+      <method name="GetScrollRegion" cname="gnome_canvas_get_scroll_region">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double*" name="x1"/>
+          <parameter type="double*" name="y1"/>
+          <parameter type="double*" name="x2"/>
+          <parameter type="double*" name="y2"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_canvas_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="JoinGdkToArt" cname="gnome_canvas_join_gdk_to_art" shared="true">
+        <return-type type="ArtPathStrokeJoinType"/>
+        <parameters>
+          <parameter type="GdkJoinStyle" name="gdk_join"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_canvas_new"/>
+      <constructor cname="gnome_canvas_new_aa"/>
+      <method name="RenderSvp" cname="gnome_canvas_render_svp" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasBuf*" name="buf"/>
+          <parameter type="ArtSVP*" name="svp"/>
+          <parameter type="guint32" name="rgba"/>
+        </parameters>
+      </method>
+      <method name="RequestRedraw" cname="gnome_canvas_request_redraw">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="x2"/>
+          <parameter type="int" name="y2"/>
+        </parameters>
+      </method>
+      <method name="RequestRedrawUta" cname="gnome_canvas_request_redraw_uta">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtUta*" name="uta"/>
+        </parameters>
+      </method>
+      <method name="Root" cname="gnome_canvas_root">
+        <return-type type="GnomeCanvasGroup*"/>
+      </method>
+      <method name="ScrollTo" cname="gnome_canvas_scroll_to">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="cx"/>
+          <parameter type="int" name="cy"/>
+        </parameters>
+      </method>
+      <method name="SetCenterScrollRegion" cname="gnome_canvas_set_center_scroll_region">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="center_scroll_region"/>
+        </parameters>
+      </method>
+      <method name="SetDither" cname="gnome_canvas_set_dither">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkRgbDither" name="dither"/>
+        </parameters>
+      </method>
+      <method name="SetPixelsPerUnit" cname="gnome_canvas_set_pixels_per_unit">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="n"/>
+        </parameters>
+      </method>
+      <method name="SetScrollRegion" cname="gnome_canvas_set_scroll_region">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="double" name="x2"/>
+          <parameter type="double" name="y2"/>
+        </parameters>
+      </method>
+      <method name="SetStippleOrigin" cname="gnome_canvas_set_stipple_origin">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkGC*" name="gc"/>
+        </parameters>
+      </method>
+      <method name="UpdateBbox" cname="gnome_canvas_update_bbox" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="x2"/>
+          <parameter type="int" name="y2"/>
+        </parameters>
+      </method>
+      <method name="UpdateNow" cname="gnome_canvas_update_now">
+        <return-type type="void"/>
+      </method>
+      <method name="UpdateSvp" cname="gnome_canvas_update_svp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSVP**" name="p_svp"/>
+          <parameter type="ArtSVP*" name="new_svp"/>
+        </parameters>
+      </method>
+      <method name="UpdateSvpClip" cname="gnome_canvas_update_svp_clip">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSVP**" name="p_svp"/>
+          <parameter type="ArtSVP*" name="new_svp"/>
+          <parameter type="ArtSVP*" name="clip_svp"/>
+        </parameters>
+      </method>
+      <method name="W2c" cname="gnome_canvas_w2c">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="wx"/>
+          <parameter type="double" name="wy"/>
+          <parameter type="int*" name="cx"/>
+          <parameter type="int*" name="cy"/>
+        </parameters>
+      </method>
+      <method name="W2cAffine" cname="gnome_canvas_w2c_affine">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="W2cD" cname="gnome_canvas_w2c_d">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="wx"/>
+          <parameter type="double" name="wy"/>
+          <parameter type="double*" name="cx"/>
+          <parameter type="double*" name="cy"/>
+        </parameters>
+      </method>
+      <method name="WindowToWorld" cname="gnome_canvas_window_to_world">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="winx"/>
+          <parameter type="double" name="winy"/>
+          <parameter type="double*" name="worldx"/>
+          <parameter type="double*" name="worldy"/>
+        </parameters>
+      </method>
+      <method name="WorldToWindow" cname="gnome_canvas_world_to_window">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="worldx"/>
+          <parameter type="double" name="worldy"/>
+          <parameter type="double*" name="winx"/>
+          <parameter type="double*" name="winy"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="CanvasBpath" cname="GnomeCanvasBpath" parent="GnomeCanvasShape">
+      <property name="Bpath" cname="bpath" type="gpointer" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_bpath_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasClipgroup" cname="GnomeCanvasClipgroup" parent="GnomeCanvasGroup">
+      <field cname="path" type="GnomeCanvasPathDef*"/>
+      <field cname="wind" type="ArtWindRule"/>
+      <field cname="svp" type="ArtSVP*"/>
+      <property name="Path" cname="path" type="gpointer" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Wind" cname="wind" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_clipgroup_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasEllipse" cname="GnomeCanvasEllipse" parent="GnomeCanvasRE">
+      <method name="GetType" cname="gnome_canvas_ellipse_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasGroup" cname="GnomeCanvasGroup" parent="GnomeCanvasItem">
+      <field cname="item_list" type="GList*"/>
+      <field cname="item_list_end" type="GList*"/>
+      <property name="X" cname="x" type="gdouble" doc-string=" _(X)" readable="true" writeable="true"/>
+      <property name="Y" cname="y" type="gdouble" doc-string=" _(Y)" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_group_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasItem" cname="GnomeCanvasItem" parent="GtkObject">
+      <field cname="canvas" type="GnomeCanvas*"/>
+      <field cname="parent" type="GnomeCanvasItem*"/>
+      <field cname="xform" type="double*"/>
+      <field cname="x1" type="double"/>
+      <field cname="y1" type="double"/>
+      <field cname="x2" type="double"/>
+      <field cname="y2" type="double"/>
+      <property name="Parent" cname="parent" type="GnomeCanvasItem" doc-string=" NULL" readable="true" writeable="true"/>
+      <signal name="CanvasEvent" cname="event" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </signal>
+      <method name="AffineAbsolute" cname="gnome_canvas_item_affine_absolute">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="AffineRelative" cname="gnome_canvas_item_affine_relative">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="Construct" cname="gnome_canvas_item_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasGroup*" name="parent"/>
+          <parameter type="const-gchar*" name="first_arg_name"/>
+          <parameter type="va_list" name="args"/>
+        </parameters>
+      </method>
+      <method name="GetBounds" cname="gnome_canvas_item_get_bounds">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double*" name="x1"/>
+          <parameter type="double*" name="y1"/>
+          <parameter type="double*" name="x2"/>
+          <parameter type="double*" name="y2"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_canvas_item_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Grab" cname="gnome_canvas_item_grab">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="unsigned" name="int"/>
+          <parameter type="GdkCursor*" name="cursor"/>
+          <parameter type="guint32" name="etime"/>
+        </parameters>
+      </method>
+      <method name="GrabFocus" cname="gnome_canvas_item_grab_focus">
+        <return-type type="void"/>
+      </method>
+      <method name="Hide" cname="gnome_canvas_item_hide">
+        <return-type type="void"/>
+      </method>
+      <method name="I2cAffine" cname="gnome_canvas_item_i2c_affine">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="I2w" cname="gnome_canvas_item_i2w">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double*" name="x"/>
+          <parameter type="double*" name="y"/>
+        </parameters>
+      </method>
+      <method name="I2wAffine" cname="gnome_canvas_item_i2w_affine">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="Lower" cname="gnome_canvas_item_lower">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="positions"/>
+        </parameters>
+      </method>
+      <method name="LowerToBottom" cname="gnome_canvas_item_lower_to_bottom">
+        <return-type type="void"/>
+      </method>
+      <method name="Move" cname="gnome_canvas_item_move">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="dx"/>
+          <parameter type="double" name="dy"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_canvas_item_new">
+        <parameters>
+          <parameter type="GnomeCanvasGroup*" name="parent"/>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-gchar*" name="first_arg_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+      <method name="Raise" cname="gnome_canvas_item_raise">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="positions"/>
+        </parameters>
+      </method>
+      <method name="RaiseToTop" cname="gnome_canvas_item_raise_to_top">
+        <return-type type="void"/>
+      </method>
+      <method name="Reparent" cname="gnome_canvas_item_reparent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasGroup*" name="new_group"/>
+        </parameters>
+      </method>
+      <method name="RequestRedrawSvp" cname="gnome_canvas_item_request_redraw_svp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+      <method name="RequestUpdate" cname="gnome_canvas_item_request_update">
+        <return-type type="void"/>
+      </method>
+      <method name="ResetBounds" cname="gnome_canvas_item_reset_bounds">
+        <return-type type="void"/>
+      </method>
+      <method name="Set" cname="gnome_canvas_item_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_arg_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="SetValist" cname="gnome_canvas_item_set_valist">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_arg_name"/>
+          <parameter type="va_list" name="args"/>
+        </parameters>
+      </method>
+      <method name="Show" cname="gnome_canvas_item_show">
+        <return-type type="void"/>
+      </method>
+      <method name="Ungrab" cname="gnome_canvas_item_ungrab">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint32" name="etime"/>
+        </parameters>
+      </method>
+      <method name="UpdateSvp" cname="gnome_canvas_item_update_svp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSVP**" name="p_svp"/>
+          <parameter type="ArtSVP*" name="new_svp"/>
+        </parameters>
+      </method>
+      <method name="UpdateSvpClip" cname="gnome_canvas_item_update_svp_clip">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSVP**" name="p_svp"/>
+          <parameter type="ArtSVP*" name="new_svp"/>
+          <parameter type="ArtSVP*" name="clip_svp"/>
+        </parameters>
+      </method>
+      <method name="W2i" cname="gnome_canvas_item_w2i">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double*" name="x"/>
+          <parameter type="double*" name="y"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="CanvasLine" cname="GnomeCanvasLine" parent="GnomeCanvasItem">
+      <field cname="coords" type="double*"/>
+      <field cname="first_coords" type="double*"/>
+      <field cname="last_coords" type="double*"/>
+      <field cname="gc" type="GdkGC*"/>
+      <field cname="stipple" type="GdkBitmap*"/>
+      <field cname="fill_svp" type="ArtSVP*"/>
+      <field cname="first_svp" type="ArtSVP*"/>
+      <field cname="last_svp" type="ArtSVP*"/>
+      <field cname="width" type="double"/>
+      <field cname="shape_a" type="double"/>
+      <field cname="shape_b" type="double"/>
+      <field cname="shape_c" type="double"/>
+      <field cname="cap" type="GdkCapStyle"/>
+      <field cname="join" type="GdkJoinStyle"/>
+      <field cname="line_style" type="GdkLineStyle"/>
+      <field cname="fill_pixel" type="gulong"/>
+      <field cname="fill_rgba" type="guint32"/>
+      <field cname="num_points" type="int"/>
+      <field cname="fill_color" type="guint"/>
+      <field cname="spline_steps" type="int"/>
+      <field cname="width_pixels" bits="1" type="guint"/>
+      <field cname="first_arrow" bits="1" type="guint"/>
+      <field cname="last_arrow" bits="1" type="guint"/>
+      <field cname="smooth" bits="1" type="guint"/>
+      <property name="Points" cname="points" type="GnomeCanvasPoints" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillColor" cname="fill_color" type="gchar*" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillColorRgba" cname="fill_color_rgba" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillStipple" cname="fill_stipple" type="GdkDrawable" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthPixels" cname="width_pixels" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthUnits" cname="width_units" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="CapStyle" cname="cap_style" type="GdkCapStyle" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="JoinStyle" cname="join_style" type="GdkJoinStyle" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="LineStyle" cname="line_style" type="GdkLineStyle" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FirstArrowhead" cname="first_arrowhead" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="LastArrowhead" cname="last_arrowhead" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Smooth" cname="smooth" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="SplineSteps" cname="spline_steps" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="ArrowShapeA" cname="arrow_shape_a" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="ArrowShapeB" cname="arrow_shape_b" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="ArrowShapeC" cname="arrow_shape_c" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_line_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasPixbuf" cname="GnomeCanvasPixbuf" parent="GnomeCanvasItem">
+      <field cname="priv" type="gpointer"/>
+      <property name="Pixbuf" cname="pixbuf" type="GdkPixbuf" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Width" cname="width" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthSet" cname="width_set" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthInPixels" cname="width_in_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Height" cname="height" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="HeightSet" cname="height_set" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="HeightInPixels" cname="height_in_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="X" cname="x" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="XInPixels" cname="x_in_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Y" cname="y" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="YInPixels" cname="y_in_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Anchor" cname="anchor" type="GtkAnchorType" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_pixbuf_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasPolygon" cname="GnomeCanvasPolygon" parent="GnomeCanvasShape">
+      <field cname="path_def" type="GnomeCanvasPathDef*"/>
+      <property name="Points" cname="points" type="GnomeCanvasPoints" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_polygon_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ToPoint" cname="gnome_canvas_polygon_to_point" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="double*" name="poly"/>
+          <parameter type="int" name="num_points"/>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="CanvasRE" cname="GnomeCanvasRE" parent="GnomeCanvasShape">
+      <field cname="x1" type="double"/>
+      <field cname="y1" type="double"/>
+      <field cname="x2" type="double"/>
+      <field cname="y2" type="double"/>
+      <field cname="path_dirty" bits="1" type="unsigned"/>
+      <property name="X1" cname="x1" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Y1" cname="y1" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="X2" cname="x2" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Y2" cname="y2" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_re_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasRect" cname="GnomeCanvasRect" parent="GnomeCanvasRE">
+      <method name="GetType" cname="gnome_canvas_rect_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasRichText" cname="GnomeCanvasRichText" parent="GnomeCanvasItem">
+      <field cname="_priv" type="GnomeCanvasRichTextPrivate*"/>
+      <property name="Text" cname="text" type="gchar*" doc-string=" _(Text to display)" readable="true" writeable="true"/>
+      <property name="X" cname="x" type="gdouble" doc-string=" _(X position)" readable="true" writeable="true"/>
+      <property name="Y" cname="y" type="gdouble" doc-string=" _(Y position)" readable="true" writeable="true"/>
+      <property name="Width" cname="width" type="gdouble" doc-string=" _(Width for text box)" readable="true" writeable="true"/>
+      <property name="Height" cname="height" type="gdouble" doc-string=" _(Height for text box)" readable="true" writeable="true"/>
+      <property name="Editable" cname="editable" type="gboolean" doc-string=" _(Is this rich text item editable?)" readable="true" writeable="true"/>
+      <property name="Visible" cname="visible" type="gboolean" doc-string=" _(Is this rich text item visible?)" readable="true" writeable="true"/>
+      <property name="CursorVisible" cname="cursor_visible" type="gboolean" doc-string=" _(Is the cursor visible in this this rich text item?)" readable="true" writeable="true"/>
+      <property name="CursorBlink" cname="cursor_blink" type="gboolean" doc-string=" _(Does the cursor blink in this this rich text item?)" readable="true" writeable="true"/>
+      <property name="GrowHeight" cname="grow_height" type="gboolean" doc-string=" _(Should the text box height grow if the text does not fit?)" readable="true" writeable="true"/>
+      <property name="WrapMode" cname="wrap_mode" type="GtkWrapMode" doc-string=" _(Wrap mode for multiline text)" readable="true" writeable="true"/>
+      <property name="Justification" cname="justification" type="GtkJustification" doc-string=" _(Justification mode)" readable="true" writeable="true"/>
+      <property name="Direction" cname="direction" type="GtkDirectionType" doc-string=" _(Text direction)" readable="true" writeable="true"/>
+      <property name="Anchor" cname="anchor" type="GtkAnchorType" doc-string=" _(Anchor point for text)" readable="true" writeable="true"/>
+      <property name="PixelsAboveLines" cname="pixels_above_lines" type="gint" doc-string=" _(Number of pixels to put above lines)" readable="true" writeable="true"/>
+      <property name="PixelsBelowLines" cname="pixels_below_lines" type="gint" doc-string=" _(Number of pixels to put below lines)" readable="true" writeable="true"/>
+      <property name="PixelsInsideWrap" cname="pixels_inside_wrap" type="gint" doc-string=" _(Number of pixels to put inside the wrap)" readable="true" writeable="true"/>
+      <property name="LeftMargin" cname="left_margin" type="gint" doc-string=" _(Number of pixels in the left margin)" readable="true" writeable="true"/>
+      <property name="RightMargin" cname="right_margin" type="gint" doc-string=" _(Number of pixels in the right margin)" readable="true" writeable="true"/>
+      <property name="Indent" cname="indent" type="gint" doc-string=" _(Number of pixels for indentation)" readable="true" writeable="true"/>
+      <signal when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasRichText*" name="text"/>
+          <parameter type="GtkTextTag*" name="tag"/>
+        </parameters>
+      </signal>
+      <method name="CopyClipboard" cname="gnome_canvas_rich_text_copy_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="CutClipboard" cname="gnome_canvas_rich_text_cut_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="GetBuffer" cname="gnome_canvas_rich_text_get_buffer">
+        <return-type type="GtkTextBuffer*"/>
+      </method>
+      <method name="GetIterAtLocation" cname="gnome_canvas_rich_text_get_iter_at_location">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+        </parameters>
+      </method>
+      <method name="GetIterLocation" cname="gnome_canvas_rich_text_get_iter_location">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter"/>
+          <parameter type="GdkRectangle*" name="location"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_canvas_rich_text_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PasteClipboard" cname="gnome_canvas_rich_text_paste_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="SetBuffer" cname="gnome_canvas_rich_text_set_buffer">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextBuffer*" name="buffer"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="CanvasShape" cname="GnomeCanvasShape" parent="GnomeCanvasItem">
+      <field cname="priv" type="GnomeCanvasShapePriv*"/>
+      <property name="FillColor" cname="fill_color" type="gchar*" doc-string=" NULL" writeable="true"/>
+      <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillColorRgba" cname="fill_color_rgba" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="OutlineColor" cname="outline_color" type="gchar*" doc-string=" NULL" writeable="true"/>
+      <property name="OutlineColorGdk" cname="outline_color_gdk" type="GdkColor" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="OutlineColorRgba" cname="outline_color_rgba" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillStipple" cname="fill_stipple" type="GdkDrawable" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="OutlineStipple" cname="outline_stipple" type="GdkDrawable" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthPixels" cname="width_pixels" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="WidthUnits" cname="width_units" type="gdouble" doc-string=" NULL" writeable="true"/>
+      <property name="CapStyle" cname="cap_style" type="GdkCapStyle" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="JoinStyle" cname="join_style" type="GdkJoinStyle" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Wind" cname="wind" type="guint" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Miterlimit" cname="miterlimit" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Dash" cname="dash" type="gpointer" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetPathDef" cname="gnome_canvas_shape_get_path_def">
+        <return-type type="GnomeCanvasPathDef*"/>
+      </method>
+      <method name="GetType" cname="gnome_canvas_shape_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SetPathDef" cname="gnome_canvas_shape_set_path_def">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasPathDef*" name="def"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="CanvasText" cname="GnomeCanvasText" parent="GnomeCanvasItem">
+      <field cname="font_desc" type="PangoFontDescription*"/>
+      <field cname="attr_list" type="PangoAttrList*"/>
+      <field cname="underline" type="PangoUnderline"/>
+      <field cname="strikethrough" type="gboolean"/>
+      <field cname="rise" type="int"/>
+      <field cname="scale" type="double"/>
+      <field cname="text" type="char*"/>
+      <field cname="stipple" type="GdkBitmap*"/>
+      <field cname="gc" type="GdkGC*"/>
+      <field cname="layout" type="PangoLayout*"/>
+      <field cname="pixel" type="gulong"/>
+      <field cname="x" type="double"/>
+      <field cname="y" type="double"/>
+      <field cname="clip_width" type="double"/>
+      <field cname="clip_height" type="double"/>
+      <field cname="xofs" type="double"/>
+      <field cname="yofs" type="double"/>
+      <field cname="affine" array_len="6" type="double"/>
+      <field cname="anchor" type="GtkAnchorType"/>
+      <field cname="justification" type="GtkJustification"/>
+      <field cname="cx" type="int"/>
+      <field cname="cy" type="int"/>
+      <field cname="clip_cx" type="int"/>
+      <field cname="clip_cy" type="int"/>
+      <field cname="clip_cwidth" type="int"/>
+      <field cname="clip_cheight" type="int"/>
+      <field cname="max_width" type="int"/>
+      <field cname="height" type="int"/>
+      <field cname="rgba" type="guint32"/>
+      <field cname="clip" bits="1" type="guint"/>
+      <field cname="underline_set" bits="1" type="guint"/>
+      <field cname="strike_set" bits="1" type="guint"/>
+      <field cname="rise_set" bits="1" type="guint"/>
+      <field cname="scale_set" bits="1" type="guint"/>
+      <field cname="priv" type="GnomeCanvasTextPrivate*"/>
+      <property name="Text" cname="text" type="gchar*" doc-string=" _(Text to render)" readable="true" writeable="true"/>
+      <property name="Markup" cname="markup" type="gchar*" doc-string=" _(Marked up text to render)" writeable="true"/>
+      <property name="X" cname="x" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Y" cname="y" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Font" cname="font" type="gchar*" doc-string=" _(Font description as a string)" readable="true" writeable="true"/>
+      <property name="FontDesc" cname="font_desc" type="PangoFontDescription" doc-string=" _(Font description as a PangoFontDescription struct)" readable="true" writeable="true"/>
+      <property name="Family" cname="family" type="gchar*" doc-string=" _(Name of the font family, e.g. Sans, Helvetica, Times, Monospace)" readable="true" writeable="true"/>
+      <property name="Attributes" cname="attributes" type="PangoAttrList" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Style" cname="style" type="PangoStyle" doc-string=" _(Font style)" readable="true" writeable="true"/>
+      <property name="Variant" cname="variant" type="PangoVariant" doc-string=" _(Font variant)" readable="true" writeable="true"/>
+      <property name="Weight" cname="weight" type="gint" doc-string=" _(Font weight)" readable="true" writeable="true"/>
+      <property name="Stretch" cname="stretch" type="PangoStretch" doc-string=" _(Font stretch)" readable="true" writeable="true"/>
+      <property name="Size" cname="size" type="gint" doc-string=" _(Font size)" readable="true" writeable="true"/>
+      <property name="SizePoints" cname="size_points" type="gdouble" doc-string=" _(Font size in points)" readable="true" writeable="true"/>
+      <property name="Rise" cname="rise" type="gint" doc-string=" _(Offset of text above the baseline (below the baseline if rise is negative))" readable="true" writeable="true"/>
+      <property name="Strikethrough" cname="strikethrough" type="gboolean" doc-string=" _(Whether to strike through the text)" readable="true" writeable="true"/>
+      <property name="Underline" cname="underline" type="PangoUnderline" doc-string=" _(Style of underline for this text)" readable="true" writeable="true"/>
+      <property name="Scale" cname="scale" type="gdouble" doc-string=" _(Size of font, relative to default size)" readable="true" writeable="true"/>
+      <property name="Anchor" cname="anchor" type="GtkAnchorType" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Justification" cname="justification" type="GtkJustification" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="ClipWidth" cname="clip_width" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="ClipHeight" cname="clip_height" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Clip" cname="clip" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="XOffset" cname="x_offset" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="YOffset" cname="y_offset" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="FillColor" cname="fill_color" type="gchar*" doc-string=" _(Text color, as string)" readable="true" writeable="true"/>
+      <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" doc-string=" _(Text color, as a GdkColor)" readable="true" writeable="true"/>
+      <property name="FillColorRgba" cname="fill_color_rgba" type="guint" doc-string=" _(Text color, as an R/G/B/A combined integer)" readable="true" writeable="true"/>
+      <property name="FillStipple" cname="fill_stipple" type="GdkDrawable" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="TextWidth" cname="text_width" type="gdouble" doc-string=" _(Width of the rendered text)" readable="true" writeable="true"/>
+      <property name="TextHeight" cname="text_height" type="gdouble" doc-string=" _(Height of the rendered text)" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_text_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="CanvasWidget" cname="GnomeCanvasWidget" parent="GnomeCanvasItem">
+      <field cname="widget" type="GtkWidget*"/>
+      <field cname="x" type="double"/>
+      <field cname="y" type="double"/>
+      <field cname="width" type="double"/>
+      <field cname="height" type="double"/>
+      <field cname="anchor" type="GtkAnchorType"/>
+      <field cname="cx" type="int"/>
+      <field cname="cy" type="int"/>
+      <field cname="cwidth" type="int"/>
+      <field cname="cheight" type="int"/>
+      <field cname="destroy_id" type="guint"/>
+      <field cname="size_pixels" bits="1" type="guint"/>
+      <field cname="in_destroy" bits="1" type="guint"/>
+      <property name="Widget" cname="widget" type="GtkWidget" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="X" cname="x" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Y" cname="y" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Width" cname="width" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Height" cname="height" type="gdouble" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Anchor" cname="anchor" type="GtkAnchorType" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="SizePixels" cname="size_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_canvas_widget_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <struct name="CanvasBpathPriv" cname="GnomeCanvasBpathPriv" opaque="true"/>
+    <struct name="CanvasBuf" cname="GnomeCanvasBuf">
+      <field cname="buf" type="guchar*"/>
+      <field cname="rect" type="ArtIRect"/>
+      <field cname="buf_rowstride" type="int"/>
+      <field cname="bg_color" type="guint32"/>
+      <field cname="is_bg" bits="1" type="unsigned"/>
+      <field cname="is_buf" bits="1" type="unsigned"/>
+      <method name="EnsureBuf" cname="gnome_canvas_buf_ensure_buf">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="CanvasPathDef" cname="GnomeCanvasPathDef" opaque="true">
+      <method name="AllClosed" cname="gnome_canvas_path_def_all_closed">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="AllOpen" cname="gnome_canvas_path_def_all_open">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="AnyClosed" cname="gnome_canvas_path_def_any_closed">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="AnyOpen" cname="gnome_canvas_path_def_any_open">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Bpath" cname="gnome_canvas_path_def_bpath">
+        <return-type type="ArtBpath*"/>
+      </method>
+      <method name="CloseAll" cname="gnome_canvas_path_def_close_all">
+        <return-type type="GnomeCanvasPathDef*"/>
+      </method>
+      <method name="ClosedParts" cname="gnome_canvas_path_def_closed_parts">
+        <return-type type="GnomeCanvasPathDef*"/>
+      </method>
+      <method name="Closepath" cname="gnome_canvas_path_def_closepath">
+        <return-type type="void"/>
+      </method>
+      <method name="ClosepathCurrent" cname="gnome_canvas_path_def_closepath_current">
+        <return-type type="void"/>
+      </method>
+      <method name="Concat" cname="gnome_canvas_path_def_concat" shared="true">
+        <return-type type="GnomeCanvasPathDef*"/>
+        <parameters>
+          <parameter type="const-GSList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="gnome_canvas_path_def_copy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GnomeCanvasPathDef*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Currentpoint" cname="gnome_canvas_path_def_currentpoint">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtPoint*" name="p"/>
+        </parameters>
+      </method>
+      <method name="Curveto" cname="gnome_canvas_path_def_curveto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="x0"/>
+          <parameter type="gdouble" name="y0"/>
+          <parameter type="gdouble" name="x1"/>
+          <parameter type="gdouble" name="y1"/>
+          <parameter type="gdouble" name="x2"/>
+          <parameter type="gdouble" name="y2"/>
+        </parameters>
+      </method>
+      <method name="Duplicate" cname="gnome_canvas_path_def_duplicate">
+        <return-type type="GnomeCanvasPathDef*"/>
+      </method>
+      <method name="EnsureSpace" cname="gnome_canvas_path_def_ensure_space">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="space"/>
+        </parameters>
+      </method>
+      <method name="Finish" cname="gnome_canvas_path_def_finish">
+        <return-type type="void"/>
+      </method>
+      <method name="FirstBpath" cname="gnome_canvas_path_def_first_bpath">
+        <return-type type="ArtBpath*"/>
+      </method>
+      <method name="HasCurrentpoint" cname="gnome_canvas_path_def_has_currentpoint">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsEmpty" cname="gnome_canvas_path_def_is_empty">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LastBpath" cname="gnome_canvas_path_def_last_bpath">
+        <return-type type="ArtBpath*"/>
+      </method>
+      <method name="Length" cname="gnome_canvas_path_def_length">
+        <return-type type="gint"/>
+      </method>
+      <method name="Lineto" cname="gnome_canvas_path_def_lineto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="x"/>
+          <parameter type="gdouble" name="y"/>
+        </parameters>
+      </method>
+      <method name="LinetoMoving" cname="gnome_canvas_path_def_lineto_moving">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="x"/>
+          <parameter type="gdouble" name="y"/>
+        </parameters>
+      </method>
+      <method name="Moveto" cname="gnome_canvas_path_def_moveto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="x"/>
+          <parameter type="gdouble" name="y"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_canvas_path_def_new"/>
+      <constructor cname="gnome_canvas_path_def_new_from_bpath">
+        <parameters>
+          <parameter type="ArtBpath*" name="bpath"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_canvas_path_def_new_from_foreign_bpath">
+        <parameters>
+          <parameter type="ArtBpath*" name="bpath"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_canvas_path_def_new_from_static_bpath">
+        <parameters>
+          <parameter type="ArtBpath*" name="bpath"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_canvas_path_def_new_sized">
+        <parameters>
+          <parameter type="gint" name="length"/>
+        </parameters>
+      </constructor>
+      <method name="OpenParts" cname="gnome_canvas_path_def_open_parts">
+        <return-type type="GnomeCanvasPathDef*"/>
+      </method>
+      <method name="Ref" cname="gnome_canvas_path_def_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Reset" cname="gnome_canvas_path_def_reset">
+        <return-type type="void"/>
+      </method>
+      <method name="Split" cname="gnome_canvas_path_def_split">
+        <return-type type="GSList*"/>
+      </method>
+      <method name="Unref" cname="gnome_canvas_path_def_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <boxed name="CanvasPoints" cname="GnomeCanvasPoints">
+      <field cname="coords" type="double*"/>
+      <field cname="num_points" type="int"/>
+      <field cname="ref_count" type="int"/>
+      <method name="Free" cname="gnome_canvas_points_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="gnome_canvas_points_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_canvas_points_new">
+        <parameters>
+          <parameter type="int" name="num_points"/>
+        </parameters>
+      </constructor>
+      <method name="Ref" cname="gnome_canvas_points_ref">
+        <return-type type="GnomeCanvasPoints*"/>
+      </method>
+    </boxed>
+    <struct name="CanvasShapePriv" cname="GnomeCanvasShapePriv" opaque="true"/>
+  </namespace>
   <namespace name="Gnome" library="gnomeui-2">
     <enum name="ClientFlags" cname="GnomeClientFlags" type="flags">
       <member cname="GNOME_CLIENT_IS_CONNECTED" name="IsConnected" value="1 &lt;&lt; 0"/>
