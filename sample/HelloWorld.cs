@@ -16,7 +16,7 @@ namespace GtkSamples {
 
 		public static int Main (string[] args)
 		{
-			Application.Init (ref args);
+			Application.Init ();
 			Gtk.Window win = new Gtk.Window (Gtk.WindowType.Toplevel);
 			win.Title = "Gtk# Hello World";
 			win.DeleteEvent += new EventHandler (Window_Delete);

@@ -26,7 +26,7 @@ namespace GLib {
 		// Destructor is required since we are allocating unmananged
 		// heap resources.
 
-		[DllImport("glib-1.3.dll")]
+		[DllImport("glib-1.3")]
 		static extern void g_free (IntPtr mem);
 
 		~Value ()
@@ -44,7 +44,7 @@ namespace GLib {
 		///	value to it.
 		/// </remarks>
 
-		[DllImport("glib-1.3.dll", 
+		[DllImport("glib-1.3", 
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern IntPtr g_malloc0 (long n_bytes);
 
@@ -74,7 +74,7 @@ namespace GLib {
 		///	Constructs a Value from a specified boolean.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_boolean (IntPtr val,
 						        bool data);
@@ -92,7 +92,7 @@ namespace GLib {
 		///	Constructs a Value from a specified integer.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_int (IntPtr val, int data);
 
@@ -110,7 +110,7 @@ namespace GLib {
 		///	Constructs a Value from a specified string.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_string (IntPtr val,
 						       IntPtr data);
@@ -129,7 +129,7 @@ namespace GLib {
 		///	Prepares a raw value to hold a specified type.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_init (IntPtr val, 
 						 TypeFundamentals type);
@@ -149,7 +149,7 @@ namespace GLib {
 		///	boolean value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern bool g_value_get_boolean (IntPtr val);
 
@@ -170,7 +170,7 @@ namespace GLib {
 		///	integer value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern int g_value_get_int (IntPtr val);
 
@@ -191,7 +191,7 @@ namespace GLib {
 		///	string value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll",
+		[DllImport("gobject-1.3",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern IntPtr g_value_get_string (IntPtr val);
 

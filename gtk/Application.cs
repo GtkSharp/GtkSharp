@@ -23,7 +23,15 @@ namespace Gtk {
 
 	public class Application {
 
-		[DllImport("gtk-1.3.dll")]
+		[DllImport("gtk-x11-1.3")]
+		static extern void gtk_init (int argc, IntPtr argv);
+
+		public static void Init ()
+		{
+			gtk_init (0, new IntPtr(0));
+		}
+
+		[DllImport("gtk-x11-1.3")]
 		static extern void gtk_init (ref int argc, ref String[] argv);
 
 		/// <summary>
@@ -48,7 +56,7 @@ namespace Gtk {
 		///	Begins the event loop iteration.
 		/// </remarks>
 
-		[DllImport("gtk-1.3.dll")]
+		[DllImport("gtk-x11-1.3")]
 		static extern void gtk_main ();
 
 		public static void Run ()
@@ -65,7 +73,7 @@ namespace Gtk {
 		///	Terminates the event loop iteration.
 		/// </remarks>
 
-		[DllImport("gtk-1.3.dll")]
+		[DllImport("gtk-x11-1.3")]
 		static extern void gtk_main_quit ();
 
 		public static void Quit ()

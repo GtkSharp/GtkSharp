@@ -173,6 +173,11 @@ namespace GtkSharp.Generation {
 			String cname = method.GetAttribute("cname");
 			String name = method.GetAttribute("name");
 			
+			if (cname[0] == '_') {
+				Statistics.ThrottledCount++;
+				return true;
+			}
+
 			sw.WriteLine("\t\t[DllImport(\"" + table.GetDllName(ns) + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
