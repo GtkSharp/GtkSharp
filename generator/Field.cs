@@ -21,12 +21,28 @@ namespace GtkSharp.Generation {
 			this.elem = elem;
 		}
 
+		public int ArrayLength {
+			get {
+				if (!IsArray)
+					return 0;
+				
+				int result;
+				try {
+					result = Int32.Parse (elem.GetAttribute("array_len"));
+				} catch (Exception e) {
+					Console.Write ("Non-numeric array_len: " + elem.GetAttribute("array_len"));
+					Console.WriteLine (" warning: array field {0} incorrectly generated", Name);
+					result = 0;
+				}
+				return result;
+			}
+		}
+
 		public string CSType {
 			get {
 				string type = SymbolTable.Table.GetCSType (CType);
 				if (IsArray)
-					// FIXME
-					type = "IntPtr";
+					type += "[]";
 				else if (IsBit)
 					type = "uint";
 				else if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && type != "string")
@@ -88,7 +104,7 @@ namespace GtkSharp.Generation {
 			get {
 				if (IsArray)
 					// FIXME
-					return "private";
+					return "public";
 				else if (IsBit || IsPadding || SymbolTable.Table.IsCallback (CType))
 					return "private";
 				else if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && CSType != "string")
@@ -108,9 +124,8 @@ namespace GtkSharp.Generation {
 
 			SymbolTable table = SymbolTable.Table;
 
-			// FIXME
-			if (IsArray)
-				Console.WriteLine ("warning: array field {0} probably incorrectly generated", Name);
+			if (IsArray) 
+				sw.WriteLine ("\t\t[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
 			sw.WriteLine ("\t\t{0} {1} {2};", Protection, CSType, table.MangleName (Name));
 
 
