@@ -1,0 +1,16 @@
+		[DllImport("gnomeui-2")]
+		static extern IntPtr gnome_druid_page_edge_new_with_vals(int position, bool antialiased, string title, string text, IntPtr logo, IntPtr watermark, IntPtr top_watermark);
+
+		public DruidPageEdge (Gnome.EdgePosition position) : this (position, false, String.Empty, String.Empty, null, null, null)
+		{
+		}
+
+		public DruidPageEdge (Gnome.EdgePosition position, bool antialiased, string title, string text, Gdk.Pixbuf logo, Gdk.Pixbuf watermark, Gdk.Pixbuf top_watermark) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (DruidPageEdge)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				Construct (position, antialiased, title, text, logo, watermark, top_watermark);
+				return;
+			}
+			Raw = gnome_druid_page_edge_new_with_vals((int) position, antialiased, title, text, (logo != null) ? logo.Handle : IntPtr.Zero, (watermark != null) ? watermark.Handle : IntPtr.Zero, (top_watermark != null) ? top_watermark.Handle : IntPtr.Zero);
+		}
