@@ -1151,6 +1151,21 @@ CellRendererText text = new CellRendererText ();
 tree_view.AppendColumn ("title", text, "text", 0);
   </code>
           </example>
+          <para>This example illustrates how you can control the "editable" attribute of a column on a row-by-row basis.</para>
+          <example>
+            <code lang="C#">
+	TreeStore store =  new TreeStore (typeof (string), typeof(bool));
+
+	/* add a column that will display the 'string' from the store */
+	/* note that we are binding the "text" value to column 0 of the store, and the "editable" value to the column 1 value of the store */
+	/* this enables per-row control over the editable flag, if desired */
+	tv.AppendColumn("My string", new CellRendererText(), "text", 0, "editable", 1);
+
+	/* add a couple of rows to the treeview */
+	store.AppendValues("You can edit this", true);
+	store.AppendValues("You can't edit this", false);
+</code>
+          </example>
         </remarks>
       </Docs>
     </Member>

@@ -1211,7 +1211,20 @@
         <summary>Makes a new Pixbuf object from a <see cref="T:System.IO.Stream" />.</summary>
         <param name="stream">a <see cref="T:System.IO.Stream" /></param>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks />
+        <remarks>Useful for creating a Pixbuf from an image file that resides in memory.
+
+<example>
+            <code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];
+
+/* create a memory stream to the buffer */
+System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);    
+
+/* create a pixbuf from the stream as if it was a file */
+Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
