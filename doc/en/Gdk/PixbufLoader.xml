@@ -16,7 +16,118 @@
 You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
 </para>
     </summary>
-    <remarks>To be added</remarks>
+    <remarks>
+      <example>
+        <code lang="C#">
+using System;
+using System.IO;
+using Gtk;
+using Gdk;
+                                                                                
+namespace GtkDemo
+{
+        public class PixbufLoaderSample : Gtk.Window
+        {
+                static Gdk.PixbufLoader pixbufLoader;
+                private uint timeout_id;
+                private static Gtk.Image progressiveImage;
+                private VBox vbox;
+                BinaryReader imageStream;
+ 
+                static void Main ()
+                {
+                        Application.Init ();
+                        new PixbufLoaderSample ();
+                        Application.Run ();
+                }
+ 
+                public PixbufLoaderSample () : base ("images")
+                {
+                        this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+                        this.BorderWidth = 8;
+ 
+                        vbox = new VBox (false, 8);
+                        vbox.BorderWidth = 8;
+                        this.Add (vbox);
+ 
+                        Label label = new Gtk.Label ("Progressive image loading");
+                        label.UseMarkup = true;
+                        vbox.PackStart (label);
+ 
+                        Gtk.Frame frame = new Gtk.Frame ();
+                        frame.ShadowType = ShadowType.In;
+ 
+                        Alignment alignment = new Alignment (0.5f, 0.5f, 0f, 0f);
+                        alignment.Add (frame);
+                        vbox.PackStart (alignment, false, false, 0);
+ 
+                        // Create an empty image for now; the progressive loader
+                        // will create the pixbuf and fill it in.
+                        progressiveImage = new Gtk.Image ();
+                        frame.Add (progressiveImage);
+ 
+                        StartProgressiveLoading ();
+ 
+                        this.ShowAll ();
+                }
+ 
+                private void WindowDelete (object o, DeleteEventArgs args)
+                {
+                        this.Hide ();
+                        this.Destroy ();
+                        args.RetVal = true;
+                }
+ 
+                private void StartProgressiveLoading ()
+                {
+                /* This is obviously totally contrived (we slow down loading
+                 * on purpose to show how incremental loading works).
+                 * The real purpose of incremental loading is the case where
+                 * you are reading data from a slow source such as the network.
+                 * The timeout simply simulates a slow data source by inserting
+                 * pauses in the reading process.
+                 */
+                        timeout_id = GLib.Timeout.Add (150, new GLib.TimeoutHandler (ProgressiveTimeout));
+                }
+ 
+                private  bool ProgressiveTimeout ()
+                {
+                        if (imageStream == null) {
+                                // note you need to provide your own image
+                                // at that location to run this sample
+                                imageStream = new BinaryReader (new StreamReader ("images/alphatest.png").BaseStream);
+                                pixbufLoader = new Gdk.PixbufLoader ();
+                                pixbufLoader.AreaPrepared += new EventHandler (ProgressivePreparedCallback);
+                                pixbufLoader.AreaUpdated += new AreaUpdatedHandler (ProgressiveUpdatedCallback);
+                        }
+ 
+                        if (imageStream.PeekChar () != -1) {
+                                byte[] bytes = imageStream.ReadBytes (256);
+                                pixbufLoader.Write (bytes, (uint) bytes.Length);
+                                return true; // leave the timeout active
+                        }
+                        else {
+                                imageStream.Close ();
+                                return false; // removes the timeout
+                        }
+                }
+ 
+                static void ProgressivePreparedCallback (object obj, EventArgs args)
+                {
+                        Gdk.Pixbuf pixbuf = pixbufLoader.Pixbuf;
+                        pixbuf.Fill (0xaaaaaaff);
+                        progressiveImage.FromPixbuf = pixbuf;
+                }
+ 
+                static void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args)
+                {
+                        progressiveImage.QueueDraw ();
+                }
+        }
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -98,9 +209,9 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.PixbufLoader'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>an object of type <see cref="T:Gdk.PixbufLoader" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -113,7 +224,7 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       <Docs>
         <summary>To be added</summary>
         <param name="image_type">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gdk.PixbufLoader'</returns>
+        <returns>an object of type <see cref="T:Gdk.PixbufLoader" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -124,9 +235,9 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>The Pixbuf that is being loaded.</summary>
+        <returns>an object of type <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Animation">
@@ -137,7 +248,7 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.PixbufAnimation'</returns>
+        <returns>an object of type <see cref="T:Gdk.PixbufAnimation" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -149,8 +260,8 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the area of the PixbufLoader is prepared.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AreaUpdated">
@@ -161,8 +272,8 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the area of the PixbufLoader is updated with data.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Closed">
@@ -173,8 +284,8 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the PixbufLoader is closed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Format">
@@ -197,8 +308,8 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the PixbufLoader has prepared its size.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetSize">
@@ -212,10 +323,10 @@ You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Set the size of the image that will be loaded.</summary>
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
