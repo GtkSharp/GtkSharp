@@ -64,7 +64,7 @@
 								  int x,
 								  int y,
 								  out IntPtr path,
-								  IntPtr column,
+								  out IntPtr column,
 								  out int cell_x,
 								  out int cell_y);
 
@@ -73,24 +73,22 @@
 								  int x,
 								  int y,
 								  out IntPtr path,
-								  IntPtr column,
+								  out IntPtr column,
 								  IntPtr cell_x,
 								  IntPtr cell_y);
 
-		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
+		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, out Gtk.TreeViewColumn column, out int cell_x, out int cell_y)
 		{
-			IntPtr col;
-			if (column == null)
-				col = IntPtr.Zero;
-			else
-				col = column.Handle;
-
 			IntPtr pathHandle;
-			bool raw_ret = gtk_tree_view_get_path_at_pos (Handle, x, y, out pathHandle, col, out cell_x, out cell_y);
-			if (raw_ret)
+			IntPtr columnHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos (Handle, x, y, out pathHandle, out columnHandle, out cell_x, out cell_y);
+			if (raw_ret) {
+				column = new TreeViewColumn (columnHandle);
 				path = new TreePath (pathHandle);
-			else
+			} else {
 				path = null;
+				column = null;
+			}
 
 			return raw_ret;
 		}
@@ -99,7 +97,8 @@
 		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path)
 		{
 			IntPtr pathHandle;
-			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			IntPtr columnHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
 			if (raw_ret)
 				path = new TreePath (pathHandle);
 			else
@@ -108,17 +107,18 @@
 			return raw_ret;
 		}
 
-		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, Gtk.TreeViewColumn column)
+		public bool GetPathAtPos (int x, int y, out Gtk.TreePath path, out Gtk.TreeViewColumn column)
 		{
-			if (column == null)
-				return GetPathAtPos (x, y, out path);
-
 			IntPtr pathHandle;
-			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, column.Handle, IntPtr.Zero, IntPtr.Zero);
-			if (raw_ret)
+			IntPtr columnHandle;
+			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
+			if (raw_ret) {
 				path = new TreePath (pathHandle);
-			else
+				column = new TreeViewColumn (columnHandle);
+			} else {
 				path = null;
+				column = null;
+			}
 
 			return raw_ret;
 		}
