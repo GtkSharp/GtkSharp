@@ -78,6 +78,69 @@
         <remarks>
           <para>See also, <see cref="M:Gtk.TreeSelection.UnselectPath(Gtk.TreePath)" /> and <see cref="M:Gtk.TreeSelection.UnselectAll()" />.</para>
         </remarks>
+	  <example>
+	    <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+ 
+class TreeSelectionSample
+{
+	Label selected;
+ 
+	static void Main ()
+	{
+		Application.Init ();
+		new TreeSelectionSample ();
+		Application.Run ();
+	}
+																				   
+	TreeSelectionSample ()
+	{
+		Window win = new Window ("TreeView selection sample");
+		win.SetDefaultSize (400, 300);
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+
+		HBox hbox = new HBox (false, 0);
+			 
+		TreeView tv = new TreeView ();
+		tv.Selection.Changed += new EventHandler (OnSelectionChanged);
+		tv.AppendColumn ("items", new CellRendererText (), "text", 0);
+								  
+		TreeStore store = new TreeStore (typeof (string));
+		for (int i = 0; i &lt; 10; i++)
+		{
+			store.AppendValues ("item " + i.ToString ());
+		}
+																   
+		tv.Model = store;
+																	    
+		hbox.PackStart (tv);
+													 
+		selected = new Label ();
+		hbox.PackStart (selected);
+																	  
+		win.Add (hbox);
+		win.ShowAll ();
+	}
+																   
+	void OnSelectionChanged (object o, EventArgs args)
+	{
+		TreeSelection ts = (TreeSelection) o;
+		TreeIter iter;
+		TreeModel model;
+		ts.GetSelected (out model, out iter);
+																	    
+		selected.Text = (string) model.GetValue (iter, 0);
+	}
+																	 
+	void OnWinDelete (object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+		</code>
+	  </example>
       </Docs>
     </Member>
     <Member MemberName="IterIsSelected">
