@@ -71,7 +71,7 @@ namespace GtkSharp.Generation {
 
 		public string ToNativeType {
 			get {
-				return SymbolTable.Table.GetMarshalType (CType) + (IsArray ? "[]" : String.Empty);
+				return SymbolTable.Table.GetToNativeReturnType (CType) + (IsArray ? "[]" : String.Empty);
 			}
 		}
 

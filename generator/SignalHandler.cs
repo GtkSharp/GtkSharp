@@ -120,14 +120,14 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\tusing System;");
 			sw.WriteLine("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine();
-			sw.Write("\tinternal delegate " + retval.MarshalType + " ");
+			sw.Write("\tinternal delegate " + retval.ToNativeType + " ");
 			sw.WriteLine(DelegateName + "(" + ISig + ", int key);");
 			sw.WriteLine();
 			sw.WriteLine("\tinternal class " + Name + " : GLib.SignalCallback {");
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate static " + DelegateName + " _Delegate;");
 			sw.WriteLine();
-			sw.Write("\t\tprivate static " + retval.MarshalType + " ");
+			sw.Write("\t\tprivate static " + retval.ToNativeType + " ");
 			sw.WriteLine(CallbackName + "(" + ISig + ", int key)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (!_Instances.Contains(key))");
@@ -179,7 +179,7 @@ namespace GtkSharp.Generation {
 					else
 						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
 
-					sw.WriteLine("\t\t\treturn (" + retval.MarshalType + ") " + table.ToNativeReturn (retval.CType, "((" + retval.CSType + ")args.RetVal)") + ";");
+					sw.WriteLine("\t\t\treturn " + table.ToNativeReturn (retval.CType, "((" + retval.CSType + ")args.RetVal)") + ";");
 				}
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();

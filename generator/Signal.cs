@@ -130,6 +130,8 @@ namespace GtkSharp.Generation {
 
 				if (igen is ObjectGen)
 					return "GLib.GType.Object";
+				if (igen is BoxedGen)
+					return retval.CSType + ".GType";
 
 				switch (retval.CSType) {
 				case "bool":
@@ -237,9 +239,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
 			sw.Write (call.Setup ("\t\t\t"));
-			sw.Write ("\t\t\t{0}", IsVoid ? "" : "return ");
+			sw.Write ("\t\t\t{0}", IsVoid ? "" : retval.CSType == retval.ToNativeType ? "return " : retval.CSType + " raw_ret = ");
 			sw.WriteLine ("obj.{0} ({1});", "On" + Name, call.ToString ());
 			sw.Write (call.Finish ("\t\t\t"));
+			if (!IsVoid && retval.CSType != retval.ToNativeType)
+				sw.WriteLine ("\t\t\treturn {0};", SymbolTable.Table.ToNativeReturn (retval.CType, "raw_ret"));
 			sw.WriteLine ("\t\t}\n");
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 			sw.WriteLine ("\t\tprivate static void Override" + Name + " (GLib.GType gtype)");
