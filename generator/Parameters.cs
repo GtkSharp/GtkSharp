@@ -281,7 +281,7 @@ namespace GtkSharp.Generation {
 					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
 					{
 						import_sig += pass_as + " ";
-						call_string += "out ";
+						call_string += pass_as + " ";
 					}
 					
 					if (SymbolTable.IsEnum (type))
@@ -323,8 +323,8 @@ namespace GtkSharp.Generation {
 			// FIXME: lame
 			call_string = call_string.Replace ("out ref", "out");
 			import_sig = import_sig.Replace ("out ref", "out");
-			call_string = call_string.Replace ("ref ref", "out");
-			import_sig = import_sig.Replace ("ref ref", "out");
+			call_string = call_string.Replace ("ref ref", "ref");
+			import_sig = import_sig.Replace ("ref ref", "ref");
 
 			// FIXME: this is also lame, I need to fix the need_sep algo
 			if (signature.EndsWith (", ")) 
