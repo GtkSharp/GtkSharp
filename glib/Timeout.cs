@@ -55,7 +55,8 @@ namespace GLib {
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
 			uint code = g_timeout_add (interval, (TimeoutHandler) p.proxy_handler, IntPtr.Zero);
-			Source.source_handlers [code] = p;
+			lock (Source.source_handlers)
+				Source.source_handlers [code] = p;
 
 			return code;
 		}

@@ -60,7 +60,8 @@ namespace GLib {
 		{
 			IdleProxy p = new IdleProxy (hndlr);
 			uint code = g_idle_add ((IdleHandler) p.proxy_handler, IntPtr.Zero);
-			Source.source_handlers [code] = p;
+			lock (Source.source_handlers)
+				Source.source_handlers [code] = p;
 
 			return code;
 		}
@@ -73,17 +74,19 @@ namespace GLib {
 			bool result = false;
 			ArrayList keys = new ArrayList ();
 
-			foreach (uint code in Source.source_handlers.Keys){
-				IdleProxy p = Source.source_handlers [code] as IdleProxy;
+			lock (Source.source_handlers) {
+				foreach (uint code in Source.source_handlers.Keys) {
+					IdleProxy p = Source.source_handlers [code] as IdleProxy;
 				
-				if (p != null && p.real_handler == hndlr) {
-					keys.Add (code);
-					result = g_source_remove_by_funcs_user_data (p.proxy_handler, IntPtr.Zero);
+					if (p != null && p.real_handler == hndlr) {
+						keys.Add (code);
+						result = g_source_remove_by_funcs_user_data (p.proxy_handler, IntPtr.Zero);
+					}
 				}
-			}
 
-			foreach (object key in keys)
-				Source.source_handlers.Remove (key);
+				foreach (object key in keys)
+					Source.source_handlers.Remove (key);
+			}
 
 			return result;
 		}
