@@ -64,6 +64,8 @@ while ($line = <STDIN>) {
 		$sdef =~ s!/\*.*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
 		$types{$1} = $sdef if ($sdef =~ /.*\}\s*(\w+);/);
+	} elsif ($line =~ /typedef\s+(unsigned\s+\w+)\s+(\**)(\w+);/) {
+		$types{$3} = $1 . $2;
 	} elsif ($line =~ /typedef\s+(\w+)\s+(\**)(\w+);/) {
 		$types{$3} = $1 . $2;
 	} elsif ($line =~ /typedef\s+enum\s+(\w+)\s+(\w+);/) {
@@ -443,8 +445,8 @@ sub addFieldElems
 			$elem = addNameElem($parent, 'callback', $2);
 			addReturnElem($elem, $1);
 			addParamsElem($elem, $3);
-		} elsif ($field =~ /(\S+)\s+(.+)/) {
-			$type = $1; $symb = $2;
+		} elsif ($field =~ /(unsigned )?(\S+)\s+(.+)/) {
+			$type = $1 . $2; $symb = $3;
 			foreach $tok (split (/,\s*/, $symb)) {
 				if ($tok =~ /(\w+)\s*\[(.*)\]/) {
 					$elem = addNameElem($parent, 'field', $1);
@@ -689,9 +691,9 @@ sub addParamsElem
 		if ($parm =~ /struct\s+(\S+)\s+(\S+)/) {
 			$parm_elem->setAttribute('type', $1);
 			$name = $2;
-		}elsif ($parm =~ /(\S+)\s+(\S+)/) {
-			$parm_elem->setAttribute('type', $1);
-			$name = $2;
+		}elsif ($parm =~ /(unsigned )?(\S+)\s+(\S+)/) {
+			$parm_elem->setAttribute('type', $1 . $2);
+			$name = $3;
 		} elsif ($parm =~ /(\S+)/) {
 			$parm_elem->setAttribute('type', $1);
 			$name = "arg" . $parm_num;
