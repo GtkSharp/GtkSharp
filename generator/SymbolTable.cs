@@ -72,8 +72,6 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("float", "float"));
 			AddType (new SimpleGen ("gdouble", "double"));
 			AddType (new SimpleGen ("double", "double"));
-			AddType (new SimpleGen ("gsize", "uint"));
-			AddType (new SimpleGen ("gssize", "int"));
 			AddType (new SimpleGen ("GQuark", "int"));
 
 			// platform specific integer types. these will break on any
@@ -81,9 +79,11 @@ namespace GtkSharp.Generation {
 			AddType (new LPGen ("ssize_t"));
 			AddType (new LPGen ("long"));
 			AddType (new LPGen ("glong"));
+			AddType (new LPGen ("gssize"));
 			AddType (new LPUGen ("size_t"));
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
+			AddType (new LPUGen ("gsize"));
 			AddType (new AliasGen ("off_t", "size_t"));
 
 			// string types
