@@ -1,3 +1,28 @@
+2002-06-14  Rachel Hestilow  <hestilow@ximian.com>
+
+	* glib/GException.cs: Added.
+
+	* generator/Ctor.cs, Method.cs: Tag function as unsafe if it throws
+	an exception. Call parms.HandleException.
+
+	* generator/Paramaters.cs: Add property ThrowsException (based
+	on a trailing GError**). If ThrowsException, mask GError in the
+	signature, initialize a GError in Initialize, and add new method
+	HandleException to throw an exception if error != null.
+
+	* generator/SymbolTable.cs: Add gdk-pixbuf DLL, and GError type.
+
+	* gdk.imaging, gdk.imaging/Makefile.in, gdk.imaging/makefile.win32:
+	Added.
+
+	* configure.in, Makefile, makefile.win32: Build gdk.imaging.
+
+	* gtk/Makefile.in, gtk/makefile.win32: Link against gdk.imaging.
+
+	* parser/gapi2xml.pl: Support namespace renaming.
+	
+	* parser/build.pl: Build gdk-pixbuf as gdk.imaging.
+	
 2002-06-09  Rachel Hestilow  <hestilow@ximian.com>
 
 	* generator/GenBase.cs: new method AppendCustom, moved from ObjectGen.

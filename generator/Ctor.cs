@@ -58,9 +58,14 @@ namespace GtkSharp.Generation {
 			
 			string cname = elem.GetAttribute("cname");
 			string name = ((XmlElement)elem.ParentNode).GetAttribute("name");
-			
+			string safety;
+			if (parms != null && parms.ThrowsException)
+				safety = "unsafe ";
+			else
+				safety = "";
+
 			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + "\")]");
-			sw.WriteLine("\t\tstatic extern IntPtr " + cname + isig);
+			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + isig);
 			sw.WriteLine();
 			
 			if (clash) {
@@ -71,13 +76,22 @@ namespace GtkSharp.Generation {
 					mname = mname.Substring(0, idx) + mname.Substring(idx+1, 1).ToUpper() + mname.Substring(idx+2);
 				}
 				
-				sw.WriteLine("\t\tpublic static " + name + " " + mname + sig);
+				sw.WriteLine("\t\tpublic static " + safety + name + " " + mname + sig);
 				sw.WriteLine("\t\t{");
-				sw.WriteLine("\t\t\treturn new " + name + "(" + cname + call + ");");
+				if (parms != null)
+					parms.Initialize(sw, false);
+				sw.WriteLine("\t\t\tIntPtr ret = " + cname + call + ";");
+				if (parms != null)
+					parms.HandleException (sw);
+				sw.WriteLine("\t\t\treturn new " + name + "(ret);");
 			} else {
-				sw.WriteLine("\t\tpublic " + name + sig);
+				sw.WriteLine("\t\tpublic " + safety + name + sig);
 				sw.WriteLine("\t\t{");
+				if (parms != null)
+					parms.Initialize(sw, false); 
 				sw.WriteLine("\t\t\tRaw = " + cname + call + ";");
+				if (parms != null)
+					parms.HandleException (sw);
 			}
 			
 			sw.WriteLine("\t\t}");

@@ -13,10 +13,16 @@ use XML::LibXML;
 use Metadata;
 
 if (!$ARGV[0]) {
-	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile>\n";
+	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile> [--out-ns outns]\n";
 }
 
 $ns = $ARGV[0];
+
+if ($ARGV[2] && $ARGV[2] eq "--out-ns") {
+	$out_ns = $ARGV[3];
+} else {
+	$out_ns = $ns;
+}
 
 ##############################################################
 # If a filename was provided see if it exists.  We parse existing files into
@@ -35,7 +41,7 @@ if ($ARGV[1] && -e $ARGV[1]) {
 }
 
 $ns_elem = $doc->createElement('namespace');
-$ns_elem->setAttribute('name', $ns);
+$ns_elem->setAttribute('name', $out_ns);
 $root->appendChild($ns_elem);
 
 ##############################################################

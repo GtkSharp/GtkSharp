@@ -69,7 +69,7 @@ namespace GtkSharp.Generation {
 					Console.Write("Name: " + name + " Type: " + type + " ");
 					return false;
 				}
-				
+
 				if (p_elem.HasAttribute("array")) {
 					cs_type += "[]";
 					m_type += "[]";
@@ -77,9 +77,12 @@ namespace GtkSharp.Generation {
 				
 				if (need_sep) {
 					call_string += ", ";
-					signature += ", ";
 					import_sig += ", ";
-					signature_types += ":";
+					if (type != "GError**")
+					{
+						signature += ", ";
+						signature_types += ":";
+					}
 				} else {
 					need_sep = true;
 				}
@@ -87,9 +90,14 @@ namespace GtkSharp.Generation {
 				if (p_elem.HasAttribute("pass_as")) {
 					signature += p_elem.GetAttribute("pass_as") + " ";
 				}
-
-				signature += (cs_type + " " + name);
-				signature_types += cs_type;
+				
+				if (type == "GError**")
+					call_string += "&";				
+				else
+				{
+					signature += (cs_type + " " + name);
+					signature_types += cs_type;
+				}
 				call_string += call_parm;
 				import_sig += (m_type + " " + name);
 			}
@@ -99,6 +107,7 @@ namespace GtkSharp.Generation {
 
 		public void Initialize (StreamWriter sw, bool is_get)
 		{
+			string name;
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -107,7 +116,7 @@ namespace GtkSharp.Generation {
 				XmlElement p_elem = (XmlElement) parm;
 
 				string type = SymbolTable.GetCSType(p_elem.GetAttribute ("type"));
-				string name = MangleName(p_elem.GetAttribute("name"));
+				name = MangleName(p_elem.GetAttribute("name"));
 				if (is_get) {
 					sw.WriteLine ("\t\t\t" + type + " " + name + ";");
 				}
@@ -116,9 +125,18 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("\t\t\t" + name + " = new " + type + "();"); 
 				}
 			}
-			
+
+			if (ThrowsException)
+				sw.WriteLine ("\t\t\tGLib.GError* {0} = null;", name);
 		}
 
+		public void HandleException (StreamWriter sw)
+		{
+			if (!ThrowsException)
+				return;
+			sw.WriteLine ("\t\t\tif (error != null) throw new GLib.GException (error);");
+		}
+		
 		public bool IsAccessor {
 			get {
 				int length = 0;
@@ -137,6 +155,27 @@ namespace GtkSharp.Generation {
 				}
 
 				return (length == 1 && pass_as == "out");
+			}
+		}
+
+		public bool ThrowsException {
+			get {
+				int i = 0;
+				XmlNode last_parm = null;
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (parm.Name != "parameter") {
+						continue;
+					}
+
+					last_parm = parm;
+				}
+
+				if (last_parm == null)
+					return false;
+	
+				XmlElement p_elem = (XmlElement) last_parm;
+				string type = p_elem.GetAttribute("type");
+				return (type == "GError**");
 			}
 		}
 

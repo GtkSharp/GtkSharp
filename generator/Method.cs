@@ -123,13 +123,19 @@ namespace GtkSharp.Generation {
 				Statistics.ThrottledCount++;
 				return;
 			}
+			
+			string safety;
+			if (parms != null && parms.ThrowsException)
+				safety = "unsafe ";
+			else
+				safety = "";
 
 			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
-			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
+			sw.Write("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
 			sw.WriteLine();
 
-			sw.Write("\t\tpublic ");
+			sw.Write("\t\tpublic " + safety);
 			bool is_get = (parms != null && parms.IsAccessor && Name.Substring(0, 3) == "Get");
 			if (is_get) {
 				s_ret = parms.AccessorReturnType;
@@ -149,12 +155,16 @@ namespace GtkSharp.Generation {
 			if (is_get || m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
 			} else {
-				sw.WriteLine("return " + SymbolTable.FromNative(rettype, cname + call) + ";");
+				sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNative(rettype, cname + call) + ";");
 			}
 			
-			if (is_get) 
-				sw.WriteLine ("\t\t\treturn " + parms.AccessorName + ";"); 
+			if (parms != null)
+				parms.HandleException (sw);
 
+			if (is_get) 
+				sw.WriteLine ("\t\t\treturn " + parms.AccessorName + ";");
+			else if (m_ret != "void")
+				sw.WriteLine ("\t\t\treturn ret;");
 
 			sw.Write("\t\t}");
 			if (is_get)

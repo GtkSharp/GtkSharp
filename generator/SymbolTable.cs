@@ -52,6 +52,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("uint1", "bool");
 			simple_types.Add ("GPtrArray", "System.IntPtr[]");
 			simple_types.Add ("GType", "int");
+			simple_types.Add ("GError", "GLib.GError**");
 			
 			// FIXME: These ought to be handled properly.
 			simple_types.Add ("GList", "System.IntPtr");
@@ -70,6 +71,7 @@ namespace GtkSharp.Generation {
 			dlls.Add("Pango", "pango-1.0");
 			dlls.Add("Atk", "atk-1.0");
 			dlls.Add("Gdk", "gdk-x11-2.0");
+			dlls.Add("Gdk.Imaging", "gdk_pixbuf-2.0");
 			dlls.Add("Gtk", "gtk-x11-2.0");
 		}
 		

@@ -56,6 +56,7 @@ namespace GtkSharp.Generation {
 			char sep = Path.DirectorySeparatorChar;
 			string dir = ".." + sep + ns.ToLower() + sep + "generated";
 			if (!Directory.Exists(dir)) {
+				Console.WriteLine ("creating " + dir);
 				Directory.CreateDirectory(dir);
 			}
 			String filename = dir + sep + Name + ".cs";
