@@ -12,7 +12,7 @@ noinst_DATA = $(TARGET)
 CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config
 
-references = ../gdk/gdk-sharp.dll
+references = ../gdk/gdk-sharp.dll ../glib/glib-sharp.dll
 build_references = $(addprefix -r:, $(references)) -r:System.Drawing
 
 sources =		 			\
