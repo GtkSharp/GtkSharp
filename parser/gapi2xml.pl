@@ -877,7 +877,7 @@ sub parseTypeToken
 	} else {
 		$tok =~ s/_TYPE//; 
 		$tok =~ s/\|.*STATIC_SCOPE//; 
-		$tok =~ s/\s+//g;
+		$tok =~ s/\W+//g;
 		return StudlyCaps (lc($tok));
 	}
 }
