@@ -171,6 +171,14 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (" {\n\t\t\t get { return \"" + str.GetAttribute ("value") + "\"; }\n\t\t}");
 			}
 
+			if (GetExpected (CName) != (QualifiedName + "," + gen_info.AssemblyName)) {
+				sw.WriteLine ();
+				sw.WriteLine ("\t\tstatic " + Name + " ()");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\tGtkSharp." + Studlify (gen_info.AssemblyName) + ".ObjectManager.Initialize ();");
+				sw.WriteLine ("\t\t}");
+			}
+
 			sw.WriteLine ("#endregion");
 			AppendCustom (sw, gen_info.CustomDir);
 
@@ -300,11 +308,15 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\tpublic class ObjectManager {");
 			sw.WriteLine ();
+			sw.WriteLine ("\t\tstatic bool initialized = false;");
 			sw.WriteLine ("\t\t// Call this method from the appropriate module init function.");
 			sw.WriteLine ("\t\tpublic static void Initialize ()");
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (initialized)");
+			sw.WriteLine ("\t\t\t\treturn;");
+			sw.WriteLine ("");
+			sw.WriteLine ("\t\t\tinitialized = true;");
 	
-			Console.WriteLine ("Generating mappers");
 			foreach (string key in dir_info.objects.Keys) {
 				if (GetExpected(key) != ((string) dir_info.objects[key] + "," + dir_info.assembly_name))
 					sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + dir_info.objects [key] + "," + dir_info.assembly_name + "\");");
