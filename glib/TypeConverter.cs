@@ -7,6 +7,7 @@
 namespace GLibSharp {
 	using System;
 	using System.Collections;
+	using System.Reflection;
 	using GLib;
 
 	/// <summary>
@@ -36,14 +37,17 @@ namespace GLibSharp {
 				return GType.Char;
 			if (type.Equals (typeof (uint)))
 				return GType.UInt;
-			if (type.IsValueType)
-				return GType.Pointer;
 			if (type.IsSubclassOf (typeof (GLib.Object)))
 				return GType.Object;
-			else if (type.IsSubclassOf (typeof (GLib.Boxed)))
-				return GType.Boxed;
-			else
-				return GType.None;
+			if (type.IsValueType) {
+				PropertyInfo pi = type.GetProperty ("GType");
+				if (pi == null)
+					return GType.Pointer;
+				else
+					return (GType) pi.GetValue (null, null); 
+			}
+
+			return GType.None;
 		}
 	}
 }

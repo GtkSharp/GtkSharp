@@ -317,6 +317,9 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
+
 		IntPtr buf = IntPtr.Zero;
 
 		/// <summary>
@@ -361,6 +364,10 @@ namespace GLib {
 				buf = Marshal.AllocHGlobal (Marshal.SizeOf (obj.GetType()));
 				Marshal.StructureToPtr (obj, buf, false);
 				g_value_set_pointer (_val, buf);
+			} else if (g_type_is_a (type.Val, GLib.GType.Boxed.Val)) {
+				buf = Marshal.AllocHGlobal (Marshal.SizeOf (obj.GetType()));
+				Marshal.StructureToPtr (obj, buf, false);
+				g_value_set_boxed (_val, buf);
 			} else
 				throw new Exception ("Unknown type");
 		}
