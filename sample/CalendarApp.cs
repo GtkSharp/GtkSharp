@@ -16,7 +16,9 @@ namespace GtkSamples {
 		public static Calendar CreateCalendar ()
 		{
 			Calendar cal = new Calendar();
-			cal.DisplayOptions (CalendarDisplayOptions.ShowHeading | CalendarDisplayOptions.ShowDayNames | CalendarDisplayOptions.ShowWeekNumbers);
+			cal.DisplayOptions = CalendarDisplayOptions.ShowHeading    |
+					     CalendarDisplayOptions.ShowDayNames   |
+					     CalendarDisplayOptions.ShowWeekNumbers;
 			return cal;
 		}
 
@@ -37,11 +39,7 @@ namespace GtkSamples {
 		static void DaySelected (object obj, EventArgs args)
 		{
 			Calendar activatedCalendar = (Calendar) obj;
-			uint year, month, day;
-			activatedCalendar.GetDate(out year, out month, out day);
-			// The month is zero-based, so tweak it before output
-			Console.WriteLine ("Selected date: {0}/{1}/{2}",
-					   year, month+1, day);
+			Console.WriteLine (activatedCalendar.GetDate ().ToString ("yyyy/MM/dd"));
 		}
 
 		static void Window_Delete (object obj, DeleteEventArgs args)
