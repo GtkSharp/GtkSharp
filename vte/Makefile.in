@@ -13,8 +13,8 @@ ASSEMBLY=vte-sharp.dll
 @ENABLE_VTE_FALSE@ all:
 
 generated-stamp: vte-api.xml
-	gapi-fixup --api=$(APIS) --metadata=Vte.metadata && \
-	gapi-codegen --generate $(APIS) --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=vte-sharp && touch generated-stamp
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(APIS) --metadata=Vte.metadata && \
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=vte-sharp && touch generated-stamp
  
 vte-sharp.dll: generated-stamp
 	$(MCS) --unsafe --target library -L $(GTKSHARP_PREFIX)/lib \
