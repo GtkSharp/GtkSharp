@@ -14,12 +14,12 @@ namespace GtkSharp.Generation {
 		{
 		}
 	
-		public override String FromNativeReturn(String var)
+		public override string FromNativeReturn(String var)
 		{
 			return "GLibSharp.Marshaller.PtrToStringGFree(" + var + ")";
 		}
 
-		public override String ToNativeReturn(String var)
+		public override string ToNativeReturn(String var)
 		{
 			return "GLibSharp.Marshaller.StringToPtrGStrdup(" + var + ")";
 		}

@@ -20,7 +20,7 @@ namespace GtkSharp.Generation {
 		private ImportSignature isig = null;
 		private MethodBody body = null;
 		private bool preferred;
-		private String clashName = null;
+		private string clashName = null;
 		private ClassBase container_type;
 		private bool force_static;
 

@@ -180,11 +180,11 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
 			sw.Write("\t\tstatic extern uint g_signal_connect_data(");
-			sw.Write("IntPtr obj, String name, " + DelegateName + " cb, int key, IntPtr p,");
+			sw.Write("IntPtr obj, string name, " + DelegateName + " cb, int key, IntPtr p,");
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
 			sw.Write("\t\tpublic " + Name + "(GLib.Object obj, IntPtr raw, ");
-			sw.WriteLine("String name, Delegate eh, Type argstype) : base(obj, eh, argstype)");
+			sw.WriteLine("string name, Delegate eh, Type argstype) : base(obj, eh, argstype)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
 			sw.WriteLine("\t\t\t\t_Delegate = new " + DelegateName + "(" + CallbackName + ");");

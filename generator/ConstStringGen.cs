@@ -14,14 +14,14 @@ namespace GtkSharp.Generation {
 		{
 		}
 
-		public override String MarshalReturnType {
+		public override string MarshalReturnType {
 			get
 			{
 				return "IntPtr";
 			}
 		}
 		
-		public override String FromNativeReturn(String var)
+		public override string FromNativeReturn(string var)
 		{
 			return "Marshal.PtrToStringAnsi(" + var + ")";
 		}

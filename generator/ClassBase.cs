@@ -104,45 +104,45 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public virtual String MarshalType {
+		public virtual string MarshalType {
 			get
 			{
 				return "IntPtr";
 			}
 		}
 
-		public virtual String MarshalReturnType {
+		public virtual string MarshalReturnType {
 			get
 			{
 				return "IntPtr";
 			}
 		}
 
-		public virtual String CallByName (String var_name)
+		public virtual string CallByName (string var_name)
 		{
 			return var_name + ".Handle";
 		}
 
-		public virtual String CallByName ()
+		public virtual string CallByName ()
 		{
 			return "Handle";
 		}
 
-		public virtual String AssignToName {
+		public virtual string AssignToName {
 			get { return "Raw"; }
 		}
 
-		public virtual String FromNative(String var)
+		public virtual string FromNative(string var)
 		{
 			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
 		
-		public virtual String FromNativeReturn(String var)
+		public virtual string FromNativeReturn(string var)
 		{
 			return FromNative (var);
 		}
 		
-		public virtual String ToNativeReturn(String var)
+		public virtual string ToNativeReturn(string var)
 		{
 			return CallByName (var);
 		}

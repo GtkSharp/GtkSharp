@@ -14,35 +14,35 @@ namespace GtkSharp.Generation {
 		
 		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public String MarshalType {
+		public string MarshalType {
 			get
 			{
 				return "int";
 			}
 		}
-		public String MarshalReturnType {
+		public string MarshalReturnType {
 			get
 			{
 				return MarshalType;
 			}
 		}
 
-		public String CallByName (String var_name)
+		public string CallByName (string var_name)
 		{
 			return "(int) " + var_name;
 		}
 		
-		public String FromNative(String var)
+		public string FromNative(string var)
 		{
 			return "(" + QualifiedName + ")" + var;
 		}
 		
-		public String FromNativeReturn(String var)
+		public string FromNativeReturn(string var)
 		{
 			return FromNative (var);
 		}
 
-		public virtual String ToNativeReturn(String var)
+		public virtual string ToNativeReturn(string var)
 		{
 			return CallByName (var);
 		}
