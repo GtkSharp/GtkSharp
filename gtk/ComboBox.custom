@@ -19,24 +19,6 @@
 // Boston, MA 02111-1307, USA.
 
 
-[DllImport("libgtk-win32-2.0-0.dll")]
-static extern IntPtr gtk_combo_box_get_model (IntPtr raw);
-
-[DllImport("libgtk-win32-2.0-0.dll")]
-static extern IntPtr gtk_combo_box_set_model (IntPtr raw, IntPtr raw_model);
-
-public Gtk.TreeModel Model {
-	get {
-		IntPtr raw_ret = gtk_combo_box_get_model (Handle);
-		Gtk.TreeModel ret = (Gtk.TreeModel) GLib.Object.GetObject (raw_ret, false);
-		return ret;
-	}
-	set {
-		gtk_combo_box_set_model (Handle, value.Handle);
-	}
-}
-
-
 public void SetCellDataFunc (Gtk.CellRenderer renderer, Gtk.CellLayoutDataFunc func)
 {
 	GtkSharp.CellLayoutDataFuncWrapper func_wrapper = null;

@@ -57,24 +57,6 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_tree_view_get_model (IntPtr raw);
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_tree_view_set_model (IntPtr raw, IntPtr raw_model);
-
-		public Gtk.TreeModel Model {
-			get {
-				IntPtr raw_ret = gtk_tree_view_get_model (Handle);
-				Gtk.TreeModel ret = (Gtk.TreeModel) GLib.Object.GetObject (raw_ret, false);
-				return ret;
-			}
-
-			set {
-				gtk_tree_view_set_model (Handle, value.Handle);
-			}
-		}
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_tree_view_get_path_at_pos (IntPtr raw,
 								  int x,
 								  int y,

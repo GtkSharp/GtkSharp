@@ -56,13 +56,6 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 
-			if (table.IsInterface(c_type)) {
-				// FIXME: Handle interface props properly.
-				Console.Write("Interface property detected ");
-				Statistics.ThrottledCount++;
-				return false;
-			}
-
 			return true;
 		}
 
@@ -100,12 +93,7 @@ namespace GtkSharp.Generation {
 			string v_type = "";
 			if (table.IsEnum(c_type)) {
 				v_type = "(int) (GLib.EnumWrapper)";
-			} else if (table.IsInterface(c_type)) {
-				// FIXME: Handle interface props properly.
-				Console.Write("Interface property detected ");
-				Statistics.ThrottledCount++;
-				return;
-			} else if (table.IsObject(c_type)) {
+			} else if (table.IsObject(c_type) || table.IsInterface (c_type)) {
 				v_type = "(GLib.UnwrappedObject)";
 			} else if (table.IsBoxed (c_type)) {
 				v_type = "(GLib.Boxed)";
@@ -164,11 +152,9 @@ namespace GtkSharp.Generation {
 			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine(indent + "get {");
 				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
-				if (table.IsObject (c_type)) {
+				if (table.IsObject (c_type) || table.IsInterface (c_type)) {
 					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
 					sw.WriteLine(indent + "\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
-					if (!table.IsBoxed (c_type) && !table.IsObject (c_type))
-						sw.WriteLine(indent + "\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				} else if (table.IsOpaque (c_type) || table.IsBoxed (c_type)) {
 					sw.WriteLine(indent + "\t" + cs_type + " ret = (" + cs_type + ") val;");
 				} else {
