@@ -1,8 +1,38 @@
+//  Gtk.RadioMenuItem.custom - Gtk RadioMenuItem customizations
+//
+//  Authors:  Todd Berman  <tberman@off.net>
+//            Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+//
+//  Copyright (c) 2004 Todd Berman, Jeroen Zwartepoorte
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_file_chooser_dialog_new(string title, IntPtr parent, int action, IntPtr nil);
 
 		public FileChooserDialog (string title, Window parent, FileChooserAction action)
 		{
+			if (GetType () != typeof (FileChooserDialog)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				Title = title;
+				if (parent != null)
+					Parent = parent;
+				Action = action;
+				return;
+			}
 			Raw = gtk_file_chooser_dialog_new (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, IntPtr.Zero);
 		}
 		
@@ -11,6 +41,14 @@
 		
 		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend)
 		{
+			if (GetType () != typeof (FileChooserDialog)) {
+				CreateNativeObject (new string[] { "file-system-backend" }, new GLib.Value[] { new GLib.Value (backend) } );
+				Title = title;
+				if (parent != null)
+					Parent = parent;
+				Action = action;
+				return;
+			}
 			Raw = gtk_file_chooser_dialog_new_with_backend (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, backend, IntPtr.Zero);
 		}
 
