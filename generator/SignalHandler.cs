@@ -99,6 +99,8 @@ namespace GtkSharp.Generation {
 			String sname = name + "Signal";
 			String dname = name + "Delegate";
 			String cbname = name + "Callback";
+			String hndlrname = name + "Handler";
+			String argsname = name + "Args";
 
 			handlers[name] = sname;
 
@@ -121,6 +123,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 			sw.Write("\tpublic delegate " + p_ret + " ");
 			sw.WriteLine(dname + "(" + pinv + ", int key);");
+			sw.WriteLine();
+			sw.WriteLine("\tpublic delegate void " + hndlrname + "(object o, " + argsname + " args);");
+			sw.WriteLine();
+			sw.WriteLine("\tpublic class " + argsname + " : EventArgs {");
+			sw.WriteLine("\t}");
 			sw.WriteLine();
 			sw.WriteLine("\tpublic class " + sname + " : SignalCallback {");
 			sw.WriteLine();

@@ -44,7 +44,10 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "method":
-					methods.Add (member.GetAttribute ("name"), new Method (LibraryName, member, this));
+					string name = member.GetAttribute("name");
+					while (methods.ContainsKey(name))
+						name += "mangled";
+					methods.Add (name, new Method (LibraryName, member, this));
 					break;
 
 				case "property":
