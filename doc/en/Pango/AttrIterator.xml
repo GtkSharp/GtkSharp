@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Used to represent an iterator through a <see cref="T:Pango.List" />.</summary>
+    <remarks>A new iterator is created with <see cref="P:Pango.AttrList.Iterator" />. Once the iterator is created, it can be advanced through the style changes in the text using <see cref="M:Pango.AttrIterator.Next()" />. At each style change, the range of the current style segment and the attributes currently in effect can be queried.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -31,8 +31,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Destroy a <see cref="T:Pango.AttrIterator" /> and free all associated memory.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Next">
@@ -43,9 +43,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Advance the iterator until the next change of style.</summary>
+        <returns>
+          <see langword="false" /> if the iterator is at the end of the list, otherwise <see langword="true" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -56,9 +57,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Pango.AttrIterator'</returns>
-        <remarks>To be added</remarks>
+        <summary>Make a copy of the iterator.</summary>
+        <returns>a <see cref="T:Pango.AttrIterator" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Get">
@@ -71,10 +72,10 @@
         <Parameter Name="type" Type="Pango.AttrType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Pango.AttrType'</param>
-        <returns>To be added: an object of type 'Pango.Attribute'</returns>
-        <remarks>To be added</remarks>
+        <summary>Find the current attribute of a particular type at the iterator location.</summary>
+        <param name="type"> the type of attribute to find.</param>
+        <returns> the current attribute of the given type, or <see langword="null" />  if no attribute of that type applies to the current location.</returns>
+        <remarks>When multiple attributes of the same type overlap, the attribute whose range starts closest to the current location is used.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -104,10 +105,10 @@
         <Parameter Name="end" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Get the range of the current segment.</summary>
+        <param name="start"> location to store the start of the range</param>
+        <param name="end"> location to store the end of the range</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Attrs">
@@ -118,9 +119,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets a list all attributes a the current position of the iterator.</summary>
         <returns>a <see cref="T:Pango.Attribute[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks> a list of all attributes for the current range.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFont">
@@ -135,11 +136,11 @@
         <Parameter Name="extra_attrs" Type="Pango.Attribute[]&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="desc">a <see cref="T:Pango.FontDescription" /></param>
-        <param name="language">a <see cref="T:Pango.Language" /></param>
-        <param name="extra_attrs">a <see cref="T:Pango.Attribute[]" /></param>
-        <remarks>To be added</remarks>
+        <summary>Get the font and other attributes at the current iterator position.</summary>
+        <param name="desc"> a <see cref="T:Pango.FontDescription" /> to fill in with the current values. The family name in this structure will be set using <see cref="M:Pango.FontDescription.SetFamilyStatic()" /> using values from an attribute in the <see cref="T:Pango.AttrList" /> associated with the iterator, so if you plan to keep it around, you must call: <see cref="T:Pango.FontDescription.SetFamily (desc, pango_font_description_get_family (desc))" />.</param>
+        <param name="language"> if non-<see langword="null" />, location to store language tag for item, or <see langword="null" />  if non is found.</param>
+        <param name="extra_attrs"> if non-<see langword="null" />, location in which to store a list of non-font attributes at the the current position; only the highest priority value of each attribute will be added to this list.</param>
+        <remarks />
       </Docs>
     </Member>
   </Members>

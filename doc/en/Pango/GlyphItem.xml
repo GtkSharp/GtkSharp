@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A pair of a <see cref="T:Pango.Item" /> and the glyphs resulting from shaping the text corresponding to an item.</summary>
+    <remarks>As an example of the usage of <see cref="T:Pango.GlyphItem" />, the results of shaping text with <see cref="T:Pango.Layout" /> is a list of <see cref="T:Pango.LayoutLine" />, each of which contains a list of <see cref="T:Pango.GlyphItem" />.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -58,11 +58,15 @@
         <Parameter Name="split_index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="split_index">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Pango.GlyphItem" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Splits an Item</summary>
+        <param name="text"> text to which positions in orig apply.</param>
+        <param name="split_index"> byte index of position to split item, relative to the start of the item</param>
+        <returns>a <see cref="T:Pango.GlyphItem" /> representing the text before <paramref name="split_index" /></returns>
+        <remarks>
+          <para>
+Modifies orig to cover only the text after <paramref name="split_index" />, and returns a new item that covers the text before <paramref name="split_index" /> that used to be in orig. You can think of <paramref name="split_index" /> as the length of the returned item. <paramref name="split_index" /> may not be 0, and it may not be greater than or equal to the length of orig (that is, there must be at least one byte assigned to each item, you cannot create a zero-length item).
+</para>
+This function is similar in function to <see cref="M:Pango.Item.Split()" /> (and uses it internally)</remarks>
       </Docs>
     </Member>
     <Member MemberName="glyphs">
@@ -72,9 +76,9 @@
         <ReturnType>Pango.GlyphString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>the glyphs obtained by shaping the text corresponding to item.</summary>
         <returns>a <see cref="T:Pango.GlyphString" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="item">
@@ -84,9 +88,9 @@
         <ReturnType>Pango.Item</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>a <see cref="T:Pango.Item" /> that provides information about a segment of text.</summary>
         <returns>a <see cref="T:Pango.Item" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ApplyAttrs">
@@ -100,11 +104,18 @@
         <Parameter Name="list" Type="Pango.AttrList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Splits a shaped item (<see cref="T:Pango.GlyphItem" />) into multiple items based on an attribute list.</summary>
         <param name="text">a <see cref="T:System.String" /></param>
         <param name="list">a <see cref="T:Pango.AttrList" /></param>
         <returns>a <see cref="T:Pango.GlyphItem[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+The idea is that if you have attributes that do not affect shaping, such as color or underline, to avoid affecting shaping, you filter them out (<see cref="M:Pango.AttrList.Filter()" />), apply the shaping process and then re-apply them to the result using this function.
+</para>
+          <para>
+All attributes that start or end inside a cluster are applied to that cluster; for instance, if half of a cluster is underlined and the other-half strikethough, then the cluster will end up with both underline and strikethrough attributes. In these cases, it may happen that item-&gt;extra_attrs for some of the result items can have multiple attributes of the same type. 
+</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

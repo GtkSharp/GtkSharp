@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Used to represent a language.</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -33,10 +33,10 @@
         <Parameter Name="language" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="language">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Pango.Language'</returns>
-        <remarks>To be added</remarks>
+        <summary>Take a RFC-3066 format language tag as a string and convert it to a <see cref="T:Pango.Language" /></summary>
+        <param name="language"> a string representing a language tag</param>
+        <returns>a <see cref="T:Pango.Language" /></returns>
+        <remarks>This function first canonicalizes the string by converting it to lowercase, mapping '_' to '-', and stripping all characters other than letters and '-'.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Matches">
@@ -49,10 +49,11 @@
         <Parameter Name="range_list" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="range_list">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Checks if a language tag matches one of the elements in a list of language ranges.</summary>
+        <param name="range_list"> a list of language ranges, separated by ';' characters. each element must either be '*', or a RFC 3066 language range canonicalized as by <see cref="M:Pango.LanguageFromString()" />.</param>
+        <returns>
+          <see langword="true" /> if a match was found.</returns>
+        <remarks>A language tag is considered to match a range in the list if the range is '*', the range is exactly the tag, or the range is a prefix of the tag, and the character after the tag is '-'.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -78,9 +79,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>A sample </summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
