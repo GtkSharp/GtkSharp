@@ -91,7 +91,7 @@ while ($line = <STDIN>) {
 			$pedef .= $line;
 			last if ($line =~ /^}/);
 		}
-		$pedefs{$class} = $pedef;
+		$pedefs{lc($class)} = $pedef;
 	} elsif ($line =~ /^(\w+)_get_type\b/) {
 		$class = StudlyCaps($1);
 		$pedef = $line;
@@ -110,7 +110,7 @@ while ($line = <STDIN>) {
 			}
 			last if ($line =~ /^}/);
 		}
-		$typefuncs{$class} = $pedef;
+		$typefuncs{lc($class)} = $pedef;
 	} elsif ($line =~ /^(const|G_CONST_RETURN)?\s*\w+\s*\**\s*(\w+)\s*\(/) {
 		$fname = $2;
 		$fdef = "";
@@ -221,7 +221,7 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$iface = $ifaces{$type};
 	($inst, $dontcare) = split(/:/, delete $objects{$type});
-	$initfunc = $pedefs{$inst};
+	$initfunc = $pedefs{lc($inst)};
 	$ifacetype = delete $types{$iface};
 	delete $types{$inst};
 	
@@ -247,8 +247,8 @@ foreach $type (sort(keys(%objects))) {
 	
 	($inst, $class) = split(/:/, $objects{$type});
 	$class = $inst . "Class" if (!$class);
-	$initfunc = $pedefs{$inst};
-	$typefunc = $typefuncs{$inst};
+	$initfunc = $pedefs{lc($inst)};
+	$typefunc = $typefuncs{lc($inst)};
 	$insttype = delete $types{$inst};
 	$classtype = delete $types{$class};
 
@@ -555,6 +555,7 @@ sub addSignalElem
 {
 	my ($spec, $class, $node) = @_;
 	$spec =~ s/\n\s*//g; $class =~ s/\n\s*//g;
+
 
 	$sig_elem = $doc->createElement('signal');
 	$node->appendChild($sig_elem);
