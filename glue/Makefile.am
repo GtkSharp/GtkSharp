@@ -22,6 +22,7 @@ BASESOURCES = 			\
 	style.c			\
 	type.c			\
 	value.c			\
+	valuearray.c		\
 	widget.c
 
 # Adding a new glue file?

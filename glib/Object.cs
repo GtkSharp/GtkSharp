@@ -399,7 +399,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		protected static extern void g_signal_chain_from_overridden (IntPtr[] args, IntPtr retval);
+		protected static extern void g_signal_chain_from_overridden (IntPtr args, IntPtr retval);
 
 		[DllImport("gtksharpglue")]
 		static extern bool gtksharp_is_object (IntPtr obj);

@@ -109,6 +109,26 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		private string ReturnGType {
+			get {
+				ClassBase igen = SymbolTable.Table.GetClassGen (elem ["return-type"].GetAttribute("type"));
+
+				if (igen is ObjectGen)
+					return "GLib.GType.Object";
+
+				switch (ReturnType) {
+				case "bool":
+					return "GLib.GType.Boolean";
+				case "string":
+					return "GLib.GType.String";
+				case "int":
+					return "GLib.GType.Int";
+				default:
+					throw new Exception (ReturnType);
+				}
+			}
+		}
+
 		private string ReturnType {
 			get {
 				string ctype = elem ["return-type"].GetAttribute("type");
@@ -155,12 +175,12 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", ReturnType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
 			if (!IsVoid)
-				sw.WriteLine ("\t\t\tGLib.Value ret = new GLib.Value ();");
+				sw.WriteLine ("\t\t\tGLib.Value ret = new GLib.Value (" + ReturnGType + ");");
 
-			sw.WriteLine ("\t\t\tIntPtr[] args = new IntPtr [" + parms.Count + "];");
+			sw.WriteLine ("\t\t\tGLib.ValueArray inst_and_params = new GLib.ValueArray (" + parms.Count + ");");
 			sw.WriteLine ("\t\t\tGLib.Value[] vals = new GLib.Value [" + parms.Count + "];");
 			sw.WriteLine ("\t\t\tvals [0] = new GLib.Value (this);");
-			sw.WriteLine ("\t\t\targs [0] = vals [0].Handle;");
+			sw.WriteLine ("\t\t\tinst_and_params.Append (vals [0]);");
 			string cleanup = "";
 			for (int i = 1; i < parms.Count; i++) {
 				if (parms [i].PassAs == "out") {
@@ -171,10 +191,10 @@ namespace GtkSharp.Generation {
 				else
 					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i].Name + ");");
 
-				sw.WriteLine ("\t\t\targs [" + i + "] = vals [" + i + "].Handle;");
+				sw.WriteLine ("\t\t\tinst_and_params.Append (vals [" + i + "]);");
 			}
 
-			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (args, " + (IsVoid ? "IntPtr.Zero" : "ret.Handle") + ");");
+			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (inst_and_params.ArrayPtr, " + (IsVoid ? "IntPtr.Zero" : "ret.Handle") + ");");
 			if (cleanup != "")
 				sw.WriteLine (cleanup);
 			if (!IsVoid)

@@ -45,6 +45,11 @@ namespace GLib {
 				g_free (_val);
 				_val = IntPtr.Zero; 
 			}
+
+			if (buf != IntPtr.Zero) {
+				Marshal.FreeHGlobal (buf);
+				buf = IntPtr.Zero;
+			}
 		}
 
 
@@ -75,6 +80,19 @@ namespace GLib {
 
 		public Value () {
 			_val = gtksharp_value_create (GType.Invalid.Val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		///
+		/// <remarks>
+		///	Constructs a new empty initialized value that can be used
+		///	to receive "out" GValue parameters.
+		/// </remarks>
+
+		public Value (GLib.GType gtype) {
+			_val = gtksharp_value_create (gtype.Val);
 		}
 
 		/// <summary>
@@ -296,6 +314,11 @@ namespace GLib {
 				g_value_set_enum (_val, (int) wrap); 
 		}
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
+
+		IntPtr buf = IntPtr.Zero;
+
 		/// <summary>
 		///	Value Constructor
 		/// </summary>
@@ -305,9 +328,6 @@ namespace GLib {
 		///   type.
 		/// </remarks>
 
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
-
 		public Value (object obj)
 		{
 			GType type = TypeConverter.LookupType (obj.GetType ());
@@ -315,8 +335,6 @@ namespace GLib {
 				_val = gtksharp_value_create (ManagedValue.GType.Val);
 			} else if (type == GType.Object) {
 				_val = gtksharp_value_create (((GLib.Object) obj).GetGType ().Val);
-			} else if (type == GType.Invalid) {
-				throw new Exception ("Unknown type");
 			} else {
 				_val = gtksharp_value_create (type.Val);
 			}
@@ -339,11 +357,13 @@ namespace GLib {
 				g_value_set_uint (_val, (uint) obj);
 			else if (type == GType.Object)
 				g_value_set_object (_val, ((GLib.Object) obj).Handle);
-			else
+			else if (type == GType.Pointer) {
+				buf = Marshal.AllocHGlobal (Marshal.SizeOf (obj.GetType()));
+				Marshal.StructureToPtr (obj, buf, false);
+				g_value_set_pointer (_val, buf);
+			} else
 				throw new Exception ("Unknown type");
 		}
-
-
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_value_get_boolean (IntPtr val);

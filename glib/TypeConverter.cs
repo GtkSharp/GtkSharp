@@ -24,16 +24,6 @@ namespace GLibSharp {
 		{
 			if (type.Equals (typeof (string)))
 				return GType.String;
-
-			if (!type.IsValueType) {
-				if (type.IsSubclassOf (typeof (GLib.Object)))
-					return GType.Object;
-				else if (type.IsSubclassOf (typeof (GLib.Boxed)))
-					return GType.Boxed;
-				else
-					return GType.None;
-			}
-
 			if (type.Equals (typeof (bool)))
 				return GType.Boolean;
 			if (type.Equals (typeof (int)))
@@ -46,8 +36,14 @@ namespace GLibSharp {
 				return GType.Char;
 			if (type.Equals (typeof (uint)))
 				return GType.UInt;
-
-			return GType.Invalid;
+			if (type.IsValueType)
+				return GType.Pointer;
+			if (type.IsSubclassOf (typeof (GLib.Object)))
+				return GType.Object;
+			else if (type.IsSubclassOf (typeof (GLib.Boxed)))
+				return GType.Boxed;
+			else
+				return GType.None;
 		}
 	}
 }
