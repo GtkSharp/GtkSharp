@@ -15,7 +15,7 @@
       <para>Functions for using GDK in multi-threaded programs</para>
       <para>For thread safety, Gdk relies on the thread primitives in GLib, and on the thread-safe GLib main loop.</para>
       <para>GLib is completely thread safe (all global data is automatically locked), but individual data structure instances are not automatically locked for performance reasons. So e.g. you must coordinate accesses to the same GHashTable from multiple threads.</para>
-      <para>Gtk# is "thread aware" but not thread safe — it provides a global lock controlled by <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> which protects all use of Gtk. That is, only one thread can use Gtk at any given time.</para>
+      <para>Gtk# is "thread aware" but not thread safe ? it provides a global lock controlled by <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> which protects all use of Gtk. That is, only one thread can use Gtk at any given time.</para>
       <para>You must call <see cref="M:Gdk.Threads.Init()" /> before executing any other Gtk or Gdk functions in a threaded Gtk# program.</para>
       <para>Idles, timeouts, and input functions are executed outside of the main Gtk lock. So, if you need to call Gtk inside of such a callback, you must surround the callback with a <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> pair. (However, signals are still executed within the main Gtk lock.)</para>
       <para>In particular, this means, if you are writing widgets that might be used in threaded programs, you must surround timeouts and idle functions in this matter.</para>
