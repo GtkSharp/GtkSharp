@@ -17,11 +17,14 @@ CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c 
 DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 				\
+	ActionEntry.cs			\
 	Application.cs			\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
 	NodeStore.cs			\
+	RadioActionEntry.cs		\
 	ThreadNotify.cs			\
+	ToggleActionEntry.cs		\
 	TreeNodeAttribute.cs		\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
@@ -32,6 +35,7 @@ customs = 				\
 	Accel.custom			\
 	AccelKey.custom			\
 	Action.custom			\
+	ActionGroup.custom		\
 	Adjustment.custom		\
 	Bin.custom			\
 	Button.custom			\

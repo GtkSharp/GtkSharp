@@ -20,15 +20,22 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-	public uint AddUiFromResource (string resource)
-	{
-		if (resource == null)
-			throw new ArgumentNullException ("resource");
-		
-		System.IO.Stream s = System.Reflection.Assembly.GetCallingAssembly ().GetManifestResourceStream (resource);
-		if (s == null)
-			throw new ArgumentException ("resource must be a valid resource name of 'assembly'.");
+		public uint AddUiFromResource (string resource)
+		{
+			if (resource == null)
+				throw new ArgumentNullException ("resource");
+			
+			System.IO.Stream s = System.Reflection.Assembly.GetCallingAssembly ().GetManifestResourceStream (resource);
+			if (s == null)
+				throw new ArgumentException ("resource must be a valid resource name of 'assembly'.");
 
-		return AddUiFromString (new System.IO.StreamReader (s).ReadToEnd ());
-	}	
+			return AddUiFromString (new System.IO.StreamReader (s).ReadToEnd ());
+		}
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern uint gtk_ui_manager_new_merge_id (IntPtr raw);
+
+		public uint NewMergeId ()
+		{
+			return gtk_ui_manager_new_merge_id (Handle);
+		}
