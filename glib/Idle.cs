@@ -30,6 +30,24 @@ namespace GLib {
 
 	public class Idle {
 
+		internal class IdleProxy : SourceProxy {
+			public IdleProxy (IdleHandler real)
+			{
+				real_handler = real;
+				proxy_handler = new IdleHandler (Handler);
+			}
+
+			public bool Handler ()
+			{
+				IdleHandler idle_handler = (IdleHandler) real_handler;
+
+				bool cont = idle_handler ();
+				if (!cont)
+					Remove ();
+				return cont;
+			}
+		}
+		
 		private Idle ()
 		{
 		}
@@ -39,7 +57,11 @@ namespace GLib {
 
 		public static uint Add (IdleHandler hndlr)
 		{
-			return g_idle_add (hndlr, IntPtr.Zero);
+			IdleProxy p = new IdleProxy (hndlr);
+			uint code = g_idle_add ((IdleHandler) p.proxy_handler, IntPtr.Zero);
+			Source.source_handlers [code] = p;
+
+			return code;
 		}
 		
 		[DllImport("libglib-2.0-0.dll")]
@@ -47,9 +69,14 @@ namespace GLib {
                                                                                 
 		public static bool Remove (IdleHandler hndlr)
 		{
+			foreach (int code in Source.source_handlers.Keys){
+				IdleProxy p = (IdleProxy) Source.source_handlers [code];
+				
+				if (p.real_handler == hndlr)
+					Source.source_handlers.Remove (p);
+			}
 			return g_source_remove_by_funcs_user_data (hndlr, IntPtr.Zero);
 		}
-
 	}
 }
 

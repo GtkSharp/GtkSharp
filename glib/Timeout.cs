@@ -28,13 +28,36 @@ namespace GLib {
 
 	public class Timeout {
 
+		internal class TimeoutProxy : SourceProxy {
+			public TimeoutProxy (TimeoutHandler real)
+			{
+				real_handler = real;
+				proxy_handler = new TimeoutHandler (Handler);
+			}
+
+			public bool Handler ()
+			{
+				TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
+
+				bool cont = timeout_handler ();
+				if (!cont)
+					Remove ();
+				return cont;
+			}
+		}
+		
 		private Timeout () {} 
 		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_timeout_add (uint interval, TimeoutHandler d, IntPtr data);
 
 		public static uint Add (uint interval, TimeoutHandler hndlr)
 		{
-			return g_timeout_add (interval, hndlr, IntPtr.Zero);
+			TimeoutProxy p = new TimeoutProxy (hndlr);
+
+			uint code = g_timeout_add (interval, (TimeoutHandler) p.proxy_handler, IntPtr.Zero);
+			Source.source_handlers [code] = p;
+
+			return code;
 		}
 	}
 }

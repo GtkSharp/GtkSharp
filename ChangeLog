@@ -1,3 +1,22 @@
+2004-09-18  Miguel de Icaza  <miguel@ximian.com>
+
+	* glib/Source.cs: Add new base class to hold the method to be
+	called, and the proxy handler we use to keep references to them
+	and avoid a collection.
+
+	Exposes a new variables that references all the active Timeouts
+	and Idle handlers to avoid collection/
+
+	* glib/Timeout.cs: Implement TimeoutProxy that acts as a filter to
+	remove the proxy when the timeout is removed.
+
+	Register a TimeoutProxy when we create a timeout.
+
+	* glib/Idle.cs: Implement IdleProxy that acts as a filter to
+	remove the proxy when the idle handler is removed.
+
+	Register an IdleProxy when we create a timeout.
+
 2004-09-17  Mike Kestner  <mkestner@ximian.com>
 
 	* configure.in : bump version and tag for 1.0.2.
