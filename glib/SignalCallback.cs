@@ -39,8 +39,7 @@ namespace GtkSharp {
 		///	Initializes instance data.
 		/// </remarks>
 
-		public SignalCallback (GLib.Object obj, IntPtr raw,
-				     String name, EventHandler eh)
+		public SignalCallback (GLib.Object obj, EventHandler eh)
 		{
 			_key = _NextKey++;
 			_obj = obj;
@@ -48,11 +47,5 @@ namespace GtkSharp {
 			_Instances [_key] = this;
 		}
 
-		// Destructor needed to release references from the instance
-		// table and unpin the delegate if no refs remain.
-		~SignalCallback ()
-		{
-			_Instances.Remove (_key);
-		}
 	}
 }

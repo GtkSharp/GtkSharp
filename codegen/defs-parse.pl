@@ -525,7 +525,7 @@ sub gen_param_strings
 sub get_sighandler
 {
 	my ($def) = @_;
-	my ($key, $name, $sname, $dname, $dir, $ns, $nspace, $tok);
+	my ($key, $name, $dir, $ns, $nspace, $tok);
 
 	$def =~ /return-type \"(\w+)\"/;
 	my $ret = $1;
@@ -566,8 +566,9 @@ sub get_sighandler
 			die "Whassup with $tok?";
 		}
 	}
-	$sname = $name . "Signal";
-	$dname = $name . "Delegate";
+	my $sname = $name . "Signal";
+	my $dname = $name . "Delegate";
+	my $cbname = $name . "Callback";
 
 	$sighandlers{$key} = $name;
 
@@ -578,9 +579,38 @@ sub get_sighandler
 	foreach $ns (split (/,/, $usings{$nspace})) {
 		print SIGFILE "\tusing $ns;\n";
 	}
-	print SIGFILE "\tpublic delegate $marshaltypes{$ret} ";
+	print SIGFILE "\n\tpublic delegate $marshaltypes{$ret} ";
 	print SIGFILE "$dname($pinv, int key);\n\n";
-	print SIGFILE "}\n";
+	print SIGFILE "\tpublic class $sname : SignalCallback {\n\n";
+	print SIGFILE "\t\tprivate static $dname _Delegate;\n\n";
+	print SIGFILE "\t\tprivate static $maptypes{$ret} ";
+	print SIGFILE "$cbname($pinv, int key)\n\t\t{\n";
+	print SIGFILE "\t\t\tif (!_Instances.Contains(key))\n";
+	print SIGFILE "\t\t\t\tthrow new Exception(\"Unexpected signal key\");";
+	print SIGFILE "\n\n\t\t\t$sname inst = ($sname) _Instances[key];\n";
+	print SIGFILE "\t\t\tSignalArgs args = new SignalArgs ();\n";
+	print SIGFILE "\t\t\tinst._handler (inst._obj, args);\n";
+	if ($ret ne "none") {
+		print SIGFILE "\t\t\treturn ($maptypes{$ret}) args.RetVal;\n";
+	}
+	print SIGFILE "\t\t}\n\n";
+	print SIGFILE "\t\t[DllImport(\"gobject-1.3.dll\", ";
+	print SIGFILE "CharSet=CharSet.Ansi, ";
+	print SIGFILE "CallingConvention=CallingConvention.Cdecl)]\n";
+	print SIGFILE "\t\tstatic extern void g_signal_connect_data(";
+	print SIGFILE "IntPtr obj, IntPtr name, $dname cb, int key, IntPtr p,";
+	print SIGFILE " int flags);\n\n";
+	print SIGFILE "\t\tpublic $sname(GLib.Object obj, IntPtr raw, ";
+	print SIGFILE "String name, EventHandler eh) : base(obj, eh)";
+	print SIGFILE "\n\t\t{\n\t\t\tif (_Delegate == null) {\n";
+	print SIGFILE "\t\t\t\t_Delegate = new $dname($cbname);\n\t\t\t}\n";
+	print SIGFILE "\t\t\tg_signal_connect_data(raw, ";
+	print SIGFILE "Marshal.StringToHGlobalAnsi(name), _Delegate, _key, ";
+	print SIGFILE "new IntPtr(0), 0);\n\t\t}\n\n";
+	print SIGFILE "\t\t~$sname()\n{\t\t\t_Instances.Remove(_key);\n";
+	print SIGFILE "\t\t\tif(_Instances.Count == 0) {\n";
+	print SIGFILE "\t\t\t\t_Delegate = null;\n\t\t\t}\n\t\t}\n";
+	print SIGFILE "\t}\n}\n";
 	close (SIGFILE);
 
 	return $sighandlers{$key};
