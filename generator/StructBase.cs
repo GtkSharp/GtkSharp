@@ -97,7 +97,7 @@ namespace GtkSharp.Generation {
 			if (field.HasAttribute("array_len")) {
 				sw.Write ("[]");
 			}
-			sw.WriteLine (" " + field.GetAttribute("cname") + ";");
+			sw.WriteLine (" " + MangleName(field.GetAttribute("cname")) + ";");
 			return true;
 		}
 
@@ -285,6 +285,8 @@ namespace GtkSharp.Generation {
 				return "evnt";
 			} else if (name == "object") {
 				return "objekt";
+			} else if (name == "in") {
+				return "inn";
 			} else {
 				return name;
 			}
