@@ -260,7 +260,7 @@ namespace GtkSharp.Generation {
 				} else
 					call_parm = table.CallByName(type, call_parm_name);
 				
-				if (this [i].NullOk && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !table.IsStruct (type))
+				if (this [i].NullOk && !cs_type.EndsWith ("IntPtr") && !table.IsStruct (type))
 					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) ? "null" : "IntPtr.Zero");
 				
 				if (this [i].IsArray)
@@ -294,6 +294,11 @@ namespace GtkSharp.Generation {
 					
 					if (table.IsEnum (type))
 						call_parm = name + "_as_int";
+					else if (table.IsObject (type) || table.IsOpaque (type) || cs_type == "GLib.Value") {
+						call_parm = this [i].PassAs + " " + call_parm.Replace (".Handle", "_handle");
+						import_sig += this [i].PassAs + " ";
+					}
+
 				} else if (type == "GError**") {
 					call_string += "out ";				
 					import_sig += "out ";				
@@ -339,11 +344,14 @@ namespace GtkSharp.Generation {
 				if (is_set)
 					name = "value";
 
-				if (is_get)
+				if (is_get) {
 					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
+					if (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value")
+						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
+				}
 
 				if ((is_get || p.PassAs == "out") && (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
-					sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
+					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
 
 				if (p.PassAs == "out" && gen is EnumGen)
 					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
@@ -365,11 +373,21 @@ namespace GtkSharp.Generation {
 
 		public void Finish (StreamWriter sw, string indent)
 		{
+			bool ref_owned_needed = true;
 			foreach (Parameter p in param_list) {
 
 				if (p.PassAs == "out" && p.Generatable is EnumGen) {
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_int;");
 				}
+
+				IGeneratable gen = p.Generatable;
+				if (ref_owned_needed && gen is ObjectGen && p.PassAs == "out") {
+					ref_owned_needed = false;
+					sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
+				}
+
+				if (p.PassAs == "out" && (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
+					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
 			}
 		}
 
