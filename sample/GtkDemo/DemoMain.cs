@@ -84,8 +84,8 @@ namespace GtkDemo
 				// The gtk-logo-rgb icon has a white background, make it transparent
 				Pixbuf transparent  = pixbuf.AddAlpha (true, 0xff, 0xff, 0xff);
 			
-				GLib.List list = new GLib.List (IntPtr.Zero, typeof (Gtk.Widget));
-				list.Append (transparent.Handle);
+				Gdk.Pixbuf[] list = new Gdk.Pixbuf [1];
+				list[0] = transparent;
 			
 		    	Gtk.Window.DefaultIconList = list;
 			}

@@ -115,7 +115,7 @@ namespace GtkDemo {
 
   		private void ToggleSensitivity (object o, EventArgs args)
 		{
-			GLib.List children = vbox.Children;
+			Widget[] children = vbox.Children;
 			foreach (Widget widget in children)
 				/* don't disable our toggle */
 				if (widget.GetType () !=  o.GetType () )
