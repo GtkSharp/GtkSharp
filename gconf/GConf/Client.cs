@@ -94,6 +94,17 @@ namespace GConf
 			gconf_client_notify_remove (Raw, cnxn);
 			callbacks.Remove (notify);
 		}
+
+		[DllImport("gconf-2")]
+		static extern void gconf_client_suggest_sync (IntPtr client, out IntPtr err);
+
+		public void SuggestSync ()
+		{
+			IntPtr err;
+			gconf_client_suggest_sync (Raw, out err);
+			if (err != IntPtr.Zero)
+				throw new GLib.GException (err);
+		}
 	}
 }
 
