@@ -24,11 +24,19 @@ class T
 		
 		ScrolledWindow sw = new ScrolledWindow ();
 		Terminal term = new Terminal ();
+		term.EncodingChanged += new EventHandler (OnEncodingChanged);
 		term.CursorBlinks = true;
 		term.MouseAutohide = true;
 		term.ScrollOnKeystroke = true;
-		//term.BackgroundTransparent = true;
+		term.DeleteBinding = TerminalEraseBinding.Auto;
 		term.Encoding = "UTF-8";
+		term.FontFromString = "Monospace";
+		term.Commit += new VteSharp.CommitHandler (OnCommit);
+		term.TextDeleted += new EventHandler (OnTextDeleted);
+
+		Gdk.Color white = new Gdk.Color ();
+		Gdk.Color.Parse ("white", ref white);
+		term.ColorBackground = white;
 		
 		Console.WriteLine (term.UsingXft);
 		Console.WriteLine (term.Encoding);
@@ -39,18 +47,32 @@ class T
 		string envv = "";
 		// FIXME: send the env vars to ForkCommand
 		Console.WriteLine (Environment.GetEnvironmentVariables ().Count);
+		Console.WriteLine (Environment.CurrentDirectory);
 		
-		int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
-		Console.WriteLine ("Child pid: " + pid);
+		//int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
+		//Console.WriteLine ("Child pid: " + pid);
 
-		//term.Feed ("ls");
-		//term.FeedChild ("ls");
-		
 		sw.AddWithViewport (term);
 
 		app.Contents = sw;
 		app.ShowAll ();
 		program.Run ();
+	}
+
+	private void OnCommit (object o, VteSharp.CommitArgs args)
+	{
+		Terminal term = (Terminal) o;
+		term.Feed (args.P0);
+	}
+
+	private void OnTextDeleted (object o, EventArgs args)
+	{
+		Console.WriteLine ("text deleted");
+	}
+	
+	private void OnEncodingChanged (object o, EventArgs args)
+	{
+		Console.WriteLine ("encoding changed");
 	}
 	
 	private void OnTextInserted (object o, EventArgs args)
