@@ -1,3 +1,5 @@
+SUBDIRS = . glue
+
 API = atk-api.xml
 RAW_API = atk-api.raw
 METADATA = Atk.metadata
@@ -9,7 +11,7 @@ assemblydir = $(libdir)
 gapidir = $(datadir)/gapi
 assembly_DATA = $(ASSEMBLY)
 gapi_DATA = $(API)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c
 
 sources = 
 
@@ -32,8 +34,9 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
 
 generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
-	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) \
-	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) \
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API)			\
+	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
+	--gluelib-name=atksharpglue --glue-filename=glue/generated.c			\
 	&& touch generated-stamp
 
 $(ASSEMBLY): $(build_sources) generated-stamp

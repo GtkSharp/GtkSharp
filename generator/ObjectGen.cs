@@ -1,8 +1,9 @@
 // GtkSharp.Generation.ObjectGen.cs - The Object Generatable.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@ximian.com>
 //
 // (c) 2001-2003 Mike Kestner and Ximian Inc.
+// (c) 2004 Novell, Inc.
 
 namespace GtkSharp.Generation {
 
@@ -15,6 +16,7 @@ namespace GtkSharp.Generation {
 	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList strings = new ArrayList();
+		private ArrayList vm_nodes = new ArrayList();
 		private static Hashtable dirs = new Hashtable ();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
@@ -27,8 +29,11 @@ namespace GtkSharp.Generation {
 				switch (node.Name) {
 				case "field":
 				case "callback":
-				case "virtual_method":
 					Statistics.IgnoreCount++;
+					break;
+
+				case "virtual_method":
+					vm_nodes.Add (node);
 					break;
 
 				case "static-string":
@@ -128,6 +133,15 @@ namespace GtkSharp.Generation {
 				GenSignals (gen_info, null);
 			}
 
+			if (vm_nodes.Count > 0) {
+				if (gen_info.GlueEnabled) {
+					GenVirtualMethods (gen_info);
+				} else {
+					Statistics.VMIgnored = true;
+					Statistics.ThrottledCount += vm_nodes.Count;
+				}
+			}
+
 			GenMethods (gen_info, null, null);
 			
 			if (interfaces != null) {
@@ -183,6 +197,39 @@ namespace GtkSharp.Generation {
 			gen_info.Writer.WriteLine();
 
 			base.GenCtors (gen_info);
+		}
+
+		private void GenVMGlue (GenerationInfo gen_info, XmlElement elem)
+		{
+			StreamWriter sw = gen_info.GlueWriter;
+
+			string vm_name = elem.GetAttribute ("cname");
+			string method = gen_info.GluelibName + "_" + NS + Name + "_override_" + vm_name;
+			sw.WriteLine ();
+			sw.WriteLine ("void " + method + " (GType type, gpointer cb);");
+			sw.WriteLine ();
+			sw.WriteLine ("void");
+			sw.WriteLine (method + " (GType type, gpointer cb)");
+			sw.WriteLine ("{");
+			sw.WriteLine ("\t{0} *klass = ({0} *) g_type_class_peek (type);", NS + Name + "Class");
+			sw.WriteLine ("\tklass->" + vm_name + " = cb;");
+			sw.WriteLine ("}");
+		}
+
+		static bool vmhdrs_needed = true;
+
+		private void GenVirtualMethods (GenerationInfo gen_info)
+		{
+			if (vmhdrs_needed) {
+				gen_info.GlueWriter.WriteLine ("#include <glib-object.h>");
+				gen_info.GlueWriter.WriteLine ("#include \"vmglueheaders.h\"");
+				gen_info.GlueWriter.WriteLine ();
+				vmhdrs_needed = false;
+			}
+
+			foreach (XmlElement elem in vm_nodes) {
+				GenVMGlue (gen_info, elem);
+			}
 		}
 
 		/* Keep this in sync with the one in glib/ObjectManager.cs */

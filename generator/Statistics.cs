@@ -1,8 +1,9 @@
 // Statistics.cs : Generation statistics class implementation
 //
-// Author: Mike Kestner  <mkestner@speakeasy.net>
+// Author: Mike Kestner  <mkestner@ximian.com>
 //
 // <c> 2002 Mike Kestner
+// <c> 2004 Novell, Inc.
 
 namespace GtkSharp.Generation {
 	
@@ -24,6 +25,7 @@ namespace GtkSharp.Generation {
 		static int sigs = 0;
 		static int throttled = 0;
 		static int ignored = 0;
+		static bool vm_ignored = false;
 		
 		public static int CBCount {
 			get {
@@ -142,8 +144,23 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
+		public static bool VMIgnored {
+			get {
+				return vm_ignored;
+			}
+			set {
+				if (value)
+					vm_ignored = value;
+			}
+		}
+		
 		public static void Report()
 		{
+			if (VMIgnored) {
+				Console.WriteLine();
+				Console.WriteLine("Warning: Generation throttled for Virtual Methods.");
+				Console.WriteLine("  Consider regenerating with --gluelib-name and --glue-filename.");
+			}
 			Console.WriteLine();
 			Console.WriteLine("Generation Summary:");
 			Console.Write("  Enums: " + enums);

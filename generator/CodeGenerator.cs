@@ -24,6 +24,8 @@ namespace GtkSharp.Generation {
 			string dir = "";
 			string custom_dir = "";
 			string assembly_name = "";
+			string glue_filename = "";
+			string gluelib_name = "";
 
 			SymbolTable table = SymbolTable.Table;
 			ArrayList gens = new ArrayList ();
@@ -48,6 +50,14 @@ namespace GtkSharp.Generation {
 					include = generate = false;
 					assembly_name = arg.Substring (16);
 					continue;
+				} else if (arg.StartsWith ("--glue-filename=")) {
+					include = generate = false;
+					glue_filename = arg.Substring (16);
+					continue;
+				} else if (arg.StartsWith ("--gluelib-name=")) {
+					include = generate = false;
+					gluelib_name = arg.Substring (15);
+					continue;
 				}
 
 				Parser p = new Parser ();
@@ -58,8 +68,8 @@ namespace GtkSharp.Generation {
 			}
 
 			GenerationInfo gen_info = null;
-			if (dir != "" || assembly_name != "")
-				gen_info = new GenerationInfo (dir, custom_dir, assembly_name);
+			if (dir != "" || assembly_name != "" || glue_filename != "" || gluelib_name != "")
+				gen_info = new GenerationInfo (dir, custom_dir, assembly_name, glue_filename, gluelib_name);
 			
 			foreach (IGeneratable gen in gens) {
 				if (gen_info == null)
@@ -69,6 +79,9 @@ namespace GtkSharp.Generation {
 			}
 
 			ObjectGen.GenerateMappers ();
+
+			if (gen_info != null)
+				gen_info.CloseGlueWriter ();
 
 			Statistics.Report();
 			return 0;
