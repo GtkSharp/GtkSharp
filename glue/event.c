@@ -30,7 +30,7 @@ gdouble* gtksharp_gdk_event_button_get_axes (GdkEventButton *event);
 GdkDevice* gtksharp_gdk_event_button_get_device (GdkEventButton *event);
 guint32 gtksharp_gdk_event_scroll_get_time (GdkEventScroll *event);
 guint gtksharp_gdk_event_scroll_get_state (GdkEventScroll *event);
-guint gtksharp_gdk_event_scroll_get_scroll_direction (GdkEventScroll *event);
+guint gtksharp_gdk_event_scroll_get_direction (GdkEventScroll *event);
 gdouble gtksharp_gdk_event_scroll_get_x (GdkEventScroll *event);
 gdouble gtksharp_gdk_event_scroll_get_y (GdkEventScroll *event);
 gdouble gtksharp_gdk_event_scroll_get_x_root (GdkEventScroll *event);
@@ -76,6 +76,15 @@ guint32 gtksharp_gdk_event_dnd_get_time (GdkEventDND *event);
 gshort gtksharp_gdk_event_dnd_get_x_root (GdkEventDND *event);
 gshort gtksharp_gdk_event_dnd_get_y_root (GdkEventDND *event);
 GdkDragContext* gtksharp_gdk_event_dnd_get_context (GdkEventDND *event);
+GdkDevice* gtksharp_gdk_event_proximity_get_device (GdkEventProximity *event);
+guint32 gtksharp_gdk_event_proximity_get_time (GdkEventProximity *event);
+GdkAtom gtksharp_gdk_event_client_get_message_type (GdkEventClient *event);
+gushort gtksharp_gdk_event_client_get_data_format (GdkEventClient *event);
+gpointer gtksharp_gdk_event_client_get_data (GdkEventClient *event);
+GdkWindowState gtksharp_gdk_event_window_state_get_changed_mask (GdkEventWindowState *event);
+GdkWindowState gtksharp_gdk_event_window_state_get_new_window_state (GdkEventWindowState *event);
+GdkSettingAction gtksharp_gdk_event_setting_get_action (GdkEventSetting *event);
+char* gtksharp_gdk_event_setting_get_name (GdkEventSetting *event);
 /* */
 
 GdkEventType
@@ -466,5 +475,59 @@ guint32
 gtksharp_gdk_event_dnd_get_time (GdkEventDND *event)
 {
 	return event->time;
+}
+
+GdkDevice* 
+gtksharp_gdk_event_proximity_get_device (GdkEventProximity *event)
+{
+	return event->device;
+}
+
+guint32 
+gtksharp_gdk_event_proximity_get_time (GdkEventProximity *event)
+{
+	return event->time;
+}
+
+GdkAtom 
+gtksharp_gdk_event_client_get_message_type (GdkEventClient *event)
+{
+	return event->message_type;
+}
+
+gushort 
+gtksharp_gdk_event_client_get_data_format (GdkEventClient *event)
+{
+	return event->data_format;
+}
+
+gpointer 
+gtksharp_gdk_event_client_get_data (GdkEventClient *event)
+{
+	return &event->data;
+}
+
+GdkWindowState 
+gtksharp_gdk_event_window_state_get_changed_mask (GdkEventWindowState *event)
+{
+	return event->changed_mask;
+}
+
+GdkWindowState 
+gtksharp_gdk_event_window_state_get_new_window_state (GdkEventWindowState *event)
+{
+	return event->new_window_state;
+}
+
+GdkSettingAction 
+gtksharp_gdk_event_setting_get_action (GdkEventSetting *event)
+{
+	return event->action;
+}
+
+char* 
+gtksharp_gdk_event_setting_get_name (GdkEventSetting *event)
+{
+	return event->name;
 }
 

@@ -118,88 +118,9 @@ namespace Gtk {
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_get_current_event ();
 
-		public static object CurrentEvent {
+		public static Gdk.Event CurrentEvent {
 			get {
-				IntPtr handle = gtk_get_current_event ();
-				Gdk.EventType type;
-
-				type = (Gdk.EventType) Marshal.ReadInt32 (handle);
-				switch (type){
-				case EventType.Delete:
-				case EventType.Destroy:
-					// Fixme: do not know what this maps to.
-					break;
-					
-				case EventType.Expose:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventExpose));
-					
-				case EventType.MotionNotify:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventMotion));
-					
-				case EventType.ButtonPress:
-				case EventType.TwoButtonPress:
-				case EventType.ThreeButtonPress:
-				case EventType.ButtonRelease:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventButton));
-					
-				case EventType.KeyPress:
-				case EventType.KeyRelease:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventKey));
-					
-				case EventType.EnterNotify:
-				case EventType.LeaveNotify:
-					// FIXME: Do not know what this maps to.
-					break;
-					
-				case EventType.FocusChange:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventFocus));
-					
-				case EventType.Configure:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventConfigure));
-					
-				case EventType.Map:
-				case EventType.Unmap:
-					// FIXME: Do not know what this maps to.
-					break;
-					
-				case EventType.PropertyNotify:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventProperty));
-					
-				case EventType.SelectionClear:
-				case EventType.SelectionRequest:
-				case EventType.SelectionNotify:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventSelection));
-					      
-				case EventType.ProximityIn:
-				case EventType.ProximityOut:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventProximity));
-					      
-				case EventType.DragEnter:
-				case EventType.DragLeave:
-				case EventType.DragMotion:
-				case EventType.DragStatus:
-				case EventType.DropFinished:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventDND));
-					
-				case EventType.ClientEvent:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventClient));
-					
-				case EventType.VisibilityNotify:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventVisibility));
-					
-				case EventType.NoExpose:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventNoExpose));
-					
-				case EventType.Scroll:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventScroll));
-					
-				case EventType.WindowState:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventWindowState));
-					
-				case EventType.Setting:
-					return Marshal.PtrToStructure (handle, typeof (Gdk.EventSetting));
-				}
-				return null;
+				return new Gdk.Event (gtk_get_current_event ());
 			}
 		}
 	}
