@@ -18,6 +18,12 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		public Action this[string name] {
+			get {
+				return GetAction (name);
+			}
+		}
+
 		public void Add (ActionEntry[] entries)
 		{
 			foreach (ActionEntry entry in entries) {
@@ -74,7 +80,7 @@
 			IntPtr raw_ret = gtk_action_group_list_actions (Handle);
 			GLib.List list = new GLib.List (raw_ret);
  			Gtk.Action[] result = new Gtk.Action [list.Count];
-            for (int i = 0; i < list.Count; i++)
-               	result [i] = list [i] as Gtk.Action;
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Gtk.Action;
 			return result;
 		}
