@@ -114,3 +114,91 @@
 		{
 			SetColumnTypes (types.Length, types);
 		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, bool value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, double value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, int value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, string value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, float value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, uint value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+		
+		public void SetValue (Gtk.TreeIter iter, int column, object value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		private void _AppendValues (Gtk.TreeIter iter, Array values) {
+			int col = 0;
+			foreach (object value in values) {
+				if (value != null)
+					SetValue (iter, col, new GLib.Value (value));
+				col++;
+			}
+		}
+
+		public Gtk.TreeIter AppendValues (Gtk.TreeIter parent, Array values) {
+			Gtk.TreeIter iter;
+			Append (out iter, parent);
+			_AppendValues (iter, values);
+			return iter;
+		}
+		
+		public Gtk.TreeIter AppendValues (Gtk.TreeIter parent, params object[] values) {
+			return AppendValues (parent, (Array) values);
+		}
+
+		public Gtk.TreeIter AppendValues (Array values) {
+			Gtk.TreeIter iter;
+			Append (out iter);
+			_AppendValues (iter, values);
+			return iter;
+		}
+		
+		public Gtk.TreeIter AppendValues (params object[] values) {
+			return AppendValues ((Array) values);
+		}
+
+		public TreeStore (params Type[] types)
+		{
+			uint[] ctypes = new uint[types.Length];
+			int i = 0;
+			foreach (Type type in types) {
+				GLib.TypeFundamentals ctype = GLibSharp.TypeConverter.LookupType (type);
+				if (ctype == GLib.TypeFundamentals.TypeNone) {
+					ctypes[i] = GLibSharp.ManagedValue.GType;
+				} else if (ctype == GLib.TypeFundamentals.TypeInvalid) {
+					throw new Exception ("Unknown type");
+				} else {
+					ctypes[i] = (uint) ctype;
+				}
+				i++;
+			}
+			
+			Raw = gtk_tree_store_newv (ctypes.Length, ctypes);
+		}
+
+		public object GetValue (Gtk.TreeIter iter, int column) {
+			GLib.Value val;
+			GetValue (iter, column, out val);
+			object ret = val.Val;
+			val.Dispose ();
+			return ret;
+		}
+
+

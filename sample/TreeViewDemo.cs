@@ -20,35 +20,20 @@ namespace GtkSamples {
 
 		private static void ProcessType (TreeIter parent, System.Type t)
 		{
-			TreeIter iter = new TreeIter ();
-
 			// .GetMembers() won't work due to unimplemented
 			// scary classes.
 			foreach (MemberInfo mi in t.GetMethods ()) {
-				GLib.Value Name = new GLib.Value (mi.Name);
-				GLib.Value Type = new GLib.Value (mi.ToString ());
-
-				store.Append (out iter, parent);
-				store.SetValue (iter, 0, Name);
-				store.SetValue (iter, 1, Type);
+ 				store.AppendValues (parent, mi.Name, mi.ToString ());
 			}
 		}
 
 		private static void ProcessAssembly (TreeIter parent, Assembly asm)
 		{
-			TreeIter iter = new TreeIter ();
 			string asm_name = asm.GetName ().Name;
 
 			foreach (System.Type t in asm.GetTypes ()) {
 				UpdateDialog ("Loading from {0}:\n{1}", asm_name, t.ToString ());
-
-				GLib.Value Name = new GLib.Value (t.Name);
-				GLib.Value Type = new GLib.Value (t.ToString ());
-
-				store.Append (out iter, parent);
-				store.SetValue (iter, 0, Name);
-				store.SetValue (iter, 1, Type);
-
+ 				TreeIter iter = store.AppendValues (parent, t.Name, t.ToString ());
 				ProcessType (iter, t);
 			}
 		}
@@ -58,10 +43,7 @@ namespace GtkSamples {
 			if (store != null)
 				return;
 
-			store = new TreeStore ((int)TypeFundamentals.TypeString,
-					       (int)TypeFundamentals.TypeString);
-
-			TreeIter iter = new TreeIter ();
+			store = new TreeStore (typeof (string), typeof (string));
 
 			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ()) {
 				// we can't show corlib due to some unimplemented
@@ -70,13 +52,7 @@ namespace GtkSamples {
 
 				UpdateDialog ("Loading {0}", asm.GetName ().Name);
 
-				GLib.Value Name = new GLib.Value (asm.GetName ().Name);
-				GLib.Value Type = new GLib.Value ("Assembly");
-
-				store.Append (out iter);
-				store.SetValue (iter, 0, Name);
-				store.SetValue (iter, 1, Type);
-
+				TreeIter iter = store.AppendValues (asm.GetName ().Name, "Assembly");
 				ProcessAssembly (iter, asm);
 			}
 		}
@@ -104,19 +80,8 @@ namespace GtkSamples {
 			TreeView tv = new TreeView (store);
 			tv.HeadersVisible = true;
 
-			TreeViewColumn NameCol = new TreeViewColumn ();
-			CellRenderer NameRenderer = new CellRendererText ();
-			NameCol.Title = "Name";
-			NameCol.PackStart (NameRenderer, true);
-			NameCol.AddAttribute (NameRenderer, "text", 0);
-			tv.AppendColumn (NameCol);
-
-			TreeViewColumn TypeCol = new TreeViewColumn ();
-			CellRenderer TypeRenderer = new CellRendererText ();
-			TypeCol.Title = "Type";
-			TypeCol.PackStart (TypeRenderer, false);
-			TypeCol.AddAttribute (TypeRenderer, "text", 1);
-			tv.AppendColumn (TypeCol);
+			tv.AppendColumn ("Name", new CellRendererText (), "text", 0);
+			tv.AppendColumn ("Type", new CellRendererText (), "text", 1);
 
 			sw.Add (tv);
 			
@@ -130,7 +95,6 @@ namespace GtkSamples {
 		private static void DeleteCB (System.Object o, DeleteEventArgs args)
 		{
 			Application.Quit ();
-			args.RetVal = true;
 		}
 
 		private static void UpdateDialog (string format, params object[] args)

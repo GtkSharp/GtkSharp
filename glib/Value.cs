@@ -8,6 +8,7 @@ namespace GLib {
 
 	using System;
 	using System.Runtime.InteropServices;
+	using GLibSharp;
 
 	/// <summary> 
 	///	Value Class
@@ -18,7 +19,7 @@ namespace GLib {
 	///	to get and set properties on Objects.
 	/// </remarks>
 
-	public class Value {
+	public class Value : IDisposable {
 
 		IntPtr	_val;
 
@@ -31,7 +32,19 @@ namespace GLib {
 
 		~Value ()
 		{
-			g_free (_val);
+			Dispose ();
+		}
+
+		public void Dispose () {
+			if (_val != IntPtr.Zero) {
+				uint type = gtksharp_value_get_value_type (_val);
+				if (type == ManagedValue.GType) {
+					ManagedValue.Free (g_value_get_boxed (_val)); 
+				}
+			
+				g_free (_val);
+				_val = IntPtr.Zero; 
+			}
 		}
 
 
@@ -262,6 +275,8 @@ namespace GLib {
 		static extern void g_value_set_enum (IntPtr val, int data);
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_flags (IntPtr val, uint data);
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_char (IntPtr val, char data);
 		
 		/// <summary>
 		///	Value Constructor
@@ -279,6 +294,66 @@ namespace GLib {
 			else
 				g_value_set_enum (_val, (int) wrap); 
 		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from any object, including a managed
+		///   type.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
+
+		public Value (object obj)
+		{
+			TypeFundamentals type = TypeConverter.LookupType (obj.GetType ());
+			if (type == TypeFundamentals.TypeNone) {
+				_val = gtksharp_value_create (ManagedValue.GType);
+			} else if (type == TypeFundamentals.TypeObject) {
+				_val = gtksharp_value_create (((GLib.Object) obj).GetGType ());
+			} else if (type == TypeFundamentals.TypeInvalid) {
+				throw new Exception ("Unknown type");
+			} else {
+				_val = gtksharp_value_create ((uint) type);
+			}
+			
+			switch (type) {
+			case TypeFundamentals.TypeNone:
+				g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (obj));
+				break;
+			case TypeFundamentals.TypeString:
+				g_value_set_string (_val, (string) obj);
+				break;
+			case TypeFundamentals.TypeBoolean:
+				g_value_set_boolean (_val, (bool) obj);
+				break;
+			case TypeFundamentals.TypeInt:
+				g_value_set_int (_val, (int) obj);
+				break;
+			case TypeFundamentals.TypeDouble:
+				g_value_set_double (_val, (double) obj);
+				break;
+			case TypeFundamentals.TypeFloat:
+				g_value_set_float (_val, (float) obj);
+				break;
+			case TypeFundamentals.TypeChar:
+				g_value_set_char (_val, (char) obj);
+				break;
+			case TypeFundamentals.TypeUInt:
+				g_value_set_uint (_val, (uint) obj);
+				break;
+			case TypeFundamentals.TypeObject:
+				g_value_set_object (_val, ((GLib.Object) obj).Handle);
+				break;
+			default:
+				throw new Exception ("Unknown type");
+			}
+		}
+
+
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_value_get_boolean (IntPtr val);
@@ -519,6 +594,40 @@ namespace GLib {
 			// _val.type indicates an error.
 			// FIXME: handle flags
 			return new EnumWrapper (g_value_get_enum (val._val), false);
+		}
+
+		[DllImport("gtksharpglue")]
+		static extern uint gtksharp_value_get_value_type (IntPtr val);
+		
+		public object Val
+		{
+			get {
+				uint type = gtksharp_value_get_value_type (_val);
+				if (type == ManagedValue.GType) {
+					return ManagedValue.ObjectForWrapper (g_value_get_boxed (_val));
+				}
+
+				switch (type) {
+				case TypeFundamentals.TypeString:
+					return (string) this;
+				case TypeFundamentals.TypeBoolean:
+					return (bool) this;
+				case TypeFundamentals.TypeInt:
+					return (int) this;
+				case TypeFundamentals.TypeDouble:
+					return (double) this;
+				case TypeFundamentals.TypeFloat:
+					return (float) this;
+				case TypeFundamentals.TypeChar:
+					return (char) this;
+				case TypeFundamentals.TypeUInt:
+					return (uint) this;
+				case TypeFundamentals.TypeObject:
+					return (GLib.Object) this;
+				default:
+					throw new Exception ("Unknown type");
+				}
+			}
 		}
 
 		/// <summary>

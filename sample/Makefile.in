@@ -18,7 +18,7 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
+linux: gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf 
 @ENABLE_GNOME_TRUE@	$(MAKE) -C rsvg
 
@@ -54,6 +54,9 @@ scribble.exe: Scribble.cs
 
 treeviewdemo.exe: TreeViewDemo.cs
 	$(MCS) --unsafe -o treeviewdemo.exe $(local_paths) $(all_assemblies) TreeViewDemo.cs
+
+managedtreeviewdemo.exe: ManagedTreeViewDemo.cs
+	$(MCS) --unsafe -o managedtreeviewdemo.exe $(local_paths) $(all_assemblies) ManagedTreeViewDemo.cs
 
 glade-viewer.exe: GladeViewer.cs
 	$(MCS) --unsafe -o glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs

@@ -29,3 +29,10 @@ gtksharp_value_create_from_property (GObject *obj, const gchar* name)
 	return gtksharp_value_create (spec->value_type);
 }
 
+GType
+gtksharp_value_get_value_type (GValue *value) {
+	g_return_val_if_fail (value != NULL, G_TYPE_INVALID);
+	g_return_val_if_fail (G_IS_VALUE (value), G_TYPE_INVALID);
+	return G_VALUE_TYPE (value);
+}
+

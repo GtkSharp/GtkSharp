@@ -1,3 +1,27 @@
+2003-05-19  Rachel Hestilow  <rachel@nullenvoid.com>
+
+	* glib/ManagedValue.cs, TypeConverter.cs: Added.
+	* glib/Value.cs: Make Value inherit from IDisposable, and
+	move dtor to Dispose. Add generic object constructor
+	with support for ManagedValue. Add a new Val property
+	which will call the appropriate explicit cast.
+	
+	* glue/value.c: Add new glue function
+	gtksharp_value_get_value_type.
+	
+	* gtk/TreeViewColumn.custom: Added.
+	* gtk/ListStore.custom, TreeStore.custom: Add a number
+	of SetValue overloads. Add convenience functtion
+	AppendValues. Add new ctor that takes System.Type instead
+	of GLib.TypeFundamentals. Add a GetValue convenience wrapper.
+	* gtk/TreeView.custom: Add AppendColumn convenience
+	functions.
+
+	* sample/ManagedTreeViewDemo.cs: Added.
+	* sample/Makefile.in: Update.
+	* sample/TreeViewDemo.cs: Update to use new convenience
+	APIs.
+	
 2003-05-18  Mike Kestner  <mkestner@speakeasy.net>
 
 	* generator/CallbackGen.cs : use non-static symtab, kill doc comments

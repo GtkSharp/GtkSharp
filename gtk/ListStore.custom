@@ -34,3 +34,84 @@
 		{
 			SetColumnTypes (types.Length, types);
 		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, bool value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, double value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, int value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, string value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, float value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+
+		public void SetValue (Gtk.TreeIter iter, int column, uint value) {
+			SetValue (iter, column, new GLib.Value (value));
+		}
+		
+		public void SetValue (Gtk.TreeIter iter, int column, object value) {
+			GLib.Value val = new GLib.Value (value);
+			SetValue (iter, column, val);
+			val.Dispose ();
+		}
+
+		public Gtk.TreeIter AppendValues (Array values) {
+			Gtk.TreeIter iter;
+			Append (out iter);
+
+			int col = 0;
+			foreach (object value in values) {
+				if (value != null) {
+					GLib.Value val = new GLib.Value (value);
+					SetValue (iter, col, val);
+					val.Dispose ();
+				}
+				col++;
+			}
+
+			return iter;
+		}
+		
+		public Gtk.TreeIter AppendValues (params object[] values) {
+			return AppendValues ((Array) values);
+		}
+
+		public ListStore (params Type[] types)
+		{
+			uint[] ctypes = new uint[types.Length];
+			int i = 0;
+			foreach (Type type in types) {
+				GLib.TypeFundamentals ctype = GLibSharp.TypeConverter.LookupType (type);
+				if (ctype == GLib.TypeFundamentals.TypeNone) {
+					ctypes[i] = GLibSharp.ManagedValue.GType;
+				} else if (ctype == GLib.TypeFundamentals.TypeInvalid) {
+					throw new Exception ("Unknown type");
+				} else {
+					ctypes[i] = (uint) ctype;
+				}
+				i++;
+			}
+			
+			Raw = gtk_list_store_newv (ctypes.Length, ctypes);
+		}
+
+		public object GetValue(Gtk.TreeIter iter, int column) {
+			GLib.Value val;
+			GetValue (iter, column, out val);
+			object ret = val.Val;
+			val.Dispose ();
+			return ret;
+		}
+
+
+

@@ -95,3 +95,19 @@
 			return raw_ret;
 		}
 
+		public Gtk.TreeViewColumn AppendColumn (string title, Gtk.CellRenderer cell, Gtk.TreeCellDataFunc cell_data) {
+			Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
+			col.Title = title;
+			col.PackStart (cell, true);
+			col.SetCellDataFunc (cell, cell_data);
+			
+			AppendColumn (col);
+			return col;
+		}
+		
+		public Gtk.TreeViewColumn AppendColumn (string title, Gtk.CellRenderer cell, params object[] attrs) {
+			Gtk.TreeViewColumn col = new Gtk.TreeViewColumn (title, cell, attrs);
+			AppendColumn (col);
+			return col;
+		}
+

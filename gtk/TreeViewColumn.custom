@@ -1,0 +1,34 @@
+// Gtk.TreeViewColumn.Custom - Gtk TreeViewColumn class customizations
+//
+// Author: Rachel Hestilow <hestilow@ximian.com> 
+//
+// (c) 2003 Rachel Hestilow 
+//
+// This code is inserted after the automatically generated code.
+
+
+		public void SetCellDataFunc(Gtk.CellRenderer cell_renderer, Gtk.TreeCellDataFunc func) {
+			GtkSharp.TreeCellDataFuncWrapper func_wrapper = null;
+			func_wrapper = new GtkSharp.TreeCellDataFuncWrapper (func, this);
+			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, func_wrapper.NativeDelegate, IntPtr.Zero, null);
+		}
+
+		private void _NewWithAttributes (string title, Gtk.CellRenderer cell, Array attrs) {
+			Title = title;
+			PackStart (cell, true);
+			for (int i = 0; (i + 1) < attrs.Length; i += 2) {
+				AddAttribute (cell, (string) attrs[i], (int) attrs[i + 1]);
+			}
+		}
+
+		public TreeViewColumn (string title, Gtk.CellRenderer cell, Array attrs) {
+			Raw = gtk_tree_view_column_new ();
+			_NewWithAttributes (title, cell, attrs);
+		}
+		
+		public TreeViewColumn (string title, Gtk.CellRenderer cell, params object[] attrs)
+		{
+			Raw = gtk_tree_view_column_new ();
+			_NewWithAttributes (title, cell, attrs);
+		}
+
