@@ -1,5 +1,5 @@
 <Type Name="Paned" FullName="Gtk.Paned">
-  <TypeSignature Language="C#" Value="public class Paned : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Paned : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,26 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Base class for containers that have two children separated by an adjustable pane.</summary>
+    <remarks><para>This class provides methods for manipulating a panel with 2 child widgets, separated by a splitter. The concrete widgets that extend from this class are <see cref="T:Gtk.VPaned"/> for a vertical splitter, and <see cref="T:Gtk.HPaned"/> for a horizontal splitter.</para>
+    <para>A paned widget draws a separator between the two child widgets that the user can drag to adjust the division.</para>
+    <para>Each child widget has two options that can be set, <paramref name="resize"/> and <paramref name="shrink"/>, (set with the <see cref="M:Gtk.Paned.Pack1"/> and <see cref="M:Gtk.Paned.Pack2"/> methods). If resize is <see langword="true"/>, then when the Paned is resized, the respective child will expand or shrink along with the paned widget. If shrink is <see langword="true"/>, then the respective child can be made smaller than it's requisition by the user. Setting shrink to <see langword="false"/> allows the application to set a minimum size. If resize is <see langword="false"/> for both children, then this exhibits exactly the same behaviour as if resize is <see langword="true"/> for both children.</para>
+    <para>The application can set the position of the slider as if it were set by the user with the <see cref="P:Gtk.Paned.Position"/> property.</para>
+    <para><example><code lang="C#">
+public Widget GetExampleFrame()
+{
+    HPaned splitter = new HPaned();
+    Frame frame1 = new Frame("Example frame1");
+    Frame frame2 = new Frame("Example frame2");
+
+    splitter.Pack1(frame1, true, false);
+    splitter.Pack2(frame2, false, false);
+    splitter.ShowAll();
+   
+    return splitter;
+}
+    </code></example></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -41,11 +59,11 @@
         <Parameter Name="shrink" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="resize">To be added: an object of type 'bool'</param>
-        <param name="shrink">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Packs a child widget into the second part of the Paned container, (the bottom or right panes).</summary>
+        <param name="child">A widget for this container to manage.</param>
+        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
+        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Pack1">
@@ -60,12 +78,12 @@
         <Parameter Name="shrink" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="resize">To be added: an object of type 'bool'</param>
-        <param name="shrink">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
-      </Docs>
+        <summary>Packs a child widget into the first part of the Paned container, (the top or left panes).</summary>
+        <param name="child">A widget for this container to manage.</param>
+        <param name="resize">Whether this child should expand when the Paned widget is resized.</param>
+        <param name="shrink">Whether this child can be made smaller than its default size by the user.</param>
+        <remarks></remarks>
+              </Docs>
     </Member>
     <Member MemberName="Add2">
       <MemberSignature Language="C#" Value="public void Add2 (Gtk.Widget child);" />
@@ -77,9 +95,9 @@
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds a child widget into the second part of the Paned container, (the bottom or right panes), with default packing settings.</summary>
+        <param name="child">A widget for this container to manage.</param>
+        <remarks><para>This is the same as calling <see cref="M:Gtk.Paned.Pack2"/> with resize set to <see langword="false"/> and shrink set to <see langword="true"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Add1">
@@ -92,9 +110,9 @@
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds a child widget into the first part of the Paned container, (the top or left panes), with default packing settings.</summary>
+        <param name="child">A widget for this container to manage.</param>
+        <remarks><para>This is the same as calling <see cref="M:Gtk.Paned.Pack1"/> with resize set to <see langword="false"/> and shrink set to <see langword="true"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ComputePosition">
@@ -166,9 +184,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Paned'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns></returns>
+        <remarks><para>This class can not be instantiated directly - use <see cref="T:Gtk.HPaned"/> or <see cref="T:Gtk.VPaned"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -190,9 +208,9 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor to the second child widget of this container</summary>
+        <returns>The child widget added with <see cref="M:Gtk.Paned.Pack2"/> or <see cref="M:Gtk.Paned.Add2"/>.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Child1">
@@ -202,9 +220,9 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor to the first child widget of this container</summary>
+        <returns>The child widget added with <see cref="M:Gtk.Paned.Pack1"/> or <see cref="M:Gtk.Paned.Add1"/>.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Position">
@@ -217,9 +235,9 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <summary>Manage the position of the splitter bar that separates the 2 child widgets.</summary>
+        <param name="value">The number of pixels the splitter should appear from the left/top edge.</param>
+        <returns>The current position ofh</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
