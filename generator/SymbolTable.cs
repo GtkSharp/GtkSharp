@@ -318,6 +318,10 @@ namespace GtkSharp.Generation {
 				return "_new";
 			case "base":
 				return "_base";
+			case "lock":
+				return "_lock";
+			case "callback":
+				return "cb";
 			default:
 				break;
 			}
