@@ -240,7 +240,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when pre-editing is started.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -252,7 +252,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when the input method needs to delete the context text.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -276,7 +276,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Event fired when the input method requires the context surrounding the cursor. 
+	</summary>
         <remarks />
       </Docs>
     </Member>
@@ -288,7 +290,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when pre-editing is completed.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -303,10 +305,16 @@
         <Parameter Name="cursor_index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets surrounding context around the insertion point and preedit string. 
+	</summary>
         <param name="text">a <see cref="T:System.String" /></param>
         <param name="cursor_index">a <see cref="T:System.Int32" /></param>
-        <remarks />
+        <remarks>
+	  This function is expected to be called in response to the 
+	  <see cref="E:Gtk.IMContext.RetrieveSurrounding"/> event,
+	  and it will likely have no effect if called at other times.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSurrounding">
@@ -324,7 +332,26 @@
         <param name="text">a <see cref="T:System.String" /></param>
         <param name="cursor_index">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <remarks>
+	  <para>
+	    Input methods typically want context in order to constrain
+	    input text based on existing text; this is important for
+	    languages such as Thai where only some sequences of
+	    characters are allowed.
+	  </para>
+	  <para>
+	    This function is implemented by emitting the <see
+	    cref="E:Gtk.IMContext.RetrieveSurrounding"/> event on the
+	    input method; in response to this signal, a widget should
+	    provide as much context as is available, up to an entire
+	    paragraph, by calling <see
+	    cref="M:Gtk.IMContext.SetSurrounding"/>. Note that there
+	    is no obligation for a widget to respond to the <see
+	    cref="E:Gtk.IMContext.RetrieveSurrounding"/> signal, so
+	    input methods must be prepared to function without
+	    context.
+	</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -448,11 +475,17 @@
         <Parameter Name="cursor_pos" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="attrs">a <see cref="T:Pango.AttrList" /></param>
-        <param name="cursor_pos">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Retrieve the current preedit string for the input context
+	  and a list of attributes to apply to the string.
+	</summary>
+        <param name="str">a <see cref="T:System.String" />, a location to store , the retrieved string.</param>
+        <param name="attrs">a <see cref="T:Pango.AttrList" />, location to store the retrieved attribute list.</param>
+        <returns>a <see cref="T:System.Int32" />, the position of the cursor (in bytes) within the preedit string.</returns>        
+	<remarks>
+	  This string should be displayed inserted at the insertion
+	  point. 
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
