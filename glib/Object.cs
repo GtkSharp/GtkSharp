@@ -20,13 +20,49 @@ namespace GLib {
 	///	Wrapper class for GObject.
 	/// </remarks>
 
-	public class Object : IWrapper {
+	public class Object : IWrapper, IDisposable {
 
 		// Private class and instance members
 		IntPtr _obj;
 		EventHandlerList _events;
+		bool disposed = false;
 		Hashtable Data;
 		static Hashtable Objects = new Hashtable();
+
+		~Object ()
+		{
+			Dispose ();
+		}
+
+		/// <summary>
+		///	Dispose Method 
+		/// </summary>
+		///
+		/// <remarks>
+		///	Disposes of the raw object. Only override this if
+		///	the Raw object should not be unref'd when the object
+		///	is garbage collected.
+		/// </remarks>
+
+		public void Dispose ()
+		{
+			if (disposed)
+				return;
+
+			DisposeNative ();
+			disposed = true;
+		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_object_unref (IntPtr raw);
+
+		protected virtual void DisposeNative ()
+		{
+			if (_obj == IntPtr.Zero)
+				return;
+
+			g_object_unref (_obj);
+		}
 
 		/// <summary>
 		///	GetObject Shared Method 

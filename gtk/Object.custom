@@ -1,0 +1,17 @@
+// Gtk.Object.custom - Gtk Window class customizations
+//
+// Author: Mike Kestner <mkestner@speakeasy.net>
+//
+// (c) 2002 Mike Kestner
+//
+// This code is inserted after the automatically generated code.
+
+
+		[DllImport("gtksharpglue")]
+		static extern void gtksharp_object_unref_if_floating (IntPtr raw);
+
+		protected override void DisposeNative ()
+		{
+			gtksharp_object_unref_if_floating (Handle);
+		}
+

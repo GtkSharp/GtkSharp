@@ -185,6 +185,11 @@ namespace GtkSharp.Generation {
 			if (!Elem.HasAttribute("parent"))
 				return;
 
+			sw.WriteLine("\t\t~" + Name + "()");
+			sw.WriteLine("\t\t{");
+			sw.WriteLine("\t\t\tDispose();");
+			sw.WriteLine("\t\t}");
+			sw.WriteLine();
 			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
 			sw.WriteLine();
 

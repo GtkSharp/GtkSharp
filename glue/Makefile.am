@@ -9,6 +9,7 @@ BASESOURCES = \
 	error.c			\
 	event.c			\
 	slist.c			\
+	object.c		\
 	paned.c			\
 	style.c			\
 	type.c			\
