@@ -1,5 +1,5 @@
 <Type Name="Help" FullName="Gnome.Help">
-  <TypeSignature Language="C#" Value="public class Help" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Help" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey />
@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Display application and Gnome system help.</summary>
+    <remarks>These functions provide a way to display help files that are either installed as part of the main Gnome installation or that are specific to the current application.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -31,13 +31,23 @@
 		<Parameter Name="link_id" Type="System.String" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Displays the help file specified by <paramref name="file_name"/> at location <paramref name="link_id"/> within the <paramref name="doc_id"/> domain in the preferred help browser of the user.</summary>
         <param name="program">a <see cref="T:Gnome.Program" /></param>
         <param name="doc_id">a <see cref="T:System.String" /></param>
         <param name="file_name">a <see cref="T:System.String" /></param>
         <param name="link_id">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Most of the time, you want to call <see cref="M:Gnome.Help.Display(System.String,System.String)"/> instead.
+          </para>
+          <para>
+            This function will display the help through creating a "ghelp" URI, by looking for <paramref name="file_name"/> in the applications installed help location (found by <see cref="F:Gnome.FileDomain.AppHelp"/>) and its <paramref name="app_id"/>. The resulting URI is roughly in the form "ghelp:appid/file_name?link_id". If a matching file cannot be found, <see langword="false"/> is returned.
+          </para>
+          <para>
+            Please note that this only displays application help. To display help files from the global Gnome domain, you will want to use <see cref="M:Gnome.Help.DisplayDesktop(Gnome.Program,System.String,System.String,System.String)"/>.
+          </para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorQuark">
@@ -64,11 +74,11 @@
 		<Parameter Name="link_id" Type="System.String" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Displays the help file specified by <paramref name="file_name"/> at location <paramref name="link_id"/> in the preferred help browser of the user.</summary>
         <param name="file_name">a <see cref="T:System.String" /></param>
         <param name="link_id">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DisplayUri">
@@ -81,10 +91,10 @@
 		<Parameter Name="help_uri" Type="System.String" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Displays <paramref name="help_uri"/> in the preferred help viewer of the user.</summary>
         <param name="help_uri">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>You should never need to call this function directly in code, since it is just a wrapper for <see cref="M:Gnome.Url.Show(System.String)"/> and consequently the viewer used to display the results depends upon the scheme of the URI (so it is not strictly a help-only function).</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisplayDesktop">
@@ -100,13 +110,20 @@
 		<Parameter Name="link_id" Type="System.String" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Displays the Gnome system help file specified by <paramref name="file_name"/> at location <paramref name="link_id"/> in the preferred help browser of the user.</summary>
         <param name="program">a <see cref="T:Gnome.Program" /></param>
         <param name="doc_id">a <see cref="T:System.String" /></param>
         <param name="file_name">a <see cref="T:System.String" /></param>
         <param name="link_id">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            This is done by creating a "ghelp" URI, by looking for <paramref name="file_name"/> in the system help domain (<see cref="F:Gnome.FileDomain.Help"/>) and its <paramref name="app_id"/>. This domain is determined when the library is compiled. If a matching file cannot be found, <see langword="false"/> is returned.
+          </para>
+          <para>
+            Please note that this only displays system help. To display help files for an application, you will want to use <see cref="M:Gnome.Help.Display(System.String,System.String)"/>.
+          </para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -115,9 +132,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new <see cref="T:Gnome.Help"/> instance.</summary>
         <returns>a <see cref="T:Gnome.Help" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is the default constructor for <see cref="T:Gnome.Help"/>.</remarks>
       </Docs>
     </Member>
   </Members>

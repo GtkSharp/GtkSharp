@@ -9,6 +9,71 @@
   <Docs>
     <summary>To be added</summary>
     <remarks>To be added</remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+using Gnome;
+
+class CanvasTest
+{
+
+	public CanvasTest()
+	{
+		Application.Init();
+
+ 		Window window1 = new Window("Hello Canvas!");
+		window1.DeleteEvent += new DeleteEventHandler (delete_event);
+
+		Canvas canvas1 = Canvas.NewAa();
+
+		int Width = 100;
+		int Height = 100;
+
+		canvas1.SetScrollRegion(0, 0, Width, Height);
+		canvas1.WidthRequest = Width;
+		canvas1.HeightRequest = Height;
+		CanvasGroup root = canvas1.Root();
+
+		// Draw Background
+
+		CanvasRect background = new CanvasRect(root);
+		background.X1 = 0;
+		background.X2 = Width;
+		background.Y1 = 0;
+		background.Y2 = Height;
+		background.FillColor = "#ffffff";
+		background.Show();
+
+        // Here we go
+
+		CanvasText hello = new CanvasText(root);
+		hello.X = 40;
+		hello.Y = 10;
+		hello.FillColor = "#000000";
+		hello.Text = "Hello, Canvas!";
+		hello.Show();
+
+		canvas1.Show();
+
+		window1.Add(canvas1);
+		window1.ShowAll();
+		Application.Run();
+	}
+
+	public static void Main()
+	{
+		new CanvasTest();
+	}
+
+	void delete_event (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+      </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>Gnome.CanvasItem</BaseTypeName>
@@ -40,8 +105,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -58,7 +123,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.CanvasText'</returns>
+        <returns>an object of type <see cref="T:Gnome.CanvasText" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -67,12 +132,12 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="group" Type="Gnome.CanvasGroup" />
-	</Parameters>
+        <Parameter Name="group" Type="Gnome.CanvasGroup" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="group">To be added: an object of type 'Gnome.CanvasGroup'</param>
-        <returns>To be added: an object of type 'Gnome.CanvasText'</returns>
+        <param name="group">an object of type <see cref="T:Gnome.CanvasGroup" /></param>
+        <returns>an object of type <see cref="T:Gnome.CanvasText" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -83,8 +148,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gnome.CanvasText</summary>
-        <returns>The GLib Type for the Gnome.CanvasText class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gnome.CanvasText" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gnome.CanvasText" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -94,12 +159,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -109,12 +173,11 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -124,12 +187,11 @@
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -139,12 +201,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -154,12 +215,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -169,12 +229,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -184,12 +243,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -199,12 +257,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -214,12 +271,11 @@
       <ReturnValue>
         <ReturnType>Pango.Stretch</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Stretch'</param>
-        <returns>To be added: an object of type 'Pango.Stretch'</returns>
+        <param name="value">an object of type <see cref="T:Pango.Stretch" /></param>
+        <returns>an object of type <see cref="T:Pango.Stretch" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -229,12 +285,11 @@
       <ReturnValue>
         <ReturnType>Gtk.Justification</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Justification'</param>
-        <returns>To be added: an object of type 'Gtk.Justification'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Justification" /></param>
+        <returns>an object of type <see cref="T:Gtk.Justification" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -244,12 +299,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -259,12 +313,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type 'double'</param>
+        <returns>an object of type 'double'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -274,12 +327,11 @@
       <ReturnValue>
         <ReturnType>Gdk.Drawable</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Drawable'</param>
-        <returns>To be added: an object of type 'Gdk.Drawable'</returns>
+        <param name="value">an object of type <see cref="T:Gdk.Drawable" /></param>
+        <returns>an object of type <see cref="T:Gdk.Drawable" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -289,12 +341,11 @@
       <ReturnValue>
         <ReturnType>Gtk.AnchorType</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.AnchorType'</param>
-        <returns>To be added: an object of type 'Gtk.AnchorType'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.AnchorType" /></param>
+        <returns>an object of type <see cref="T:Gtk.AnchorType" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -304,12 +355,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -319,12 +369,11 @@
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -334,12 +383,11 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -349,12 +397,11 @@
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.AttrList'</param>
-        <returns>To be added: an object of type 'Pango.AttrList'</returns>
+        <param name="value">an object of type <see cref="T:Pango.AttrList" /></param>
+        <returns>an object of type <see cref="T:Pango.AttrList" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -364,12 +411,11 @@
       <ReturnValue>
         <ReturnType>Pango.Underline</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Underline'</param>
-        <returns>To be added: an object of type 'Pango.Underline'</returns>
+        <param name="value">an object of type <see cref="T:Pango.Underline" /></param>
+        <returns>an object of type <see cref="T:Pango.Underline" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -379,12 +425,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -394,12 +439,11 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -409,12 +453,11 @@
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -424,12 +467,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -439,12 +481,11 @@
       <ReturnValue>
         <ReturnType>Pango.Style</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Style'</param>
-        <returns>To be added: an object of type 'Pango.Style'</returns>
+        <param name="value">an object of type <see cref="T:Pango.Style" /></param>
+        <returns>an object of type <see cref="T:Pango.Style" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -454,12 +495,11 @@
       <ReturnValue>
         <ReturnType>Pango.Variant</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Variant'</param>
-        <returns>To be added: an object of type 'Pango.Variant'</returns>
+        <param name="value">an object of type <see cref="T:Pango.Variant" /></param>
+        <returns>an object of type <see cref="T:Pango.Variant" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -469,12 +509,11 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -484,12 +523,11 @@
       <ReturnValue>
         <ReturnType>Pango.FontDescription</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.FontDescription'</param>
-        <returns>To be added: an object of type 'Pango.FontDescription'</returns>
+        <param name="value">an object of type <see cref="T:Pango.FontDescription" /></param>
+        <returns>an object of type <see cref="T:Pango.FontDescription" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -499,12 +537,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -514,12 +551,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type 'double'</param>
+        <returns>an object of type 'double'</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -529,12 +565,11 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
+        <param name="value">an object of type <see cref="T:System.Double" /></param>
+        <returns>an object of type <see cref="T:System.Double" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -544,12 +579,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -558,8 +592,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
