@@ -10,12 +10,12 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	public delegate void LogFunc (string log_domain,
 				      LogLevelFlags log_level,
-				      string message,
-				      IntPtr user_data);
+				      string message);
 
 	public delegate void PrintFunc (string message);
 
@@ -45,6 +45,14 @@ namespace GLib {
 
 	public class Log {
 
+		static Hashtable handlers;
+
+		static void EnsureHash ()
+		{
+			if (handlers == null)
+				handlers = new Hashtable ();
+		}
+
 		[DllImport("glib-2.0")]
 		static extern void g_logv (string log_domain, LogLevelFlags flags, string message);
 		
@@ -61,10 +69,14 @@ namespace GLib {
 		
 		public static uint SetLogHandler (string logDomain,
 						  LogLevelFlags flags,
-						  LogFunc logFunc,
-						  IntPtr userData)
+						  LogFunc logFunc)
+						  
 		{
-			return g_log_set_handler (logDomain, flags, logFunc, userData);
+			uint result = g_log_set_handler (logDomain, flags, logFunc, IntPtr.Zero);
+			EnsureHash ();
+			handlers [result] = logFunc;
+
+			return result;
 		}
 
 		[DllImport("glib-2.0")]
@@ -72,6 +84,9 @@ namespace GLib {
 
 		public static void RemoveLogHandler (string logDomain, uint handlerID)
 		{
+			if (handlers != null && handlers.ContainsKey (handlerID))
+				handlers.Remove (handlerID);
+			
 			g_log_remove_handler (logDomain, handlerID);
 		}
 
@@ -81,6 +96,9 @@ namespace GLib {
 
 		public static PrintFunc SetPrintHandler (PrintFunc handler)
 		{
+			EnsureHash ();
+			handlers ["PrintHandler"] = handler;
+
 			return g_set_print_handler (handler);
 		}
 		
@@ -89,6 +107,9 @@ namespace GLib {
 
 		public static PrintFunc SetPrintErrorHandler (PrintFunc handler)
 		{
+			EnsureHash ();
+			handlers ["PrintErrorHandler"] = handler;
+
 			return g_set_printerr_handler (handler);
 		}
 		
@@ -100,10 +121,10 @@ namespace GLib {
 
 		public static void DefaultHandler (string logDomain,
 						   LogLevelFlags logLevel,
-						   string message,
-						   IntPtr unusedData)
+						   string message)
+						   
 		{
-			g_log_default_handler (logDomain, logLevel, message, unusedData);
+			g_log_default_handler (logDomain, logLevel, message, IntPtr.Zero);
 		}
 
 		[DllImport("glib-2.0")]
@@ -128,24 +149,24 @@ namespace GLib {
 		 * Sample usage:
 		 *
 		 *	// Print the messages for the NULL domain
-		 *	LogFunc logFunc = new GLib.LogFunc (Glib.Log.PrintLogFunction);
-		 *	Log.SetLogHandler (null, GLib.LogLevelFlags.All, logFunc, IntPtr.Zero);
+		 *	LogFunc logFunc = new LogFunc (Log.PrintLogFunction);
+		 *	Log.SetLogHandler (null, LogLevelFlags.All, logFunc);
 		 *
 		 *	// Print messages and stack trace for Gtk critical messages
-		 *	logFunc = new GLib.LogFunc (Glib.Log.PrintTraceLogFunction);
-		 *	Log.SetLogHandler ("Gtk", Glib.LogLevelFlags.Critical, logFunc, IntPtr.Zero);
+		 *	logFunc = new LogFunc (Log.PrintTraceLogFunction);
+		 *	Log.SetLogHandler ("Gtk", LogLevelFlags.Critical, logFunc);
 		 *
 		 */
 
-		public static void PrintLogFunction (string domain, LogLevelFlags level, string message, IntPtr data)
+		public static void PrintLogFunction (string domain, LogLevelFlags level, string message)
 		{
 			Console.WriteLine ("Domain: '{0}' Level: {1}", domain, level);
 			Console.WriteLine ("Message: {0}", message);
 		}
 
-		public static void PrintTraceLogFunction (string domain, LogLevelFlags level, string message, IntPtr data)
+		public static void PrintTraceLogFunction (string domain, LogLevelFlags level, string message)
 		{
-			PrintLogFunction (domain, level, message, data);
+			PrintLogFunction (domain, level, message);
 			Console.WriteLine ("Trace follows:\n{0}", new System.Diagnostics.StackTrace ());
 		}
 	}
