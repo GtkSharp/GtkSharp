@@ -120,6 +120,11 @@ namespace GtkSharp.Generation {
 			m_ret = SymbolTable.GetMarshalType(rettype);
 			s_ret = SymbolTable.GetCSType(rettype);
 			cname = elem.GetAttribute("cname");
+			
+			if (ret_elem.HasAttribute("array")) {
+					s_ret += "[]";
+					m_ret += "[]";
+				}
 
 			if (parms != null && parms.ThrowsException)
 				safety = "unsafe ";

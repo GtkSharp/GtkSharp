@@ -99,6 +99,9 @@ sub fixupParams {
 			if ($node->nodeName eq "parameters") {
 				$params_node = $node;
 				last;
+			} elsif ($node->nodeName eq "return-type" and $$data[1] eq "return") {
+				$node->setAttribute ($$data[5], $$data[6]);
+				last;
 			}
 		}
 		next if not $params_node;

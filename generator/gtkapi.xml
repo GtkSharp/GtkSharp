@@ -5211,6 +5211,12 @@
       <method name="SelectParagraphExtended" cname="gtk_html_select_paragraph_extended">
         <return-type type="void"/>
       </method>
+      <method name="StreamLogNew" cname="gtk_html_stream_log_new">
+        <return-type type="GtkHTMLStream*"/>
+        <parameters>
+          <parameter type="GtkHTMLStream*" name="stream"/>
+        </parameters>
+      </method>
       <constructor cname="gtk_html_new_from_string">
         <parameters>
           <parameter type="const-gchar*" name="str"/>
@@ -5316,6 +5322,15 @@
         <parameters>
           <parameter type="GtkHTMLFontStyle" name="and_mask"/>
           <parameter type="GtkHTMLFontStyle" name="or_mask"/>
+        </parameters>
+      </method>
+      <method name="StreamNew" cname="gtk_html_stream_new">
+        <return-type type="GtkHTMLStream*"/>
+        <parameters>
+          <parameter type="GtkHTMLStreamTypesFunc" name="type_func"/>
+          <parameter type="GtkHTMLStreamWriteFunc" name="write_func"/>
+          <parameter type="GtkHTMLStreamCloseFunc" name="close_func"/>
+          <parameter type="gpointer" name="user_data"/>
         </parameters>
       </method>
       <method name="GetUrlObjectRelative" cname="gtk_html_get_url_object_relative">
@@ -5557,6 +5572,12 @@
           <parameter type="GtkHTML*" name="html,"/>
         </parameters>
       </callback>
+    </struct>
+    <struct name="HTMLStream" cname="GtkHTMLStream">
+      <field cname="write_func" type="GtkHTMLStreamWriteFunc"/>
+      <field cname="close_func" type="GtkHTMLStreamCloseFunc"/>
+      <field cname="types_func" type="GtkHTMLStreamTypesFunc"/>
+      <field cname="user_data" type="gpointer"/>
     </struct>
   </namespace>
   <namespace name="Gdk" library="gdk-x11-2.0">
@@ -10689,7 +10710,7 @@
         </parameters>
       </method>
       <method name="GetSelections" cname="gtk_file_selection_get_selections">
-        <return-type type="gchar**"/>
+        <return-type type="gchar**" array="1"/>
       </method>
       <method name="Complete" cname="gtk_file_selection_complete">
         <return-type type="void"/>
