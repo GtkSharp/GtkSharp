@@ -1,5 +1,5 @@
 <Type Name="SpinButton" FullName="Gtk.SpinButton">
-  <TypeSignature Language="C#" Value="public class SpinButton : Gtk.Entry, Editable, IWrapper, CellEditable, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class SpinButton : Gtk.Entry, Editable, IWrapper, CellEditable, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,35 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Retrieve an integer or floating-point number from the user.</summary>
+    <remarks><para>A SpinButton is an ideal way to allow the user to enter a numeric value. Rather than having to directly type a number into an <see cref="T:Gtk.Entry"/>, a SpinButton allows the user to click on one of two arrows to increment or decrement the displayed value. A value can still be typed in, with the added benefit that it can be checked to ensure it is within a given range.</para>
+    <para>To precisely configure a SpinButton, an <see cref="T:Gtk.Adjustment"/> is used. Though it is not mandatory, its use allows fine control over the 'spinning' properties of the SpinButton.</para>
+    <para>A SpinButton is typically created by setting up an <see cref="T:Gtk.Adjustment"/> and passing that to the SpinButton's constructor. The value entered by a user can then be retrieved using either the <see cref="P:Gtk.SpinButton.Value"/> property or the <see cref="P:Gtk.SpinButton.ValueAsInt"/> property.</para>
+    <para>The following demonstrates how to get an integer from a SpinButton:
+    <example><code lang="C#">
+
+// Creates a window with a spin button
+public void CreateSpinButton() 
+{
+    Window window = new Window();
+    window.BorderWidth = 5;
+    // Create a spin button for percentage values.
+    SpinButton spinner = new SpinButton(0f, 100f, 1f);
+    spinner.ValueChanged += new EventHandler(OutputValue);
+    window.Add(spinner);
+    window.ShowAll();
+}
+
+// Handles ValueChanged events and writes to the console
+private void OutputValue(object source, System.EventArgs args)
+{
+    SpinButton spinner = source as SpinButton;
+    System.Console.WriteLine("Current value is: " + spinner.ValueAsInt);
+}
+
+    </code></example>
+    </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Entry</BaseTypeName>
@@ -62,10 +89,10 @@
         <Parameter Name="increment" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="direction">To be added: an object of type 'Gtk.SpinType'</param>
-        <param name="increment">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>Changes the value of the SpinButton by <paramref name="increment"/>.</summary>
+        <param name="direction">A direction that indicates if the SpinButton should be incremented or decremented.</param>
+        <param name="increment">The amount to adjust the SpinButton by.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetRange">
@@ -79,10 +106,10 @@
         <Parameter Name="max" Type="System.Double&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="min">To be added: an object of type 'double&amp;'</param>
-        <param name="max">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Find out the minimum and maximum allowed input values.</summary>
+        <param name="min">The minimum value that can be accepted.</param>
+        <param name="max">The maximum value that can be accepted.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Configure">
@@ -97,11 +124,11 @@
         <Parameter Name="digits" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="adjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <param name="climb_rate">To be added: an object of type 'double'</param>
-        <param name="digits">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Configures various properties of the SpinButton.</summary>
+        <param name="adjustment">An optional <see cref="T:Gtk.Adjustment"/> to configure certain properties, null otherwise.</param>
+        <param name="climb_rate">The value to adjust the SpinButton by when one of its arrows are clicked.</param>
+        <param name="digits">The number of decimal places to display.</param>
+        <remarks><para>An <see cref="T:Gtk.Adjustment"/> is used to configure a variety of the properties for a SpinButton. See the documentation for the <see cref="T:Gtk.Adjustment"/> members for more information.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Update">
@@ -112,8 +139,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Forces the SpinButton to update its value</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIncrements">
@@ -127,10 +154,10 @@
         <Parameter Name="page" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="step">To be added: an object of type 'double'</param>
-        <param name="page">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the step and page increments.</summary>
+        <param name="step">The amount to change the spin button by when the user clicks with button 1, (usually the left mouse button).</param>
+        <param name="page">The amount to change the spin button by when the user clicks with button 2, (usually the middle mouse button).</param>
+        <remarks><para>Changing the values with this method alters how quickly the SpinButton's value changes when its arrows are activated.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetRange">
@@ -144,10 +171,10 @@
         <Parameter Name="max" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="min">To be added: an object of type 'double'</param>
-        <param name="max">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>Alters the minimum and maximum allowable values.</summary>
+        <param name="min">The minimum value that can be entered.</param>
+        <param name="max">The maximum value that can be entered.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIncrements">
@@ -161,10 +188,10 @@
         <Parameter Name="page" Type="System.Double&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="step">To be added: an object of type 'double&amp;'</param>
-        <param name="page">To be added: an object of type 'double&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Retrieve the current step and page increments.</summary>
+        <param name="step">Outputs the value that a spin button is changed by when the user clicks with button 1, (usually the left mouse button).</param>
+        <param name="page">Outputs the value that a spin button is changed by when the user clicks with button 2, (usually the middle mouse button).</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -221,7 +248,7 @@
         <Parameter Name="digits" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new SpinButton based on the specified <see cref="T:Gtk.Adjustment"/>.</summary>
         <param name="adjustment">To be added: an object of type 'Gtk.Adjustment'</param>
         <param name="climb_rate">To be added: an object of type 'double'</param>
         <param name="digits">To be added: an object of type 'uint'</param>
@@ -239,12 +266,12 @@
         <Parameter Name="step" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="min">To be added: an object of type 'double'</param>
-        <param name="max">To be added: an object of type 'double'</param>
-        <param name="step">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'Gtk.SpinButton'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a SpinButton without the need for a manually created <see cref="T:Gtk.Adjustment"/>.</summary>
+        <param name="min">Minimum allowable value.</param>
+        <param name="max">Maximum allowable value.</param>
+        <param name="step">The value to alter the SpinButton by when a <see cref="Gtk.SpinButton.Spin"/> is carried out on it.</param>
+        <returns>A new SpinButton.</returns>
+        <remarks><para>The default value of the new SpinButton is initially set to <paramref name="min"/>.</para><para>The default page increment is set to 10 * <paramref name="step"/>.</para><para>The visible precision of the spin button is equivalent to the precision of <paramref name="step"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -253,9 +280,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.SpinButton'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -277,9 +304,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieve the current value as an integer.</summary>
+        <returns>The value of the SpinButton with integer precision.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Numeric">
@@ -292,10 +319,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether or not the SpinButton accepts non-numeric input.</summary>
+        <param name="value"><see langword="true"/> if non-numeric text can be entered into the text entry of the SpinButton, <see langword="false"/> otherwise.</param>
+        <returns>Whether the SpinButton currently accepts only numeric input.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ClimbRate">
@@ -324,10 +351,11 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether a SpinButton's value wraps around to the opposite limit when the upper or lower limit of the range is exceeded.</summary>
+        <param name="value">Set to <see langword="true"/> to cause values to wrap from maximum to minimum, <see langword="false"/> to force the value at the limits to remain unchanged.</param>
+        <returns>Whether this SpinButton wraps its maximum/minimum values when spinning.</returns>
+        <remarks><para>If this property is set to <see langword="true"/>, then when the user tries to change the value in a SpinButton, (usually by clicking one of the arrows), the next value after the maximum will wrap to the minimum.</para>
+        <para>Alternatively, if this property is set to <see langword="false"/>, then trying to increase the value of the SpinButton when it is at the maximum value, will have no effect. Likewise when trying to decrement the value at its minimum.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -340,10 +368,10 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
-        <remarks>To be added</remarks>
+        <summary>The current value of the SpinButton.</summary>
+        <param name="value">Sets a new value in this SpinButton</param>
+        <returns>The current value of the SpinButton.</returns>
+        <remarks><para>The value of the SpinButton is limited by the precision set with the <see cref="P:Gtk.SpinButton.Digits"/> property.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Digits">
@@ -356,10 +384,10 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the precision that this SpinButton's value is displayed with.</summary>
+        <param name="value">The number of digits to be displayed for the spin button's value.</param>
+        <returns>The maximum number of digits that the SpinButton will currently display.</returns>
+        <remarks><para>Up to 20 digit precision is allowed.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SnapToTicks">
@@ -372,10 +400,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether values are corrected to the nearest step increment when a SpinButton is activated with an invalid value.</summary>
+        <param name="value"><see langword="true"/> if invalid values should be corrected, <see langword="false"/> otherwise.</param>
+        <returns><see langword="true"/> if values are snapped to the nearest step, <see langword="false"/> otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdatePolicy">
@@ -426,8 +454,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is fired when the SpinButton's value changes.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Input">
