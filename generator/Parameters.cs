@@ -256,7 +256,7 @@ namespace GtkSharp.Generation {
 				string name = this [i].Name;
 
 				if (i > 0 && this [i - 1].IsString && this [i].IsLength) {
-					call_string += ", " + this [i - 1].Name + ".Length";
+					call_string += ", " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length";
 					import_sig += ", " + m_type + " " + name;
 					continue;
 				}
