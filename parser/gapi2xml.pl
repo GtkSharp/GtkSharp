@@ -169,11 +169,18 @@ while ($line = <STDIN>) {
 		}
 		$cast_macro =~ s/\\\n\s*//g;
 		$cast_macro =~ s/\s+/ /g;
-		if ($cast_macro =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)/) {
+		if ($cast_macro =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)\)/) {
 			if ($1 eq "INSTANCE") {
 				$objects{$2} = $3 . $objects{$2};
 			} else {
 				$objects{$2} .= ":$3";
+			}
+		} elsif ($cast_macro =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*([a-zA-Z0-9]+)_(\w+)_get_type\s*\(\),\s*(\w+)\)/) {
+			$typename = uc ("$2_type_$3");
+			if ($1 eq "INSTANCE") {
+				$objects{$typename} = $4 . $objects{$typename};
+			} else {
+				$objects{$typename} .= ":$4";
 			}
 		} elsif ($cast_macro =~ /GTK_CHECK_CAST.*,\s*(\w+),\s*(\w+)/) {
 			$objects{$1} = $2 . $objects{$1};
@@ -309,7 +316,6 @@ foreach $type (sort(keys(%ifaces))) {
 ##############################################################
 
 foreach $type (sort(keys(%objects))) {
-	
 	($inst, $class) = split(/:/, $objects{$type});
 	$class = $inst . "Class" if (!$class);
 	$initfunc = $pedefs{lc($inst)};

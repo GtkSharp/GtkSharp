@@ -1367,6 +1367,630 @@
         </parameters>
       </method>
     </object>
+    <object name="XqlAtom" cname="GdaXqlAtom" parent="GdaXqlItem">
+      <method name="GetType" cname="gda_xql_atom_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_atom_new">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlBin" cname="GdaXqlBin" parent="GdaXqlItem">
+      <field name="Priv" cname="priv" type="GdaXqlBinPrivate*"/>
+      <method name="GetChild" cname="gda_xql_bin_get_child">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="GetType" cname="gda_xql_bin_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_bin_new">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+          <parameter type="gchar*" name="sqlfmt"/>
+          <parameter type="gchar*" name="sqlop"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_bin_new_exists"/>
+      <constructor cname="gda_xql_bin_new_having"/>
+      <constructor cname="gda_xql_bin_new_having_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_bin_new_intersect"/>
+      <constructor cname="gda_xql_bin_new_minus"/>
+      <constructor cname="gda_xql_bin_new_not"/>
+      <constructor cname="gda_xql_bin_new_not_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_bin_new_null"/>
+      <constructor cname="gda_xql_bin_new_null_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_bin_new_on"/>
+      <constructor cname="gda_xql_bin_new_union"/>
+      <constructor cname="gda_xql_bin_new_unionall"/>
+      <constructor cname="gda_xql_bin_new_where"/>
+      <constructor cname="gda_xql_bin_new_where_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_bin_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+          <parameter type="gchar*" name="sqlfmt"/>
+          <parameter type="gchar*" name="sqlop"/>
+          <parameter type="GdaXqlItem*" name="child"/>
+        </parameters>
+      </constructor>
+      <method name="SetChild" cname="gda_xql_bin_set_child">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="XqlColumn" cname="GdaXqlColumn" parent="GdaXqlAtom">
+      <method name="GetType" cname="gda_xql_column_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_column_new"/>
+      <constructor cname="gda_xql_column_new_with_data">
+        <parameters>
+          <parameter type="gint" name="num"/>
+          <parameter type="gboolean" name="asc"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlConst" cname="GdaXqlConst" parent="GdaXqlAtom">
+      <method name="GetType" cname="gda_xql_const_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_const_new"/>
+      <constructor cname="gda_xql_const_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="alias"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gchar*" name="null"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlDelete" cname="GdaXqlDelete" parent="GdaXqlDml">
+      <method name="GetType" cname="gda_xql_delete_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_delete_new"/>
+    </object>
+    <object name="XqlDml" cname="GdaXqlDml" parent="GdaXqlItem">
+      <field name="Priv" cname="priv" type="GdaXqlDmlPrivate*"/>
+      <virtual_method name="AddTargetFromText" cname="add_target_from_text">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="GdaXqlItem*" name="join"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddFieldFromText" cname="add_field_from_text">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="gchar*" name="id"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gchar*" name="alias"/>
+          <parameter type="gboolean" name="group"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddConstFromText" cname="add_const_from_text">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gboolean" name="null"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddFunc" cname="add_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddQuery" cname="add_query">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddRowCondition" cname="add_row_condition">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="GdaXqlItem*" name="cond"/>
+          <parameter type="gchar*" name="type"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddGroupCondition" cname="add_group_condition">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="GdaXqlItem*" name="cond"/>
+          <parameter type="gchar*" name="type"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddOrder" cname="add_order">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="gint" name="column"/>
+          <parameter type="gboolean" name="asc"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddSet" cname="add_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddSetConst" cname="add_set_const">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlDml*" name="xqldml"/>
+          <parameter type="gchar*" name="field"/>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gboolean" name="null"/>
+        </parameters>
+      </virtual_method>
+      <method name="AddConstFromText" cname="gda_xql_dml_add_const_from_text">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gboolean" name="null"/>
+        </parameters>
+      </method>
+      <method name="AddFieldFromText" cname="gda_xql_dml_add_field_from_text">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gchar*" name="alias"/>
+          <parameter type="gboolean" name="group"/>
+        </parameters>
+      </method>
+      <method name="AddFunc" cname="gda_xql_dml_add_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </method>
+      <method name="AddGroupCondition" cname="gda_xql_dml_add_group_condition">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="cond"/>
+          <parameter type="gchar*" name="type"/>
+        </parameters>
+      </method>
+      <method name="AddOrder" cname="gda_xql_dml_add_order">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+          <parameter type="gboolean" name="asc"/>
+        </parameters>
+      </method>
+      <method name="AddQuery" cname="gda_xql_dml_add_query">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </method>
+      <method name="AddRowCondition" cname="gda_xql_dml_add_row_condition">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="cond"/>
+          <parameter type="gchar*" name="type"/>
+        </parameters>
+      </method>
+      <method name="AddSet" cname="gda_xql_dml_add_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </method>
+      <method name="AddSetConst" cname="gda_xql_dml_add_set_const">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="field"/>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gboolean" name="null"/>
+        </parameters>
+      </method>
+      <method name="AddTargetFromText" cname="gda_xql_dml_add_target_from_text">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="GdaXqlItem*" name="join"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gda_xql_dml_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="XqlDual" cname="GdaXqlDual" parent="GdaXqlItem">
+      <field name="Priv" cname="priv" type="GdaXqlDualPrivate*"/>
+      <method name="GetLeft" cname="gda_xql_dual_get_left">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="GetRight" cname="gda_xql_dual_get_right">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="GetType" cname="gda_xql_dual_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_dual_new">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+          <parameter type="gchar*" name="sqlfmt"/>
+          <parameter type="gchar*" name="sqlop"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_eq"/>
+      <constructor cname="gda_xql_dual_new_eq_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_ge"/>
+      <constructor cname="gda_xql_dual_new_ge_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_gt"/>
+      <constructor cname="gda_xql_dual_new_gt_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_in"/>
+      <constructor cname="gda_xql_dual_new_in_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_le"/>
+      <constructor cname="gda_xql_dual_new_le_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_like"/>
+      <constructor cname="gda_xql_dual_new_like_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_lt"/>
+      <constructor cname="gda_xql_dual_new_lt_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_ne"/>
+      <constructor cname="gda_xql_dual_new_ne_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_set"/>
+      <constructor cname="gda_xql_dual_new_set_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_dual_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+          <parameter type="gchar*" name="sqlfmt"/>
+          <parameter type="gchar*" name="sqlop"/>
+          <parameter type="GdaXqlItem*" name="left"/>
+          <parameter type="GdaXqlItem*" name="right"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlField" cname="GdaXqlField" parent="GdaXqlAtom">
+      <method name="GetType" cname="gda_xql_field_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_field_new"/>
+      <constructor cname="gda_xql_field_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="source"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gchar*" name="alias"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlFunc" cname="GdaXqlFunc" parent="GdaXqlBin">
+      <method name="AddConstFromText" cname="gda_xql_func_add_const_from_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="value"/>
+          <parameter type="gchar*" name="type"/>
+          <parameter type="gchar*" name="null"/>
+        </parameters>
+      </method>
+      <method name="AddFieldFromText" cname="gda_xql_func_add_field_from_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gchar*" name="alias"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gda_xql_func_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_func_new"/>
+      <constructor cname="gda_xql_func_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gchar*" name="alias"/>
+          <parameter type="gchar*" name="aggregate"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlInsert" cname="GdaXqlInsert" parent="GdaXqlDml">
+      <method name="GetType" cname="gda_xql_insert_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_insert_new"/>
+    </object>
+    <object name="XqlItem" cname="GdaXqlItem" parent="GObject">
+      <field name="Priv" cname="priv" type="GdaXqlItemPrivate*"/>
+      <virtual_method name="ToDom" cname="to_dom">
+        <return-type type="xmlNode*"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="xqlitem"/>
+          <parameter type="xmlNode*" name="parNode"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Add" cname="add">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="xqlitem"/>
+          <parameter type="GdaXqlItem*" name="child"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FindId" cname="find_id">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="xqlitem"/>
+          <parameter type="gchar*" name="id"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FindRef" cname="find_ref">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="xqlitem"/>
+          <parameter type="gchar*" name="ref"/>
+        </parameters>
+      </virtual_method>
+      <method name="Add" cname="gda_xql_item_add">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="child"/>
+        </parameters>
+      </method>
+      <method name="AddId" cname="gda_xql_item_add_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+        </parameters>
+      </method>
+      <method name="AddRef" cname="gda_xql_item_add_ref">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="ref"/>
+        </parameters>
+      </method>
+      <method name="FindId" cname="gda_xql_item_find_id">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+        </parameters>
+      </method>
+      <method name="FindRef" cname="gda_xql_item_find_ref">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="gchar*" name="ref"/>
+        </parameters>
+      </method>
+      <method name="FindRoot" cname="gda_xql_item_find_root">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="GetAttrib" cname="gda_xql_item_get_attrib">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gchar*" name="attrib"/>
+        </parameters>
+      </method>
+      <method name="GetParent" cname="gda_xql_item_get_parent">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="GetRef" cname="gda_xql_item_get_ref">
+        <return-type type="GdaXqlItem*"/>
+        <parameters>
+          <parameter type="gchar*" name="ref"/>
+        </parameters>
+      </method>
+      <method name="GetTag" cname="gda_xql_item_get_tag">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetType" cname="gda_xql_item_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SetAttrib" cname="gda_xql_item_set_attrib">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="attrib"/>
+          <parameter type="gchar*" name="value"/>
+        </parameters>
+      </method>
+      <method name="SetParent" cname="gda_xql_item_set_parent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="SetTag" cname="gda_xql_item_set_tag">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+        </parameters>
+      </method>
+      <method name="ToDom" cname="gda_xql_item_to_dom">
+        <return-type type="xmlNode*"/>
+        <parameters>
+          <parameter type="xmlNode*" name="parent"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="XqlJoin" cname="GdaXqlJoin" parent="GdaXqlDual">
+      <method name="GetType" cname="gda_xql_join_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_join_new"/>
+      <constructor cname="gda_xql_join_new_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="target"/>
+          <parameter type="GdaXqlItem*" name="cond"/>
+          <parameter type="gchar*" name="type"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlList" cname="GdaXqlList" parent="GdaXqlItem">
+      <field name="Priv" cname="priv" type="GdaXqlListPrivate*"/>
+      <method name="GetType" cname="gda_xql_list_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_list_new">
+        <parameters>
+          <parameter type="gchar*" name="tag"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_xql_list_new_and"/>
+      <constructor cname="gda_xql_list_new_arglist"/>
+      <constructor cname="gda_xql_list_new_dest"/>
+      <constructor cname="gda_xql_list_new_group"/>
+      <constructor cname="gda_xql_list_new_joinlist"/>
+      <constructor cname="gda_xql_list_new_or"/>
+      <constructor cname="gda_xql_list_new_order"/>
+      <constructor cname="gda_xql_list_new_setlist"/>
+      <constructor cname="gda_xql_list_new_sourcelist"/>
+      <constructor cname="gda_xql_list_new_targetlist"/>
+      <constructor cname="gda_xql_list_new_valuelist"/>
+      <method name="UnrefList" cname="gda_xql_list_unref_list" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GSList*" name="list"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="XqlQuery" cname="GdaXqlQuery" parent="GdaXqlBin">
+      <method name="GetType" cname="gda_xql_query_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_query_new"/>
+      <constructor cname="gda_xql_query_new_with_data">
+        <parameters>
+          <parameter type="GdaXqlItem*" name="xqlitem"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlSelect" cname="GdaXqlSelect" parent="GdaXqlDml">
+      <method name="GetType" cname="gda_xql_select_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_select_new"/>
+    </object>
+    <object name="XqlStack" cname="GdaXqlStack" parent="GObject">
+      <field name="Priv" cname="priv" type="GdaXqlStackPrivate*"/>
+      <method name="Empty" cname="gda_xql_stack_empty">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gda_xql_stack_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_stack_new"/>
+      <method name="Pop" cname="gda_xql_stack_pop">
+        <return-type type="GdaXqlItem*"/>
+      </method>
+      <method name="Push" cname="gda_xql_stack_push">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaXqlItem*" name="item"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="XqlTarget" cname="GdaXqlTarget" parent="GdaXqlBin">
+      <method name="GetType" cname="gda_xql_target_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_target_new"/>
+      <constructor cname="gda_xql_target_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="GdaXqlItem*" name="join"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlUpdate" cname="GdaXqlUpdate" parent="GdaXqlDml*">
+      <method name="GetType" cname="gda_xql_update_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_update_new"/>
+    </object>
+    <object name="XqlValue" cname="GdaXqlValue" parent="GdaXqlBin">
+      <method name="GetType" cname="gda_xql_value_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_value_new"/>
+      <constructor cname="gda_xql_value_new_with_data">
+        <parameters>
+          <parameter type="gchar*" name="id"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="XqlValueRef" cname="GdaXqlValueRef" parent="GdaXqlAtom">
+      <method name="GetType" cname="gda_xql_valueref_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_xql_valueref_new"/>
+    </object>
     <struct name="Blob" cname="GdaBlob">
       <callback cname="open">
         <return-type type="gint"/>
@@ -2268,684 +2892,6 @@
       </method>
     </struct>
     <alias name="ValueList" cname="GdaValueList" type="GList"/>
-    <struct name="XqlAtom" cname="GdaXqlAtom">
-      <field name="Xqlitem" cname="xqlitem" type="GdaXqlItem"/>
-      <method name="GetType" cname="gda_xql_atom_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_atom_new">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlAtomClass" cname="GdaXqlAtomClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlItemClass"/>
-    </struct>
-    <struct name="XqlBin" cname="GdaXqlBin">
-      <field name="Xqlitem" cname="xqlitem" type="GdaXqlItem"/>
-      <field name="Priv" cname="priv" type="GdaXqlBinPrivate*"/>
-      <method name="GetChild" cname="gda_xql_bin_get_child">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="GetType" cname="gda_xql_bin_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_bin_new">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-          <parameter type="gchar*" name="sqlfmt"/>
-          <parameter type="gchar*" name="sqlop"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_bin_new_exists"/>
-      <constructor cname="gda_xql_bin_new_having"/>
-      <constructor cname="gda_xql_bin_new_having_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="data"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_bin_new_intersect"/>
-      <constructor cname="gda_xql_bin_new_minus"/>
-      <constructor cname="gda_xql_bin_new_not"/>
-      <constructor cname="gda_xql_bin_new_not_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="data"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_bin_new_null"/>
-      <constructor cname="gda_xql_bin_new_null_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="data"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_bin_new_on"/>
-      <constructor cname="gda_xql_bin_new_union"/>
-      <constructor cname="gda_xql_bin_new_unionall"/>
-      <constructor cname="gda_xql_bin_new_where"/>
-      <constructor cname="gda_xql_bin_new_where_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="data"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_bin_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-          <parameter type="gchar*" name="sqlfmt"/>
-          <parameter type="gchar*" name="sqlop"/>
-          <parameter type="GdaXqlItem*" name="child"/>
-        </parameters>
-      </constructor>
-      <method name="SetChild" cname="gda_xql_bin_set_child">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="item"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="XqlBinClass" cname="GdaXqlBinClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlItemClass"/>
-    </struct>
-    <struct name="XqlColumn" cname="GdaXqlColumn">
-      <field name="Xqlatom" cname="xqlatom" type="GdaXqlAtom"/>
-      <method name="GetType" cname="gda_xql_column_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_column_new"/>
-      <constructor cname="gda_xql_column_new_with_data">
-        <parameters>
-          <parameter type="gint" name="num"/>
-          <parameter type="gboolean" name="asc"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlColumnClass" cname="GdaXqlColumnClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlAtomClass"/>
-    </struct>
-    <struct name="XqlConst" cname="GdaXqlConst">
-      <field name="Xqlatom" cname="xqlatom" type="GdaXqlAtom"/>
-      <method name="GetType" cname="gda_xql_const_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_const_new"/>
-      <constructor cname="gda_xql_const_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="value"/>
-          <parameter type="gchar*" name="alias"/>
-          <parameter type="gchar*" name="type"/>
-          <parameter type="gchar*" name="null"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlConstClass" cname="GdaXqlConstClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlAtomClass"/>
-    </struct>
-    <struct name="XqlDelete" cname="GdaXqlDelete">
-      <field name="Xqldml" cname="xqldml" type="GdaXqlDml"/>
-      <method name="GetType" cname="gda_xql_delete_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_delete_new"/>
-    </struct>
-    <struct name="XqlDeleteClass" cname="GdaXqlDeleteClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlDmlClass"/>
-    </struct>
-    <struct name="XqlDml" cname="GdaXqlDml">
-      <field name="Xqldml" cname="xqldml" type="GdaXqlItem"/>
-      <field name="Priv" cname="priv" type="GdaXqlDmlPrivate*" access="private"/>
-      <method name="AddConstFromText" cname="gda_xql_dml_add_const_from_text">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="gchar*" name="value"/>
-          <parameter type="gchar*" name="type"/>
-          <parameter type="gboolean" name="null"/>
-        </parameters>
-      </method>
-      <method name="AddFieldFromText" cname="gda_xql_dml_add_field_from_text">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="gchar*" name="alias"/>
-          <parameter type="gboolean" name="group"/>
-        </parameters>
-      </method>
-      <method name="AddFunc" cname="gda_xql_dml_add_func">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="item"/>
-        </parameters>
-      </method>
-      <method name="AddGroupCondition" cname="gda_xql_dml_add_group_condition">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="cond"/>
-          <parameter type="gchar*" name="type"/>
-        </parameters>
-      </method>
-      <method name="AddOrder" cname="gda_xql_dml_add_order">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gint" name="column"/>
-          <parameter type="gboolean" name="asc"/>
-        </parameters>
-      </method>
-      <method name="AddQuery" cname="gda_xql_dml_add_query">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="item"/>
-        </parameters>
-      </method>
-      <method name="AddRowCondition" cname="gda_xql_dml_add_row_condition">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="cond"/>
-          <parameter type="gchar*" name="type"/>
-        </parameters>
-      </method>
-      <method name="AddSet" cname="gda_xql_dml_add_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="item"/>
-        </parameters>
-      </method>
-      <method name="AddSetConst" cname="gda_xql_dml_add_set_const">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="field"/>
-          <parameter type="gchar*" name="value"/>
-          <parameter type="gchar*" name="type"/>
-          <parameter type="gboolean" name="null"/>
-        </parameters>
-      </method>
-      <method name="AddTargetFromText" cname="gda_xql_dml_add_target_from_text">
-        <return-type type="gchar*"/>
-        <parameters>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="GdaXqlItem*" name="join"/>
-        </parameters>
-      </method>
-      <method name="GetType" cname="gda_xql_dml_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-    </struct>
-    <struct name="XqlDmlClass" cname="GdaXqlDmlClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlItemClass"/>
-      <callback cname="add_target_from_text">
-        <return-type type="gchar*"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_field_from_text">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_const_from_text">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_func">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_query">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_row_condition">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_group_condition">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_order">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-      <callback cname="add_set_const">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlDml*" name="xqldml,"/>
-        </parameters>
-      </callback>
-    </struct>
-    <struct name="XqlDual" cname="GdaXqlDual">
-      <field name="Xqldual" cname="xqldual" type="GdaXqlItem"/>
-      <field name="Priv" cname="priv" type="GdaXqlDualPrivate*" access="private"/>
-      <method name="GetLeft" cname="gda_xql_dual_get_left">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="GetRight" cname="gda_xql_dual_get_right">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="GetType" cname="gda_xql_dual_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_dual_new">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-          <parameter type="gchar*" name="sqlfmt"/>
-          <parameter type="gchar*" name="sqlop"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_eq"/>
-      <constructor cname="gda_xql_dual_new_eq_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_ge"/>
-      <constructor cname="gda_xql_dual_new_ge_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_gt"/>
-      <constructor cname="gda_xql_dual_new_gt_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_in"/>
-      <constructor cname="gda_xql_dual_new_in_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_le"/>
-      <constructor cname="gda_xql_dual_new_le_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_like"/>
-      <constructor cname="gda_xql_dual_new_like_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_lt"/>
-      <constructor cname="gda_xql_dual_new_lt_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_ne"/>
-      <constructor cname="gda_xql_dual_new_ne_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_set"/>
-      <constructor cname="gda_xql_dual_new_set_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_dual_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-          <parameter type="gchar*" name="sqlfmt"/>
-          <parameter type="gchar*" name="sqlop"/>
-          <parameter type="GdaXqlItem*" name="left"/>
-          <parameter type="GdaXqlItem*" name="right"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlDualClass" cname="GdaXqlDualClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlItemClass"/>
-    </struct>
-    <struct name="XqlField" cname="GdaXqlField">
-      <field name="Xqlatom" cname="xqlatom" type="GdaXqlAtom"/>
-      <method name="GetType" cname="gda_xql_field_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_field_new"/>
-      <constructor cname="gda_xql_field_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="source"/>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="gchar*" name="alias"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlFieldClass" cname="GdaXqlFieldClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlAtomClass"/>
-    </struct>
-    <struct name="XqlFunc" cname="GdaXqlFunc">
-      <field name="Xqlbin" cname="xqlbin" type="GdaXqlBin"/>
-      <method name="AddConstFromText" cname="gda_xql_func_add_const_from_text">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="value"/>
-          <parameter type="gchar*" name="type"/>
-          <parameter type="gchar*" name="null"/>
-        </parameters>
-      </method>
-      <method name="AddFieldFromText" cname="gda_xql_func_add_field_from_text">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="gchar*" name="alias"/>
-        </parameters>
-      </method>
-      <method name="GetType" cname="gda_xql_func_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_func_new"/>
-      <constructor cname="gda_xql_func_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="gchar*" name="alias"/>
-          <parameter type="gchar*" name="aggregate"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlFuncClass" cname="GdaXqlFuncClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlBinClass"/>
-    </struct>
-    <struct name="XqlInsert" cname="GdaXqlInsert">
-      <field name="Xqldml" cname="xqldml" type="GdaXqlDml"/>
-      <method name="GetType" cname="gda_xql_insert_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_insert_new"/>
-    </struct>
-    <struct name="XqlInsertClass" cname="GdaXqlInsertClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlDmlClass"/>
-    </struct>
-    <struct name="XqlItem" cname="GdaXqlItem">
-      <field name="Object" cname="object" type="GObject"/>
-      <field name="Priv" cname="priv" type="GdaXqlItemPrivate*"/>
-      <method name="Add" cname="gda_xql_item_add">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="child"/>
-        </parameters>
-      </method>
-      <method name="AddId" cname="gda_xql_item_add_id">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-        </parameters>
-      </method>
-      <method name="AddRef" cname="gda_xql_item_add_ref">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="ref"/>
-        </parameters>
-      </method>
-      <method name="FindId" cname="gda_xql_item_find_id">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-        </parameters>
-      </method>
-      <method name="FindRef" cname="gda_xql_item_find_ref">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="gchar*" name="ref"/>
-        </parameters>
-      </method>
-      <method name="FindRoot" cname="gda_xql_item_find_root">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="GetAttrib" cname="gda_xql_item_get_attrib">
-        <return-type type="gchar*"/>
-        <parameters>
-          <parameter type="gchar*" name="attrib"/>
-        </parameters>
-      </method>
-      <method name="GetParent" cname="gda_xql_item_get_parent">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="GetRef" cname="gda_xql_item_get_ref">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="gchar*" name="ref"/>
-        </parameters>
-      </method>
-      <method name="GetTag" cname="gda_xql_item_get_tag">
-        <return-type type="gchar*"/>
-      </method>
-      <method name="GetType" cname="gda_xql_item_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <method name="SetAttrib" cname="gda_xql_item_set_attrib">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="attrib"/>
-          <parameter type="gchar*" name="value"/>
-        </parameters>
-      </method>
-      <method name="SetParent" cname="gda_xql_item_set_parent">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="parent"/>
-        </parameters>
-      </method>
-      <method name="SetTag" cname="gda_xql_item_set_tag">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-        </parameters>
-      </method>
-      <method name="ToDom" cname="gda_xql_item_to_dom">
-        <return-type type="xmlNode*"/>
-        <parameters>
-          <parameter type="xmlNode*" name="parent"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="XqlItemClass" cname="GdaXqlItemClass">
-      <field name="ParentClass" cname="parent_class" type="GObjectClass"/>
-      <callback cname="to_dom">
-        <return-type type="xmlNode*"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="xqlitem,"/>
-        </parameters>
-      </callback>
-      <callback cname="add">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="xqlitem,"/>
-        </parameters>
-      </callback>
-      <callback cname="find_id">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="xqlitem,"/>
-        </parameters>
-      </callback>
-      <callback cname="find_ref">
-        <return-type type="GdaXqlItem*"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="xqlitem,"/>
-        </parameters>
-      </callback>
-    </struct>
-    <struct name="XqlJoin" cname="GdaXqlJoin">
-      <field name="Xqldual" cname="xqldual" type="GdaXqlDual"/>
-      <method name="GetType" cname="gda_xql_join_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_join_new"/>
-      <constructor cname="gda_xql_join_new_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="target"/>
-          <parameter type="GdaXqlItem*" name="cond"/>
-          <parameter type="gchar*" name="type"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlJoinClass" cname="GdaXqlJoinClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlDualClass"/>
-    </struct>
-    <struct name="XqlList" cname="GdaXqlList">
-      <field name="Xqlitem" cname="xqlitem" type="GdaXqlItem"/>
-      <field name="Priv" cname="priv" type="GdaXqlListPrivate*" access="private"/>
-      <method name="GetType" cname="gda_xql_list_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_list_new">
-        <parameters>
-          <parameter type="gchar*" name="tag"/>
-        </parameters>
-      </constructor>
-      <constructor cname="gda_xql_list_new_and"/>
-      <constructor cname="gda_xql_list_new_arglist"/>
-      <constructor cname="gda_xql_list_new_dest"/>
-      <constructor cname="gda_xql_list_new_group"/>
-      <constructor cname="gda_xql_list_new_joinlist"/>
-      <constructor cname="gda_xql_list_new_or"/>
-      <constructor cname="gda_xql_list_new_order"/>
-      <constructor cname="gda_xql_list_new_setlist"/>
-      <constructor cname="gda_xql_list_new_sourcelist"/>
-      <constructor cname="gda_xql_list_new_targetlist"/>
-      <constructor cname="gda_xql_list_new_valuelist"/>
-      <method name="UnrefList" cname="gda_xql_list_unref_list" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GSList*" name="list"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="XqlListClass" cname="GdaXqlListClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlItemClass"/>
-    </struct>
-    <struct name="XqlQuery" cname="GdaXqlQuery">
-      <field name="Xqlquery" cname="xqlquery" type="GdaXqlBin"/>
-      <method name="GetType" cname="gda_xql_query_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_query_new"/>
-      <constructor cname="gda_xql_query_new_with_data">
-        <parameters>
-          <parameter type="GdaXqlItem*" name="xqlitem"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlQueryClass" cname="GdaXqlQueryClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlBinClass"/>
-    </struct>
-    <struct name="XqlSelect" cname="GdaXqlSelect">
-      <field name="Xqldml" cname="xqldml" type="GdaXqlDml"/>
-      <method name="GetType" cname="gda_xql_select_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_select_new"/>
-    </struct>
-    <struct name="XqlSelectClass" cname="GdaXqlSelectClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlDmlClass"/>
-    </struct>
-    <struct name="XqlStack" cname="GdaXqlStack">
-      <field name="Gobject" cname="gobject" type="GObject"/>
-      <field name="Priv" cname="priv" type="GdaXqlStackPrivate*" access="private"/>
-      <method name="Empty" cname="gda_xql_stack_empty">
-        <return-type type="gboolean"/>
-      </method>
-      <method name="GetType" cname="gda_xql_stack_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_stack_new"/>
-      <method name="Pop" cname="gda_xql_stack_pop">
-        <return-type type="GdaXqlItem*"/>
-      </method>
-      <method name="Push" cname="gda_xql_stack_push">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXqlItem*" name="item"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="XqlStackClass" cname="GdaXqlStackClass">
-      <field name="ParentClass" cname="parent_class" type="GObjectClass"/>
-    </struct>
-    <struct name="XqlTarget" cname="GdaXqlTarget">
-      <field name="Xqlbin" cname="xqlbin" type="GdaXqlBin"/>
-      <method name="GetType" cname="gda_xql_target_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_target_new"/>
-      <constructor cname="gda_xql_target_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-          <parameter type="gchar*" name="name"/>
-          <parameter type="GdaXqlItem*" name="join"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlTargetClass" cname="GdaXqlTargetClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlBinClass"/>
-    </struct>
-    <struct name="XqlUpdate" cname="GdaXqlUpdate">
-      <field name="Xqldml" cname="xqldml" type="GdaXqlDml*"/>
-      <method name="GetType" cname="gda_xql_update_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_update_new"/>
-    </struct>
-    <struct name="XqlUpdateClass" cname="GdaXqlUpdateClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlDmlClass"/>
-    </struct>
-    <struct name="XqlValue" cname="GdaXqlValue">
-      <field name="Xqlbin" cname="xqlbin" type="GdaXqlBin"/>
-      <method name="GetType" cname="gda_xql_value_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_value_new"/>
-      <constructor cname="gda_xql_value_new_with_data">
-        <parameters>
-          <parameter type="gchar*" name="id"/>
-        </parameters>
-      </constructor>
-    </struct>
-    <struct name="XqlValueClass" cname="GdaXqlValueClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlBinClass"/>
-    </struct>
-    <struct name="XqlValueRef" cname="GdaXqlValueRef">
-      <field name="Xqlatom" cname="xqlatom" type="GdaXqlAtom"/>
-      <method name="GetType" cname="gda_xql_valueref_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <constructor cname="gda_xql_valueref_new"/>
-    </struct>
-    <struct name="XqlValueRefClass" cname="GdaXqlValueRefClass">
-      <field name="ParentClass" cname="parent_class" type="GdaXqlAtomClass"/>
-    </struct>
     <class name="Config" cname="GdaConfig_">
       <method name="AddListener" cname="gda_config_add_listener" shared="true">
         <return-type type="guint"/>
