@@ -16,6 +16,9 @@
 	'guint32', "uint", 'const-gchar', "IntPtr", 'GObject', "IntPtr",
 	'gchar', "IntPtr");
 
+`mkdir -p ../gdk/generated`;
+`mkdir -p ../gtk/generated`;
+
 while ($def = get_def()) {
 
 	if ($def =~ /^\(define-(enum|flags)/) {
@@ -44,7 +47,7 @@ while ($def = get_def()) {
 }
 
 foreach $key (sort (keys (%objects))) {
-	next if ($key !~ /(GtkBin|GtkButton|GtkContainer|GtkObject|GtkWidget|GtkWindow)$/);
+	next if ($key ne "GtkWindow");
 	gen_object (split (/\n/, $objects{$key}));
 }
 
@@ -106,8 +109,7 @@ sub gen_enum
 		}
 	}
 
-	$dir = "../generated/" . lc ($namespace);
-	`mkdir -p $dir`;
+	$dir = "../" . lc ($namespace) . "/generated";
 
 	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
 	
@@ -157,8 +159,7 @@ sub gen_object
 	$parent = $maptypes{$1};
 
 	$objdef =~ /in-module "(\w+)"/;
-	$dir = "../generated/" . lc ($namespace = $1);
-	`mkdir -p $dir`;
+	$dir = "../" . lc ($namespace = $1) . "/generated";
 
 	%props = ();
 	%events = ();
@@ -173,7 +174,7 @@ sub gen_object
 		}
 	}
 
-	print "Generating Class $typename in ../$dir/$typename.cs\n";
+	print "Generating Class $typename in $dir/$typename.cs\n";
 	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
 	
 	print OUTFILE "// Generated file: Do not modify\n\n";
@@ -192,6 +193,10 @@ sub gen_object
 	}
 
 	foreach $key (sort (keys (%methods))) {
+		if (($key =~ /^(Get|Set)(\w+)/) && exists($props{$2})) {
+			print "killed $key\n";
+			next;
+		}
 		print OUTFILE gen_method ($key, $methods{$key}, "gtk-1.3.dll");
 	}
 

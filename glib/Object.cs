@@ -107,6 +107,35 @@ namespace GLib {
 		}
 
 		/// <summary>
+		///	Equals Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Checks equivalence of two Objects.
+		/// </remarks>
+
+		public override bool Equals (object o)
+		{
+			if (!(o is Object))
+				return false;
+
+			return (Handle == ((Object) o).Handle);
+		}
+
+		/// <summary>
+		///	GetHashCode Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Calculates a hashing value.
+		/// </remarks>
+
+		public override int GetHashCode ()
+		{
+			return Handle.GetHashCode ();
+		}
+
+		/// <summary>
 		///	GetData Method
 		/// </summary>
 		///
