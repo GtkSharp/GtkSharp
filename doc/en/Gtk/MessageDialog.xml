@@ -26,7 +26,9 @@
 	in the <see cref="T:Gtk.Dialog" /> is clicked or the <see cref="T:Gtk.MessageDialog" /> is closed.
       </para>
       <para>
-        A message dialog
+	After  <see cref="M:Gtk.Dialog.Run()" /> returns, you are responsible for hiding (using <see cref="M:Gtk.Widget.Hide()" />) or destroying (using <see cref="M:Gtk.Widget.Destroy()" />) the dialog if you wish to do so.</para>
+      <para>
+        A simple message dialog
 	<example>
           <code lang="C#">
 MessageDialog md = new MessageDialog (parent_window, 
@@ -35,6 +37,24 @@ MessageDialog md = new MessageDialog (parent_window,
                                       ButtonsType.Close, "Error loading file");
 	
 int result = md.Run ();
+md.Destroy();
+  	  </code>
+        </example></para>
+      <para>
+        A yes/no message dialog
+	<example>
+          <code lang="C#">
+MessageDialog md = new MessageDialog (parent_window, 
+                                      DialogFlags.DestroyWithParent,
+	                              MessageType.Question, 
+                                      ButtonsType.YesNo, "Are you sure you want to quit?");
+	
+ResponseType result = (ResponseType)md.Run ();
+
+if (result == ResponseType.Yes)
+	Application.Quit();
+else
+	md.Destroy();
   	  </code>
         </example></para>
       <para>
