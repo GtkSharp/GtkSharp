@@ -52,6 +52,17 @@ public Program (string app_id, string app_version, ModuleInfo module,
 	new_argv[0] = app_id;
 	Array.Copy (argv, 0, new_argv, 1, argv.Length);
 	Raw = gtksharp_gnome_program_init (app_id, app_version, ref module, new_argv.Length, new_argv, nargs, args);
+
+	//
+	// Dynamically reset the signal handlers, because Gnome overwrites them
+	//
+	Type mono_runtime_type = Type.GetType ("Mono.Runtime");
+	if (mono_runtime_type != null){
+		object [] iargs = new object [0];
+		System.Reflection.MethodInfo mi = mono_runtime_type.GetMethod ("InstallSignalHandlers");
+	
+		mi.Invoke (null, iargs);
+	}
 }
 
 public void Run ()
