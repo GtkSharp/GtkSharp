@@ -22,3 +22,15 @@
 			}
 		}
 
+		[DllImport("gnomeui-2")]
+		static extern IntPtr gnome_icon_list_new(uint icon_width, IntPtr adj, int flags);
+
+		public IconList (uint icon_width, Gtk.Adjustment adj, int flags) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (IconList)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				Construct (icon_width, adj, flags);
+				return;
+			}
+			Raw = gnome_icon_list_new(icon_width, (adj != null) ? adj.Handle : IntPtr.Zero, flags);
+		}
