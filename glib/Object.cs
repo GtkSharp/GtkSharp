@@ -357,6 +357,12 @@ namespace GLib {
 			}
 		}
 
+		protected Hashtable PersistentData {
+			get {
+				return WeakObject.Lookup (Handle).Data;
+			}
+		}
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_get_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 

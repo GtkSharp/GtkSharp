@@ -84,3 +84,25 @@
 			val.Dispose ();
 			return ret;
 		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_sortable_set_default_sort_func(IntPtr raw, IntPtr sort_func, IntPtr user_data, IntPtr destroy);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_sortable_set_default_sort_func(IntPtr raw, GtkSharp.TreeIterCompareFuncNative sort_func, IntPtr user_data, GtkSharp.DestroyNotifyNative destroy);
+
+		public void SetDefaultSortFunc (TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
+		{
+			if (sort_func == null) {
+				PersistentData ["default_sort_func"] = null;
+				gtk_tree_sortable_set_default_sort_func (Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+				return;
+			}
+
+			GtkSharp.TreeIterCompareFuncWrapper sort_func_wrapper = new GtkSharp.TreeIterCompareFuncWrapper (sort_func);
+			PersistentData ["default_sort_func"] = sort_func_wrapper;
+			GtkSharp.DestroyNotifyWrapper destroy_wrapper = null;
+			destroy_wrapper = new GtkSharp.DestroyNotifyWrapper (destroy);
+			gtk_tree_sortable_set_default_sort_func(Handle, sort_func_wrapper.NativeDelegate, user_data, destroy_wrapper.NativeDelegate);
+		}
+
