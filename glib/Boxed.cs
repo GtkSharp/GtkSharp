@@ -30,7 +30,7 @@ namespace GLib {
 
 		public Boxed (object o)
 		{
-			this.obj = obj;
+			this.obj = o;
 		}
 
 		public Boxed (IntPtr ptr)
