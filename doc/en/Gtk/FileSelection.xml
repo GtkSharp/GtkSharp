@@ -30,6 +30,7 @@ using Gtk;
 class FileSelectionSample
 {
 	Label lbl;
+	FileSelection fs;
 
 	static void Main ()
 	{
@@ -49,16 +50,26 @@ class FileSelectionSample
 		vbox.Add (btn);
 		lbl = new Label ("Selected: ");
 		vbox.Add (lbl);
-		win.ShowAll ();
+		win.ShowAll ()
+
+		fs = new FileSelection ("Choose a file");
+		fs.Response += new ResponseHandler (OnFileSelectionResponse);
+
 		Application.Run ();
 	}
 
 	void OnButtonClicked (object o, EventArgs args)
 	{
-		FileSelection fs = new FileSelection ("Choose a file");
 		fs.Run ();
-		lbl.Text = "Selected: " + fs.SelectionEntry.Text;
 		fs.Hide ();
+	}
+
+	void OnFileSelectionResponse (object o, ResponseArgs args)
+	{
+		if (args.ResponseId == ResponseType.Ok)
+		{
+			lbl.Text = "Selected: " + fs.Filename;
+		}
 	}
 
 	void OnWinDelete (object o, DeleteEventArgs args)
@@ -247,7 +258,7 @@ class FileSelectionSample
       <Docs>
         <summary>The filename selected by this <see cref="T:Gtk.FileSelection" />.</summary>
         <returns>an object of type <see cref="T:System.String" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FileopEntry">
@@ -271,7 +282,7 @@ class FileSelectionSample
       <Docs>
         <summary>The dialog box for confirming actions, if necessary.</summary>
         <returns>an object of type <see cref="T:Gtk.MessageDialog" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HistoryMenu">
@@ -347,7 +358,7 @@ class FileSelectionSample
       <Docs>
         <summary>The text to display about the file to be selected.</summary>
         <returns>an object of type <see cref="T:Gtk.Label" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SelectionEntry">
@@ -359,7 +370,7 @@ class FileSelectionSample
       <Docs>
         <summary>The text-entry widget for entering a filename into.</summary>
         <returns>an object of type <see cref="T:Gtk.Entry" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FileList">
