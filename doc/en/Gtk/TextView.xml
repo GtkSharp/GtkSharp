@@ -1,5 +1,5 @@
 <Type Name="TextView" FullName="Gtk.TextView">
-  <TypeSignature Language="C#" Value="public class TextView : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TextView : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,29 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Widget that displays a <see cref="T:Gtk.TextBuffer" /></summary>
+    <remarks>
+      <example>
+        <code lang="C#">
+
+           Gtk.TextView view;
+           Gtk.TextBuffer buffer;
+
+           view = new Gtk.TextView ();
+           buffer = view.Buffer;
+
+           buffer.Text = "Hello, this is some text";
+        </code>
+        <para>
+          Now you might put the view in a container and display it on
+          the screen; when the user edits the text, events on the
+          buffer will be emitted, such as <see
+          cref="E:Gtk.TextView.Changed" />, <see
+          cref="E:Gtk.TextView.InsertText" />,
+          and so on.
+        </para>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -40,7 +61,7 @@
         <Parameter Name="location" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This API needs to be fixed</summary>
         <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
         <param name="location">To be added: an object of type 'Gdk.Rectangle'</param>
         <remarks>To be added</remarks>
@@ -60,13 +81,24 @@
         <Parameter Name="window_y" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="win">To be added: an object of type 'Gtk.TextWindowType'</param>
-        <param name="buffer_x">To be added: an object of type 'int'</param>
-        <param name="buffer_y">To be added: an object of type 'int'</param>
-        <param name="window_x">To be added: an object of type 'int&amp;'</param>
-        <param name="window_y">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Converts specified buffer coordinates to coordinates
+          for window
+        </summary>
+        <param name="win">
+          a <see cref="T:Gtk.TextWindowType" />,
+          except for <see cref="T:Gtk.TextWindowType.Private" />
+        </param>
+        <param name="buffer_x">x coordinate of the buffer</param>
+        <param name="buffer_y">y coordinate of the buffer</param>
+        <param name="window_x">return location for the window's x coordinate</param>
+        <param name="window_y">return location for the window's y coordinate</param>
+        <remarks>
+          <para>
+            Note that you can't convert coordinates for a nonexisting
+            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBorderWindowSize">
@@ -79,10 +111,10 @@
         <Parameter Name="type" Type="Gtk.TextWindowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Gtk.TextWindowType'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the width of the specified border window.</summary>
+        <param name="type">a window to return size from</param>
+        <returns>the width of the window</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardDisplayLine">
@@ -95,10 +127,23 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the given iter backward by one display (wrapped) line</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <returns><see langword="true" /> if <see paramref="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            Moves the given iter backward by one display (wrapped)
+            line. A display line is different from a
+            paragraph. Paragraphs are separated by newlines or other
+            paragraph separator characters. Display lines are created
+            by line-wrapping a paragraph. If wrapping is turned off,
+            display lines and paragraphs will be the same. Display
+            lines are divided differently for each view, since they
+            depend on the view's width; paragraphs are the same in all
+            views, since they depend on the contents of the <see
+            cref="T:Gtk.TextBuffer" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWindow">
@@ -111,10 +156,22 @@
         <Parameter Name="win" Type="Gtk.TextWindowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="win">To be added: an object of type 'Gtk.TextWindowType'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the <see cref="T:Gdk.Window" /> corresponding to an area of the text view</summary>
+        <param name="win">window to get</param>
+        <returns>
+          a <see cref="T:Gdk.Window" />, or <see langword="null" />
+        </returns>
+        <remarks>
+          <para>
+            Retrieves the <see cref="T:Gdk.Window" /> corresponding to
+            an area of the text view; possible windows include the
+            overall widget window, child windows on the left, right,
+            top, bottom, and the window that displays the text
+            buffer. Windows are <see langword="null" /> and
+            nonexistent if their width or height is 0, and are
+            nonexistent before the widget has been realized.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetBorderWindowSize">
@@ -128,10 +185,24 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Gtk.TextWindowType'</param>
-        <param name="size">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Sets the width of <see cref="T:Gtk.TextWindowType.Left" />
+          or <see cref="T:Gtk.TextWindowType.Right" />, or the height of
+          <see cref="T:Gtk.TextWindow.Top" /> or <see cref="T:Gtk.TextWindow.Bottom" />.
+        </summary>
+        <param name="type">the window to affect</param>
+        <param name="size">the width or height of the window</param>
+        <remarks>
+          <para>
+            Automatically destroys the corresponding window if the
+            size is set to 0, and creates the window if the size is
+            set to non-zero. This function can only be used for the
+            "border windows," it doesn't work with <see
+            cref="T:Gtk.TextWindowType.Widget" />, <see
+            cref="T:Gtk.TextWindow.Text" />, or <see
+            cref="T:Gtk.TextWindow.Private" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PlaceCursorOnscreen">
@@ -142,9 +213,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the cursor to the currently visible region of the buffer, it it isn't there already.</summary>
+        <returns><see langword="true" /> if the cursor had to be moved</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ForwardDisplayLineEnd">
@@ -157,10 +228,23 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves <see paramref="iter" /> forward to the next display line end</summary>
+        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
+        <returns><see langword="true" /> if <see paramref="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            Moves the given iter forward to the next display line
+            end. A display line is different from a
+            paragraph. Paragraphs are separated by newlines or other
+            paragraph separator characters. Display lines are created
+            by line-wrapping a paragraph. If wrapping is turned off,
+            display lines and paragraphs will be the same. Display
+            lines are divided differently for each view, since they
+            depend on the view's width; paragraphs are the same in all
+            views, since they depend on the contents of the
+            <see cref="T:Gtk.TextBuffer" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetVisibleRect">
@@ -173,9 +257,13 @@
         <Parameter Name="visible_rect" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="visible_rect">To be added: an object of type 'Gdk.Rectangle'</param>
-        <remarks>To be added</remarks>
+        <summary>Fills <see paramref="visible_rect" /> with the currently-visible region of the buffer, in buffer coordinates.</summary>
+        <param name="visible_rect">the rectangle to fill</param>
+        <remarks>
+          You can convert to window coordinates with <see
+          cref="M:Gtk.TextView.BufferToWindowCoords(Gtk.TextWindowType,System.Int32,System.Int32,System.Int32&amp;,System.Int32&amp;)"
+          />.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddChildAtAnchor">
@@ -189,10 +277,13 @@
         <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="anchor">To be added: an object of type 'Gtk.TextChildAnchor'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds a child widget in the text buffer, at the given anchor</summary>
+        <param name="child">any <see cref="M:Gtk.Widget" /></param>
+        <param name="anchor">
+          a <see cref="M:Gtk.TextChildAnchor" /> in the current <see
+          cref="P:Gtk.TextView.Buffer"/>
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackwardDisplayLineStart">
@@ -205,10 +296,22 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the given <see paramref="iter" /> backward to the next display line start</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <returns><see langword="true" /> if <see paramref="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            A display line is different from a paragraph. Paragraphs
+            are separated by newlines or other paragraph separator
+            characters. Display lines are created by line-wrapping a
+            paragraph. If wrapping is turned off, display lines and
+            paragraphs will be the same. Display lines are divided
+            differently for each view, since they depend on the view's
+            width; paragraphs are the same in all views, since they
+            depend on the contents of the <see cref="T:Gtk.TextBuffer"
+            />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardDisplayLine">
@@ -221,10 +324,22 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the given <see paramref="iter" /> forward by one display (wrapped) line</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <returns><see langword="true" /> if <see paramref="iter" /> was moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            A display line is different from a paragraph. Paragraphs
+            are separated by newlines or other paragraph separator
+            characters. Display lines are created by line-wrapping a
+            paragraph. If wrapping is turned off, display lines and
+            paragraphs will be the same. Display lines are divided
+            differently for each view, since they depend on the view's
+            width; paragraphs are the same in all views, since they
+            depend on the contents of the <see cref="T:Gtk.TextBuffer"
+            />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetLineYrange">
@@ -239,11 +354,20 @@
         <Parameter Name="height" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="y">To be added: an object of type 'int&amp;'</param>
-        <param name="height">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Gets the y coordinate of the top of the line
+          containing <see paramref="iter" />, and the height of the line
+        </summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <param name="y">return location for the y coordinate</param>
+        <param name="height">return location for the height</param>
+        <remarks>
+          Gets the y coordinate of the top of the line containing
+          iter, and the height of the line. The coordinate is a buffer
+          coordinate; convert to window coordinates with <see
+          cref="M:Gtk.TextView.BufferToWindowCoords(Gtk.TextWindowType,System.Int32,System.Int32,System.Int32&amp;,System.Int32&amp;)"
+          />.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollToMark">
@@ -260,13 +384,36 @@
         <Parameter Name="yalign" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <param name="within_margin">To be added: an object of type 'double'</param>
-        <param name="use_align">To be added: an object of type 'bool'</param>
-        <param name="xalign">To be added: an object of type 'double'</param>
-        <param name="yalign">To be added: an object of type 'double'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Scrolls the view so that <see paramref="mark" /> is on the
+          screen in the position indicated by <see paramref="xalign"
+          /> and <see paramref="yalign" />
+        </summary>
+        <param name="mark">a given <see cref="T:Gtk.TextMark" /></param>
+        <param name="within_margin">
+          margin of screen size, the valid range is 0.0 to 0.5
+        </param>
+        <param name="use_align">
+          whether to use alignment arguments (if <see langword="false"
+        />, just get the mark onscreen)
+        </param>
+        <param name="xalign">
+          horizontal alignment of mark within visible area
+        </param>
+        <param name="yalign">
+          vertical alignment of mark within visible area
+        </param>
+        <remarks>
+          <para>
+            An alignment of 0.0 indicates left or top, 1.0 indicates
+            right or bottom, 0.5 means center. If <see
+            paramref="use_align" /> is <see langword="false" />,
+            the text scrolls the minimal distance to get the mark
+            onscreen, possibly not scrolling at all. The effective
+            screen for purposes of this function is reduced by a
+            margin of size <see paramref="within_margin" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StartsDisplayLine">
@@ -279,10 +426,17 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether iter is at the start of a display line</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <returns><see langword="true" /> if <see paramref="iter" /> begins a wrapped line</returns>
+        <remarks>
+          <para>
+            Determines whether iter is at the start of a display
+            line. See <see
+            cref="M:GtkTextView.ForwardDisplayLine(Gtk.TextIter)" /> for an
+            explanation of display lines vs. paragraphs.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWindowType">
@@ -295,10 +449,10 @@
         <Parameter Name="window" Type="Gdk.Window" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="window">To be added: an object of type 'Gdk.Window'</param>
-        <returns>To be added: an object of type 'Gtk.TextWindowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Used for finding out which window an event corresponds to</summary>
+        <param name="window">a window type</param>
+        <returns>the window type</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MoveVisually">
@@ -312,11 +466,27 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="count">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Move the iterator a given number of characters visually, treating it as the strong cursor position</summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <param name="count">the number of characters to move (negative moves left, positive moves right)</param>
+        <returns><see langword="true" /> if iter moved and is not on the end iterator</returns>
+        <remarks>
+          <para>
+            Move the iterator a given number of characters visually,
+            treating it as the strong cursor position. If count is
+            positive, then the new strong cursor position will be
+            count positions to the right of the old cursor
+            position. If count is negative then the new strong cursor
+            position will be count positions to the left of the old
+            cursor position.
+          </para>
+          <para>
+            In the presence of bidirection text, the correspondence
+            between logical and visual order will depend on the
+            direction of the current run, and there may be jumps when
+            the cursor is moved off of the end of a run.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveMarkOnscreen">
@@ -329,10 +499,10 @@
         <Parameter Name="mark" Type="Gtk.TextMark" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Moves <see paramref="mark" /> within the buffer so that it's located within the currently-visible text area</summary>
+        <param name="mark">a <see cref="T:Gtk.TextMark" /></param>
+        <returns><see langword="true" /> if the mark moved (wasn't already onscreen)</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollToIter">
@@ -348,15 +518,47 @@
         <Parameter Name="xalign" Type="System.Double" />
         <Parameter Name="yalign" Type="System.Double" />
       </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="within_margin">To be added: an object of type 'double'</param>
-        <param name="use_align">To be added: an object of type 'bool'</param>
-        <param name="xalign">To be added: an object of type 'double'</param>
-        <param name="yalign">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+      <Docs>p
+        <summary>
+          Scrolls the text view so that <see paramref="iter" /> is on
+          the screen in the position indicated by <see
+          paramref="xalign" /> and <see paramref="yalign" />
+        </summary>
+        <param name="iter">the given <see cref="T:Gtk.TextIter" /></param>
+        <param name="within_margin">
+          margin of screen size, the valid range is 0.0 to 0.5
+        </param>
+        <param name="use_align">
+          whether to use alignment arguments (if <see
+          langword="false"/>, just get the mark onscreen)
+        </param>
+        <param name="xalign">horizontal alignment of mark within visible area</param>
+        <param name="yalign">vertical alignment of mark within visible area</param>
+        <returns><see langword="true" /> if scrolling occurred</returns>
+        <remarks>
+          <para>
+            Scrolls the text view so that <see paramref="iter" /> is on the screen in the
+            position indicated by <see paramref="xalign" /> and <see
+            paramref="yalign" />. An alignment of
+            0.0 indicates left or top, 1.0 indicates right or bottom,
+            0.5 means center. If <see paramref="use_align" /> is <see
+            langword="false" />, the text scrolls
+            the minimal distance to get the mark onscreen, possibly
+            not scrolling at all. The effective screen for purposes of
+            this function is reduced by a margin of size
+            within_margin.
+          </para>
+          <para>
+            NOTE: This function uses the currently-computed height of
+            the lines in the text buffer. Note that line heights are
+            computed in an idle handler; so this function may not have
+            the desired effect if it's called before the height
+            computations. To avoid oddness, consider using <see
+            cref="M:Gtk.TextView.ScrollToMark(Gtk.TextMark,System.Double,System.Boolean,System.Double,System.Double)"
+            /> which saves a point to be scrolled to after line
+            validation.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollMarkOnscreen">
@@ -369,9 +571,15 @@
         <Parameter Name="mark" Type="Gtk.TextMark" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Scrolls the text view the minimum distance such that <see
+          paramref="mark" /> is contained within the visible area of
+          the widget
+        </summary>
+        <param name="mark">
+          a mark in the current <see cref="P:Gtk.TextView.Buffer" />
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="WindowToBufferCoords">
@@ -388,13 +596,21 @@
         <Parameter Name="buffer_y" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="win">To be added: an object of type 'Gtk.TextWindowType'</param>
-        <param name="window_x">To be added: an object of type 'int'</param>
-        <param name="window_y">To be added: an object of type 'int'</param>
-        <param name="buffer_x">To be added: an object of type 'int&amp;'</param>
-        <param name="buffer_y">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Converts coordinates on the window to buffer coordinates</summary>
+        <param name="win">
+          a <see cref="T:Gtk.TextWindowType" /> except <see
+          cref="T:Gtk.TextWindowType.Private" />
+        </param>
+        <param name="window_x">x coordinate of the window</param>
+        <param name="window_y">y coordinate of the window</param>
+        <param name="buffer_x">return location for the buffer's x coordinate</param>
+        <param name="buffer_y">return location for the buffer's y coordinate</param>
+        <remarks>
+          <para>
+            Note that you can't convert coordinates for a nonexisting
+            window (see <see cref="M:Ptk.TextView.SetBorderWindowSize(Gtk.TextWindowType,System.Int32)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -431,9 +647,16 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextView'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new TextView</summary>
+        <returns>the newly-created TextView</returns>
+        <remarks>
+          <para>
+            If you don't set the <see cref="P:Gtk.TextView.Buffer" /> before using
+            the text view, an empty default buffer will be created for
+            you. If you want to specify your own buffer, use
+            <see cref="C:Gtk.TextView(Gtk.TextBuffer)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -444,10 +667,16 @@
         <Parameter Name="buffer" Type="Gtk.TextBuffer" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">To be added: an object of type 'Gtk.TextBuffer'</param>
-        <returns>To be added: an object of type 'Gtk.TextView'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new TextView displaying a specified buffer.</summary>
+        <param name="buffer">the buffer to be displayed</param>
+        <returns>a newly-created TextView</returns>
+        <remarks>
+          <para>
+            Creates a new <see cref="T:Gtk.TextView" /> widget
+            displaying the <see paramref="buffer" /> buffer. One
+            buffer can be shared among many widgets.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -469,9 +698,22 @@
         <ReturnType>Gtk.TextAttributes</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The default text attributes</summary>
         <returns>To be added: an object of type 'Gtk.TextAttributes'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Obtains a copy of the default text attributes. These are
+            the attributes used for text unless a tag overrides
+            them. You'd typically pass the default attributes in to
+            <see cref="M:Gtk.TextIter.GetAttributes(System.Boolean)"
+            /> in order to get the attributes in effect at a given
+            text position.
+          </para>
+          <para>
+            The return valuea is a copy owned by the caller of this
+            function, and should be freed.
+          </para>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="Buffer">
@@ -484,10 +726,12 @@
         <Parameter Name="value" Type="Gtk.TextBuffer" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.TextBuffer'</param>
-        <returns>To be added: an object of type 'Gtk.TextBuffer'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          The <see cref="T:Gtk.TextBuffer" /> displayed by the text view
+        </summary>
+        <param name="value">the new buffer to be displayed</param>
+        <returns>the current buffer that is displayed</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CursorVisible">
@@ -500,10 +744,13 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the insertion point is displayed</summary>
+        <param name="value">
+          <see langword="true" /> to display the insertion
+          point
+        </param>
+        <returns>whether the insertion point is visible</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="LeftMargin">
@@ -516,10 +763,10 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default left margin</summary>
+        <param name="value">the left margin in pixels</param>
+        <returns>the left margin</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RightMargin">
@@ -532,10 +779,10 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default right margin</summary>
+        <param name="value">the right margin in pixels</param>
+        <returns>the right margin</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PixelsAboveLines">
@@ -548,10 +795,15 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default number of blank pixels above paragraphs</summary>
+        <param name="value">the number of pixels above paragraphs</param>
+        <returns>the number of pixels above paragraphs</returns>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override the defaults.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Justification">
@@ -564,10 +816,15 @@
         <Parameter Name="value" Type="Gtk.Justification" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Justification'</param>
-        <returns>To be added: an object of type 'Gtk.Justification'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default justification</summary>
+        <param name="value">The <see cref="T:Gtk.Justification" /> for the text</param>
+        <returns>The default justification of paragraphs</returns>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override the defaults.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Indent">
@@ -580,10 +837,14 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default indentation for paragraphs</summary>
+        <param name="value">the indentation in pixels</param>
+        <returns>the number of pixels of indentation</returns>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may override the default.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Editable">
@@ -596,10 +857,14 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the text can be modified by the user</summary>
+        <param name="value">
+          <see langword="true" /> if the text is editable by the user
+        </param>
+        <returns>
+          whether or not the text can be edited by the user
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="WrapMode">
@@ -612,10 +877,10 @@
         <Parameter Name="value" Type="Gtk.WrapMode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.WrapMode'</param>
-        <returns>To be added: an object of type 'Gtk.WrapMode'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether to wrap lines never, at word boundaries, or at character boundaries.</summary>
+        <param name="value">a <see cref="T:Gtk.WrapMode" /></param>
+        <returns>the <see cref="T:Gtk.WrapMode" /> of the text view </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Tabs">
@@ -628,10 +893,10 @@
         <Parameter Name="value" Type="Pango.TabArray" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.TabArray'</param>
-        <returns>To be added: an object of type 'Pango.TabArray'</returns>
-        <remarks>To be added</remarks>
+        <summary>Custom tabs for this text</summary>
+        <param name="value">a <see cref="T:Pango.TabArray" /></param>
+        <returns>custom tabes for this text</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PixelsBelowLines">
@@ -644,10 +909,15 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default number of pixels of blank space to put below paragraphs</summary>
+        <param name="value">the number of pixels of blank space below paragraphs</param>
+        <returns>the blank space below paragraphs in pixels</returns>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override this default.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PixelsInsideWrap">
@@ -660,10 +930,15 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default number of pixels of blank space to leave between display/wrapped lines within a paragraph</summary>
+        <param name="value">default number of pixels between wrapped lines</param>
+        <returns>default number of pixels of blank space between wrapped lines</returns>
+        <remarks>
+          <para>
+            Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
+            override this default.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollAdjustmentsSet">
@@ -814,7 +1089,7 @@
         <Parameter Name="line_top" Type="System.Int32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This method should be fixed</summary>
         <param name="target_iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
         <param name="y">To be added: an object of type 'int'</param>
         <param name="line_top">To be added: an object of type 'int&amp;'</param>
@@ -833,7 +1108,7 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This method should be fixed</summary>
         <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
         <param name="x">To be added: an object of type 'int'</param>
         <param name="y">To be added: an object of type 'int'</param>
