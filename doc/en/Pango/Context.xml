@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Stores global information used to control the itemization process.</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -36,10 +36,10 @@
         <Parameter Name="desc" Type="Pango.FontDescription" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="desc">To be added: an object of type 'Pango.FontDescription'</param>
-        <returns>To be added: an object of type 'Pango.Font'</returns>
-        <remarks>To be added</remarks>
+        <summary>Loads the font in one of the fontmaps in the context that is the closest match for <paramref name="desc" />.</summary>
+        <param name="desc">an object of type <see cref="T:Pango.FontDescription" /> describing the font to load</param>
+        <returns>the font loaded, or <see langword="null" /> if no font matched.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetMetrics">
@@ -53,11 +53,14 @@
         <Parameter Name="language" Type="Pango.Language" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="desc">To be added: an object of type 'Pango.FontDescription'</param>
-        <param name="language">To be added: an object of type 'Pango.Language'</param>
-        <returns>To be added: an object of type 'Pango.FontMetrics'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get overall metric information for a font particular font description.</summary>
+        <param name="desc">an object of type <see cref="T:Pango.FontDescription" /></param>
+        <param name="language"> language tag used to determine which script to get the metrics for, or <see langword="null" /> to indicate to get the metrics for the entire font.</param>
+        <returns> a <see cref="T:Pango.Metrics" /> object.</returns>
+        <remarks>Since the metrics may be substantially different for different scripts, a language tag can be provided to indicate that the metrics should be retrieved that correspond to the script(s) used by that language.
+
+<para>The <see cref="T:Pango.FontDescription" /> is interpreted in the same way as by pango_itemize(), and the family name may be a comma separated list of figures. If characters from multiple of these families would be used to render the string, then the returned fonts would be a composite of the metrics for the fonts loaded for the individual families.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadFontset">
@@ -71,11 +74,11 @@
         <Parameter Name="language" Type="Pango.Language" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="desc">To be added: an object of type 'Pango.FontDescription'</param>
-        <param name="language">To be added: an object of type 'Pango.Language'</param>
-        <returns>To be added: an object of type 'Pango.Fontset'</returns>
-        <remarks>To be added</remarks>
+        <summary>Load a set of fonts in the context that can be used to render a font matching <paramref name="desc" />.</summary>
+        <param name="desc">an object of type <see cref="T:Pango.FontDescription" /> describing the fonts to load</param>
+        <param name="language">an object of type <see cref="T:Pango.Language" /> the fonts will be used for</param>
+        <returns>the fontset, or <see langword="null" /> if no font matched.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -115,10 +118,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.FontDescription'</param>
-        <returns>To be added: an object of type 'Pango.FontDescription'</returns>
-        <remarks>To be added</remarks>
+        <summary>The default font description for the context.</summary>
+        <param name="value">the new pango font description</param>
+        <returns>the context's default font description.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Language">
@@ -130,10 +133,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Language'</param>
-        <returns>To be added: an object of type 'Pango.Language'</returns>
-        <remarks>To be added</remarks>
+        <summary>The global language tag for the context.</summary>
+        <param name="value"> the new language tag.</param>
+        <returns> the global language tag.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BaseDir">
@@ -145,10 +148,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Direction'</param>
-        <returns>To be added: an object of type 'Pango.Direction'</returns>
-        <remarks>To be added</remarks>
+        <summary>The base direction for the context.</summary>
+        <param name="value">the new base direction</param>
+        <returns>the base direction</returns>
+        <remarks>The base direction is used in applying the Unicode bidirectional algorithm; if the direction is <see cref="F:Pango.Direction.Ltr" /> or <see cref="F:Pango.Direction.Rtl" />, then the value will be used as the paragraph direction in the Unicode bidirectional algorithm.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -188,10 +191,10 @@
         <Parameter Name="families" Type="Pango.FontFamily" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>List all families for a context.</summary>
         <param name="families">a <see cref="T:Pango.FontFamily" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <returns>the number of families</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -200,9 +203,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <returns>a <see cref="T:Pango.Context" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
   </Members>
