@@ -2,7 +2,7 @@
 
 namespace Gdk
 {
-	public enum Keys {
+	public enum Key {
 		VoidSymbol = 0xFFFFFF,
 		BackSpace = 0xFF08,
 		Tab = 0xFF09,
