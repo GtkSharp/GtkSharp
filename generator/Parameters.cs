@@ -119,7 +119,16 @@ namespace GtkSharp.Generation {
 
 		public string PassAs {
 			get {
-				return elem.GetAttribute ("pass_as");
+				if (elem.HasAttribute ("pass_as"))
+					return elem.GetAttribute ("pass_as");
+
+				if (IsArray)
+					return "";
+
+				if (Generatable is SimpleGen && !(Generatable is ConstStringGen) && CType.EndsWith ("*") && !CSType.EndsWith ("IntPtr"))
+					return "out";
+
+				return "";
 			}
 		}
 
@@ -283,7 +292,10 @@ namespace GtkSharp.Generation {
 					need_sep = true;
 				}
 
-				if (this [i].PassAs != "") {
+				if (type == "GError**") {
+					call_string += "out ";				
+					import_sig += "out ";				
+				} else if (this [i].PassAs != "" && !IsVarArgs) {
 					signature += this [i].PassAs + " ";
 					// We only need to do this for value types
 					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
@@ -298,12 +310,8 @@ namespace GtkSharp.Generation {
 						call_parm = this [i].PassAs + " " + call_parm.Replace (".Handle", "_handle");
 						import_sig += this [i].PassAs + " ";
 					}
-
-				} else if (type == "GError**") {
-					call_string += "out ";				
-					import_sig += "out ";				
 				}
-				
+
 				if (IsVarArgs && i == (Count - 2) && VAType == "length_param") {
 					call_string += this [Count - 1].Name + ".Length";
 				} else {

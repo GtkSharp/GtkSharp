@@ -104,12 +104,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t{");
 
 			int count = (parms != null) ? parms.Count : 0;
-			if (count > 0)
-				sw.WriteLine ("\t\t\tobject[] _args = new object[{0}];", count);
 			int idx = 0;
 			bool need_sep = false;
 			bool need_ref_owned = true;
 			string call_str = "";
+			string cleanup_str = "";
 			for (int i = 0; i < count; i++)
 			{
 				string parm_name = parms[i].Name;
@@ -122,22 +121,27 @@ namespace GtkSharp.Generation {
 					continue;
 
 				string cstype = parms[i].CSType;
-				// FIXME: Too much code copy/pasted here. Refactor?
 				ClassBase parm_wrapper = table.GetClassGen (ctype);
 				if (need_ref_owned && parm_wrapper != null && ((parm_wrapper is ObjectGen) || (parm_wrapper is InterfaceGen))) {
 					need_ref_owned = false;
 					sw.WriteLine("\t\t\tbool ref_owned = false;");
 				}
-				sw.WriteLine("\t\t\t_args[" + idx + "] = " + table.FromNative (ctype, parm_name) + ";");
+				sw.Write("\t\t\t" + cstype + " _arg" + idx);
+				if (parms[i].PassAs == "out") {
+					sw.WriteLine(";");
+					cleanup_str += "\t\t\t" + parm_name + " = " + table.CallByName (ctype, "_arg" + idx) + ";\n";
+				} else
+					sw.WriteLine(" = " + table.FromNative (ctype, parm_name) + ";");
+
 				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || table.IsManuallyWrapped (ctype)) {
-					sw.WriteLine("\t\t\tif (_args[" + idx + "] == null)");
-					sw.WriteLine("\t\t\t\t_args[{0}] = new {1}({2});", idx, cstype, parm_name);
+					sw.WriteLine("\t\t\tif (_arg" + idx + " == null)");
+					sw.WriteLine("\t\t\t\t_arg{0} = new {1}({2});", idx, cstype, parm_name);
 				}
 				if (need_sep)
 					call_str += ", ";
 				else
 					need_sep = true;
-				call_str += String.Format ("({0}) _args[{1}]", cstype, idx);
+				call_str += String.Format ("{0} _arg{1}", parms[i].PassAs, idx);
 				idx++;
 			}
 
@@ -154,9 +158,11 @@ namespace GtkSharp.Generation {
 						sw.WriteLine ("return (int) {0};", invoke);
 					else
 						sw.WriteLine ("return ({0}) {1};", m_ret, table.ToNativeReturn (rettype, invoke));
-			}
-			else
+			} else
 				sw.WriteLine (invoke + ";");
+
+			if (cleanup_str != "")
+				sw.Write (cleanup_str);
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 

@@ -1,5 +1,16 @@
 2003-10-13  Mike Kestner  <mkestner@ximian.com>
 
+	* gdk/Gdk.metadata : mark an array param on PixbufDestroyNotify
+	* gdk/gdk-api.xml : regenerated
+	* generator/CallbackGen.cs : Handle out params in callback sigs
+	and ditch the object[] args handling for typed args.
+	* generator/Parameters.cs : more proactive PassAs logic.  We now
+	default all simple pointer types (uint*, int*, double*, etc...) 
+	to out params unless they are marked otherwise in the XML with a
+	pass_as tag or an array tag.  [Fixes #32104]
+
+2003-10-13  Mike Kestner  <mkestner@ximian.com>
+
 	* gnome/Gnome.metadata : new xpath metadata rules
 	* gnome/Makefile.in : apply metadata before generation
 	* gnome/gnome-api.xml : regenerated
