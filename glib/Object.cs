@@ -201,6 +201,23 @@ namespace GLib {
 		}
 
 		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Accesses an Object Property.
+		/// </remarks>
+
+		public void GetProperty (String name, out GLib.Object val)
+		{
+			IntPtr obj;
+			g_object_get (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      out obj, new IntPtr (0));
+			val = GLib.Object.GetObject (obj);
+		}
+
+		/// <summary>
 		///	SetProperty Method
 		/// </summary>
 		///
@@ -260,6 +277,22 @@ namespace GLib {
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
+
+		/// <summary>
+		///	SetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Changes the value of an Object Property.
+		/// </remarks>
+
+		public void SetProperty (String name, GLib.Object val)
+		{
+			g_object_set (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      val.Handle, new IntPtr (0));
+		}
+
 
 /*
 		[DllImport("gtk-1.3.dll")]
