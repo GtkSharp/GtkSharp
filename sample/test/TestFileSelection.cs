@@ -57,9 +57,7 @@ namespace WidgetViewer {
 
 		static void file_selection_cancel (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace WidgetViewer {
 		public static Gtk.Window Create ()
 		{
 			window = new Dialog ();
-			window.Response += new EventHandler (Print_Response);
+			window.Response += new ResponseHandler (Print_Response);
 			window.SetDefaultSize (200, 100);
 
 			window.Title = "GtkDialog";
@@ -46,16 +46,12 @@ namespace WidgetViewer {
 
 		static void Close_Button (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 
-		static void Print_Response (object o, EventArgs args)
+		static void Print_Response (object o, ResponseArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
-			Console.WriteLine ("Received response signal: " + sa.Args [1]);
-			sa.RetVal = true;
+			Console.WriteLine ("Received response signal: " + args.ResponseId);
 		}
 
 		static void Label_Toggle (object o, EventArgs args)

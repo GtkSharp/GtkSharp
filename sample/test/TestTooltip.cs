@@ -30,9 +30,7 @@ namespace WidgetViewer {
 
 		static void Window_Delete (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 	}
 }

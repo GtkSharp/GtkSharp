@@ -78,11 +78,9 @@ namespace WidgetViewer {
 
 		static void Color_Selection_Cancel (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			if (dialog != null)
 				dialog.Destroy ();
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 
 		static void Display_Result (Gdk.Color color)

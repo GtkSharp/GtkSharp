@@ -63,9 +63,7 @@ namespace WidgetViewer {
 
 		static void Close_Button (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 	}
 }

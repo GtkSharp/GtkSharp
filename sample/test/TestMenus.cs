@@ -135,7 +135,10 @@ namespace WidgetViewer {
 				if (i == 3)
 					menuitem.Sensitive = false;
 				
-				menuitem.Submenu = Create_Menu ((depth - 1), true);
+				Menu child = Create_Menu ((depth - 1), true);
+
+				if (child != null)
+					menuitem.Submenu = child;
 			}
 
 			return menu;
