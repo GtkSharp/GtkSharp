@@ -67,7 +67,11 @@ GdkColor *gtksharp_gtk_style_get_fg (GtkStyle *style, int i);
 
 GdkColor *gtksharp_gtk_style_get_bg (GtkStyle *style, int i);
 
+GdkColor *gtksharp_gtk_style_get_light (GtkStyle *style, int i);
+
 GdkColor *gtksharp_gtk_style_get_mid (GtkStyle *style, int i);
+
+GdkColor *gtksharp_gtk_style_get_dark (GtkStyle *style, int i);
 
 GdkColor *gtksharp_gtk_style_get_text (GtkStyle *style, int i);
 
@@ -226,9 +230,21 @@ gtksharp_gtk_style_get_bg (GtkStyle *style, int i)
 }
 
 GdkColor*
+gtksharp_gtk_style_get_light (GtkStyle *style, int i)
+{
+	return &style->light[i];
+}
+
+GdkColor*
 gtksharp_gtk_style_get_mid (GtkStyle *style, int i)
 {
 	return &style->mid[i];
+}
+
+GdkColor*
+gtksharp_gtk_style_get_dark (GtkStyle *style, int i)
+{
+	return &style->dark[i];
 }
 
 GdkColor*

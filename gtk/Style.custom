@@ -299,6 +299,66 @@ public Gdk.Color[] BaseColors {
 	}
 }
 
+[DllImport("gtksharpglue-2")]
+static extern IntPtr gtksharp_gtk_style_get_light (IntPtr style, int i);
+
+public Gdk.Color Light (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_light (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] LightColors {
+	get {
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_light (Handle, i));
+		}
+		return ret;
+	}
+}
+
+[DllImport("gtksharpglue-2")]
+static extern IntPtr gtksharp_gtk_style_get_mid (IntPtr style, int i);
+
+public Gdk.Color Mid (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_mid (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] MidColors {
+	get {
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_mid (Handle, i));
+		}
+		return ret;
+	}
+}
+
+[DllImport("gtksharpglue-2")]
+static extern IntPtr gtksharp_gtk_style_get_dark (IntPtr style, int i);
+
+public Gdk.Color Dark (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_dark (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] DarkColors {
+	get {
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_dark (Handle, i));
+		}
+		return ret;
+	}
+}
+
 [DllImport ("gtksharpglue-2")]
 static extern int gtksharp_gtk_style_get_thickness (IntPtr style, int x_axis);
 [DllImport ("gtksharpglue-2")]
