@@ -11,7 +11,7 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Global API elements for <see cref="N:Gdk" /></summary>
-    <remarks />
+    <remarks>Shouldn't be called explicitly if Gtk.Application.Init() is used.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -199,9 +199,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the display name specified in the command line arguments passed to Global.ParseArgs.</summary>
+        <returns>A <see cref="T:System.String" /> containing the name specified.</returns>
+        <remarks>If the name was not specified then null is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProgramClass">
@@ -358,9 +358,9 @@
         <Parameter Name="argv" Type="System.String[]&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="argv">a <see cref="T:System.String[]" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Initializes the library for usage.</summary>
+        <param name="argv">A <see cref="T:System.String[]" /> containing the args used to initialize the library.</param>
+        <returns>A <see cref="T:System.Boolean" />, that is true if its able to open and set the default display, otherwise its false.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -374,9 +374,9 @@
         <Parameter Name="argv" Type="System.String[]&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="argv">a <see cref="T:System.String[]" /></param>
-        <remarks>To be added</remarks>
+        <summary>Parses command line arguments and stores them for future usage.</summary>
+        <param name="argv">A <see cref="T:System.String[]" /> containing the args to parse.</param>
+        <remarks>Shouldn't be called explicitly if Global.InitCheck or Gtk.Application.Init or Gtk.Application.InitCheck are being used.</remarks>
       </Docs>
     </Member>
     <Member MemberName="QueryDepths">
