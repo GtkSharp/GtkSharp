@@ -20,7 +20,7 @@ namespace GLib {
 	public delegate void PrintFunc (string message);
 
 	[Flags]
-	public enum LogLevelFlags : uint
+	public enum LogLevelFlags : int
 	{
 		/* log flags */
 		FlagRecursion          = 1 << 0,
@@ -40,7 +40,7 @@ namespace GLib {
 		All                    = 255,
 
 		FlagMask               = 3,
-		LevelMask              = (uint) 0xFFFFFFFC
+		LevelMask              = unchecked ((int) 0xFFFFFFFC)
 	}
 
 	public class Log {

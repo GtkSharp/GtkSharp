@@ -17,7 +17,12 @@ namespace GLibSharp {
 	/// </remarks>
 	
 	public class Marshaller {
-	
+
+		//
+		// Do not allow instances of this
+		//
+		private Marshaller () {}
+		
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr mem);
 

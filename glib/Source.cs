@@ -10,6 +10,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 
         public class Source {
+		private Source () {}
 		
 		[DllImport("libglib-2.0-0.dll")]
 		static extern bool g_source_remove (uint tag);

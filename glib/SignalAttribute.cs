@@ -20,7 +20,7 @@ namespace GLib {
 	///   and allows obtaining its original name.
 	/// </remarks>
 	[Serializable]
-	public class SignalAttribute : Attribute 
+	public sealed class SignalAttribute : Attribute 
 	{
 		private string cname;
 

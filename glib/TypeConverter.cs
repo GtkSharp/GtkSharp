@@ -17,6 +17,9 @@ namespace GLibSharp {
 	///  Utilities for converting between TypeFundamentals and System.Type
 	/// </remarks>
 	public class TypeConverter {
+
+		private TypeConverter () {}
+		
 		public static TypeFundamentals LookupType (System.Type type)
 		{
 			if (type.Equals (typeof (string)))

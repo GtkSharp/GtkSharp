@@ -13,6 +13,8 @@ namespace GLib {
 
 
 	public class Markup {
+		private Markup () {}
+		
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_markup_escape_text (string text, int len);
 		

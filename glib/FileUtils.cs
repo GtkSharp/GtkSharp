@@ -25,5 +25,7 @@ namespace GLib {
 
 			return Marshal.PtrToStringAnsi (contents, length);
 		}
+
+		private FileUtils () {}
 	}
 }

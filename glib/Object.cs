@@ -16,7 +16,7 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 
 	[AttributeUsage(AttributeTargets.All)]
-	public class WrapperClassAttribute : Attribute {
+	public sealed class WrapperClassAttribute : Attribute {
 
 		public WrapperClassAttribute () : base () {}
 	}
