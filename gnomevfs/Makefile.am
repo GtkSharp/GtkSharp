@@ -39,9 +39,13 @@ sources = 					\
 	FileInfo.cs				\
 	Handle.cs				\
 	MimeType.cs				\
+	ModuleCallback.cs			\
+	ModuleCallbackAuthentication.cs		\
+	ModuleCallbackFullAuthentication.cs	\
 	Monitor.cs				\
 	Sync.cs					\
 	Vfs.cs					\
+	VfsException.cs				\
 	VfsStream.cs				\
 	VfsStreamAsyncResult.cs			\
 	Xfer.cs					\

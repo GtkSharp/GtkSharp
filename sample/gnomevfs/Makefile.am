@@ -1,6 +1,7 @@
 TARGETS =			\
 	TestAsync.exe		\
 	TestAsyncStream.exe	\
+	TestCallback.exe	\
 	TestDirectory.exe	\
 	TestInfo.exe		\
 	TestMime.exe		\
@@ -22,6 +23,7 @@ CLEANFILES = $(TARGETS)
 EXTRA_DIST = 			\
 	TestAsync.cs		\
 	TestAsyncStream.cs	\
+	TestCallback.cs		\
 	TestDirectory.cs	\
 	TestInfo.cs		\
 	TestMime.cs		\
@@ -39,6 +41,9 @@ TestAsync.exe: $(srcdir)/TestAsync.cs $(assemblies)
 
 TestAsyncStream.exe: $(srcdir)/TestAsyncStream.cs $(assemblies)
 	$(CSC) /out:TestAsyncStream.exe $(references) $(srcdir)/TestAsyncStream.cs
+
+TestCallback.exe: $(srcdir)/TestCallback.cs $(assemblies)
+	$(CSC) /out:TestCallback.exe $(references) $(srcdir)/TestCallback.cs
 
 TestDirectory.exe: $(srcdir)/TestDirectory.cs $(assemblies)
 	$(CSC) /out:TestDirectory.exe $(references) $(srcdir)/TestDirectory.cs

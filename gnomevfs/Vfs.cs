@@ -122,7 +122,7 @@ namespace Gnome.Vfs {
 				case Result.ErrorNotFound:
 					throw new FileNotFoundException (uri);
 				default:
-					throw new IOException (ResultToString (result));
+					throw new VfsException (result);
 			}
 		}
 	}
