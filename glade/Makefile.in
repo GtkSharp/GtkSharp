@@ -14,7 +14,8 @@ ASSEMBLY=glade-sharp.dll
 @ENABLE_GLADE_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GLADE_FALSE@ all: 
 
-generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe ../parser/gapi-fixup.exe Glade.metadata
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=glade-api.xml --metadata=Glade.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
 	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
 	--assembly-name=glade-sharp && touch generated-stamp

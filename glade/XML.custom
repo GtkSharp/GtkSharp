@@ -320,3 +320,19 @@
                         return new Glade.XML (
                                 System.Reflection.Assembly.GetCallingAssembly (), resource_name, root, domain);
                 }
+
+		[DllImport("libglade-2.0-0.dll")]
+		static extern IntPtr glade_xml_get_widget_prefix(IntPtr raw, string name);
+
+		public Gtk.Widget[] GetWidgetPrefix(string name) 
+		{
+			IntPtr raw_ret = glade_xml_get_widget_prefix(Handle, name);
+			if (raw_ret == IntPtr.Zero)
+				return new Gtk.Widget [0];
+			GLib.List list = new GLib.List (raw_ret);
+			Gtk.Widget[] result = new Gtk.Widget [list.Count];
+			int i = 0;
+			foreach (Gtk.Widget w in list)
+				result [i++] = w;
+			return result;
+		}
