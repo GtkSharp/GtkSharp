@@ -110,7 +110,7 @@ namespace WidgetViewer {
 			Menu menu = new Menu ();
 			MenuItem menuitem = null;
 			string label = null;
-			GLib.SList group = new GLib.SList (IntPtr.Zero);
+			GLib.SList group = null;
 
 			if (tearoff) {
 				menuitem = new TearoffMenuItem ();
@@ -122,11 +122,8 @@ namespace WidgetViewer {
 
 				label = String.Format ("item {0} - {1}", depth, j);
 				Console.WriteLine ("label: " + label);
-				try {
-					menuitem = RadioMenuItem.NewWithLabel (group, label);
-				} catch (Exception e) {
-					Console.WriteLine (e);
-				}
+				menuitem = RadioMenuItem.NewWithLabel (group, label);
+
 
 				group = ((RadioMenuItem) menuitem).Group;
 				Console.WriteLine ("Pass");
@@ -146,9 +143,7 @@ namespace WidgetViewer {
 
 		static void Close_Button (object o, EventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			window.Destroy ();
-			sa.RetVal = true;
 		}
 	}
 }
