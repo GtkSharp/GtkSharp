@@ -25,15 +25,18 @@ sub parseClass {
 	my ($node, $classes) = @_;
 	my %methods = ();
 	my %signals = ();
+	my %properties = ();
 	my @attrs = $node->attributes;
 	my $class_name = $attrs[0]->value;
-	${$classes}{$class_name} = [\%methods, \%signals];
+	${$classes}{$class_name} = [\%methods, \%signals, \%properties];
 
 	for ($method_node = $node->firstChild; $method_node != undef; $method_node = $method_node->nextSibling ()) {
 		if ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor") {
 			$methods{$method_node->firstChild->nodeValue} = 1;
 		} elsif ($method_node->nodeName eq "signal") {
 			$signals{$method_node->firstChild->nodeValue} = 1;
+		} elsif ($method_node->nodeName eq "property") {
+			$properties{$method_node->firstChild->nodeValue} = 1;
 		}	
 	}
 }
@@ -191,12 +194,13 @@ sub fixupNamespace {
 			my %classes = %$classes_ref;
 			$methods_ref = $classes{$class}[0];
 			$signals_ref = $classes{$class}[1];
+			$properties_ref = $classes{$class}[2];
 
 			if ({%$classes_ref}->{$class}) {
 			    addClassData ($doc, $node, $class, $data_list_ref);
 			}
 
-			next if not ($methods_ref or $signals_ref);
+			next if not ($methods_ref or $signals_ref or $properties_ref);
 
 			for ($method_node = $node->firstChild; $method_node; $method_node = $method_node->nextSibling ()) {
 				next if not ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor");
@@ -224,6 +228,26 @@ sub fixupNamespace {
 				next if not ${$signals_ref}{$signal};
 
 				fixupParams ($signal_node, $data_list_ref);
+			}
+
+			for ($property_node = $node->firstChild; $property_node; $property_node = $property_node->nextSibling ()) {
+				next if $property_node->nodeName ne "property";
+				my $property;
+				foreach $attr ($property_node->attributes) {
+					if ($attr->name eq "name") {
+						$property = $attr->value;
+						last;
+					}
+				}
+				next if not ${$properties_ref}{$property};
+
+				foreach $data (@$data_list_ref) {
+					if ($$data[1] eq "property") {
+						$property_node->setAttribute ($$data[5], $$data[6]);
+						next;
+					}
+				}
+
 			}
 
 		}
