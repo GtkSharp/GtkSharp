@@ -29,7 +29,6 @@ namespace GtkSharp.Generation {
 		
 		static SymbolTable table = null;
 
-		Hashtable alias = new Hashtable ();
 		Hashtable types = new Hashtable ();
 		
 		public static SymbolTable Table {
@@ -43,9 +42,6 @@ namespace GtkSharp.Generation {
 
 		public SymbolTable ()
 		{
-			Hashtable alias = new Hashtable ();
-			Hashtable types = new Hashtable ();
-		
 			AddType (new SimpleGen ("void", "void"));
 			AddType (new SimpleGen ("gboolean", "bool"));
 			AddType (new SimpleGen ("gint", "int"));
@@ -92,9 +88,9 @@ namespace GtkSharp.Generation {
 			// but this should work for now
 			AddType (new SimpleGen ("gsize", "uint"));
 			AddType (new SimpleGen ("gssize", "int"));
-			AddType (new SimpleGen ("off_t", "System.UIntPtr"));
-			AddType (new SimpleGen ("size_t", "System.UIntPtr"));
-			AddType (new SimpleGen ("ssize_t", "System.IntPtr"));
+			AddType (new AliasGen ("off_t", "size_t"));
+			AddType (new SizeTGen ());
+			AddType (new SSizeTGen ());
 			
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GMemChunk", "IntPtr"));

@@ -52,7 +52,7 @@ namespace GtkSharp.Generation {
 			string result = array.NullOk ? array.Name + " != null ? " : "";
 			result += CastFromInt (length.CSType) + array.Name + ".Length";
 			result += array.NullOk ? ": 0" : "";
-			return result;
+			return length.Generatable.CallByName (result);
 		}
 
 		public string GetCallString (bool is_set)
@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
 						continue;
 					}
 				} else if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
-					result[i] = CastFromInt (p.CSType) + parameters [i - 1].Name + ".Length";
+					result[i] = igen.CallByName (CastFromInt (p.CSType) + parameters [i - 1].Name + ".Length");
 					continue;
 				} else if (p.IsArray && p.MarshalType != p.CSType) {
 					result[i] = (is_set && i == 0 ? "native_value" : "native_" + p.Name);

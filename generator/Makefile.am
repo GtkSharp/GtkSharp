@@ -41,6 +41,8 @@ sources = 				\
 	SignalHandler.cs		\
 	Signature.cs			\
 	SimpleGen.cs			\
+	SizeTGen.cs			\
+	SSizeTGen.cs			\
 	Statistics.cs			\
 	StringGen.cs			\
 	StructBase.cs			\
