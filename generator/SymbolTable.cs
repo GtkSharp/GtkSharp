@@ -112,6 +112,10 @@ namespace GtkSharp.Generation {
 		
 		private static string Trim(string type)
 		{
+			// HACK: If we don't detect this here, there is no
+			// way of indicating it in the symbol table
+			if (type == "void*" || type == "const-void*") return "gpointer";
+
 			string trim_type = type.TrimEnd('*');
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
