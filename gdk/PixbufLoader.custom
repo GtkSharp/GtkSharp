@@ -48,33 +48,37 @@
 
 			while ((n = input.Read (buffer, 0, 8192)) != 0)
 				Write (buffer, (uint) n);
-			Close ();
 		}
 		
 		public PixbufLoader (System.IO.Stream stream) : this ()
 		{
-			LoadFromStream (stream);
+			try {
+				LoadFromStream (stream);
+			} finally {
+				Close ();
+			}
 		}
 
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource) : this ()
 		{
-			if (assembly == null)
-				assembly = System.Reflection.Assembly.GetCallingAssembly ();
+			try {
+				if (assembly == null)
+					assembly = System.Reflection.Assembly.GetCallingAssembly ();
 
-			if (resource == null)
-				throw new ArgumentNullException ("resource");
+				if (resource == null)
+					throw new ArgumentNullException ("resource");
 
-			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
-			if (s == null)
-				throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
+				System.IO.Stream s = assembly.GetManifestResourceStream (resource);
+				if (s == null)
+					throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
 
-			LoadFromStream (s);
+				LoadFromStream (s);
+			} finally {
+				Close ();
+			}
 		}
 
 		static public PixbufLoader LoadFromResource (string resource)
 		{
-			if (resource == null)
-				throw new ArgumentNullException ("resource");
-
 			return new PixbufLoader (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
