@@ -16,15 +16,17 @@ enum DialogType
 
 class Client {
 
-	static Window window = null;
-	static Dialog dialog = null;
-	static Toolbar toolbar = null;
-	static Table tableau = null;
-	static Entry id_entry = null;
-	static Entry name_entry = null;
-	static Entry address_entry = null;
-	static VBox box = null;
-	static IdConnection conn = null;
+	static Window window;
+	static Dialog dialog;
+	static Toolbar toolbar;
+	static Table tableau;
+	static Entry id_entry;
+	static Entry name_entry;
+	static Entry address_entry;
+	static Statusbar status;
+	static Stack statusIds;
+	static VBox box;
+	static IdConnection conn;
 	
 	static void Main ()
 	{
@@ -42,10 +44,27 @@ class Client {
 
 		UpdateView ();
 
+		status = new Statusbar ();
+		box.PackEnd (status, false, false, 0);
 		window.ShowAll ();
 		Application.Run ();
 	}
 
+	static uint context_id = 0;
+	static void PushMessage (string message)
+	{
+		if (statusIds == null)
+			statusIds = new Stack ();
+		statusIds.Push (status.Push (context_id++, message));
+	}
+
+	static void PopMessage ()
+	{
+		if (statusIds == null || statusIds.Count == 0)
+			return;
+		status.Pop ((uint) statusIds.Pop ());
+	}
+	
 	static void PackToolbar ()
 	{
 		toolbar.AppendItem ("Insert", "Insert a row", String.Empty,
@@ -124,6 +143,9 @@ class Client {
 
 	static void Db_Insert ()
 	{
+		if (dialog != null) {
+			return;
+		}
 		dialog = new Dialog ();
 		dialog.Title = "Insert row";
 		dialog.BorderWidth = 3;
@@ -151,6 +173,9 @@ class Client {
 
 	static void Db_Remove ()
 	{
+		if (dialog != null) {
+			return;
+		}
 		dialog = new Dialog ();
 		dialog.Title = "Remove row";
 		dialog.BorderWidth = 3;		
@@ -212,6 +237,9 @@ class Client {
 
 	static void Db_Update ()
 	{
+		if (dialog != null) {
+			return;
+		}
 		dialog = new Dialog ();
 		dialog.Title = "Update row";
 		dialog.BorderWidth = 3;		
@@ -299,7 +327,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=80.24.221.71;" +
+		string connectionString = "hostaddr=192.168.1.2;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
