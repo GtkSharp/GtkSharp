@@ -37,6 +37,7 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
 
 generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
+	rm generated/* &&	\
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API)			\
 	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
 	--gluelib-name=atksharpglue --glue-filename=glue/generated.c			\

@@ -75,6 +75,7 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
 
 generated-stamp: $(API) $(srcdir)/$(ADDITIONAL_API) ../generator/gapi_codegen.exe $(build_customs)
+	rm generated/* &&	\
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) $(srcdir)/$(ADDITIONAL_API) 			\
 	--include $(INCLUDE_API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
 	--gluelib-name=gdksharpglue --glue-filename=glue/generated.c						\
