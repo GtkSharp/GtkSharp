@@ -1,0 +1,57 @@
+<html>
+<body>
+
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<h1>Mono</h1>
+
+<a id="about"><h2>About the Mono Technology</h2></a><br>
+<a id="mylife"><h2>How Will Mono Technology Change My Life?</h2></a><br>
+<a id="hello"<h2>HelloWorld</h2></a><br>
+This is a must in every book or tutorial, a "Hello, World!" program, so  here it is:
+
+<pre class="code">
+using System;
+
+class Hello {
+    static void Main() {
+        Console.WriteLine ("Hello, World!");
+    }
+}
+</pre>
+
+<kbd>mcs Hello.cs -o hello.exe<br>
+mono hello.exe or
+mint hello.exe         
+</kbd>
+
+<a id="arch"><h2>Architecture</h2></a><br>
+<a id="tools"><h2>Tools</h2></a>
+<h3>MonoDoc</h3>
+<h3>Mono Compiler Suite (mcs)</h3>
+<h3>Mono Interpreter (mint)</h3>
+<h3>Mono Content dumper and disassembler (monodis)</h3>
+<h3>Mono debugger</h3>
+
+<a id="kernel"><h2>Linux kernel support for binaries</h2></a>
+You can make your mono .exe files executable by following these steps:
+<ol>
+ <li>Enabling binfmt in your kernel.
+ <li>Adding the line below to your fstab:<br>
+ <pre class="code">binfmt_misc /proc/sys/fs/binfmt_misc binfmt_misc none</pre>
+ <li>On boot run the cmd below:<br>
+ <pre class="code">echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register</pre>
+ <li>chmod +x foobar.exe
+</ol>
+
+Another way to accomplish the above is to wrap the <br>
+mono .exe file it in a shell script, like this:
+<pre class="code">
+#!/bin/sh
+/usr/bin/mono /usr/bin/mcs.exe "$@"
+</pre>
+
+<a id="qae"><h2>Questions and exercises</h2></a>
+
+</body>
+</html>
