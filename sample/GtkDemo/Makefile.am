@@ -1,4 +1,5 @@
-references = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../../atk/atk-sharp.dll /r:../../gdk/gdk-sharp.dll /r:../../gtk/gtk-sharp.dll
+assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
+references = $(addprefix /r:, $(assemblies))
 TARGETS = GtkDemo.exe
 CLEANFILES = $(TARGETS)
 noinst_SCRIPTS = $(TARGETS)
@@ -26,6 +27,6 @@ sources = 					\
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
-GtkDemo.exe: $(build_sources)
+GtkDemo.exe: $(build_sources) $(assemblies)
 	$(CSC) -g /out:GtkDemo.exe $(build_sources) $(references)
 

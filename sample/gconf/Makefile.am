@@ -10,14 +10,15 @@ FILES = 		\
 
 SCHEMA = $(srcdir)/sample.schema
 RESOURCES = /resource:$(srcdir)/sample.glade
-REFERENCES = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../../atk/atk-sharp.dll /r:../../art/art-sharp.dll /r:../../gdk/gdk-sharp.dll /r:$(GCONFDIR)/GConf/gconf-sharp.dll /r:../../gtk/gtk-sharp.dll /r:../../gnome/gnome-sharp.dll /r:../../glade/glade-sharp.dll /r:$(GCONFDIR)/GConf.PropertyEditors/gconf-sharp-peditors.dll
+ASSEMBLIES = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../art/art-sharp.dll ../../gdk/gdk-sharp.dll $(GCONFDIR)/GConf/gconf-sharp.dll ../../gtk/gtk-sharp.dll ../../gnome/gnome-sharp.dll ../../glade/glade-sharp.dll $(GCONFDIR)/GConf.PropertyEditors/gconf-sharp-peditors.dll
+REFERENCES = $(addprefix /r:, $(ASSEMBLIES))
 
 top_builddir=../..
 GCONFDIR=$(top_builddir)/gconf
 
 noinst_SCRIPTS = $(TARGET)
 
-sample.exe: $(SCHEMA) $(srcdir)/sample.glade $(FILES)
+sample.exe: $(SCHEMA) $(srcdir)/sample.glade $(FILES) $(ASSEMBLIES)
 	$(CSC) /out:sample.exe $(FILES) $(REFERENCES) $(RESOURCES)
 
 Settings.cs: $(SCHEMA)

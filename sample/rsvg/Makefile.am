@@ -1,4 +1,5 @@
-references = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../../atk/atk-sharp.dll /r:../../gdk/gdk-sharp.dll /r:../../gtk/gtk-sharp.dll /r:../../glade/glade-sharp.dll /r:../../art/art-sharp.dll /r:../../gnome/gnome-sharp.dll /r:../../rsvg/rsvg-sharp.dll
+assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll ../../glade/glade-sharp.dll ../../art/art-sharp.dll ../../gnome/gnome-sharp.dll ../../rsvg/rsvg-sharp.dll
+references = $(addprefix /r:, $(assemblies))
 
 if ENABLE_RSVG
 TARGETS = svghelloworld.exe
@@ -10,6 +11,6 @@ noinst_SCRIPTS = $(TARGETS)
 EXTRA_DIST = svghelloworld.cs sample.svg
 
 SOURCES = $(srcdir)/svghelloworld.cs
-svghelloworld.exe: $(SOURCES)
+svghelloworld.exe: $(SOURCES) $(assemblies)
 	$(CSC) /out:svghelloworld.exe $(SOURCES) $(references)
 
