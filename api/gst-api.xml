@@ -52,11 +52,11 @@
       <member cname="GST_ELEMENT_FLAG_LAST" name="FlagLast"/>
     </enum>
     <enum name="ElementState" cname="GstElementState" type="enum">
-      <member cname="GST_STATE_VOID_PENDING" name="VoidPending"/>
-      <member cname="GST_STATE_NULL" name="Null"/>
-      <member cname="GST_STATE_READY" name="Ready"/>
-      <member cname="GST_STATE_PAUSED" name="Paused"/>
-      <member cname="GST_STATE_PLAYING" name="Playing"/>
+      <member cname="GST_STATE_VOID_PENDING" name="VoidPending" value="0"/>
+      <member cname="GST_STATE_NULL" name="Null" value="1"/>
+      <member cname="GST_STATE_READY" name="Ready" value="2"/>
+      <member cname="GST_STATE_PAUSED" name="Paused" value="4"/>
+      <member cname="GST_STATE_PLAYING" name="Playing" value="8"/>
     </enum>
     <enum name="ElementStateReturn" cname="GstElementStateReturn" type="enum">
       <member cname="GST_STATE_FAILURE" name="Failure"/>
@@ -344,12 +344,6 @@
     </callback>
     <callback name="PadGetFunction" cname="GstPadGetFunction">
       <return-type type="GstBuffer*"/>
-      <parameters>
-        <parameter type="GstPad*" name="pad"/>
-      </parameters>
-    </callback>
-    <callback name="PadIntConnFunction" cname="GstPadIntConnFunction">
-      <return-type type="GList*"/>
       <parameters>
         <parameter type="GstPad*" name="pad"/>
       </parameters>
@@ -1588,12 +1582,6 @@
           <parameter type="GstPadGetCapsFunction" name="getcaps"/>
         </parameters>
       </method>
-      <method name="SetInternalConnectionFunction" cname="gst_pad_set_internal_connection_function">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GstPadIntConnFunction" name="intconn"/>
-        </parameters>
-      </method>
       <method name="SetName" cname="gst_pad_set_name">
         <return-type type="void"/>
         <parameters>
@@ -1742,7 +1730,6 @@
       <field cname="queryfunc" type="GstPadQueryFunction"/>
       <field cname="formatsfunc" type="GstPadFormatsFunction"/>
       <field cname="querytypefunc" type="GstPadQueryTypeFunction"/>
-      <field cname="intconnfunc" type="GstPadIntConnFunction"/>
       <field cname="bufferpoolfunc" type="GstPadBufferPoolFunction"/>
       <signal name="SetActive" cname="set_active" when="LAST">
         <return-type type="void"/>
@@ -2661,7 +2648,6 @@
       <field cname="type" type="GstEventType"/>
       <field cname="timestamp" type="guint64"/>
       <field cname="src" type="GstObject*"/>
-      <field cname="type" type="GstSeekType"/>
       <method name="DiscontGetValue" cname="gst_event_discont_get_value">
         <return-type type="gboolean"/>
         <parameters>
