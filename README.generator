@@ -1,0 +1,33 @@
+How to use the Gtk# code generator:
+
+Install dependencies:
+   * You need to install the XML::LibXML perl bindings and Gtk#.
+
+Within your project directory, do the following:
+   * Setup a toplevel subdirectory for each namespace/assembly you
+     are wrapping. Instruct the makefile for this directory to compile,
+     at minimum, generated/*.
+   * Write a .sources file listing the source directories for the
+     libraries you will be wrapping, one line per directory. The
+     format is: "directory namespace library".
+   * Run gapi.pp SOURCEFILE APIDIR where SOURCEFILE is the sources file
+     you just wrote, and APIDIR is the directory to place the API XML
+	  descriptions in.
+	* Run gapi_codegen.exe on the API files you created. If you depend
+	  on any other wrapped libraries (such as gtk-sharp.dll), you need to 
+	  include their API listings via the --include directive. 
+	  The code generator, if successful, will have populated the assembly
+	  directories with generated/ directories.
+
+It is generally helpful to automate this process with makefiles. Gtk# uses
+the following organization:
+  sources/: Source directories, .sources listing, .metadata files.
+            Is not listed in SUBDIRS, developers run make manually here when
+				they want to update the API files.
+	   api/: API files written here. They are committed to CVS and included
+		      in releases for the convenience of the lib user.
+				This _is_ listed in SUBDIRS, the generator directives are in
+				this makefile. (And hence api needs to be listed before
+				the assembly directories)
+
+	
