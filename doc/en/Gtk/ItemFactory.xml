@@ -1,5 +1,5 @@
 <Type Name="ItemFactory" FullName="Gtk.ItemFactory">
-  <TypeSignature Language="C#" Value="public class ItemFactory : Gtk.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class ItemFactory : Gtk.Object, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A factory for menus.</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
@@ -33,10 +33,14 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>If <paramref name="widget" /> has been created by an item factory, returns the full path to it.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <returns>The full path to <paramref name="widget" /> if it has been created by an item factory, <see langword="null" /> otherwise. This value is owned by GTK+ and must not be modified or freed.</returns>
+        <remarks>
+	 <para>
+	  The full path of a <paramref name="widget" /> is the concatenation of the factory path specified in <see cref="M:Gtk.ItemFactory.Construct" /> with the path specified in the <see cref="T:Gtk.ItemFactoryEntry" /> from which the <paramref name="widget" /> was created.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromWidget">
@@ -49,10 +53,10 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.ItemFactory'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the item factory from which a <paramref name="widget" /> was created.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <returns>The item factory from which <paramref name="widget" /> was created, or <see langword="null" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PopupDataFromWidget">
@@ -65,10 +69,14 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'IntPtr'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the <paramref name="popup_data" /> which was passed to <see cref="M:Gtk.ItemFactory.PopupWithData" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <returns><paramref name="popup_data" /> associated with the item factory from which <paramref name="widget" /> was created, or <see langword="null" /> if <paramref name="widget" /> wasn't created by an item factory.</returns>
+        <remarks>
+	 <para>
+	  This data is available until the menu is popped down again.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddForeign">
@@ -85,13 +93,17 @@
         <Parameter Name="modifiers" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="full_path">To be added: an object of type 'string'</param>
-        <param name="accel_group">To be added: an object of type 'Gtk.AccelGroup'</param>
-        <param name="keyval">To be added: an object of type 'uint'</param>
-        <param name="modifiers">To be added: an object of type 'Gdk.ModifierType'</param>
-        <remarks>To be added</remarks>
+        <summary>Installs an accelerator for <paramref name="accel_widget" /> in <paramref name="accel_group" />, that causes the activate event to be emitted it the accelerator is activated.</summary>
+        <param name="accel_widget">Widget to install an accelerator on.</param>
+        <param name="full_path">The full path for the <paramref name="accel_widget" />.</param>
+        <param name="accel_group">The accelerator group to install the accelerator in.</param>
+        <param name="keyval">Key value of the accelerator.</param>
+        <param name="modifiers">Modifier combination of the acelerator.</param>
+        <remarks>
+	 <para>
+	  This method can be used to make widgets participate in the accel saving/restoring functionality provided by <see cref="M:Gtk.Accel.MapSave" /> and <see cref="M:Gtk.Accel.MapLoad" />, even if they haven't been created by an item factory. The recommended API for this purpose are the <see cref="P:Gtk.Menu.AccelPath" /> and <see cref="P:Gtk.Widget.SetAccelPath" />; don't use <see cref="M:Gtk.ItemFactory.AddForeign" /> in new code, since it is likely to be removed in the future.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteEntries">
@@ -105,10 +117,10 @@
         <Parameter Name="entries" Type="Gtk.ItemFactoryEntry" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="n_entries">To be added: an object of type 'uint'</param>
-        <param name="entries">To be added: an object of type 'Gtk.ItemFactoryEntry'</param>
-        <remarks>To be added</remarks>
+        <summary>Deletes the menu items which were created from the entries by the given item factory.</summary>
+        <param name="n_entries">The length of <paramref name="entries" />.</param>
+        <param name="entries">An array of <see cref="T:Gtk.ItemFactoryEntry" />s.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetItem">
@@ -121,7 +133,7 @@
         <Parameter Name="action" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains the menu item which correponds to <paramref name="action" />.</summary>
         <param name="action">To be added: an object of type 'uint'</param>
         <returns>To be added: an object of type 'Gtk.Widget'</returns>
         <remarks>To be added</remarks>
@@ -139,11 +151,11 @@
         <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="container_type">To be added: an object of type 'uint'</param>
-        <param name="path">To be added: an object of type 'string'</param>
-        <param name="accel_group">To be added: an object of type 'Gtk.AccelGroup'</param>
-        <remarks>To be added</remarks>
+        <summary>Initializes a item factory.</summary>
+        <param name="container_type">The kind of menu to create, an object of type 'uint'.</param>
+        <param name="path">The factory path of <see cref="T:Gtk.ItemFactory" />, a string of the form "name".</param>
+        <param name="accel_group">A <see cref="T:Gtk.AccelGroup" /> to which the accelerators for the menu items will be added, or <see langword="null" /> to create a new one.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DeleteEntry">
@@ -156,9 +168,9 @@
         <Parameter Name="entry" Type="Gtk.ItemFactoryEntry" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="entry">To be added: an object of type 'Gtk.ItemFactoryEntry'</param>
-        <remarks>To be added</remarks>
+        <summary>Deletes the menu item which was created from <paramref name="entry" /> by the given item factory.</summary>
+        <param name="entry">A <see cref="T:Gtk.ItemFactoryEntry" />.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CreateItem">
@@ -173,11 +185,11 @@
         <Parameter Name="callback_type" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="entry">To be added: an object of type 'Gtk.ItemFactoryEntry'</param>
-        <param name="callback_data">To be added: an object of type 'IntPtr'</param>
-        <param name="callback_type">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates an item for <paramref name="entry" />.</summary>
+        <param name="entry">The <see cref="T:Gtk.ItemFactoryEntry" /> to create an item for.</param>
+        <param name="callback_data">Data passed to the callback method of <paramref name="entry" />.</param>
+        <param name="callback_type">1 if the callback method of <paramref name="entry" /> is of type <see cref="T:Gtk.ItemFactoryCallback" />, 2 if it is of type <see cref="T:Gtk.ItemFactoryCallback1" />.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetWidget">
@@ -190,7 +202,7 @@
         <Parameter Name="action" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains the <paramref name="widget" /> which corresponds to <paramref name="action" />.</summary>
         <param name="action">To be added: an object of type 'uint'</param>
         <returns>To be added: an object of type 'Gtk.Widget'</returns>
         <remarks>To be added</remarks>
@@ -206,10 +218,14 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the menu item which corresponds to <paramref name="path" />.</summary>
+        <param name="path">The path to the menu item.</param>
+        <returns>The menu item for the given path, or <see langword="null" /> if <paramref name="path" /> doesn't lead to a menu item.</returns>
+        <remarks>
+	 <para>
+	  If the <paramref name="widget" /> corresponding to <paramref name="path" /> is a menu item which opens a submenum, then the item is returned. If you are interested in the submenum, use <see cref="M:Gtk.ItemFactory.GetWidget" /> instead.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteItem">
@@ -222,9 +238,9 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Deletes the menu item which was created for <paramref name="path" /> by the given item factory.</summary>
+        <param name="path">A path.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PopupData">
@@ -235,9 +251,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'IntPtr'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the <paramref name="popup_data" /> which was passed to <see cref="M:Gtk.ItemFactory.PopupWithData" />.</summary>
+        <returns><paramref name="popup_data" /> associated.</returns>
+        <remarks>
+	 <para>
+	  This data is available until the menu is popped down again.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateItems">
@@ -252,11 +272,11 @@
         <Parameter Name="callback_data" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="n_entries">To be added: an object of type 'uint'</param>
-        <param name="entries">To be added: an object of type 'Gtk.ItemFactoryEntry'</param>
-        <param name="callback_data">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates the menu items from the <paramref name="entries" />.</summary>
+        <param name="n_entries">The length of <paramref name="entries" />.</param>
+        <param name="entries">An array of <see cref="T:Gtk.ItemFactoryEntry" />s whose <paramref name="callback" /> members must be of type <see cref="T:Gtk.ItemFactoryCallback1" />.</param>
+        <param name="callback_data">Data passed to the callback methods of all entries.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetWidget">
@@ -269,10 +289,14 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the <paramref name="widget" /> which corresponds to <paramref name="path" />.</summary>
+        <param name="path">The path to the <paramref name="widget" />.</param>
+        <returns>The <paramref name="widget" /> for the given path, or <see langword="null" /> if <paramref name="path" /> doesn't lead to a <paramref name="widget" />.</returns>
+        <remarks>
+	 <para>
+	  If the <paramref name="widget" /> corresponding to <paramref name="path" /> is a menu item which opens a submenu, then the submenu is returned. If you are interested in the menu item, use <see cref="M:Gtk:ItemFactory.GetItem" /> instead.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetTranslateFunc">
@@ -287,11 +311,11 @@
         <Parameter Name="notify" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TranslateFunc'</param>
-        <param name="data">To be added: an object of type 'IntPtr'</param>
-        <param name="notify">To be added: an object of type 'Gtk.DestroyNotify'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets a method to be used for translating the path elements before they are displayed.</summary>
+        <param name="func">The <see cref="T:Gtk.TraslateFunc" /> delegate to be used to traslate path elements.</param>
+        <param name="data">Data to pass to <paramref name="func" /> and <paramref name="notify" />.</param>
+        <param name="notify">A <see cref="T:Gtk.DestroyNotify" /> delegate to be called when the <see cref="T:Gtk.ItemFactory" /> object is destroyed and when the translation is changed again.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -332,12 +356,12 @@
         <Parameter Name="accel_group" Type="Gtk.AccelGroup" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>A constructor.</summary>
         <param name="container_type">To be added: an object of type 'uint'</param>
-        <param name="path">To be added: an object of type 'string'</param>
-        <param name="accel_group">To be added: an object of type 'Gtk.AccelGroup'</param>
-        <returns>To be added: an object of type 'Gtk.ItemFactory'</returns>
-        <remarks>To be added</remarks>
+        <param name="path"></param>
+        <param name="accel_group"></param>
+        <returns>A new instance of <see cref="T:Gtk.ItemFactory" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -346,9 +370,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.ItemFactory'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor.</summary>
+        <returns>An instance of <see cref="T:Gtk.ItemFactory" />.</returns>
+        <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -394,14 +418,27 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="popup_data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:Gtk.DestroyNotify" /></param>
-        <param name="x">a <see cref="T:System.UInt32" /></param>
-        <param name="y">a <see cref="T:System.UInt32" /></param>
-        <param name="mouse_button">a <see cref="T:System.UInt32" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Pops up the menu constructed form the item factory at (<paramref name="x" />, <paramref name="y" />).</summary>
+        <param name="popup_data">Data available for callbacks while the menu is posted.</param>
+        <param name="destroy">A <see cref="T:Gtk.DestroyNotify" /> to be called on <paramref name="popup_data" /> when the menu is unposted.</param>
+        <param name="x">The x position.</param>
+        <param name="y">The y position.</param>
+        <param name="mouse_button">The mouse button which was pressed to initiate the popup.</param>
+        <param name="time_">The time at which the activation event ocurred.</param>
+        <remarks>
+	 <para>
+	  Callbacks can access the <paramref name="popup_data" /> while the menu is posted via <see cref="M:Gtk.ItemFactory.PopupData" /> and <see cref="M:Gtk.ItemFactory.PopupDataFromWidget" />.
+	 </para>
+	 <para>
+	  The <paramref name="mouse_button" /> should be the mouse button pressed to initiate the menu popup. If the menu popup was initiated by something other than a mouse button press, such as a mouse button release or a keypress, <paramref name="mouse_button" /> should be 0.
+	 </para>
+	 <para>
+	  The <paramref name="time_" /> should be the time stamp of the event that initiated the popup. If such a event is not available, use <see cref="P:Gtk.Global.CurrentEventTime" /> instead.
+	 </para>
+	 <para>
+	  The operation of the <paramref name="mouse_button" /> and the <paramref name="time_" /> is the same as the <paramref name="button" /> and <paramref name="activation_time" /> for <see cref="M:Gtk.Menu.Popup" />.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Popup">
@@ -417,12 +454,22 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.UInt32" /></param>
-        <param name="y">a <see cref="T:System.UInt32" /></param>
-        <param name="mouse_button">a <see cref="T:System.UInt32" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Pops up the menu constructed form the item factory at (<paramref name="x" />, <paramref name="y" />).</summary>
+        <param name="x">The x position.</param>
+        <param name="y">The y position.</param>
+        <param name="mouse_button">The mouse button which was pressed to initiate the popup.</param>
+        <param name="time_">The time at which the activation event ocurred.</param>
+        <remarks>
+	 <para>
+	  The <paramref name="mouse_button" /> should be the mouse button pressed to initiate the menu popup. If the menu popup was initiated by something other than a mouse button press, such as a mouse button release or a keypress, <paramref name="mouse_button" /> should be 0.
+	 </para>
+	 <para>
+	  The <paramref name="time_" /> should be the time stamp of the event that initiated the popup. If such a event is not available, use <see cref="P:Gtk.Global.CurrentEventTime" /> instead.
+	 </para>
+	 <para>
+	  The operation of the <paramref name="mouse_button" /> and the <paramref name="time_" /> is the same as the <paramref name="button" /> and <paramref name="activation_time" /> for <see cref="M:Gtk.Menu.Popup" />.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
