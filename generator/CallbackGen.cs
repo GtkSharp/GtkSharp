@@ -103,8 +103,13 @@ namespace GtkSharp.Generation {
 			{
 				string parm_name = parms[i].Name;
 				string ctype = parms[i].CType;
+
+				if (i > 0 && parms[i].IsLength && parms[i-1].IsString)
+					continue;
+
 				if ((i == count - 1) && ctype == "gpointer" && (parm_name.EndsWith ("data") || parm_name.EndsWith ("data_or_owner"))) 
 					continue;
+
 				string cstype = parms[i].CSType;
 				// FIXME: Too much code copy/pasted here. Refactor?
 				ClassBase parm_wrapper = SymbolTable.GetClassGen (ctype);
