@@ -160,6 +160,7 @@ namespace GtkDemo
         	store.AppendValues ("Application Window", "DemoApplicationWindow.cs", false);
         	store.AppendValues ("Button Boxes", "DemoButtonBox.cs", false);
         	store.AppendValues ("Change Display (0%)", "DemoChangeDisplay.cs", false);
+        	store.AppendValues ("Clipboard", "DemoClipboard.cs", false);
         	store.AppendValues ("Color Selector", "DemoColorSelection.cs", false);
         	store.AppendValues ("Dialog and Message Boxes", "DemoDialog.cs", false);
         	store.AppendValues ("Drawing Area", "DemoDrawingArea.cs", false);
@@ -183,7 +184,6 @@ namespace GtkDemo
         	return store;
         }
         
-	//FIXME: italicize selected row
         private void OnTreeChanged (object o, EventArgs args)
 	{
 		TreeIter iter;
@@ -214,61 +214,64 @@ namespace GtkDemo
         		case "2":
         			//
         			break;
-        		case "3":
+				case "3":
+        			new DemoClipboard ();
+					break;
+        		case "4":
         			new DemoColorSelection ();
         			break;
-        		case "4":
+        		case "5":
         			new DemoDialog ();
         			break;
-        		case "5":
+        		case "6":
         			new DemoDrawingArea ();
         			break;
-        		case "6":
+        		case "7":
         			new DemoEntryCompletion ();
         			break;
-        		case "7":
+        		case "8":
         			new DemoExpander ();
         			break;
-        		case "8":
+        		case "9":
         			new DemoImages ();
         			break;
-        		case "9":
+        		case "10":
         			new DemoMenus ();
         			break;
-        		case "10":
+        		case "11":
         			new DemoPanes ();
         			break;
-        		case "11":
+        		case "12":
         			new DemoPixbuf ();
         			break;
-        		case "12":
+        		case "13":
         			new DemoSizeGroup ();
         			break;
-        		case "13":
-        			new DemoStockBrowser ();
-        			break;
         		case "14":
-				ToggleRow (args.Path);
-				break;
-        		case "14:0":
-        			new DemoHyperText ();
-        			break;
-        		case "14:1":
-        			new DemoTextView ();
+        			new DemoStockBrowser ();
         			break;
         		case "15":
 				ToggleRow (args.Path);
-        			break;
+				break;
         		case "15:0":
-        			new DemoEditableCells ();
+        			new DemoHyperText ();
         			break;
         		case "15:1":
+        			new DemoTextView ();
+        			break;
+        		case "16":
+				ToggleRow (args.Path);
+        			break;
+        		case "16:0":
+        			new DemoEditableCells ();
+        			break;
+        		case "16:1":
         			new DemoListStore ();
         			break;
-        		case "15:2":
+        		case "16:2":
         			new DemoTreeStore ();
         			break;
-				case "16":
+				case "17":
 					new DemoUIManager ();
 					break;
         		default:
