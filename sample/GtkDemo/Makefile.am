@@ -4,7 +4,7 @@ TARGETS = GtkDemo.exe
 CLEANFILES = $(TARGETS)
 noinst_SCRIPTS = $(TARGETS)
 
-EXTRA_DIST = $(sources)
+EXTRA_DIST = $(sources) $(image_names)
 
 sources = 					\
 	DemoApplicationWindow.cs	\
@@ -40,6 +40,21 @@ images = \
 	images/background.jpg,background.jpg \
 	images/gtk-logo-rgb.gif,gtk-logo-rgb.gif \
 	images/floppybuddy.gif,floppybuddy.gif
+
+image_names = \
+	images/gnome-foot.png \
+	images/MonoIcon.png \
+	images/gnome-calendar.png \
+	images/gnome-gmush.png \
+	images/gnu-keys.png \
+	images/gnome-applets.png \
+	images/gnome-gsame.png \
+	images/alphatest.png \
+	images/gnome-gimp.png \
+	images/apple-red.png \
+	images/background.jpg \
+	images/gtk-logo-rgb.gif \
+	images/floppybuddy.gif
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
 build_images = $(addprefix $(srcdir)/, $(images))
