@@ -12,10 +12,68 @@
       <para>The Statusbar widget displays textual messages to the user. Statusbars are typically placed at the bottom of application <see cref="T:Gtk.Window" />s.</para>
       <para>A Statusbar may provide a regular commentary of the application's status (as is usually the case in a web browser, for example), or may be used to simply output a message when the status changes, (when an upload is complete in an FTP client, for example).</para>
       <para>As a finishing touch to the StatusBar, it can have a "resize grip" added in the lower right corner. This is a triangular area that can be clicked on to resize the window containing the statusbar.</para>
-      <para>Status bars in Gtk+ maintain a stack of messages. The message at the top of the each bar's stack is the one that will currently be displayed.</para>
+      <para>Status bars in Gtk maintain a stack of messages. The message at the top of the each bar's stack is the one that will currently be displayed.</para>
       <para>Any messages added to a statusbar's stack must specify a <paramref name="context_id" /> that is used to uniquely identify the source of a message. This <paramref name="context_id" /> can be generated with <see cref="M:Gtk.Statusbar.GetContextId" />, given a message. Note that messages are stored in a stack, and when choosing which message to display, the stack structure is adhered to, regardless of the context identifier of a message.</para>
       <para>Messages are added to the bar's stack with <see cref="M:Gtk.Statusbar.Push" />, and the message at the top of the stack can be removed using <see cref="M:Gtk.Statusbar.Pop" />. A message can be removed from anywhere in the stack if it's <paramref name="message_id" /> was recorded at the time it was added. This is done using <see cref="M:Gtk.Statusbar.Remove" />.</para>
     </remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class StatusbarSample
+{
+	Statusbar sb;
+	const int id = 1;
+	int count;
+	
+	static void Main ()
+	{
+		new StatusbarSample ();	
+	}
+	
+	StatusbarSample ()
+	{
+		Application.Init ();
+		
+		count = 0;
+		
+		Window win = new Window ("StatusbarSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		win.SetDefaultSize (150, 100);
+		
+		VBox vbox = new VBox (false, 1);
+		win.Add (vbox);
+		
+		Button btn = new Button ("Add to counter");
+		btn.Clicked += new EventHandler (OnButtonClicked);
+		vbox.Add (btn);
+		
+		sb = new Statusbar ();
+		sb.Push (id, "Welcome!");
+		sb.HasResizeGrip = false;
+		vbox.Add (sb);
+		
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	void OnButtonClicked (object obj, EventArgs args)
+	{
+		count ++;
+		string message = String.Format ("Pushed {0} times", count);
+		sb.Pop (id);
+		sb.Push (id, message);
+	}
+	
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}      
+	  </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.HBox</BaseTypeName>
