@@ -9,8 +9,18 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      <see cref="T:System.IAsyncResult" /> implementation tracking a pending asynchronous <see cref="T:Gnome.Vfs.VfsStream" /> operation.</summary>
+    <remarks>
+      <para>To wait until the operation has finished, you cannot use the <see cref="T:System.IAsyncResult.AsyncWaitHandle" /> since that will also block the Gnome.Vfs thread. Instead, use <see cref="M:GLib.MainContext.Iteration" /> like this:</para>
+      <example>
+        <code lang="C#">
+while (!asyncResult.IsCompleted) {
+	GLib.MainContext.Iteration ();
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -22,52 +32,6 @@
   </Interfaces>
   <Attributes />
   <Members>
-    <Member MemberName="SetComplete">
-      <MemberSignature Language="C#" Value="public void SetComplete (Exception e);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="e" Type="System.Exception" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="e">a <see cref="T:System.Exception" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetComplete">
-      <MemberSignature Language="C#" Value="public void SetComplete (Exception e, int nbytes);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="e" Type="System.Exception" />
-        <Parameter Name="nbytes" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="e">a <see cref="T:System.Exception" /></param>
-        <param name="nbytes">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public VfsStreamAsyncResult (object state);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="state" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="state">a <see cref="T:System.Object" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.VfsStreamAsyncResult" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="AsyncState">
       <MemberSignature Language="C#" Value="public virtual object AsyncState { get; };" />
       <MemberType>Property</MemberType>
@@ -76,7 +40,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the user-provided state object supplied at the time the asynchronous operation was started.</summary>
         <returns>a <see cref="T:System.Object" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -89,7 +53,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Retrieving this property will throw a <see cref="T:System.NotSupportedException" />. Instead use "while (!asyncResult.IsCompleted) { GLib.MainContext.Iteration(); }" to wait for the operation to finish.</summary>
         <returns>a <see cref="T:System.Threading.WaitHandle" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -102,20 +66,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Done">
-      <MemberSignature Language="C#" Value="public bool Done { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
+        <summary>Returns whether the asynchronous operation completed synchronously.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -128,7 +79,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Retrieves the <see cref="T:System.Exception" /> that occurred during the asynchronous operation.</summary>
         <returns>a <see cref="T:System.Exception" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -141,9 +92,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Indicates whether the asynchronous operation has finished.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If an error occurred during the operation, <see cref="M:Gnome.Vfs.VfsStreamAsyncResult.Exception" /> contains the exception that was thrown.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NBytes">
@@ -154,7 +105,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the number of bytes read or written during the operation.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>

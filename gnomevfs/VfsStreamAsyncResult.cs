@@ -29,7 +29,7 @@ namespace Gnome.Vfs {
 		private Exception exception = null;
 		private int nbytes = -1;
 
-		public VfsStreamAsyncResult (object state)
+		internal VfsStreamAsyncResult (object state)
 		{
 			this.state = state;
 		}
@@ -59,7 +59,7 @@ namespace Gnome.Vfs {
 			}
 		}
 		
-		public bool Done {
+		internal bool Done {
 			get {
 				return done;
 			}
@@ -86,13 +86,13 @@ namespace Gnome.Vfs {
 			}
 		}
 		
-		public void SetComplete (Exception e)
+		internal void SetComplete (Exception e)
 		{
 			exception = e;
 			completed = true;
 		}
 		
-		public void SetComplete (Exception e, int nbytes)
+		internal void SetComplete (Exception e, int nbytes)
 		{
 			this.nbytes = nbytes;
 			SetComplete (e);

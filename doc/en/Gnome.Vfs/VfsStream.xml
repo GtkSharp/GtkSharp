@@ -34,7 +34,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Reads a byte from the stream and advances the position within the stream by one byte.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -49,8 +49,8 @@
         <Parameter Name="value" Type="System.Byte" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">a <see cref="T:System.Byte" /></param>
+        <summary>Writes a single <see cref="T:System.Byte" /> to the current position in the stream and advances the position by one byte.</summary>
+        <param name="value">a <see cref="T:System.Byte" /> to write to the stream.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -66,11 +66,11 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+        <param name="buffer">a <see cref="T:System.Byte" /> array. When this method returns, the elements between <paramref name="offset" /> and <paramref name="offset" /> + <paramref name="count" /> are replaced by the bytes read from the current stream.</param>
+        <param name="offset">a <see cref="T:System.Int32" /> that specifies the zero based byte offset in <paramref name="buffer" /> at which to begin storing the data read from the current stream.</param>
+        <param name="count">a <see cref="T:System.Int32" /> that specifies the maximum number of bytes to be read from the stream.</param>
+        <returns>a <see cref="T:System.Int32" /> that specifies the total number of bytes read into the buffer, or zero if the end of the stream has been reached before any data could be read.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -88,14 +88,24 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <param name="cback">a <see cref="T:System.AsyncCallback" /></param>
-        <param name="state">a <see cref="T:System.Object" /></param>
-        <returns>a <see cref="T:System.IAsyncResult" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Begins an asynchronous read operation.</summary>
+        <param name="buffer">the <see cref="T:System.Byte" /> array to read the data into.</param>
+        <param name="offset">a <see cref="T:System.Int32" /> that specifies the byte offset in <paramref name="buffer" /> at which to begin writing data from the stream.</param>
+        <param name="count">a <see cref="T:System.Int32" /> that specifies the maximum number of bytes to read from the stream.</param>
+        <param name="cback">a <see cref="T:System.AsyncCallback" /> that is called when the read operation has finished.</param>
+        <param name="state">an application-defined object, or <see langword="null" />.</param>
+        <returns>a <see cref="T:System.IAsyncResult" /> that contains information about the asynchronous read operation, which could still be pending.</returns>
+        <remarks>
+          <para>This method starts an asynchronous read operation using the <see cref="T:Gnome.Vfs.Async" /> class.</para>
+          <para>To wait until the operation has finished, you cannot use the <see cref="T:System.IAsyncResult.AsyncWaitHandle" /> since that will also block the Gnome.Vfs thread. Instead, use <see cref="M:GLib.MainContext.Iteration" /> like this:</para>
+          <example>
+            <code lang="C#">
+while (!asyncResult.IsCompleted) {
+	GLib.MainContext.Iteration ();
+}
+  </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EndRead">
@@ -108,10 +118,10 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="result">a <see cref="T:System.IAsyncResult" /></param>
+        <summary>Ends a pending asynchronous read request.</summary>
+        <param name="result">the <see cref="T:System.IAsyncResult" /> object that references the pending asynchronous read request.</param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This method blocks until the read operation has finished.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -126,10 +136,10 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
+        <summary>Writes a sequence of bytes to the current stream and advances the current position within the current stream by the number of bytes written.</summary>
+        <param name="buffer">a <see cref="T:System.Byte" /> array containing the data to write.</param>
+        <param name="offset">a <see cref="T:System.Int32" /> that specifies the zero based byte offset in <paramref name="buffer" /> at which to start copying bytes to the current stream.</param>
+        <param name="count">a <see cref="T:System.Int32" /> that specifies the number of bytes to be written to the current stream.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -147,14 +157,24 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="count">a <see cref="T:System.Int32" /></param>
-        <param name="cback">a <see cref="T:System.AsyncCallback" /></param>
-        <param name="state">a <see cref="T:System.Object" /></param>
-        <returns>a <see cref="T:System.IAsyncResult" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Begins an asynchronous write operation.</summary>
+        <param name="buffer">the <see cref="T:System.Byte" /> array to be written to the current stream.</param>
+        <param name="offset">a <see cref="T:System.Int32" /> that specifies the byte offset in <paramref name="buffer" /> at which to begin copying bytes to the current stream.</param>
+        <param name="count">a <see cref="T:System.Int32" /> that specifies the maximum number of bytes to be written to the stream.</param>
+        <param name="cback">a <see cref="T:System.AsyncCallback" /> that is called when the write operation has finished.</param>
+        <param name="state">an application-defined object, or <see langword="null" />.</param>
+        <returns>a <see cref="T:System.IAsyncResult" /> that represents the asynchronous write, which could still be pending.</returns>
+        <remarks>
+          <para>This method starts an asynchronous write operation using the <see cref="T:Gnome.Vfs.Async" /> class.</para>
+          <para>To wait until the operation has finished, you cannot use the <see cref="T:System.IAsyncResult.AsyncWaitHandle" /> since that will also block the Gnome.Vfs thread. Instead, use <see cref="M:GLib.MainContext.Iteration" /> like this:</para>
+          <example>
+            <code lang="C#">
+while (!asyncResult.IsCompleted) {
+	GLib.MainContext.Iteration ();
+}
+  </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EndWrite">
@@ -167,9 +187,9 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="result">a <see cref="T:System.IAsyncResult" /></param>
-        <remarks>To be added</remarks>
+        <summary>Ends an asynchronous write operation.</summary>
+        <param name="result">a <see cref="T:System.IAsyncResult" /> object that references the pending asynchronous write operation.</param>
+        <remarks>This method blocks until the write operation has finished.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Seek">
@@ -183,11 +203,11 @@
         <Parameter Name="origin" Type="System.IO.SeekOrigin" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int64" /></param>
-        <param name="origin">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the position within the current stream.</summary>
+        <param name="offset">a <see cref="T:System.Int64" /> that specifies the byte offset relative to origin.</param>
+        <param name="origin">a <see cref="T:System.IO.SeekOrigin" /> value indicating the reference point used to obtain the new position.</param>
+        <returns>a <see cref="T:System.Int64" /> that specifies the new position within the current stream.</returns>
+        <remarks>This method only works for readable synchronous streams (see <see cref="M:Gnome.Vfs.VfsStream.IsAsync" />).</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetLength">
@@ -200,8 +220,8 @@
         <Parameter Name="length" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="length">a <see cref="T:System.Int64" /></param>
+        <summary>Sets the length of the current stream.</summary>
+        <param name="length">a <see cref="T:System.Int64" /> that specifies the desired length of the current stream in bytes.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -213,8 +233,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Flushes the internal buffer.</summary>
+        <remarks>NOOP.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -225,7 +245,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Closes the current stream and releases any resources associated with the current stream.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

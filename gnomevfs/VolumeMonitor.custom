@@ -19,6 +19,36 @@
 // Boston, MA 02111-1307, USA.
 
 		[DllImport("gnomevfs-2")]
+		static extern IntPtr gnome_vfs_volume_monitor_get_connected_drives(IntPtr raw);
+
+		public Drive[] ConnectedDrives { 
+			get {
+				IntPtr raw_ret = gnome_vfs_volume_monitor_get_connected_drives(Handle);
+				GLib.List list = new GLib.List(raw_ret);
+ 				Drive[] result = new Drive [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Drive;
+				list.Dispose ();
+				return result;
+			}
+		}
+
+		[DllImport("gnomevfs-2")]
+		static extern IntPtr gnome_vfs_volume_monitor_get_mounted_volumes(IntPtr raw);
+
+		public Volume[] MountedVolumes { 
+			get {
+				IntPtr raw_ret = gnome_vfs_volume_monitor_get_mounted_volumes(Handle);
+				GLib.List list = new GLib.List(raw_ret);
+ 				Volume[] result = new Volume [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Volume;
+				list.Dispose ();
+				return result;
+			}
+		}
+
+		[DllImport("gnomevfs-2")]
 		static extern IntPtr gnome_vfs_get_volume_monitor ();
 
 		public static VolumeMonitor Get ()
