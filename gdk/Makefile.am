@@ -51,6 +51,7 @@ customs = 			\
 	Drawable.custom		\
 	Global.custom		\
 	Keymap.custom		\
+	Pixmap.custom		\
 	Pixbuf.custom		\
 	PixbufLoader.custom	\
 	Pixdata.custom		\

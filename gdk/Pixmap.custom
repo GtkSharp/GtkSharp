@@ -1,6 +1,8 @@
+// Gdk.Pixmap.custom - Pixmap extensions
 //
-// Pixmap extensions
+// Authors:  Mike Kestner  <mkestner@ximian.com>
 //
+// Copyright (c) 2004  Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -16,8 +18,53 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-	public Pixmap (Gdk.Drawable drawable, int width, int height)
-	: this (drawable, width, height, -1)
-	{
-	}
+		public Pixmap (Gdk.Drawable drawable, int width, int height) : this (drawable, width, height, -1) {}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixmap_colormap_create_from_xpm(IntPtr drawable, IntPtr colormap, IntPtr mask, IntPtr transparent_color, string filename);
+
+		public static Gdk.Pixmap ColormapCreateFromXpm(Gdk.Drawable drawable, Gdk.Colormap colormap, string filename) 
+		{
+			IntPtr raw_ret = gdk_pixmap_colormap_create_from_xpm(drawable.Handle, colormap.Handle, IntPtr.Zero, IntPtr.Zero, filename);
+			if (raw_ret == IntPtr.Zero)
+				return null;
+
+			return (Gdk.Pixmap) GLib.Object.GetObject(raw_ret);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixmap_colormap_create_from_xpm_d(IntPtr drawable, IntPtr colormap, IntPtr mask, IntPtr transparent_color, string data);
+
+		public static Gdk.Pixmap ColormapCreateFromXpmD(Gdk.Drawable drawable, Gdk.Colormap colormap, string data) 
+		{
+			IntPtr raw_ret = gdk_pixmap_colormap_create_from_xpm_d(drawable.Handle, colormap.Handle, IntPtr.Zero, IntPtr.Zero, data);
+			if (raw_ret == IntPtr.Zero)
+				return null;
+
+			return (Gdk.Pixmap) GLib.Object.GetObject(raw_ret);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixmap_create_from_xpm(IntPtr drawable, IntPtr mask, IntPtr transparent_color, string filename);
+
+		public static Gdk.Pixmap CreateFromXpm(Gdk.Drawable drawable, string filename) 
+		{
+			IntPtr raw_ret = gdk_pixmap_create_from_xpm(drawable.Handle, IntPtr.Zero, IntPtr.Zero, filename);
+			if (raw_ret == IntPtr.Zero)
+				return null;
+
+			return (Gdk.Pixmap) GLib.Object.GetObject(raw_ret);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixmap_create_from_xpm_d(IntPtr drawable, IntPtr mask, IntPtr transparent_color, string data);
+
+		public static Gdk.Pixmap CreateFromXpmD(Gdk.Drawable drawable, string data) 
+		{
+			IntPtr raw_ret = gdk_pixmap_create_from_xpm_d(drawable.Handle, IntPtr.Zero, IntPtr.Zero, data);
+			if (raw_ret == IntPtr.Zero)
+				return null;
+
+			return (Gdk.Pixmap) GLib.Object.GetObject(raw_ret);
+		}
 
