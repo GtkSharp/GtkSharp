@@ -14,7 +14,7 @@ namespace Gst {
 
 	public class Application {
 
-		[DllImport("gstreamer-0.4.1")]
+		[DllImport("gstreamer-0.4.2")]
 		static extern void gst_init (int argc, IntPtr argv);
 
 		public static void Init ()
@@ -22,7 +22,7 @@ namespace Gst {
 			gst_init (0, new IntPtr(0));
 		}
 
-		[DllImport("gstreamer-0.4.1")]
+		[DllImport("gstreamer-0.4.2")]
 		static extern void gst_init (ref int argc, ref String[] argv);
 
 		public static void Init (ref string[] args)

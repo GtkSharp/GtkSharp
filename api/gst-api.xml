@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <api>
-  <namespace name="Gst" library="gstreamer-0.4.1">
+  <namespace name="Gst" library="gstreamer-0.4.2">
     <enum name="AutoplugFlags" cname="GstAutoplugFlags" type="enum">
       <member cname="GST_AUTOPLUG_TO_CAPS" name="ToCaps"/>
       <member cname="GST_AUTOPLUG_TO_RENDERER" name="ToRenderer"/>
@@ -136,7 +136,6 @@
     <enum name="PluginError" cname="GstPluginError" type="enum">
       <member cname="GST_PLUGIN_ERROR_MODULE" name="Module"/>
       <member cname="GST_PLUGIN_ERROR_DEPENDENCIES" name="Dependencies"/>
-      <member cname="GST_PLUGIN_ERROR_NOT_A_PLUGIN" name="NotAPlugin"/>
     </enum>
     <enum name="PropsType" cname="GstPropsType" type="enum">
       <member cname="GST_PROPS_END_TYPE" name="EndType"/>
@@ -148,6 +147,7 @@
       <member cname="GST_PROPS_STRING_TYPE" name="StringType"/>
       <member cname="GST_PROPS_VAR_TYPE" name="VarType"/>
       <member cname="GST_PROPS_LIST_TYPE" name="ListType"/>
+      <member cname="GST_PROPS_GLIST_TYPE" name="GlistType"/>
       <member cname="GST_PROPS_FLOAT_RANGE_TYPE" name="FloatRangeType"/>
       <member cname="GST_PROPS_INT_RANGE_TYPE" name="IntRangeType"/>
       <member cname="GST_PROPS_LAST_TYPE" name="LastType"/>
@@ -1038,7 +1038,7 @@
         </parameters>
       </method>
       <method name="SetState" cname="gst_element_set_state">
-        <return-type type="gint"/>
+        <return-type type="GstElementStateReturn"/>
         <parameters>
           <parameter type="GstElementState" name="state"/>
         </parameters>
@@ -2039,6 +2039,12 @@
       <method name="Reset" cname="gst_scheduler_reset">
         <return-type type="void"/>
       </method>
+      <method name="SchedulingChange" cname="gst_scheduler_scheduling_change">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
       <method name="SetClock" cname="gst_scheduler_set_clock">
         <return-type type="void"/>
         <parameters>
@@ -2475,12 +2481,6 @@
           <parameter ellipsis="true"/>
         </parameters>
       </method>
-      <method name="CheckCompatibility" cname="gst_caps_check_compatibility">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GstCaps*" name="tocaps"/>
-        </parameters>
-      </method>
       <method name="Copy" cname="gst_caps_copy">
         <return-type type="GstCaps*"/>
       </method>
@@ -2521,6 +2521,12 @@
         <return-type type="GstCaps*"/>
         <parameters>
           <parameter type="GstCaps*" name="caps2"/>
+        </parameters>
+      </method>
+      <method name="IsAlwaysCompatible" cname="gst_caps_is_always_compatible">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstCaps*" name="tocaps"/>
         </parameters>
       </method>
       <method name="LoadThyself" cname="gst_caps_load_thyself" shared="true">
@@ -2644,6 +2650,7 @@
     <struct name="ElementDetails" cname="GstElementDetails">
       <field cname="longname" type="gchar*"/>
       <field cname="klass" type="gchar*"/>
+      <field cname="license" type="gchar*"/>
       <field cname="description" type="gchar*"/>
       <field cname="version" type="gchar*"/>
       <field cname="author" type="gchar*"/>
@@ -2706,6 +2713,11 @@
     <struct name="EventMask" cname="GstEventMask">
       <field cname="type" type="GstEventType"/>
       <field cname="flags" type="GstEventFlag"/>
+    </struct>
+    <struct name="FormatDefinition" cname="GstFormatDefinition">
+      <field cname="value" type="GstFormat"/>
+      <field cname="nick" type="gchar*"/>
+      <field cname="description" type="gchar*"/>
     </struct>
     <struct name="MemChunk" cname="GstMemChunk">
       <field cname="swap" type="GstAtomicSwap"/>
