@@ -218,8 +218,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Automatically connect signals</summary>
+        <remarks>
+          <para>
+            This method uses gmodule's introspective features to look
+            at the application's symbol table.  From here it tries to
+            match the signal handler names given in the interface
+            description with symbols in the application and connects
+            the signals.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Construct">
@@ -234,12 +242,16 @@
         <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="fname">To be added: an object of type 'string'</param>
-        <param name="root">To be added: an object of type 'string'</param>
-        <param name="domain">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          This routine can be used by bindings (such as gtk--) to help
+          construct a <see cref="T:Glade.XML" /> object, if it is
+          needed.
+        </summary>
+                <param name="fname">the XML filename</param>
+        <param name="root">the root widget node, or <see langword="null" /> </param>
+        <param name="domain">the translation domain, or <see langword="null" /></param>
+        <returns><see langword="true" /> if construction succeeded</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureAccel">
@@ -250,9 +262,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.AccelGroup'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+           This function is used to get the current
+           <see cref="T:Gtk.AccelGroup" />. If there isn't one, a new one
+           is created and bound to the current toplevel window (if a
+           toplevel has been set).
+        </summary>
+        <returns>the current <see cref="T:Gtk.AccelGroup" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetPackingProperty">
@@ -268,12 +285,14 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="parent">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="value">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          This sets the packing property on container <see paramref="parent" /> of widget <see paramref="child" /> with
+          <see paramref="name" /> to <see paramref="value" /></summary>
+        <param name="parent">the container widget.</param>
+        <param name="child">the contained child</param>
+        <param name="name">the name of the property</param>
+        <param name="value">its stringified value</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BuildWidget">
@@ -286,10 +305,30 @@
         <Parameter Name="info" Type="Glade.WidgetInfo" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="info">To be added: an object of type 'Glade.WidgetInfo'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          This function is not intended for people who just use
+          libglade.
+        </summary>
+        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for the widget.</param>
+        <returns>the newly created widget.</returns>
+        <remarks>
+          <para>
+            This function is not intended for people who just use
+            libglade. Instead it is for people extending it (it is
+            designed to be called in the child build routine defined
+            for the parent widget). It first checks the type of the
+            widget from the class tag, then calls the corresponding
+            widget creation routine.  This routine sets up all the
+            settings specific to that type of widget.  Then general
+            widget settings are performed on the widget.  Then it sets
+            up accelerators for the widget, and extracts any signal
+            information for the widget.  Then it checks to see if
+            there are any child widget nodes for this widget, and if
+            so calls the widget's build routine, which will create the
+            children with this function and add them to the widget in
+            the appropriate way.  Finally it returns the widget.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RelativeFile">
@@ -302,10 +341,19 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          This function resolves a relative pathname, using the
+          directory of the XML file as a base.
+        </summary>
+        <param name="filename">a filename</param>
+        <returns>The absolute filename</returns>
+        <remarks>
+          <para>
+            This function resolves a relative pathname, using the
+            directory of the XML file as a base.  If the pathname is
+            absolute, then the original filename is returned.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SignalAutoconnectFull">
@@ -318,9 +366,16 @@
         <Parameter Name="func" Type="Glade.XMLConnectFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Glade.XMLConnectFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          This function is similar to <see cref="M:Glade.XML.SignalConnectFull(System.String,Glade.XMLConnectFunc)" />
+          except that it will try to connect all signals in the
+          interface, not just a single named handler.  It can be
+          thought of the interpeted language binding version of
+          <see cref="M:Glade.XML.SignalAutoconnect" />, except that it does not
+          require gmodule to function correctly.
+        </summary>
+        <param name="func">the function used to connect the signals.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleWidgetProp">
@@ -335,11 +390,24 @@
         <Parameter Name="value_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="prop_name">To be added: an object of type 'string'</param>
-        <param name="value_name">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Used to set properties on <see cref="T:Gtk.Widget" />s</summary>
+        <param name="widget">the property the widget to set the property on.</param>
+        <param name="prop_name">the name of the property.</param>
+        <param name="value_name">the name of the widget used as the value for the property.</param>
+        <remarks>
+          <para>
+            Some widgets have properties of type <see cref="T:Gtk.Widget" />.  These are
+            represented as the widget name in the glade file.  When
+            constructing the interface, the widget specified as the
+            value for a property may not exist yet.
+          </para>
+          <para>
+            Rather than setting the property directly, this function
+            should be used.  It will perform the name to <see cref="T:Gtk.Widget" /> conversion,
+            and if the widget is yet to be constructed, defer setting the
+            property until the widget is constructed.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWidgetPrefix">
@@ -359,8 +427,7 @@
         <param name="name">the beginning of a widget name</param>
         <returns>
           a <see cref="T:GLib.List" /> of widgets whose name starts
-          with <see paramref="name" />
-        </returns>
+          with <see paramref="name" /></returns>
         <remarks></remarks>
       </Docs>
     </Member>
@@ -397,7 +464,7 @@
         <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>GParamSpec needs to be wrapped</summary>
         <param name="pspec">To be added: an object of type 'IntPtr'</param>
         <param name="str1ng">To be added: an object of type 'string'</param>
         <param name="value">To be added: an object of type 'GLib.Value'</param>
@@ -416,10 +483,17 @@
         <Parameter Name="func" Type="Glade.XMLConnectFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler_name">To be added: an object of type 'string'</param>
-        <param name="func">To be added: an object of type 'Glade.XMLConnectFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          This function is similar to <see cref="M:Glade.XML.SignalAutoConnect" />, except
+          that it allows you to give an arbitrary function that will
+          be used for actually connecting the signals.  This is mainly
+          useful for writers of interpreted language bindings, or
+          applications where you need more control over the signal
+          connection process.
+        </summary>
+        <param name="handler_name">the name of the signal handler that we want to connect.</param>
+        <param name="func">the function to use to connect the signals.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -529,18 +603,6 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public Gtk.Widget Item { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Filename">
       <MemberSignature Language="C#" Value="public string Filename { get; };" />
       <MemberType>Property</MemberType>
@@ -561,10 +623,20 @@
       </ReturnValue>
       <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          This is used while the tree is being built to set the toplevel window that
+          is currently being built.
+        </summary>
         <param name="value">To be added: an object of type 'Gtk.Window'</param>
         <returns>To be added: an object of type 'Gtk.Window'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            This is used while the tree is being built to set the
+            toplevel window that is currently being built.  It is
+            mainly used to enable <see cref="T:Gtk.AccelGroup" />'s to be bound to the
+            correct window, but could have other uses.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -593,12 +665,22 @@
         <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          Creates an <see cref="T:Glade.XML" /> object from a
+          <see cref="T:System.IO.Stream" /></summary>
         <param name="s">a <see cref="T:System.IO.Stream" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.XML" /></returns>
-        <remarks>To be added</remarks>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <returns>
+          the newly created <see cref="T:Glade.XML" /> object, or
+          <see langword="null" /> if the operation failed.
+        </returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -612,13 +694,27 @@
         <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="assembly">a <see cref="T:System.Reflection.Assembly" /></param>
-        <param name="resource_name">a <see cref="T:System.String" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.XML" /></returns>
-        <remarks>To be added</remarks>
+        <summary>
+        Creates an <see cref="T:Glade.XML" /> object from an
+        <see cref="T:System.Reflection.Assembly" />
+        </summary>
+        <param name="assembly">
+          an <see cref="T:System.Reflection.Assembly" />, or
+          <see langword="null" /> to use the current assembly
+        </param>
+        <param name="resource_name">the name of the resource in <see paramref="assembly" /></param>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <returns>
+          the newly created <see cref="T:Glade.XML" /> object, or
+          <see langword="null" /> if the operation failed.
+        </returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
