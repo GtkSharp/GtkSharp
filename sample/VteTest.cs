@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Gtk;
 using Gnome;
 using Vte;
@@ -17,7 +18,7 @@ class T
 		app.SetDefaultSize (600, 450);
 		app.DeleteEvent += new DeleteEventHandler (OnAppDelete);
 		
-		ScrolledWindow sw = new ScrolledWindow ();
+		HBox hbox = new HBox ();
 		Terminal term = new Terminal ();
 		term.EncodingChanged += new EventHandler (OnEncodingChanged);
 		term.CursorBlinks = true;
@@ -30,6 +31,10 @@ class T
 		term.TextDeleted += new EventHandler (OnTextDeleted);
 		term.ChildExited += new EventHandler (OnChildExited);
 
+		VScrollbar vscroll = new VScrollbar (term.Adjustment);
+		hbox.PackStart (term);
+		hbox.PackStart (vscroll);
+
 		Gdk.Color white = new Gdk.Color ();
 		Gdk.Color.Parse ("white", ref white);
 		// FIXME: following line is broken
@@ -41,23 +46,27 @@ class T
 		//term.ColorForeground = black;
 		term.SetColors (black, white, white, 16);
 		
-		Console.WriteLine (term.UsingXft);
-		Console.WriteLine (term.Encoding);
-		Console.WriteLine (term.StatusLine);
+		//Console.WriteLine (term.UsingXft);
+		//Console.WriteLine (term.Encoding);
+		//Console.WriteLine (term.StatusLine);
 
 		string[] argv = Environment.GetCommandLineArgs ();
-
-		string[] envv = new string[] {""};
-		// FIXME: send the env vars to ForkCommand
-		Console.WriteLine (Environment.GetEnvironmentVariables ().Count);
-		Console.WriteLine (Environment.CurrentDirectory);
+		// seems to want an array of "variable=value"
+		string[] envv = new string [Environment.GetEnvironmentVariables ().Count];
+		int i = 0;
+		foreach (DictionaryEntry e in Environment.GetEnvironmentVariables ())
+		{
+			if (e.Key == "" || e.Value == "")
+				continue;
+			string tmp = String.Format ("{0}={1}", e.Key, e.Value);
+			envv[i] = tmp;
+			i ++;
+		}
 		
-		int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
-		Console.WriteLine ("Child pid: " + pid);
+		int pid = term.ForkCommand (Environment.GetEnvironmentVariable ("SHELL"), argv, envv, Environment.CurrentDirectory, false, true, true);
+		Console.WriteLine ("Child pid: {0}", pid);
 
-		sw.AddWithViewport (term);
-
-		app.Contents = sw;
+		app.Contents = hbox;
 		app.ShowAll ();
 		program.Run ();
 	}
