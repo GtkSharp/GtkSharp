@@ -521,11 +521,16 @@ sub addNameElem
 	my $elem = $doc->createElement($type);
 	$node->appendChild($elem);
 	if ($prefix) {
-		$cname =~ /$prefix(\w+)/;
-		if ($prepend) {
-			$name = $prepend . $1;
+		my $match;
+		if ($cname =~ /$prefix(\w+)/) {
+			$match = $1;
 		} else {
-			$name = $1;
+			$match = $cname;
+		}
+		if ($prepend) {
+			$name = $prepend . $match;
+		} else {
+			$name = $match;
 		}
 		$elem->setAttribute('name', StudlyCaps($name));
 	}
