@@ -1,5 +1,5 @@
 <Type Name="Table" FullName="Gtk.Table">
-  <TypeSignature Language="C#" Value="public class Table : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Table : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,30 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Pack widgets in grid/table patterns.</summary>
+    <remarks><para>The Table widget allows a programmer to arrange widgets in rows and columns, making it easy to align many widgets adjacent to each other, horizontally and vertically.</para>
+    <para>Tables are created with a specific size - the number of rows and columns. This can be changed dynamically with the <see cref="M:Gtk.Table.Resize"/> method. Widgets are packed into the table with <see cref="M:Gtk.Table.Attach"/> methods.</para>
+    <para>The layout of a table can be altered by setting the spacing between rows and columns. This is done with the <see cref="P:Gtk.Table.ColumnSpacing"/> and <see cref="P:Gtk.Table.RowSpacing"/> properties, respectively. The spacing of individual cells can be adjusted with <see cref="M:Gtk.Table.SetColSpacing"/>.</para>
+    <para>The following shows how to create a table with three widgets:
+    <example><code lang="C#">
+public Widget MakeTableTester()
+{
+	// Create a table with 2 rows and 1 column
+	Table tableLayout = new Table(2, 1, false);
+	Label longLabel = new Label("This is a label that spans at least two Entry widgets");
+	
+	// Attach the label over the entire first row
+	tableLayout.Attach(longLabel,   0, 2, 0, 1);
+	// Attach an entry to each cell in the second row
+	tableLayout.Attach(new Entry(), 0, 1, 1, 2);
+	tableLayout.Attach(new Entry(), 1, 2, 1, 2);
+	
+	tableLayout.ShowAll();
+	return tableLayout;
+}
+    </code></example>
+    </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -40,10 +62,10 @@
         <Parameter Name="spacing" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'uint'</param>
-        <param name="spacing">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the spacing around a specified column.</summary>
+        <param name="column">A zero-indexed column number to adjust the spacing of.</param>
+        <param name="spacing">The number of pixels on each side of the <paramref name="column"/>.</param>
+        <remarks><para>To adjust the spacing between all columns, use the <see cref="P:Gtk.Table.ColumnSpacing"/> property.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetColSpacing">
@@ -56,10 +78,10 @@
         <Parameter Name="column" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The spacing currently set for a given column.</summary>
+        <param name="column">A zero-indexed column number to retrieve spacing information from.</param>
+        <returns>The number of pixels of spacing assigned to the specified <paramref name="column"/>.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Resize">
@@ -73,10 +95,10 @@
         <Parameter Name="columns" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rows">To be added: an object of type 'uint'</param>
-        <param name="columns">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Resizes the table so that the specified number of <paramref name="rows"/>  and <paramref name="columns"/> are available for widget packing.</summary>
+        <param name="rows">The new number of rows this table should allow.</param>
+        <param name="columns">The new number of columns this table should allow.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Attach">
@@ -97,17 +119,19 @@
         <Parameter Name="ypadding" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="left_attach">To be added: an object of type 'uint'</param>
-        <param name="right_attach">To be added: an object of type 'uint'</param>
-        <param name="top_attach">To be added: an object of type 'uint'</param>
-        <param name="bottom_attach">To be added: an object of type 'uint'</param>
-        <param name="xoptions">To be added: an object of type 'Gtk.AttachOptions'</param>
-        <param name="yoptions">To be added: an object of type 'Gtk.AttachOptions'</param>
-        <param name="xpadding">To be added: an object of type 'uint'</param>
-        <param name="ypadding">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Packs a widget into the table.</summary>
+        <param name="child">The <see cref="T:Gtk.Widget"/> to add.</param>
+        <param name="left_attach">The column number to attach the left side of <paramref name="child"/> to.</param>
+        <param name="right_attach">The column number to attach the right side of <paramref name="child"/> to.</param>
+        <param name="top_attach">The row number to attach the top of <paramref name="child"/> to.</param>
+        <param name="bottom_attach">The row number to attach the bottom of <paramref name="child"/> to.</param>
+        <param name="xoptions">The horizontal packing options for this <paramref name="child"/>.</param>
+        <param name="yoptions">The vertical packing options for this <paramref name="child"/>.</param>
+        <param name="xpadding">The number of pixels of padding to add to the left and right of <paramref name="child"/>.</param>
+        <param name="ypadding">The number of pixels of padding to add to the top and bottom of <paramref name="child"/>.</param>
+        <remarks><para>You can pack widgets into the Table using default packing and padding with the <see cref="M:Gtk.Table.Attach(Gtk.Widget,uint,uint,uint,uint)"/> convenience method.</para>
+        <para>Child widgets can span as many table cells as they wish, allowing the programmer to create complex grids of Widgets.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Attach">
@@ -124,13 +148,13 @@
         <Parameter Name="bottom_attach" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="left_attach">To be added: an object of type 'uint'</param>
-        <param name="right_attach">To be added: an object of type 'uint'</param>
-        <param name="top_attach">To be added: an object of type 'uint'</param>
-        <param name="bottom_attach">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Packs a widget into the table with default packing options.</summary>
+        <param name="child">The <see cref="T:Gtk.Widget"/> to add.</param>
+        <param name="left_attach">The column number to attach the left side of <paramref name="child"/> to.</param>
+        <param name="right_attach">The column number to attach the right side of <paramref name="child"/> to.</param>
+        <param name="top_attach">The row number to attach the top of <paramref name="child"/> to.</param>
+        <param name="bottom_attach">The row number to attach the bottom of <paramref name="child"/> to.</param>
+        <remarks><para>To pack widgets into the table with more control over size and padding, use the alternative <see cref="M:Gtk.Table.Attach(Gtk.Widget,uint,uint,uint,uint,Gtk.AttachOptions,Gtk.AttachOptions,uint,uint)"/> method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -171,12 +195,12 @@
         <Parameter Name="homogeneous" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rows">To be added: an object of type 'uint'</param>
-        <param name="columns">To be added: an object of type 'uint'</param>
-        <param name="homogeneous">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'Gtk.Table'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new Table widget.</summary>
+        <param name="rows">The number of rows in this table.</param>
+        <param name="columns">The number of columns in this table.</param>
+        <param name="homogeneous">Whether all table cells are forced to be the same size.</param>
+        <returns>A new Table.</returns>
+        <remarks><para>The size of the table can be altered after its creation using the <see cref="M:Gtk.able.Resize"/> method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -185,9 +209,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Table'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -212,10 +236,10 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the space between every column equal to <paramref name="value"/>.</summary>
+        <param name="value">The number of pixels to place between every column.</param>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultRowSpacing">
@@ -225,9 +249,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieve the spacing that gets placed between newly added rows by default.</summary>
+        <returns>Spacing between rows that will be added, in pixels.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultColSpacing">
@@ -284,10 +308,10 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the number of columns in this Table.</summary>
+        <param name="value">The number of columns that this table should have.</param>
+        <returns>The number of columns this table currently has.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Homogeneous">
@@ -300,10 +324,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether all cells must be of equal size.</summary>
+        <param name="value"><see langword="true"/> to set all cells to an equal size, <see langword="false"/> otherwise.</param>
+        <returns><see langword="true"/> if all cells are currently equally sized, <see langword="false"/> otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RowSpacing">
@@ -332,10 +356,10 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the number of rows in this Table.</summary>
+        <param name="value">The number of rows that this table should have.</param>
+        <returns>The number of rows this table currently has.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
