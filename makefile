@@ -1,5 +1,5 @@
 DIRS=codegen glib gdk gtk sample
-ROOT=//$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
+ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.2914/csc.exe
 
 all:
