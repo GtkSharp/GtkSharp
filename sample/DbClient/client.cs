@@ -55,7 +55,8 @@ class Client {
 	{
 		if (statusIds == null)
 			statusIds = new Stack ();
-		statusIds.Push (status.Push (context_id++, message));
+		if (status != null)
+			statusIds.Push (status.Push (context_id++, message));
 	}
 
 	static void PopMessage ()
@@ -102,6 +103,8 @@ class Client {
 		if (tableau != null)
 			tableau.Destroy ();
 
+		PopMessage ();
+		PushMessage ("");
 		ArrayList dataList = Conn.SelectAll ();
 		
 		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, false);
@@ -271,23 +274,38 @@ class Client {
 
 	static void Insert_Action (object o, EventArgs args)
 	{
-		Conn.Insert (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-		UpdateView ();
+		try {
+			Conn.Insert (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
+			UpdateView ();
+		} catch (Exception e) {
+			PushMessage (e.Message);
+		}
 		dialog.Destroy ();
+		dialog = null;
 	}
 
 	static void Remove_Action (object o, EventArgs args)
 	{
-		Conn.Delete (UInt32.Parse (id_entry.Text));
-		UpdateView ();
+		try {
+			Conn.Delete (UInt32.Parse (id_entry.Text));
+			UpdateView ();
+		} catch (Exception e) {
+			PushMessage (e.Message);
+		}
 		dialog.Destroy ();
+		dialog = null;
 	}
 
 	static void Update_Action (object o, EventArgs args)
 	{
-		Conn.Update (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-		UpdateView ();
+		try {
+			Conn.Update (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
+			UpdateView ();
+		} catch (Exception e) {
+			PushMessage (e.Message);
+		}
 		dialog.Destroy ();
+		dialog = null;
 	}
 
 	static void Dialog_Cancel (object o, EventArgs args)
