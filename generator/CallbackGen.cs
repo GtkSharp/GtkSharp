@@ -27,6 +27,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public String MarshalReturnType {
+			get
+			{
+				return MarshalType;
+			}
+		}
+
 		public String CallByName (String var_name)
 		{
 			return var_name;
@@ -35,6 +42,11 @@ namespace GtkSharp.Generation {
 		public String FromNative(String var)
 		{
 			return var;
+		}
+
+		public String FromNativeReturn(String var)
+		{
+			return FromNative (var);
 		}
 
 		public void Generate ()

@@ -97,6 +97,18 @@ namespace GLib {
 		public Value (GLib.Boxed val)
 		{
 			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
+			//g_value_set_boxed (_val, val.Handle);
+		}
+
+		public Value (IntPtr obj, string prop_name, Boxed val)
+		{
+			_val = gtksharp_value_create_from_property (obj, prop_name);
+			//g_value_set_boxed (_val, val.Handle);
+		}
+
+		public Value (GLib.Opaque val)
+		{
+			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
 			g_value_set_boxed (_val, val.Handle);
 		}
 
@@ -258,6 +270,11 @@ namespace GLib {
 
 		[DllImport("gobject-2.0")]
 		static extern IntPtr g_value_get_boxed (IntPtr val);
+
+		public static explicit operator GLib.Opaque (Value val)
+		{
+			return GLib.Opaque.GetOpaque (g_value_get_boxed (val._val));
+		}
 
 		/// <summary>
 		///	Value to Boxed Conversion

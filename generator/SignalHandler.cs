@@ -31,7 +31,7 @@ namespace GtkSharp.Generation {
 			}
 			
 			string s_ret = SymbolTable.GetCSType(retval);
-			string p_ret = SymbolTable.GetMarshalType(retval);
+			string p_ret = SymbolTable.GetMarshalReturnType(retval);
 			if ((s_ret == "") || (p_ret == "")) {
 				Console.Write("Funky type: " + retval);
 				return "";
@@ -66,8 +66,6 @@ namespace GtkSharp.Generation {
 					pinv += ", ";
 				}
 
-				if (SymbolTable.IsStruct(type))
-					pinv += "ref ";
 				pinv += (ptype + " arg" + pcnt);
 				parms.Add(type);
 				if (SymbolTable.IsObject(type)) {
@@ -156,7 +154,7 @@ namespace GtkSharp.Generation {
 						string ctype = (string) parms[idx];
 						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
 						ClassBase wrapper = SymbolTable.GetClassGen (ctype);
-						if ((wrapper != null && !(wrapper is InterfaceGen)) || SymbolTable.IsManuallyWrapped (ctype) || SymbolTable.IsBoxed (ctype)) {
+						if ((wrapper != null && ((wrapper is ObjectGen) || (wrapper is OpaqueGen))) || SymbolTable.IsManuallyWrapped (ctype)) {
 							sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
 							sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
 						}

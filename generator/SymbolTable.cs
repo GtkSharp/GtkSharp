@@ -123,7 +123,17 @@ namespace GtkSharp.Generation {
 			return type;
 		}
 
+		public static string FromNativeReturn(string c_type, string val)
+		{
+			return FromNative (c_type, val, true);
+		}
+
 		public static string FromNative(string c_type, string val)
+		{
+			return FromNative (c_type, val, false);
+		}
+
+		public static string FromNative(string c_type, string val, bool ret)
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
@@ -131,7 +141,10 @@ namespace GtkSharp.Generation {
 				return val;
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				return gen.FromNative(val);
+				if (ret)
+					return gen.FromNativeReturn(val);
+				else
+					return gen.FromNative(val);
 			} else if (manually_wrapped_types.ContainsKey(c_type)) {
 				// FIXME: better way of handling this?
 				if (c_type == "GSList") {
@@ -184,7 +197,17 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
+		public static string GetMarshalReturnType(string c_type)
+		{
+			return GetMarshalType (c_type, true);
+		}
+		
 		public static string GetMarshalType(string c_type)
+		{
+			return GetMarshalType (c_type, false);
+		}
+		
+		public static string GetMarshalType(string c_type, bool ret)
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
@@ -194,7 +217,10 @@ namespace GtkSharp.Generation {
 				return "IntPtr";
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				return gen.MarshalType;
+				if (ret)
+					return gen.MarshalReturnType;
+				else
+					return gen.MarshalType;
 			} else {
 				return "";
 			}
@@ -215,7 +241,20 @@ namespace GtkSharp.Generation {
 				return "";
 			}
 		}
-		
+	
+		public static bool IsOpaque(string c_type)
+		{
+			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is OpaqueGen) {
+					return true;
+				}
+			}
+			return false;
+		}
+	
 		public static bool IsBoxed(string c_type)
 		{
 			c_type = Trim(c_type);
@@ -272,10 +311,7 @@ namespace GtkSharp.Generation {
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
-			if (IsInterface(c_type) || IsObject (c_type)) {
-				return (ClassBase) complex_types[c_type];
-			}
-			return null;
+			return (complex_types[c_type] as ClassBase);
 		}
 			
 		public static bool IsObject(string c_type)

@@ -119,7 +119,7 @@ namespace GtkSharp.Generation {
 			}
 			
 			rettype = ret_elem.GetAttribute("type");
-			m_ret = SymbolTable.GetMarshalType(rettype);
+			m_ret = SymbolTable.GetMarshalReturnType(rettype);
 			s_ret = SymbolTable.GetCSType(rettype);
 			cname = elem.GetAttribute("cname");
 			bool is_shared = elem.HasAttribute("shared");
@@ -140,12 +140,12 @@ namespace GtkSharp.Generation {
 			if (parms != null) {
 				parms.CreateSignature (is_set);
 				sig = "(" + parms.Signature + ")";
-				isig = "(" + (is_shared ? "" : "IntPtr raw, ") + parms.ImportSig + ");";
-				call = "(" + (is_shared ? "" : "Handle, ") + parms.CallString + ")";
+				isig = "(" + (is_shared ? "" : container_type.MarshalType + " raw, ") + parms.ImportSig + ");";
+				call = "(" + (is_shared ? "" : container_type.CallByName () + ", ") + parms.CallString + ")";
 			} else {
 				sig = "()";
-				isig = "(" + (is_shared ? "" : "IntPtr raw") + ");";
-				call = "(" + (is_shared ? "" : "Handle") + ")";
+				isig = "(" + (is_shared ? "" : container_type.MarshalType + " raw") + ");";
+				call = "(" + (is_shared ? "" : container_type.CallByName ()) + ")";
 			}
 
 			initialized = true;
@@ -343,14 +343,14 @@ namespace GtkSharp.Generation {
 			if (m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
 			} else {
-				if (SymbolTable.IsObject (rettype))
+				if (SymbolTable.IsObject (rettype) || SymbolTable.IsOpaque (rettype))
 				{
 					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + SymbolTable.FromNative(rettype, "raw_ret") + ";");
+					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
 					sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
 				}
 				else
-					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNative(rettype, cname + call) + ";");
+					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, cname + call) + ";");
 			}
 			
 			if (parms != null)

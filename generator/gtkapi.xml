@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <api>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
@@ -1659,7 +1659,7 @@
       <field cname="instance_init" type="GnomeModuleHook"/>
       <field cname="pre_args_parse" type="GnomeModuleHook"/>
       <field cname="post_args_parse" type="GnomeModuleHook"/>
-      <field cname="poptOption* options" type="struct"/>
+      <field cname="options" type="struct-poptOption*"/>
       <field cname="init_pass" type="GnomeModuleInitHook"/>
       <field cname="class_init" type="GnomeModuleClassInitHook"/>
       <field cname="opt_prefix" type="const-char*"/>
@@ -1674,12 +1674,7 @@
     </struct>
     <struct name="Trigger" cname="GnomeTrigger">
       <field cname="type" type="GnomeTriggerType"/>
-      <field cname="{GnomeTriggerActionFunction function" type="union"/>
-      <field cname="command" type="gchar*"/>
-      <field cname="{gchar* file" type="struct"/>
-      <field cname="cache_id" type="int"/>
-      <field cname="media" type="}"/>
-      <field cname="u" type="}"/>
+      <field cname="function" type="GnomeTriggerActionFunction"/>
       <field cname="level" type="gchar*"/>
       <method name="TypeGetType" cname="gnome_trigger_type_get_type" shared="true">
         <return-type type="GType"/>
@@ -3367,10 +3362,7 @@
       <field cname="send_event" type="gint8"/>
       <field cname="message_type" type="GdkAtom"/>
       <field cname="data_format" type="gushort"/>
-      <field cname="b" array_len="20" type="union"/>
-      <field cname="s" array_len="10" type="short"/>
-      <field cname="l" array_len="5" type="long"/>
-      <field cname="data" type="}"/>
+      <field cname="b" array_len="20" type="char"/>
     </struct>
     <struct name="EventConfigure" cname="GdkEventConfigure">
       <field cname="type" type="GdkEventType"/>
@@ -10425,7 +10417,7 @@
       </method>
     </object>
     <object name="TextView" cname="GtkTextView" parent="GtkContainer">
-      <field cname="_GtkTextLayout* layout" type="struct"/>
+      <field cname="layout" type="struct-_GtkTextLayout*"/>
       <field cname="buffer" type="GtkTextBuffer*"/>
       <field cname="selection_drag_handler" type="guint"/>
       <field cname="scroll_timeout" type="guint"/>
@@ -13829,10 +13821,7 @@
     </struct>
     <struct name="BindingArg" cname="GtkBindingArg">
       <field cname="arg_type" type="GtkType"/>
-      <field cname="{glong long_data" type="union"/>
-      <field cname="double_data" type="gdouble"/>
-      <field cname="string_data" type="gchar*"/>
-      <field cname="d" type="}"/>
+      <field cname="long_data" type="glong"/>
     </struct>
     <struct name="BindingEntry" cname="GtkBindingEntry">
       <field cname="keyval" type="guint"/>
@@ -14881,12 +14870,7 @@
       <field cname="next" type="GtkTextLineSegment*"/>
       <field cname="char_count" type="int"/>
       <field cname="byte_count" type="int"/>
-      <field cname="chars" array_len="4" type="union"/>
-      <field cname="toggle" type="GtkTextToggleBody"/>
-      <field cname="mark" type="GtkTextMarkBody"/>
-      <field cname="pixbuf" type="GtkTextPixbuf"/>
-      <field cname="child" type="GtkTextChildBody"/>
-      <field cname="body" type="}"/>
+      <field cname="chars" array_len="4" type="char"/>
       <method name="Split" cname="gtk_text_line_segment_split" shared="true">
         <return-type type="GtkTextLineSegment*"/>
         <parameters>
@@ -14943,18 +14927,7 @@
     </struct>
     <struct name="TreeDataList" cname="GtkTreeDataList">
       <field cname="next" type="GtkTreeDataList*"/>
-      <field cname="{gint v_int" type="union"/>
-      <field cname="v_char" type="gint8"/>
-      <field cname="v_uchar" type="guint8"/>
-      <field cname="v_uint" type="guint"/>
-      <field cname="v_long" type="glong"/>
-      <field cname="v_ulong" type="gulong"/>
-      <field cname="v_int64" type="gint64"/>
-      <field cname="v_uint64" type="guint64"/>
-      <field cname="v_float" type="gfloat"/>
-      <field cname="v_double" type="gdouble"/>
-      <field cname="v_pointer" type="gpointer"/>
-      <field cname="data" type="}"/>
+      <field cname="v_int" type="gint"/>
       <method name="CompareFunc" cname="gtk_tree_data_list_compare_func" shared="true">
         <return-type type="gint"/>
         <parameters>
@@ -17664,6 +17637,8 @@
       <member cname="GTK_HTML_COMMAND_KILL_WORD" name="KillWord"/>
       <member cname="GTK_HTML_COMMAND_KILL_WORD_BACKWARD" name="KillWordBackward"/>
       <member cname="GTK_HTML_COMMAND_TEXT_COLOR_APPLY" name="TextColorApply"/>
+      <member cname="GTK_HTML_COMMAND_SAVE_DATA_ON" name="SaveDataOn"/>
+      <member cname="GTK_HTML_COMMAND_SAVE_DATA_OFF" name="SaveDataOff"/>
     </enum>
     <enum name="HTMLCursorSkipType" cname="GtkHTMLCursorSkipType" type="enum">
       <member cname="GTK_HTML_CURSOR_SKIP_ONE" name="One"/>

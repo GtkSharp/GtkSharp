@@ -225,6 +225,9 @@ namespace GtkSharp.Generation {
 					call_string += call_parm;
 				}
 				import_sig += (m_type + " " + name);
+				// FIXME: lame
+				call_string = call_string.Replace ("out ref", "ref");
+				import_sig = import_sig.Replace ("out ref", "ref");
 
 				i++;
 			}
@@ -247,7 +250,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
 				}
 
-				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsBoxed (c_type))) {
+				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type))) {
 					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
 				}
 			}

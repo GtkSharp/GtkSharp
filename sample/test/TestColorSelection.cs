@@ -67,12 +67,12 @@ namespace WidgetViewer {
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
 			Gdk.Color selected = window.ColorSelection.CurrentColor;
-
+/*
 			if (selected == null) {
 				Console.WriteLine ("Color selection failed.");
 				return;
 			}
-			
+*/			
 			Display_Result (selected);
 		}
 
@@ -85,10 +85,10 @@ namespace WidgetViewer {
 
 		static void Display_Result (Gdk.Color color)
 		{
-
+/*
 			if (color == null)
 				Console.WriteLine ("Null color");
-			
+*/			
 			dialog = new Dialog ();
 			dialog.Title = "Selected Color";
 

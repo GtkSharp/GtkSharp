@@ -14,6 +14,8 @@ namespace GtkSharp.Generation {
 
 		String MarshalType {get;}
 
+		String MarshalReturnType {get;}
+
 		String Name {get;}
 
 		String QualifiedName {get;}
@@ -21,6 +23,8 @@ namespace GtkSharp.Generation {
 		String CallByName (String var_name);
 		
 		String FromNative (String var);
+
+		String FromNativeReturn (String var);
 
 		void Generate ();
 	}

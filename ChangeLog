@@ -1,3 +1,50 @@
+2002-07-25  Rachel Hestilow  <hestilow@ximian.com>
+
+	[about 60% of the marshalling patch that I lost.
+	 The rest to come tomorrow.]
+	
+	* generator/BoxedGen.cs, StructGen.cs: Move most of this to StructBase,
+	delete large chunks duplicated from ClassBase.
+
+	* generator/IGeneratable.cs: Add MarshalReturnType, FromNativeReturn.
+
+	* generator/ClassBase.cs: Move ctor stuff here. Add a CallByName
+	overload with no parameters for the "self" reference.
+
+	* generator/EnumGen.cs, CallbackGen.cs: Implement new MarshalReturnType,
+	  FromNativeReturn.
+
+   * generator/Method.cs: Use container_type.MarshalType, CallByName, and
+	  SymbolTable.FromNativeReturn when generating call and import sigs.
+
+	* generator/OpaqueGen.cs: Added.
+
+	* generator/Property.cs: Handle boxed and opaques differently.
+
+	* generator/SymbolTable.cs: Update for the opaque stuff and the new Return
+	methods. Also change GetClassGen to simply call the as operator.
+	
+	* glib/Boxed.cs: Update for struct usage -- this is now a wrapper for
+	  the purposes of using with Value.
+
+   * glib/Opaque.cs: Added. New base class for opaque structs.
+
+	* glue/textiter.c, gtk/TextIter.custom: Remove.
+
+	* gnome/Program.cs: Update for new struct marshalling.
+
+	* parser/Metadata.pm: Use our own getChildrenByTagName.
+
+	* parser/README: Update for new requirements (was out of sync with
+	  build.pl)
+
+	* parser/gapi2xml.pl: Hide struct like const in field elements.
+
+	* parser/gapi_pp.pl: Handle embedded union fields (poorly).
+
+	* sample/test/TestColorSelection.cs: Comment out null color tests
+     for now.
+
 2002-07-24  Mike Kestner <mkestner@speakeasy.net>
 
 	* generator/SignalHandler.cs : use ref parameters in signal cb's.

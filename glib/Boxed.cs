@@ -16,11 +16,8 @@ namespace GLib {
 	///	An abstract base class to derive structures and marshal them.
 	/// </remarks>
 
-	public abstract class Boxed {
-
-		private IntPtr raw;
-
-		public Boxed () : this (IntPtr.Zero) {}
+	public class Boxed {
+		object raw;
 
 		/// <summary>
 		///	Boxed Constructor
@@ -30,7 +27,7 @@ namespace GLib {
 		///	Constructs a Boxed type from a raw ref.
 		/// </remarks>
 
-		public Boxed (IntPtr raw)
+		public Boxed (object o)
 		{
 			this.raw = raw;
 		}
@@ -43,44 +40,13 @@ namespace GLib {
 		///	Gets a marshallable IntPtr.
 		/// </remarks>
 
-		public virtual IntPtr Handle {
+		public virtual object Obj {
 			get {
 				return raw;
 			}
 			set {
 				raw = value;
 			}
-		}
-
-		/// <summary>
-		///	Raw Property
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Gets or sets a marshallable IntPtr.
-		/// </remarks>
-
-		protected IntPtr Raw {
-			get {
-				return raw;
-			}
-			set {
-				raw = value;
-			}
-		}
-
-		/// <summary>
-		///	FromNative Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Gets a Boxed type from a raw IntPtr.
-		/// </remarks>
-
-		public static GLib.Boxed FromNative (IntPtr raw) 
-		{
-			// FIXME:
-			return null;
 		}
 	}
 }

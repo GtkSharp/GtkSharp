@@ -2,7 +2,6 @@ lib_LTLIBRARIES = libgtksharpglue.la
 
 BASESOURCES = \
 	value.c			\
-	textiter.c		\
 	fileselection.c		\
 	dialog.c		\
 	colorseldialog.c        \

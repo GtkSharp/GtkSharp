@@ -77,6 +77,8 @@ namespace GtkSharp.Generation {
 				v_type = "(GLib.Object)";
 			} else if (SymbolTable.IsBoxed (c_type)) {
 				v_type = "(GLib.Boxed)";
+			} else if (SymbolTable.IsOpaque (c_type)) {
+				v_type = "(GLib.Opaque)";
 			}
 
 			if (elem.HasAttribute("construct-only") && !elem.HasAttribute("readable")) {
@@ -93,19 +95,21 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
-				if (SymbolTable.IsObject (c_type))
-				{
+				if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type)) {
 					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) (GLib.UnwrappedObject) val;");
-					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + SymbolTable.FromNative(c_type, "raw_ret") + ";");
+					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + SymbolTable.FromNativeReturn(c_type, "raw_ret") + ";");
 					sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
-				}
-				else {
+				} else {
 					sw.Write("\t\t\t\t" + cs_type + " ret = ");
-					sw.Write ("(" + cs_type + ") ");
-					if (v_type != "") {
-						sw.Write(v_type + " ");
+					if (SymbolTable.IsBoxed (c_type)) {
+						sw.WriteLine ("({0}) (({1} val).Obj);", cs_type, v_type);
+					} else {
+						sw.Write ("(" + cs_type + ") ");
+						if (v_type != "") {
+							sw.Write(v_type + " ");
+						}
+						sw.WriteLine("val;");
 					}
-					sw.WriteLine("val;");
 				}
 
 				sw.WriteLine("\t\t\t\treturn ret;");
@@ -117,6 +121,8 @@ namespace GtkSharp.Generation {
 				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
 				if (SymbolTable.IsEnum(c_type)) {
 					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value)));");
+				} else if (SymbolTable.IsBoxed (c_type)) {
+					sw.WriteLine("Handle, " + cname + ", new GLib.Boxed (value)));");
 				} else {
 					if (v_type != "") {
 						sw.Write(v_type + " ");

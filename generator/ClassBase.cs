@@ -17,6 +17,11 @@ namespace GtkSharp.Generation {
 		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = null;
+		protected ArrayList ctors = new ArrayList();
+
+		private bool hasDefaultConstructor = true;
+		private bool ctors_initted = false;
+		private Hashtable clash_map;
 
 		public Hashtable Methods {
 			get {
@@ -64,6 +69,14 @@ namespace GtkSharp.Generation {
 					interfaces = ParseImplements (member);
 					break;
 
+				case "constructor":
+					ctors.Add (new Ctor (LibraryName, member, this));
+					break;
+
+				case "disabledefaultconstructor":
+					hasDefaultConstructor = false;
+					break;
+					
 				default:
 					break;
 				}
@@ -77,6 +90,8 @@ namespace GtkSharp.Generation {
 			case "property":
 			case "signal":
 			case "implements":
+			case "constructor":
+			case "disabledefaultconstructor":
 				return true;
 				
 			default:
@@ -91,16 +106,33 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual String MarshalReturnType {
+			get
+			{
+				return "IntPtr";
+			}
+		}
+
 		public virtual String CallByName (String var_name)
 		{
 			return var_name + ".Handle";
+		}
+
+		public virtual String CallByName ()
+		{
+			return "Handle";
 		}
 
 		public virtual String FromNative(String var)
 		{
 			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
-
+		
+		public virtual String FromNativeReturn(String var)
+		{
+			return FromNative (var);
+		}
+		
 		protected void GenProperties (StreamWriter sw)
 		{		
 			if (props == null)
@@ -263,5 +295,61 @@ namespace GtkSharp.Generation {
 			else
 				return false;
 		}
+
+		public ArrayList Ctors { get { return ctors; } }
+
+		private void InitializeCtors ()
+		{
+			if (ctors_initted)
+				return;
+			
+			clash_map = new Hashtable();
+
+			if (ctors != null) {
+				bool has_preferred = false;
+				foreach (Ctor ctor in ctors) {
+					if (ctor.Validate ()) {
+						ctor.InitClashMap (clash_map);
+						if (ctor.Preferred)
+							has_preferred = true;
+					}
+					else
+						Console.WriteLine(" in Object " + Name);
+				}
+				
+				if (!has_preferred && ctors.Count > 0)
+					((Ctor) ctors[0]).Preferred = true;
+
+				foreach (Ctor ctor in ctors) 
+					if (ctor.Validate ()) {
+						ctor.Initialize (clash_map);
+					}
+			}
+
+			ctors_initted = true;
+		}
+
+		protected virtual void GenCtors (StreamWriter sw)
+		{
+			ClassBase klass = this;
+			while (klass != null) {
+				klass.InitializeCtors ();
+				klass = klass.Parent;
+			}
+			
+			if (ctors != null) {
+				foreach (Ctor ctor in ctors) {
+					if (ctor.Validate ())
+						ctor.Generate (sw);
+				}
+			}
+
+			if (!clash_map.ContainsKey("") && hasDefaultConstructor) {
+				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
+				sw.WriteLine();
+			}
+
+		}
+
 	}
 }

@@ -13,11 +13,7 @@ namespace GtkSharp.Generation {
 
 	public class ObjectGen : ClassBase, IGeneratable  {
 
-		private ArrayList ctors = new ArrayList();
 		private ArrayList strings = new ArrayList();
-		private bool hasDefaultConstructor = true;
-		private bool ctors_initted = false;
-		private Hashtable clash_map;
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
@@ -32,14 +28,6 @@ namespace GtkSharp.Generation {
 					Statistics.IgnoreCount++;
 					break;
 
-				case "constructor":
-					ctors.Add (new Ctor (LibraryName, member, this));
-					break;
-
-				case "disabledefaultconstructor":
-					hasDefaultConstructor = false;
-					break;
-					
 				case "static-string":
 					strings.Add (node);
 					break;
@@ -177,65 +165,16 @@ namespace GtkSharp.Generation {
 
 			return true;
 		}
-
-		public ArrayList Ctors { get { return ctors; } }
-
-		private void InitializeCtors ()
-		{
-			if (ctors_initted)
-				return;
-			
-			clash_map = new Hashtable();
-
-			if (ctors != null) {
-				bool has_preferred = false;
-				foreach (Ctor ctor in ctors) {
-					if (ctor.Validate ()) {
-						ctor.InitClashMap (clash_map);
-						if (ctor.Preferred)
-							has_preferred = true;
-					}
-					else
-						Console.WriteLine(" in Object " + Name);
-				}
-				
-				if (!has_preferred && ctors.Count > 0)
-					((Ctor) ctors[0]).Preferred = true;
-
-				foreach (Ctor ctor in ctors) 
-					if (ctor.Validate ()) {
-						ctor.Initialize (clash_map);
-					}
-			}
-
-			ctors_initted = true;
-		}
-
-		private void GenCtors (StreamWriter sw)
+		
+		protected override void GenCtors (StreamWriter sw)
 		{
 			if (!Elem.HasAttribute("parent"))
 				return;
-			ObjectGen klass = this;
-			while (klass != null) {
-				klass.InitializeCtors ();
-				klass = (ObjectGen) klass.Parent;
-			}
-			
+
 			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
 			sw.WriteLine();
 
-			if (ctors != null) {
-				foreach (Ctor ctor in ctors) {
-					if (ctor.Validate ())
-						ctor.Generate (sw);
-				}
-			}
-
-			if (!clash_map.ContainsKey("") && hasDefaultConstructor) {
-				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
-				sw.WriteLine();
-			}
-
+			base.GenCtors (sw);
 		}
 	}
 }

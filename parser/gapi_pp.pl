@@ -66,6 +66,16 @@ foreach $fname (@hdrs) {
 			while ($line !~ /^}\s*\w+;/) {$line = <INFILE>;}
 		} elsif ($line =~ /^enum\s+\{/) {
 			while ($line !~ /^};/) {$line = <INFILE>;}
+		} elsif ($line =~ /(\s+)union\s*{/) {
+			# this is a hack for now, but I need it for the fields to work
+			$indent = $1;
+			$do_print = 1;
+			while ($line !~ /^$indent}\s*\w+;/) {
+				$line = <INFILE>;
+				next if ($line !~ /;/);
+				print $line if $do_print;
+				$do_print = 0;
+			}
 		} else {
 			if ($braces or $line =~ /;/) {
 				print $line;

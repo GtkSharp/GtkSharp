@@ -127,12 +127,26 @@ sub fixupParams {
 	}
 }
 
+sub myGetChildrenByTagName {
+   my ($node, $tagname) = @_;
+   my ($child);
+   my (@nodes) = ();
+   for ($child = $node->firstChild; $child; $child = $child->nextSibling ()) {
+   	if ($child->nodeName eq $tagname) {
+		push @nodes, $child;		
+	}
+   }
+   return @nodes;
+}
+
 sub addClassData {
     my ($doc, $node, $class, $data_list_ref) = @_;
 
     foreach $data (@$data_list_ref) {
 	if ($$data[1] eq "class") {
-	    my @nodes = $node->getChildrenByTagName ($$data[5]);
+	    # my copy of XML::LibXML doesn't have this method.
+	    #my @nodes = $node->getChildrenByTagName ($$data[5]);
+	    my @nodes = myGetChildrenByTagName ($node, $$data[5]);
 
 	    if (0 == scalar @nodes) {
 		print STDERR "DEBUG> $class $$data[0] $$data[1] $$data[2] $$data[3] $$data[4] $$data[5] $$data[6]\n";

@@ -16,6 +16,7 @@ namespace GtkSharp.Generation {
 		static int objects = 0;
 		static int structs = 0;
 		static int boxed = 0;
+		static int opaques = 0;
 		static int interfaces = 0;
 		static int methods = 0;
 		static int ctors = 0;
@@ -66,6 +67,15 @@ namespace GtkSharp.Generation {
 			}
 			set {
 				boxed = value;
+			}
+		}
+
+		public static int OpaqueCount {
+			get {
+				return opaques;
+			}
+			set {
+				opaques = value;
 			}
 		}
 
@@ -138,6 +148,7 @@ namespace GtkSharp.Generation {
 			Console.WriteLine("\tEnums: " + enums);
 			Console.WriteLine("\tStructs: " + structs);
 			Console.WriteLine("\tBoxed: " + boxed);
+			Console.WriteLine("\tOpaques: " + opaques);
 			Console.WriteLine("\tInterfaces: " + interfaces);
 			Console.WriteLine("\tCallbacks: " + cbs);
 			Console.WriteLine("\tObjects: " + objects);
@@ -147,7 +158,7 @@ namespace GtkSharp.Generation {
 			Console.WriteLine("\tConstructors: " + ctors);
 			Console.WriteLine("\tThrottled: " + throttled);
 			Console.WriteLine("\tIgnored: " + ignored);
-			Console.WriteLine("Total Nodes: " + (enums+structs+boxed+interfaces+cbs+objects+props+sigs+methods+ctors+throttled+ignored));
+			Console.WriteLine("Total Nodes: " + (enums+structs+boxed+opaques+interfaces+cbs+objects+props+sigs+methods+ctors+throttled+ignored));
 		}
 	}
 }

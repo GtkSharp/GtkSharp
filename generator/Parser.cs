@@ -72,7 +72,10 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "boxed":
-					SymbolTable.AddType (new BoxedGen (ns, elem));
+					if (elem.HasAttribute ("opaque"))
+						SymbolTable.AddType (new OpaqueGen (ns, elem));
+					else
+						SymbolTable.AddType (new BoxedGen (ns, elem));
 					break;
 
 				case "callback":
@@ -92,7 +95,10 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "struct":
-					SymbolTable.AddType (new StructGen (ns, elem));
+					if (elem.HasAttribute ("opaque"))
+						SymbolTable.AddType (new OpaqueGen (ns, elem));
+					else
+						SymbolTable.AddType (new StructGen (ns, elem));
 					break;
 
 				default:
