@@ -253,17 +253,22 @@ sub gen_object
 	print OUTFILE "\t/// <remarks>\n\t///\t FIXME: Generate docs\n";
 	print OUTFILE "\t/// </remarks>\n\n";
 	print OUTFILE "\tpublic ";
-	if ($abstract) {
+	if (@ctors == 0) {
 		print OUTFILE "abstract ";
 	}
 	print OUTFILE "class $typename : $parent {\n\n";
 
-	print OUTFILE "\t\t/// <summary> $typename Constructor </summary>\n";
-	print OUTFILE "\t\t/// <remarks>\n";
-	print OUTFILE "\t\t///\tWraps a raw GObject reference.\n";
-	print OUTFILE "\t\t/// </remarks>\n\n";
-	print OUTFILE "\t\tpublic $typename (IntPtr o)\n\t\t{\n";
-	print OUTFILE "\t\t\tRawObject = o;\n\t\t}\n\n";
+	# Only generate the wrapper ctor if other ctors exist
+	if (@ctors) {
+		print OUTFILE "\t\t/// <summary>\n";
+		print OUTFILE "\t\t///\t$typename Constructor\n";
+		print OUTFILE "\t\t/// </summary>\n";
+		print OUTFILE "\t\t/// <remarks>\n";
+		print OUTFILE "\t\t///\tWraps a raw GObject reference.\n";
+		print OUTFILE "\t\t/// </remarks>\n\n";
+		print OUTFILE "\t\tpublic $typename (IntPtr o)\n\t\t{\n";
+		print OUTFILE "\t\t\tRawObject = o;\n\t\t}\n\n";
+	}
 
 	foreach $ctor (@ctors) {
 		print OUTFILE gen_ctor ($ctor, "gtk-1.3.dll");
