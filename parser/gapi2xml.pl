@@ -418,11 +418,16 @@ sub addParamsElem
 	foreach $parm (@params) {
 		$parm_elem = $doc->createElement('parameter');
 		$parms_elem->appendChild($parm_elem);
-		$parm =~ s/\s+\*/\* /g;
+		$parm =~ s/\s+(\*+)/\1 /g;
 		$parm =~ s/const\s+/const-/g;
 		$parm =~ /(\S+)\s+(\S+)/;
-		$parm_elem->setAttribute('type', "$1");
-		$parm_elem->setAttribute('name', "$2");
+		$parm_elem->setAttribute('type', $1);
+		my $name = $2;
+		if ($name =~ /(\w+)\[\]/) {
+			$name = $1;
+			$parm_elem->setAttribute('array', "true");
+		}
+		$parm_elem->setAttribute('name', $name);
 	}
 }
 

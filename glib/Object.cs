@@ -51,6 +51,28 @@ namespace GLib {
 			return null; //FIXME: Call TypeParser here eventually.
 		}
 
+		/// <summary>
+		///	Object Constructor
+		/// </summary>
+		///
+		/// <remarks>
+		///	Dummy constructor needed for derived classes.
+		/// </remarks>
+
+		public Object () {}
+
+		/// <summary>
+		///	Object Constructor
+		/// </summary>
+		///
+		/// <remarks>
+		///	Creates an object from a raw object reference.
+		/// </remarks>
+
+		public Object (IntPtr raw)
+		{
+			RawObject = raw;
+		}
 
 		/// <summary>
 		///	RawObject Property

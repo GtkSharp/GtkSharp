@@ -7,6 +7,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.Collections;
 	using System.IO;
 	using System.Xml;
 
@@ -59,6 +60,11 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine ();
 				
+			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			sw.WriteLine();
+				
+			Hashtable clash_map = new Hashtable();
+				
 			foreach (XmlNode node in elem.ChildNodes) {
 				
 				XmlElement member = (XmlElement) node;
@@ -74,7 +80,7 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "constructor":
-					if (!GenCtor(member, table, sw)) {
+					if (!GenCtor(member, table, sw, clash_map)) {
 						Console.WriteLine("in object " + CName);
 					}
 					break;
@@ -96,6 +102,11 @@ namespace GtkSharp.Generation {
 					break;
 				}
 				
+			}
+			
+			if (!clash_map.ContainsKey("")) {
+				sw.WriteLine("\t\tpublic " + Name + "() : base(){}");
+				sw.WriteLine();
 			}
 				
 			sw.WriteLine ("\t}");

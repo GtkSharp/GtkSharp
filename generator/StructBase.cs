@@ -7,7 +7,9 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.Collections;
 	using System.IO;
+	using System.Text.RegularExpressions;
 	using System.Xml;
 
 	public class StructBase  {
@@ -43,23 +45,28 @@ namespace GtkSharp.Generation {
 		}
 		
 
-		protected bool GenCtor(XmlElement ctor, SymbolTable table, StreamWriter sw)
+		protected bool GenCtor(XmlElement ctor, SymbolTable table, StreamWriter sw, Hashtable clash_map)
 		{
-			String sig, isig, call;
+			String sig, isig, call, sigtypes;
 			XmlElement parms = ctor["parameters"];
 			
 			if (parms == null) {
 				sig = "()";
 				isig = call = "();";
-			//} else if (!GetSignature(parms, table, out sig) ||
-			//    	   !GetImportSig(parms, table, out isig) ||
-			//           !GetCallString(parms, table, out call)) {
-			//	Console.Write("ctor ");
-			//	return false;       	
-			} else {
-				Console.Write("ctor with parms ");
-				return false;
+				sigtypes = "";
+			} else if (!GetSignature(parms, table, out sig, out sigtypes) ||
+			    	   !GetImportSig(parms, table, out isig) ||
+			           !GetCallString(parms, table, out call)) {
+				Console.Write("ctor ");
+				return false;       	
 			}
+			
+			bool clash = false;
+			if (clash_map.ContainsKey(sigtypes)) {
+				clash = true;
+			} else {
+				clash_map[sigtypes] = ctor;
+			}			
 			
 			String cname = ctor.GetAttribute("cname");
 			
@@ -67,9 +74,19 @@ namespace GtkSharp.Generation {
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.WriteLine("\t\tstatic extern IntPtr " + cname + isig);
 			sw.WriteLine();
-			sw.WriteLine("\t\tpublic " + Name + sig);
-			sw.WriteLine("\t\t{");
-			sw.WriteLine("\t\t\tRawObject = " + cname + call);
+			
+			if (clash) {
+				String mname = cname.Substring(cname.IndexOf("new"));
+				// mname = Regex.Replace(mname, "_(\\w)", "\\u\\1");
+				sw.WriteLine("\t\tpublic static " + Name + " " + mname + sig);
+				sw.WriteLine("\t\t{");
+				sw.WriteLine("\t\t\treturn new " + Name + "(" + cname + call + ");");
+			} else {
+				sw.WriteLine("\t\tpublic " + Name + sig);
+				sw.WriteLine("\t\t{");
+				sw.WriteLine("\t\t\tRawObject = " + cname + call + ";");
+			}
+			
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			
@@ -106,6 +123,8 @@ namespace GtkSharp.Generation {
 		{
 			call = "(";
 			
+			bool need_comma = false;
+			
 			foreach (XmlNode parm in parms.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -114,7 +133,7 @@ namespace GtkSharp.Generation {
 				XmlElement elem = (XmlElement) parm;
 			}
 			
-			call += ");";
+			call += ")";
 			return true;
 		}
 
@@ -134,9 +153,12 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 		
-		private bool GetSignature(XmlElement parms, SymbolTable table, out String sig)
+		private bool GetSignature(XmlElement parms, SymbolTable table, out String sig, out String sigtypes)
 		{
 			sig = "(";
+			
+			bool need_comma = false;
+			sigtypes = "";
 			
 			foreach (XmlNode parm in parms.ChildNodes) {
 				if (parm.Name != "parameter") {
@@ -144,10 +166,41 @@ namespace GtkSharp.Generation {
 				}
 
 				XmlElement elem = (XmlElement) parm;
+				String type = elem.GetAttribute("type");
+				String cs_type = table.GetCSType(type);
+				String name = elem.GetAttribute("name");
+				name = MangleName(name);
+				
+				if ((cs_type == "") || (name == "")) {
+					Console.Write("Name: " + name + " Type: " + type + " ");
+					return false;
+				}
+				
+				if (elem.HasAttribute("array")) {
+					cs_type += "[]";
+				}
+				
+				if (need_comma) {
+					sig += ", ";
+					sigtypes += ":";
+				} else {
+					need_comma = true;
+				}
+				sig += (cs_type + " " + name);
+				sigtypes += cs_type;
 			}
 			
 			sig += ")";
 			return true;
+		}
+		
+		private String MangleName(String name)
+		{
+			if (name == "string") {
+				return "str1ng";
+			} else {
+				return name;
+			}
 		}
 	}
 }

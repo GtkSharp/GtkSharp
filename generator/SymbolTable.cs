@@ -59,7 +59,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GArray", "IntPtr");
 			simple_types.Add ("GData", "IntPtr");
 			simple_types.Add ("GTypeModule", "GLib.Object");
-			simple_types.Add ("GSList", "IntPtr");
+			simple_types.Add ("GSList", "GLib.SList");
 			simple_types.Add ("GHashTable", "IntPtr");
 			simple_types.Add ("va_list", "IntPtr");
 			simple_types.Add ("GParamSpec", "IntPtr");
@@ -88,8 +88,16 @@ namespace GtkSharp.Generation {
 			return complex_types.GetEnumerator();
 		}
 		
+		private String Trim(String type)
+		{
+			char[] ast = {'*'};
+			String trim_type = type.TrimEnd(ast);
+			return trim_type;
+		}
+
 		public String GetCSType(String c_type)
 		{
+			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return (String) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
