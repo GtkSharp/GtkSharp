@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
   <namespace name="GnomeDb" library="gnomedb-2">
     <enum name="ComponentType" cname="GnomeDbComponentType" type="enum">
       <member cname="GNOME_DB_COMPONENT_TYPE_INVALID" name="Invalid" value="-1"/>
@@ -16,13 +22,6 @@
       <parameters>
         <parameter type="GnomeDbGrid*" name="grid"/>
         <parameter type="gint" name="row"/>
-        <parameter type="gpointer" name="user_data"/>
-      </parameters>
-    </callback>
-    <callback name="SqlEditorRunFunc" cname="GnomeDbSqlEditorRunFunc">
-      <return-type type="gboolean"/>
-      <parameters>
-        <parameter type="GnomeDbSqlEditorCommand*" name="cmd"/>
         <parameter type="gpointer" name="user_data"/>
       </parameters>
     </callback>
@@ -242,6 +241,59 @@
       </method>
       <constructor cname="gnome_db_dsn_config_druid_new"/>
     </object>
+    <object name="Editor" cname="GnomeDbEditor" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbEditorPrivate*"/>
+      <method name="CopyClipboard" cname="gnome_db_editor_copy_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="CutClipboard" cname="gnome_db_editor_cut_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="GetAllText" cname="gnome_db_editor_get_all_text">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetHighlight" cname="gnome_db_editor_get_highlight">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gnome_db_editor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="LoadFromFile" cname="gnome_db_editor_load_from_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_db_editor_new"/>
+      <method name="PasteClipboard" cname="gnome_db_editor_paste_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="SaveToFile" cname="gnome_db_editor_save_to_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SetEditable" cname="gnome_db_editor_set_editable">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="editable"/>
+        </parameters>
+      </method>
+      <method name="SetHighlight" cname="gnome_db_editor_set_highlight">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="highlight"/>
+        </parameters>
+      </method>
+      <method name="SetText" cname="gnome_db_editor_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="len"/>
+        </parameters>
+      </method>
+    </object>
     <object name="Error" cname="GnomeDbError" parent="GtkVBox">
       <field cname="priv" type="GnomeDbErrorPrivate*"/>
       <method name="Clear" cname="gnome_db_error_clear">
@@ -359,6 +411,26 @@
           <parameter type="GnomeDbGrid*" name="grid"/>
         </parameters>
       </signal>
+      <signal name="DoubleClicked" cname="double_clicked" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </signal>
+      <signal name="CreatePopupMenu" cname="create_popup_menu" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid"/>
+          <parameter type="GtkWidget*" name="menu"/>
+        </parameters>
+      </signal>
+      <method name="FindRowFromData" cname="gnome_db_grid_find_row_from_data">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
       <method name="ForeachSelected" cname="gnome_db_grid_foreach_selected">
         <return-type type="void"/>
         <parameters>
@@ -368,6 +440,12 @@
       </method>
       <method name="GetModel" cname="gnome_db_grid_get_model">
         <return-type type="GdaDataModel*"/>
+      </method>
+      <method name="GetRowData" cname="gnome_db_grid_get_row_data">
+        <return-type type="gpointer"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
       </method>
       <method name="GetSelection" cname="gnome_db_grid_get_selection">
         <return-type type="GList*"/>
@@ -402,6 +480,13 @@
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </method>
+      <method name="SetRowData" cname="gnome_db_grid_set_row_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
       <method name="SetSelectionMode" cname="gnome_db_grid_set_selection_mode">
         <return-type type="void"/>
         <parameters>
@@ -425,6 +510,24 @@
       </method>
       <method name="UnselectAll" cname="gnome_db_grid_unselect_all">
         <return-type type="void"/>
+      </method>
+    </object>
+    <object name="IconList" cname="GnomeDbIconList" parent="GnomeIconList">
+      <field cname="priv" type="GnomeDbIconListPrivate*"/>
+      <property name="Model" cname="model" type="GdaDataModel" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_db_icon_list_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_icon_list_new">
+        <parameters>
+          <parameter type="guint" name="icon_width"/>
+        </parameters>
+      </constructor>
+      <method name="SetModel" cname="gnome_db_icon_list_set_model">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
       </method>
     </object>
     <object name="List" cname="GnomeDbList" parent="GtkVBox">
@@ -528,97 +631,6 @@
       </method>
       <constructor cname="gnome_db_report_editor_new"/>
     </object>
-    <object name="SqlEditor" cname="GnomeDbSqlEditor" parent="GtkVBox">
-      <field cname="priv" type="GnomeDbSqlEditorPrivate*"/>
-      <method name="Debug" cname="gnome_db_sql_editor_debug">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gchar*" name="text"/>
-        </parameters>
-      </method>
-      <method name="DebugSetup" cname="gnome_db_sql_editor_debug_setup">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="dtv"/>
-        </parameters>
-      </method>
-      <method name="ForeachCommand" cname="gnome_db_sql_editor_foreach_command">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="gboolean" name="run_at_pref"/>
-          <parameter type="GnomeDbSqlEditorRunFunc" name="run_command"/>
-          <parameter type="gpointer" name="user_data"/>
-        </parameters>
-      </method>
-      <method name="GetAllCommands" cname="gnome_db_sql_editor_get_all_commands">
-        <return-type type="GList*"/>
-        <parameters>
-          <parameter type="gboolean" name="run_at_pref"/>
-        </parameters>
-      </method>
-      <method name="GetAllText" cname="gnome_db_sql_editor_get_all_text">
-        <return-type type="gchar*"/>
-      </method>
-      <method name="GetCommandAtCursor" cname="gnome_db_sql_editor_get_command_at_cursor">
-        <return-type type="GnomeDbSqlEditorCommand*"/>
-      </method>
-      <method name="GetText" cname="gnome_db_sql_editor_get_text">
-        <return-type type="gchar*"/>
-        <parameters>
-          <parameter type="GtkTextIter*" name="start"/>
-          <parameter type="GtkTextIter*" name="end"/>
-        </parameters>
-      </method>
-      <method name="GetTextBuffer" cname="gnome_db_sql_editor_get_text_buffer">
-        <return-type type="GtkTextBuffer*"/>
-      </method>
-      <method name="GetTextView" cname="gnome_db_sql_editor_get_text_view">
-        <return-type type="GtkTextView*"/>
-      </method>
-      <method name="GetType" cname="gnome_db_sql_editor_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-      <method name="InsertText" cname="gnome_db_sql_editor_insert_text">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextIter*" name="iter"/>
-          <parameter type="gchar*" name="text"/>
-          <parameter type="gint" name="len"/>
-        </parameters>
-      </method>
-      <method name="LoadFromFile" cname="gnome_db_sql_editor_load_from_file">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-gchar*" name="filename"/>
-        </parameters>
-      </method>
-      <constructor cname="gnome_db_sql_editor_new"/>
-      <method name="SaveToFile" cname="gnome_db_sql_editor_save_to_file">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-gchar*" name="filename"/>
-        </parameters>
-      </method>
-      <method name="SetEditable" cname="gnome_db_sql_editor_set_editable">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gboolean" name="setting"/>
-        </parameters>
-      </method>
-      <method name="SetText" cname="gnome_db_sql_editor_set_text">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="const-gchar*" name="text"/>
-          <parameter type="gint" name="len"/>
-        </parameters>
-      </method>
-      <method name="UseSyntaxHiLighting" cname="gnome_db_sql_editor_use_syntax_hi_lighting">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gboolean" name="hi_lighting"/>
-        </parameters>
-      </method>
-    </object>
     <object name="TableEditor" cname="GnomeDbTableEditor" parent="GtkVBox">
       <field cname="priv" type="GnomeDbTableEditorPrivate*"/>
       <method name="GetType" cname="gnome_db_table_editor_get_type" shared="true">
@@ -687,27 +699,29 @@
       <field cname="domain" type="gchar*"/>
       <field cname="properties" type="GdaParameterList*"/>
     </struct>
-    <struct name="SqlEditorClass" cname="GnomeDbSqlEditorClass">
+    <struct name="EditorClass" cname="GnomeDbEditorClass">
       <field cname="parent_class" type="GtkVBoxClass"/>
       <callback cname="text_changed">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GnomeDbSqlEditor*" name="sql_editor"/>
+          <parameter type="GnomeDbEditor" name="editor"/>
         </parameters>
       </callback>
     </struct>
-    <struct name="SqlEditorCommand" cname="GnomeDbSqlEditorCommand">
-      <field cname="offset" type="gint"/>
-      <field cname="sql_statement" type="gchar*"/>
-      <field cname="error" type="gint"/>
-    </struct>
     <object name="Stock" cname="GnomeDbStock">
+      <static-string cname="GNOME_DB_STOCK_AGGREGATES" name="Aggregates" value="gnome-db-aggregates"/>
       <static-string cname="GNOME_DB_STOCK_CONNECT" name="Connect" value="gnome-db-connect"/>
       <static-string cname="GNOME_DB_STOCK_DATABASE" name="Database" value="gnome-db-database"/>
       <static-string cname="GNOME_DB_STOCK_DESIGNER" name="Designer" value="gnome-db-designer"/>
       <static-string cname="GNOME_DB_STOCK_DISCONNECT" name="Disconnect" value="gnome-db-disconnect"/>
+      <static-string cname="GNOME_DB_STOCK_NO_TRANSACTION" name="NoTransaction" value="gnome-db-no-transaction"/>
+      <static-string cname="GNOME_DB_STOCK_PROCEDURES" name="Procedures" value="gnome-db-procedures"/>
+      <static-string cname="GNOME_DB_STOCK_QUERY" name="Query" value="gnome-db-query"/>
+      <static-string cname="GNOME_DB_STOCK_SEQUENCES" name="Sequences" value="gnome-db-sequences"/>
       <static-string cname="GNOME_DB_STOCK_SQL" name="Sql" value="gnome-db-sql"/>
       <static-string cname="GNOME_DB_STOCK_TABLES" name="Tables" value="gnome-db-tables"/>
+      <static-string cname="GNOME_DB_STOCK_TYPES" name="Types" value="gnome-db-types"/>
+      <static-string cname="GNOME_DB_STOCK_WITHIN_TRANSACTION" name="WithinTransaction" value="gnome-db-within-transaction"/>
     </object>
   </namespace>
 </api>
