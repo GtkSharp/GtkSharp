@@ -1,3 +1,4 @@
+
 <html>
 <title>GTK#</title>
 <body>
@@ -5,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="../../style.css" />
 
 <h1>GTK#</h1>
-by Johannes Roith (<a href="mailto:johannes@jroith.de">johannes@jroith.de</a>) [if you contribute to this chapter please add your name here]<br>
+by Johannes Roith (<a href="mailto:johannes@jroith.de">johannes@jroith.de</a>), Alejandro Sánchez Acosta (<a href="mailto:raciel@es.gnu.org">raciel@es.gnu.org</a>[if you contribute to this chapter please add your name here]<br>
 This chapter does use some content from the GTK+ Tutorial by Tony Gale, Ian Main, & the GTK team
 
 <h2>Introduction</h2>
@@ -121,21 +122,263 @@ An event handler is passed an object, the object that fired the event, here wind
 		}
 </pre>
 This sample also adds a button to the window and connects the clicked event to "hello".
-<h2>Packing Widgets (Boxes)</h2>
 
-When creating an application, you'll want to put more than one widget inside a window. Our first helloworld example only used one widget so we could simply use a window.Add() call to "pack" the widget into the window. But when you want to put more than one widget into a window, how do you control where that widget is positioned? This is where packing comes in.<br><br>
+<h2>Packing Widgets</h2>
+<p>
+When you create an application you will need to pack your widgets in   a window, that is it too easy to make,  only you have to use the Add method with your corresponding widget like window.Add (button), that would be add a button in your window.</p>
+
+<p>
 If you come from Windows, you're probably used to position several widgets using coordinates. Also possible, that's not the way it's done in GTK#. Most packing is done by creating boxes. These are invisible widget containers that we can pack our widgets into which come in two forms, a horizontal box, and a vertical box. While this is more difficult for a newcomer it has some advantages:
 <ul>
 <li>Independent of screesize</li>
 <li>Easier Internationalization</li>
 </ul>
 
-When packing widgets into a horizontal box, the objects are inserted horizontally from left to right or right to left depending on the call used. In a vertical box, widgets are packed from top to bottom or vice versa. You may use any combination of boxes inside or beside other boxes to create the desired effect.<br><br>
-An object may be another container or a widget. In fact, many widgets are actually containers themselves, including the button, but we usually only use a label inside a button.<br><br>
+<p>
+There are other kind of methods to pack widgets that is using packing widgets. There are two boxes: vbox and hbox. The creation of  that is too simple, only you have to create an instance of HBox or VBox like the Button widgets.</p>
 
-By using these calls, GTK knows where you want to place your widgets so it can do automatic resizing and other nifty things. There are also a number of options as to how your widgets should be packed. As you can imagine, this method gives us a quite a bit of flexibility when placing and creating widgets.<br><br>
-<br>
-[TODO]
+<p>
+Two important methods of that packing boxes are PackStart and PackEnd, these methods packing the element beginning with the top  to the button and the second will do button to up in VBox. In HBox you package the samples left to right with PackStart and right to left with PackEnd.
+</p>
+
+<p>
+By using these calls, GTK knows where you want to place your widgets so it can do automatic resizing and other nifty things. There are also a number of options as to how your widgets should be packed. As you can imagine, this method gives us a quite a bit of flexibility when placing and creating widgets.
+<p>
+
+<p>Then a packing widgets sample:</p>
+
+<pre class="code">
+    namespace GtkSharpTutorial {
+
+	using Gtk;
+	using GtkSharp;
+	using Gdk;
+	using GdkSharp;
+	using Glib;
+	using GlibSharp;
+	using System;
+	using System.Drawing;
+
+	public class fixedcontainer
+	{
+
+		public int x = 50;
+		public int y = 50;
+
+		static Gtk.HBox make_box (bool homogeneous, int spacing, bool expand, bool fill, uint padding)
+		{
+			HBox box;
+			Box box1;
+			Button button;
+			string padstr;
+
+			box = new HBox (homogeneous, spacing);
+			button = new Button ("gtk_box_pack");
+			box.PackStart (button, expand, fill, padding);
+
+			button.Show();
+
+			button = new Button ("(box,");
+
+			box.PackStart (button, expand, fill, padding);
+			button.Show();
+
+			button = new Button ("button");
+			box.PackStart (button, expand, fill, padding);
+			button.Show();
+
+			if (expand == true)
+				button = new Button ("TRUE");
+			else
+				button = new Button ("FALSE");
+			box.PackStart (button, expand, fill, padding);
+			button.Show();
+
+			button = new Button (fill ? "TRUE," : "FALSE,");
+
+			box.PackStart(button, expand, fill, padding);
+			button.Show();
+
+			padstr=padding.ToString()+");";
+
+			button = new Button (padstr);
+			box.PackStart (button, expand, fill, padding);
+			button.Show();
+			return box;
+		}
+			
+		static void delete_event (object obj, DeleteEventArgs args)
+		{
+			Application.Quit();
+		}
+
+		static void exitbutton_event (object obj, ButtonPressEventArgs args)
+		{
+			Application.Quit();
+		}
+
+		public static int Main (string[] args)
+		{
+			Gtk.Window window;
+			Button button;
+			VBox box1;
+			HBox box2;
+			HSeparator separator;
+			Misc misc;
+			Box quitbox;
+			int which;
+			Gtk.Label label;
+			Application.Init();
+
+			if (args.Length !=1) {
+				Console.WriteLine ("Usage: packbox num, where num is 1, 2 o 3");
+				return (1);
+			}
+
+			which = Convert.ToInt32 (args[0]);
+
+			window = new Gtk.Window ("packingdemo");
+	
+			window.DeleteEvent += new DeleteEventHandler (delete_event);
+
+			window.BorderWidth = 10;
+			
+			box1 = new VBox (false, 0);
+			
+			switch (which) {
+				case 1: 
+					label=new Gtk.Label("gtk_hbox_new (FALSE, 0);");
+
+					box2 = new HBox (false, 0);
+
+					label.SetAlignment (0, 0);
+					box1.PackStart (label, false, false, 0);
+
+					label.Show();
+
+					box2 = make_box (false, 0, false, false, 0);
+
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					box2 = make_box (false, 0, true, false, 0);
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					box2 = make_box (false, 0, true, true, 0);
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					separator = new HSeparator ();
+
+					box1.PackStart (separator, false, true, 5);
+					separator.Show();
+
+					box1 = new VBox (true, 0);
+					label=new Gtk.Label("gtk_hbox_new (TRUE, 0);");
+					label.SetAlignment (0, 0);
+
+					box1.PackStart(label, false, false, 0);
+					label.Show();
+
+					box2 = make_box (true, 0, true, true, 0);
+
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					box2 = make_box (true, 0, true, true, 0);
+					box1.PackStart(box2, false, false, 0);
+					box2.Show();
+
+					separator = new HSeparator();
+
+					box1.PackStart (separator, false, true, 5);
+					separator.Show();
+
+					break;
+				
+				case 2:
+					box2 = new HBox (false, 10);
+					label = new Gtk.Label("gtk_hbox_new (FALSE, 10);");
+
+					label.SetAlignment (0, 0);
+					box1.PackStart (box2, false, false, 0);
+					box1.Show();
+
+					box2 = make_box (false, 10, true, true, 0);
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					separator = new HSeparator ();
+
+					box1.PackStart (separator, false, true, 5);
+					separator.Show();
+
+					box2 = new HBox (false, 0);
+
+					label=new Gtk.Label("gtk_hbox_new (FALSE, 0);");
+					label.SetAlignment (0, 0);
+					box1.PackStart (label, false, false, 0);
+					label.Show();
+
+					box2 = make_box (false, 0, true, false, 10);
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+					
+					box2 = make_box (false, 0, true, true, 10);
+					box1.PackStart (box2, false, false, 0);
+					box2.Show();
+
+					separator = new HSeparator ();
+					box1.PackStart(separator, false, true, 5);
+					separator.Show();
+					break;
+
+				case 3:
+					box2 = make_box (false, 0, false, false, 0);
+					label = new Label ("end");
+					box2.PackEnd(label, false, false, 0);
+					label.Show();
+
+					box1.PackStart(box2, false, false, 0);
+					box2.Show();
+
+					separator = new HSeparator();
+					separator.SetSizeRequest(400, 5);
+					box1.PackStart (separator, false, true, 5);
+					separator.Show();
+					break;
+			}
+			quitbox = new HBox (false, 0);
+
+			button = new Button ("Quit");
+
+			button.Clicked += new EventHandler (ClickedEventHandler);
+
+			quitbox.PackStart(button, true, false, 0);
+			box1.PackStart (quitbox, false, false, 0);
+
+			window.Add(box1);
+			button.Show();
+			quitbox.Show();
+
+			box1.Show();
+			window.Show();
+
+			Application.Run();
+			return 0;
+		}
+		
+		static void ClickedEventHandler(object sender, EventArgs e)
+		{
+			Application.Quit();
+		}
+		
+	}
+}
+</pre>
+
+<p>[TODO]: Explain sample.
 
 <h2>A closer look at Buttons</h2>
 GTK# offers not just the normal button, but some other types, derived from it. 
@@ -243,7 +486,7 @@ they will pop back up. Click again, and they will pop back down. When popped dow
 	using System;
 	using System.Drawing;
 
-	public class checkbuttons
+	public class togglebuttons
 	{
 
 
@@ -382,8 +625,7 @@ CheckButton cb1 = new CheckButton ("CheckButton 1");
 	}
 </pre>
 
-<h2>Container Widgets</h2>
-[TODO]
+
 <h2>Miscellaneous Widgets</h2>
 This section describes some often used widgets, but is not a complete reference. A more complete 
 listing will be available in the GTK# port of the GTK+ 2.0 tutorial or the GTK# documentation.
