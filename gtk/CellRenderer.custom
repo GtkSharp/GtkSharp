@@ -29,6 +29,7 @@
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_cellrenderer_override_get_size (GLib.GType gtype, GetSizeDelegate cb);
 		
+		[GLib.CDeclCallback]
 		delegate void GetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
                 
 		static GetSizeDelegate GetSizeCallback;
@@ -70,6 +71,7 @@
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_cellrenderer_override_render (GLib.GType gtype, RenderDelegate cb);
 
+		[GLib.CDeclCallback]
 		delegate void RenderDelegate (IntPtr item, IntPtr window, IntPtr widget, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, Gtk.CellRendererState flags);
 
 		static RenderDelegate RenderCallback;
@@ -98,6 +100,7 @@
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_cellrenderer_override_start_editing (GLib.GType gtype, StartEditingDelegate cb);
 
+		[GLib.CDeclCallback]
 		delegate IntPtr StartEditingDelegate (IntPtr raw, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags);
 
 		static StartEditingDelegate StartEditingCallback;

@@ -211,6 +211,7 @@ public int FocusLineWidth {
 [DllImport("gtksharpglue-2")]
 static extern int gtksharp_widget_connect_set_scroll_adjustments_signal (IntPtr gtype, SetScrollAdjustmentsDelegate cb);
 
+[GLib.CDeclCallback]
 delegate void SetScrollAdjustmentsDelegate (IntPtr widget, IntPtr hadj, IntPtr vadj);
 
 static SetScrollAdjustmentsDelegate SetScrollAdjustmentsCallback;
@@ -251,6 +252,7 @@ private class BindingInvoker {
 	}
 }
 
+[GLib.CDeclCallback]
 private delegate void BindingHandler (IntPtr handle, IntPtr user_data);
 
 private static void BindingCallback (IntPtr handle, IntPtr user_data)

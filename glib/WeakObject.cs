@@ -30,6 +30,7 @@ namespace GLib {
 		GCHandle gc_handle;
 
 		static DestroyNotify notify = new DestroyNotify (OnNativeDestroy);
+		[CDeclCallback]
 		delegate void DestroyNotify (IntPtr data);
 		static void OnNativeDestroy (IntPtr data)
 		{

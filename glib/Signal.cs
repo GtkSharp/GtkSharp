@@ -52,6 +52,7 @@ namespace GLib {
 		Delegate marshaler;
 
 		static DestroyNotify notify = new DestroyNotify (OnNativeDestroy);
+		[CDeclCallback]
 		delegate void DestroyNotify (IntPtr data, IntPtr obj);
 		static void OnNativeDestroy (IntPtr data, IntPtr obj)
 		{
@@ -161,6 +162,7 @@ namespace GLib {
 				g_signal_handler_disconnect (handle, handler_id);
 		}
 
+		[CDeclCallback]
 		delegate void voidObjectDelegate (IntPtr handle, IntPtr gch);
 
 		static void voidObjectCallback (IntPtr handle, IntPtr gch)

@@ -106,6 +106,7 @@ static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallD
 [DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
 
+[GLib.CDeclCallback]
 delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
 
 static ForallDelegate ForallCallback;
@@ -164,6 +165,7 @@ static extern IntPtr gtk_container_child_type(IntPtr raw);
 [DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_override_child_type (GLib.GType type, ChildTypeDelegate cb);
 
+[GLib.CDeclCallback]
 delegate IntPtr ChildTypeDelegate (IntPtr raw);
 
 static ChildTypeDelegate ChildTypeCallback;

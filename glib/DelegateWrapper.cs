@@ -69,6 +69,7 @@ namespace GLib {
 			}
 		}
 
+		[CDeclCallback]
 		private delegate void DestroyNotify (IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]

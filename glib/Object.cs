@@ -295,6 +295,7 @@ namespace GLib {
 			}
 		}
 
+		[CDeclCallback]
 		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
 
 		void NotifyCallback (IntPtr handle, IntPtr pspec, IntPtr gch)

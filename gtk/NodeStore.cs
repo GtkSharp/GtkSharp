@@ -49,17 +49,29 @@ namespace Gtk {
                 	public IDHashtable () : base (new IDHashCodeProvider (), new IDComparer ()) {}
         	}
 
+		[GLib.CDeclCallback]
 		delegate int GetFlagsDelegate ();
+		[GLib.CDeclCallback]
 		delegate int GetNColumnsDelegate ();
+		[GLib.CDeclCallback]
 		delegate IntPtr GetColumnTypeDelegate (int col);
+		[GLib.CDeclCallback]
 		delegate bool GetNodeDelegate (out int node_idx, IntPtr path);
+		[GLib.CDeclCallback]
 		delegate IntPtr GetPathDelegate (int node_idx);
+		[GLib.CDeclCallback]
 		delegate void GetValueDelegate (int node_idx, int col, ref GLib.Value val);
+		[GLib.CDeclCallback]
 		delegate bool NextDelegate (ref int node_idx);
+		[GLib.CDeclCallback]
 		delegate bool ChildrenDelegate (out int child, int parent);
+		[GLib.CDeclCallback]
 		delegate bool HasChildDelegate (int node_idx);
+		[GLib.CDeclCallback]
 		delegate int NChildrenDelegate (int node_idx);
+		[GLib.CDeclCallback]
 		delegate bool NthChildDelegate (out int child, int parent, int n);
+		[GLib.CDeclCallback]
 		delegate bool ParentDelegate (out int parent, int child);
 
 		[StructLayout(LayoutKind.Sequential)]
