@@ -44,6 +44,8 @@ namespace GtkSharp.Generation {
 					method.GenerateDecl (sw);
 			}
 
+			AppendCustom (sw);
+
 			sw.WriteLine ("\t}");
 			CloseWriter (sw);
 			Statistics.IFaceCount++;
