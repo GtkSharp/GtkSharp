@@ -120,8 +120,8 @@ namespace GtkSharp.Generation {
 				return true;
 
 			Parameters parms = Parameters;
-			is_get = ((((parms.IsAccessor && retval.CSType == "void") || (parms.Count == 0 && retval.CSType != "void")) || (parms.Count == 0 && retval.CSType != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
-			is_set = ((parms.IsAccessor || (parms.Count == 1 && retval.CSType == "void")) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
+			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
+			is_set = ((parms.IsAccessor || (parms.Count == 1 && retval.IsVoid)) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
@@ -178,7 +178,7 @@ namespace GtkSharp.Generation {
 				sw.Write("new ");
 
 			if (is_get || is_set) {
-				if (retval.CSType == "void")
+				if (retval.IsVoid)
 					sw.Write (Parameters.AccessorReturnType);
 				else
 					sw.Write(retval.CSType);
@@ -321,21 +321,12 @@ namespace GtkSharp.Generation {
 				Body.InitAccessor (sw, Signature, indent);
 			Body.Initialize(gen_info, is_get, is_set, indent);
 
-			SymbolTable table = SymbolTable.Table;
-			IGeneratable ret_igen = table [retval.CType];
-
 			sw.Write(indent + "\t\t\t");
-			if (retval.MarshalType == "void") {
+			if (retval.IsVoid)
 				sw.WriteLine(CName + call + ";");
-			} else {
+			else {
 				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
-				sw.Write(indent + "\t\t\t");
-				string raw_parms = "raw_ret";
-				if (retval.ElementType != String.Empty)
-					raw_parms += ", typeof (" + retval.ElementType + ")";
-				else if (retval.Owned)
-					raw_parms += ", true";
-				sw.WriteLine(retval.CSType + " ret = " + table.FromNativeReturn(retval.CType, raw_parms) + ";");
+				sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
 			}
 
 			Body.Finish (sw, indent);
@@ -343,7 +334,7 @@ namespace GtkSharp.Generation {
 
 			if (is_get && Parameters.Count > 0) 
 				sw.WriteLine (indent + "\t\t\treturn " + Parameters.AccessorName + ";");
-			else if (retval.MarshalType != "void")
+			else if (!retval.IsVoid)
 				sw.WriteLine (indent + "\t\t\treturn ret;");
 			else if (IsAccessor)
 				Body.FinishAccessor (sw, Signature, indent);
@@ -353,7 +344,7 @@ namespace GtkSharp.Generation {
 
 		bool IsAccessor { 
 			get { 
-				return retval.CSType == "void" && Signature.IsAccessor; 
+				return retval.IsVoid && Signature.IsAccessor; 
 			} 
 		}
 	}

@@ -57,6 +57,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsVoid {
+			get {
+				return CSType == "void";
+			}
+		}
+
 		public string MarshalType {
 			get {
 				return SymbolTable.Table.GetMarshalReturnType (CType) + (IsArray ? "[]" : String.Empty);
@@ -75,6 +81,15 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string FromNative (string var)
+		{
+			if (Owned)
+				var += ", true";
+			else if (ElementType != String.Empty)
+				var += ", typeof (" + ElementType + ")";
+			return SymbolTable.Table.FromNativeReturn (CType, var);
+		}
+			
 		public bool Validate ()
 		{
 			if (MarshalType == "" || CSType == "") {
