@@ -10,7 +10,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>
+      <para>PixbufLoader is a 'passive' pixbuf loader. It's not actively read pix buf data, but 'listen' for incoming data instead. It's useful in a case where you want to read the image data in small chunks. Typical use of PixbufLoader is when you want to read a very large image data or reading image from a slow media (such as a slow network connection).</para>
+      <para>
+You can see the "Images" section of GtkDemo to learn how to use PixbufLoader.
+</para>
+    </summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -37,11 +42,13 @@
         <Parameter Name="count" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buf">To be added: an object of type 'byte []'</param>
-        <param name="count">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Parses the next count bytes of image data from buffer buf.</summary>
+        <param name="buf">array of bytes buffer to parse.</param>
+        <param name="count">number of bytes to parse.</param>
+        <returns>returns true if data was parsed and loaded succesfully.</returns>
+        <remarks>
+          <para>If the return value is false, the PixbufLoader will be closed.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -52,9 +59,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Closes the loader.</summary>
+        <returns>returns true on successful close and false on error.</returns>
+        <remarks>During the close, PixbufLoader will parse any data that has not been parsed. If the data is incomplete or corrupted, this method will return false.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">

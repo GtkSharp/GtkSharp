@@ -10,7 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>The ListStore is a columned list data structure to be used with <see cref="T:Gtk.TreeView" /> widget. It is the <i>model</i> part in <b>Model/View/Controller</b> design paradigm. The contents of the ListStore can be sorted and are drag-and-drop ready.
+</summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -441,7 +442,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes all data from the store.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -474,11 +475,11 @@
         <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
         <param name="column">To be added: an object of type 'int'</param>
         <param name="value">To be added: an object of type 'GLib.Value'</param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be a <see cref="T:GLib.Value" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -801,10 +802,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Removes a row from the store.</summary>
+        <param name="iter">the <see cref="T:Gtk.TreeIter" /> to be removed.</param>
+        <returns>a <see cref="T:System.Boolean" />. </returns>
+        <remarks>After being removed, iter is set to be the next valid row, or invalidated if it pointed to the last row in the store.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Swap">
@@ -818,10 +819,10 @@
         <Parameter Name="b" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Swaps rows a and b in the store.</summary>
         <param name="a">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="b">a <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This is only works in unsorted stores.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveBefore">
@@ -865,10 +866,17 @@
         <Parameter Name="types" Type="System.Type[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new store. The columns' type specified by the argument.</summary>
         <param name="types">a <see cref="T:System.Type[]" /></param>
         <returns>a <see cref="T:Gtk.ListStore" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <example>
+            <code lang="C#">
+ListStore ls = new ListStore (typeof (string), typeof (int), typeof (double));
+...
+  </code>
+          </example>
+The above example creates a new three columns list store. The types of the columns are <see cref="T:System.String" />, <see cref="T:System.Int32" />, and <see cref="T:System.Double" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
@@ -920,11 +928,11 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be a <see cref="T:System.Boolean" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -939,11 +947,11 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Double" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be a <see cref="T:System.Double" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -958,11 +966,11 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be an <see cref="T:System.Int32" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -977,11 +985,11 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be a <see cref="T:System.String" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -996,11 +1004,11 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Single" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be an <see cref="T:System.Single" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -1015,11 +1023,11 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be an <see cref="T:System.UInt32" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -1034,11 +1042,11 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of the specified column in the row pointed by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Object" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The type of specified column must be an <see cref="T:System.Object" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
