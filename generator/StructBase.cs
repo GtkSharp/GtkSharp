@@ -39,7 +39,7 @@ namespace GtkSharp.Generation {
 				return;
 			}
 			
-			sw.Write ("\t\t" + cs_type);
+			sw.Write ("\t\t public " + cs_type);
 			if (field.HasAttribute("array_len")) {
 				sw.Write ("[]");
 			}

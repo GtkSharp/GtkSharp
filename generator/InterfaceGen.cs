@@ -38,7 +38,7 @@ namespace GtkSharp.Generation {
 		public String QualifiedName {
 			get
 			{
-				return ns + "." + elem.GetAttribute("cname");
+				return ns + "." + elem.GetAttribute("name");
 			}
 		}
 		
