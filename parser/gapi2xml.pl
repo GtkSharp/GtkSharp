@@ -383,8 +383,27 @@ sub addFuncElems
 		$mdef = delete $fdefs{$mname};
 
 		if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
-			@parms = split(/,/, $1);
-			($dump, @parms) = @params if $drop_1st;
+			@parms = ();
+			$parm = "";
+			$pcnt = 0;
+			foreach $char (split(//, $1)) {
+				if ($char eq "(") {
+					$pcnt++;
+				} elsif ($char eq ")") {
+					$pcnt--;
+				} elsif (($pcnt == 0) && ($char eq ",")) {
+					@parms = (@parms, $parm);
+					$parm = "";
+					next;
+				}
+				$parm .= $char;
+			}
+
+			if ($parm) {
+				@parms = (@parms, $parm);
+			}
+			# @parms = split(/,/, $1);
+			($dump, @parms) = @parms if $drop_1st;
 			if (@parms > 0) {
 				addParamsElem($el, @parms);
 			}
@@ -416,10 +435,19 @@ sub addParamsElem
 	my $parms_elem = $doc->createElement('parameters');
 	$parent->appendChild($parms_elem);
 	foreach $parm (@params) {
-		$parm_elem = $doc->createElement('parameter');
-		$parms_elem->appendChild($parm_elem);
 		$parm =~ s/\s+(\*+)/\1 /g;
 		$parm =~ s/const\s+/const-/g;
+		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
+			my $ret = $1; my $cbn = $2; my $params = $3;
+			$cb_elem = addNameElem($parms_elem, 'callback', $cbn);
+			addReturnElem($cb_elem, $ret);
+			if ($params && ($params ne "void")) {
+				addParamsElem($cb_elem, split(/,/, $params));
+			}
+			next;
+		}
+		$parm_elem = $doc->createElement('parameter');
+		$parms_elem->appendChild($parm_elem);
 		$parm =~ /(\S+)\s+(\S+)/;
 		$parm_elem->setAttribute('type', $1);
 		my $name = $2;

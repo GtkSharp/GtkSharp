@@ -190,7 +190,8 @@ namespace GtkSharp.Generation {
 			
 			foreach (XmlNode parm in parms.ChildNodes) {
 				if (parm.Name != "parameter") {
-					continue;
+					Console.Write(parm.Name + " node ");
+					return false;
 				}
 
 				XmlElement elem = (XmlElement) parm;
@@ -294,6 +295,10 @@ namespace GtkSharp.Generation {
 		{
 			if (name == "string") {
 				return "str1ng";
+			} else if (name == "event") {
+				return "evnt";
+			} else if (name == "object") {
+				return "objekt";
 			} else {
 				return name;
 			}
