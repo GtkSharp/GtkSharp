@@ -89,6 +89,7 @@ namespace WidgetViewer {
 		static void Close_Button (object o, EventArgs args)
 		{
 			window.Destroy ();
+			((SignalArgs)args).RetVal = true;
 		}
 
 		static void reformat_value (object o, FormatValueArgs args)
