@@ -36,7 +36,7 @@ namespace GtkDemo
 {
 	public class DemoImages : Gtk.Window
 	{
-		private static Gtk.Image progressiveImage;
+		private Gtk.Image progressiveImage;
 		private VBox vbox;
 		BinaryReader imageStream;
 
@@ -138,7 +138,7 @@ namespace GtkDemo
 			timeout_id = GLib.Timeout.Add (150, new GLib.TimeoutHandler (ProgressiveTimeout));
 		}
 
-		static Gdk.PixbufLoader pixbufLoader;
+		Gdk.PixbufLoader pixbufLoader;
 
 		// TODO: Decide if we want to perform crazy error handling
 		private  bool ProgressiveTimeout ()
@@ -162,14 +162,14 @@ namespace GtkDemo
 			}
 		}
 
-		static void ProgressivePreparedCallback (object obj, EventArgs args) 
+		void ProgressivePreparedCallback (object obj, EventArgs args) 
 		{
 			Gdk.Pixbuf pixbuf = pixbufLoader.Pixbuf;
 			pixbuf.Fill (0xaaaaaaff);
 			progressiveImage.FromPixbuf = pixbuf;
 		}
 
-		static void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
+		void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
 		{
 			progressiveImage.QueueDraw ();
 		}
