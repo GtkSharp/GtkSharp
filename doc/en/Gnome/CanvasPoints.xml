@@ -10,7 +10,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>A structure to manage an array of points (X and Y coordinates). </summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -91,10 +91,50 @@
         <Parameter Name="coords" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="coords">a <see cref="T:System.Double[]" /></param>
+        <summary>Creates canvas points from x and y coordinates stored in array.</summary>
+        <param name="coords">
+          <see cref="T:System.Double[]" /> array of coordinates (num_points * 2 in size), X coordinates are stored in the even-numbered indices, and Y coordinates are stored in the odd-numbered indices.</param>
         <returns>a <see cref="T:Gnome.CanvasPoints" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <example>
+            <code lang="C#">
+// LineExample.cs - Displays triangle using gnome canvas 
+// Compile: mcs -r gtk-sharp.dll -r gnome-sharp.dll LineExample.cs
+
+namespace GnomeSamples {
+
+    using System;
+    using Gtk;
+    using Gnome;
+
+    public class LineExample  {
+
+        public static int Main (string[] args) {
+            Application.Init ();
+                        
+            Gtk.Window win = new Gtk.Window ("Canvas line example");
+            win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+                    
+            Canvas canvas = new Canvas ();
+            win.Add (canvas);
+            CanvasLine line = new CanvasLine (canvas.Root ());
+            line.Points = new CanvasPoints (new double[]{40,0, 0,80, 80,80, 40,0});                                
+                                    
+            win.ShowAll ();
+            Application.Run ();
+            return 0;
+        }
+
+        static void Window_Delete (object obj, DeleteEventArgs args) {
+            Application.Quit ();
+            args.RetVal = true;
+       }
+    }
+}
+
+  </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">

@@ -15,7 +15,45 @@
       A canvas item for drawing lines. This canvas item uses a
       <see cref="T:Gnome.CanvasPoints" /> structure so one or multiple joined lined
       segments can be drawn with a single <see cref="T:Gnome.CanvasLine" /> item.
-    </remarks>
+    
+<example>
+        <code lang="C#">
+// LineExample.cs - Displays triangle using gnome canvas 
+// Compile: mcs -r gtk-sharp.dll -r gnome-sharp.dll LineExample.cs
+
+namespace GnomeSamples {
+
+    using System;
+    using Gtk;
+    using Gnome;
+
+    public class LineExample  {
+
+        public static int Main (string[] args) {
+            Application.Init ();
+                        
+            Gtk.Window win = new Gtk.Window ("Canvas line example");
+            win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+                    
+            Canvas canvas = new Canvas ();
+            win.Add (canvas);
+            CanvasLine line = new CanvasLine (canvas.Root ());
+            line.Points = new CanvasPoints (new double[]{40,0, 0,80, 80,80, 40,0});                                
+                                    
+            win.ShowAll ();
+            Application.Run ();
+            return 0;
+        }
+
+        static void Window_Delete (object obj, DeleteEventArgs args) {
+            Application.Quit ();
+            args.RetVal = true;
+       }
+    }
+}
+
+  </code>
+      </example></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gnome.CanvasItem</BaseTypeName>
