@@ -61,7 +61,7 @@ namespace Gtk {
 
 		public void Show () 
 		{
-			gtk_widget_show (obj);
+			gtk_widget_show (RawObject);
 
 		}
 	}

@@ -7,11 +7,10 @@
 namespace Gtk {
 
 	using System;
-	using System.Drawing;
+	using System.ComponentModel;
 	using System.Runtime.InteropServices;
 
-
-	public abstract class Object :  Glib.Object {
+	public abstract class Object :  GLib.Object {
 
 		protected delegate void SimpleCallback (IntPtr obj);
 
@@ -25,7 +24,7 @@ namespace Gtk {
 
 		protected void ConnectSignal (string name, SimpleCallback cb)
 		{
-			gtk_signal_connect_full (obj, name, cb,
+			gtk_signal_connect_full (RawObject, name, cb,
 					new IntPtr (0), new IntPtr (0), 
 					new IntPtr (0), 0, 0);
 		}

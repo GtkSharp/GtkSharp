@@ -6,7 +6,7 @@
 
 namespace GtkSamples {
 
-	using GTK;
+	using Gtk;
 	using System;
 
 	public class HelloWorld  {

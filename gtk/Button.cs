@@ -18,7 +18,7 @@ namespace Gtk {
 			{
                                 if (Events[ClickedEvent] == null)
 				{
-					ConnectSignal ("clicked", new SimpleCallback (EmitDeleteEvent));
+					ConnectSignal ("clicked", new SimpleCallback (EmitClickedEvent));
 				}
 				Events.AddHandler (ClickedEvent, value);
 			}
@@ -48,7 +48,7 @@ namespace Gtk {
 
 		public Button (IntPtr o)
 		{
-			Object = o;
+			RawObject = o;
 		}
 
 		/// <summary>
@@ -60,11 +60,11 @@ namespace Gtk {
 		/// </remarks>
 
 		[DllImport("gtk-1.3")]
-		static extern IntPtr gtk_label_new_with_label (String str);
+		static extern IntPtr gtk_button_new_with_label (String str);
 
 		public Button (String str)
 		{
-			Object = gtk_button_new_with_label (str);
+			RawObject = gtk_button_new_with_label (str);
 		}
 	}
 }

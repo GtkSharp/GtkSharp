@@ -1,3 +1,36 @@
+2001-09-19  Mike Kestner  <mkestner@speakeasy.net>
+
+	* HACKING : New rulez.
+	* NOTES: Killed.  We have a mailing list now for this kind of stuff.
+	* glib/makefile : New, to build the new glib-sharp.dll target.
+	* glib/Object.cs : (GetObject): Commented out. Design problems here.
+	IntPtr's can't be used in the manner this code attempts to use them.  
+	(Data prop): Commented out.  Apparently keyed properties are not 
+	supported.  
+	(Object prop): Renamed RawObject, and made it protected.
+	(Events): Fixed to cause list to be initialized if null and then 
+	return the list.
+	* glib/ObjectManager.cs : commented out entirely.  Not sure what this
+	code is trying to accomplish and it doesn't compile.
+	* glib/Value.cs : New attempt at implementing GValues. Doesn't work 
+	yet.
+	* gtk/Button.cs : Updated to use RawObject.  
+	(Clicked event): s/EmitDeleteEvent/EmitClickedEvent.
+	(Button(String)): s/gtk_label_new_with_lable/gtk_button_new_with_label.
+	* gtk/Label.cs : Fixed some yank and paste errors where 2 value params
+	were getting passed to all the set_* property methods.
+	* gtk/Window.cs : Fixed hanging GTK namespace ref.
+	* sample/HelloWorld.cs : Fixed hanging GTK namespace ref.
+
+
+2001-09-18  Bob Smith  <bob@thestuff.net>
+
+	* glib/Object.cs : Moved parts of gtk/Object.cs here, and added 
+	static GetObject method and a Data property.
+	* glib/ObjectManager.cs : New.
+	* gtk/Object.cs : removed some GObject wrapping code.
+	* gtk/*.cs : Updated namespace from GTK to Gtk.
+
 2001-09-18  Bob Smith  <bob@thestuff.net>
 
 	* gtk/Object.cs : Added EventList and Object properties.

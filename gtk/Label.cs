@@ -21,7 +21,7 @@ namespace Gtk {
 
 		public Label (IntPtr o)
 		{
-			Object = o;
+			RawObject = o;
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace Gtk {
 
 		public Label (String str)
 		{
-			Object = gtk_label_new (str);
+			RawObject = gtk_label_new (str);
 		}
 
 		/// <summary>
@@ -49,18 +49,18 @@ namespace Gtk {
 		/// </remarks>
 
 		[DllImport("gtk-1.3")]
-		static extern void gtk_label_set_text (IntPtr hnd, const String str);
+		static extern void gtk_label_set_text (IntPtr hnd, String str);
 		[DllImport("gtk-1.3")]
 		static extern String gtk_label_get_text (IntPtr hnd);
 
 		public String Text {
 			get
 			{
-				return gtk_label_get_text (Object);
+				return gtk_label_get_text (RawObject);
 			}
 			set
 			{
-				gtk_label_set_text (Object, value);
+				gtk_label_set_text (RawObject, value);
 			}
 		}
 
@@ -73,12 +73,12 @@ namespace Gtk {
 		/// </remarks>
 
 		[DllImport("gtk-1.3")]
-		static extern void gtk_label_set_markup (IntPtr hnd, const String str);
+		static extern void gtk_label_set_markup (IntPtr hnd, String str);
 
 		public String Markup {
 			set
 			{
-				gtk_label_set_markup (Object, value);
+				gtk_label_set_markup (RawObject, value);
 			}
 		}
 
@@ -89,23 +89,23 @@ namespace Gtk {
 		/// <remarks>
 		///	Parsed content.
 		/// </remarks>
-
+/*
 		[DllImport("gtk-1.3")]
-		static extern void gtk_label_set_label (IntPtr hnd, const String str);
+		static extern void gtk_label_set_label (IntPtr hnd, String str);
 		[DllImport("gtk-1.3")]
 		static extern String gtk_label_get_label (IntPtr hnd);
 
 		public String Label {
 			get
 			{
-				return gtk_label_get_label (Object);
+				return gtk_label_get_label (RawObject);
 			}
 			set
 			{
-				gtk_label_set_label (Object, value);
+				gtk_label_set_label (RawObject, value);
 			}
 		}
-
+*/
 		/// <summary>
 		///	Selectable Property
 		/// </summary>
@@ -122,11 +122,11 @@ namespace Gtk {
 		public bool Selectable {
 			get
 			{
-				return gtk_label_get_selectable (Object);
+				return gtk_label_get_selectable (RawObject);
 			}
 			set
 			{
-				gtk_label_set_selectable (Object, value, value);
+				gtk_label_set_selectable (RawObject, value);
 			}
 		}
 
@@ -146,11 +146,11 @@ namespace Gtk {
 		public bool UseUnderline {
 			get
 			{
-				return gtk_label_get_use_underline (Object);
+				return gtk_label_get_use_underline (RawObject);
 			}
 			set
 			{
-				gtk_label_set_use_underline (Object, value, value);
+				gtk_label_set_use_underline (RawObject, value);
 			}
 		}
 
@@ -170,11 +170,11 @@ namespace Gtk {
 		public bool UseMarkup {
 			get
 			{
-				return gtk_label_get_use_markup (Object);
+				return gtk_label_get_use_markup (RawObject);
 			}
 			set
 			{
-				gtk_label_set_use_markup (Object, value, value);
+				gtk_label_set_use_markup (RawObject, value);
 			}
 		}
 
@@ -194,11 +194,11 @@ namespace Gtk {
 		public bool LineWrap {
 			get
 			{
-				return gtk_label_get_line_wrap (Object);
+				return gtk_label_get_line_wrap (RawObject);
 			}
 			set
 			{
-				gtk_label_set_line_wrap (Object, value, value);
+				gtk_label_set_line_wrap (RawObject, value);
 			}
 		}
 

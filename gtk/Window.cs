@@ -1,4 +1,4 @@
-// GTK.Window.cs - GTK Window class implementation
+// Gtk.Window.cs - GTK Window class implementation
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -6,6 +6,7 @@
 
 namespace Gtk {
 
+	using GLib;
 	using System;
 	using System.Drawing;
 	using System.Runtime.InteropServices;
@@ -27,7 +28,7 @@ namespace Gtk {
 
 		public Window (IntPtr o)
 		{
-			Object = o;
+			RawObject = o;
 		}
 
 		/// <summary>
@@ -39,11 +40,11 @@ namespace Gtk {
 		/// </remarks>
 
 		[DllImport("gtk-1.3")]
-		static extern IntPtr gtk_window_new (GTK.WindowType type);
+		static extern IntPtr gtk_window_new (WindowType type);
 
 		public Window ()
 		{
-			Object = gtk_window_new (WindowType.TopLevel);
+			RawObject = gtk_window_new (WindowType.TopLevel);
 		}
 
 		/// <summary>
@@ -71,8 +72,13 @@ namespace Gtk {
 		/// </remarks>
 
 		public bool AllowGrow {
-			get {;}
-			set {;}
+			get {
+				GValue val = GetProp ("allow-grow");
+				return (val != 0);
+			}
+			set {
+				SetProp ("allow-grow", new GValue (value));
+			}
 		}
 			
 		/// <summary>
@@ -85,8 +91,13 @@ namespace Gtk {
 		/// </remarks>
 
 		public bool AllowShrink {
-			get {;}
-			set {;}
+			get {
+				GValue val = GetProp ("allow-shrink");
+				return (val != 0);
+			}
+			set {
+				SetProp ("allow-shrink", new GValue (value));
+			}
 		}
 			
 		/// <summary>
@@ -98,8 +109,13 @@ namespace Gtk {
 		/// </remarks>
 
 		public Size DefaultSize {
-			get {;}
-			set {;}
+			get {
+				GValue val = GetProp ("default-size");
+				return (val != 0);
+			}
+			set {
+				SetProp ("default-size", new GValue (value));
+			}
 		}
 
 		/// <summary>
@@ -112,8 +128,13 @@ namespace Gtk {
 		/// </remarks>
 
 		public bool DestroyWithParent {
-			get {;}
-			set {;}
+			get {
+				GValue val = GetProp ("allow-grow");
+				return (val != 0);
+			}
+			set {
+				SetProp ("allow-grow", new GValue (value));
+			}
 		}
 
 		/// <summary>
@@ -128,8 +149,13 @@ namespace Gtk {
 		/// </remarks>
 
 		public bool IsModal {
-			get {;}
-			set {;}
+			get {
+				GValue val = GetProp ("allow-grow");
+				return (val != 0);
+			}
+			set {
+				SetProp ("allow-grow", new GValue (value));
+			}
 		}
 */
 		/// <summary>
@@ -148,7 +174,7 @@ namespace Gtk {
 			set
 			{
 				gtk_window_set_position (
-						obj, value.X, value.Y);
+						RawObject, value.X, value.Y);
 			}
 		}
 
@@ -160,14 +186,15 @@ namespace Gtk {
 		///	The Title displayed in the Window's Title Bar.
 		/// </remarks>
 
-		[DllImport("gtk-1.3")]
-		static extern void gtk_window_set_title (IntPtr hnd,
-							 String title);
+		[DllImport("gobject-1.3")]
+		static extern void g_object_set_property (String title,
+							  ref GValueStruct vs);
 
 		public String Title {
-			set
-			{
-				gtk_window_set_title (Object, value);
+			set {
+				GValue val = new GValue (value);
+				GValueStruct vs = val.ValueStruct;
+				g_object_set_property ("title", ref vs);
 			}
 		}
 	}

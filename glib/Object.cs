@@ -4,12 +4,15 @@
 //
 // (c) 2001 Bob Smith
 
-namespace Glib {
+namespace GLib {
 
 	using System;
+	using System.ComponentModel;
 	using System.Runtime.InteropServices;
 
 	public class Object  {
+
+/*
 		public static Object GetObject(IntPtr o)
 		{
 			if (o == null) throw new ArgumentNullException ();
@@ -22,18 +25,15 @@ namespace Glib {
 		{
 			Object = o;
 		}
-		protected IntPtr _obj;
+*/
+		private IntPtr _obj;
 
-		private IntPtr Object
+		protected IntPtr RawObject
 		{
-			get
-			{
+			get {
 				return _obj;
 			}
-			set
-			{
-				if (value == null) throw new ArgumentNullException ();
-				_objectManager = null;
+			set {
 				_obj = value;
 			}
 		}       
@@ -41,18 +41,19 @@ namespace Glib {
 		private EventHandlerList _events;
 		protected EventHandlerList Events
 		{
-			get
-			{
-				if (_events != null) return _events;
-				_events = new EventHandlerList ();
+			get {
+				if (_events == null)
+					_events = new EventHandlerList ();
+				return _events;
 			}
 		}
 
-		[DllImport("gtk-1.3")]
+/*
+		[DllImport("gobject-1.3")]
 		static extern IntPtr g_object_get_data (
 					IntPtr object,
 					String key );
-		[DllImport("gtk-1.3")]
+		[DllImport("gobject-1.3")]
 		static extern void g_object_set_data (
 					IntPtr object,
 					String key,
@@ -76,7 +77,6 @@ namespace Glib {
 					IntPtr data,
 					DestroyNotify destroy );
 
-/*
 
 void        (*GObjectGetPropertyFunc)       (GObject *object,
                                              guint property_id,

@@ -4,15 +4,14 @@
 //
 // (c) 2001 Bob Smith
 
-namespace Glib {
+namespace GLib {
 
 	using System;
 	using System.Runtime.InteropServices;
 
-	protected delegate void DestroyNotify (IntPtr data);
-
+/*
 	public class ObjectManager  {
-		public ObjectManager(IntPtr o, Glib.Object go)
+		public ObjectManager(IntPtr o, Object go)
 		{
 			if (o == null || go -- null) throw new ArgumentNullException ();
 			_gobj = go;
@@ -23,6 +22,8 @@ namespace Glib {
 		}
 		public Glib.Object gobj;
 
+		protected delegate void DestroyNotify (IntPtr data);
+
 		private void DestroyNotifyEvent (IntPtr data)
 		{
 			gobj.gh.Free();
@@ -30,4 +31,5 @@ namespace Glib {
 		}
 
 	}
+*/
 }
