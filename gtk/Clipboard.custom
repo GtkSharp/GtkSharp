@@ -1,3 +1,8 @@
+// Gtk.Clipboard.custom - Customizations for the Clipboard class
+//
+// Authors:  Mike Kestner  <mkestner@novell.com>
+//
+// Copyright (c) 2005  Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -14,59 +19,45 @@
 // Boston, MA 02111-1307, USA.
 
 
-/*
-		public static Hashtable clipboard_objects = new Hashtable ();
-		private static uint clipboard_object_next_id = 0;
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_clipboard_set_with_data(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr data);
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern bool gtk_clipboard_set_with_data(IntPtr raw, IntPtr targets, int n_targets, GtkSharp.GtkClipboardGetFuncNative get_func, GtkSharp.GtkClipboardClearFuncNative clear_func, uint id);
+		static extern bool gtk_clipboard_set_with_owner(IntPtr raw, TargetEntry[] targets, int n_targets, GtkSharp.ClipboardGetFuncNative get_func, GtkSharp.ClipboardClearFuncNative clear_func, IntPtr owner);
 
-		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_clipboard_target_list_add (IntPtr list, IntPtr name, uint flags, uint info);
-
-		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_clipboard_target_list_to_array (IntPtr list);
-
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_clipboard_target_array_free (IntPtr targets);
-
-		[DllImport("gtksharpglue-2")]
-		static extern void gtksharp_clipboard_target_list_free (IntPtr list);
-
-		GtkSharp.GtkClipboardGetFuncWrapper get_func_wrapper;
-		GtkSharp.GtkClipboardClearFuncWrapper clear_func_wrapper;
-
-		public bool Set (Gtk.TargetEntry[] targets,
-				 Gtk.ClipboardGetFunc get_func,
-				 Gtk.ClipboardClearFunc clear_func,
-				 object data)
+		void ClearProxy (Clipboard clipboard)
 		{
-			uint this_id;
-
-			lock (clipboard_objects) {
-				this_id = clipboard_object_next_id++;
-				clipboard_objects[this_id] = data;
+			if (PersistentData ["clear_func"] != null)  {
+				ClipboardClearFunc clear = PersistentData ["clear_func"] as ClipboardClearFunc;
+				clear (clipboard);
 			}
+			SetPersistentData (null, null, null);
+		}
 
-			get_func_wrapper = new GtkSharp.GtkClipboardGetFuncWrapper (get_func, this);
-			clear_func_wrapper = new GtkSharp.GtkClipboardClearFuncWrapper (clear_func, this);
+		void SetPersistentData (object get_func_wrapper, object clear_func, object clear_proxy_wrapper)
+		{
+			PersistentData ["get_func_wrapper"] = get_func_wrapper;
+			PersistentData ["clear_func"] = clear_func;
+			PersistentData ["clear_proxy_wrapper"] = clear_proxy_wrapper;
+		}
 
-			IntPtr list = IntPtr.Zero;
-
-			foreach (Gtk.TargetEntry t in targets) {
-				IntPtr native = GLib.Marshaller.StringToPtrGStrdup (t.target);
-				list = gtksharp_clipboard_target_list_add (list, native, t.flags, t.info);
-				GLib.Marshaller.Free (native);
-			}
-
-			IntPtr array = gtksharp_clipboard_target_list_to_array (list);
-
-			bool ret = gtk_clipboard_set_with_data (Handle, array, targets.Length, get_func_wrapper.NativeDelegate, clear_func_wrapper.NativeDelegate, this_id);
-
-			gtksharp_clipboard_target_array_free (array);
-			gtksharp_clipboard_target_list_free (list);
-
+		public bool SetWithData (TargetEntry[] targets, ClipboardGetFunc get_func, ClipboardClearFunc clear_func)
+		{
+			ClipboardClearFunc clear_proxy = new ClipboardClearFunc (ClearProxy);
+			GtkSharp.ClipboardGetFuncWrapper get_func_wrapper = new GtkSharp.ClipboardGetFuncWrapper (get_func);
+			GtkSharp.ClipboardClearFuncWrapper clear_proxy_wrapper = new GtkSharp.ClipboardClearFuncWrapper (clear_proxy);
+			bool ret = gtk_clipboard_set_with_data (Handle, targets, targets.Length, get_func_wrapper.NativeDelegate, clear_proxy_wrapper.NativeDelegate, IntPtr.Zero);
+			SetPersistentData (get_func_wrapper, clear_func, clear_proxy_wrapper);
 			return ret;
 		}
-*/
+
+		public bool SetWithOwner (TargetEntry[] targets, ClipboardGetFunc get_func, ClipboardClearFunc clear_func, GLib.Object owner)
+		{
+			ClipboardClearFunc clear_proxy = new ClipboardClearFunc (ClearProxy);
+			GtkSharp.ClipboardGetFuncWrapper get_func_wrapper = new GtkSharp.ClipboardGetFuncWrapper (get_func);
+			GtkSharp.ClipboardClearFuncWrapper clear_proxy_wrapper = new GtkSharp.ClipboardClearFuncWrapper (clear_proxy);
+			bool ret = gtk_clipboard_set_with_owner (Handle, targets, targets.Length, get_func_wrapper.NativeDelegate, clear_proxy_wrapper.NativeDelegate, owner == null ? IntPtr.Zero : owner.Handle);
+			SetPersistentData (get_func_wrapper, clear_func, clear_proxy_wrapper);
+			return ret;
+		}
 
