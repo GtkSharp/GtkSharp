@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001-2002 Mike Kestner
+// (c) 2001-2003 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -11,109 +11,116 @@ namespace GtkSharp.Generation {
 
 	public class SymbolTable {
 		
-		private static Hashtable alias = new Hashtable ();
-		private static Hashtable complex_types = new Hashtable ();
-		private static Hashtable simple_types;
-		private static Hashtable manually_wrapped_types;
+		static SymbolTable table = null;
+
+		Hashtable alias = new Hashtable ();
+		Hashtable types = new Hashtable ();
 		
-		static SymbolTable ()
+		public static SymbolTable Table {
+			get {
+				if (table == null)
+					table = new SymbolTable ();
+
+				return table;
+			}
+		}
+
+		public SymbolTable ()
 		{
-			simple_types = new Hashtable ();
-			simple_types.Add ("void", "void");
-			simple_types.Add ("gboolean", "bool");
-			simple_types.Add ("gint", "int");
-			simple_types.Add ("guint", "uint");
-			simple_types.Add ("glong", "long");
-			simple_types.Add ("gshort", "short");
-			simple_types.Add ("gushort", "ushort");
-			simple_types.Add ("guint32", "uint");
-			simple_types.Add ("guint64", "ulong");
-			simple_types.Add ("const-gchar", "string");
-			simple_types.Add ("const-char", "string");
-			simple_types.Add ("gchar", "string");
-			simple_types.Add ("GObject", "GLib.Object");
-			simple_types.Add ("gfloat", "float");
-			simple_types.Add ("gdouble", "double");
-			simple_types.Add ("gint8", "byte");
-			simple_types.Add ("guint8", "byte");
-			simple_types.Add ("gint16", "short");
-			simple_types.Add ("gint32", "int");
-			simple_types.Add ("gint64", "long");
-			simple_types.Add ("guint16", "ushort");
-			simple_types.Add ("guint1", "bool");
-			simple_types.Add ("gpointer", "System.IntPtr");
-			simple_types.Add ("guchar", "byte");
-			simple_types.Add ("long", "long");
-			simple_types.Add ("gulong", "ulong");
-			simple_types.Add ("GQuark", "int");
-			simple_types.Add ("int", "int");
-			simple_types.Add ("char", "string");
-			simple_types.Add ("double", "double");
-			simple_types.Add ("float", "float");
-			simple_types.Add ("gunichar", "string");
-			simple_types.Add ("uint1", "bool");
-			simple_types.Add ("GPtrArray", "System.IntPtr[]");
-			simple_types.Add ("GType", "uint");
-			simple_types.Add ("GError", "IntPtr");
+			Hashtable alias = new Hashtable ();
+			Hashtable types = new Hashtable ();
+		
+			AddType (new SimpleGen ("void", "void"));
+			AddType (new SimpleGen ("gboolean", "bool"));
+			AddType (new SimpleGen ("gint", "int"));
+			AddType (new SimpleGen ("guint", "uint"));
+			AddType (new SimpleGen ("glong", "long"));
+			AddType (new SimpleGen ("gshort", "short"));
+			AddType (new SimpleGen ("gushort", "ushort"));
+			AddType (new SimpleGen ("guint32", "uint"));
+			AddType (new SimpleGen ("guint64", "ulong"));
+			AddType (new SimpleGen ("const-gchar", "string"));
+			AddType (new SimpleGen ("const-char", "string"));
+			AddType (new SimpleGen ("gchar", "string"));
+			AddType (new SimpleGen ("gfloat", "float"));
+			AddType (new SimpleGen ("gdouble", "double"));
+			AddType (new SimpleGen ("gint8", "sbyte"));
+			AddType (new SimpleGen ("guint8", "byte"));
+			AddType (new SimpleGen ("gint16", "short"));
+			AddType (new SimpleGen ("gint32", "int"));
+			AddType (new SimpleGen ("gint64", "long"));
+			AddType (new SimpleGen ("guint16", "ushort"));
+			AddType (new SimpleGen ("guint1", "bool"));
+			AddType (new SimpleGen ("gpointer", "IntPtr"));
+			AddType (new SimpleGen ("guchar", "byte"));
+			AddType (new SimpleGen ("long", "long"));
+			AddType (new SimpleGen ("gulong", "ulong"));
+			AddType (new SimpleGen ("GQuark", "int"));
+			AddType (new SimpleGen ("int", "int"));
+			AddType (new SimpleGen ("char", "string"));
+			AddType (new SimpleGen ("double", "double"));
+			AddType (new SimpleGen ("float", "float"));
+			AddType (new SimpleGen ("gunichar", "string"));
+			AddType (new SimpleGen ("uint1", "bool"));
+			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
+			AddType (new SimpleGen ("GType", "uint"));
+			AddType (new SimpleGen ("GError", "IntPtr"));
 			// gsize is a system-specific typedef in glibconfig.h,
 			// but this should work for now
-			simple_types.Add ("gsize", "uint");
-			simple_types.Add ("gssize", "int");
-			simple_types.Add ("size_t", "int");
+			AddType (new SimpleGen ("gsize", "uint"));
+			AddType (new SimpleGen ("gssize", "int"));
+			AddType (new SimpleGen ("size_t", "int"));
 			
 			// FIXME: These ought to be handled properly.
-			simple_types.Add ("GMemChunk", "System.IntPtr");
-			simple_types.Add ("GTimeVal", "System.IntPtr");
-			simple_types.Add ("GClosure", "System.IntPtr");
-			simple_types.Add ("GArray", "System.IntPtr");
-			simple_types.Add ("GData", "System.IntPtr");
-			simple_types.Add ("GTypeModule", "GLib.Object");
-			simple_types.Add ("GHashTable", "System.IntPtr");
-			simple_types.Add ("va_list", "System.IntPtr");
-			simple_types.Add ("GParamSpec", "System.IntPtr");
-			simple_types.Add ("gconstpointer", "System.IntPtr");
+			AddType (new SimpleGen ("GMemChunk", "IntPtr"));
+			AddType (new SimpleGen ("GTimeVal", "IntPtr"));
+			AddType (new SimpleGen ("GClosure", "IntPtr"));
+			AddType (new SimpleGen ("GArray", "IntPtr"));
+			AddType (new SimpleGen ("GData", "IntPtr"));
+			AddType (new SimpleGen ("GTypeModule", "GLib.Object"));
+			AddType (new SimpleGen ("GHashTable", "System.IntPtr"));
+			AddType (new SimpleGen ("va_list", "IntPtr"));
+			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
+			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
 
-			manually_wrapped_types = new Hashtable ();
-			manually_wrapped_types.Add ("GSList", "GLib.SList");
-			manually_wrapped_types.Add ("GList", "GLib.List");
-			manually_wrapped_types.Add ("GValue", "GLib.Value");
+			AddType (new ManualGen ("GSList", "GLib", "SList"));
+			AddType (new ManualGen ("GList", "GLib", "List"));
+			AddType (new ManualGen ("GValue", "GLib", "Value"));
+			AddType (new ManualGen ("GObject", "GLib", "Object"));
 		}
 		
-		public static void AddAlias (string name, string type)
+		public void AddAlias (string name, string type)
 		{
 			type = type.TrimEnd(' ', '\t');
 			alias [name] = type;
 		}
 		
-		public static void AddType (IGeneratable gen)
+		public void AddType (IGeneratable gen)
 		{
-			complex_types [gen.CName] = gen;
+			types [gen.CName] = gen;
 		}
 		
-		public static void AddSimpleType (string cname, string name)
-		{
-			simple_types.Add (cname, name);
-		}
-
-		public static void AddManualType (string cname, string name)
-		{
-			manually_wrapped_types.Add (cname, name);
-		}
-
-		public static int Count {
+		public int Count {
 			get
 			{
-				return complex_types.Count;
+				return types.Count;
 			}
 		}
 		
-		public static IEnumerable Generatables {
+		public IEnumerable Generatables {
 			get {
-				return complex_types.Values;
+				return types.Values;
 			}
 		}
 		
-		private static string Trim(string type)
+		public IGeneratable this [string ctype] {
+			get {
+				ctype = DeAlias (ctype);
+				return types [ctype] as IGeneratable;
+			}
+		}
+
+		private string Trim(string type)
 		{
 			// HACK: If we don't detect this here, there is no
 			// way of indicating it in the symbol table
@@ -124,243 +131,149 @@ namespace GtkSharp.Generation {
 			return trim_type;
 		}
 
-		private static string DeAlias (string type)
+		private string DeAlias (string type)
 		{
+			type = Trim (type);
 			while (alias.ContainsKey(type))
 				type = (string) alias[type];
 
 			return type;
 		}
 
-		public static string FromNativeReturn(string c_type, string val)
+		public string FromNativeReturn(string c_type, string val)
 		{
-			return FromNative (c_type, val, true);
+			IGeneratable gen = this[c_type];
+			if (gen == null)
+				return "";
+			return gen.FromNativeReturn (val);
 		}
 
-		public static string FromNative(string c_type, string val)
+		public string FromNative(string c_type, string val)
 		{
-			return FromNative (c_type, val, false);
+			IGeneratable gen = this[c_type];
+			if (gen == null)
+				return "";
+			return gen.FromNative (val);
 		}
 
-		public static string FromNative(string c_type, string val, bool ret)
+		public string GetCSType(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type)) {
-				return val;
-			} else if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (ret)
-					return gen.FromNativeReturn(val);
-				else
-					return gen.FromNative(val);
-			} else if (manually_wrapped_types.ContainsKey(c_type)) {
-				string cs_type = (string) manually_wrapped_types[c_type];
-				return String.Format ("new {0} ({1})", cs_type, val);
-			} else {
+			IGeneratable gen = this[c_type];
+			if (gen == null)
 				return "";
-			}
+			return gen.QualifiedName;
 		}
 		
-		public static string GetCSType(string c_type)
+		public string GetName(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type)) {
-				return (string) simple_types[c_type];
-			} else if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				return gen.QualifiedName;
-			} else if (manually_wrapped_types.ContainsKey(c_type)) {
-				return (string) manually_wrapped_types[c_type];
-			} else {
+			IGeneratable gen = this[c_type];
+			if (gen == null)
 				return "";
-			}
+			return gen.Name;
 		}
 		
-		public static string GetName(string c_type)
+		public string GetMarshalReturnType(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type) || manually_wrapped_types.ContainsKey(c_type)) {
-				string stype;
-				if (simple_types.ContainsKey(c_type))
-					stype = (string) simple_types[c_type];
-				else
-					stype = (string) manually_wrapped_types[c_type];
-				int dotidx = stype.IndexOf(".");
-				if (dotidx == -1) {
-					return stype;
-				} else {
-					return stype.Substring(dotidx+1);
-				}
-			} else if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				return gen.Name;
-			} else {
+			IGeneratable gen = this[c_type];
+			if (gen == null)
 				return "";
-			}
+			return gen.MarshalReturnType;
 		}
 		
-		public static string GetMarshalReturnType(string c_type)
+		public string GetMarshalType(string c_type)
 		{
-			return GetMarshalType (c_type, true);
-		}
-		
-		public static string GetMarshalType(string c_type)
-		{
-			return GetMarshalType (c_type, false);
-		}
-		
-		public static string GetMarshalType(string c_type, bool ret)
-		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type)) {
-				return (string) simple_types[c_type];
-			} else if (manually_wrapped_types.ContainsKey(c_type)) {
-				return "IntPtr";
-			} else if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (ret)
-					return gen.MarshalReturnType;
-				else
-					return gen.MarshalType;
-			} else {
+			IGeneratable gen = this[c_type];
+			if (gen == null)
 				return "";
-			}
+			return gen.MarshalType;
 		}
 		
-		public static string CallByName(string c_type, string var_name)
+		public string CallByName(string c_type, string var_name)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type)) {
-				return var_name;
-			} else if (manually_wrapped_types.ContainsKey(c_type)) {
-				return var_name + ".Handle";
-			} else if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				return gen.CallByName(var_name);
-			} else {
+			IGeneratable gen = this[c_type];
+			if (gen == null)
 				return "";
-			}
+			return gen.CallByName(var_name);
 		}
 	
-		public static bool IsOpaque(string c_type)
+		public bool IsOpaque(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is OpaqueGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is OpaqueGen)
+				return true;
+
 			return false;
 		}
 	
-		public static bool IsBoxed(string c_type)
+		public bool IsBoxed(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is BoxedGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is BoxedGen)
+				return true;
+
 			return false;
 		}
 		
-		public static bool IsStruct(string c_type)
+		public bool IsStruct(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is StructGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is StructGen)
+				return true;
+
 			return false;
 		}
 	
-		public static bool IsEnum(string c_type)
+		public bool IsEnum(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is EnumGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is EnumGen)
+				return true;
+
 			return false;
 		}
 	
-		public static bool IsEnumFlags(string c_type)
+		public bool IsEnumFlags(string c_type)
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				EnumGen gen = complex_types[c_type] as EnumGen;
+			if (types.ContainsKey(c_type)) {
+				EnumGen gen = types[c_type] as EnumGen;
 				return (gen != null && gen.Elem.GetAttribute ("type") == "flags");
 			}
 			return false;
 		}
 	
-		public static bool IsInterface(string c_type)
+		public bool IsInterface(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is InterfaceGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is InterfaceGen)
+				return true;
+
 			return false;
 		}
 		
-		public static ClassBase GetClassGen(string c_type)
+		public ClassBase GetClassGen(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			return (complex_types[c_type] as ClassBase);
+			return this[c_type] as ClassBase;
 		}
 			
-		public static bool IsObject(string c_type)
+		public bool IsObject(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is ObjectGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is ObjectGen)
+				return true;
+
 			return false;
 		}
 
-		public static bool IsCallback(string c_type)
+		public bool IsCallback(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (complex_types.ContainsKey(c_type)) {
-				IGeneratable gen = (IGeneratable) complex_types[c_type];
-				if (gen is CallbackGen) {
-					return true;
-				}
-			}
+			if (this[c_type] is CallbackGen)
+				return true;
+
 			return false;
 		}
 
-		public static bool IsManuallyWrapped(string c_type)
+		public bool IsManuallyWrapped(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			return manually_wrapped_types.ContainsKey(c_type);
+			if (this[c_type] is ManualGen)
+				return true;
+
+			return false;
 		}
 
 	}

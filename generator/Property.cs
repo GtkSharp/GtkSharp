@@ -31,7 +31,8 @@ namespace GtkSharp.Generation {
 		public bool Validate ()
 		{
 			string c_type = elem.GetAttribute("type");
-			string cs_type = SymbolTable.GetCSType(c_type);
+			SymbolTable table = SymbolTable.Table;
+			string cs_type = table.GetCSType(c_type);
 
 			if (cs_type == "") {
 				Console.Write("Property has unknown Type {0} ", c_type);
@@ -39,7 +40,7 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 
-			if (SymbolTable.IsInterface(c_type)) {
+			if (table.IsInterface(c_type)) {
 				// FIXME: Handle interface props properly.
 				Console.Write("Interface property detected ");
 				Statistics.ThrottledCount++;
@@ -51,8 +52,10 @@ namespace GtkSharp.Generation {
 
 		public void Generate (StreamWriter sw)
 		{
+			SymbolTable table = SymbolTable.Table;
+
 			string c_type = elem.GetAttribute("type");
-			string cs_type = SymbolTable.GetCSType(c_type);
+			string cs_type = table.GetCSType(c_type);
 			string modifiers = "";
 
 			if (elem.HasAttribute("new_flag") || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
@@ -66,18 +69,18 @@ namespace GtkSharp.Generation {
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 
 			string v_type = "";
-			if (SymbolTable.IsEnum(c_type)) {
+			if (table.IsEnum(c_type)) {
 				v_type = "(int) (GLib.EnumWrapper)";
-			} else if (SymbolTable.IsInterface(c_type)) {
+			} else if (table.IsInterface(c_type)) {
 				// FIXME: Handle interface props properly.
 				Console.Write("Interface property detected ");
 				Statistics.ThrottledCount++;
 				return;
-			} else if (SymbolTable.IsObject(c_type)) {
+			} else if (table.IsObject(c_type)) {
 				v_type = "(GLib.UnwrappedObject)";
-			} else if (SymbolTable.IsBoxed (c_type)) {
+			} else if (table.IsBoxed (c_type)) {
 				v_type = "(GLib.Boxed)";
-			} else if (SymbolTable.IsOpaque (c_type)) {
+			} else if (table.IsOpaque (c_type)) {
 				v_type = "(GLib.Opaque)";
 			}
 
@@ -118,10 +121,10 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
-				if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type) || SymbolTable.IsBoxed (c_type)) {
+				if (table.IsObject (c_type) || table.IsOpaque (c_type) || table.IsBoxed (c_type)) {
 					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
-					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + SymbolTable.FromNativeReturn(c_type, "raw_ret") + ";");
-					if (!SymbolTable.IsBoxed (c_type))
+					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
+					if (!table.IsBoxed (c_type))
 						sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				} else {
 					sw.Write("\t\t\t\t" + cs_type + " ret = ");
@@ -143,12 +146,12 @@ namespace GtkSharp.Generation {
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
 				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
-				if (SymbolTable.IsEnum(c_type)) {
-					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", SymbolTable.IsEnumFlags (c_type) ? "true" : "false");
-				} else if (SymbolTable.IsBoxed (c_type)) {
+				if (table.IsEnum(c_type)) {
+					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", table.IsEnumFlags (c_type) ? "true" : "false");
+				} else if (table.IsBoxed (c_type)) {
 					sw.WriteLine("Handle, " + cname + ", new GLib.Boxed (value)));");
 				} else {
-					if (v_type != "" && !(SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type))) {
+					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {
 						sw.Write(v_type + " ");
 					}
 					sw.WriteLine("value));");

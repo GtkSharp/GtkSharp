@@ -112,13 +112,13 @@ namespace GtkSharp.Generation {
 		{
 			name = "";
 			c_type = field.GetAttribute ("type");
-			type = SymbolTable.GetCSType (c_type);
+			type = SymbolTable.Table.GetCSType (c_type);
 			if (IsBit (field)) {
 				type = "uint";
-			} else if ((IsPointer (field) || SymbolTable.IsOpaque (c_type)) && type != "string") {
+			} else if ((IsPointer (field) || SymbolTable.Table.IsOpaque (c_type)) && type != "string") {
 				type = "IntPtr";
 				name = "_";
-			} else if (SymbolTable.IsCallback (c_type)) {
+			} else if (SymbolTable.Table.IsCallback (c_type)) {
 				type = "IntPtr";
 			} else {
 				if (type == "") {
@@ -149,34 +149,35 @@ namespace GtkSharp.Generation {
 
 			if (field.HasAttribute("array_len"))
 				Console.WriteLine ("warning: array field {0}.{1} probably incorrectly generated", QualifiedName, name);
+			SymbolTable table = SymbolTable.Table;
 
-			string wrapped = SymbolTable.GetCSType (c_type);
+			string wrapped = table.GetCSType (c_type);
 			string wrapped_name = MangleName (field.GetAttribute ("cname"));
-			if (SymbolTable.IsObject (c_type)) {
+			if (table.IsObject (c_type)) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + SymbolTable.FromNativeReturn(c_type, name) + ";");
+				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(c_type, name) + ";");
 				sw.WriteLine ("\t\t\t\tret.Ref ();");
 				sw.WriteLine ("\t\t\t\treturn ret;");
 				sw.WriteLine ("\t\t\t}");
-				sw.WriteLine ("\t\t\tset { " + name + " = " + SymbolTable.CallByName (c_type, "value") + "; }");
+				sw.WriteLine ("\t\t\tset { " + name + " = " + table.CallByName (c_type, "value") + "; }");
 				sw.WriteLine ("\t\t}");
-			} else if (SymbolTable.IsOpaque (c_type)) {
+			} else if (table.IsOpaque (c_type)) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + SymbolTable.FromNativeReturn(c_type, name) + ";");
+				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(c_type, name) + ";");
 				sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + name + ");");
 				sw.WriteLine ("\t\t\t\treturn ret;");
 				sw.WriteLine ("\t\t\t}");
 
-				sw.WriteLine ("\t\t\tset { " + name + " = " + SymbolTable.CallByName (c_type, "value") + "; }");
+				sw.WriteLine ("\t\t\tset { " + name + " = " + table.CallByName (c_type, "value") + "; }");
 				sw.WriteLine ("\t\t}");
-			} else if (IsPointer (field) && (SymbolTable.IsStruct (c_type) || SymbolTable.IsBoxed (c_type))) {
+			} else if (IsPointer (field) && (table.IsStruct (c_type) || table.IsBoxed (c_type))) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { return " + SymbolTable.FromNativeReturn (c_type, name) + "; }");
+				sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (c_type, name) + "; }");
 				sw.WriteLine ("\t\t}");
 			}
 			
@@ -210,7 +211,6 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = CreateWriter ();
 			
-			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();

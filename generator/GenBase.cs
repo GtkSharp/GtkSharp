@@ -82,6 +82,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
+			sw.WriteLine ();
 
 			return sw;
 		}

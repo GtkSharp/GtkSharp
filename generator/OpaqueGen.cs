@@ -34,7 +34,6 @@ namespace GtkSharp.Generation {
 
 			StreamWriter sw = CreateWriter ();
 
-			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();

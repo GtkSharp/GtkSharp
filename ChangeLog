@@ -1,5 +1,28 @@
 2003-05-18  Mike Kestner  <mkestner@speakeasy.net>
 
+	* generator/CallbackGen.cs : use non-static symtab, kill doc comments
+	* generator/ClassBase.cs : use non-static symtab
+	* generator/CodeGenerator.cs : use non-static symtab
+	* generator/EnumGen.cs : kill doc comments, don't gen using System here
+	* generator/GenBase.cs : gen using System here for all types
+	* generator/InterfaceGen.cs : don't gen using System here.
+	* generator/Method.cs : use non-static symtab
+	* generator/ObjectGen.cs : kill doc comments, use non-static symtab
+	* generator/OpaqueGen.cs : don't gen using System here.
+	* generator/Parameters.cs : use non static symtab.
+	* generator/Parser.cs : use non static symtab. add SimpleGen's and
+	ManualGen's
+	* generator/Property.cs : use non static symtab
+	* generator/SignalHandler.cs : use non static symtab
+	* generator/StructBase.cs : use non static symtab
+	* generator/SymbolTable.cs : major refactoring. now uses SimpleGen and
+	ManualGen IGeneratables to simplify the method and prop code.  Is now 
+	instance based with a static prop to get the singleton instance, so that
+	a this indexer can be provided to access the IGeneratables nicely. Gearing
+	up to remove even more code from here by accessing IGeneratables directly.
+
+2003-05-18  Mike Kestner  <mkestner@speakeasy.net>
+
 	* generator/ClassBase.cs : Use QualifiedName in spew
 	* generator/ObjectGen.cs (Validate): kill, not used
 

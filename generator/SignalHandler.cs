@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2002 Mike Kestner
+// (c) 2002-2003 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -27,8 +27,10 @@ namespace GtkSharp.Generation {
 				return "";
 			}
 			
-			string s_ret = SymbolTable.GetCSType(retval);
-			string p_ret = SymbolTable.GetMarshalReturnType(retval);
+			SymbolTable table = SymbolTable.Table;
+
+			string s_ret = table.GetCSType(retval);
+			string p_ret = table.GetMarshalReturnType(retval);
 			if ((s_ret == "") || (p_ret == "")) {
 				Console.Write("Funky type: " + retval);
 				return "";
@@ -36,7 +38,7 @@ namespace GtkSharp.Generation {
 			
 			string key = retval;
 			string pinv = "";
-			string name = SymbolTable.GetName(retval);
+			string name = table.GetName(retval);
 			int pcnt = 0;
 			
 			ArrayList parms = new ArrayList();
@@ -52,7 +54,7 @@ namespace GtkSharp.Generation {
 
 				XmlElement elem = (XmlElement) parm;
 				string type = elem.GetAttribute("type");
-				string ptype = SymbolTable.GetMarshalType(type);
+				string ptype = table.GetMarshalType(type);
 				if (ptype == "") {
 					Console.Write("Funky type: " + type);
 					return "";
@@ -64,11 +66,11 @@ namespace GtkSharp.Generation {
 
 				pinv += (ptype + " arg" + pcnt);
 				parms.Add(type);
-				if (SymbolTable.IsObject(type) || SymbolTable.IsInterface(type)) {
+				if (table.IsObject(type) || table.IsInterface(type)) {
 					name += "Object";
 					key += "Object";
 				} else {
-					name += SymbolTable.GetName(type);
+					name += table.GetName(type);
 					key += type;
 				}
 				pcnt++;
@@ -131,22 +133,22 @@ namespace GtkSharp.Generation {
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
 					string ctype = (string) parms[idx];
-					ClassBase wrapper = SymbolTable.GetClassGen (ctype);
-					if ((wrapper != null && !(wrapper is StructBase)) || SymbolTable.IsManuallyWrapped (ctype)) {
+					ClassBase wrapper = table.GetClassGen (ctype);
+					if ((wrapper != null && !(wrapper is StructBase)) || table.IsManuallyWrapped (ctype)) {
 						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
 						sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
 						sw.WriteLine("\t\t\telse {");
 						if (wrapper != null && wrapper is ObjectGen)
 							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = GLib.Object.GetObject(arg" + idx + ");");
 						else
-							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
-						if ((wrapper != null && (wrapper is OpaqueGen)) || SymbolTable.IsManuallyWrapped (ctype)) {
+							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = " + table.FromNative (ctype, "arg" + idx)  + ";");
+						if ((wrapper != null && (wrapper is OpaqueGen)) || table.IsManuallyWrapped (ctype)) {
 							sw.WriteLine("\t\t\t\tif (args.Args[" + (idx-1) + "] == null)");
-							sw.WriteLine("\t\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
+							sw.WriteLine("\t\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, table.GetCSType (ctype), idx);
 						}
 						sw.WriteLine("\t\t\t}");
 					} else {
-						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
+						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + table.FromNative (ctype, "arg" + idx)  + ";");
 					}
 				}
 				sw.WriteLine("\t\t\tobject[] argv = new object[2];");
@@ -160,7 +162,7 @@ namespace GtkSharp.Generation {
 					else
 						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
 
-					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + SymbolTable.CallByName (retval, "((" + s_ret + ")args.RetVal)") + ";");
+					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + table.CallByName (retval, "((" + s_ret + ")args.RetVal)") + ";");
 				}
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();

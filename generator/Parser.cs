@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 					string atype = elem.GetAttribute("type");
 					if ((aname == "") || (atype == ""))
 						continue;
-					SymbolTable.AddAlias (aname, atype);
+					SymbolTable.Table.AddAlias (aname, atype);
 					break;
 					
 				case "boxed":
@@ -117,7 +117,7 @@ namespace GtkSharp.Generation {
 
 				if (igen != null) {
 					igen.DoGenerate = generate;
-					SymbolTable.AddType (igen);
+					SymbolTable.Table.AddType (igen);
 				}
 			}
 		}
@@ -129,9 +129,9 @@ namespace GtkSharp.Generation {
 			string name = symbol.GetAttribute ("name");
 
 			if (type == "simple")
-				SymbolTable.AddSimpleType (cname, name);
+				SymbolTable.Table.AddType (new SimpleGen (cname, name));
 			else if (type == "manual")
-				SymbolTable.AddManualType (cname, name);
+				SymbolTable.Table.AddType (new ManualGen (cname, name));
 			else
 				Console.WriteLine ("Unexpected symbol type " + type);
 		}

@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 
 		public string CSType {
 			get {
-				string cstype = SymbolTable.GetCSType( elem.GetAttribute("type"));
+				string cstype = SymbolTable.Table.GetCSType( elem.GetAttribute("type"));
 				if (cstype == "void")
 					cstype = "System.IntPtr";
 				if (elem.HasAttribute("array")) {
@@ -56,7 +56,7 @@ namespace GtkSharp.Generation {
 
 		public string MarshalType {
 			get {
-				string type = SymbolTable.GetMarshalType( elem.GetAttribute("type"));
+				string type = SymbolTable.Table.GetMarshalType( elem.GetAttribute("type"));
 				if (type == "void")
 					type = "System.IntPtr";
 				if (elem.HasAttribute("array")) {
@@ -191,7 +191,7 @@ namespace GtkSharp.Generation {
 				Parameter p = new Parameter (p_elem);
 				
 				if ((p.CSType == "") || (p.Name == "") || 
-				    (p.MarshalType == "") || (SymbolTable.CallByName(p.CType, p.Name) == "")) {
+				    (p.MarshalType == "") || (SymbolTable.Table.CallByName(p.CType, p.Name) == "")) {
 					Console.Write("Name: " + p.Name + " Type: " + p.CType + " ");
 					return false;
 				}
@@ -208,6 +208,7 @@ namespace GtkSharp.Generation {
 			bool last_was_user_data = false;
 			bool has_user_data = false;
 			
+			SymbolTable table = SymbolTable.Table;
 			int len = 0;
 			Parameter last_param = null;
 			foreach (XmlNode parm in elem.ChildNodes) {
@@ -250,14 +251,14 @@ namespace GtkSharp.Generation {
 					call_parm_name = "value";
 
 				string call_parm;
-				if (SymbolTable.IsCallback (type)) {
+				if (table.IsCallback (type)) {
 					has_callback = true;
-					call_parm = SymbolTable.CallByName (type, call_parm_name + "_wrapper");
+					call_parm = table.CallByName (type, call_parm_name + "_wrapper");
 				} else
-					call_parm = SymbolTable.CallByName(type, call_parm_name);
+					call_parm = table.CallByName(type, call_parm_name);
 				
-				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !SymbolTable.IsStruct (type))
-					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, SymbolTable.IsCallback (type) ? "null" : "IntPtr.Zero");
+				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !table.IsStruct (type))
+					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) ? "null" : "IntPtr.Zero");
 				
 				if (p_elem.HasAttribute("array"))
 					call_parm = call_parm.Replace ("ref ", "");
@@ -289,7 +290,7 @@ namespace GtkSharp.Generation {
 						call_string += pass_as + " ";
 					}
 					
-					if (SymbolTable.IsEnum (type))
+					if (table.IsEnum (type))
 						call_parm = name + "_as_int";
 				}
 				else if (type == "GError**")
@@ -340,6 +341,8 @@ namespace GtkSharp.Generation {
 		{
 			string name = "";
 
+			SymbolTable table = SymbolTable.Table;
+
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -361,11 +364,11 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
 				}
 
-				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type) || type == "GLib.Value")) {
+				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (table.IsObject (c_type) || table.IsOpaque (c_type) || type == "GLib.Value")) {
 					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
 				}
 
-				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.IsEnum (c_type)) {
+				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && table.IsEnum (c_type)) {
 					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
 				}
 			}
@@ -390,7 +393,7 @@ namespace GtkSharp.Generation {
 					name = p.Name;
 				}
 
-				if (SymbolTable.IsCallback (c_type)) {
+				if (table.IsCallback (c_type)) {
 					type = type.Replace(".", "Sharp.") + "Wrapper";
 
 					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", type, name);
@@ -417,7 +420,7 @@ namespace GtkSharp.Generation {
 				string name = p.Name;
 				string type = p.CSType;
 
-				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.IsEnum (c_type)) {
+				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.Table.IsEnum (c_type)) {
 					sw.WriteLine(indent + "\t\t\t" + name + " = (" + type + ") " + name + "_as_int;");
 				}
 			}
@@ -500,7 +503,7 @@ namespace GtkSharp.Generation {
 					if (parm.Name != "parameter") 
 						continue;
 					XmlElement p_elem = (XmlElement) parm;
-					return SymbolTable.GetCSType(p_elem.GetAttribute ("type"));
+					return SymbolTable.Table.GetCSType(p_elem.GetAttribute ("type"));
 				}
 				return null;
 			}

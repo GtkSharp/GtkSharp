@@ -148,9 +148,11 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 			
+			SymbolTable table = SymbolTable.Table;
+
 			rettype = ret_elem.GetAttribute("type");
-			m_ret = SymbolTable.GetMarshalReturnType(rettype);
-			s_ret = SymbolTable.GetCSType(rettype);
+			m_ret = table.GetMarshalReturnType(rettype);
+			s_ret = table.GetCSType(rettype);
 			cname = elem.GetAttribute("cname");
 			if (ret_elem.HasAttribute("element_type"))
 				element_type = ret_elem.GetAttribute("element_type");
@@ -385,17 +387,19 @@ namespace GtkSharp.Generation {
 			if (parms != null)
 				parms.Initialize(sw, is_get, is_set, indent);
 
+			SymbolTable table = SymbolTable.Table;
+
 			sw.Write(indent + "\t\t\t");
 			if (m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
 			} else {
-				if (SymbolTable.IsObject (rettype) || SymbolTable.IsOpaque (rettype))
+				if (table.IsObject (rettype) || table.IsOpaque (rettype))
 				{
 					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
+					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
 					if (needs_ref)
 						sw.WriteLine(indent + "\t\t\tret.Ref ();");
-					if (SymbolTable.IsOpaque (rettype))
+					if (table.IsOpaque (rettype))
 						sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
 				}
 				else {
@@ -404,7 +408,7 @@ namespace GtkSharp.Generation {
 					string raw_parms = "raw_ret";
 					if (element_type != null)
 						raw_parms += ", typeof (" + element_type + ")";
-					sw.WriteLine(s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, raw_parms) + ";");
+					sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
 				}
 			}
 			

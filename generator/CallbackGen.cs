@@ -83,22 +83,24 @@ namespace GtkSharp.Generation {
 				sig = parms.Signature;
 			}
 
+			SymbolTable table = SymbolTable.Table;
+
 			XmlElement ret_elem = Elem["return-type"];
 			string rettype = ret_elem.GetAttribute("type");
-			string m_ret = SymbolTable.GetMarshalReturnType (rettype);
-			string s_ret = SymbolTable.GetCSType (rettype);
-			ClassBase ret_wrapper = SymbolTable.GetClassGen (rettype);
+			string m_ret = table.GetMarshalReturnType (rettype);
+			string s_ret = table.GetCSType (rettype);
+			ClassBase ret_wrapper = table.GetClassGen (rettype);
 
 			sw.WriteLine ("\tinternal delegate " + m_ret + " " + wrapper + "(" + import_sig + ");");
 			sw.WriteLine ();
 			
 			sw.WriteLine ("\tpublic class " + Name + "Wrapper : GLib.DelegateWrapper {");
 			if (m_ret != "void") {
-				if (SymbolTable.IsEnum (rettype)) {
+				if (table.IsEnum (rettype)) {
 					sw.WriteLine ("\t\tstatic int _dummy;");
 				} else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen)) {
 					// Do nothing
-				} else if (!SymbolTable.IsStruct (rettype) && !SymbolTable.IsBoxed (rettype)) {
+				} else if (!table.IsStruct (rettype) && !table.IsBoxed (rettype)) {
 					sw.WriteLine ("\t\tstatic {0} _dummy;", s_ret);
 				}
 			}
@@ -108,7 +110,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tpublic " + m_ret + " NativeCallback (" + import_sig + ")");
 			sw.WriteLine ("\t\t{");
 			sw.Write ("\t\t\tif (RemoveIfNotAlive ()) return ");
-			if (SymbolTable.IsStruct (rettype) || SymbolTable.IsBoxed (rettype))
+			if (table.IsStruct (rettype) || table.IsBoxed (rettype))
 				sw.WriteLine ("IntPtr.Zero;");
 			else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
 				sw.WriteLine ("IntPtr.Zero;");
@@ -134,9 +136,9 @@ namespace GtkSharp.Generation {
 
 				string cstype = parms[i].CSType;
 				// FIXME: Too much code copy/pasted here. Refactor?
-				ClassBase parm_wrapper = SymbolTable.GetClassGen (ctype);
-				sw.WriteLine("\t\t\t_args[" + idx + "] = " + SymbolTable.FromNative (ctype, parm_name) + ";");
-				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || SymbolTable.IsManuallyWrapped (ctype)) {
+				ClassBase parm_wrapper = table.GetClassGen (ctype);
+				sw.WriteLine("\t\t\t_args[" + idx + "] = " + table.FromNative (ctype, parm_name) + ";");
+				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || table.IsManuallyWrapped (ctype)) {
 					sw.WriteLine("\t\t\tif (_args[" + idx + "] == null)");
 					sw.WriteLine("\t\t\t\t_args[{0}] = new {1}({2});", idx, cstype, parm_name);
 				}
@@ -153,11 +155,11 @@ namespace GtkSharp.Generation {
 			if (m_ret != "void") {
 					if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
 						sw.WriteLine ("return (({0}) {1}).Handle;", s_ret, invoke);
-					else if (SymbolTable.IsStruct (rettype) || SymbolTable.IsBoxed (rettype)) {
+					else if (table.IsStruct (rettype) || table.IsBoxed (rettype)) {
 						// Shoot. I have no idea what to do here.
 						sw.WriteLine ("return IntPtr.Zero;"); 
 					}
-					else if (SymbolTable.IsEnum (rettype))
+					else if (table.IsEnum (rettype))
 						sw.WriteLine ("return (int) {0};", invoke);
 					else
 						sw.WriteLine ("return ({0}) {1};", s_ret, invoke);
@@ -196,8 +198,10 @@ namespace GtkSharp.Generation {
 				return;
 			}
 
+			SymbolTable table = SymbolTable.Table;
+
 			string rettype = ret_elem.GetAttribute("type");
-			string s_ret = SymbolTable.GetCSType (rettype);
+			string s_ret = table.GetCSType (rettype);
 			if (s_ret == "") {
 				Console.WriteLine("rettype: " + rettype + " in callback " + CName);
 				Statistics.ThrottledCount++;

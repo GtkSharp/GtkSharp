@@ -38,7 +38,7 @@ namespace GtkSharp.Generation {
 		public ClassBase Parent {
 			get {
 				string parent = Elem.GetAttribute("parent");
-				return SymbolTable.GetClassGen(parent);
+				return SymbolTable.Table.GetClassGen(parent);
 			}
 		}
 
@@ -250,7 +250,7 @@ namespace GtkSharp.Generation {
 			
 			if (check_self && p == null && interfaces != null) {
 				foreach (string iface in interfaces) {
-					ClassBase igen = SymbolTable.GetClassGen (iface);
+					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
 					p = igen.GetMethodRecursively (name, true);
 					if (p != null)
 						break;
@@ -287,7 +287,7 @@ namespace GtkSharp.Generation {
 			
 			if (check_self && p == null && interfaces != null) {
 				foreach (string iface in interfaces) {
-					ClassBase igen = SymbolTable.GetClassGen (iface);
+					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
 					p = igen.GetSignalRecursively (name, true);
 					if (p != null)
 						break;

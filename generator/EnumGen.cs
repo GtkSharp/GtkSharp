@@ -50,16 +50,9 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = CreateWriter ();
 
 			if (Elem.GetAttribute("type") == "flags") {
-				sw.WriteLine ("\tusing System;");
 				sw.WriteLine ();
-			}
-
-			sw.WriteLine("\t\t/// <summary> " + Name + " enumeration </summary>");
-			sw.WriteLine("\t\t/// <remarks>");
-			sw.WriteLine("\t\t/// </remarks>");
-
-			if (Elem.GetAttribute("type") == "flags") 
 				sw.WriteLine ("\t[Flags]");
+			}
 
 			// Ok, this is obscene.  We need to go through the enums first
 			// to find "large" values.  If we find some, we need to change
