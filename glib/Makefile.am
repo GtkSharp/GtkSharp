@@ -23,6 +23,7 @@ sources =		 			\
 	List.cs					\
 	Log.cs					\
 	MainContext.cs				\
+	MainLoop.cs				\
 	ManagedValue.cs				\
 	Markup.cs				\
 	Marshaller.cs				\
