@@ -257,7 +257,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
 	  If <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" />, it will also set the <paramref name="F:Gdk.WindowHints.UserPos" /> and/or <see cref="F:Gdk.WindowHints.UserSize" /> hints indicating to the window manager that the size/position of the <paramref name="window" /> was user-specified. This causes most window managers to honor the geometry.
 	 </para>
           <para>
-	  Note that for <see cref="M:Gtk.Window.ParseGeometry" /> to work as expected, it has to be called when the <paramref name="window" /> has its "final" size, i.e. after calling <see cref="M:Gtk.Widget.ShowAll" /> on the contents and <see cref="M:Gtk.Window.SetGeometryHints" /> on the <paramref nmae="window" />.
+	  Note that for <see cref="M:Gtk.Window.ParseGeometry" /> to work as expected, it has to be called when the <paramref name="window" /> has its "final" size, i.e. after calling <see cref="M:Gtk.Widget.ShowAll" /> on the contents and <see cref="M:Gtk.Window.SetGeometryHints" /> on the <paramref name="window" />.
 	 </para>
         </remarks>
       </Docs>
@@ -387,13 +387,13 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
             <see cref="M:Gtk.Window.GetPosition" /> is not 100% reliable because the X Window System does not specify a way to obtain the geometry of the decorations placed on a <paramref name="window" /> by the window manager. Thus GTK# is using a "best guess" that works with most window managers.
 	 </para>
           <para>
-	  Moreover, nearly all window managers are historically broken with respect to their handling of window gravity. So moving a <paramref name="window" /> to its current position as returned by <see cref="M:Gtk.Window.GetPostion" /> tends to result in moving the <paramef name="window" /> slightly. Window managers are slowly getting better over time.
+	  Moreover, nearly all window managers are historically broken with respect to their handling of window gravity. So moving a <paramref name="window" /> to its current position as returned by <see cref="M:Gtk.Window.GetPostion" /> tends to result in moving the <paramref name="window" /> slightly. Window managers are slowly getting better over time.
 	 </para>
           <para>
-	  If a <paramef name="window" /> has gravity <see cref="F.Gdk.Gravity.Static" /> the window manager frame is not relevant, and thus <see cref="M:Gtk.Window.GetPosition" /> will always produce accurate results. However you can't use static gravity to do things like place a <paramef name="window" /> in a corner of the screen, because static gravity ignores the window manager decorations.
+	  If a <paramref name="window" /> has gravity <see cref="F.Gdk.Gravity.Static" /> the window manager frame is not relevant, and thus <see cref="M:Gtk.Window.GetPosition" /> will always produce accurate results. However you can't use static gravity to do things like place a <paramref name="window" /> in a corner of the screen, because static gravity ignores the window manager decorations.
 	 </para>
           <para>
-	  If you are saving and restoring your application's <paramef name="window" /> positions, you should know that it's impossible for applications to do this without getting it somewhat wrong because applications do not have sufficient knowledge of window manager state. The Correct Mechanism is to support the session management protocol (see the "GnomeClient" object in the GNOME libraries for example) and allow the window manager to save your <paramef name="window" /> sizes and positions.
+	  If you are saving and restoring your application's <paramref name="window" /> positions, you should know that it's impossible for applications to do this without getting it somewhat wrong because applications do not have sufficient knowledge of window manager state. The Correct Mechanism is to support the session management protocol (see the "GnomeClient" object in the GNOME libraries for example) and allow the window manager to save your <paramref name="window" /> sizes and positions.
 	 </para>
         </remarks>
       </Docs>
@@ -409,7 +409,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Asks to deiconify (i.e. unminimizw) the specified <paramref name="window" />.</summary>
         <remarks>
           <para>
-	  Note that you shouldn't assume the <paramef name="window" /> is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
 	 </para>
           <para>
 	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. 
@@ -465,10 +465,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Asks to maximize <paramref name="window" />, so that it becomes full-screen.</summary>
         <remarks>
           <para>
-	  Note that you shouldn't assume the <paramef name="window" /> is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the <paramef name="window" /> will end up maximized. Just don't write code that crashes if not.
+	  Note that you shouldn't assume the <paramref name="window" /> is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the <paramref name="window" /> will end up maximized. Just don't write code that crashes if not.
 	 </para>
           <para>
-	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T.Gtk.Widget" />. It's permitted to call this method before showing a <paramref name="window" />, in which case the <pramref name="window" /> will be maximized when it appears onscreen initially.
+	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T.Gtk.Widget" />. It's permitted to call this method before showing a <paramref name="window" />, in which case the <paramref name="window" /> will be maximized when it appears onscreen initially.
 	 </para>
         </remarks>
       </Docs>
@@ -566,10 +566,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
 	  For more control over a <paramref name="window" />'s initial size and how resizing works, investigate <see cref="M:Gtk.Window.SetGeometryHints" />.
 	 </para>
           <para>
-	  For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the <parmref name="window" />, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the <paramref name="window" /> itself, not the geometry widget. 
+	  For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the <paramref name="window" />, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the <paramref name="window" /> itself, not the geometry widget. 
 	 </para>
           <para>
-	  The default size of a <pamaref name="window" /> only affects the first time a <paramref name="window" /> is shown; if a <paramref name="window" /> is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
+	  The default size of a <paramref name="window" /> only affects the first time a <paramref name="window" /> is shown; if a <paramref name="window" /> is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
 	 </para>
         </remarks>
       </Docs>
@@ -585,10 +585,10 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Presents a <paramref name="window" /> to the user.</summary>
         <remarks>
           <para>
-	  This may mean raising the <paramref name="window" /> in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences. If <paramef name="window" /> is hidden, this method calls <see cref="M:Gtk.Widget.Show" /> as well. 
+	  This may mean raising the <paramref name="window" /> in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences. If <paramref name="window" /> is hidden, this method calls <see cref="M:Gtk.Widget.Show" /> as well. 
 	 </para>
           <para>
-	  This method should be used when the user tries to open a <paramef name="window" /> that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use <see cref="M:Gtk.Window.Present" /> to move the already-open dialog where the user can see it.
+	  This method should be used when the user tries to open a <paramref name="window" /> that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use <see cref="M:Gtk.Window.Present" /> to move the already-open dialog where the user can see it.
 	 </para>
         </remarks>
       </Docs>
@@ -625,7 +625,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <param name="y">Y coordinate to move <paramref name="window" /> to.</param>
         <remarks>
           <para>
-	  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the <paramef name="window" /> has already been shown.
+	  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the <paramref name="window" /> has already been shown.
 	 </para>
           <para>
 	  Note: the position is the position of the gravity-determined reference point for the <paramref name="window" />. The gravity determines two things: first, the location of the reference point in root <paramref name="window" /> coordinates; and second, which point on the <paramref name="window" /> is positioned at the reference point. 
@@ -1152,7 +1152,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
           <see langword="true" /> if the <paramref name="window" /> has no minimum size.</returns>
         <remarks>
           <para>
-	  Setting this to <pararemf name="true" /> is 99% of the time a bad idea.
+	  Setting this to <paramref name="true" /> is 99% of the time a bad idea.
 	 </para>
         </remarks>
       </Docs>
@@ -1309,7 +1309,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </Parameters>
       <Docs>
         <summary>Whether the <paramref name="window" /> should not be in the pager.</summary>
-        <param name="value">If <see langwoed="true" /> then the <paramref name="window" /> will not be in the pager.</param>
+        <param name="value">If <see langword="true" /> then the <paramref name="window" /> will not be in the pager.</param>
         <returns>
           <see langword="true" /> if the <paramref name="window" /> should not be in the pager.</returns>
         <remarks>
@@ -1326,7 +1326,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </Parameters>
       <Docs>
         <summary>Whether the <paramref name="window" /> should not be in the taskbar.</summary>
-        <param name="value">If <see langword="true" /> then the <see paramref="window" /> will not be in the taskbar.</param>
+        <param name="value">If <see langword="true" /> then the <paramref name="window" /> will not be in the taskbar.</param>
         <returns>
           <see langword="true" /> if the <paramref name="window" /> should not be in the taskbar.</returns>
         <remarks>
