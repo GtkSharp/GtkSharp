@@ -129,7 +129,21 @@ namespace GtkSharp.Generation {
 
 		public string StudlyName {
 			get {
-				return elem.GetAttribute ("name");
+				string studly = elem.GetAttribute ("name");
+				if (studly != "")
+					return studly;
+
+				// FIXME: this is backward compatibility for API files
+				// output by older versions of the parser. It can go
+				// away at some point.
+				string name = elem.GetAttribute ("cname");
+				string[] segs = name.Split('_');
+				foreach (string s in segs) {
+					if (s.Trim () == "")
+						continue;
+					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
+				}
+				return studly;
 			}
 		}
 
