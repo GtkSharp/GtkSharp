@@ -153,6 +153,12 @@ class Updater {
 		if (!t.IsAbstract && typeof (System.Delegate).IsAssignableFrom (t))
 			return CompareDelegate (t, doc);
 
+		XmlNode base_type = doc.SelectSingleNode ("/Type/Base/BaseTypeName");
+		if (base_type != null && base_type.InnerText != GetBaseType (t)) {
+			base_type.InnerText = GetBaseType (t);
+			changed = true;
+		}
+
 		TypeReflector reflector = new TypeReflector (t);
 		changed |= Compare (doc, MemberType.Field, reflector.Fields, GetNodesOfType (doc, "Field"));
 		changed |= Compare (doc, MemberType.Property, reflector.Properties, GetNodesOfType (doc, "Property"));
@@ -519,8 +525,8 @@ class Updater {
 
 	XmlDocument Generate (Type type)
 	{
-		bool isDelagate;
-		string signature = AddTypeSignature (type, out isDelagate);
+		bool isDelegate;
+		string signature = AddTypeSignature (type, out isDelegate);
 
 		if (signature == null)
 			return null;
@@ -607,17 +613,9 @@ class Updater {
 		XmlElement base_node = document.CreateElement ("Base");
 		type_node.AppendChild (base_node);
 
-		if (type.IsEnum)
-			base_node.AppendChild (AddElement (document, "BaseTypeName", "System.Enum"));
-
-		else if (type.IsValueType)
-			base_node.AppendChild (AddElement (document, "BaseTypeName", "System.ValueType"));
-
-		else if (isDelagate)
-			base_node.AppendChild (AddElement (document, "BaseTypeName", "System.Delegate"));
-
-		else if (type.IsClass && type != typeof (object))
-			base_node.AppendChild (AddElement (document, "BaseTypeName", type.BaseType.FullName));
+		string base_type = GetBaseType (type);
+		if (base_type != null)
+			base_node.AppendChild (AddElement (document, "BaseTypeName", base_type));
 
 		//
 		// <Interfaces>
@@ -653,7 +651,7 @@ class Updater {
 		//
 		// delegates have an empty <Members> element.
 		//
-		if (isDelagate)
+		if (isDelegate)
 			members = document.CreateElement ("Members");
 		else
 			members = AddMembersNode (document, type);
@@ -663,7 +661,7 @@ class Updater {
 		//
 		// delegates have a top-level parameters and return value section
 		//
-		if (isDelagate) {
+		if (isDelegate) {
 			System.Reflection.MethodInfo method = type.GetMethod ("Invoke");
 			Type return_type = method.ReturnType;
 			ParameterInfo [] parameters = method.GetParameters ();
@@ -1009,6 +1007,20 @@ class Updater {
 			throw new ArgumentException ();
 	}
 
+	string GetBaseType (Type t)
+	{
+		if (t.IsEnum)
+			return "System.Enum";
+		else if (t.IsValueType)
+			return "System.ValueType";
+		else if (!t.IsAbstract && typeof (System.Delegate).IsAssignableFrom (t))
+			return "System.Delegate";
+		else if (t.IsClass && t != typeof (object))
+			return t.BaseType.FullName;
+		else
+			return null;
+	}
+
 	string GetTypeVisibility (TypeAttributes ta)
 	{
 		switch (ta & TypeAttributes.VisibilityMask){
@@ -1026,10 +1038,10 @@ class Updater {
 		}
 	}
 
-	string AddTypeSignature (Type type, out bool isDelagate)
+	string AddTypeSignature (Type type, out bool isDelegate)
 	{
 		// Assume it is not a delegate
-		isDelagate = false;
+		isDelegate = false;
 
 		if (type == null)
 			return null;
@@ -1061,7 +1073,7 @@ class Updater {
 		//
 		if (kind == "class" && !type.IsAbstract &&
 		    typeof (System.Delegate).IsAssignableFrom (type)) {
-			isDelagate = true;
+			isDelegate = true;
 			return AddDelegateSignature (visibility, modifiers, name, type);
 		}
 
