@@ -84,7 +84,7 @@ namespace GLibSharp {
 			for (int i = 0; i < args.Length; i++)
 				ptrs[i] = (int) Marshal.StringToHGlobalAuto (args[i]);
 
-			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(string)) * 
+			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(int)) * 
 					       (ulong) args.Length);
 			Marshal.Copy (ptrs, 0, buf, ptrs.Length);
 			return buf;
@@ -97,7 +97,7 @@ namespace GLibSharp {
 			for (int i = 0; i < args.Length; i++)
 				ptrs[i] = (long) Marshal.StringToHGlobalAuto (args[i]);
 				
-			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(string)) * 
+			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(long)) * 
 					       (ulong) args.Length);
 			Marshal.Copy (ptrs, 0, buf, ptrs.Length);
 			return buf;

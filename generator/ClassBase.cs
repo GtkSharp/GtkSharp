@@ -39,7 +39,11 @@ namespace GtkSharp.Generation {
 		public ClassBase Parent {
 			get {
 				string parent = Elem.GetAttribute("parent");
-				return SymbolTable.Table.GetClassGen(parent);
+
+				if (parent == "")
+					return null;
+				else
+					return SymbolTable.Table.GetClassGen(parent);
 			}
 		}
 
