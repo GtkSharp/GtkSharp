@@ -1,0 +1,21 @@
+// Accel.custom - customizations to Gtk.Accel
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_accel_groups_from_object (IntPtr obj);
+
+		public static AccelGroup[] GroupsFromObject (GLib.Object obj)
+		{
+			IntPtr raw_ret = gtk_accel_groups_from_object(obj.Handle);
+			if (raw_ret == IntPtr.Zero)
+				return new AccelGroup [0];
+			GLib.List list = new GLib.List(raw_ret);
+			AccelGroup[] result = new AccelGroup [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as AccelGroup;
+			return result;
+		}
+
