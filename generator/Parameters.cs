@@ -91,10 +91,10 @@ namespace GtkSharp.Generation {
 					signature += p_elem.GetAttribute("pass_as") + " ";
 				}
 				
-				if (type == "GError**")
-					call_string += "&";				
-				else
-				{
+				if (type == "GError**") {
+					call_string += "out ";				
+					import_sig += "out ";				
+				} else {
 					signature += (cs_type + " " + name);
 					signature_types += cs_type;
 				}
@@ -127,14 +127,14 @@ namespace GtkSharp.Generation {
 			}
 
 			if (ThrowsException)
-				sw.WriteLine ("\t\t\tGLib.GError* {0} = null;", name);
+				sw.WriteLine ("\t\t\tIntPtr error;");
 		}
 
 		public void HandleException (StreamWriter sw)
 		{
 			if (!ThrowsException)
 				return;
-			sw.WriteLine ("\t\t\tif (error != null) throw new GLib.GException (error);");
+			sw.WriteLine ("\t\t\tif (error != IntPtr.Zero) throw new GLib.GException (error);");
 		}
 		
 		public bool IsAccessor {
@@ -160,19 +160,10 @@ namespace GtkSharp.Generation {
 
 		public bool ThrowsException {
 			get {
-				XmlNode last_parm = null;
-				foreach (XmlNode parm in elem.ChildNodes) {
-					if (parm.Name != "parameter") {
-						continue;
-					}
-
-					last_parm = parm;
-				}
-
-				if (last_parm == null)
+				if ((elem.ChildNodes == null) || (elem.ChildNodes.Count < 1))
 					return false;
-	
-				XmlElement p_elem = (XmlElement) last_parm;
+
+				XmlElement p_elem = (XmlElement) elem.ChildNodes[elem.ChildNodes.Count - 1];
 				string type = p_elem.GetAttribute("type");
 				return (type == "GError**");
 			}

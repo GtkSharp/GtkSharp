@@ -52,7 +52,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("uint1", "bool");
 			simple_types.Add ("GPtrArray", "System.IntPtr[]");
 			simple_types.Add ("GType", "int");
-			simple_types.Add ("GError", "GLib.GError**");
+			simple_types.Add ("GError", "IntPtr");
 			
 			// FIXME: These ought to be handled properly.
 			simple_types.Add ("GList", "System.IntPtr");

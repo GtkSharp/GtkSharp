@@ -9,31 +9,28 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 	
-	[StructLayout(LayoutKind.Sequential)]
-	public unsafe struct GError
+	public class GException : Exception
 	{
-		[MarshalAs (UnmanagedType.U4)]
-		public uint domain;
-		[MarshalAs (UnmanagedType.I4)]
-		public int code;
-		[MarshalAs (UnmanagedType.LPStr)]
-		public string message;
-	}
-
-	public unsafe class GException : Exception
-	{
-		GError *errptr;
+		IntPtr errptr;
 	
-		unsafe public GException (GError *errptr) : base (errptr->message)
+		public GException (IntPtr errptr) : base ()
 		{
 			this.errptr = errptr;
 		}
 
+		[DllImport("gtksharpglue")]
+		static extern string gtksharp_error_get_message (IntPtr errptr);
+		public override string Message {
+			get {
+				return gtksharp_error_get_message (errptr);
+			}
+		}
+
 		[DllImport("glib-2.0")]
-		unsafe static extern void g_clear_error (GError **errptr);
+		static extern void g_clear_error (IntPtr errptr);
 		~GException ()
 		{
-			unsafe { g_clear_error (&errptr); }
+			g_clear_error (errptr);
 		}
 	}
 }
