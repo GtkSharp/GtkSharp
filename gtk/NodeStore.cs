@@ -89,22 +89,14 @@ namespace Gtk {
 		bool get_node_cb (out int node_idx, IntPtr path)
 		{
 			if (path == IntPtr.Zero)
-				Console.WriteLine ("Got a null path in get_node");
+				throw new ArgumentNullException ("path");
+
 			TreePath treepath = new TreePath (path);
 			node_idx = -1;
-			int[] indices = treepath.Indices;
 
-			if (indices[0] >= Nodes.Count)
+			ITreeNode node = GetNodeAtPath (treepath);
+			if (node == null)
 				return false;
-
-			ITreeNode node = Nodes [indices [0]] as ITreeNode;
-			int i;
-			for (i = 1; i < treepath.Depth; i++) {
-				if (indices [i] >= node.ChildCount)
-					return false;
-
-				node = node [indices [i]];
-			}
 
 			node_idx = node.ID;
 			node_hash [node.ID] = node;
@@ -409,6 +401,32 @@ namespace Gtk {
 			path.AppendIndex (idx);
 
 			gtksharp_node_store_emit_row_deleted (Handle, path.Handle);
+		}
+
+		private ITreeNode GetNodeAtPath (TreePath path)
+		{
+			int[] indices = path.Indices;
+
+			if (indices[0] >= Nodes.Count)
+				return null;
+
+			ITreeNode node = Nodes [indices [0]] as ITreeNode;
+			int i;
+			for (i = 1; i < path.Depth; i++) {
+				if (indices [i] >= node.ChildCount)
+					return null;
+
+				node = node [indices [i]];
+			}
+
+			return node;
+		}
+
+		public ITreeNode GetNode (TreePath path) {
+			if (path == null)
+				throw new ArgumentNullException ();
+
+			return GetNodeAtPath (path);
 		}
 	}
 }
