@@ -16,7 +16,7 @@ namespace Gtk {
 
 		int ID { get; }
 
-		ITreeNode Parent { get; set; }
+		ITreeNode Parent { get; }
 
 		int ChildCount { get; }
 

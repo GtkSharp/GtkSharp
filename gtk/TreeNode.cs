@@ -32,9 +32,6 @@ namespace Gtk {
 			get {
 				return parent;
 			}
-			set {
-				parent = value;
-			}
 		}
 
 		public int ChildCount {
@@ -46,6 +43,11 @@ namespace Gtk {
 		public int IndexOf (object o) 
 		{
 			return children.IndexOf (o);
+		}
+
+		internal void SetParent (ITreeNode parent)
+		{
+			this.parent = parent;
 		}
 
 		public ITreeNode this [int index] {
@@ -87,20 +89,21 @@ namespace Gtk {
 			ChildRemoved (this, old_position);
 		}
 
-		public void AddChild (ITreeNode child)
+		public void AddChild (TreeNode child)
 		{
 			children.Add (child);
-			child.Parent = this;
+			child.SetParent (this);
 			OnChildAdded (child);
 		}
 
-		public void RemoveChild (ITreeNode child)
+		public void RemoveChild (TreeNode child)
 		{
 			int idx = children.IndexOf (child);
 			if (idx < 0)
 				return;
 
 			children.Remove (child);
+			child.SetParent (null);
 			OnChildRemoved (idx);
 		}
 	}
