@@ -478,7 +478,7 @@ public class TestDnd {
 		Application.Init ();
 
 		window = new Gtk.Window (Gtk.WindowType.Toplevel);
-		//g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+		window.DeleteEvent += new DeleteEventHandler (OnDelete);
 
 		table = new Table (2, 2, false);
 		window.Add (table);
@@ -536,5 +536,10 @@ public class TestDnd {
 		window.ShowAll ();
 
 		Application.Run ();
+	}
+
+	private static void OnDelete (object o, DeleteEventArgs e)
+	{
+		Application.Quit ();
 	}
 }
