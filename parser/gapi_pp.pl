@@ -3,9 +3,11 @@
 # gapi_pp.pl : A source preprocessor for the extraction of API info from a
 #	       C library source directory.
 #
-# Author: Mike Kestner <mkestner@speakeasy.net>
+# Authors: Mike Kestner <mkestner@speakeasy.net>
+# 	   Martin Willemoes Hansen <mwh@sysrq.dk>
 #
 # <c> 2001 Mike Kestner
+# <c> 2003 Martin Willemoes Hansen
 
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_(DEPRECATED|COMPAT)|ENABLE_BROKEN|COMPILATION)";
 $ignoreit_regex = '^\s+\*|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
@@ -130,8 +132,33 @@ foreach $fname (`ls $ARGV[0]/*.c`, @privhdrs) {
 			print "private";
 		}
 
+		$comment = 0;
+		$begin = 0;
+		$end = 0;
 		do {
-			print $line;
+			# Following ifs strips out // and /* */ C comments
+			if ($line =~ /\/\*/) {
+				$comment = 1;
+				$begin = 1;
+			}
+
+			if ($comment != 1) {
+				$line =~ s/\/\/.*//;
+				print $line;
+			}
+
+			if ($line =~ /\*\//) {
+				$comment = 0;
+				$end = 1;
+			}
+
+			if ($begin == 1 && $end == 1) {
+				$line =~ s/\/\*.*\*\///;
+				print $line;
+			}
+
+			$begin = 0;
+			$end = 0;
 		} until (($line = <INFILE>) =~ /^}/);
 		print $line;
 	}
