@@ -31,4 +31,4 @@ install: all
 	@echo "Nothing to install in generator."
 
 codegen.exe: *.cs
-	$(MCS) --unsafe -o codegen.exe -r System.Xml.dll *.cs
+	$(MCS) --unsafe -o codegen.exe -r System.Xml *.cs
