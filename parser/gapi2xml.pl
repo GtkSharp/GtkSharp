@@ -57,6 +57,8 @@ while ($line = <STDIN>) {
 		$types{$2} = $1;
 	} elsif ($line =~ /typedef\s+(\w+)\s+(\**)(\w+);/) {
 		$types{$3} = $1 . $2;
+	} elsif ($line =~ /typedef\s+enum\s+(\w+)\s+(\w+);/) {
+		$etypes{$1} = $2;
 	} elsif ($line =~ /(typedef\s+)?\benum\b/) {
 		$edef = $line;
 		while ($line = <STDIN>) {
@@ -167,9 +169,10 @@ while ($line = <STDIN>) {
 
 foreach $cname (sort(keys(%edefs))) {
 	$ecnt++;
+	$def = $edefs{$cname};
+	$cname = $etypes{$cname} if (exists($etypes{$cname}));
 	$enums{lc($cname)} = $cname;
 	$enum_elem = addNameElem($ns_elem, 'enum', $cname, $ns);
-	$def = $edefs{$cname};
 	if ($def =~ /=\s*1\s*<<\s*\d+/) {
 		$enum_elem->setAttribute('type', "flags");
 	} else {

@@ -49,24 +49,38 @@ for ($apinode = $root->firstChild; $apinode; $apinode = $apinode->nextSibling ()
 			}
 
 			my @files = ();
+			my @realfiles = ();
+			my %excludes = ();
 			for ($srcnode = $nsnode->firstChild; $srcnode; $srcnode = $srcnode->nextSibling ()) {
-				next if ($srcnode->nodeName ne "dir" && $srcnode->nodeName ne "file");
+				next if ($srcnode->nodeName ne "dir" && $srcnode->nodeName ne "file" && $srcnode->nodeName ne "exclude");
 
 				if ($srcnode->nodeName eq "dir") {
 					my ($dir);
 					$dir = $srcnode->firstChild->nodeValue;
-					print "$dir\n";
-					system ("gapi_pp.pl $dir | gapi2xml.pl $ns $outfile.pre $lib");
+					print "<dir $dir> ";
+					@files = (@files, `ls $dir/*.c`);
+					@files = (@files, `ls $dir/*.h`);
 				} elsif ($srcnode->nodeName eq "file") {
+					$incfile = $srcnode->firstChild->nodeValue;
+					print "<file $incfile> ";
 					@files = (@files, $srcnode->firstChild->nodeValue);
+				} elsif ($srcnode->nodeName eq "exclude") {
+					$excfile = $srcnode->firstChild->nodeValue;
+					print "<exclude $excfile> ";
+					$excludes{$srcnode->firstChild->nodeValue} = 1;
 				} else {
 					die "Unexpected source $srcnode->nodeName \n";
 				}
 
 			}
+			print "\n";
 			if ($#files >= 0) {
-				$pp_args = join (" ", @files);
-				print "$pp_args\n";
+				foreach $file (@files) {
+					chomp ($file);
+					@realfiles = (@realfiles, $file) if (!exists($excludes{$file}));
+				}
+					
+				$pp_args = join (" ", @realfiles);
 				system ("gapi_pp.pl $pp_args | gapi2xml.pl $ns $outfile.pre $lib");
 			}
 		}
