@@ -46,6 +46,7 @@ customs = 				\
 	Dialog.custom			\
 	Entry.custom			\
 	FileChooserDialog.custom	\
+	FileChooserWidget.custom	\
 	FileSelection.custom		\
 	FileSystemModel.custom		\
 	Frame.custom			\
