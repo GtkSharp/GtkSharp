@@ -65,7 +65,8 @@ customs =					\
 	Print.custom				\
 	PrintDialog.custom			\
 	PrintJob.custom				\
-	Program.custom
+	Program.custom				\
+	Scores.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
