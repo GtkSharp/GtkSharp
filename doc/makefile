@@ -17,5 +17,5 @@ install: gtk-sharp-docs.zip gtk-sharp-docs.tree
 	install -m 644 gtk-sharp-docs.source `monodoc --get-sourcesdir`
 
 clean:
-	rm *.tree
-	rm *zip
+	rm -f *.tree
+	rm -f *zip
