@@ -3,7 +3,9 @@ lib_LTLIBRARIES = libgdksharpglue.la
 libgdksharpglue_la_SOURCES =	\
 	dragcontext.c		\
 	event.c			\
-	selection.c
+	generated.c		\
+	selection.c		\
+	vmglueheaders.h
 
 # Adding a new glue file?
 # Please remember to update makefile.win32

@@ -8,12 +8,14 @@ libgtksharpglue_la_SOURCES =	\
 	combo.c			\
 	dialog.c		\
 	fileselection.c		\
+	generated.c		\
 	layout.c		\
 	nodestore.c		\
 	object.c		\
 	paned.c			\
 	selectiondata.c		\
 	style.c			\
+	vmglueheaders.h		\
 	widget.c
 
 # Adding a new glue file?

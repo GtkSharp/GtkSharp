@@ -1,4 +1,4 @@
-SUBDIRS = glue
+SUBDIRS = . glue
 
 API = gdk-api.xml
 RAW_API = gdk-api.raw
@@ -13,7 +13,7 @@ assemblydir = $(libdir)
 gapidir = $(datadir)/gapi
 assembly_DATA = $(ASSEMBLY)
 gapi_DATA = $(API) $(ADDITIONAL_API)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c
 
 sources = 			\
 	EventButton.cs		\
@@ -70,8 +70,9 @@ $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
 
 generated-stamp: $(API) $(srcdir)/$(ADDITIONAL_API) ../generator/gapi_codegen.exe $(build_customs)
-	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) $(srcdir)/$(ADDITIONAL_API) \
-	--include $(INCLUDE_API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) \
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) $(srcdir)/$(ADDITIONAL_API) 			\
+	--include $(INCLUDE_API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
+	--gluelib-name=gdksharpglue --glue-filename=glue/generated.c						\
 	&& touch generated-stamp
 
 $(ASSEMBLY): $(build_sources) generated-stamp
