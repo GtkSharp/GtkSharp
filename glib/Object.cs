@@ -142,7 +142,7 @@ namespace GLib {
 			object[] parms = {gtype, t};
 			BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
 			foreach (MethodInfo minfo in t.GetMethods(flags))
-				foreach (object attr in minfo.GetCustomAttributes (typeof (ClassInitializerAttribute), true))
+				if (minfo.IsDefined (typeof (ClassInitializerAttribute), true))
 					minfo.Invoke (null, parms);
 		}
 
