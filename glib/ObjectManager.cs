@@ -46,7 +46,7 @@ namespace GLib {
 				mangled = (string)types[typename];
 			else
 				mangled = GetExpected (typename);
-			Type t = Type.GetType (mangled);
+			Type t = LookupType (mangled);
 
 			// if null, try to get a parent type
 			if (t == null)
@@ -116,6 +116,20 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_get_type_name_for_id (int typ);
 
+		static Type LookupType (string mangled)
+		{
+			string[] toks = mangled.Split (',');
+			if (toks.Length < 2)
+				throw new ArgumentException ("mangled not properly formatted: " + mangled);
+
+			Assembly a = Assembly.LoadWithPartialName (toks [1]);
+
+			if (a == null)
+				return null;
+
+			return a.GetType (toks [0]);
+		}
+
 		static Type GetValidParentType (IntPtr raw)
 		{
 			int type_id = gtksharp_get_type_id (raw);
@@ -130,7 +144,7 @@ namespace GLib {
 					mangled = (string)types[typename];
 				else
 					mangled = GetExpected (typename);
-				t = Type.GetType (mangled);
+				t = LookupType (mangled);
 				if (t != null) {
 					return t;
 				}
