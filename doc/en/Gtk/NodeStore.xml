@@ -1,5 +1,5 @@
 <Type Name="NodeStore" FullName="Gtk.NodeStore">
-  <TypeSignature Language="C#" Value="public class NodeStore : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class NodeStore : GLib.Object, IWrapper, IDisposable" Maintainer="Mike Kestner" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey></AssemblyPublicKey>
@@ -7,7 +7,7 @@
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement />
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>To be added</summary>
     <remarks>To be added</remarks>
@@ -35,9 +35,11 @@
         <Parameter Name="node" Type="Gtk.ITreeNode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>AddNode method</summary>
         <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          Adds <paramref name="node" /> to the end of the list of root level nodes.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveNode">
@@ -52,7 +54,9 @@
       <Docs>
         <summary>To be added</summary>
         <param name="node">a <see cref="T:Gtk.ITreeNode" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          Removes <paramref name="node" /> from the list of root level nodes.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -63,10 +67,13 @@
         <Parameter Name="node_type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>NodeStore constructor</summary>
         <param name="node_type">a <see cref="T:System.Type" /></param>
         <returns>a <see cref="T:Gtk.NodeStore" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Creates a <see cref="T:Gtk.NodeStore" /> for nodes of the specified <paramref name="node_type"/>.
+          The type provided in <paramref name="node_type"/> must implement <see cref="T:Gtk.ITreeNode" />.
+        </remarks>
       </Docs>
     </Member>
   </Members>
