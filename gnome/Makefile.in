@@ -15,7 +15,8 @@ ASSEMBLY=gnome-sharp.dll
 @ENABLE_GNOME_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GNOME_FALSE@ all: 
 
-generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe Gnome.metadata
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=gnome-api.xml --metadata=Gnome.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
 	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
 	--assembly-name=gnome-sharp && touch generated-stamp

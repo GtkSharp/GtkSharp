@@ -74,9 +74,7 @@ namespace GtkSharp.Parsing {
 				}
 			}
 
-			Stream out_stream = File.OpenWrite (api_filename);
-			api_doc.Save (out_stream);
-			out_stream.Close ();
+			api_doc.Save (api_filename);
 			return 0;
 		}
 	}
