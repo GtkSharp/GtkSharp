@@ -1,4 +1,4 @@
-MCS=mcs
+MCS=mcs -g
 
 @ENABLE_GNOME_TRUE@ GNOME_PATH=-L ../art -L ../gnome
 @ENABLE_GNOME_TRUE@ GNOME_ASSEMBLY=-r art-sharp.dll -r gnome-sharp.dll
@@ -23,53 +23,57 @@ windows:
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
 linux: gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf 
 @ENABLE_GNOME_TRUE@	$(MAKE) -C rsvg
 
 gtk-hello-world.exe: HelloWorld.cs
-	$(MCS) --unsafe -o gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
+	$(MCS)  -out:gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
 
 gnome-hello-world.exe: GnomeHelloWorld.cs
-	$(MCS) --unsafe -o gnome-hello-world.exe $(local_paths) $(all_assemblies) GnomeHelloWorld.cs
+	$(MCS)  -out:gnome-hello-world.exe $(local_paths) $(all_assemblies) GnomeHelloWorld.cs
 
 canvas-example.exe: CanvasExample.cs
-	$(MCS) --unsafe -o canvas-example.exe $(local_paths) $(all_assemblies) CanvasExample.cs
+	$(MCS)  -out:canvas-example.exe $(local_paths) $(all_assemblies) CanvasExample.cs
 
 fifteen.exe: Fifteen.cs
-	$(MCS) --unsafe -o fifteen.exe $(local_paths) $(all_assemblies) Fifteen.cs
+	$(MCS)  -out:fifteen.exe $(local_paths) $(all_assemblies) Fifteen.cs
 
 print.exe: PrintSample.cs
-	$(MCS) --unsafe -o print.exe $(local_paths) $(all_assemblies) PrintSample.cs
+	$(MCS)  -out:print.exe $(local_paths) $(all_assemblies) PrintSample.cs
 
 button.exe: ButtonApp.cs
-	$(MCS) --unsafe -o button.exe $(local_paths) $(all_assemblies) ButtonApp.cs
+	$(MCS)  -out:button.exe $(local_paths) $(all_assemblies) ButtonApp.cs
 
 calendar.exe: CalendarApp.cs
-	$(MCS) --unsafe -o calendar.exe $(local_paths) $(all_assemblies) CalendarApp.cs
+	$(MCS)  -out:calendar.exe $(local_paths) $(all_assemblies) CalendarApp.cs
 
 subclass.exe: Subclass.cs
-	$(MCS) --unsafe -o subclass.exe $(local_paths) $(all_assemblies) Subclass.cs
+	$(MCS)  -out:subclass.exe $(local_paths) $(all_assemblies) Subclass.cs
 
 menu.exe: Menu.cs
-	$(MCS) --unsafe -o menu.exe $(local_paths) $(all_assemblies) Menu.cs
+	$(MCS)  -out:menu.exe $(local_paths) $(all_assemblies) Menu.cs
 
 size.exe: Size.cs
-	$(MCS) --unsafe -o size.exe $(local_paths) $(all_assemblies) Size.cs
+	$(MCS)  -out:size.exe $(local_paths) $(all_assemblies) Size.cs
 
 scribble.exe: Scribble.cs
-	$(MCS) --unsafe -o scribble.exe $(local_paths) $(all_assemblies) Scribble.cs
+	$(MCS)  -out:scribble.exe $(local_paths) $(all_assemblies) Scribble.cs
 
 treeviewdemo.exe: TreeViewDemo.cs
-	$(MCS) --unsafe -o treeviewdemo.exe $(local_paths) $(all_assemblies) TreeViewDemo.cs
+	$(MCS)  -out:treeviewdemo.exe $(local_paths) $(all_assemblies) TreeViewDemo.cs
 
 managedtreeviewdemo.exe: ManagedTreeViewDemo.cs
-	$(MCS) --unsafe -o managedtreeviewdemo.exe $(local_paths) $(all_assemblies) ManagedTreeViewDemo.cs
+	$(MCS)  -out:managedtreeviewdemo.exe $(local_paths) $(all_assemblies) ManagedTreeViewDemo.cs
 
 glade-viewer.exe: GladeViewer.cs
-	$(MCS) --unsafe -o glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs
+	$(MCS)  -out:glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs
 
 glade-test.exe: GladeTest.cs test.glade
-	$(MCS) --unsafe -resource:test.glade -o glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
+	$(MCS)  -resource:test.glade -out:glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
+
+cairo-sample.exe: CairoSample.cs
+	$(MCS) -out:cairo-sample.exe $(local_paths) $(all_assemblies) -r:Mono.Cairo CairoSample.cs
 
 testdnd.exe: TestDnd.cs
 	$(MCS) -g --unsafe -o testdnd.exe $(local_paths) $(all_assemblies) TestDnd.cs
