@@ -163,8 +163,15 @@ namespace GLib {
 		public static Object GetObject(IntPtr o)
 		{
 			WeakReference obj = Objects[o] as WeakReference;
-			if (obj != null)
-				return obj.Target as GLib.Object;
+			if (obj != null) {
+				// If the target object has not been collected, use it...
+				if (obj.IsAlive)
+					return obj.Target as GLib.Object;
+
+				// ... otherwise we create a new wrapper around the IntPtr.
+				Objects [o] = null;
+			}
+
 			return GtkSharp.ObjectManager.CreateObject(o); 
 		}
 
