@@ -1,5 +1,5 @@
 <Type Name="TreeSelection" FullName="Gtk.TreeSelection">
-  <TypeSignature Language="C#" Value="public class TreeSelection : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TreeSelection : GLib.Object, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The selection object for <see cref="T:Gtk.TreeView"/>.</summary>
+    <remarks><para>TreeSelection provides a single class for managing selection information on the List/Tree widget.</para>
+    <para>A TreeSelection object is automatically created when a new <see cref="T:Gtk.TreeView"/> widget is created and is inherently tied to it. A TreeSelection cannot exist independently of a <see cref="T:Gtk.TreeView"/>. Selection information is retrieved from the <see cref="T:Gtk.TreeView"/> with the <see cref="P:Gtk.TreeView.Selection"/> property.</para>
+	<para>TreeSelection can check the selection status of the tree, as well as select and deselect individual rows. Selection is done completely on the view. As a result, multiple views of the same model can have completely different selections. Additionally, you cannot change the selection of a row that is not currently displayed by the view without expanding its parents first.</para>
+	<para>One of the important things to remember when monitoring the selection of a view is that the <see cref="F:Gtk.TreeSelection.Changed"/> event is mostly a hint. For example, it may only fire once when a range of rows is selected. It may also fire when nothing has happened, such as when <see cref="M:Gtk.TreeSelection.SelectRow"/> is called on a row that is already selected.</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -34,11 +37,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="model">To be added: an object of type 'Gtk.TreeModel&amp;'</param>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get information about the currently selected node.</summary>
+        <param name="model">A convenient accessor to the <see cref="T:Gtk.TreeModel"/> that this TreeSelection's <see cref="T:Gtk.TreeView"/> is associated with.</param>
+        <param name="iter">The position that was selected.</param>
+        <returns><see langword="true"/> if a row was selected</returns>
+        <remarks><para>This method will not work if the TreeSelection <see cref="P:Gtk.TreeSelection.Mode"/> has been set to <see cref="P:Gtk.SelectionMode.Multiple"/>. In that case you should use <see cref="M:Gtk.TreeSelection.SelectedForeach"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectPath">
@@ -51,9 +54,9 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects the specified row that <paramref name="path"/> represents.</summary>
+        <param name="path">A row to be selected.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PathIsSelected">
@@ -66,10 +69,10 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines whether a TreePath has been selected in this TreeView.</summary>
+        <param name="path">The path to a node whose selected status should be checked.</param>
+        <returns><see langword="true"/> if <paramref name="path"/> is selected, <see langword="false"/> otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectIter">
@@ -82,9 +85,9 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Deselects the specified position in the tree.</summary>
+        <param name="iter">The tree position that should be deselected.</param>
+        <remarks><para>See also, <see cref="M:Gtk.TreeSelection.UnselectPath"/> and <see cref="M:Gtk.TreeSelection.UnselectAll"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="IterIsSelected">
@@ -97,10 +100,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determine if the iter is selected.</summary>
+        <param name="iter">The tree location to check</param>
+        <returns><see langword="true"/> if the tree node specified by <paramref name="iter"/> is selected, <see langword="false"/> otherwise.</returns>
+        <remarks><para>See also <see cref="M:Gtk.TreeSelection.PathIsSelected"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectAll">
@@ -111,8 +114,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Selects every node in this <see cref="T:Gtk.TreeView"/>.</summary>
+        <remarks><para>The <see cref="P:Gtk.TreeSelection.Mode"/> must be set to <see cref="P:Gtk.SelectionMode.Multiple"/> for this method to work.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectPath">
@@ -125,9 +128,9 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <remarks>To be added</remarks>
+        <summary>Deselects the tree node that <paramref name="path"/> refers to.</summary>
+        <param name="path">A node in the tree.</param>
+        <remarks><para>See also <see cref="M:Gtk.TreeSelection.UnselectIter"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectRange">
@@ -141,10 +144,10 @@
         <Parameter Name="end_path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="end_path">To be added: an object of type 'Gtk.TreePath'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects all the nodes that appear between <paramref name="start_path"/> and <paramref name="end_path"/>.</summary>
+        <param name="start_path">The first node to select on the tree.</param>
+        <param name="end_path">The last node to select on the tree.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectAll">
@@ -155,8 +158,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Sets all nodes in the <see cref="T:Gtk.TreeView"/> as unselected.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectedForeach">
@@ -169,9 +172,9 @@
         <Parameter Name="func" Type="Gtk.TreeSelectionForeachFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeSelectionForeachFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Invokes the delegate passed in by <see paramref="func"/> for each selected row in the <see cref="T:Gtk.TreeView"/>.</summary>
+        <param name="func">The delegate that should be called for each selected row.</param>
+        <remarks><para>This method is useful when the <see cref="P:Gtk.TreeSelection.Mode"/> of this TreeSelection is set to <see cref="P:Gtk.Selection.Multiple"/>. It is currently the only way to access selection information for multiple rows. See the class overview for an example on how to effectively use this method for selection tracking.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSelectFunction">
@@ -186,11 +189,11 @@
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeSelectionFunc'</param>
-        <param name="data">To be added: an object of type 'IntPtr'</param>
-        <param name="destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
-        <remarks>To be added</remarks>
+        <summary>Add a hook into selection and unselection.</summary>
+        <param name="func">A delegate to invoke before a node is (un)selected.</param>
+        <param name="data">Raw data to pass to <paramref name="func"/> when it is called.</param>
+        <param name="destroy">A delegate to be notified when <paramref name="data"/> should be destroyed. Can be <see langword="null"/>.</param>
+        <remarks><para> If set, <paramref name="func"/> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true"/> if the state of the node may be toggled, and <see langword="false"/> if the state of the node should be left unchanged.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectIter">
@@ -203,9 +206,9 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects the specified <see cref="T:Gtk.TreeIter"/>.</summary>
+        <param name="iter">Indicates which row to select.</param>
+        <remarks><para>See also <see cref="M:Gtk.TreeSelection.SelectAll"/> and <see cref="M:Gtk.TreeSelection.SelectPath"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -242,9 +245,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeSelection'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -269,10 +272,10 @@
         <Parameter Name="value" Type="Gtk.SelectionMode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.SelectionMode'</param>
-        <returns>To be added: an object of type 'Gtk.SelectionMode'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manages the way rows can be selected.</summary>
+        <param name="value">A new mode of selection.</param>
+        <returns>The current mode dictating selection behaviour.</returns>
+        <remarks><para>Rows may be deselected by changing this property. For example, if <see cref="P:Gtk.SelectionMode.Multiple"/> rows are selected and the mode is changed to <see cref="P:Gtk.SelectionMode.Single"/> or <see cref="P:Gtk.SelectionMode.Browse"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="UserData">
@@ -282,9 +285,9 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'IntPtr'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the data associated with the <see cref="T:Gtk.TreeSelectionFunc"/> that has been setup for this TreeSelection.</summary>
+        <returns>The raw data that was set when <see cref="M:Gtk.TreeSelection.SetSelectFunction"/> was called.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="TreeView">
@@ -294,9 +297,9 @@
         <ReturnType>Gtk.TreeView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeView'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the <see cref="T:Gtk.TreeView"/> that this TreeSelection is associated with.</summary>
+        <returns>The <see cref="T:Gtk.TreeView"/> that this TreeSelection is tied to.</returns>
+        <remarks><para>A TreeSelection object can only be retrieved from a <see cref="T:Gtk.TreeView"/>. That is done with its <see cref="P:Gtk.TreeView.Selection"/> property.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -305,8 +308,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired when the selection (may have) changed.</summary>
+        <remarks><para>This event is mostly a hint. It may only be fired once when a range of rows are selected, and it may occasionally be fired when nothing has happened.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
