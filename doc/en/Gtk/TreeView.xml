@@ -264,10 +264,10 @@ public class TreeViewDemo {
 		<Parameter Name="column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes <paramref name="column" /> from <see cref="T:Gtk.TreeView" />.</summary>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetColumnDragFunction">
@@ -282,11 +282,11 @@ public class TreeViewDemo {
 		<Parameter Name="destroy" Type="Gtk.DestroyNotify" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets a user function for determining where a column may be dropped when dragged.</summary>
         <param name="func">an object of type <see cref="T:Gtk.TreeViewColumnDropFunc" /></param>
         <param name="user_data">an object of type <see cref="T:System.IntPtr" /></param>
         <param name="destroy">an object of type <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This function is called on every column pair in turn at the beginning of a column drag to determine where a drop can take place. If <paramref name="func" /> is set to be <see langword="null" />, then <see cref="Gtk.TreeView" /> reverts to the default behavior of allowing all columns to be dropped everywhere.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollToCell">
@@ -303,13 +303,23 @@ public class TreeViewDemo {
 		<Parameter Name="col_align" Type="System.Single" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves the alignments of the <see cref="T:Gtk.TreeView" /> to the position specified by <paramref name="column" /> and <paramref name="path" />.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="use_align">an object of type <see cref="T:System.Boolean" /></param>
         <param name="row_align">an object of type <see cref="T:System.Single" /></param>
         <param name="col_align">an object of type <see cref="T:System.Single" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            If <paramref name="column" /> is <see langword="null" />, then no horizontal scrolling occurs. Likewise, if <paramref name="path" /> is <see langword="null" /> no vertical scrolling occurs. At a minimum, one of <paramref name="column" /> or <paramref name="path" /> need to be non-<see langword="null" />. <paramref name="row_align" /> determines where the row is placed, and <paramref name="col_align" /> determines where the column is placed. Both are expected to be between 0.0 and 1.0. 0.0 means left/top alignment, 1.0 means right/bottom alignment, 0.5 means center.
+          </para>
+          <para>
+            If <paramref name="use_align" /> is <see langword="false" />, then the alignment arguments are ignored, and the tree does the minimum amount of work to scroll the cell onto the screen. This means that the cell will be scrolled to the edge closest to its current position. If the cell is currently visible on the screen, nothing is done.
+          </para>
+          <para>
+            This function only works if the model is set, and <paramref name="path" /> is a valid row on the model. If the model changes before the <see cref="Gtk.TreeView" /> is realized, the centered path will be modified to reflect this change.
+          </para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnableModelDragDest">
@@ -341,10 +351,10 @@ public class TreeViewDemo {
 		<Parameter Name="path" Type="Gtk.TreePath" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This image is used for a drag icon.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <returns>an object of type <see cref="T:Gdk.Pixmap" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Creates a <see cref="T:Gdk.Pixmap" /> representation of the row at <paramref name="path" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CollapseAll">
@@ -355,8 +365,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Recursively collapses all visible and expanded nodes.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveColumnAfter">
@@ -370,10 +380,10 @@ public class TreeViewDemo {
 		<Parameter Name="base_column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves <paramref name="column" /> to be after to <paramref name="base_column" />.</summary>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="base_column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="base_column" /> is <see langword="null" />, then <paramref name="column" /> is placed in the first position.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCursor">
@@ -388,11 +398,11 @@ public class TreeViewDemo {
 		<Parameter Name="start_editing" Type="System.Boolean" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the current keyboard focus to be at <paramref name="path" />, and selects it.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="focus_column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="start_editing">an object of type <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This is useful when you want to focus the attention of the user on a particular row. If <paramref name="focus_column" /> is not <see langword="null" />, then focus is given to the column specified by it. Additionally, if <paramref name="focus_column" /> is specified, and <paramref name="start_editing" /> is <see langword="true" />, then editing should be started in the specified cell. This function is often followed by <see cref="M:Gtk.Widget.GrabFocus()" /> in order to give keyboard focus to the widget. Please note that editing can only happen when the widget is realized.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBackgroundArea">
@@ -407,11 +417,11 @@ public class TreeViewDemo {
 		<Parameter Name="rect" Type="Gdk.Rectangle" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="rect">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="path" /> is <see langword="null" />, or points to a node not found in the tree, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The returned rectangle is equivalent to the <paramref name="background_area" /> passed to <see cref="M:Gtk.CellRenderer.Render()" />. These background areas tile to cover the entire tree window (except for the area used for header buttons). Contrast with the <paramref name="cell_area" />, returned by <see cref="M:Gtk.TreeView.GetCellArea()" />, which returns only the cell itself, excluding surrounding borders and the tree expander area.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetVisibleRect">
@@ -424,9 +434,9 @@ public class TreeViewDemo {
 		<Parameter Name="visible_rect" Type="Gdk.Rectangle" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills <paramref name="visible_rect" /> with the currently-visible region of the buffer, in tree coordinates.</summary>
         <param name="visible_rect">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Convert to widget coordinates with <see cref="M:Gtk.TreeView.TreeToWidgetCoords(System.Int32,System.Int32,System.Int32,System.Int32)" />. Tree coordinates start at 0,0 for row 0 of the tree, and cover the entire scrollable area of the tree.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertColumn">
@@ -440,11 +450,11 @@ public class TreeViewDemo {
 		<Parameter Name="position" Type="System.Int32" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This inserts the <paramref name="column" /> into the <see cref="T:Gtk.TreeView" /> at <paramref name="position" />.</summary>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="position">an object of type <see cref="T:System.Int32" /></param>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="position" /> is -1, then the <paramref name="column" /> is inserted at the end.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ActivateRow">
@@ -458,10 +468,10 @@ public class TreeViewDemo {
 		<Parameter Name="column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Activates the cell determined by <paramref name="path" /> and <paramref name="column" />.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RowExpand">
@@ -474,10 +484,10 @@ public class TreeViewDemo {
 		<Parameter Name="path" Type="Gtk.TreePath" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Opens the row so its children are visible.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDestroyCountFunc">
@@ -492,11 +502,11 @@ public class TreeViewDemo {
 		<Parameter Name="destroy" Type="Gtk.DestroyNotify" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This function should almost never be used.</summary>
         <param name="func">an object of type <see cref="T:Gtk.TreeDestroyCountFunc" /></param>
         <param name="data">an object of type <see cref="T:System.IntPtr" /></param>
         <param name="destroy">an object of type <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>To be added</remarks>
+        <remarks>It is meant for private use by Atk for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSearchEqualFunc">
@@ -511,11 +521,11 @@ public class TreeViewDemo {
 		<Parameter Name="search_destroy" Type="Gtk.DestroyNotify" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the compare function for the interactive search capabilities.</summary>
         <param name="search_equal_func"> an object of type <see cref="T:Gtk.TreeViewSearchEqualFunc" /></param>
         <param name="search_user_data">an object of type <see cref="T:System.IntPtr" /></param>
         <param name="search_destroy">an object of type <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UnsetRowsDragDest">
@@ -540,10 +550,10 @@ public class TreeViewDemo {
 		<Parameter Name="column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Appends <paramref name="column" /> to the list of columns.</summary>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDragDestRow">
@@ -606,10 +616,10 @@ public class TreeViewDemo {
 		<Parameter Name="path" Type="Gtk.TreePath" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Collapses a row (hides its child rows, if they exist).</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDestRowAtPos">
@@ -642,8 +652,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Recursively expands all nodes.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDragDestRow">
@@ -689,10 +699,10 @@ public class TreeViewDemo {
 		<Parameter Name="tree_y" Type="System.Int32" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Scrolls the <see cref="T:Gtk.TreeView" /> such that the top-left corner of the visible area is <paramref name="tree_x" />, <paramref name="tree_y" />, where <paramref name="tree_x" /> and <paramref name="tree_y" /> are specified in tree window coordinates.</summary>
         <param name="tree_x">an object of type <see cref="T:System.Int32" /></param>
         <param name="tree_y">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The <see cref="T:Gtk.TreeView" /> must be realized before this function is called. If it is not, you probably want to be using <see cref="M:Gtk.TreeView.ScrollToCell(Gtk.TreePath,Gtk.TreeViewColumn,System.Boolean,System.Single,System.Single)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetColumn">
@@ -705,10 +715,10 @@ public class TreeViewDemo {
 		<Parameter Name="n" Type="System.Int32" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the <see cref="T:Gtk.TreeViewColumn" /> at the given position in the <see cref="T:Gtk.TreeView" />.</summary>
         <param name="n">an object of type <see cref="T:System.Int32" /></param>
         <returns>an object of type <see cref="T:Gtk.TreeViewColumn" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ExpandRow">
@@ -722,11 +732,11 @@ public class TreeViewDemo {
 		<Parameter Name="open_all" Type="System.Boolean" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Opens the row so its children are visible.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="open_all">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ColumnsAutosize">
@@ -737,8 +747,8 @@ public class TreeViewDemo {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Resizes all columns to their optimal width.</summary>
+        <remarks>Only works after the <see cref="T:Gtk.TreeView" /> has been realized.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TreeToWidgetCoords">
@@ -754,12 +764,12 @@ public class TreeViewDemo {
 		<Parameter Name="wy" Type="System.Int32" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts tree coordinates (coordinates in full scrollable area of the tree) to widget coordinates.</summary>
         <param name="tx">an object of type <see cref="T:System.Int32" /></param>
         <param name="ty">an object of type <see cref="T:System.Int32" /></param>
         <param name="wx">an object of type <see cref="T:System.Int32" /></param>
         <param name="wy">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCellArea">
@@ -774,11 +784,11 @@ public class TreeViewDemo {
 		<Parameter Name="rect" Type="Gdk.Rectangle" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <param name="rect">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="path" /> is <see langword="null" />, or points to a path not currently displayed, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The sum of all cell rects does not cover the entire tree; there are extra pixels in between rows, for example. This function is only valid if <see cref="T:Gtk.TreeView" /> is realized.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCursor">
@@ -792,10 +802,10 @@ public class TreeViewDemo {
 		<Parameter Name="focus_column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills in <paramref name="path" /> and <paramref name="focus_column" /> with the current path and focus column.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="focus_column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <remarks>To be added</remarks>
+        <remarks>If the cursor is not currently set, then <paramref name="path" /> will be <see langword="null" />. If no column currently has focus, then <paramref name="focus_column" /> will be <see langword="null" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -832,9 +842,9 @@ public class TreeViewDemo {
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new <see cref="T:Gtk.TreeView" /> object.</summary>
         <returns>an object of type <see cref="T:Gtk.TreeView" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is the default constructor for <see cref="T:Gtk.TreeView" /></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -845,10 +855,10 @@ public class TreeViewDemo {
 		<Parameter Name="model" Type="Gtk.TreeModel" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new <see cref="T:Gtk.TreeView" /> object.</summary>
         <param name="model">an object of type <see cref="T:Gtk.TreeModel" /></param>
         <returns>an object of type <see cref="T:Gtk.TreeView" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>In this constructor the <see cref="P:Gtk.TreeView.Model" /> is set from <paramref name="model" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -872,10 +882,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The model for the TreeView.</summary>
         <param name="value">an object of type <see cref="T:Gtk.TreeModel" /></param>
         <returns>an object of type <see cref="T:Gtk.TreeModel" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Selection">
@@ -885,9 +895,9 @@ public class TreeViewDemo {
         <ReturnType>Gtk.TreeSelection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the <see cref="T:Gtk.TreeSelection" /> associated with the TreeView.</summary>
         <returns>an object of type <see cref="T:Gtk.TreeSelection" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BinWindow">
@@ -926,7 +936,7 @@ public class TreeViewDemo {
         <summary>Whether to display alternating, shaded rows in the <see cref="Gtk.TreeView" />.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>Setting <see cref="P:Gtk.TreeView.RulesHint" /> to <see langword="true" /> enables alternating, shaded rows in the <see cref="T:Gtk.TreeView" />.</remarks>
+        <remarks>Setting <see cref="P:Gtk.TreeView.RulesHint" /> to <see langword="true" /> sets a hint to the theme engine to draw rows in alternating colors.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnableSearch">
@@ -938,10 +948,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>View allows user to search through columns interactively.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="HeadersVisible">
@@ -953,10 +963,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Show the column header buttons.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ExpanderColumn">
@@ -968,10 +978,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Set the column for the expander column.</summary>
         <param name="value">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>an object of type <see cref="T:Gtk.TreeViewColumn" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Reorderable">
@@ -983,10 +993,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>View is reorderable.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Hadjustment">
@@ -998,10 +1008,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Horizontal Adjustment for the widget.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
         <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="HeadersClickable">
@@ -1013,10 +1023,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Column headers respond to click events.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Vadjustment">
@@ -1028,10 +1038,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Vertical Adjustment for the widget.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
         <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SearchColumn">
@@ -1043,10 +1053,10 @@ public class TreeViewDemo {
       <Parameters>
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Model column to search through when searching through code.</summary>
         <param name="value">an object of type <see cref="T:System.Int32" /></param>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollAdjustmentsSet">
@@ -1188,13 +1198,13 @@ public class TreeViewDemo {
 		<Parameter Name="column" Type="Gtk.TreeViewColumn" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds the path at the point (x, y), relative to widget coordinates.</summary>
         <param name="x">an object of type <see cref="T:System.Int32" /></param>
         <param name="y">an object of type <see cref="T:System.Int32" /></param>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>It is primarily for things like popup menus. If <paramref name="path" /> is non-<see langword="null" />, then it will be filled with the <see cref="T:Gtk.TreePath" /> at that point. If <paramref name="column" /> is non-<see langword="null" />, then it will be filled with the <paramref name="column" /> at that point. This function is only meaningful if TreeView is realized.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPathAtPos">
@@ -1232,7 +1242,7 @@ public class TreeViewDemo {
 		<Parameter Name="cell_y" Type="System.Int32&amp;" RefType="out" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds the path at the point (x, y), relative to widget coordinates.</summary>
         <param name="x">an object of type <see cref="T:System.Int32" /></param>
         <param name="y">an object of type <see cref="T:System.Int32" /></param>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
@@ -1256,12 +1266,12 @@ public class TreeViewDemo {
 		<Parameter Name="ty" Type="System.Int32&amp;" RefType="out" />
 	</Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts widget coordinates to coordinates for the tree window (the full scrollable area of the tree).</summary>
         <param name="wx">an object of type <see cref="T:System.Int32" /></param>
         <param name="wy">an object of type <see cref="T:System.Int32" /></param>
         <param name="tx">an object of type <see cref="T:System.Int32" /></param>
         <param name="ty">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ToggleCursorRow">
