@@ -6,10 +6,8 @@
 
 namespace GladeSamples {
 	using System;
-	using System.Runtime.InteropServices;
 
 	using Gtk;
-	using Gnome;
 	using Glade;
 
 	public class GladeDemo {
@@ -17,11 +15,11 @@ namespace GladeSamples {
 		public static void Main (string[] args)
 		{
 			if (args.Length < 2) {
-				Console.WriteLine ("Use: mono ./glade-viewer.exe \"fname\" \"root\"");
+				Console.WriteLine ("Use: ./glade-viewer.exe \"fname\" \"root\"");
 				return;
 			}
 
-			Program viewer = new Program ("GladeViewer", "0.1", Modules.UI, args);
+			Application.Init ();
 
 			string fname = args [0];
 			string root = args [1];
@@ -34,7 +32,7 @@ namespace GladeSamples {
 			Console.WriteLine ("A relative filename: {0}", gxml.RelativeFile ("image.png"));
 
 			Console.WriteLine ("The name of the root widget: {0}", Glade.XML.GetWidgetName (wid));
-			Console.WriteLine ("BTW, it's {0} that it was created using from a Glade.XML object",
+			Console.WriteLine ("It is {0} that it was created using a Glade.XML object",
 					   Glade.XML.GetWidgetTree (wid) != null);
 
 			Console.WriteLine ("\nList of created widgets:");
@@ -45,7 +43,7 @@ namespace GladeSamples {
 						   Glade.XML.GetWidgetName (w));
 			}
 			
-			viewer.Run ();
+			Application.Run ();
 		}
 		
 	}

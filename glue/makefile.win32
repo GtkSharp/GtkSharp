@@ -1,5 +1,5 @@
-GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0`
-GTK_LIBS=`pkg-config --libs gtk+-win32-2.0`
+GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0 libglade-2.0`
+GTK_LIBS=`pkg-config --libs gtk+-win32-2.0 libglade-2.0`
 CC=gcc -mno-cygwin
 DLLWRAP=dllwrap -mno-cygwin --target i386-mingw32 --export-all-symbols
 
@@ -22,6 +22,7 @@ GLUE_OBJS = \
         type.o                  \
         value.o                 \
         widget.o                \
+	gladexml.o              \
 	win32dll.o
 
 all: gtksharpglue.dll
