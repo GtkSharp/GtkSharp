@@ -158,7 +158,6 @@ namespace GtkSharp.Generation {
 
 				IGeneratable gen = p.Generatable;
 
-				string name = p.Name;
 				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNative (p.Name + "_as_native") + ";");
 			}

@@ -41,17 +41,28 @@ namespace GtkSharp.Generation {
 
 		public string CSType {
 			get {
-				return SymbolTable.Table.GetCSType (CType) + (IsArray ? "[]" : String.Empty);
+				if (IGen == null)
+					return String.Empty;
+				return IGen.QualifiedName + (IsArray ? "[]" : String.Empty);
 			}
 		}
 
-		public string ElementType {
+		string ElementType {
 			get {
 				return elem == null ? String.Empty : elem.GetAttribute("element_type");
 			}
 		}
 
-		public bool IsArray {
+		IGeneratable igen;
+		IGeneratable IGen {
+			get {
+				if (igen == null)
+					igen = SymbolTable.Table [CType];
+				return igen;
+			}
+		}
+
+		bool IsArray {
 			get {
 				return elem == null ? false : elem.HasAttribute ("array");
 			}
@@ -65,11 +76,13 @@ namespace GtkSharp.Generation {
 
 		public string MarshalType {
 			get {
-				return SymbolTable.Table.GetMarshalReturnType (CType) + (IsArray ? "[]" : String.Empty);
+				if (IGen == null)
+					return String.Empty;
+				return IGen.MarshalReturnType + (IsArray ? "[]" : String.Empty);
 			}
 		}
 
-		public bool Owned {
+		bool Owned {
 			get {
 				return elem.GetAttribute ("owned") == "true";
 			}
@@ -77,17 +90,21 @@ namespace GtkSharp.Generation {
 
 		public string ToNativeType {
 			get {
-				return SymbolTable.Table.GetToNativeReturnType (CType) + (IsArray ? "[]" : String.Empty);
+				if (IGen == null)
+					return String.Empty;
+				return IGen.ToNativeReturnType + (IsArray ? "[]" : String.Empty);
 			}
 		}
 
 		public string FromNative (string var)
 		{
+			if (IGen == null)
+				return String.Empty;
 			if (Owned)
 				var += ", true";
 			else if (ElementType != String.Empty)
 				var += ", typeof (" + ElementType + ")";
-			return SymbolTable.Table.FromNativeReturn (CType, var);
+			return IGen.FromNativeReturn (var);
 		}
 			
 		public bool Validate ()
