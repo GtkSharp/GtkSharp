@@ -14,9 +14,13 @@ public class Fifteen
 	static Window window = null;
 	static Canvas canvas = null;
 	static BoardPiece [] board;
+	static bool debug = false;
 	
-	static void Main ()
+	static void Main (string [] args)
 	{
+		if (args.Length > 0 && args [0] == "debug")
+			debug = true;
+		
 		Application.Init ();
 		window = new Window ("Fifteen #");
 		VBox vbox = new VBox (false, 4);
@@ -107,14 +111,15 @@ public class Fifteen
 			break;
 
 		case EventType.ButtonPress:
-			int y = piece.Position / 4;
+			int y = piece.Position / 4; 
 			int x = piece.Position % 4;
-
-			bool toMove = false;
+			Print_Position ("from", piece.Position, true);
+			
+			bool toMove = true;
 
 			if ((y > 0) && (board [(y - 1) * 4 + x] == null)) {
 				dx = 0.0;
-				dy = 1.0;
+				dy = -1.0;
 				y --;
 			} else if ((y < 3) && (board [(y + 1) * 4 + x] == null)) {
 				dx = 0.0;
@@ -126,23 +131,42 @@ public class Fifteen
 				x --;
 			} else if ((x < 3) && (board [y * 4 + x + 1] == null)) {
 				dx = 1.0;
-				dy = 1.0;
-				y ++;
+				dy = 0.0;
+				x ++;
 			} else 
 				toMove = false;
 
 			if (toMove) {
 				int new_position = y * 4 + x;
+				Print_Position ("to", new_position, false);
 				board [piece.Position] = null;
 				board [new_position] = piece;
 				piece.Position = new_position;
 				piece.Move (dx * PIECE_SIZE, dy * PIECE_SIZE);
-			}
+			} else
+				Print_Position ("to", piece.Position, false);
 
 			break;
 
 		default:
 			break;
+		}
+
+		args.RetVal = false;
+	}
+
+	static void Print_Position (string text, int position, bool newLine)
+	{
+		if (!debug)
+			return;
+		else {
+			int x = position / 4;
+			int y = position % 4;
+			string output = String.Format (" {0} ({1}, {2})", text, x + 1, y + 1);
+			if (newLine)
+				Console.Write (output);
+			else
+				Console.WriteLine (output);
 		}
 	}
 
@@ -150,8 +174,7 @@ public class Fifteen
 	{
 		Random rand = new Random ();
 		int blank;
-		int position;
-		
+		int position;		
 
 		// find blank spot
 		for (position = 0; position < 16; position ++)
