@@ -40,8 +40,11 @@ class T
 		// FIXME: send the env vars to ForkCommand
 		Console.WriteLine (Environment.GetEnvironmentVariables ().Count);
 		
-		int pid = term.ForkCommand ("/bin/bash", argv, envv, "/home/jluke", false, true, true);
+		int pid = term.ForkCommand ("/bin/bash", argv, envv, Environment.CurrentDirectory, false, true, true);
 		Console.WriteLine ("Child pid: " + pid);
+
+		//term.Feed ("ls");
+		//term.FeedChild ("ls");
 		
 		sw.AddWithViewport (term);
 
