@@ -167,16 +167,19 @@ namespace GtkDemo
 			int gray50_width = 2;
 			int gray50_height = 2;
 			string gray50_bits = new  string ((char) 0x02, (char) 0x01);
-			// Pixmap stipple = Pixmap.CreateFromData (null, (string) gray50_bits, gray50_width, gray50_height, 16, Color.Zero, Color.Zero);
+
+			// The C gtk-demo passes NULL for the drawable param, which isn't
+			// multi-head safe, so it seems bad to allow it in the C# API.
+			// But the Window isn't realized at this point, so we can't get
+			// an actual Drawable from it. So we kludge for now.
+			Pixmap stipple = Pixmap.CreateBitmapFromData (Gdk.Screen.Default.RootWindow, (string) gray50_bits, gray50_width, gray50_height);
 			
 			tag  = new TextTag ("background_stipple");
-			// tag.BackgroundStipple = stipple;
-			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
+			tag.BackgroundStipple = stipple;
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("foreground_stipple");
-			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
-			// tag.ForegroundStipple = stipple;			
+			tag.ForegroundStipple = stipple;			
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("big_gap_before_line");

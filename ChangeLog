@@ -1,3 +1,22 @@
+2004-12-03  Dan Winship  <danw@novell.com>
+
+	* gdk/gdk-symbols.xml: alias GdkBitmap to GdkPixmap [Fixes #68824]
+
+	* gdk/Gdk.metadata: Remove the earlier GdkBitmap hack now that
+	it's aliased. Also move Gdk.Bitmap.CreateFromData to
+	Gdk.Pixmap.CreateBitmapFromData
+
+	* gdk/Pixbuf.custom (RenderPixmapAndMask,
+	RenderPixmapAndMaskForColormap, RenderThresholdAlpha):
+	s/Bitmap/Pixmap/
+
+	* sample/GtkDemo/DemoTextView.cs: uncomment the fg/bg stipple
+	code, since that works now
+
+	* parser/gapi-fixup.cs: Add an "add-node" rule. This turned out to
+	not actually be needed for this fix, but we know we'll need it
+	later, so here it is.
+
 2004-12-03  Jorge Garcia <jgarcia@ac.upc.es>
 
 	* glib/Type.cs:          add Int64 and UInt64 support.

@@ -77,6 +77,17 @@ namespace GtkSharp.Parsing {
 			XPathNavigator meta_nav = meta_doc.CreateNavigator ();
 			XPathNavigator api_nav = api_doc.CreateNavigator ();
 
+			XPathNodeIterator add_iter = meta_nav.Select ("/metadata/add-node");
+			while (add_iter.MoveNext ()) {
+				string path = add_iter.Current.GetAttribute ("path", "");
+				XPathNodeIterator api_iter = api_nav.Select (path);
+				while (api_iter.MoveNext ()) {
+					XmlElement api_node = ((IHasXmlNode)api_iter.Current).GetNode () as XmlElement;
+					foreach (XmlNode child in ((IHasXmlNode)add_iter.Current).GetNode().ChildNodes)
+						api_node.AppendChild (api_doc.ImportNode (child, true));
+				}
+			}
+
 			XPathNodeIterator attr_iter = meta_nav.Select ("/metadata/attr");
 			while (attr_iter.MoveNext ()) {
 				string path = attr_iter.Current.GetAttribute ("path", "");

@@ -564,13 +564,13 @@
       </Docs>
     </Member>
     <Member MemberName="RenderThresholdAlpha">
-      <MemberSignature Language="C#" Value="public void RenderThresholdAlpha (Gdk.Bitmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);" />
+      <MemberSignature Language="C#" Value="public void RenderThresholdAlpha (Gdk.Pixmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="bitmap" Type="Gdk.Bitmap" />
+        <Parameter Name="bitmap" Type="Gdk.Pixmap" />
         <Parameter Name="src_x" Type="System.Int32" />
         <Parameter Name="src_y" Type="System.Int32" />
         <Parameter Name="dest_x" Type="System.Int32" />
@@ -580,12 +580,11 @@
         <Parameter Name="alpha_threshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Render pixbuf alpha channel as a bi-level clip mask to a <see cref="T:Gdk.Bitmap" /></summary>
-        <param name="bitmap">The destination object of type 'Gdk.Bitmap'</param>
+        <summary>Render pixbuf alpha channel as a bi-level clip mask to a <see cref="T:Gdk.Pixmap" /></summary>
+        <param name="bitmap">The destination, a 1-bit-depth <see cref="T:Gdk.Pixmap" />.</param>
         <param name="src_x">Source X coordinate.</param>
         <param name="src_y">Source Y coordinate.</param>
-        <param name="dest_x">Destination X coordinate.
-</param>
+        <param name="dest_x">Destination X coordinate.</param>
         <param name="dest_y">Destination Y coordinate.</param>
         <param name="width">The width of the region to modify, or -1 to use <see cref="P:Gdk.Pixbuf.Width" />.</param>
         <param name="height">The height of the region to reder or -1 to use <see cref="P:Gdk.Pixbuf.Height" /></param>
@@ -1483,14 +1482,14 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMask">
-      <MemberSignature Language="C#" Value="public void RenderPixmapAndMask (Gdk.Pixmap pixmap_return, Gdk.Bitmap mask_return, int alpha_threshold);" />
+      <MemberSignature Language="C#" Value="public void RenderPixmapAndMask (Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="pixmap_return" Type="Gdk.Pixmap" />
-        <Parameter Name="mask_return" Type="Gdk.Bitmap" />
+        <Parameter Name="mask_return" Type="Gdk.Pixmap" />
         <Parameter Name="alpha_threshold" Type="System.Int32" />
       </Parameters>
       <Docs>
@@ -1505,20 +1504,20 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
 	  <see cref="M:Gdk.Pixbuf.RenderThresholdAlpha" />.
 	</summary>
         <param name="pixmap_return">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask_return">a <see cref="T:Gdk.Bitmap" /></param>
+        <param name="mask_return">a <see cref="T:Gdk.Pixmap" /></param>
         <param name="alpha_threshold">a <see cref="T:System.Int32" />, threshold value for opacity.</param>
         <remarks>
 	  The pixmap that is created is created for the colormap returned
 	  by <see cref="M:Gdk.Rgb.GetColormap" />. You normally will want to instead use
 	  the actual colormap for a widget, and use
 	  <see cref="M:Gdk.Pixbuf.RenderPixmapAndMaskForColormap" />,
-	  If the pixbuf does not have an alpha channel, then *<paramref name="mask_return" /> will be set
+	  If the pixbuf does not have an alpha channel, then <paramref name="mask_return" /> will be set
 	  to <see langword="null" />.
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMaskForColormap">
-      <MemberSignature Language="C#" Value="public void RenderPixmapAndMaskForColormap (Gdk.Colormap colormap, Gdk.Pixmap pixmap_return, Gdk.Bitmap mask_return, int alpha_threshold);" />
+      <MemberSignature Language="C#" Value="public void RenderPixmapAndMaskForColormap (Gdk.Colormap colormap, Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1526,7 +1525,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
       <Parameters>
         <Parameter Name="colormap" Type="Gdk.Colormap" />
         <Parameter Name="pixmap_return" Type="Gdk.Pixmap" />
-        <Parameter Name="mask_return" Type="Gdk.Bitmap" />
+        <Parameter Name="mask_return" Type="Gdk.Pixmap" />
         <Parameter Name="alpha_threshold" Type="System.Int32" />
       </Parameters>
       <Docs>
@@ -1543,13 +1542,13 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
 	</summary>
         <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
         <param name="pixmap_return">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask_return">a <see cref="T:Gdk.Bitmap" /></param>
+        <param name="mask_return">a <see cref="T:Gdk.Pixmap" /></param>
         <param name="alpha_threshold">a <see cref="T:System.Int32" /></param>
         <remarks>
 	    The pixmap that is created uses the <see cref="T:Gdk.Colormap" /> specified by <paramref name="colormap" />.
 	    This colormap must match the colormap of the window where the pixmap
 	    will eventually be used or an error will result.
-	    If the pixbuf does not have an alpha channel, then *<paramref name="mask_return" /> will be set
+	    If the pixbuf does not have an alpha channel, then <paramref name="mask_return" /> will be set
 	    to <see langword="null" />.
 	  </remarks>
       </Docs>

@@ -172,9 +172,9 @@ namespace GtkDemo
         	store.AppendValues ("Stock Item and Icon Browser (10% complete)", "DemoStockBrowser.cs", false);
         	parent = store.AppendValues ("Text Widget");
 		store.AppendValues (parent, "HyperText (50%)", "DemoHyperText.cs", false);
-		store.AppendValues (parent, "Multiple Views (95%)", "DemoTextView.cs", false);
+		store.AppendValues (parent, "Multiple Views", "DemoTextView.cs", false);
         	parent = store.AppendValues ("Tree View");
-        	store.AppendValues (parent, "Editable Cells", "DemoEditableCells", false);
+        	store.AppendValues (parent, "Editable Cells", "DemoEditableCells.cs", false);
         	store.AppendValues (parent, "List Store", "DemoListStore.cs", false);
         	store.AppendValues (parent, "Tree Store", "DemoTreeStore.cs", false);
         	
