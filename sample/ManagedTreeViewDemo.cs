@@ -46,9 +46,6 @@ namespace GtkSamples {
 			((CellRendererText) cell).Text = val.b;
 		}
 		
-		[DllImport("gtk-x11-2.0")]
-		static extern void gtk_init (ref int argc, ref String[] argv);
-
 		public static void Main (string[] args)
 		{
 			Application.Init ();
