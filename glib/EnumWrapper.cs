@@ -13,9 +13,11 @@ namespace GLib {
 	// <remarks> </remarks>
 	public class EnumWrapper {
 		int val;
+		public bool flags;
 		
-		public EnumWrapper (int val) {
+		public EnumWrapper (int val, bool flags) {
 			this.val = val;
+			this.flags = flags;
 		}
 
 		public static explicit operator int (EnumWrapper wrap) {

@@ -42,7 +42,7 @@
   </data>
 </rule>
 
-<!-- drawable hacks-->
+<!-- API hacks -->
 <rule>
   <class name="GdkBitmap"/>
   <class name="GdkPixmap"/>
@@ -60,6 +60,49 @@
   <data>
     <attribute target="class">
 	 	<delete/>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GdkPixbuf">
+    <method>RenderThresholdAlpha</method>
+    <method>RenderToDrawable</method>
+    <method>RenderToDrawableAlpha</method>
+    <method>RenderPixmapAndMaskForColormap</method>
+    <method>RenderPixmapAndMask</method>
+    <method>GetFromDrawable</method>
+    <method>GetFromImage</method>
+  </class>
+  <data>
+    <attribute target="method">
+	   <name>library</name>
+	   <value>gdk-x11-2.0</value>
+	 </attribute>
+  </data>
+</rule>
+
+<!-- out parameters -->
+<rule>
+  <class name="GdkWindow">
+    <method>GetPointer</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="type">gint*</filter>
+      <name>pass_as</name>
+      <value>out</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GdkWindow">
+    <method>GetPointer</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="type">GdkModifierType*</filter>
+      <name>pass_as</name>
+      <value>out</value>
     </attribute>
   </data>
 </rule>

@@ -128,8 +128,9 @@ namespace GtkSharp.Generation {
 				}
 			}
 			
+			// FIXME: marshalling not implemented here in mono 
 			if (field.HasAttribute("array_len"))
-				type += "[]";
+				type = "IntPtr";
 
 			if (IsBit (field))
 				name = String.Format ("_bitfield{0}", bitfields++);

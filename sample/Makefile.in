@@ -14,7 +14,7 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe menu.exe $(GNOME_TARGETS) 
+linux: gtk-hello-world.exe button.exe menu.exe size.exe scribble.exe $(GNOME_TARGETS) 
 
 gtk-hello-world.exe: HelloWorld.cs
 	$(MCS) --unsafe -o gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
@@ -27,6 +27,12 @@ button.exe: ButtonApp.cs
 
 menu.exe: Menu.cs
 	$(MCS) --unsafe -o menu.exe $(local_paths) $(all_assemblies) Menu.cs
+
+size.exe: Size.cs
+	$(MCS) --unsafe -o size.exe $(local_paths) $(all_assemblies) Size.cs
+
+scribble.exe: Scribble.cs
+	$(MCS) --unsafe -o scribble.exe $(local_paths) $(all_assemblies) Scribble.cs
 
 clean:
 	rm -f *.exe

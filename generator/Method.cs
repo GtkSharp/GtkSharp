@@ -27,12 +27,16 @@ namespace GtkSharp.Generation {
 
 		public Method (string libname, XmlElement elem, ClassBase container_type) 
 		{
-			this.libname = libname;
 			this.elem = elem;
 			if (elem["parameters"] != null)
 				parms = new Parameters (elem["parameters"]);
 			this.container_type = container_type;
 			this.name = elem.GetAttribute("name");
+			// override library - used in pixbuf API fixage 
+			if (elem.HasAttribute ("library"))
+				this.libname = elem.GetAttribute ("library");
+			else
+				this.libname = libname;
 		}
 
 		public string Name {
@@ -356,8 +360,10 @@ namespace GtkSharp.Generation {
 				}
 			}
 			
-			if (parms != null)
+			if (parms != null) {
+				parms.Finish (sw, indent);
 				parms.HandleException (sw, indent);
+			}
 
 			if (is_get && parms != null) 
 				sw.WriteLine (indent + "\t\t\treturn " + parms.AccessorName + ";");

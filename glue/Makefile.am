@@ -8,7 +8,9 @@ BASESOURCES = \
 	error.c			\
 	event.c			\
 	slist.c			\
-	paned.c			
+	paned.c			\
+	style.c			\
+	widget.c			
 
 if ENABLE_GNOME
 libgtksharpglue_la_SOURCES = 	\

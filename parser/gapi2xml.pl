@@ -438,9 +438,15 @@ sub addFuncElems
 		next if ($mname =~ /^_/);
 		$obj_el = "";
 		$prefix = $mname;
+		$prepend = undef;
 		while ($prefix =~ /(\w+)_/) {
 			$prefix = $key = $1;
 			$key =~ s/_//g;
+			# FIXME: lame Gdk API hack
+			if ($key eq "gdkdraw") {
+				$key = "gdkdrawable";
+				$prepend = "draw_";
+			}
 			if (exists ($elem_table{$key})) {
 				$prefix .= "_";
 				$obj_el = $elem_table{$key};
@@ -456,7 +462,7 @@ sub addFuncElems
 			$el = addNameElem($obj_el, 'constructor', $mname); 
 			$drop_1st = 0;
 		} else {
-			$el = addNameElem($obj_el, 'method', $mname, $prefix);
+			$el = addNameElem($obj_el, 'method', $mname, $prefix, $prepend);
 			$mdef =~ /(.*?)\w+\s*\(/;
 			addReturnElem($el, $1);
 			$mdef =~ /\(\s*(const)?\s*(\w+)/;
@@ -500,13 +506,18 @@ sub addFuncElems
 
 sub addNameElem
 {
-	my ($node, $type, $cname, $prefix) = @_;
+	my ($node, $type, $cname, $prefix, $prepend) = @_;
 
 	my $elem = $doc->createElement($type);
 	$node->appendChild($elem);
 	if ($prefix) {
 		$cname =~ /$prefix(\w+)/;
-		$elem->setAttribute('name', StudlyCaps($1));
+		if ($prepend) {
+			$name = $prepend . $1;
+		} else {
+			$name = $1;
+		}
+		$elem->setAttribute('name', StudlyCaps($name));
 	}
 	if ($cname) {
 		$elem->setAttribute('cname', $cname);

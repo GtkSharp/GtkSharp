@@ -233,6 +233,8 @@ namespace GLib {
 
 		[DllImport("gobject-2.0")]
 		static extern void g_value_set_enum (IntPtr val, int data);
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_flags (IntPtr val, uint data);
 		
 		/// <summary>
 		///	Value Constructor
@@ -245,7 +247,10 @@ namespace GLib {
 		public Value (IntPtr obj, string prop_name, EnumWrapper wrap)
 		{
 			_val = gtksharp_value_create_from_property (obj, prop_name);
-			g_value_set_enum (_val, (int) wrap); 
+			if (wrap.flags)
+				g_value_set_flags (_val, (uint) (int) wrap); 
+			else
+				g_value_set_enum (_val, (int) wrap); 
 		}
 
 		[DllImport("gobject-2.0")]
@@ -451,6 +456,8 @@ namespace GLib {
 
 		[DllImport("gobject-2.0")]
 		static extern int g_value_get_enum (IntPtr val);
+		[DllImport("gobject-2.0")]
+		static extern uint g_value_get_flags (IntPtr val);
 
 		/// <summary>
 		///	Value to Enum Conversion
@@ -466,7 +473,8 @@ namespace GLib {
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return new EnumWrapper (g_value_get_enum (val._val));
+			// FIXME: handle flags
+			return new EnumWrapper (g_value_get_enum (val._val), false);
 		}
 
 		/// <summary>

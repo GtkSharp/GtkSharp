@@ -296,7 +296,18 @@ namespace GtkSharp.Generation {
 			}
 			return false;
 		}
-		
+	
+		public static bool IsEnumFlags(string c_type)
+		{
+			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
+			if (complex_types.ContainsKey(c_type)) {
+				EnumGen gen = complex_types[c_type] as EnumGen;
+				return (gen != null && gen.Elem.GetAttribute ("type") == "flags");
+			}
+			return false;
+		}
+	
 		public static bool IsInterface(string c_type)
 		{
 			c_type = Trim(c_type);

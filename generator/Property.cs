@@ -117,7 +117,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\tset {");
 				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
 				if (SymbolTable.IsEnum(c_type)) {
-					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value)));");
+					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", SymbolTable.IsEnumFlags (c_type) ? "true" : "false");
 				} else if (SymbolTable.IsBoxed (c_type)) {
 					sw.WriteLine("Handle, " + cname + ", new GLib.Boxed (value)));");
 				} else {

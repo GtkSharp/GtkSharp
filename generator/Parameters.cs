@@ -199,12 +199,15 @@ namespace GtkSharp.Generation {
 				if (p_elem.HasAttribute("pass_as")) {
 					string pass_as = p_elem.GetAttribute("pass_as");
 					signature += pass_as + " ";
-					// We only need to do this for value types 
+					// We only need to do this for value types
 					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
 					{
 						import_sig += pass_as + " ";
 						call_string += "out ";
 					}
+					
+					if (SymbolTable.IsEnum (type))
+						call_parm = name + "_as_int";
 				}
 				else if (type == "GError**")
 				{
@@ -253,13 +256,17 @@ namespace GtkSharp.Generation {
 				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type))) {
 					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
 				}
+
+				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.IsEnum (c_type)) {
+					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
+				}
 			}
 
 			if (ThrowsException)
 				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
 		}
-/*
-		public void Finish (StreamWriter sw)
+
+		public void Finish (StreamWriter sw, string indent)
 		{
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
@@ -269,16 +276,14 @@ namespace GtkSharp.Generation {
 				XmlElement p_elem = (XmlElement) parm;
 				string c_type = p_elem.GetAttribute ("type");
 				string name = MangleName(p_elem.GetAttribute("name"));
+				string type = SymbolTable.GetCSType(c_type);
 
-				if ((p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) {
-					string call_parm = SymbolTable.CallByName(c_type, name);
-					string local_parm = GetPossibleLocal (call_parm);
-					if (call_parm != local_parm)
-						sw.WriteLine ("\t\t\t{0} = {1};", call_parm, local_parm);
+				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.IsEnum (c_type)) {
+					sw.WriteLine(indent + "\t\t\t" + name + " = (" + type + ") " + name + "_as_int;");
 				}
 			}
 		}
-*/
+
 
 		public void HandleException (StreamWriter sw, string indent)
 		{

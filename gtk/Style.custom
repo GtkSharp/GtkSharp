@@ -1,0 +1,92 @@
+//
+// Gtk.Style.custom - Gtk Style class customizations
+//
+// Author: Rachel Hestilow <hestilow@ximian.com> 
+//
+// Copyright (C) 2002 Rachel Hestilow 
+//
+// This code is inserted after the automatically generated code.
+//
+		
+static Gdk.GC EnsureGC (IntPtr raw) {
+	if (raw == IntPtr.Zero)
+		return null;
+	Gdk.GC ret = (Gdk.GC) GLib.Object.GetObject (raw);
+	if (ret == null)
+		ret = new Gdk.GC (raw);
+	return ret;
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_white_gc (IntPtr style);
+
+public Gdk.GC WhiteGC {
+	get { return EnsureGC (gtksharp_gtk_style_get_white_gc (Handle)); }
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_black_gc (IntPtr style);
+
+public Gdk.GC BlackGC {
+	get { return EnsureGC (gtksharp_gtk_style_get_black_gc (Handle)); }
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr[] gtksharp_gtk_style_get_fg_gc (IntPtr style);
+
+public Gdk.GC[] ForegroundGC {
+	get {
+		IntPtr[] raws = gtksharp_gtk_style_get_fg_gc (Handle);
+		Gdk.GC[] ret = new Gdk.GC[raws.Length];
+		int i = 0;
+		foreach (IntPtr raw in raws) {
+			ret[i++] = EnsureGC (raw);
+		}
+		return ret;
+	}
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr[] gtksharp_gtk_style_get_bg_gc (IntPtr style);
+
+public Gdk.GC[] BackgroundGC {
+	get {
+		IntPtr[] raws = gtksharp_gtk_style_get_bg_gc (Handle);
+		Gdk.GC[] ret = new Gdk.GC[raws.Length];
+		int i = 0;
+		foreach (IntPtr raw in raws) {
+			ret[i++] = EnsureGC (raw);
+		}
+		return ret;
+	}
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_white (IntPtr style);
+
+public Gdk.Color White {
+	get { return Gdk.Color.New (gtksharp_gtk_style_get_white (Handle)); }
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_black (IntPtr style);
+
+public Gdk.Color Black {
+	get { return Gdk.Color.New (gtksharp_gtk_style_get_black (Handle)); }
+}
+
+[DllImport("gtksharpglue")]
+static extern Gdk.Color[] gtksharp_gtk_style_get_fg (IntPtr style);
+public Gdk.Color[] Foreground {
+	get {
+		return gtksharp_gtk_style_get_fg (Handle);
+	}
+}
+
+static extern Gdk.Color[] gtksharp_gtk_style_get_bg (IntPtr style);
+public Gdk.Color[] Background {
+	get {
+		return gtksharp_gtk_style_get_bg (Handle);
+	}
+}
+

@@ -1,3 +1,30 @@
+2002-08-03  Rachel Hestilow  <hestilow@ximian.com>
+
+	* generator/Method.cs: Support libname overrides. Call parms.Finish.
+	* generator/Parameters.cs: New method parms.Finish. Generate a temporary
+	holder variable for enum out parameters.
+	* generator/Property.cs: Pass a boolean to EnumWrapper indicating.
+	if these are flags.
+	* generator/StructBase.cs: Disable array marshalling (it is
+	broken in mono.)
+	* generator/SymbolTable.cs: Add methods IsEnumFlags.
+
+	* glib/EnumWrapper.cs: New bool "flags".
+	* glib/Value.cs: Call flags variant on GValue for enum props, if needed.
+
+	* glue/Makefile.am, glue/style.c, glue/widget.c: Add widget
+	and style field accessor methods.
+	
+	* gtk/Style.custom, Widget.custom: Added.
+	
+	* parser/README: Update requirements (needed for pixbuf drawable hack)
+	* parser/Gdk.metadata: Fix library for pixbuf methods in gdk.
+	Add Window.GetPointer "out" parameters.
+	* parser/gapi2xml.pl: Remap gdk_draw_* methods to Drawable.
+
+	* sample/Makefile.in: Add size and scribble samples.
+	* sample/Scribble.cs: Added.
+	
 2002-08-02  Rachel Hestilow  <hestilow@ximian.com>
 
 	[ Mike, this is everything I wanted in for the release. ]
