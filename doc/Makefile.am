@@ -62,7 +62,3 @@ dist-hook:
 	cp $(srcdir)/en/GConf/*.xml $(distdir)/en/GConf/
 	mkdir -p $(distdir)/en/GConf.PropertyEditors
 	cp $(srcdir)/en/GConf.PropertyEditors/*.xml $(distdir)/en/GConf.PropertyEditors/
-	mkdir -p $(distdir)/en/GLibSharp
-	cp $(srcdir)/en/GLibSharp/*.xml $(distdir)/en/GLibSharp/
-	mkdir -p $(distdir)/en/GtkSharp
-	cp $(srcdir)/en/GtkSharp/*.xml $(distdir)/en/GtkSharp/
