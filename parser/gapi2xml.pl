@@ -137,6 +137,11 @@ while ($line = <STDIN>) {
 		$boxdefs{$1} = $line;
 	} elsif ($line =~ /^BUILTIN\s*\{\s*\"(\w+)\".*GTK_TYPE_(ENUM|FLAGS)/) {
 		# ignoring these for now.
+	} elsif ($line =~ /^\#define/) {
+		my $test_ns = uc ($ns);
+		if ($line =~ /\#define\s+(\w+)\s+\"(.*)\"/) {
+			$defines{$1} = $2;
+		}
 	} else {
 		print $line;
 	}
@@ -231,7 +236,6 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
 	if ($initfunc) {
-		print "parsing $inst\n";
 		parseInitFunc($iface_el, $initfunc);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
@@ -514,9 +518,12 @@ sub addPropElem
 	my $type = $1;
 	my @params = split(/,/, $2);
 
-	# FIXME: Handle non-literals.  Needs work in the pp too.
 	$name = $params[0];
-	$name =~ s/\"//g;
+	if ($defines{$name}) {
+		$name = $defines{$name};
+	} else {
+		$name =~ s/\"//g;
+	}
 
 	while ($params[2] !~ /(\"|NULL)\s*\)?$/) {
 		die "Unable to reconstruct doc string.\n" if (!$params[3]);

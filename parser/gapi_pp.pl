@@ -23,12 +23,23 @@ foreach $fname (@hdrs) {
 
 	open(INFILE, $fname) || die "Could open $fname\n";
 
+	$braces = 0;
+	$prepend = "";
 	while ($line = <INFILE>) {
-
+		$braces++ if ($line =~ /{/ and $line !~ /}/);
+		$braces-- if ($line =~ /}/ and $line !~ /{/);
+		
 		next if ($line =~ /$ignoreit_regex/);
 		next if ($line !~ /\S/);
 
-		if ($line =~ /#\s*define\s+\w+\s*\D+/) {
+		$line = $prepend . $line;
+		$prepend = "";
+
+		if ($line =~ /#\s*define\s+\w+\s+\"/) {
+			$def = $line;
+			while ($def !~ /\".*\"/) {$def .= ($line = <INFILE>);}
+			print $def;
+		} elsif ($line =~ /#\s*define\s+\w+\s*\D+/) {
 			$def = $line;
 			while ($line =~ /\\\n/) {$def .= ($line = <INFILE>);}
 			if ($def =~ /_CHECK_\w*CAST|INSTANCE_GET_INTERFACE/) {
@@ -48,7 +59,12 @@ foreach $fname (@hdrs) {
 		} elsif ($line =~ /^enum\s+\{/) {
 			while ($line !~ /^};/) {$line = <INFILE>;}
 		} else {
-			print $line;
+			if ($braces or $line =~ /;/) {
+				print $line;
+			} else {
+				$prepend = $line;
+				$prepend =~ s/\n/ /g;
+			}
 		}
 	}
 }

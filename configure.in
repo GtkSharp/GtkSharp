@@ -57,20 +57,25 @@ AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
 	fi
 )
 
+
 ## Versions of dependencies
+GNOME_REQUIRED_VERSION=2.0.0
 GTK_REQUIRED_VERSION=2.0.0
+PKG_CHECK_MODULES(BASE_DEPENDENCIES, libgnome-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
 
-PKG_CHECK_MODULES(BASE_DEPENDENCIES, gtk+-2.0 >= $GTK_REQUIRED_VERSION)
+if test "x$enable_gnome" = "xno"; then
+	PKG_CHECK_MODULES(BASE_DEPENDENCIES, gtk+-2.0 >= $GTK_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION)
+fi
 
-GTK_CFLAGS=`$PKG_CONFIG --cflags gtk+-2.0`
-GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
-GMODULE_CFLAGS=`$PKG_CONFIG --cflags gmodule-2.0`
-GMODULE_LIBS=`$PKG_CONFIG --libs gmodule-2.0`
+#GTK_CFLAGS=`$PKG_CONFIG --cflags gtk+-2.0`
+#GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
+#GMODULE_CFLAGS=`$PKG_CONFIG --cflags gmodule-2.0`
+#GMODULE_LIBS=`$PKG_CONFIG --libs gmodule-2.0`
 
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
-AC_SUBST(GMODULE_CFLAGS)
-AC_SUBST(GMODULE_LIBS)
+AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
+AC_SUBST(BASE_DEPENDENCIES_LIBS)
+
+AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 
 AC_SUBST(CFLAGS)
 

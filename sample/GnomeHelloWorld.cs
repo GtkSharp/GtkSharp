@@ -105,12 +105,15 @@ namespace GtkSamples {
 	
 		public static int Main (string[] args)
 		{
-			Application.Init ();
+			/* FIXME: Broken params support in mcs, should be fixed soonish */
+			object[] props = new object[0];
+			Program kit = new Program ("gnome-hello-world", "0.0.1", Modules.UI,
+												args, props);
 			
 			GnomeHelloWorld hello = new GnomeHelloWorld ();
 			Window win = hello.CreateWindow ();
 			win.ShowAll ();
-			Application.Run ();
+			kit.Run ();
 			return 0;
 		}
 
@@ -123,6 +126,7 @@ namespace GtkSamples {
 		
 		static void exit_cb (object o, EventArgs args)
 		{
+			Console.WriteLine ("hi {0}", Gnome.Program.Get ().AppId);
 			Application.Quit ();
 		}
 		

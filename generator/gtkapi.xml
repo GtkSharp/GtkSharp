@@ -537,8 +537,23 @@
       <method name="GetBuffer" cname="gnome_canvas_rich_text_get_buffer">
         <return-type type="GtkTextBuffer*"/>
       </method>
+      <method name="GetIterLocation" cname="gnome_canvas_rich_text_get_iter_location">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GtkTextIter*" name="iter"/>
+          <parameter type="GdkRectangle*" name="location"/>
+        </parameters>
+      </method>
       <method name="PasteClipboard" cname="gnome_canvas_rich_text_paste_clipboard">
         <return-type type="void"/>
+      </method>
+      <method name="GetIterAtLocation" cname="gnome_canvas_rich_text_get_iter_at_location">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+        </parameters>
       </method>
     </object>
     <object name="CanvasShape" cname="GnomeCanvasShape" parent="GnomeCanvasItem">
@@ -923,25 +938,76 @@
     </callback>
     <object name="Program" cname="GnomeProgram" parent="GObject">
       <field cname="_priv" type="GnomeProgramPrivate*"/>
-      <property name="GNOME_PARAM_POPT_TABLE" cname="GNOME_PARAM_POPT_TABLE" type="gpointer" doc-string=" _(The table of options for popt)" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_POPT_FLAGS" cname="GNOME_PARAM_POPT_FLAGS" type="gint" doc-string=" _(The flags to use for popt)" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_POPT_CONTEXT" cname="GNOME_PARAM_POPT_CONTEXT" type="gpointer" doc-string=" _(The popt context pointer that GnomeProgram is using)" readable="true"/>
-      <property name="GNOME_PARAM_HUMAN_READABLE_NAME" cname="GNOME_PARAM_HUMAN_READABLE_NAME" type="gchar*" doc-string=" _(Human readable name of this application)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_GNOME_PATH" cname="GNOME_PARAM_GNOME_PATH" type="gchar*" doc-string=" _(Path in which to look for installed files)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_APP_ID" cname="GNOME_PARAM_APP_ID" type="gchar*" doc-string=" _(ID string to use for this application)" readable="true"/>
-      <property name="GNOME_PARAM_APP_VERSION" cname="GNOME_PARAM_APP_VERSION" type="gchar*" doc-string=" _(Version of this application)" readable="true"/>
-      <property name="GNOME_PARAM_GNOME_PREFIX" cname="GNOME_PARAM_GNOME_PREFIX" type="gchar*" doc-string=" _(Prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_GNOME_LIBDIR" cname="GNOME_PARAM_GNOME_LIBDIR" type="gchar*" doc-string=" _(Library prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_GNOME_DATADIR" cname="GNOME_PARAM_GNOME_DATADIR" type="gchar*" doc-string=" _(Data prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_GNOME_SYSCONFDIR" cname="GNOME_PARAM_GNOME_SYSCONFDIR" type="gchar*" doc-string=" _(Configuration prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_APP_PREFIX" cname="GNOME_PARAM_APP_PREFIX" type="gchar*" doc-string=" _(Prefix where this application was installed)" readable="true" writeable="true"/>
-      <property name="GNOME_PARAM_APP_LIBDIR" cname="GNOME_PARAM_APP_LIBDIR" type="gchar*" doc-string=" _(Library prefix where this application was installed)" readable="true" writeable="true"/>
-      <property name="GNOME_PARAM_APP_DATADIR" cname="GNOME_PARAM_APP_DATADIR" type="gchar*" doc-string=" _(Data prefix where this application was installed)" readable="true" writeable="true"/>
-      <property name="GNOME_PARAM_APP_SYSCONFDIR" cname="GNOME_PARAM_APP_SYSCONFDIR" type="gchar*" doc-string=" _(Configuration prefix where this application was installed)" readable="true" writeable="true"/>
-      <property name="GNOME_PARAM_CREATE_DIRECTORIES" cname="GNOME_PARAM_CREATE_DIRECTORIES" type="gboolean" doc-string=" _(Create standard GNOME directories on startup)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_ENABLE_SOUND" cname="GNOME_PARAM_ENABLE_SOUND" type="gboolean" doc-string=" _(Enable sound on startup)" readable="true" writeable="true" construct-only="true"/>
-      <property name="GNOME_PARAM_ESPEAKER" cname="GNOME_PARAM_ESPEAKER" type="gchar*" doc-string=" _(How to connect to esd)" readable="true" writeable="true" construct-only="true"/>
+      <property name="PoptTable" cname="popt-table" type="gpointer" doc-string=" _(The table of options for popt)" writeable="true" construct-only="true"/>
+      <property name="PoptFlags" cname="popt-flags" type="gint" doc-string=" _(The flags to use for popt)" writeable="true" construct-only="true"/>
+      <property name="PoptContext" cname="popt-context" type="gpointer" doc-string=" _(The popt context pointer that GnomeProgram is using)" readable="true"/>
+      <property name="HumanReadableName" cname="human-readable-name" type="gchar*" doc-string=" _(Human readable name of this application)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomePath" cname="gnome-path" type="gchar*" doc-string=" _(Path in which to look for installed files)" readable="true" writeable="true" construct-only="true"/>
+      <property name="AppId" cname="app-id" type="gchar*" doc-string=" _(ID string to use for this application)" readable="true"/>
+      <property name="AppVersion" cname="app-version" type="gchar*" doc-string=" _(Version of this application)" readable="true"/>
+      <property name="GnomePrefix" cname="gnome-prefix" type="gchar*" doc-string=" _(Prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeLibdir" cname="gnome-libdir" type="gchar*" doc-string=" _(Library prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeDatadir" cname="gnome-datadir" type="gchar*" doc-string=" _(Data prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="GnomeSysconfdir" cname="gnome-sysconfdir" type="gchar*" doc-string=" _(Configuration prefix where GNOME was installed)" readable="true" writeable="true" construct-only="true"/>
+      <property name="AppPrefix" cname="app-prefix" type="gchar*" doc-string=" _(Prefix where this application was installed)" readable="true" writeable="true"/>
+      <property name="AppLibdir" cname="app-libdir" type="gchar*" doc-string=" _(Library prefix where this application was installed)" readable="true" writeable="true"/>
+      <property name="AppDatadir" cname="app-datadir" type="gchar*" doc-string=" _(Data prefix where this application was installed)" readable="true" writeable="true"/>
+      <property name="AppSysconfdir" cname="app-sysconfdir" type="gchar*" doc-string=" _(Configuration prefix where this application was installed)" readable="true" writeable="true"/>
+      <property name="CreateDirectories" cname="create-directories" type="gboolean" doc-string=" _(Create standard GNOME directories on startup)" readable="true" writeable="true" construct-only="true"/>
+      <property name="EnableSound" cname="enable-sound" type="gboolean" doc-string=" _(Enable sound on startup)" readable="true" writeable="true" construct-only="true"/>
+      <property name="Espeaker" cname="espeaker" type="gchar*" doc-string=" _(How to connect to esd)" readable="true" writeable="true" construct-only="true"/>
+      <method name="GetHumanReadableName" cname="gnome_program_get_human_readable_name">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetAppVersion" cname="gnome_program_get_app_version">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="Postinit" cname="gnome_program_postinit">
+        <return-type type="void"/>
+      </method>
+      <method name="Preinit" cname="gnome_program_preinit">
+        <return-type type="poptContext"/>
+        <parameters>
+          <parameter type="const-char*" name="app_id"/>
+          <parameter type="const-char*" name="app_version"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char**" name="argv"/>
+        </parameters>
+      </method>
+      <method name="LocateFile" cname="gnome_program_locate_file">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GnomeFileDomain" name="domain"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gboolean" name="only_if_exists"/>
+          <parameter type="GSList**" name="ret_locations"/>
+        </parameters>
+      </method>
+      <method name="ParseArgs" cname="gnome_program_parse_args">
+        <return-type type="void"/>
+      </method>
+      <method name="GetAppId" cname="gnome_program_get_app_id">
+        <return-type type="const-char*"/>
+      </method>
     </object>
+    <boxed name="ModuleInfo" cname="GnomeModuleInfo">
+      <field cname="name" type="const-char*"/>
+      <field cname="version" type="const-char*"/>
+      <field cname="description" type="const-char*"/>
+      <field cname="requirements" type="GnomeModuleRequirement*"/>
+      <field cname="instance_init" type="GnomeModuleHook"/>
+      <field cname="pre_args_parse" type="GnomeModuleHook"/>
+      <field cname="post_args_parse" type="GnomeModuleHook"/>
+      <field cname="poptOption* options" type="struct"/>
+      <field cname="init_pass" type="GnomeModuleInitHook"/>
+      <field cname="class_init" type="GnomeModuleClassInitHook"/>
+      <field cname="opt_prefix" type="const-char*"/>
+      <field cname="expansion1" type="gpointer"/>
+    </boxed>
+    <struct name="ModuleRequirement" cname="GnomeModuleRequirement">
+      <field cname="required_version" type="const-char*"/>
+      <field cname="module_info" type="const-GnomeModuleInfo*"/>
+    </struct>
     <struct name="ProgramPrivate" cname="GnomeProgramPrivate">
       <field cname="{APP_UNINIT=0" type="enum"/>
       <field cname="APP_CREATE_DONE=1" type="enum"/>
@@ -3714,6 +3780,9 @@
           <parameter type="const-gchar*" name="fontname"/>
         </parameters>
       </method>
+      <method name="GetMode" cname="gnome_font_picker_get_mode">
+        <return-type type="GnomeFontPickerMode"/>
+      </method>
       <method name="SetPreviewText" cname="gnome_font_picker_set_preview_text">
         <return-type type="void"/>
         <parameters>
@@ -4166,6 +4235,12 @@
         <return-type type="GtkWidget*"/>
       </method>
       <constructor cname="gnome_icon_selection_new"/>
+      <method name="GetIcon" cname="gnome_icon_selection_get_icon">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gboolean" name="full_path"/>
+        </parameters>
+      </method>
       <method name="AddDirectory" cname="gnome_icon_selection_add_directory">
         <return-type type="void"/>
         <parameters>
@@ -6430,8 +6505,8 @@
           <callback cname="child_func">
             <return-type type="gboolean"/>
             <parameters>
-              <parameter type="gboolean " name="child_func"/>
-              <parameter type="gboolean " name="child_func"/>
+              <parameter type="        gboolean " name="child_func"/>
+              <parameter type="        gboolean " name="child_func"/>
             </parameters>
           </callback>
           <parameter type="gpointer" name="user_data"/>
@@ -13178,7 +13253,7 @@
       <constructor cname="gtk_list_store_new">
         <parameters>
           <parameter type="gint" name="n_columns"/>
-          <parameter type="g" name=""/>
+          <parameter type=" " name=""/>
         </parameters>
       </constructor>
       <method name="Prepend" cname="gtk_list_store_prepend">
@@ -16265,7 +16340,7 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkWidget*" name="child"/>
-          <parameter type="gint" name="xpos"/>
+          <parameter type="/*" name="window"/>
           <parameter type="gint" name="ypos"/>
         </parameters>
       </method>
@@ -16473,7 +16548,7 @@
         <parameters>
           <parameter type="GtkWidget*" name="child"/>
           <parameter type="GtkTextWindowType" name="which_window"/>
-          <parameter type="gint" name="xpos"/>
+          <parameter type="/*" name="window"/>
           <parameter type="gint" name="ypos"/>
         </parameters>
       </method>
@@ -17250,7 +17325,7 @@
       <constructor cname="gtk_tree_store_new">
         <parameters>
           <parameter type="gint" name="n_columns"/>
-          <parameter type="g" name=""/>
+          <parameter type=" " name=""/>
         </parameters>
       </constructor>
       <method name="InsertBefore" cname="gtk_tree_store_insert_before">
@@ -21446,6 +21521,9 @@
           <parameter type="gint**" name="selected"/>
         </parameters>
       </method>
+      <method name="GetCaption" cname="atk_table_get_caption">
+        <return-type type="AtkObject*"/>
+      </method>
       <method name="GetRowAtIndex" cname="atk_table_get_row_at_index">
         <return-type type="gint"/>
         <parameters>
@@ -21462,6 +21540,12 @@
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="RemoveColumnSelection" cname="atk_table_remove_column_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
         </parameters>
       </method>
       <method name="SetRowDescription" cname="atk_table_set_row_description">
@@ -21489,6 +21573,13 @@
         <parameters>
           <parameter type="gint" name="column"/>
           <parameter type="AtkObject*" name="header"/>
+        </parameters>
+      </method>
+      <method name="SetColumnDescription" cname="atk_table_set_column_description">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+          <parameter type="const-gchar*" name="description"/>
         </parameters>
       </method>
       <method name="RemoveRowSelection" cname="atk_table_remove_row_selection">
@@ -21571,8 +21662,20 @@
           <parameter type="gint**" name="selected"/>
         </parameters>
       </method>
+      <method name="GetRowDescription" cname="atk_table_get_row_description">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
       <method name="AddColumnSelection" cname="atk_table_add_column_selection">
         <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetColumnDescription" cname="atk_table_get_column_description">
+        <return-type type="const-gchar*"/>
         <parameters>
           <parameter type="gint" name="column"/>
         </parameters>

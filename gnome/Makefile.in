@@ -1,6 +1,7 @@
 MCS=mcs
 
-all: linux
+@ENABLE_GNOME_TRUE@ all: linux
+@ENABLE_GNOME_FALSE@ all: 
 
 windows:
 	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /out:gnome-sharp.dll /recurse:*.cs
@@ -15,5 +16,5 @@ clean:
 	rm -f generated/*
 
 install: all
-	cp gnome-sharp.dll @prefix@/lib
+@ENABLE_GNOME_TRUE@	cp gnome-sharp.dll @prefix@/lib
 

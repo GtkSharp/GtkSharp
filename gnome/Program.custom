@@ -1,0 +1,83 @@
+//
+// Gnome.Program.custom - Gnome Program class customizations
+//
+// Author: Rachel Hestilow <hestilow@ximian.com>
+//
+// Copyright (C) 2002 Rachel Hestilow
+//
+// This code is inserted after the automatically generated code.
+//
+	
+[DllImport("gobject-2.0")]
+static extern void g_type_init ();
+
+[DllImport("libgnome-2.so.0")]
+static extern System.IntPtr gnome_program_get_type ();
+
+[StructLayout(LayoutKind.Sequential)]
+struct PropertyArg {
+	public string name;
+	public IntPtr value;
+}
+
+[DllImport("gtksharpglue")]
+static extern System.IntPtr
+gtksharp_gnome_program_init (string app_id, string app_version, System.IntPtr module, int argc, string[] argv, int nargs, PropertyArg[] args);
+
+public Program (string app_id, string app_version, ModuleInfo module,
+                string[] argv, params object[] props)
+{
+	int nargs = props.Length / 2;
+	PropertyArg[] args = new PropertyArg[nargs];
+	GLib.Value[] vals = new GLib.Value[nargs];
+	string[] new_argv = new string[argv.Length + 1];
+	
+	g_type_init ();
+
+	for (int i = 0; i < nargs; i++)
+	{
+		args[i].name = (string) props[i * 2];
+		GLib.Value value;
+		// FIXME: handle more types
+		object prop = props[i * 2 + 1];
+		Type type = prop.GetType ();
+		if (type == "hello".GetType ())
+			value = new GLib.Value ((string) prop);
+		else if (type == true.GetType ())
+			value = new GLib.Value ((bool) prop);
+		else
+			value = null;
+		vals[i] = value;
+		args[i].value = value.Handle; 
+	}
+	
+	/* FIXME: Is there a way to access this in .NET? */ 
+	new_argv[0] = app_id;
+	Array.Copy (argv, 0, new_argv, 1, argv.Length);
+	Raw = gtksharp_gnome_program_init (app_id, app_version, module.Handle, new_argv.Length, new_argv, nargs, args);
+}
+
+public void Run ()
+{
+	Gtk.Application.Run ();
+}
+
+public void Quit ()
+{
+	Gtk.Application.Quit ();
+}
+
+[DllImport("libgnome-2.so.0")]
+static extern System.IntPtr gnome_program_get ();
+
+public static Program Get ()
+{
+	IntPtr raw = gnome_program_get ();
+	if (raw == IntPtr.Zero)
+		return null;
+	Program program = (Program) GLib.Object.GetObject (raw);
+	if (program == null)
+		program = new Program (raw);
+	return program;
+}
+

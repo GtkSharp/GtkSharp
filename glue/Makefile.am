@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libgtksharpglue.la
 
-INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
+INCLUDES = @BASE_DEPENDENCIES_CFLAGS@ -I$(top_srcdir)
+
 
 libgtksharpglue_la_SOURCES = 	\
 	value.c			\
@@ -9,6 +10,7 @@ libgtksharpglue_la_SOURCES = 	\
 	error.c			\
 	event.c			\
 	slist.c			\
+@ENABLE_GNOME_TRUE@	program.c \
 	#
 
 libgtksharpglue.dll: $(libgtksharpglue_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
