@@ -1,3 +1,20 @@
+2004-10-18  Dan Winship  <danw@novell.com>
+
+	* generator/OpaqueGen.cs: Don't build the (IntPtr raw) constructor
+	if "disable_raw_ctor" is set on the opaque type.
+
+	* gtk/Gtk.metadata: Make GtkTargetList opaque (fixes a crash in
+	Gtk.Drag.Begin), hide the generated constructor and ref/unref
+	methods, and fix up the interpretation of AddTable.
+
+	* gtk/TargetList.custom (TargetList, ~TargetList): Implement the
+	suppressed constructors and add a finalizer, which handle
+	refcounting the underlying struct.
+	(Add, Find, Remove): convenience overloads that take string
+	instead of Gdk.Atom.
+
+	* gtk/Makefile.am (customs): add TargetList.custom
+
 2004-10-07  Mike Kestner  <mkestner@ximian.com>
 
 	* gdk/Makefile.am : add missing custom file.

@@ -73,6 +73,7 @@ customs = 				\
 	Style.custom			\
 	Table.custom			\
 	TargetEntry.custom		\
+	TargetList.custom		\
 	TextBuffer.custom		\
 	TextChildAnchor.custom		\
 	TextIter.custom			\

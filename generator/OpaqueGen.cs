@@ -42,6 +42,12 @@ namespace GtkSharp.Generation {
 			return FromNative (var);
 		}
 		
+		private bool DisableRawCtor {
+			get {
+				return Elem.HasAttribute ("disable_raw_ctor");
+			}
+		}
+
 		public void Generate ()
 		{
 			GenerationInfo gen_info = new GenerationInfo (NSElem);
@@ -91,8 +97,10 @@ namespace GtkSharp.Generation {
 
 		protected override void GenCtors (GenerationInfo gen_info)
 		{
-			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
-			gen_info.Writer.WriteLine();
+			if (!DisableRawCtor) {
+				gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+				gen_info.Writer.WriteLine();
+			}
 
 			base.GenCtors (gen_info);
 		}
