@@ -15,8 +15,7 @@ class GnomeDbClient {
 	
 	static void Main (string [] args)
 	{
-		Gtk.Application.Init ();
-		GnomeDb.Application.Init ("GnomeDbClient", "0.1", ref args);
+		GnomeDb.Application.Init ();
 
 		/* create the UI */
 		window = new Gtk.Window ("GNOME-DB client");
