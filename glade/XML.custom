@@ -268,7 +268,8 @@
 				// The widget to field binding must be 1:1, so only check
 				// the first attribute.
 				GladeWidgetAttribute widget = (GladeWidgetAttribute) attrs[0];
-				field.SetValue (target, GetWidget (widget.Name), flags, null, null);
+				if (widget.Specified) field.SetValue (target, GetWidget (widget.Name), flags, null, null);
+				else field.SetValue (target, GetWidget (field.Name), flags, null, null);
 			}
 		}
 		
