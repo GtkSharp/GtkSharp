@@ -1,0 +1,15 @@
+		// Patch submitted by malte on bug #49518
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_tree_path_get_indices(IntPtr raw);
+
+		public int [] Indices { 
+			get {
+				IntPtr ptr = gtk_tree_path_get_indices(Handle);
+				int [] arr = new int [Depth];
+				int isize = Marshal.SizeOf (typeof (int));
+
+				for (int i = 0; i < arr.Length; i++)
+					arr [i] = Marshal.ReadInt32 ( ptr, i * isize);
+				return arr;
+			}
+		}
