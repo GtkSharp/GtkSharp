@@ -4,6 +4,7 @@ BASESOURCES = \
 	adjustment.c		\
 	value.c			\
 	fileselection.c		\
+	combo.c			\
 	dialog.c		\
 	colorseldialog.c        \
 	error.c			\

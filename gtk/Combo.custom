@@ -5,3 +5,12 @@ public void SetPopdownStrings (params string[] args) {
 		list.Append (Marshal.StringToHGlobalAnsi (arg));
 	PopdownStrings = list;
 }
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_combo_get_entry(IntPtr i);
+
+public Gtk.Entry Entry {
+	get {
+		return new Gtk.Entry (gtksharp_combo_get_entry(this.Handle));
+	}
+}
