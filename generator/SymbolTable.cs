@@ -27,6 +27,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("gshort", "short");
 			simple_types.Add ("gushort", "ushort");
 			simple_types.Add ("guint32", "uint");
+			simple_types.Add ("guint64", "ulong");
 			simple_types.Add ("const-gchar", "string");
 			simple_types.Add ("const-char", "string");
 			simple_types.Add ("gchar", "string");
@@ -37,6 +38,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("guint8", "byte");
 			simple_types.Add ("gint16", "short");
 			simple_types.Add ("gint32", "int");
+			simple_types.Add ("gint64", "long");
 			simple_types.Add ("guint16", "ushort");
 			simple_types.Add ("guint1", "bool");
 			simple_types.Add ("gpointer", "System.IntPtr");

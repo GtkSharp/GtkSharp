@@ -134,7 +134,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{");
 
 				if (parms != null)
-					parms.Initialize(sw, false, ""); 
+					parms.Initialize(sw, false, false, ""); 
 
 				sw.Write("\t\t\treturn ");
 				if (container_type is StructBase)
@@ -147,7 +147,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{");
 
 				if (parms != null)
-					parms.Initialize(sw, false, ""); 
+					parms.Initialize(sw, false, false, ""); 
 				sw.WriteLine("\t\t\t{0} = {1}{2};", container_type.AssignToName, cname, call);
 				if (parms != null)
 					parms.HandleException (sw, "");

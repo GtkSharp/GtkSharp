@@ -301,7 +301,7 @@ namespace GtkSharp.Generation {
 				signature = signature.Remove (signature.Length - 2, 2);
 		}
 
-		public void Initialize (StreamWriter sw, bool is_get, string indent)
+		public void Initialize (StreamWriter sw, bool is_get, bool is_set, string indent)
 		{
 			string name = "";
 
@@ -314,7 +314,13 @@ namespace GtkSharp.Generation {
 
 				string c_type = p_elem.GetAttribute ("type");
 				string type = SymbolTable.GetCSType(c_type);
-				name = MangleName(p_elem.GetAttribute("name"));
+
+				if (is_set) {
+					name = "value";
+				} else {
+					name = MangleName(p_elem.GetAttribute("name"));
+				}
+
 				if (is_get) {
 					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
 				}
@@ -340,7 +346,12 @@ namespace GtkSharp.Generation {
 
 				string c_type = p_elem.GetAttribute ("type");
 				string type = SymbolTable.GetCSType(c_type);
-				name = MangleName(p_elem.GetAttribute("name"));
+
+				if (is_set) {
+					name = "value";
+				} else {
+					name = MangleName(p_elem.GetAttribute("name"));
+				}
 
 				if (SymbolTable.IsCallback (c_type)) {
 					type = type.Replace(".", "Sharp.") + "Wrapper";
@@ -488,6 +499,8 @@ namespace GtkSharp.Generation {
 				return "in_param";
 			case "out":
 				return "out_param";
+			case "fixed":
+				return "mfixed";
 			default:
 				break;
 			}

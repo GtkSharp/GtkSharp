@@ -197,6 +197,8 @@ namespace GtkSharp.Generation {
 				return "reference";
 			} else if (name == "params") {
 				return "parms";
+			} else if (name == "fixed") {
+				return "mfixed";
 			} else if (name == "in") {
 				return "inn";
 			} else {

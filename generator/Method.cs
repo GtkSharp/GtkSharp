@@ -382,7 +382,7 @@ namespace GtkSharp.Generation {
 		{
 			sw.WriteLine(" {");
 			if (parms != null)
-				parms.Initialize(sw, is_get, indent);
+				parms.Initialize(sw, is_get, is_set, indent);
 
 			sw.Write(indent + "\t\t\t");
 			if (m_ret == "void") {
