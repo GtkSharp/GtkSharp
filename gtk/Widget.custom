@@ -164,3 +164,31 @@ public int FocusLineWidth {
 		return gtksharp_gtk_widget_style_get_int (Handle, "focus-line-width");
 	}
 }
+
+[DllImport("gtksharpglue")]
+static extern int gtksharp_widget_connect_set_scroll_adjustments_signal (IntPtr gtype, SetScrollAdjustmentsDelegate cb);
+
+delegate void SetScrollAdjustmentsDelegate (IntPtr widget, IntPtr hadj, IntPtr vadj);
+
+static SetScrollAdjustmentsDelegate SetScrollAdjustmentsCallback;
+
+static void SetScrollAdjustments_cb (IntPtr widget, IntPtr hadj, IntPtr vadj)
+{
+	Widget obj = GLib.Object.GetObject (widget, false) as Widget;
+	Gtk.Adjustment h = GLib.Object.GetObject (hadj, false) as Gtk.Adjustment;
+	Gtk.Adjustment v = GLib.Object.GetObject (vadj, false) as Gtk.Adjustment;
+	obj.OnSetScrollAdjustments (h, v);
+}
+
+static void ConnectSetScrollAdjustments (GLib.GType gtype)
+{
+	if (SetScrollAdjustmentsCallback == null)
+		SetScrollAdjustmentsCallback = new SetScrollAdjustmentsDelegate (SetScrollAdjustments_cb);
+	gtksharp_widget_connect_set_scroll_adjustments_signal (gtype.Val, SetScrollAdjustmentsCallback);
+}
+
+[GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
+protected virtual void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustment vadj)
+{
+}
+
