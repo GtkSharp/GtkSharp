@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A base class for animations that are rendered using <see cref="T:Gdk.Pixbuf"/></summary>
-    <remarks/>
+    <summary>A base class for animations that are rendered using <see cref="T:Gdk.Pixbuf" /></summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -41,46 +41,50 @@
 	  the frames that should be displayed at a given time.
 	  It should be freed after use with g_object_unref().
 	</summary>
-        <param name="start_time">A <see cref="T:IntPtr"/></param>
-        <returns>A <see cref="T:Gdk.PixbufAnimationIter"/> to move over the animation</returns>
+        <param name="start_time">A <see cref="T:IntPtr" /></param>
+        <returns>A <see cref="T:Gdk.PixbufAnimationIter" /> to move over the animation</returns>
         <remarks>
-	  <p>
-	    <paramref name="start_time"/> would normally come from 
+          <p>
+            <paramref name="start_time" /> would normally come from 
 	    g_get_current_time() (FIXME: this function isn't bound into C#; 
 	    this needs a look), and
 	    marks the beginning of animation playback. After creating an
 	  iterator, you should immediately display the pixbuf returned by
-	    <see cref="P:Gdk.PixbufAnimationIter.Pixbuf"/>. Then, you should install a
+	    <see cref="P:Gdk.PixbufAnimationIter.Pixbuf" />. Then, you should install a
 	    timeout (with g_timeout_add() (FIXME)) or by some other mechanism ensure
 	    that you'll update the image after
-	    <see cref="P:Gdk.PixbufAnimation.DelayTime"/> milliseconds. Each time
+	    <see cref="P:Gdk.PixbufAnimation.DelayTime" /> milliseconds. Each time
 	    the image is updated, you should reinstall the timeout with the new,
 	    possibly-changed delay time.
-	  </p><p>
-	  As a shortcut, if <paramref name="start_time"/> is <see langword="null"/>, the result of
+	  </p>
+          <p>
+	  As a shortcut, if <paramref name="start_time" /> is <see langword="null" />, the result of
 	  g_get_current_time() will be used automatically.
-	    </p><p>
+	    </p>
+          <p>
 	  To update the image (i.e. possibly change the result of
 	  gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
 	  call gdk_pixbuf_animation_iter_advance().
-	    </p><p>
+	    </p>
+          <p>
 
-	  If you're using <see cref="T:Gdk.PixbufLoader"/>, in addition 
+	  If you're using <see cref="T:Gdk.PixbufLoader" />, in addition 
 	  to updating the image
 	  after the delay time, you should also update it whenever you
 	  receive the area_updated signal and
-	  <see cref="M:Gdk.PixbufAnimationIter.OnCurrentlyLoadingFrame"/> returns
+	  <see cref="M:Gdk.PixbufAnimationIter.OnCurrentlyLoadingFrame" /> returns
 	  true. In this case, the frame currently being fed into the loader
 	  has received new data, so needs to be refreshed. The delay time for
 	  a frame may also be modified after an 
-	  <see cref="E:Gdk.PixbufLoader.AreaUpdated"/> signal, for
+	  <see cref="E:Gdk.PixbufLoader.AreaUpdated" /> signal, for
 	  example if the delay time for a frame is encoded in the data after
 	  the frame itself. So your timeout should be reinstalled after any
-	  <see cref="E:Gdk.PixbufLoader.AreaUpdated"/> signal.
-	    </p><p>
+	  <see cref="E:Gdk.PixbufLoader.AreaUpdated" /> signal.
+	    </p>
+          <p>
 	    A delay time of -1 is possible, indicating "infinite."
 	  </p>
-	  </remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -124,14 +128,14 @@
 	  detected automatically.  If the file's format does not support 
 	  multi-frame images, then an animation with a single frame will 
 	  be created. Possible errors are in the 
-	  <see cref="T:Gdk.PixbufError"/> and <see cref="T:Gdk.Error"/> domains.
+	  <see cref="T:Gdk.PixbufError" /> and <see cref="T:Gdk.Error" /> domains.
 	</summary>
-        <param name="filename">A <see cref="T:System.String"/>, the filename to load into this object.</param>
-        <returns>A <see cref="T:Gdk.PixbufAnimation"/> with a reference count 
-	  of 1, or <see langword="null"/> if an error occurred.
+        <param name="filename">A <see cref="T:System.String" />, the filename to load into this object.</param>
+        <returns>A <see cref="T:Gdk.PixbufAnimation" /> with a reference count 
+	  of 1, or <see langword="null" /> if an error occurred.
 	</returns>
-        <remarks/>
-       </Docs>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="Width">
       <MemberSignature Language="C#" Value="public int Width { get; };" />
@@ -141,8 +145,8 @@
       </ReturnValue>
       <Docs>
         <summary>The width of the animation.</summary>
-        <returns>A <see cref="T:System.Int32"/></returns>
-        <remarks/>
+        <returns>A <see cref="T:System.Int32" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="StaticImage">
@@ -154,8 +158,8 @@
       <Docs>
         <summary>Gets the image if this animation is actually a static, 
 	  unanimaged file.</summary>
-        <returns>A <see cref="T:Gdk.Pixbuf"/></returns>
-        <remarks/>
+        <returns>A <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Height">
@@ -166,8 +170,8 @@
       </ReturnValue>
       <Docs>
         <summary>The height of the animation.</summary>
-        <returns>A <see cref="T:System.Int32"/></returns>
-        <remarks/>
+        <returns>A <see cref="T:System.Int32" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IsStaticImage">
@@ -179,14 +183,14 @@
       <Parameters />
       <Docs>
         <summary>
-	  If you load a file with <see cref="M:Gdk.PixbufAnimation.ctor"/> 
+	  If you load a file with <see cref="M:Gdk.PixbufAnimation.ctor" /> 
 	  and it turns out to be a plain, unanimated image, then this 
 	  function will return
-	  TRUE. Use <see cref="P:Gdk.PixbufAnimation.StaticImage"/> to
+	  TRUE. Use <see cref="P:Gdk.PixbufAnimation.StaticImage" /> to
 	  retrieve the image.
 	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -214,6 +218,31 @@
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.PixbufAnimation" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Ref">
+      <MemberSignature Language="C#" Value="public Gdk.PixbufAnimation Ref ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.PixbufAnimation</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unref">
+      <MemberSignature Language="C#" Value="public void Unref ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
