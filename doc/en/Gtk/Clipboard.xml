@@ -17,7 +17,7 @@
       <para>
         <see cref="M:Gtk.Clipboard.SetWithData()" /> and <see cref="M:Gtk.Clipboard.SetWithOwner()" />  are quite similar; the choice between the two depends mostly on which is more convenient in a particular situation. The former is most useful when you want to have a blob of data with callbacks to convert it into the various data types that you advertise. When the clear_func you provided is called, you simply free the data blob. The latter is more useful when the contents of clipboard reflect the internal state of a <see cref="T:GLib.Object" />  (As an example, for the PRIMARY clipboard, when an entry widget provides the contents for the clipboar the contents are simply the text within the selected region.) If the contents change, the entry widget can call <see cref="M:Gtk.Clipboard.SetWithOwner()" /> to update the timestamp for clipboard ownership, without having to worry about clear_func being called.</para>
       <para>Requesting the data from the clipboard is essentially asynchronous. If the contents of the clipboard are provided within the same process, then a direct function call will be made to retrieve the data, but if they are provided by another process, then the data needs to be retrieved from the other process, which may take some time. To avoid blocking the user interface, the call to request the selection, <see cref="M:Gtk.Clipboard.RequestContents()" /> takes a callback that will be called when the contents are received (or when the request fails.) If you do not want to deal with providing a separate callback, you can also use <see cref="M:Gtk.Clipboard.WaitForContents()" />. What this does is run the GLib main loop recursively waiting for the contents. This can simplify the code flow, but you still have to be aware that other callbacks in your program can be called while this recursive mainloop is running.</para>
-    <para> Along with the functions to get the clipboard contents as an arbitrary data chunk, there are also functions to retrieve it as text, <see cref="M:Gtk.Clipboard.RequestText()" /> and <see cref="M:Gtk.Clipboard.WaitForText()" />. These functions take care of determining which formats are advertised by the clipboard provider, asking for the clipboard in the best available format and converting the results into the UTF-8 encoding. (The standard form for representing strings in Gtk#.)</para>
+      <para> Along with the functions to get the clipboard contents as an arbitrary data chunk, there are also functions to retrieve it as text, <see cref="M:Gtk.Clipboard.RequestText()" /> and <see cref="M:Gtk.Clipboard.WaitForText()" />. These functions take care of determining which formats are advertised by the clipboard provider, asking for the clipboard in the best available format and converting the results into the UTF-8 encoding. (The standard form for representing strings in Gtk#.)</para>
     </remarks>
   </Docs>
   <Base>
@@ -266,7 +266,7 @@
 	  callback will be called.</summary>
         <param name="target">a <see cref="T:Gdk.Atom" /> representing the form into which the clipboard-owning program should convert the selection.</param>
         <param name="cb">a <see cref="T:Gtk.ClipboardReceivedFunc" />, a function to call when the clipboard results are received.</param>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RequestText">
@@ -279,9 +279,9 @@
         <Parameter Name="cb" Type="Gtk.ClipboardTextReceivedFunc" />
       </Parameters>
       <Docs>
-        <summary>Fetch the clipboard's text and fire the function <paramref name="cb"/> on it.</summary>
+        <summary>Fetch the clipboard's text and fire the function <paramref name="cb" /> on it.</summary>
         <param name="cb">a <see cref="T:Gtk.ClipboardTextReceivedFunc" /></param>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -306,7 +306,40 @@
       <Docs>
         <summary>Proctected constructor.</summary>
         <returns>a <see cref="T:Gtk.Clipboard" /></returns>
-        <remarks/>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForTargets">
+      <MemberSignature Language="C#" Value="public bool WaitForTargets (Gdk.Atom targets, out int n_targets);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targets" Type="Gdk.Atom" />
+        <Parameter Name="n_targets" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="targets">a <see cref="T:Gdk.Atom" /></param>
+        <param name="n_targets">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestTargets">
+      <MemberSignature Language="C#" Value="public void RequestTargets (Gtk.ClipboardTargetsReceivedFunc cb);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cb" Type="Gtk.ClipboardTargetsReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="cb">a <see cref="T:Gtk.ClipboardTargetsReceivedFunc" /></param>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
