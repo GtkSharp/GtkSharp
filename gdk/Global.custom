@@ -141,10 +141,12 @@
 
 		public static bool InitCheck (ref string[] argv)
 		{
-			IntPtr ptr = GLib.Marshaller.ArgvToArrayPtr (argv);
-			int count = argv.Length;
-			bool result = gdk_init_check (ref count, ref ptr);
-			argv = GLib.Marshaller.ArrayPtrToArgv (ptr, count);
+			GLib.Argv a = new GLib.Argv (argv, true);
+			IntPtr buf = a.Handle;
+			int argc = argv.Length + 1;
+
+			bool result = gdk_init_check (ref argc, ref buf);
+			argv = a.GetArgs (argc);
 			return result;
 		}
 
@@ -153,10 +155,12 @@
 
 		public static void ParseArgs (ref string[] argv)
 		{
-			IntPtr ptr = GLib.Marshaller.ArgvToArrayPtr (argv);
-			int count = argv.Length;
-			gdk_parse_args (ref count, ref ptr);
-			argv = GLib.Marshaller.ArrayPtrToArgv (ptr, count);
+			GLib.Argv a = new GLib.Argv (argv, true);
+			IntPtr buf = a.Handle;
+			int argc = argv.Length + 1;
+
+			gdk_parse_args (ref argc, ref buf);
+			argv = a.GetArgs (argc);
 		}
 
 		[DllImport("libgdk-win32-2.0-0.dll")]

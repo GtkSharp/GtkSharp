@@ -28,6 +28,7 @@ namespace GLib {
 
 		IntPtr[] arg_ptrs;
 		IntPtr handle;
+		bool add_progname = false;
 
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_strdup (string str);
@@ -46,8 +47,18 @@ namespace GLib {
 			g_free (handle);
 		}
 				
-		public Argv (string[] args) 
+		public Argv (string[] args) : this (args, false) {}
+		
+		public Argv (string[] args, bool add_program_name)
 		{
+			add_progname = add_program_name;
+			if (add_progname) {
+				string[] full = new string [args.Length + 1];
+				full [0] = System.Environment.GetCommandLineArgs ()[0];
+				args.CopyTo (full, 1);
+				args = full;
+			}
+
 			arg_ptrs = new IntPtr [args.Length];
 
 			for (int i = 0; i < args.Length; i++)
@@ -58,7 +69,7 @@ namespace GLib {
 			for (int i = 0; i < args.Length; i++)
 				Marshal.WriteIntPtr (handle, i * IntPtr.Size, arg_ptrs [i]);
 		}
-		
+
 		public IntPtr Handle {
 			get {
 				return handle;
@@ -67,10 +78,12 @@ namespace GLib {
 
 		public string[] GetArgs (int argc)
 		{
-			string[] result = new string [argc];
+			int count = add_progname ? argc - 1 : argc;
+			int idx = add_progname ? 1 : 0;
+			string[] result = new string [count];
 
-			for (int i = 0; i < argc; i++) 
-				result [i] = Marshal.PtrToStringAnsi (Marshal.ReadIntPtr (handle, i * IntPtr.Size));
+			for (int i = 0; i < count; i++, idx++) 
+				result [i] = Marshal.PtrToStringAnsi (Marshal.ReadIntPtr (handle, idx * IntPtr.Size));
 
 			return result;
 		}
