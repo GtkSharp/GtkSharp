@@ -1,0 +1,28 @@
+MCS = mcs
+DESTDIR = 
+
+SOURCES = \
+	PropertyEditor.cs \
+	PropertyEditorBool.cs \
+	PropertyEditorColorPicker.cs \
+	PropertyEditorEnum.cs \
+	PropertyEditorEntry.cs \
+	PropertyEditorFileEntry.cs \
+	PropertyEditorOptionMenu.cs \
+	PropertyEditorRadioButton.cs \
+	PropertyEditorSpinButton.cs \
+	PropertyEditorToggleButton.cs \
+	EditorShell.cs \
+	#
+
+all: gconf-sharp-peditors.dll
+
+gconf-sharp-peditors.dll: $(SOURCES)
+	$(MCS) $(SOURCES) /r:../GConf/gconf-sharp.dll /r:glib-sharp /r:gtk-sharp /r:gnome-sharp /r:glade-sharp /r:System.Drawing /target:library /out:gconf-sharp-peditors.dll
+
+install: all
+	cp gconf-sharp-peditors.dll $(DESTDIR)@prefix@/lib
+
+clean:
+	rm -f gconf-sharp-peditors.dll
+

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>Using GConf#</title>
+ </head>
+ <body>
+  <p align="center">
+  <font size="+3">Using GConf#</font></p>
+  <h1>Introduction</h1>
+  <p>Using GConf directly from an application is often inconvenient.
+     Because the configuration key system effectively represents a 
+     string-based API, accessing GConf values leaves your application
+     open to runtime errors from a single typo. Even if you store your
+     keys in constants (as is recommended), you still wind up maintaining
+     two lists of keys: one in the schema, and one in your app.</p>
+  <p>Another problem is that the GConf value types are very limited:
+     string, float, int, bool, and list. When storing common value types
+     such as colors or enumerations, one has to serialize these values
+     to and from strings.</p>
+  <p>Finally, providing graphical dialogs for your settings can be a very
+     tedious process. For each config element exposed in your UI, you have
+     to manually hook up the "changed" signal on the UI to a custom handler
+     setting the GConf value. Inversely, one must initially populate the
+     dialog based on previously-set GConf values. Complicating all of this
+     is the GNOME HIG, which specifies that all preference dialogs be
+     instant-apply if possible.</p>
+  <p>GConf# addresses these issues with two new utilities: SchemaGen, and
+     the GConf.PropertyEditors library.</p>
+
+  <h1>SchemaGen</h1>
+  <p>SchemaGen is a new tool which generates a custom API for the settings
+     in a gconf schema file. Given a schema, it generates two classes,
+     <b>Settings</b> and <b>SettingKeys</b>. <b>Settings</b> provides static
+     properties for each specified gconf setting. These properties map
+     directly to the values in the gconf database. <b>Settings</b> also
+     specifies static events for each setting indicating when the setting
+     has changed, and a generic Changed event which notifies when any
+     of your settings have changed. Finally, for every property in
+     <b>Settings</b>, SchemaGen creates a read-only property of the same
+     name in <b>SettingKeys</b> specifying the GConf key used to access
+     this property. <b>SettingKeys</b> is not needed if you are only using
+     the <b>Settings</b> class, but it is very useful when attaching
+     PropertyEditors, or when accessing GConf directly.</p>
+  <p>SchemaGen also provides for limited marshalling to and from the
+     GConf value types. It currently defines marshallers for
+     System.Drawing.Color and for enumerations. This is done by specifying
+     a <b>cstype</b> directive in the GConf schema.</p>
+  <h2>Example</h2>
+  <p>First, we need to write a GConf schema specifying our settings.</p>
+  <pre>
+&lt;gconfschema&gt;
+ &lt;schemalist&gt;
+  &lt;schema&gt;
+   &lt;key&gt;/schemas/apps/gconfsharp/sample_app/toolbar_alignment&lt;/key&gt;
+   &lt;applyto&gt;/apps/gconfsharp/sample_app/toolbar_alignment&lt;/applyto&gt;
+   &lt;owner&gt;sample_app&lt;/owner&gt;
+<b>   &lt;type&gt;string&lt;/type&gt;</b>
+<b>   &lt;cstype class="Sample.Alignment"&gt;enum&lt;/cstype&gt;</b>
+   &lt;locale name="C"&gt;
+    &lt;short&gt;Toolbar alignment&lt;/short&gt;
+    &lt;long&gt;Where the toolbar should be. Can be one of Top, Bottom, Left, Rigt.&lt;/long&gt;
+   &lt;/locale&gt;
+   &lt;default&gt;Top&lt;/default&gt;
+  &lt;/schema&gt;
+  &lt;schema&gt;
+   &lt;key&gt;/schemas/apps/gconfsharp/sample_app/text_color&lt;/key&gt;
+   &lt;applyto&gt;/apps/gconfsharp/sample_app/text_color&lt;/applyto&gt;
+   &lt;owner&gt;sample_app&lt;/owner&gt;
+<b>   &lt;type&gt;string&lt;/type&gt;</b>
+<b>   &lt;cstype&gt;color&lt;/cstype&gt;</b>
+   &lt;locale name="C"&gt;
+    &lt;short&gt;Text color&lt;/short&gt;
+    &lt;long&gt;Text color&lt;/long&gt;
+   &lt;/locale&gt;
+   &lt;default&gt;#000000&lt;/default&gt;
+  &lt;/schema&gt;
+  &lt;schema&gt;
+   &lt;key&gt;/schemas/apps/gconfsharp/sample_app/enable_text_color&lt;/key&gt;
+   &lt;applyto&gt;/apps/gconfsharp/sample_app/enable_text_color&lt;/applyto&gt;
+   &lt;owner&gt;sample_app&lt;/owner&gt;
+   &lt;type&gt;bool&lt;/type&gt;
+   &lt;locale name="C"&gt;
+    &lt;short&gt;Show colored text&lt;/short&gt;
+    &lt;long&gt;Show colored text&lt;/long&gt;
+   &lt;/locale&gt;
+   &lt;default&gt;#000000&lt;/default&gt;
+  &lt;/schema&gt;
+ &lt;/schemalist&gt;
+&lt;/gconfschemafile&gt;  
+  </pre>
+  <p>Note how we specify both the cstype and type for the enum and color.
+     This is because GConf doesn't know anything about cstype.</p>
+  <p>We save this to sample.schema, and install it with the command:</p>
+  <pre>env GCONF_CONFIG_SOURCE="" gconftool-2 --makefile-install-rule sample.schema</pre>
+  <p>GConf generates a warning because it doesn't recognize cstype, but
+     it is nothing to worry about.</p>
+  <p>We're now ready to run SchemaGen. Installing the schema before running
+     SchemaGen is not required, but you should make sure to install it before
+     running your application, because GConf# will throw an exception if
+     GConf can't find your settings.</p>
+  <p>SchemaGen's full executable name is <b>gconfsharp-schemagen</b>. It
+     takes a namespace and the schema filename as parameters, and outputs
+     to the console. Here is the command used to generate Settings.cs for
+     sample.schema:</p>
+  <pre>gconfsharp-schemagen Sample sample.schema &gt; Settings.cs</pre>
+  <p>Now we're ready to write a small program using our new settings.</p>
+  <pre>
+namespace Sample
+{
+   using System;
+   using System.Drawing;
+   
+   public enum Alignment
+   {
+     Top,
+     Bottom,
+     Left,
+     Right
+   }
+   
+   class X
+   {
+      public static void Main (string args[])
+      {
+         Alignment align = Settings.ToolbarAlignment;
+         Console.WriteLine ("Alignment is: {0}", align);
+	 Settings.ToolbarAlignment = Left;
+	 Console.WriteLine ("Color is: {0}", Settings.TextColor);
+	 Console.WriteLine ("Color is enabled: {0}", Settings.TextEnableColor);
+      }
+   }
+}
+  </pre>
+  <p>As you can see, our GConf settings are now nicely encapsulated, and
+     are as easy to access as any other .NET properties.</p>
+  <h1>Property Editors</h1>
+  <p>Property Editors are objects which act as intermediaries between
+     GConf and Gtk+ widgets. They are analoguous to the Controller of the MVC
+     design pattern. Property editors do two things:
+     <ul>
+      <li>They listen to GConf notifications, and update the widget
+          to reflect any changes in a GConf setting.
+      <li>They connect to the various "changed" signals on a widget,
+          and update GConf to reflect the widget's current state.</li>
+     </ul>
+     This means that the widget and GConf are always in sync, no matter
+     if the value is set through Gtk+ or through GConf. GConf# defines a
+     number of Property Editors which correspond to common widget/setting
+     combinations -- for example, a CheckButton representing a boolean
+     setting. 
+  </p>
+  <p>GConf# also provides a utility class called <b>EditorShell</b>.
+     EditorShell exposes a simple API to automatically construct
+     PropertyEditors for a Glade UI.</p>
+  <p>As a historical note, and in the interests of giving credit where
+     credit is due, it should be noted that GConf Property Editors are
+     not unique to GConf#. They were originally conceived and implemented
+     by Bradford Hovinen for use in the GNOME Control Center. Although
+     the APIs are somewhat similar, the original version was written in
+     C and was limited to internal use in the Control Center.</p>
+  <h2>Example</h2>
+  <p>For this example we'll assume you have written a Glade UI for 
+     the settings in the previous example. It employs three elements:
+     an option menu named "toolbar_menu", a checkbox named "enable_check",
+     and a color picker named "colorpicker". Given our Glade.XML object,
+     all we have to do is set up the EditorShell.</p>
+  <pre>
+Glade.XML gxml = <i>...</i>
+GConf.PropertyEditors.EditorShell shell = new GConf.PropertyEditors.EditorShell (gxml);
+
+shell.Add (SettingKeys.ToolbarAlignment, "toolbar_menu", typeof (Sample.Alignment));
+shell.Add (SettingKeys.EnableTextColor, "enable_check");
+shell.Add (SettingKeys.TextColor, "colorpicker");
+  </pre>
+  <p>That's all that is needed to implement the preferences dialog. Note
+     how we didn't have to specify what type of property editor to use.
+     The EditorShell uses introspection to create the correct Property
+     Editor for all the types of widgets it knows about. Also note that
+     because ToolbarAlignment is an enum, we had to pass its type in so that
+     the Property Editor can store its value correctly. By default,
+     Property Editors assume that the order of elements in an OptionMenu
+     (or RadioButton) correspond to the order of values in an enum. If
+     this is not the case, you can pass in an additional parameter to
+     Add: an array of integers, each array element being the integer
+     representation of an enum value. This array represents the order of
+     values in your GUI element.
+  </p>
+  <p>Now, a really good preference dialog would "ghost out" the
+     color picker if the "Enable text color" option is disabled. This
+     requires a small addition to our previous code:</p>
+  <pre>
+shell.AddGuard (SettingKeys.EnableTextColor, "color_box");
+  </pre>
+  <p>Again, for the purposes of the example, "color_box" is the name of the
+     HBox containing the label and color picker corresponding to TextColor.</p>
+  <h1></h1>
+  <p>
+   <font size=-1>
+    <i>Last updated: October 19th, 2002 <br />
+       Rachel Hestilow <a href="mailto:hestilow@ximian.com">(hestilow@ximian.com)</a></i>
+   </font>
+  </p>
+ </body>
+</html>

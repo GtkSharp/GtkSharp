@@ -1,0 +1,25 @@
+MCS = mcs
+DESTDIR = 
+bindir = @prefix@/bin
+
+SOURCES = \
+	schemagen.cs \
+	#
+
+all: gconfsharp-schemagen.exe gconfsharp-schemagen
+
+gconfsharp-schemagen.exe: $(SOURCES)
+	$(MCS) /out:gconfsharp-schemagen.exe $(SOURCES)
+
+gconfsharp-schemagen: gconfsharp-schemagen.in
+	sed -e 's^\@bindir\@^$(bindir)^g' < gconfsharp-schemagen.in > gconfsharp-schemagen.tmp \
+	&& mv gconfsharp-schemagen.tmp gconfsharp-schemagen \
+	&& chmod +x gconfsharp-schemagen  
+
+install: all
+	chmod +x gconfsharp-schemagen && cp gconfsharp-schemagen.exe gconfsharp-schemagen $(DESTDIR)@prefix@/bin
+
+clean:
+	rm -f gconfsharp-schemagen.exe
+	rm -f gconfsharp-schemagen
+

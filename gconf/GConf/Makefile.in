@@ -1,0 +1,26 @@
+MCS = mcs
+DESTDIR =
+
+SOURCES = \
+	ClientBase.cs \
+	Client.cs \
+	ChangeSet.cs \
+	_Entry.cs \
+	NoSuchKeyException.cs \
+	NotifyEventArgs.cs \
+	NotifyEventHandler.cs \
+	NotifyWrapper.cs \
+	Value.cs \
+	#
+
+all: gconf-sharp.dll
+
+gconf-sharp.dll: $(SOURCES)
+	$(MCS) $(SOURCES) /r:glib-sharp.dll /target:library /out:gconf-sharp.dll
+
+install: all
+	cp gconf-sharp.dll $(DESTDIR)@prefix@/lib
+
+clean:
+	rm -f gconf-sharp.dll
+
