@@ -14,7 +14,6 @@ namespace GtkSharp.Generation {
 		
 		private XmlElement ns;
 		private XmlElement elem;
-		private bool do_generate;
 
 		protected GenBase (XmlElement ns, XmlElement elem)
 		{
