@@ -8,6 +8,14 @@ GNOME_TARGETS=
 GNOME_ASSEMBLY=
 endif
 
+if ENABLE_GNOMEVFS
+GNOMEVFS_TARGETS=testvfs.exe
+GNOMEVFS_ASSEMBLY=../gnomevfs/gnome-vfs-sharp.dll
+else
+GNOMEVFS_TARGETS=
+GNOMEVFS_ASSEMBLY=
+endif
+
 if ENABLE_GLADE
 GLADE_TARGETS=glade-viewer.exe glade-test.exe
 GLADE_ASSEMBLY=../glade/glade-sharp.dll
@@ -24,9 +32,9 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe actions.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
-assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll ../gnomevfs/gnome-vfs-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
+assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOMEVFS_ASSEMBLY) $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix /r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
@@ -104,7 +112,7 @@ actions.exe: $(srcdir)/Actions.cs
 custom-notebook.exe: $(srcdir)/CustomNotebook.cs $(assemblies)
 	$(CSC) /debug /out:custom-notebook.exe $(references) $(srcdir)/CustomNotebook.cs
 
-testvfs.exe: $(srcdir)/TestVfs.cs
+testvfs.exe: $(srcdir)/TestVfs.cs $(assemblies)
 	$(CSC) /debug /out:testvfs.exe $(references) $(srcdir)/TestVfs.cs
 
 EXTRA_DIST = 				\
