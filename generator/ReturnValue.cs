@@ -63,6 +63,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool Owned {
+			get {
+				return elem.GetAttribute ("owned") == "true";
+			}
+		}
+
 		public string ToNativeType {
 			get {
 				return SymbolTable.Table.GetMarshalType (CType) + (IsArray ? "[]" : String.Empty);

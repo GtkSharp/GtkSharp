@@ -390,7 +390,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + "\t\t\tif (raw_ret == IntPtr.Zero)");
 				sw.WriteLine(indent + "\t\t\t\tret = null;");
 				sw.WriteLine(indent + "\t\t\telse");
-				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(retval.CType, "raw_ret") + ";");
+				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(retval.CType, "raw_ret" + (retval.Owned ? ", true" : "")) + ";");
 			} else {
 				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
 				sw.Write(indent + "\t\t\t");
