@@ -203,6 +203,12 @@ namespace GtkSharp.Generation {
 			return container_type.GetMethod (complement + elem.GetAttribute("name").Substring (1));
 		}
 		
+		public string Declaration {
+			get {
+				return retval.CSType + " " + Name + " (" + (sig != null ? sig.ToString() : "") + ");";
+			}
+		}
+
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
 			if (elem.GetAttribute ("shared") == "true")
