@@ -71,3 +71,16 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 			}
 		}
 
+		[DllImport ("libpango-1.0-0.dll")]
+		static extern void pango_layout_set_text (IntPtr raw, string text, int length);
+
+		public void SetText (string text) {
+			pango_layout_set_text (Handle, text, -1);
+		}
+
+		[DllImport ("libpango-1.0-0.dll")]
+		static extern void pango_layout_set_markup (IntPtr raw, string markup, int length);
+
+		public void SetMarkup (string markup) {
+			pango_layout_set_markup (Handle, markup, -1);
+		}
