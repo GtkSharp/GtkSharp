@@ -1,5 +1,5 @@
 <Type Name="Application" FullName="Gtk.Application">
-  <TypeSignature Language="C#" Value="public class Application" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Application" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -11,11 +11,38 @@
     <remarks>
       <para>
 	Provides the initialization and event loop iteration related
-	methods for the GTK widget library.  Since GTK+ is an event 
+	methods for the Gtk# widget library.  Since Gtk# is an event 
 	driven toolkit, Applications register callbacks against various
 	events to handle user input. These callbacks are invoked from
 	the main event loop when events are detected.
       </para>
+      <example>
+        <code lang="C#">
+using Gtk;
+using GtkSharp;
+using System;
+
+public class HelloWorld  {
+
+	public static int Main (string[] args)
+	{
+		Application.Init ();
+		Gtk.Window win = new Gtk.Window ("Gtk# Hello World");
+		win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+		win.ShowAll ();
+		Application.Run ();
+		return 0;
+	}
+
+	static void Window_Delete (object obj, DeleteEventArgs args)
+	{
+		SignalArgs sa = (SignalArgs) args;
+		Application.Quit ();
+		sa.RetVal = true;
+	}
+}
+        </code>
+      </example>
     </remarks>
   </Docs>
   <Base>
@@ -52,8 +79,8 @@
         <remarks>
           <para>
 	    Runs a single iteration of the mainloop. If no events are
-	    waiting to be processed GTK+ will block until the next
-	    event is noticed.  If you don't want to block look at <see cref="M:Gtk.Application.RunIteration(bool)" /> or check if
+	    waiting to be processed Gtk# will block until the next
+	    event is noticed.  If you do not want to block look at <see cref="M:Gtk.Application.RunIteration(System.Boolean)" /> or check if
 	    any events are pending with <see cref="M:Gtk.Application.EventsPending()" /> first.
 	  </para>
         </remarks>
@@ -68,7 +95,7 @@
       <Parameters />
       <Docs>
         <summary>Whether there are events on the queue</summary>
-        <returns>true if events are available to be processed, false otherwise</returns>
+        <returns><see langword="true"/> if events are available to be processed, <see langword="false"/> otherwise</returns>
         <remarks>
           <para>
 	    Checks if any events are pending. This can be used to
@@ -77,16 +104,16 @@
 	  </para>
           <example>
             <code lang="C#">
-	      void LongComputation ()
-	      {
-	           while (!done){
-	               ComputationChunk ();
+void LongComputation ()
+{
+	while (!done){
+	    ComputationChunk ();
 
-	               // Flush pending events to keep the GUI reponsive
-	               while (Application.EventsPending ())
-	                  Application.RunIteration ();
-	           }
-	      }
+    	// Flush pending events to keep the GUI reponsive
+    	while (Application.EventsPending ())
+		    Application.RunIteration ();
+	}
+}
 	    </code>
           </example>
         </remarks>
@@ -104,7 +131,7 @@
         <remarks>
           <para>
 	    Runs the main loop until <see cref="M:Gtk.Application.Quit()" /> is called. You can nest
-	    calls to <see cref="Gtk.Application.Run()" />.  In that
+	    calls to <see cref="M:Gtk.Application.Run()" />.  In that
 	    case <see cref="M:Gtk.Application.Quit()" /> will make the
 	    innermost invocation of the main loop return.
 	  </para>
@@ -121,11 +148,11 @@
         <Parameter Name="args" Type="System.String []&amp;" />
       </Parameters>
       <Docs>
-        <summary>Initializes GTK+ for operation.</summary>
+        <summary>Initializes Gtk# for operation.</summary>
         <param name="args">The arguments to pass to the toolkit</param>
         <remarks>
           <para>
-	    Call this function before using any other GTK+ functions
+	    Call this function before using any other Gtk# functions
 	    in your GUI applications. It will initialize everything
 	    needed to operate the toolkit.
 	  </para>
@@ -133,7 +160,7 @@
 	    This function will terminate your program if it was unable
 	    to initialize the GUI for some reason. If you want your
 	    program to fall back to a textual interface you want to
-	    call <see cref="M:Gtk.Application.InitCheck()" /> instead.
+	    call <see cref="M:Gtk.Application.InitCheck(System.String []&amp;)" /> instead.
 	  </para>
           <para>
 	    The args values will be modified after Gtk has removed the
@@ -152,13 +179,13 @@
         <Parameter Name="args" Type="System.String []&amp;" />
       </Parameters>
       <Docs>
-        <summary>Initializes GTK+ for operation, probes window system.</summary>
+        <summary>Initializes Gtk# for operation, probes window system.</summary>
         <returns>true if the toolkit was initialized, false if the
         windowing system can not be initilized.</returns>
         <param name="args">The arguments to pass to the toolkit</param>
         <remarks>
           <para>
-	    You use this call to initialize GTK+ for your GUI
+	    You use this call to initialize Gtk# for your GUI
 	    applications.  This method will allow your application to
 	    be both GUI/text.  A true return value means that the
 	    toolkit was initialized, a false value means that the
@@ -169,7 +196,7 @@
 	    This function will terminate your program if it was unable
 	    to initialize the GUI for some reason. If you want your
 	    program to fall back to a textual interface you want to
-	    call <see cref="M:Gtk.Application.InitCheck()" /> instead.
+	    call <see cref="M:Gtk.Application.InitCheck(System.String []&amp;)" /> instead.
 	  </para>
         </remarks>
       </Docs>
@@ -185,7 +212,7 @@
         <summary>Initializes GTK+ for operation.</summary>
         <remarks>
           <para>
-	    Call this function before using any other GTK+ functions
+	    Call this function before using any other Gtk# functions
 	    in your GUI applications. It will initialize everything
 	    needed to operate the toolkit.
 	  </para>
@@ -193,11 +220,11 @@
 	    This function will terminate your program if it was unable
 	    to initialize the GUI for some reason. If you want your
 	    program to fall back to a textual interface you want to
-	    call <see cref="M:Gtk.Application.InitCheck()" /> instead.
+	    call <see cref="M:Gtk.Application.InitCheck(System.String []&amp;)" /> instead.
 	  </para>
           <para>
 	    If you want to pass arguments from the command line use
-	    the <see cref="T:Gtk.Application.Init(ref string [])" />
+	    the <see cref="T:Gtk.Application.Init(System.String []&amp;)" />
 	    method instead. 
 	  </para>
         </remarks>
@@ -210,16 +237,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="blocking" Type="System.Boolean;" />
+        <Parameter Name="blocking" Type="System.Boolean" />
       </Parameters>
       <Docs>
         <summary />
         <param name="block">A boolean value, whether the iteration should block or not</param>
         <remarks>
           <para>
-            Runs a single iteration of the mainloop. If <paramref name="blocking" /> is true, then if no events are
-            waiting to be processed GTK+ will block until the next event is noticed; If <paramref name="blocking" /> is false,
-            then it if no events are waiting to be processed Gtk+  routine will return immediately.
+            Runs a single iteration of the mainloop. If <paramref name="blocking" /> is <see langword="true"/>, then if no events are
+            waiting to be processed Gtk# will block until the next event is noticed; If <paramref name="blocking" /> is <see langword="false"/>,
+            then it if no events are waiting to be processed Gtk#, routine will return immediately.
           </para>
         </remarks>
       </Docs>
@@ -232,7 +259,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'object'</returns>
+        <returns>an object of type <see cref="System.Object"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
