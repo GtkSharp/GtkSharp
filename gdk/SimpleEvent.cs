@@ -73,6 +73,7 @@ namespace Gdk {
 			SimpleEvent se = (SimpleEvent) _Instances [inst_key];
 			Event evnt = new Event ();
 			Marshal.PtrToStructure (e, evnt);
+			// Marshal.PtrToStructure (e, (object) evnt);
 			EventArgs args = new SimpleEventArgs (evnt);
 			se._handler (se._obj, args);
 			return true; //FIXME: How do we manage the return value?

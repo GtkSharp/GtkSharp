@@ -36,7 +36,7 @@ while ($def = get_def()) {
 		$def =~ /c-name "(\w+)"/;
 		$cname=$1;
 		$def =~ s/\n\s*//g;
-		$structs{$name} = $def;
+		$structs{$cname} = $def;
 		$maptypes{$cname} = $name;
 		$marshaltypes{$cname} = $name;
 	} elsif ($def =~ /^\(define-object (\w+)/) {
@@ -172,17 +172,15 @@ sub gen_enum
 	close (OUTFILE);
 }
 
+# Code generation for the structure definitions.
 sub gen_struct
 {
-	my ($name, $def) = @_;
+	my ($cname, $def) = @_;
 
-	$def =~ /c-name "(\w+)"/;
-	$cname = $1;
+	$def =~ /define-struct (\w+)/;
+	$name = $1;
 	$def =~ /in-module "(\w+)"/;
 	$namespace = $1;
-
-	$maptypes{$cname} = $name;
-	$marshaltypes{$cname} = $name;
 
 	$dir = "../" . lc ($namespace) . "/generated";
 	open (OUTFILE, ">$dir/$name.cs") || die "can't open file";
@@ -196,7 +194,8 @@ sub gen_struct
 	print OUTFILE "\t/// <remarks>\n\t///\tFIXME: Add docs.\n";
 	print OUTFILE "\t/// </remarks>\n\n";
 
-	print OUTFILE "\tpublic struct $name {\n";
+	print OUTFILE "\t[StructLayout(LayoutKind.Sequential)]\n";
+	print OUTFILE "\tpublic class $name {\n";
 
 	if ($def =~ /fields'\((.*)\)\)\)/) {
 		foreach $parm (split(/\)'\(/, $1)) {
@@ -303,6 +302,7 @@ sub gen_object
 	close (OUTFILE);
 }
 
+# Code generation for signal definitions.
 sub gen_signal
 {
 	my ($name, $def, $dll) = @_;
@@ -344,6 +344,7 @@ sub gen_signal
 	return $code;
 }
 
+# Code generation for property definitions.
 sub gen_prop
 {
 	my ($name, $def, $dll) = @_;
@@ -522,6 +523,7 @@ sub gen_param_strings
 	return ($call, $pinv, $sig);
 }
 
+# Code generation for signal handlers.
 sub get_sighandler
 {
 	my ($def) = @_;
@@ -589,6 +591,24 @@ sub get_sighandler
 	print SIGFILE "\t\t\t\tthrow new Exception(\"Unexpected signal key\");";
 	print SIGFILE "\n\n\t\t\t$sname inst = ($sname) _Instances[key];\n";
 	print SIGFILE "\t\t\tSignalArgs args = new SignalArgs ();\n";
+	if ($def =~ /parameters'\((.*)\)\)\)/) {
+		my (@parms) = split(/\)'\(/, $1);
+		print "$sname pcnt=$#parms\n";
+		for ($idx=0; $idx < $#parms; $idx++) {
+			$parms[$idx+1] =~ s/\*//g;
+			$parms[$idx+1] =~ /"(\S*)" "(\S*)"/;
+			$ptype = $1;
+			$pname = $2;
+			$pname =~ s/object/objekt/;
+			$pname =~ s/event/ev3nt/;
+			print "$ptype $pname\n";
+			if (exists($objects{$ptype})) {
+				print SIGFILE "\t\t\targs.Args[$idx] = GLib.Object.GetObject($pname);\n";
+			} elsif (exists($maptypes{$ptype})) {
+				print SIGFILE "\t\t\targs.Args[$idx] = $pname;\n";
+			} else { warn "Whassup wit $ptype?"; }
+		}
+	}
 	print SIGFILE "\t\t\tinst._handler (inst._obj, args);\n";
 	if ($ret ne "none") {
 		print SIGFILE "\t\t\treturn ($maptypes{$ret}) args.RetVal;\n";

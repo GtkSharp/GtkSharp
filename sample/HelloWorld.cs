@@ -7,6 +7,8 @@
 namespace GtkSamples {
 
 	using Gtk;
+	using Gdk;
+	using GtkSharp;
 	using System;
 	using System.Drawing;
 
@@ -16,10 +18,7 @@ namespace GtkSamples {
 		{
 			Application.Init (ref args);
 			Window win = new Window ("Gtk# Hello World");
-			win.DefaultSize = new Size (400, 400);
-			System.Console.WriteLine (win.Title);
-			System.Console.WriteLine (win.DefaultSize);
-			System.Console.WriteLine (win.AllowShrink);
+			win.DefaultSize = new Size (200, 150);
 			win.Deleted += new EventHandler (Window_Delete);
 			win.Show ();
 			Application.Run ();
@@ -28,6 +27,9 @@ namespace GtkSamples {
 
 		static void Window_Delete (object obj, EventArgs args)
 		{
+			SimpleEventArgs sa = (SimpleEventArgs) args;
+
+			Console.WriteLine(sa.Event.type);
 			Application.Quit ();
 		}
 
