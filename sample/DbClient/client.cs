@@ -9,6 +9,9 @@ class Client {
 	static Dialog dialog = null;
 	static Toolbar toolbar = null;
 	static Table tableau = null;
+	static Entry id_entry = null;
+	static Entry name_entry = null;
+	static Entry address_entry = null;
 	
 	static void Main ()
 	{
@@ -149,23 +152,21 @@ class Client {
 		table.ColSpacings = 4;
 		table.RowSpacings = 4;
 		Label label = null;
-		Gtk.Entry entry = null;
 
 		label = Label.NewWithMnemonic ("_ID");
 		table.Attach (label, 0, 1, 0, 1);
-		entry = new Entry ();
-		table.Attach (entry, 1, 2, 0, 1);
+		id_entry = new Entry ();
+		table.Attach (id_entry, 1, 2, 0, 1);
 
 		label = Label.NewWithMnemonic ("_Name");
 		table.Attach (label, 0, 1, 1, 2);
-		entry = new Entry ();
-		table.Attach (entry, 1, 2, 1, 2);
+		name_entry = new Entry ();
+		table.Attach (name_entry, 1, 2, 1, 2);
 
 		label = Label.NewWithMnemonic ("_Address");
 		table.Attach (label, 0, 1, 2, 3);
-		entry = new Entry ();
-		table.Attach (entry, 1, 2, 2, 3);
-		
+		address_entry = new Entry ();
+		table.Attach (address_entry, 1, 2, 2, 3);
 
 		return hbox ;
 	}
@@ -181,10 +182,14 @@ class Client {
 
 	static void Insert_Action (object o, EventArgs args)
 	{
+		Console.WriteLine (String.Format ("ID: {0}\nName: {1}\nAddress: {2}",
+						  id_entry.Text, name_entry.Text, address_entry.Text));
 	}
 
 	static void Remove_Action (object o, EventArgs args)
 	{
+		Console.WriteLine (String.Format ("ID: {0}\nName: {1}\nAddress: {2}",
+						  id_entry.Text, name_entry.Text, address_entry.Text));
 	}
 
 	static void Dialog_Cancel (object o, EventArgs args)
