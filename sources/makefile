@@ -12,6 +12,13 @@ DOWNLOADS = \
 	http://unc.dl.sourceforge.net/sourceforge/gstreamer/gstreamer-0.4.2.tar.gz           \
 	http://ftp.gnome.org/pub/gnome/sources/librsvg/2.0/librsvg-2.0.1.tar.gz              \
 
+GTKHTML_SOURCES = \
+        gtkhtml/src/gtkhtml.c \
+        gtkhtml/src/gtkhtml.h \
+        gtkhtml/src/gtkhtml-types.h \
+        gtkhtml/src/gtkhtml-enums.h \
+        gtkhtml/src/gtkhtml-stream.c \
+        gtkhtml/src/gtkhtml-stream.h \
 
 all:
 	PERLLIB=../parser PATH=../parser:$$PATH ../parser/gapi.pl gtk-sharp.sources ../api
@@ -22,12 +29,7 @@ get-source-code:
 	done;
 
 	export CVS_PASSWORD=""
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.c
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.h
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-types.h
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-enums.h
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.c
-	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.h
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co $(GTKHTML_SOURCES)
 	patch -p0 < gtkhtml-font-style-enum.patch
 
 	ln -f -s ../gdk/gdkpixbuf-drawable.c gtk+-2.2.2/gdk-pixbuf/gdkpixbuf-drawable.c
