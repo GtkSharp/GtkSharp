@@ -20,6 +20,8 @@ GType    gtksharp_get_parent_type (GType typ);
 G_CONST_RETURN gchar   *gtksharp_get_type_name_for_id (GType typ);
 
 GType    gtksharp_register_type (gchar *name, GType parent);
+
+void     gtksharp_override_virtual_method (GType g_type, const gchar *name, GCallback callback);
 /* */
 
 G_CONST_RETURN gchar *
@@ -64,4 +66,12 @@ gtksharp_register_type (gchar *name, GType parent)
 	info.instance_size = query.instance_size;
 
 	return g_type_register_static (parent, name, &info, 0);
+}
+
+void
+gtksharp_override_virtual_method (GType g_type, const gchar *name, GCallback callback)
+{
+	guint id = g_signal_lookup (name, g_type);
+	GClosure *closure = g_cclosure_new (callback, NULL, NULL);
+	g_signal_override_class_closure (id, g_type, closure);
 }
