@@ -1,5 +1,5 @@
 <Type Name="TreeNode" FullName="Gtk.TreeNode">
-  <TypeSignature Language="C#" Value="public abstract class TreeNode : ITreeNode" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public abstract class TreeNode : ITreeNode" Maintainer="Mike Kestner" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey></AssemblyPublicKey>
@@ -7,10 +7,49 @@
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement />
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>TreeNode abstract class</summary>
+    <remarks>
+      <para>
+        Convenience class for deriving ITreeNode implementing objects for 
+        <see cref="T:Gtk.NodeStore"/> implementations. This class can be subclassed
+        to quickly implement a node type without having to implement the tree building
+        and navigational aspects of the <see cref="T:Gtk.ITreeNode"/> interface.
+      </para>
+      <para>
+        The following example shows a simple <see cref="T:Gtk.TreeNode"/> subclass:
+      </para>
+      <example>
+        <code lang="C#">
+[TreeNode(ColumnCount=1)]
+public class MyTreeNode : TreeNode {
+	string level;
+    
+	public MyTreeNode (string level)
+	{
+		this.level = level;
+	}
+    
+	[TreeNodeValue(Column=0)]
+	public string Level { 
+		get { 
+			return level; 
+		} 
+		set {
+			level = value;
+			OnChanged ();
+		}
+	}
+}
+        </code>
+      </example>
+      <para>
+        The <see cref="T:Gtk.TreeNode"/> base class provides all the <see cref="T:Gtk.ITreeNode"/> 
+        details and MyTreeNode uses <see cref="T:Gtk.TreeNode.OnChanged"/> to notify of tree related 
+        node changes.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -36,10 +75,13 @@
         <Parameter Name="o" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>IndexOf method</summary>
         <param name="o">a <see cref="T:System.Object" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Returns the child index of <paramref name="o"/> 
+          or -1 if <paramref name="o"/> is not a child of this <see cref="T:Gtk.TreeNode"/>.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnChanged">
@@ -50,8 +92,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>OnChanged method</summary>
+        <remarks>Raises the Changed event. Call this method if any column values of the node change.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddChild">
@@ -64,9 +106,14 @@
         <Parameter Name="child" Type="Gtk.ITreeNode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>AddChild method</summary>
         <param name="child">a <see cref="T:Gtk.ITreeNode" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          Adds the specified <paramref name="child"/> to this <see cref="T:Gtk.ITreeNode"/>. 
+          The <paramref name="child"/> is added to the end of the children list, the 
+          <see cref="P:Gtk.TreeNode.Parent"/> property of <paramref name="child"/> is set to 
+          this node, and the <see cref="E:Gtk.TreeNode.ChildAdded"/> event is raised.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveChild">
@@ -79,9 +126,13 @@
         <Parameter Name="child" Type="Gtk.ITreeNode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>RemoveChild method</summary>
         <param name="child">a <see cref="T:Gtk.ITreeNode" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          Removes the specified <paramref name="child"/> from this <see cref="T:Gtk.ITreeNode"/>.
+          The <see cref="P:Gtk.TreeNode.Parent"/> property of <paramref name="child"/> is set to 
+          <see langword="null"/> and the <see cref="E:Gtk.TreeNode.ChildRemoved"/> event is raised.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -90,9 +141,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>TreeNode constructor</summary>
         <returns>a <see cref="T:Gtk.TreeNode" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Default constructor..</remarks>
       </Docs>
     </Member>
     <Member MemberName="ID">
@@ -103,9 +154,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>ID property</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Read-only.  Provides a unique identifier for all <see cref="T:Gtk.TreeNode" /> instances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Parent">
@@ -116,9 +167,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Parent property</summary>
         <returns>a <see cref="T:Gtk.ITreeNode" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Read-only.  The parent <see cref="T:Gtk.ITreeNode" /> for this node.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildCount">
@@ -129,9 +180,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>ChildCount</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Read-only.  The number of <see cref="T:Gtk.ITreeNode" /> children of this node.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -144,10 +195,13 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Child indexer</summary>
         <param name="index">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gtk.ITreeNode" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Returns the child at position <paramref name="index" /> in the list of children
+          for this <see cref="T:Gtk.ITreeNode" />.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -158,8 +212,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Changed event</summary>
+        <remarks>
+          Raised when the contents of the <see cref="T:Gtk.ITreeNode" /> change.
+          Use <see cref="M:Gtk.ITreeNode.OnChange"/> for a convenient way to raise the event.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildAdded">
@@ -170,8 +227,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>ChildAdded event</summary>
+        <remarks>Raised when a child <see cref="T:Gtk.ITreeNode" /> is added to the node.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildRemoved">
@@ -182,8 +239,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>ChildRemoved event</summary>
+        <remarks>Raised when a child <see cref="T:Gtk.ITreeNode" /> is removed from the node.</remarks>
       </Docs>
     </Member>
   </Members>
