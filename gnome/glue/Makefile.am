@@ -18,9 +18,9 @@ libgnomesharpglue_la_SOURCES = 	\
 	program.c		\
 	#
 
-libgnomesharpglue_la_LIBADD = $(BASE_DEPENDENCIES_LIBS)
+libgnomesharpglue_la_LIBADD = $(GNOME_LIBS)
 
-INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GNOME_CFLAGS) -I$(top_srcdir)
 
 libgnomesharpglue.dll: $(libgnomesharpglue_la_OBJECTS) libgnomesharpglue.rc libgnomesharpglue.def
 	./build-dll libgnomesharpglue $(VERSION)

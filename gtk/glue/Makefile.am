@@ -22,9 +22,9 @@ libgtksharpglue_la_SOURCES =	\
 
 libgtksharpglue_la_LDFLAGS = -module -avoid-version
 
-libgtksharpglue_la_LIBADD = $(BASE_DEPENDENCIES_LIBS)
+libgtksharpglue_la_LIBADD = $(GTK_LIBS)
 
-INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue.dll: $(libgtksharpglue_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
 	./build-dll libgtksharpglue $(VERSION)

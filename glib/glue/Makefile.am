@@ -16,9 +16,9 @@ libglibsharpglue_la_SOURCES = 	\
 # Adding a new glue file?
 # Please remember to update makefile.win32
 
-libglibsharpglue_la_LIBADD = $(BASE_DEPENDENCIES_LIBS)
+libglibsharpglue_la_LIBADD = $(GLIB_LIBS)
 
-INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GLIB_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue.dll: $(libgtksharpglue_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
 	./build-dll libgtksharpglue $(VERSION)
