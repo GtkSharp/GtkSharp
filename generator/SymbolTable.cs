@@ -82,6 +82,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GTimeVal", "IntPtr"));
 			AddType (new SimpleGen ("GClosure", "IntPtr"));
 			AddType (new SimpleGen ("GArray", "IntPtr"));
+			AddType (new SimpleGen ("GByteArray", "IntPtr"));
 			AddType (new SimpleGen ("GData", "IntPtr"));
 			AddType (new SimpleGen ("GTypeModule", "GLib.Object"));
 			AddType (new SimpleGen ("GHashTable", "System.IntPtr"));
