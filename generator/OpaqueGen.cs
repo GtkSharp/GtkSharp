@@ -17,12 +17,12 @@ namespace GtkSharp.Generation {
 		{
 		}
 	
-		public override String FromNative(String var)
+		public override string FromNative(string var)
 		{
-			return "(" + QualifiedName + ") GLib.Opaque.GetOpaque(" + var + ")";
+			return "new " + QualifiedName + "(" + var + ")";
 		}
 
-		public override String FromNativeReturn(String var)
+		public override string FromNativeReturn(string var)
 		{
 			return FromNative (var);
 		}
