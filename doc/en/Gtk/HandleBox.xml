@@ -1,5 +1,5 @@
 <Type Name="HandleBox" FullName="Gtk.HandleBox">
-  <TypeSignature Language="C#" Value="public class HandleBox : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class HandleBox : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A container with a handle and a detachable child widget.</summary>
+    <remarks><para>The HandleBox widget allows a portion of a window to be &quot;torn off&quot;. It is a <see cref="T:Gtk.Bin"/> widget that displays its child with a handle that the user can drag to create a separate floating window containing the child widget and the 'handle'.</para>
+    <para>A thin ghost is drawn in the original location of the HandleBox. By dragging the separate window back to its original location, it can be reattached. When reattaching, the ghost and float window, must be aligned along one of the edges, the <see cref="P:Gtk.HandlBox.SnapEdge"/>. This can either be specified by the application programmer explicitly, otherwise a reasonable default will be used, based on the <see cref="P:Gtk.HandleBox.HandlePosition"/>.</para>
+    <para>To make detaching and reattaching the HandleBox as minimally confusing as possible to the user, it is important to set the snap edge so that it does not move when the HandleBox is deattached. For instance, if the HandleBox is packed at the bottom of a <see cref="T:Gtk.VBox"/>, then when the HandleBox is detached, the bottom edge of the HandleBox's allocation will remain fixed as the height of the HandleBox shrinks, so the snap edge should be set to <see cref="P:Gtk.PositionType.Bottom"/>.</para>
+    <para>The child of this widget is set using the <see cref="M:Gtk.Container.Add"/> method in <see cref="T:Gtk.Container"/>.</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -63,9 +66,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.HandleBox'</returns>
-        <remarks>To be added</remarks>
+        <summary>The main way to create a HandleBox.</summary>
+        <returns>A new HandleBox.</returns>
+        <remarks><para>Creates a new HandleBox, with the <see cref="P:Gtk.HandleBox.HandlePosition"/> set to the <see cref="P:Gtk.PositionType.Left"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -90,10 +93,10 @@
         <Parameter Name="value" Type="Gtk.PositionType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.PositionType'</param>
-        <returns>To be added: an object of type 'Gtk.PositionType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage which edge a detached HandleBox must reattach to.</summary>
+        <param name="value">The new edge</param>
+        <returns>The current edge that snapping works with.</returns>
+        <remarks><para>To ensure good usability, this edge should be set to a side of the HandleBox whose position or size will not be altered when the child is detached.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShadowType">
@@ -106,10 +109,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the appearance of the <see cref="T:Gtk.Container"/> surrounding the child widget.</summary>
+        <param name="value">The new style of shadow to use for this HandleBox.</param>
+        <returns>The current style of shadow in use.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="HandlePosition">
@@ -122,10 +125,10 @@
         <Parameter Name="value" Type="Gtk.PositionType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.PositionType'</param>
-        <returns>To be added: an object of type 'Gtk.PositionType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage where the handle of this container is placed.</summary>
+        <param name="value">A new position for the handle.</param>
+        <returns>The current position of the handle.</returns>
+        <remarks><para>Note: In western cultures, anything other than a <see cref="P:Gtk.PositionType.Left"/> handle for horizontal HandleBoxes, or a <see cref="P:Gtk.PositionType.Top"/> handle for vertical HandleBoxes, may seem strange to users.</para><para>The reverse is likely to be true for cultures with languages that are written from right to left.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Shadow">
@@ -138,10 +141,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the appearance of the <see cref="T:Gtk.Container"/> surrounding the child widget.</summary>
+        <param name="value">The new style of shadow to use for this HandleBox.</param>
+        <returns>The current style of shadow in use.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildAttached">
@@ -150,8 +153,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is fired when the contents of the HandleBox are reattached to the main window. </summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildDetached">
@@ -160,8 +163,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is fired when the contents of the handlebox are detached from the main window.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
