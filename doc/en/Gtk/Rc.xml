@@ -236,10 +236,15 @@
         <Parameter Name="pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rc_style">a <see cref="T:Gtk.RcStyle" /></param>
-        <param name="pattern">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Adds a <see cref="T:Gtk.RcStyle" /> that will be looked up
+	  by a match against the widget's class pathname.
+	</summary>
+        <param name="rc_style">a <see cref="T:Gtk.RcStyle" />, the style to use for widgets matching <paramref name="pattern"/></param>
+        <param name="pattern">a <see cref="T:System.String" />, the pattern to match</param>
+        <remarks>
+	  This is equivalent to a "widget_class PATTERN style STYLE" statement in a RC file.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddWidgetNameStyle">
@@ -253,10 +258,14 @@
         <Parameter Name="pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rc_style">a <see cref="T:Gtk.RcStyle" /></param>
-        <param name="pattern">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Adds a  <see cref="T:Gtk.RcStyle" /> that will be looked up by a match against the widget's pathname. 
+	</summary>
+        <param name="rc_style">a <see cref="T:Gtk.RcStyle" />, the style to use for widgets matching <paramref name="pattern"/></param>
+        <param name="pattern">a <see cref="T:System.String" />, the pattern to match</param>
+        <remarks>
+	This is equivalent to a "widget PATTERN style STYLE" statement in a RC file.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddClassStyle">
@@ -270,10 +279,10 @@
         <Parameter Name="pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Deprecated. Do not use.</summary>
         <param name="rc_style">a <see cref="T:Gtk.RcStyle" /></param>
         <param name="pattern">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ResetStyles">
@@ -286,9 +295,27 @@
         <Parameter Name="settings" Type="Gtk.Settings" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Recomputes the styles for all widgets that use a particular <see cref="T:Gtk.Settings" /> object. 
+	</summary>
         <param name="settings">a <see cref="T:Gtk.Settings" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  <para>
+	    There is one GtkSettings object per <see cref="T:Gdk.Screen" />;
+	    see <see cref="M:Gtk.Settings.GetForScreen" />
+	  </para>
+	  <para>
+	    This method is useful when some global parameter has
+	    changed that affects the appearance of all widgets,
+	    because when a widget gets a new style, it will both
+	    redraw and recompute any cached information about its
+	    appearance. As an example, it is used when the default
+	    font size set by the operating system changes. Note that
+	    this function doesn't affect widgets that have a style set
+	    explicitly on them with <see cref="M:Gtk.Widget.SetStyle"
+	    />.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
