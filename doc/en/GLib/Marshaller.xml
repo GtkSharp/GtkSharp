@@ -29,10 +29,10 @@
         <Parameter Name="ptr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Marshals a utf8 string from native memory and frees the native string.</summary>
         <param name="ptr">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PtrToStringGFree">
@@ -45,7 +45,7 @@
         <Parameter Name="ptrs" Type="System.IntPtr[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Marshals an array of utf8 string from native memory and frees the native strings.</summary>
         <param name="ptrs">a <see cref="T:System.IntPtr[]" /></param>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>To be added</remarks>
@@ -61,10 +61,10 @@
         <Parameter Name="str" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Marshal a string to a native Utf8 string using GLib memory allocation.</summary>
         <param name="str">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ArgvToArrayPtr">
@@ -183,6 +183,38 @@
         <param name="args">arguments for <paramref name="format" /></param>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>This is a wrapper for marshalling between managed String.Format-style methods and unmanaged printf-style ones. The managed function should take a <see cref="T:System.String" /> format, and a <see langword="params" /> array of <see cref="T:System.Object" />, and pass that to <see cref="M:GLib.Marshaller.StringFormat" />. <see cref="M:GLib.Marshaller.StringFormat" /> will format the data, and then make sure that any percent signs in the result are doubled so that they can safely be passed to an unmanaged method that expects a printf-style string (and following arguments).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Utf8PtrToString">
+      <MemberSignature Language="C#" Value="public static string Utf8PtrToString (IntPtr ptr);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptr" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Marshals a native Utf8 string to a managed string.</summary>
+        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PtrToStructureAlloc">
+      <MemberSignature Language="C#" Value="public static IntPtr PtrToStructureAlloc (object o);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="o">a <see cref="T:System.Object" /></param>
+        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
