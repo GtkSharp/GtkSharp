@@ -348,6 +348,15 @@ foreach $key (sort (keys (%types))) {
 	}
 }
 
+# really, _really_ opaque structs that aren't even defined in sources. Lovely.
+foreach $key (sort (keys (%ptrs))) {
+	next if $ptrs{$key} !~ /struct\s+(\w+)/;
+	$type = $1;
+	$struct_el = addNameElem ($ns_elem, 'struct', $key, $ns);
+	$struct_el->setAttribute('opaque', 'true');
+	$elem_table{lc($key)} = $struct_el;
+}
+
 addFuncElems();
 
 # This should probably be done in a more generic way

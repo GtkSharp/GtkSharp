@@ -115,7 +115,7 @@ namespace GtkSharp.Generation {
 			type = SymbolTable.GetCSType (c_type);
 			if (IsBit (field)) {
 				type = "uint";
-			} else if (IsPointer (field) && type != "string") {
+			} else if ((IsPointer (field) || SymbolTable.IsOpaque (c_type)) && type != "string") {
 				type = "IntPtr";
 				name = "_";
 			} else if (SymbolTable.IsCallback (c_type)) {
