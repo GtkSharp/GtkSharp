@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
   <namespace name="Gtk" library="gtk-x11-2.0">
     <enum name="AccelFlags" cname="GtkAccelFlags" type="flags">
       <member cname="GTK_ACCEL_VISIBLE" name="Visible" value="1 &lt;&lt; 0"/>
@@ -10046,8 +10052,8 @@
       <method name="GetPosition" cname="gtk_window_get_position">
         <return-type type="void"/>
         <parameters>
-          <parameter type="gint*" name="root_x"/>
-          <parameter type="gint*" name="root_y"/>
+          <parameter type="gint*" name="root_x" pass_as="out"/>
+          <parameter type="gint*" name="root_y" pass_as="out"/>
         </parameters>
       </method>
       <method name="GetResizable" cname="gtk_window_get_resizable">
@@ -11664,6 +11670,10 @@
     </object>
   </namespace>
   <namespace name="Gtk" library="gtkhtml-3.0">
+    <enum name="HTMLBeginFlags" cname="GtkHTMLBeginFlags" type="enum">
+      <member cname="GTK_HTML_BEGIN_KEEP_SCROLL" name="Scroll"/>
+      <member cname="GTK_HTML_BEGIN_KEEP_IMAGES" name="Images"/>
+    </enum>
     <enum name="HTMLCommandType" cname="GtkHTMLCommandType" type="enum">
       <member cname="GTK_HTML_COMMAND_UNDO" name="Undo"/>
       <member cname="GTK_HTML_COMMAND_REDO" name="Redo"/>
@@ -11812,6 +11822,10 @@
       <member cname="GTK_HTML_COMMAND_IS_SAVED" name="IsSaved"/>
       <member cname="GTK_HTML_COMMAND_SCROLL_BOD" name="ScrollBod"/>
       <member cname="GTK_HTML_COMMAND_SCROLL_EOD" name="ScrollEod"/>
+      <member cname="GTK_HTML_COMMAND_CELL_CSPAN_INC" name="CellCspanInc"/>
+      <member cname="GTK_HTML_COMMAND_CELL_RSPAN_INC" name="CellRspanInc"/>
+      <member cname="GTK_HTML_COMMAND_CELL_CSPAN_DEC" name="CellCspanDec"/>
+      <member cname="GTK_HTML_COMMAND_CELL_RSPAN_DEC" name="CellRspanDec"/>
     </enum>
     <enum name="HTMLCursorSkipType" cname="GtkHTMLCursorSkipType" type="enum">
       <member cname="GTK_HTML_CURSOR_SKIP_ONE" name="One"/>
@@ -11849,15 +11863,13 @@
       <member cname="GTK_HTML_FONT_STYLE_SUPERSCRIPT" name="Superscript" value="1 &lt;&lt; 9"/>
     </enum>
     <enum name="HTMLFontStyleShift" cname="GtkHTMLFontStyleShift" type="enum">
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_FIRST" name="First" value="3"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_BOLD" name="Bold"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_ITALIC" name="Italic"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_UNDERLINE" name="Underline"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_STRIKEOUT" name="Strikeout"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_FIXED" name="Fixed"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUBSCRIPT" name="Subscript"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUPERSCRIPT" name="Superscript"/>
-      <member cname="GTK_HTML_FONT_STYLE_SHIFT_LAST" name="Last"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_BOLD" name="Bold" value="3"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_ITALIC" name="Italic" value="4"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_UNDERLINE" name="Underline" value="5"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_STRIKEOUT" name="Strikeout" value="6"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_FIXED" name="Fixed" value="7"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUBSCRIPT" name="Subscript" value="8"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUPERSCRIPT" name="Superscript" value="9"/>
     </enum>
     <enum name="HTMLParagraphAlignment" cname="GtkHTMLParagraphAlignment" type="enum">
       <member cname="GTK_HTML_PARAGRAPH_ALIGNMENT_LEFT" name="Left"/>
@@ -11937,12 +11949,11 @@
       <field cname="engine" type="HTMLEngine*"/>
       <field cname="pointer_url" type="gchar*"/>
       <field cname="hand_cursor" type="GdkCursor*"/>
-      <field cname="arrow_cursor" type="GdkCursor*"/>
       <field cname="ibeam_cursor" type="GdkCursor*"/>
       <field cname="selection_x1" type="gint"/>
       <field cname="selection_y1" type="gint"/>
       <field cname="in_selection" bits="1" type="guint"/>
-      <field cname="button1_pressed" bits="1" type="guint"/>
+      <field cname="in_selection_drag" bits="1" type="guint"/>
       <field cname="debug" bits="1" type="guint"/>
       <field cname="allow_selection" bits="1" type="guint"/>
       <field cname="hadj_connection" type="guint"/>
@@ -12115,8 +12126,13 @@
           <parameter type="gchar*" name="content_type"/>
         </parameters>
       </method>
-      <method name="BuildWithGconf" cname="gtk_html_build_with_gconf" shared="true">
-        <return-type type="gboolean"/>
+      <method name="BeginFull" cname="gtk_html_begin_full">
+        <return-type type="GtkHTMLStream*"/>
+        <parameters>
+          <parameter type="char*" name="target_frame"/>
+          <parameter type="char*" name="content_type"/>
+          <parameter type="GtkHTMLBeginFlags" name="flags"/>
+        </parameters>
       </method>
       <method name="Command" cname="gtk_html_command">
         <return-type type="gboolean"/>
@@ -12181,6 +12197,9 @@
       <method name="GetParagraphAlignment" cname="gtk_html_get_paragraph_alignment">
         <return-type type="GtkHTMLParagraphAlignment"/>
       </method>
+      <method name="GetParagraphIndentation" cname="gtk_html_get_paragraph_indentation">
+        <return-type type="guint"/>
+      </method>
       <method name="GetParagraphStyle" cname="gtk_html_get_paragraph_style">
         <return-type type="GtkHTMLParagraphStyle"/>
       </method>
@@ -12230,6 +12249,15 @@
       <method name="ImagesUnref" cname="gtk_html_images_unref">
         <return-type type="void"/>
       </method>
+      <method name="IndentPopLevel" cname="gtk_html_indent_pop_level">
+        <return-type type="void"/>
+      </method>
+      <method name="IndentPushLevel" cname="gtk_html_indent_push_level">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="HTMLListType" name="level_type"/>
+        </parameters>
+      </method>
       <method name="InsertGtkHtml" cname="gtk_html_insert_gtk_html">
         <return-type type="void"/>
         <parameters>
@@ -12258,21 +12286,18 @@
           <parameter type="gint" name="len"/>
         </parameters>
       </method>
-      <method name="ModifyIndentByDelta" cname="gtk_html_modify_indent_by_delta">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="gint" name="delta"/>
-        </parameters>
-      </method>
       <constructor cname="gtk_html_new"/>
       <constructor cname="gtk_html_new_from_string">
         <parameters>
-          <parameter type="const-gchar*" name="str"/>
+          <parameter type="const-gchar*" name="Astr"/>
           <parameter type="gint" name="len"/>
         </parameters>
       </constructor>
       <method name="Paste" cname="gtk_html_paste">
         <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="as_cite"/>
+        </parameters>
       </method>
       <method name="Print" cname="gtk_html_print">
         <return-type type="void"/>
@@ -12291,7 +12316,7 @@
       <method name="PrintSetMaster" cname="gtk_html_print_set_master">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GnomePrintMaster*" name="print_master"/>
+          <parameter type="GnomePrintJob*" name="print_master"/>
         </parameters>
       </method>
       <method name="PrintWithHeaderFooter" cname="gtk_html_print_with_header_footer">
@@ -12314,6 +12339,7 @@
           <parameter type="GdkAtom" name="selection"/>
           <parameter type="gint" name="type"/>
           <parameter type="gint32" name="time"/>
+          <parameter type="gboolean" name="as_cite"/>
         </parameters>
       </method>
       <method name="Save" cname="gtk_html_save">
@@ -12395,7 +12421,7 @@
         </parameters>
       </method>
       <method name="SetIframeParent" cname="gtk_html_set_iframe_parent">
-        <return-type type="void"/>
+        <return-type type="gint"/>
         <parameters>
           <parameter type="GtkWidget*" name="parent"/>
           <parameter type="HTMLObject*" name="frame"/>
@@ -12404,7 +12430,7 @@
       <method name="SetIndent" cname="gtk_html_set_indent">
         <return-type type="void"/>
         <parameters>
-          <parameter type="gint" name="level"/>
+          <parameter type="GByteArray*" name="levels"/>
         </parameters>
       </method>
       <method name="SetMagnification" cname="gtk_html_set_magnification">
