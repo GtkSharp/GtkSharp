@@ -195,9 +195,9 @@ namespace GtkSharp.Generation {
 		{
 			VMSignature vmsig = new VMSignature (parms);
 			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
-			sw.WriteLine ("\t\tprotected ");
+			sw.Write ("\t\tprotected ");
 			if (NeedNew (implementor))
-				sw.WriteLine ("new ");
+				sw.Write ("new ");
 			sw.WriteLine ("virtual {0} {1} ({2})", retval.CSType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
 			if (IsVoid)
