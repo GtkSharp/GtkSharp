@@ -8,6 +8,7 @@ namespace Gtk {
 
         using System;
         using System.Collections;
+        using System.Drawing;
         using System.Runtime.InteropServices;
 	using GLib;
 	using Gdk;
@@ -210,6 +211,24 @@ namespace Gtk {
 			}
 			set {
 				SetProperty ("sensitive", value);
+			}
+		}
+
+                /// <summary>
+                ///     SizeRequest Property
+                /// </summary>
+                ///
+                /// <remarks>
+                ///     The desired size in pixels for the widget.
+                /// </remarks>
+
+		public Size SizeRequest {
+			get {
+				return new Size (WidthRequest, HeightRequest);
+			}
+			set {
+				WidthRequest = value.Width;
+				HeightRequest = value.Height;
 			}
 		}
 

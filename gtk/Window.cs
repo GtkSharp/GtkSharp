@@ -11,7 +11,15 @@ namespace Gtk {
 	using System.Drawing;
 	using System.Runtime.InteropServices;
 
-	public class Window : Widget {
+	/// <summary>
+	///	Window Class
+	/// </summary>
+	///
+	/// <remarks>
+	///	A Top Level Window object.
+	/// </remarks>
+
+	public class Window : Container {
 
 		/// <summary>
 		///	Window Object Constructor

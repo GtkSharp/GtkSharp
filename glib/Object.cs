@@ -58,8 +58,9 @@ namespace GLib {
 		///
 		/// <remarks>
 		///	The raw GObject reference associated with this wrapper.
-		///	Only subclasses of Object should need to access this
-		///	unmanaged pointer.
+		///	Only subclasses of Object can access this read/write
+		///	property.  For public read-only access, use the
+		///	Handle property.
 		/// </remarks>
 
 		protected IntPtr RawObject {
@@ -73,6 +74,22 @@ namespace GLib {
 		}       
 
 		/// <summary>
+		///	Handle Property
+		/// </summary>
+		///
+		/// <remarks>
+		///	The raw GObject reference associated with this object.
+		///	Subclasses can use RawObject property for read/write
+		///	access.
+		/// </remarks>
+
+		public IntPtr Handle {
+			get {
+				return _obj;
+			}
+		}
+
+		/// <summary>
 		///	Events Property
 		/// </summary>
 		///
@@ -81,7 +98,7 @@ namespace GLib {
 		///	object indexed by the Gtk+ signal name.
 		/// </remarks>
 
-		public EventHandlerList Events {
+		protected EventHandlerList Events {
 			get {
 				if (_events == null)
 					_events = new EventHandlerList ();
