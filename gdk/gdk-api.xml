@@ -495,10 +495,10 @@
       <field cname="colors" type="GdkColor*" />
       <field cname="visual" type="GdkVisual*" />
       <field cname="windowing_data" type="gpointer" />
-      <method name="AllocColor" cname="gdk_colormap_alloc_color" hidden="1">
+      <method name="AllocColor" cname="gdk_colormap_alloc_color">
         <return-type type="gboolean" />
         <parameters>
-          <parameter type="GdkColor*" name="color" />
+          <parameter type="GdkColor*" name="color" pass_as="ref" />
           <parameter type="gboolean" name="writeable" />
           <parameter type="gboolean" name="best_match" />
         </parameters>
@@ -506,17 +506,17 @@
       <method name="AllocColors" cname="gdk_colormap_alloc_colors">
         <return-type type="gint" />
         <parameters>
-          <parameter type="GdkColor*" name="colors" />
+          <parameter type="GdkColor*" name="colors" array="1" />
           <parameter type="gint" name="ncolors" />
           <parameter type="gboolean" name="writeable" />
           <parameter type="gboolean" name="best_match" />
-          <parameter type="gboolean*" name="success" />
+          <parameter type="gboolean*" name="success" array="1" />
         </parameters>
       </method>
       <method name="FreeColors" cname="gdk_colormap_free_colors">
         <return-type type="void" />
         <parameters>
-          <parameter type="GdkColor*" name="colors" />
+          <parameter type="GdkColor*" name="colors" array="1" />
           <parameter type="gint" name="ncolors" />
         </parameters>
       </method>
@@ -542,7 +542,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gulong" name="pixel" />
-          <parameter type="GdkColor*" name="result" />
+          <parameter type="GdkColor*" name="result" pass_as="ref" />
         </parameters>
       </method>
     </object>
