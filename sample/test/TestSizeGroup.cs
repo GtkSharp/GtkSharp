@@ -62,7 +62,7 @@ namespace WidgetViewer {
 			check_button.Active = true;
 			check_button.Toggled += new EventHandler (Button_Toggle_Cb);
 
-			Button close_button = new Button ("_Close");
+			Button close_button = Button.NewFromStock (Stock.Close);
 			close_button.Clicked += new EventHandler (Close_Button);
 			window.ActionArea.PackStart (close_button, false, false, 0);
 			

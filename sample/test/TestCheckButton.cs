@@ -50,7 +50,7 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, false, false, 0);
 
-			Button button = new Button ("close");
+			Button button = Button.NewFromStock (Stock.Close);
 			button.Clicked += new EventHandler (Close_Button);
 			button.CanDefault = true;
 			

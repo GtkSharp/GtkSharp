@@ -88,39 +88,44 @@ namespace WidgetViewer {
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
 			Gdk.Color selected = window.ColorSelection.CurrentColor;
-			if (selected.IsNull) {
+			if (selected.IsNull)
 				Console.WriteLine ("Color selection failed.");
-				return;
+			else {
+				window.Hide ();
+				Display_Result (selected);
 			}
-			Display_Result (selected);
 		}
 
 		static void Color_Selection_Cancel (object o, EventArgs args)
 		{
-			if (dialog != null)
-				dialog.Destroy ();
 			window.Destroy ();
+		}
+
+		static void Dialog_Ok (object o, EventArgs args)
+		{
+			dialog.Destroy ();
+			window.ShowAll ();
 		}
 
 		static void Display_Result (Gdk.Color color)
 		{
 			if (color.IsNull)
 				Console.WriteLine ("Null color");
-			dialog = new Dialog ();
-			dialog.Title = "Selected Color";
 
-			dialog.VBox.PackStart (new Gtk.Label (HexFormat (color)),
-										  false, false, 0);
+			dialog = new Dialog ();
+			dialog.Title = "Selected Color: " + HexFormat (color);
+			dialog.HasSeparator = true;
 
 			DrawingArea da = new DrawingArea ();
 
 			da.ModifyBg (StateType.Normal, color);
 
-			dialog.VBox.PackStart (da, true, true, 0);
+			dialog.VBox.BorderWidth = 10;
+			dialog.VBox.PackStart (da, true, true, 10);
 			dialog.SetDefaultSize (200, 200);
 
-			Button button = new Button ("OK");
-			button.Clicked += new EventHandler (Close_Button);
+			Button button = Button.NewFromStock (Stock.Ok);
+			button.Clicked += new EventHandler (Dialog_Ok);
 			button.CanDefault = true;
 			dialog.ActionArea.PackStart (button, true, true, 0);
 			button.GrabDefault ();

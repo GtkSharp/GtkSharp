@@ -39,7 +39,7 @@ namespace WidgetViewer {
 			check_button.Toggled += new EventHandler (Toggle_Flip);
 			check_button.BorderWidth = 10;
 
-			button = new Button ("close");
+			button = Button.NewFromStock (Stock.Close);
 			button.Clicked += new EventHandler (Close_Button);
 			button.CanDefault = true;
 			
