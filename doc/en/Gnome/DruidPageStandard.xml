@@ -1,16 +1,25 @@
 <Type Name="DruidPageStandard" FullName="Gnome.DruidPageStandard">
-  <TypeSignature Language="C#" Value="public class DruidPageStandard : Gnome.DruidPage, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class DruidPageStandard : Gnome.DruidPage, Implementor, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
-    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyPublicKey>
+    </AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A widget used to implement the middle pages in a <see cref="T:Gnome.Druid" /> sequence.
+</summary>
+    <remarks>
+      <para>
+        This widget provides similar functionality to that in GnomeDruidPageEdge. It is used for pages that are not the initial or terminal pages of a druid.
+      </para>
+      <para>
+        The main difference between an edge and a standard druid page (in a display sense) is that standard pages do not have a left-side watermark and the body of the contents section is a bit more arbitrary (it is a <see cref="T:Gtk.VBox" />), rather than just displaying text (which is the common case for edge pages).
+      </para>
+	</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gnome.DruidPage</BaseTypeName>
@@ -18,9 +27,6 @@
   <Interfaces>
     <Interface>
       <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
@@ -43,11 +49,18 @@
         <Parameter Name="additional_info" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="question">To be added: an object of type 'string'</param>
-        <param name="item">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="additional_info">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Convenience function to add a <see cref="T:Gtk.Widget" /> to the <see cref="T:Gnome.DruidPageStandard" /> vbox.</summary>
+        <param name="question">an object of type <see cref="T:System.String" /></param>
+        <param name="item">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="additional_info">an object of type <see cref="T:System.String" /></param>
+        <remarks>
+          <para>
+            This function creates a new contents section that has the <paramref name="question" /> text followed by the <paramref name="item" /> widget and then the <paramref name="addition_info" /> text, all stacked vertically from top to bottom.
+          </para>
+          <para>
+            The <paramref name="item" /> widget could be something like a set of radio checkbuttons requesting a choice from the user.
+          </para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -84,9 +97,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.DruidPageStandard'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>an object of type <see cref="T:Gnome.DruidPageStandard" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -99,12 +112,12 @@
         <Parameter Name="top_watermark" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="title">To be added: an object of type 'string'</param>
-        <param name="logo">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="top_watermark">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gnome.DruidPageStandard'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gnome.DruidPageStandard" /> instance.</summary>
+        <param name="title">an object of type <see cref="T:System.String" /></param>
+        <param name="logo">an object of type <see cref="T:Gdk.Pixbuf" /></param>
+        <param name="top_watermark">an object of type <see cref="T:Gdk.Pixbuf" /></param>
+        <returns>an object of type <see cref="T:Gnome.DruidPageStandard" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -114,8 +127,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gnome.DruidPageStandard</summary>
-        <returns>The GLib Type for the Gnome.DruidPageStandard class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gnome.DruidPageStandard" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gnome.DruidPageStandard" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -125,12 +138,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The color of the main contents section background.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="TitleForegroundGdk">
@@ -139,12 +153,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The title text to the specified color.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LogoBackgroundGdk">
@@ -153,12 +168,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The background of the logo.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="TitleForegroundSet">
@@ -167,11 +183,12 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -181,12 +198,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the logo in the top right corner.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks>If <see langword ="null" />, then no logo will be displayed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TitleForeground">
@@ -195,12 +213,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The title text to the specified color.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LogoBackground">
@@ -209,12 +228,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The background color of the logo</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Background">
@@ -223,12 +243,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The background color of the top section of the druid page.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Title">
@@ -237,12 +258,13 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The title of the druid page.</summary>
+        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.String" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BackgroundGdk">
@@ -251,12 +273,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>The background color of the top section of the druid page.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <returns>an object of type <see cref="T:Gdk.Color" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="TopWatermark">
@@ -265,12 +288,13 @@
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on the top strip on the druid.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Pixbuf" /></param>
+        <returns>an object of type <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>If <see langword="null" />, it is reset to the normal color.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LogoBackgroundSet">
@@ -279,11 +303,12 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -293,11 +318,12 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

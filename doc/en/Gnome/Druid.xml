@@ -1,16 +1,17 @@
 <Type Name="Druid" FullName="Gnome.Druid">
-  <TypeSignature Language="C#" Value="public class Druid : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Druid : Gtk.Container, Implementor, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
-    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyPublicKey>
+    </AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Widget for sequentially stepping through some pages.</summary>
+    <remarks></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -18,9 +19,6 @@
   <Interfaces>
     <Interface>
       <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
@@ -41,9 +39,9 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="page">To be added: an object of type 'Gnome.DruidPage'</param>
-        <remarks>To be added</remarks>
+        <summary>This will prepend a <see cref="T:Gnome.DruidPage" /> into the internal list of pages of the druid.</summary>
+        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
+        <remarks>Since GnomeDruid is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertPage">
@@ -57,10 +55,10 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="back_page">To be added: an object of type 'Gnome.DruidPage'</param>
-        <param name="page">To be added: an object of type 'Gnome.DruidPage'</param>
-        <remarks>To be added</remarks>
+        <summary>This will insert <paramref name="page" /> after <paramref name="back_page" /> into the list of internal pages of the druid.</summary>
+        <param name="back_page">an object of type <see cref="T:Gnome.DruidPage" /></param>
+        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
+        <remarks>If <paramref name="back_page" /> is not present in the list or <see langword="null" />, <paramref name="page" /> will be prepended to the list. Since <see cref="T:Gnome.Druid" /> is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetButtonsSensitive">
@@ -76,12 +74,12 @@
         <Parameter Name="help_sensitive" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="back_sensitive">To be added: an object of type 'bool'</param>
-        <param name="next_sensitive">To be added: an object of type 'bool'</param>
-        <param name="cancel_sensitive">To be added: an object of type 'bool'</param>
-        <param name="help_sensitive">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the sensitivity of of the control-buttons for the <see cref="T:Gnome.Druid" />.</summary>
+        <param name="back_sensitive">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="next_sensitive">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="cancel_sensitive">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="help_sensitive">an object of type <see cref="T:System.Boolean" /></param>
+        <remarks>If the variables are <see langword="true" />, then they will be clickable. This function is used primarily by the actual <see cref="T:Gnome.DruidPage" /> widgets.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendPage">
@@ -94,9 +92,9 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="page">To be added: an object of type 'Gnome.DruidPage'</param>
-        <remarks>To be added</remarks>
+        <summary>This will append <paramref name="page" /> onto the end of the internal list of the druid.</summary>
+        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
+        <remarks>Since GnomeDruid is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstructWithWindow">
@@ -112,12 +110,12 @@
         <Parameter Name="window" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="title">To be added: an object of type 'string'</param>
-        <param name="parent">To be added: an object of type 'Gtk.Window'</param>
-        <param name="close_on_cancel">To be added: an object of type 'bool'</param>
-        <param name="window">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates a new toplevel window with the title of <paramref name="title" /> (which can be <see langword="null" />) and a parent of <paramref name="parent" /> (which also can be <see langword="null" />).</summary>
+        <param name="title">an object of type <see cref="T:System.String" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.Window" /></param>
+        <param name="close_on_cancel">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="window">an object of type <see cref="T:Gtk.Widget" /></param>
+        <remarks>The druid will be placed inside this window. The window and the druid will both be shown. If you need the window widget pointer you can optionally get it through the last argument. When the druid gets destroyed, so will the window that is created here.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -154,9 +152,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.Druid'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>an object of type <see cref="T:Gnome.Druid" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -170,13 +168,13 @@
         <Parameter Name="window" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="title">To be added: an object of type 'string'</param>
-        <param name="parent">To be added: an object of type 'Gtk.Window'</param>
-        <param name="close_on_cancel">To be added: an object of type 'bool'</param>
-        <param name="window">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gnome.Druid'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gnome.Druid" /> instance.</summary>
+        <param name="title">an object of type <see cref="T:System.String" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.Window" /></param>
+        <param name="close_on_cancel">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="window">an object of type <see cref="T:Gtk.Widget" /></param>
+        <returns>an object of type <see cref="T:Gnome.Druid" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -186,8 +184,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gnome.Druid</summary>
-        <returns>The GLib Type for the Gnome.Druid class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gnome.Druid" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gnome.Druid" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -197,12 +195,13 @@
       <ReturnValue>
         <ReturnType>Gnome.DruidPage</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gnome.DruidPage'</param>
-        <returns>To be added: an object of type 'Gnome.DruidPage'</returns>
-        <remarks>To be added</remarks>
+        <summary>This will make <paramref name="page" /> the currently showing page in the druid.</summary>
+        <param name="value">an object of type <see cref="T:Gnome.DruidPage" /></param>
+        <returns>an object of type <see cref="T:Gnome.DruidPage" /></returns>
+        <remarks><paramref name="page" /> must already be in the druid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFinish">
@@ -211,12 +210,13 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Used to specify if the druid is currently showing the last page of the sequence (and hence should display "Finish", rather than "Next").</summary>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowHelp">
@@ -225,12 +225,13 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters></Parameters>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the "Help" button on the druid to be visible in the lower left corner of the widget, if <see langword="true" />.</summary>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Help">
@@ -241,8 +242,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Help" button of the druid is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Cancel">
@@ -253,8 +254,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Cancel" button of the druid is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">

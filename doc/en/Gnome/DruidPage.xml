@@ -1,16 +1,17 @@
 <Type Name="DruidPage" FullName="Gnome.DruidPage">
-  <TypeSignature Language="C#" Value="public class DruidPage : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class DruidPage : Gtk.Bin, Implementor, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
-    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyPublicKey>
+    </AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A widget representing a single page inside a druid.</summary>
+    <remarks>The functions in this page are mostly only for the information of developers -- they should never need to call them directly. Typically, a druid will connect to the various signals described here as a way of controlling the behaviour of druids that do not just proceed in a front-to-back fashion (for example, where the subsequent pages depend upon the choice made at some point).</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -18,9 +19,6 @@
   <Interfaces>
     <Interface>
       <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
@@ -39,7 +37,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Emit the <see cref="E:Gnome.DruidPage.Finish" /> event.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -51,9 +49,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Emit the <see cref="E:Gnome.DruidPage.Next" /> event.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>It is called by gnome-druid exclusively. It is expected that non-linear Druids will override this signal and return <see langword="true" /> if it handles changing pages.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Cancel">
@@ -64,9 +62,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Emit the <see cref="E:Gnome.DruidPage.Next" /> event.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>It is called by gnome-druid exclusively. It is expected that a Druid will override this signal and return <see langword="true" /> if it does not want to exit.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Prepare">
@@ -77,8 +75,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emit the <see cref="E:Gnome.DruidPage.Prepare" /> event.</summary>
+        <remarks>It is called by <see cref="T:Gnome.Druid" /> exclusively. This function is called immediately prior to a druid page being shown so that it can "prepare" for display.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Back">
@@ -89,9 +87,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Emit the <see cref="E:Gnome.DruidPage.Back" /> event.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>It is called by <see cref="T:Gnome.Druid" /> exclusively. It is expected that non-linear Druids will override this signal and return <see langword="true" /> if it handles changing pages.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -128,9 +126,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.DruidPage'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>an object of type <see cref="T:Gnome.DruidPage" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -140,8 +138,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gnome.DruidPage</summary>
-        <returns>The GLib Type for the Gnome.DruidPage class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gnome.DruidPage" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gnome.DruidPage" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -153,8 +151,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Cancel" button of the page is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BackClicked">
@@ -165,8 +163,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Back" button of the page is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FinishClicked">
@@ -177,8 +175,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Finish" button of the page is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="NextClicked">
@@ -189,8 +187,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the "Next" button of the page is clicked.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Prepared">
@@ -201,8 +199,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted immediately prior to a druid page being shown.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
