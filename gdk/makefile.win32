@@ -1,7 +1,10 @@
 all: windows
 
 windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:gdk-sharp.dll /recurse:*.cs
+	cat *.cs generated/*.cs > allthesource.cs
+	../mapdllnames.pl allthesource.cs
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:gdk-sharp.dll allthesource.cs
+	rm allthesource.cs
 
 docs:
 	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /doc:gdk-sharp-docs.xml /out:gdk-sharp.dll /recurse:*.cs

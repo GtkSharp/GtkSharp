@@ -244,6 +244,20 @@ namespace GLib {
 			g_value_set_uint (_val, val); 
 		}
 
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified ushort.
+		/// </remarks>
+
+		public Value (ushort val)
+		{
+			_val = gtksharp_value_create (TypeFundamentals.TypeUInt);
+			g_value_set_uint (_val, val); 
+		}
+
 		[DllImport("gobject-2.0")]
 		static extern void g_value_set_enum (IntPtr val, int data);
 		[DllImport("gobject-2.0")]
@@ -465,6 +479,23 @@ namespace GLib {
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_uint (val._val);
+		}
+
+		/// <summary>
+		///	Value to Unsigned Short Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a ushort from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	unsigned integer value.  
+		/// </remarks>
+
+		public static explicit operator ushort (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return (ushort) g_value_get_uint (val._val);
 		}
 
 		[DllImport("gobject-2.0")]

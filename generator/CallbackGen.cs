@@ -23,7 +23,7 @@ namespace GtkSharp.Generation {
 		public String MarshalType {
 			get
 			{
-				return "GtkSharp." + NS + Name + "Native";
+				return NS + "Sharp." + Name + "Native";
 			}
 		}
 
@@ -57,9 +57,9 @@ namespace GtkSharp.Generation {
 			if (!Directory.Exists (dir))
 				Directory.CreateDirectory (dir);
 
-			string wrapper = NS + Name + "Native";
+			string wrapper = Name + "Native";
 
-			string filename = dir + sep + "GtkSharp." + wrapper + ".cs";
+			string filename = dir + sep + NS + "Sharp." + wrapper + ".cs";
 
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -67,10 +67,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Generated File.  Do not modify.");
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
-			sw.WriteLine ("namespace GtkSharp {");
+			sw.WriteLine ("namespace " + NS + "Sharp {");
 			sw.WriteLine ();
 			sw.WriteLine ("\tusing System;");
-			sw.WriteLine ("\tusing System.Collections;");
+			sw.WriteLine ();
 			
 			string import_sig;
 			if (parms != null)
@@ -87,7 +87,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic delegate " + m_ret + " " + wrapper + "(" + import_sig + ");");
 			sw.WriteLine ();
 			
-			sw.WriteLine ("\tpublic class " + NS + Name + "Wrapper : GLib.DelegateWrapper {");
+			sw.WriteLine ("\tpublic class " + Name + "Wrapper : GLib.DelegateWrapper {");
 			sw.WriteLine ();
 
 			sw.WriteLine ("\t\tpublic " + m_ret + " NativeCallback (" + import_sig + ")");
@@ -147,7 +147,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tprotected {0} _managed;", NS + "." + Name);
 			sw.WriteLine ();
 
-			sw.WriteLine ("\t\tpublic {0} ({1} managed) : base ()", NS + Name + "Wrapper", NS + "." + Name);
+			sw.WriteLine ("\t\tpublic {0} ({1} managed) : base ()", Name + "Wrapper", NS + "." + Name);
 			sw.WriteLine ("\t\t{");
 
 			sw.WriteLine ("\t\t\tNativeDelegate = new {0} (NativeCallback);", wrapper);

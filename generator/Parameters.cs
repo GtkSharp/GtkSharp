@@ -215,8 +215,7 @@ namespace GtkSharp.Generation {
 
 				if (SymbolTable.IsCallback (type)) {
 					call_parm = SymbolTable.CallByName (type, call_parm_name + "_wrapper");
-					callback_type = type.Replace (".", "");
-					callback_type = "GtkSharp." + callback_type + "Wrapper";
+					callback_type = type.Replace(".", "Sharp.") + "Wrapper";
 				} else
 					call_parm = SymbolTable.CallByName(type, call_parm_name);
 				
@@ -344,8 +343,7 @@ namespace GtkSharp.Generation {
 				name = MangleName(p_elem.GetAttribute("name"));
 
 				if (SymbolTable.IsCallback (c_type)) {
-					type = type.Replace (".", "");
-					type = "GtkSharp." + type + "Wrapper";
+					type = type.Replace(".", "Sharp.") + "Wrapper";
 
 					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", type, name);
 					sw.Write (indent + "\t\t\t");

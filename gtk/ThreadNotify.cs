@@ -16,7 +16,7 @@ namespace Gtk {
 	// <summary>
 	//    This delegate will be invoked on the main Gtk thread.
 	// </summary>
-	delegate void ReadyEvent ();
+	public delegate void ReadyEvent ();
 
 	/// <summary>
 	///   Utility class to help writting multi-threaded Gtk applications

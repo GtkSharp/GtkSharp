@@ -88,7 +88,7 @@ namespace GtkSharp.Generation {
 				Directory.CreateDirectory(dir);
 			}
 
-			String filename = dir + sep + sname + ".cs";
+			String filename = dir + sep + ns + "Sharp." + sname + ".cs";
 
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -96,12 +96,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Generated File.  Do not modify.");
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
-			sw.WriteLine("namespace GtkSharp {");
-			sw.WriteLine();
-			sw.WriteLine("namespace " + ns + " {");
+			sw.WriteLine("namespace " + ns + "Sharp {");
 			sw.WriteLine();
 			sw.WriteLine("\tusing System;");
 			sw.WriteLine("\tusing System.Runtime.InteropServices;");
+			sw.WriteLine("\tusing GtkSharp;");
 			sw.WriteLine();
 			sw.Write("\tpublic delegate " + p_ret + " ");
 			sw.WriteLine(dname + "(" + pinv + ", int key);");
@@ -189,10 +188,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine("\t}");
 			sw.WriteLine("}");
-			sw.WriteLine("}");
 			sw.Close();
 
-			return ns + "." + sname;
+			return ns + "Sharp." + sname;
 		}
 	}
 }

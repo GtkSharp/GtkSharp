@@ -1,7 +1,10 @@
 all: windows
 
 windows:
-	$(CSC) /unsafe /target:library /out:glib-sharp.dll /recurse:*.cs
+	cat *.cs > allthesource.cs
+	../mapdllnames.pl allthesource.cs
+	$(CSC) /unsafe /target:library /out:glib-sharp.dll allthesource.cs
+	rm allthesource.cs
 
 docs:
 	$(CSC) /unsafe /target:library /doc:glib-sharp-docs.xml /out:glib-sharp.dll /recurse:*.cs

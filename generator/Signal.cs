@@ -57,7 +57,7 @@ namespace GtkSharp.Generation {
 			string argsname;
 			string handler = GetHandlerName (out argsname);
 			if (handler != "EventHandler")
-				handler = "GtkSharp." + handler;
+				handler = container_type.NS + "Sharp." + handler;
 
 			GenComments (sw);
 			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null))
@@ -98,7 +98,7 @@ namespace GtkSharp.Generation {
 			if (!Directory.Exists (dir))
 				Directory.CreateDirectory (dir);
 
-			string filename = dir + sep + "GtkSharp." + handler + ".cs";
+			string filename = dir + sep + container_type.NS + "Sharp." + handler + ".cs";
 
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -106,7 +106,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Generated File.  Do not modify.");
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
-			sw.WriteLine ("namespace GtkSharp {");
+			sw.WriteLine ("namespace " + container_type.NS + "Sharp {");
 			sw.WriteLine ();
 			sw.WriteLine ("\tusing System;");
 
@@ -138,13 +138,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("}");
 			sw.Close ();
 			argsname = "GtkSharp." + argsname;
-			return "GtkSharp." + handler;
+			return container_type.NS + "Sharp." + handler;
 		}
 
 		public void Generate (StreamWriter sw, ClassBase implementor, bool gen_docs)
 		{
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
-			string qual_marsh = "GtkSharp." + marsh;
+			string qual_marsh = marsh;
 
 			if (gen_docs)
 				GenComments (sw);
