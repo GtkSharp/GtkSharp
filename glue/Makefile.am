@@ -12,7 +12,9 @@ BASESOURCES = \
 	paned.c			\
 	style.c			\
 	type.c			\
-	widget.c	
+	widget.c		\
+	canvas-proxy.c		\
+	canvas-proxy.h
 
 GNOMESOURCES = \
 	canvasitem.c \
