@@ -256,6 +256,12 @@
     </object>
     <object name="Editor" cname="GnomeDbEditor" parent="GtkVBox">
       <field name="Priv" cname="priv" type="GnomeDbEditorPrivate*"/>
+      <virtual_method name="TextChanged" cname="text_changed">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbEditor" name="editor"/>
+        </parameters>
+      </virtual_method>
       <method name="CopyClipboard" cname="gnome_db_editor_copy_clipboard">
         <return-type type="void"/>
       </method>
@@ -830,15 +836,6 @@
       <field name="Hostname" cname="hostname" type="gchar*"/>
       <field name="Domain" cname="domain" type="gchar*"/>
       <field name="Properties" cname="properties" type="GdaParameterList*"/>
-    </struct>
-    <struct name="EditorClass" cname="GnomeDbEditorClass">
-      <field name="ParentClass" cname="parent_class" type="GtkVBoxClass"/>
-      <callback cname="text_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GnomeDbEditor" name="editor"/>
-        </parameters>
-      </callback>
     </struct>
     <class name="Config" cname="GnomeDbConfig_">
       <method name="AddListener" cname="gnome_db_config_add_listener" shared="true">
