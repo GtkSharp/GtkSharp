@@ -55,7 +55,11 @@ namespace GtkDemo
 			AddColumns (treeView);
 			scrolledWindow.Add (treeView);
 
-			// expand all rows after the treeview widget has been realized 
+			// expand all rows after the treeview widget has been realized
+			for (int i = 0; i < 12; i++)
+			{
+				treeView.ExpandRow (new TreePath (i.ToString ()), false);
+			}
 
 			window.SetDefaultSize (650, 400);
 
