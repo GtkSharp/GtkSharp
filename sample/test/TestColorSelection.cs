@@ -88,7 +88,7 @@ namespace WidgetViewer {
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
 			Gdk.Color selected = window.ColorSelection.CurrentColor;
-			if (selected.IsNull)
+			if (selected == Gdk.Color.Zero)
 				Console.WriteLine ("Color selection failed.");
 			else {
 				window.Hide ();
@@ -109,7 +109,7 @@ namespace WidgetViewer {
 
 		static void Display_Result (Gdk.Color color)
 		{
-			if (color.IsNull)
+			if (color == Gdk.Color.Zero)
 				Console.WriteLine ("Null color");
 
 			dialog = new Dialog ();

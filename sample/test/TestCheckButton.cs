@@ -51,7 +51,7 @@ namespace WidgetViewer {
 			box1.PackStart (box2, false, false, 0);
 
 			Button button = Button.NewFromStock (Stock.Close);
-			button.Clicked += new EventHandler (Close_Button);
+			button.Clicked += new EventHandler (OnCloseClicked);
 			button.CanDefault = true;
 			
 			box2.PackStart (button, true, true, 0);
@@ -59,7 +59,7 @@ namespace WidgetViewer {
 			return window;
 		}
 
-		static void Close_Button (object o, EventArgs args)
+		static void OnCloseClicked (object o, EventArgs args)
 		{
 			window.Destroy ();
 		}
