@@ -105,6 +105,27 @@ namespace Gtk {
 			}
 		}
 			
+		/// <summary>
+		///	DefaultHeight Property
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	The default Height of the Window in Pixels.
+		/// </remarks>
+
+		public int DefaultHeight {
+			get {
+				Value val = new Value (
+						TypeFundamentals.TypeInt);
+				GetProperty ("default-height", val);
+				return ((int) val);
+			}
+			set {
+				Value val = new Value (value);
+				SetProperty ("default-height", val);
+			}
+		}
+
 /*
 		/// <summary>
 		///	DefaultSize Property
@@ -124,6 +145,27 @@ namespace Gtk {
 			}
 		}
 */
+		/// <summary>
+		///	DefaultWidth Property
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	The default Width of the Window in Pixels.
+		/// </remarks>
+
+		public int DefaultWidth {
+			get {
+				Value val = new Value (
+						TypeFundamentals.TypeInt);
+				GetProperty ("default-width", val);
+				return ((int) val);
+			}
+			set {
+				Value val = new Value (value);
+				SetProperty ("default-width", val);
+			}
+		}
+
 
 		/// <summary>
 		///	DestroyWithParent Property

@@ -87,6 +87,23 @@ namespace GLib {
 		/// </summary>
 		/// 
 		/// <remarks>
+		///	Constructs a Value from a specified integer.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_set_int (IntPtr val, int data);
+
+		public Value (int val) : this ()
+		{
+			g_value_init (_val, TypeFundamentals.TypeInt);
+			g_value_set_int (_val, val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
 		///	Constructs a Value from a specified string.
 		/// </remarks>
 
@@ -134,6 +151,26 @@ namespace GLib {
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_boolean (val._val);
+		}
+
+		/// <summary>
+		///	Value to Integer Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts an int from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	integer value.  
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern int g_value_get_int (IntPtr val);
+
+		public static explicit operator int (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_int (val._val);
 		}
 
 		/// <summary>
