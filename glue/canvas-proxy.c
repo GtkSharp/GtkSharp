@@ -50,8 +50,8 @@ gtksharp_canvas_proxy_class_init (CanvasProxyClass *class)
 					       G_SIGNAL_RUN_LAST,
 					       G_STRUCT_OFFSET (GnomeCanvasItemClass, update),
 					       NULL, NULL,
-					       g_cclosure_user_marshal_VOID__OBJECT_DOUBLE_POINTER_INT,
-					       G_TYPE_NONE, 3, G_TYPE_DOUBLE,
+					       g_cclosure_user_marshal_VOID__OBJECT_POINTER_POINTER_INT,
+					       G_TYPE_NONE, 3, G_TYPE_POINTER,
 					       G_TYPE_POINTER, G_TYPE_INT);
 
 	/* void (* realize) (GnomeCanvasItem *item); */

@@ -47,22 +47,22 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* VOID:OBJECT,DOUBLE,POINTER,INT (canvas-proxy-marshal.list:1) */
+/* VOID:OBJECT,POINTER,POINTER,INT (canvas-proxy-marshal.list:1) */
 void
-g_cclosure_user_marshal_VOID__OBJECT_DOUBLE_POINTER_INT (GClosure     *closure,
-                                                         GValue       *return_value,
-                                                         guint         n_param_values,
-                                                         const GValue *param_values,
-                                                         gpointer      invocation_hint,
-                                                         gpointer      marshal_data)
+g_cclosure_user_marshal_VOID__OBJECT_POINTER_POINTER_INT (GClosure     *closure,
+                                                          GValue       *return_value,
+                                                          guint         n_param_values,
+                                                          const GValue *param_values,
+                                                          gpointer      invocation_hint,
+                                                          gpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__OBJECT_DOUBLE_POINTER_INT) (gpointer     data1,
-                                                                gpointer     arg_1,
-                                                                gdouble      arg_2,
-                                                                gpointer     arg_3,
-                                                                gint         arg_4,
-                                                                gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_DOUBLE_POINTER_INT callback;
+  typedef void (*GMarshalFunc_VOID__OBJECT_POINTER_POINTER_INT) (gpointer     data1,
+                                                                 gpointer     arg_1,
+                                                                 gpointer     arg_2,
+                                                                 gpointer     arg_3,
+                                                                 gint         arg_4,
+                                                                 gpointer     data2);
+  register GMarshalFunc_VOID__OBJECT_POINTER_POINTER_INT callback;
   register GCClosure *cc = (GCClosure*) closure;
   register gpointer data1, data2;
 
@@ -78,11 +78,11 @@ g_cclosure_user_marshal_VOID__OBJECT_DOUBLE_POINTER_INT (GClosure     *closure,
       data1 = g_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
-  callback = (GMarshalFunc_VOID__OBJECT_DOUBLE_POINTER_INT) (marshal_data ? marshal_data : cc->callback);
+  callback = (GMarshalFunc_VOID__OBJECT_POINTER_POINTER_INT) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,
             g_marshal_value_peek_object (param_values + 1),
-            g_marshal_value_peek_double (param_values + 2),
+            g_marshal_value_peek_pointer (param_values + 2),
             g_marshal_value_peek_pointer (param_values + 3),
             g_marshal_value_peek_int (param_values + 4),
             data2);
