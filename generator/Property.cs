@@ -138,8 +138,6 @@ namespace GtkSharp.Generation {
 					cs_type = getter_type;
 			}
 
-			sw.WriteLine();
-
 			sw.WriteLine (indent + PropertyAttribute (qpname));
 			sw.WriteLine (indent + "public " + modifiers + cs_type + " " + name + " {");
 			indent += "\t";
