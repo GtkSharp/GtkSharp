@@ -1,10 +1,10 @@
-// GtkSharp.IGeneratable.cs - Interface to generate code for a type.
+// GtkSharp.Generation.IGeneratable.cs - Interface to generate code for a type.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // (c) 2001 Mike Kestner
 
-namespace GtkSharp {
+namespace GtkSharp.Generation {
 
 	using System;
 
@@ -16,8 +16,10 @@ namespace GtkSharp {
 
 		String Name {get;}
 
+		String QualifiedName {get;}
+
 		String CallByName (String var_name);
 
-		void Generate ();
+		void Generate (SymbolTable table);
 	}
 }

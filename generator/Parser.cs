@@ -1,10 +1,10 @@
-// GtkSharp.Parser.cs - The XML Parsing engine.
+// GtkSharp.Generation.Parser.cs - The XML Parsing engine.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // (c) 2001 Mike Kestner
 
-namespace GtkSharp {
+namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
@@ -13,7 +13,7 @@ namespace GtkSharp {
 	public class Parser  {
 		
 		private XmlDocument doc;
-		private Hashtable types;
+		private SymbolTable table;
 		
 		public Parser (String filename)
 		{
@@ -30,33 +30,30 @@ namespace GtkSharp {
 			}
 
 		}
-		
 
-		public Hashtable Types {
-			get 
-			{
-				if (types != null) return types;
+		public SymbolTable Parse ()
+		{
+			if (table != null) return table;
 				
-				XmlElement root = doc.DocumentElement;
+			XmlElement root = doc.DocumentElement;
 
-				if ((root == null) || !root.HasChildNodes) {
+			if ((root == null) || !root.HasChildNodes) {
 					Console.WriteLine ("No Namespaces found.");
 					return null;
-				}
-
-				types = new Hashtable ();
-			
-				foreach (XmlNode ns in root.ChildNodes) {
-					if (ns.Name != "namespace") {
-						continue;
-					}
-
-					XmlElement elem = (XmlElement) ns;
-					ParseNamespace (elem);
-				}
-
-				return types;
 			}
+
+			table = new SymbolTable ();
+			
+			foreach (XmlNode ns in root.ChildNodes) {
+				if (ns.Name != "namespace") {
+					continue;
+				}
+
+				XmlElement elem = (XmlElement) ns;
+				ParseNamespace (elem);
+			}
+
+			return table;
 		}
 
 		private void ParseNamespace (XmlElement ns)
@@ -70,7 +67,7 @@ namespace GtkSharp {
 				}
 
 				XmlElement elem = (XmlElement) def;
-
+				
 				switch (def.Name) {
 
 				case "alias":
@@ -80,14 +77,14 @@ namespace GtkSharp {
 					break;
 
 				case "enum":
-					IGeneratable gen = new EnumGen (ns_name, elem);
-					types [gen.CName] = gen;
+					table.AddType (new EnumGen (ns_name, elem));
 					break;
 
 				case "object":
 					break;
 
 				case "struct":
+					table.AddType (new StructGen (ns_name, elem));
 					break;
 
 				default:
@@ -95,8 +92,6 @@ namespace GtkSharp {
 					break;
 				}
 			}
-
 		}
-
 	}
 }

@@ -1,4 +1,4 @@
-// GtkSharp.Generation.EnumGen.cs - The Enumeration Generatable.
+// GtkSharp.Generation.StructGen.cs - The Structure Generatable.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -10,21 +10,21 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class EnumGen : IGeneratable  {
+	public class StructGen : StructBase, IGeneratable  {
 		
-		private String ns;
-		private XmlElement elem;
-		
-		public EnumGen (String ns, XmlElement elem) {
-			
-			this.ns = ns;
-			this.elem = elem;
-		}
+		public StructGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String Name {
 			get
 			{
 				return elem.GetAttribute("name");
+			}
+		}
+		
+		public String QualifiedName {
+			get
+			{
+				return ns + "." + elem.GetAttribute("name");
 			}
 		}
 		
@@ -35,23 +35,16 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String QualifiedName {
-			get
-			{
-				return ns + "." + elem.GetAttribute("cname");
-			}
-		}
-		
 		public String MarshalType {
 			get
 			{
-				return "int";
+				return "IntPtr";
 			}
 		}
 		
 		public String CallByName (String var_name)
 		{
-			return "(int) " + var_name;
+			return var_name;
 		}
 		
 		public void Generate (SymbolTable table)
@@ -68,27 +61,37 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("namespace " + ns + " {");
 			sw.WriteLine ();
 				
-			if (elem.GetAttribute("type") == "flags") {
-				sw.WriteLine ("\tusing System;");
-				sw.WriteLine ();
-				sw.WriteLine ("\t[Flags]");
-			}
+			sw.WriteLine ("\tusing System;");
+			sw.WriteLine ("\tusing System.Collections;");
+			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
+			sw.WriteLine ();
 			
-			sw.WriteLine ("\tpublic enum " + Name + " {");
+			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
+			sw.WriteLine ("\tpublic class " + Name + " {");
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in elem.ChildNodes) {
-				if (node.Name != "member") {
-					continue;
-				}
 				
 				XmlElement member = (XmlElement) node;
-				sw.Write ("\t\t" + member.GetAttribute("name"));
-				if (member.HasAttribute("value")) {
-					sw.WriteLine (" = " + member.GetAttribute("value") + ",");
-				} else {
-					sw.WriteLine (",");
+
+				switch (node.Name) {
+				case "field":
+					break;
+					
+				case "callback":
+					break;
+					
+				case "constructor":
+					break;
+					
+				case "method":
+					break;
+					
+				default:
+					Console.WriteLine ("Unexpected node");
+					break;
 				}
+				
 			}
 				
 			sw.WriteLine ("\t}");
@@ -97,8 +100,7 @@ namespace GtkSharp.Generation {
 			
 			sw.Flush();
 			sw.Close();
-		}
-		
+		}		
 	}
 }
 

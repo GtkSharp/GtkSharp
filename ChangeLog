@@ -1,3 +1,19 @@
+2002-01-05  Mike Kestner <mkestner@speakeasy.net>
+
+	* generator/*.cs : Move into GtkSharp.Generation namespace.
+	* generator/CodeGenerator.cs (Main): Add usage check. Add SymbolTable.
+	* generator/EnumGen.cs (QualifiedName): New.
+	(Generate): Add SymbolTable to signature.
+	* generator/IGeneratable : Add QualifiedName prop and update Generate
+	  signature.
+	* generator/Parser.cs : Switch from plain Hashtable to SymbolTable.
+	(Parse): Replaces the Types property and returns a SymbolTable.
+	* generator/StructBase.cs : New base class to derive struct and object
+	  types. Initial implementation of protected GenField method and ctor.
+	* generator/StructGen.cs : New non-object struct type generatable.
+	* generator/SymbolTable.cs : New. Manages complex types hash and a
+	  simple types hash.  Will provide generic lookup interface.
+	
 2002-01-04  Mike Kestner <mkestner@speakeasy.net>
 
 	* makefile : switch to the new generator.

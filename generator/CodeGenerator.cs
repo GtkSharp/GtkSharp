@@ -1,10 +1,10 @@
-// GtkSharp.CodeGenerator.cs - The main code generation engine.
+// GtkSharp.Generation.CodeGenerator.cs - The main code generation engine.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // (c) 2001 Mike Kestner
 
-namespace GtkSharp {
+namespace GtkSharp.Generation {
 
 	using System;
 	using System.Collections;
@@ -14,14 +14,19 @@ namespace GtkSharp {
 
 		public static int Main (string[] args)
 		{
-			Parser p = new Parser (args[0]);
-			Hashtable types = p.Types;
-			Console.WriteLine (types.Count);
+			if (args.Length != 1) {
+				Console.WriteLine ("Usage: codegen <filename>");
+				return 0;
+			}
 			
-			IDictionaryEnumerator de = types.GetEnumerator();
+			Parser p = new Parser (args[0]);
+			SymbolTable table = p.Parse ();
+			Console.WriteLine (table.Count + " types parsed.");
+			
+			IDictionaryEnumerator de = table.GetEnumerator();
 			while (de.MoveNext()) {
 				IGeneratable gen = (IGeneratable) de.Value;
-				gen.Generate ();
+				gen.Generate (table);
 			}
 
 			return 0;
