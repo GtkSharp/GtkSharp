@@ -49,6 +49,16 @@ GdkRectangle gtksharp_gdk_event_expose_get_area (GdkEventExpose *event);
 gint gtksharp_gdk_event_expose_get_count (GdkEventExpose *event);
 GdkRegion* gtksharp_gdk_event_expose_get_region (GdkEventExpose *event);
 GdkVisibilityState gtksharp_gdk_event_visibility_get_state (GdkEventVisibility *event);
+guint32 gtksharp_gdk_event_crossing_get_time (GdkEventCrossing *event);
+guint gtksharp_gdk_event_crossing_get_state (GdkEventCrossing *event);
+gboolean gtksharp_gdk_event_crossing_get_focus (GdkEventCrossing *event);
+gdouble gtksharp_gdk_event_crossing_get_x (GdkEventCrossing *event);
+gdouble gtksharp_gdk_event_crossing_get_y (GdkEventCrossing *event);
+gdouble gtksharp_gdk_event_crossing_get_x_root (GdkEventCrossing *event);
+gdouble gtksharp_gdk_event_crossing_get_y_root (GdkEventCrossing *event);
+GdkNotifyType gtksharp_gdk_event_crossing_get_detail (GdkEventCrossing *event);
+GdkCrossingMode gtksharp_gdk_event_crossing_get_mode (GdkEventCrossing *event);
+GdkWindow* gtksharp_gdk_event_crossing_get_subwindow (GdkEventCrossing *event);
 /* */
 
 GdkEventType
@@ -277,5 +287,65 @@ GdkVisibilityState
 gtksharp_gdk_event_visibility_get_state (GdkEventVisibility *event)
 {
 	return event->state;
+}
+
+gdouble
+gtksharp_gdk_event_crossing_get_x (GdkEventCrossing *event)
+{
+	return event->x;
+}
+
+gdouble
+gtksharp_gdk_event_crossing_get_y (GdkEventCrossing *event)
+{
+	return event->y;
+}
+
+gdouble
+gtksharp_gdk_event_crossing_get_x_root (GdkEventCrossing *event)
+{
+	return event->x_root;
+}
+
+gdouble
+gtksharp_gdk_event_crossing_get_y_root (GdkEventCrossing *event)
+{
+	return event->y_root;
+}
+
+guint32
+gtksharp_gdk_event_crossing_get_time (GdkEventCrossing *event)
+{
+	return event->time;
+}
+
+guint
+gtksharp_gdk_event_crossing_get_state (GdkEventCrossing *event)
+{
+	return event->state;
+}
+
+gboolean
+gtksharp_gdk_event_crossing_get_focus (GdkEventCrossing *event)
+{
+	return event->focus;
+}
+
+GdkWindow*
+gtksharp_gdk_event_crossing_get_subwindow (GdkEventCrossing *event)
+{
+	return event->subwindow;
+}
+
+GdkCrossingMode
+gtksharp_gdk_event_crossing_get_mode (GdkEventCrossing *event)
+{
+	return event->mode;
+}
+
+GdkNotifyType
+gtksharp_gdk_event_crossing_get_detail (GdkEventCrossing *event)
+{
+	return event->detail;
 }
 
