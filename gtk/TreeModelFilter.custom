@@ -57,3 +57,54 @@
 			val.Dispose ();
 			return ret;
 		}
+
+		[GLib.CDeclCallback]
+		delegate void DestroyNotify (IntPtr data);
+
+		static void ReleaseCallback (IntPtr data)
+		{
+			if (data == IntPtr.Zero)
+				return;
+			GCHandle gch = (GCHandle) data;
+			gch.Free ();
+		}
+
+		static DestroyNotify release_callback;
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_model_filter_set_visible_func (IntPtr raw, GtkSharp.TreeModelFilterVisibleFuncNative func, IntPtr data, GtkSharp.DestroyNotifyNative destroy);
+
+		[Obsolete ("Replaced by SetVisibleFunc (TreeModelFilterVisibleFunc) overload.")]
+		public void SetVisibleFunc (TreeModelFilterVisibleFunc func, IntPtr data, Gtk.DestroyNotify destroy) 
+		{
+			GtkSharp.TreeModelFilterVisibleFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterVisibleFuncWrapper (func);
+			GtkSharp.DestroyNotifyWrapper destroy_wrapper = new GtkSharp.DestroyNotifyWrapper (destroy);
+			gtk_tree_model_filter_set_visible_func (Handle, func_wrapper.NativeDelegate, data, destroy_wrapper.NativeDelegate);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_model_filter_set_visible_func (IntPtr raw, GtkSharp.TreeModelFilterVisibleFuncNative func, IntPtr data, DestroyNotify destroy);
+		public void SetVisibleFunc (TreeModelFilterVisibleFunc func) 
+		{
+			GtkSharp.TreeModelFilterVisibleFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterVisibleFuncWrapper (func);
+			if (release_callback == null)
+				release_callback = new DestroyNotify (ReleaseCallback);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_model_filter_set_visible_func (Handle, func_wrapper.NativeDelegate, (IntPtr) gch, release_callback);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, DestroyNotify destroy);
+
+		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func) 
+		{
+			GtkSharp.TreeModelFilterModifyFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterModifyFuncWrapper (func);
+			if (release_callback == null)
+				release_callback = new DestroyNotify (ReleaseCallback);
+			IntPtr[] native_types = new IntPtr [types.Length];
+			for (int i = 0; i < types.Length; i++)
+				native_types [i] = types [i].Val;
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, release_callback);
+		}
+
