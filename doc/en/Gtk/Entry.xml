@@ -16,68 +16,62 @@
       <para>
 See also the <see cref="T:Gtk.TextView" /> widget for displaying and editing large amounts of text.
 </para>
-    </remarks>
-    <example>
-      <code language="C#">
+      <example>
+        <code lang="C#">
 using System;
 using Gtk;
 
 class EntrySample
 {
 	Entry entry;
-	
+
 	static void Main ()
 	{
-		new EntrySample ();	
+		new EntrySample ();
 	}
-	
+
 	EntrySample ()
 	{
 		Application.Init ();
-		
 		Window win = new Window ("EntrySample");
 		win.SetDefaultSize (200, 150);
 		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
-		
 		VBox vbox = new VBox (false, 1);
 		win.Add (vbox);
-		
 		entry = new Entry ("hello world");
 		entry.Editable = true;
 		entry.Visibility = true;
 		vbox.Add (entry);
-		
 		CheckButton editable = new CheckButton ("Editable");
 		editable.Toggled += new EventHandler (OnEditableToggled);
 		editable.Active = true;
 		vbox.Add (editable);
-		
 		CheckButton visibility = new CheckButton ("Visibility");
 		visibility.Toggled += new EventHandler (OnVisibilityToggled);
 		visibility.Active = true;
 		vbox.Add (visibility);
-		
 		win.ShowAll ();
 		Application.Run ();
 	}
-	
+
 	void OnEditableToggled (object obj, EventArgs args)
 	{
 		entry.Editable = !entry.Editable;
 	}
-	
+
 	void OnVisibilityToggled (object obj, EventArgs args)
 	{
 		entry.Visibility = !entry.Visibility;
 	}
-	
+
 	void OnWinDelete (object obj, DeleteEventArgs args)
 	{
 		Application.Quit ();
 	}
-}      
-	  </code>
-    </example>
+} 
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>

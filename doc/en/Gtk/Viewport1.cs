@@ -7,9 +7,7 @@
 namespace GtkSamples {
 
 	using Gtk;
-	using GtkSharp;
 	using System;
-	using System.Drawing;
 
 	public class ViewportApp  {
 
@@ -33,7 +31,7 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Window win = new Window ("Viewport Tester");
-			win.DefaultSize = new Size (180, 50);
+			win.SetDefaultSize (180, 50);
 			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			ScrolledWindow scroller = CreateViewport();
 			win.Add (scroller);

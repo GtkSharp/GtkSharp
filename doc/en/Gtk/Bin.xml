@@ -27,8 +27,7 @@
         For the widget to be useful, it should participate in size
         negotiation and size allocation using the events <see cref="E:Gtk.Widget.SizeAllocated" /> and <see cref="E:Gtk.Widget.SizeRequested" />.</para>
       <para>
-        Since Gtk.Bin is an abstract class in C, it is necessary to
-        register a Type.  Sample follows.
+        Sample follows.
       </para>
       <example>
         <code lang="C#">
@@ -40,19 +39,9 @@ using Gtk;
 //
 class MyPadder : Bin {
 	int pad = 50;
-	static GLib.Type type;
 	Widget child;
 	
-	static MyPadder ()
-	{
-	        //
-	        // Register the type on the static constructor, so it is
-		// available on the instance constructors
-		//
-		type = RegisterGType (typeof (MyPadder));
-	}
-	
-	public MyPadder () : base (type)
+	public MyPadder ()
 	{
 		// To track our child widget.
 		Added += new AddedHandler (MyAdded);
@@ -68,8 +57,8 @@ class MyPadder : Bin {
 	void OnSizeRequested (object o, SizeRequestedArgs args)
 	{
 		if (child != null){
-			int width = args.Requisition.width;
-			int height = args.Requisition.height;
+			int width = args.Requisition.Width;
+			int height = args.Requisition.Height;
 			
 			child.GetSizeRequest (out width, out height);
 			if (width == -1 || height == -1)
@@ -88,10 +77,10 @@ class MyPadder : Bin {
 			Gdk.Rectangle mine = args.Allocation;
 			Gdk.Rectangle his = mine;
 
-			his.x += pad;
-			his.y += pad;
-			his.width -= pad * 2;
-			his.height -= pad * 2;
+			his.X += pad;
+			his.Y += pad;
+			his.Width -= pad * 2;
+			his.Height -= pad * 2;
 			child.SizeAllocate (his);
 		}
 	}

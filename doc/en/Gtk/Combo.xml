@@ -35,9 +35,7 @@
         </para>
         <code lang="c#">
 using System;
-using System.Runtime.InteropServices;
 using Gtk;
-using GLib;
 
 class ComboSample
 {
@@ -55,15 +53,10 @@ class ComboSample
 		Window win = new Window ("ComboSample");
 		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
 
-		GLib.List l = new GLib.List (IntPtr.Zero, typeof (string));
-		
-		for (int i =0; i &lt; 5; i++)
-		{
-			l.Append ("String " + i);
-		}
+		string[] list = new string[] {"one", "two", "three"};
 		
 		combo = new Combo ();
-		combo.PopdownStrings = l;
+		combo.PopdownStrings = list;
 		combo.DisableActivate ();
 		combo.Entry.Activated += new EventHandler (OnEntryActivated);
 		
@@ -84,9 +77,6 @@ class ComboSample
 	}
 }
         </code>
-        <para>
-          See <see cref="T:GLib.List" /> for more about GLib.List.
-        </para>
       </example>
     </remarks>
   </Docs>

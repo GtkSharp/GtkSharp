@@ -18,39 +18,38 @@
       <para>
       It is commonly dropped down by activating a <see cref="T:Gtk.MenuItem" /> in a <see cref="T:Gtk.MenuBar" /> or in another <see cref="T:Gtk.Menu" />, it can also be popped up by activating a <see cref="T:Gtk.OptionMenu" />. Other composite widgets such as the <see cref="T:Gtk.Notebook" /> can pop up a <see cref="T:Gtk.Menu" /> as well.
      </para>
-    </remarks>
-    <example>
-      <code language="C#">
+      <example>
+        <code lang="C#">
 using System;
 using Gtk;
 
-public class MenuApp {
-
+public class MenuApp
+{
 	public static void Main (string[] args)
 	{
 		Application.Init();
+
 		Window win = new Window ("Menu Sample App");
 		win.DeleteEvent += new DeleteEventHandler (delete_cb);
 		win.SetDefaultSize (200, 150);
 
 		VBox box = new VBox (false, 2);
-
 		MenuBar mb = new MenuBar ();
 		Menu file_menu = new Menu ();
 		MenuItem exit_item = new MenuItem("Exit");
 		exit_item.Activated += new EventHandler (exit_cb);
 		file_menu.Append (exit_item);
+
 		MenuItem file_item = new MenuItem("File");
 		file_item.Submenu = file_menu;
 		mb.Append (file_item);
-		box.PackStart(mb, false, false, 0);
 
+		box.PackStart(mb, false, false, 0);
 		Button btn = new Button ("Yep, that's a menu");
 		box.PackStart(btn, true, true, 0);
-			
+
 		win.Add (box);
 		win.ShowAll ();
-
 		Application.Run ();
 	}
 
@@ -63,9 +62,10 @@ public class MenuApp {
 	{
 		Application.Quit ();
 	}
-}
-      </code>
-    </example>
+} 
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.MenuShell</BaseTypeName>

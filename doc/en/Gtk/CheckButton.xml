@@ -14,40 +14,34 @@
     <remarks>
       <para>
         A <see cref="T:Gtk.CheckButton" /> places a discrete <see cref="T:Gtk.ToggleButton" /> next to a widget, usually a <see cref="T:Gtk.Label" />. See <see cref="T:Gtk.ToggleButton" /> for more information about toggle/check buttons.
-    </para>
-    </remarks>
-    <example>
-      <code language="C#">
+</para>
+      <example>
+        <code lang="C#">
 using System;
 using Gtk;
 
 class CheckButtonSample
 {
 	CheckButton cb;
-	
 	static void Main ()
 	{
-		new CheckButtonSample ();	
+		new CheckButtonSample ();
 	}
-	
+
 	CheckButtonSample ()
 	{
 		Application.Init ();
-	
 		Window win = new Window ("CheckButtonSample");
 		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
-
 		VBox vbox = new VBox (true, 1);
 		win.Add (vbox);
-
 		cb = new CheckButton ("Checked");
 		cb.Toggled += new EventHandler (OnCheckToggled);
-		vbox.Add (cb);	
-		
+		vbox.Add (cb);
 		win.ShowAll ();
 		Application.Run ();
 	}
-	
+
 	void OnCheckToggled (object obj, EventArgs args)
 	{
 		if (cb.Label == "Checked")
@@ -59,14 +53,15 @@ class CheckButtonSample
 			cb.Label = "Checked";
 		}
 	}
-	
+
 	void OnWinDelete (object obj, DeleteEventArgs args)
 	{
 		Application.Quit ();
 	}
-}
-      </code>
-    </example>
+} 
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.ToggleButton</BaseTypeName>

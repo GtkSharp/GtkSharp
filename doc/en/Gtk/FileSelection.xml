@@ -22,43 +22,37 @@
       <para>
     The functionality of the <see cref="T:Gtk.FileSelection" /> can be extended by using the available accessors to the buttons and drop downs.
     </para>
-    </remarks>
-    <example>
-      <code language="C#">
+      <example>
+        <code lang="C#">
 using System;
 using Gtk;
 
 class FileSelectionSample
 {
 	Label lbl;
-	
+
 	static void Main ()
 	{
-		new FileSelectionSample ();	
+		new FileSelectionSample ();
 	}
-	
+
 	FileSelectionSample ()
 	{
 		Application.Init ();
-		
 		Window win = new Window ("FileSelectionSample");
 		win.SetDefaultSize (250,200);
 		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
-		
 		VBox vbox = new VBox (true, 1);
 		win.Add (vbox);
-		
 		Button btn = new Button ("Select a file.");
 		btn.Clicked += new EventHandler (OnButtonClicked);
 		vbox.Add (btn);
-		
 		lbl = new Label ("Selected: ");
 		vbox.Add (lbl);
-		
 		win.ShowAll ();
 		Application.Run ();
 	}
-	
+
 	void OnButtonClicked (object o, EventArgs args)
 	{
 		FileSelection fs = new FileSelection ("Choose a file");
@@ -66,14 +60,15 @@ class FileSelectionSample
 		lbl.Text = "Selected: " + fs.SelectionEntry.Text;
 		fs.Hide ();
 	}
-	
+
 	void OnWinDelete (object o, DeleteEventArgs args)
 	{
 		Application.Quit ();
 	}
-}
-      </code>
-    </example>
+} 
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
