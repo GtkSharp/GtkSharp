@@ -11,14 +11,43 @@
     <remarks>
       <example>
         <code lang="C#">
+using System;
+using Gtk;
+using GtkSharp;
 
-           Gtk.TextView view;
-           Gtk.TextBuffer buffer;
+class TextViewSample
+{
+	static void Main ()
+	{
+		new TextViewSample ();
+	}
 
-           view = new Gtk.TextView ();
-           buffer = view.Buffer;
+	TextViewSample ()
+	{
+		Application.Init ();
+		Window win = new Window ("TextViewSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		win.SetDefaultSize (600,400);
+		
+		Gtk.TextView view;
+		Gtk.TextBuffer buffer;
 
-           buffer.Text = "Hello, this is some text";
+        view = new Gtk.TextView ();
+        buffer = view.Buffer;
+
+        buffer.Text = "Hello, this is some text";
+
+		win.Add (view);
+		win.ShowAll ();
+
+		Application.Run ();
+	}
+
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
         </code>
         <para>
           Now you might put the view in a container and display it on
