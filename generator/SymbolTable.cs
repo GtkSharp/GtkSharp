@@ -91,6 +91,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
 
+			// AddType (new CustomMarshalerGen ("time_t", "System.DateTime", "GLib.time_t_CustomMarshaler"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ManualGen ("GValue", "GLib.Value"));
@@ -326,6 +327,8 @@ namespace GtkSharp.Generation {
 				return "cb";
 			case "readonly":
 				return "read_only";
+			case "interface":
+				return "iface";
 			default:
 				break;
 			}
