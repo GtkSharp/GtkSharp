@@ -15,7 +15,9 @@ windows:
 unix:
 	@echo "'make unix' is broken for now."
 
-linux:
+linux: 
+	(cd glue;make) || exit 1
 	for i in $(DIRS); do				\
 		(cd $$i; MCS="$(MCS)" make linux) || exit 1;\
 	done;
+

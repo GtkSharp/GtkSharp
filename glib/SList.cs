@@ -20,6 +20,17 @@ namespace GLib {
 
 	public class SList : ArrayList {
 
+		private IntPtr list_ptr;
+
+		[DllImport("gobject-2.0")]
+		static extern void g_slist_free(IntPtr l);
+
+		~SList ()
+		{
+			if (list_ptr != IntPtr.Zero)
+				g_slist_free (list_ptr);
+		}
+
 		/// <summary>
 		///	Handle Property
 		/// </summary>
@@ -33,6 +44,9 @@ namespace GLib {
 
 		public IntPtr Handle {
 			get {
+				if (list_ptr != IntPtr.Zero)
+					g_slist_free (list_ptr);
+
 				IntPtr l = IntPtr.Zero;
 				foreach (object o in this) {
 					IntPtr data = IntPtr.Zero;
@@ -41,9 +55,10 @@ namespace GLib {
 					else
 						throw new Exception();
 				}
+
+				list_ptr = l;
 				return l;
 			}
 		}
-
 	}
 }

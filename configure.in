@@ -1,0 +1,85 @@
+
+AC_INIT(README)
+AC_CANONICAL_SYSTEM
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(gtk-sharp, 0.2)
+AM_MAINTAINER_MODE
+
+AC_CHECK_TOOL(CC, gcc, gcc)
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_PROG_INSTALL
+
+dnl may require a specific autoconf version
+dnl AC_PROG_CC_FOR_BUILD
+dnl CC_FOR_BUILD not automatically detected
+CC_FOR_BUILD=$CC
+BUILD_EXEEXT=
+if test "x$cross_compiling" = "xyes"; then
+	CC_FOR_BUILD=cc
+	BUILD_EXEEXT=""
+fi
+AC_SUBST(CC_FOR_BUILD)
+AC_SUBST(HOST_CC)
+AC_SUBST(BUILD_EXEEXT)
+
+# Set STDC_HEADERS
+AC_HEADER_STDC
+AM_PROG_LIBTOOL
+
+# not 64 bit clean in cross-compile
+AC_CHECK_SIZEOF(void *, 4)
+
+CFLAGS='-g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes  -Wmissing-prototypes -Wnested-externs  -Wshadow -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings'
+
+AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+if test "x$PKG_CONFIG" = "xno"; then
+	AC_MSG_ERROR([You need to install pkg-config])
+fi
+
+dnl for use on the build system
+dnl pkg-config is stupid
+BUILD_GLIB_CFLAGS=`$PKG_CONFIG --cflags glib-2.0`
+BUILD_GLIB_LIBS=`$PKG_CONFIG --libs glib-2.0`
+AC_SUBST(BUILD_GLIB_CFLAGS)
+AC_SUBST(BUILD_GLIB_LIBS)
+
+PKG_PATH=
+AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
+	if test x$with_crosspkgdir = "x"; then
+		if test -s $PKG_CONFIG_PATH; then
+			PKG_PATH=$PKG_CONFIG_PATH
+		fi
+	else
+		PKG_PATH=$with_crosspkgdir
+		PKG_CONFIG_PATH=$PKG_PATH
+		export PKG_CONFIG_PATH
+	fi
+)
+
+## Versions of dependencies
+GLIB_REQUIRED_VERSION=2.0.0
+
+PKG_CHECK_MODULES(BASE_DEPENDENCIES, glib-2.0 >= $GLIB_REQUIRED_VERSION)
+
+GLIB_CFLAGS=`$PKG_CONFIG --cflags glib-2.0`
+GLIB_LIBS=`$PKG_CONFIG --libs glib-2.0`
+GMODULE_CFLAGS=`$PKG_CONFIG --cflags gmodule-2.0`
+GMODULE_LIBS=`$PKG_CONFIG --libs gmodule-2.0`
+
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
+AC_SUBST(GMODULE_CFLAGS)
+AC_SUBST(GMODULE_LIBS)
+
+AC_SUBST(CFLAGS)
+
+AC_OUTPUT([
+glue/Makefile
+])
+
+echo "
+
+	Now do a "make linux" or "make windows" to build Gtk#.
+
+"
