@@ -68,7 +68,7 @@ namespace GtkSamples {
 			args.RetVal = true;
 		}
 
-		static void DrawBrush (double x, double y)
+		static void DrawBrush (double x, double y, bool black)
 		{
 			Gdk.Rectangle update_rect = new Gdk.Rectangle ();
 			update_rect.X = (int) x - 5;
@@ -76,7 +76,7 @@ namespace GtkSamples {
 			update_rect.Width = 10;
 			update_rect.Height = 10;
 			
-			pixmap.DrawRectangle (darea.Style.BlackGC, true,
+			pixmap.DrawRectangle (black ? darea.Style.BlackGC : darea.Style.WhiteGC, true,
 										 update_rect.X, update_rect.Y,
 										 update_rect.Width, update_rect.Height);
 			darea.QueueDrawArea (update_rect.X, update_rect.Y,
@@ -87,8 +87,9 @@ namespace GtkSamples {
 		{
 			Gdk.EventButton ev = args.Event;
 			if (ev.Button == 1 && pixmap != null)
-				DrawBrush (ev.X, ev.Y);
-
+				DrawBrush (ev.X, ev.Y, true);
+			else if (ev.Button == 3 && pixmap != null)
+				DrawBrush (ev.X, ev.Y, false);
 			args.RetVal = true;
 		}
 		
@@ -110,7 +111,9 @@ namespace GtkSamples {
 			}
 
 			if ((state & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null)
-				DrawBrush (x, y);
+				DrawBrush (x, y, true);
+			else if ((state & Gdk.ModifierType.Button3Mask) != 0 && pixmap != null)
+				DrawBrush (x, y, false);
 
 			args.RetVal = true;
 		}
