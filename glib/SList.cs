@@ -65,7 +65,7 @@ namespace GLib {
 		///	The number of elements in the SList.
 		/// </remarks>
 
-		[DllImport("glib-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("glib-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern int g_slist_length(IntPtr raw);
 
 		public int Count {
@@ -168,7 +168,7 @@ namespace GLib {
 		///	Indexer to access members of the SList.
 		/// </remarks>
 
-		[DllImport("glib-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("glib-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern IntPtr g_slist_nth_data(IntPtr raw, int index);
 
 		public object this[int index] {

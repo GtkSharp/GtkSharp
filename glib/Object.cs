@@ -197,7 +197,7 @@ namespace GLib {
 		///	Accesses a string Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out string val, IntPtr term);
 
@@ -214,7 +214,7 @@ namespace GLib {
 		///	Accesses a boolean Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out bool val, IntPtr term);
 
@@ -231,7 +231,7 @@ namespace GLib {
 		///	Accesses a double Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out double val, IntPtr term);
 
@@ -248,7 +248,7 @@ namespace GLib {
 		///	Accesses a float Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out float val, IntPtr term);
 
@@ -265,7 +265,7 @@ namespace GLib {
 		///	Accesses an integer Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out int val, IntPtr term);
 
@@ -282,7 +282,7 @@ namespace GLib {
 		///	Accesses an unsigned integer Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out uint val, IntPtr term);
 
@@ -299,7 +299,7 @@ namespace GLib {
 		///	Accesses an Object Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_get (IntPtr obj, string name,
                                              	 out IntPtr val, IntPtr term);
 
@@ -346,7 +346,7 @@ namespace GLib {
 		///	Changes the value of a string Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  string val, IntPtr term);
 
@@ -363,7 +363,7 @@ namespace GLib {
 		///	Changes the value of an integer Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  int val, IntPtr term);
 
@@ -380,7 +380,7 @@ namespace GLib {
 		///	Changes the value of an unsigned integer Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  uint val, IntPtr term);
 
@@ -397,7 +397,7 @@ namespace GLib {
 		///	Changes the value of a boolean Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  bool val, IntPtr term);
 
@@ -414,7 +414,7 @@ namespace GLib {
 		///	Changes the value of a double Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  double val, IntPtr term);
 
@@ -431,7 +431,7 @@ namespace GLib {
 		///	Changes the value of a float Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  float val, IntPtr term);
 
@@ -448,7 +448,7 @@ namespace GLib {
 		///	Changes the value of an IntPtr Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3", CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0", CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_object_set (IntPtr obj, string name,
                                                  IntPtr val, IntPtr term);
 
@@ -485,7 +485,7 @@ namespace GLib {
 
 
 /*
-		[DllImport("gtk-1.3")]
+		[DllImport("gtk-2.0")]
 		static extern void g_object_set_data_full (
 					IntPtr obj,
 					String key,

@@ -66,10 +66,10 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GParamSpec", "IntPtr");
 			
 			dlls = new Hashtable();
-			dlls.Add("Pango", "pango");
-			dlls.Add("Atk", "atk");
-			dlls.Add("Gdk", "gdk-x11-1.3");
-			dlls.Add("Gtk", "gtk-x11-1.3");
+			dlls.Add("Pango", "pango-1.0");
+			dlls.Add("Atk", "atk-1.0");
+			dlls.Add("Gdk", "gdk-x11-2.0");
+			dlls.Add("Gtk", "gtk-x11-2.0");
 		}
 		
 		public void AddType (IGeneratable gen)

@@ -4,7 +4,7 @@ all:
 	@echo "'make unix' is broken for now."
 
 windows:
-	$(CSC) /unsafe /out:codegen.exe /recurse:*.cs
+	$(CSC) /unsafe /out:codegen.exe *.cs
 	./codegen gtkapi.xml
 
 linux:
