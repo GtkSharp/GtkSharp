@@ -581,6 +581,13 @@ sub parseParms
 {
 	my ($el, $mdef, $drop_1st) = @_;
 
+	$fmt_args = 0;
+
+	if ($mdef =~ /G_GNUC_PRINTF.*\((\d+,\s*\d+)\s*\)/) {
+		$fmt_args = $1;
+		$mdef =~ s/\s*G_GNUC_PRINTF.*\)//;
+	}
+
 	if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
 		@parms = ();
 		$parm = "";
@@ -605,6 +612,15 @@ sub parseParms
 		($dump, @parms) = @parms if $drop_1st;
 		if (@parms > 0) {
 			addParamsElem($el, @parms);
+		}
+
+		if ($fmt_args != 0) {
+			$fmt_args =~ /(\d+),\s*(\d+)/;
+			$fmt = $1; $args = $2;
+			($params_el, @junk) = $el->getElementsByTagName ("parameters");
+			(@params) = $params_el->getElementsByTagName ("parameter");
+			$params[$fmt-1]->setAttribute ("printf_format", "true");
+			$params[$args-1]->setAttribute ("printf_format_args", "true");
 		}
 	}
 }
