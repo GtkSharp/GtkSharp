@@ -27,6 +27,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 
 using Gtk;
 using Gdk;
@@ -61,7 +62,7 @@ namespace GtkDemo
 			alignment.Add (frame);
 			vbox.PackStart (alignment, false, false, 0);
 			
-			Gtk.Image image = new Gtk.Image ("images/gtk-logo-rgb.gif");
+			Gtk.Image image = new Gtk.Image (Gdk.Pixbuf.LoadFromResource ("gtk-logo-rgb.gif"));
 			frame.Add (image);			
 
 			// Animation
@@ -76,7 +77,7 @@ namespace GtkDemo
 			alignment.Add (frame);
 			vbox.PackStart (alignment, false, false, 0);
 
-			image = new Gtk.Image ("images/floppybuddy.gif");
+			image = new Gtk.Image (Gdk.Pixbuf.LoadFromResource ("floppybuddy.gif"));
 			frame.Add (image);
 
 			// Progressive
@@ -143,7 +144,8 @@ namespace GtkDemo
 		private  bool ProgressiveTimeout ()
 		{
 			if (imageStream == null) {
-				imageStream = new BinaryReader (new StreamReader ("images/alphatest.png").BaseStream);
+				Stream stream = Assembly.GetExecutingAssembly ().GetManifestResourceStream ("alphatest.png");
+				imageStream = new BinaryReader (stream);
 				pixbufLoader = new Gdk.PixbufLoader ();
 				pixbufLoader.AreaPrepared += new EventHandler (ProgressivePreparedCallback);
 				pixbufLoader.AreaUpdated += new AreaUpdatedHandler (ProgressiveUpdatedCallback);

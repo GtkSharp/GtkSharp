@@ -32,17 +32,17 @@ namespace GtkDemo
 	{
 		const int FrameDelay = 50;
 		const int CycleLen = 60;
-		const string BackgroundName = "images/background.jpg";
+		const string BackgroundName = "background.jpg";
 		
 		string [] ImageNames = {
-			"images/apple-red.png",
-			"images/gnome-applets.png",
-			"images/gnome-calendar.png",
-			"images/gnome-foot.png",
-			"images/gnome-gmush.png",
-			"images/gnome-gimp.png",
-			"images/gnome-gsame.png",
-			"images/gnu-keys.png"
+			"apple-red.png",
+			"gnome-applets.png",
+			"gnome-calendar.png",
+			"gnome-foot.png",
+			"gnome-gmush.png",
+			"gnome-gimp.png",
+			"gnome-gsame.png",
+			"gnu-keys.png"
 		};
 		
 		// current frame
@@ -69,8 +69,9 @@ namespace GtkDemo
 
 			images = new Pixbuf[ImageNames.Length];
 		
-			for (int i = 0; i < ImageNames.Length; i++) 
-				images[i] = Gdk.Pixbuf.LoadFromResource (ImageNames[i]);
+			int i = 0;
+			foreach (string im in ImageNames) 
+				images[i++] = Gdk.Pixbuf.LoadFromResource (im);
 		}
 
 		// Expose callback for the drawing area

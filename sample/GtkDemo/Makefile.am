@@ -29,7 +29,7 @@ images = \
 /resource:$(srcdir)/images/gnome-foot.png,gnome-foot.png \
 /resource:$(srcdir)/images/MonoIcon.png,MonoIcon.png \
 /resource:$(srcdir)/images/gnome-calendar.png,gnome-calendar.png \
-/resource:$(srcdir)/images/gnome-gmush.png,gnome-mush.png \
+/resource:$(srcdir)/images/gnome-gmush.png,gnome-gmush.png \
 /resource:$(srcdir)/images/gnu-keys.png,gnu-keys.png \
 /resource:$(srcdir)/images/gnome-applets.png,gnome-applets.png \
 /resource:$(srcdir)/images/gnome-gsame.png,gnome-gsame.png \
