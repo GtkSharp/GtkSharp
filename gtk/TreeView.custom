@@ -12,8 +12,16 @@
 
 		public TreeView (NodeStore store) : base (IntPtr.Zero)
 		{
-			if (GetType() != typeof (TreeView))
-				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+			if (GetType() != typeof (TreeView)) {
+				string[] names = new string [1];
+				GLib.Value[] vals = new GLib.Value [1];
+				names [0] = "model";
+				vals [0] = new GLib.Value (store);
+				CreateNativeObject (names, vals);
+				vals [0].Dispose ();
+				return;
+			}
+
 			Raw = gtk_tree_view_new_with_model (store.Handle);
 		}
 
