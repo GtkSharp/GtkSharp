@@ -6,6 +6,7 @@ all: windows
 
 windows: generated-stamp
 	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:System.Drawing.dll /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
+	../gapi-cdecl-insert --keyfile=gtk-sharp.snk gdk-sharp.dll
 	cd glue && make -f makefile.win32
 
 generated-stamp: ../generator/codegen.exe $(APIS) $(I_APIS) *.custom

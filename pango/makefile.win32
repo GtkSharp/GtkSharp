@@ -6,6 +6,7 @@ all: windows
 
 windows: generated-stamp
 	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
+	../gapi-cdecl-insert --keyfile=gtk-sharp.snk pango-sharp.dll
 
 generated-stamp: ../generator/codegen.exe $(APIS)
 	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=pango-sharp && touch generated-stamp
