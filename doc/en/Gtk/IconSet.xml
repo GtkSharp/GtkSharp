@@ -1,5 +1,5 @@
 <Type Name="IconSet" FullName="Gtk.IconSet">
-  <TypeSignature Language="C#" Value="public class IconSet : GLib.Opaque, IWrapper" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class IconSet : GLib.Opaque, IWrapper" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      A <see cref="T:Gtk.IconSet" /> represents a single icon in various sizes and widget states.
+    </summary>
+    <remarks>
+      A <see cref="T:Gtk.IconSet" /> represents a single icon in
+      various sizes and widget states. It can provide a <see
+      cref="T:Gdk.Pixbuf" /> for a given size and state on request,
+      and automatically caches some of the rendered GdkPixbuf objects.
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -35,15 +42,35 @@
         <Parameter Name="detail" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="style">To be added: an object of type 'Gtk.Style'</param>
-        <param name="direction">To be added: an object of type 'Gtk.TextDirection'</param>
-        <param name="state">To be added: an object of type 'Gtk.StateType'</param>
-        <param name="size">To be added: an object of type 'Gtk.IconSize'</param>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="detail">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Renders an icon using <see cref="M:Gtk.Style.RenderIcon(Gtk.IconSource,Gtk.TextDirection,Gtk.StateType,Gtk.IconSize,Gtk.Widget,System.String)"/> 
+        </summary>
+        <param name="style">
+          a <see cref="T:Gtk.Style" /> associated with widget, or <see langword="null"/>
+        </param>
+        <param name="direction">The text direction</param>
+        <param name="state">The widget state</param>
+        <param name="size">The size of the icon</param>
+        <param name="widget">
+          widget that will display the icon, or <see langword="null"/>
+        </param>
+        <param name="detail">
+          detail to pass to the theme engine, or <see
+          langword="null"/>
+        </param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /> to be displayed</returns>
+        <remarks>
+          Renders an icon using <see
+          cref="M:Gtk.Style.RenderIcon(Gtk.IconSource,Gtk.TextDirection,Gtk.StateType,Gtk.IconSize,Gtk.Widget,System.String)"/>. In
+          most cases, <see
+          cref="M:Gtk.Widget.RenderIcon(System.String,Gtk.IconSize,System.String)"
+          /> is better, since it automatically provides most of the arguments from the
+          current widget settings. This function never returns <see
+          langword="null" />;
+          if the icon can't be rendered (perhaps because an image file
+          fails to load), a default "missing image" icon will be
+          returned instead.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSizes">
@@ -57,7 +84,7 @@
         <Parameter Name="n_sizes" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>This method needs fixing, the signature is incorrect</summary>
         <param name="sizes">To be added: an object of type 'Gtk.IconSize'</param>
         <param name="n_sizes">To be added: an object of type 'int'</param>
         <remarks>To be added</remarks>
@@ -71,9 +98,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.IconSet'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Copy the IconSet by value.
+        </summary>
+        <returns>a copy of the current IconSet</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddSource">
@@ -86,9 +115,50 @@
         <Parameter Name="source" Type="Gtk.IconSource" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          Adds an IconSource to the current IconSet.
+        </summary>
         <param name="source">To be added: an object of type 'Gtk.IconSource'</param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Icon sets have a list of <see cref="T:Gtk.IconSource" />,
+            which they use as base icons for rendering icons in
+            different states and sizes. Icons are scaled, made to look
+            insensitive, etc. in <see
+            cref="M:Gtk.Style.RenderIcon(Gtk.IconSource,Gtk.TextDirection,Gtk.StateType,Gtk.IconSize,Gtk.Widget,System.String)"/>,
+            but <see cref="T:Gtk.IconSet" /> needs base images to work
+            with. The base images and when to use them are described
+            by a <see cref="T:Gtk.IconSource" />.
+          </para>
+
+          <para>
+            This function copies <see paramref="source" />, so you can reuse the same
+            source immediately without affecting the icon set.
+          </para>
+          <para>
+            An example of when you'd use this function: a web
+            browser's "Back to Previous Page" icon might point in a
+            different direction in Hebrew and in English; it might
+            look different when insensitive; and it might change size
+            depending on toolbar mode (small/large icons). So a single
+            icon set would contain all those variants of the icon, and
+            you might add a separate source for each one.
+          </para>
+          <para>
+            You should nearly always add a "default" icon source with
+            all fields wildcarded, which will be used as a fallback if
+            no more specific source matches. <see cref="T:Gtk.IconSet"
+            />always prefers more specific icon sources to more
+            generic icon sources. The order in which you add the
+            sources to the icon set does not matter.
+          </para>
+
+          <para>
+            This <see cref="C:Gtk.IconSet(Gdk.Pixbuf)" /> constructor
+            creates a new icon set with a default icon source based on
+            the given pixbuf.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Ref">
@@ -99,9 +169,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.IconSet'</returns>
-        <remarks>To be added</remarks>
+        <summary>Increments the reference count.</summary>
+        <returns>the IconSet with the incremented reference count</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Unref">
@@ -112,8 +182,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Decrements the reference count</summary>
+        <remarks>
+          Decrements the reference count, and frees memory
+          if the reference count reaches 0.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -138,9 +211,16 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.IconSet'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Creates a new <see cref="T:Gtk.IconSet" />. A <see
+          cref="T:Gtk.IconSet" /> represents a single
+          icon in various sizes and widget states. It can provide a
+          <see cref="T:Gdk.Pixbuf" /> for a given size and state on request, and
+          automatically caches some of the rendered <see
+          cref="T:Gdk.Pixbuf" /> objects.
+        </summary>
+        <returns>a new IconSet</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -151,10 +231,14 @@
         <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gtk.IconSet'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Creates a new <see cref="T:Gtk.IconSet" /> with <see paramref="pixbuf" /> as the default/fallback source image.
+        </summary>
+        <param name="pixbuf">
+          a <see cref="T:Gdk.Pixbuf" />
+        </param>
+        <returns>an <see cref="T:Gtk.IconSet" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
