@@ -21,6 +21,7 @@ sources = 				\
 	Field.cs			\
 	GenBase.cs			\
 	GenerationInfo.cs		\
+	GObjectGen.cs			\
 	IGeneratable.cs			\
 	ImportSignature.cs		\
 	InterfaceGen.cs			\

@@ -68,12 +68,12 @@ namespace GtkSharp.Generation {
 			return var_name + "." + handle;
 		}
 		
-		public string FromNative(string var)
+		public virtual string FromNative(string var)
 		{
 			return "new " + QualifiedName + "(" + var + ")";
 		}
 		
-		public string FromNativeReturn(string var)
+		public virtual string FromNativeReturn(string var)
 		{
 			return FromNative (var);
 		}
