@@ -95,7 +95,13 @@ namespace GtkSharp.Generation {
 		bool IsPointer (XmlElement field)
 		{
 			string c_type = field.GetAttribute("type");
-			return (c_type[c_type.Length - 1] == '*');
+			return (c_type.EndsWith ("*") || c_type.EndsWith ("pointer"));
+		}
+
+		bool IsPadding (XmlElement field)
+		{
+			string c_name = field.GetAttribute ("cname");
+			return (c_name.StartsWith ("dummy"));
 		}
 
 		protected void GenFields (StreamWriter sw)
@@ -114,29 +120,39 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected bool GetFieldInfo (XmlElement field, out string c_type, out string type, out string name)
+		protected bool GetFieldInfo (XmlElement field, out string c_type, out string type, out string name, out string protection)
 		{
 			name = "";
+			protection = "";
 			c_type = field.GetAttribute ("type");
 			type = SymbolTable.Table.GetCSType (c_type);
 			if (IsBit (field)) {
 				type = "uint";
+				protection = "private";
 			} else if ((IsPointer (field) || SymbolTable.Table.IsOpaque (c_type)) && type != "string") {
 				type = "IntPtr";
 				name = "_";
+				protection = "private";
 			} else if (SymbolTable.Table.IsCallback (c_type)) {
 				type = "IntPtr";
+				protection = "private";
+			} else if (IsPadding (field)) {
+				protection = "private";
 			} else {
 				if (type == "") {
 					Console.WriteLine ("Field has unknown Type {0}", c_type);
 					Statistics.ThrottledCount++;
 					return false;
 				}
+
+				protection = "public";
 			}
 			
 			// FIXME: marshalling not implemented here in mono 
-			if (field.HasAttribute("array_len"))
+			if (field.HasAttribute("array_len")) {
 				type = "IntPtr";
+				protection = "private";
+			}
 
 			if (IsBit (field))
 				name = String.Format ("_bitfield{0}", bitfields++);
@@ -148,10 +164,10 @@ namespace GtkSharp.Generation {
 
 		protected bool GenField (XmlElement field, StreamWriter sw)
 		{
-			string c_type, type, name;
-			if (!GetFieldInfo (field, out c_type, out type, out name))
+			string c_type, type, name, protection;
+			if (!GetFieldInfo (field, out c_type, out type, out name, out protection))
 				return false;
-			sw.WriteLine ("\t\tpublic {0} {1};", type, SymbolTable.Table.MangleName (name));
+			sw.WriteLine ("\t\t{0} {1} {2};", protection, type, SymbolTable.Table.MangleName (name));
 
 			if (field.HasAttribute("array_len"))
 				Console.WriteLine ("warning: array field {0}.{1} probably incorrectly generated", QualifiedName, name);
