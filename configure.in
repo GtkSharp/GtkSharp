@@ -102,7 +102,7 @@ if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found])
 fi
 
-SDCHECK="`$GACUTIL /l |grep ^System.Drawing, |cut -f1 -d','`"
+SDCHECK="`$GACUTIL /l |grep ^System.Drawing, | head -n1 |cut -f1 -d','`"
 if test "x$SDCHECK" = "xSystem.Drawing"; then
 	enable_dotnet=yes
 else
