@@ -135,3 +135,55 @@
 				return workareas;
 			}
 		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern bool gdk_init_check(ref int argc, ref IntPtr argv);
+
+		public static bool InitCheck (ref string[] argv)
+		{
+			IntPtr ptr = GLib.Marshaller.ArgvToArrayPtr (argv);
+			int count = argv.Length;
+			bool result = gdk_init_check (ref count, ref ptr);
+			argv = GLib.Marshaller.ArrayPtrToArgv (ptr, count);
+			return result;
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_parse_args(ref int argc, ref IntPtr argv);
+
+		public static void ParseArgs (ref string[] argv)
+		{
+			IntPtr ptr = GLib.Marshaller.ArgvToArrayPtr (argv);
+			int count = argv.Length;
+			gdk_parse_args (ref count, ref ptr);
+			argv = GLib.Marshaller.ArrayPtrToArgv (ptr, count);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_query_depths (out IntPtr depths, out int n_depths);
+
+		public static int[] QueryDepths ()
+		{
+			IntPtr ptr;
+			int count;
+			gdk_query_depths (out ptr, out count);
+			int[] result = new int [count];
+			Marshal.Copy (ptr, result, 0, count);
+			return result;
+		}
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_query_visual_types (out IntPtr types, out int n_types);
+
+		public static VisualType[] QueryVisualTypes ()
+		{
+			IntPtr ptr;
+			int count;
+			gdk_query_visual_types (out ptr, out count);
+			int[] tmp = new int [count];
+			Marshal.Copy (ptr, tmp, 0, count);
+			VisualType[] result = new VisualType [count];
+			for (int i = 0; i < count; i++)
+				result [i] = (VisualType) tmp [i];
+			return result;
+		}
+

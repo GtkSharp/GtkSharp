@@ -50,6 +50,7 @@ customs = 			\
 	DragContext.custom	\
 	Drawable.custom		\
 	Global.custom		\
+	Keymap.custom		\
 	Pixbuf.custom		\
 	PixbufLoader.custom	\
 	Pixdata.custom		\
