@@ -34,3 +34,30 @@
 			return result;
 		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		struct ConstStockItem {
+			public IntPtr StockId;
+			public IntPtr Label;
+			public Gdk.ModifierType Modifier;
+			public uint Keyval;
+			public IntPtr TranslationDomain;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_stock_lookup (string stock_id, out ConstStockItem item);
+
+		public static Gtk.StockItem Lookup (string stock_id) {
+			ConstStockItem const_item;
+
+			if (!gtk_stock_lookup (stock_id, out const_item))
+				return Gtk.StockItem.Zero;
+
+			Gtk.StockItem item = new Gtk.StockItem ();
+			item.StockId = Marshal.PtrToStringAnsi (const_item.StockId);
+			item.Label = Marshal.PtrToStringAnsi (const_item.Label);
+			item.Modifier = const_item.Modifier;
+			item.Keyval = const_item.Keyval;
+			item.TranslationDomain = Marshal.PtrToStringAnsi (const_item.TranslationDomain);
+			return item;
+		}
+

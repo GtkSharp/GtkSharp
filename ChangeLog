@@ -1,3 +1,13 @@
+2004-12-20  Dan Winship  <danw@novell.com>
+
+	* gtk/Gtk.metadata: Don't rename GtkStock to StockManager, hide
+	Lookup (so we can customize it) and AddStatic (since it can't work
+	right from managed code), and tweak the params of Add.
+
+	* gtk/Stock.custom: Implement Lookup() using a special
+	ConstStockItem struct so the p/invoke layer won't try to free
+	static strings. [#70589]
+
 2004-12-20  Mike Kestner  <mkestner@novell.com>
 
 	* generator/Property.cs : generate Interface properties.
