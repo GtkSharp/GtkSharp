@@ -1,3 +1,14 @@
+2001-10-04  Mike Kestner <mkestner@speakeasy.net>
+
+	* HACKING : Little bit of cleanup.
+	* gdk/SimpleEvent.cs : Redesigned a bit. Docs.  Replaced refcounting 
+	mechanism with an instance hash and added ctor/dtor.  This class
+	now completely encapsulates the signal attachment and forwarding 
+	mechanism for GdkEvent based signals.  It attaches to the raw signal, 
+	maintains a ref to the associated event handler, and uses the static 
+	callback to activate the event handler on signal receipt.
+	* sample/makefile : killed one last CSC explicit reference. 
+
 2001-10-02  Mike Kestner <mkestner@speakeasy.net>
 
 	* glib/Value.cs : Tried adding CallingConvention.Cdecl to all the
