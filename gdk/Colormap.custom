@@ -1,9 +1,18 @@
-[DllImport("libgdk-win32-2.0-0.dll", EntryPoint="gdk_colormap_alloc_color")]
-static extern bool _gdk_colormap_alloc_color(IntPtr raw, ref Gdk.Color color, bool writeable, bool best_match);
+// Gdk.Color.custom - Gdk Color class customizations
+//
+// Authors:
+// 	Gonzalo Paniagua Javier (gonzalo@ximian.com)
+//
+// (c) 2003 Ximian, Inc. (gonzalo@ximian.com)
+//
+// This code is inserted after the automatically generated code.
 
-public bool AllocColor(ref Gdk.Color color, bool writeable, bool best_match) 
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern bool gdk_colormap_alloc_color(IntPtr raw, ref Gdk.Color color, bool writeable, bool best_match);
+
+public bool AllocColor (ref Gdk.Color color, bool writeable, bool best_match)
 {
-	bool raw_ret = _gdk_colormap_alloc_color(Handle, ref color, writeable, best_match);
-	bool ret = raw_ret;
-	return ret;
+	return gdk_colormap_alloc_color (Handle, ref color, writeable, best_match);
 }
+

@@ -27,7 +27,9 @@ namespace GConf.Tools
 		{
 			XmlDocument doc = new XmlDocument ();
 			try {
-				doc.Load (filename);
+				Stream stream = File.OpenRead (filename);
+				doc.Load (stream);
+				stream.Close ();
 			} catch (XmlException e) {
 				Die ("Could not parse " + filename);
 			}
