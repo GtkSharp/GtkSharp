@@ -1,0 +1,18 @@
+//
+// gdk/EventMotion.custom
+//
+// Author: Gustavo Giraldez <gustavo.giraldez@gmx.net>
+//
+// Copyright (C) 2004 Gustavo Giraldez.
+//
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern IntPtr gdk_event_get_type();
+
+public static GLib.GType GType { 
+	get {
+		IntPtr raw_ret = gdk_event_get_type();
+		GLib.GType ret = new GLib.GType(raw_ret);
+		return ret;
+	}
+}
