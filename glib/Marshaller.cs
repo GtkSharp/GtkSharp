@@ -211,6 +211,9 @@ namespace GLib {
 
 		public static char GUnicharToChar (uint ucs4_char)
 		{ 
+			if (ucs4_char == 0)
+				return (char) 0;
+
 			IntPtr raw_ret = gtksharp_unichar_to_utf8_string (ucs4_char);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			if (ret.Length > 1)
