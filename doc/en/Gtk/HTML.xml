@@ -22,6 +22,124 @@
       <para>
 	Gtk.HTML does not have support for CSS or JavaScript.
       </para>
+      <para>
+	The following sample is a very minimal web browser.
+      </para>
+      <para>
+	  <example>
+	    <code lang="C#">
+using System;
+using System.Net;
+using System.IO;
+using Gtk;
+using GtkSharp;
+
+namespace HtmlTest
+{
+        class HtmlTest
+        {
+                HTML html;
+                Entry entry;
+                string currentUrl;
+                
+                static void Main (string[] args)
+                {
+                        new HtmlTest();
+                }
+                
+                HtmlTest()
+                {
+                        Application.Init ();
+                        
+                        Window win = new Window ("HtmlTest");
+                        win.SetDefaultSize (800, 600);
+                        win.DeleteEvent += new DeleteEventHandler (OnWindowDelete);
+                        
+                        VBox vbox = new VBox (false, 1);
+                        win.Add (vbox);
+                        
+                        HBox hbox = new HBox (false, 1);
+                        
+                        Label label = new Label ("Address:");
+                        
+                        entry = new Entry ("");
+                        entry.Activated += new EventHandler (OnEntryActivated);
+                        
+                        Button button = new Button ("Go!");
+                        button.Clicked += new EventHandler (OnButtonClicked);
+                        
+                        hbox.PackStart (label, false, false, 1);
+                        hbox.PackStart (entry, true, true, 1);
+                        hbox.PackStart (button, false, false, 1);
+                        
+                        vbox.PackStart (hbox, false, false, 1);
+                        
+                        ScrolledWindow sw = new ScrolledWindow ();
+                        sw.VscrollbarPolicy = PolicyType.Always;
+                        sw.HscrollbarPolicy = PolicyType.Always;
+                        vbox.PackStart(sw, true, true, 1);
+                        
+                        html = new HTML ();
+                        html.LinkClicked += new LinkClickedHandler (OnLinkClicked);
+                        sw.Add (html);
+                        
+                        win.ShowAll();
+                        Application.Run ();
+                
+                }
+                
+                void OnWindowDelete (object obj, DeleteEventArgs args)
+                {
+                        Application.Quit();
+                }
+                
+                void OnButtonClicked (object obj, EventArgs args)
+                {
+                        currentUrl = entry.Text.Trim();
+                        LoadHtml (currentUrl);
+                }
+                
+                void OnEntryActivated (object obj, EventArgs args)
+                {
+                        OnButtonClicked (obj, args);
+                }
+                
+                void OnLinkClicked (object obj, LinkClickedArgs args)
+                {
+                        string newUrl;
+                        
+                        // decide absolute or relative
+                        if (args.Url.StartsWith("http://")) 
+                                newUrl = args.Url;
+                        else
+                                newUrl = currentUrl + args.Url;
+
+	                try {
+                                LoadHtml (newUrl);
+	                } catch { }
+                        currentUrl = newUrl;
+                }
+                
+                void LoadHtml (string URL)
+                {
+                        HttpWebRequest web_request = (HttpWebRequest) WebRequest.Create (URL);
+                        HttpWebResponse web_response = (HttpWebResponse) web_request.GetResponse ();
+			Stream stream = web_response.GetResponseStream ();
+			byte [] buffer = new byte [8192];
+			
+			HTMLStream html_stream = html.Begin ();
+			int count;
+			
+			while ((count = stream.Read (buffer, 0, 8192)) != 0){
+				html_stream.Write (buffer, count);
+			}
+			html.End (html_stream, HTMLStreamStatus.Ok);
+                }
+        }
+}
+	    </code>
+	  </example>
+      </para>
     </remarks>
   </Docs>
   <Base>
