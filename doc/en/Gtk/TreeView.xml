@@ -44,80 +44,48 @@
       </para>
       <example>
         <code lang="C#">
-namespace Samples {
-        using System;
-        using System.Drawing;
-        using GLib;
-        using Gtk;
-        using GtkSharp;
+using System;
+using Gtk;
+using GtkSharp;
 
-
-        public class TreeView {
+public class TreeViewSample {
                 
-                public static void Main (string [] args)
-                {
-                        TreeStore store = null;
-                                                
-                        Application.Init ();
+	public static void Main (string [] args)
+	{              
+		Application.Init ();
 
+		TreeStore store = new TreeStore (typeof (string), typeof (string));
 
-                        store = new TreeStore ((int)TypeFundamentals.TypeString,
-                                               (int)TypeFundamentals.TypeString);
-
-
-                        TreeIter iter = new TreeIter ();
+		for (int i=0; i &lt; 5; i++)
+		{
+			TreeIter iter = store.AppendValues ("Demo " + i, "Data " + i);
+		}
                         
-                        for (int i=0; i&lt;0; i++)
-                        {
-                                GLib.Value Name = new GLib.Value ("Demo " + i.ToString());
-                                GLib.Value Type = new GLib.Value ("Data " + i.ToString());
-                                store.Append (out iter);
-                                store.SetValue (iter, 0, Name);
-                                store.SetValue (iter, 1, Type);
-                        }
+		Window win = new Window ("TreeView List Demo");
+		win.DeleteEvent += new DeleteEventHandler (delete_cb);
+		win.SetDefaultSize (400,250);
+
+		ScrolledWindow sw = new ScrolledWindow ();
+		win.Add (sw);
+
+		TreeView tv = new TreeView ();
+		tv.Model = store;
+		tv.HeadersVisible = true;
+
+		tv.AppendColumn ("Demo", new CellRendererText (), "text", 0);
+		tv.AppendColumn ("Data", new CellRendererText (), "text", 1);
                         
-                        Window win = new Window ("TreeView List Demo");
-                        win.DeleteEvent += new DeleteEventHandler (delete_cb);
-                        win.DefaultSize = new Size (400,250);
+		sw.Add (tv);
+		sw.Show();
+		win.ShowAll ();
+		Application.Run ();
+	}
 
-
-                        ScrolledWindow sw = new ScrolledWindow ();
-                        win.Add (sw);
-
-
-                        TreeView tv = new TreeView (store);
-                        tv.HeadersVisible = true;
-
-
-                        TreeViewColumn DemoCol = new TreeViewColumn ();
-                        CellRenderer DemoRenderer = new CellRendererText ();
-                        DemoCol.Title = "Demo";
-                        DemoCol.PackStart (DemoRenderer, true);
-                        DemoCol.AddAttribute (DemoRenderer, "text", 0);
-                        tv.AppendColumn (DemoCol);
-
-
-                        TreeViewColumn DataCol = new TreeViewColumn ();
-                        CellRenderer DataRenderer = new CellRendererText ();
-                        DataCol.Title = "Data";
-                        DataCol.PackStart (DataRenderer, false);
-                        DataCol.AddAttribute (DataRenderer, "text", 1);
-                        tv.AppendColumn (DataCol);
-
-
-                        sw.Add (tv);
-                        sw.Show();
-                        win.ShowAll ();
-                        Application.Run ();
-                }
-
-
-                private static void delete_cb (System.Object o, DeleteEventArgs args)
-                {
-                        Application.Quit ();
-                        args.RetVal = true;
-                }
-        }
+	private static void delete_cb (System.Object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+		args.RetVal = true;
+	}
 }
 	</code>
       </example>
@@ -151,7 +119,7 @@ namespace Samples {
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
+        <returns>an object of type <see cref="T:System.UInt32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -166,8 +134,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -184,9 +152,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeViewColumnDropFunc'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
+        <param name="func">an object of type <see cref="T:Gtk.TreeViewColumnDropFunc"/></param>
+        <param name="user_data">an object of type <see cref="T:System.IntPtr"/></param>
+        <param name="destroy">an object of type <see cref="T:Gtk.DestroyNotify"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -205,11 +173,11 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="use_align">To be added: an object of type 'bool'</param>
-        <param name="row_align">To be added: an object of type 'float'</param>
-        <param name="col_align">To be added: an object of type 'float'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="use_align">an object of type <see cref="T:System.Boolean"/></param>
+        <param name="row_align">an object of type <see cref="T:System.Single"/></param>
+        <param name="col_align">an object of type <see cref="T:System.Single"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -226,9 +194,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="targets">To be added: an object of type 'Gtk.TargetEntry'</param>
-        <param name="n_targets">To be added: an object of type 'int'</param>
-        <param name="actions">To be added: an object of type 'Gdk.DragAction'</param>
+        <param name="targets">an object of type <see cref="T:Gtk.TargetEntry"/></param>
+        <param name="n_targets">an object of type <see cref="T:System.UInt32"/></param>
+        <param name="actions">an object of type <see cref="T:Gdk.DragAction"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -243,8 +211,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <returns>an object of type <see cref="T:Gdk.Pixmap"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -272,8 +240,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="base_column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="base_column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -290,9 +258,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="focus_column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="start_editing">To be added: an object of type 'bool'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="focus_column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="start_editing">an object of type <see cref="T:System.Boolean"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -309,9 +277,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="rect">To be added: an object of type 'Gdk.Rectangle'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="rect">an object of type <see cref="T:Gdk.Rectangle"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -326,7 +294,7 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="visible_rect">To be added: an object of type 'Gdk.Rectangle'</param>
+        <param name="visible_rect">an object of type <see cref="T:Gdk.Rectangle"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -342,9 +310,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="position">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="position">an object of type <see cref="T:System.Int32"/></param>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -360,8 +328,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -376,8 +344,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -394,9 +362,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeDestroyCountFunc'</param>
-        <param name="data">To be added: an object of type 'IntPtr'</param>
-        <param name="destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
+        <param name="func">an object of type <see cref="T:Gtk.TreeDestroyCountFunc"/></param>
+        <param name="data">an object of type <see cref="T:System.IntPtr"/></param>
+        <param name="destroy">an object of type <see cref="T:Gtk.DestroyNotify"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -413,9 +381,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="search_equal_func">To be added: an object of type 'Gtk.TreeViewSearchEqualFunc'</param>
-        <param name="search_user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="search_destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
+        <param name="search_equal_func"> an object of type <see cref="T:Gtk.TreeViewSearchEqualFunc"/></param>
+        <param name="search_user_data">an object of type <see cref="T:System.IntPtr"/></param>
+        <param name="search_destroy">an object of type <see cref="T:Gtk.DestroyNotify"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -442,8 +410,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -459,8 +427,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="pos">To be added: an object of type 'Gtk.TreeViewDropPosition'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="pos">an object of type <see cref="T:Gtk.TreeViewDropPosition"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -490,10 +458,10 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="start_button_mask">To be added: an object of type 'Gdk.ModifierType'</param>
-        <param name="targets">To be added: an object of type 'Gtk.TargetEntry'</param>
-        <param name="n_targets">To be added: an object of type 'int'</param>
-        <param name="actions">To be added: an object of type 'Gdk.DragAction'</param>
+        <param name="start_button_mask">an object of type <see cref="T:Gdk.ModifierType"/></param>
+        <param name="targets">an object of type <see cref="T:Gtk.TargetEntry"/></param>
+        <param name="n_targets">an object of type <see cref="T:System.Int32"/></param>
+        <param name="actions">an object of type <see cref="T:Gdk.DragAction"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -508,8 +476,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -527,11 +495,11 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="drag_x">To be added: an object of type 'int'</param>
-        <param name="drag_y">To be added: an object of type 'int'</param>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="pos">To be added: an object of type 'Gtk.TreeViewDropPosition'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="drag_x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="drag_y">an object of type <see cref="T:System.Int32"/></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="pos">an object of type <see cref="T:Gtk.TreeViewDropPosition"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -559,8 +527,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="pos">To be added: an object of type 'Gtk.TreeViewDropPosition'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="pos">an object of type <see cref="T:Gtk.TreeViewDropPosition"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -575,7 +543,7 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeViewMappingFunc'</param>
+        <param name="func">an object of type <see cref="T:Gtk.TreeViewMappingFunc"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -591,8 +559,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="tree_x">To be added: an object of type 'int'</param>
-        <param name="tree_y">To be added: an object of type 'int'</param>
+        <param name="tree_x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="tree_y">an object of type <see cref="T:System.Int32"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -607,8 +575,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="n">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.TreeViewColumn'</returns>
+        <param name="n">an object of type <see cref="T:System.Int32"/></param>
+        <returns>an object of type <see cref="T:Gtk.TreeViewColumn"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -624,9 +592,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="open_all">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="open_all">an object of type <see cref="T:System.Boolean"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -656,10 +624,10 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="tx">To be added: an object of type 'int'</param>
-        <param name="ty">To be added: an object of type 'int'</param>
-        <param name="wx">To be added: an object of type 'int'</param>
-        <param name="wy">To be added: an object of type 'int'</param>
+        <param name="tx">an object of type <see cref="T:System.Int32"/></param>
+        <param name="ty">an object of type <see cref="T:System.Int32"/></param>
+        <param name="wx">an object of type <see cref="T:System.Int32"/></param>
+        <param name="wy">an object of type <see cref="T:System.Int32"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -676,9 +644,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="rect">To be added: an object of type 'Gdk.Rectangle'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="rect">an object of type <see cref="T:Gdk.Rectangle"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -694,8 +662,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="focus_column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="focus_column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -734,7 +702,7 @@ namespace Samples {
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeView'</returns>
+        <returns>an object of type <see cref="T:Gtk.TreeView"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -747,8 +715,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="model">To be added: an object of type 'Gtk.TreeModel'</param>
-        <returns>To be added: an object of type 'Gtk.TreeView'</returns>
+        <param name="model">an object of type <see cref="T:Gtk.TreeModel"/></param>
+        <returns>an object of type <see cref="T:Gtk.TreeView"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -759,8 +727,8 @@ namespace Samples {
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.TreeView</summary>
-        <returns>The GLib Type for the Gtk.TreeView class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.TreeView"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.TreeView"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -775,8 +743,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.TreeModel'</param>
-        <returns>To be added: an object of type 'Gtk.TreeModel'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.TreeModel"/></param>
+        <returns>an object of type <see cref="T:Gtk.TreeModel"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -788,7 +756,7 @@ namespace Samples {
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeSelection'</returns>
+        <returns>an object of type <see cref="T:Gtk.TreeSelection"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -800,7 +768,7 @@ namespace Samples {
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
+        <returns>an object of type <see cref="T:Gdk.Window"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -812,7 +780,7 @@ namespace Samples {
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.List'</returns>
+        <returns>an object of type <see cref="T:GLib.List"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -875,8 +843,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <returns>To be added: an object of type 'Gtk.TreeViewColumn'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <returns>an object of type <see cref="T:Gtk.TreeViewColumn"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -907,8 +875,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment"/></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -939,8 +907,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment"/></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -955,8 +923,8 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32"/></param>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -1150,10 +1118,10 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="path">To be added: an object of type 'Gtk.TreePath&amp;'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
+        <param name="x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="y">an object of type <see cref="T:System.Int32"/></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
         <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -1171,9 +1139,9 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="path">To be added: an object of type 'Gtk.TreePath&amp;'</param>
+        <param name="x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="y">an object of type <see cref="T:System.Int32"/></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
         <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -1194,12 +1162,12 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="path">To be added: an object of type 'Gtk.TreePath&amp;'</param>
-        <param name="column">To be added: an object of type 'Gtk.TreeViewColumn'</param>
-        <param name="cell_x">To be added: an object of type 'int&amp;'</param>
-        <param name="cell_y">To be added: an object of type 'int&amp;'</param>
+        <param name="x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="y">an object of type <see cref="T:System.Int32"/></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath"/></param>
+        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn"/></param>
+        <param name="cell_x">an object of type <see cref="T:System.Int32"/></param>
+        <param name="cell_y">an object of type <see cref="T:System.Int32"/></param>
         <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -1218,10 +1186,10 @@ namespace Samples {
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="wx">To be added: an object of type 'int'</param>
-        <param name="wy">To be added: an object of type 'int'</param>
-        <param name="tx">To be added: an object of type 'int&amp;'</param>
-        <param name="ty">To be added: an object of type 'int&amp;'</param>
+        <param name="wx">an object of type <see cref="T:System.Int32"/></param>
+        <param name="wy">an object of type <see cref="T:System.Int32"/></param>
+        <param name="tx">an object of type <see cref="T:System.Int32"/></param>
+        <param name="ty">an object of type <see cref="T:System.Int32"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
