@@ -44,6 +44,15 @@ namespace GLib {
 		{
 			return g_idle_add (hndlr, IntPtr.Zero);
 		}
+		
+		[DllImport("libglib-2.0-0.dll")]
+		static extern bool g_source_remove_by_funcs_user_data (IdleHandler d, IntPtr data);
+                                                                                
+		public static bool Remove (IdleHandler hndlr)
+		{
+			return g_source_remove_by_funcs_user_data (hndlr, IntPtr.Zero);
+		}
+
 	}
 }
 
