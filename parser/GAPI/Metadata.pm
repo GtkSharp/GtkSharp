@@ -116,15 +116,24 @@ sub fixupParams {
 
 		for ($node = $params_node->firstChild; $node; $node = $node->nextSibling ()) {
 			my $param_type;
+			my $param_name;
+
 			foreach $attr ($node->attributes) {
 				if ($attr->name eq "type") {
 					$param_type = $attr->value;
-					last;
+				} elsif ($attr->name eq "name") {
+					$param_name = $attr->value;
 				}
 			}
 	
-			if ($param_type eq $$data[4]) {
-				$node->setAttribute ($$data[5], $$data[6]);
+			if ($$data[3] eq "type") {
+				if ($param_type eq $$data[4]) {
+					$node->setAttribute ($$data[5], $$data[6]);
+				}
+			} elsif ($$data[3] eq "name") {
+				if ($param_name eq $$data[4]) {
+					$node->setAttribute ($$data[5], $$data[6]);
+				}
 			}
 		}
 	}

@@ -42,11 +42,110 @@
     </attribute>
   </data>
 </rule>
+<rule>
+  <class name="GtkListStore">
+    <method>Append</method>
+    <method>Insert</method>
+    <method>InsertAfter</method>
+    <method>InsertBefore</method>
+    <method>Prepend</method>
+    <method>Remove</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="name">iter</filter>
+      <name>pass_as</name>
+      <value>out</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModelSort">
+    <method>ConvertChildIterToIter</method>
+   </class>
+   <data>
+     <attribute target="param">
+       <filter level="name">sort_iter</filter>
+       <name>pass_as</name>
+       <value>out</value>
+     </attribute>
+   </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>GetIter</method>
+    <method>GetIterFirst</method>
+    <method>GetIterFromString</method>
+    <method>IterChildren</method>
+    <method>IterNext</method>
+    <method>IterNthChild</method>
+    <method>IterParent</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="name">iter</filter>
+      <name>pass_as</name>
+      <value>out</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModelSort">
+    <method>ConvertIterToChildIter</method>
+   </class>
+   <data>
+     <attribute target="param">
+       <filter level="name">child_iter</filter>
+       <name>pass_as</name>
+       <value>out</value>
+     </attribute>
+   </data>
+</rule>
+<rule>
+  <class name="GtkTreeSelection">
+    <method>GetSelected</method>
+   </class>
+   <data>
+     <attribute target="param">
+       <filter level="name">iter</filter>
+       <name>pass_as</name>
+       <value>out</value>
+     </attribute>
+   </data>
+</rule>
+<rule>
+  <class name="GtkTreeStore">
+    <method>Append</method>
+    <method>Insert</method>
+    <method>InsertAfter</method>
+    <method>InsertBefore</method>
+    <method>Prepend</method>
+    <method>Remove</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="name">iter</filter>
+      <name>pass_as</name>
+      <value>out</value>
+    </attribute>
+  </data>
+</rule>
 
 <!-- variable arguments -->
 <rule>
   <class name="GtkTreeStore">
     <constructor>gtk_tree_store_newv</constructor>
+  </class>
+  <data>
+    <attribute target="parameters">
+      <name>va_type</name>
+      <value>length_param</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkListStore">
+    <constructor>gtk_list_store_newv</constructor>
   </class>
   <data>
     <attribute target="parameters">
@@ -944,7 +1043,7 @@
   <data>
     <attribute target="method">
       <name>name</name>
-      <value>DeleteRow</value>
+      <value>EmitRowDeleted</value>
     </attribute>
   </data>
 </rule>
@@ -955,7 +1054,7 @@
   <data>
     <attribute target="method">
       <name>name</name>
-      <value>ToggleRowHasChild</value>
+      <value>EmitRowHasChildToggled</value>
     </attribute>
   </data>
 </rule>
@@ -966,7 +1065,7 @@
   <data>
     <attribute target="method">
       <name>name</name>
-      <value>InsertRow</value>
+      <value>EmitRowInserted</value>
     </attribute>
   </data>
 </rule>
@@ -977,7 +1076,7 @@
   <data>
     <attribute target="method">
       <name>name</name>
-      <value>ChangeRow</value>
+      <value>EmitRowChanged</value>
     </attribute>
   </data>
 </rule>
@@ -988,7 +1087,7 @@
   <data>
     <attribute target="method">
       <name>name</name>
-      <value>ReorderRows</value>
+      <value>EmitRowsReordered</value>
     </attribute>
   </data>
 </rule>
@@ -1530,39 +1629,6 @@
   <data>
     <attribute target="param">
       <filter level="type">gpointer</filter>
-      <name>null_ok</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTreeIter"/>
-  <data>
-    <attribute target="class">
-      <name>opaque</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTreeModel">
-    <method>IterNChildren</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">GtkTreeIter*</filter>
-      <name>null_ok</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTreeModel">
-    <method>IterNthChild</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">GtkTreeIter*</filter>
       <name>null_ok</name>
       <value>1</value>
     </attribute>

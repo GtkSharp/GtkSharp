@@ -158,7 +158,7 @@ namespace GtkSharp.Generation {
 			else
 				safety = "";
 
-			is_get = ((parms != null && (parms.IsAccessor || (parms.Count == 0 && s_ret != "void")) || (parms == null && s_ret != "void")) && Name.Length > 3 && Name.Substring(0, 3) == "Get");
+			is_get = ((parms != null && ((parms.IsAccessor && s_ret == "void") || (parms.Count == 0 && s_ret != "void")) || (parms == null && s_ret != "void")) && Name.Length > 3 && Name.Substring(0, 3) == "Get");
 			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && s_ret == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
 			if (parms != null) {

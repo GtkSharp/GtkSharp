@@ -5128,20 +5128,20 @@
       <method name="GetIter" cname="gtk_tree_model_get_iter">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreePath*" name="path"/>
         </parameters>
       </method>
       <method name="GetIterFirst" cname="gtk_tree_model_get_iter_first">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="GetIterFromString" cname="gtk_tree_model_get_iter_from_string">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="const-gchar*" name="path_string"/>
         </parameters>
       </method>
@@ -5175,7 +5175,7 @@
       <method name="IterChildren" cname="gtk_tree_model_iter_children">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
         </parameters>
       </method>
@@ -5188,27 +5188,27 @@
       <method name="IterNChildren" cname="gtk_tree_model_iter_n_children">
         <return-type type="gint"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter" null_ok="1"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
         </parameters>
       </method>
       <method name="IterNext" cname="gtk_tree_model_iter_next">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="IterNthChild" cname="gtk_tree_model_iter_nth_child">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter" null_ok="1"/>
-          <parameter type="GtkTreeIter*" name="parent" null_ok="1"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
+          <parameter type="GtkTreeIter*" name="parent"/>
           <parameter type="gint" name="n"/>
         </parameters>
       </method>
       <method name="IterParent" cname="gtk_tree_model_iter_parent">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="child"/>
         </parameters>
       </method>
@@ -5218,34 +5218,34 @@
           <parameter type="GtkTreeIter*" name="iter"/>
         </parameters>
       </method>
-      <method name="ChangeRow" cname="gtk_tree_model_row_changed">
+      <method name="EmitRowChanged" cname="gtk_tree_model_row_changed">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkTreePath*" name="path"/>
           <parameter type="GtkTreeIter*" name="iter"/>
         </parameters>
       </method>
-      <method name="DeleteRow" cname="gtk_tree_model_row_deleted">
+      <method name="EmitRowDeleted" cname="gtk_tree_model_row_deleted">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkTreePath*" name="path"/>
         </parameters>
       </method>
-      <method name="ToggleRowHasChild" cname="gtk_tree_model_row_has_child_toggled">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreePath*" name="path"/>
-          <parameter type="GtkTreeIter*" name="iter"/>
-        </parameters>
-      </method>
-      <method name="InsertRow" cname="gtk_tree_model_row_inserted">
+      <method name="EmitRowHasChildToggled" cname="gtk_tree_model_row_has_child_toggled">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkTreePath*" name="path"/>
           <parameter type="GtkTreeIter*" name="iter"/>
         </parameters>
       </method>
-      <method name="ReorderRows" cname="gtk_tree_model_rows_reordered">
+      <method name="EmitRowInserted" cname="gtk_tree_model_row_inserted">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="EmitRowsReordered" cname="gtk_tree_model_rows_reordered">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkTreePath*" name="path"/>
@@ -8324,7 +8324,7 @@
       <method name="Append" cname="gtk_list_store_append">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="Clear" cname="gtk_list_store_clear">
@@ -8336,21 +8336,21 @@
       <method name="Insert" cname="gtk_list_store_insert">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="gint" name="position"/>
         </parameters>
       </method>
       <method name="InsertAfter" cname="gtk_list_store_insert_after">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="sibling"/>
         </parameters>
       </method>
       <method name="InsertBefore" cname="gtk_list_store_insert_before">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="sibling"/>
         </parameters>
       </method>
@@ -8361,7 +8361,7 @@
         </parameters>
       </constructor>
       <constructor cname="gtk_list_store_newv">
-        <parameters>
+        <parameters va_type="length_param">
           <parameter type="gint" name="n_columns"/>
           <parameter type="GType*" name="types"/>
         </parameters>
@@ -8369,13 +8369,13 @@
       <method name="Prepend" cname="gtk_list_store_prepend">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="Remove" cname="gtk_list_store_remove">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="Set" cname="gtk_list_store_set">
@@ -11815,7 +11815,7 @@
       <method name="ConvertChildIterToIter" cname="gtk_tree_model_sort_convert_child_iter_to_iter">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="sort_iter"/>
+          <parameter type="GtkTreeIter*" name="sort_iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="child_iter"/>
         </parameters>
       </method>
@@ -11828,7 +11828,7 @@
       <method name="ConvertIterToChildIter" cname="gtk_tree_model_sort_convert_iter_to_child_iter">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="child_iter"/>
+          <parameter type="GtkTreeIter*" name="child_iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="sorted_iter"/>
         </parameters>
       </method>
@@ -11872,7 +11872,7 @@
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="GtkTreeModel**" name="model"/>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="GetTreeView" cname="gtk_tree_selection_get_tree_view">
@@ -11977,7 +11977,7 @@
       <method name="Append" cname="gtk_tree_store_append">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
         </parameters>
       </method>
@@ -11990,7 +11990,7 @@
       <method name="Insert" cname="gtk_tree_store_insert">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
           <parameter type="gint" name="position"/>
         </parameters>
@@ -11998,7 +11998,7 @@
       <method name="InsertAfter" cname="gtk_tree_store_insert_after">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
           <parameter type="GtkTreeIter*" name="sibling"/>
         </parameters>
@@ -12006,7 +12006,7 @@
       <method name="InsertBefore" cname="gtk_tree_store_insert_before">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
           <parameter type="GtkTreeIter*" name="sibling"/>
         </parameters>
@@ -12039,14 +12039,14 @@
       <method name="Prepend" cname="gtk_tree_store_prepend">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
           <parameter type="GtkTreeIter*" name="parent"/>
         </parameters>
       </method>
       <method name="Remove" cname="gtk_tree_store_remove">
         <return-type type="void"/>
         <parameters>
-          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="iter" pass_as="out"/>
         </parameters>
       </method>
       <method name="Set" cname="gtk_tree_store_set">
@@ -15552,7 +15552,7 @@
         </parameters>
       </method>
     </struct>
-    <boxed name="TreeIter" cname="GtkTreeIter" opaque="1">
+    <boxed name="TreeIter" cname="GtkTreeIter">
       <field cname="stamp" type="gint"/>
       <field cname="user_data" type="gpointer"/>
       <field cname="user_data2" type="gpointer"/>
