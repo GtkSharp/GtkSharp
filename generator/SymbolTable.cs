@@ -323,6 +323,8 @@ namespace GtkSharp.Generation {
 				return "_lock";
 			case "callback":
 				return "cb";
+			case "readonly":
+				return "read_only";
 			default:
 				break;
 			}
