@@ -36,8 +36,7 @@ namespace GladeSamples {
 					   Glade.XML.GetWidgetTree (wid) != null);
 
 			Console.WriteLine ("\nList of created widgets:");
-			GLib.List l = gxml.GetWidgetPrefix ("");
-			foreach (Widget w in l) {
+			foreach (Widget w in gxml.GetWidgetPrefix ("")) {
 				Console.WriteLine ("{0} {1}", 
 						   w.GetType (),
 						   Glade.XML.GetWidgetName (w));
