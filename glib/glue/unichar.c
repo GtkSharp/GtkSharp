@@ -24,6 +24,7 @@
 
 /* Forward declarations */
 gchar *gtksharp_unichar_to_utf8_string (gunichar chr);
+gunichar glibsharp_utf16_to_unichar (guint16 chr);
 /* */
 
 gchar * 
@@ -33,5 +34,17 @@ gtksharp_unichar_to_utf8_string (gunichar chr)
 	gint cnt = g_unichar_to_utf8 (chr, buf);
 	buf [cnt] = 0;
 	return buf;
+}
+
+gunichar
+glibsharp_utf16_to_unichar (guint16 chr)
+{
+	gunichar *ucs4_str;
+	gunichar result;
+
+	ucs4_str = g_utf16_to_ucs4 (&chr, 1, NULL, NULL, NULL);
+	result = *ucs4_str;
+	g_free (ucs4_str);
+	return result;
 }
 

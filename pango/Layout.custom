@@ -37,3 +37,37 @@ public LayoutLine[] Lines {
 	}
 }
 
+[DllImport("libpango-1.0-0.dll")]
+static extern void pango_layout_set_markup_with_accel (IntPtr raw, string markup, int length, uint accel_marker, out uint accel_char);
+
+public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char)
+{
+	uint ucs4_accel_char;
+	pango_layout_set_markup_with_accel (Handle, markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out ucs4_accel_char);
+	accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
+}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_free (IntPtr raw);
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern void pango_layout_get_log_attrs (IntPtr raw, out IntPtr attrs, out int n_attrs);
+
+		public LogAttr [] LogAttrs {
+			get {
+				int count;
+				IntPtr array_ptr;
+				pango_layout_get_log_attrs (Handle, out array_ptr, out count);
+				if (array_ptr == IntPtr.Zero)
+					return new LogAttr [0];
+				LogAttr [] result = new LogAttr [count];
+				for (int i = 0; i < count; i++) {
+					IntPtr fam_ptr = Marshal.ReadIntPtr (new IntPtr ((int)array_ptr + i * IntPtr.Size));
+					result [i] = LogAttr.New (fam_ptr);
+				}
+
+				g_free (array_ptr);
+				return result;
+			}
+		}
+

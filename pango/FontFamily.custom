@@ -1,0 +1,56 @@
+// Pango.FontFamily.custom - Pango FontFamily class customizations
+//
+// Authors:  Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_free (IntPtr raw);
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern void pango_font_family_list_faces(IntPtr raw, out IntPtr faces, out int n_faces);
+
+		public FontFace [] Faces {
+			get {
+				int count;
+				IntPtr array_ptr;
+				pango_font_family_list_faces (Handle, out array_ptr, out count);
+				if (array_ptr == IntPtr.Zero)
+					return new FontFace [0];
+				FontFace [] result = new FontFace [count];
+				for (int i = 0; i < count; i++) {
+					IntPtr fam_ptr = Marshal.ReadIntPtr (new IntPtr ((int)array_ptr + i * IntPtr.Size));
+					result [i] = GLib.Object.GetObject (fam_ptr) as FontFace;
+				}
+
+				g_free (array_ptr);
+				return result;
+			}
+		}
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern void pango_font_family_list_faces(IntPtr raw, IntPtr faces, out int n_faces);
+
+		[Obsolete]
+		public int ListFaces(Pango.FontFace faces) {
+			int n_faces;
+			pango_font_family_list_faces(Handle, faces.Handle, out n_faces);
+			return n_faces;
+		}
+

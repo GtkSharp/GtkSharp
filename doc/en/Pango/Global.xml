@@ -74,22 +74,6 @@
         <remarks>The <paramref name="log_attrs" /> array must have one <see cref="T:Pango.LogAttr" /> for each position in text; if text contains N characters, it has N+1 positions, including the last position at the end of the text. text should be an entire paragraph; logical attributes cannot be computed without context (for example you need to see spaces on either side of a word to know the word is a word).</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SkipSpace">
-      <MemberSignature Language="C#" Value="public static bool SkipSpace (string pos);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pos" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Skips 0 or more characters of whitespace</summary>
-        <param name="pos">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" />, which is true if there are non-whitespace characters before the end of the string.</returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Global ();" />
       <MemberType>Constructor</MemberType>
@@ -221,6 +205,64 @@ If no delimiters are found, both <paramref name="paragraph_delimiter_index" /> a
         <param name="pos">a <see cref="T:System.String" />, a string to scan.</param>
         <param name="out_param">a <see cref="T:System.Int32&amp;" />, an integer to put the result into.</param>
         <returns>a <see cref="T:System.Boolean" />, false if a parse error occurred.</returns>
+      </Docs>
+    </Member>
+    <Member MemberName="SkipSpace">
+      <MemberSignature Language="C#" Value="public static bool SkipSpace (ref string pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pos" Type="System.String&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <summary>Skips 0 or more characters of whitespace</summary>
+        <param name="pos">a <see cref="T:System.String" /></param>
+        <returns>a <see cref="T:System.Boolean" />, which is true if there are non-whitespace characters before the end of the string.</returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScanInt">
+      <MemberSignature Language="C#" Value="public static bool ScanInt (ref string pos, out int out_param);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pos" Type="System.String&amp;" RefType="ref" />
+        <Parameter Name="out_param" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Scans a string looking for an integer. An integer consists of up to 31 decimal digits.</summary>
+        <param name="pos">a <see cref="T:System.String" /></param>
+        <param name="out_param">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParseMarkup">
+      <MemberSignature Language="C#" Value="public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="markup" Type="System.String" />
+        <Parameter Name="accel_marker" Type="System.Char" />
+        <Parameter Name="attrs" Type="Pango.AttrList&amp;" RefType="out" />
+        <Parameter Name="text" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="accel_char" Type="System.Char&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Parses a markup text string into text and a list of attributes.</summary>
+        <param name="markup">a <see cref="T:System.String" /></param>
+        <param name="accel_marker">a <see cref="T:System.Char" /></param>
+        <param name="attrs">a <see cref="T:Pango.AttrList" /></param>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <param name="accel_char">a <see cref="T:System.Char" /></param>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,0 +1,46 @@
+// Pango.Global.custom - Pango Global class customizations
+//
+// Authors:  Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern bool pango_scan_int(string pos, out int out_param);
+
+		[Obsolete]
+		public static bool ScanInt(string pos, out int out_param) {
+			bool raw_ret = pango_scan_int(pos, out out_param);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern bool pango_parse_markup (string markup, int length, uint accel_marker, out IntPtr attr_list_handle, out string text, out uint accel_char, IntPtr err);
+
+		public static bool ParseMarkup (string markup, char accel_marker, out Pango.AttrList attrs, out string text, out char accel_char)
+		{
+			uint ucs4_accel_char;
+			IntPtr attrs_handle;
+			bool result = pango_parse_markup (markup, -1, GLib.Marshaller.CharToGUnichar (accel_marker), out attrs_handle, out text, out ucs4_accel_char, IntPtr.Zero);
+			accel_char = GLib.Marshaller.GUnicharToChar (ucs4_accel_char);
+			attrs = new Pango.AttrList (attrs_handle);
+			return result;
+		}
+
+

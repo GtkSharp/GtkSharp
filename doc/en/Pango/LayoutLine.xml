@@ -44,27 +44,6 @@
         <remarks>If the result is zero, the line and all associated memory will be freed.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetXRanges">
-      <MemberSignature Language="C#" Value="public void GetXRanges (int start_index, int end_index, out int ranges, out int n_ranges);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start_index" Type="System.Int32" />
-        <Parameter Name="end_index" Type="System.Int32" />
-        <Parameter Name="ranges" Type="System.Int32&amp;" RefType="out" />
-        <Parameter Name="n_ranges" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a list of visual ranges corresponding to a given logical range.</summary>
-        <param name="start_index"> Start byte index of the logical range. If this value is less than the start index for the line, then the first range will extend all the way to the leading edge of the layout. Otherwise it will start at the leading edge of the first character.</param>
-        <param name="end_index"> Ending byte index of the logical range. If this value is greater than the end index for the line, then the last range will extend all the way to the trailing edge of the layout. Otherwise, it will end at the trailing edge of the last character.</param>
-        <param name="ranges"> location to store a pointer to an array of ranges. The array will be of length 2*n_ranges, with each range starting at (*ranges)[2*n]  and of width (*ranges)[2*n + 1] - (*ranges)[2*n]. This array must be freed with g_free(). The coordinates are relative to the layout and are in <see cref="T:Pango.GlyphUnit" />.</param>
-        <param name="n_ranges"> The number of ranges stored in <paramref name="ranges" />.</param>
-        <remarks>This list is not necessarily minimal - there may be consecutive ranges which are adjacent. The ranges will be sorted from left to right. The ranges are with respect to the left edge of the entire layout, not with respect to the line.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="XToIndex">
       <MemberSignature Language="C#" Value="public bool XToIndex (int x_pos, out int index_, out int trailing);" />
       <MemberType>Method</MemberType>
@@ -189,6 +168,25 @@
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Pango.LayoutLine" /></returns>
         <remarks>This is an internal constructor, and should not be used by user code.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXRanges">
+      <MemberSignature Language="C#" Value="public void GetXRanges (int start_index, int end_index, out int [] ranges);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_index" Type="System.Int32" />
+        <Parameter Name="end_index" Type="System.Int32" />
+        <Parameter Name="ranges" Type="System.Int32[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Gets a list of visual ranges corresponding to a given logical range.</summary>
+        <param name="start_index"> Start byte index of the logical range. If this value is less than the start index for the line, then the first range will extend all the way to the leading edge of the layout. Otherwise it will start at the leading edge of the first character.</param>
+        <param name="end_index"> Ending byte index of the logical range. If this value is greater than the end index for the line, then the last range will extend all the way to the trailing edge of the layout. Otherwise, it will end at the trailing edge of the last character.</param>
+        <param name="ranges"> location to store an array of ranges. The array will be of length 2*n_ranges, with each range starting at (*ranges)[2*n]  and of width (*ranges)[2*n + 1] - (*ranges)[2*n]. This array must be freed with g_free(). The coordinates are relative to the layout and are in <see cref="T:Pango.GlyphUnit" />.</param>
+        <remarks>This list is not necessarily minimal - there may be consecutive ranges which are adjacent. The ranges will be sorted from left to right. The ranges are with respect to the left edge of the entire layout, not with respect to the line.</remarks>
       </Docs>
     </Member>
   </Members>

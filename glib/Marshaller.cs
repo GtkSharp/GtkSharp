@@ -171,6 +171,28 @@ namespace GLib {
 		{
 			return local_epoch.AddSeconds ((int)time_t);
 		}
+
+		[DllImport("glibsharpglue")]
+		static extern IntPtr gtksharp_unichar_to_utf8_string (uint c);
+
+		public static char GUnicharToChar (uint ucs4_char)
+		{ 
+			IntPtr raw_ret = gtksharp_unichar_to_utf8_string (ucs4_char);
+			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
+			if (ret.Length > 1)
+				throw new ArgumentOutOfRangeException ("ucs4char is not representable by a char.");
+
+			return ret [0];
+		}
+
+		[DllImport("glibsharpglue")]
+		static extern uint glibsharp_utf16_to_gunichar (ushort c);
+
+		public static uint CharToGUnichar (char c)
+		{
+			return glibsharp_utf16_to_gunichar ((ushort) c);
+		}
+
 	}
 }
 

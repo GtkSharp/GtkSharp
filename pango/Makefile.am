@@ -22,9 +22,15 @@ dist_sources = $(sources)
 
 customs =			\
 	AttrIterator.custom	\
+	Context.custom		\
+	Coverage.custom		\
+	FontFamily.custom	\
+	FontMap.custom		\
+	Global.custom		\
 	GlyphItem.custom	\
 	Layout.custom		\
-	LayoutLine.custom
+	LayoutLine.custom	\
+	TabArray.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 dist_customs = $(customs)

@@ -207,22 +207,6 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
 </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetLogAttrs">
-      <MemberSignature Language="C#" Value="public int GetLogAttrs (Pango.LogAttr attrs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="attrs" Type="Pango.LogAttr" />
-      </Parameters>
-      <Docs>
-        <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
-        <param name="attrs">a <see cref="T:Pango.LogAttr" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="GetPixelExtents">
       <MemberSignature Language="C#" Value="public void GetPixelExtents (out Pango.Rectangle ink_rect, out Pango.Rectangle logical_rect);" />
       <MemberType>Method</MemberType>
@@ -305,7 +289,6 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <Parameter Name="index_" Type="System.Int32&amp;" RefType="out" />
         <Parameter Name="trailing" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
-
       <Docs>
         <summary>Convert from X and Y position within a layout to the byte index to the character at that logical position.</summary>
         <param name="x">a <see cref="T:System.Int32" />, the X offset (in thousandths of a device unit) from the left edge of the layout.</param>
@@ -468,7 +451,8 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <param name="alignment">a <see cref="T:Pango.Alignment" /> object.</param>
         <returns>an object of type <see cref="T:Pango.Alignment" /></returns>
         <returns>an object of type <see cref="T:Pango.Alignment" /></returns>
-	<remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Justify">
@@ -610,6 +594,39 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>The count of lines for the layout.</summary>
         <returns>The count of lines for the layout.</returns>
+      </Docs>
+    </Member>
+    <Member MemberName="LogAttrs">
+      <MemberSignature Language="C#" Value="public Pango.LogAttr [] LogAttrs { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.LogAttr[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
+        <returns>a <see cref="T:Pango.LogAttr[]" /></returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetMarkupWithAccel">
+      <MemberSignature Language="C#" Value="public void SetMarkupWithAccel (string markup, char accel_marker, out char accel_char);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="markup" Type="System.String" />
+        <Parameter Name="accel_marker" Type="System.Char" />
+        <Parameter Name="accel_char" Type="System.Char&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Sets the text of a Layout includ</summary>
+        <summary>Sets the layout text and attribute list from marked-up text with an accelerator marker (see markup format).</summary>
+        <param name="markup">marked-up text</param>
+        <param name="accel_marker">the character following this char is underlined.</param>
+        <param name="accel_char">returns a parsed accelerator char from the marked-up text.</param>
+        <remarks>Replaces the current text and attribute list.</remarks>
       </Docs>
     </Member>
   </Members>
