@@ -9,16 +9,68 @@
   <Docs>
     <summary>Creates a new dialog for the user to select one or more files, directories, or cancel.</summary>
     <remarks>
-      <para>FileSelection should be used to retrieve file or directory names from the user. It will create a new dialog window containing a directory list, and a file list corresponding to the current working directory.
+      <para><see cref="T:Gtk.FileSelection"/> should be used to retrieve file or directory names from the user. It will create a new dialog window containing a directory list, and a file list corresponding to the current working directory.
     </para>
       <para>
     The filesystem can be navigated using the directory list or the drop-down history menu. Alternatively, the TAB key can be used to navigate using filename completion - common in text based editors such as emacs and jed.</para>
       <para>
     Simple file operations; create directory, delete file, and rename file, are available from buttons at the top of the dialog.</para>
       <para>
-    The functionality of the FileSelection can be extended by using the available accessors to the buttons and drop downs.
+    The functionality of the <see cref="T:Gtk.FileSelection"/> can be extended by using the available accessors to the buttons and drop downs.
     </para>
     </remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class FileSelectionSample
+{
+	Label lbl;
+	
+	static void Main ()
+	{
+		new FileSelectionSample ();	
+	}
+	
+	FileSelectionSample ()
+	{
+		Application.Init ();
+		
+		Window win = new Window ("FileSelectionSample");
+		win.SetDefaultSize (250,200);
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		
+		VBox vbox = new VBox (true, 1);
+		win.Add (vbox);
+		
+		Button btn = new Button ("Select a file.");
+		btn.Clicked += new EventHandler (OnButtonClicked);
+		vbox.Add (btn);
+		
+		lbl = new Label ("Selected: ");
+		vbox.Add (lbl);
+		
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	void OnButtonClicked (object o, EventArgs args)
+	{
+		FileSelection fs = new FileSelection ("Choose a file");
+		fs.Run ();
+		lbl.Text = "Selected: " + fs.SelectionEntry.Text;
+		fs.Hide ();
+	}
+	
+	void OnWinDelete (object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+      </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
@@ -52,7 +104,7 @@
         <summary>Restrict the visible files and directories to those that match the given <paramref name="pattern" />.</summary>
         <param name="pattern">A simple wildcard pattern such as '*.txt'.</param>
         <remarks>
-          <para>This method attempts to match <paramref name="pattern" /> to a valid filenames or subdirectories in the current directory. If a match can be made, the matched filename will appear in the text entry field of the file selection dialog. If a partial match can be made, the "Files" list will contain those file names which have been partially matched, and the "Folders" list will show those directories with a partial match.</para>
+          <para>This method attempts to match <paramref name="pattern" /> to a valid filenames or subdirectories in the current directory. If a match can be made, the matched filename will appear in the text entry field of the <see cref="T:Gtk.FileSelection"/>. If a partial match can be made, the "Files" list will contain those file names which have been partially matched, and the "Folders" list will show those directories with a partial match.</para>
         </remarks>
       </Docs>
     </Member>
@@ -140,8 +192,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.FileSelection</summary>
-        <returns>The GLib Type for the Gtk.FileSelection class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.FileSelection"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.FileSelection"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -153,7 +205,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.HButtonBox'</returns>
+        <returns>an object of type <see cref="T:Gtk.HButtonBox"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -165,7 +217,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.HButtonBox'</returns>
+        <returns>an object of type <see cref="T:Gtk.HButtonBox"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -219,7 +271,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
+        <returns>an object of type <see cref="T:System.String"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -230,7 +282,7 @@
         <ReturnType>Gtk.Entry</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The main text entry widget of this file selector.</summary>
+        <summary>The main <see cref="T:Gtk.Entry"/> widget of this <see cref="T:Gtk.FileSelection"/>.</summary>
         <returns />
         <remarks />
       </Docs>
@@ -243,7 +295,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.MessageDialog'</returns>
+        <returns>an object of type <see cref="T:Gtk.MessageDialog"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -257,7 +309,7 @@
         <summary>The <see cref="T:Gtk.Menu" /> that is displayed by the <see cref="P:Gtk.FileSelection.HistoryPulldown" />.</summary>
         <returns>A menu containing the file system paths higher than the selected directory, and the user's directory history.</returns>
         <remarks>
-          <para>Note that this widget does not just contain history, it contains a list of directories above the current directory in the filesystem as well as user directory history.</para>
+          <para>Note that this <see cref="T:Gtk.Widget"/> does not just contain history, it contains a list of directories above the current directory in the filesystem as well as user directory history.</para>
         </remarks>
       </Docs>
     </Member>
@@ -294,7 +346,7 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The 'cancel' of this file selector.</summary>
+        <summary>The 'cancel' button of this file selector.</summary>
         <returns />
         <remarks />
       </Docs>
@@ -319,7 +371,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Label'</returns>
+        <returns>an object of type <see cref="T:Gtk.Label"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -331,7 +383,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Entry'</returns>
+        <returns>an object of type <see cref="T:Gtk.Entry"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -435,7 +487,7 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
-        <returns>Creates a new instance of FileSelection, using the GLib-provided type</returns>
+        <returns>Creates a new instance of <see cref="T:Gtk.FileSelection"/>, using the GLib-provided type</returns>
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.FileSelection" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
