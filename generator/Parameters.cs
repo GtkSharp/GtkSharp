@@ -107,7 +107,7 @@ namespace GtkSharp.Generation {
 
 		public void Initialize (StreamWriter sw, bool is_get)
 		{
-			string name;
+			string name = "";
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -140,7 +140,7 @@ namespace GtkSharp.Generation {
 		public bool IsAccessor {
 			get {
 				int length = 0;
-				string pass_as;
+				string pass_as = "";
 				foreach (XmlNode parm in elem.ChildNodes) {
 					if (parm.Name != "parameter") {
 						continue;
@@ -160,7 +160,6 @@ namespace GtkSharp.Generation {
 
 		public bool ThrowsException {
 			get {
-				int i = 0;
 				XmlNode last_parm = null;
 				foreach (XmlNode parm in elem.ChildNodes) {
 					if (parm.Name != "parameter") {
