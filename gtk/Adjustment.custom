@@ -4,6 +4,25 @@
 // This code is inserted after the automatically generated code.
 //
 
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_adjustment_new(double value, double lower, double upper, double step_increment, double page_increment, double page_size);
+
+public Adjustment (double value, double lower, double upper, double step_increment, double page_increment, double page_size) : base (IntPtr.Zero)
+{
+	if (GetType () != typeof (Adjustment)) {
+		CreateNativeObject (new string [0], new GLib.Value [0]);
+		Value = value;
+		Lower = lower;
+		Upper = upper;
+		StepIncrement = step_increment;
+		PageIncrement = page_increment;
+		PageSize = page_size;
+		return;
+	}
+
+	Raw = gtk_adjustment_new(value, lower, upper, step_increment, page_increment, page_size);
+}
+
 [DllImport("gtksharpglue")]
 static extern void gtksharp_gtk_adjustment_set_bounds (IntPtr i, double lower, double upper, double step_increment, double page_increment, double page_size);
 
@@ -20,17 +39,30 @@ public void SetBounds (double lower, double upper, double step_increment, double
 [DllImport ("gtksharpglue")]
 static extern double gtksharp_gtk_adjustment_get_lower (IntPtr i);
 
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_adjustment_set_lower (IntPtr i, double lower);
+
 public double Lower {
 	get {
 		return gtksharp_gtk_adjustment_get_lower (this.Handle);
+	}
+	set {
+		gtksharp_gtk_adjustment_set_lower (Handle, value);
 	}
 }
 
 [DllImport ("gtksharpglue")]
 static extern double gtksharp_gtk_adjustment_get_upper (IntPtr i);
+
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_adjustment_set_upper (IntPtr i, double upper);
+
 public double Upper {
 	get {
 		return gtksharp_gtk_adjustment_get_upper (this.Handle);
+	}
+	set {
+		gtksharp_gtk_adjustment_set_upper (Handle, value);
 	}
 }
 

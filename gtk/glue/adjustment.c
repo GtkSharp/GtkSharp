@@ -15,8 +15,10 @@ void    gtksharp_gtk_adjustment_set_bounds (GtkAdjustment *adj,
 					    gdouble page_size);
 
 gdouble gtksharp_gtk_adjustment_get_lower (GtkAdjustment *adj);
+void    gtksharp_gtk_adjustment_set_lower (GtkAdjustment *adj, gdouble lower);
 
 gdouble gtksharp_gtk_adjustment_get_upper (GtkAdjustment *adj);
+void    gtksharp_gtk_adjustment_set_upper (GtkAdjustment *adj, gdouble upper);
 
 gdouble gtksharp_gtk_adjustment_get_step_increment (GtkAdjustment *adj);
 
@@ -54,10 +56,26 @@ gtksharp_gtk_adjustment_get_lower (GtkAdjustment *adj)
 	return adj->lower;
 }
 
+void
+gtksharp_gtk_adjustment_set_lower (GtkAdjustment *adj, gdouble lower)
+{
+	adj->lower = lower;
+	
+	gtk_adjustment_changed (adj);
+}
+
 gdouble
 gtksharp_gtk_adjustment_get_upper (GtkAdjustment *adj)
 {
 	return adj->upper;
+}
+
+void
+gtksharp_gtk_adjustment_set_upper (GtkAdjustment *adj, gdouble upper)
+{
+	adj->upper = upper;
+	
+	gtk_adjustment_changed (adj);
 }
 
 gdouble
