@@ -39,7 +39,7 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			marsh = SignalHandler.GetName(elem);
+			marsh = SignalHandler.GetName(elem, container_type.NS, container_type.DoGenerate);
 			if ((Name == "") || (marsh == "")) {
 				Console.Write ("bad signal " + Name);
 				Statistics.ThrottledCount++;
@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 
 		private string GetHandlerName (out string argsname)
 		{
-			if (marsh == "voidObjectSignal") {
+			if (marsh.EndsWith (".voidObjectSignal")) {
 				argsname = "EventArgs";
 				return "EventHandler";
 			}
@@ -89,7 +89,7 @@ namespace GtkSharp.Generation {
 		private string GenHandler (out string argsname)
 		{
 			string handler = GetHandlerName (out argsname);
-			if (handler == "EventHandler")
+			if (handler == "EventHandler" || !container_type.DoGenerate)
 				return handler;
 
 			char sep = Path.DirectorySeparatorChar;

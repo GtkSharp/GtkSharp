@@ -15,7 +15,6 @@ namespace GtkSharp.Generation {
 		private static Hashtable complex_types = new Hashtable ();
 		private static Hashtable simple_types;
 		private static Hashtable manually_wrapped_types;
-		private static Hashtable dlls;
 		
 		static SymbolTable ()
 		{
@@ -42,7 +41,6 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("guint1", "bool");
 			simple_types.Add ("gpointer", "System.IntPtr");
 			simple_types.Add ("guchar", "byte");
-			simple_types.Add ("GtkType", "int");
 			simple_types.Add ("long", "long");
 			simple_types.Add ("gulong", "ulong");
 			simple_types.Add ("GQuark", "int");
@@ -71,20 +69,11 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GHashTable", "System.IntPtr");
 			simple_types.Add ("va_list", "System.IntPtr");
 			simple_types.Add ("GParamSpec", "System.IntPtr");
-			simple_types.Add ("GdkAtom", "System.IntPtr");
 			simple_types.Add ("gconstpointer", "System.IntPtr");
 
 			manually_wrapped_types = new Hashtable ();
-			manually_wrapped_types.Add ("GdkEvent", "Gdk.Event");
 			manually_wrapped_types.Add ("GSList", "GLib.SList");
 			manually_wrapped_types.Add ("GValue", "GLib.Value");
-
-			dlls = new Hashtable();
-			dlls.Add("Pango", "pango-1.0");
-			dlls.Add("Atk", "atk-1.0");
-			dlls.Add("Gdk", "gdk-x11-2.0");
-			dlls.Add("Gdk.Imaging", "gdk_pixbuf-2.0");
-			dlls.Add("Gtk", "gtk-x11-2.0");
 		}
 		
 		public static void AddAlias (string name, string type)
@@ -98,6 +87,16 @@ namespace GtkSharp.Generation {
 			complex_types [gen.CName] = gen;
 		}
 		
+		public static void AddSimpleType (string cname, string name)
+		{
+			simple_types.Add (cname, name);
+		}
+
+		public static void AddManualType (string cname, string name)
+		{
+			manually_wrapped_types.Add (cname, name);
+		}
+
 		public static int Count {
 			get
 			{
@@ -149,16 +148,8 @@ namespace GtkSharp.Generation {
 				else
 					return gen.FromNative(val);
 			} else if (manually_wrapped_types.ContainsKey(c_type)) {
-				// FIXME: better way of handling this?
-				if (c_type == "GSList") {
-					return "new GLib.SList (" + val + ")";
-				} else if (c_type == "GdkEvent") {
-					return "new Gdk.Event (" + val + ")";
-				} else if (c_type == "GValue") {
-					return "new GLib.Value (" + val + ")";
-				} else {
-					return "(" + GetCSType (c_type) + ") GLib.Object.GetObject(" + val + ")";
-				}
+				string cs_type = (string) manually_wrapped_types[c_type];
+				return String.Format ("new {0} ({1})", cs_type, val);
 			} else {
 				return "";
 			}

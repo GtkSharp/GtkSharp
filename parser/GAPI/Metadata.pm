@@ -6,7 +6,7 @@
 # <c> 2002 Rachel Hestilow
 ##############################################################
 
-package Metadata;
+package GAPI::Metadata;
 
 use XML::LibXML;
 
@@ -245,7 +245,7 @@ sub fixup {
 		my $namespace = $attrs[0]->value;
 		if (-f "$namespace.metadata") {
 			if (not ($metadata and $metadata->{namespace} eq $namespace)) {
-				$metadata = new Metadata ($namespace);
+				$metadata = new GAPI::Metadata ($namespace);
 			}
 			$metadata->fixupNamespace ($doc, $ns_node);
 		}

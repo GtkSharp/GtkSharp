@@ -8,12 +8,11 @@ windows:
 
 linux: glib-sharp.dll
 
-glib-sharp.dll: *.cs generated/*.cs
+glib-sharp.dll: *.cs
 	$(MCS) --unsafe --target library -o glib-sharp.dll --recurse '*.cs'
 
 clean:
 	rm -f *.dll
-	rm -f generated/*
 
 install: all
 	cp glib-sharp.dll $(DESTDIR)@prefix@/lib || exit 1

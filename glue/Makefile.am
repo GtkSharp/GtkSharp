@@ -12,13 +12,15 @@ BASESOURCES = \
 	paned.c			\
 	style.c			\
 	type.c			\
-	widget.c		\
-	canvas-proxy.c		\
-	canvas-proxy.h
+	widget.c		
 
 GNOMESOURCES = \
 	canvasitem.c \
 	canvaspoints.c \
+	canvas-proxy.c	\
+	canvas-proxy.h \
+	canvas-proxy-marshal.c \
+	canvas-proxy-marshal.h \
 	program.c
 
 # fixme: Makefile.am = THE SUCK

@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api>
+  <namespace name="Gdk" library="gdk_pixbuf-2.0">
+    <enum name="Colorspace" cname="GdkColorspace" type="enum">
+      <member cname="GDK_COLORSPACE_RGB" name="Rgb"/>
+    </enum>
+    <enum name="InterpType" cname="GdkInterpType" type="enum">
+      <member cname="GDK_INTERP_NEAREST" name="Nearest"/>
+      <member cname="GDK_INTERP_TILES" name="Tiles"/>
+      <member cname="GDK_INTERP_BILINEAR" name="Bilinear"/>
+      <member cname="GDK_INTERP_HYPER" name="Hyper"/>
+    </enum>
+    <enum name="PixbufAlphaMode" cname="GdkPixbufAlphaMode" type="enum">
+      <member cname="GDK_PIXBUF_ALPHA_BILEVEL" name="Bilevel"/>
+      <member cname="GDK_PIXBUF_ALPHA_FULL" name="Full"/>
+    </enum>
+    <enum name="PixbufError" cname="GdkPixbufError" type="enum">
+      <member cname="GDK_PIXBUF_ERROR_CORRUPT_IMAGE" name="CorruptImage"/>
+      <member cname="GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY" name="InsufficientMemory"/>
+      <member cname="GDK_PIXBUF_ERROR_BAD_OPTION" name="BadOption"/>
+      <member cname="GDK_PIXBUF_ERROR_UNKNOWN_TYPE" name="UnknownType"/>
+      <member cname="GDK_PIXBUF_ERROR_UNSUPPORTED_OPERATION" name="UnsupportedOperation"/>
+      <member cname="GDK_PIXBUF_ERROR_FAILED" name="Failed"/>
+    </enum>
+    <enum name="PixbufFrameAction" cname="GdkPixbufFrameAction" type="enum">
+      <member cname="GDK_PIXBUF_FRAME_RETAIN" name="Retain"/>
+      <member cname="GDK_PIXBUF_FRAME_DISPOSE" name="Dispose"/>
+      <member cname="GDK_PIXBUF_FRAME_REVERT" name="Revert"/>
+    </enum>
+    <enum name="PixdataDumpType" cname="GdkPixdataDumpType" type="flags">
+      <member cname="GDK_PIXDATA_DUMP_PIXDATA_STREAM" name="PixdataStream"/>
+      <member cname="GDK_PIXDATA_DUMP_PIXDATA_STRUCT" name="PixdataStruct" value="1"/>
+      <member cname="GDK_PIXDATA_DUMP_MACROS" name="Macros" value="2"/>
+      <member cname="GDK_PIXDATA_DUMP_GTYPES" name="Gtypes"/>
+      <member cname="GDK_PIXDATA_DUMP_CTYPES" name="Ctypes" value="1 &lt;&lt; 8"/>
+      <member cname="GDK_PIXDATA_DUMP_STATIC" name="Static" value="1 &lt;&lt; 9"/>
+      <member cname="GDK_PIXDATA_DUMP_CONST" name="Const" value="1 &lt;&lt; 10"/>
+      <member cname="GDK_PIXDATA_DUMP_RLE_DECODER" name="RleDecoder" value="1 &lt;&lt; 16"/>
+    </enum>
+    <enum name="PixdataType" cname="GdkPixdataType" type="enum">
+      <member cname="GDK_PIXDATA_COLOR_TYPE_RGB" name="ColorTypeRgb" value="0x01"/>
+      <member cname="GDK_PIXDATA_COLOR_TYPE_RGBA" name="ColorTypeRgba" value="0x02"/>
+      <member cname="GDK_PIXDATA_COLOR_TYPE_MASK" name="ColorTypeMask" value="0xff"/>
+      <member cname="GDK_PIXDATA_SAMPLE_WIDTH_8" name="SampleWidth8" value="1 &lt;&lt; 16"/>
+      <member cname="GDK_PIXDATA_SAMPLE_WIDTH_MASK" name="SampleWidthMask" value="0x0f &lt;&lt; 16"/>
+      <member cname="GDK_PIXDATA_ENCODING_RAW" name="EncodingRaw" value="1 &lt;&lt; 24"/>
+      <member cname="GDK_PIXDATA_ENCODING_RLE" name="EncodingRle" value="0x02 &lt;&lt; 24"/>
+      <member cname="GDK_PIXDATA_ENCODING_MASK" name="EncodingMask" value="0x0f &lt;&lt; 24"/>
+    </enum>
+    <callback name="PixbufDestroyNotify" cname="GdkPixbufDestroyNotify">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="guchar*" name="pixels"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <object name="Pixbuf" cname="GdkPixbuf" parent="GObject">
+      <method name="AddAlpha" cname="gdk_pixbuf_add_alpha">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="gboolean" name="substitute_color"/>
+          <parameter type="guchar" name="r"/>
+          <parameter type="guchar" name="g"/>
+          <parameter type="guchar" name="b"/>
+        </parameters>
+      </method>
+      <method name="AlphaModeGetType" cname="gdk_pixbuf_alpha_mode_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Composite" cname="gdk_pixbuf_composite">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="dest"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="dest_width"/>
+          <parameter type="int" name="dest_height"/>
+          <parameter type="double" name="offset_x"/>
+          <parameter type="double" name="offset_y"/>
+          <parameter type="double" name="scale_x"/>
+          <parameter type="double" name="scale_y"/>
+          <parameter type="GdkInterpType" name="interp_type"/>
+          <parameter type="int" name="overall_alpha"/>
+        </parameters>
+      </method>
+      <method name="CompositeColor" cname="gdk_pixbuf_composite_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="dest"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="dest_width"/>
+          <parameter type="int" name="dest_height"/>
+          <parameter type="double" name="offset_x"/>
+          <parameter type="double" name="offset_y"/>
+          <parameter type="double" name="scale_x"/>
+          <parameter type="double" name="scale_y"/>
+          <parameter type="GdkInterpType" name="interp_type"/>
+          <parameter type="int" name="overall_alpha"/>
+          <parameter type="int" name="check_x"/>
+          <parameter type="int" name="check_y"/>
+          <parameter type="int" name="check_size"/>
+          <parameter type="guint32" name="color1"/>
+          <parameter type="guint32" name="color2"/>
+        </parameters>
+      </method>
+      <method name="CompositeColorSimple" cname="gdk_pixbuf_composite_color_simple">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="int" name="dest_width"/>
+          <parameter type="int" name="dest_height"/>
+          <parameter type="GdkInterpType" name="interp_type"/>
+          <parameter type="int" name="overall_alpha"/>
+          <parameter type="int" name="check_size"/>
+          <parameter type="guint32" name="color1"/>
+          <parameter type="guint32" name="color2"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="gdk_pixbuf_copy">
+        <return-type type="GdkPixbuf*"/>
+      </method>
+      <method name="CopyArea" cname="gdk_pixbuf_copy_area">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="GdkPixbuf*" name="dest_pixbuf"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+        </parameters>
+      </method>
+      <method name="ErrorGetType" cname="gdk_pixbuf_error_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ErrorQuark" cname="gdk_pixbuf_error_quark" shared="true">
+        <return-type type="GQuark"/>
+      </method>
+      <method name="Fill" cname="gdk_pixbuf_fill">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint32" name="pixel"/>
+        </parameters>
+      </method>
+      <method name="FromPixdata" cname="gdk_pixbuf_from_pixdata" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-GdkPixdata*" name="pixdata"/>
+          <parameter type="gboolean" name="copy_pixels"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="GetBitsPerSample" cname="gdk_pixbuf_get_bits_per_sample">
+        <return-type type="int"/>
+      </method>
+      <method name="GetColorspace" cname="gdk_pixbuf_get_colorspace">
+        <return-type type="GdkColorspace"/>
+      </method>
+      <method name="GetFromDrawable" cname="gdk_pixbuf_get_from_drawable" library="gdk-x11-2.0">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="src"/>
+          <parameter type="GdkColormap*" name="cmap"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetFromImage" cname="gdk_pixbuf_get_from_image" library="gdk-x11-2.0">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="GdkImage*" name="src"/>
+          <parameter type="GdkColormap*" name="cmap"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetHasAlpha" cname="gdk_pixbuf_get_has_alpha">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetHeight" cname="gdk_pixbuf_get_height">
+        <return-type type="int"/>
+      </method>
+      <method name="GetNChannels" cname="gdk_pixbuf_get_n_channels">
+        <return-type type="int"/>
+      </method>
+      <method name="GetOption" cname="gdk_pixbuf_get_option">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+        </parameters>
+      </method>
+      <method name="GetPixels" cname="gdk_pixbuf_get_pixels">
+        <return-type type="guchar*"/>
+      </method>
+      <method name="GetRowstride" cname="gdk_pixbuf_get_rowstride">
+        <return-type type="int"/>
+      </method>
+      <method name="GetType" cname="gdk_pixbuf_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetWidth" cname="gdk_pixbuf_get_width">
+        <return-type type="int"/>
+      </method>
+      <constructor cname="gdk_pixbuf_new">
+        <parameters>
+          <parameter type="GdkColorspace" name="colorspace"/>
+          <parameter type="gboolean" name="has_alpha"/>
+          <parameter type="int" name="bits_per_sample"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_from_data">
+        <parameters>
+          <parameter type="const-guchar*" name="data"/>
+          <parameter type="GdkColorspace" name="colorspace"/>
+          <parameter type="gboolean" name="has_alpha"/>
+          <parameter type="int" name="bits_per_sample"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="GdkPixbufDestroyNotify" name="destroy_fn"/>
+          <parameter type="gpointer" name="destroy_fn_data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_from_file" preferred="1">
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_from_inline">
+        <parameters>
+          <parameter type="gint" name="data_length"/>
+          <parameter type="const-guint8*" name="data"/>
+          <parameter type="gboolean" name="copy_pixels"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_from_xpm_data">
+        <parameters>
+          <parameter type="const-char**" name="data"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gdk_pixbuf_new_subpixbuf">
+        <parameters>
+          <parameter type="GdkPixbuf*" name="src_pixbuf"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </constructor>
+      <method name="RenderPixmapAndMask" cname="gdk_pixbuf_render_pixmap_and_mask" library="gdk-x11-2.0">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixmap**" name="pixmap_return"/>
+          <parameter type="GdkBitmap**" name="mask_return"/>
+          <parameter type="int" name="alpha_threshold"/>
+        </parameters>
+      </method>
+      <method name="RenderPixmapAndMaskForColormap" cname="gdk_pixbuf_render_pixmap_and_mask_for_colormap" library="gdk-x11-2.0">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColormap*" name="colormap"/>
+          <parameter type="GdkPixmap**" name="pixmap_return"/>
+          <parameter type="GdkBitmap**" name="mask_return"/>
+          <parameter type="int" name="alpha_threshold"/>
+        </parameters>
+      </method>
+      <method name="RenderThresholdAlpha" cname="gdk_pixbuf_render_threshold_alpha" library="gdk-x11-2.0">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkBitmap*" name="bitmap"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="alpha_threshold"/>
+        </parameters>
+      </method>
+      <method name="RenderToDrawable" cname="gdk_pixbuf_render_to_drawable" library="gdk-x11-2.0">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="GdkRgbDither" name="dither"/>
+          <parameter type="int" name="x_dither"/>
+          <parameter type="int" name="y_dither"/>
+        </parameters>
+      </method>
+      <method name="RenderToDrawableAlpha" cname="gdk_pixbuf_render_to_drawable_alpha" library="gdk-x11-2.0">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="int" name="src_x"/>
+          <parameter type="int" name="src_y"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="GdkPixbufAlphaMode" name="alpha_mode"/>
+          <parameter type="int" name="alpha_threshold"/>
+          <parameter type="GdkRgbDither" name="dither"/>
+          <parameter type="int" name="x_dither"/>
+          <parameter type="int" name="y_dither"/>
+        </parameters>
+      </method>
+      <method name="SaturateAndPixelate" cname="gdk_pixbuf_saturate_and_pixelate">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="dest"/>
+          <parameter type="gfloat" name="saturation"/>
+          <parameter type="gboolean" name="pixelate"/>
+        </parameters>
+      </method>
+      <method name="Save" cname="gdk_pixbuf_save">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+          <parameter type="const-char*" name="type"/>
+          <parameter type="GError**" name="error"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Savev" cname="gdk_pixbuf_savev">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+          <parameter type="const-char*" name="type"/>
+          <parameter type="char**" name="option_keys"/>
+          <parameter type="char**" name="option_values"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="Scale" cname="gdk_pixbuf_scale">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="dest"/>
+          <parameter type="int" name="dest_x"/>
+          <parameter type="int" name="dest_y"/>
+          <parameter type="int" name="dest_width"/>
+          <parameter type="int" name="dest_height"/>
+          <parameter type="double" name="offset_x"/>
+          <parameter type="double" name="offset_y"/>
+          <parameter type="double" name="scale_x"/>
+          <parameter type="double" name="scale_y"/>
+          <parameter type="GdkInterpType" name="interp_type"/>
+        </parameters>
+      </method>
+      <method name="ScaleSimple" cname="gdk_pixbuf_scale_simple">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="int" name="dest_width"/>
+          <parameter type="int" name="dest_height"/>
+          <parameter type="GdkInterpType" name="interp_type"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="PixbufAnimation" cname="GdkPixbufAnimation" parent="GObject">
+      <method name="GetHeight" cname="gdk_pixbuf_animation_get_height">
+        <return-type type="int"/>
+      </method>
+      <method name="GetIter" cname="gdk_pixbuf_animation_get_iter">
+        <return-type type="GdkPixbufAnimationIter*"/>
+        <parameters>
+          <parameter type="const-GTimeVal*" name="start_time"/>
+        </parameters>
+      </method>
+      <method name="GetStaticImage" cname="gdk_pixbuf_animation_get_static_image">
+        <return-type type="GdkPixbuf*"/>
+      </method>
+      <method name="GetType" cname="gdk_pixbuf_animation_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetWidth" cname="gdk_pixbuf_animation_get_width">
+        <return-type type="int"/>
+      </method>
+      <method name="IsStaticImage" cname="gdk_pixbuf_animation_is_static_image">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gdk_pixbuf_animation_new_from_file">
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="PixbufAnimationIter" cname="GdkPixbufAnimationIter" parent="GObject">
+      <method name="Advance" cname="gdk_pixbuf_animation_iter_advance">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GTimeVal*" name="current_time"/>
+        </parameters>
+      </method>
+      <method name="GetDelayTime" cname="gdk_pixbuf_animation_iter_get_delay_time">
+        <return-type type="int"/>
+      </method>
+      <method name="GetPixbuf" cname="gdk_pixbuf_animation_iter_get_pixbuf">
+        <return-type type="GdkPixbuf*"/>
+      </method>
+      <method name="GetType" cname="gdk_pixbuf_animation_iter_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="OnCurrentlyLoadingFrame" cname="gdk_pixbuf_animation_iter_on_currently_loading_frame">
+        <return-type type="gboolean"/>
+      </method>
+    </object>
+    <object name="PixbufGifAnim" cname="GdkPixbufGifAnim" parent="GdkPixbufAnimation">
+      <field cname="n_frames" type="int"/>
+      <field cname="total_time" type="int"/>
+      <field cname="frames" type="GList*"/>
+      <field cname="width" type="int"/>
+      <field cname="height" type="int"/>
+      <field cname="bg_red" type="guchar"/>
+      <field cname="bg_green" type="guchar"/>
+      <field cname="bg_blue" type="guchar"/>
+      <method name="FrameComposite" cname="gdk_pixbuf_gif_anim_frame_composite">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbufFrame*" name="frame"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gdk_pixbuf_gif_anim_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="PixbufGifAnimIter" cname="GdkPixbufGifAnimIter" parent="GdkPixbufAnimationIter">
+      <field cname="gif_anim" type="GdkPixbufGifAnim*"/>
+      <field cname="start_time" type="GTimeVal"/>
+      <field cname="current_time" type="GTimeVal"/>
+      <field cname="position" type="gint"/>
+      <field cname="current_frame" type="GList*"/>
+      <method name="GetType" cname="gdk_pixbuf_gif_anim_iter_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="PixbufLoader" cname="GdkPixbufLoader" parent="GObject">
+      <field cname="priv" type="gpointer"/>
+      <signal name="AreaPrepared" cname="area_prepared" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbufLoader*" name="loader"/>
+        </parameters>
+      </signal>
+      <signal name="AreaUpdated" cname="area_updated" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbufLoader*" name="loader"/>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+        </parameters>
+      </signal>
+      <signal name="Closed" cname="closed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbufLoader*" name="loader"/>
+        </parameters>
+      </signal>
+      <method name="Close" cname="gdk_pixbuf_loader_close">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="GetAnimation" cname="gdk_pixbuf_loader_get_animation">
+        <return-type type="GdkPixbufAnimation*"/>
+      </method>
+      <method name="GetPixbuf" cname="gdk_pixbuf_loader_get_pixbuf">
+        <return-type type="GdkPixbuf*"/>
+      </method>
+      <method name="GetType" cname="gdk_pixbuf_loader_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gdk_pixbuf_loader_new"/>
+      <constructor cname="gdk_pixbuf_loader_new_with_type">
+        <parameters>
+          <parameter type="const-char*" name="image_type"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </constructor>
+      <method name="Write" cname="gdk_pixbuf_loader_write">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-guchar*" name="buf" array="1"/>
+          <parameter type="gsize" name="count"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+    </object>
+    <struct name="PixbufFrame" cname="GdkPixbufFrame">
+      <field cname="pixbuf" type="GdkPixbuf*"/>
+      <field cname="x_offset" type="int"/>
+      <field cname="y_offset" type="int"/>
+      <field cname="delay_time" type="int"/>
+      <field cname="elapsed" type="int"/>
+      <field cname="action" type="GdkPixbufFrameAction"/>
+      <field cname="need_recomposite" type="gboolean"/>
+      <field cname="bg_transparent" type="gboolean"/>
+      <field cname="composited" type="GdkPixbuf*"/>
+      <field cname="revert" type="GdkPixbuf*"/>
+    </struct>
+    <struct name="PixbufModule" cname="GdkPixbufModule">
+      <field cname="module_name" type="char*"/>
+      <callback cname="format_check">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guchar*" name="buffer,"/>
+        </parameters>
+      </callback>
+      <field cname="module" type="GModule*"/>
+      <callback cname="load">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="FILE*" name="f,GError**"/>
+        </parameters>
+      </callback>
+      <callback cname="load_xpm_data">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-char**" name="data"/>
+        </parameters>
+      </callback>
+      <callback cname="begin_load">
+        <return-type type="gpointer"/>
+        <parameters>
+          <parameter type="ModulePreparedNotifyFunc" name="prepare_func,ModuleUpdatedNotifyFunc"/>
+        </parameters>
+      </callback>
+      <callback cname="stop_load">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gpointer" name="context,GError**"/>
+        </parameters>
+      </callback>
+      <callback cname="load_increment">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gpointer" name="context,const-guchar*"/>
+        </parameters>
+      </callback>
+      <callback cname="load_animation">
+        <return-type type="GdkPixbufAnimation*"/>
+        <parameters>
+          <parameter type="FILE*" name="f,GError**"/>
+        </parameters>
+      </callback>
+      <callback cname="save">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="FILE*" name="f,GdkPixbuf*"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="Pixdata" cname="GdkPixdata">
+      <field cname="magic" type="guint32"/>
+      <field cname="length" type="gint32"/>
+      <field cname="pixdata_type" type="guint32"/>
+      <field cname="rowstride" type="guint32"/>
+      <field cname="width" type="guint32"/>
+      <field cname="height" type="guint32"/>
+      <field cname="pixel_data" type="guint8*"/>
+      <method name="Deserialize" cname="gdk_pixdata_deserialize">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guint" name="stream_length"/>
+          <parameter type="const-guint8*" name="stream"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromPixbuf" cname="gdk_pixdata_from_pixbuf">
+        <return-type type="gpointer"/>
+        <parameters>
+          <parameter type="const-GdkPixbuf*" name="pixbuf"/>
+          <parameter type="gboolean" name="use_rle"/>
+        </parameters>
+      </method>
+      <method name="Serialize" cname="gdk_pixdata_serialize">
+        <return-type type="guint8*"/>
+        <parameters>
+          <parameter type="guint*" name="stream_length_p"/>
+        </parameters>
+      </method>
+      <method name="ToCsource" cname="gdk_pixdata_to_csource">
+        <return-type type="GString*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GdkPixdataDumpType" name="dump_type"/>
+        </parameters>
+      </method>
+    </struct>
+  </namespace>
+</api>

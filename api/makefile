@@ -1,0 +1,27 @@
+APIS = \
+	atk-api.xml \
+	pango-api.xml \
+	gdk-api.xml \
+	gdk-symbols.xml \
+	gtk-api.xml \
+	gtk-symbols.xml \
+	glade-api.xml \
+	art-api.xml \
+	gnome-api.xml 
+
+RUNTIME=mono 
+
+all: generated-stamp
+
+generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+	$(RUNTIME)../generator/gapi_codegen.exe --generate $(APIS) && touch generated-stamp
+	
+clean:
+
+prefix=/usr
+apidir = $(DESTDIR)$(prefix)/share/gapi
+
+install: all
+	../mkinstalldirs $(apidir)
+	cp $(APIS) $(apidir)
+

@@ -30,7 +30,7 @@ namespace GtkSharp.Generation {
 
 		}
 
-		public void Parse ()
+		public void Parse (bool generate)
 		{
 			XmlElement root = doc.DocumentElement;
 
@@ -40,16 +40,18 @@ namespace GtkSharp.Generation {
 			}
 
 			foreach (XmlNode ns in root.ChildNodes) {
-				if (!(ns is XmlElement) || ns.Name != "namespace") {
+				XmlElement elem = ns as XmlElement;
+				if (elem == null)
 					continue;
-				}
 
-				XmlElement elem = (XmlElement) ns;
-				ParseNamespace (elem);
+				if (ns.Name == "namespace")
+					ParseNamespace (elem, generate);
+				else if (ns.Name == "symbol")
+					ParseSymbol (elem);
 			}
 		}
 
-		private void ParseNamespace (XmlElement ns)
+		private void ParseNamespace (XmlElement ns, bool generate)
 		{
 			String ns_name = ns.GetAttribute ("name");
 
@@ -60,6 +62,7 @@ namespace GtkSharp.Generation {
 				}
 
 				XmlElement elem = (XmlElement) def;
+				IGeneratable igen = null;
 				
 				switch (def.Name) {
 
@@ -73,39 +76,58 @@ namespace GtkSharp.Generation {
 					
 				case "boxed":
 					if (elem.HasAttribute ("opaque"))
-						SymbolTable.AddType (new OpaqueGen (ns, elem));
+						igen = new OpaqueGen (ns, elem);
 					else
-						SymbolTable.AddType (new BoxedGen (ns, elem));
+						igen = new BoxedGen (ns, elem);
 					break;
 
 				case "callback":
-					SymbolTable.AddType (new CallbackGen (ns, elem));
+					igen = new CallbackGen (ns, elem);
 					break;
 
 				case "enum":
-					SymbolTable.AddType (new EnumGen (ns, elem));
+					igen = new EnumGen (ns, elem);
 					break;
 
 				case "interface":
-					SymbolTable.AddType (new InterfaceGen (ns, elem));
+					igen = new InterfaceGen (ns, elem);
 					break;
 
 				case "object":
-					SymbolTable.AddType (new ObjectGen (ns, elem));
+					igen = new ObjectGen (ns, elem);
 					break;
 
 				case "struct":
 					if (elem.HasAttribute ("opaque"))
-						SymbolTable.AddType (new OpaqueGen (ns, elem));
+						igen = new OpaqueGen (ns, elem);
 					else
-						SymbolTable.AddType (new StructGen (ns, elem));
+						igen = new StructGen (ns, elem);
 					break;
 
 				default:
 					Console.WriteLine ("Unexpected node named " + def.Name);
 					break;
 				}
+
+				if (igen != null) {
+					igen.DoGenerate = generate;
+					SymbolTable.AddType (igen);
+				}
 			}
+		}
+
+		private void ParseSymbol (XmlElement symbol)
+		{
+			string type = symbol.GetAttribute ("type");
+			string cname = symbol.GetAttribute ("cname");
+			string name = symbol.GetAttribute ("name");
+
+			if (type == "simple")
+				SymbolTable.AddSimpleType (cname, name);
+			else if (type == "manual")
+				SymbolTable.AddManualType (cname, name);
+			else
+				Console.WriteLine ("Unexpected symbol type " + type);
 		}
 	}
 }

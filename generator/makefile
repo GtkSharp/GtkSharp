@@ -7,16 +7,15 @@ windows: *.cs
 	$(CSC) /unsafe /out:codegen.exe *.cs
 	./codegen gtkapi.xml
 
-linux: generated-stamp 
-
-generated-stamp: codegen.exe gtkapi.xml
-	$(RUNTIME) ./codegen.exe gtkapi.xml && touch generated-stamp
+linux: gapi_codegen.exe
 
 clean:
 	rm -f *.exe
 
-install: all
-	@echo "Nothing to install in generator."
+prefix=/usr
 
-codegen.exe: *.cs
-	$(MCS) --unsafe -o codegen.exe -r System.Xml *.cs
+install: all
+	cp gapi_codegen.exe $(DESTDIR)$(prefix)/bin
+
+gapi_codegen.exe: *.cs
+	$(MCS) --unsafe -o gapi_codegen.exe -r System.Xml *.cs

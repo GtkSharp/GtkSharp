@@ -1,3 +1,49 @@
+2002-08-19  Rachel Hestilow  <hestilow@ximian.com>
+
+	* art/Makefile.in (clean): Change to avoid bugging out on generated/CVS.
+	
+	* glib/ObjectManager.cs: Added. Used to be auto-generated, but
+	now it can infer names, and relies on per-namespace ObjectManager
+	classes to inform it of oddly-named classes.
+	
+	* generator/IGeneratable.cs, GenBase.cs: New "DoGenerate" property.
+	* generator/*Gen.cs: Honor DoGenerate.
+	* generator/CodeGenerator.cs: Support including dependency files
+	which will not be generated.
+	* generator/ObjectGen.cs: Generate mapping file per-namespace, as one
+	that calls back to the one in glib. Only generate if the name does
+	not follow the normal conventions, otherwise, GtkSharp.ObjectManager
+	can infer the name.
+	* generator/Parser.cs: Accept 'generate' flag to pass on to the
+	IGeneratables. Parse a new toplevel element, "symbol", which adds
+	a type to the SymbolTable (instead of hard-coding it).
+	* generator/SignalHandler.cs: Do not optimize signal handler creation,
+   instead creating them in their own namespaces. Do not generate
+	if the calling Signal told us not to.
+	* generator/Signal.cs: Do not generate handlers if container's DoGenerate
+	is false. Adjust to the marshaller name being in a sub-namespace.
+	* generator/SymbolTable.cs (AddSimpleType, AddManualType): Used
+	to add simple and manually wrapped types at runtime instead of
+	compile-time.
+	(FromNative): Remove hard-coded cases for manually wrapped types, use
+	a generic case instead.
+	
+	* api: Added. Move api files and generation targets here. 
+	* source: Added. Move source parsing here.
+	
+	* generator/makefile: Move actual generation to api/.
+	* glib/Makefile.in: Remove generated/* target.
+	* glue/Makefile.am: Fix to include canvas-marshal. Move canvas stuff
+	to GNOME target.
+
+	* gnome/CanvasProxy.cs: Update to work with SignalHandlers being
+	namespace-specific.
+
+	* parser/Metadata.pm: Moved to GAPI/Metadata.pm, renamed, etc.
+	* parser/gapi2xml.pl: Use GAPI::Metadata.
+	* parser/makefile: Install scripts, remove source parse build target.
+	Rename formatXML to gapi_format_xml.
+	
 2002-08-17  Miguel de Icaza  <miguel@ximian.com>
 
 	* gtk/ThreadNotify.cs: New file, used to notify invoke code in the

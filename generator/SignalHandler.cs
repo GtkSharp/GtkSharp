@@ -13,9 +13,7 @@ namespace GtkSharp.Generation {
 
 	public class SignalHandler {
 		
-		private static Hashtable handlers = new Hashtable ();
-		
-		public static String GetName(XmlElement sig)
+		public static String GetName(XmlElement sig, string ns, bool generate)
 		{
 			XmlElement ret_elem = sig["return-type"];
 			if (ret_elem == null) {
@@ -66,7 +64,7 @@ namespace GtkSharp.Generation {
 
 				pinv += (ptype + " arg" + pcnt);
 				parms.Add(type);
-				if (SymbolTable.IsObject(type)) {
+				if (SymbolTable.IsObject(type) || SymbolTable.IsInterface(type)) {
 					name += "Object";
 					key += "Object";
 				} else {
@@ -76,32 +74,15 @@ namespace GtkSharp.Generation {
 				pcnt++;
 			}		 
 
-			if (handlers.ContainsKey(name)) {
-				return (String) handlers[name];
-			}
-			
-			String dir;
-			char sep = Path.DirectorySeparatorChar;
-						
-			if (key.IndexOf("Gtk") >= 0) {
-				dir = ".." + sep + "gtk" + sep + "generated";
-			} else if (key.IndexOf("Gdk") >= 0) {
-				dir = ".." + sep + "gdk" + sep + "generated";
-			} else if (key.IndexOf("Atk") >= 0) {
-				dir = ".." + sep + "atk" + sep + "generated";
-			} else if (key.IndexOf("Pango") >= 0) {
-				dir = ".." + sep + "pango" + sep + "generated";
-			} else if (key.IndexOf("Gnome") >= 0) {
-				dir = ".." + sep + "gnome" + sep + "generated";
-			} else {
-				dir = ".." + sep + "glib" + sep + "generated";
-			}
-
 			String sname = name + "Signal";
 			String dname = name + "Delegate";
 			String cbname = name + "Callback";
 
-			handlers[name] = sname;
+			if (!generate)
+				return ns + "." + sname;
+
+			char sep = Path.DirectorySeparatorChar;
+			String dir = ".." + sep + ns.ToLower() + sep + "generated";
 
 			if (!Directory.Exists(dir)) {
 				Directory.CreateDirectory(dir);
@@ -116,6 +97,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
 			sw.WriteLine("namespace GtkSharp {");
+			sw.WriteLine();
+			sw.WriteLine("namespace " + ns + " {");
 			sw.WriteLine();
 			sw.WriteLine("\tusing System;");
 			sw.WriteLine("\tusing System.Runtime.InteropServices;");
@@ -146,9 +129,6 @@ namespace GtkSharp.Generation {
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
 					string ctype = (string) parms[idx];
-					/* ok, this should do the "create a new wrapper" thing for
-					 * objects as well, but because the signature only
-					 * specifies GObject, we can't. So wait for introspection */
 					ClassBase wrapper = SymbolTable.GetClassGen (ctype);
 					if ((wrapper != null && !(wrapper is StructBase)) || SymbolTable.IsManuallyWrapped (ctype)) {
 						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
@@ -209,9 +189,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t}");
 			sw.WriteLine("\t}");
 			sw.WriteLine("}");
+			sw.WriteLine("}");
 			sw.Close();
 
-			return sname;
+			return ns + "." + sname;
 		}
 	}
 }

@@ -16,6 +16,9 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate ()
 		{
+			if (!DoGenerate)
+				return;
+
 			base.Generate ();
 			Statistics.StructCount++;
 		}		

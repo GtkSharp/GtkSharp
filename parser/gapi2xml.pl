@@ -10,7 +10,7 @@
 $debug=1;
 
 use XML::LibXML;
-use Metadata;
+use GAPI::Metadata;
 
 if (!$ARGV[2]) {
 	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile> <libname>\n";
@@ -369,7 +369,7 @@ foreach $define (sort (keys (%defines))) {
 ##############################################################
 # Add metadata
 ##############################################################
-Metadata::fixup $doc;
+GAPI::Metadata::fixup $doc;
 
 ##############################################################
 # Output the tree

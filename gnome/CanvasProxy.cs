@@ -36,7 +36,7 @@ namespace Gnome {
 		public event EventHandler Realize {
 			add {
 				if (EventList["realize"] == null)
-					Signals["realize"] = new GtkSharp.voidObjectSignal(this, Handle, "realize", value, System.Type.GetType("EventArgs"));
+					Signals["realize"] = new GtkSharp.Gtk.voidObjectSignal(this, Handle, "realize", value, System.Type.GetType("EventArgs"));
 				EventList.AddHandler("realize", value);
 			}
 			remove {
@@ -49,7 +49,7 @@ namespace Gnome {
 		public event EventHandler Unrealize {
 			add {
 				if (EventList["unrealize"] == null)
-					Signals["unrealize"] = new GtkSharp.voidObjectSignal(this, Handle, "unrealize", value, System.Type.GetType("EventArgs"));
+					Signals["unrealize"] = new GtkSharp.Gtk.voidObjectSignal(this, Handle, "unrealize", value, System.Type.GetType("EventArgs"));
 				EventList.AddHandler("unrealize", value);
 			}
 			remove {
@@ -62,7 +62,7 @@ namespace Gnome {
 		public event EventHandler Map {
 			add {
 				if (EventList["map"] == null)
-					Signals["map"] = new GtkSharp.voidObjectSignal(this, Handle, "map", value, System.Type.GetType("EventArgs"));
+					Signals["map"] = new GtkSharp.Gtk.voidObjectSignal(this, Handle, "map", value, System.Type.GetType("EventArgs"));
 				EventList.AddHandler("map", value);
 			}
 			remove {
@@ -75,7 +75,7 @@ namespace Gnome {
 		public event EventHandler Unmap {
 			add {
 				if (EventList["unmap"] == null)
-					Signals["unmap"] = new GtkSharp.voidObjectSignal(this, Handle, "unmap", value, System.Type.GetType("EventArgs"));
+					Signals["unmap"] = new GtkSharp.Gtk.voidObjectSignal(this, Handle, "unmap", value, System.Type.GetType("EventArgs"));
 				EventList.AddHandler("unmap", value);
 			}
 			remove {

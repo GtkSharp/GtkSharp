@@ -1,0 +1,2359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api>
+  <namespace name="Gnome" library="gnomeui-2">
+    <enum name="ClientFlags" cname="GnomeClientFlags" type="flags">
+      <member cname="GNOME_CLIENT_IS_CONNECTED" name="IsConnected" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_CLIENT_RESTARTED" name="Restarted" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_CLIENT_RESTORED" name="Restored" value="1 &lt;&lt; 2"/>
+    </enum>
+    <enum name="ClientState" cname="GnomeClientState" type="enum">
+      <member cname="GNOME_CLIENT_IDLE" name="Idle"/>
+      <member cname="GNOME_CLIENT_SAVING_PHASE_1" name="SavingPhase1"/>
+      <member cname="GNOME_CLIENT_WAITING_FOR_PHASE_2" name="WaitingForPhase2"/>
+      <member cname="GNOME_CLIENT_SAVING_PHASE_2" name="SavingPhase2"/>
+      <member cname="GNOME_CLIENT_FROZEN" name="Frozen"/>
+      <member cname="GNOME_CLIENT_DISCONNECTED" name="Disconnected"/>
+      <member cname="GNOME_CLIENT_REGISTERING" name="Registering"/>
+    </enum>
+    <enum name="DateEditFlags" cname="GnomeDateEditFlags" type="flags">
+      <member cname="GNOME_DATE_EDIT_SHOW_TIME" name="ShowTime" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_DATE_EDIT_24_HR" name="Two4Hr" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY" name="WeekStartsOnMonday" value="1 &lt;&lt; 2"/>
+    </enum>
+    <enum name="DialogType" cname="GnomeDialogType" type="enum">
+      <member cname="GNOME_DIALOG_ERROR" name="Error"/>
+      <member cname="GNOME_DIALOG_NORMAL" name="Normal"/>
+    </enum>
+    <enum name="EdgePosition" cname="GnomeEdgePosition" type="enum">
+      <member cname="GNOME_EDGE_START" name="Start"/>
+      <member cname="GNOME_EDGE_FINISH" name="Finish"/>
+      <member cname="GNOME_EDGE_OTHER" name="Other"/>
+      <member cname="GNOME_EDGE_LAST" name="Last"/>
+    </enum>
+    <enum name="FontPickerMode" cname="GnomeFontPickerMode" type="enum">
+      <member cname="GNOME_FONT_PICKER_MODE_PIXMAP" name="Pixmap"/>
+      <member cname="GNOME_FONT_PICKER_MODE_FONT_INFO" name="FontInfo"/>
+      <member cname="GNOME_FONT_PICKER_MODE_USER_WIDGET" name="UserWidget"/>
+      <member cname="GNOME_FONT_PICKER_MODE_UNKNOWN" name="Unknown"/>
+    </enum>
+    <enum name="IconListMode" cname="GnomeIconListMode" type="enum">
+      <member cname="GNOME_ICON_LIST_ICONS" name="Icons"/>
+      <member cname="GNOME_ICON_LIST_TEXT_BELOW" name="TextBelow"/>
+      <member cname="GNOME_ICON_LIST_TEXT_RIGHT" name="TextRight"/>
+    </enum>
+    <enum name="InteractStyle" cname="GnomeInteractStyle" type="enum">
+      <member cname="GNOME_INTERACT_NONE" name="None"/>
+      <member cname="GNOME_INTERACT_ERRORS" name="Errors"/>
+      <member cname="GNOME_INTERACT_ANY" name="Any"/>
+    </enum>
+    <enum name="PreferencesType" cname="GnomePreferencesType" type="enum">
+      <member cname="GNOME_PREFERENCES_NEVER" name="Never"/>
+      <member cname="GNOME_PREFERENCES_USER" name="User"/>
+      <member cname="GNOME_PREFERENCES_ALWAYS" name="Always"/>
+    </enum>
+    <enum name="RestartStyle" cname="GnomeRestartStyle" type="enum">
+      <member cname="GNOME_RESTART_IF_RUNNING" name="IfRunning"/>
+      <member cname="GNOME_RESTART_ANYWAY" name="Anyway"/>
+      <member cname="GNOME_RESTART_IMMEDIATELY" name="Immediately"/>
+      <member cname="GNOME_RESTART_NEVER" name="Never"/>
+    </enum>
+    <enum name="SaveStyle" cname="GnomeSaveStyle" type="enum">
+      <member cname="GNOME_SAVE_GLOBAL" name="Global"/>
+      <member cname="GNOME_SAVE_LOCAL" name="Local"/>
+      <member cname="GNOME_SAVE_BOTH" name="Both"/>
+    </enum>
+    <enum name="UIInfoConfigurableTypes" cname="GnomeUIInfoConfigurableTypes" type="enum">
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_NEW" name="New"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_OPEN" name="Open"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_SAVE" name="Save"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS" name="SaveAs"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_REVERT" name="Revert"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PRINT" name="Print"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP" name="PrintSetup"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_CLOSE" name="Close"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_QUIT" name="Quit"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_CUT" name="Cut"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_COPY" name="Copy"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PASTE" name="Paste"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_CLEAR" name="Clear"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_UNDO" name="Undo"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_REDO" name="Redo"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_FIND" name="Find"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN" name="FindAgain"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_REPLACE" name="Replace"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES" name="Properties"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES" name="Preferences"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_ABOUT" name="About"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL" name="SelectAll"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW" name="NewWindow"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW" name="CloseWindow"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME" name="NewGame"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME" name="PauseGame"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME" name="RestartGame"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE" name="UndoMove"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE" name="RedoMove"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_HINT" name="Hint"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_SCORES" name="Scores"/>
+      <member cname="GNOME_APP_CONFIGURABLE_ITEM_END_GAME" name="EndGame"/>
+    </enum>
+    <enum name="UIInfoType" cname="GnomeUIInfoType" type="enum">
+      <member cname="GNOME_APP_UI_ENDOFINFO" name="Endofinfo"/>
+      <member cname="GNOME_APP_UI_ITEM" name="Item"/>
+      <member cname="GNOME_APP_UI_TOGGLEITEM" name="Toggleitem"/>
+      <member cname="GNOME_APP_UI_RADIOITEMS" name="Radioitems"/>
+      <member cname="GNOME_APP_UI_SUBTREE" name="Subtree"/>
+      <member cname="GNOME_APP_UI_SEPARATOR" name="Separator"/>
+      <member cname="GNOME_APP_UI_HELP" name="Help"/>
+      <member cname="GNOME_APP_UI_BUILDER_DATA" name="BuilderData"/>
+      <member cname="GNOME_APP_UI_ITEM_CONFIGURABLE" name="ItemConfigurable"/>
+      <member cname="GNOME_APP_UI_SUBTREE_STOCK" name="SubtreeStock"/>
+      <member cname="GNOME_APP_UI_INCLUDE" name="Include"/>
+    </enum>
+    <enum name="UIPixmapType" cname="GnomeUIPixmapType" type="enum">
+      <member cname="GNOME_APP_PIXMAP_NONE" name="None"/>
+      <member cname="GNOME_APP_PIXMAP_STOCK" name="Stock"/>
+      <member cname="GNOME_APP_PIXMAP_DATA" name="Data"/>
+      <member cname="GNOME_APP_PIXMAP_FILENAME" name="Filename"/>
+    </enum>
+    <callback name="GdkPixbufDoneCallback" cname="GnomeGdkPixbufDoneCallback">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeGdkPixbufAsyncHandle*" name="handle"/>
+        <parameter type="gpointer" name="cb_data"/>
+      </parameters>
+    </callback>
+    <callback name="GdkPixbufLoadCallback" cname="GnomeGdkPixbufLoadCallback">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeGdkPixbufAsyncHandle*" name="handle"/>
+        <parameter type="GnomeVFSResult" name="error"/>
+        <parameter type="GdkPixbuf*" name="pixbuf"/>
+        <parameter type="gpointer" name="cb_data"/>
+      </parameters>
+    </callback>
+    <callback name="InteractFunction" cname="GnomeInteractFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeClient*" name="client"/>
+        <parameter type="gint" name="key"/>
+        <parameter type="GnomeDialogType" name="dialog_type"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="ReplyCallback" cname="GnomeReplyCallback">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="gint" name="reply"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="StringCallback" cname="GnomeStringCallback">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="gchar*" name="string"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="UISignalConnectFunc" cname="GnomeUISignalConnectFunc">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        <parameter type="const-char*" name="signal_name"/>
+        <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+      </parameters>
+    </callback>
+    <object name="About" cname="GnomeAbout" parent="GtkDialog">
+      <field cname="_priv" type="GnomeAboutPrivate*"/>
+      <property name="Name" cname="name" type="gchar*" doc-string=" _(The name of the program)" readable="true" writeable="true"/>
+      <property name="Version" cname="version" type="gchar*" doc-string=" _(The version of the program)" readable="true" writeable="true"/>
+      <property name="Copyright" cname="copyright" type="gchar*" doc-string=" _(Copyright information for the program)" readable="true" writeable="true"/>
+      <property name="Comments" cname="comments" type="gchar*" doc-string=" _(Comments about the program)" readable="true" writeable="true"/>
+      <property name="Authors" cname="authors" type="value_array" doc-string=" _(List of authors of the programs)" writeable="true"/>
+      <property name="Documenters" cname="documenters" type="value_array" doc-string=" _(List of people documenting the program)" writeable="true"/>
+      <property name="TranslatorCredits" cname="translator_credits" type="gchar*" doc-string=" _(Credits to the translators. This string should be marked as translatable)" readable="true" writeable="true"/>
+      <property name="Logo" cname="logo" type="GdkPixbuf" doc-string=" _(A logo for the about box)" writeable="true"/>
+      <method name="Construct" cname="gnome_about_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="version"/>
+          <parameter type="const-gchar*" name="copyright"/>
+          <parameter type="const-gchar*" name="comments"/>
+          <parameter type="const-gchar**" name="authors"/>
+          <parameter type="const-gchar**" name="documenters"/>
+          <parameter type="const-gchar*" name="translator_credits"/>
+          <parameter type="GdkPixbuf*" name="logo_pixbuf"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_about_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_about_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="version"/>
+          <parameter type="const-gchar*" name="copyright"/>
+          <parameter type="const-gchar*" name="comments"/>
+          <parameter type="const-gchar**" name="authors" array="1"/>
+          <parameter type="const-gchar**" name="documenters" array="1"/>
+          <parameter type="const-gchar*" name="translator_credits"/>
+          <parameter type="GdkPixbuf*" name="logo_pixbuf"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="App" cname="GnomeApp" parent="GtkWindow">
+      <field cname="name" type="gchar*"/>
+      <field cname="prefix" type="gchar*"/>
+      <field cname="dock" type="GtkWidget*"/>
+      <field cname="statusbar" type="GtkWidget*"/>
+      <field cname="vbox" type="GtkWidget*"/>
+      <field cname="menubar" type="GtkWidget*"/>
+      <field cname="contents" type="GtkWidget*"/>
+      <field cname="layout" type="BonoboDockLayout*"/>
+      <field cname="accel_group" type="GtkAccelGroup*"/>
+      <field cname="enable_layout_config" bits="1" type="guint"/>
+      <field cname="_priv" type="GnomeAppPrivate*"/>
+      <property name="AppId" cname="app_id" type="gchar*" doc-string=" _(The application ID string)" readable="true" writeable="true"/>
+      <method name="AddDockItem" cname="gnome_app_add_dock_item">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="BonoboDockItem*" name="item"/>
+          <parameter type="BonoboDockPlacement" name="placement"/>
+          <parameter type="gint" name="band_num"/>
+          <parameter type="gint" name="band_position"/>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </method>
+      <method name="AddDocked" cname="gnome_app_add_docked">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="BonoboDockItemBehavior" name="behavior"/>
+          <parameter type="BonoboDockPlacement" name="placement"/>
+          <parameter type="gint" name="band_num"/>
+          <parameter type="gint" name="band_position"/>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </method>
+      <method name="AddToolbar" cname="gnome_app_add_toolbar">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="BonoboDockItemBehavior" name="behavior"/>
+          <parameter type="BonoboDockPlacement" name="placement"/>
+          <parameter type="gint" name="band_num"/>
+          <parameter type="gint" name="band_position"/>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </method>
+      <method name="Construct" cname="gnome_app_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="appname"/>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="CreateMenus" cname="gnome_app_create_menus">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="CreateMenusCustom" cname="gnome_app_create_menus_custom">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+        </parameters>
+      </method>
+      <method name="CreateMenusInterp" cname="gnome_app_create_menus_interp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkCallbackMarshal" name="relay_func"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy_func"/>
+        </parameters>
+      </method>
+      <method name="CreateMenusWithData" cname="gnome_app_create_menus_with_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="CreateToolbar" cname="gnome_app_create_toolbar">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="CreateToolbarCustom" cname="gnome_app_create_toolbar_custom">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+        </parameters>
+      </method>
+      <method name="CreateToolbarInterp" cname="gnome_app_create_toolbar_interp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkCallbackMarshal" name="relay_func"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy_func"/>
+        </parameters>
+      </method>
+      <method name="CreateToolbarWithData" cname="gnome_app_create_toolbar_with_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="EnableLayoutConfig" cname="gnome_app_enable_layout_config">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="enable"/>
+        </parameters>
+      </method>
+      <method name="FillMenu" cname="gnome_app_fill_menu" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkMenuShell*" name="menu_shell"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+          <parameter type="gboolean" name="uline_accels"/>
+          <parameter type="gint" name="pos"/>
+        </parameters>
+      </method>
+      <method name="FillMenuCustom" cname="gnome_app_fill_menu_custom" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkMenuShell*" name="menu_shell"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+          <parameter type="gboolean" name="uline_accels"/>
+          <parameter type="gint" name="pos"/>
+        </parameters>
+      </method>
+      <method name="FillMenuWithData" cname="gnome_app_fill_menu_with_data" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkMenuShell*" name="menu_shell"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+          <parameter type="gboolean" name="uline_accels"/>
+          <parameter type="gint" name="pos"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="FillToolbar" cname="gnome_app_fill_toolbar" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+        </parameters>
+      </method>
+      <method name="FillToolbarCustom" cname="gnome_app_fill_toolbar_custom" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+        </parameters>
+      </method>
+      <method name="FillToolbarWithData" cname="gnome_app_fill_toolbar_with_data" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkAccelGroup*" name="accel_group"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="FindMenuPos" cname="gnome_app_find_menu_pos" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="parent"/>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="gint*" name="pos"/>
+        </parameters>
+      </method>
+      <method name="GetDock" cname="gnome_app_get_dock">
+        <return-type type="BonoboDock*"/>
+      </method>
+      <method name="GetDockItemByName" cname="gnome_app_get_dock_item_by_name">
+        <return-type type="BonoboDockItem*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_app_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="HelperGettext" cname="gnome_app_helper_gettext" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="string"/>
+        </parameters>
+      </method>
+      <method name="InsertMenus" cname="gnome_app_insert_menus">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="GnomeUIInfo*" name="menuinfo"/>
+        </parameters>
+      </method>
+      <method name="InsertMenusCustom" cname="gnome_app_insert_menus_custom">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GnomeUIBuilderData*" name="uibdata"/>
+        </parameters>
+      </method>
+      <method name="InsertMenusInterp" cname="gnome_app_insert_menus_interp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="GnomeUIInfo*" name="menuinfo"/>
+          <parameter type="GtkCallbackMarshal" name="relay_func"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy_func"/>
+        </parameters>
+      </method>
+      <method name="InsertMenusWithData" cname="gnome_app_insert_menus_with_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="GnomeUIInfo*" name="menuinfo"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="InstallAppbarMenuHints" cname="gnome_app_install_appbar_menu_hints" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeAppBar*" name="appbar"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="InstallMenuHints" cname="gnome_app_install_menu_hints">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="InstallStatusbarMenuHints" cname="gnome_app_install_statusbar_menu_hints" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStatusbar*" name="bar"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_app_new">
+        <parameters>
+          <parameter type="const-gchar*" name="appname"/>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </constructor>
+      <method name="RemoveMenuRange" cname="gnome_app_remove_menu_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="gint" name="start"/>
+          <parameter type="gint" name="items"/>
+        </parameters>
+      </method>
+      <method name="RemoveMenus" cname="gnome_app_remove_menus">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+          <parameter type="gint" name="items"/>
+        </parameters>
+      </method>
+      <method name="SetContents" cname="gnome_app_set_contents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="contents"/>
+        </parameters>
+      </method>
+      <method name="SetMenus" cname="gnome_app_set_menus">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkMenuBar*" name="menubar"/>
+        </parameters>
+      </method>
+      <method name="SetStatusbar" cname="gnome_app_set_statusbar">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="statusbar"/>
+        </parameters>
+      </method>
+      <method name="SetStatusbarCustom" cname="gnome_app_set_statusbar_custom">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="container"/>
+          <parameter type="GtkWidget*" name="statusbar"/>
+        </parameters>
+      </method>
+      <method name="SetToolbar" cname="gnome_app_set_toolbar">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+        </parameters>
+      </method>
+      <method name="SetupToolbar" cname="gnome_app_setup_toolbar" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkToolbar*" name="toolbar"/>
+          <parameter type="BonoboDockItem*" name="dock_item"/>
+        </parameters>
+      </method>
+      <method name="UiConfigureConfigurable" cname="gnome_app_ui_configure_configurable" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="AppBar" cname="GnomeAppBar" parent="GtkHBox">
+      <field cname="_priv" type="GnomeAppBarPrivate*"/>
+      <signal name="UserResponse" cname="user_response" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeAppBar*" name="ab"/>
+        </parameters>
+      </signal>
+      <signal name="PromptCleared" cname="clear_prompt" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeAppBar*" name="ab"/>
+        </parameters>
+      </signal>
+      <property name="HasProgress" cname="has_progress" type="gboolean" doc-string=" _(Create a progress widget.)" readable="true" writeable="true" construct-only="true"/>
+      <property name="HasStatus" cname="has_status" type="gboolean" doc-string=" _(Create a status widget.)" readable="true" writeable="true" construct-only="true"/>
+      <property name="Interactivity" cname="interactivity" type="GnomePreferencesType" doc-string=" _(Level of user activity required.)" readable="true" writeable="true" construct-only="true"/>
+      <method name="ClearPrompt" cname="gnome_appbar_clear_prompt">
+        <return-type type="void"/>
+      </method>
+      <method name="ClearStack" cname="gnome_appbar_clear_stack">
+        <return-type type="void"/>
+      </method>
+      <method name="GetProgress" cname="gnome_appbar_get_progress">
+        <return-type type="GtkProgressBar*"/>
+      </method>
+      <method name="GetResponse" cname="gnome_appbar_get_response">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetStatus" cname="gnome_appbar_get_status">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GetType" cname="gnome_appbar_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_appbar_new">
+        <parameters>
+          <parameter type="gboolean" name="has_progress"/>
+          <parameter type="gboolean" name="has_status"/>
+          <parameter type="GnomePreferencesType" name="interactivity"/>
+        </parameters>
+      </constructor>
+      <method name="Pop" cname="gnome_appbar_pop">
+        <return-type type="void"/>
+      </method>
+      <method name="Push" cname="gnome_appbar_push">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="status"/>
+        </parameters>
+      </method>
+      <method name="Refresh" cname="gnome_appbar_refresh">
+        <return-type type="void"/>
+      </method>
+      <method name="SetDefault" cname="gnome_appbar_set_default">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="default_status"/>
+        </parameters>
+      </method>
+      <method name="SetProgressPercentage" cname="gnome_appbar_set_progress_percentage">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gfloat" name="percentage"/>
+        </parameters>
+      </method>
+      <method name="SetPrompt" cname="gnome_appbar_set_prompt">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="prompt"/>
+          <parameter type="gboolean" name="modal"/>
+        </parameters>
+      </method>
+      <method name="SetStatus" cname="gnome_appbar_set_status">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="status"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Client" cname="GnomeClient" parent="GtkObject">
+      <field cname="smc_conn" type="gpointer"/>
+      <field cname="client_id" type="gchar*"/>
+      <field cname="previous_id" type="gchar*"/>
+      <field cname="config_prefix" type="gchar*"/>
+      <field cname="global_config_prefix" type="gchar*"/>
+      <field cname="static_args" type="GList*"/>
+      <field cname="clone_command" type="gchar**"/>
+      <field cname="current_directory" type="gchar*"/>
+      <field cname="discard_command" type="gchar**"/>
+      <field cname="environment" type="GHashTable*"/>
+      <field cname="process_id" type="pid_t"/>
+      <field cname="program" type="gchar*"/>
+      <field cname="resign_command" type="gchar**"/>
+      <field cname="restart_command" type="gchar**"/>
+      <field cname="restart_style" type="GnomeRestartStyle"/>
+      <field cname="shutdown_command" type="gchar**"/>
+      <field cname="user_id" type="gchar*"/>
+      <field cname="interaction_keys" type="GSList*"/>
+      <field cname="input_id" type="gint"/>
+      <field cname="save_style" bits="2" type="GnomeSaveStyle"/>
+      <field cname="interact_style" bits="2" type="GnomeInteractStyle"/>
+      <field cname="state" bits="3" type="GnomeClientState"/>
+      <field cname="shutdown" bits="1" type="guint"/>
+      <field cname="fast" bits="1" type="guint"/>
+      <field cname="save_phase_2_requested" bits="1" type="guint"/>
+      <field cname="save_successfull" bits="1" type="guint"/>
+      <field cname="save_yourself_emitted" bits="1" type="guint"/>
+      <field cname="reserved" type="gpointer"/>
+      <signal name="SaveYourself" cname="save_yourself" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+          <parameter type="gint" name="phase"/>
+          <parameter type="GnomeSaveStyle" name="save_style"/>
+          <parameter type="gboolean" name="shutdown"/>
+          <parameter type="GnomeInteractStyle" name="interact_style"/>
+          <parameter type="gboolean" name="fast"/>
+        </parameters>
+      </signal>
+      <signal name="Die" cname="die" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+        </parameters>
+      </signal>
+      <signal name="SaveComplete" cname="save_complete" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+        </parameters>
+      </signal>
+      <signal name="ShutdownCancelled" cname="shutdown_cancelled" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+        </parameters>
+      </signal>
+      <signal name="Connected" cname="connect" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+          <parameter type="gboolean" name="restarted"/>
+        </parameters>
+      </signal>
+      <signal name="Disconnected" cname="disconnect" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeClient*" name="client"/>
+        </parameters>
+      </signal>
+      <method name="AddStaticArg" cname="gnome_client_add_static_arg">
+        <return-type type="void"/>
+        <parameters>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Connect" cname="gnome_client_connect">
+        <return-type type="void"/>
+      </method>
+      <method name="Disconnect" cname="gnome_client_disconnect">
+        <return-type type="void"/>
+      </method>
+      <method name="FlagsGetType" cname="gnome_client_flags_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Flush" cname="gnome_client_flush">
+        <return-type type="void"/>
+      </method>
+      <method name="GetConfigPrefix" cname="gnome_client_get_config_prefix">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetDesktopId" cname="gnome_client_get_desktop_id">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetFlags" cname="gnome_client_get_flags">
+        <return-type type="GnomeClientFlags"/>
+      </method>
+      <method name="GetGlobalConfigPrefix" cname="gnome_client_get_global_config_prefix">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetId" cname="gnome_client_get_id">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPreviousId" cname="gnome_client_get_previous_id">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_client_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ModuleInfoGet" cname="gnome_client_module_info_get" shared="true">
+        <return-type type="const-GnomeModuleInfo*"/>
+      </method>
+      <constructor cname="gnome_client_new"/>
+      <constructor cname="gnome_client_new_without_connection"/>
+      <method name="RequestInteraction" cname="gnome_client_request_interaction">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDialogType" name="dialog_type"/>
+          <parameter type="GnomeInteractFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="RequestInteractionInterp" cname="gnome_client_request_interaction_interp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDialogType" name="dialog_type"/>
+          <parameter type="GtkCallbackMarshal" name="function"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="RequestPhase2" cname="gnome_client_request_phase_2">
+        <return-type type="void"/>
+      </method>
+      <method name="RequestSave" cname="gnome_client_request_save">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeSaveStyle" name="save_style"/>
+          <parameter type="gboolean" name="shutdown"/>
+          <parameter type="GnomeInteractStyle" name="interact_style"/>
+          <parameter type="gboolean" name="fast"/>
+          <parameter type="gboolean" name="global"/>
+        </parameters>
+      </method>
+      <method name="SaveAnyDialog" cname="gnome_client_save_any_dialog">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkDialog*" name="dialog"/>
+        </parameters>
+      </method>
+      <method name="SaveErrorDialog" cname="gnome_client_save_error_dialog">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkDialog*" name="dialog"/>
+        </parameters>
+      </method>
+      <method name="SetCloneCommand" cname="gnome_client_set_clone_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="argc"/>
+          <parameter type="gchar*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="SetCurrentDirectory" cname="gnome_client_set_current_directory">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="dir"/>
+        </parameters>
+      </method>
+      <method name="SetDiscardCommand" cname="gnome_client_set_discard_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="argc"/>
+          <parameter type="gchar*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="SetEnvironment" cname="gnome_client_set_environment">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="value"/>
+        </parameters>
+      </method>
+      <method name="SetGlobalConfigPrefix" cname="gnome_client_set_global_config_prefix">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="prefix"/>
+        </parameters>
+      </method>
+      <method name="SetId" cname="gnome_client_set_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="id"/>
+        </parameters>
+      </method>
+      <method name="SetPriority" cname="gnome_client_set_priority">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="priority"/>
+        </parameters>
+      </method>
+      <method name="SetProcessId" cname="gnome_client_set_process_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="pid_t" name="pid"/>
+        </parameters>
+      </method>
+      <method name="SetProgram" cname="gnome_client_set_program">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="program"/>
+        </parameters>
+      </method>
+      <method name="SetResignCommand" cname="gnome_client_set_resign_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="argc"/>
+          <parameter type="gchar*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="SetRestartCommand" cname="gnome_client_set_restart_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="argc"/>
+          <parameter type="gchar*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="SetRestartStyle" cname="gnome_client_set_restart_style">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeRestartStyle" name="style"/>
+        </parameters>
+      </method>
+      <method name="SetShutdownCommand" cname="gnome_client_set_shutdown_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="argc"/>
+          <parameter type="gchar*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="SetUserId" cname="gnome_client_set_user_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="id"/>
+        </parameters>
+      </method>
+      <method name="StateGetType" cname="gnome_client_state_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="ColorPicker" cname="GnomeColorPicker" parent="GtkButton">
+      <field cname="_priv" type="GnomeColorPickerPrivate*"/>
+      <signal name="ColorSet" cname="color_set" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeColorPicker*" name="cp"/>
+          <parameter type="guint" name="r"/>
+          <parameter type="guint" name="g"/>
+          <parameter type="guint" name="b"/>
+          <parameter type="guint" name="a"/>
+        </parameters>
+      </signal>
+      <property name="Dither" cname="dither" type="gboolean" doc-string="Whether or not to dither to color" readable="true" writeable="true"/>
+      <property name="UseAlpha" cname="use_alpha" type="gboolean" doc-string="Whether or not to give the color an alpha value" readable="true" writeable="true"/>
+      <property name="Title" cname="title" type="gchar*" doc-string="The title to give to the color picker" readable="true" writeable="true"/>
+      <property name="Red" cname="red" type="guint" doc-string="The amount of red in the chosen color" readable="true" writeable="true"/>
+      <property name="Green" cname="green" type="guint" doc-string="The amount of green in the chosen color" readable="true" writeable="true"/>
+      <property name="Blue" cname="blue" type="guint" doc-string="The amount of blue in the chosen color" readable="true" writeable="true"/>
+      <property name="Alpha" cname="alpha" type="guint" doc-string="The alpha value of the chosen color" readable="true" writeable="true"/>
+      <method name="GetD" cname="gnome_color_picker_get_d">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble*" name="r"/>
+          <parameter type="gdouble*" name="g"/>
+          <parameter type="gdouble*" name="b"/>
+          <parameter type="gdouble*" name="a"/>
+        </parameters>
+      </method>
+      <method name="GetDither" cname="gnome_color_picker_get_dither">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetI16" cname="gnome_color_picker_get_i16">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gushort*" name="r"/>
+          <parameter type="gushort*" name="g"/>
+          <parameter type="gushort*" name="b"/>
+          <parameter type="gushort*" name="a"/>
+        </parameters>
+      </method>
+      <method name="GetI8" cname="gnome_color_picker_get_i8">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint8*" name="r"/>
+          <parameter type="guint8*" name="g"/>
+          <parameter type="guint8*" name="b"/>
+          <parameter type="guint8*" name="a"/>
+        </parameters>
+      </method>
+      <method name="GetTitle" cname="gnome_color_picker_get_title">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="gnome_color_picker_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUseAlpha" cname="gnome_color_picker_get_use_alpha">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gnome_color_picker_new"/>
+      <method name="SetD" cname="gnome_color_picker_set_d">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="r"/>
+          <parameter type="gdouble" name="g"/>
+          <parameter type="gdouble" name="b"/>
+          <parameter type="gdouble" name="a"/>
+        </parameters>
+      </method>
+      <method name="SetDither" cname="gnome_color_picker_set_dither">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="dither"/>
+        </parameters>
+      </method>
+      <method name="SetI16" cname="gnome_color_picker_set_i16">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gushort" name="r"/>
+          <parameter type="gushort" name="g"/>
+          <parameter type="gushort" name="b"/>
+          <parameter type="gushort" name="a"/>
+        </parameters>
+      </method>
+      <method name="SetI8" cname="gnome_color_picker_set_i8">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint8" name="r"/>
+          <parameter type="guint8" name="g"/>
+          <parameter type="guint8" name="b"/>
+          <parameter type="guint8" name="a"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_color_picker_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="SetUseAlpha" cname="gnome_color_picker_set_use_alpha">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="use_alpha"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="DateEdit" cname="GnomeDateEdit" parent="GtkHBox">
+      <field cname="_priv" type="GnomeDateEditPrivate*"/>
+      <property name="Time" cname="time" type="ulong" doc-string=" _(The time currentlyselected)" readable="true" writeable="true"/>
+      <property name="DateeditFlags" cname="dateedit_flags" type="GnomeDateEditFlags" doc-string=" _(Flags for howDateEdit looks)" readable="true" writeable="true"/>
+      <property name="LowerHour" cname="lower_hour" type="gint" doc-string=" _(Lower hour inthe time popupselector)" readable="true" writeable="true"/>
+      <property name="UpperHour" cname="upper_hour" type="gint" doc-string=" _(Upper hour inthe time popupselector)" readable="true" writeable="true"/>
+      <property name="InitialTime" cname="initial_time" type="ulong" doc-string=" _(The initial time)" readable="true" writeable="true"/>
+      <signal name="TimeChanged" cname="time_changed" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDateEdit*" name="gde"/>
+        </parameters>
+      </signal>
+      <signal name="DateChanged" cname="date_changed" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDateEdit*" name="gde"/>
+        </parameters>
+      </signal>
+      <method name="Construct" cname="gnome_date_edit_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="time_t" name="the_time"/>
+          <parameter type="GnomeDateEditFlags" name="flags"/>
+        </parameters>
+      </method>
+      <method name="FlagsGetType" cname="gnome_date_edit_flags_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetFlags" cname="gnome_date_edit_get_flags">
+        <return-type type="int"/>
+      </method>
+      <method name="GetInitialTime" cname="gnome_date_edit_get_initial_time">
+        <return-type type="time_t"/>
+      </method>
+      <method name="GetTime" cname="gnome_date_edit_get_time">
+        <return-type type="time_t"/>
+      </method>
+      <method name="GetType" cname="gnome_date_edit_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_date_edit_new">
+        <parameters>
+          <parameter type="time_t" name="the_time"/>
+          <parameter type="gboolean" name="show_time"/>
+          <parameter type="gboolean" name="use_24_format"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_date_edit_new_flags">
+        <parameters>
+          <parameter type="time_t" name="the_time"/>
+          <parameter type="GnomeDateEditFlags" name="flags"/>
+        </parameters>
+      </constructor>
+      <method name="SetFlags" cname="gnome_date_edit_set_flags">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDateEditFlags" name="flags"/>
+        </parameters>
+      </method>
+      <method name="SetPopupRange" cname="gnome_date_edit_set_popup_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="low_hour"/>
+          <parameter type="int" name="up_hour"/>
+        </parameters>
+      </method>
+      <method name="SetTime" cname="gnome_date_edit_set_time">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="time_t" name="the_time"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Druid" cname="GnomeDruid" parent="GtkContainer">
+      <field cname="help" type="GtkWidget*"/>
+      <field cname="back" type="GtkWidget*"/>
+      <field cname="next" type="GtkWidget*"/>
+      <field cname="cancel" type="GtkWidget*"/>
+      <field cname="finish" type="GtkWidget*"/>
+      <field cname="_priv" type="GnomeDruidPrivate*"/>
+      <signal name="Cancel" cname="cancel" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruid*" name="druid"/>
+        </parameters>
+      </signal>
+      <signal name="Help" cname="help" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruid*" name="druid"/>
+        </parameters>
+      </signal>
+      <property name="ShowFinish" cname="show_finish" type="gboolean" doc-string=" _(Show the 'Finish' button instead of the 'Next' button)" readable="true" writeable="true"/>
+      <property name="ShowHelp" cname="show_help" type="gboolean" doc-string=" _(Show the 'Help' button)" readable="true" writeable="true"/>
+      <method name="AppendPage" cname="gnome_druid_append_page">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="page"/>
+        </parameters>
+      </method>
+      <method name="ConstructWithWindow" cname="gnome_druid_construct_with_window">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="title"/>
+          <parameter type="GtkWindow*" name="parent"/>
+          <parameter type="gboolean" name="close_on_cancel"/>
+          <parameter type="GtkWidget**" name="window"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_druid_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="InsertPage" cname="gnome_druid_insert_page">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="back_page"/>
+          <parameter type="GnomeDruidPage*" name="page"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_druid_new"/>
+      <constructor cname="gnome_druid_new_with_window">
+        <parameters>
+          <parameter type="const-char*" name="title"/>
+          <parameter type="GtkWindow*" name="parent"/>
+          <parameter type="gboolean" name="close_on_cancel"/>
+          <parameter type="GtkWidget**" name="window"/>
+        </parameters>
+      </constructor>
+      <method name="PrependPage" cname="gnome_druid_prepend_page">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="page"/>
+        </parameters>
+      </method>
+      <method name="SetButtonsSensitive" cname="gnome_druid_set_buttons_sensitive">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="back_sensitive"/>
+          <parameter type="gboolean" name="next_sensitive"/>
+          <parameter type="gboolean" name="cancel_sensitive"/>
+          <parameter type="gboolean" name="help_sensitive"/>
+        </parameters>
+      </method>
+      <method name="SetPage" cname="gnome_druid_set_page">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="page"/>
+        </parameters>
+      </method>
+      <method name="SetShowFinish" cname="gnome_druid_set_show_finish">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show_finish"/>
+        </parameters>
+      </method>
+      <method name="SetShowHelp" cname="gnome_druid_set_show_help">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show_help"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="DruidPage" cname="GnomeDruidPage" parent="GtkBin">
+      <field cname="_priv" type="GnomeDruidPagePrivate*"/>
+      <signal name="NextClicked" cname="next" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="GtkWidget*" name="druid"/>
+        </parameters>
+      </signal>
+      <signal name="Prepared" cname="prepare" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="GtkWidget*" name="druid"/>
+        </parameters>
+      </signal>
+      <signal name="BackClicked" cname="back" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="GtkWidget*" name="druid"/>
+        </parameters>
+      </signal>
+      <signal name="FinishClicked" cname="finish" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="GtkWidget*" name="druid"/>
+        </parameters>
+      </signal>
+      <signal name="CancelClicked" cname="cancel" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="GtkWidget*" name="druid"/>
+        </parameters>
+      </signal>
+      <method name="Back" cname="gnome_druid_page_back">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Cancel" cname="gnome_druid_page_cancel">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Finish" cname="gnome_druid_page_finish">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="gnome_druid_page_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_druid_page_new"/>
+      <method name="Next" cname="gnome_druid_page_next">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Prepare" cname="gnome_druid_page_prepare">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="DruidPageEdge" cname="GnomeDruidPageEdge" parent="GnomeDruidPage">
+      <field cname="title" type="gchar*"/>
+      <field cname="text" type="gchar*"/>
+      <field cname="logo_image" type="GdkPixbuf*"/>
+      <field cname="watermark_image" type="GdkPixbuf*"/>
+      <field cname="top_watermark_image" type="GdkPixbuf*"/>
+      <field cname="background_color" type="GdkColor"/>
+      <field cname="textbox_color" type="GdkColor"/>
+      <field cname="logo_background_color" type="GdkColor"/>
+      <field cname="title_color" type="GdkColor"/>
+      <field cname="text_color" type="GdkColor"/>
+      <field cname="position" bits="2" type="GnomeEdgePosition"/>
+      <field cname="_priv" type="GnomeDruidPageEdgePrivate*"/>
+      <method name="Construct" cname="gnome_druid_page_edge_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeEdgePosition" name="position"/>
+          <parameter type="gboolean" name="antialiased"/>
+          <parameter type="const-gchar*" name="title"/>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="GdkPixbuf*" name="logo"/>
+          <parameter type="GdkPixbuf*" name="watermark"/>
+          <parameter type="GdkPixbuf*" name="top_watermark"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_druid_page_edge_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_druid_page_edge_new">
+        <parameters>
+          <parameter type="GnomeEdgePosition" name="position"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_druid_page_edge_new_aa">
+        <parameters>
+          <parameter type="GnomeEdgePosition" name="position"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_druid_page_edge_new_with_vals">
+        <parameters>
+          <parameter type="GnomeEdgePosition" name="position"/>
+          <parameter type="gboolean" name="antialiased"/>
+          <parameter type="const-gchar*" name="title"/>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="GdkPixbuf*" name="logo"/>
+          <parameter type="GdkPixbuf*" name="watermark"/>
+          <parameter type="GdkPixbuf*" name="top_watermark"/>
+        </parameters>
+      </constructor>
+      <method name="SetBgColor" cname="gnome_druid_page_edge_set_bg_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetLogo" cname="gnome_druid_page_edge_set_logo">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="logo_image"/>
+        </parameters>
+      </method>
+      <method name="SetLogoBgColor" cname="gnome_druid_page_edge_set_logo_bg_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetText" cname="gnome_druid_page_edge_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="SetTextColor" cname="gnome_druid_page_edge_set_text_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetTextboxColor" cname="gnome_druid_page_edge_set_textbox_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_druid_page_edge_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="SetTitleColor" cname="gnome_druid_page_edge_set_title_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetTopWatermark" cname="gnome_druid_page_edge_set_top_watermark">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="top_watermark_image"/>
+        </parameters>
+      </method>
+      <method name="SetWatermark" cname="gnome_druid_page_edge_set_watermark">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="watermark"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="DruidPageStandard" cname="GnomeDruidPageStandard" parent="GnomeDruidPage">
+      <field cname="vbox" type="GtkWidget*"/>
+      <field cname="title" type="gchar*"/>
+      <field cname="logo" type="GdkPixbuf*"/>
+      <field cname="top_watermark" type="GdkPixbuf*"/>
+      <field cname="title_foreground" type="GdkColor"/>
+      <field cname="background" type="GdkColor"/>
+      <field cname="logo_background" type="GdkColor"/>
+      <field cname="contents_background" type="GdkColor"/>
+      <field cname="_priv" type="GnomeDruidPageStandardPrivate*"/>
+      <property name="Title" cname="title" type="gchar*" doc-string=" _(Title of the druid)" readable="true" writeable="true"/>
+      <property name="Logo" cname="logo" type="GdkPixbuf" doc-string=" _(Logo image)" readable="true" writeable="true"/>
+      <property name="TopWatermark" cname="top_watermark" type="GdkPixbuf" doc-string=" _(Watermark image for the top)" readable="true" writeable="true"/>
+      <property name="TitleForeground" cname="title_foreground" type="gchar*" doc-string=" _(Foreground color of the title)" writeable="true"/>
+      <property name="TitleForegroundGdk" cname="title_foreground_gdk" type="GdkColor" doc-string=" _(Foreground color of the title as a GdkColor)" readable="true" writeable="true"/>
+      <property name="TitleForegroundSet" cname="title_foreground_set" type="gboolean" doc-string=" _(Foreground color of the title is set)" readable="true" writeable="true"/>
+      <property name="Background" cname="background" type="gchar*" doc-string=" _(Background color)" writeable="true"/>
+      <property name="BackgroundGdk" cname="background_gdk" type="GdkColor" doc-string=" _(Background color as a GdkColor)" readable="true" writeable="true"/>
+      <property name="BackgroundSet" cname="background_set" type="gboolean" doc-string=" _(Background color is set)" readable="true" writeable="true"/>
+      <property name="LogoBackground" cname="logo_background" type="gchar*" doc-string=" _(Logo Background color)" writeable="true"/>
+      <property name="LogoBackgroundGdk" cname="logo_background_gdk" type="GdkColor" doc-string=" _(Logo Background color as a GdkColor)" readable="true" writeable="true"/>
+      <property name="LogoBackgroundSet" cname="logo_background_set" type="gboolean" doc-string=" _(Logo Background color is set)" readable="true" writeable="true"/>
+      <method name="AppendItem" cname="gnome_druid_page_standard_append_item">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="question"/>
+          <parameter type="GtkWidget*" name="item"/>
+          <parameter type="const-gchar*" name="additional_info"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_druid_page_standard_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_druid_page_standard_new"/>
+      <constructor cname="gnome_druid_page_standard_new_with_vals">
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+          <parameter type="GdkPixbuf*" name="logo"/>
+          <parameter type="GdkPixbuf*" name="top_watermark"/>
+        </parameters>
+      </constructor>
+      <method name="SetBackground" cname="gnome_druid_page_standard_set_background">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetContentsBackground" cname="gnome_druid_page_standard_set_contents_background">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetLogo" cname="gnome_druid_page_standard_set_logo">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="logo_image"/>
+        </parameters>
+      </method>
+      <method name="SetLogoBackground" cname="gnome_druid_page_standard_set_logo_background">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_druid_page_standard_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="SetTitleForeground" cname="gnome_druid_page_standard_set_title_foreground">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="SetTopWatermark" cname="gnome_druid_page_standard_set_top_watermark">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="top_watermark_image"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Entry" cname="GnomeEntry" parent="GtkCombo">
+      <field cname="_priv" type="GnomeEntryPrivate*"/>
+      <signal name="Activated" cname="activate" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeEntry*" name="entry"/>
+        </parameters>
+      </signal>
+      <property name="HistoryId" cname="history_id" type="gchar*" doc-string=" _(History id)" readable="true" writeable="true"/>
+      <property name="GtkEntry" cname="gtk_entry" type="GtkEntry" doc-string=" _(The GTK entry)" readable="true"/>
+      <implements>
+        <interface cname="GtkEditable"/>
+      </implements>
+      <method name="AppendHistory" cname="gnome_entry_append_history">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="save"/>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="ClearHistory" cname="gnome_entry_clear_history">
+        <return-type type="void"/>
+      </method>
+      <method name="Construct" cname="gnome_entry_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+        </parameters>
+      </method>
+      <method name="GetHistoryId" cname="gnome_entry_get_history_id">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetMaxSaved" cname="gnome_entry_get_max_saved">
+        <return-type type="guint"/>
+      </method>
+      <method name="GetType" cname="gnome_entry_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetGtkEntry" cname="gnome_entry_gtk_entry">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <constructor cname="gnome_entry_new">
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+        </parameters>
+      </constructor>
+      <method name="PrependHistory" cname="gnome_entry_prepend_history">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="save"/>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="SetHistoryId" cname="gnome_entry_set_history_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+        </parameters>
+      </method>
+      <method name="SetMaxSaved" cname="gnome_entry_set_max_saved">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="max_saved"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="FileEntry" cname="GnomeFileEntry" parent="GtkVBox">
+      <field cname="fsw" type="GtkWidget*"/>
+      <field cname="default_path" type="char*"/>
+      <field cname="_priv" type="GnomeFileEntryPrivate*"/>
+      <signal name="BrowseClicked" cname="browse_clicked" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeFileEntry*" name="fentry"/>
+        </parameters>
+      </signal>
+      <signal name="Activated" cname="activate" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeFileEntry*" name="fentry"/>
+        </parameters>
+      </signal>
+      <property name="HistoryId" cname="history_id" type="gchar*" doc-string=" _(Unique identifier for the file entry.This will be used to save the history list.)" readable="true" writeable="true"/>
+      <property name="BrowseDialogTitle" cname="browse_dialog_title" type="gchar*" doc-string=" _(Title for the Browse file dialog.)" readable="true" writeable="true"/>
+      <property name="DirectoryEntry" cname="directory_entry" type="gboolean" doc-string=" _(Whether the file entry is being used toenter directory names or complete filenames.)" readable="true" writeable="true"/>
+      <property name="Modal" cname="modal" type="gboolean" doc-string=" _(Whether the Browse file window should be modal.)" readable="true" writeable="true"/>
+      <property name="Filename" cname="filename" type="gchar*" doc-string=" _(Filename that should be displayed in thefile entry.)" readable="true" writeable="true"/>
+      <property name="DefaultPath" cname="default_path" type="gchar*" doc-string=" _(Default path for the Browse file window.)" readable="true" writeable="true"/>
+      <property name="GnomeEntry" cname="gnome_entry" type="GnomeEntry" doc-string=" _(GnomeEntry that the file entry uses forentering filenames. You can use this propertyto get the GnomeEntry if you need to modifyor query any of its parameters.)" readable="true"/>
+      <property name="GtkEntry" cname="gtk_entry" type="GtkEntry" doc-string=" _(GtkEntry that the file entry uses forentering filenames. You can use this propertyto get the GtkEntry if you need to modifyor query any of its parameters.)" readable="true"/>
+      <implements>
+        <interface cname="GtkEditable"/>
+      </implements>
+      <method name="Construct" cname="gnome_file_entry_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="history_id"/>
+          <parameter type="const-char*" name="browse_dialog_title"/>
+        </parameters>
+      </method>
+      <method name="GetDirectoryEntry" cname="gnome_file_entry_get_directory_entry">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetFullPath" cname="gnome_file_entry_get_full_path">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="gboolean" name="file_must_exist"/>
+        </parameters>
+      </method>
+      <method name="GetModal" cname="gnome_file_entry_get_modal">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gnome_file_entry_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GnomeEntry" cname="gnome_file_entry_gnome_entry" hidden="1">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GtkEntry" cname="gnome_file_entry_gtk_entry" hidden="1">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <constructor cname="gnome_file_entry_new">
+        <parameters>
+          <parameter type="const-char*" name="history_id"/>
+          <parameter type="const-char*" name="browse_dialog_title"/>
+        </parameters>
+      </constructor>
+      <method name="SetDefaultPath" cname="gnome_file_entry_set_default_path">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+        </parameters>
+      </method>
+      <method name="SetDirectoryEntry" cname="gnome_file_entry_set_directory_entry">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="directory_entry"/>
+        </parameters>
+      </method>
+      <method name="SetFilename" cname="gnome_file_entry_set_filename">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SetModal" cname="gnome_file_entry_set_modal">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="is_modal"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_file_entry_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="browse_dialog_title"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="FontPicker" cname="GnomeFontPicker" parent="GtkButton">
+      <field cname="_priv" type="GnomeFontPickerPrivate*"/>
+      <property name="Title" cname="title" type="gchar*" doc-string=" _(The title of the selection dialog box)" readable="true" writeable="true"/>
+      <property name="Mode" cname="mode" type="GnomeFontPickerMode" doc-string=" _(The mode of operation of the font picker)" readable="true" writeable="true"/>
+      <property name="FontName" cname="font_name" type="gchar*" doc-string=" _(Name of the selected font)" readable="true" writeable="true"/>
+      <property name="Font" cname="font" type="gpointer" doc-string=" _(The selected GtkFont)" readable="true"/>
+      <property name="PreviewText" cname="preview_text" type="gchar*" doc-string=" _(Preview text shown in the dialog)" readable="true" writeable="true"/>
+      <property name="UseFontInLabel" cname="use-font-in-label" type="gboolean" doc-string=" _(Use font in the label in font info mode)" readable="true" writeable="true"/>
+      <property name="LabelFontSize" cname="label-font-size" type="gint" doc-string=" _(Font size for label in font info mode)" readable="true" writeable="true"/>
+      <property name="ShowSize" cname="show-size" type="gboolean" doc-string=" _(Show size in font info mode)" readable="true" writeable="true"/>
+      <signal name="FontSet" cname="font_set" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeFontPicker*" name="gfp"/>
+          <parameter type="const-gchar*" name="font_name"/>
+        </parameters>
+      </signal>
+      <method name="FiSetShowSize" cname="gnome_font_picker_fi_set_show_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show_size"/>
+        </parameters>
+      </method>
+      <method name="FiSetUseFontInLabel" cname="gnome_font_picker_fi_set_use_font_in_label">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="use_font_in_label"/>
+          <parameter type="gint" name="size"/>
+        </parameters>
+      </method>
+      <method name="GetFontName" cname="gnome_font_picker_get_font_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetMode" cname="gnome_font_picker_get_mode">
+        <return-type type="GnomeFontPickerMode"/>
+      </method>
+      <method name="GetPreviewText" cname="gnome_font_picker_get_preview_text">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetTitle" cname="gnome_font_picker_get_title">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_font_picker_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ModeGetType" cname="gnome_font_picker_mode_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_font_picker_new"/>
+      <method name="SetFontName" cname="gnome_font_picker_set_font_name">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="fontname"/>
+        </parameters>
+      </method>
+      <method name="SetMode" cname="gnome_font_picker_set_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeFontPickerMode" name="mode"/>
+        </parameters>
+      </method>
+      <method name="SetPreviewText" cname="gnome_font_picker_set_preview_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_font_picker_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="UwGetWidget" cname="gnome_font_picker_uw_get_widget">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="UwSetWidget" cname="gnome_font_picker_uw_set_widget">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="HRef" cname="GnomeHRef" parent="GtkButton">
+      <field cname="_priv" type="GnomeHRefPrivate*"/>
+      <property name="Url" cname="url" type="gchar*" doc-string=" _(The URL that GnomeHRef activates)" readable="true" writeable="true"/>
+      <property name="Text" cname="text" type="gchar*" doc-string=" _(The text on the button)" readable="true" writeable="true"/>
+      <method name="Construct" cname="gnome_href_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="url"/>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="GetText" cname="gnome_href_get_text">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_href_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUrl" cname="gnome_href_get_url">
+        <return-type type="const-gchar*"/>
+      </method>
+      <constructor cname="gnome_href_new">
+        <parameters>
+          <parameter type="const-gchar*" name="url"/>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </constructor>
+      <method name="SetText" cname="gnome_href_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="SetUrl" cname="gnome_href_set_url">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="url"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="IconEntry" cname="GnomeIconEntry" parent="GtkVBox">
+      <field cname="_priv" type="GnomeIconEntryPrivate*"/>
+      <signal name="Changed" cname="changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconEntry*" name="ientry"/>
+        </parameters>
+      </signal>
+      <signal name="Browse" cname="browse" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconEntry*" name="ientry"/>
+        </parameters>
+      </signal>
+      <property name="HistoryId" cname="history_id" type="gchar*" doc-string=" _(Unique identifier for the icon entry.This will be used to save the history list.)" readable="true" writeable="true"/>
+      <property name="BrowseDialogTitle" cname="browse_dialog_title" type="gchar*" doc-string=" _(Title for the Browse icon dialog.)" readable="true" writeable="true"/>
+      <property name="PixmapSubdir" cname="pixmap_subdir" type="gchar*" doc-string=" _(Directory that will be searched for icons.)" readable="true" writeable="true"/>
+      <property name="Filename" cname="filename" type="gchar*" doc-string=" _(Filename that should be displayed in theicon entry.)" readable="true" writeable="true"/>
+      <property name="PickDialog" cname="pick_dialog" type="GtkDialog" doc-string=" _(Icon picker dialog. You can use this propertyto get the GtkDialog if you need to modifyor query any of its properties.)" readable="true"/>
+      <method name="Construct" cname="gnome_icon_entry_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+          <parameter type="const-gchar*" name="browse_dialog_title"/>
+        </parameters>
+      </method>
+      <method name="GetFilename" cname="gnome_icon_entry_get_filename">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_icon_entry_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GnomeEntry" cname="gnome_icon_entry_gnome_entry">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GnomeFileEntry" cname="gnome_icon_entry_gnome_file_entry">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GtkEntry" cname="gnome_icon_entry_gtk_entry">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <constructor cname="gnome_icon_entry_new">
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+          <parameter type="const-gchar*" name="browse_dialog_title"/>
+        </parameters>
+      </constructor>
+      <method name="PickDialog" cname="gnome_icon_entry_pick_dialog" hidden="1">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="SetBrowseDialogTitle" cname="gnome_icon_entry_set_browse_dialog_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="browse_dialog_title"/>
+        </parameters>
+      </method>
+      <method name="SetFilename" cname="gnome_icon_entry_set_filename">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SetHistoryId" cname="gnome_icon_entry_set_history_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+        </parameters>
+      </method>
+      <method name="SetIcon" cname="gnome_icon_entry_set_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SetPixmapSubdir" cname="gnome_icon_entry_set_pixmap_subdir">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="subdir"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="IconList" cname="GnomeIconList" parent="GnomeCanvas">
+      <field cname="adj" type="GtkAdjustment*"/>
+      <field cname="hadj" type="GtkAdjustment*"/>
+      <field cname="_priv" type="GnomeIconListPrivate*"/>
+      <signal name="IconSelected" cname="select_icon" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+          <parameter type="gint" name="num"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </signal>
+      <signal name="IconUnselected" cname="unselect_icon" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+          <parameter type="gint" name="num"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </signal>
+      <signal name="IconFocused" cname="focus_icon" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+          <parameter type="gint" name="num"/>
+        </parameters>
+      </signal>
+      <signal name="TextChanged" cname="text_changed" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+          <parameter type="gint" name="num"/>
+          <parameter type="const-char*" name="new_text"/>
+        </parameters>
+      </signal>
+      <signal name="MoveCursor" cname="move_cursor" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+          <parameter type="GtkDirectionType" name="dir"/>
+          <parameter type="gboolean" name="clear_selection"/>
+        </parameters>
+      </signal>
+      <signal name="ToggleCursorSelection" cname="toggle_cursor_selection" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil"/>
+        </parameters>
+      </signal>
+      <method name="Append" cname="gnome_icon_list_append">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="icon_filename"/>
+          <parameter type="const-char*" name="text"/>
+        </parameters>
+      </method>
+      <method name="AppendPixbuf" cname="gnome_icon_list_append_pixbuf">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="GdkPixbuf*" name="im"/>
+          <parameter type="const-char*" name="icon_filename"/>
+          <parameter type="const-char*" name="text"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="gnome_icon_list_clear">
+        <return-type type="void"/>
+      </method>
+      <method name="Construct" cname="gnome_icon_list_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="icon_width"/>
+          <parameter type="GtkAdjustment*" name="adj"/>
+          <parameter type="int" name="flags"/>
+        </parameters>
+      </method>
+      <method name="FindIconFromData" cname="gnome_icon_list_find_icon_from_data">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="FindIconFromFilename" cname="gnome_icon_list_find_icon_from_filename">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="FocusIcon" cname="gnome_icon_list_focus_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="idx"/>
+        </parameters>
+      </method>
+      <method name="Freeze" cname="gnome_icon_list_freeze">
+        <return-type type="void"/>
+      </method>
+      <method name="GetIconAt" cname="gnome_icon_list_get_icon_at">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+        </parameters>
+      </method>
+      <method name="GetIconData" cname="gnome_icon_list_get_icon_data">
+        <return-type type="gpointer"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+      <method name="GetIconFilename" cname="gnome_icon_list_get_icon_filename">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="int" name="idx"/>
+        </parameters>
+      </method>
+      <method name="GetIconPixbufItem" cname="gnome_icon_list_get_icon_pixbuf_item">
+        <return-type type="GnomeCanvasPixbuf*"/>
+        <parameters>
+          <parameter type="int" name="idx"/>
+        </parameters>
+      </method>
+      <method name="GetIconTextItem" cname="gnome_icon_list_get_icon_text_item">
+        <return-type type="GnomeIconTextItem*"/>
+        <parameters>
+          <parameter type="int" name="idx"/>
+        </parameters>
+      </method>
+      <method name="GetItemsPerLine" cname="gnome_icon_list_get_items_per_line">
+        <return-type type="int"/>
+      </method>
+      <method name="GetNumIcons" cname="gnome_icon_list_get_num_icons">
+        <return-type type="guint"/>
+      </method>
+      <method name="GetSelection" cname="gnome_icon_list_get_selection">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetSelectionMode" cname="gnome_icon_list_get_selection_mode">
+        <return-type type="GtkSelectionMode"/>
+      </method>
+      <method name="GetType" cname="gnome_icon_list_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IconIsVisible" cname="gnome_icon_list_icon_is_visible">
+        <return-type type="GtkVisibility"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+      <method name="Insert" cname="gnome_icon_list_insert">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+          <parameter type="const-char*" name="icon_filename"/>
+          <parameter type="const-char*" name="text"/>
+        </parameters>
+      </method>
+      <method name="InsertPixbuf" cname="gnome_icon_list_insert_pixbuf">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+          <parameter type="GdkPixbuf*" name="im"/>
+          <parameter type="const-char*" name="icon_filename"/>
+          <parameter type="const-char*" name="text"/>
+        </parameters>
+      </method>
+      <method name="ModeGetType" cname="gnome_icon_list_mode_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Moveto" cname="gnome_icon_list_moveto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+          <parameter type="double" name="yalign"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_icon_list_new">
+        <parameters>
+          <parameter type="guint" name="icon_width"/>
+          <parameter type="GtkAdjustment*" name="adj" null_ok="1"/>
+          <parameter type="int" name="flags"/>
+        </parameters>
+      </constructor>
+      <method name="Remove" cname="gnome_icon_list_remove">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+      <method name="SelectIcon" cname="gnome_icon_list_select_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+      <method name="SetColSpacing" cname="gnome_icon_list_set_col_spacing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pixels"/>
+        </parameters>
+      </method>
+      <method name="SetHadjustment" cname="gnome_icon_list_set_hadjustment">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkAdjustment*" name="hadj"/>
+        </parameters>
+      </method>
+      <method name="SetIconBorder" cname="gnome_icon_list_set_icon_border">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pixels"/>
+        </parameters>
+      </method>
+      <method name="SetIconData" cname="gnome_icon_list_set_icon_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="idx"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="SetIconDataFull" cname="gnome_icon_list_set_icon_data_full">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="SetIconWidth" cname="gnome_icon_list_set_icon_width">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="w"/>
+        </parameters>
+      </method>
+      <method name="SetRowSpacing" cname="gnome_icon_list_set_row_spacing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pixels"/>
+        </parameters>
+      </method>
+      <method name="SetSelectionMode" cname="gnome_icon_list_set_selection_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkSelectionMode" name="mode"/>
+        </parameters>
+      </method>
+      <method name="SetSeparators" cname="gnome_icon_list_set_separators">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="sep"/>
+        </parameters>
+      </method>
+      <method name="SetTextSpacing" cname="gnome_icon_list_set_text_spacing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pixels"/>
+        </parameters>
+      </method>
+      <method name="SetVadjustment" cname="gnome_icon_list_set_vadjustment">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkAdjustment*" name="vadj"/>
+        </parameters>
+      </method>
+      <method name="Thaw" cname="gnome_icon_list_thaw">
+        <return-type type="void"/>
+      </method>
+      <method name="UnselectAll" cname="gnome_icon_list_unselect_all">
+        <return-type type="int"/>
+      </method>
+      <method name="UnselectIcon" cname="gnome_icon_list_unselect_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="IconSelection" cname="GnomeIconSelection" parent="GtkVBox">
+      <field cname="_priv" type="GnomeIconSelectionPrivate*"/>
+      <method name="AddDefaults" cname="gnome_icon_selection_add_defaults">
+        <return-type type="void"/>
+      </method>
+      <method name="AddDirectory" cname="gnome_icon_selection_add_directory">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="dir"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="gnome_icon_selection_clear">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="not_shown"/>
+        </parameters>
+      </method>
+      <method name="GetBox" cname="gnome_icon_selection_get_box">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GetGil" cname="gnome_icon_selection_get_gil">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GetIcon" cname="gnome_icon_selection_get_icon">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gboolean" name="full_path"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_icon_selection_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_icon_selection_new"/>
+      <method name="SelectIcon" cname="gnome_icon_selection_select_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="ShowIcons" cname="gnome_icon_selection_show_icons">
+        <return-type type="void"/>
+      </method>
+      <method name="StopLoading" cname="gnome_icon_selection_stop_loading">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="IconTextItem" cname="GnomeIconTextItem" parent="GnomeCanvasItem">
+      <field cname="x" type="int"/>
+      <field cname="y" type="int"/>
+      <field cname="width" type="int"/>
+      <field cname="fontname" type="char*"/>
+      <field cname="text" type="char*"/>
+      <field cname="editing" bits="1" type="unsigned"/>
+      <field cname="selected" bits="1" type="unsigned"/>
+      <field cname="focused" bits="1" type="unsigned"/>
+      <field cname="is_editable" bits="1" type="unsigned"/>
+      <field cname="is_text_allocated" bits="1" type="unsigned"/>
+      <field cname="_priv" type="GnomeIconTextItemPrivate*"/>
+      <signal name="TextChanged" cname="text_changed" when="LAST">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="HeightChanged" cname="height_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="WidthChanged" cname="width_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="EditingStarted" cname="editing_started" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="EditingStopped" cname="editing_stopped" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="SelectionStarted" cname="selection_started" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <signal name="SelectionStopped" cname="selection_stopped" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti"/>
+        </parameters>
+      </signal>
+      <method name="Configure" cname="gnome_icon_text_item_configure">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+          <parameter type="int" name="width"/>
+          <parameter type="const-char*" name="fontname"/>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="gboolean" name="is_editable"/>
+          <parameter type="gboolean" name="is_static"/>
+        </parameters>
+      </method>
+      <method name="Focus" cname="gnome_icon_text_item_focus">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="focused"/>
+        </parameters>
+      </method>
+      <method name="GetEditable" cname="gnome_icon_text_item_get_editable">
+        <return-type type="GtkEditable*"/>
+      </method>
+      <method name="GetText" cname="gnome_icon_text_item_get_text">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="gnome_icon_text_item_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Select" cname="gnome_icon_text_item_select">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="sel"/>
+        </parameters>
+      </method>
+      <method name="Setxy" cname="gnome_icon_text_item_setxy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+        </parameters>
+      </method>
+      <method name="StartEditing" cname="gnome_icon_text_item_start_editing">
+        <return-type type="void"/>
+      </method>
+      <method name="StopEditing" cname="gnome_icon_text_item_stop_editing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="accept"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="PixmapEntry" cname="GnomePixmapEntry" parent="GnomeFileEntry">
+      <field cname="_priv" type="GnomePixmapEntryPrivate*"/>
+      <property name="DoPreview" cname="do_preview" type="gboolean" doc-string=" _(Whether the pixmap entry should have a preview.)" readable="true" writeable="true"/>
+      <method name="Construct" cname="gnome_pixmap_entry_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+          <parameter type="const-gchar*" name="browse_dialog_title"/>
+          <parameter type="gboolean" name="do_preview"/>
+        </parameters>
+      </method>
+      <method name="GetFilename" cname="gnome_pixmap_entry_get_filename">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_pixmap_entry_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_pixmap_entry_new">
+        <parameters>
+          <parameter type="const-gchar*" name="history_id"/>
+          <parameter type="const-gchar*" name="browse_dialog_title"/>
+          <parameter type="gboolean" name="do_preview"/>
+        </parameters>
+      </constructor>
+      <method name="PreviewWidget" cname="gnome_pixmap_entry_preview_widget">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="ScrolledWindow" cname="gnome_pixmap_entry_scrolled_window">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="SetPixmapSubdir" cname="gnome_pixmap_entry_set_pixmap_subdir">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="subdir"/>
+        </parameters>
+      </method>
+      <method name="SetPreview" cname="gnome_pixmap_entry_set_preview">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="do_preview"/>
+        </parameters>
+      </method>
+      <method name="SetPreviewSize" cname="gnome_pixmap_entry_set_preview_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="preview_w"/>
+          <parameter type="gint" name="preview_h"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Scores" cname="GnomeScores" parent="GtkDialog">
+      <field cname="_priv" type="GnomeScoresPrivate*"/>
+      <method name="Construct" cname="gnome_scores_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="n_scores"/>
+          <parameter type="gchar**" name="names"/>
+          <parameter type="gfloat*" name="scores"/>
+          <parameter type="time_t*" name="times"/>
+          <parameter type="gboolean" name="clear"/>
+        </parameters>
+      </method>
+      <method name="DisplayWithPixmap" cname="gnome_scores_display_with_pixmap" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="pixmap_logo"/>
+          <parameter type="const-gchar*" name="app_name"/>
+          <parameter type="const-gchar*" name="level"/>
+          <parameter type="int" name="pos"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gnome_scores_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_scores_new">
+        <parameters>
+          <parameter type="guint" name="n_scores"/>
+          <parameter type="/*" name="Number"/>
+          <parameter type="/*" name="Names"/>
+          <parameter type="/*" name="Scores*"/>
+          <parameter type="/*" name="Time"/>
+        </parameters>
+      </constructor>
+      <method name="SetColor" cname="gnome_scores_set_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+          <parameter type="/*" name="Entry"/>
+        </parameters>
+      </method>
+      <method name="SetColors" cname="gnome_scores_set_colors">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkColor*" name="col"/>
+        </parameters>
+      </method>
+      <method name="SetCurrentPlayer" cname="gnome_scores_set_current_player">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+        </parameters>
+      </method>
+      <method name="SetDefColor" cname="gnome_scores_set_def_color">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+        </parameters>
+      </method>
+      <method name="SetLogoLabel" cname="gnome_scores_set_logo_label">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+          <parameter type="/*" name="Text"/>
+          <parameter type="/*" name="Font"/>
+        </parameters>
+      </method>
+      <method name="SetLogoLabelTitle" cname="gnome_scores_set_logo_label_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+        </parameters>
+      </method>
+      <method name="SetLogoPixmap" cname="gnome_scores_set_logo_pixmap">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+        </parameters>
+      </method>
+      <method name="SetLogoWidget" cname="gnome_scores_set_logo_widget">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="/*" name="GNOME"/>
+        </parameters>
+      </method>
+    </object>
+    <struct name="AppBarMsg" cname="GnomeAppBarMsg" opaque="true"/>
+    <struct name="GdkPixbufAsyncHandle" cname="GnomeGdkPixbufAsyncHandle" opaque="true"/>
+    <struct name="UIBuilderData" cname="GnomeUIBuilderData">
+      <field cname="connect_func" type="GnomeUISignalConnectFunc"/>
+      <field cname="data" type="gpointer"/>
+      <field cname="is_interp" type="gboolean"/>
+      <field cname="relay_func" type="GtkCallbackMarshal"/>
+      <field cname="destroy_func" type="GtkDestroyNotify"/>
+    </struct>
+    <struct name="UIInfo" cname="GnomeUIInfo">
+      <field cname="type" type="GnomeUIInfoType"/>
+      <field cname="label" type="const-gchar*"/>
+      <field cname="hint" type="const-gchar*"/>
+      <field cname="moreinfo" type="gpointer"/>
+      <field cname="user_data" type="gpointer"/>
+      <field cname="unused_data" type="gpointer"/>
+      <field cname="pixmap_type" type="GnomeUIPixmapType"/>
+      <field cname="pixmap_info" type="gconstpointer"/>
+      <field cname="accelerator_key" type="guint"/>
+      <field cname="ac_mods" type="GdkModifierType"/>
+      <field cname="widget" type="GtkWidget*"/>
+      <method name="ConfigurableTypesGetType" cname="gnome_ui_info_configurable_types_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="TypeGetType" cname="gnome_ui_info_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </struct>
+    <object name="Stock" cname="GnomeStock">
+      <static-string cname="GNOME_STOCK_ABOUT" name="About" value="gnome-stock-about"/>
+      <static-string cname="GNOME_STOCK_ATTACH" name="Attach" value="gnome-stock-attach"/>
+      <static-string cname="GNOME_STOCK_BLANK" name="Blank" value="gnome-stock-blank"/>
+      <static-string cname="GNOME_STOCK_BOOK_BLUE" name="BookBlue" value="gnome-stock-book-blue"/>
+      <static-string cname="GNOME_STOCK_BOOK_GREEN" name="BookGreen" value="gnome-stock-book-green"/>
+      <static-string cname="GNOME_STOCK_BOOK_OPEN" name="BookOpen" value="gnome-stock-book-open"/>
+      <static-string cname="GNOME_STOCK_BOOK_RED" name="BookRed" value="gnome-stock-book-red"/>
+      <static-string cname="GNOME_STOCK_BOOK_YELLOW" name="BookYellow" value="gnome-stock-book-yellow"/>
+      <static-string cname="GNOME_STOCK_LINE_IN" name="LineIn" value="gnome-stock-line-in"/>
+      <static-string cname="GNOME_STOCK_MAIL" name="Mail" value="gnome-stock-mail"/>
+      <static-string cname="GNOME_STOCK_MAIL_FWD" name="MailFwd" value="gnome-stock-mail-fwd"/>
+      <static-string cname="GNOME_STOCK_MAIL_NEW" name="MailNew" value="gnome-stock-mail-new"/>
+      <static-string cname="GNOME_STOCK_MAIL_RCV" name="MailRcv" value="gnome-stock-mail-rcv"/>
+      <static-string cname="GNOME_STOCK_MAIL_RPL" name="MailRpl" value="gnome-stock-mail-rpl"/>
+      <static-string cname="GNOME_STOCK_MAIL_SND" name="MailSnd" value="gnome-stock-mail-snd"/>
+      <static-string cname="GNOME_STOCK_MIC" name="Mic" value="gnome-stock-mic"/>
+      <static-string cname="GNOME_STOCK_MIDI" name="Midi" value="gnome-stock-midi"/>
+      <static-string cname="GNOME_STOCK_MULTIPLE_FILE" name="MultipleFile" value="gnome-stock-multiple-file"/>
+      <static-string cname="GNOME_STOCK_NOT" name="Not" value="gnome-stock-not"/>
+      <static-string cname="GNOME_STOCK_SCORES" name="Scores" value="gnome-stock-scores"/>
+      <static-string cname="GNOME_STOCK_TABLE_BORDERS" name="TableBorders" value="gnome-stock-table-borders"/>
+      <static-string cname="GNOME_STOCK_TABLE_FILL" name="TableFill" value="gnome-stock-table-fill"/>
+      <static-string cname="GNOME_STOCK_TEXT_BULLETED_LIST" name="TextBulletedList" value="gnome-stock-text-bulleted-list"/>
+      <static-string cname="GNOME_STOCK_TEXT_INDENT" name="TextIndent" value="gnome-stock-text-indent"/>
+      <static-string cname="GNOME_STOCK_TEXT_NUMBERED_LIST" name="TextNumberedList" value="gnome-stock-text-numbered-list"/>
+      <static-string cname="GNOME_STOCK_TEXT_UNINDENT" name="TextUnindent" value="gnome-stock-text-unindent"/>
+      <static-string cname="GNOME_STOCK_TIMER" name="Timer" value="gnome-stock-timer"/>
+      <static-string cname="GNOME_STOCK_TIMER_STOP" name="TimerStop" value="gnome-stock-timer-stop"/>
+      <static-string cname="GNOME_STOCK_TRASH" name="Trash" value="gnome-stock-trash"/>
+      <static-string cname="GNOME_STOCK_TRASH_FULL" name="TrashFull" value="gnome-stock-trash-full"/>
+      <static-string cname="GNOME_STOCK_VOLUME" name="Volume" value="gnome-stock-volume"/>
+    </object>
+  </namespace>
+</api>

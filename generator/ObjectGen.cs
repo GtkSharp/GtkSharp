@@ -9,15 +9,23 @@ namespace GtkSharp.Generation {
 	using System;
 	using System.Collections;
 	using System.IO;
+	using System.Text;
 	using System.Xml;
 
 	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList strings = new ArrayList();
-		private static Hashtable objs = new Hashtable();
+		private static Hashtable namespaces = new Hashtable ();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
+			Hashtable objs;
+			if (namespaces.ContainsKey (NS)) 
+				objs = (Hashtable) namespaces[NS];
+			else {
+				objs = new Hashtable();
+				namespaces.Add (NS, objs);
+			}
 			objs.Add (CName, QualifiedName + "," + NS.ToLower() + "-sharp");
  
 			foreach (XmlNode node in elem.ChildNodes) {
@@ -45,6 +53,9 @@ namespace GtkSharp.Generation {
 
 		public void Generate ()
 		{
+			if (!DoGenerate)
+				return;
+
 			StreamWriter sw = CreateWriter ();
 
 			sw.WriteLine ("\tusing System;");
@@ -180,66 +191,80 @@ namespace GtkSharp.Generation {
 			base.GenCtors (sw);
 		}
 
+		/* Keep this in sync with the one in glib/ObjectManager.cs */
+		static string GetExpected (string cname)
+		{
+			StringBuilder expected = new StringBuilder ();
+			string ns = "";
+			bool needs_dot = true;
+			for (int i = 0; i < cname.Length; i++)
+			{
+				if (needs_dot && i > 0 && Char.IsUpper (cname[i])) {
+					ns = expected.ToString ().ToLower (); 
+					expected.Append ('.');
+					needs_dot = false;
+				}
+				expected.Append (cname[i]);
+			}
+			expected.AppendFormat (",{0}-sharp", ns);
+			return expected.ToString ();
+		}
+
 		public static void GenerateMapper ()
 		{
-			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + "glib" + sep + "generated";
-			if (!Directory.Exists(dir)) {
+			foreach (string ns in namespaces.Keys) {
+				Hashtable objs = (Hashtable) namespaces[ns];
+				bool needs_map = false;
+				foreach (string key in objs.Keys) {
+					string expected = GetExpected (key);
+					if (expected != ((string) objs[key])) {
+						needs_map = true;
+					}
+				}
+
+				if (!needs_map)
+					continue;
+	
+				char sep = Path.DirectorySeparatorChar;
+				string dir = ".." + sep + ns.ToLower () + sep + "generated";
+				if (!Directory.Exists(dir)) {
         			Console.WriteLine ("creating " + dir);
-        			Directory.CreateDirectory(dir);
+      		  	Directory.CreateDirectory(dir);
+				}
+				String filename = dir + sep + "ObjectManager.cs";
+
+				FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
+				StreamWriter sw = new StreamWriter (stream);
+
+				sw.WriteLine ("// Generated File.  Do not modify.");
+				sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
+				sw.WriteLine ();
+
+				sw.WriteLine ("namespace GtkSharp {");
+				sw.WriteLine ();
+				sw.WriteLine ("\tnamespace " + ns + " {");
+				sw.WriteLine ();
+				sw.WriteLine ("\tpublic class ObjectManager {");
+				sw.WriteLine ();
+				sw.WriteLine ("\t\t// Call this method from the appropriate module init function.");
+				sw.WriteLine ("\t\tpublic static void Initialize ()");
+				sw.WriteLine ("\t\t{");
+	
+				foreach (string key in objs.Keys) {
+					string expected = GetExpected (key);
+					if (expected != ((string) objs[key])) {
+						sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + objs[key] + "\");");
+					}
+				}
+					
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ("\t}");
+				sw.WriteLine ("}");
+				sw.WriteLine ("}");
+
+				sw.Flush ();
+				sw.Close ();
 			}
-			String filename = dir + sep + "ObjectManager.cs";
-
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
-
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
-			sw.WriteLine ();
-
-			sw.WriteLine ("namespace GtkSharp {");
-			sw.WriteLine ();
-			sw.WriteLine ("\tusing System;");
-			sw.WriteLine ("\tusing System.Collections;");
-			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
-			sw.WriteLine ();
-			sw.WriteLine ("\tpublic class ObjectManager {");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tprivate static Hashtable types = new Hashtable ();");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tstatic ObjectManager ()");
-			sw.WriteLine ("\t\t{");
-
-			foreach (string key in objs.Keys) {
-				sw.WriteLine ("\t\t\t\ttypes.Add(\"" + key + "\", \"" + objs[key] + "\");");
-			}
-				
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t[DllImport(\"gtksharpglue\")]");
-			sw.WriteLine ("\t\tstatic extern string gtksharp_get_type_name (IntPtr raw);");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic static GLib.Object CreateObject (IntPtr raw)");
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tif (raw == IntPtr.Zero)");
-			sw.WriteLine ("\t\t\t\treturn null;");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t\tstring typename = gtksharp_get_type_name (raw);");
-			sw.WriteLine ("\t\t\tif (!types.ContainsKey(typename))");
-			sw.WriteLine ("\t\t\t\treturn null;");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t\tType t = Type.GetType ((string)types[typename]);");
-			sw.WriteLine ("\t\t\treturn (GLib.Object) Activator.CreateInstance (t, new object[] {raw});");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic static void RegisterType (string native_name, string managed_name, string assembly)");
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\ttypes.Add(native_name, managed_name + \",\" + assembly);");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ("\t}");
-			sw.WriteLine ("}");
-			sw.Flush ();
-			sw.Close ();
 		}
 	}
 }

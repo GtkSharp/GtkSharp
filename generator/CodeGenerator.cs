@@ -14,13 +14,25 @@ namespace GtkSharp.Generation {
 
 		public static int Main (string[] args)
 		{
-			if (args.Length != 1) {
-				Console.WriteLine ("Usage: codegen <filename>");
+			if (args.Length < 2) {
+				Console.WriteLine ("Usage: codegen --generate <filename1...>");
 				return 0;
 			}
 
-			Parser p = new Parser (args[0]);
-			p.Parse ();
+			bool generate = false;
+			foreach (string arg in args) {
+					if (arg == "--generate") {
+						generate = true;
+						continue;
+					} else if (arg == "--include") {
+						generate = false;
+						continue;
+					}
+					
+					Parser p = new Parser (arg);
+					p.Parse (generate);
+			}
+
 			Console.WriteLine (SymbolTable.Count + " types parsed.");
 			
 			foreach (IGeneratable gen in SymbolTable.Generatables) {

@@ -14,6 +14,7 @@ namespace GtkSharp.Generation {
 		
 		private XmlElement ns;
 		private XmlElement elem;
+		private bool do_generate;
 
 		protected GenBase (XmlElement ns, XmlElement elem)
 		{
@@ -55,6 +56,11 @@ namespace GtkSharp.Generation {
 			get {
 				return NS + "." + Name;
 			}
+		}
+
+		public bool DoGenerate {
+			get { return do_generate; }
+			set { do_generate = value; }
 		}
 
 		protected StreamWriter CreateWriter () 
