@@ -101,13 +101,18 @@ class NotebookSample
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Returns the label widget for a given widget.</summary>
+        <summary>Returns the label caption for the Notebookpage containing the given widget.</summary>
         <param name="child">The widget in the page.</param>
-        <returns>The tab label widget, or <see langword="null" /> if
-        not found.</returns>
+        <returns>
+          <para>
+	    The text of the tab label, or <see langword="null" /> if
+	    the widget does not have a tab label other than the
+	    default tab label, or the tab label page is not a <see cref="T:Gtk.Label" />. 
+	  </para>
+        </returns>
         <remarks>
           <para>
-	    Returns the tab label widget for the page child.  <see langword="null" /> is returned if the child widget is not
+	    Returns the tab label text for the page child.  <see langword="null" /> is returned if the child widget is not
 	    in the notebook or if no tab label has specifically been
 	    set for the <paramref name="child" />.
 	  </para>
@@ -124,13 +129,13 @@ class NotebookSample
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Returns the label caption for a given widget.</summary>
+        <summary>Returns the label caption for the menu of the notebookpage containing the given widget.</summary>
         <param name="child">The child widget in the page</param>
         <returns>
           <para>
-	    The text of the tab label, or <see langword="null" /> if
+	    The text of the menu label, or <see langword="null" /> if
 	    the widget does not have a menu label other than the
-	    default menu label, or the menu label widget is not a <see cref="T:Gtk.Label" />. 
+	    default menu label, or the menu label page is not a <see cref="T:Gtk.Label" />. 
 	    </para>
         </returns>
         <remarks>
@@ -328,10 +333,10 @@ class NotebookSample
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the label for the menu of the notebookpage containing the given widget.</summary>
+        <param name="child">The child widget in the page.</param>
+        <returns>The <see cref="T:Gtk.Widget" />, or null if the page does not have a menu label other than the default menu label.</returns>
+        <remarks>the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="ReorderChild">
@@ -369,10 +374,13 @@ class NotebookSample
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the <see cref="T:Gtk.Widget" /> for the Notebookpage containing the given widget.</summary>
+        <param name="child">The child widget in the page.</param>
+        <returns>The label, or null if the page does not have a tab label other than the default tab label.</returns>
+        <remarks>
+          <para>
+the label of a menu doesn't have to be a <see cref="T:Gtk.Label" />. it can be any <see cref="T:Gtk.Widget" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNthPage">
@@ -385,10 +393,10 @@ class NotebookSample
         <Parameter Name="page_num" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="page_num">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the notebookpage with the given index.</summary>
+        <param name="page_num">the zero-based index of the page to return. use -1 for the last page.</param>
+        <returns>returns the <see cref="T:Gtk.Widget" /> with the given index.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetMenuLabelText">
@@ -402,10 +410,10 @@ class NotebookSample
         <Parameter Name="menu_text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="menu_text">an object of type <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>sets the text of a menu label of a page.</summary>
+        <param name="child">the page.</param>
+        <param name="menu_text">the text of the label.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PrependPage">
@@ -419,10 +427,10 @@ class NotebookSample
         <Parameter Name="tab_label" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>prepends a page.</summary>
+        <param name="child">a <see cref="T:Gtk.Widget" /> t use as content of the page.</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as the tab label. use null to use the default label.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="NextPage">
@@ -433,8 +441,17 @@ class NotebookSample
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+          <para>
+	    Switches to the next page. 
+	  </para>
+        </summary>
+        <remarks>
+          <para>
+	    Switches to the next page. Nothing happens if the
+	    current page is the last page.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PrependPageMenu">
@@ -449,10 +466,10 @@ class NotebookSample
         <Parameter Name="menu_label" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
+        <summary>prepends a page, with a custom popup-label.</summary>
+        <param name="child">the <see cref="T:Gtk.Widget" /> to use as contents of the page.</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as tab label. use null to use the default label.</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -467,9 +484,9 @@ class NotebookSample
         <Parameter Name="menu_label" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
+        <summary>sets the menulabel of a page.</summary>
+        <param name="child">the page</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -486,11 +503,11 @@ class NotebookSample
         <Parameter Name="pack_type" Type="Gtk.PackType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="expand">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="fill">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="pack_type">an object of type <see cref="T:Gtk.PackType" /></param>
+        <summary>sets the packing of the tab label of a page.</summary>
+        <param name="child">a page.</param>
+        <param name="expand">sets true to expand the label.</param>
+        <param name="fill">sets true to fill to fill the allocated area.</param>
+        <param name="pack_type">sets <see cref="T:Gtk.PackType" /> of the label.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -542,7 +559,7 @@ class NotebookSample
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The index of the curent page.
+        <summary>Sets or obtains the index of the curent page.
 </summary>
         <param name="value">the index of the page to switch to.</param>
         <returns>Returns the index of the current page .</returns>
@@ -663,7 +680,7 @@ class NotebookSample
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The index of the curent page.</summary>
+        <summary>Sets or obtains the index of the curent page.</summary>
         <param name="value">The index of the page to switch to.</param>
         <returns>Returns the index of the curent page.</returns>
         <remarks>use <see cref="P:Gtk.Notebook.CurrentPage" /> instead.</remarks>
@@ -693,7 +710,7 @@ class NotebookSample
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>enables the popup menu.</summary>
+        <summary>Indicates if  the popup menu in enabled.</summary>
         <param name="value">Use true to enable and false to disable.</param>
         <returns>Returns true if the popup menu is enabled and false if not.</returns>
         <remarks>if true and the user clicks with the right mouse button on the tabs, a menu with all the pages will be popped up. </remarks>
@@ -792,12 +809,12 @@ class NotebookSample
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="position">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Insert a page into notebook at the given position, with a custom popup-label.</summary>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to use as th content of the page.</param>
+        <param name="tab_label">the<see cref="T:Gtk.Widget" /> to use as a label. use null for the default label.</param>
+        <param name="menu_label">the  <see cref="T:Gtk.Widget" /> to use as menu label. use null to get the same label as the tab label, this only works if the tab label is a <see cref="T:Gtk.Label" /></param>
+        <param name="position">the zero-based position to insert the page. use -1 make it the last page.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetTabLabel">
@@ -811,10 +828,10 @@ class NotebookSample
         <Parameter Name="tab_label" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the label for the page containing a widget</summary>
+        <param name="child">the page</param>
+        <param name="tab_label">the <see cref="T:Gtk.Widget" /> to use as label. use null for the default label.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="NPages">
@@ -825,8 +842,8 @@ class NotebookSample
       </ReturnValue>
       <Docs>
         <summary>returns the amount  of pages in this notebook.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>returns the amount of pages in this noteboo</remarks>
+        <returns>the amount of pages in the notebook.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CurrentPageWidget">
@@ -859,12 +876,12 @@ class NotebookSample
         <Parameter Name="pack_type" Type="Gtk.PackType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">a <see cref="T:Gtk.Widget" /></param>
-        <param name="expand">a <see cref="T:System.Boolean&amp;" /></param>
-        <param name="fill">a <see cref="T:System.Boolean&amp;" /></param>
-        <param name="pack_type">a <see cref="T:Gtk.PackType&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Query the packing attributes for the tab label of the page containing child.</summary>
+        <param name="child">the page.</param>
+        <param name="expand">indicates if expand is true or false.</param>
+        <param name="fill">indicates if fill is true or false.</param>
+        <param name="pack_type">returns to <see cref="T:Gtk.PackType;" />which is used.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
