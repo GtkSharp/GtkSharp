@@ -127,7 +127,7 @@ namespace GtkSharp.Generation {
 			}
 			
 			if (!clash_map.ContainsKey("")) {
-				sw.WriteLine("\t\tpublic " + Name + "() : base(){}");
+				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
 				sw.WriteLine();
 			}
 			
