@@ -1,8 +1,20 @@
-// Shortcut for getting the current Page widget.
-// Author: Xavier Amado (xavier@blackbloodstudios.com)
+// Notebook.custom - customization for Gtk.Notebook
+//
+// Authors: Xavier Amado (xavier@blackbloodstudios.com)
+//          Mike Kestner (mkestner@ximian.com)
+//
+// <c> 2004 Novel, Inc.
 
 public Widget CurrentPageWidget {
         get {
                 return GetNthPage (CurrentPage);
         }
 }       
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern int gtk_notebook_page_num (IntPtr handle, IntPtr child);
+
+public int PageNum (Widget child)
+{
+	return gtk_notebook_page_num (Handle, child.Handle);
+}
