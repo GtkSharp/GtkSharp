@@ -607,7 +607,7 @@ namespace GLib {
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (_val));
 				}
 
-				switch (type) {
+				switch ((TypeFundamentals) type) {
 				case TypeFundamentals.TypeString:
 					return (string) this;
 				case TypeFundamentals.TypeBoolean:
