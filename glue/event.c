@@ -59,6 +59,11 @@ gdouble gtksharp_gdk_event_crossing_get_y_root (GdkEventCrossing *event);
 GdkNotifyType gtksharp_gdk_event_crossing_get_detail (GdkEventCrossing *event);
 GdkCrossingMode gtksharp_gdk_event_crossing_get_mode (GdkEventCrossing *event);
 GdkWindow* gtksharp_gdk_event_crossing_get_subwindow (GdkEventCrossing *event);
+gint16 gtksharp_gdk_event_focus_get_in (GdkEventFocus *event);
+gint gtksharp_gdk_event_configure_get_x (GdkEventConfigure *event);
+gint gtksharp_gdk_event_configure_get_y (GdkEventConfigure *event);
+gint gtksharp_gdk_event_configure_get_width (GdkEventConfigure *event);
+gint gtksharp_gdk_event_configure_get_height (GdkEventConfigure *event);
 /* */
 
 GdkEventType
@@ -347,5 +352,35 @@ GdkNotifyType
 gtksharp_gdk_event_crossing_get_detail (GdkEventCrossing *event)
 {
 	return event->detail;
+}
+
+gint16
+gtksharp_gdk_event_focus_get_in (GdkEventFocus *event)
+{
+	return event->in;
+}
+
+gint
+gtksharp_gdk_event_configure_get_x (GdkEventConfigure *event)
+{
+	return event->x;
+}
+
+gint
+gtksharp_gdk_event_configure_get_y (GdkEventConfigure *event)
+{
+	return event->y;
+}
+
+gint
+gtksharp_gdk_event_configure_get_width (GdkEventConfigure *event)
+{
+	return event->width;
+}
+
+gint
+gtksharp_gdk_event_configure_get_height (GdkEventConfigure *event)
+{
+	return event->height;
 }
 

@@ -60,15 +60,12 @@ namespace GtkSamples {
 		static void ConfigureEvent (object obj, ConfigureEventArgs args)
 		{
 			Gdk.EventConfigure ev = args.Event;
-			Gdk.Window window = ev.window;
+			Gdk.Window window = ev.Window;
 			Gdk.Rectangle allocation = darea.Allocation;
 
-			pixmap = new Gdk.Pixmap (window,
-									       allocation.Width,
-									       allocation.Height,
-											 -1);
+			pixmap = new Gdk.Pixmap (window, allocation.Width, allocation.Height, -1);
 			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
-									    allocation.Width, allocation.Height);
+					      allocation.Width, allocation.Height);
 
 			args.RetVal = true;
 		}
