@@ -35,6 +35,8 @@ namespace GtkSharp.Generation {
 				if (cstype == "void")
 					cstype = "System.IntPtr";
 				if (IsArray) {
+					if (IsParams)
+						cstype = "params " + cstype;
 					cstype += "[]";
 					cstype = cstype.Replace ("ref ", "");
 				}
@@ -100,6 +102,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsParams {
+			get {
+				return elem.HasAttribute("params");
+			}
+		}
+
 		public bool IsString {
 			get {
 				return (CSType == "string");
@@ -108,7 +116,7 @@ namespace GtkSharp.Generation {
 
 		public bool IsUserData {
 			get {
-				return CType == "gpointer" && (Name.EndsWith ("data") || Name.EndsWith ("data_or_owner"));
+				return CSType == "IntPtr" && (Name.EndsWith ("data") || Name.EndsWith ("data_or_owner"));
 			}
 		}
 
@@ -155,6 +163,24 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string CallByName (string call_parm_name)
+		{
+			string call_parm;
+			if (Generatable is CallbackGen)
+				call_parm = SymbolTable.Table.CallByName (CType, call_parm_name + "_wrapper");
+			else
+				call_parm = SymbolTable.Table.CallByName(CType, call_parm_name);
+			
+			if (NullOk && !CSType.EndsWith ("IntPtr") && !(Generatable is StructBase))
+				call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, Generatable is CallbackGen ? "null" : "IntPtr.Zero");
+				
+			if (IsArray)
+				call_parm = call_parm.Replace ("ref ", "");
+
+			return call_parm;
+
+		}
+
 		public string StudlyName {
 			get {
 				string name = elem.GetAttribute("name");
@@ -177,10 +203,6 @@ namespace GtkSharp.Generation {
 		private ArrayList param_list;
 		private XmlElement elem;
 		private string impl_ns;
-		private string import_sig = "";
-		private string call_string = "";
-		private string signature = "";
-		private string signature_types = "";
 		private bool hide_data;
 		private bool is_static;
 
@@ -196,12 +218,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CallString {
-			get {
-				return call_string;
-			}
-		}
-
 		public int Count {
 			get {
 				return param_list.Count;
@@ -214,30 +230,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string ImportSig {
-			get {
-				return import_sig;
-			}
-		}
-		
-		public string Signature {
-			get {
-				return signature;
-			}
-		}
-
-		public string SignatureTypes {
-			get {
-				return signature_types;
-			}
-		}
-
 		public bool HideData {
 			get { return hide_data; }
 			set { hide_data = value; }
 		}
 
 		public bool Static {
+			get { return is_static; }
 			set { is_static = value; }
 		}
 
@@ -260,206 +259,9 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		public void CreateSignature (bool is_set)
-		{
-			import_sig = call_string = signature = signature_types = "";	
-			bool need_sep = false;
-			bool has_callback = hide_data;
-			
-			SymbolTable table = SymbolTable.Table;
-
-			for (int i = 0; i < Count; i++) {
-
-				string type = this [i].CType;
-				string cs_type = this [i].CSType;
-				string m_type = this [i].MarshalType;
-				string name = this [i].Name;
-
-				if (i > 0 && this [i - 1].IsArray && this [i].IsCount) {
-					call_string += ", " + this[i-1].Name + " != null ? " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length : 0";
-					import_sig += ", " + m_type + " " + name;
-					continue;
-				}
-
-				if (i > 0 && this [i - 1].IsString && this [i].IsLength) {
-					call_string += ", " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length";
-					import_sig += ", " + m_type + " " + name;
-					continue;
-				}
-
-				string call_parm_name = name;
-				if (is_set && i == 0) 
-					call_parm_name = "value";
-
-				string call_parm;
-				if (table.IsCallback (type)) {
-					has_callback = true;
-					call_parm = table.CallByName (type, call_parm_name + "_wrapper");
-				} else
-					call_parm = table.CallByName(type, call_parm_name);
-				
-				if (this [i].NullOk && (this [i].IsArray || (!cs_type.EndsWith ("IntPtr") && !table.IsStruct (type))))
-					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) || this[i].IsArray ? "null" : "IntPtr.Zero");
-				
-				if (this [i].IsArray)
-					call_parm = call_parm.Replace ("ref ", "");
-
-				if (IsVarArgs && i == (Count - 1) && VAType == "length_param") {
-					cs_type = "params " + cs_type + "[]";
-					m_type += "[]";
-				}
-				
-				if (need_sep) {
-					call_string += ", ";
-					import_sig += ", ";
-					if (type != "GError**"  && !(IsVarArgs && i == (Count - 1) && VAType == "length_param"))
-					{
-						signature += ", ";
-						signature_types += ":";
-					}
-				} else {
-					need_sep = true;
-				}
-
-				if (type == "GError**") {
-					call_string += "out ";				
-					import_sig += "out ";				
-				} else if (this [i].PassAs != "" && !IsVarArgs) {
-					signature += this [i].PassAs + " ";
-					// We only need to do this for value types
-					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
-					{
-						import_sig += this [i].PassAs + " ";
-						call_string += this [i].PassAs + " ";
-					}
-					
-					if (table.IsEnum (type))
-						call_parm = name + "_as_int";
-					else if (table.IsObject (type) || table.IsInterface (type) || table.IsOpaque (type) || cs_type == "GLib.Value") {
-						call_parm = this [i].PassAs + " " + call_parm.Replace (".Handle", "_handle");
-						import_sig += this [i].PassAs + " ";
-					}
-				}
-
-				if (IsVarArgs && i == (Count - 2) && VAType == "length_param") {
-					call_string += this [Count - 1].Name + ".Length";
-				} else {
-					if (!(type == "GError**" || (has_callback && (type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))))) {
-						signature += (cs_type + " " + name);
-						signature_types += cs_type;
-					} else if (type == "GError**") {
-						call_parm = call_parm.Replace (name, "error");
-					} else if ((type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))) {
-						call_parm = "IntPtr.Zero"; 
-					}
-					
-					call_string += call_parm;
-				}
-				if (table.IsCallback (type))
-					m_type = impl_ns + "Sharp" + m_type.Substring(m_type.IndexOf("."));
-				import_sig += (m_type + " " + name);
-			}
-
-			// FIXME: lame
-			call_string = call_string.Replace ("out ref", "out");
-			import_sig = import_sig.Replace ("out ref", "out");
-			call_string = call_string.Replace ("ref ref", "ref");
-			import_sig = import_sig.Replace ("ref ref", "ref");
-
-			// FIXME: this is also lame, I need to fix the need_sep algo
-			if (signature.EndsWith (", ")) 
-				signature = signature.Remove (signature.Length - 2, 2);
-		}
-
-		public void Initialize (GenerationInfo gen_info, bool is_get, bool is_set, string indent)
-		{
-			StreamWriter sw = gen_info.Writer;
-			foreach (Parameter p in param_list) {
-
-				IGeneratable gen = p.Generatable;
-				string name = p.Name;
-				if (is_set)
-					name = "value";
-
-				if (is_get) {
-					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
-					if (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value")
-						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
-				}
-
-				if ((is_get || p.PassAs == "out") && (gen is ObjectGen || gen is InterfaceGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
-					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
-
-				if (p.PassAs == "out" && gen is EnumGen)
-					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
-
-				if (gen is CallbackGen) {
-					CallbackGen cbgen = gen as CallbackGen;
-					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
-					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", wrapper, name);
-					sw.Write (indent + "\t\t\t");
-					if (p.NullOk)
-						sw.Write ("if ({0} != null) ", name);
-					sw.WriteLine ("{1}_wrapper = new {0} ({1}, {2});", wrapper, name, is_static ? "null" : "this");
-				}
-			}
-
-			if (ThrowsException)
-				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
-		}
-
-		public void Finish (StreamWriter sw, string indent)
-		{
-			bool ref_owned_needed = true;
-			foreach (Parameter p in param_list) {
-
-				if (p.PassAs == "out" && p.Generatable is EnumGen) {
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_int;");
-				}
-
-				IGeneratable gen = p.Generatable;
-				if (ref_owned_needed && (gen is ObjectGen || gen is InterfaceGen) && p.PassAs == "out") {
-					ref_owned_needed = false;
-					sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
-				}
-
-				if (p.PassAs == "out" && (gen is ObjectGen || gen is InterfaceGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
-			}
-		}
-
-
-		public void HandleException (StreamWriter sw, string indent)
-		{
-			if (!ThrowsException)
-				return;
-			sw.WriteLine (indent + "\t\t\tif (error != IntPtr.Zero) throw new GLib.GException (error);");
-		}
-		
 		public bool IsAccessor {
 			get {
 				return Count == 1 && this [0].PassAs == "out";
-			}
-		}
-
-		public bool ThrowsException {
-			get {
-				if (Count < 1)
-					return false;
-
-				return this [Count - 1].CType == "GError**";
-			}
-		}
-
-		public bool IsVarArgs {
-			get {
-				return elem.HasAttribute ("va_type");
-			}
-		}
-
-		public string VAType {
-			get {
-				return elem.GetAttribute ("va_type");
 			}
 		}
 

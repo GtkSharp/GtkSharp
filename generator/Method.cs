@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001-2002 Mike Kestner
+// (c) 2001-2003 Mike Kestner, (c) 2003 Novell, Inc.
 
 namespace GtkSharp.Generation {
 
@@ -16,10 +16,13 @@ namespace GtkSharp.Generation {
 		private string libname;
 		private XmlElement elem;
 		private Parameters parms;
+		private Signature sig;
+		private ImportSignature isig;
+		private MethodBody body;
 		private ClassBase container_type;
 
 		private bool initialized = false;
-		private string sig, isig, call;
+		private string call;
 		private string rettype, m_ret, s_ret;
 		private string element_type = null;
 		private string name, cname, safety;
@@ -30,13 +33,13 @@ namespace GtkSharp.Generation {
 		public Method (string libname, XmlElement elem, ClassBase container_type) 
 		{
 			this.elem = elem;
-			if (elem["parameters"] != null)
+			if (elem["parameters"] != null) {
 				parms = new Parameters (elem["parameters"], container_type.NS);
+			}
 			this.container_type = container_type;
 			this.name = elem.GetAttribute("name");
 			if (name == "GetType")
 				name = "GetGType";
-			// override library - used in pixbuf API fixage 
 			if (elem.HasAttribute ("library"))
 				this.libname = elem.GetAttribute ("library");
 			else
@@ -59,18 +62,18 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		private bool IsShared {
+			get {
+				return elem.HasAttribute("shared");
+			}
+		}
+
 		public string Name {
 			get {
 				return name;
 			}
 			set {
 				name = value;
-			}
-		}
-
-		public Parameters Params {
-			get {
-				return parms;
 			}
 		}
 
@@ -89,48 +92,31 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public Signature Signature {
+			get {
+				return sig;
+			}
+		}
+
 		public override bool Equals (object o)
 		{
 			if (!(o is Method))
 				return false;
-/*
-			return (this == (Method) o);
-		}
-
-		public static bool operator == (Method a, Method b)
-		{
-			if (a == null)
-				return (b 
-*/
 			Method a = this;
 			Method b = (Method) o;
+
 			if (a.Name != b.Name)
 				return false;
 
-			if (a.Params == null)
-				return b.Params == null;
+			if (a.Signature == null)
+				return b.Signature == null;
 
-			if (b.Params == null)
+			if (b.Signature == null)
 				return false;
 
-			return (a.Params.SignatureTypes == b.Params.SignatureTypes);
+			return (a.Signature.Types == b.Signature.Types);
 		}
-/*
-		public static bool operator != (Method a, Method b)
-		{
-			return !(
-			if (a.Name == b.Name)
-				return false;
 
-			if (a.Params == null)
-				return b.Params != null;
-
-			if (b.Params == null)
-				return true;
-
-			return (a.Params.SignatureTypes != b.Params.SignatureTypes);
-		}
-*/
 		private bool Initialize ()
 		{
 			if (initialized)
@@ -156,32 +142,27 @@ namespace GtkSharp.Generation {
 			cname = elem.GetAttribute("cname");
 			if (ret_elem.HasAttribute("element_type"))
 				element_type = ret_elem.GetAttribute("element_type");
-			bool is_shared = elem.HasAttribute("shared");
 			
 			if (ret_elem.HasAttribute("array")) {
 					s_ret += "[]";
 					m_ret += "[]";
 				}
 
-			if (parms != null && parms.ThrowsException)
-				safety = "unsafe ";
-			else
-				safety = "";
-
 			is_get = (((parms != null && ((parms.IsAccessor && s_ret == "void") || (parms.Count == 0 && s_ret != "void"))) || (parms == null && s_ret != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
 			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && s_ret == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
-			if (parms != null) {
-				parms.Static = is_shared;
-				parms.CreateSignature (is_set);
-				sig = "(" + parms.Signature + ")";
-				isig = "(" + (is_shared ? "" : container_type.MarshalType + " raw, ") + parms.ImportSig + ");";
-				call = "(" + (is_shared ? "" : container_type.CallByName () + ", ") + parms.CallString + ")";
-			} else {
-				sig = "()";
-				isig = "(" + (is_shared ? "" : container_type.MarshalType + " raw") + ");";
-				call = "(" + (is_shared ? "" : container_type.CallByName ()) + ")";
-			}
+			if (parms != null)
+				parms.Static = IsShared;
+
+			sig = new Signature (parms);
+			isig = new ImportSignature (parms, container_type.NS);
+			body = new MethodBody (parms, container_type.NS);
+			call = "(" + (IsShared ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + body.GetCallString (is_set) + ")";
+
+			if (body.ThrowsException)
+				safety = "unsafe ";
+			else
+				safety = "";
 
 			initialized = true;
 			return true;
@@ -217,16 +198,17 @@ namespace GtkSharp.Generation {
 				sw.Write("static ");
 			sw.Write(safety);
 			Method dup = null;
-			if (Name == "ToString" && Params == null)
+			if (container_type != null)
+				dup = container_type.GetMethodRecursively (Name);
+			if (implementor != null)
+				dup = implementor.GetMethodRecursively (Name);
+
+			if (Name == "ToString" && parms == null)
 				sw.Write("override ");
 			else if (Name == "GetGType" && container_type is ObjectGen)
 				sw.Write("new ");
-			else if (elem.HasAttribute("new_flag") || (container_type != null && (dup = container_type.GetMethodRecursively (Name)) != null) || (implementor != null && (dup = implementor.GetMethodRecursively (Name)) != null)) {
-				if (dup != null && dup.parms != null)
-					dup.parms.CreateSignature (false);
-				if (elem.HasAttribute("new_flag") || (dup != null && ((dup.parms != null && dup.parms.Signature == parms.Signature) || (dup.parms == null && parms == null))))
-					sw.Write("new ");
-			}
+			else if (elem.HasAttribute("new_flag") || (dup != null && dup.Initialize () && ((dup.Signature != null && sig != null && dup.Signature.ToString() == sig.ToString()) || (dup.Signature == null && sig == null))))
+				sw.Write("new ");
 
 			if (is_get || is_set) {
 				if (s_ret == "void")
@@ -239,7 +221,7 @@ namespace GtkSharp.Generation {
 					sw.Write (Name);
 				sw.WriteLine(" { ");
 			} else {
-				sw.Write(s_ret + " " + Name + sig);
+				sw.Write(s_ret + " " + Name + "(" + (sig != null ? sig.ToString() : "") + ")");
 			}
 		}
 
@@ -282,8 +264,11 @@ namespace GtkSharp.Generation {
 
 		public void GenerateImport (StreamWriter sw)
 		{
+			string import_sig = IsShared ? "" : container_type.MarshalType + " raw";
+			import_sig += !IsShared && parms != null ? ", " : "";
+			import_sig += isig.ToString();
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
-			sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
+			sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + "(" + import_sig + ");");
 			sw.WriteLine();
 		}
 
@@ -308,8 +293,7 @@ namespace GtkSharp.Generation {
 				if (comp != null && is_set && parms.AccessorReturnType != comp.s_ret)
 				{
 					is_set = false;
-					parms.CreateSignature (false);
-					call = "(Handle, " + parms.CallString + ")";
+					call = "(Handle, " + body.GetCallString (false) + ")";
 					comp = null;
 				}
 				/* some setters take more than one arg */
@@ -358,8 +342,7 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine(" {");
-			if (parms != null)
-				parms.Initialize(gen_info, is_get, is_set, indent);
+			body.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
 
@@ -388,10 +371,8 @@ namespace GtkSharp.Generation {
 				}
 			}
 			
-			if (parms != null) {
-				parms.Finish (sw, indent);
-				parms.HandleException (sw, indent);
-			}
+			body.Finish (sw, indent);
+			body.HandleException (sw, indent);
 
 			if (is_get && parms != null) 
 				sw.WriteLine (indent + "\t\t\treturn " + parms.AccessorName + ";");

@@ -1,13 +1,32 @@
+2003-12-03  Mike Kestner  <mkestner@speakeasy.net>
+
+	* generator/CallbackGen.cs : use new sig and isig classes.
+	* generator/Ctor.cs : use new sig, isig, and body classes.
+	* generator/ImportSignature.cs : isig code spun out from Parameters.
+	* generator/Method.cs : use new sig, isig, and body classes.
+	* generator/MethodBody.cs : spun Initialize, GetCallString,
+	Finish, and Exception throwing methods from Parameters.
+	* generator/Parameters.cs : Slayed the evilness that was CreateSignature. 
+	It is now essentially a container for Parameter classes instead of a 
+	tangled mess of code trying to do everything remotely related to 
+	parameter lists. Also completely killed the VAType/IsVarArgs stuff, 
+	as it can be done with the array and params attrs instead.
+	* generator/Property.cs : use new sig class.
+	* generator/Signature.cs : new method sig generator extracted from
+	Parameters class. add "params" keyword support for tagged parameters.
+	* gnome/Gnome.metadata : hide IconList.GetSearchPath (to be manual)
+	* gnome/gnome-api.xml : regen
+	* gtk/ListStore.custom : kill unneeded overload
+	* gtk/TreeStore.custom : kill unneeded overload
+	* gtk/Gtk.metadata : mark params/args on *store_newv
+	* gtk/gtk-api.xml : regenerated
+
 2003-12-03  Ettore Perazzoli  <ettore@ximian.com>
 
 	* sample/TestDnd.cs: New.
-
 	* gtk/TargetEntry.custom: New.
-
 	* glue/dragcontext.c: New.
-
 	* glib/Object.cs: New public property TypeName in class Object.
-
 	* gdk/DragContext.custom: New.
 
 2003-11-30  Mike Kestner  <mkestner@speakeasy.net>

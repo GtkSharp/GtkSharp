@@ -103,8 +103,8 @@ namespace GtkSharp.Generation {
 				setter.GenerateImport(sw);
 			}
 
-			if (has_setter && setter.Params[0].CSType != cs_type)
-				cs_type = setter.Params[0].CSType;
+			if (has_setter && setter.Signature.Types != cs_type)
+				cs_type = setter.Signature.Types;
 			else if (has_getter && getter.ReturnType != cs_type)
 				cs_type = getter.ReturnType;
 
