@@ -35,6 +35,8 @@
 		public static Gdk.Pixbuf[] DefaultIconList {
 			get {
 				IntPtr raw_ret = gtk_window_get_default_icon_list();
+				if (raw_ret == IntPtr.Zero)
+					return new Gdk.Pixbuf [0];
 				GLib.List list = new GLib.List(raw_ret, typeof (Gdk.Pixbuf));
 				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -69,6 +71,8 @@
 		public Gdk.Pixbuf[] IconList {
 			get {
 				IntPtr raw_ret = gtk_window_get_icon_list(Handle);
+				if (raw_ret == IntPtr.Zero)
+					return new Gdk.Pixbuf [0];
 				GLib.List list = new GLib.List(raw_ret, typeof (Gdk.Pixbuf));
 				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
 				for (int i = 0; i < list.Count; i++)
@@ -110,7 +114,7 @@
 		{
 			IntPtr raw_ret = gtk_window_list_toplevels();
 			if (raw_ret == IntPtr.Zero)
-				return null;
+				return new Window [0];
 
 			GLib.List list = new GLib.List(raw_ret, typeof (Gtk.Window));
 			Window[] result = new Window [list.Count];

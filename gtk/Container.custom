@@ -11,7 +11,7 @@ public Widget[] Children {
 	get {
 		IntPtr list_ptr = gtk_container_get_children (Handle);
 		if (list_ptr == IntPtr.Zero)
-			return null;
+			return new Widget [0];
 
 		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
 		Widget[] result = new Widget [list.Count];
@@ -32,7 +32,7 @@ public Widget[] FocusChain {
 		IntPtr list_ptr;
 		bool success = gtk_container_get_focus_chain (Handle, out list_ptr);
 		if (!success)
-			return null;
+			return new Widget [0];
 
 		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
 		Widget[] result = new Widget [list.Count];
