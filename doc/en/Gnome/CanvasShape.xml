@@ -7,8 +7,16 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Base class for canvas item shapes</summary>
+    <remarks>
+      <para>
+        Provides a base class for canvas item shapes, including:
+        <see cref="T:Gnome.CanvasBpath" />,
+        <see cref="T:Gnome.CanvasEllipse" />,
+        <see cref="T:Gnome.CanvasRect" />, and
+        <see cref="T:Gnome.CanvasPolygon" />.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gnome.CanvasItem</BaseTypeName>
@@ -40,8 +48,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -67,9 +75,9 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="group" Type="Gnome.CanvasGroup" />
-		<Parameter Name="type" Type="System.UInt32" />
-	</Parameters>
+        <Parameter Name="group" Type="Gnome.CanvasGroup" />
+        <Parameter Name="type" Type="System.UInt32" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="group">To be added: an object of type 'Gnome.CanvasGroup'</param>
@@ -96,13 +104,19 @@
       <ReturnValue>
         <ReturnType>Gnome.CanvasPathDef</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gnome.CanvasPathDef'</param>
-        <returns>To be added: an object of type 'Gnome.CanvasPathDef'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gnome.CanvasPathDef" /> used</summary>
+        <param name="value">a <see cref="T:Gnome.CanvasPathDef" /></param>
+        <returns>
+          a <see cref="T:Gnome.CanvasPathDef" /> or <see langword="null" /> if none is set for the shape.
+        </returns>
+        <remarks>
+          <para>
+            It does not request updates, as it is meant to be used
+            from item implementations, from inside update queue.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FillStipple">
@@ -111,13 +125,12 @@
       <ReturnValue>
         <ReturnType>Gdk.Drawable</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Drawable'</param>
-        <returns>To be added: an object of type 'Gdk.Drawable'</returns>
-        <remarks>To be added</remarks>
+        <summary>Stipple pattern for fill.</summary>
+        <param name="value">Stipple pattern</param>
+        <returns>Stipple pattern</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OutlineColor">
@@ -126,13 +139,12 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>X color specification for outline color, or <see langword="null" /> pointer for no color (transparent).</summary>
+        <param name="value">X color specification</param>
+        <returns>X color specification</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Dash">
@@ -141,10 +153,9 @@
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Dashing pattern.</summary>
         <param name="value">To be added: an object of type 'IntPtr'</param>
         <returns>To be added: an object of type 'IntPtr'</returns>
         <remarks>To be added</remarks>
@@ -156,13 +167,12 @@
       <ReturnValue>
         <ReturnType>Gdk.CapStyle</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.CapStyle'</param>
-        <returns>To be added: an object of type 'Gdk.CapStyle'</returns>
-        <remarks>To be added</remarks>
+        <summary>Cap (end point) style for the Bezier path.</summary>
+        <param name="value">Cap style</param>
+        <returns>Cap style used by the Bezier path</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="JoinStyle">
@@ -171,13 +181,12 @@
       <ReturnValue>
         <ReturnType>Gdk.JoinStyle</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.JoinStyle'</param>
-        <returns>To be added: an object of type 'Gdk.JoinStyle'</returns>
-        <remarks>To be added</remarks>
+        <summary>Vertex join style for the Bezier path.</summary>
+        <param name="value">Vertex join style</param>
+        <returns>Verty join style used by the Bezier path</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FillColorRgba">
@@ -186,13 +195,12 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Fill color with an alpha component (in the format 0xRRGGBBAA).</summary>
+        <param name="value">the color to fill</param>
+        <returns>the fill color</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Miterlimit">
@@ -201,13 +209,12 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
-        <remarks>To be added</remarks>
+        <summary>Minimum angle between segments, where miter join rule is applied.</summary>
+        <param name="value">minium angle between segments</param>
+        <returns>Minimum angle between segments, where miter join rule is applied.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FillColorGdk">
@@ -216,13 +223,12 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Allocated <see cref="T:Gdk.Color" /> for fill.</summary>
+        <param name="value">a <see cref="T:Gdk.Color" /></param>
+        <returns>the <see cref="T:Gdk.Color" /> to fill</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WidthUnits">
@@ -231,13 +237,12 @@
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'double'</param>
-        <returns>To be added: an object of type 'double'</returns>
-        <remarks>To be added</remarks>
+        <summary>Width of the outline in canvas units. The outline will be scaled when the canvas zoom factor is changed.</summary>
+        <param name="value">width of the outline</param>
+        <returns>width of the outline</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OutlineColorRgba">
@@ -246,13 +251,12 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Outline color with an alpha component (in the format 0xRRGGBBAA).</summary>
+        <param name="value">outline color</param>
+        <returns>outline color</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WidthPixels">
@@ -261,13 +265,12 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Width of the outline in pixels. The outline will not be scaled when the canvas zoom factor is changed.</summary>
+        <param name="value">Width of the outline</param>
+        <returns>width of the outline</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Wind">
@@ -276,13 +279,12 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Winding rule for the Bezier path</summary>
+        <param name="value">winding rule</param>
+        <returns>winding rule used by the Bezier path</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OutlineStipple">
@@ -291,13 +293,12 @@
       <ReturnValue>
         <ReturnType>Gdk.Drawable</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Drawable'</param>
-        <returns>To be added: an object of type 'Gdk.Drawable'</returns>
-        <remarks>To be added</remarks>
+        <summary>Stipple pattern for outline.</summary>
+        <param name="value">a stipple pattern</param>
+        <returns>Stipple pattern used by the outline</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FillColor">
@@ -306,13 +307,14 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          X color specification for fill color, or <see langword="null" /> pointer for no color (transparent).
+        </summary>
+        <param name="value">X color specification</param>
+        <returns>X color specification</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OutlineColorGdk">
@@ -321,13 +323,12 @@
       <ReturnValue>
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Allocated <see cref="T:Gdk.Color" /> for outline.</summary>
+        <param name="value">a <see cref="Gdk.Color" /></param>
+        <returns>the color of the outline</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -335,8 +336,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
