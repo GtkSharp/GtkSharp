@@ -328,11 +328,11 @@ namespace GtkDemo
 			InsertWithTagsByName (buffer, "Images. ", new string[] {"heading"});
 			Insert (buffer,"The buffer can have images in it: ");
 			
-			buffer.GetIterAtMark (out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
 			buffer.InsertPixbuf (insertIter, pixbuf);
-			buffer.GetIterAtMark (out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
 			buffer.InsertPixbuf (insertIter, pixbuf);
-			buffer.GetIterAtMark (out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
 			buffer.InsertPixbuf (insertIter, pixbuf);
 
 			Insert (buffer, " for example.\n\n");
@@ -359,23 +359,23 @@ namespace GtkDemo
 			//InsertWithTagsByName (buffer,  "\331\210\331\202\330\257 \330\250\330\257\330\243 \330\253\331\204\330\247\330\253 \331\205\331\206 \330\243\331\203\330\253\330\261 \330\247\331\204\331\205\330\244\330\263\330\263\330\247\330\252 \330\252\331\202\330\257\331\205\330\247 \331\201\331\212 \330\264\330\250\331\203\330\251 \330\247\331\203\330\263\331\212\331\210\331\206 \330\250\330\261\330\247\331\205\330\254\331\207\330\247 \331\203\331\205\331\206\330\270\331\205\330\247\330\252 \331\204\330\247 \330\252\330\263\330\271\331\211 \331\204\331\204\330\261\330\250\330\255\330\214 \330\253\331\205 \330\252\330\255\331\210\331\204\330\252 \331\201\331\212 \330\247\331\204\330\263\331\206\331\210\330\247\330\252 \330\247\331\204\330\256\331\205\330\263 \330\247\331\204\331\205\330\247\330\266\331\212\330\251 \330\245\331\204\331\211 \331\205\330\244\330\263\330\263\330\247\330\252 \331\205\330\247\331\204\331\212\330\251 \331\205\331\206\330\270\331\205\330\251\330\214 \331\210\330\250\330\247\330\252\330\252 \330\254\330\262\330\241\330\247 \331\205\331\206 \330\247\331\204\331\206\330\270\330\247\331\205 \330\247\331\204\331\205\330\247\331\204\331\212 \331\201\331\212 \330\250\331\204\330\257\330\247\331\206\331\207\330\247\330\214 \331\210\331\204\331\203\331\206\331\207\330\247 \330\252\330\252\330\256\330\265\330\265 \331\201\331\212 \330\256\330\257\331\205\330\251 \331\202\330\267\330\247\330\271 \330\247\331\204\331\205\330\264\330\261\331\210\330\271\330\247\330\252 \330\247\331\204\330\265\330\272\331\212\330\261\330\251. \331\210\330\243\330\255\330\257 \330\243\331\203\330\253\330\261 \331\207\330\260\331\207 \330\247\331\204\331\205\330\244\330\263\330\263\330\247\330\252 \331\206\330\254\330\247\330\255\330\247 \331\207\331\210 \302\273\330\250\330\247\331\206\331\203\331\210\330\263\331\210\331\204\302\253 \331\201\331\212 \330\250\331\210\331\204\331\212\331\201\331\212\330\247.\n\n", new string[] {"rtl_quote"});
 			//InsertWithTagsByName (buffer,  "\x2", new string[] {"rtl_quote"});
 			Insert (buffer, "You can put widgets in the buffer: Here's a button: ");
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			buttonAnchor    = buffer.CreateChildAnchor (insertIter);
 
 			Insert (buffer, "and a menu");
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 		        menuAnchor      = buffer.CreateChildAnchor (insertIter);
 
 			Insert (buffer, "and a scale");
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			scaleAnchor	= buffer.CreateChildAnchor (insertIter);
 
 			Insert (buffer, "and an animation");
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			animationAnchor	= buffer.CreateChildAnchor (insertIter);
 
 			Insert (buffer, " finally a text entry: ");
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			entryAnchor	= buffer.CreateChildAnchor (insertIter);
 
 			Insert (buffer, "\n");
@@ -395,12 +395,12 @@ namespace GtkDemo
 
 
 			begin = buffer.CharCount;
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			buffer.Insert (insertIter, insertText);
 			end = buffer.CharCount;
 			foreach (string fontItem in fontName){
-				buffer.GetIterAtOffset (out endIter, end);
-				buffer.GetIterAtOffset (out beginIter, begin);
+				endIter = buffer.GetIterAtOffset (end);
+				beginIter = buffer.GetIterAtOffset (begin);
 				buffer.ApplyTag (fontItem, beginIter, endIter);}		
 		}
 
@@ -408,7 +408,7 @@ namespace GtkDemo
 		{
 			TextIter insertIter;
 
-			buffer.GetIterAtMark(out insertIter, buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			buffer.Insert (insertIter, insertText);
 		}
 
@@ -447,7 +447,7 @@ namespace GtkDemo
 
 			TextBuffer bufferCB = new TextBuffer (null);
 			Insert(bufferCB, "This buffer is shared by a set of nested text views.\n Nested view:\n");
-			bufferCB.GetIterAtMark(out insertIter, bufferCB.InsertMark);
+			insertIter = bufferCB.GetIterAtMark(bufferCB.InsertMark);
 			TextChildAnchor anchor = bufferCB.CreateChildAnchor (insertIter);
 			Insert(bufferCB, "\nDon't do this in real applications, please.\n");
 			TextView viewCB = new TextView (bufferCB);

@@ -237,19 +237,19 @@ class Client {
 		table.RowSpacing = 4;
 		Label label = null;
 
-		label = Label.NewWithMnemonic ("_ID");
+		label = new Label ("_ID");
 		table.Attach (label, 0, 1, 0, 1);
 		id_entry = new Entry ();
 		table.Attach (id_entry, 1, 2, 0, 1);
 
-		label = Label.NewWithMnemonic ("_Name");
+		label = new Label ("_Name");
 		table.Attach (label, 0, 1, 1, 2);
 		name_entry = new Entry ();
 		if (type == DialogType.Delete)
 			name_entry.Sensitive = false;
 		table.Attach (name_entry, 1, 2, 1, 2);
 
-		label = Label.NewWithMnemonic ("_Address");
+		label = new Label ("_Address");
 		table.Attach (label, 0, 1, 2, 3);
 		address_entry = new Entry ();
 		if (type == DialogType.Delete)
