@@ -45,9 +45,24 @@ gtksharp_gtk_adjustment_get_page_increment (GtkAdjustment *adj)
 	return adj->page_increment;
 }
 
+void
+gtksharp_gtk_adjustment_set_page_increment (GtkAdjustment *adj, gdouble page_increment)
+{
+	adj->page_increment = page_increment;
+	
+	gtk_adjustment_changed (adj);
+}
+
 gdouble
 gtksharp_gtk_adjustment_get_page_size (GtkAdjustment *adj)
 {
 	return adj->page_size;
 }
 
+void
+gtksharp_gtk_adjustment_set_page_size (GtkAdjustment *adj, gdouble page_size)
+{
+	adj->page_size = page_size;
+
+	gtk_adjustment_changed (adj);
+}

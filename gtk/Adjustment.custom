@@ -44,17 +44,29 @@ public double StepIncrement {
 
 [DllImport ("gtksharpglue")]
 static extern double gtksharp_gtk_adjustment_get_page_increment (IntPtr i);
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_adjustment_set_page_increment (IntPtr i, double page_increment);
 public double PageIncrement {
 	get {
 		return gtksharp_gtk_adjustment_get_page_increment (this.Handle);
+	}	
+	
+	set {
+		gtksharp_gtk_adjustment_set_page_increment (Handle, value);
 	}
 }
 
 [DllImport ("gtksharpglue")]
 static extern double gtksharp_gtk_adjustment_get_page_size (IntPtr i);
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_adjustment_set_page_size (IntPtr i, double page_size);
 public double PageSize {
 	get {
 		return gtksharp_gtk_adjustment_get_page_size (this.Handle);
+	}
+
+	set {
+		gtksharp_gtk_adjustment_set_page_size (Handle, value);
 	}
 }
 
