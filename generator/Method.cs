@@ -290,8 +290,6 @@ namespace GtkSharp.Generation {
 				summary = "Method";
 				sname = Name;
 			}
-			sw.WriteLine("\t\t/// <summary> " + sname + " " + summary + " </summary>");
-			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
 		}
 
 		public void GenerateImport (StreamWriter sw)

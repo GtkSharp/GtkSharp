@@ -117,8 +117,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + isig);
 			sw.WriteLine();
 			
-			sw.WriteLine("\t\t/// <summary> " + name + " Constructor </summary>");
-			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
 			if (clashName != null) {
 				string modifiers = "";
 				Ctor dup = null;

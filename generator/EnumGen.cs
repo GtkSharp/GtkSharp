@@ -97,10 +97,6 @@ namespace GtkSharp.Generation {
 				
 				XmlElement member = (XmlElement) node;
 
-				sw.WriteLine("\t\t/// <summary />");
-				sw.WriteLine("\t\t/// <remarks>");
-				sw.WriteLine("\t\t/// </remarks>");
-
 				sw.Write ("\t\t" + member.GetAttribute("name"));
 				if (member.HasAttribute("value")) {
 					sw.WriteLine (" = " + member.GetAttribute("value") + ",");

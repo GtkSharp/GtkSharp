@@ -108,9 +108,6 @@ namespace GtkSharp.Generation {
 				cs_type = getter.ReturnType;
 
 			sw.WriteLine();
-			sw.WriteLine("\t\t/// <summary> " + name + " Property </summary>");
-			sw.WriteLine("\t\t/// <remarks>");
-			sw.WriteLine("\t\t/// </remarks>");
 
 			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
 			if (has_getter) {
