@@ -16,6 +16,55 @@
       <para>The <see cref="T:Pango.Layout" /> represents and entire paragraph of text. It is initialized with a <see cref="T:Pango.Context" />, UTF-8 string and set of attributes for that string. Once that is done, the set of formatted lines can be extracted from the object, the layout can be rendered, and conversion between logical character positions within the layout's text, and the physical position of the resulting glyphs can be made.</para>
       <para>There are also a number of parameters to adjust the formatting of a <see cref="T:Pango.Layout" />. It is possible, as well, to ignore the 2-D setup, and simply treat the results of a <see cref="T:Pango.Layout" /> as a list of lines.</para>
     </remarks>
+	<example>
+	  <code lang="C#">
+using System;
+using Gtk;
+using Pango;
+ 
+class LayoutSample : DrawingArea
+{
+        Pango.Layout layout;
+ 
+        static void Main ()
+        {
+                Application.Init ();
+                new LayoutSample ();
+                Application.Run ();
+        }
+ 
+        LayoutSample ()
+        {
+                Window win = new Window ("Layout sample");
+                win.SetDefaultSize (400, 300);
+                win.DeleteEvent += OnWinDelete;
+                this.Realized += OnRealized;
+                this.ExposeEvent += OnExposed;
+ 
+                win.Add (this);
+                win.ShowAll ();
+        }
+ 
+        void OnExposed (object o, ExposeEventArgs args)
+        {
+                this.GdkWindow.DrawLayout (this.Style.TextGC (StateType.Normal), 100, 150, layout);
+        }
+ 
+        void OnRealized (object o, EventArgs args)
+        {
+                layout = new Pango.Layout (this.PangoContext);
+                layout.Wrap = Pango.WrapMode.Word;
+                layout.FontDescription = FontDescription.FromString ("Tahoma 16");
+                layout.SetMarkup ("Hello Pango.Layout");
+        }
+ 
+        void OnWinDelete (object o, DeleteEventArgs args)
+        {
+                Application.Quit ();
+        }
+}
+	  </code>
+	</example>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
