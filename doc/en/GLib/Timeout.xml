@@ -11,8 +11,7 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Allows the installation of Timeout Handlers on the GLib main loop.</summary>
-    <remarks>
-    </remarks>
+    <remarks>Use the <see cref="M:GLib.Timeout.Add" /> method to install timeout handlers into the mainloop.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -31,11 +30,18 @@
         <Parameter Name="hndlr" Type="GLib.TimeoutHandler" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="interval">an object of type <see cref="T:System.UInt32" /></param>
-        <param name="hndlr">an object of type <see cref="T:GLib.TimeoutHandler" /></param>
-        <returns>an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a <see cref="T:GLib.TimeoutHandler" /> delegate to the mainloop.  </summary>
+        <param name="interval">the interval in milliseconds between invocations of <paramref name="hndlr" />.</param>
+        <param name="hndlr">a delegate of type <see cref="T:GLib.TimeoutHandler" /> to invoke every <paramref name="interval" />.</param>
+        <returns>an id representing the event source of the installed timeout handler.</returns>
+        <remarks>
+          <para>
+The delegate is invoked after the time period specified by <paramref name="interval" />. The delegate is invoked repeatedly until it returns <see langword="false" />.
+</para>
+          <para>
+Invocation of the delegate may be delayed by other event processing, so this mechanism cannot be depended on for accurate timing. The interval to the next timeout is calculated at completion of the preceding timeout. There is no attempt made to "catch up" if an invocation is delayed.
+</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
