@@ -33,7 +33,8 @@ sources = 			\
 	EventSetting.cs		\
 	EventVisibility.cs	\
 	EventWindowState.cs	\
-	Key.cs
+	Key.cs			\
+	Size.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
