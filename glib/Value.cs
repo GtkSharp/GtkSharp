@@ -357,6 +357,24 @@ namespace GLib {
 			return GLib.Object.GetObject(g_value_get_object (val._val));
 		}
 
+		/// <summary>
+		///	Value to Unresolved Object Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts an object from a Value without looking up its wrapping
+		///   class.
+		///   Note, this method will produce an exception if the Value does
+		///   not hold a object value.  
+		/// </remarks>
+
+		public static explicit operator GLib.UnwrappedObject (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return new UnwrappedObject(g_value_get_object (val._val));
+		}
+
 		[DllImport("gobject-2.0")]
 		static extern IntPtr g_value_get_pointer (IntPtr val);
 

@@ -81,11 +81,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
-				sw.Write("\t\t\t\treturn (" + cs_type + ") ");
-				if (v_type != "") {
-					sw.Write(v_type + " ");
+				if (SymbolTable.IsObject (c_type))
+				{
+					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) (GLib.UnwrappedObject) val;");
+					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + SymbolTable.FromNative(c_type, "raw_ret") + ";");
+					sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				}
-				sw.WriteLine("val;");
+				else {
+					sw.Write("\t\t\t\t" + cs_type + " ret = ");
+					sw.Write ("(" + cs_type + ") ");
+					if (v_type != "") {
+						sw.Write(v_type + " ");
+					}
+					sw.WriteLine("val;");
+				}
+
+				sw.WriteLine("\t\t\t\treturn ret;");
 				sw.WriteLine("\t\t\t}");
 			}
 
