@@ -1,9 +1,10 @@
 //
 // Gtk.Style.custom - Gtk Style class customizations
 //
-// Author: Rachel Hestilow <hestilow@ximian.com> 
+// Authors: Rachel Hestilow <hestilow@ximian.com> 
+//          Radek Doulik <rodo@matfyz.cz> 
 //
-// Copyright (C) 2002 Rachel Hestilow 
+// Copyright (C) 2002, 2003 Rachel Hestilow, Radek Doulik
 //
 // This code is inserted after the automatically generated code.
 //
@@ -147,5 +148,21 @@ public int YThickness {
 
 	set {
 		gtksharp_gtk_style_set_thickness (Handle, -value);
+	}
+}
+
+[DllImport ("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_font_description (IntPtr style);
+
+public Pango.FontDescription FontDescription {
+	get {
+		IntPtr Raw = gtksharp_gtk_style_get_font_description (Handle);
+
+		if (Raw == IntPtr.Zero)
+			return null;
+		Pango.FontDescription ret = (Pango.FontDescription) GLib.Opaque.GetOpaque (Raw);
+		if (ret == null)
+			ret = new Pango.FontDescription (Raw);
+		return ret;
 	}
 }

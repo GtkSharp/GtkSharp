@@ -1,8 +1,9 @@
 /* style.c : Glue to access fields in GtkStyle.
  *
  * Author: Rachel Hestilow  <hestilow@ximian.com>
+ *         Radek Doulik <rodo@matfyz.cz>
  *
- * <c> 2002 Rachel Hestilow, Mike Kestner
+ * <c> 2002, 2003 Rachel Hestilow, Mike Kestner, Radek Doulik
  */
 
 #include <gtk/gtkstyle.h>
@@ -61,6 +62,12 @@ gtksharp_gtk_style_get_bg (GtkStyle *style, int i)
 	return &style->bg[i];
 }
 
+PangoFontDescription *
+gtksharp_gtk_style_get_font_description (GtkStyle *style)
+{
+	return style->font_desc;
+}
+
 int
 gtksharp_gtk_style_get_thickness (GtkStyle *style, int x)
 {
@@ -78,4 +85,3 @@ gtksharp_gtk_style_set_thickness (GtkStyle *style, int thickness)
 	else
 		style->ythickness = -thickness;
 }
-
