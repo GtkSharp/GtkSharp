@@ -20,6 +20,9 @@ gdouble gtksharp_gtk_adjustment_get_upper (GtkAdjustment *adj);
 
 gdouble gtksharp_gtk_adjustment_get_step_increment (GtkAdjustment *adj);
 
+void    gtksharp_gtk_adjustment_set_step_increment (GtkAdjustment *adj,
+						    gdouble step_increment);
+
 gdouble gtksharp_gtk_adjustment_get_page_increment (GtkAdjustment *adj);
 
 void    gtksharp_gtk_adjustment_set_page_increment (GtkAdjustment *adj,
@@ -61,6 +64,14 @@ gdouble
 gtksharp_gtk_adjustment_get_step_increment (GtkAdjustment *adj)
 {
 	return adj->step_increment;
+}
+
+void
+gtksharp_gtk_adjustment_set_step_increment (GtkAdjustment *adj, gdouble step_increment)
+{
+	adj->step_increment = step_increment;
+	
+	gtk_adjustment_changed (adj);
 }
 
 gdouble

@@ -36,9 +36,15 @@ public double Upper {
 
 [DllImport ("gtksharpglue")]
 static extern double gtksharp_gtk_adjustment_get_step_increment (IntPtr i);
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_adjustment_set_step_increment (IntPtr i, double step_increment);
 public double StepIncrement {
 	get {
 		return gtksharp_gtk_adjustment_get_step_increment (this.Handle);
+	}
+	
+	set {
+		gtksharp_gtk_adjustment_set_step_increment (Handle, value);
 	}
 }
 
