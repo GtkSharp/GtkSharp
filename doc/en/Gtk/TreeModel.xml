@@ -135,7 +135,7 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModel.RowHasChildToggled" /> event.</summary>
+        <summary>Emits the <see cref="E:Gtk.TreeModelSort.RowHasChildToggled" /> event.</summary>
         <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
         <remarks>This should be called by models after the child state of a node changes.</remarks>
@@ -189,7 +189,7 @@
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
         <remarks>
           <para>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.</para>
-          <para>This function is primarily meant as a way for views to let caching model know when nodes are being displayed (and hence, whether or not to cache that node.) For example, a file-system based model would not want to keep the entire file-hierarchy in memory, just the sections that are currently being displayed by every current view.</para>
+          <para>This function is primarily meant as a way for views to let caching models know when nodes are being displayed (and hence, whether or not to cache that node.) For example, a file-system based model would not want to keep the entire file-hierarchy in memory, just the sections that are currently being displayed by every current view.</para>
           <para>A model should be expected to be able to get an iter independent of its referenced state.</para>
         </remarks>
       </Docs>
@@ -222,8 +222,8 @@
       </Parameters>
       <Docs>
         <summary>Emits the <see cref="E:Gtk.TreeModel.RowInserted" /> event.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" />, path of the inserted row.</param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" />, points to the inserted row.</param>
         <remarks>
         </remarks>
       </Docs>
@@ -669,11 +669,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>Emits the <see cref="E:Gtk.TreeModel.RowsReordered" /> event.</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks />
+        <summary>Sends out a <see cref="E:Gtk.TreeModel.RowsReordered"/> event.</summary>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> that points to the row whose children have been reordered.</param>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" />that points to the row whose children have been reordered.</param>
+        <returns>a <see cref="T:System.Int32" />, pointer to an array of integers with the new indices of the children.</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetValue">

@@ -58,10 +58,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the rows of this tree.</summary>
+        <param name="iter">A <see cref="T:Gtk.TreeIter&amp;"/> to fill with the rows of this tree.</param>
+        <returns>A <see cref="T:System.Boolean"/>, true if this tree has children, false otherwise.</returns>
+        <remarks>The underlying C call supports the specification of arbitrary parent rows to return children of, but the C# bindings assume that the root
+node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeSortColumn">
@@ -72,8 +73,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fires a <see cref="E:Gtk.TreeSortable.SortColumnChanged" /> event.</summary>
+        <remarks>Designed to be called by routines that change the sort of the tree.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSortColumnId">
@@ -87,10 +88,10 @@
         <Parameter Name="order" Type="Gtk.SortType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="sort_column_id">To be added: an object of type 'int'</param>
-        <param name="order">To be added: an object of type 'Gtk.SortType'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets which column is to be used to sort the data in the tree.</summary>
+        <param name="sort_column_id">A <see cref="T:System.Int32"/>, the sort column index.</param>
+        <param name="order">A <see cref="T:Gtk.SortType"/>, the kind of sort to use</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetSortFunc">
@@ -106,12 +107,12 @@
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="sort_column_id">To be added: an object of type 'int'</param>
-        <param name="sort_func">To be added: an object of type 'Gtk.TreeIterCompareFunc'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets a function that should be used to be sort a particular column.</summary>
+        <param name="sort_column_id">A <see cref="System.Int32"/>, the index of the column to be sorted</param>
+        <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc"/>, the function to use for sorting</param>
+        <param name="user_data">An <see cref="T:IntPtr"/>, pointer to the user data, or <see langword="null"/></param>
+        <param name="destroy">A <see cref="Gtk.DestroyNotify"/> to be called when user data is destroyed, or <see langword="null"/>.</param>
+        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn"/>.(FIXME: explain the user data parameter.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefaultSortFunc">
@@ -126,11 +127,11 @@
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="sort_func">To be added: an object of type 'Gtk.TreeIterCompareFunc'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="destroy">To be added: an object of type 'Gtk.DestroyNotify'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets a function that should be used to be sort columns by default if not otherwise specified by <see cref="T:Gtk.TreeModelSort.SetSortFunc"/>.</summary>
+        <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc"/>, the function to use for sorting</param>
+        <param name="user_data">An <see cref="T:IntPtr"/>, pointer to the user data, or <see langword="null"/></param>
+        <param name="destroy">A <see cref="Gtk.DestroyNotify"/> to be called when user data is destroyed, or <see langword="null"/>.</param>
+        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn"/>.(FIXME: explain the user data parameter.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowChanged">
@@ -144,10 +145,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.TreeModelSort.RowChanged"/> signal for the row in <paramref name="iter"/>.</summary>
+        <param name="path">A <see cref="T:Gtk.TreePath"/> pointing to the changed row.</param>
+        <param name="iter">A <see cref="T:Gtk.TreeIter"/> pointing to the changed row.</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Foreach">
@@ -160,9 +161,9 @@
         <Parameter Name="func" Type="Gtk.TreeModelForeachFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">To be added: an object of type 'Gtk.TreeModelForeachFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Run <paramref name="func" /> on every row in the TreeModel.</summary>
+        <param name="func">A <see cref="T:Gtk.TreeModelForeachFunc"/></param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetIterFirst">
@@ -175,10 +176,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the first iterator in the tree (the one at the path "0") and returns <see langword="true" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>Returns <see langword="false" /> if the tree is empty.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowHasChildToggled">
@@ -192,10 +193,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowHasChildToggled" /> event.</summary>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <remarks>This should be called by models after the child state of a node changes.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPath">
@@ -208,10 +209,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'Gtk.TreePath'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the <see cref="T:Gtk.TreePath" /> of <paramref name="iter" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:Gtk.TreePath" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IterHasChild">
@@ -224,10 +226,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if iter has children, <see langword="false" /> otherwise.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RefNode">
@@ -240,9 +243,13 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Lets the tree ref the node.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <remarks>
+          <para>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.</para>
+          <para>This function is primarily meant as a way for views to let caching models know when nodes are being displayed (and hence, whether or not to cache that node.) For example, a file-system based model would not want to keep the entire file-hierarchy in memory, just the sections that are currently being displayed by every current view.</para>
+          <para>A model should be expected to be able to get an iter independent of its referenced state.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IterNChildren">
@@ -255,10 +262,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the number of children that <paramref name="iter" /> has.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <remarks>As a special case, if <paramref name="iter" /> is <see langword="null" />, then the number of toplevel nodes is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowInserted">
@@ -272,10 +279,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowInserted" /> event.</summary>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" />, path of the inserted row.</param>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" />, points to the inserted row.</param>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowDeleted">
@@ -288,9 +296,9 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <remarks>To be added</remarks>
+        <summary>Emits the <see cref="E:Gtk.TreeModel.RowDeleted" /> event.</summary>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <remarks>This should be called by models after a row has been removed. The location pointed to by <paramref name="path" /> should be the location that the row previously was at. It may not be a valid location anymore.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValist">
@@ -304,10 +312,10 @@
         <Parameter Name="var_args" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <param name="var_args">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the values of child properties for the row pointed to by <paramref name="iter" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="var_args">a <see cref="T:System.IntPtr" />, pointer to the va_list data structure of arguments (FIXME: clarify what va_lists look like)</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UnrefNode">
@@ -320,9 +328,9 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Lets the tree unref the node.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <remarks>This is an optional method for models to implement. To be more specific, models may ignore this call as it exists primarily for performance reasons.  For more information on what this means, see <see cref="M:Gtk.TreeModel.RefNode()" />. Please note that nodes that are deleted are not unreferenced.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConvertPathToChildPath">
@@ -335,10 +343,10 @@
         <Parameter Name="sorted_path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="sorted_path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'Gtk.TreePath'</returns>
-        <remarks>To be added</remarks>
+        <summary>Converts <paramref name="sorted_path"/> to a path on the child model of this TreeModelSort object. (In other words, <paramref name="sorted_path"/> points to a location within this objectable.) </summary>
+        <param name="sorted_path">A <see cref="T:Gtk.TreePath"/></param>
+        <returns>A new <see cref="T:Gtk.TreePath"/> that points to the same location as <paramref name="sorted_path"/> in the model that's not sorted. May also return <see langword="null"/> if the <paramref name="sorted_path"/> does not point to a location in the child model.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ClearCache">
@@ -349,8 +357,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> * This function should almost never be called.  It clears the TreeModelSort object of any cached iterators that haven't been reffed with <see cref="M:Gtk.TreeModel.RefNode"/>. This might be useful if the child model being sorted is static (and doesn't change often) and there has been a lot of unreffed access to nodes.  As a side effect of this function, all unreffed iters will be invalid.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ResetDefaultSortFunc">
@@ -361,8 +369,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clear the default sort function.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ConvertChildPathToPath">
@@ -375,10 +383,10 @@
         <Parameter Name="child_path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child_path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'Gtk.TreePath'</returns>
-        <remarks>To be added</remarks>
+        <summary>Converts <paramref name="child_path"/> to a path relative to <paramref name="tree_model_sort"/>.  That is, <paramref name="child_path"/> points to a path in the child model.  The returned path will point to the same row in the sorted model.  If <paramref name="child_path"/> isn't a valid path on the child model, then <see langword="null"/> is returned.</summary>
+        <param name="child_path">A <see cref="T:Gtk.TreePath"/></param>
+        <returns>A <see cref="T:Gtk.TreePath"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -417,10 +425,10 @@
         <Parameter Name="child_model" Type="Gtk.TreeModel" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child_model">To be added: an object of type 'Gtk.TreeModel'</param>
-        <returns>To be added: an object of type 'Gtk.TreeModelSort'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor.</summary>
+        <param name="child_model">A <see cref="Gtk.TreeModel"/>, the child model for the new object.</param>
+        <returns>A new <see cref="T:Gtk.TreeModelSort"/></returns>
+        <remarks>FIXME: needs more explanation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NColumns">
@@ -455,8 +463,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired when the sort column is changed.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="RowHasChildToggled">
@@ -467,8 +475,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Fired when the child state of a row is toggled.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="RowInserted">
@@ -530,11 +538,11 @@
         <Parameter Name="n" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="n">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to be the child of the root node, using the given index.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="n">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>In this case, the nth root node is set.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterNthChild">
@@ -549,12 +557,12 @@
         <Parameter Name="n" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="parent">To be added: an object of type 'Gtk.TreeIter'</param>
-        <param name="n">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to be the child of <paramref name="parent" />, using the given index.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="n">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>The first index is 0. If <paramref name="n" /> is too big, or <paramref name="parent" /> has no children, <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterFromString">
@@ -568,11 +576,11 @@
         <Parameter Name="path_string" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="path_string">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the <see cref="T:Gtk.TreeIter" /> at <paramref name="path_string" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="path_string">an object of type <see cref="T:System.String" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>Otherwise, <paramref name="iter" /> is left invalid and <see langword="false" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
@@ -586,11 +594,12 @@
         <Parameter Name="parent" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="parent">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to point to the first child of <paramref name="parent" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="parent">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If <paramref name="parent" /> has no children, <see langword="false" /> is returned and <paramref name="iter" /> is set to be invalid. <paramref name="parent" /> will remain a valid node after this function has been called.</remarks>
+        <summary/>
       </Docs>
     </Member>
     <Member MemberName="GetIter">
@@ -604,11 +613,12 @@
         <Parameter Name="path" Type="Gtk.TreePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="path">To be added: an object of type 'Gtk.TreePath'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to a valid iterator pointing to <paramref name="path" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IterParent">
@@ -621,12 +631,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
         <Parameter Name="child" Type="Gtk.TreeIter" />
       </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TreeIter&amp;'</param>
-        <param name="child">To be added: an object of type 'Gtk.TreeIter'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to be the parent of <paramref name="child" />.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <param name="child">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If <paramref name="child" /> is at the toplevel, and does not have a parent, then <paramref name="iter" /> is set to an invalid iterator and <see langword="false" /> is returned. <paramref name="child" /> will remain a valid node after this function has been called.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetStringFromIter">
@@ -639,10 +648,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Generates a string representation of the path of <paramref name="iter" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This string is a ':' separated list of numbers. For example, "4:10:0:3" would be an acceptable return value for this string.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterIsValid">
@@ -655,10 +664,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Tests whether <paramref name="iter"/> is a valid iterator for this TreeModel.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetSortColumnId">
@@ -672,11 +681,11 @@
         <Parameter Name="order" Type="Gtk.SortType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="sort_column_id">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="order">a <see cref="T:Gtk.SortType&amp;" /></param>
+        <summary>Returns the index of the column currently being used to sort the model data.</summary>
+        <param name="sort_column_id">a <see cref="T:System.Int32&amp;" />, an integer to put the results in</param>
+        <param name="order">a <see cref="T:Gtk.SortType&amp;" />, an object to put the type of sort into</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -691,11 +700,11 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a boolean.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -710,11 +719,11 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is a <see cref="T:System.Double" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Double" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -729,11 +738,11 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Int32" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -748,11 +757,11 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.String" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -767,11 +776,11 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Single" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Single" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -786,11 +795,10 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.UInt32" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
@@ -805,11 +813,11 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the value of column <paramref name="column" /> in the row pointed to by <paramref name="iter" /> to <paramref name="value" /> if the value is an <see cref="T:System.Object" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.Object" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AppendValues">
@@ -822,10 +830,10 @@
         <Parameter Name="values" Type="System.Object[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Add the list of objects in <paramref name="values"/> to the model; there should be enough objects to fill one row of the model.</summary>
         <param name="values">a <see cref="T:System.Object[]" /></param>
         <returns>a <see cref="T:Gtk.TreeIter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
@@ -839,11 +847,11 @@
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" />.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.Object" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasDefaultSortFunc">
@@ -854,9 +862,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Return whether this TreeModel has a default sort function or not.</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if a default sort function exists.</returns>
+        <remarks>See <see cref="M:Gtk.TreeModelSort.SetDefaultSortFunc"/> to set a default sort function.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -882,10 +890,10 @@
         <Parameter Name="index_" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
+        <summary>Returns the type of the column  at the given index.</summary>
+        <param name="index_">a <see cref="T:System.Int32" />, the column number.</param>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OnRowsReordered">
@@ -1009,10 +1017,10 @@
         <Parameter Name="child_iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the row in the TreeModel that corresponds to the row pointed to by <paramref name="child_iter"/>.</summary>
         <param name="child_iter">a <see cref="T:Gtk.TreeIter" /></param>
         <returns>a <see cref="T:Gtk.TreeIter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ConvertIterToChildIter">
@@ -1025,10 +1033,10 @@
         <Parameter Name="sorted_iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns an iter that points to the row pointed to by <paramref name="sorted_iter"/>.</summary>
         <param name="sorted_iter">a <see cref="T:Gtk.TreeIter" /></param>
         <returns>a <see cref="T:Gtk.TreeIter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="EmitRowsReordered">
@@ -1042,11 +1050,11 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:Gtk.TreePath" /></param>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sends out a <see cref="E:Gtk.TreeModel.RowsReordered"/> event.</summary>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> that points to the row whose children have been reordered.</param>
+        <param name="iter">a <see cref="T:Gtk.TreeIter" />that points to the row whose children have been reordered.</param>
+        <returns>a <see cref="T:System.Int32" />, pointer to an array of integers with the new indices of the children.</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
@@ -1061,11 +1069,11 @@
         <Parameter Name="value" Type="GLib.Value&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the value stored in column <paramref name="column" /> of the row pointed to by <paramref name="iter" /> and stores it in <paramref name="value" /></summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:GLib.Value" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IterNext">
@@ -1078,10 +1086,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="iter" /> to point to the node following it at the current level.</summary>
+        <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>If there is no next iter, <see langword="false" /> is returned and iter is set to be invalid.</remarks>
       </Docs>
     </Member>
   </Members>
