@@ -64,6 +64,26 @@ namespace GLib {
 			g_object_unref (_obj);
 		}
 
+		[DllImport("gobject-2.0")]
+		static extern void g_object_ref (IntPtr raw);
+
+		/// <summary>
+		///   Ref Method
+		/// </summary>
+		///
+		/// <remarks>
+		///   Increases the reference count on the native object.
+		///   This method is used by generated classes and structs,
+		///   and should not be used in user code.
+		/// </remarks>
+		public virtual void Ref ()
+		{
+			if (_obj == IntPtr.Zero)
+				return;
+
+			g_object_ref (_obj);
+		}
+		
 		/// <summary>
 		///	GetObject Shared Method 
 		/// </summary>

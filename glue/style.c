@@ -12,24 +12,28 @@
 GdkGC*
 gtksharp_gtk_style_get_white_gc (GtkStyle *style)
 {
+	g_object_ref (G_OBJECT (style->white_gc));
 	return style->white_gc;
 }
 
 GdkGC*
 gtksharp_gtk_style_get_black_gc (GtkStyle *style)
 {
+	g_object_ref (G_OBJECT (style->black_gc));
 	return style->black_gc;
 }
 
 GdkGC**
 gtksharp_gtk_style_get_fg_gc (GtkStyle *style)
 {
+	g_object_ref (G_OBJECT (style->fg_gc));
 	return style->fg_gc;
 }
 
 GdkGC**
 gtksharp_gtk_style_get_bg_gc (GtkStyle *style)
 {
+	g_object_ref (G_OBJECT (style->bg_gc));
 	return style->bg_gc;
 }
 

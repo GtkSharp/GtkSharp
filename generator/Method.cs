@@ -25,6 +25,7 @@ namespace GtkSharp.Generation {
 		private string name, cname, safety;
 		private string protection = "public";
 		private bool is_get, is_set;
+		private bool needs_ref = false;
 
 		public Method (string libname, XmlElement elem, ClassBase container_type) 
 		{
@@ -40,6 +41,10 @@ namespace GtkSharp.Generation {
 				this.libname = elem.GetAttribute ("library");
 			else
 				this.libname = libname;
+			
+			// caller does not own reference?
+			if (elem.HasAttribute ("needs_ref"))
+				this.needs_ref = (elem.GetAttribute ("needs_ref") == "1");
 		}
 
 		public bool IsGetter {
@@ -387,6 +392,8 @@ namespace GtkSharp.Generation {
 				{
 					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
 					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + SymbolTable.FromNativeReturn(rettype, "raw_ret") + ";");
+					if (needs_ref)
+						sw.WriteLine(indent + "\t\t\tret.Ref ();");
 					if (SymbolTable.IsOpaque (rettype))
 						sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
 				}

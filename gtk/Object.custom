@@ -12,6 +12,17 @@
 
 		protected override void DisposeNative ()
 		{
-			gtksharp_object_unref_if_floating (Handle);
+			if (_needs_unref)
+				base.DisposeNative ();
+			else
+				gtksharp_object_unref_if_floating (Handle);
 		}
 
+		private bool _needs_unref = false;
+
+		public override void Ref ()
+		{
+			_needs_unref = true;
+			base.Ref ();
+		}
+		

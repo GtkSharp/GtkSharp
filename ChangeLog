@@ -1,3 +1,19 @@
+2002-09-11  Rachel Hestilow  <hestilow@ximian.com>
+
+	* glib/Object.cs (Ref): Added.
+	
+	* gtk/Object.custom (Ref): Overload. Note that we were reffed.
+	(DisposeNative): Unref if we were explicitly reffed.
+	
+	* generator/Method.cs: Call Ref if needs_ret is set.
+	* generator/StructBase.cs: Call Ref on all object accessors.
+
+	* glue/style.c: Ref returned GCs.
+	
+	* sources/Gtk.metadata: Set needs_ret on various gdk-related
+	accessors in GtkWidget. Hide Ref/Unref methods on Widget and
+	RcStyle as these ought to be deprecated anyway.
+
 2002-09-11  Rodrigo Moya <rodrigo@gnome-db.org>
 
 	* gnomedb/Makefile.in:

@@ -152,8 +152,17 @@ namespace GtkSharp.Generation {
 
 			string wrapped = SymbolTable.GetCSType (c_type);
 			string wrapped_name = MangleName (field.GetAttribute ("cname"));
-			if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type)) {
-				// FIXME: cut n paste code, remove after introspection completed 
+			if (SymbolTable.IsObject (c_type)) {
+				sw.WriteLine ();
+				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
+				sw.WriteLine ("\t\t\tget { ");
+				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + SymbolTable.FromNativeReturn(c_type, name) + ";");
+				sw.WriteLine ("\t\t\t\tret.Ref ();");
+				sw.WriteLine ("\t\t\t\treturn ret;");
+				sw.WriteLine ("\t\t\t}");
+				sw.WriteLine ("\t\t\tset { " + name + " = " + SymbolTable.CallByName (c_type, "value") + "; }");
+				sw.WriteLine ("\t\t}");
+			} else if (SymbolTable.IsOpaque (c_type)) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
