@@ -1,0 +1,21 @@
+MCS=mcs
+DESTDIR=
+
+all: linux
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:gnomeprint-sharp.dll /recurse:*.cs
+
+linux: gnomeprint-sharp.dll
+
+gnomeprint-sharp.dll: *.cs
+	$(MCS) --unsafe --target library -L ../glib -r glib-sharp.dll -o gnomeprint-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -rf generated
+
+install: all
+	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
+	cp gnomeprint-sharp.dll $(DESTDIR)@prefix@/lib || exit 1
+
