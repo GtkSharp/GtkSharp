@@ -354,6 +354,9 @@
           <parameter type="GnomeDbForm*" name="form"/>
         </parameters>
       </signal>
+      <method name="GetCurrentRow" cname="gnome_db_form_get_current_row">
+        <return-type type="gint"/>
+      </method>
       <method name="GetFormType" cname="gnome_db_form_get_form_type">
         <return-type type="GnomeDbFormType"/>
       </method>
@@ -364,6 +367,12 @@
         <return-type type="GType"/>
       </method>
       <constructor cname="gnome_db_form_new"/>
+      <method name="SetCurrentRow" cname="gnome_db_form_set_current_row">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
       <method name="SetFormType" cname="gnome_db_form_set_form_type">
         <return-type type="void"/>
         <parameters>
@@ -590,6 +599,18 @@
           <parameter type="const-gchar*" name="dsn"/>
         </parameters>
       </constructor>
+      <method name="SetPassword" cname="gnome_db_login_set_password">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="password"/>
+        </parameters>
+      </method>
+      <method name="SetUsername" cname="gnome_db_login_set_username">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="username"/>
+        </parameters>
+      </method>
     </object>
     <object name="LoginDialog" cname="GnomeDbLoginDialog" parent="GtkDialog">
       <field cname="priv" type="GnomeDbLoginDialogPrivate*"/>
@@ -598,6 +619,9 @@
       <property name="Password" cname="password" type="gchar*" doc-string=" NULL" readable="true"/>
       <method name="GetDsn" cname="gnome_db_login_dialog_get_dsn">
         <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetLoginWidget" cname="gnome_db_login_dialog_get_login_widget">
+        <return-type type="GtkWidget*"/>
       </method>
       <method name="GetPassword" cname="gnome_db_login_dialog_get_password">
         <return-type type="const-gchar*"/>

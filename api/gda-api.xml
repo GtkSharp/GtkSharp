@@ -44,7 +44,8 @@
       <member cname="GDA_CONNECTION_FEATURE_XML_QUERIES" name="XmlQueries"/>
     </enum>
     <enum name="ConnectionOptions" cname="GdaConnectionOptions" type="flags">
-      <member cname="GDA_CONNECTION_OPTIONS_READ_ONLY" name="Only" value="1 &lt;&lt; 0"/>
+      <member cname="GDA_CONNECTION_OPTIONS_READ_ONLY" name="ReadOnly" value="1 &lt;&lt; 0"/>
+      <member cname="GDA_CONNECTION_OPTIONS_DONT_SHARE" name="DontShare" value="2 &lt;&lt; 0"/>
     </enum>
     <enum name="ConnectionSchema" cname="GdaConnectionSchema" type="enum">
       <member cname="GDA_CONNECTION_SCHEMA_AGGREGATES" name="Aggregates"/>
@@ -75,6 +76,7 @@
     <enum name="ValueType" cname="GdaValueType" type="enum">
       <member cname="GDA_VALUE_TYPE_NULL" name="Null"/>
       <member cname="GDA_VALUE_TYPE_BIGINT" name="Bigint"/>
+      <member cname="GDA_VALUE_TYPE_BIGUINT" name="Biguint"/>
       <member cname="GDA_VALUE_TYPE_BINARY" name="Binary"/>
       <member cname="GDA_VALUE_TYPE_BOOLEAN" name="Boolean"/>
       <member cname="GDA_VALUE_TYPE_DATE" name="Date"/>
@@ -87,11 +89,14 @@
       <member cname="GDA_VALUE_TYPE_NUMERIC" name="Numeric"/>
       <member cname="GDA_VALUE_TYPE_SINGLE" name="Single"/>
       <member cname="GDA_VALUE_TYPE_SMALLINT" name="Smallint"/>
+      <member cname="GDA_VALUE_TYPE_SMALLUINT" name="Smalluint"/>
       <member cname="GDA_VALUE_TYPE_STRING" name="String"/>
       <member cname="GDA_VALUE_TYPE_TIME" name="Time"/>
       <member cname="GDA_VALUE_TYPE_TIMESTAMP" name="Timestamp"/>
       <member cname="GDA_VALUE_TYPE_TINYINT" name="Tinyint"/>
+      <member cname="GDA_VALUE_TYPE_TINYUINT" name="Tinyuint"/>
       <member cname="GDA_VALUE_TYPE_TYPE" name="Type"/>
+      <member cname="GDA_VALUE_TYPE_UINTEGER" name="Uinteger"/>
       <member cname="GDA_VALUE_TYPE_UNKNOWN" name="Unknown"/>
     </enum>
     <callback name="ConfigListenerFunc" cname="GdaConfigListenerFunc">
@@ -115,6 +120,87 @@
         <parameter type="gpointer" name="user_data"/>
       </parameters>
     </callback>
+    <object name="Batch" cname="GdaBatch" parent="GObject" hidden="1">
+      <field cname="cnc" type="GdaConnection*"/>
+      <field cname="transaction_mode" type="gboolean"/>
+      <field cname="is_running" type="gboolean"/>
+      <field cname="commands" type="GList*"/>
+      <signal name="BeginTransaction" cname="begin_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="CommitTransaction" cname="commit_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="RollbackTransaction" cname="rollback_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="ExecuteCommand" cname="execute_command" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+          <parameter type="const-gchar*" name="cmd"/>
+        </parameters>
+      </signal>
+      <method name="AddCommand" cname="gda_batch_add_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="cmd"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="gda_batch_clear">
+        <return-type type="void"/>
+      </method>
+      <method name="Free" cname="gda_batch_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetConnection" cname="gda_batch_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetTransactionMode" cname="gda_batch_get_transaction_mode">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gda_batch_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsRunning" cname="gda_batch_is_running">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LoadFile" cname="gda_batch_load_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+          <parameter type="gboolean" name="clean"/>
+        </parameters>
+      </method>
+      <constructor cname="gda_batch_new"/>
+      <method name="SetConnection" cname="gda_batch_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
+      <method name="SetTransactionMode" cname="gda_batch_set_transaction_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="mode"/>
+        </parameters>
+      </method>
+      <method name="Start" cname="gda_batch_start">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Stop" cname="gda_batch_stop">
+        <return-type type="void"/>
+      </method>
+    </object>
     <object name="Client" cname="GdaClient" parent="GObject">
       <field cname="priv" type="GdaClientPrivate*"/>
       <signal name="EventNotification" cname="event_notification" when="LAST">
@@ -1407,10 +1493,22 @@
       <method name="GetValue" cname="gda_parameter_get_value">
         <return-type type="const-GdaValue*"/>
       </method>
-      <constructor cname="gda_parameter_new">
+      <constructor cname="gda_parameter_new_boolean">
         <parameters>
           <parameter type="const-gchar*" name="name"/>
-          <parameter type="GdaValueType" name="type"/>
+          <parameter type="gboolean" name="value"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_parameter_new_double">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="gdouble" name="value"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_parameter_new_from_value">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GdaValue*" name="value"/>
         </parameters>
       </constructor>
       <constructor cname="gda_parameter_new_gobject">
@@ -1518,7 +1616,7 @@
         <return-type type="gint"/>
       </method>
       <method name="GetValue" cname="gda_row_get_value">
-        <return-type type="GdaValue*"/>
+        <return-type type="const-GdaValue*"/>
         <parameters>
           <parameter type="gint" name="num"/>
         </parameters>
@@ -1567,6 +1665,7 @@
     <struct name="Value" cname="GdaValue">
       <field cname="type" type="GdaValueType"/>
       <field cname="v_bigint" type="gint64"/>
+      <field cname="v_biguint" type="guint64"/>
       <field cname="v_binary" type="gpointer"/>
       <field cname="v_boolean" type="gboolean"/>
       <field cname="v_date" type="GdaDate"/>
@@ -1579,11 +1678,14 @@
       <field cname="v_numeric" type="GdaNumeric"/>
       <field cname="v_single" type="gfloat"/>
       <field cname="v_smallint" type="gshort"/>
+      <field cname="v_smalluint" type="gushort"/>
       <field cname="v_string" type="gchar*"/>
       <field cname="v_time" type="GdaTime"/>
       <field cname="v_timestamp" type="GdaTimestamp"/>
       <field cname="v_tinyint" type="gchar"/>
+      <field cname="v_tinyuint" type="guchar"/>
       <field cname="v_type" type="GdaValueType"/>
+      <field cname="v_uinteger" type="guint"/>
       <field cname="value" type="}"/>
       <field cname="binary_length" type="glong"/>
       <method name="Compare" cname="gda_value_compare">
@@ -1600,6 +1702,9 @@
       </method>
       <method name="GetBigint" cname="gda_value_get_bigint">
         <return-type type="gint64"/>
+      </method>
+      <method name="GetBiguint" cname="gda_value_get_biguint">
+        <return-type type="guint64"/>
       </method>
       <method name="GetBinary" cname="gda_value_get_binary">
         <return-type type="gconst-pointer"/>
@@ -1640,6 +1745,9 @@
       <method name="GetSmallint" cname="gda_value_get_smallint">
         <return-type type="gshort"/>
       </method>
+      <method name="GetSmalluint" cname="gda_value_get_smalluint">
+        <return-type type="gushort"/>
+      </method>
       <method name="GetString" cname="gda_value_get_string">
         <return-type type="const-gchar*"/>
       </method>
@@ -1652,8 +1760,14 @@
       <method name="GetTinyint" cname="gda_value_get_tinyint">
         <return-type type="gchar"/>
       </method>
+      <method name="GetTinyuint" cname="gda_value_get_tinyuint">
+        <return-type type="guchar"/>
+      </method>
       <method name="GetType" cname="gda_value_get_type">
         <return-type type="GdaValueType"/>
+      </method>
+      <method name="GetUinteger" cname="gda_value_get_uinteger">
+        <return-type type="guint"/>
       </method>
       <method name="GetVtype" cname="gda_value_get_vtype">
         <return-type type="GdaValueType"/>
@@ -1667,6 +1781,11 @@
       <constructor cname="gda_value_new_bigint">
         <parameters>
           <parameter type="gint64" name="val"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_value_new_biguint">
+        <parameters>
+          <parameter type="guint64" name="val"/>
         </parameters>
       </constructor>
       <constructor cname="gda_value_new_binary">
@@ -1742,6 +1861,11 @@
           <parameter type="gshort" name="val"/>
         </parameters>
       </constructor>
+      <constructor cname="gda_value_new_smalluint">
+        <parameters>
+          <parameter type="gushort" name="val"/>
+        </parameters>
+      </constructor>
       <constructor cname="gda_value_new_string">
         <parameters>
           <parameter type="const-gchar*" name="val"/>
@@ -1767,15 +1891,31 @@
           <parameter type="gchar" name="val"/>
         </parameters>
       </constructor>
+      <constructor cname="gda_value_new_tinyuint">
+        <parameters>
+          <parameter type="guchar" name="val"/>
+        </parameters>
+      </constructor>
       <constructor cname="gda_value_new_type">
         <parameters>
           <parameter type="GdaValueType" name="val"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_value_new_uinteger">
+        <parameters>
+          <parameter type="guint" name="val"/>
         </parameters>
       </constructor>
       <method name="SetBigint" cname="gda_value_set_bigint">
         <return-type type="void"/>
         <parameters>
           <parameter type="gint64" name="val"/>
+        </parameters>
+      </method>
+      <method name="SetBiguint" cname="gda_value_set_biguint">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint64" name="val"/>
         </parameters>
       </method>
       <method name="SetBinary" cname="gda_value_set_binary">
@@ -1867,6 +2007,12 @@
           <parameter type="gshort" name="val"/>
         </parameters>
       </method>
+      <method name="SetSmalluint" cname="gda_value_set_smalluint">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gushort" name="val"/>
+        </parameters>
+      </method>
       <method name="SetString" cname="gda_value_set_string">
         <return-type type="void"/>
         <parameters>
@@ -1889,6 +2035,18 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="gchar" name="val"/>
+        </parameters>
+      </method>
+      <method name="SetTinyuint" cname="gda_value_set_tinyuint">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guchar" name="val"/>
+        </parameters>
+      </method>
+      <method name="SetUinteger" cname="gda_value_set_uinteger">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="val"/>
         </parameters>
       </method>
       <method name="SetVtype" cname="gda_value_set_vtype">
