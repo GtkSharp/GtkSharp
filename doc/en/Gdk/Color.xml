@@ -7,8 +7,36 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Describes an allocated or unallocated color.</summary>
+    <remarks>
+      <para>
+	The Gdk.Color structure is used to describe an allocated or
+	unallocated color.  Unallocated colors only have the red,
+	green and blue ushort values initialized.  Colors are
+	allocated using the <see
+	cref="M:Gdk.Colormap.AllocColor(Gdk.Color,bool,bool)"/>
+	method.  After a color is allocated the value in the <see
+	cref="F:Gdk.Color.pixel"/> field is valid.
+      </para>
+      <example>
+	<code lang="C#">
+	  DrawRedLine (Gdk.Drawable drawable)
+	  {
+	  Gdk.GC gc = new Gdk.GC (drawable);
+	  
+	  Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+	  
+	  // Use the system colormap, easy.
+	  Gdk.Colormap colormap = Gdk.Colormap.System;
+	  
+	  colormap.AllocColor (red_color, true, true);
+	  
+	  // Now you can use it
+	  drawable.DrawLine (gc, 0, 0, 100, 100);
+	  }
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -36,8 +64,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Pixel value for the color</summary>
+        <remarks>
+	  <para>
+	    Colors are specified in Gdk by their red, green and blue
+	    elements.   But before the color can be used, the color
+	    has to be allocated in a given colormap.  The value of the
+	    allocation is stored in this pixel field and it is the
+	    token used to render the color.  
+	  </para>
+	  <para>
+	    The pixel value is initialized when using the <see
+	    cref="M:Gdk.Colormap.AllocColor(Gdk.Color,bool,bool)"/> method.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="red">
@@ -48,8 +88,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Red element of the color</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="green">
@@ -60,8 +100,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Green element of the color</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="blue">
@@ -72,8 +112,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Blue element of the color.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -99,6 +139,28 @@
 	    mapped into the 16-bit value space.  This is just a
 	    convenience routine to initialize this structure. 
 	  </para>
+	  <para>
+	    To use the Gdk.Color you must allocate it within the
+	    current colormap. 
+	  </para>
+	  <example>
+	    <code lang="C#">
+	      DrawRedLine (Gdk.Drawable drawable)
+	      {
+	              Gdk.GC gc = new Gdk.GC (drawable);
+	              
+	              Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+	              
+	              // Use the system colormap, easy.
+	              Gdk.Colormap colormap = Gdk.Colormap.System;
+	              
+	              colormap.AllocColor (red_color, true, true);
+	              
+	              // Now you can use it
+	              drawable.DrawLine (gc, 0, 0, 100, 100);
+              }
+	    </code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
@@ -118,6 +180,24 @@
 	    Use this constructor to create new color values based on
 	    an existing color from a <see cref="T:System.Drawing.Color"/>.
 	  </para>
+	  <example>
+	    <code lang="C#">
+	      DrawRedLine (Gdk.Drawable drawable)
+	      {
+	              Gdk.GC gc = new Gdk.GC (drawable);
+	              
+	              Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+	              
+	              // Use the system colormap, easy.
+	              Gdk.Colormap colormap = Gdk.Colormap.System;
+	              
+	              colormap.AllocColor (red_color, true, true);
+	              
+	              // Now you can use it
+	              drawable.DrawLine (gc, 0, 0, 100, 100);
+              }
+	    </code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
@@ -133,10 +213,42 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="spec">To be added: an object of type 'string'</param>
-        <param name="color">To be added: an object of type 'Gdk.Color&amp;'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <param name="spec">A string specification for the color.</param>
+        <param name="color">A structure where the colors are generated</param>
+        <returns>Non-zero on success</returns>
+        <remarks>
+	  <para>
+	    Parses a textual specification of a color and fill in the
+	    red, green, and blue fields of the Gdk.Color structure.
+	    The color is not allocated, you must call <see
+	    cref="M:Gdk.Colormap.AllocColor(Gdk.Color,bool,bool)"/>
+	    yourself.
+	  </para>
+	  <para>
+	    The text string can be in any of the forms accepted by
+	    XParseColor; these include name for a color from rgb.txt,
+	    such as DarkSlateGray, or a hex specification such as
+	    305050.
+	  </para>
+	  <example>
+	    <code lang="C#">
+	      DrawRedLine (Gdk.Drawable drawable)
+	      {
+	              Gdk.GC gc = new Gdk.GC (drawable);
+	              Gdk.Color red_color;
+	              Gdk.Color.Parse ("red", ref red_color);
+	              
+	              // Use the system colormap, easy.
+	              Gdk.Colormap colormap = Gdk.Colormap.System;
+	              
+	              colormap.AllocColor (red_color, true, true);
+	              
+	              // Now you can use it
+	              drawable.DrawLine (gc, 0, 0, 100, 100);
+              }
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="New">
