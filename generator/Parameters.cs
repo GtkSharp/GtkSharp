@@ -60,6 +60,26 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsCount {
+			get {
+				
+				if (Name.StartsWith("n_"))
+					switch (CSType) {
+					case "int":
+					case "uint":
+					case "long":
+					case "ulong":
+					case "short":
+					case "ushort": 
+						return true;
+					default:
+						return false;
+					}
+				else
+					return false;
+			}
+		}
+
 		public bool IsLength {
 			get {
 				
@@ -254,6 +274,12 @@ namespace GtkSharp.Generation {
 				string cs_type = this [i].CSType;
 				string m_type = this [i].MarshalType;
 				string name = this [i].Name;
+
+				if (i > 0 && this [i - 1].IsArray && this [i].IsCount) {
+					call_string += ", " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length";
+					import_sig += ", " + m_type + " " + name;
+					continue;
+				}
 
 				if (i > 0 && this [i - 1].IsString && this [i].IsLength) {
 					call_string += ", " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length";
