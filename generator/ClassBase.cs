@@ -93,6 +93,13 @@ namespace GtkSharp.Generation {
 					props.Add (name, new Property (member, this));
 					break;
 
+				case "childprop":
+					name = member.GetAttribute("name");
+					while (props.ContainsKey(name))
+						name += "mangled";
+					props.Add (name, new ChildProperty (member, this));
+					break;
+
 				case "signal":
 					name = member.GetAttribute("name");
 					while (sigs.ContainsKey(name))
@@ -131,6 +138,7 @@ namespace GtkSharp.Generation {
 			switch (name) {
 			case "method":
 			case "property":
+			case "childprop":
 			case "signal":
 			case "implements":
 			case "constructor":

@@ -11,6 +11,7 @@ sources = 				\
 	BoxedGen.cs			\
 	ByRefGen.cs			\
 	CallbackGen.cs			\
+	ChildProperty.cs		\
 	ClassBase.cs			\
 	ClassGen.cs			\
 	CodeGenerator.cs		\

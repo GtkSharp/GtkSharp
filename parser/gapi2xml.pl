@@ -465,7 +465,7 @@ if ($ARGV[1]) {
 $scnt = keys(%sdefs); $fcnt = keys(%fdefs); $tcnt = keys(%types);
 print "structs: $scnt  enums: $ecnt  callbacks: $cbcnt\n";
 print "funcs: $fcnt types: $tcnt  classes: $classcnt\n";
-print "props: $propcnt signals: $sigcnt\n\n";
+print "props: $propcnt childprops: $childpropcnt signals: $sigcnt\n\n";
 
 sub addFieldElems
 {
@@ -776,7 +776,7 @@ sub addReturnElem
 
 sub addPropElem
 {
-	my ($spec, $node) = @_;
+	my ($spec, $node, $is_child) = @_;
 	my ($name, $mode, $docs);
 	$spec =~ /g_param_spec_(\w+)\s*\((.*)\s*\)\s*\)/;
 	my $type = $1;
@@ -787,6 +787,9 @@ sub addPropElem
 		$name = $defines{$name};
 	} else {
 		$name =~ s/\s*\"//g;
+	}
+	if ($is_child) {
+	    $name = "child_$name";
 	}
 
 	$mode = $params[$#params];
@@ -807,7 +810,7 @@ sub addPropElem
 		$type = StudlyCaps(lc($type));
 	}
 
-	$prop_elem = $doc->createElement('property');
+	$prop_elem = $doc->createElement($is_child ? "childprop" : "property");
 	$node->appendChild($prop_elem);
 	$prop_elem->setAttribute('name', StudlyCaps($name));
 	$prop_elem->setAttribute('cname', $name);
@@ -952,8 +955,15 @@ sub parseInitFunc
 			do {
 				$prop .= $init_lines[++$linenum];
 			} until ($init_lines[$linenum] =~ /\)\s*;/);
-			addPropElem ($prop, $obj_el);
+			addPropElem ($prop, $obj_el, 0);
 			$propcnt++;
+		} elsif ($line =~ /gtk_container_class_install_child_property/) {
+			my $prop = $line;
+			do {
+				$prop .= $init_lines[++$linenum];
+			} until ($init_lines[$linenum] =~ /\)\s*;/);
+			addPropElem ($prop, $obj_el, 1);
+			$childpropcnt++;
 		} elsif ($line =~ /\bg.*_signal_new/) {
 			my $sig = $line;
 			do {

@@ -64,6 +64,8 @@ gtksharp_container_base_child_type (GtkContainer *container)
 	return slot;
 }
 
+void gtksharp_container_override_child_type (GType gtype, gpointer cb);
+
 void
 gtksharp_container_override_child_type (GType gtype, gpointer cb)
 {
@@ -72,3 +74,16 @@ gtksharp_container_override_child_type (GType gtype, gpointer cb)
 		klass = g_type_class_ref (gtype);
 	((GtkContainerClass *) klass)->child_type = cb;
 }
+
+void gtksharp_container_child_get_property (GtkContainer *container, GtkWidget *child,
+					    const gchar* property, GValue *value);
+
+void
+gtksharp_container_child_get_property (GtkContainer *container, GtkWidget *child,
+				       const gchar* property, GValue *value)
+{
+	GParamSpec *spec = gtk_container_class_find_child_property (G_OBJECT_GET_CLASS (container), property);
+	g_value_init (value, spec->value_type);
+	gtk_container_child_get_property (container, child, property, value);
+}
+

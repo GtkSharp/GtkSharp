@@ -1,3 +1,32 @@
+2004-11-05  Dan Winship  <danw@novell.com>
+
+	* parser/gapi2xml.pl (parseInitFunc, addPropElem): handle
+	GtkContainer child properties
+
+	* generator/Property.cs:
+	* generator/ChildProperty.cs: make Property subclassable and add a
+	"ChildProperty" subclass.
+
+	* generator/Makefile.am (sources): add ChildProperty.cs
+
+	* generator/ClassBase.cs: handle "childprop" nodes by creating
+	ChildProperty objects.
+
+	* glib/Value.cs (explicit operator EnumWrapper): use
+	g_value_get_flags() rather than g_value_get_enum() when
+	appropriate.
+
+	* glib/glue/value.c (glibsharp_value_holds_flags): glue for that
+
+	* gtk/gtk-api.raw: regen to pick up child properties
+
+	* gtk/Gtk.metadata: 
+	* gtk/Container.custom: hide the auto-generated
+	Gtk.Container.ChildGetProperty and implement a nicer one by hand.
+
+	* gtk/glue/container.c (gtksharp_container_child_get_property):
+	utility function to set up an appropriate GValue for us
+
 2004-11-05  Tambet Ingo  <tambet@ximian.com>
 
 	* generator/OpaqueGen.cs: Add optional "parent" attribute to Opaque

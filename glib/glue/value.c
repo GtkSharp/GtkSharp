@@ -25,6 +25,7 @@
 void gtksharp_value_create_from_property (GValue *value, GObject *obj, const gchar* name);
 void gtksharp_value_create_from_type_and_property (GValue *value, GType gtype, const gchar* name);
 GType gtksharp_value_get_value_type (GValue *value);
+gboolean glibsharp_value_holds_flags (GValue *value);
 /* */
 
 void
@@ -49,3 +50,8 @@ gtksharp_value_get_value_type (GValue *value)
 	return G_VALUE_TYPE (value);
 }
 
+gboolean
+glibsharp_value_holds_flags (GValue *value)
+{
+	return G_VALUE_HOLDS_FLAGS (value);
+}

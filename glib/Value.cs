@@ -290,11 +290,15 @@ namespace GLib {
 		static extern int g_value_get_enum (ref Value val);
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_value_get_flags (ref Value val);
+		[DllImport("glibsharpglue-2.0")]
+		static extern bool glibsharp_value_holds_flags (ref Value val);
 
 		public static explicit operator EnumWrapper (Value val)
 		{
-			// FIXME: handle flags
-			return new EnumWrapper (g_value_get_enum (ref val), false);
+			if (glibsharp_value_holds_flags (ref val))
+				return new EnumWrapper ((int)g_value_get_flags (ref val), true);
+			else
+				return new EnumWrapper (g_value_get_enum (ref val), false);
 		}
 
 		[DllImport("glibsharpglue-2.0")]

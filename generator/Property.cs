@@ -29,8 +29,8 @@ namespace GtkSharp.Generation {
 
 	public class Property {
 
-		private XmlElement elem;
-		private ClassBase container_type;
+		protected XmlElement elem;
+		protected ClassBase container_type;
 
 		public string Name {
 			get {
@@ -64,6 +64,34 @@ namespace GtkSharp.Generation {
 			}
 
 			return true;
+		}
+
+		protected virtual string PropertyHeader (ref string indent, string modifiers, string cs_type, string name) {
+			string header;
+
+			header = indent + "public " + modifiers + cs_type + " " + name + " {\n";
+			indent += "\t";
+			return header;
+		}
+
+		protected virtual string GetterHeader (string modifiers, string cs_type, string name) {
+			return "get";
+		}
+
+		protected virtual string RawGetter (string cname) {
+			return "GetProperty (" + cname + ")";
+		}
+
+		protected virtual string SetterHeader (string modifiers, string cs_type, string name) {
+			return "set";
+		}
+
+		protected virtual string RawSetter (string cname) {
+			return "SetProperty(" + cname + ", val)";
+		}
+
+		protected virtual string PropertyFooter (string indent) {
+			return indent.Substring (1) + "}\n";
 		}
 
 		public void Generate (GenerationInfo gen_info)
@@ -141,23 +169,24 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine();
 
-			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
+			string indent = "\t\t";
+			sw.Write(PropertyHeader (ref indent, modifiers, cs_type, name));
 			if (has_getter) {
-				sw.Write("\t\t\tget ");
+				sw.Write(indent + GetterHeader (modifiers, cs_type, name));
 				getter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
-				sw.WriteLine("\t\t\tget {");
-				sw.WriteLine("\t\t\t\tGLib.Value val = GetProperty (" + cname + ");");
+				sw.WriteLine(indent + GetterHeader (modifiers, cs_type, name) + " {");
+				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (cname) + ";");
 				if (table.IsObject (c_type)) {
-					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
-					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
+					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
+					sw.WriteLine(indent + "\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
 					if (!table.IsBoxed (c_type) && !table.IsObject (c_type))
-						sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
+						sw.WriteLine(indent + "\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				} else if (table.IsOpaque (c_type) || table.IsBoxed (c_type)) {
-					sw.WriteLine("\t\t\t\t" + cs_type + " ret = (" + cs_type + ") val;");
+					sw.WriteLine(indent + "\t" + cs_type + " ret = (" + cs_type + ") val;");
 				} else {
-					sw.Write("\t\t\t\t" + cs_type + " ret = ");
+					sw.Write(indent + "\t" + cs_type + " ret = ");
 					sw.Write ("(" + cs_type + ") ");
 					if (v_type != "") {
 						sw.Write(v_type + " ");
@@ -165,18 +194,18 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("val;");
 				}
 
-				sw.WriteLine("\t\t\t\tval.Dispose ();");
-				sw.WriteLine("\t\t\t\treturn ret;");
-				sw.WriteLine("\t\t\t}");
+				sw.WriteLine(indent + "\tval.Dispose ();");
+				sw.WriteLine(indent + "\treturn ret;");
+				sw.WriteLine(indent + "}");
 			}
 
 			if (has_setter) {
-				sw.Write("\t\t\tset ");
+				sw.Write(indent + SetterHeader (modifiers, cs_type, name));
 				setter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
-				sw.WriteLine("\t\t\tset {");
-				sw.Write("\t\t\t\tGLib.Value val = ");
+				sw.WriteLine(indent + SetterHeader (modifiers, cs_type, name) + " {");
+				sw.Write(indent + "\tGLib.Value val = ");
 				if (table.IsEnum(c_type)) {
 					sw.WriteLine("new GLib.Value(this, " + cname + ", new GLib.EnumWrapper ((int) value, {0}));", table.IsEnumFlags (c_type) ? "true" : "false");
 				} else if (table.IsBoxed (c_type)) {
@@ -190,12 +219,12 @@ namespace GtkSharp.Generation {
 					}
 					sw.WriteLine("value);");
 				}
-				sw.WriteLine("\t\t\t\tSetProperty(" + cname + ", val);");
-				sw.WriteLine("\t\t\t\tval.Dispose ();");
-				sw.WriteLine("\t\t\t}");
+				sw.WriteLine(indent + "\t" + RawSetter (cname) + ";");
+				sw.WriteLine(indent + "\tval.Dispose ();");
+				sw.WriteLine(indent + "}");
 			}
 
-			sw.WriteLine("\t\t}");
+			sw.Write(PropertyFooter (indent));
 			sw.WriteLine();
 
 			Statistics.PropCount++;
