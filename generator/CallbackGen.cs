@@ -116,6 +116,11 @@ namespace GtkSharp.Generation {
 				if ((i == count - 1) && ctype == "gpointer" && (parm_name.EndsWith ("data") || parm_name.EndsWith ("data_or_owner"))) 
 					continue;
 
+				if (ctype == "GError**") {
+					sw.WriteLine ("\t\t\t" + parm_name + " = IntPtr.Zero;");
+					continue;
+				}
+
 				string cstype = parms[i].CSType;
 				ClassBase parm_wrapper = table.GetClassGen (ctype);
 				sw.Write("\t\t\t" + cstype + " _arg" + idx);
