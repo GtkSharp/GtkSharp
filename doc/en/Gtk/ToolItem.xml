@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Objects to fill a <see cref="T:Gtk.Toolbar"/>.</summary>
+    <remarks/>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -36,8 +36,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Override for any actions required before object destruction.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="OnToolbarReconfigured">
@@ -96,10 +96,15 @@
         <Parameter Name="menu_item" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets the <see cref="T:Gtk.MenuItem"/> used in the toolbar overflow menu. 
+	</summary>
         <param name="menu_item_id">a <see cref="T:System.String" /></param>
         <param name="menu_item">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  The <paramref name="menu_item_id"/> is used to identify the caller of this function and
+	  should also be used with <see cref="M:Gtk.ToolItem.GetProxyMenuItem"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProxyMenuItem">
@@ -112,10 +117,22 @@
         <Parameter Name="menu_item_id" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  If <paramref name="menu_item_id"/> matches the string passed to 
+	  <see cref="M:Gtk.ToolItem.SetProxyMenuItem"/>,
+	  return the corresponding <see cref="T:Gtk.MenuItem"/>.
+
+	</summary>
         <param name="menu_item_id">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Custom subclasses of <see cref="T:Gtk.ToolItem"/> should use this 
+	  function to update their menu item when the 
+	  <see cref="T:Gtk.ToolItem"/> changes. That the 
+	  <paramref name="menu_item_id"/>s must match ensures that a
+	   <see cref="T:Gtk.ToolItem"/> will not
+	  inadvertently change a menu item that they did not create.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetTooltip">
@@ -130,11 +147,15 @@
         <Parameter Name="tip_private" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets the <see cref="T:Gtk.Tooltips"/> object to be used for 
+	  this tool item, the text to be displayed as tooltip on the 
+	  item and the private text to be used. 
+	</summary>
         <param name="tooltips">a <see cref="T:Gtk.Tooltips" /></param>
-        <param name="tip_text">a <see cref="T:System.String" /></param>
-        <param name="tip_private">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <param name="tip_text">a <see cref="T:System.String" />, the tooltip text for the item</param>
+        <param name="tip_private">a <see cref="T:System.String" />, the pricate text</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="RetrieveProxyMenuItem">
@@ -145,9 +166,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Returns the <see cref="T:Gtk.MenuItem"/> that was last set by
+	  <see cref="M:Gtk.ToolItem.SetProxyMenuItem"/>; that is, the 
+	  <see cref="T:Gtk.MenuItem"/> that is going to appear in the 
+	  overflow menu.
+	</summary>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -158,10 +184,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.ToolItem" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -172,10 +198,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Constructor for internal use. Do not use.</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" />, pointer to the underlying C object.</param>
         <returns>a <see cref="T:Gtk.ToolItem" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -184,9 +210,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Public constructor.</summary>
         <returns>a <see cref="T:Gtk.ToolItem" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -199,7 +225,7 @@
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="VisibleHorizontal">
@@ -210,9 +236,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the toolbar item is visible when the toolbar is in a horizontal orientation.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="VisibleVertical">
@@ -223,9 +249,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the toolbar item is visible when the toolbar is in a vertical orientation.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="IsImportant">
@@ -236,9 +262,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether the toolbar item is considered important.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  When TRUE, toolbar buttons show text when the toolbar is in 
+	  <see cref="T:Gtk.ToolbarStyle.BothHoriz"/> mode.
+	  </remarks>
       </Docs>
     </Member>
     <Member MemberName="ToolbarStyle">
@@ -249,9 +278,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets some display styles for this toolbar; see 
+	  <see cref="T:Gtk.ToolbarStyle" /> for details. </summary>
         <returns>a <see cref="T:Gtk.ToolbarStyle" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Orientation">
@@ -262,9 +292,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The orientation used for this tool item. See <see cref="T:Gtk.Orientation" />.</summary>
         <returns>a <see cref="T:Gtk.Orientation" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="IconSize">
@@ -275,9 +305,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The size of icons in this toolbar. See <see cref="T:Gtk.IconSize" />.</summary>
         <returns>a <see cref="T:Gtk.IconSize" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="UseDragWindow">
@@ -288,9 +318,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	 Whether this toolitem has a drag window.
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  When this is TRUE the toolitem can be used as a drag source through 
+	  <see cref="M:Gtk.Drag.SourceSet"/>.
+	  When this toolitem has a drag window it will intercept all events,
+	  even those that would otherwise be sent to a child of the toolitem.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ReliefStyle">
@@ -301,9 +338,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Returns the relief style of this toolitem. See <see cref="T:Gtk.ReliefStyle" />.
+	</summary>
         <returns>a <see cref="T:Gtk.ReliefStyle" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Custom subclasses of <see cref="T:Gtk.ToolItem"/> should call 
+	  this function in the handler
+	  of the <see cref="E:Gtk.ToolItem.ToolbarReconfigured"/> signal
+	  to find out the relief style of buttons.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Expand">
@@ -314,12 +358,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Whether this toolitem is allocated extra space when there
+	  is more room on the toolbar then needed for the items. 
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  If true, the effect is that the item gets bigger when the 
+	  toolbar gets bigger and smaller when the toolbar gets smaller.
+	</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Homogeneous">
+ <see cref="T:Gtk.ReliefStyle" />    <Member MemberName="Homogeneous">
       <MemberSignature Language="C#" Value="public bool Homogeneous { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
@@ -327,9 +377,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Whether this toolitem is to be allocated the same size as other
+	  homogeneous items. 
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  If true, the effect is that all homogeneous items will have
+	  the same width as the widest of the items.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToolbarReconfigured">
@@ -340,8 +396,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  This signal is emitted when some property of the toolbar that the
+	  item is a child of changes. 
+	</summary>
+        <remarks>
+	  For custom subclasses of 
+	  <see cref="T:Gtk.ToolItem"/>,
+	  the default handler of this signal uses the properties
+	  <see cref="P:Gtk.Toolbar.Orientation"/>, 
+	  <see cref="P:Gtk.Toolbar.Style"/>,
+	  <see cref="P:Gtk.Toolbar.IconSize"/>, and
+	  <see cref="P:Gtk.Toolbar.ReliefStyle"/>
+	  to find out what the toolbar should look like and change
+	  themselves accordingly.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateMenuProxy">
@@ -353,7 +422,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="TooltipSet">
@@ -364,8 +433,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  This signal is emitted when the toolitem's tooltip changes.
+	</summary>
+        <remarks/>
       </Docs>
     </Member>
   </Members>
