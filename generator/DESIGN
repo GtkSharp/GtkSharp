@@ -37,30 +37,29 @@ GenBase: Abstract base class for any api.xml element that will have
             StructGen: Handles non-opaque <struct> elements
     EnumGen: Handles <enum> elements.
 
-The remaining IGeneratable classes don't generate output files
-themselves, they are just used to generate references to their
-corresponding types in method signatures and the like.
+SimpleBase: Abstract base class for types which aren't generated from
+		xml like simple types or manually wrapped/implemented types.
 
-ByRefGen: Handles struct types that must be passed into C code by
-          reference (at the moment, only GValue/GLib.Value)
-CustomMarshalerGen: Handles types that need custom marshalling.
-                    (Currently unused?)
-GStringGen: Handles conversion between GString and System.String
-ManualGen: Handles types that must be manually marshalled between
-           managed and unmanaged code (by handwritten classes such
-           as GLib.List)
-    GObjectGen: Handles GObjects
-SimpleGen: Handles types that can be simply converted from an
-           unmanaged type to a managed type (usually IntPtr)
+    ByRefGen: Handles struct types that must be passed into C code by
+        	reference (at the moment, only GValue/GLib.Value)
+    ManualGen: Handles types that must be manually marshalled between
+        	managed and unmanaged code (by handwritten classes such
+        	as GLib.List)
+    MarshalGen: Handles types that must be manually marshalled between
+		managed and unmanaged code via special CallByName/FromNative
+		syntax (eg time_t<->DateTime, gunichar<->char)
+    SimpleGen: Handles types that can be simply converted from an
+        	unmanaged type to a managed type (int, byte, short, etc...)
+	LPGen : marshals system specific long and "size" types.
+	LPUGen : marshals system specific unsigned long and "size" types.
     ConstStringGen: Handles conversion between "const char *" and
-                    System.String
+        	System.String
         StringGen: Handles conversion between non-const "char *" and
-                   System.String
-TimeTGen: Handles conversion between time_t and System.DateTime
+                System.String
 
-AliasGen: Handles <alias> elements. "Generates" type aliases by
-          ignoring them (eg, outputting "Gdk.Rectangle" wherever the
-          API calls for a GtkAllocation).
+    AliasGen: Handles <alias> elements. "Generates" type aliases by
+          	ignoring them (eg, outputting "Gdk.Rectangle" wherever the
+          	API calls for a GtkAllocation).
 
 
 Other code-generating classes used by IGeneratables
