@@ -1,4 +1,3 @@
-# TODO: Need to add gtkhtml-3.0 to DOWNLOADS.
 DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.0/sources/atk-1.0.2.tar.gz            \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.0/sources/pango-1.0.3.tar.gz          \
@@ -21,5 +20,15 @@ get-source-code:
 	for i in $(DOWNLOADS); do                          \
 		wget $$i --output-document=- | tar -xz ;   \
 	done;
-
-
+	export CVS_PASSWORD=""
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.c
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.h
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-types.h
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-enums.h
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.c
+	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.h
+	ln -f -s ../gdk/gdkpixbuf-drawable.c gtk+-2.0.5/gdk-pixbuf/gdkpixbuf-drawable.c
+	ln -f -s ../gdk/gdkpixbuf.h          gtk+-2.0.5/gdk-pixbuf/gdkpixbuf.h
+	ln -f -s ../gdk/gdkpixbuf-render.c   gtk+-2.0.5/gdk-pixbuf/gdkpixbuf-render.c
+ 
+ 
