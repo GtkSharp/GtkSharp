@@ -1,11 +1,27 @@
 2003-07-15  Duncan Mak  <duncan@ximian.com>
 
+	* sources/Gtk.metadata
+	(GtkIconSet): hide the GetSizes method.
+	(GtkTextBuffer): new overrides
+		MoveMarkByName    -> MoveMark
+		DeleteMarkByName  -> DeleteMark
+		ApplyTagByName    -> ApplyTag
+		RemoveTagByName   -> RemoveTag
+	(GtkItemFactory): new overrides
+		GetItemByAction   -> GetItem
+		GetWidgetByAction -> GetWidget
+
+	These two changes fixes bug #46388.
+
+	(GtkHTML): overrides for Begin, mark BeginContent and BeginFull as
+	overrides of Begin. This fixes bug #46427.
+
 	* sources/gtkhtml-font-style-enum.patch: A patch to use real values
         in gtkhtml-enums.h so that the parser won't choke on the complex enum
         declarations.
 
 	* sources/makefile: Apply the above patch after checking out the
-        source code for GtkHTML
+        source code for GtkHTML.
 
 2003-07-14  Mike Kestner <mkestner@speakeasy.net>
 
