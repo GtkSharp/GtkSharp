@@ -90,27 +90,13 @@
 			return ret;
 		}
 
-//
-// These are temporary bug fixes: there are a number of entry points that
-// are currently miss-generated.
-//
-
-		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern IntPtr gdk_pixbuf_new_from_data(
-					byte [] data, int colorspace, bool has_alpha, 
-					int bits_per_sample, int width, int height, int rowstride, 
-					GdkSharp.PixbufDestroyNotifyNative destroy_fn, System.IntPtr destroy_fn_data);
-
+		// overload to default the colorspace
 		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn)
 		{
 			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
 			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn, this);
 			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
 		}
-
-
-		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, byte [] data, bool copy_pixels, out IntPtr error);
 
 		public unsafe Pixbuf(byte[] data, bool copy_pixels)
 		{
