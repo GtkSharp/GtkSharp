@@ -61,8 +61,11 @@ glade-test.exe: GladeTest.cs test.glade
 clean:
 	rm -f *.exe
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf clean 
+@ENABLE_GNOME_TRUE@	$(MAKE) -C rsvg clean 
 
 distclean: clean
+@ENABLE_RSVG_TRUE@	$(MAKE) -C rsvg distclean
+
 
 unix:
 	@echo "'make unix' is broken for now."
