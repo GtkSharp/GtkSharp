@@ -3,6 +3,7 @@
 // Authors: 
 // 	Vladimir Vukicevic <vladimir@pobox.com>
 // 	Miguel de Icaza <miguel@ximian.com>
+// 	Mike Kestner <mkestner@ximian.com>
 // 	Duncan Mak <duncan@ximian.com>
 //	Gonzalo Paniagua Javier <gonzalo@ximian.com>
 //	Martin Willemoes Hansen <mwh@sysrq.dk> 
@@ -12,6 +13,7 @@
 // (C) 2003 Ximian, Inc. (Duncan Mak)
 // (C) 2003 Ximian, Inc. (Gonzalo Paniagua Javier)
 // (C) 2003 Martin Willemoes Hansen
+// (C) 2004 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 
@@ -165,3 +167,20 @@
                 		return ret;
                 	}
                 }
+
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
+		static extern IntPtr gdk_pixbuf_get_formats();
+
+		public static PixbufFormat[] Formats {
+			get {
+				IntPtr list_ptr = gdk_pixbuf_get_formats ();
+				if (list_ptr == IntPtr.Zero)
+					return new PixbufFormat [0];
+				GLib.SList list = new GLib.SList (list_ptr, typeof (PixbufFormat));
+				PixbufFormat[] result = new PixbufFormat [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = (PixbufFormat) list [i];
+				return result;
+			}
+		}
+
