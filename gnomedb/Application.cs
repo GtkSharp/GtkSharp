@@ -22,12 +22,14 @@ namespace GnomeDb
 
 	public class Application
 	{
+		private const string VERSION = "0.10";
+
 		[DllImport("gnomedb-2")]
 		static extern void gnome_db_init (string app_id, string version, int nargs, IntPtr args);
 
 		public static void Init ()
 		{
-			gnome_db_init ("GnomeDb#", "0.4", 0, new IntPtr(0));
+			gnome_db_init ("GnomeDb#", VERSION, 0, new IntPtr(0));
 		}
 
 		public static void Init (string app_id, string version)
@@ -40,7 +42,7 @@ namespace GnomeDb
 		public static void Init (ref string [] args)
 		{
 			int argc = args.Length;
-			gnome_db_init ("GnomeDb#", "0.4", ref argc, ref args);
+			gnome_db_init ("GnomeDb#", VERSION, ref argc, ref args);
 		}
 
 		public static void Init (string app_id, string version, ref string [] args)

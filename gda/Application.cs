@@ -22,12 +22,14 @@ namespace Gda
 
 	public class Application
 	{
+		private const string VERSION = "0.10";
+
 		[DllImport("gda-2")]
 		static extern void gda_init (string app_id, string version, int nargs, string[] args);
 
 		public static void Init ()
 		{
-			gda_init ("Gda#", "0.4", 0, new string[0]);
+			gda_init ("Gda#", VERSION, 0, new string[0]);
 		}
 
 		public static void Init (string app_id, string version)
@@ -37,7 +39,7 @@ namespace Gda
 
 		public static void Init (string[] args)
 		{
-			gda_init ("Gda#", "0.4", args.Length, args);
+			gda_init ("Gda#", VERSION, args.Length, args);
 		}
 
 		public static void Init (string app_id, string version, string[] args)
