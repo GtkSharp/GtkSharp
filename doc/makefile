@@ -2,7 +2,7 @@ LIBDIR=/usr/lib
 BROWSER=../../monodoc/browser/browser.exe
 ASSEMBLER=../../monodoc/browser/assembler.exe
 GENERATOR=../../monodoc/generator/generator.exe
-UPDATER=../../monodoc/updater/updater.exe
+UPDATER=../../monodoc/generator/updater.exe
 
 all: docs
 
