@@ -14,3 +14,21 @@ public DateTime GetDate ()
 	return new DateTime ((int) year, (int) month + 1, (int) day);
 }
 
+
+// This defines a Date property for Calendar
+// Note that the setter causes CalendarChange events to be fired
+public DateTime Date
+
+{
+        get {
+                return this.GetDate();
+        }
+        set {
+                uint month= (uint) value.Month-1;
+                uint year= (uint) value.Year;
+                uint day = (uint) value.Day;
+             
+                SelectMonth(month,year);
+                SelectDay(day);
+        }        
+}
