@@ -8,7 +8,8 @@ BASESOURCES = \
 	colorseldialog.c        \
 	error.c			\
 	event.c			\
-	slist.c	
+	slist.c			\
+	paned.c			
 
 if ENABLE_GNOME
 libgtksharpglue_la_SOURCES = 	\
