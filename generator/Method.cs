@@ -217,7 +217,7 @@ namespace GtkSharp.Generation {
 				sw.Write("static ");
 			sw.Write(safety);
 			Method dup = null;
-			if (Name == "ToString")
+			if (Name == "ToString" && Params == null)
 				sw.Write("override ");
 			else if (Name == "GetGType" && container_type is ObjectGen)
 				sw.Write("new ");
