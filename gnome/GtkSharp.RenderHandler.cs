@@ -1,12 +1,12 @@
 //
-// GtkSharp.RenderHandler.cs
+// Gnome.RenderHandler.cs
 //
 // Author: Duncan Mak (duncan@ximian.com)
 //
 // 2002 (C) Copyright, Ximian, Inc.
 //
 
-namespace GtkSharp {
+namespace Gnome {
 
 	using System;
 

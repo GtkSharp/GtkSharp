@@ -24,7 +24,7 @@ namespace Gnome {
 
 		private Hashtable Signals = new Hashtable ();
 
-		public event GtkSharp.UpdateHandler Update {
+		public event UpdateHandler Update {
 			add {
 				if (EventList["update"] == null)
 					Signals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
@@ -103,7 +103,7 @@ namespace Gnome {
 		}
 
 
-		public event GtkSharp.DrawHandler Draw {
+		public event DrawHandler Draw {
 			add {
 				throw new NotImplementedException ();
 			}
@@ -115,7 +115,7 @@ namespace Gnome {
 			}
 		}
 
-		public event GtkSharp.RenderHandler Render {
+		public event RenderHandler Render {
 			add {
 				throw new NotImplementedException ();
 			}
@@ -127,7 +127,7 @@ namespace Gnome {
 			}
 		}
 
-		public event GtkSharp.PointHandler Point {
+		public event PointHandler Point {
 			add {
 				throw new NotImplementedException ();
 			}
@@ -139,7 +139,7 @@ namespace Gnome {
 			}
 		}
 
-		public event GtkSharp.BoundsHandler Bounds {
+		public event BoundsHandler Bounds {
 			add {
 				throw new NotImplementedException ();
 			}

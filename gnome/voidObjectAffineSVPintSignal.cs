@@ -5,9 +5,9 @@ namespace GtkSharp {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public delegate void voidObjectAffineSVPintDelegate(IntPtr arg0, IntPtr arg1, ref Art.SVP arg2, int arg3, int key);
+	internal delegate void voidObjectAffineSVPintDelegate(IntPtr arg0, IntPtr arg1, ref Art.SVP arg2, int arg3, int key);
 
-	public class voidObjectAffineSVPintSignal : SignalCallback {
+	internal class voidObjectAffineSVPintSignal : SignalCallback {
 
 		private static voidObjectAffineSVPintDelegate _Delegate;
 
