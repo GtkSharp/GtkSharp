@@ -5,6 +5,7 @@ all:
 	TestCheckButton.cs TestColorSelection.cs TestFileSelection.cs \
 	TestRadioButton.cs TestRange.cs TestStatusbar.cs TestToolbar.cs \
 	TestDialog.cs TestFlipping.cs TestMenus.cs TestSizeGroup.cs \
+	TestCombo.cs \
 	WidgetViewer.cs
 clean:
 	rm -f *.exe
