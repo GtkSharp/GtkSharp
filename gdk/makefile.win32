@@ -1,8 +1,17 @@
+ASSEMBLY=gdk-sharp.dll
+APIS=gdk-symbols.xml gdk-api.xml
+I_APIS=../atk/atk-api.xml ../pango/pango-api.xml
+
 all: windows
 
-windows:
-	$(CSC) /unsafe /target:library /r:System.Drawing.dll /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:gdk-sharp.dll /recurse:*.cs
+windows: generated-stamp
+	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:System.Drawing.dll /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
 
-docs:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /doc:gdk-sharp-docs.xml /out:gdk-sharp.dll /recurse:*.cs
+generated-stamp: ../generator/codegen.exe $(APIS) $(I_APIS) *.custom
+	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=gdk-sharp && touch generated-stamp
+
+clean:
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
+	rm -rf generated
 

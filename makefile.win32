@@ -1,4 +1,4 @@
-DIRS=glue generator api glib pango atk gdk gtk glade
+DIRS=glue generator glib pango atk gdk gtk glade
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.3705/csc.exe /d:WIN32
 
@@ -10,21 +10,11 @@ windows:
 	done;
 
 clean:
-	rm -f api/generated-stamp
-	rm -rf lib
-	-find -iname "*.exe" -exec rm -f \{\} \;
-	-find -iname "*.dll" -exec rm -f \{\} \;
-
 	for i in $(DIRS); do \
-		rm -rf $$i/generated; \
+		(cd $$i; make -f makefile.win32 clean) || exit 1;\
 	done;
 
 release: clean windows
 	mkdir lib
 	find $(DIRS) -iname "*.dll" -exec cp \{\} lib \;
-
-docs:
-	for i in $(DIRS); do				\
-		(cd $$i; CSC="$(CSC)" make -f makefile.win32 docs) || exit 1;\
-	done;
 

@@ -1,8 +1,17 @@
+ASSEMBLY=pango-sharp.dll
+APIS=pango-api.xml
+I_APIS=
+
 all: windows
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:pango-sharp.dll /recurse:*.cs
+windows: generated-stamp
+	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
 
-docs:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /doc:pango-sharp-docs.xml /out:pango-sharp.dll /recurse:*.cs
+generated-stamp: ../generator/codegen.exe $(APIS)
+	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=pango-sharp && touch generated-stamp
+
+clean:
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
+	rm -rf generated
 

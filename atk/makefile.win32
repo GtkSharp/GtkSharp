@@ -1,8 +1,17 @@
+ASSEMBLY=atk-sharp.dll
+APIS=atk-api.xml
+I_APIS=	
+
 all: windows
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /out:atk-sharp.dll /recurse:*.cs
+windows: generated-stamp
+	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
 
-docs:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /doc:atk-sharp-docs.xml /out:atk-sharp.dll /recurse:*.cs
+generated-stamp: ../generator/codegen.exe atk-api.xml
+	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=atk-sharp && touch generated-stamp
+
+clean:
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
+	rm -rf generated
 
