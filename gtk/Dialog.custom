@@ -24,10 +24,9 @@
 // Boston, MA 02111-1307, USA.
 
 
-// Manually wrap until we figure out how to gen ellipses.
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern IntPtr gtk_dialog_new_with_buttons (string title, IntPtr i, int flags, IntPtr dummy);
-public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base(IntPtr.Zero)
+public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params object[] button_data) : base(IntPtr.Zero)
 {
 	if (GetType() != typeof (Dialog)) {
 		GLib.Value[] vals = new GLib.Value [1];
@@ -42,10 +41,11 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base(In
 			DestroyWithParent = true;
 		if ((flags & DialogFlags.NoSeparator) > 0)
 			HasSeparator = false;
-		return;
-	}
+	} else
+		Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
 
-	Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
+	for (int i = 0; i < button_data.Length - 1; i += 2)
+		AddButton ((string) button_data [i], (int) button_data [i + 1]);
 }
 
 [DllImport("gtksharpglue-2")]

@@ -23,7 +23,7 @@
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_file_chooser_dialog_new(string title, IntPtr parent, int action, IntPtr nil);
 
-		public FileChooserDialog (string title, Window parent, FileChooserAction action)
+		public FileChooserDialog (string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (FileChooserDialog)) {
 				CreateNativeObject (new string[0], new GLib.Value[0]);
@@ -31,15 +31,17 @@
 				if (parent != null)
 					TransientFor = parent;
 				Action = action;
-				return;
-			}
-			Raw = gtk_file_chooser_dialog_new (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, IntPtr.Zero);
+			} else
+				Raw = gtk_file_chooser_dialog_new (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, IntPtr.Zero);
+
+			for (int i = 0; i < button_data.Length - 1; i += 2)
+				AddButton ((string) button_data [i], (int) button_data [i + 1]);
 		}
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_file_chooser_dialog_new_with_backend(string title, IntPtr parent, int action, string backend, IntPtr nil);
 		
-		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend)
+		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend, params object[] button_data) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (FileChooserDialog)) {
 				CreateNativeObject (new string[] { "file-system-backend" }, new GLib.Value[] { new GLib.Value (backend) } );
@@ -47,9 +49,11 @@
 				if (parent != null)
 					TransientFor = parent;
 				Action = action;
-				return;
-			}
-			Raw = gtk_file_chooser_dialog_new_with_backend (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, backend, IntPtr.Zero);
+			} else
+				Raw = gtk_file_chooser_dialog_new_with_backend (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, backend, IntPtr.Zero);
+
+			for (int i = 0; i < button_data.Length - 1; i += 2)
+				AddButton ((string) button_data [i], (int) button_data [i + 1]);
 		}
 
 		[DllImport ("libgtk-win32-2.0-0.dll")]

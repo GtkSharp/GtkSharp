@@ -10,12 +10,6 @@
  * Dialog widgets are used to pop up a transient window for user feedback.
  */
 
-// TODO: - Couldn't find a good equivalent to gtk_dialog_new_with_buttons
-//         in InteractiveDialogClicked
-//       - Check how to handle response type. Can we make the button to have
-//         the binding to the cancel signal automagicly like in 
-//         gtk_dialog_new_with_buttons or should we just use the if ?
-
 using System;
 using Gtk;
 
@@ -102,49 +96,41 @@ namespace GtkDemo
 
 		private void InteractiveDialogClicked (object o, EventArgs args)
 		{
-			using (MessageDialog dialog = new MessageDialog (this,
-					DialogFlags.Modal | DialogFlags.DestroyWithParent,
-					MessageType.Question,
-					ButtonsType.Ok,
-					null)) {
+			Dialog dialog = new Dialog ("Interactive Dialog", this, DialogFlags.Modal | DialogFlags.DestroyWithParent, Gtk.Stock.Ok, ResponseType.Ok, "_Non-stock Button", ResponseType.Cancel);
+
+			HBox hbox = new HBox (false, 8);
+			hbox.BorderWidth = 8;
+			dialog.VBox.PackStart (hbox, false, false, 0);
+
+			Table table = new Table (2, 2, false);
+			table.RowSpacing = 4;
+			table.ColumnSpacing = 4;
+			hbox.PackStart (table, false, false, 0);
+
+			Label label = new Label ("_Entry1");
+			table.Attach (label, 0, 1, 0, 1);
+			Entry localEntry1 = new Entry();
+			localEntry1.Text = entry1.Text;
+			table.Attach (localEntry1, 1, 2, 0, 1);
+			label.MnemonicWidget = localEntry1;
+
+			label = new Label ("E_ntry2");
+			table.Attach (label, 0, 1, 1, 2);
+			Entry localEntry2 = new Entry();
+			localEntry2.Text = entry2.Text;
+			table.Attach (localEntry2, 1, 2, 1, 2);
+			label.MnemonicWidget = localEntry2;
 			
-				dialog.AddButton ("_Non-stock Button", (int) ResponseType.Cancel);
-
-				HBox hbox = new HBox (false, 8);
-				hbox.BorderWidth = 8;
-				dialog.VBox.PackStart (hbox, false, false, 0);
-
-				Table table = new Table (2, 2, false);
-				table.RowSpacing = 4;
-				table.ColumnSpacing = 4;
-				hbox.PackStart (table, false, false, 0);
-
-				Label label = new Label ("_Entry1");
-				table.Attach (label, 0, 1, 0, 1);
-				Entry localEntry1 = new Entry();
-				localEntry1.Text = entry1.Text;
-				table.Attach (localEntry1, 1, 2, 0, 1);
-				label.MnemonicWidget = localEntry1;
-
-				label = new Label ("E_ntry2");
-				table.Attach (label, 0, 1, 1, 2);
-				Entry localEntry2 = new Entry();
-				localEntry2.Text = entry2.Text;
-				table.Attach (localEntry2, 1, 2, 1, 2);
-				label.MnemonicWidget = localEntry2;
-			
-				hbox.ShowAll ();
+			hbox.ShowAll ();
 	
-				ResponseType response = (ResponseType) dialog.Run ();
+			ResponseType response = (ResponseType) dialog.Run ();
 
-				if (response == ResponseType.Ok)
-				{
-					entry1.Text = localEntry1.Text;
-					entry2.Text = localEntry2.Text;
-				}			
+			if (response == ResponseType.Ok) {
+				entry1.Text = localEntry1.Text;
+				entry2.Text = localEntry2.Text;
+			}			
 			
-				dialog.Hide ();
-			}
+			dialog.Destroy ();
 		}
 	}		     
 }
