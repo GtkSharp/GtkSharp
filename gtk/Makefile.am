@@ -31,6 +31,7 @@ customs = 				\
 	Accel.custom			\
 	AccelKey.custom			\
 	Adjustment.custom		\
+	Bin.custom			\
 	Button.custom			\
 	Calendar.custom			\
 	CellRenderer.custom		\
