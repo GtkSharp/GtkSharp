@@ -1,0 +1,27 @@
+// Pango.Layout.custom - Pango Layout class customizations
+//
+// Author: Pedro Abelleira Seco <pedroabelleira@yahoo.es>
+//
+// This code is inserted after the automatically generated code.
+
+
+/// <summary> Size property </summary>
+/// <remarks> Returns the size of the Layout </remarks>
+public System.Drawing.Size Size {
+    get {
+	    int width, height;
+	    GetSize (out width, out height);
+	    return new System.Drawing.Size (width, height);
+    }
+}
+
+/// <summary> SetText Method, overloaded to not having to calculate string length </summary>
+public void SetText(string text) {
+    SetText(text, text.Length);
+}
+
+/// <summary> SetMarkup Method, overloaded to not having to calculate string length </summary>
+public void SetMarkup(string markup) {
+    SetText(markup, markup.Length);
+}
+
