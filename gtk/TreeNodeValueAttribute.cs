@@ -9,7 +9,7 @@ namespace Gtk {
 	using System;
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class TreeNodeValueAttribute : Attribute {
+	public sealed class TreeNodeValueAttribute : Attribute {
 		int col;
 
 		public int Column {
