@@ -10,8 +10,10 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      An iterator used by <see cref="T:Gdk.PixbufAnimation"/> for displaying animations by stepping through frames.
+    </summary>
+    <remarks/>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -36,10 +38,34 @@
         <Parameter Name="current_time" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="current_time">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Possibly advances an animation to a new frame. Chooses the frame based
+	  on the start time passed to 
+	  <see cref="M:Gdk.PixbufAnimation.GetIter"/>.
+	</summary>
+        <param name="current_time">A <see cref="T:IntPtr"/>, pointer to a C time object</param>
+        <returns>A <see cref="T:System.Boolean"/>, true if the image may need updating.</returns>
+        <remarks>
+	  <p>
+	    <paramref name="current_time"/> would normally come from g_get_current_time(), and
+	    must be greater than or equal to the time passed to
+	    <see cref="M:Gdk.PixbufAnimation.GetIter"/>, and must increase or remain
+	    unchanged each time this method is
+	    called. That is, you can't go backward in time; animations only
+	    play forward.
+	  </p><p>
+	    As a shortcut, pass <see langword="null"/> for the current time and g_get_current_time()
+	    will be invoked on your behalf. So you only need to explicitly pass
+	    <paramref name="current_time"/> if you're doing something odd like playing the animation
+	    at double speed.
+	  </p><p>
+	    If this method returns false, there's no need to update the animation
+	    display, assuming the display had been rendered prior to advancing;
+	    if true, you need to call 
+	    <see cref="P:Gdk.PixbufAnimationIter.Pixbuf"/> and update the
+	    display with the new pixbuf.
+	  </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="OnCurrentlyLoadingFrame">
@@ -50,9 +76,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Used to determine how to respond to the 
+	  <see cref="E:Gdk.PixbufLoader.AreaUpdated"/> signal
+	  when loading an animation. 
+	  <see cref="E:Gdk.PixbufLoader.AreaUpdated"/> is emitted
+	  for an area of the frame currently streaming into the loader. So if
+	  you're on the currently loading frame, you need to redraw the 
+	  screen for the updated area.
+	</summary>
+        <returns>A <see cref="T:System.Boolean"/>, true if the frame we're on is partially loaded, or the last frame</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -90,9 +124,16 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Gets the number of milliseconds the current pixbuf should be displayed,
+	  or -1 if the current pixbuf should be displayed forever. 
+	</summary>
+        <returns>A <see cref="T:System.Int32"/>,  delay time in milliseconds (thousandths of a second)</returns>
+        <remarks>
+	  g_timeout_add() (FIXME: this doesn't seem to be bound)
+	  conveniently takes a timeout in milliseconds, so you can use a timeout
+	  to schedule the next update.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pixbuf">
@@ -102,9 +143,20 @@
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Gets the current pixbuf which should be displayed; the pixbuf will
+	  be the same size as the animation itself
+	  (<see cref="M:Gdk.PixbufAnimation.GetWidth"/>, <see cref="M:Gdk.PixbufAnimation.GetHeight"/>). This pixbuf should be displayed
+	  for <see cref="P:Gdk.PixbufAnimation.DelayTime"/> milliseconds. The caller
+	  of this function does not own a reference to the returned pixbuf;
+	  the returned pixbuf will become invalid when the iterator advances
+	  to the next frame, which may happen anytime you call
+	  <see cref="M:Gdk.PixbufAnimationIter.Advance"/>. Copy the pixbuf to keep it
+	  (don't just add a reference), as it may get recycled as you advance
+	  the iterator.
+	</summary>
+        <returns>A <see cref="T:Gdk.Pixbuf"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -140,9 +192,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <returns>a <see cref="T:Gdk.PixbufAnimationIter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
   </Members>
