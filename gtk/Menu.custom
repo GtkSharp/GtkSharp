@@ -26,14 +26,11 @@
 	}
 
 	[DllImport("libgtk-win32-2.0-0.dll")]
-	static extern IntPtr gtk_widget_get_screen (IntPtr raw);
-
-	[DllImport("libgtk-win32-2.0-0.dll")]
 	static extern void gtk_menu_set_screen (IntPtr raw, IntPtr screen);
 
-	public new Gdk.Screen Screen { 
+	public new Gdk.Screen Screen {
 		get {
-			return GLib.Object.GetObject (gtk_widget_get_screen (Handle), false) as Gdk.Screen;
+			return base.Screen;
 		}
 		set {
 			gtk_menu_set_screen (Handle, value.Handle);
