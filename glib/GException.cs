@@ -27,10 +27,10 @@ namespace GLib {
 		}
 
 		[DllImport("glib-2.0")]
-		static extern void g_clear_error (IntPtr errptr);
+		static extern void g_clear_error (ref IntPtr errptr);
 		~GException ()
 		{
-			g_clear_error (errptr);
+			g_clear_error (ref errptr);
 		}
 	}
 }
