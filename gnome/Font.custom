@@ -1,0 +1,41 @@
+// Font.custom - customizations to Gnome.Font
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("gnomeprint-2-2")]
+		static extern IntPtr gnome_font_list ();
+
+		public static string[] List ()
+		{
+			IntPtr list_ptr = gnome_font_list ();
+			if (list_ptr == IntPtr.Zero)
+				return new string [0];
+
+			GLib.List list = new GLib.List (list_ptr, typeof (string));
+			string[] result = new string [list.Count];
+			int i = 0;
+			foreach (string val in list)
+				result [i++] = val;
+			return result;
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern IntPtr gnome_font_style_list (string family);
+
+		public static string[] StyleList (string family)
+		{
+			IntPtr list_ptr = gnome_font_style_list (family);
+			if (list_ptr == IntPtr.Zero)
+				return new string [0];
+
+			GLib.List list = new GLib.List (list_ptr, typeof (string));
+			string[] result = new string [list.Count];
+			int i = 0;
+			foreach (string val in list)
+				result [i++] = val;
+			return result;
+		}
+
+
