@@ -108,16 +108,16 @@ namespace GtkSamples {
 			int x, y;
 			Gdk.ModifierType state;
 			Gdk.EventMotion ev = args.Event;
-			Gdk.Window window = ev.window;
+			Gdk.Window window = ev.Window;
 
-			if (ev.IsHint != 0) {
+			if (ev.IsHint) {
 				Gdk.ModifierType s;
 				window.GetPointer (out x, out y, out s);
 				state = s;
 			} else {
 				x = (int) ev.X;
 				y = (int) ev.Y;
-				state = (Gdk.ModifierType) ev.State;
+				state = ev.State;
 			}
 
 			if ((state & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null)
