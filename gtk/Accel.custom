@@ -12,7 +12,7 @@
 			IntPtr raw_ret = gtk_accel_groups_from_object(obj.Handle);
 			if (raw_ret == IntPtr.Zero)
 				return new AccelGroup [0];
-			GLib.List list = new GLib.List(raw_ret);
+			GLib.SList list = new GLib.SList(raw_ret);
 			AccelGroup[] result = new AccelGroup [list.Count];
 			for (int i = 0; i < list.Count; i++)
 				result [i] = list [i] as AccelGroup;
