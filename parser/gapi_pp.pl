@@ -51,7 +51,15 @@ foreach $fname (@hdrs) {
 		} elsif ($line =~ /^#ifndef\s+\w+_H_*\b/) {
 			while ($line !~ /#define/) {$line = <INFILE>;}
 		} elsif ($line =~ /$eatit_regex/) {
-			while ($line !~ /#else|#endif/) {$line = <INFILE>;}
+			$nested = 0;
+			while ($line = <INFILE>) {
+				last if (!$nested && ($line =~ /#else|#endif/));
+				if ($line =~ /#if/) {
+					$nested++;
+				} elsif ($line =~ /#endif/) {
+					$nested--
+				}
+			}
 		} elsif ($line =~ /^#\s*ifn?\s*\!?def/) {
 			#warn "Ignored #if:\n$line";
 		} elsif ($line =~ /typedef\s+struct\s+\w*\s*\{/) {
