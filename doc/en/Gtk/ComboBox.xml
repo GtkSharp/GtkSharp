@@ -9,8 +9,58 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A widget used to choose from a list of items</summary>
+    <remarks>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class ComboBoxSample
+{
+	static void Main ()
+	{
+		new ComboBoxSample ();
+	}
+
+	ComboBoxSample ()
+	{
+		Application.Init ();
+
+		Window win = new Window ("ComboBoxSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+
+		ComboBox combo = ComboBox.NewText ();
+		for (int i = 0; i &lt; 5; i ++)
+			combo.AppendText ("item " + i);
+		combo.Changed += new EventHandler (OnComboBoxChanged);
+
+		win.Add (combo);
+
+		win.ShowAll ();
+		Application.Run ();
+	}
+
+	void OnComboBoxChanged (object o, EventArgs args)
+	{
+		ComboBox combo = o as ComboBox;
+		if (o == null)
+			return;
+
+		TreeIter iter;
+
+		if (combo.GetActiveIter (out iter))
+			Console.WriteLine ((string) combo.Model.GetValue (iter, 0));
+	}
+
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -39,9 +89,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Convenience function which constructs a new text combo box, which is a <see cref="T:Gtk.ComboBox" /> just displaying strings.</summary>
         <returns>a <see cref="T:Gtk.ComboBox" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If you use this function to create a text combo box, you should only manipulate its data source with the following convenience functions: <see cref="M:Gtk.ComboBox.AppendText()" />, <see cref="M:Gtk.ComboBox.InsertText()" />, <see cref="M:Gtk.ComboBox.PrependText()" /> and <see cref="M:Gtk.ComboBox.RemoveText()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -52,8 +102,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OnChanged">
@@ -64,8 +114,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Default handler for the <see cref="E:Gtk.ComboBox.Changed" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="E:Gtk.ComboBox.Changed" /> event.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertText">
@@ -79,10 +129,15 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="position">a <see cref="T:System.Int32" /></param>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Inserts <paramref name="text" /> at <paramref name="position" /> in the list of strings stored in <see cref="T:Gtk.ComboBox" />.</summary>
+        <param name="position">An index to insert <paramref name="text" />.</param>
+        <param name="text">a <see cref="T:System.String" /> to insert</param>
+        <remarks>
+          <block subset="none" type="note">
+            <para>You can only use this function with combo boxes constructed with <see cref="M:Gtk.ComboBox.NewText()" />.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PrependText">
@@ -95,9 +150,14 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Prepends <paramref name="string" /> to the list of strings stored in the <see cref="T:Gtk.ComboBox" />.</summary>
         <param name="text">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>You can only use this function with combo boxes constructed with <see cref="M:Gtk.ComboBox.NewText()" />.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Popup">
@@ -108,8 +168,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Pops up the menu or dropdown list of <see cref="T:Gtk.ComboBox" />.</summary>
+        <remarks>This function is mostly intended for use by accessibility technologies; applications should have little use for it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveText">
@@ -122,9 +182,14 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes text at <paramref name="position" /> in the list of strings stored in <see cref="T:Gtk.ComboBox" />.</summary>
         <param name="position">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>You can only use this function with combo boxes constructed with <see cref="M:Gtk.ComboBox.NewText()" />.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetActiveIter">
@@ -137,10 +202,10 @@
         <Parameter Name="iter" Type="Gtk.TreeIter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the iter that points to the current active item, if it exists.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if it exists.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetActiveIter">
@@ -153,7 +218,7 @@
         <Parameter Name="iter" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the current active item to be the one referenced by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <remarks>To be added</remarks>
       </Docs>
@@ -166,8 +231,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Hides the menu or dropdown list of this <see cref="T:Gtk.ComboBox" />.</summary>
+        <remarks>This function is mostly intended for use by accessibility technologies; applications should have little use for it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendText">
@@ -180,9 +245,14 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Appends <paramref name="text" /> to the list of strings stored in <see cref="T:Gtk.ComboBox" />.</summary>
         <param name="text">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>You can only use this function with combo boxes constructed with <see cref="M:Gtk.ComboBox.NewText()" />.
+  </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Reorder">
@@ -307,10 +377,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.ComboBox" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -321,10 +391,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.ComboBox" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -333,9 +403,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Gtk.ComboBox" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -346,10 +416,10 @@
         <Parameter Name="model" Type="Gtk.TreeModel" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new <see cref="T:Gtk.ComboBox" /> that uses <paramref name="model" /></summary>
         <param name="model">a <see cref="T:Gtk.TreeModel" /></param>
         <returns>a <see cref="T:Gtk.ComboBox" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -360,9 +430,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>GType Property</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns the native GLib.GType value for Combo.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WrapWidth">
@@ -373,9 +443,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Wrap width for laying out the items in a grid.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+Allowed values: &gt;= 0
+</para>
+          <para>
+Default value: 0
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ColumnSpanColumn">
@@ -386,9 +463,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The column with column span information.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The column span column contains integers which indicate how many columns an item should span.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Active">
@@ -399,9 +476,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The index of the currently active item.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>-1 if there is no active item.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RowSpanColumn">
@@ -412,9 +489,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The column with row span information</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The row span column contains integers which indicate how many rows an item should span.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Model">
@@ -425,9 +502,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The <see cref="T:Gtk.TreeModel" /> which is acting as data source for the <see cref="T:Gtk.ComboBox" />.</summary>
         <returns>a <see cref="T:Gtk.TreeModel" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Will unset a previously set model (if applicable). If model is <see langword="null" />, then it will unset the model.
+
+
+<block subset="none" type="note">
+            <para>setting the model does not clear the cell renderers, you have to call <see cref="M:Gtk.ComboBox.Clear()" /> yourself if you need to set up different cell renderers for the new model.
+  </para>
+          </block></remarks>
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -438,8 +521,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the selected item is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
