@@ -1,8 +1,8 @@
 prefix=/usr
 BROWSER=../../monodoc/browser/browser.exe
 ASSEMBLER=../../monodoc/browser/assembler.exe
-GENERATOR=../../monodoc/generator/generator.exe
 UPDATER=../../monodoc/generator/updater.exe
+DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg
 
 all: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
@@ -11,6 +11,11 @@ b:
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: en/*/*.xml
 	mono $(ASSEMBLER) --ecma en -o gtk-sharp-docs
+
+update:
+	for i in $(DIRS); do                    		\
+		mono $(UPDATER) ../$$i/*.dll -o ./en -f || exit 1;	\
+        done
 
 install: gtk-sharp-docs.zip gtk-sharp-docs.tree 
 	install -m 644 gtk-sharp-docs.zip gtk-sharp-docs.tree `monodoc --get-sourcesdir`
