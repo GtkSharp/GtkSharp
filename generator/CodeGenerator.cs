@@ -21,6 +21,9 @@ namespace GtkSharp.Generation {
 
 			bool generate = false;
 			bool include = false;
+			string dir = "";
+			string custom_dir = "";
+			string assembly_name = "";
 
 			SymbolTable table = SymbolTable.Table;
 			ArrayList gens = new ArrayList ();
@@ -33,6 +36,18 @@ namespace GtkSharp.Generation {
 					generate = false;
 					include = true;
 					continue;
+				} else if (arg.StartsWith ("--outdir=")) {
+					include = generate = false;
+					dir = arg.Substring (9);
+					continue;
+				} else if (arg.StartsWith ("--customdir=")) {
+					include = generate = false;
+					custom_dir = arg.Substring (12);
+					continue;
+				} else if (arg.StartsWith ("--assembly-name=")) {
+					include = generate = false;
+					assembly_name = arg.Substring (16);
+					continue;
 				}
 
 				Parser p = new Parser ();
@@ -41,9 +56,16 @@ namespace GtkSharp.Generation {
 				if (generate)
 					gens.AddRange (curr_gens);
 			}
+
+			GenerationInfo gen_info = null;
+			if (dir != "" || assembly_name != "")
+				gen_info = new GenerationInfo (dir, custom_dir, assembly_name);
 			
 			foreach (IGeneratable gen in gens) {
-				gen.Generate ();
+				if (gen_info == null)
+					gen.Generate ();
+				else
+					gen.Generate (gen_info);
 			}
 
 			ObjectGen.GenerateMappers ();

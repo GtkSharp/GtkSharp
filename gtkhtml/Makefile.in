@@ -1,29 +1,42 @@
-MCS=mcs
-DESTDIR=
+INCLUDE_APIS = \
+	../api/atk-api.xml \
+	../api/pango-api.xml \
+	../api/gdk-api.xml \
+	../api/gdk-symbols.xml \
+	../api/gtk-symbols.xml \
+	../api/gtk-api.xml 
 
-all: linux
+NONINCLUDE_APIS = \
+	glade-api.xml \
+	art-api.xml \
+	gnome-api.xml \
+	gda-api.xml \
+	gst-api.xml \
+	gnomedb-api.xml \
+	rsvg-api.xml \
 
-windows:
-	$(CSC) /unsafe /target:library \
-	/r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll \
-	/r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll \
-	/r:../gtk/gtk-sharp.dll /r:../gnome/gnome-sharp.dll \
-	/out:gtkhtml-sharp.dll /recurse:*.cs
 
-linux: gtkhtml-sharp.dll
+RUNTIME=mono 
 
-gtkhtml-sharp.dll: generated/*.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library \
-	-r ../glib/glib-sharp.dll -r ../pango/pango-sharp.dll \
-	-r ../atk/atk-sharp.dll -r ../gdk/gdk-sharp.dll \
-	-r ../gtk/gtk-sharp.dll -r ../gnome/gnome-sharp.dll \
-	-o gtkhtml-sharp.dll --recurse '*.cs'
+all: gtkhtml-sharp.dll
+
+generated-stamp: gtkhtml-api.xml *.custom ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate gtkhtml-api.xml --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=gtkhtml-sharp && touch generated-stamp
+
+gtkhtml-sharp.dll: generated-stamp
+	 $(MCS) --unsafe -nowarn:0660,0661 --target library -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o gtkhtml-sharp.dll --recurse '*.cs'
 
 clean:
-	rm -f *.dll
+	rm -f generated-stamp
+	rm -f gtkhtml-sharp.dll
 	rm -rf generated
 
-install: all
-	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
-	cp gtkhtml-sharp.dll $(DESTDIR)@prefix@/lib
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
 
+install: all
+	../mkinstalldirs $(apidir) && \
+	cp gtkhtml-api.xml $(apidir) && \
+	cp gtkhtml-sharp.dll $(libdir)
