@@ -9,7 +9,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A widget used to choose from a list of items</summary>
+    <summary>A widget used to choose from a list of items.</summary>
     <remarks>
       <example>
         <code lang="C#">
@@ -220,7 +220,7 @@ class ComboBoxSample
       <Docs>
         <summary>Sets the current active item to be the one referenced by iter.</summary>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Popdown">
@@ -266,10 +266,13 @@ class ComboBoxSample
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Re-inserts <paramref name="cell"/> at <paramref name="position"/>.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="position">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Note that <paramref name="cell"/> has already to be packed
+	  into the combo box for this to function properly.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PackEnd">
@@ -283,10 +286,14 @@ class ComboBoxSample
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary></summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  If <paramref name="expand"/> is <see langword="false"/>, then the
+	  <paramref name="cell"/> is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand"/> is <see langword="true"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PackStart">
@@ -295,15 +302,16 @@ class ComboBoxSample
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
+
       <Parameters>
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds the <paramref name="cell"/> to the end of the combo box.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddAttribute">
@@ -318,11 +326,18 @@ class ComboBoxSample
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds an attribute mapping to the list in this combo box. 
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="attribute">a <see cref="T:System.String" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <param name="attribute">a <see cref="T:System.String" />, parameter on <paramref name="cell"/> to be set from the value</param>
+        <param name="column">a <see cref="T:System.Int32" />, column of the model to get a value from.</param>
+        <remarks>
+	  The <paramref name="column"/> is the column of the model to get a value from, and the <paramref name="attribute"/> is the
+	  parameter on <paramref name="cell"/> to be set from the value. So for example if column 2
+	  of the model contains strings, you could have the "text" attribute of a
+	  <see cref="T:Gtk.ComboBox"/> get its values from column 2.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearAttributes">
@@ -335,9 +350,12 @@ class ComboBoxSample
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Clears all existing attributes previously set with
+	  <see cref="M:Gtk.ComboBox.SetAttributes"/>.
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -348,8 +366,8 @@ class ComboBoxSample
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Unsets all the mappings on all renderers for this combo box.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
@@ -363,10 +381,15 @@ class ComboBoxSample
         <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets a data function to use for the combo box.</summary>
         <param name="renderer">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	 The data function
+	 is used instead of the standard attributes mapping for setting the
+	 column value, and should set the value of the cell renderer 
+	 as appropriate. <paramref name="func"/> may be <see langword="null"/> to remove an older one.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -538,12 +561,19 @@ Default value: 0
         <Parameter Name="destroy" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets a data function to use for the combo box.</summary>
+        <param name="renderer">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
         <param name="func_data">a <see cref="T:System.IntPtr" /></param>
         <param name="destroy">a <see cref="T:System.IntPtr" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	 The data function
+	 is used instead of the standard attributes mapping for setting the
+	 column value, and should set the value of the cell renderer 
+	 as appropriate. <paramref name="func"/> may be <see langword="null"/> to remove an older one.
+	</remarks>
       </Docs>
     </Member>
   </Members>
