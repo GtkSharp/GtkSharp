@@ -8,6 +8,7 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
+	using System.Collections;
 
 	public class Actions {
 		static VBox box = null;
@@ -18,6 +19,7 @@ namespace GtkSamples {
 		static ActionGroup dynGroup = null;
 		static uint mergeId = 0;
 		static UIManager uim = null;
+		static Hashtable actions = new Hashtable ();
 
 		/* XML description of the menus for the test app.  The parser understands
 		 * a subset of the Bonobo UI XML format, and uses GMarkup for parsing */
@@ -297,7 +299,7 @@ namespace GtkSamples {
 
 		static void OnSelect (object obj, EventArgs args)
 		{
-			Action action = ((GLib.Object)obj).Data["action"] as Action;
+			Action action = (Action) actions[obj];
 			if (action.Tooltip != null)
 				statusbar.Push (0, action.Tooltip);
 		}
@@ -310,7 +312,7 @@ namespace GtkSamples {
 		static void OnProxyConnect (object obj, ConnectProxyArgs args)
 		{
 			if (args.Proxy is MenuItem) {
-				((GLib.Object)args.Proxy).Data ["action"] = args.Action;
+				actions[args.Proxy] = args.Action;
 				((Item)args.Proxy).Selected += new EventHandler (OnSelect);
 				((Item)args.Proxy).Deselected += new EventHandler (OnDeselect);
 			}
