@@ -1,5 +1,5 @@
 <Type Name="ITreeNode" FullName="Gtk.ITreeNode">
-  <TypeSignature Language="C#" Value="public abstract interface ITreeNode" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public abstract interface ITreeNode" Maintainer="Mike Kestner" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey></AssemblyPublicKey>
@@ -7,10 +7,14 @@
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement />
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Tree Node navigation and update notification interface</summary>
+    <remarks>
+      Implement this interface for types which expose tree node information.
+      Types which implement this interface can be used to instantiate a
+      <see cref="T:Gtk.NodeStore" /> for a <see cref="T:Gtk.TreeView" />
+    </remarks>
   </Docs>
   <Base />
   <Interfaces />
@@ -30,10 +34,14 @@
         <Parameter Name="o" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>IndexOf method</summary>
         <param name="o">a <see cref="T:System.Object" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Returns the position of the specified child object in the
+          list of children. If the child is not found, the returned
+          value should be less than 0, typically -1.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ID">
@@ -44,22 +52,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>ID property</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Read-only. Represents a unique identifier for the object as a positive integer.
+	  This value is used by the <see cref="T:Gtk.NodeStore" /> as a hash value and
+	  must uniquely identify the object.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Parent">
-      <MemberSignature Language="C#" Value="public virtual Gtk.ITreeNode Parent { set; get; };" />
+      <MemberSignature Language="C#" Value="public virtual Gtk.ITreeNode Parent { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.ITreeNode</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Parent property</summary>
         <returns>a <see cref="T:Gtk.ITreeNode" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Read-only, The parent <see cref="T:Gtk.ITreeNode" /> for this <see cref="T:Gtk.ITreeNode" />
+	  or <see langword="null" /> if the node is a root <see cref="T:Gtk.ITreeNode" />. 
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildCount">
@@ -70,9 +85,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>ChildCount property</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Read-only.  Indicates the number of children of this <see cref="T:Gtk.ITreeNode" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -85,10 +100,13 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Child indexer</summary>
         <param name="index">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gtk.ITreeNode" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          Returns the child at position <paramref name="index" /> in the list of children 
+          of this <see cref="T:Gtk.ITreeNode" />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -99,8 +117,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Changed event</summary>
+        <remarks>Emited when the tree-related contents of the node have changed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildAdded">
@@ -111,8 +129,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>ChildAdded event</summary>
+        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is added to the <see cref="T:Gtk.ITreeNode" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildRemoved">
@@ -123,8 +141,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>ChildRemoved event</summary>
+        <remarks>Emited when a child <see cref="T:Gtk.ITreeNode" /> is removed from the <see cref="T:Gtk.ITreeNode" />.</remarks>
       </Docs>
     </Member>
   </Members>
