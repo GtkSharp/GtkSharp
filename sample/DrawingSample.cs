@@ -91,11 +91,13 @@ class PrettyGraphic : DrawingArea {
 
 class MovingText : DrawingArea {
 	static int d = 0;
-
+	Font f;
+	
 	public MovingText ()
 	{
-		Gtk.Timeout.Add (50, new Function (Forever));
+		Gtk.Timeout.Add (20, new Function (Forever));
 		SetSizeRequest (300, 200);
+		f = new Font ("Times", 20);
 	}
 
 	bool Forever ()
@@ -112,14 +114,12 @@ class MovingText : DrawingArea {
 		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
 			using (Brush back = new SolidBrush (Color.White), 
 			       fore = new SolidBrush (Color.Red)){
-				using (Font f = new Font ("Times", 20)){
 
 					g.FillRectangle (back, 0, 0, 400, 400);
 					g.TranslateTransform (150, 100); 
 					g.RotateTransform (d);
 					d += 3;
 					g.DrawString ("Mono", f, fore, 0, 0);
-				}
 			}
 		}
 
