@@ -263,7 +263,7 @@ class CustomNotebook : Container {
 		tabHBorder = 2;
 		tabVBorder = 2;
 
-		Flags |= (int)WidgetFlags.NoWindow;
+		WidgetFlags |= WidgetFlags.NoWindow;
 	}
 
 	public void AppendPage (Widget child, string label)
@@ -422,7 +422,7 @@ class CustomNotebook : Container {
 
 	protected override void OnRealized ()
 	{
-		Flags |= (int)WidgetFlags.Realized;
+		WidgetFlags |= WidgetFlags.Realized;
 		
 		GdkWindow = ParentWindow;
 		Style = Style.Attach (GdkWindow);

@@ -54,7 +54,7 @@ class CustomWidget : Bin {
 		layout = null;
 		stockid = Stock.Execute;
 		
-		Flags |= (int)WidgetFlags.NoWindow;
+		WidgetFlags |= WidgetFlags.NoWindow;
 	}
 
 	private Gdk.Pixbuf Icon {
@@ -137,7 +137,7 @@ class CustomWidget : Bin {
 
 	protected override void OnRealized ()
 	{
-		Flags |= (int)WidgetFlags.Realized;
+		WidgetFlags |= WidgetFlags.Realized;
 		
 		GdkWindow = ParentWindow;
 		Style = Style.Attach (GdkWindow);
