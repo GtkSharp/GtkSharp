@@ -10,8 +10,28 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      The ATK interface implemented by container objects whose <see cref="T:Atk.Object" /> children can be selected.
+    </summary>
+    <remarks>
+      <para>
+        The ATK interface implemented by container objects whose <see cref="T:Atk.Object" /> children can be selected.
+      </para>
+      <para>
+        This should be implemented by UI components with children
+        which are exposed by <see cref="M:Atk.Object.RefChild" /> and
+        <see cref="M:Atk.Object.NChildren" />, if the use of the parent UI
+        component ordinarily involves selection of one or more of the
+        objects corresponding to those AtkObject children - for
+        example, selectable lists.
+      </para>
+      <para>
+        Note that other types of "selection" (for instance text
+        selection) are accomplished a other ATK interfaces -
+        <see cref="T:Atk.Selection" /> is limited to the selection/deselection of
+        children.
+      </para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
@@ -29,9 +49,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Causes every child of the object to be selected if the object supports multiple selections.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RemoveSelection">
@@ -44,10 +66,16 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Removes the specified child of the object from the object's selection.</summary>
+        <param name="i">
+          A <see langword="int" /> specifying the index in the selection set. (e.g. the
+          ith selection as opposed to the ith child).
+        </param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" />
+          otherwise.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IsChildSelected">
@@ -60,10 +88,17 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines if the current child of this object is selected.</summary>
+        <param name="i">A <see langword="int" /> specifying the child index.</param>
+        <returns>A bool representing the specified child is selected, or 0 if selection does not implement this interface.</returns>
+        <remarks>
+          <para>
+            Callers should not rely on 0 or on a zero value for
+            indication of whether AtkSelectionIface is implemented, they
+            should use type checking/interface checking macros or the
+            atk_get_accessible_value() convenience method.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearSelection">
@@ -74,9 +109,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Clears the selection in the object so that no children in the object are selected.</summary>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddSelection">
@@ -89,10 +126,12 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds the specified accessible child of the object to the object's selection.</summary>
+        <param name="i">A <see langword="int" /> specifying the child index.</param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RefSelection">
@@ -118,9 +157,20 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the number of accessible children currently selected.</summary>
+        <returns>
+          A <see langword="int" /> representing the number of items
+          selected, or 0 if selection does not implement this
+          interface.
+        </returns>
+        <remarks>
+          <para>
+            Callers should not rely on 0 or on a zero value for
+            indication of whether AtkSelectionIface is implemented,
+            they should use type checking/interface checking macros or
+            the atk_get_accessible_value() convenience method.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionChanged">
@@ -131,8 +181,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Event fired when the selected is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>
