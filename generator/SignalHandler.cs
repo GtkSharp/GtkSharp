@@ -80,17 +80,18 @@ namespace GtkSharp.Generation {
 			}
 			
 			String dir;
+			char sep = Path.DirectorySeparatorChar;
 						
 			if (key.IndexOf("Gtk") >= 0) {
-				dir = "..\\gtk\\generated";
+				dir = ".." + sep + "gtk" + sep + "generated";
 			} else if (key.IndexOf("Gdk") >= 0) {
-				dir = "..\\gdk\\generated";
+				dir = ".." + sep + "gdk" + sep + "generated";
 			} else if (key.IndexOf("Atk") >= 0) {
-				dir = "..\\atk\\generated";
+				dir = ".." + sep + "atk" + sep + "generated";
 			} else if (key.IndexOf("Pango") >= 0) {
-				dir = "..\\pango\\generated";
+				dir = ".." + sep + "pango" + sep + "generated";
 			} else {
-				dir = "..\\glib\\generated";
+				dir = ".." + sep + "glib" + sep + "generated";
 			}
 
 			String sname = name + "Signal";
@@ -103,7 +104,7 @@ namespace GtkSharp.Generation {
 				Directory.CreateDirectory(dir);
 			}
 
-			String filename = dir + "\\" + sname + ".cs";
+			String filename = dir + sep + sname + ".cs";
 
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -148,7 +149,7 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
-			sw.Write("\t\t[DllImport(\"gobject-1.3.dll\", ");
+			sw.Write("\t\t[DllImport(\"gobject-1.3\", ");
 			sw.WriteLine("CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern void g_signal_connect_data(");
 			sw.Write("IntPtr obj, String name, " + dname + " cb, int key, IntPtr p,");
