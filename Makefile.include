@@ -5,9 +5,9 @@ RAW_API = $(pkg)-api.raw
 ASSEMBLY_NAME = $(pkg)-sharp
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 
-TARGET = $(addsuffix -sharp.dll, $(pkg)) $(addsuffix -sharp.dll.config, $(pkg))
+TARGET = $(pkg:=-sharp.dll) $(pkg:=-sharp.dll.config)
 noinst_DATA = $(TARGET)
-TARGET_API = $(addsuffix -api.xml, $(pkg))
+TARGET_API = $(pkg:=-api.xml)
 gapidir = $(datadir)/gapi-2.0
 gapi_DATA = $(TARGET_API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c $(SNK)
@@ -21,16 +21,16 @@ $(API): $(METADATA) $(RAW_API) $(SYMBOLS)
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
 	@if test -n '$(METADATA)'; then		\
-		echo "$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)";	\
-		$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
+		echo "$(RUNTIME) $(top_builddir)/parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)";	\
+		$(RUNTIME) $(top_builddir)/parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
 	fi
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 api_includes = $(addprefix -I:, $(INCLUDE_API))
 
-generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
+generated-stamp: $(API) $(top_builddir)/generator/gapi_codegen.exe $(build_customs)
 	rm -f generated/* &&	\
-	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) \
+	$(RUNTIME) $(top_builddir)/generator/gapi_codegen.exe --generate $(API) \
 	$(api_includes)	\
 	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
 	--gluelib-name=$(pkg)sharpglue --glue-filename=glue/generated.c			\
@@ -39,7 +39,7 @@ generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
 $(SNK): $(top_srcdir)/$(SNK)
 	cp $(top_srcdir)/$(SNK) .
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) ../AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo.cs
 build_references = $(addprefix /r:, $(references))
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
@@ -56,4 +56,3 @@ uninstall-local:
 	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
 	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
 	fi
-
