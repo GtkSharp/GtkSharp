@@ -210,6 +210,12 @@
     </object>
     <object name="DsnConfig" cname="GnomeDbDsnConfig" parent="GtkVBox">
       <field cname="priv" type="GnomeDbDsnConfigPrivate*"/>
+      <signal name="Changed" cname="changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbDsnConfig*" name="config"/>
+        </parameters>
+      </signal>
       <method name="GetInfo" cname="gnome_db_dsn_config_get_info">
         <return-type type="GdaDataSourceInfo*"/>
       </method>
@@ -251,6 +257,9 @@
       </method>
       <method name="GetAllText" cname="gnome_db_editor_get_all_text">
         <return-type type="gchar*"/>
+      </method>
+      <method name="GetEditable" cname="gnome_db_editor_get_editable">
+        <return-type type="gboolean"/>
       </method>
       <method name="GetHighlight" cname="gnome_db_editor_get_highlight">
         <return-type type="gboolean"/>
@@ -386,9 +395,16 @@
         </parameters>
       </method>
     </object>
-    <object name="GrayBar" cname="GnomeDbGrayBar" parent="GtkEventBox">
+    <object name="GrayBar" cname="GnomeDbGrayBar" parent="GtkBin">
       <field cname="priv" type="GnomeDbGrayBarPrivate*"/>
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true"/>
+      <property name="ShowIcon" cname="show_icon" type="gchar*" readable="true" writeable="true"/>
+      <method name="GetShowIcon" cname="gnome_db_gray_bar_get_show_icon">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetText" cname="gnome_db_gray_bar_get_text">
+        <return-type type="const-gchar*"/>
+      </method>
       <method name="GetType" cname="gnome_db_gray_bar_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -397,6 +413,25 @@
           <parameter type="const-gchar*" name="text"/>
         </parameters>
       </constructor>
+      <method name="SetIconFromFile" cname="gnome_db_gray_bar_set_icon_from_file">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file"/>
+        </parameters>
+      </method>
+      <method name="SetIconFromStock" cname="gnome_db_gray_bar_set_icon_from_stock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="stock_id"/>
+          <parameter type="GtkIconSize" name="size"/>
+        </parameters>
+      </method>
+      <method name="SetShowIcon" cname="gnome_db_gray_bar_set_show_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show"/>
+        </parameters>
+      </method>
       <method name="SetText" cname="gnome_db_gray_bar_set_text">
         <return-type type="void"/>
         <parameters>
@@ -465,6 +500,9 @@
       <method name="GetShowTitle" cname="gnome_db_grid_get_show_title">
         <return-type type="gboolean"/>
       </method>
+      <method name="GetShowTitleIcon" cname="gnome_db_grid_get_show_title_icon">
+        <return-type type="gboolean"/>
+      </method>
       <method name="GetTitle" cname="gnome_db_grid_get_title">
         <return-type type="const-gchar*"/>
       </method>
@@ -508,10 +546,29 @@
           <parameter type="gboolean" name="show"/>
         </parameters>
       </method>
+      <method name="SetShowTitleIcon" cname="gnome_db_grid_set_show_title_icon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show"/>
+        </parameters>
+      </method>
       <method name="SetTitle" cname="gnome_db_grid_set_title">
         <return-type type="void"/>
         <parameters>
           <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="SetTitleIconFromFile" cname="gnome_db_grid_set_title_icon_from_file">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file"/>
+        </parameters>
+      </method>
+      <method name="SetTitleIconFromStock" cname="gnome_db_grid_set_title_icon_from_stock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="stock_id"/>
+          <parameter type="GtkIconSize" name="size"/>
         </parameters>
       </method>
       <method name="ShowColumnTitles" cname="gnome_db_grid_show_column_titles">
@@ -599,6 +656,18 @@
           <parameter type="const-gchar*" name="dsn"/>
         </parameters>
       </constructor>
+      <method name="SetDsn" cname="gnome_db_login_set_dsn">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="dsn"/>
+        </parameters>
+      </method>
+      <method name="SetEnableCreateButton" cname="gnome_db_login_set_enable_create_button">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="enable"/>
+        </parameters>
+      </method>
       <method name="SetPassword" cname="gnome_db_login_set_password">
         <return-type type="void"/>
         <parameters>
@@ -647,6 +716,26 @@
         <return-type type="GType"/>
       </method>
       <constructor cname="gnome_db_provider_selector_new"/>
+    </object>
+    <object name="QueryBuilder" cname="GnomeDbQueryBuilder" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbQueryBuilderPrivate*"/>
+      <method name="GetConnection" cname="gnome_db_query_builder_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_query_builder_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_query_builder_new">
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </constructor>
+      <method name="SetConnection" cname="gnome_db_query_builder_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
     </object>
     <object name="ReportEditor" cname="GnomeDbReportEditor" parent="GtkVBox">
       <field cname="priv" type="GnomeDbReportEditorPrivate*"/>
@@ -711,6 +800,19 @@
       <method name="Show" cname="gnome_db_window_show">
         <return-type type="void"/>
       </method>
+    </object>
+    <object name="SqlViewer" cname="SqlViewer" parent="GtkVBox">
+      <field cname="sql_editor" type="GtkWidget*"/>
+      <field cname="grid" type="GtkWidget*"/>
+      <method name="GetType" cname="sql_viewer_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="sql_viewer_new">
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="const-gchar*" name="sql"/>
+        </parameters>
+      </constructor>
     </object>
     <struct name="ComponentInfo" cname="GnomeDbComponentInfo">
       <field cname="id" type="gchar*"/>

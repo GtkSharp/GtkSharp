@@ -7,6 +7,11 @@
 
 -->
   <namespace name="Gda" library="gda-2">
+    <enum name="BlobMode" cname="GdaBlobMode" type="flags">
+      <member cname="GDA_BLOB_MODE_READ" name="Read" value="1"/>
+      <member cname="GDA_BLOB_MODE_WRITE" name="Write" value="1 &lt;&lt; 1"/>
+      <member cname="GDA_BLOB_MODE_RDWR" name="Rdwr" value="0x03 "/>
+    </enum>
     <enum name="ClientEvent" cname="GdaClientEvent" type="enum">
       <member cname="GDA_CLIENT_EVENT_INVALID" name="Invalid"/>
       <member cname="GDA_CLIENT_EVENT_ERROR" name="Error"/>
@@ -42,6 +47,7 @@
       <member cname="GDA_CONNECTION_FEATURE_USERS" name="Users"/>
       <member cname="GDA_CONNECTION_FEATURE_VIEWS" name="Views"/>
       <member cname="GDA_CONNECTION_FEATURE_XML_QUERIES" name="XmlQueries"/>
+      <member cname="GDA_CONNECTION_FEATURE_BLOBS" name="Blobs"/>
     </enum>
     <enum name="ConnectionOptions" cname="GdaConnectionOptions" type="flags">
       <member cname="GDA_CONNECTION_OPTIONS_READ_ONLY" name="ReadOnly" value="1 &lt;&lt; 0"/>
@@ -78,6 +84,7 @@
       <member cname="GDA_VALUE_TYPE_BIGINT" name="Bigint"/>
       <member cname="GDA_VALUE_TYPE_BIGUINT" name="Biguint"/>
       <member cname="GDA_VALUE_TYPE_BINARY" name="Binary"/>
+      <member cname="GDA_VALUE_TYPE_BLOB" name="Blob"/>
       <member cname="GDA_VALUE_TYPE_BOOLEAN" name="Boolean"/>
       <member cname="GDA_VALUE_TYPE_DATE" name="Date"/>
       <member cname="GDA_VALUE_TYPE_DOUBLE" name="Double"/>
@@ -276,6 +283,12 @@
           <parameter type="GdaTransaction*" name="xaction"/>
         </parameters>
       </method>
+      <method name="CreateBlob" cname="gda_connection_create_blob">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob"/>
+        </parameters>
+      </method>
       <method name="CreateDatabase" cname="gda_connection_create_database">
         <return-type type="gboolean"/>
         <parameters>
@@ -428,6 +441,12 @@
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </signal>
+      <method name="AddDataFromXmlNode" cname="gda_data_model_add_data_from_xml_node">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="node"/>
+        </parameters>
+      </method>
       <method name="AppendRow" cname="gda_data_model_append_row">
         <return-type type="const-GdaRow*"/>
         <parameters>
@@ -592,7 +611,7 @@
           <parameter type="gint" name="cols"/>
         </parameters>
       </constructor>
-      <method name="SetNColumns" cname="gda_data_model_array_set_n_columns">
+      <method name="SetNColumns" cname="gda_data_model_array_set_n_columns" new_flag="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="gint" name="cols"/>
@@ -634,7 +653,7 @@
           <parameter type="gint" name="cols"/>
         </parameters>
       </constructor>
-      <method name="SetNColumns" cname="gda_data_model_hash_set_n_columns">
+      <method name="SetNColumns" cname="gda_data_model_hash_set_n_columns" new_flag="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="gint" name="cols"/>
@@ -850,6 +869,13 @@
         <parameters>
           <parameter type="GdaConnection*" name="cnc"/>
           <parameter type="GdaTransaction*" name="xaction"/>
+        </parameters>
+      </method>
+      <method name="CreateBlob" cname="gda_server_provider_create_blob">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="GdaBlob*" name="blob"/>
         </parameters>
       </method>
       <method name="CreateDatabase" cname="gda_server_provider_create_database">
@@ -1083,6 +1109,12 @@
       <method name="GetUri" cname="gda_xml_database_get_uri">
         <return-type type="const-gchar*"/>
       </method>
+      <method name="GetUserVersion" cname="gda_xml_database_get_user_version">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetVersion" cname="gda_xml_database_get_version">
+        <return-type type="const-gchar*"/>
+      </method>
       <constructor cname="gda_xml_database_new"/>
       <constructor cname="gda_xml_database_new_from_uri">
         <parameters>
@@ -1128,6 +1160,12 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="const-gchar*" name="uri"/>
+        </parameters>
+      </method>
+      <method name="SetUserVersion" cname="gda_xml_database_set_user_version">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="user_version"/>
         </parameters>
       </method>
       <method name="ToString" cname="gda_xml_database_to_string">
@@ -1186,6 +1224,96 @@
         </parameters>
       </method>
     </object>
+    <struct name="Blob" cname="GdaBlob">
+      <callback cname="open">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob,"/>
+        </parameters>
+      </callback>
+      <callback cname="read">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob,"/>
+        </parameters>
+      </callback>
+      <callback cname="write">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob,"/>
+        </parameters>
+      </callback>
+      <callback cname="lseek">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob,"/>
+        </parameters>
+      </callback>
+      <callback cname="close">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob"/>
+        </parameters>
+      </callback>
+      <callback cname="remove">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob"/>
+        </parameters>
+      </callback>
+      <callback cname="stringify">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob"/>
+        </parameters>
+      </callback>
+      <callback cname="free_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBlob*" name="blob"/>
+        </parameters>
+      </callback>
+      <field cname="priv_data" type="gpointer"/>
+      <field cname="user_data" type="gpointer"/>
+      <method name="Close" cname="gda_blob_close">
+        <return-type type="gint"/>
+      </method>
+      <method name="FreeData" cname="gda_blob_free_data">
+        <return-type type="void"/>
+      </method>
+      <method name="Lseek" cname="gda_blob_lseek">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="gint" name="whence"/>
+        </parameters>
+      </method>
+      <method name="Open" cname="gda_blob_open">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaBlobMode" name="mode"/>
+        </parameters>
+      </method>
+      <method name="Read" cname="gda_blob_read">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gpointer" name="buf"/>
+          <parameter type="gint" name="size"/>
+          <parameter type="gint*" name="bytes_read"/>
+        </parameters>
+      </method>
+      <method name="Remove" cname="gda_blob_remove">
+        <return-type type="gint"/>
+      </method>
+      <method name="Write" cname="gda_blob_write">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gpointer" name="buf"/>
+          <parameter type="gint" name="size"/>
+          <parameter type="gint*" name="bytes_written"/>
+        </parameters>
+      </method>
+    </struct>
     <struct name="Command" cname="GdaCommand">
       <field cname="text" type="gchar*"/>
       <field cname="type" type="GdaCommandType"/>
@@ -1586,6 +1714,7 @@
       <field cname="v_bigint" type="gint64"/>
       <field cname="v_biguint" type="guint64"/>
       <field cname="v_binary" type="gpointer"/>
+      <field cname="v_blob" type="GdaBlob"/>
       <field cname="v_boolean" type="gboolean"/>
       <field cname="v_date" type="GdaDate"/>
       <field cname="v_double" type="gdouble"/>
@@ -1626,10 +1755,13 @@
         <return-type type="guint64"/>
       </method>
       <method name="GetBinary" cname="gda_value_get_binary">
-        <return-type type="gconst-pointer"/>
+        <return-type type="const-gpointer"/>
         <parameters>
           <parameter type="glong*" name="size"/>
         </parameters>
+      </method>
+      <method name="GetBlob" cname="gda_value_get_blob">
+        <return-type type="const-GdaBlob*"/>
       </method>
       <method name="GetBoolean" cname="gda_value_get_boolean">
         <return-type type="gboolean"/>
@@ -1711,6 +1843,11 @@
         <parameters>
           <parameter type="gconstpointer" name="val"/>
           <parameter type="glong" name="size"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gda_value_new_blob">
+        <parameters>
+          <parameter type="const-GdaBlob*" name="val"/>
         </parameters>
       </constructor>
       <constructor cname="gda_value_new_boolean">
@@ -1842,6 +1979,12 @@
         <parameters>
           <parameter type="gconstpointer" name="val"/>
           <parameter type="glong" name="size"/>
+        </parameters>
+      </method>
+      <method name="SetBlob" cname="gda_value_set_blob">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GdaBlob*" name="val"/>
         </parameters>
       </method>
       <method name="SetBoolean" cname="gda_value_set_boolean">
@@ -2813,6 +2956,12 @@
           <parameter type="const-gchar*" name="description"/>
           <parameter type="const-gchar*" name="username"/>
           <parameter type="const-gchar*" name="password"/>
+        </parameters>
+      </method>
+      <method name="SaveDataSourceInfo" cname="gda_config_save_data_source_info" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataSourceInfo*" name="dsn_info"/>
         </parameters>
       </method>
       <method name="SetBoolean" cname="gda_config_set_boolean" shared="true">

@@ -10,6 +10,7 @@
     <enum name="DefType" cname="RsvgDefType" type="enum">
       <member cname="RSVG_DEF_LINGRAD" name="Lingrad"/>
       <member cname="RSVG_DEF_RADGRAD" name="Radgrad"/>
+      <member cname="RSVG_DEF_PATTERN" name="Pattern"/>
     </enum>
     <enum name="Error" cname="RsvgError" type="enum">
       <member cname="RSVG_ERROR_FAILED" name="Failed"/>
@@ -23,7 +24,6 @@
       </parameters>
     </callback>
     <struct name="BpathDef" cname="RsvgBpathDef">
-      <field cname="ref_count" type="int"/>
       <field cname="bpath" type="ArtBpath*"/>
       <field cname="n_bpath" type="int"/>
       <field cname="n_bpath_max" type="int"/>
@@ -68,9 +68,6 @@
           <parameter type="ArtBpath*" name="bpath"/>
         </parameters>
       </constructor>
-      <method name="Ref" cname="rsvg_bpath_def_ref">
-        <return-type type="RsvgBpathDef*"/>
-      </method>
     </struct>
     <struct name="DefVal" cname="RsvgDefVal">
       <field cname="type" type="RsvgDefType"/>
@@ -122,6 +119,13 @@
         <return-type type="GdkPixbuf*"/>
       </method>
       <constructor cname="rsvg_handle_new"/>
+      <constructor cname="rsvg_handle_new_gz"/>
+      <method name="SetDpi" cname="rsvg_handle_set_dpi">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="dpi"/>
+        </parameters>
+      </method>
       <method name="SetSizeCallback" cname="rsvg_handle_set_size_callback">
         <return-type type="void"/>
         <parameters>
@@ -141,13 +145,14 @@
     </struct>
     <struct name="LinearGradient" cname="RsvgLinearGradient">
       <field cname="super" type="RsvgDefVal"/>
+      <field cname="obj_bbox" type="gboolean"/>
       <field cname="affine" array_len="6" type="double"/>
+      <field cname="stops" type="RsvgGradientStops*"/>
+      <field cname="spread" type="ArtGradientSpread"/>
       <field cname="x1" type="double"/>
       <field cname="y1" type="double"/>
       <field cname="x2" type="double"/>
       <field cname="y2" type="double"/>
-      <field cname="spread" type="ArtGradientSpread"/>
-      <field cname="stops" type="RsvgGradientStops*"/>
     </struct>
     <struct name="PSCtx" cname="RsvgPSCtx">
       <field cname="dummy" type="int"/>
@@ -169,14 +174,70 @@
     </struct>
     <struct name="RadialGradient" cname="RsvgRadialGradient">
       <field cname="super" type="RsvgDefVal"/>
+      <field cname="obj_bbox" type="gboolean"/>
       <field cname="affine" array_len="6" type="double"/>
+      <field cname="stops" type="RsvgGradientStops*"/>
+      <field cname="spread" type="ArtGradientSpread"/>
       <field cname="cx" type="double"/>
       <field cname="cy" type="double"/>
       <field cname="r" type="double"/>
       <field cname="fx" type="double"/>
       <field cname="fy" type="double"/>
-      <field cname="stops" type="RsvgGradientStops*"/>
     </struct>
+    <struct name="State" cname="RsvgState">
+      <field cname="affine" array_len="6" type="double"/>
+      <field cname="opacity" type="gint"/>
+      <field cname="fill" type="RsvgPaintServer*"/>
+      <field cname="fill_opacity" type="gint"/>
+      <field cname="stroke" type="RsvgPaintServer*"/>
+      <field cname="stroke_opacity" type="gint"/>
+      <field cname="stroke_width" type="double"/>
+      <field cname="miter_limit" type="double"/>
+      <field cname="cap" type="ArtPathStrokeCapType"/>
+      <field cname="join" type="ArtPathStrokeJoinType"/>
+      <field cname="font_size" type="double"/>
+      <field cname="font_family" type="char*"/>
+      <field cname="font_style" type="PangoStyle"/>
+      <field cname="font_variant" type="PangoVariant"/>
+      <field cname="font_weight" type="PangoWeight"/>
+      <field cname="font_stretch" type="PangoStretch"/>
+      <field cname="font_decor" type="TextDecoration"/>
+      <field cname="text_offset" type="guint"/>
+      <field cname="stop_color" type="guint32"/>
+      <field cname="stop_opacity" type="gint"/>
+      <field cname="visible" type="gboolean"/>
+      <field cname="dash" type="ArtVpathDash"/>
+      <field cname="save_pixbuf" type="GdkPixbuf*"/>
+      <method name="Clone" cname="rsvg_state_clone">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-RsvgState*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Finalize" cname="rsvg_state_finalize">
+        <return-type type="void"/>
+      </method>
+      <method name="Init" cname="rsvg_state_init">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <alias name="TextDecoration" cname="TextDecoration" type="int"/>
+    <class name="Clone" cname="RsvgClone_">
+      <method name="LinearGradient" cname="rsvg_clone_linear_gradient" shared="true">
+        <return-type type="RsvgLinearGradient*"/>
+        <parameters>
+          <parameter type="const-RsvgLinearGradient*" name="grad"/>
+          <parameter type="gboolean*" name="shallow_cloned"/>
+        </parameters>
+      </method>
+      <method name="RadialGradient" cname="rsvg_clone_radial_gradient" shared="true">
+        <return-type type="RsvgRadialGradient*"/>
+        <parameters>
+          <parameter type="const-RsvgRadialGradient*" name="grad"/>
+          <parameter type="gboolean*" name="shallow_cloned"/>
+        </parameters>
+      </method>
+    </class>
     <class name="Css" cname="RsvgCss_">
       <method name="ParamArgOffset" cname="rsvg_css_param_arg_offset" shared="true">
         <return-type type="int"/>
@@ -191,13 +252,54 @@
           <parameter type="const-char*" name="param_name"/>
         </parameters>
       </method>
+      <method name="ParseAngle" cname="rsvg_css_parse_angle" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
       <method name="ParseColor" cname="rsvg_css_parse_color" shared="true">
         <return-type type="guint32"/>
         <parameters>
           <parameter type="const-char*" name="str"/>
         </parameters>
       </method>
-      <method name="ParseFontsize" cname="rsvg_css_parse_fontsize" shared="true">
+      <method name="ParseFontFamily" cname="rsvg_css_parse_font_family" shared="true">
+        <return-type type="const-char*"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="const-char*" name="inherit"/>
+        </parameters>
+      </method>
+      <method name="ParseFontStretch" cname="rsvg_css_parse_font_stretch" shared="true">
+        <return-type type="PangoStretch"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoStretch" name="inherit"/>
+        </parameters>
+      </method>
+      <method name="ParseFontStyle" cname="rsvg_css_parse_font_style" shared="true">
+        <return-type type="PangoStyle"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoStyle" name="inherit"/>
+        </parameters>
+      </method>
+      <method name="ParseFontVariant" cname="rsvg_css_parse_font_variant" shared="true">
+        <return-type type="PangoVariant"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoVariant" name="inherit"/>
+        </parameters>
+      </method>
+      <method name="ParseFontWeight" cname="rsvg_css_parse_font_weight" shared="true">
+        <return-type type="PangoWeight"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoWeight" name="inherit"/>
+        </parameters>
+      </method>
+      <method name="ParseFrequency" cname="rsvg_css_parse_frequency" shared="true">
         <return-type type="double"/>
         <parameters>
           <parameter type="const-char*" name="str"/>
@@ -207,7 +309,19 @@
         <return-type type="double"/>
         <parameters>
           <parameter type="const-char*" name="str"/>
-          <parameter type="int*" name="fixed"/>
+          <parameter type="gdouble" name="pixels_per_inch"/>
+          <parameter type="gint*" name="percent"/>
+          <parameter type="gint*" name="em"/>
+          <parameter type="gint*" name="ex"/>
+        </parameters>
+      </method>
+      <method name="ParseNormalizedLength" cname="rsvg_css_parse_normalized_length" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="gdouble" name="pixels_per_inch"/>
+          <parameter type="gdouble" name="width_or_height"/>
+          <parameter type="gdouble" name="font_size"/>
         </parameters>
       </method>
       <method name="ParseOpacity" cname="rsvg_css_parse_opacity" shared="true">
@@ -216,10 +330,40 @@
           <parameter type="const-char*" name="str"/>
         </parameters>
       </method>
+      <method name="ParseTime" cname="rsvg_css_parse_time" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParseVbox" cname="rsvg_css_parse_vbox" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="vbox"/>
+          <parameter type="double*" name="x"/>
+          <parameter type="double*" name="y"/>
+          <parameter type="double*" name="w"/>
+          <parameter type="double*" name="h"/>
+        </parameters>
+      </method>
     </class>
     <class name="Global" cname="RsvgGlobal">
       <method name="ErrorQuark" cname="rsvg_error_quark" shared="true">
         <return-type type="GQuark"/>
+      </method>
+      <method name="IsStyleArg" cname="rsvg_is_style_arg" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParseCssbuffer" cname="rsvg_parse_cssbuffer" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-char*" name="buff"/>
+          <parameter type="size_t" name="buflen"/>
+        </parameters>
       </method>
       <method name="ParsePath" cname="rsvg_parse_path" shared="true">
         <return-type type="RsvgBpathDef*"/>
@@ -227,12 +371,64 @@
           <parameter type="const-char*" name="path_str"/>
         </parameters>
       </method>
-      <method name="RenderPaintServer" cname="rsvg_render_paint_server" shared="true">
+      <method name="ParseStyle" cname="rsvg_parse_style" shared="true">
         <return-type type="void"/>
         <parameters>
-          <parameter type="ArtRender*" name="ar"/>
-          <parameter type="RsvgPaintServer*" name="ps"/>
-          <parameter type="const-RsvgPSCtx*" name="ctx"/>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="RsvgState*" name="state"/>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParseStyleAttrs" cname="rsvg_parse_style_attrs" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-char*" name="tag"/>
+          <parameter type="const-char*" name="klazz"/>
+          <parameter type="const-char*" name="id"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="ParseStylePair" cname="rsvg_parse_style_pair" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="RsvgState*" name="state"/>
+          <parameter type="const-char*" name="key"/>
+          <parameter type="const-char*" name="val"/>
+        </parameters>
+      </method>
+      <method name="ParseTransform" cname="rsvg_parse_transform" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="const-char*" name="src"/>
+        </parameters>
+      </method>
+      <method name="PopOpacityGroup" cname="rsvg_pop_opacity_group" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="int" name="opacity"/>
+        </parameters>
+      </method>
+      <method name="PushOpacityGroup" cname="rsvg_push_opacity_group" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+        </parameters>
+      </method>
+      <method name="SetDefaultDpi" cname="rsvg_set_default_dpi" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="dpi"/>
+        </parameters>
+      </method>
+      <method name="ViewportPercentage" cname="rsvg_viewport_percentage" shared="true">
+        <return-type type="gdouble"/>
+        <parameters>
+          <parameter type="gdouble" name="width"/>
+          <parameter type="gdouble" name="height"/>
         </parameters>
       </method>
     </class>
@@ -253,9 +449,29 @@
           <parameter type="GError**" name="error"/>
         </parameters>
       </method>
+      <method name="FromFileAtMaxSizeEx" cname="rsvg_pixbuf_from_file_at_max_size_ex" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="handle"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gint" name="max_width"/>
+          <parameter type="gint" name="max_height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
       <method name="FromFileAtSize" cname="rsvg_pixbuf_from_file_at_size" shared="true">
         <return-type type="GdkPixbuf*"/>
         <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtSizeEx" cname="rsvg_pixbuf_from_file_at_size_ex" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="handle"/>
           <parameter type="const-gchar*" name="file_name"/>
           <parameter type="gint" name="width"/>
           <parameter type="gint" name="height"/>
@@ -271,6 +487,16 @@
           <parameter type="GError**" name="error"/>
         </parameters>
       </method>
+      <method name="FromFileAtZoomEx" cname="rsvg_pixbuf_from_file_at_zoom_ex" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="handle"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="double" name="x_zoom"/>
+          <parameter type="double" name="y_zoom"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
       <method name="FromFileAtZoomWithMax" cname="rsvg_pixbuf_from_file_at_zoom_with_max" shared="true">
         <return-type type="GdkPixbuf*"/>
         <parameters>
@@ -280,6 +506,115 @@
           <parameter type="gint" name="max_width"/>
           <parameter type="gint" name="max_height"/>
           <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtZoomWithMaxEx" cname="rsvg_pixbuf_from_file_at_zoom_with_max_ex" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="handle"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="double" name="x_zoom"/>
+          <parameter type="double" name="y_zoom"/>
+          <parameter type="gint" name="max_width"/>
+          <parameter type="gint" name="max_height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileEx" cname="rsvg_pixbuf_from_file_ex" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="handle"/>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+    </class>
+    <class name="Render" cname="RsvgRender_">
+      <method name="PaintServer" cname="rsvg_render_paint_server" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtRender*" name="ar"/>
+          <parameter type="RsvgPaintServer*" name="ps"/>
+          <parameter type="const-RsvgPSCtx*" name="ctx"/>
+        </parameters>
+      </method>
+      <method name="Path" cname="rsvg_render_path" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-char*" name="d"/>
+        </parameters>
+      </method>
+    </class>
+    <class name="Start" cname="RsvgStart_">
+      <method name="Circle" cname="rsvg_start_circle" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Ellipse" cname="rsvg_start_ellipse" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Image" cname="rsvg_start_image" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Line" cname="rsvg_start_line" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Path" cname="rsvg_start_path" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Polygon" cname="rsvg_start_polygon" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Polyline" cname="rsvg_start_polyline" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Rect" cname="rsvg_start_rect" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Text" cname="rsvg_start_text" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
+        </parameters>
+      </method>
+      <method name="Tspan" cname="rsvg_start_tspan" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgHandle*" name="ctx"/>
+          <parameter type="const-xmlChar**" name="atts"/>
         </parameters>
       </method>
     </class>
