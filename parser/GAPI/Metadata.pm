@@ -80,7 +80,7 @@ sub load {
 				@data = parseData ($node);	
 			}
 		}
-			
+
 		push @{$self->{rules}}, [\%classes, \@data];
 	}
 }
@@ -127,8 +127,25 @@ sub fixupParams {
 	}
 }
 
+sub addClassData {
+    my ($doc, $node, $class, $data_list_ref) = @_;
+
+    foreach $data (@$data_list_ref) {
+	if ($$data[1] eq "class") {
+	    my @nodes = $node->getChildrenByTagName ($$data[5]);
+
+	    if (0 == scalar @nodes) {
+		print STDERR "DEBUG> $class $$data[0] $$data[1] $$data[2] $$data[3] $$data[4] $$data[5] $$data[6]\n";
+		my $new_node = $doc->createElement ($$data[5]);
+		$node->appendChild ($new_node);
+	    }
+	    next;
+	}
+    }
+}
+
 sub fixupNamespace {
-	my ($self, $ns_node) = @_;
+	my ($self, $doc, $ns_node) = @_;
 	my $node;
 	foreach $rule (@{$self->{rules}}) {
 		my ($classes_ref, $data_list_ref) = @$rule;
@@ -145,6 +162,11 @@ sub fixupNamespace {
 			my %classes = %$classes_ref;
 			$methods_ref = $classes{$class}[0];
 			$signals_ref = $classes{$class}[1];
+
+			if ({%$classes_ref}->{$class}) {
+			    addClassData ($doc, $node, $class, $data_list_ref);
+			}
+
 			next if not ($methods_ref or $signals_ref);
 
 			for ($method_node = $node->firstChild; $method_node; $method_node = $method_node->nextSibling ()) {
@@ -196,7 +218,7 @@ sub fixup {
 			if (not ($metadata and $metadata->{namespace} eq $namespace)) {
 				$metadata = new Metadata ($namespace);
 			}
-			$metadata->fixupNamespace ($ns_node);
+			$metadata->fixupNamespace ($doc, $ns_node);
 		}
 	}
 }

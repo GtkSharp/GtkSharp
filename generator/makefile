@@ -1,4 +1,5 @@
 MCS=mcs
+RUNTIME=mono
 
 all: linux
 
@@ -9,7 +10,7 @@ windows: *.cs
 linux: generated-stamp 
 
 generated-stamp: codegen.exe gtkapi.xml
-	mono ./codegen.exe gtkapi.xml && touch generated-stamp
+	$(RUNTIME) ./codegen.exe gtkapi.xml && touch generated-stamp
 
 clean:
 	rm -f *.exe

@@ -15,6 +15,7 @@ namespace GtkSharp.Generation {
 
 		private ArrayList ctors = new ArrayList();
 		private ArrayList strings = new ArrayList();
+		private bool hasDefaultConstructor = true;
 		private bool ctors_initted = false;
 		private Hashtable clash_map;
 
@@ -33,6 +34,10 @@ namespace GtkSharp.Generation {
 
 				case "constructor":
 					ctors.Add (new Ctor (LibraryName, member, this));
+					break;
+
+				case "disabledefaultconstructor":
+					hasDefaultConstructor = false;
 					break;
 					
 				case "static-string":
@@ -218,7 +223,7 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			if (!clash_map.ContainsKey("")) {
+			if (!clash_map.ContainsKey("") && hasDefaultConstructor) {
 				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
 				sw.WriteLine();
 			}
