@@ -130,7 +130,7 @@ class Client {
 		
 		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, false);
 		DrawTitles (tableau);
-		tableau.ColSpacings = 10;
+		tableau.ColumnSpacing = 10;
 		uint i = 1;
 		foreach (Record r in dataList) {
 			tableau.Attach (new Label (r.ID.ToString ()), 0, 1, i, i + 1);
@@ -181,13 +181,13 @@ class Client {
 		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
-		button = Button.NewFromStock (Stock.Add);
+		button = new Button (Stock.Add);
 		button.Clicked += new EventHandler (Insert_Action);
 		button.CanDefault = true;
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		button.GrabDefault ();
 
-		button = Button.NewFromStock (Stock.Cancel);
+		button = new Button (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		dialog.Modal = true;
@@ -211,13 +211,13 @@ class Client {
 		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
-		button = Button.NewFromStock (Stock.Remove);
+		button = new Button (Stock.Remove);
 		button.Clicked += new EventHandler (Remove_Action);
 		button.CanDefault = true;
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		button.GrabDefault ();
 
-		button = Button.NewFromStock (Stock.Cancel);
+		button = new Button (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
 
@@ -233,8 +233,8 @@ class Client {
 		
 		Table table = new Table (3, 3, false);
 		hbox.PackStart (table);
-		table.ColSpacings = 4;
-		table.RowSpacings = 4;
+		table.ColumnSpacing = 4;
+		table.RowSpacing = 4;
 		Label label = null;
 
 		label = Label.NewWithMnemonic ("_ID");
@@ -275,13 +275,13 @@ class Client {
 		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
-		button = Button.NewFromStock (Stock.Apply);
+		button = new Button (Stock.Apply);
 		button.Clicked += new EventHandler (Update_Action);
 		button.CanDefault = true;
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		button.GrabDefault ();
 
-		button = Button.NewFromStock (Stock.Cancel);
+		button = new Button (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
 
