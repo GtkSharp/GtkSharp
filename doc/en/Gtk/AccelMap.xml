@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Global accelerator map for an entire application.</summary>
+    <remarks>This class is a singleton; only one can exist at a time.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -36,11 +36,11 @@
         <Parameter Name="key" Type="Gtk.AccelKey" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_path">a <see cref="T:System.String" /></param>
-        <param name="key">a <see cref="T:Gtk.AccelKey" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Looks up the accelerator entry for <paramref name="accel_path"/> and fills in <paramref name="key"/>.</summary>
+        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
+        <param name="key">a <see cref="T:Gtk.AccelKey" />, the accelerator key to be filled in (optional)</param>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true"/> if <paramref name="accel_path"/> is known, <see langword="false"/> otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LockPath">
@@ -53,9 +53,32 @@
         <Parameter Name="accel_path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>  
+	  Locks the given accelerator path. If the accelerator map doesn't yet contain
+	  an entry for <paramref name="accel_path"/>, a new one is created.
+	</summary>
         <param name="accel_path">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  <para>
+	    Locking an accelerator path prevents its accelerator from being changed 
+	    during runtime. A locked accelerator path can be unlocked by 
+	    <see cref="M:Gtk.AccelMap.UnlockPath"/>.
+	    Refer to <see cref="M:Gtk.AccelMap.ChangeEntry"/>
+	    for information about runtime accelerator changes.
+	  </para>
+	  <para>
+	    If called more than once, <paramref name="accel_path"/> remains locked until
+	    <see cref="M:Gtk.AccelMap.UnlockPath"/>
+	    has been called an equivalent number of times.
+	  </para>
+
+	  <para>
+	    Note that locking of individual accelerator paths is independent from 
+	    locking the <see cref="T:Gtk.AccelGroup"/> containing them. For runtime accelerator
+	    changes to be possible both the accelerator path and its 
+	    <see cref="T:Gtk.AccelGroup"/> have to be unlocked. 
+	  </para>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnlockPath">
@@ -68,9 +91,14 @@
         <Parameter Name="accel_path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_path">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Undoes the last call to <see cref="M:Gtk.AccelMap.LockPath"/>
+	  on this <paramref name="accel_path"/>.
+	</summary>
+        <param name="accel_path">a <see cref="T:System.String" />, a valid accelerator path</param>
+        <remarks>
+	  Refer to <see cref="M:Gtk.AccelMap.LockPath"/> for information
+	  about accelerator path locking.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeEntry">
@@ -86,13 +114,21 @@
         <Parameter Name="replace" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary> 
+	  Changes the <paramref name="accel_key"/> and <paramref name="accel_mods"/> currently associated with 
+	  <paramref name="accel_path"/>. 
+	</summary>
         <param name="accel_path">a <see cref="T:System.String" /></param>
         <param name="accel_key">a <see cref="T:System.UInt32" /></param>
         <param name="accel_mods">a <see cref="T:System.Int32" /></param>
         <param name="replace">a <see cref="T:System.Boolean" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Due to conflicts with other accelerators, a change may not always be possible. The
+	  <paramref name="replace"/> parameter indicates whether other accelerators may be deleted to resolve such
+	  conflicts. A change will only occur if all conflicts could be resolved (which  might not be the case if conflicting accelerators are locked). Successful
+	  changes are indicated by a <see langword="true"/> return value.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -105,9 +141,12 @@
         <Parameter Name="file_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Parses a file previously saved with <see cref="M:Gtk.AccelMap.Save"/>
+	  for accelerator specifications, and propagates them accordingly.
+	</summary>
         <param name="file_name">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveFd">
@@ -120,9 +159,11 @@
         <Parameter Name="fd" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="fd">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  File descriptor variant of <see cref="M:Gtk.AccelMap.Save"/>.
+	</summary>
+        <param name="fd">a <see cref="T:System.Int32" />, a valid writeable file descriptor</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Save">
@@ -135,9 +176,14 @@
         <Parameter Name="file_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Saves current accelerator specifications (accelerator path, key
+	  and modifiers) to <paramref name="file_name"/>.
+	  The file is written in a format suitable to be read back in by
+	  <see cref="M:Gtk.AccelMap.Load"/>.
+	</summary>
+        <param name="file_name">a <see cref="T:System.String" />, a file to contain accelerator specifications</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadFd">
@@ -150,9 +196,11 @@
         <Parameter Name="fd" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="fd">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  File descriptor variant of <see cref="M:Gtk.AccelMap.Load"/>.
+	</summary>
+        <param name="fd">a <see cref="T:System.Int32" />, a valid readable file descriptor.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddEntry">
@@ -167,11 +215,27 @@
         <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Registers a new accelerator with the global accelerator map.
+	</summary>
         <param name="accel_path">a <see cref="T:System.String" /></param>
         <param name="accel_key">a <see cref="T:System.UInt32" /></param>
         <param name="accel_mods">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  This function should only be called once per <paramref name="accel_path"/>
+	  with the canonical <paramref name="accel_key"/> and <paramref name="accel_mods"/> for this path.
+	  To change the accelerator during runtime programatically, use
+	  <see cref="M:Gtk.AccelMap.ChangeEntry"/>.
+	  The accelerator path must consist of "&lt;WINDOWTYPE&gt;/Category1/Category2/.../Action",
+	  where &lt;WINDOWTYPE&gt; should be a unique application-specific identifier, that
+	  corresponds to the kind of window the accelerator is being used in, e.g. "Gimp-Image",
+	  "Abiword-Document" or "Gnumeric-Settings".
+	  The Category1/.../Action portion is most appropriately chosen by the action the
+	  accelerator triggers, i.e. for accelerators on menu items, choose the item's menu path,
+	  e.g. "File/Save As", "Image/View/Zoom" or "Edit/Select All".
+	  So a full valid accelerator path may look like:
+	  "&lt;Gimp-Toolbox&gt;/File/Dialogs/Tool Options...".
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddFilter">
@@ -184,9 +248,21 @@
         <Parameter Name="filter_pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds a filter to the global list of accel path filters.
+	</summary>
         <param name="filter_pattern">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  <para>
+	    Accel map entries whose accel path matches one of the filters
+	    are skipped by <see cref="M:Gtk.AccelMap.Foreach"/>.
+	  </para>
+	  <para>
+	    This function is intended for Gtk# modules that create their own
+	    menus but don't want them to be saved into the applications 
+	    accelerator map dump.
+	  </para>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="Get">
@@ -197,9 +273,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Gets the singleton global<see cref="T:Gtk.AccelMap"/>. object. This object
+	  is useful only for notification of changes to the accelerator
+	  map via the internal "changed" signal; it isn't a parameter to the
+	  other accelerator map functions.
+	</summary>
         <returns>a <see cref="T:Gtk.AccelMap" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Foreach">
@@ -213,10 +294,18 @@
         <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Loops over the entries in the accelerator map whose accel path
+	  doesn't match any of the filters added with 
+	  <see cref="M:Gtk.AccelMap.AddFilter"/>
+	  and executes <paramref name="foreach_func"/> on each. 
+	</summary>
+        <param name="data">a <see cref="T:System.IntPtr" />, data to pass to <paramref name="foreach_func"/></param>
+        <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" />, function to execute on each accel map entrey</param>
+        <remarks>
+	  See also  <see cref="M:Gtk.AccelMap.ForeachUnfiltered"/>.
+	  XXX: See http://bugzilla.ximian.com/show_bug.cgi?id=70912.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForeachUnfiltered">
@@ -230,10 +319,13 @@
         <Parameter Name="foreach_func" Type="Gtk.AccelMapForeach" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Loops over all entries in the accelerator map and executes
+ * <paramref name="foreach_func"/> on each.</summary>
         <param name="data">a <see cref="T:System.IntPtr" /></param>
         <param name="foreach_func">a <see cref="T:Gtk.AccelMapForeach" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  See also  <see cref="M:Gtk.AccelMap.Foreach"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -283,9 +375,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <returns>a <see cref="T:Gtk.AccelMap" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
