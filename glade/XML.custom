@@ -45,4 +45,153 @@
 			return ret;
 		}
 
+		/* signal autoconnection using reflection */
+
+		/// <summary>Automatically connect signals</summary>
+		/// <remarks>Connects the signals defined in the glade file with handler methods
+		///     provided by the given object.</remarks>
+		public void Autoconnect (object handler)
+		{
+			SignalConnector sc = new SignalConnector (this, handler);
+			sc.Autoconnect ();
+		}
 		
+		/// <summary>Automatically connect signals</summary>
+		/// <remarks>Connects the signals defined in the glade file with static handler 
+		///     methods provided by the given type.</remarks>
+		public void Autoconnect (Type handler_class)
+		{
+			SignalConnector sc = new SignalConnector (this, handler_class);
+			sc.Autoconnect ();
+		}
+
+		class SignalConnector 
+		{
+			/* the Glade.XML object whose signals we want to connect */
+			XML gxml;
+	
+			/* the object to look for handlers */
+			object handler_object;
+	
+			/* the type to look for handlers if no object has been specified */
+			Type handler_type;
+	
+			public SignalConnector (XML gxml, object handler) 
+			{
+				this.gxml = gxml;
+				this.handler_object = handler;
+				this.handler_type = handler.GetType ();
+			}
+	
+			public SignalConnector (XML gxml, Type type)
+			{
+				this.gxml = gxml;
+				this.handler_object = null;
+				this.handler_type = type;
+			}
+			
+			delegate void RawXMLConnectFunc (string handler_name, IntPtr objekt, 
+						         string signal_name, string signal_data, 
+						         IntPtr connect_object, int after, IntPtr user_data);
+			
+			[DllImport("glade-2.0")]
+			static extern void glade_xml_signal_autoconnect_full (IntPtr raw, RawXMLConnectFunc func,
+									      IntPtr user_data);
+			
+			public void Autoconnect () {
+				RawXMLConnectFunc cf = new RawXMLConnectFunc (ConnectFunc);
+				glade_xml_signal_autoconnect_full (gxml.Handle, cf, IntPtr.Zero);
+			}
+			
+			void ConnectFunc (string handler_name, IntPtr objekt_ptr, 
+					  string signal_name, string signal_data, 
+					  IntPtr connect_object_ptr, int after, IntPtr user_data) {
+				
+				GLib.Object objekt = GLib.Object.GetObject (objekt_ptr);
+	
+				/* if an connect_object_ptr is provided, use that as handler */
+				object connect_object = 
+					connect_object_ptr == IntPtr.Zero 
+						? handler_object
+						: GLib.Object.GetObject (connect_object_ptr);
+				
+				/* search for the event to connect */
+				System.Reflection.MemberInfo[] evnts = objekt.GetType ().
+					FindMembers (System.Reflection.MemberTypes.Event, 
+					     System.Reflection.BindingFlags.Instance 
+					     | System.Reflection.BindingFlags.Static
+					     | System.Reflection.BindingFlags.Public 
+					     | System.Reflection.BindingFlags.NonPublic, 
+					     signalFilter, signal_name);
+				foreach (System.Reflection.EventInfo ei in evnts) 
+				{
+					bool connected = false;
+					System.Reflection.MethodInfo add = ei.GetAddMethod ();
+					System.Reflection.ParameterInfo[] addpi = add.GetParameters ();
+					if (addpi.Length == 1) 
+					{ /* this should be always true, unless there's something broken */
+						Type delegate_type = addpi[0].ParameterType;
+	
+						/* look for an instance method */
+						if (connect_object != null) try 
+						{
+							Delegate d = Delegate.CreateDelegate 
+								(delegate_type, connect_object, handler_name);
+							add.Invoke (objekt, new object[] { d } );
+							connected = true;
+						} 
+						catch (ArgumentException) 
+						{
+							/* ignore if there is not such instance method */
+						}
+						
+						/* look for a static method if no instance method has been found */
+						if (!connected && handler_type != null) try 
+						{
+							Delegate d = Delegate.CreateDelegate 
+								(delegate_type, handler_type, handler_name);
+							add.Invoke (objekt, new object[] { d } );
+							connected = true;
+						} 
+						catch (ArgumentException) 
+						{
+							/* ignore if there is not such static method */
+						}
+	
+						if (!connected) 
+						{
+							throw new HandlerNotFoundException (handler_name, signal_name, ei, delegate_type);
+						}
+					}
+				}
+	
+			}
+	
+			System.Reflection.MemberFilter signalFilter = new System.Reflection.MemberFilter (SignalFilter);
+			
+			/* matches events to GLib signal names */
+			static bool SignalFilter (System.Reflection.MemberInfo m, object filterCriteria) 
+			{
+				string signame = (filterCriteria as string);
+				object[] attrs = m.GetCustomAttributes (typeof (GLib.SignalAttribute), true);
+				if (attrs.Length > 0)
+				{
+					foreach (GLib.SignalAttribute a in attrs)
+					{
+						if (signame == a.CName)
+						{
+							return true;
+						}
+					}
+					return false;
+				}
+				else
+				{
+					/* this tries to match the names when no attibutes are present.
+					   It is only a fallback. */
+					signame = signame.ToLower ().Replace ("_", "");
+					string evname = m.Name.ToLower ();
+					return signame == evname;
+				}
+			}
+		}

@@ -152,6 +152,7 @@ namespace GtkSharp.Generation {
 			string argsname;
 			string handler = GenHandler (out argsname);
 
+			sw.WriteLine("\t\t[GLib.Signal("+ cname + ")]");
 			sw.Write("\t\tpublic ");
 			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null) || (implementor != null && implementor.GetSignalRecursively (Name) != null))
 				sw.Write("new ");

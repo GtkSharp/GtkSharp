@@ -6,7 +6,7 @@ MCS=mcs
 
 @ENABLE_GLADE_TRUE@ GLADE_PATH=-L ../glade
 @ENABLE_GLADE_TRUE@ GLADE_ASSEMBLY=-r glade-sharp.dll
-@ENABLE_GLADE_TRUE@ GLADE_TARGETS=glade-viewer.exe
+@ENABLE_GLADE_TRUE@ GLADE_TARGETS=glade-viewer.exe glade-test.exe
 
 local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk $(GNOME_PATH) $(GLADE_PATH) 
 all_assemblies=-r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) -r System.Drawing
@@ -49,6 +49,9 @@ treeviewdemo.exe: TreeViewDemo.cs
 
 glade-viewer.exe: GladeViewer.cs
 	$(MCS) --unsafe -o glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs
+
+glade-test.exe: GladeTest.cs
+	$(MCS) --unsafe -o glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
 
 clean:
 	rm -f *.exe
