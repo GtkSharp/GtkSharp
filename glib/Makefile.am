@@ -32,6 +32,7 @@ sources =		 			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
+	PropertyAttribute.cs			\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
 	SignalCallback.cs			\

@@ -66,39 +66,19 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected virtual string QuotedPropertyName (string cname) {
-			return "\"" + cname + "\"";
-		}
-
-		protected virtual string PropertyHeader (ref string indent, string modifiers, string cs_type, string name) {
-			string header;
-
-			header = indent + "public " + modifiers + cs_type + " " + name + " {\n";
-			indent += "\t";
-			return header;
-		}
-
-		protected virtual string GetterHeader (string modifiers, string cs_type, string name) {
-			return "get";
+		protected virtual string PropertyAttribute (string qpname) {
+			return "[GLib.Property (" + qpname + ")]";
 		}
 
 		protected virtual string RawGetter (string qpname) {
 			return "GetProperty (" + qpname + ")";
 		}
 
-		protected virtual string SetterHeader (string modifiers, string cs_type, string name) {
-			return "set";
-		}
-
 		protected virtual string RawSetter (string qpname) {
 			return "SetProperty(" + qpname + ", val)";
 		}
 
-		protected virtual string PropertyFooter (string indent) {
-			return indent.Substring (1) + "}\n";
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public void Generate (GenerationInfo gen_info, string indent)
 		{
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
@@ -115,7 +95,7 @@ namespace GtkSharp.Generation {
 			if (name == container_type.Name) {
 				name += "Prop";
 			}
-			string qpname = QuotedPropertyName (elem.GetAttribute("cname"));
+			string qpname = "\"" + elem.GetAttribute("cname") + "\"";
 
 			string v_type = "";
 			if (table.IsEnum(c_type)) {
@@ -173,14 +153,16 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine();
 
-			string indent = "\t\t";
-			sw.Write(PropertyHeader (ref indent, modifiers, cs_type, name));
+			sw.WriteLine (indent + PropertyAttribute (qpname));
+			sw.WriteLine (indent + "public " + modifiers + cs_type + " " + name + " {");
+			indent += "\t";
+
 			if (has_getter) {
-				sw.Write(indent + GetterHeader (modifiers, cs_type, name));
+				sw.Write(indent + "get ");
 				getter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
-				sw.WriteLine(indent + GetterHeader (modifiers, cs_type, name) + " {");
+				sw.WriteLine(indent + "get {");
 				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
 				if (table.IsObject (c_type)) {
 					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
@@ -204,11 +186,11 @@ namespace GtkSharp.Generation {
 			}
 
 			if (has_setter) {
-				sw.Write(indent + SetterHeader (modifiers, cs_type, name));
+				sw.Write(indent + "set ");
 				setter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
-				sw.WriteLine(indent + SetterHeader (modifiers, cs_type, name) + " {");
+				sw.WriteLine(indent + "set {");
 				sw.Write(indent + "\tGLib.Value val = ");
 				if (table.IsEnum(c_type)) {
 					sw.WriteLine("new GLib.Value(new GLib.EnumWrapper ((int) value, {0}), \"{1}\");", table.IsEnumFlags (c_type) ? "true" : "false", c_type);
@@ -228,7 +210,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + "}");
 			}
 
-			sw.Write(PropertyFooter (indent));
+			sw.WriteLine(indent.Substring (1) + "}");
 			sw.WriteLine();
 
 			Statistics.PropCount++;

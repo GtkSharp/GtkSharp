@@ -18,6 +18,7 @@ DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 				\
 	Application.cs			\
+	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
 	NodeStore.cs			\
 	ThreadNotify.cs			\

@@ -1,3 +1,41 @@
+2004-11-18  Dan Winship  <danw@novell.com>
+
+	Redo child property handling; now we generate classes to hold the
+	child properties for a given widget in a container, and generate
+	the child properties as properties on those classes.
+	
+	* parser/gapi2xml.pl (addPropElem): don't prepend "child_" to
+	child prop names any more
+
+	* generator/ClassBase.cs (ClassBase): keep childprops separate
+	from properties
+	(GenChildProperties): create a subclass of Gtk.ContainerChild
+	containing the container type's child properties, and override the
+	Container indexer to return that type.
+
+	* generator/ObjectGen.cs (Generate): call GenChildProperties
+
+	* generator/Property.cs:
+	* generator/ChildProperty.cs: Simplify these a bunch, since child
+	properties are now represented as C# properties as well. Also add
+	[GLib.Property(cname)] and [Gtk.ChildProperty(cname)] attributes.
+
+	* glib/Makefile.am (sources): add PropertyAttribute.cs
+
+	* glib/PropertyAttribute.cs: attribute used to label
+	GObject properties
+
+	* gtk/Makefile.am (sources): add ChildPropertyAttribute.cs
+
+	* gtk/gtk-api.raw: regenerate for parser changes (remove
+	"Child"/"child_" from child property names).
+
+	* gtk/ChildPropertyAttribute.cs: attribute used to label
+	GtkContainer child properties
+
+	* gtk/Container.custom: define the ContainerChild class, and an
+	indexer to return instances of it.
+
 2004-11-17  Jorn Baayen  <jorn@nl.linux.org>
 
 	* gtk/FileChooserDialog.custom : set TransientFor, not Parent.

@@ -186,3 +186,32 @@ public virtual GLib.GType ChildType() {
 	GLib.GType ret = new GLib.GType(raw_ret);
 	return ret;
 }
+
+public class ContainerChild {
+	protected Container parent;
+	protected Widget child;	
+
+	public ContainerChild (Container parent, Widget child)
+	{
+		this.parent = parent;
+		this.child = child;
+	}
+
+	public Container Parent {
+		get {
+			return parent;
+		}
+	}
+
+	public Widget Child {
+		get {
+			return child;
+		}
+	}
+}
+
+public virtual ContainerChild this [Widget w] {
+	get {
+		return new ContainerChild (this, w);
+	}
+}

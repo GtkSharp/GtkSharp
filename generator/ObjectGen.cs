@@ -146,6 +146,7 @@ namespace GtkSharp.Generation {
 
 			GenCtors (gen_info);
 			GenProperties (gen_info);
+			GenChildProperties (gen_info);
 			
 			bool has_sigs = (sigs != null && sigs.Count > 0);
 			if (!has_sigs && interfaces != null) {

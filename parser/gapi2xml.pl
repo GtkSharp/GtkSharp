@@ -789,9 +789,6 @@ sub addPropElem
 	} else {
 		$name =~ s/\s*\"//g;
 	}
-	if ($is_child) {
-	    $name = "child_$name";
-	}
 
 	$mode = $params[$#params];
 
