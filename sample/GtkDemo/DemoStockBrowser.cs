@@ -36,8 +36,9 @@ namespace GtkDemo
 			list.Selection.Changed += new EventHandler (OnSelectionChanged);
 			scrolledWindow.Add (list);
 			
-			Frame frame = new Frame ();
-			hbox.PackStart (frame, true, true, 0);
+			Frame frame = new Frame ("Selected Item");
+			frame.Add (new Label ("TODO"));
+			hbox.PackStart (frame, false, false, 0);
 			
 			this.ShowAll ();
 		}	
@@ -45,25 +46,40 @@ namespace GtkDemo
 		private ListStore CreateStore ()
 		{
 			// image, name, label, accel, id
-			ListStore store = new Gtk.ListStore (typeof (Gdk.Pixbuf), typeof(string), typeof(string), typeof(string), typeof (string));
+			ListStore store = new Gtk.ListStore (typeof (Gtk.Image), typeof(string), typeof(string), typeof(string), typeof (string));
 
 			string[] stock_ids = Gtk.Stock.ListIds ();		
 
 			foreach (string s in stock_ids)
 			{
-				Gtk.StockItem si;
-				/* Gtk.Stock.Lookup is not being generated
-				if (Gtk.Stock.Lookup (out si)) {
+				/* until 61893
+				Gtk.StockItem si = new StockItem ();
+				if (Gtk.StockManager.Lookup (s, ref si)) {
 					Image icon = new Image (s, IconSize.Menu);
-					store.AppendValues (si.Pixbuf, si.Label, "Ok", "_Ok", si.StockId);
+					store.AppendValues (icon, GetCLSName (si.StockId), si.Label, GetKeyName (si), si.StockId);
 				}
 				else {
-					Console.WriteLine ("StockItem {0} could not be found.", s);
+					Console.WriteLine ("StockItem '{0}' could not be found.", s);
 				}
 				*/
 			}
 			
 			return store;
+		}
+
+		string GetCLSName (string stockID)
+		{
+			// TODO: change gtk-stock-close
+			// int Gtk.Stock.Close
+			return stockID;
+		}
+
+		string GetKeyName (StockItem si)
+		{
+			// TODO: use si.Keyval and si.Modifier
+			// to produce a reasonable representation
+			// of the key binding
+			return "<ctl> + key";
 		}
 
 		void OnSelectionChanged (object o, EventArgs args)
