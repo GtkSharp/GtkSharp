@@ -81,7 +81,12 @@ namespace GtkSharp.Generation {
 			
 			if (clash) {
 				String mname = cname.Substring(cname.IndexOf("new"));
-				// mname = Regex.Replace(mname, "_(\\w)", "\\u\\1");
+				mname = mname.Substring(0,1).ToUpper() + mname.Substring(1);
+				int idx;
+				while ((idx = mname.IndexOf("_")) > 0) {
+					mname = mname.Substring(0, idx) + mname.Substring(idx+1, 1).ToUpper() + mname.Substring(idx+2);
+				}
+				
 				sw.WriteLine("\t\tpublic static " + Name + " " + mname + sig);
 				sw.WriteLine("\t\t{");
 				sw.WriteLine("\t\t\treturn new " + Name + "(" + cname + call + ");");

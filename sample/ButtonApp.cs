@@ -7,6 +7,7 @@
 namespace GtkSamples {
 
 	using Gtk;
+	using GtkSharp;
 	using System;
 	using System.Drawing;
 
@@ -33,7 +34,9 @@ namespace GtkSamples {
 
 		static void Window_Delete (object obj, EventArgs args)
 		{
+			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
+			sa.RetVal = true;
 		}
 
 	}
