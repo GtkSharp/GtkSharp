@@ -31,9 +31,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Close, to indicate that loading the image is complete. </summary>
+        <returns>
+          <see langword="true" /> if the loader closed successfully, or <see langword="false" /> if there was an error.</returns>
+        <remarks>This will return <see langword="true" /> if the loader closed successfully.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -44,8 +45,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Frees handle.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -68,9 +69,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Rsvg.Handle" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns a new rsvg handle.</summary>
+        <returns>a new <see cref="T:Rsvg.Handle" /></returns>
+        <remarks>This handle can be used for dynamically loading an image. You need to feed it data using <see cref="M:Rsvg.Handle.Write()" />, then call <see cref="M:Rsvg.Handle.Close()" /> when done. No more than one image can be loaded with one handle.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pixbuf">
@@ -81,9 +82,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The pixbuf loaded by handle.</summary>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If insufficient data has been read to create the pixbuf, or an error occurred in loading, then <see langword="null" /> will be returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dpi">
@@ -93,9 +94,9 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the DPI for the all future outgoing pixbufs.</summary>
+        <returns> Dots Per Inch (aka Pixels Per Inch)</returns>
+        <remarks>Common values are 72, 90, and 300 DPI. Passing a number &lt;= 0 to dpi will reset the DPI to whatever the default value happens to be.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NewGz">
@@ -106,9 +107,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>See <see cref="C:Rsvg.Handle" />, except that this will handle GZipped SVGs (svgz)</summary>
         <returns>a <see cref="T:Rsvg.Handle" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Use the returned handle identically to how you use a handle returned from <see cref="C:Rsvg.Handle" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -122,11 +123,11 @@
         <Parameter Name="count" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buf">a <see cref="T:System.Byte" /></param>
-        <param name="count">a <see cref="T:System.UInt32" /></param>
+        <summary>Loads the next <paramref name="count" /> bytes</summary>
+        <param name="buf"> Pointer to svg data</param>
+        <param name="count"> length of the <paramref name="buf" /> buffer in bytes</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This will return <see langword="true" /> if the data was loaded successful, and <see langword="false" /> if an error occurred. In the latter case, the loader will be closed, and will not accept further writes.</remarks>
       </Docs>
     </Member>
   </Members>

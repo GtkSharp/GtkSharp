@@ -10,7 +10,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>Utility/Convenience Functions for creating a <see cref="T:Gdk.PixBuf" /> from SVG. </summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -33,14 +33,14 @@
         <Parameter Name="max_height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="x_zoom">a <see cref="T:System.Double" /></param>
-        <param name="y_zoom">a <see cref="T:System.Double" /></param>
-        <param name="max_width">a <see cref="T:System.Int32" /></param>
-        <param name="max_height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="x_zoom" />, <paramref name="y_zoom" />, <paramref name="max_width" /> and <paramref name="max_height" />.</summary>
+        <param name="file_name"> A file name</param>
+        <param name="x_zoom"> The horizontal zoom factor</param>
+        <param name="y_zoom"> The vertical zoom factor</param>
+        <param name="max_width"> The requested max width</param>
+        <param name="max_height"> The requested max height</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated by the file by a factor of <paramref name="x_zoom" /> and <paramref name="y_zoom" />. If the resulting pixbuf would be larger than <paramref name="max_width" /> / <paramref name="max_height" /> it is uniformly scaled down to fit in that rectangle.  If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFile">
@@ -53,10 +53,10 @@
         <Parameter Name="file_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> and returns it.</summary>
+        <param name="file_name"> A file name</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtSize">
@@ -71,12 +71,12 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="height" /> and <paramref name="width" />.</summary>
+        <param name="file_name"> A file name</param>
+        <param name="width"> The new width, or -1</param>
+        <param name="height"> The new height, or -1</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated to the new size indicated by <paramref name="width" /> and <paramref name="height" />. If either of these are -1, then the default size of the image being loaded is used.  If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtMaxSize">
@@ -91,12 +91,12 @@
         <Parameter Name="max_height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="max_width">a <see cref="T:System.Int32" /></param>
-        <param name="max_height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="max_width" /> and <paramref name="max_height" />.</summary>
+        <param name="file_name"> A file name</param>
+        <param name="max_width"> The requested max width</param>
+        <param name="max_height"> The requested max height</param>
+        <returns>A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is uniformly scaled so that the it fits into a rectangle of size <paramref name="max_width" /> * <paramref name="max_height" />.  If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtZoom">
@@ -111,12 +111,12 @@
         <Parameter Name="y_zoom" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="x_zoom">a <see cref="T:System.Double" /></param>
-        <param name="y_zoom">a <see cref="T:System.Double" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="x_zoom" /> and <paramref name="y_zoom" />.</summary>
+        <param name="file_name"> A file name</param>
+        <param name="x_zoom"> The horizontal zoom factor</param>
+        <param name="y_zoom"> The vertical zoom factor</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated by the file by a factor of <paramref name="x_zoom" /> and <paramref name="y_zoom" />.  If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -143,13 +143,13 @@
         <Parameter Name="max_height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Rsvg.Handle" /></param>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="max_width">a <see cref="T:System.Int32" /></param>
-        <param name="max_height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="max_width" /> and <paramref name="max_height" />.</summary>
+        <param name="handle"> The <see cref="T:Rsvg.Handle" /> you wish to render with (either normal or gzipped)</param>
+        <param name="file_name"> A file name</param>
+        <param name="max_width"> The requested max width</param>
+        <param name="max_height"> The requested max height</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is uniformly scaled so that the it fits into a rectangle of size <paramref name="max_width" /> * <paramref name="max_height" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtSizeEx">
@@ -165,13 +165,13 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Rsvg.Handle" /></param>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new <see cref="T:Gdk.Pixbuf" /> from <paramref name="file_name" /> at <paramref name="width" /> and <paramref name="height" /></summary>
+        <param name="handle"> The <see cref="T:Rsvg.Handle" /> you wish to render with (either normal or gzipped)</param>
+        <param name="file_name"> A file name</param>
+        <param name="width"> The new width, or -1</param>
+        <param name="height"> The new height, or -1</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated to the new size indicated by width and height. If either of these are -1, then the default size of the image being loaded is used.  If an error occurred <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtZoomEx">
@@ -187,13 +187,13 @@
         <Parameter Name="y_zoom" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Rsvg.Handle" /></param>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="x_zoom">a <see cref="T:System.Double" /></param>
-        <param name="y_zoom">a <see cref="T:System.Double" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new GdkPixbuf from <paramref name="file_name" /> at <paramref name="x_zoom" /> and <paramref name="y_zoom" />.</summary>
+        <param name="handle"> The <see cref="T:Rsvg.Handle" /> you wish to render with (either normal or gzipped)</param>
+        <param name="file_name"> A file name</param>
+        <param name="x_zoom"> The horizontal zoom factor</param>
+        <param name="y_zoom"> The vertical zoom factor</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated by the file by a factor of <paramref name="x_zoom" /> and <paramref name="y_zoom" />. </remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileEx">
@@ -207,11 +207,11 @@
         <Parameter Name="file_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Rsvg.Handle" /></param>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new GdkPixbuf from <paramref name="file_name" />.</summary>
+        <param name="handle"> The <see cref="T:Rsvg.Handle" /> you wish to render with (either normal or gzipped)</param>
+        <param name="file_name"> A file name</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>If an error occurred, error is set and <see langword="null" /> is returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileAtZoomWithMaxEx">
@@ -229,15 +229,15 @@
         <Parameter Name="max_height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Rsvg.Handle" /></param>
-        <param name="file_name">a <see cref="T:System.String" /></param>
-        <param name="x_zoom">a <see cref="T:System.Double" /></param>
-        <param name="y_zoom">a <see cref="T:System.Double" /></param>
-        <param name="max_width">a <see cref="T:System.Int32" /></param>
-        <param name="max_height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Loads a new GdkPixbuf from file_name</summary>
+        <param name="handle"> The <see cref="T:Rsvg.Handle" /> you wish to render with (either normal or gzipped)</param>
+        <param name="file_name"> A file name</param>
+        <param name="x_zoom"> The horizontal zoom factor</param>
+        <param name="y_zoom"> The vertical zoom factor</param>
+        <param name="max_width"> The requested max width</param>
+        <param name="max_height"> The requested max height</param>
+        <returns> A newly allocated <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /></returns>
+        <remarks>This pixbuf is scaled from the size indicated by the file by a factor of <paramref name="x_zoom" /> and <paramref name="y_zoom" />. If the resulting pixbuf would be larger than <paramref name="max_width" /> / <paramref name="max_height" /> it is uniformly scaled down to fit in that rectangle.  </remarks>
       </Docs>
     </Member>
   </Members>
