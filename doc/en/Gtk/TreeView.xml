@@ -7,8 +7,120 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A widget for displaying both trees and lists.</summary>
+    <remarks>
+      <para>
+	Widget that displays any object that implements the
+	<see cref="T:Gtk.TreeModel"/> interface.
+      </para>
+      <para>
+	To create a tree or list in GTK#, you need to use the <see
+	cref="T:Gtk.TreeModel"/> interface, in conjunction with the
+	<see cref="T:Gtk.TreeView"/> widget.  This widget is designed around a
+	Model/View/Controller design and consists of four major parts:
+	<list type="bullet">
+	  <item><see cref="T:Gtk.TreeView"/>, the tree view widget</item>
+	  <item><see cref="T:Gtk.TreeViewColumn"/>, the view column.</item>
+	  <item>The cell renderers (<see cref="T:Gtk.CellRenderer"/>
+	  and others).</item>
+	  <item><see cref="T:Gtk.TreeModel"/>, the model interface.</item>
+	</list>
+      </para>
+      <para>
+	The View is composed of the first three, while the last is the
+	Model. One of the prime benefits of the MVC design is that
+	multiple views can be created of a single model.  For example,
+	a model mapping the file system could be created for a file
+	manager. Many views could be created to display various parts
+	of the file system, but only one copy need be kept in memory.
+      </para>
+      <para>
+	The purpose of the cell renderers is to provide extensibility
+	to the widget and to allow multiple ways of rendering the same
+	type of data. For example, consider how to render a boolean
+	variable. Should you render it as a string of "True" or
+	"False", "On" or "Off", or should you render it as a checkbox?
+      </para>
+      <example>
+	<code lang="C#">
+namespace Samples {
+        using System;
+        using System.Drawing;
+        using GLib;
+        using Gtk;
+        using GtkSharp;
+
+
+        public class TreeView {
+                
+                public static void Main (string[] args)
+                {
+                        TreeStore store = null;
+                                                
+                        Application.Init ();
+
+
+                        store = new TreeStore ((int)TypeFundamentals.TypeString,
+                                               (int)TypeFundamentals.TypeString);
+
+
+                        TreeIter iter = new TreeIter ();
+                        
+                        for (int i=0; i&lt;0; i++)
+                        {
+                                GLib.Value Name = new GLib.Value ("Demo " + i.ToString());
+                                GLib.Value Type = new GLib.Value ("Data " + i.ToString());
+                                store.Append (out iter);
+                                store.SetValue (iter, 0, Name);
+                                store.SetValue (iter, 1, Type);
+                        }
+                        
+                        Window win = new Window ("TreeView List Demo");
+                        win.DeleteEvent += new DeleteEventHandler (delete_cb);
+                        win.DefaultSize = new Size (400,250);
+
+
+                        ScrolledWindow sw = new ScrolledWindow ();
+                        win.Add (sw);
+
+
+                        TreeView tv = new TreeView (store);
+                        tv.HeadersVisible = true;
+
+
+                        TreeViewColumn DemoCol = new TreeViewColumn ();
+                        CellRenderer DemoRenderer = new CellRendererText ();
+                        DemoCol.Title = "Demo";
+                        DemoCol.PackStart (DemoRenderer, true);
+                        DemoCol.AddAttribute (DemoRenderer, "text", 0);
+                        tv.AppendColumn (DemoCol);
+
+
+                        TreeViewColumn DataCol = new TreeViewColumn ();
+                        CellRenderer DataRenderer = new CellRendererText ();
+                        DataCol.Title = "Data";
+                        DataCol.PackStart (DataRenderer, false);
+                        DataCol.AddAttribute (DataRenderer, "text", 1);
+                        tv.AppendColumn (DataCol);
+
+
+                        sw.Add (tv);
+                        sw.Show();
+                        win.ShowAll ();
+                        Application.Run ();
+                }
+
+
+                private static void delete_cb (System.Object o, DeleteEventArgs args)
+                {
+                        Application.Quit ();
+                        args.RetVal = true;
+                }
+        }
+}
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
