@@ -48,6 +48,9 @@ namespace Gtk {
 			gtk_init (ref argc, ref args);
 		}
 
+		[DllImport("gtk-x11-2.0")]
+		static extern void gtk_main ();
+
 		/// <summary>
 		///	Run Method
 		/// </summary>
@@ -56,14 +59,13 @@ namespace Gtk {
 		///	Begins the event loop iteration.
 		/// </remarks>
 
-		[DllImport("gtk-x11-2.0")]
-		static extern void gtk_main ();
-
 		public static void Run ()
 		{
 			gtk_main ();
 		}
 
+		[DllImport("gtk-x11-2.0")]
+		static extern void gtk_main_quit ();
 
 		/// <summary>
 		///	Quit Method
@@ -72,9 +74,6 @@ namespace Gtk {
 		/// <remarks>
 		///	Terminates the event loop iteration.
 		/// </remarks>
-
-		[DllImport("gtk-x11-2.0")]
-		static extern void gtk_main_quit ();
 
 		public static void Quit ()
 		{

@@ -192,6 +192,10 @@ namespace GLib {
 			Data [key] = val;
 		}
 
+		[DllImport("gobject-2.0")]
+		static extern void g_object_get_property (
+				IntPtr obj, string name, IntPtr val);
+
 		/// <summary>
 		///	GetProperty Method
 		/// </summary>
@@ -200,14 +204,14 @@ namespace GLib {
 		///	Accesses a Value Property.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_object_get_property (
-				IntPtr obj, string name, IntPtr val);
-
 		public void GetProperty (String name, GLib.Value val)
 		{
 			g_object_get_property (Raw, name, val.Handle);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_object_set_property (
+				IntPtr obj, string name, IntPtr val);
 
 		/// <summary>
 		///	SetProperty Method
@@ -216,10 +220,6 @@ namespace GLib {
 		/// <remarks>
 		///	Accesses a Value Property.
 		/// </remarks>
-
-		[DllImport("gobject-2.0")]
-		static extern void g_object_set_property (
-				IntPtr obj, string name, IntPtr val);
 
 		public void SetProperty (String name, GLib.Value val)
 		{

@@ -31,6 +31,9 @@ namespace GLib {
 				g_slist_free (list_ptr);
 		}
 
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_slist_append(IntPtr l, IntPtr d);
+
 		/// <summary>
 		///	Handle Property
 		/// </summary>
@@ -38,9 +41,6 @@ namespace GLib {
 		/// <remarks>
 		///	A raw GSList reference for marshaling situations.
 		/// </remarks>
-
-		[DllImport("gobject-2.0")]
-		static extern IntPtr g_slist_append(IntPtr l, IntPtr d);
 
 		public IntPtr Handle {
 			get {

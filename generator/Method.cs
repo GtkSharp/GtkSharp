@@ -250,16 +250,18 @@ namespace GtkSharp.Generation {
 				if (comp != null && !comp.is_set)
 					comp = null;
 			}
-			else {
+			
+			GenerateImport (sw);
+			if (comp != null && s_ret == comp.parms.AccessorReturnType)
+				comp.GenerateImport (sw);
+			
+			if (!(is_set || is_get))
+			{
 				sw.WriteLine("\t\t/// <summary> " + Name + " Method </summary>");
 				sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
 				sw.WriteLine();
 			}
 
-			GenerateImport (sw);
-			if (comp != null && s_ret == comp.parms.AccessorReturnType)
-				comp.GenerateImport (sw);
-				
 			sw.Write("\t\t");
 			if (protection != "")
 				sw.Write("{0} ", protection);

@@ -65,6 +65,10 @@ namespace GLib {
 			_val = gtksharp_value_create_from_property (obj, prop_name);
 		}
 
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_boolean (IntPtr val,
+						        bool data);
+
 		/// <summary>
 		///	Value Constructor
 		/// </summary>
@@ -73,14 +77,14 @@ namespace GLib {
 		///	Constructs a Value from a specified boolean.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_boolean (IntPtr val,
-						        bool data);
 		public Value (bool val)
 		{
 			_val = gtksharp_value_create(TypeFundamentals.TypeBoolean);
 			g_value_set_boolean (_val, val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_boxed (IntPtr val, IntPtr data);
 
 		/// <summary>
 		///	Value Constructor
@@ -90,13 +94,14 @@ namespace GLib {
 		///	Constructs a Value from a specified boxed type.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_boxed (IntPtr val, IntPtr data);
 		public Value (GLib.Boxed val)
 		{
 			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
 			g_value_set_boxed (_val, val.Handle);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_double (IntPtr val, double data);
 
 		/// <summary>
 		///	Value Constructor
@@ -106,14 +111,14 @@ namespace GLib {
 		///	Constructs a Value from a specified double.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_double (IntPtr val, double data);
-
 		public Value (double val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeDouble);
 			g_value_set_double (_val, val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_float (IntPtr val, float data);
 
 		/// <summary>
 		///	Value Constructor
@@ -123,14 +128,14 @@ namespace GLib {
 		///	Constructs a Value from a specified float.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_float (IntPtr val, float data);
-
 		public Value (float val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeFloat);
 			g_value_set_float (_val, val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_int (IntPtr val, int data);
 
 		/// <summary>
 		///	Value Constructor
@@ -140,14 +145,14 @@ namespace GLib {
 		///	Constructs a Value from a specified integer.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_int (IntPtr val, int data);
-
 		public Value (int val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeInt);
 			g_value_set_int (_val, val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_object (IntPtr val, IntPtr data);
 
 		/// <summary>
 		///	Value Constructor
@@ -157,14 +162,14 @@ namespace GLib {
 		///	Constructs a Value from a specified object.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_object (IntPtr val, IntPtr data);
-
 		public Value (GLib.Object val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeObject);
 			g_value_set_object (_val, val.Handle);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_pointer (IntPtr val, IntPtr data);
 
 		/// <summary>
 		///	Value Constructor
@@ -174,14 +179,14 @@ namespace GLib {
 		///	Constructs a Value from a specified pointer.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_pointer (IntPtr val, IntPtr data);
-
 		public Value (IntPtr val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypePointer);
 			g_value_set_pointer (_val, val); 
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_string (IntPtr val, string data);
 
 		/// <summary>
 		///	Value Constructor
@@ -191,14 +196,14 @@ namespace GLib {
 		///	Constructs a Value from a specified string.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_string (IntPtr val, string data);
-
 		public Value (string val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeString);
 			g_value_set_string (_val, val); 
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_uint (IntPtr val, uint data);
 
 		/// <summary>
 		///	Value Constructor
@@ -208,14 +213,14 @@ namespace GLib {
 		///	Constructs a Value from a specified uint.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern void g_value_set_uint (IntPtr val, uint data);
-
 		public Value (uint val)
 		{
 			_val = gtksharp_value_create (TypeFundamentals.TypeUInt);
 			g_value_set_uint (_val, val); 
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern bool g_value_get_boolean (IntPtr val);
 
 		/// <summary>
 		///	Value to Boolean Conversion
@@ -227,15 +232,15 @@ namespace GLib {
 		///	boolean value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern bool g_value_get_boolean (IntPtr val);
-
 		public static explicit operator bool (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_boolean (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_boxed (IntPtr val);
 
 		/// <summary>
 		///	Value to Boxed Conversion
@@ -247,9 +252,6 @@ namespace GLib {
 		///	boxed type value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern IntPtr g_value_get_boxed (IntPtr val);
-
 		public static explicit operator GLib.Boxed (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
@@ -257,6 +259,9 @@ namespace GLib {
 			// FIXME: Figure out how to wrap this boxed type
 			return null;
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern double g_value_get_double (IntPtr val);
 
 		/// <summary>
 		///	Value to Double Conversion
@@ -268,15 +273,15 @@ namespace GLib {
 		///	double value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern double g_value_get_double (IntPtr val);
-
 		public static explicit operator double (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_double (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern float g_value_get_float (IntPtr val);
 
 		/// <summary>
 		///	Value to Float Conversion
@@ -288,15 +293,15 @@ namespace GLib {
 		///	float value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern float g_value_get_float (IntPtr val);
-
 		public static explicit operator float (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_float (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern int g_value_get_int (IntPtr val);
 
 		/// <summary>
 		///	Value to Integer Conversion
@@ -308,15 +313,15 @@ namespace GLib {
 		///	integer value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern int g_value_get_int (IntPtr val);
-
 		public static explicit operator int (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_int (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_object (IntPtr val);
 
 		/// <summary>
 		///	Value to Object Conversion
@@ -328,15 +333,15 @@ namespace GLib {
 		///	object value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern IntPtr g_value_get_object (IntPtr val);
-
 		public static explicit operator GLib.Object (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return GLib.Object.GetObject(g_value_get_object (val._val));
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_pointer (IntPtr val);
 
 		/// <summary>
 		///	Value to Pointer Conversion
@@ -348,15 +353,15 @@ namespace GLib {
 		///	pointer value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern IntPtr g_value_get_pointer (IntPtr val);
-
 		public static explicit operator IntPtr (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_pointer (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern string g_value_get_string (IntPtr val);
 
 		/// <summary>
 		///	Value to String Conversion
@@ -368,15 +373,15 @@ namespace GLib {
 		///	string value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
-		static extern string g_value_get_string (IntPtr val);
-
 		public static explicit operator String (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_string (val._val);
 		}
+
+		[DllImport("gobject-2.0")]
+		static extern uint g_value_get_uint (IntPtr val);
 
 		/// <summary>
 		///	Value to Unsigned Integer Conversion
@@ -387,9 +392,6 @@ namespace GLib {
 		///	will produce an exception if the Value does not hold a
 		///	unsigned integer value.  
 		/// </remarks>
-
-		[DllImport("gobject-2.0")]
-		static extern uint g_value_get_uint (IntPtr val);
 
 		public static explicit operator uint (Value val)
 		{
