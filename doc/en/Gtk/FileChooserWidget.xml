@@ -9,7 +9,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>Widget to allow the selection of files from a directory.</summary>
     <remarks>
     </remarks>
   </Docs>
@@ -43,7 +43,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Override to accomplish actions that must happen before object destruction.</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -58,11 +58,15 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>
+	  Sets the current folder for the chooser from an URI.
+	</summary>
+        <param name="uri">a <see cref="T:System.String" />, the URI to use</param>
+        <returns>a <see cref="T:System.Boolean" />, true if the folder could be changed successfully, false otherwise</returns>
         <remarks>
-        </remarks>
+	  The user will be shown the full contents of the current folder,
+	  plus user interface elements for navigating to other folders.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectAll">
@@ -73,9 +77,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>
-        </remarks>
+        <summary>Unselects all the files in the current folder of a file chooser.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetFilename">
@@ -88,11 +91,26 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets <paramref name="filename"/> as the current filename for
+	  the file chooser;
+	  If the file name isn't in the current folder of the file chooser, then the
+	  current folder of the file chooser will be changed to the folder containing
+	  <paramref name="filename"/>. 
+	</summary>
         <param name="filename">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" />, true if both the 
+	  folder could be changed and the file was
+	  selected successfully, false otherwise. </returns>
         <remarks>
-        </remarks>
+	  This is equivalent to a sequence of
+	  <see cref="M:Gtk.FileChooser.UnselectAll"/>
+	  followed by <see cref="M:Gtk.FileChooser.SelectFilename"/>.
+	  
+	  Note that the file must exist, or nothing will be done except
+	  for the directory change. To pre-enter a filename for the user, as in
+	  a save-as dialog, use  <see cref="M:Gtk.FileChooser.SetCurrentFilename"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveShortcutFolderUri">
@@ -105,11 +123,14 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Removes a folder URI from a file chooser's list of shortcut folders.
+	</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  See also <see cref="M:Gtk.FileChooser.AddShortcutFolderUri"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddShortcutFolderUri">
@@ -122,11 +143,18 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds a folder URI to be displayed with the shortcut folders in a file
+	  chooser.  
+	</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" />, true if the folder 
+	  could be added successfully, false otherwise.</returns>
         <remarks>
-        </remarks>
+	  Note that shortcut folders do not get saved, as they are provided
+	  by the application.  For example, you can use this to add a
+	  "file:///usr/share/mydrawprogram/Clipart" folder to the volume list.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectAll">
@@ -137,7 +165,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Selects all the files in the current folder of a file chooser.</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -152,9 +180,15 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Selects the file at <paramref name="uri"/>. If the URI doesn't refer to a
+	  file in the current folder of the file chooser, then the current folder of
+	  the file chooser will be changed to the folder that's part of <paramref name="uri"/> .
+	</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" />, true if both the 
+	  folder could be changed and the URI was
+	  selected successfully, false otherwise.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -169,10 +203,10 @@
         <Parameter Name="filter" Type="Gtk.FileFilter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes <paramref name="filter"/> from the list of filters that the user can select between.</summary>
         <param name="filter">a <see cref="T:Gtk.FileFilter" /></param>
         <remarks>
-        </remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddShortcutFolder">
@@ -185,11 +219,14 @@
         <Parameter Name="folder" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a folder to be displayed with the shortcut folders in a file chooser.</summary>
         <param name="folder">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  Note that shortcut folders do not get saved, as they are provided by the
+	  application.  For example, you can use this to add a
+	  "/usr/share/mydrawprogram/Clipart" folder to the volume list.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectFilename">
@@ -202,11 +239,14 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Selects a filename.</summary>
         <param name="filename">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  If the file name isn't in the current
+	  folder of the file chooser, then the current folder of the file chooser will
+	  be changed to the folder containing <paramref name="filename"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectFilename">
@@ -219,10 +259,14 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Unselects a currently selected filename. 
+	</summary>
         <param name="filename">a <see cref="T:System.String" /></param>
         <remarks>
-        </remarks>
+	  If the filename is not in the current directory, does not exist, or
+	  is otherwise not currently selected, does nothing.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddFilter">
@@ -235,10 +279,15 @@
         <Parameter Name="filter" Type="Gtk.FileFilter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds <paramref name="filter"/> to the list of filters that the 
+	  user can select between.
+	</summary>
         <param name="filter">a <see cref="T:Gtk.FileFilter" /></param>
         <remarks>
-        </remarks>
+	  When a filter is selected, only files that are passed by that
+	  filter are displayed.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveShortcutFolder">
@@ -251,11 +300,10 @@
         <Parameter Name="folder" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes a folder from a file chooser's list of shortcut folders.</summary>
         <param name="folder">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>See also <see cref="M:Gtk.FileChooser.AddShortcutFolder"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnselectUri">
@@ -268,10 +316,14 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Unselects the file referred to by <paramref name="uri"/>. 
+	</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
         <remarks>
-        </remarks>
+	  If the file is not in the current directory, does not exist, or
+	  is otherwise not currently selected, does nothing.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCurrentFolder">
@@ -284,11 +336,15 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets the current folder for the file chooser from a local filename.
+	</summary>
         <param name="filename">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  The user will be shown the full contents of the current folder,
+	  plus user interface elements for navigating to other folders.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetUri">
@@ -301,9 +357,14 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets the file referred to by <paramref name="uri"/> as the 
+	  current file for the the file chooser.
+	</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" />, true if both the folder 
+	  could be changed and the URI was
+	  selected successfully, false otherwise.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -376,7 +437,7 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.FileChooserWidget" /></returns>
         <remarks>
@@ -391,8 +452,8 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Constructor for internal use.</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" />, pointer to underlying C object</param>
         <returns>a <see cref="T:Gtk.FileChooserWidget" /></returns>
         <remarks>
         </remarks>
@@ -406,8 +467,8 @@
         <Parameter Name="action" Type="Gtk.FileChooserAction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="action">a <see cref="T:System.Int32" /></param>
+        <summary>Public constructor.</summary>
+        <param name="action">a <see cref="T:Gtk.FileChooserAction" />, the action this chooser will perform</param>
         <returns>a <see cref="T:Gtk.FileChooserWidget" /></returns>
         <remarks>
         </remarks>
@@ -422,9 +483,9 @@
         <Parameter Name="backend" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="action">a <see cref="T:System.Int32" /></param>
-        <param name="backend">a <see cref="T:System.String" /></param>
+        <summary>Public constructor.</summary>
+        <param name="action">a <see cref="T:Gtk.FileChooserAction" />, the action this widget should perform</param>
+        <param name="backend">a <see cref="T:System.String" />, the filesystem back-end to use.</param>
         <returns>a <see cref="T:Gtk.FileChooserWidget" /></returns>
         <remarks>
         </remarks>
@@ -438,7 +499,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The <see cref="T:GLib.GType" /> for this object.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
         <remarks>
         </remarks>
@@ -452,7 +513,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The file chooser's current folder, if set from a URI.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -466,7 +527,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>An application-supplied widget to provide extra options to the user.</summary>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
         <remarks>
         </remarks>
@@ -479,10 +540,16 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Property to represent the current name in the file selector, 
+	  as if entered by the user. 
+	</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
-        </remarks>
+	  Note that the name passed in here is a UTF-8
+	  string rather than a filename. This function is meant for
+	  such uses as a suggested name in a "Save As..." dialog.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Filter">
@@ -493,7 +560,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The currently-applied file filter.</summary>
         <returns>a <see cref="T:Gtk.FileFilter" /></returns>
         <remarks>
         </remarks>
@@ -507,10 +574,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets whether only local files can be selected in the
+	  file selector.
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  If true (the default),
+	  then the selected file are files are guaranteed to be
+	  accessible through the operating systems native file
+	  file system and therefore the application only
+	  needs to worry about the filename functions in
+	  <see cref="T:Gtk.FileChooser"/>, like 
+	  <see cref="M:Gtk.FileChooser.GetFilename"/>,
+	  rather than the URI functions like
+	  <see cref="M:Gtk.FileChooser.GetUri"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PreviewWidgetActive">
@@ -521,10 +600,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets whether the preview widget set by <see cref="M:Gtk.FileChooser.SetPreviewWidget"/>
+	   should be shown for the current filename.
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
+        <remarks> When this property is set to false, the file chooser
+	  may display an internally generated preview of the current file
+	  or it may display no preview at all.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PreviewFilename">
@@ -535,10 +618,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal function; gets the filename that should be previewed in a custom preview.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>Not for general programmer use.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Uri">
@@ -549,10 +631,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The URI for the currently selected file in
+	  the file selector. </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
-        </remarks>
+	  If multiple files are selected,
+	  one of the filenames will be returned at random.
+	  If the file chooser is in folder mode, this function returns the 
+	  selected folder.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UsePreviewLabel">
@@ -563,10 +650,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets whether the file chooser should display a stock label with the name of
+	  the file that is being previewed; the default is true.  
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  Applications that
+	  want to draw the whole preview area themselves should set this 
+	  to false and display the name themselves in their preview widget.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Filename">
@@ -577,7 +670,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The current filename selected by the file chooser.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -591,7 +684,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The URI that should be previewed in a custom preview widget. </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -605,10 +698,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets whether multiple files can be selected in the file selector.
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>
-        </remarks>
+	  This is only relevant if the action is set to be 
+	  <see cref="M:Gtk.FileChooserAction.Open"/> or 
+	  <see cref="M:Gtk.FileChooserAction.Save"/>.
+	  It cannot be set with either of the folder actions.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PreviewWidget">
@@ -619,10 +718,32 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  An application-supplied widget to use to display a custom preview
+	  of the currently selected file. 
+	</summary>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
         <remarks>
-        </remarks>
+	  <para>
+	    To implement a preview, after setting the
+	    preview widget, you connect to the 
+	    <see cref="E:Gtk.FileChooser.SelectionChanged"/>
+	    signal, and check
+	    <see cref="P:Gtk.FileChooser.PreviewFilename"/> or
+	    <see cref="P:Gtk.FileChooser.PreviewUri"/>
+	    on each change. If you can
+	    display a preview of the new file, update your widget and
+	    set the preview active using
+	    <see cref="P:Gtk.FileChooser.PreviewWidgetActive"/>
+	    Otherwise, set the preview inactive.
+	  </para>
+	  <para>
+	    When there is no application-supplied preview widget, or the
+	    application-supplied preview widget is not active, the file chooser
+	    may display an internally generated preview of the current file or
+	    it may display no preview at all.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Action">
@@ -633,10 +754,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Sets the type of operation that that the chooser is performing; the
+	  user interface is adapted to suit the selected action.
+	</summary>
         <returns>a <see cref="T:Gtk.FileChooserAction" /></returns>
         <remarks>
-        </remarks>
+	  For example,
+	  an option to create a new folder might be shown if the action is
+	  <see cref="M:Gtk.FileChooserAction.Save"/> but not if the action is
+	  <see cref="M:Gtk.FileChooserAction.Open"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentFolder">
@@ -647,7 +775,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The current folder for the file chooser, when the chooser has selected a local filename.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -661,7 +789,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The filenames selected by this widget.</summary>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>
         </remarks>
@@ -675,7 +803,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The URIs selected by this widget.</summary>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>
         </remarks>
@@ -689,7 +817,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The filters currently in use by this widget for patterns of files to display.</summary>
         <returns>a <see cref="T:Gtk.FileFilter[]" /></returns>
         <remarks>
         </remarks>
@@ -703,7 +831,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The shortcut folders currently in use for this widget.</summary>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>
         </remarks>
@@ -717,7 +845,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The shortcut URIs currently allowed for this widget.</summary>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>
         </remarks>
@@ -731,9 +859,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>This event is fired every time the selected file changes.</summary>
         <remarks>
-        </remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FileActivated">
@@ -744,9 +872,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  This signal is emitted when the user "activates" a file in the file
+	  chooser.
+	</summary>
         <remarks>
-        </remarks>
+	  This event can happen by double-clicking on a file in the file list, or
+	  by pressing Enter.
+	  
+	  Normally you do not need to connect to this signal.  It is used internally
+	  by the file chooser code to know when to activate the default button in the dialog.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdatePreview">
@@ -757,9 +893,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  This signal is emitted when the preview in a file chooser should be
+	  regenerated. For example, this can happen when the currently 
+	  selected file changes.  
+	</summary>
         <remarks>
-        </remarks>
+	  <para>You should use this signal if you want your file chooser to have
+	  a preview widget.</para>
+   
+	  <para>Once you have installed a preview widget with
+	    <see cref="P:Gtk.FileChooser.PreviewWidget"/>, you should update it when this
+	    signal is emitted.  You can use the properties
+	    <see cref="P:Gtk.FileChooser.PreviewFilename"/>	or
+	    <see cref="P:Gtk.FileChooser.PreviewUri"/>
+	    to get the name of the file to preview.
+	    Your widget may not be able to preview all kinds of files; your callback
+	    must set <see cref="P:Gtk.FileChooser.PreviewWidgetActive"/> to inform the file
+	    chooser about whether the preview was generated successfully or not.
+	    </para>
+	  <para>
+	    TODO: insert example from gtkfilechooser-preview in gtk+ docs.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentFolderChanged">
@@ -770,7 +926,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when the chooser changes the folder it's looking at.</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -783,7 +939,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when the size of the widget changes.</summary>
         <remarks>
         </remarks>
       </Docs>
