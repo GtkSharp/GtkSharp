@@ -63,7 +63,7 @@ namespace GtkSharp.Parsing {
 			XPathNavigator meta_nav = meta_doc.CreateNavigator ();
 			XPathNavigator api_nav = api_doc.CreateNavigator ();
 
-			XPathNodeIterator attr_iter = meta_nav.Select ("//attr");
+			XPathNodeIterator attr_iter = meta_nav.Select ("/metadata/attr");
 			while (attr_iter.MoveNext ()) {
 				string path = attr_iter.Current.GetAttribute ("path", "");
 				string attr_name = attr_iter.Current.GetAttribute ("name", "");
@@ -74,14 +74,15 @@ namespace GtkSharp.Parsing {
 				}
 			}
 
-			XPathNodeIterator move_iter = meta_nav.Select ("//move-node");
+			XPathNodeIterator move_iter = meta_nav.Select ("/metadata/move-node");
 			while (move_iter.MoveNext ()) {
 				string path = move_iter.Current.GetAttribute ("path", "");
+				XPathExpression expr = api_nav.Compile (path);
 				string parent = move_iter.Current.Value;
 				XPathNodeIterator parent_iter = api_nav.Select (parent);
 				while (parent_iter.MoveNext ()) {
 					XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
-					XPathNodeIterator path_iter = parent_iter.Current.Clone ().Select (path);
+					XPathNodeIterator path_iter = parent_iter.Current.Clone ().Select (expr);
 					while (path_iter.MoveNext ()) {
 						XmlNode node = ((IHasXmlNode)path_iter.Current).GetNode ();
 						parent_node.AppendChild (node.Clone ());
