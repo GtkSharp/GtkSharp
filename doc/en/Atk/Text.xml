@@ -10,8 +10,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The interface implemented by components with text content.</summary>
+    <remarks>
+      <para>
+        <see cref="T:Atk.Text" /> should be implemented by <see cref="T:Atk.Object" />s on behalf of widgets that have text content which is either attributed or otherwise non-trivial. <see cref="T:Atk.Object" />s whose text content is simple, unattributed, and very brief may expose that content via atk_object_get_name instead; however if the text is editable, multi-line, typically longer than three or four words, attributed, selectable, or if the object already uses the 'name' ATK property for other information, the <see cref="T:Atk.Text" /> interface should be used to expose the text content. In the case of editable text content, <see cref="T:Atk.EditableText" /> (a subtype of the <see cref="T:Atk.Text" /> interface) should be implemented instead.
+</para>
+      <para>
+        <see cref="T:Atk.Text" /> provides not only traversal facilities and change notification for text content, but also caret tracking and glyph bounding box calculations. Note that the text strings are exposed as UTF-8, and are therefore potentially multi-byte, and caret-to-byte offset mapping makes no assumptions about the character length; also bounding box glyph-to-offset mapping may be complex for languages which use ligatures. 
+</para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
