@@ -1,5 +1,6 @@
 MCS=mcs
 RUNTIME=mono
+DESTDIR=
 
 all: linux
 
@@ -15,6 +16,7 @@ clean:
 prefix=@prefix@
 
 install: all
+	../mkinstalldirs $(DESTDIR)$(prefix)/bin && \
 	cp gapi_codegen.exe $(DESTDIR)$(prefix)/bin
 
 gapi_codegen.exe: *.cs

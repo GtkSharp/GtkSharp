@@ -8,8 +8,8 @@ MCS=mcs
 all: linux
 
 windows:
-	for i in $(DIRS); do				\
-		(cd $$i; CSC=$(CSC) make windows) || exit 1;\
+	for i in $(DIRS); do					\
+		CSC=$(CSC) make -C $$i windows || exit 1;	\
 	done;
 
 unix:
@@ -19,37 +19,41 @@ linux: native binding
 
 binding:
 	for i in $(DIRS); do				\
-		(cd $$i; MCS="$(MCS)" make) || exit 1;\
+		MCS="$(MCS)" make -C $$i || exit 1;\
 	done;
 
 native:
-	for i in $(NATIVE_DIRS); do \
-		(cd $$i; make) || exit 1;\
+	for i in $(NATIVE_DIRS); do			\
+		make -C $$i || exit 1;			\
 	done
 
 clean:
-	for i in $(NATIVE_DIRS) $(DIRS); do	\
-		(cd $$i; make clean) || exit 1;	\
+	for i in $(NATIVE_DIRS) $(DIRS); do		\
+		make -C $$i clean || exit 1;		\
 	done;
 
 distclean: clean
-	for i in $(NATIVE_DIRS); do \
-		(cd $$i; make distclean) || exit 1;\
+	for i in $(NATIVE_DIRS); do			\
+		make -C $$i distclean || exit 1;	\
 	done
 	for i in $(DIRS); do				\
 		rm -f $$i/Makefile;			\
 	done
 	rm -f config.cache config.h config.log config.status libtool
 
+maintainer-clean: distclean
+	rm -f aclocal.m4 config.guess config.h.in config.sub
+	rm -f configure install-sh ltmain.sh missing
+	rm -f mkinstalldirs stamp-h glue/Makefile.in
+
 install: install-native install-binding
 
 install-binding:
 	for i in $(DIRS); do				\
-		(cd $$i; make install) || exit 1;	\
-	done;
-
-install-native:
-	for i in $(NATIVE_DIRS); do \
-		(cd $$i; make install) || exit 1;\
+		make -C $$i install || exit 1;		\
 	done
 
+install-native:
+	for i in $(NATIVE_DIRS); do			\
+		make -C $$i install || exit 1;		\
+	done

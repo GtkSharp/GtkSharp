@@ -15,13 +15,14 @@ all: generated-stamp
 
 generated-stamp: $(APIS) ../generator/gapi_codegen.exe
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) && touch generated-stamp
-	
+
 clean:
+	rm -f generated-stamp
 
 prefix=@prefix@
-apidir = $(DESTDIR)$(prefix)/share/gapi
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
 
 install: all
-	../mkinstalldirs $(apidir)
+	../mkinstalldirs $(apidir) && \
 	cp $(APIS) $(apidir)
-
