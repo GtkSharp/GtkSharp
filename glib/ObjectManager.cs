@@ -3,7 +3,7 @@
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // Copyright <c> 2001-2002 Mike Kestner
-// Copyright <c> 2004 Novell, Inc.
+// Copyright <c> 2004-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -32,125 +32,97 @@ namespace GLib {
 
 		private static Hashtable types = new Hashtable ();
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
+		static BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance;
 
 		public static GLib.Object CreateObject (IntPtr raw)
 		{
 			if (raw == IntPtr.Zero)
 				return null;
 
-			string typename = Marshaller.Utf8PtrToString (gtksharp_get_type_name (raw));
-			string mangled;
-			if (types.ContainsKey(typename)) 
-				mangled = (string)types[typename];
-			else
-				mangled = GetExpected (typename);
-			Type t = LookupType (mangled);
+			Type type = GetTypeOrParent (raw);
 
-			// if null, try to get a parent type
-			if (t == null)
-				t = GetValidParentType (raw);
-
-			if (t == null) {
-				// should never get reached since everything should end up at
-				// GObject. Perhaps throw an exception here instead?
-				Console.WriteLine ("*** Warning: No C# equivalent for class '" + typename +
-						   "' found, returning null");
+			if (type == null)
 				return null;
-			}
 
 			GLib.Object obj;
 			try {
-				obj = (GLib.Object) Activator.CreateInstance (t,BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] {raw}, null);
+				obj = Activator.CreateInstance (type, flags, null, new object[] {raw}, null) as GLib.Object;
 			} catch (MissingMethodException) {
-				throw new GLib.MissingIntPtrCtorException ("GLib.Object subclass " + t + " must provide a protected or public IntPtr ctor to support wrapping of native object handles.");
+				throw new GLib.MissingIntPtrCtorException ("GLib.Object subclass " + type + " must provide a protected or public IntPtr ctor to support wrapping of native object handles.");
 			}
 			return obj;
 		}
 
+		[Obsolete ("Use the (GType, Type) overload instead")]
 		public static void RegisterType (string native_name, string managed_name, string assembly)
 		{
 			RegisterType (native_name, managed_name + "," + assembly);
 		}
 
+		[Obsolete ("Use the (GType, Type) overload instead")]
 		public static void RegisterType (string native_name, string mangled)
 		{
 			types [native_name] = mangled;
 		}
 
-		static string GetExpected (string cname)
+		public static void RegisterType (GType native_type, System.Type type)
 		{
-			StringBuilder expected = new StringBuilder ();
-			string ns = "";
-			bool needs_dot = true;
-			for (int i = 0; i < cname.Length; i++)
-			{
-				if (needs_dot && i > 0 && Char.IsUpper (cname[i])) {
-					// check for initial "G" and mangle to "GLib" if so
-					// really only necessary for GObject
-					if (expected.Length == 1 && expected[0] == 'G') {
-						ns = "glib";
-						expected = new StringBuilder ("GLib.");
-					} else {
-						ns = expected.ToString ().ToLower (); 
-						expected.Append ('.');
-					}
-					needs_dot = false;
+			types [native_type.Val] = type;
+		}
+
+		static string GetQualifiedName (string cname)
+		{
+			for (int i = 1; i < cname.Length; i++) {
+				if (Char.IsUpper (cname[i])) {
+					if (i == 1 && cname [0] == 'G')
+						return "GLib." + cname.Substring (1);
+					else
+						return cname.Substring (0, i) + "." + cname.Substring (i);
 				}
-				expected.Append (cname[i]);
 			}
-			expected.AppendFormat (",{0}-sharp", ns);
 
-			string expected_string = expected.ToString ();
-			RegisterType (cname, expected_string);
-			return expected_string;
+			throw new ArgumentException ("cname is not in NamespaceType format. RegisterType should be called directly for " + cname);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern int gtksharp_get_type_id (IntPtr raw);
-
-		[DllImport("glibsharpglue-2")]
-		static extern int gtksharp_get_parent_type (int typ);
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_name_for_id (int typ);
-
-		static Type LookupType (string mangled)
+		static Type GetTypeOrParent (IntPtr obj)
 		{
-			string[] toks = mangled.Split (',');
-			if (toks.Length < 2)
-				throw new ArgumentException ("mangled not properly formatted: " + mangled);
+			IntPtr typeid = gtksharp_get_type_id (obj);
 
-			Assembly a = Assembly.LoadWithPartialName (toks [1]);
-
-			if (a == null)
-				return null;
-
-			return a.GetType (toks [0]);
-		}
-
-		static Type GetValidParentType (IntPtr raw)
-		{
-			int type_id = gtksharp_get_type_id (raw);
-			string typename;
-			string mangled;
-			Type t;
-			// We will always end up at GObject and will break this loop
-			while (true) {
-				type_id = gtksharp_get_parent_type (type_id);
-				if (type_id == 0)
+			Type result = LookupType (typeid);
+			while (result == null) {
+				typeid = gtksharp_get_parent_type (typeid);
+				if (typeid == IntPtr.Zero)
 					return null;
-				typename = Marshaller.Utf8PtrToString (gtksharp_get_type_name_for_id (type_id));
-				if (types.ContainsKey (typename))
-					mangled = (string)types[typename];
-				else
-					mangled = GetExpected (typename);
-				t = LookupType (mangled);
-				if (t != null) {
-					return t;
-				}
+				result = LookupType (typeid);
 			}
+			return result;
 		}
+
+		static Type LookupType (IntPtr typeid)
+		{
+			if (types.Contains (typeid))
+				return types [typeid] as Type;
+
+			string native_name = Marshaller.Utf8PtrToString (gtksharp_get_type_name_for_id (typeid));
+			string type_name = GetQualifiedName (native_name);
+			Type result = null;
+			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ()) {
+				result = asm.GetType (type_name);
+				if (result != null)
+					break;
+			}
+
+			types [typeid] = result;
+			return result;
+		}
+
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
+
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr gtksharp_get_parent_type (IntPtr typ);
+
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr gtksharp_get_type_name_for_id (IntPtr typ);
 	}
 }

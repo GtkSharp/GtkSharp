@@ -144,12 +144,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tinternal " + wrapper + " NativeDelegate;");
 			sw.WriteLine ("\t\t" + NS + "." + Name + " managed;");
 			sw.WriteLine ();
-
 			sw.WriteLine ("\t\tpublic " + Name + "Wrapper (" + NS + "." + Name + " managed)");
 			sw.WriteLine ("\t\t{");
-
-			sw.WriteLine ("\t\t\tNativeDelegate = new " + wrapper + " (NativeCallback);");
 			sw.WriteLine ("\t\t\tthis.managed = managed;");
+			sw.WriteLine ("\t\t\tif (managed != null)");
+			sw.WriteLine ("\t\t\t\tNativeDelegate = new " + wrapper + " (NativeCallback);");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("#endregion");

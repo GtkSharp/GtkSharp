@@ -117,7 +117,6 @@ namespace GtkSharp.Generation {
 		public override void Generate (GenerationInfo gen_info)
 		{
 			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, gen_info.AssemblyName);
-			di.objects.Add (CName, QualifiedName);
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 
@@ -135,8 +134,10 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t[Obsolete]");
 			sw.Write ("\tpublic {0} class " + Name, IsAbstract ? "abstract" : "");
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
-			if (cs_parent != "")
+			if (cs_parent != "") {
+				di.objects.Add (CName, QualifiedName);
 				sw.Write (" : " + cs_parent);
+			}
 			if (interfaces != null) {
 				foreach (string iface in interfaces) {
 					if (Parent != null && Parent.Implements (iface))
@@ -204,7 +205,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (" {\n\t\t\t get { return \"" + str.GetAttribute ("value") + "\"; }\n\t\t}");
 			}
 
-			if (GetExpected (CName) != (QualifiedName + "," + gen_info.AssemblyName)) {
+			if (cs_parent != String.Empty && GetExpected (CName) != QualifiedName) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tstatic " + Name + " ()");
 				sw.WriteLine ("\t\t{");
@@ -321,32 +322,22 @@ namespace GtkSharp.Generation {
 		/* Keep this in sync with the one in glib/ObjectManager.cs */
 		private static string GetExpected (string cname)
 		{
-			StringBuilder expected = new StringBuilder ();
-			string ns = "";
-			bool needs_dot = true;
-			for (int i = 0; i < cname.Length; i++)
-			{
-				if (needs_dot && i > 0 && Char.IsUpper (cname[i])) {
-					if (expected.Length == 1 && expected[0] == 'G') {
-						ns = "glib";
-						expected = new StringBuilder ("GLib.");
-					} else {
-						ns = expected.ToString ().ToLower ();
-						expected.Append ('.');
-					}
-					needs_dot = false;
+			for (int i = 1; i < cname.Length; i++) {
+				if (Char.IsUpper (cname[i])) {
+					if (i == 1 && cname[0] == 'G')
+						return "GLib." + cname.Substring (1);
+					else
+						return cname.Substring (0, i) + "." + cname.Substring (i);
 				}
-				expected.Append (cname[i]);
 			}
-			expected.AppendFormat (",{0}-sharp", ns);
 
-			return expected.ToString ();
+			throw new ArgumentException ("cname doesn't follow the NamespaceType capitalization style: " + cname);
 		}
 
 		private static bool NeedsMap (Hashtable objs, string assembly_name)
 		{
 			foreach (string key in objs.Keys)
-				if (GetExpected (key) != ((string) objs[key] + "," + assembly_name))
+				if (GetExpected (key) != ((string) objs[key]))
 					return true;
 			
 			return false;
@@ -396,8 +387,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tinitialized = true;");
 	
 			foreach (string key in dir_info.objects.Keys) {
-				if (GetExpected(key) != ((string) dir_info.objects[key] + "," + dir_info.assembly_name))
-					sw.WriteLine ("\t\t\tGLib.ObjectManager.RegisterType(\"" + key + "\", \"" + dir_info.objects [key] + "," + dir_info.assembly_name + "\");");
+				if (GetExpected(key) != ((string) dir_info.objects[key]))
+					sw.WriteLine ("\t\t\tGLib.ObjectManager.RegisterType({0}.GType, typeof ({0}));", dir_info.objects [key]);
 			}
 					
 			sw.WriteLine ("\t\t}");

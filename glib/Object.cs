@@ -153,10 +153,10 @@ namespace GLib {
 		{
 			GType parent_gtype = LookupGType (t.BaseType);
 			string name = t.FullName.Replace(".", "_");
-			GLib.ObjectManager.RegisterType (name, t.FullName, t.Assembly.GetName().Name);
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
 			GLib.Marshaller.Free (native_name);
+			GLib.ObjectManager.RegisterType (gtype, t);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			g_types[t] = gtype;
