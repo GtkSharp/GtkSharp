@@ -8,14 +8,14 @@
 // This code is inserted after the automatically generated code.
 //
 
-public class Button : Gtk.Button {
+public class ColorSelectionButton : Gtk.Button {
 	private ColorSelectionDialog color_sel;
 
 	public ColorSelectionDialog ColorSelectionDialog {
 		get { return color_sel; }
 	}
 
-	public Button (ColorSelectionDialog cs, IntPtr raw) : base (raw) {
+	public ColorSelectionButton (ColorSelectionDialog cs, IntPtr raw) : base (raw) {
 		color_sel = cs;
 	}
 }
@@ -23,23 +23,23 @@ public class Button : Gtk.Button {
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_color_selection_dialog_get_colorsel (IntPtr i);
 public Gtk.ColorSelection ColorSelection {
-       get { return new Gtk.ColorSelection (gtksharp_color_selection_dialog_get_colorsel (this.Handle)); }
+       get { return new ColorSelection (gtksharp_color_selection_dialog_get_colorsel (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_color_selection_dialog_get_ok_button (IntPtr i);
 public Gtk.Button OkButton {
-       get { return new Button (this, gtksharp_color_selection_dialog_get_ok_button (this.Handle)); }
+       get { return new ColorSelectionButton (this, gtksharp_color_selection_dialog_get_ok_button (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_color_selection_dialog_get_cancel_button (IntPtr i);
 public Gtk.Button CancelButton {
-       get { return new Button (this, gtksharp_color_selection_dialog_get_cancel_button (this.Handle)); }
+       get { return new ColorSelectionButton (this, gtksharp_color_selection_dialog_get_cancel_button (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_color_selection_dialog_get_help_button (IntPtr i);
 public Gtk.Button HelpButton {
-       get { return new Button (this, gtksharp_color_selection_dialog_get_help_button (this.Handle)); }
+       get { return new ColorSelectionButton (this, gtksharp_color_selection_dialog_get_help_button (this.Handle)); }
 }
