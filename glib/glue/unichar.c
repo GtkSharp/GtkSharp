@@ -25,6 +25,7 @@
 /* Forward declarations */
 gchar *gtksharp_unichar_to_utf8_string (gunichar chr);
 gunichar glibsharp_utf16_to_unichar (guint16 chr);
+gssize glibsharp_strlen (gchar *s);
 /* */
 
 gchar * 
@@ -46,5 +47,13 @@ glibsharp_utf16_to_unichar (guint16 chr)
 	result = *ucs4_str;
 	g_free (ucs4_str);
 	return result;
+}
+
+gssize 
+glibsharp_strlen (gchar *s)
+{
+	gssize cnt = 0;
+	for (cnt = 0; *s; s++, cnt++);
+	return cnt;
 }
 

@@ -37,15 +37,15 @@ namespace GLib {
 			g_free (ptr);
 		}
 
-		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_utf8_strlen (IntPtr mem, int size);
+		[DllImport("glibsharpglue-2")]
+		static extern UIntPtr glibsharp_strlen (IntPtr mem);
 
 		public static string Utf8PtrToString (IntPtr ptr) 
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			int len = (int) g_utf8_strlen (ptr, -1);
+			int len = (int) (uint)glibsharp_strlen (ptr);
 			byte[] bytes = new byte [len];
 			Marshal.Copy (ptr, bytes, 0, len);
 			return System.Text.Encoding.UTF8.GetString (bytes);
