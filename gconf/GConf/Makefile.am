@@ -25,6 +25,7 @@ sources = 			\
 	ClientBase.cs 		\
 	Client.cs 		\
 	ChangeSet.cs 		\
+	Engine.cs 		\
 	_Entry.cs 		\
 	NoSuchKeyException.cs 	\
 	NotifyEventArgs.cs 	\

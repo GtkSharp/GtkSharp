@@ -35,6 +35,12 @@ namespace GConf
 			Raw = gconf_change_set_new ();
 		}
 
+		internal ChangeSet (IntPtr raw) : base ()
+		{
+			Initialize ();
+			Raw = raw;
+		}
+
 		~ChangeSet ()
 		{
 			Dispose ();
@@ -49,6 +55,12 @@ namespace GConf
 			{
 				gconf_change_set_unref (Raw);
 				Raw = IntPtr.Zero;
+			}
+		}
+
+		internal IntPtr Handle {
+			get {
+				return Raw;
 			}
 		}
 
