@@ -131,9 +131,9 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_object (ref Value val, IntPtr data);
 
-		public Value (GLib.Object val) : this (val.NativeType)
+		public Value (GLib.Object val) : this (val == null ? GType.Object : val.NativeType)
 		{
-			g_value_set_object (ref this, val.Handle);
+			g_value_set_object (ref this, val == null ? IntPtr.Zero : val.Handle);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
