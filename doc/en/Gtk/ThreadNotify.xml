@@ -10,8 +10,36 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Multi-threaded integration with Gtk support.</summary>
+    <remarks>
+      <para>The ThreadNotify class is used to invoke methods in the Gtk+ thread.  Since Gtk is not a thread-safe toolkit, only a single thread at a time might be making calls into Gtk.</para>
+      <para>Typically applications will be executing the main Gtk+ main loop and when threads are done processing work, they invoke <see cref="M:Gtk.ThreadNotify.WakeupMain()" /> to invoke a method on the main Gtk+ thread.</para>
+      <example>
+        <code lang="C#">
+using Gtk;
+
+class Demo {
+  static void Main ()
+  {
+    Application.Init ();
+    notify = new ThreadNotify (new ReadyEvent (ready));
+    Application.Run ();
+  }
+
+  static void ready ()
+  {
+    // Update the GUI with computation values.
+  }
+
+  static void ThreadRoutine ()
+  {
+	LargeComputation ();
+        notify.WakeupMain ();
+  }
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -27,8 +55,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Wakeup the main thread, and invoke delegate.</summary>
+        <remarks>This methods wakes up the Gtk+ main thread and executes the delegate that was specified at construction time in the Gtk+ thread.   </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -39,10 +67,10 @@
         <Parameter Name="re" Type="Gtk.ReadyEvent" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="re">To be added: an object of type 'Gtk.ReadyEvent'</param>
-        <returns>To be added: an object of type 'Gtk.ThreadNotify'</returns>
-        <remarks>To be added</remarks>
+        <summary>ThreadNotify constructor</summary>
+        <param name="re">A ReadyEvent delegate.</param>
+        <returns>Constructed object.</returns>
+        <remarks>The method referenced by the delegate will be invoked on the Gtk+ mainloop whenever any thread invokes the <see cref="M:Gtk.ThreadNotify.WakeupMain ()" /> method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Close">
