@@ -8,6 +8,7 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
+	using System.Drawing;
 
 	public class HelloWorld  {
 
@@ -15,6 +16,10 @@ namespace GtkSamples {
 		{
 			Application.Init (ref args);
 			Window win = new Window ("Gtk# Hello World");
+			win.DefaultSize = new Size (400, 400);
+			System.Console.WriteLine (win.Title);
+			System.Console.WriteLine (win.DefaultSize);
+			System.Console.WriteLine (win.AllowShrink);
 			win.DeleteEvent += new EventHandler (Window_Delete);
 			win.Show ();
 			Application.Run ();

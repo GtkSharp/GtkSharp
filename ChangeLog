@@ -1,3 +1,17 @@
+2001-10-02  Mike Kestner <mkestner@speakeasy.net>
+
+	* glib/Value.cs : Tried adding CallingConvention.Cdecl to all the
+	DllImports, but still couldn't get reliable Propery setting without
+	periodic NullReference exceptions.  When all else fails, drop back 
+	and punt.
+	* glib/Object.cs : Rewrote Set|GetProperty methods.  Now they use
+	g_object_get|set and don't rely on GValues. The int, bool, and string 
+	prop types are now working reliably.
+	* gtk/Window.cs : Update all Properties to use new GLib.Object
+	signatures.
+	* sample/HelloWorld.cs : added some more property usage for testing
+	purposes.
+
 2001-09-29  Mike Kestner <mkestner@speakeasy.net>
 
 	* glib/Value.cs (int ctor): New constructor for int-based values.

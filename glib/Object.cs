@@ -126,17 +126,61 @@ namespace GLib {
 		/// </summary>
 		///
 		/// <remarks>
-		///	Accesses a raw Object Property.
+		///	Accesses a string Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
-		static extern void g_object_get_property (IntPtr obj,
-                                             		  String name,
-                                             		  IntPtr val);
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_get (IntPtr obj, IntPtr name,
+                                             	 out IntPtr val, IntPtr term);
 
-		public void GetProperty (String name, Value val)
+		public void GetProperty (String name, out String val)
 		{
-			g_object_get_property (RawObject, name, val.MarshalAs);
+			IntPtr propval;
+			g_object_get (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      out propval, new IntPtr (0));
+			val = Marshal.PtrToStringAnsi (propval);
+		}
+
+		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Accesses a boolean Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_get (IntPtr obj, IntPtr name,
+                                             	 out bool val, IntPtr term);
+
+		public void GetProperty (String name, out bool val)
+		{
+			g_object_get (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      out val, new IntPtr (0));
+		}
+
+		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Accesses an integer Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_get (IntPtr obj, IntPtr name,
+                                             	 out int val, IntPtr term);
+
+		public void GetProperty (String name, out int val)
+		{
+			g_object_get (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      out val, new IntPtr (0));
 		}
 
 		/// <summary>
@@ -144,17 +188,60 @@ namespace GLib {
 		/// </summary>
 		///
 		/// <remarks>
-		///	Changes the value of a raw Object Property.
+		///	Changes the value of a string Property.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
-		static extern void g_object_set_property (IntPtr obj,
-                                             		  String name,
-                                             		  IntPtr val);
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_set (IntPtr obj, IntPtr name,
+                                                 IntPtr val, IntPtr term);
 
-		public void SetProperty (String name, Value val)
+		public void SetProperty (String name, String val)
 		{
-			g_object_set_property (RawObject, name, val.MarshalAs);
+			g_object_set (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      Marshal.StringToHGlobalAnsi (val), 
+				      new IntPtr (0));
+		}
+
+		/// <summary>
+		///	SetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Changes the value of an integer Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_set (IntPtr obj, IntPtr name,
+                                                 int val, IntPtr term);
+
+		public void SetProperty (String name, int val)
+		{
+			g_object_set (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      val, new IntPtr (0));
+		}
+
+		/// <summary>
+		///	SetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Changes the value of a boolean Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll", CharSet=CharSet.Ansi,
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern void g_object_set (IntPtr obj, IntPtr name,
+                                                 bool val, IntPtr term);
+
+		public void SetProperty (String name, bool val)
+		{
+			g_object_set (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      val, new IntPtr (0));
 		}
 
 /*
@@ -218,7 +305,6 @@ gpointer g_object_steal_qdata (GObject *object,
 void        g_object_watch_closure (GObject *object,
                                              GClosure *closure);
 void        g_object_run_dispose (GObject *object);
-gpointer g_value_get_object (const GValue *value);
 */
 
 	}

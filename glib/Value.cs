@@ -44,7 +44,8 @@ namespace GLib {
 		///	value to it.
 		/// </remarks>
 
-		[DllImport("glib-1.3.dll")]
+		[DllImport("glib-1.3.dll", 
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern IntPtr g_malloc0 (long n_bytes);
 
 		public Value ()
@@ -73,7 +74,8 @@ namespace GLib {
 		///	Constructs a Value from a specified boolean.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_boolean (IntPtr val,
 						        bool data);
 		public Value (bool val) : this ()
@@ -90,7 +92,8 @@ namespace GLib {
 		///	Constructs a Value from a specified integer.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_int (IntPtr val, int data);
 
 		public Value (int val) : this ()
@@ -107,13 +110,15 @@ namespace GLib {
 		///	Constructs a Value from a specified string.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_string (IntPtr val,
-						       String data);
+						       IntPtr data);
 		public Value (String val) : this ()
 		{
 			g_value_init (_val, TypeFundamentals.TypeString);
-			g_value_set_string (_val, val);
+			g_value_set_string (_val, 
+					    Marshal.StringToHGlobalAnsi (val));
 		}
 
 		/// <summary>
@@ -124,7 +129,8 @@ namespace GLib {
 		///	Prepares a raw value to hold a specified type.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_init (IntPtr val, 
 						 TypeFundamentals type);
 
@@ -143,7 +149,8 @@ namespace GLib {
 		///	boolean value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern bool g_value_get_boolean (IntPtr val);
 
 		public static explicit operator bool (Value val)
@@ -163,7 +170,8 @@ namespace GLib {
 		///	integer value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
 		static extern int g_value_get_int (IntPtr val);
 
 		public static explicit operator int (Value val)
@@ -183,14 +191,16 @@ namespace GLib {
 		///	string value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
-		static extern String g_value_get_string (IntPtr val);
+		[DllImport("gobject-1.3.dll",
+			   CallingConvention=CallingConvention.Cdecl)]
+		static extern IntPtr g_value_get_string (IntPtr val);
 
 		public static explicit operator String (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return g_value_get_string (val._val);
+			return Marshal.PtrToStringAnsi (
+					g_value_get_string (val._val));
 		}
 
 		/// <summary>

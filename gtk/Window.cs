@@ -72,14 +72,12 @@ namespace Gtk {
 
 		public bool AllowGrow {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeBoolean);
-				GetProperty ("allow-grow", val);
-				return ((bool) val);
+				bool val;
+				GetProperty ("allow-grow", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("allow-grow", val);
+				SetProperty ("allow-grow", value);
 			}
 		}
 			
@@ -94,14 +92,12 @@ namespace Gtk {
 
 		public bool AllowShrink {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeBoolean);
-				GetProperty ("allow-shrink", val);
-				return ((bool) val);
+				bool val;
+				GetProperty ("allow-shrink", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("allow-shrink", val);
+				SetProperty ("allow-shrink", value);
 			}
 		}
 			
@@ -115,18 +111,15 @@ namespace Gtk {
 
 		public int DefaultHeight {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeInt);
-				GetProperty ("default-height", val);
-				return ((int) val);
+				int val;
+				GetProperty ("default-height", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("default-height", val);
+				SetProperty ("default-height", value);
 			}
 		}
 
-/*
 		/// <summary>
 		///	DefaultSize Property
 		/// </summary>
@@ -137,14 +130,14 @@ namespace Gtk {
 
 		public Size DefaultSize {
 			get {
-				GValue val = GetProp ("default-size");
-				return (val != 0);
+				return new Size (DefaultWidth, DefaultHeight);
 			}
 			set {
-				SetProp ("default-size", new GValue (value));
+				DefaultWidth = value.Width;
+				DefaultHeight = value.Height;
 			}
 		}
-*/
+
 		/// <summary>
 		///	DefaultWidth Property
 		/// </summary>
@@ -155,14 +148,12 @@ namespace Gtk {
 
 		public int DefaultWidth {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeInt);
-				GetProperty ("default-width", val);
-				return ((int) val);
+				int val;
+				GetProperty ("default-width", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("default-width", val);
+				SetProperty ("default-width", value);
 			}
 		}
 
@@ -178,14 +169,12 @@ namespace Gtk {
 
 		public bool DestroyWithParent {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeBoolean);
-				GetProperty ("destroy-with-parent", val);
-				return ((bool) val);
+				bool val;
+				GetProperty ("destroy-with-parent", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("destroy-with-parent", val);
+				SetProperty ("destroy-with-parent", value);
 			}
 		}
 
@@ -202,14 +191,12 @@ namespace Gtk {
 
 		public bool Modal {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeBoolean);
-				GetProperty ("modal", val);
-				return ((bool) val);
+				bool val;
+				GetProperty ("modal", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("modal", val);
+				SetProperty ("modal", value);
 			}
 		}
 
@@ -244,14 +231,12 @@ namespace Gtk {
 
 		public bool Resizable {
 			get {
-				Value val = new Value (
-						TypeFundamentals.TypeBoolean);
-				GetProperty ("resizable", val);
-				return ((bool) val);
+				bool val;
+				GetProperty ("resizable", out val);
+				return (val);
 			}
 			set {
-				Value val = new Value (value);
-				SetProperty ("resizable", val);
+				SetProperty ("resizable", value);
 			}
 		}
 
@@ -263,18 +248,14 @@ namespace Gtk {
 		///	The Title displayed in the Window's Title Bar.
 		/// </remarks>
 
-		[DllImport("gobject-1.3.dll")]
-		static extern void g_object_set (IntPtr obj, String name,
-						 IntPtr val, IntPtr term);
-
 		public String Title {
+			get {
+				String val;
+				GetProperty ("title", out val);
+				return val;
+			}
 			set {
-				g_object_set (RawObject, "title", 
-					      Marshal.StringToHGlobalAnsi (value), new IntPtr (0));
-/* FIXME: When the String value setting problem is solved.
-				Value val = new Value (value);
-				SetProperty ("title", val);
-*/
+				SetProperty ("title", value); 
 			}
 		}
 	}
