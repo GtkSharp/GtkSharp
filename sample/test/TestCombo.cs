@@ -29,7 +29,8 @@ namespace WidgetViewer {
 			box1.PackStart (box2, true, true, 0);
 
 			combo = new Gtk.Combo ();
-			combo.SetPopdownStrings ("Foo", "Bar");
+			string[] pop = {"Foo", "Bar"};
+			combo.PopdownStrings = pop;
 			combo.Entry.Activated += new EventHandler (OnComboActivated);
 			box2.PackStart (combo, true, true, 0);
 
@@ -60,7 +61,7 @@ namespace WidgetViewer {
 			string text = ((Gtk.Entry) o).Text;
 
 			// combo.AppendString (text);
-			combo.SetPopdownStrings (text);
+			// combo.SetPopdownStrings (text);
 		}
 	}
 }
