@@ -220,7 +220,7 @@ namespace GtkSharp.Generation {
 		
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
-			if (elem.HasAttribute("shared") && 
+			if (elem.HasAttribute("shared") &&
 			    (elem.GetAttribute("shared") == "true"))
 				sw.Write("static ");
 			sw.Write(safety);
@@ -259,7 +259,7 @@ namespace GtkSharp.Generation {
 			if (!Initialize ()) 
 				return;
 
-			if (elem.HasAttribute("shared") && 
+			if (elem.HasAttribute("shared") &&
 			    (elem.GetAttribute("shared") == "true"))
 				return;
 
@@ -338,7 +338,7 @@ namespace GtkSharp.Generation {
 			GenerateImport (gen_info.Writer);
 			if (comp != null && s_ret == comp.parms.AccessorReturnType)
 				comp.GenerateImport (gen_info.Writer);
-			
+
 			if (IsDeprecated)
 				gen_info.Writer.WriteLine("\t\t[Obsolete]");
 			gen_info.Writer.Write("\t\t");
