@@ -191,7 +191,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\t_raw = raw;");
 			sw.Write("\t\t\t_HandlerID = g_signal_connect_data(raw, name, ");
-			sw.WriteLine("_Delegate, _key, new IntPtr(0), 0);");
+			sw.WriteLine("_Delegate, _key, new IntPtr(0), 1);");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
