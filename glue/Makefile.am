@@ -5,6 +5,7 @@ INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
 libgtksharpglue_la_SOURCES = 	\
 	value.c			\
 	textiter.c		\
+	fileselection.c		\
 	error.c			\
 	#
 
