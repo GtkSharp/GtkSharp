@@ -86,7 +86,7 @@ namespace WidgetViewer {
 
 		static void Close_Button (object o, EventArgs args)
 		{
-			Window_Delete (o, (DeleteEventArgs) args);
+			Application.Quit ();
 		}
 
 		static void Check_Buttons (object o, EventArgs args)

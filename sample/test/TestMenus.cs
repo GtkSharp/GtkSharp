@@ -40,7 +40,7 @@ namespace WidgetViewer {
 			menuitem.Submenu = Create_Menu (3, true);
 			menubar.Append (menuitem);
 			
-			Image image = new Image ("gtk-help", IconSize.Menu);
+			Image image = new Image (Stock.Help, IconSize.Menu);
 
 			menuitem = new ImageMenuItem ("Help");
 			((ImageMenuItem) menuitem).Image = image;

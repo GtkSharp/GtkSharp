@@ -18,6 +18,7 @@ namespace WidgetViewer {
 		static Window window = null;
 		static Statusbar statusbar = null;
 		static int counter = 1;
+		static uint context_id ;
 
 		public static Gtk.Window Create ()
 		{
@@ -33,7 +34,7 @@ namespace WidgetViewer {
 
 			statusbar = new Statusbar ();
 			box1.PackEnd (statusbar, true, true, 0);
-			statusbar.TextPopped += new EventHandler (statusbar_popped);
+			statusbar.TextPopped += new TextPoppedHandler (statusbar_popped);
 
 			Button button = new Button ("push");
 			box2.PackStart (button, false, false, 0);
@@ -41,7 +42,7 @@ namespace WidgetViewer {
 
 			button = new Button ("pop");
 			box2.PackStart (button, false, false, 0);
-			button.Clicked += new EventHandler (statusbar_popped);
+			button.Clicked += new EventHandler (pop_clicked);
 
 			box1.PackStart (new HSeparator (), false, true, 0);
 
@@ -59,17 +60,27 @@ namespace WidgetViewer {
 			return window;
 		}
 
-		static void statusbar_popped (object o, EventArgs args)
+		static void pop_clicked (object o, EventArgs args)
 		{
-			statusbar.Pop ((uint) 1);
+			Console.WriteLine ("Pop");
+			statusbar.Pop (context_id);
+		}
+
+		static void statusbar_popped (object o, TextPoppedArgs args)
+		{
+			Console.WriteLine ("statusbar_popped signal");
+			Console.WriteLine (args.Text);
+			Console.WriteLine (args.ContextId);
 		}
 
 		static void statusbar_pushed (object o, EventArgs args)
 		{
-			if (counter < 1024) {
-				statusbar.Push (1, String.Format ("Push #{0}", counter));
-				counter ++;
-			}
+			string content = String.Format ("Push #{0}", counter);
+			context_id = statusbar.GetContextId (content);
+			statusbar.Push (context_id, content);
+
+			counter ++;
+			return;
 		}
 
 		static void Close_Button (object o, EventArgs args)
