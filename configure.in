@@ -135,6 +135,10 @@ PKG_CHECK_MODULES(LIBART, libart-2.0 >= $ART_REQUIRED_VERSION, enable_libart=yes
 AC_SUBST(LIBART_CFLAGS)
 AC_SUBST(LIBART_LIBS)
 
+PKG_CHECK_MODULES(GNOMEVFS, gnome-vfs-2.0 >= $GNOME_REQUIRED_VERSION, enable_gnomevfs=yes, enable_gnomevfs=no)
+AC_SUBST(GNOMEVFS_CFLAGS)
+AC_SUBST(GNOMEVFS_LIBS)
+
 PKG_CHECK_MODULES(GNOME, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
 AC_SUBST(GNOME_CFLAGS)
 AC_SUBST(GNOME_LIBS)
@@ -185,6 +189,7 @@ AC_SUBST(LIBPANEL_CFLAGS)
 AC_SUBST(LIBPANEL_LIBS)
 
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
+AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
@@ -302,6 +307,7 @@ echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
 echo "      * art-sharp.dll: $enable_libart"
+echo "      * gnomevfs-sharp.dll: $enable_gnomevfs"
 echo "      * gnome-sharp.dll: $enable_gnome"
 echo "      * glade-sharp.dll: $enable_glade"
 echo "      * gda-sharp.dll: $enable_gda"

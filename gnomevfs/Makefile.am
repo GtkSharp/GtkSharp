@@ -1,5 +1,15 @@
 SUBDIRS = .
 
+if ENABLE_GNOMEVFS
+TARGET = $(ASSEMBLY) $(ASSEMBLY).config
+APIS = $(API) $(ADDITIONAL_API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = gnome-vfs-sharp-2.0.pc
+else
+TARGET=
+APIS=
+endif
+
 API = gnomevfs-api.xml
 ADDITIONAL_API = gnomevfs-symbols.xml
 RAW_API = gnomevfs-api.raw
@@ -8,11 +18,10 @@ METADATA = Gnomevfs.metadata
 ASSEMBLY_NAME = gnome-vfs-sharp
 references = /r:../glib/glib-sharp.dll
 
-TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 gapidir = $(datadir)/gapi-2.0
-noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
-gapi_DATA = $(API) $(ADDITIONAL_API)
+noinst_DATA = $(TARGET)
+gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs gnome-vfs-sharp.pc
 
@@ -73,9 +82,6 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 
 $(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.snk
 	$(CSC) /unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) $(GENERATED_SOURCES)
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gnome-vfs-sharp-2.0.pc
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

@@ -9,10 +9,22 @@ else
 GLADE_DIR =
 endif
 
+if ENABLE_GNOMEVFS
+GNOME_VFS_DIR = gnomevfs
+else
+GNOME_VFS_DIR =
+endif
+
 if ENABLE_GNOME
 GNOME_DIR = art gnome gconf/GConf gconf/GConf.PropertyEditors
 else
 GNOME_DIR =
+endif
+
+if ENABLE_PANEL
+PANELAPPLET_DIR = panelapplet
+else
+PANELAPPLET_DIR =
 endif
 
 if ENABLE_GTKHTML
@@ -45,8 +57,8 @@ else
 VTE_DIR =
 endif
 
-UPDATE_DIRS=glib pango atk gdk gtk glade $(GNOME_DIR) $(GDA_DIR) $(GNOMEDB_DIR) $(RSVG_DIR) $(GTKHTML_DIR) $(VTE_DIR)
-NAMESPACES=GLib Pango Atk Gdk Gtk Glade Art Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
+UPDATE_DIRS=glib pango atk gdk gtk glade $(GNOME_VFS_DIR) $(GNOME_DIR) $(PANELAPPLET_DIR) $(GDA_DIR) $(GNOMEDB_DIR) $(RSVG_DIR) $(GTKHTML_DIR) $(VTE_DIR)
+NAMESPACES=GLib Pango Atk Gdk Gtk Glade Art Gnome.Vfs Gnome PanelApplet Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
 
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
