@@ -81,6 +81,7 @@ namespace GtkSharp.Generation {
 						result += SymbolTable.Table.GetName(parms[i].CType);
 					}
 				}		 
+				result = result.Replace ("[]", "Array");
 				return result;
 			}
 		}
