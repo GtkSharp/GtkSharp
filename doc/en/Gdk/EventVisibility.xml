@@ -8,7 +8,12 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Generated when the window visibility status has changed.</summary>
-    <remarks></remarks>
+    <remarks>
+      <para>
+	The type member is set to the event type constant name that
+        uniquely identifies it.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -36,8 +41,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The type for this event</summary>
+        <remarks>The value type for this event.</remarks>
       </Docs>
     </Member>
     <Member MemberName="_window">
@@ -60,8 +65,38 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The visibility state for the window.</summary>
+        <remarks>
+	  <para>
+	    The state member is set to the state of the window's
+	    visibility and can be VisibilityUnobscured,
+	    VisibilityPartiallyObscured, or VisibilityFullyObscured.
+	    The X server ignores all of a window's subwindows when
+	    determining the visibility state of the window and
+	    processes VisibilityNotify events according to the
+	    following:
+	  </para>
+	  <para>
+	    When the window changes state from partially obscured, fully
+            obscured, or not viewable to viewable and completely unobscured,
+            the X server generates the event with the state member of the
+            EventVisibility structure set to Gdk.Visibility.Unobscured.
+	  </para>
+	  <para>
+	    When the window changes state from viewable and completely unob-
+            scured or not viewable to viewable and partially obscured, the X
+            server generates the event with the state member of the XVisibili-
+            tyEvent structure set to Gdk.Visibility.Partial.
+	  </para>
+	  <para>
+	    When the window changes state from viewable and completely
+            unobscured, viewable and partially obscured, or not
+            viewable to viewable and fully obscured, the X server
+            generates the event with the state member of the
+            XVisibilityEvent structure set to
+            Gdk.Visibility.FullyObscured.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="New">
@@ -88,10 +123,15 @@
       </ReturnValue>
       <Parameters></Parameters>
       <Docs>
-        <summary>the window which received the event.</summary>
-        <param name="value">the window which received the event.</param>
-        <returns>the window which received the event.</returns>
-        <remarks></remarks>
+        <summary>The window whose visibility changed.</summary>
+        <param name="value">The window whose visibility changed.</param>
+        <returns>The window whose visibility changed.</returns>
+        <remarks>
+	  <para>
+	    The <see cref="P:Gdk.EventVisibility.state"> property
+	    reports the state changed for the window.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="send_event">
@@ -102,7 +142,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>TRUE if the event was sent explicitly (e.g. using XSendEvent).</summary>
+        <summary>Non-zero if the event was sent explicitly (e.g. using XSendEvent).</summary>
         <remarks></remarks>
       </Docs>
     </Member>
