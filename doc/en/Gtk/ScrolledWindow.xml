@@ -7,8 +7,18 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Adds scrollbars to its child widget.</summary>
+    <remarks>
+      <para>
+        GtkScrolledWindow is a <see cref="T:Gtk.Bin"/> subclass: it's a container the accepts a single child widget. GtkScrolledWindow adds scrollbars to the child widget and optionally draws a beveled frame around the child widget.
+      </para>
+      <para>
+        The scrolled window can work in two ways. Some widgets have native scrolling support; these widgets have "slots" for <see cref="T:Gtk.Adjustment"/> objects. Widgets with native scroll support include <see cref="T:Gtk.TreeView"/>, <see cref="T:Gtk.TextView"/>, and <see cref="T:Gtk.Layout"/>.
+      </para>
+      <para>
+        The position of the scrollbars is controlled by the scroll adjustments. See <see cref="T:Gtk.Adjustment"/> for the properties in an adjustment - for <see cref="T:Gtk.Scrollbar"/>, used by <see cref="T:Gtk.ScrolledWindow"/>, the <see cref="P:Gtk.Adjustment.Value"/> property represents the position of the scrollbar, which must be between the <see cref="P:Gtk.Adjustment.Lower"/> and <see cref="P:Gtk.Adjustment.Upper"/> - <see cref="P:Gtk.Adjustment.PageSize"/>. The <see cref="P:Gtk.Adjustment.PageSize"/> property represents the size of the visible scrollable area. The <see cref="P:Gtk.Adjustment.StepIncrement"/> and <see cref="P:Gtk.Adjustment.PageIncrement"/> properties are used when the user asks to step down (using the small stepper arrows) or page down (using for example the PageDown key).
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -39,9 +49,19 @@
         <Parameter Name="child" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Used to add children without native scrolling capabilities.</summary>
         <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Used to add children without native scrolling capabilities. This is simply a convenience function; it is equivalent to adding the unscrollable child to a viewport, then adding the viewport to the scrolled window. If a child has native scrolling, use <see cref="M:Gtk.Container.Add"/> instead of this function.
+          </para>
+          <para>
+            The viewport scrolls the child by moving its <see cref="T:Gdk.Window"/>, and takes the size of the child to be the size of its toplevel <see cref="T:Gdk.Window"/>. This will be very wrong for most widgets that support native scrolling; for example, if you add a widget such as <see cref="T:Gtk.TreeView"/> with a viewport, the whole widget will scroll, including the column headings. Thus, widgets with native scrolling support should not be used with the <see cref="T:Gtk.Viewport"/> proxy.
+          </para>
+          <para>
+            A widget supports scrolling natively if the set_scroll_adjustments_signal field in GtkWidgetClass is non-zero, i.e. has been filled in with a valid signal identifier.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetPolicy">
@@ -55,10 +75,14 @@
         <Parameter Name="vscrollbar_policy" Type="Gtk.PolicyType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hscrollbar_policy">To be added: an object of type 'Gtk.PolicyType'</param>
-        <param name="vscrollbar_policy">To be added: an object of type 'Gtk.PolicyType'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the scrollbar policy for the horizontal and vertical scrollbars.</summary>
+        <param name="hscrollbar_policy">Policy for horizontal bar.</param>
+        <param name="vscrollbar_policy">Policy for vertical bar.</param>
+        <remarks>
+          <para>
+            Sets the scrollbar policy for the horizontal and vertical scrollbars. The policy determines when the scrollbar should appear; it is a value from the <see cref="T:Gtk.PolicyType"/> enumeration. If <see cref="T:Gtk.PolicyType.Always"/>, the scrollbar is always present; if <see cref="T:Gtk.PolicyType.Never"/>, the scrollbar is never present; if <see cref="T:Gtk.PolicyType.Automatic"/>, the scrollbar is present only if needed (that is, if the slider part of the bar would be smaller than the trough - the display is larger than the page size).
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPolicy">
@@ -72,10 +96,14 @@
         <Parameter Name="vscrollbar_policy" Type="Gtk.PolicyType&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hscrollbar_policy">To be added: an object of type 'Gtk.PolicyType&amp;'</param>
-        <param name="vscrollbar_policy">To be added: an object of type 'Gtk.PolicyType&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the current policy values for the horizontal and vertical scrollbars.</summary>
+        <param name="hscrollbar_policy">Location to store the policy for the horizontal scrollbar.</param>
+        <param name="vscrollbar_policy">Location to store the policy for the horizontal scrollbar.</param>
+        <remarks>
+          <para>
+            Retrieves the current policy values for the horizontal and vertical scrollbars.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -127,11 +155,15 @@
         <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <param name="vadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
+        <summary>Creates a new scrolled window.</summary>
+        <param name="hadjustment">Horizontal adjustment.</param>
+        <param name="vadjustment">Vertical adjustment.</param>
         <returns>To be added: an object of type 'Gtk.ScrolledWindow'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Creates a new scrolled window. The two arguments are the scrolled window's adjustments; these will be shared with the scrollbars and the child widget to keep the bars in sync with the child. Usually you want to pass <see cref="langword:null"/> for the adjustments, which will cause the scrolled window to create them for you.
+        </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -167,10 +199,14 @@
         <Parameter Name="value" Type="Gtk.CornerType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.CornerType'</param>
-        <returns>To be added: an object of type 'Gtk.CornerType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines the location of the child widget with respect to the scrollbars.</summary>
+        <param name="value">Position of the child window.</param>
+        <returns></returns>
+        <remarks>
+          <para>
+            Determines the location of the child widget with respect to the scrollbars. The default is <see cref="T:Gtk.CornerType.TopLeft"/>, meaning the child is in the top left, with the scrollbars underneath and to the right. Other values in <see cref="T:Gtk.CornerType"/> are <see cref="T:Gtk.CornerType.TopRight"/>, <see cref="T:Gtk.CornerType.BottomLeft"/>, and <see cref="T:Gtk.CornerType.BottomRight"/>.
+        </para>
+      </remarks>
       </Docs>
     </Member>
     <Member MemberName="HscrollbarPolicy">
@@ -183,7 +219,7 @@
         <Parameter Name="value" Type="Gtk.PolicyType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>When the horizontal scrollbar is displayed.</summary>
         <param name="value">To be added: an object of type 'Gtk.PolicyType'</param>
         <returns>To be added: an object of type 'Gtk.PolicyType'</returns>
         <remarks>To be added</remarks>
@@ -199,9 +235,9 @@
         <Parameter Name="value" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <summary>Sets the <see cref="T:Gtk.Adjustment"/> for the horizontal scrollbar.</summary>
+        <param name="value">Horizontal scroll adjustment.</param>
+        <returns>The horizontal GtkAdjustment.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -215,7 +251,7 @@
         <Parameter Name="value" Type="Gtk.PolicyType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>When the vertical scrollbar is displayed.</summary>
         <param name="value">To be added: an object of type 'Gtk.PolicyType'</param>
         <returns>To be added: an object of type 'Gtk.PolicyType'</returns>
         <remarks>To be added</remarks>
@@ -231,9 +267,9 @@
         <Parameter Name="value" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <summary>Sets or Gets the <see cref="T:Gtk.Adjustment"/> for the vertical scrollbar.</summary>
+        <param name="value">Vertical scroll adjustment.</param>
+        <returns>The vertical GtkAdjustment.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -247,10 +283,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the shadow type of the scrolled window.</summary>
+        <param name="value">Kind of shadow to draw around scrolled window contents.</param>
+        <returns>The current shadow type.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowPlacement">
@@ -263,7 +299,7 @@
         <Parameter Name="value" Type="Gtk.CornerType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Where the contents are located with respect to the scrollbars.</summary>
         <param name="value">To be added: an object of type 'Gtk.CornerType'</param>
         <returns>To be added: an object of type 'Gtk.CornerType'</returns>
         <remarks>To be added</remarks>
@@ -272,7 +308,7 @@
     <Member MemberName="ScrollChild">
       <MemberSignature Language="C#" Value="public event GtkSharp.ScrollChildHandler ScrollChild;" />
       <MemberType>Event</MemberType>
-      <ReturnValue />
+      <ReturnpValue />
       <Parameters />
       <Docs>
         <summary>To be added</summary>
