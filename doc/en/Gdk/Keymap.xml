@@ -5,11 +5,11 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>Not thread safe</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Object for keyboard code manipulation</summary>
     <remarks>
-    <para>
+      <para>
     Defines translations from keyboard states to a `keyval`. Two phase translation: determine keyboard group and level 
     for keyboard state, then lookup the keycode/group/level triplet in the keymap and get the corresponding keyval.
     Keycode is the hardware/keyboard code for that key. Keygroup is used for language and horizontal tracking [ "group 1" is english, 
@@ -148,12 +148,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>
-        To be added
-        </summary>
-        <remarks>
-        None
-        </remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -164,13 +160,11 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>
-        Creates a Keymap based upon the GLib type.
-        </summary>
-        <param name="gtype">An object of type 'uint', the GLib type.</param>
-        <returns>An object of type 'Gdk.Keymap', and gtype.</returns>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of Keymap, using the GLib-provided type</returns>
         <remarks>
-        None
+          <para>This is a constructor used by derivative types of <see cref="T:Gdk.Keymap" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
       </Docs>
     </Member>
@@ -182,14 +176,11 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>
-        This is an internal constructor, and should not be used by
-        user code. 
-        </summary>
-        <param name="raw">An object of type 'IntPtr', pointer to a C object.</param>
-        <returns>An object of type 'Gdk.Keymap'</returns>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of Keymap, wrapping the C object.</returns>
         <remarks>
-        Wrapper for the C object.
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
@@ -225,9 +216,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The GLib Type for Gdk.Keymap</summary>
+        <returns>The GLib TYpe for the Gdk.Keymap class.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Direction">

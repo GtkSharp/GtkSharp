@@ -5,14 +5,14 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>CheckButton is not a thread safe object</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>A GtkCheckButton places a discrete GtkToggleButton next to a widget.</summary>
     <remarks>
       <para>
-        A GtkCheckButton places a discrete <see cref="T:Gtk.ToggleButton"/> next to a widget, usually a <see cref="T:Gtk.Label"/>. See <see cref="T:Gtk.ToggleButton"/> for more information about toggle/check buttons.
+        A GtkCheckButton places a discrete <see cref="T:Gtk.ToggleButton" /> next to a widget, usually a <see cref="T:Gtk.Label" />. See <see cref="T:Gtk.ToggleButton" /> for more information about toggle/check buttons.
     </para>
-  </remarks>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.ToggleButton</BaseTypeName>
@@ -58,8 +58,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Disposes of this widget</summary>
-        <remarks></remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -70,10 +70,12 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Internal contructor</summary>
-        <param name="gtype"></param>
-        <returns>A new CheckButton</returns>
-        <remarks>Internal contructor</remarks>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of CheckButton, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.CheckButton" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -85,12 +87,10 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="raw">A pointer to a GtkCheckButton, as returned by the Gtk+ C API.</param>
-        <returns>A C# Gtk.CheckButton that wraps the <paramref name="raw"/> parameter</returns>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of CheckButton, wrapping the C object.</returns>
         <remarks>
-          <para>
-            If you don't already know that you need this constructor, it should not be used.
-          </para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
@@ -102,7 +102,7 @@
       <Docs>
         <summary>Constructor</summary>
         <returns>A new CheckButton</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -116,7 +116,7 @@
         <summary>Constructor</summary>
         <param name="label">A string for the label.</param>
         <returns>A new CheckButton with a label</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -126,11 +126,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Get the type of this object, as registered with the
-        GLib object system.</summary>
-        <returns><para>A number that uniquely identifies this type in
-        the GLib object system.</para></returns>
-        <remarks><para>Mostly for internal use.</para></remarks>
+        <summary>The GLib Type for Gtk.CheckButton</summary>
+        <returns>The GLib TYpe for the Gtk.CheckButton class.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

@@ -5,13 +5,14 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>Box is not a thread-safe object</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>A Box is a Gtk container that holds an arbitrary number of widgets. This means its sole purpose is to provide layout, size and spacing for other widgets.</summary>
-    <remarks><para>A Box is a rectangular area organized into either a single row or a single column of child widgets, depending upon whether the box is horizontally or vertically oriented, respectively.</para>
-    <para>A Box is abstract - specific layout containers are provided in its sub classes, including a horizontal box, (<see cref="T:Gtk.HBox"/>), a vertical box (<see cref="T:Gtk.VBox"/>), and button boxes, (<see cref="T:Gtk.ButtonBox"/>).</para>
-    <para>
-    Widgets that are 'packed' into a box are considered to be the children of the box, and the box controls their layout. Properties such as <see cref="P:Homogeneous"/> control the layout of all the children in the box, whereas specific packing settings can be applied to each child individually, such as <see cref="M:SetChildPacking(Gtk.Widget,bool,bool,uint,Gtk.PackType)"/>.
+    <remarks>
+      <para>A Box is a rectangular area organized into either a single row or a single column of child widgets, depending upon whether the box is horizontally or vertically oriented, respectively.</para>
+      <para>A Box is abstract - specific layout containers are provided in its sub classes, including a horizontal box, (<see cref="T:Gtk.HBox" />), a vertical box (<see cref="T:Gtk.VBox" />), and button boxes, (<see cref="T:Gtk.ButtonBox" />).</para>
+      <para>
+    Widgets that are 'packed' into a box are considered to be the children of the box, and the box controls their layout. Properties such as <see cref="P:Homogeneous" /> control the layout of all the children in the box, whereas specific packing settings can be applied to each child individually, such as <see cref="M:SetChildPacking(Gtk.Widget,bool,bool,uint,Gtk.PackType)" />.
     </para>
     </remarks>
   </Docs>
@@ -50,11 +51,13 @@
       <Docs>
         <summary>Change the packing properties of a child that is currently in this box.</summary>
         <param name="child">The child widget whose layout should be adjusted</param>
-        <param name="expand">If <lang keyword="true"/>, the child widget will expand to use as much space as it is given.</param>
-        <param name="fill">If <lang keyword="true"/>, the child widget will request as much space as is available.</param>
+        <param name="expand">If <lang keyword="true" />, the child widget will expand to use as much space as it is given.</param>
+        <param name="fill">If <lang keyword="true" />, the child widget will request as much space as is available.</param>
         <param name="padding">The size (in pixels) of a border to place around the specified child widget.</param>
         <param name="pack_type">Whether this child widget should be packed from the beginning of the box, (eg. the left, or the top), or from the end, (eg. the right or the bottom)</param>
-        <remarks><para>It is more common to set any specific packing requirements on child widgets when they are initially added to the box. This can be done using <see cref="M:PackStart(Gtk.Widget,bool,bool,uint)"/> and <see cref="M:PackEnd(Gtk.Widget,bool,bool,uint)"/>.</para></remarks>
+        <remarks>
+          <para>It is more common to set any specific packing requirements on child widgets when they are initially added to the box. This can be done using <see cref="M:PackStart(Gtk.Widget,bool,bool,uint)" /> and <see cref="M:PackEnd(Gtk.Widget,bool,bool,uint)" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="QueryChildPacking">
@@ -92,7 +95,9 @@
       <Docs>
         <summary>Add a widget to the 'end' of a box with default packing settings.</summary>
         <param name="widget">The child widget to add to the box.</param>
-        <remarks><para>The 'end' of a box is the right hand side in a <see cref="T:Gtk.HBox"/> and the bottom in a <see cref="T:Gtk.VBox"/>.</para></remarks>
+        <remarks>
+          <para>The 'end' of a box is the right hand side in a <see cref="T:Gtk.HBox" /> and the bottom in a <see cref="T:Gtk.VBox" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PackStart">
@@ -107,7 +112,9 @@
       <Docs>
         <summary>Add a widget to the 'start' of a box with default packing settings.</summary>
         <param name="widget">The child widget to add to the box.</param>
-        <remarks><para>The 'start' of a box is the left hand side in a <see cref="T:Gtk.HBox"/> and the top in a <see cref="T:Gtk.VBox"/>.</para></remarks>
+        <remarks>
+          <para>The 'start' of a box is the left hand side in a <see cref="T:Gtk.HBox" /> and the top in a <see cref="T:Gtk.VBox" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PackStart">
@@ -125,10 +132,12 @@
       <Docs>
         <summary>Add a widget to the 'start' of a box with the specified packing properties.</summary>
         <param name="child">A widget to pack into the box.</param>
-        <param name="expand">If <lang keyword="true"/>, the child widget will expand to use as much space as it is given.</param>
-        <param name="fill">If <lang keyword="true"/>, the child widget will request as much space as is available.</param>
+        <param name="expand">If <lang keyword="true" />, the child widget will expand to use as much space as it is given.</param>
+        <param name="fill">If <lang keyword="true" />, the child widget will request as much space as is available.</param>
         <param name="padding">The size (in pixels) of a border to place around the specified child widget.</param>
-        <remarks><para>To add a widget to the start of a box with default packing, use <see cref="M:PackStart()"/></para></remarks>
+        <remarks>
+          <para>To add a widget to the start of a box with default packing, use <see cref="M:PackStart()" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PackEnd">
@@ -146,10 +155,12 @@
       <Docs>
         <summary>Add a widget to the 'end' of a box with the specified packing properties.</summary>
         <param name="child">A widget to pack into the box.</param>
-        <param name="expand">If <lang keyword="true"/>, the child widget will expand to use as much space as it is given.</param>
-        <param name="fill">If <lang keyword="true"/>, the child widget will request as much space as is available.</param>
+        <param name="expand">If <lang keyword="true" />, the child widget will expand to use as much space as it is given.</param>
+        <param name="fill">If <lang keyword="true" />, the child widget will request as much space as is available.</param>
         <param name="padding">The size (in pixels) of a border to place around the specified child widget.</param>
-        <remarks><para>To add a widget to the end of a box with default packing, use <see cref="M:PackEnd()"/></para></remarks>
+        <remarks>
+          <para>To add a widget to the end of a box with default packing, use <see cref="M:PackEnd()" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReorderChild">
@@ -165,8 +176,10 @@
       <Docs>
         <summary>Alters the position of a child widget that has already been packed into a Box.</summary>
         <param name="child">A widget that has already been packed into this box.</param>
-        <param name="position"><para>The new position for this widget, indexed from zero. If negative, the <paramref name="child"/> will be placed at the end of the box.</para></param>
-        <remarks></remarks>
+        <param name="position">
+          <para>The new position for this widget, indexed from zero. If negative, the <paramref name="child" /> will be placed at the end of the box.</para>
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -177,8 +190,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Destroy and free all resources used by this widget</summary>
-        <remarks></remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -190,9 +203,11 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="gtype"></param>
-        <returns></returns>
-        <remarks></remarks>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of Box, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.Box" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -203,10 +218,12 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Used for language bindings only.</summary>
-        <param name="raw">A pointer to a GtkBox, as returned by the Gtk+ C API.</param>
-        <returns>A C# Gtk.Box that wraps the <paramref name="raw"/> parameter.</returns>
-        <remarks><para>If you don't already know that you need this constructor, it should not be used.</para></remarks>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of Box, wrapping the C object.</returns>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -216,8 +233,8 @@
       <Parameters />
       <Docs>
         <summary>Internal constructor</summary>
-        <returns></returns>
-        <remarks></remarks>
+        <returns />
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -227,9 +244,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Get the type of this object, as registered with the GLib object system.</summary>
-        <returns>A number that uniquely identifies this type in the GLib object system.</returns>
-        <remarks><para>Mostly for internal use.</para></remarks>
+        <summary>The GLib Type for Gtk.Box</summary>
+        <returns>The GLib TYpe for the Gtk.Box class.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Spacing">
@@ -245,7 +262,7 @@
         <summary>Adjust the spacing between child widgets.</summary>
         <param name="value">The number of pixels of space to put between child widgets.</param>
         <returns>The current pixel spacing between child widgets</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Homogeneous">
@@ -259,9 +276,10 @@
       </Parameters>
       <Docs>
         <summary>Set the size of all child widgets to be the same</summary>
-        <param name="value">If <see langword="true"/>, all child widgets are forced to have the same size, otherwise they appear at their preferred size.</param>
-        <returns><see langword="true"/> if child widgets size themselves equally, false otherwise.</returns>
-        <remarks></remarks>
+        <param name="value">If <see langword="true" />, all child widgets are forced to have the same size, otherwise they appear at their preferred size.</param>
+        <returns>
+          <see langword="true" /> if child widgets size themselves equally, false otherwise.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

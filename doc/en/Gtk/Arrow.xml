@@ -5,22 +5,22 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>Arrow is not a thread safe object</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Produces an Arrow pointing in one of four cardinal directions.</summary>
     <remarks>
       <para>
 	  Arrow should be used to draw simple arrows that need to point in one of the four cardinal directions (Up, Down, Left, or Right). The style of the arrow can be one of the following: None, In, Out, EtchedIn and EtchedOut. Note that these directions and style types may be ammended in versions of Gtk to come.
 	</para>
-	<para>
-	  Arrow will fill any space alloted to it, but since it is inherited from <see cref="C:Gtk.Misc"/>, it can be padded 
+      <para>
+	  Arrow will fill any space alloted to it, but since it is inherited from <see cref="C:Gtk.Misc" />, it can be padded 
  and/or aligned, fill exactly the space the programmer desires.
 	</para>
-	<para>
-          The direction or style of an arrow can be changed after creation by using <see cref="M:Gtk.Arrow.Set"/>. 
+      <para>
+          The direction or style of an arrow can be changed after creation by using <see cref="M:Gtk.Arrow.Set" />. 
 	</para>
-      </remarks>
-    </Docs>
+    </remarks>
+  </Docs>
   <Base>
     <BaseTypeName>Gtk.Misc</BaseTypeName>
   </Base>
@@ -50,7 +50,7 @@
       <Docs>
         <summary>To be added</summary>
         <returns>To be added: an object of type 'uint'</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Set">
@@ -81,8 +81,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Disposes of this widget</summary>
-        <remarks></remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -94,9 +94,11 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="gtype"></param>
-        <returns>A new Arrow</returns>
-        <remarks></remarks>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of Arrow, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.Arrow" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -107,11 +109,11 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal construction</summary>
-        <param name="raw">A pointer to a GtkArrow, as returned by the Gtk+ C API.</param>
-        <returns>A C# Gtk.Arrow that wraps the <paramref name="raw"/> parameter</returns>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of Arrow, wrapping the C object.</returns>
         <remarks>
-          <para>If you don't already know that you need this constructor, it should not be used.</para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
@@ -128,7 +130,7 @@
         <param name="arrow_type">A valid ArrowType.</param>
         <param name="shadow_type">A valid ShadowType.</param>
         <returns>A new Arrow</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -139,7 +141,7 @@
       <Docs>
         <summary>Constructor</summary>
         <returns>A new Arrow</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -149,9 +151,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Get the type of this object, as registered with the GLib object system.</summary>
-        <returns>A number that uniquely identifies this type in the GLib object system</returns>
-        <remarks><para>Mostly for internal use.</para></remarks>
+        <summary>The GLib Type for Gtk.Arrow</summary>
+        <returns>The GLib TYpe for the Gtk.Arrow class.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ShadowType">
@@ -169,9 +171,9 @@
         <returns>Returns a new ShadowType.</returns>
         <remarks>
           <para>
-            Changes the appearance of an outline typically provided by a <see cref="T:Gtk.Frame"/>.
+            Changes the appearance of an outline typically provided by a <see cref="T:Gtk.Frame" />.
         </para>
-        <para>
+          <para>
           The shadow types are: None, In, Out, EtchedIn and EtchedOut.
         </para>
         </remarks>

@@ -5,10 +5,12 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>ButtonBox is not a thread-safe object</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>ButtonBox is a container for laying out <see cref="T:Gtk.Button"/> widgets.</summary>
-    <remarks><para>A button box should be used to provide a consistent layout of buttons throughout your application. Specific button boxes are <see cref="T:Gtk.HButtonBox"/> for horizontal groups of buttons, and <see cref="T:Gtk.VButtonBox"/> for vertical button groups.</para></remarks>
+    <summary>ButtonBox is a container for laying out <see cref="T:Gtk.Button" /> widgets.</summary>
+    <remarks>
+      <para>A button box should be used to provide a consistent layout of buttons throughout your application. Specific button boxes are <see cref="T:Gtk.HButtonBox" /> for horizontal groups of buttons, and <see cref="T:Gtk.VButtonBox" /> for vertical button groups.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Box</BaseTypeName>
@@ -37,9 +39,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The <see cref="T:Glib.Object"/> type ID for the <see cref="T:Gtk.ButtonBoxStyle"/> enumerated type.</summary>
-        <returns></returns>
-        <remarks></remarks>
+        <summary>The <see cref="T:Glib.Object" /> type ID for the <see cref="T:Gtk.ButtonBoxStyle" /> enumerated type.</summary>
+        <returns />
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetChildSecondary">
@@ -53,10 +55,13 @@
         <Parameter Name="is_secondary" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Sets whether <paramref name="child"/> should appear in a secondary group of children. A typical use of a secondary child is the help button in a dialog.</summary>
+        <summary>Sets whether <paramref name="child" /> should appear in a secondary group of children. A typical use of a secondary child is the help button in a dialog.</summary>
         <param name="child">A widget that is already packed into this button box</param>
-        <param name="is_secondary"><see langword="true"/> if <paramref name="child"/> should be placed in a secondary group, <see langword="false"/> otherwise.</param>
-        <remarks><para>A secondary group appears after the other children if the style is <see cref="P:Gtk.ButtonBoxStyle.Start"/>, <see cref="P:Gtk.ButtonBoxStyle.Spread"/> or <see cref="P:Gtk.ButtonBoxStyle.Edge"/>, and before the the other children if the style is <see cref="P:Gtk.ButtonBoxStyle.End"/>. For horizontal button boxes, the definition of before/after depends on direction of the widget (see <see cref="P:Gtk.Widget.Direction"/>). If the style is <see cref="P:Gtk.ButtonBoxStyle.Start"/> or <see cref="P:Gtk.ButtonBoxStyle.End"/>, then the secondary children are aligned at the other end of the button box from the main children. For the other styles, they appear immediately next to the main children.</para></remarks>
+        <param name="is_secondary">
+          <see langword="true" /> if <paramref name="child" /> should be placed in a secondary group, <see langword="false" /> otherwise.</param>
+        <remarks>
+          <para>A secondary group appears after the other children if the style is <see cref="P:Gtk.ButtonBoxStyle.Start" />, <see cref="P:Gtk.ButtonBoxStyle.Spread" /> or <see cref="P:Gtk.ButtonBoxStyle.Edge" />, and before the the other children if the style is <see cref="P:Gtk.ButtonBoxStyle.End" />. For horizontal button boxes, the definition of before/after depends on direction of the widget (see <see cref="P:Gtk.Widget.Direction" />). If the style is <see cref="P:Gtk.ButtonBoxStyle.Start" /> or <see cref="P:Gtk.ButtonBoxStyle.End" />, then the secondary children are aligned at the other end of the button box from the main children. For the other styles, they appear immediately next to the main children.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -67,8 +72,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Destroy and free all resources used by this widget</summary>
-        <remarks></remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -80,9 +85,11 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="gtype"></param>
-        <returns></returns>
-        <remarks></remarks>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of ButtonBox, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.ButtonBox" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -93,10 +100,12 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Used for language bindings only.</summary>
-        <param name="raw">A pointer to a GtkButtonBox, as returned by the Gtk+ C API.</param>
-        <returns>A C# Gtk.ButtonBox that wraps the <paramref name="raw"/> parameter.</returns>
-        <remarks><para>If you don't already know that you need this constructor, it should not be used.</para></remarks>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of ButtonBox, wrapping the C object.</returns>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -106,8 +115,8 @@
       <Parameters />
       <Docs>
         <summary>Internal constructor</summary>
-        <returns></returns>
-        <remarks></remarks>
+        <returns />
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -117,9 +126,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Get the type of this object, as registered with the GLib object system.</summary>
-        <returns>A number that uniquely identifies this type in the GLib object system.</returns>
-        <remarks><para>Mostly for internal use.</para></remarks>
+        <summary>The GLib Type for Gtk.ButtonBox</summary>
+        <returns>The GLib TYpe for the Gtk.ButtonBox class.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Layout">
@@ -135,7 +144,7 @@
         <summary>Alter the way the buttons in this box are arranged.</summary>
         <param name="value">the new style to arrange the buttons in.</param>
         <returns>The style that the child widgets are currently arranged in.</returns>
-        <remarks>See <see cref="T:Gtk.ButtonBoxStyle"/> for more information about the styles of button boxes.</remarks>
+        <remarks>See <see cref="T:Gtk.ButtonBoxStyle" /> for more information about the styles of button boxes.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LayoutStyle">
@@ -148,10 +157,10 @@
         <Parameter Name="value" Type="Gtk.ButtonBoxStyle" />
       </Parameters>
       <Docs>
-        <summary>See <see cref="P:Gtk.ButtonBox.Layout"/></summary>
-        <param name="value"></param>
-        <returns></returns>
-        <remarks></remarks>
+        <summary>See <see cref="P:Gtk.ButtonBox.Layout" /></summary>
+        <param name="value" />
+        <returns />
+        <remarks />
       </Docs>
     </Member>
   </Members>
