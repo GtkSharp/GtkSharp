@@ -319,7 +319,7 @@
       </Docs>
     </Member>
     <Member MemberName="CreateNativeObject">
-      <MemberSignature Language="C#" Value="protected void CreateNativeObject (string [] names, GLib.Value[] vals);" />
+      <MemberSignature Language="C#" Value="protected virtual void CreateNativeObject (string [] names, GLib.Value[] vals);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -329,10 +329,10 @@
         <Parameter Name="vals" Type="GLib.Value[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="names">a <see cref="T:System.String" /></param>
-        <param name="vals">a <see cref="T:GLib.Value" /></param>
-        <remarks>To be added</remarks>
+        <summary>Creates the GObject underlying a managed <see cref="T:GLib.Object"/> subclass</summary>
+        <param name="names">an array of (GObject) property names</param>
+        <param name="vals">the values for the properties identified by <paramref name="names"/></param>
+        <remarks>This is the method used by managed <see cref="T:GLib.Object"/> subclasses (as opposed to classes that are just wrappers around C-based objects) to create their underlying GObject. It will be invoked for you automatically by when you chain to your subclass's base class constructor.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProperty">
