@@ -10,15 +10,10 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A widget used to implement the middle pages in a <see cref="T:Gnome.Druid" /> sequence.
-</summary>
+    <summary>A widget used to implement the middle pages in a druid's sequence.</summary>
     <remarks>
-      <para>
-        This widget provides similar functionality to that in GnomeDruidPageEdge. It is used for pages that are not the initial or terminal pages of a druid.
-      </para>
-      <para>
-        The main difference between an edge and a standard druid page (in a display sense) is that standard pages do not have a left-side watermark and the body of the contents section is a bit more arbitrary (it is a <see cref="T:Gtk.VBox" />), rather than just displaying text (which is the common case for edge pages).
-      </para>
+      <para>This widget provides similar functionality to that in <see cref="T:Gnome.DruidPageEdge" />. It is used for pages that are not the initial or terminal pages of a druid.</para>
+      <para>The main difference between an edge and a standard druid page (in a display sense) is that standard pages do not have a left-side watermark and the body of the contents section is a bit more arbitrary (it is a <see cref="T:GTK.VBox" /> widget), rather than just displaying text (which is the common case for edge pages).</para>
     </remarks>
   </Docs>
   <Base>
@@ -49,17 +44,13 @@
         <Parameter Name="additional_info" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Convenience function to add a <see cref="T:Gtk.Widget" /> to the <see cref="T:Gnome.DruidPageStandard" /> vbox.</summary>
-        <param name="question">an object of type <see cref="T:System.String" /></param>
-        <param name="item">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="additional_info">an object of type <see cref="T:System.String" /></param>
+        <summary>Add a <see cref="T:Gtk.Widget" /> to a <see cref="T:Gnome.DruidPageStandard" />'s VBox.</summary>
+        <param name="question"> The text to place above the item.</param>
+        <param name="item">The <see cref="T:Gtk.Widget" /> to be included.</param>
+        <param name="additional_info"> The text to be placed below the item in a smaller font.</param>
         <remarks>
-          <para>
-            This function creates a new contents section that has the <paramref name="question" /> text followed by the <paramref name="item" /> widget and then the <paramref name="addition_info" /> text, all stacked vertically from top to bottom.
-          </para>
-          <para>
-            The <paramref name="item" /> widget could be something like a set of radio checkbuttons requesting a choice from the user.
-          </para>
+          <para>Convenience function to add a <see cref="T:Gtk.Widget" /> to a <see cref="T:Gnome.DruidPageStandard" />'s VBox. This function creates a new contents section that has the question text followed by the item widget and then the addition_info text, all stacked vertically from top to bottom.</para>
+          <para>The item widget could be something like a set of radio checkbuttons requesting a choice from the user.</para>
         </remarks>
       </Docs>
     </Member>
@@ -97,8 +88,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Default constructor</summary>
-        <returns>an object of type <see cref="T:Gnome.DruidPageStandard" /></returns>
+        <summary>Construct a new <see cref="T:Gnome.DruidPageStandard" />.</summary>
+        <returns>a new <see cref="T:Gnome.DruidPageStandard" />.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -113,11 +104,11 @@
         <Parameter Name="top_watermark" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:Gnome.DruidPageStandard" /> instance.</summary>
-        <param name="title">an object of type <see cref="T:System.String" /></param>
-        <param name="logo">an object of type <see cref="T:Gdk.Pixbuf" /></param>
-        <param name="top_watermark">an object of type <see cref="T:Gdk.Pixbuf" /></param>
-        <returns>an object of type <see cref="T:Gnome.DruidPageStandard" /></returns>
+        <summary>Constructs a new <see cref="T:Gnome.DruidPageStandard" /> and allows the caller to fill in some of the values at the same time.</summary>
+        <param name="title"> The title of the druid page.</param>
+        <param name="logo"> The logo to put on the druid page.</param>
+        <param name="top_watermark"> The watermark to put at the top of the druid page.</param>
+        <returns>a new <see cref="T:Gnome.DruidPageStandard" />.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -147,8 +138,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The title text to the specified color.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets the color of the main contents section's background.</summary>
+        <param name="value"> The new color for the main body's background.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -209,11 +200,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The title text to the specified color.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the logo in the top right corner.</summary>
+        <param name="value"> The <see cref="T:Gdk.Pixbuf" /> to use as a logo.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>If set to null, then no logo will be displayed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LogoBackground">
@@ -225,8 +215,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The background color of the logo</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets the title text to the specified color.</summary>
+        <param name="value"> The new color of the title text.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -241,8 +231,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The background color of the top section of the druid page.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Set the color behind the druid page's logo.</summary>
+        <param name="value"> The new color for the logo background.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -257,8 +247,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The title of the druid page.</summary>
-        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <summary>Sets the background color of the top section of the druid page.</summary>
+        <param name="value"> The new background color.</param>
         <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -304,10 +294,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on top of the top strip on the druid.</summary>
+        <param name="value"> The <see cref="T:Gdk.Pixbuf" /> to use as a top watermark.</param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If set to null, the top watermark is reset to the normal color.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackgroundSet">

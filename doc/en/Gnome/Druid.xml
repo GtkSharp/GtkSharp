@@ -11,8 +11,7 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Widget for sequentially stepping through some pages.</summary>
-    <remarks>
-    </remarks>
+    <remarks>The widget which ultimately holds all of the druid's pages and information. This is the widget which the application developer then places inside an outer widget, such as a dialog box for ultimate display.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -40,9 +39,11 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>This will prepend a <see cref="T:Gnome.DruidPage" /> into the internal list of pages of the druid.</summary>
-        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
-        <remarks>Since GnomeDruid is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
+        <summary>
+          <para>This will prepend a <see cref="T:Gnome.DruidPage" /> into the internal list of pages that the druid has.</para>
+        </summary>
+        <param name="page"> The page to be inserted.</param>
+        <remarks>Since <see cref="T:Gnome.Druid" /> is just a container, you will need to also call Show() on the page, otherwise the page will not be shown.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertPage">
@@ -56,10 +57,13 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>This will insert <paramref name="page" /> after <paramref name="back_page" /> into the list of internal pages of the druid.</summary>
-        <param name="back_page">an object of type <see cref="T:Gnome.DruidPage" /></param>
-        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
-        <remarks>If <paramref name="back_page" /> is not present in the list or <see langword="null" />, <paramref name="page" /> will be prepended to the list. Since <see cref="T:Gnome.Druid" /> is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
+        <summary>This will insert a page after back_page into the list of internal pages that the druid has.</summary>
+        <param name="back_page"> The <see cref="T:Gnome.DruidPage" /> prior to the page to be inserted.</param>
+        <param name="page">The <see cref="T:Gnome.DruidPage" /> to insert.</param>
+        <remarks>
+          <para>If back_page is not present in the list or null, page will be prepended to the list.</para>
+          <para>Since <see cref="T:Gnome.Druid" /> is just a container, you will need to also call Show() on the page, otherwise the page will not be shown.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetButtonsSensitive">
@@ -75,12 +79,12 @@
         <Parameter Name="help_sensitive" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Sets the sensitivity of of the control-buttons for the <see cref="T:Gnome.Druid" />.</summary>
-        <param name="back_sensitive">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="next_sensitive">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="cancel_sensitive">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="help_sensitive">an object of type <see cref="T:System.Boolean" /></param>
-        <remarks>If the variables are <see langword="true" />, then they will be clickable. This function is used primarily by the actual <see cref="T:Gnome.DruidPage" /> widgets.</remarks>
+        <summary>Sets the sensitivity of druid's control-buttons.</summary>
+        <param name="back_sensitive">true if the back button is sensitive.</param>
+        <param name="next_sensitive">true if the next button is sensitive.</param>
+        <param name="cancel_sensitive">true if the cancel button is sensitive.</param>
+        <param name="help_sensitive">true if the help button is sensitive.</param>
+        <remarks>If the variables are true, then the buttons will be clickable. This function is used primarily by the actual GnomeDruidPage widgets.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendPage">
@@ -93,9 +97,11 @@
         <Parameter Name="page" Type="Gnome.DruidPage" />
       </Parameters>
       <Docs>
-        <summary>This will append <paramref name="page" /> onto the end of the internal list of the druid.</summary>
-        <param name="page">an object of type <see cref="T:Gnome.DruidPage" /></param>
-        <remarks>Since GnomeDruid is just a container, you will need to also call <see cref="M:Gtk.Widget.Show()" /> on the page, otherwise the page will not be shown.</remarks>
+        <summary>This will append a <see cref="T:Gnome.DruidPage" /> onto the end of the internal list.</summary>
+        <param name="page"> The <see cref="T:Gnome.DruidPage" /> to be appended.</param>
+        <remarks>
+          <para>Since <see cref="T:Gnome.Druid" /> is just a container, you will need to also call Show() on the page, otherwise the page will not be shown.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstructWithWindow">
@@ -153,10 +159,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Default constructor</summary>
-        <returns>an object of type <see cref="T:Gnome.Druid" /></returns>
-        <remarks>
-        </remarks>
+        <summary>Creates a new GnomeDruid widget.</summary>
+        <returns>a new <see cref="T:Gnome.Druid" /> Widget.</returns>
+        <remarks>You need to add this druid to a dialog yourself, it is not a dialog.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -170,13 +175,17 @@
         <Parameter Name="window" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:Gnome.Druid" /> instance.</summary>
-        <param name="title">an object of type <see cref="T:System.String" /></param>
-        <param name="parent">an object of type <see cref="T:Gtk.Window" /></param>
-        <param name="close_on_cancel">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="window">an object of type <see cref="T:Gtk.Widget" /></param>
-        <returns>an object of type <see cref="T:Gnome.Druid" /></returns>
+        <summary>
+          <para>Creates a new <see cref="T:Gnome.Druid" /> widget inside a new toplevel window.</para>
+        </summary>
+        <param name="title"> A title of the window.</param>
+        <param name="parent"> The parent of this window (TransientFor).</param>
+        <param name="close_on_cancel">Indicates if the window should be closed when cancel is pressed.</param>
+        <param name="window"> Optional return of the <see cref="T:Gtk.Window" /> created.</param>
+        <returns>a new <see cref="T:Gnome.Druid" /> Widget.</returns>
         <remarks>
+          <para>Creates a new <see cref="T:Gnome.Druid" /> widget and a new toplevel window with the given title (which can be null) and a parent (which also can be null). The window and the druid will both be shown.</para>
+          <para>When the druid gets destroyed, so will the window that is created here.</para>
         </remarks>
       </Docs>
     </Member>
@@ -205,10 +214,15 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Used to specify if the druid is currently showing the last page of the sequence (and hence should display "Finish", rather than "Next").</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <summary>
+          <para>This will make the given <see cref="T:Gnome.DruidPage" /> the currently showing page in the druid.</para>
+        </summary>
+        <param name="value">
+          <para>The <see cref="T:Gnome.DruidPage" /> to be brought to the foreground.</para>
+        </param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>
+          <para>The page must already be in the druid.</para>
         </remarks>
       </Docs>
     </Member>
@@ -221,11 +235,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets the "Help" button on the druid to be visible in the lower left corner of the widget, if <see langword="true" />.</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <summary>Used to specify if the druid is currently showing the last page of the sequence.</summary>
+        <param name="value"> If true, then the "Next" button is changed to be "Finish".</param>
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>If set to true, the druid will display "Finish", rather than "Next".</remarks>
       </Docs>
     </Member>
     <Member MemberName="Help">
@@ -236,9 +249,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Emitted when the "Help" button of the druid is clicked.</summary>
-        <remarks>
-        </remarks>
+        <summary>Used to specify if the "Help" button on the druid is visible.</summary>
+        <remarks>If set to true, the "Help" button is shown in the lower left corner of the widget.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Cancel">

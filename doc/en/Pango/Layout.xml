@@ -10,8 +10,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>High-level driver for formatting entire paragraphs of text at once.</summary>
+    <remarks>
+      <para>While complete access to the layout capabilities of Pango is provided using the detailed interfaces for itemization and shaping, using that functionality directly involves writing a fairly large amount of code. The objects and functions in <see cref="T:Pango.Layout" /> provide a high-level driver for formatting entire paragraphs of text at once.</para>
+      <para>The <see cref="T:Pango.Layout" /> represents and entire paragraph of text. It is initialized with a <see cref="T:Pango.Context" />, UTF-8 string and set of attributes for that string. Once that is done, the set of formatted lines can be extracted from the object, the layout can be rendered, and conversion between logical character positions within the layout's text, and the physical position of the resulting glyphs can be made.</para>
+      <para>There are also a number of parameters to adjust the formatting of a <see cref="T:Pango.Layout" />. It is possible, as well, to ignore the 2-D setup, and simply treat the results of a <see cref="T:Pango.Layout" /> as a list of lines.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -51,7 +55,7 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Set the text of the layout.</summary>
         <param name="text">To be added: an object of type 'string'</param>
         <remarks>To be added</remarks>
       </Docs>
@@ -66,9 +70,9 @@
         <Parameter Name="line" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="line">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Pango.LayoutLine'</returns>
+        <summary>Retrieves a particular line.</summary>
+        <param name="line">the index of a line.</param>
+        <returns>the requested <see cref="T:Pango.LayoutLine" />, or null if the index is out of range.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -83,10 +87,10 @@
         <Parameter Name="logical_rect" Type="Pango.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="ink_rect">To be added: an object of type 'Pango.Rectangle'</param>
-        <param name="logical_rect">To be added: an object of type 'Pango.Rectangle'</param>
-        <remarks>To be added</remarks>
+        <summary>Compute the logical and ink extents of layout.</summary>
+        <param name="ink_rect">rectangle used to store the extents of the layout as drawn.</param>
+        <param name="logical_rect">rectangle used to store the logical extents of the layout.</param>
+        <remarks>Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSize">
@@ -159,7 +163,7 @@
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Determine the logical width and height of a <see cref="T:Pango.Layout" /> in device units.</summary>
         <param name="width">To be added: an object of type 'int&amp;'</param>
         <param name="height">To be added: an object of type 'int&amp;'</param>
         <remarks>To be added</remarks>
@@ -201,9 +205,9 @@
         <Parameter Name="context" Type="Pango.Context" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">To be added: an object of type 'Pango.Context'</param>
-        <returns>To be added: an object of type 'Pango.Layout'</returns>
+        <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
+        <param name="context">a <see cref="T:Pango.Context" />.</param>
+        <returns>a new <see cref="T:Pango.Layout" />.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -237,8 +241,8 @@
         <ReturnType>GLib.SList</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.SList'</returns>
+        <summary>The count of lines for the layout.</summary>
+        <returns>The count of lines for the layout.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -251,7 +255,7 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Return the lines of the layout as a list.</summary>
         <param name="value">To be added: an object of type 'int'</param>
         <returns>To be added: an object of type 'int'</returns>
         <remarks>To be added</remarks>
@@ -266,10 +270,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Alignment'</param>
+        <summary>The amount by which the first line should be shorter than the rest of the lines.</summary>
+        <param name="value">the amount by which to indent.</param>
         <returns>To be added: an object of type 'Pango.Alignment'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The value be negative, in which case the subsequent lines will be shorter than the first line. (However, in either case, the entire width of the layout will be given by the value.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Tabs">
@@ -281,10 +285,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.TabArray'</param>
-        <returns>To be added: an object of type 'Pango.TabArray'</returns>
-        <remarks>To be added</remarks>
+        <summary>The alignment for the layout.</summary>
+        <param name="value">The new alignment.</param>
+        <returns>The current alignment.</returns>
+        <remarks>Specifies how partial lines are positioned within the horizontal space available.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SingleParagraphMode">
@@ -296,10 +300,13 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>The tabs to use for the layout.</summary>
+        <param name="value">the tabs to use for the layout.</param>
+        <returns>the current <see cref="T:Pango.TabArray" /> used by this layout. If no <see cref="T:Pango.TabArray" /> has been set, then the default tabs are in use and null is returned.</returns>
+        <remarks>
+          <para>By default, tabs are every 8 spaces.</para>
+          <para>Setting new tabs overrides the default tabs. If Tabs is set to null, the default tabs are reinstated.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Context">
@@ -309,9 +316,12 @@
         <ReturnType>Pango.Context</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether or not to treat newlines and similar characters as paragraph separators.</summary>
         <returns>To be added: an object of type 'Pango.Context'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>If set to true, do not treat newlines and similar characters as paragraph separators; instead, keep all text in a single paragraph, and display a glyph for paragraph separator characters.</para>
+          <para>Used when you want to allow editing of newlines on a single text line.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Iter">
@@ -321,7 +331,7 @@
         <ReturnType>Pango.LayoutIter</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>the <see cref="T:Pango.Context" /> used for this layout.</summary>
         <returns>To be added: an object of type 'Pango.LayoutIter'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -335,9 +345,9 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>An iterator to iterate over the visual extents of the layout.</summary>
         <param name="value">To be added: an object of type 'Pango.AttrList'</param>
-        <returns>To be added: an object of type 'Pango.AttrList'</returns>
+        <returns>a new <see cref="T:Pango.LayoutIter" />.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -365,8 +375,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
+        <summary>The amount of spacing between the lines of the layout.</summary>
+        <param name="value">the amount of spacing.</param>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -380,10 +390,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
+        <summary>Sets whether or not each complete line should be stretched to fill the entire width of the layout.</summary>
+        <param name="value">whether the lines in the layout should be justified.</param>
         <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <remarks>This stretching is typically done by adding whitespace, but for some scripts (such as Arabic), the justification is done by extending the characters.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Text">
@@ -393,7 +403,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the width to which the lines of the Layout should be wrapped.</summary>
         <returns>To be added: an object of type 'string'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -422,10 +432,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the <see cref="T:Pango.WrapMode" />.</summary>
         <param name="value">To be added: an object of type 'Pango.FontDescription'</param>
         <returns>To be added: an object of type 'Pango.FontDescription'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The wrap style only has an effect if a width is set on the layout. To turn off wrapping, set the width to -1.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetMarkupWithAccel">
@@ -440,11 +450,11 @@
         <Parameter Name="accel_char" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="markup">To be added: an object of type 'string'</param>
+        <summary>Set the default <see cref="T:Pango.FontDescription" /> for the layout.</summary>
+        <param name="value">the new <see cref="Pango.FontDescription" />, or null to unset the current font description.</param>
         <param name="accel_marker">To be added: an object of type 'string'</param>
         <param name="accel_char">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <remarks>If no <see cref="T:Pango.FontDescription" /> is set on the layout, the font description from the layout's context is used.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Size">
@@ -550,13 +560,17 @@
         <Parameter Name="trailing" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
-        <param name="index_">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="trailing">a <see cref="T:System.Int32&amp;" /></param>
+        <summary>Computes a new cursor position from an old position and a count of positions to move visually.</summary>
+        <param name="strong">whether the moving cursor is the strong cursor or the weak cursor. The strong cursor is the cursor corresponding to text insertion in the base direction for the layout.</param>
+        <param name="old_index">the byte index of the grapheme for the old index.</param>
+        <param name="old_trailing">if 0, the cursor was at the trailing edge of the grapheme indicated by old_index, if &gt; 0, the cursor was at the leading edge.</param>
+        <param name="direction">direction to move cursor. A negative value indicates motion to the left.</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>If count is positive, then the new strong cursor position will be one position to the right of the old cursor position. If count is position then the new strong cursor position will be one position to the left of the old cursor position.</para>
+          <para>In the presence of bidirection text, the correspondence between logical and visual order will depend on the direction of the current run, and there may be jumps when the cursor is moved off of the end of a run.</para>
+          <para>Motion here is in cursor positions, not in characters, so a single call to MoveCursorVisually() may move the cursor over multiple characters when multiple characters combine to form a single grapheme.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -580,10 +594,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Pango.Layout" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Convert from X and Y position within a layout to the byte index to the character at that logical position.</summary>
+        <param name="x">the X offset from the left edge of the layout.</param>
+        <returns>true if the coordinates were inside text.</returns>
+        <remarks>If the position is not inside the layout, the closest position is chosen (the x/y position will be clamped inside the layout). If a closest position is chosen, then the function returns false; on an exact hit, it returns true.</remarks>
       </Docs>
     </Member>
   </Members>

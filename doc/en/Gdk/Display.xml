@@ -10,8 +10,23 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      <para>Controls the keyboard/mouse pointer grabs and a set of GdkScreens</para>
+    </summary>
+    <remarks>
+      <para>
+        <see cref="T:Gdk.Display" /> objects purpose are two fold:</para>
+      <list type="bullet">
+        <item>
+          <term>To grab/ungrab keyboard focus and mouse pointer</term>
+        </item>
+        <item>
+          <term>To manage and provide information about the <see cref="T:Gdk.Screen" />(s) available for this <see cref="T:Gdk.Display" /></term>
+        </item>
+      </list>
+      <para>
+        <see cref="T:Gdk.Display" /> objects are the GDK representation of the X Display which can be described as a workstation consisting of a keyboard a pointing device (such as a mouse) and one or more screens. It is used to open and keep track of various <see cref="T:Gdk.Screen" /> objects currently instanciated by the application. It is also used to grab and release the keyboard and the mouse pointer.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -49,9 +64,9 @@
         <Parameter Name="display_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
+        <summary>Opens a display.</summary>
+        <param name="display_name">a <see cref="T:System.String" /> -  the name of the display to open</param>
+        <returns>a <see cref="T:Gdk.Display" />, or null if the display could not be opened.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -65,8 +80,8 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
+        <summary>Appends the given event onto the front of the event queue for display.</summary>
+        <param name="evnt">a <see cref="T:Gdk.Event" /> to be appended onto the front of the event queue.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -81,9 +96,9 @@
         <Parameter Name="func" Type="Gdk.FilterFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="message_type">a <see cref="T:Gdk.Atom" /></param>
-        <param name="func">a <see cref="T:Gdk.FilterFunc" /></param>
+        <summary>Adds a filter to be called when X ClientMessage events are received.</summary>
+        <param name="message_type">a <see cref="T:Gdk.Atom" /> representing the type of ClientMessage events to receive.</param>
+        <param name="func">a <see cref="T:Gdk.FilterFunc" /> to call to process the event.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -95,8 +110,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Test if the pointer is grabbed.</summary>
+        <returns>a <see cref="T:System.Boolean" /> that is true if an active X pointer grab is in effect.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -108,7 +123,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Emits a short beep.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -120,8 +135,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
+        <summary>Gets a copy of the first <see cref="T:Gdk.Event" /> in the display's event queue, without removing the event from the queue. (Note that this function will not get more events from the windowing system. It only checks the events that have already been moved to the GDK event queue.)</summary>
+        <returns>a copy of the first <see cref="T:Gdk.Event" /> on the event queue, or null if no events are in the queue.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -133,7 +148,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Closes the connection windowing system for the given display, and cleans up associated resources.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -147,8 +162,8 @@
         <Parameter Name="screen_num" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="screen_num">a <see cref="T:System.Int32" /></param>
+        <summary>Returns a screen object for one of the screens of the display.</summary>
+        <param name="screen_num">a <see cref="T:System.Int32" /> representing the screen number</param>
         <returns>a <see cref="T:Gdk.Screen" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -163,15 +178,23 @@
         <Parameter Name="new_hooks" Type="Gdk.DisplayPointerHooks" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+        </summary>
         <param name="new_hooks">a <see cref="T:Gdk.DisplayPointerHooks" /></param>
-        <returns>a <see cref="T:Gdk.DisplayPointerHooks" /></returns>
-        <remarks>To be added</remarks>
+        <returns> the previous <see cref="T:Gdk.DisplayPointerHooks" /> table</returns>
+        <remarks>
+	  <para>
+	     This function allows for hooking into the operation of
+	     getting the current location of the pointer on a
+	     particular display. This is only useful for such
+	     low-level tools as an event recorder. Applications
+	     should never have any reason to use this facility.
+	   </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="KeyboardUngrab">
-      <MemberSignature Language="C#" Value="public void KeyboardUngrab (uint time_);" />
-      <MemberType>Method</MemberType>
+      <MemberSignature Language="C#" Value="public void KeyboardUngrab (uint time_);" /> <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -179,8 +202,8 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <summary>Release any keyboard grab.</summary>
+        <param name="time_">a <see cref="T:System.UInt32" /> representing a  a timestap.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -192,8 +215,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:GLib.List" /></returns>
+        <summary>Returns the list of available input devices attached to the display.</summary>
+        <returns>a <see cref="T:GLib.List" /> of <see cref="T:Gdk.Device" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -207,8 +230,8 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <summary>Release any pointer grab.</summary>
+        <param name="time_">a <see cref="T:System.UInt32" /> representing a  a timestap.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -268,8 +291,8 @@
         <ReturnType>Gdk.Display</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
+        <summary>Get the default <see cref="T:Gdk.Screen" /> for the display.</summary>
+        <returns> the default <see cref="T:Gdk.Screen" /> object for display.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -280,9 +303,10 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The name of the display</summary>
+        <returns>A <see cref="T:System.String" /> representing the
+        display name.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DoubleClickTime">
@@ -294,10 +318,15 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the double-click timeout.</summary>
         <param name="value">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gdk.Display" />, or null if there is no default display.</returns>
+        <remarks>
+	      <para>Sets the double click time (two clicks within this
+	      time interval count as a double click). Applications
+	      should NOT set this, it is a global user-configured
+	      setting.</para>
+	    </remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultScreen">
@@ -307,8 +336,8 @@
         <ReturnType>Gdk.Screen</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
+        <summary>The default screen..</summary>
+        <returns>The screen represending the DefaultScreen.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -319,7 +348,9 @@
         <ReturnType>Gdk.Device</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	      To be added
+        </summary>
         <returns>a <see cref="T:Gdk.Device" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -331,8 +362,8 @@
         <ReturnType>Gdk.Event</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
+        <summary>To be added.</summary>
+        <returns></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -356,7 +387,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the next <see cref="T:Gdk.Event" /> to be processed for display, fetching events from the windowing system if necessary.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -373,12 +404,13 @@
         <Parameter Name="mask" Type="Gdk.ModifierType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the current location of the pointer and the
+        current modifier mask for a given display.</summary>
         <param name="screen">a <see cref="T:Gdk.Screen" /></param>
         <param name="x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="y">a <see cref="T:System.Int32&amp;" /></param>
         <param name="mask">a <see cref="T:Gdk.ModifierType&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks>None</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWindowAtPointer">
@@ -392,11 +424,14 @@
         <Parameter Name="win_y" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains the window underneath the mouse pointer.</summary>
         <param name="win_x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="win_y">a <see cref="T:System.Int32&amp;" /></param>
         <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Obtains the window underneath the mouse pointer,
+        returning the location of that window in win_x, win_y for
+        screen. Returns NULL if the window under the mouse pointer is
+        not known to GDK (for example, belongs to another application).</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -407,7 +442,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the current location of the pointer and the current modifier mask for a given display.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -422,8 +457,8 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <summary>To be added.</summary>
+        <param name="win_x">a <see cref="T:System.Int32&amp;" /> -  return location for origin of the window under the pointer</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

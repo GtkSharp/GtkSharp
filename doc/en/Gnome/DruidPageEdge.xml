@@ -10,14 +10,10 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A widget used to implement first and last pages in the sequence of the <see cref="T:Gnome.Druid" />.</summary>
+    <summary>A widget used to implement first and last pages in a druid's sequence.</summary>
     <remarks>
-      <para>
-        A druid can be thought of as having a page that starts the sequence, one or more pages that end the sequences (there can be multiple end pages if the flow of pages diverges at some point) and some pages that are in between the start and end pages.
-      </para>
-      <para>
-        The <see cref="T:Gnome.DruidPageEdge" /> widget is for the first and last pages in the sequence of pages in the <see cref="T:Gnome.Druid" />. Pages in the "middle" of a sequence should use <see cref="T:Gnome.DruidPageStandard" />.
-      </para>
+      <para>A druid can be thought of as having a page that starts the sequence, one or more pages that end the sequences (there can be multiple end pages if the flow of pages diverges at some point) and some pages that are in between the start and end pages.</para>
+      <para>The <see cref="T:Gnome.DruidPageEdge" /> widget is for the first and last pages in a druid's sequence of pages. Pages in the "middle" of a sequence should use <see cref="T:Gnome.DruidPageStandard" />.</para>
     </remarks>
   </Docs>
   <Base>
@@ -117,8 +113,8 @@
       </Parameters>
       <Docs>
         <summary>Creates a new <see cref="T:Gnome.DruidPageEdge" /> widget.</summary>
-        <param name="position">an object of type <see cref="T:Gnome.EdgePosition" /></param>
-        <returns>an object of type <see cref="T:Gnome.DruidPageEdge" /></returns>
+        <param name="position">Position in druid.</param>
+        <returns>a new <see cref="T:Gnome.DruidPageEdge" />.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -137,17 +133,16 @@
         <Parameter Name="top_watermark" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:Gnome.DruidPageEdge" /> widget.</summary>
-        <param name="position">an object of type <see cref="T:Gnome.EdgePosition" /></param>
-        <param name="antialiased">an object of type <see cref="T:System.Boolean" /></param>
-        <param name="title">an object of type <see cref="T:System.String" /></param>
-        <param name="text">an object of type <see cref="T:System.String" /></param>
-        <param name="logo">an object of type <see cref="T:Gdk.Pixbuf" /></param>
-        <param name="watermark">an object of type <see cref="T:Gdk.Pixbuf" /></param>
-        <param name="top_watermark">an object of type <see cref="T:Gdk.Pixbuf" /></param>
-        <returns>an object of type <see cref="T:Gnome.DruidPageEdge" /></returns>
-        <remarks>
-        </remarks>
+        <summary>Creates a new <see cref="T:Gnome.DruidPageEdge" /> widget with the values given.</summary>
+        <param name="position">Position in druid.</param>
+        <param name="antialiased">Use an antialiased canvas.</param>
+        <param name="title">The title.</param>
+        <param name="text">The introduction text.</param>
+        <param name="logo">The logo in the upper right corner.</param>
+        <param name="watermark">The watermark on the left.</param>
+        <param name="top_watermark">The top watermark.</param>
+        <returns>a new <see cref="T:Gnome.DruidPageEdge" />.</returns>
+        <remarks>It is acceptable for any of the reference values to be null.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -156,8 +151,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Internal constructor</summary>
-        <returns>an object of type <see cref="T:Gnome.DruidPageEdge" /></returns>
+        <summary>Creates a new <see cref="T:Gnome.DruidPageEdge" /> widget.</summary>
+        <returns>a new <see cref="T:Gnome.DruidPageEdge" />.</returns>
         <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
@@ -186,8 +181,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The title text of the page.</summary>
-        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <summary>This will set the background color.</summary>
+        <param name="value"> The new background color.</param>
         <returns>an object of type <see cref="T:System.String" /></returns>
         <remarks>
         </remarks>
@@ -202,8 +197,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The color of the background in the main text area of the page.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets the contents of the page's title text.</summary>
+        <param name="value">The title text.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -218,8 +213,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The color of the text in the body of the druid page.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets the color of the background in the main text area of the page.</summary>
+        <param name="value">The new textbox color.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -234,8 +229,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The color behind the logo of the druid page.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets the color of the text in the body of the druid page.</summary>
+        <param name="value"> The new text color.</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
         <remarks>
         </remarks>
@@ -250,7 +245,7 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on the left strip on the druid.</summary>
+        <summary>Set the color behind the druid page's logo.</summary>
         <param name="value">an object of type <see cref="T:Gdk.Pixbuf" /></param>
         <returns>an object of type <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>If <see langword="null" />, it is reset to the normal color.</remarks>
@@ -265,10 +260,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on the top strip on the druid.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Pixbuf" /></param>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on the left strip on the druid.</summary>
+        <param name="value">The <see cref="T:Gdk.Pixbuf" /> to use as a watermark.</param>
         <returns>an object of type <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>If <see langword="null" />, it is reset to the normal color.</remarks>
+        <remarks>If watermark is set to null, it is reset to the normal color.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TitleColor">
@@ -280,11 +275,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The color of the title text on the current page.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Color" /></param>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the watermark on top of the top strip on the druid.</summary>
+        <param name="value">The <see cref="T:Gdk.Pixbuf" /> to use as a top watermark</param>
         <returns>an object of type <see cref="T:Gdk.Color" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>If the top watermark is set to null, it is reset to the normal color.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Logo">
@@ -296,8 +290,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the logo in the top right corner.</summary>
-        <param name="value">an object of type <see cref="T:Gdk.Pixbuf" /></param>
+        <summary>Sets the color of the title text on the current page.</summary>
+        <param name="value"> The color of the title text.</param>
         <returns>an object of type <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>If <see langword="null" />, then no logo will be displayed.</remarks>
       </Docs>
@@ -311,11 +305,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The contents of the text portion of the druid page.</summary>
-        <param name="value">an object of type <see cref="T:System.String" /></param>
+        <summary>Sets a <see cref="T:Gdk.Pixbuf" /> as the logo in the top right corner.</summary>
+        <param name="value">The <see cref="T:Gdk.Pixbuf" /> to use as a logo.</param>
         <returns>an object of type <see cref="T:System.String" /></returns>
-        <remarks>
-        </remarks>
+        <remarks>If set to null, then no logo will be displayed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -326,7 +319,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the contents of the text portion of the druid page.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
         <remarks>To be added</remarks>
       </Docs>
