@@ -2,7 +2,7 @@ prefix=/usr
 BROWSER=../../monodoc/browser/browser.exe
 ASSEMBLER=../../monodoc/browser/assembler.exe
 UPDATER=../../monodoc/generator/updater.exe
-DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg
+DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg gtkhtml
 
 all: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
