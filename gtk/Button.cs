@@ -11,30 +11,16 @@ namespace Gtk {
 
 	public class Button : Widget {
 
-		private static readonly object ClickedEvent = new object ();
+		private static readonly string ClickedEvent = "clicked";
 		public event EventHandler Clicked
 		{
 			add
 			{
-                                if (Events[ClickedEvent] == null)
-				{
-					ConnectSignal ("clicked", new SimpleCallback (EmitClickedEvent));
-				}
-				Events.AddHandler (ClickedEvent, value);
+				AddSimpleEvent(ClickedEvent, value);
 			}
                         remove 
 			{
-				Events.RemoveHandler (ClickedEvent, value);
-			}
-		}
-
-		private void EmitClickedEvent (IntPtr obj)
-		{
-			EventHandler eh = (EventHandler)(Events[ClickedEvent]);
-			if (eh != null)
-			{
-				EventArgs args = new EventArgs ();
-				eh(this, args);
+				RemoveSimpleEvent (ClickedEvent, value);
 			}
 		}
 
