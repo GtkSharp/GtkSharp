@@ -15,34 +15,31 @@
 //
 // This code is inserted after the automatically generated code.
 
-		IntPtr LoadFromStream (System.IO.Stream input)
+		static private Pixbuf LoadFromStream (System.IO.Stream input)
 		{
 			PixbufLoader loader = new PixbufLoader ();
 			byte [] buffer = new byte [8192];
-		
 			int n;
-		
+
 			while ((n = input.Read (buffer, 0, 8192)) != 0)
 				loader.Write (buffer, (uint) n);
+		
 			loader.Close ();
-		
-			return loader.Pixbuf.Handle;
+			return loader.Pixbuf;
 		}
 		
-		public Pixbuf (System.IO.Stream input)
+		static public Pixbuf LoadResource (System.Reflection.Assembly assembly, string resource)
 		{
-			Raw = LoadFromStream (input);
+			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
+			if (s == null)
+				return null;
+			else
+				return LoadFromStream (s);
 		}
-		
-		public Pixbuf (System.Reflection.Assembly assembly, string resource)
+
+		static public Pixbuf LoadResource (string resource)
 		{
-			if (assembly == null)
-				assembly = System.Reflection.Assembly.GetCallingAssembly ();
-		
-			System.IO.Stream s;
-			Pixbuf p = null;
-			using (s = assembly.GetManifestResourceStream (resource))
-				Raw = LoadFromStream (s);
+			return LoadResource (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
 		
