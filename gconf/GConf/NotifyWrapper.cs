@@ -15,6 +15,10 @@ namespace GConf
 		{
 			Client client = new Client (client_ptr);
 			_Entry entry = new _Entry (entry_ptr);
+			if (entry.ValuePtr == IntPtr.Zero) {
+				notify (client, new NotifyEventArgs (entry.Key, null));
+				return;
+			}
 			Value val = new Value (entry.ValuePtr);
 			val.Managed = false;
 			notify (client, new NotifyEventArgs (entry.Key, val.Get ()));
