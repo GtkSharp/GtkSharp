@@ -11,7 +11,7 @@
   <Docs>
     <summary>Methods for controlling drag and drop handling.</summary>
     <remarks>
-     <para>
+      <para>
       GTK+ has a rich set of methods for doing inter-process communication via the drag-and-drop metaphor. GTK+ can do drag-and-drop (DND) via multiple protocols. The currently supported protocols are the Xdnd and Motif protocols. As well as the methods listed here, applications may need to use some facilities provided for <see cref="T:Gtk.Selection" />. Also, the Drag and Drop API makes use of events in the <see cref="T:Gtk.Widget" /> class.
      </para>
     </remarks>
@@ -35,10 +35,10 @@
         <summary>Clears information about a drop destinantion set with <see cref="M:Gtk.Drag.Fixme" />.</summary>
         <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
         <remarks>
-	 <para>
+          <para>
 	  The <paramref name="widget" /> will no longer receive notification of drags.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSourceWidget">
@@ -114,10 +114,10 @@
         <param name="widget">A <see cref="T:Gtk.Widget" /> that's a drag destination.</param>
         <param name="target_list">List of droppable targets, or <see langword="null" /> for none.</param>
         <remarks>
-	 <para>
+          <para>
 	  The <paramref name="widget" /> must first be made into a drag destination with <see cref="M:Drag.Fixme" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceSet">
@@ -141,10 +141,10 @@
         <param name="n_targets">The number of items in <paramref name="targets" />.</param>
         <param name="actions">the bitmask of possible actions for a drag from this <paramref name="widget" />.</param>
         <remarks>
-	 <para>
+          <para>
 	  The <paramref name="widget" /> must have a window.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DestFindTarget">
@@ -159,16 +159,16 @@
         <Parameter Name="target_list" Type="Gtk.TargetList" />
       </Parameters>
       <Docs>
-        <summary>Looks for a match between <paramref name="context" />->targets and the <paramref name="dest_target_list" />, returning the first matching target, otherwise returning GDK_NONE.</summary>
+        <summary>Looks for a match between <paramref name="context" />-&gt;targets and the <paramref name="dest_target_list" />, returning the first matching target, otherwise returning GDK_NONE.</summary>
         <param name="widget">Drag destination <paramref name="widget" />.</param>
         <param name="context">Drag context.</param>
         <param name="target_list">List of droppable targets, or <see langword="null" /> to use <see cref="M:Gtk.Drag.DestGetTargetList" />.</param>
         <returns>First target that the source offers and the dest can accept. or GDK_NONE.</returns>
         <remarks>
-	 <para>
-	   <paramref name="dest_target_list" /> should usually be the return value from <see cref="M:Gtk.Drag.DestGetTargetList" /> but some widgets may have different valid targets for different parts of the <paramref name="widget" />; in that case, they will have to implement a drag_motion handler that passes the correct target list to this method.
+          <para>
+            <paramref name="dest_target_list" /> should usually be the return value from <see cref="M:Gtk.Drag.DestGetTargetList" /> but some widgets may have different valid targets for different parts of the <paramref name="widget" />; in that case, they will have to implement a drag_motion handler that passes the correct target list to this method.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CheckThreshold">
@@ -191,7 +191,8 @@
         <param name="start_y">Y coordinate of a start of drag.</param>
         <param name="current_x">Current X coordinate.</param>
         <param name="current_y">Current Y coordinate.</param>
-        <returns><see langword="true" /> if the drag threshold has been passed.</returns>
+        <returns>
+          <see langword="true" /> if the drag threshold has been passed.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -240,10 +241,10 @@
         <summary>Draws a highlight around a <paramref name="widget" />.</summary>
         <param name="widget">A <paramref name="widget" /> to highlight.</param>
         <remarks>
-	 <para>
+          <para>
 	  This will attach handlers to <see cref="F:Gtk.Widget.ExposeEvent" /> and <see cref="F:Gtk.Widget.QueueDraw" />, so the highlight will continue to be displayed until <see cref="M:Gtk.Drag.Unhighlight" /> is called.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceSetIconPixbuf">
@@ -261,10 +262,10 @@
         <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
         <param name="pixbuf">The <see cref="T:Gdk.Pixbuf" /> for the drag icon.</param>
         <remarks>
-	 <para>
+          <para>
 	  GTK+ retains a reference for <paramref name="pixbuf" /> and will release it when it is no longer needed.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Begin">
@@ -289,10 +290,10 @@
         <param name="evnt">The event that triggered the start of the drag.</param>
         <returns>The context fot this drag.</returns>
         <remarks>
-	 <para>
+          <para>
 	  The method only needs to be used when the application is starting drags itself, and is not needed when <see cref="M:Gtk.Drag.SourceSset" /> is used.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconStock">
@@ -335,10 +336,10 @@
         <param name="target">The target (form of the data) to retrieve.</param>
         <param name="time_">A timestamp for retrieving the data. This will generally be the time received in a <see cref="F:Gtk.Widget.DragMotion" /> or <see cref="F:Gtk.Widget.DragDrop" /> event.</param>
         <remarks>
-	 <para>
+          <para>
 	  When the data is received or the retrieval fails, GTK+ will emit a <see cref="F:Gtk.Widget.DragDataReceived" /> event. Failure of the retrieval is indicated by the length field of the <paramref name="selection_data" /> signal parameter being negative. However, when <see cref="M:Gtk.Drag.GetData" /> is called implicitely because the <see cref="F:Gtk.DestDefaults.Drop" /> was set, then the <paramref name="widget" /> will not receive notification of failed drops. 
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconPixmap">
@@ -364,10 +365,10 @@
         <param name="hot_x">The X offset with <paramref name="pixmap" /> of the hotspot.</param>
         <param name="hot_y">The Y offset with <paramref name="pixmap" /> of the hotspot.</param>
         <remarks>
-	 <para>
+          <para>
 	  GTK+ retains references for the arguments, and will release them when they are no longer needed. In general, <see cref="M:Gtk.Drag.SetIconPixbuf" /> will be more convenient to use.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconPixbuf">
@@ -441,10 +442,10 @@
         <param name="pixmap">The image data for the icon.</param>
         <param name="mask">The transparency mask for an image.</param>
         <remarks>
-	 <para>
+          <para>
 	  GTK+ retains references for the arguments, and will release them when they are no longer needed. Use <see cref="M:Gtk.Drag.SourceSetIconPixbuf" /> instead.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconWidget">
@@ -466,10 +467,10 @@
         <param name="hot_x">The X offset within <paramref name="widget" /> of the hotspot.</param>
         <param name="hot_y">The Y offset within <paramref name="widget" /> of the hotspot.</param>
         <remarks>
-	 <para>
+          <para>
 	  GTK+ will not destroy the icon, so if you don't want it to persist, you should connect to the <see cref="F:Gtk.Widgart.DragEnd" /> event and destroy it yourself.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -493,7 +494,8 @@
       <Docs>
         <summary>Sets the icon for a particular drag to the default icon.</summary>
         <param name="value">The context for a drag (this must be called with a context for the source side of a drag).</param>
-        <returns><see langword="true" /> if the icon has been made the default.</returns>
+        <returns>
+          <see langword="true" /> if the icon has been made the default.</returns>
         <remarks />
       </Docs>
     </Member>
