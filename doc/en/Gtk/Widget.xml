@@ -50,7 +50,7 @@
         <summary>Makes all newly-created <paramref name="widgets" /> as composite children until the corresponding <see cref="M:Gtk.Widget.PopCompositeChild" /> call.</summary>
         <remarks>
           <para>
-          A composite child is a child that's an implementation detail of the container it's inside and should not be visible to people using the container. Composite children aren't treated differently by GTK (but see <see cref="M:Gtk.Container.Foreach" /> vs. <see cref="M:GtkContainer.Forall" />), but e.g. GUI builders might want to treat them in a different way.
+          A composite child is a child that's an implementation detail of the container it's inside and should not be visible to people using the container. Composite children aren't treated differently by GTK# (but see <see cref="M:Gtk.Container.Foreach" /> vs. <see cref="M:GtkContainer.Forall" />), but e.g. GUI builders might want to treat them in a different way.
          </para>
         </remarks>
       </Docs>
@@ -190,7 +190,7 @@
           <see langword="true" /> if focus ended up inside <paramref name="widget" />.</returns>
         <remarks>
           <para>
-          This method is used by custom widget implementations; if you're writing an app, you'd use <see cref="M:Gtk.Widget.GrabFocus" /> to move the focus to a particular <paramref name="widget" />, and <see cref="M:Gtk.Container.SetFocusChain" /> to change the focus tab order. So you may want to investigate those methods instead.
+          This method is used by custom <paramref name="widget" /> implementations; if you're writing an app, you'd use <see cref="M:Gtk.Widget.GrabFocus" /> to move the focus to a particular <paramref name="widget" />, and <see cref="M:Gtk.Container.SetFocusChain" /> to change the focus tab order. So you may want to investigate those methods instead.
          </para>
           <para>
             <see cref="M:Gtk.Widget.ChildFocus" /> is called by containers as the user moves around the window using keyboard shortcuts. <paramref name="direction" /> indicates what kind of motion is taking place (up, down, left, right, tab forward, tab backward). <see cref="M:Gtk.Widget.ChildFocus" /> invokes the <see cref="F:Gtk.Window.FocusActivated" /> event on <see cref="T:Gtk.Widget" />; <paramref name="widgets" /> override the default handler for this event in order to implement appropriate focus behavior.
@@ -256,7 +256,7 @@
         <param name="height">Height of region to draw.</param>
         <remarks>
           <para>
-          Invalidates the rectangular area of <paramref name="widget" /> defined by <paramref name="x" />, <paramref name="y" />, <paramref name="width" /> and <paramref name="height" /> by calling <see cref="M:Gdk.Window.InvalidateRect" /> on the widget's window and all its child windows. Once the main loop becomes idle (after the current batch of events has been processed, roughly), the window will receive <see cref="F:Gtk.Widget.ExposeEvent" /> events for the union of all regions that have been invalidated.
+          Invalidates the rectangular area of <paramref name="widget" /> defined by <paramref name="x" />, <paramref name="y" />, <paramref name="width" /> and <paramref name="height" /> by calling <see cref="M:Gdk.Window.InvalidateRect" /> on the <paramref name="widget" />'s window and all its child windows. Once the main loop becomes idle (after the current batch of events has been processed, roughly), the window will receive <see cref="F:Gtk.Widget.ExposeEvent" /> events for the union of all regions that have been invalidated.
          </para>
           <para>
           Normally you would only use this method in widget implementations. You might also use it, or <see cref="M:Gdk.Window.InvalidateRect" /> directly, to schedule a redraw of a <see cref="T:Gtk.DrawingArea" /> or some portion thereof. Frequently you can just call <see cref="M:Gdk.Window.InvalidateRect" /> or <see cref="M:Gdk.Window.InvalidateRegion" /> instead of this method. Those methods will invalidate only a single window, instead of the <paramref name="widget" /> and all its children.
@@ -726,10 +726,10 @@
         <Parameter Name="group_cycling" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Activates the targets associated with the mnemonic.</summary>
         <param name="group_cycling">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <returns><see langword="true" /> if the activation is done.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetSizeRequest">
@@ -949,8 +949,8 @@
         <summary>Adds the events in the bitfield <paramref name="events" /> to the event mask for <paramref name="widget" />.</summary>
         <param name="events" />
         <remarks>
-          <para>
-          Adds the events in the bitfield <paramref name="events" /> to the event mask for <paramref name="widget" />. See <see cref="M:Gtk.Widget.Events" /> for details.
+	 <para>
+	  See <see cref="M:Gtk.Widget.Events" /> for details.
          </para>
         </remarks>
       </Docs>
@@ -1488,10 +1488,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> is visible.</summary>
+        <param name="value">If <see langword="true" /> the widget is set to be visible.</param>
+        <returns><see langword="true" /> if the widget is meant to be visible.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WidthRequest">
@@ -1503,10 +1503,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Override for the width request for the <paramref name="widget" />.</summary>
+        <param name="value">The width to be set for the <paramref name="widget" />.</param>
+        <returns>The width of the <paramref name="widget" />.</returns>
+        <remarks>Or -1 if natural request should be used.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Sensitive">
@@ -1518,10 +1518,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> responds to input.</summary>
+        <param name="value">If <see langword="true" /> the <paramref name="widget" /> is set to respond to input.</param>
+        <returns><see langword="true" /> if the <paramref name="widget" /> responds to input.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Events">
@@ -1533,10 +1533,23 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains or sets the event mask for the <paramref name="widget" /> (a bitfield containing flags from <see cref="T:Gdk.EventMask" />).</summary>
+        <param name="value">Event mask.</param>
+        <returns>Event mask for <paramref name="widget" />.</returns>
+        <remarks>
+	 <para>
+	  The event mask determines which events a <paramref name="widget" /> will receive. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a <paramref name="widget" />'s fuctionalit, so be careful.
+	 </para>
+	 <para>
+	  This property must be called while a <paramref name="widget" /> is unrealized. Consider <see cref="M:Gtk.Widget.AddEvents" /> for widgets that are already realized, or if you want to preserve the existing event mask. 
+	 </para>
+	 <para>
+	  This property can't be used with <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets; to get events on those events, place them inside a <see cref="T:Gtk.EventBox" /> and receive events on the event box. 
+	 </para>
+	 <para>
+	  These are the events that the <paramref name="widget" /> will receive.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceivesDefault">
@@ -1548,10 +1561,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether to make the <paramref name="widget" /> receive the default action when it is focused.</summary>
+        <param name="value">If <see langword="true" /> the <paramref name="widget" /> will receive the default action when is focused.</param>
+        <returns><see langword="true" /> if the <paramref name="true" /> will receive the default action when is focused.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasFocus">
@@ -1563,10 +1576,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> has the input focus.</summary>
+        <param name="value">If <see langword="true" /> the <paramref name="widget" /> has the input focus.</param>
+        <returns><see langword="true" /> if the <paramref name="widget" /> has the input focus.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExtensionEvents">
@@ -1578,10 +1591,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.ExtensionMode'</param>
-        <returns>To be added: an object of type 'Gdk.ExtensionMode'</returns>
-        <remarks>To be added</remarks>
+        <summary>The mask that decides what kind of extension events the <paramref name="widget" /> gets.</summary>
+        <param name="value">A Gdk.ExtensionMode.</param>
+        <returns>A Gdk.ExtensionMode.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasDefault">
@@ -1593,10 +1606,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> is the default <paramref name="widget" />.</summary>
+        <param name="value">If <paramref name="true" /> the <paramref name="widget" /> is the default <paramref name="widget" />.</param>
+        <returns><see langword="true" /> if the <paramref name="widget" /> is the default <paramref name="widget" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CompositeChild">
@@ -1606,9 +1619,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> is part of a composite widget.</summary>
+        <returns><see langword="true" /> if the <paramref name="widget" /> is part of a composite widget.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CanDefault">
@@ -1620,10 +1633,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> can be the default widget.</summary>
+        <param name="value">If <see langword="true" /> the <paramref name="widget" /> can be the default widget.</param>
+        <returns><see langoword="true" /> if the <paramref name="widget" /> can be the default widget.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CanFocus">
@@ -1635,10 +1648,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the <paramref name="widget" /> can accept the input focus.</summary>
+        <param name="value">If <see langword="true" /> the <paramref name="widget" /> can accept the input focus.</param>
+        <returns><see langword="true" /> if the <paramref name="widget" /> can accept the input focus.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HeightRequest">
@@ -1650,10 +1663,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Override for the height request for the <paramref name="widget" />.</summary>
+        <param name="value">The height to be set for the <paramref name="widget" />.</param>
+        <returns>The height of the <paramref name="widget" />.</returns>
+        <remarks>Or -1 if natural request should be used.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppPaintable">
@@ -1665,10 +1678,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the application will paint directly on the <paramref name="widget" />.</summary>
+        <param name="value">If <see langword="true" /> the application will paint directly on the <paramref name="widget" />.</param>
+        <returns><see langword="true" /> if the application will paint directly on the <paramref name="widget" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Parent">
@@ -1680,10 +1693,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>The parent widget of this <paramref name="widget" />.</summary>
+        <param name="value">The parent widget.</param>
+        <returns>The parent widget.</returns>
+        <remarks>Must be a Container <paramref name="widget" />,</remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -1695,10 +1708,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The name of the <paramref name="widget" />.</summary>
+        <param name="value">The name to be set for the <paramref name="widget" />.</param>
+        <returns>The name of the <paramref name="widget" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Style">
@@ -1710,10 +1723,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Style'</param>
-        <returns>To be added: an object of type 'Gtk.Style'</returns>
-        <remarks>To be added</remarks>
+        <summary>The style of the <paramref name="widget" />.</summary>
+        <param name="value">A style.</param>
+        <returns>A style.</returns>
+        <remarks>Which contains information about how it will look (colors etc).</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnmapEvent">
@@ -2422,9 +2435,16 @@
         <ReturnType>Gdk.Display</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the <see cref="T:Gdk.Display" /> for the toplevel window associated with this <paramref name="widget" />.</summary>
+        <returns>The <see cref="T:Gdk.Display" /> for the toplevel for this <paramref name="widget" />.</returns>
+        <remarks>
+	 <para>
+	  This method can only be called after the <paramref name="widget" /> has been added to a widget hierarchy with a <see cref="T:Gtk.Window" /> at the top.
+	 </para>
+	 <para>
+	  In general, you should only create display specific resources when a <paramref name="widget" /> has been realized, and you should free those resources when the <paramref name="widget" /> is unrealized. 
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Screen">
@@ -2434,9 +2454,16 @@
         <ReturnType>Gdk.Screen</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the <see cref="T:Gdk.Screen" /> from the toplevel window associated with this <paramref name="widget" />.</summary>
+        <returns>The <see cref="T:Gdk.Screen" /> for the toplevel for this <paramref name="widget" />.</returns>
+        <remarks>
+	 <para>
+	  This method can only be called after the <paramref name="widget" /> has been added to a widget hierarchy with a <see cref="T:Gtk.Window" /> at the top. 
+	 </para>
+	 <para>
+	  In general, you should only create screen specific resources when a <paramref name="widget" /> has been realized, and you should free those resources when the <paramref name="widget" /> is unrealized.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsFocus">
@@ -2504,11 +2531,11 @@
       </Parameters>
       <Docs>
         <summary>Returns the clipboard object for the given selection to be used with <paramref name="widget" />.</summary>
-        <param name="selection">A <see cref="T:Gdk.Atom" /> which identifies the clipboard to use. GDK_SELECTION_CLIPBOARD gives the default clipboard, another common value is GDK_SELECTION_PRIMARY, which gives the primary X selection.</param>
+        <param name="selection">A <see cref="T:Gdk.Atom" /> which identifies the clipboard to use. <see cref="F:Gdk.Selection.Clipboard" /> gives the default clipboard, another common value is <see cref="F:Gdk.Selection.Primary" />, which gives the primary X selection.</param>
         <returns>The appropiate clipboard object. If no clipboard already exists, a new one will be created. Once a clipboard object has been created, it is persistent for all time.</returns>
         <remarks>
           <para>
-            <paramref name="widget" /> must have a <see cref="T:Gdk.Display" /> associated with it, so must be attached to a toplevel window.
+           <paramref name="widget" /> must have a <see cref="T:Gdk.Display" /> associated with it, so must be attached to a toplevel window.
 	 </para>
         </remarks>
       </Docs>
@@ -2629,9 +2656,19 @@
         <Parameter Name="requisition" Type="Gtk.Requisition&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="requisition">a <see cref="T:Gtk.Requisition&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Obtains the preferred size of a <paramref name="widget" />.</summary>
+        <param name="requisition">A <see cref="T:Gtk.Requisition" />.</param>
+        <remarks>
+	 <para>
+	  The container uses this information to arrange its child widgets and decide what size allocations to give them with <see cref="M:Gtk.Widget.SizeAllocate" />.
+	 </para>
+	 <para>
+	  You can also call this method from an application, with some caveats. Most notably, getting a size request requieres the <paramref name="widget" /> to be associated with a screen, because font information may be needed. Multihead-aware applications should keep this in mind.
+	 </para>
+	 <para>
+	  Also remember that the size request is not necessarily the size a <paramref name="widget" /> will actually be allocated.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="StyleGetProperty">
@@ -2645,10 +2682,10 @@
         <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="property_name">a <see cref="T:System.String" /></param>
-        <param name="value">a <see cref="T:GLib.Value" /></param>
-        <remarks>To be added</remarks>
+        <summary>Obtains the value of a style property of <paramref name="widget" />.</summary>
+        <param name="property_name">The name of a style property.</param>
+        <param name="value">Location to return the property value.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasScreen">
@@ -4472,10 +4509,14 @@
         <Parameter Name="widget_type" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget_type">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the first ancestor of <paramref name="widget" />.</summary>
+        <param name="widget_type">Ancestor type.</param>
+        <returns>The ancesor <paramref name="widget" />, or see <see langword="null" /> if not found.</returns>
+        <remarks>
+	 <para>
+	  For example sending <paramref name="GTK_TYPE_BOX" /> gets the first <see cref="T:Gtk.Box" /> that's an ancstor of <paramref name="widget" />. No reference will be added to the retured <paramref name="widget" />; it should not be unreferenced. See note about checking for a toplevel <see cref="T:Gtk.WIndow" /> in the docs for <see cref="M:Gtk.Widget.Toplevel" />. Note that unlike <see cref="M:Gtk.Widget.IsAncestor" />, <see cref="M:Gtk.Widget.GetAncestor" /> considers <paramref name="widget" /> to be an ancestor of itself.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
