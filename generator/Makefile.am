@@ -43,7 +43,6 @@ sources = 				\
 	SimpleBase.cs			\
 	SimpleGen.cs			\
 	Statistics.cs			\
-	StringGen.cs			\
 	StructBase.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\

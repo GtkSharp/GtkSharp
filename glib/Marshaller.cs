@@ -32,8 +32,20 @@ namespace GLib {
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr mem);
 
-		public static string PtrToStringGFree (IntPtr ptr) {
-			string ret = Marshal.PtrToStringAnsi (ptr);
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_utf8_strlen (IntPtr mem, int size);
+
+		public static string Utf8PtrToString (IntPtr ptr) 
+		{
+			int len = (int) g_utf8_strlen (ptr, -1);
+			byte[] bytes = new byte [len];
+			Marshal.Copy (ptr, bytes, 0, len);
+			return System.Text.Encoding.UTF8.GetString (bytes);
+		}
+
+		public static string PtrToStringGFree (IntPtr ptr) 
+		{
+			string ret = Utf8PtrToString (ptr);
 			g_free (ptr);
 			return ret;
 		}
@@ -45,17 +57,18 @@ namespace GLib {
 			// The last pointer is a null terminator.
 			string[] ret = new string[ptrs.Length - 1];
 			for (int i = 0; i < ret.Length; i++) {
-				ret[i] = Marshal.PtrToStringAnsi (ptrs[i]);
+				ret[i] = Utf8PtrToString (ptrs[i]);
 				g_free (ptrs[i]);
 			}
 			return ret;
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_strdup (string str);
+		static extern IntPtr g_strdup (byte[] bytes);
 
 		public static IntPtr StringToPtrGStrdup (string str) {
-			return g_strdup (str);
+			byte[] bytes = System.Text.Encoding.UTF8.GetBytes (str);
+			return g_strdup (bytes);
 		}
 
 		public static string StringFormat (string format, params object[] args) {
@@ -204,6 +217,12 @@ namespace GLib {
 			return glibsharp_utf16_to_unichar ((ushort) c);
 		}
 
+		public static IntPtr PtrToStructureAlloc (object o)
+		{
+			IntPtr result = Marshal.AllocHGlobal (Marshal.SizeOf (o));
+			Marshal.StructureToPtr (o, result, false);
+			return result;
+		}
 	}
 }
 

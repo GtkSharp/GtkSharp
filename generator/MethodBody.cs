@@ -86,16 +86,10 @@ namespace GtkSharp.Generation {
 				if (p.CType == "GError**") {
 					result [i] += "out ";				
 				} else if (p.PassAs != "") {
-					if (p.Generatable is LPGen || p.Generatable is LPUGen || !p.MarshalType.EndsWith ("IntPtr")) 
-						result [i] += p.PassAs + " ";
-					
-					if (igen is EnumGen)
-						call_parm = p.Name + "_as_int";
-					else if (igen is LPUGen || igen is LPGen)
-						call_parm = p.Name + "_as_ptr";
-					else if (UsesHandle (igen)) {
-						call_parm = p.PassAs + " " + p.Name + "_handle";
-					}
+					result [i] += p.PassAs + " ";
+
+ 					if (p.CSType != p.MarshalType && !(igen is StructBase || igen is ByRefGen))
+						call_parm = p.Name + "_as_native";
 				}
 
 				if (p.CType == "GError**") {
@@ -128,14 +122,8 @@ namespace GtkSharp.Generation {
 				if (is_set)
 					name = "value";
 
-				if ((is_get || p.PassAs == "out") && UsesHandle (gen))
-					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
-
-				if (p.PassAs == "out" && gen is EnumGen)
-					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
-
-				if (p.PassAs == "out" && (gen is LPGen || gen is LPUGen))
-					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_ptr;");
+				if ((is_get || p.PassAs == "out") && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
+					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_native;");
 
 				if (p.IsArray && p.MarshalType != p.CSType) {
 					sw.WriteLine(indent + "\t\t\t{0}[] native_{1} = new {0} [{1}.Length];", p.MarshalType.TrimEnd('[', ']'), name);
@@ -170,14 +158,9 @@ namespace GtkSharp.Generation {
 
 				IGeneratable gen = p.Generatable;
 
-				if (p.PassAs == "out" && gen is EnumGen)
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_int;");
-
-				if (p.PassAs == "out" && (gen is LPGen || gen is LPUGen))
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_ptr;");
-
-				if (p.PassAs == "out" && UsesHandle (gen))
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
+				string name = p.Name;
+				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
+					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNative (p.Name + "_as_native") + ";");
 			}
 		}
 
