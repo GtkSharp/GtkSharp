@@ -130,6 +130,9 @@ namespace GtkSharp.Generation {
 			else
 				safety = "";
 
+			sw.WriteLine("\t\t/// <summary> " + Name + " Method </summary>");
+			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
+			sw.WriteLine();
 			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
