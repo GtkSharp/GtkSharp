@@ -1,5 +1,5 @@
 <Type Name="Combo" FullName="Gtk.Combo">
-  <TypeSignature Language="C#" Value="public class Combo : Gtk.HBox, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Combo : Gtk.HBox, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,36 +10,77 @@
     <summary>A text entry field with a dropdown list</summary>
     <remarks>
       <para>
-        The GtkCombo widget consists of a single-line text entry field and a
+        The <see cref="T:Gtk.Combo" /> widget consists of a single-line text entry field and a
         drop-down list. The drop-down list is displayed when the user clicks
         on a small arrow button to the right of the entry field.
       </para>
       <para>
-        The drop-down list is a GtkList widget and can be accessed using the
-        list member of the GtkCombo. List elements can contain arbitrary
+        The drop-down list is a <see cref="T:Glib.List" /> widget and can be accessed using the
+        list member of the <see cref="T:Gtk.Combo" />. List elements can contain arbitrary
         widgets, but if an element is not a plain label, then you must use
-        the gtk_list_set_item_string() function. This sets the string which
+        the <see cref="M:Glib.List.SetItemString()" /> function. This sets the string which
         will be placed in the text entry field when the item is selected.
       </para>
       <para>
         By default, the user can step through the items in the list using the
         arrow (cursor) keys, though this behaviour can be turned off with
-        gtk_combo_set_use_arrows().
+        <see cref="P:Gtk.Combo.UseArrows" /> = <see langword="false" />.
       </para>
       <example>
         <para>
-          Creating a GtkCombo widget with simple text items:
+          Creating a <see cref="T:Gtk.Combo" /> widget with simple text items:
         </para>
         <code lang="c#">
-          Gtk.Combo MakeCombo () {
-            GLib.List l = new GLib.List (IntPtr.Zero, typeof(string));
-            l.Append(Marshal.StringToHGlobalAnsi("String 1"));
-            l.Append(Marshal.StringToHGlobalAnsi("String 2"));
-            Gtk.Combo combo = new Gtk.Combo
-              (new GLib.Type((uint)TypeFundamentals.TypeString));
-            combo.PopdownStrings = l;
-            return combo;
-          }
+using System;
+using System.Runtime.InteropServices;
+using Gtk;
+using GtkSharp;
+using GLib;
+
+class ComboSample
+{
+	Combo combo;
+	
+	static void Main ()
+	{
+		new ComboSample ();	
+	}
+	
+	ComboSample ()
+	{
+		Application.Init ();
+	
+		Window win = new Window ("ComboSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+
+		GLib.List l = new GLib.List (IntPtr.Zero, typeof (string));
+		
+		for (int i =0; i &lt; 5; i++)
+		{
+			l.Append (Marshal.StringToHGlobalAnsi("String " + i));
+		}
+		
+		combo = new Combo ();
+		combo.PopdownStrings = l;
+		combo.DisableActivate ();
+		combo.Entry.Activated += new EventHandler (OnEntryActivated);
+		
+		win.Add (combo);
+	
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	void OnEntryActivated (object o, EventArgs args)
+	{
+		Console.WriteLine (combo.Entry.Text);
+	}
+	
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
         </code>
         <para>
           See <see cref="T:GLib.List" /> for more about GLib.List.
@@ -73,11 +114,11 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="args" Type="System.String []" />
-	</Parameters>
+        <Parameter Name="args" Type="System.String []" />
+      </Parameters>
       <Docs>
         <summary>Convenience function to set all of the items in the popup list.</summary>
-        <param name="args">To be added: an object of type 'string []'</param>
+        <param name="args">an object of type <see cref="T:System.String" /> []</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -88,14 +129,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="item" Type="Gtk.Item" />
-		<Parameter Name="item_value" Type="System.String" />
-	</Parameters>
+        <Parameter Name="item" Type="Gtk.Item" />
+        <Parameter Name="item_value" Type="System.String" />
+      </Parameters>
       <Docs>
-        <summary>Sets the string to place in the Gtk.Entry field when a particular list item is selected. This is needed if the list item is not a simple label.</summary>
-        <param name="item">To be added: an object of type 'Gtk.Item'</param>
-        <param name="item_value">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the string to place in the <see cref="T:Gtk.Entry" /> field when a particular list item is selected.</summary>
+        <param name="item">an object of type <see cref="T:Gtk.Item" /></param>
+        <param name="item_value">an object of type <see cref="T:System.String" /></param>
+        <remarks>This is not needed if the list item is a simple <see cref="T:Gtk.Label" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisableActivate">
@@ -106,8 +147,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Stops the Gtk.Combo widget from showing the popup list when the Gtk.Entry emits the "activate" signal, i.e. when the Return key is pressed. This may be useful if, for example, you want the Return key to close a dialog instead.</summary>
-        <remarks>To be added</remarks>
+        <summary>Disables showing the popup list on the activate event.</summary>
+        <remarks>Stops the <see cref="T:Gtk.Combo" /> widget from showing the popup list when the <see cref="T:Gtk.Entry" /> emits the <see cref="E:Gtk.Entry.Activate" /> event, i.e. when the Return key is pressed.
+			This may be useful if, for example, you want the Return key to close a dialog instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -127,12 +169,12 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Combo, wrapping the C object.</returns>
+        <returns>An instance of <see cref="T:Gtk.Combo" />, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -144,9 +186,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Creates a new Combo.</summary>
-        <returns>To be added: an object of type 'Gtk.Combo'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gtk.Combo" />.</summary>
+        <returns>an object of type <see cref="T:Gtk.Combo" /></returns>
+        <remarks>This is the default contructor for <see cref="T:Gtk.Combo" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -156,8 +198,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Combo</summary>
-        <returns>The GLib Type for the Gtk.Combo class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.Combo" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.Combo" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -168,9 +210,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The Button asociated with the Combo.</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.Button" /> asociated with the <see cref="T:Gtk.Combo" />.</summary>
+        <returns>an object of type <see cref="T:Gtk.Button" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Entry">
@@ -180,9 +222,9 @@
         <ReturnType>Gtk.Entry</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The Entry asociated with the Combo.</summary>
-        <returns>To be added: an object of type 'Gtk.Entry'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.Entry" /> asociated with the <see cref="T:Gtk.Combo" />.</summary>
+        <returns>an object of type <see cref="T:Gtk.Entry" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="PopdownStrings">
@@ -191,13 +233,12 @@
       <ReturnValue>
         <ReturnType>GLib.List</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Property to set all of the items in the popup list.</summary>
-        <param name="value">To be added: an object of type 'GLib.List'</param>
-        <returns>To be added: an object of type 'GLib.List'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">an object of type <see cref="T:GLib.List" /></param>
+        <returns>an object of type <see cref="T:GLib.List" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UseArrowsAlways">
@@ -206,8 +247,7 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Does nothing. ---- To get out ----</summary>
         <param name="value">To be added: an object of type 'bool'</param>
@@ -221,12 +261,12 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list.</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>TRUE if the arrow keys can be used to step through the items in the list.</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Boolean" /></param>
+        <returns>
+          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</returns>
         <remarks>This is on by default.</remarks>
       </Docs>
     </Member>
@@ -236,8 +276,7 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="value">To be added: an object of type 'bool'</param>
@@ -251,13 +290,14 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>Specifies whether the value entered in the text entry field must match one of the values in the list. If this is set then the user will not be able to perform any other action until a valid value has been entered.</summary>
-        <param name="value">TRUE if the value entered must match one of the values in the list.</param>
-        <returns>TRUE if the value entered must match one of the values in the list.</returns>
-        <remarks>To be added</remarks>
+        <summary>Specifies whether the value entered in the text entry field must match one of the values in the list.</summary>
+        <param name="value">
+          <see langword="true" /> if the value entered must match one of the values in the list.</param>
+        <returns>
+          <see langword="true" /> if the value entered must match one of the values in the list.</returns>
+        <remarks>If this is set then the user will not be able to perform any other action until a valid value has been entered.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AllowEmpty">
@@ -266,12 +306,13 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Specifies if an empty field is acceptable.</summary>
-        <param name="value">TRUE if an empty value is considered valid.</param>
-        <returns>TRUE if an empty value is considered valid.</returns>
+        <param name="value">
+          <see langword="true" /> if an empty value is considered valid.</param>
+        <returns>
+          <see langword="true" /> if an empty value is considered valid.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -281,13 +322,14 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list. This is true by default.</summary>
-        <param name="value">TRUE if the arrow keys can be used to step through the items in the list.</param>
-        <returns>TRUE if the arrow keys can be used to step through the items in the list.</returns>
-        <remarks>To be added</remarks>
+        <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list.</summary>
+        <param name="value">
+          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</param>
+        <returns>
+          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</returns>
+        <remarks>This is <see langword="true" /> by default.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CaseSensitive">
@@ -296,12 +338,13 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>Specifies whether the text entered into the Entry field and the text in the list items is case sensitive.</summary>
-        <param name="value">TRUE if the text in the list items is case sensitive.</param>
-        <returns>TRUE if the text in the list items is case sensitive.</returns>
+        <summary>Specifies whether the text entered into the <see cref="T:Gtk.Entry" /> field and the text in the list items is case sensitive.</summary>
+        <param name="value">
+          <see langword="true" /> if the text in the list items is case sensitive.</param>
+        <returns>
+          <see langword="true" /> if the text in the list items is case sensitive.</returns>
         <remarks>This may be useful, for example, when you have set true ValueInList to limit the values entered, but you are not worried about differences in case.</remarks>
       </Docs>
     </Member>
@@ -310,8 +353,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
