@@ -1,0 +1,28 @@
+#!/usr/bin/perl -w
+# Generates a C# Keys enum from the Gdk headers (gdkkeysyms.h)
+# Usage: ./gen_keysyms < gdkkeysyms.h > Keys.cs
+# Alp Toker <alp@atoker.com>
+
+print "// Generated File.  Do not modify.\n\n";
+print "namespace Gdk\n";
+print "{\n";
+print "\tpublic enum Keys {\n";
+
+while(<>) {
+	chomp;
+
+	if (m/^\W*#define\W+GDK_(\w+)\W+(\w+)\W*$/) {
+		$key = $1;
+		$value = $2;
+		
+		# keys can't start with a digit
+		if ($key =~ m/^\d.*$/) {
+			$key = "Key_$key";
+		}
+
+		print "\t\t$key = $value,\n";
+	}
+}
+
+print "\t}\n";
+print "}\n";
