@@ -32,23 +32,21 @@ namespace GLib {
 		public IntPtr MarshalManagedToNative (object obj)
 		{
 			DateTime dt = (DateTime) obj;
-			int size = Marshal.SizeOf (typeof (int)) + GetNativeDataSize ();
+			int size = GetNativeDataSize ();
 			IntPtr ptr = Marshal.AllocCoTaskMem (size);
-			IntPtr time_t_ptr = new IntPtr (ptr.ToInt32 () + Marshal.SizeOf (typeof(int)));
 			int secs = ((int)dt.Subtract (local_epoch).TotalSeconds) + utc_offset;
 			if (GetNativeDataSize () == 4)
-				Marshal.WriteInt32 (time_t_ptr, secs);
+				Marshal.WriteInt32 (ptr, secs);
 			else if (GetNativeDataSize () == 8)
-				Marshal.WriteInt64 (time_t_ptr, secs);
+				Marshal.WriteInt64 (ptr, secs);
 			else
 				throw new Exception ("Unexpected native size for time_t.");
-			return time_t_ptr;
+			return ptr;
 		}
 
 		public void CleanUpNativeData (IntPtr data)
 		{
-			IntPtr ptr = new IntPtr (data.ToInt32 () - Marshal.SizeOf (typeof (int)));
-			Marshal.FreeCoTaskMem (ptr);
+			Marshal.FreeCoTaskMem (data);
 		}
 
 		public object MarshalNativeToManaged (IntPtr data)
