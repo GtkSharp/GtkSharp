@@ -1,6 +1,7 @@
 namespace GConf
 {
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	internal enum ValueType
@@ -49,6 +50,8 @@ namespace GConf
 				return ValueType.Float;
 			} else if (data is bool) {
 				return ValueType.Bool;
+			} else if (data is ICollection) {
+				return ValueType.List;
 			} else {
 				return ValueType.Invalid;
 			}
@@ -63,6 +66,12 @@ namespace GConf
 			Set (data, type);
 		}
 
+		[DllImport("gconf-2")]
+		static extern IntPtr gconf_value_set_list_nocopy (IntPtr value, IntPtr list);
+		
+		[DllImport("gconf-2")]
+		static extern IntPtr gconf_value_set_list_type (IntPtr value, ValueType vtype);
+		
 		void Set (object data, ValueType type)
 		{
 			if (data == null)
@@ -82,9 +91,40 @@ namespace GConf
 				case ValueType.Bool:
 					gconf_value_set_bool (Raw, (bool) data);
 					break;
+				case ValueType.List:
+					ValueType listType;
+					GLib.SList list = GetListFromCollection ((ICollection) data, out listType);
+					gconf_value_set_list_type (Raw, listType);
+					gconf_value_set_list_nocopy (Raw, list.Handle);
+					break;
 				default:
 					throw new InvalidValueTypeException ();
 			}
+		}
+		
+		GLib.SList GetListFromCollection (ICollection data, out ValueType listType)
+		{
+			object [] arr = (object []) Array.CreateInstance (typeof (object), data.Count);
+			data.CopyTo (arr, 0);
+
+			listType = ValueType.Invalid;
+			GLib.SList list = new GLib.SList (IntPtr.Zero);
+			GC.SuppressFinalize (list);
+
+			foreach (object o in arr) {
+				ValueType type = LookupType (o);
+				if (listType == ValueType.Invalid)
+					listType = type;
+
+				if (listType == ValueType.Invalid || type != listType)
+					throw new InvalidValueTypeException ();
+
+				Value v = new Value (o);
+				GC.SuppressFinalize (v);
+				list.Append (v.Raw);
+			}
+			
+			return list;
 		}
 
 		[DllImport("gconf-2")]
@@ -99,6 +139,9 @@ namespace GConf
 		[DllImport("gconf-2")]
 		static extern bool gconf_value_get_bool (IntPtr value);
 		
+		[DllImport("gconf-2")]
+		static extern IntPtr gconf_value_get_list (IntPtr value);
+		
 		public object Get ()
 		{
 			switch (val_type)
@@ -111,8 +154,41 @@ namespace GConf
 					return gconf_value_get_float (Raw);
 				case ValueType.Bool:
 					return gconf_value_get_bool (Raw);
+				case ValueType.List:
+					GLib.SList list = new GLib.SList (gconf_value_get_list (Raw), typeof (Value));
+					Array result = Array.CreateInstance (GetListType (), list.Count);
+					int i = 0;
+					foreach (Value v in list) {
+						((IList) result) [i] =  v.Get ();
+						v.managed = false; // This is the trick to prevent a crash
+						i++;
+					}
+
+					return result;
 				default:
 					throw new InvalidValueTypeException ();
+			}
+		}
+
+		[DllImport("gconf-2")]
+		static extern ValueType gconf_value_get_list_type (IntPtr value);
+
+		Type GetListType ()
+		{
+			ValueType vt = gconf_value_get_list_type (Raw);
+			switch (vt) {
+			case ValueType.String:
+				return typeof (string);
+			case ValueType.Int:
+				return typeof (int);
+			case ValueType.Float:
+				return typeof (float);
+			case ValueType.Bool:
+				return typeof (bool);
+			case ValueType.List:
+				return typeof (GLib.SList);
+			default:
+				throw new InvalidValueTypeException ();
 			}
 		}
 
@@ -173,10 +249,16 @@ namespace GConf
 		
 		~Value ()
 		{
-			Dispose ();
+			Dispose (false);
 		}
 		
 		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		protected virtual void Dispose (bool disposing)
 		{
 			if (managed && Raw != IntPtr.Zero)
 			{

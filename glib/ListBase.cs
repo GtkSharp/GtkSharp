@@ -49,7 +49,7 @@ namespace GLib {
 		
 		~ListBase ()
 		{
-			Dispose ();
+			Dispose (false);
 		}
 		
 		public bool Managed {
@@ -76,7 +76,8 @@ namespace GLib {
 			}
 			set {
 				if (managed && list_ptr != IntPtr.Zero)
-					Dispose ();
+					FreeList ();
+
 				list_ptr = value;
 			}
 		}
@@ -180,15 +181,26 @@ namespace GLib {
 		// IDisposable
 		public void Dispose ()
 		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		protected virtual void Dispose (bool disposing)
+		{
 			if (!managed)
 				return;
 
+			FreeList ();
+		}
+		
+		void FreeList ()
+		{
 			if (list_ptr != IntPtr.Zero)
 				Free (list_ptr);
 			list_ptr = IntPtr.Zero;
 			length = -1;
 		}
-		
+
 		// ICloneable
 		abstract public object Clone ();
 	}

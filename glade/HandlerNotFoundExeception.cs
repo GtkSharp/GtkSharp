@@ -14,7 +14,7 @@ namespace Glade {
 	///	Exception thrown when signal autoconnection fails.
 	/// </summary>
 	[Serializable]
-	public class HandlerNotFoundException : Exception 
+	public class HandlerNotFoundException : SystemException 
 	{
 		string handler_name;
 		string signal_name;
@@ -23,6 +23,14 @@ namespace Glade {
 
 		public HandlerNotFoundException (string handler_name, string signal_name, 
 						 EventInfo evnt, Type delegate_type)
+			: this (handler_name, signal_name, evnt, delegate_type, null)
+		{
+		}				 
+
+		public HandlerNotFoundException (string handler_name, string signal_name, 
+						 EventInfo evnt, Type delegate_type, Exception inner)
+			: base ("No handler " + handler_name + " found for signal " + signal_name,
+				inner)
 		{
 			this.handler_name = handler_name;
 			this.signal_name = signal_name;
@@ -37,13 +45,6 @@ namespace Glade {
 			signal_name = info.GetString ("SignalName");
 			evnt = info.GetValue ("Event", typeof (EventInfo)) as EventInfo;
 			delegate_type = info.GetValue ("DelegateType", typeof (Type)) as Type;
-		}
-
-		public override string Message
-		{
-			get { 
-				return "No handler " + handler_name + " found for signal " + signal_name;
-			}
 		}
 
 		public string HandlerName
