@@ -24,7 +24,7 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe drawing-sample.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe drawing-sample.exe custom-widget.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
 assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix -r , $(assemblies))
@@ -92,6 +92,9 @@ custom-cellrenderer.exe: $(srcdir)/CustomCellRenderer.cs $(assemblies)
 drawing-sample.exe: $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs $(assemblies)
 	$(CSC) -debug+ -out:drawing-sample.exe $(references) $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs -r:System.Drawing
 
+custom-widget.exe: $(srcdir)/CustomWidget.cs $(assemblies)
+	$(CSC) -debug+ -out:custom-widget.exe $(references) $(srcdir)/CustomWidget.cs
+
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	GnomeHelloWorld.cs		\
@@ -115,4 +118,5 @@ EXTRA_DIST = 				\
 	CustomCellRenderer.cs		\
 	DrawingSample.cs		\
 	sysdraw.cs			\
-	drawing-sample.exe.config
+	drawing-sample.exe.config	\
+	CustomWidget.cs
