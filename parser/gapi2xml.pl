@@ -467,9 +467,10 @@ sub addFuncElems
 				$inst = $key;
 				last;
 			} elsif (exists ($enums{$key})) {
-				last;
+				last if ($mname =~ /_get_type/);
 			}
 		}
+		printf ("unmatched method %s\n", $mname) if (!$obj_el);
 		next if (!$obj_el);
 
 		$mdef = delete $fdefs{$mname};
@@ -609,22 +610,19 @@ sub addPropElem
 		$name =~ s/\s*\"//g;
 	}
 
-	while ($params[2] !~ /(\"|NULL)\s*\)?$/) {
-		die "Unable to reconstruct doc string.\n" if (!$params[3]);
-		$params[2] .= ",$params[3]";
-		@params = (@params[0..2],@params[4..$#params]);
-	}
-	$docs = $params[2];
-	$docs =~ s/\s*\"//g;
-	$docs =~ s/\s+/ /g;
 	$mode = $params[$#params];
 
 	if ($type =~ /boolean|float|double|^u?int|pointer/) {
 		$type = "g$type";
 	} elsif ($type =~ /string/) {
 		$type = "gchar*";
-	} elsif ($type =~ /boxed|enum|flags|object/) {
-		$type = $params[3];
+	} elsif ($type =~ /boxed|object/) {
+		$type = $params[$#params-1];
+		$type =~ s/TYPE_//;
+		$type =~ s/\s+//g;
+		$type = StudlyCaps(lc($type));
+	} elsif ($type =~ /enum|flags/) {
+		$type = $params[$#params-2];
 		$type =~ s/TYPE_//;
 		$type =~ s/\s+//g;
 		$type = StudlyCaps(lc($type));
@@ -635,7 +633,6 @@ sub addPropElem
 	$prop_elem->setAttribute('name', StudlyCaps($name));
 	$prop_elem->setAttribute('cname', $name);
 	$prop_elem->setAttribute('type', $type);
-	$prop_elem->setAttribute('doc-string', $docs);
 
 	$prop_elem->setAttribute('readable', "true") if ($mode =~ /READ/);
 	$prop_elem->setAttribute('writeable', "true") if ($mode =~ /WRIT/);

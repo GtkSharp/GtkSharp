@@ -1044,6 +1044,12 @@
           <parameter type="va_list" name="var_args"/>
         </parameters>
       </method>
+      <method name="StateGetName" cname="gst_element_state_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="GstElementState" name="state"/>
+        </parameters>
+      </method>
       <method name="WaitStateChange" cname="gst_element_wait_state_change">
         <return-type type="void"/>
       </method>
@@ -1143,7 +1149,7 @@
       <field cname="lock" type="GMutex*"/>
       <field cname="parent" type="GstObject*"/>
       <field cname="flags" type="guint32"/>
-      <property name="Name" cname="name" type="gchar*" doc-string="The name of the object" readable="true" writeable="true"/>
+      <property name="Name" cname="name" type="gchar*" readable="true" writeable="true"/>
       <signal name="ParentSet" cname="parent_set" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -1676,11 +1682,11 @@
       <field cname="not_full" type="GCond*"/>
       <field cname="timeval" type="GTimeVal*"/>
       <field cname="events" type="GAsyncQueue*"/>
-      <property name="Leaky" cname="leaky" type="GstQueueLeaky" doc-string="Where the queue leaks, if at all." readable="true" writeable="true"/>
-      <property name="Level" cname="level" type="gint" doc-string="How many buffers are in the queue." readable="true"/>
-      <property name="MaxLevel" cname="max_level" type="gint" doc-string="How many buffers the queue holds." readable="true" writeable="true"/>
-      <property name="MayDeadlock" cname="may_deadlock" type="gboolean" doc-string="The queue may deadlock if it's full and not PLAYING" readable="true" writeable="true"/>
-      <property name="BlockTimeout" cname="block_timeout" type="gint" doc-string="Microseconds until blocked queue times out and returns filler event.Value of -1 disables timeout" readable="true" writeable="true"/>
+      <property name="Leaky" cname="leaky" type="GstQueueLeaky" readable="true" writeable="true"/>
+      <property name="Level" cname="level" type="gint" readable="true"/>
+      <property name="MaxLevel" cname="max_level" type="gint" readable="true" writeable="true"/>
+      <property name="MayDeadlock" cname="may_deadlock" type="gboolean" readable="true" writeable="true"/>
+      <property name="BlockTimeout" cname="block_timeout" type="gint" readable="true" writeable="true"/>
       <method name="GetType" cname="gst_queue_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -1749,7 +1755,7 @@
           <parameter type="GstEvent*" name="event"/>
         </parameters>
       </signal>
-      <property name="Active" cname="active" type="gboolean" doc-string="Whether the pad is active." readable="true" writeable="true"/>
+      <property name="Active" cname="active" type="gboolean" readable="true" writeable="true"/>
       <method name="GetType" cname="gst_real_pad_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -2012,6 +2018,13 @@
       <method name="Show" cname="gst_scheduler_show">
         <return-type type="void"/>
       </method>
+      <method name="StateTransition" cname="gst_scheduler_state_transition">
+        <return-type type="GstElementStateReturn"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="gint" name="transition"/>
+        </parameters>
+      </method>
       <method name="UnlockElement" cname="gst_scheduler_unlock_element">
         <return-type type="void"/>
         <parameters>
@@ -2095,8 +2108,8 @@
       <field cname="lock" type="GMutex*"/>
       <field cname="cond" type="GCond*"/>
       <field cname="transition" type="gint"/>
-      <property name="Schedpolicy" cname="schedpolicy" type="GstThreadSchedpolicy" doc-string="The scheduling policy of the thread" readable="true" writeable="true"/>
-      <property name="Priority" cname="priority" type="gint" doc-string="The scheduling priority of the thread" readable="true" writeable="true"/>
+      <property name="Schedpolicy" cname="schedpolicy" type="GstThreadSchedpolicy" readable="true" writeable="true"/>
+      <property name="Priority" cname="priority" type="gint" readable="true" writeable="true"/>
       <signal name="Shutdown" cname="shutdown" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -2187,7 +2200,7 @@
     <object name="TypeFind" cname="GstTypeFind" parent="GstElement">
       <field cname="sinkpad" type="GstPad*"/>
       <field cname="caps" type="GstCaps*"/>
-      <property name="Caps" cname="caps" type="gpointer" doc-string="Found capabilities" readable="true"/>
+      <property name="Caps" cname="caps" type="gpointer" readable="true"/>
       <signal name="HaveType" cname="have_type" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -2696,6 +2709,9 @@
         <parameters>
           <parameter type="GstPluginFeature*" name="feature"/>
         </parameters>
+      </method>
+      <method name="ErrorQuark" cname="gst_plugin_error_quark" shared="true">
+        <return-type type="GQuark"/>
       </method>
       <method name="FindFeature" cname="gst_plugin_find_feature">
         <return-type type="GstPluginFeature*"/>
