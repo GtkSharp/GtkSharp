@@ -25,10 +25,10 @@ namespace WidgetViewer {
 
 			toolbar = new Toolbar ();
 			toolbar.InsertStock (Stock.New, "Stock icon: New", "Toolbar/New",
-					     new SignalFunc (set_small_icon), -1);
+					     new SignalFunc (set_small_icon), IntPtr.Zero, -1);
 
 			toolbar.InsertStock (Stock.Open, "Stock icon: Open", "Toolbar/Open",
-					     new SignalFunc (set_large_icon), -1);
+					     new SignalFunc (set_large_icon), IntPtr.Zero, -1);
 
 			toolbar.AppendSpace ();
 
@@ -67,7 +67,7 @@ namespace WidgetViewer {
 			toolbar.AppendSpace ();
 
 			toolbar.InsertStock (Stock.Close, "Stock icon: Close", "Toolbar/Close",
-					     new SignalFunc (Close_Button), -1);
+					     new SignalFunc (Close_Button), IntPtr.Zero, -1);
 
 			window.Add (toolbar);
 			window.ShowAll ();
