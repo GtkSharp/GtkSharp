@@ -1,5 +1,5 @@
 <Type Name="Frame" FullName="Gtk.Frame">
-  <TypeSignature Language="C#" Value="public class Frame : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Frame : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,9 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A <see cref="T:Gtk.Bin"/> with a decorative frame and optional <see cref="T:Gtk.Label"/>.</summary>
+    <remarks><para>This widget draws a frame around whatever it contains, so is often used to visually group a set of widgets together.</para>
+    <para>If present, a label is drawn in a gap in the top side of the frame. The position of the label can be controlled with <see cref="M:Gtk.Frame.SetLabelAlign"/>.</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -57,10 +58,10 @@
         <Parameter Name="yalign" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="xalign">To be added: an object of type 'float'</param>
-        <param name="yalign">To be added: an object of type 'float'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the alignment of the <see cref="P:Gtk.Frame.LabelWidget"/>.</summary>
+        <param name="xalign">The horizontal alignment, between 0 and 1.0.</param>
+        <param name="yalign">The vertical alignment, between 0 and 1.0.</param>
+        <remarks><para>Horizontal and vertical alignments can be adjusted individually using the <see cref="P:Gtk.Frame.LabelXAlign"/> and <see cref="P:Gtk.Frame.LabelYAlign"/> properties, respectively.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -115,10 +116,10 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="label">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.Frame'</returns>
-        <remarks>To be added</remarks>
+        <summary>Create a new frame with a label in the top left corner.</summary>
+        <param name="label">The text to appear as this frame's label</param>
+        <returns>A new Frame.</returns>
+        <remarks><para>This creates a new frame with a <see cref="T:Gtk.Label"/> widget in the top left corner, displaying the text passed in as <paramref name="label"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -127,9 +128,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Frame'</returns>
-        <remarks>To be added</remarks>
+        <summary>Create a new frame with no label</summary>
+        <returns>A new Frame with a null <see cref="P:Gtk.Frame.LabelWidget"/>.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -154,10 +155,10 @@
         <Parameter Name="value" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the widget that acts as a frame's <see cref="T:Gtk.Label"/>.</summary>
+        <param name="value">A widget to replace the existing label.</param>
+        <returns>The current <see cref="T:Gtk.Widget"/> in use as this Frame's label.</returns>
+        <remarks><para>Despite its name, this property does not have to set a <see cref="T:Gtk.Label"/> widget as its label. Because of the way that Gtk containers work, you may add an arbitrary widget as the label for this frame. However, a genuine <see cref="T:Gtk.Label"/> is recommended for consistency with other applications.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="LabelYalign">
@@ -170,10 +171,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the vertical alignment of the <see cref="P:Gtk.Frame.LabelWidget"/>.</summary>
+        <param name="value">A new vertical alignment between 0 and 1.0</param>
+        <returns>The existing vertical alignment of this Frame's label</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LabelXalign">
@@ -186,10 +187,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the horizontal alignment of the <see cref="P:Gtk.Frame.LabelWidget"/>.</summary>
+        <param name="value">A new horizontal alignment between 0 and 1.0</param>
+        <returns>The existing horizontal alignment of this Frame's label</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShadowType">
@@ -202,10 +203,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the appearance of this frame's border.</summary>
+        <param name="value">A new shadow type.</param>
+        <returns>The current shadow style that this Frame is rendered with.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Label">
@@ -218,10 +219,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The string that is visible as the Frame's label</summary>
+        <param name="value">Sets the text of the label, if this Frame has one.</param>
+        <returns>The text of a label if <see cref="P:Gtk.Frame.LabelWidget"/> is a <see cref="T:Gtk.Label"/>, null otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Shadow">
@@ -234,10 +235,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the appearance of this frame's border.</summary>
+        <param name="value">A new shadow type.</param>
+        <returns>The current shadow style that this Frame is rendered with.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
