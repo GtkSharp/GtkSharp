@@ -10,6 +10,7 @@ DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 references = 
 
 sources =		 			\
+	Argv.cs					\
 	Boxed.cs				\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\

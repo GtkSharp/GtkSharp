@@ -109,6 +109,7 @@ namespace GLib {
 			return buf;
 		}
 
+		[Obsolete ("Use GLib.Argv instead to avoid leaks.")]
 		public static IntPtr ArgvToArrayPtr (string[] args)
 		{
 			if (args.Length == 0)
@@ -149,6 +150,7 @@ namespace GLib {
 			return args;
 		}		
 
+		[Obsolete ("Use GLib.Argv instead to avoid leaks.")]
 		public static string[] ArrayPtrToArgv (IntPtr array, int argc)
 		{
 			if (argc == 0)

@@ -55,7 +55,8 @@ namespace Gtk {
 			progargs[0] = progname;
 			args.CopyTo (progargs, 1);
 
-			IntPtr buf = GLib.Marshaller.ArgvToArrayPtr (progargs);
+			GLib.Argv argv = new GLib.Argv (progargs);
+			IntPtr buf = argv.Handle;
 			int argc = progargs.Length;
 
 			if (check)
@@ -63,13 +64,16 @@ namespace Gtk {
 			else
 				gtk_init (ref argc, ref buf);
 
+			if (buf != argv.Handle)
+				throw new Exception ("init returned new argv handle");
+
 			// copy back the resulting argv, minus argv[0], which we're
 			// not interested in.
 
-			if (argc == 0)
+			if (argc <= 1)
 				args = new string[0];
 			else {
-				progargs = GLib.Marshaller.ArrayPtrToArgv (buf, argc);
+				progargs = argv.GetArgs (argc);
 				args = new string[argc - 1];
 				Array.Copy (progargs, 1, args, 0, argc - 1);
 			}
