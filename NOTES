@@ -1,0 +1,30 @@
+Mike,
+
+We have some problems. Some methods are going to return a gtk widget which
+will need to be wrapped again into a c# class. This will have a nasty
+reaction when callbacks are added to the wrapper, then the wrapper is nuked
+when complete. It will leave a rogue pointer of some kind laying around, and
+callbacks won't work as expected.
+
+Proposed solution:
+Every GTK# class is a wrapper class. With a constructor for a GtkWidget* and
+one for a default _new. Events are done as in CVS, except that the events
+object will need to be bound to the GtkWidget owning it, and when a wrapper
+is created, that Events object is resurected. This way, even if there is no
+wrapper in existance, signals will function properly, and multiple wrappers
+will work properly too. The event object will register a delete signal with
+the widget so that when its nuked, it has a chance to free itself. Are we
+going to have to tell the garbage collector to stay away from this class?
+We might need our own class for this, and this class might not be able to be
+written in c#.
+
+
+Problem number two is with taking an arbitrary GtkWidget, and constructing a
+wrapper as needed. Which wrapper is created? A simple GtkWidget wouldnt work
+too well if the GtkWidget is really a button. We need to deside how to
+handle this. Should we just return a GtkWidget, and force the developer to
+pass the GtkWidget back to a constructor for the desided apon Widget wrapper?
+How does gtk itself deal with this? Are we going to need a database of
+widget wrappers for this?
+
+Bob

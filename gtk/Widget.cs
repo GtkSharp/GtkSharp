@@ -12,32 +12,6 @@ namespace GTK {
 	public abstract class Widget : Object {
 
 		/// <summary>
-		///	ConnectEvents method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Connects event handlers to the wrapped GTK widget.  
-		///	It is not possible to perform this connection in a 
-		///	constructor, since the leaf class constructor in which
-		///	the wrapped object is created is not executed until
-		///	after the base class' constructor.
-		/// </remarks>
-
-		protected void PrepareEvents ()
-		{
-			ConnectSignal ("delete-event", 
-				       new SimpleCallback (EmitDeleteEvent));
-		}
-
-		private void EmitDeleteEvent (IntPtr obj)
-		{
-			if (Delete != null) {
-				EventArgs args = new EventArgs ();
-				Delete (this, args);
-			}
-		}
-
-		/// <summary>
 		///	Delete Event
 		/// </summary>
 		///
@@ -46,7 +20,33 @@ namespace GTK {
 		///	manager.
 		/// </remarks>
 
-		public event EventHandler Delete;
+		private static readonly object DeleteEvent = new object ();
+
+		public event EventHandler Delete
+		{
+			add
+			{
+                                if (Events[DeleteEvent] == null)
+				{
+					ConnectSignal ("delete-event", new SimpleCallback (EmitDeleteEvent));
+				}
+				Events.AddHandler (DeleteEvent, value);
+			}
+                        remove 
+			{
+				Events.RemoveHandler (DeleteEvent, value);
+			}
+		}
+
+		private void EmitDeleteEvent (IntPtr obj)
+		{
+			EventHandler eh = (EventHandler)(_events[DeleteEvent]);
+			if (eh != null)
+			{
+				EventArgs args = new EventArgs ();
+				eh(this, args);
+			}
+		}
 
 		/// <summary>
 		///	Show Method

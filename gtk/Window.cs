@@ -18,6 +18,19 @@ namespace GTK {
 	public class Window : Widget {
 
 		/// <summary>
+		///	Window Object Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Window Wrapper.
+		/// </remarks>
+
+		public Window (IntPtr o)
+		{
+			Object = o;
+		}
+
+		/// <summary>
 		///	Window Constructor
 		/// </summary>
 		/// 
@@ -30,8 +43,7 @@ namespace GTK {
 
 		public Window ()
 		{
-			obj = gtk_window_new (WindowType.TopLevel);
-			base.PrepareEvents ();
+			Object = gtk_window_new (WindowType.TopLevel);
 		}
 
 		/// <summary>
@@ -155,7 +167,7 @@ namespace GTK {
 		public String Title {
 			set
 			{
-				gtk_window_set_title (obj, value);
+				gtk_window_set_title (Object, value);
 			}
 		}
 	}

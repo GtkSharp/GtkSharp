@@ -11,8 +11,30 @@ namespace GTK {
 	using System.Runtime.InteropServices;
 
 	public abstract class Object  {
+		private EventHandlerList _events;
+		protected EventHandlerList Events
+		{
+			get
+			{
+				if (_events != null) return _events;
+				_events = new EventHandlerList ();
+			}
+		}
 
-		protected IntPtr obj;
+		private IntPtr _obj;
+
+		IntPtr Object
+		{
+			get
+			{
+				return _obj;
+			}
+			set
+			{
+				_events = null;
+				_obj = value;
+			}
+		}       
 
 		protected delegate void SimpleCallback (IntPtr obj);
 
