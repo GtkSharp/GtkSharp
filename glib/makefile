@@ -6,5 +6,8 @@ all:
 windows:
 	$(CSC) /unsafe /target:library /out:glib-sharp.dll /recurse:*.cs
 
+linux:
+	mcs --unsafe --target library -o glib-sharp.dll --recurse *.cs
+
 unix:
 	@echo "'make unix' is broken for now."

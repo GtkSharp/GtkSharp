@@ -6,5 +6,8 @@ all:
 windows:
 	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:pango-sharp.dll /recurse:*.cs
 
+linux:
+	mcs --unsafe --target library -r ../glib/glib-sharp.dll -o pango-sharp.dll --recurse *.cs
+
 unix:
 	@echo "'make unix' is broken for now."
