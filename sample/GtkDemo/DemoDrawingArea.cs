@@ -211,7 +211,7 @@ namespace GtkDemo
 
 			if ((state & ModifierType.Button1Mask) != 0 && pixmap != null)
 				DrawBrush (x, y);
-			/* We've handled it, stop processing */
+			// We've handled it, stop processing
 			args.RetVal = true;
 		}
 

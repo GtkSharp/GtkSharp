@@ -5,6 +5,14 @@
 //
 // (C) 2003 Ximian, Inc.
 
+/* Stock Item and Icon Browser
+ *
+ * This source code for this demo doesn't demonstrate anything
+ * particularly useful in applications. The purpose of the "demo" is
+ * just to provide a handy place to browse the available stock icons
+ * and stock items.
+ */
+
 using System;
 using System.Collections;
 using Gtk;

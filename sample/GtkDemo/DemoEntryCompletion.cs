@@ -1,3 +1,9 @@
+/* Entry Completion
+ *
+ * GtkEntryCompletion provides a mechanism for adding support for
+ * completion in GtkEntry.
+ *
+ */
 using System;
 using Gtk;
 

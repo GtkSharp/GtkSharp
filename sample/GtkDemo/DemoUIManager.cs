@@ -1,3 +1,8 @@
+/* UI Manager
+ *
+ * The GtkUIManager object allows the easy creation of menus
+ * from an array of actions and a description of the menu hierarchy.
+ */
 using System;
 using Gtk;
 

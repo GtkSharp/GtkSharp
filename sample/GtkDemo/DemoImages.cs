@@ -20,11 +20,6 @@
  * application binary can be self-contained.
  */
 
-// TODO:
-// Finish implementing the callback, I can't get the image
-// to show up, and I'm stuck in the ProgressivePreparedCallback
-// because I can't get a white background to appear
-
 using System;
 using System.IO;
 using System.Reflection;
@@ -121,7 +116,7 @@ namespace GtkDemo
 		{
 			Widget[] children = vbox.Children;
 			foreach (Widget widget in children)
-				/* don't disable our toggle */
+				// don't disable our toggle
 				if (widget.GetType () !=  o.GetType () )
 					widget.Sensitive =  !widget.Sensitive;
 		}
@@ -129,7 +124,7 @@ namespace GtkDemo
 		private uint timeout_id;
 		private void StartProgressiveLoading ()
 		{
-                /* This is obviously totally contrived (we slow down loading
+		/* This is obviously totally contrived (we slow down loading
 		 * on purpose to show how incremental loading works).
 		 * The real purpose of incremental loading is the case where
 		 * you are reading data from a slow source such as the network.

@@ -5,7 +5,7 @@
 //
 // Copyright (C) 2003, Ximian Inc.
 
-/* 
+/* Color Selector
  *
  * GtkColorSelection lets the user choose a color. GtkColorSelectionDialog is
  * a prebuilt dialog containing a GtkColorSelection.

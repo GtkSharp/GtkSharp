@@ -1,8 +1,16 @@
 //
 // Author: John Luke  <john.luke@gmail.com>
 // ported from gtk-demo in GTK+
-// Demostrates HyperLinks in the TextView
+// Demonstrates HyperLinks in the TextView
 //
+
+/* Text Widget/Hypertext
+ *
+ * Usually, tags modify the appearance of text in the view, e.g. making it 
+ * bold or colored or underlined. But tags are not restricted to appearance. 
+ * They can also affect the behavior of mouse and key presses, as this demo 
+ * shows.
+ */
 
 using System;
 using Gtk;

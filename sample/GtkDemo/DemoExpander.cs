@@ -1,3 +1,9 @@
+/* Expander
+ *
+ * GtkExpander allows to provide additional content that is initially hidden.
+ * This is also known as "disclosure triangle".
+ *
+ */
 using System;
 using Gtk;
 

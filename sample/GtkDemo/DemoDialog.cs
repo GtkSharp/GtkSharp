@@ -5,10 +5,9 @@
 //
 // Copyright (C) 2003, Ximian Inc.
 
-/*
+/* Dialog and Message Boxes
  *
- *Dialog widgets are used to pop up a transient window for user feedback.
- *
+ * Dialog widgets are used to pop up a transient window for user feedback.
  */
 
 // TODO: - Couldn't find a good equivalent to gtk_dialog_new_with_buttons

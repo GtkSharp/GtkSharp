@@ -49,6 +49,10 @@ namespace GtkDemo
 			hbox.PackStart (notebook, true, true, 0);
 
 			notebook.AppendPage (CreateText (infoBuffer, false), new Label ("_Info"));
+			TextTag heading = new TextTag ("heading");
+			heading.Scale = heading.Scale * 2;
+			infoBuffer.TagTable.Add (heading);
+
 			notebook.AppendPage (CreateText (sourceBuffer, true), new Label ("_Source"));
 
 			window.ShowAll ();
@@ -59,12 +63,12 @@ namespace GtkDemo
 			Stream file = Assembly.GetExecutingAssembly ().GetManifestResourceStream (filename);
 			if (file != null)
 			{
-				LoadStream (file, filename);
+				LoadStream (file);
 			}
 			else if (File.Exists (filename))
 			{
 				file = File.OpenRead (filename);
-				LoadStream (file, filename);
+				LoadStream (file);
 			}
 			else
 			{
@@ -75,15 +79,56 @@ namespace GtkDemo
 			Fontify ();
 		}
 
-		private void LoadStream (Stream file, string filename)
+		private void LoadStream (Stream file)
 		{
 			StreamReader sr = new StreamReader (file);
-			string s = sr.ReadToEnd ();
+			bool insideComment = false;
+			bool headingValid = true;
+
+			infoBuffer.Text = "";
+			sourceBuffer.Text = "";
+
+			// mostly broken comment parsing for splitting
+			// out the special comments to display in the infobuffer
+			string line, trimmed;
+			while (sr.Peek () != -1) {
+				line = sr.ReadLine ();
+				trimmed = line.Trim ();
+				if (headingValid && line.Trim ().StartsWith ("//"))
+				{
+					continue;
+				}
+				else if (headingValid && trimmed.StartsWith ("/*"))
+				{
+					TextIter iter = infoBuffer.EndIter;
+					infoBuffer.InsertWithTagsByName (ref iter, trimmed.Substring (2) + Environment.NewLine, "heading");
+					infoBuffer.Insert (ref iter, Environment.NewLine);
+					insideComment = true;
+				}
+				else if (headingValid && trimmed.StartsWith ("*/"))
+				{
+					insideComment = false;
+					headingValid = false;
+				}
+				else
+				{
+					if (insideComment)
+					{
+						TextIter iter = infoBuffer.EndIter;
+						if (trimmed.StartsWith ("*"))
+							infoBuffer.Insert (ref iter, trimmed.Substring (1));
+						else
+							infoBuffer.Insert (ref iter, trimmed);
+					}
+					else
+					{
+						TextIter iter = sourceBuffer.EndIter;
+						sourceBuffer.Insert (ref iter, line + Environment.NewLine);
+					}
+				}
+			}
 			sr.Close ();
 			file.Close ();
-
-			infoBuffer.Text = filename;
-			sourceBuffer.Text = s;
 		}
 
 		// this is to highlight the sourceBuffer
