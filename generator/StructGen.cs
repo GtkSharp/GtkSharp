@@ -45,7 +45,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t/// </remarks>");
 
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\tpublic class " + Name + " {");
+			sw.WriteLine ("\tpublic struct " + Name + " {");
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in Elem.ChildNodes) {

@@ -49,6 +49,7 @@ while ($line = <STDIN>) {
 	if ($line =~ /typedef\s+(struct\s+\w+\s+)\*+(\w+);/) {
 		$ptrs{$2} = $1;
 	} elsif ($line =~ /typedef\s+(struct\s+\w+)\s+(\w+);/) {
+		next if ($2 =~ /Private$/);
 		$types{$2} = $1;
 	} elsif ($line =~ /typedef\s+(\w+\s+\**)(\w+);/) {
 		$types{$2} = $1;
@@ -503,6 +504,11 @@ sub addParamsElem
 			if ($params && ($params ne "void")) {
 				addParamsElem($cb_elem, split(/,/, $params));
 			}
+			next;
+		} elsif ($parm =~ /\.\.\./) {
+			$parm_elem = $doc->createElement('parameter');
+			$parms_elem->appendChild($parm_elem);
+			$parm_elem->setAttribute('ellipsis', 'true');
 			next;
 		}
 		$parm_elem = $doc->createElement('parameter');
