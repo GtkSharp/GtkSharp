@@ -35,11 +35,11 @@
 		}
 
 		[DllImport("gtksharpglue")]
-		private static extern IntPtr gtksharp_selection_data_get_data_pointer (IntPtr selection_data);
+		private static extern IntPtr gtksharp_gtk_selection_data_get_data_pointer (IntPtr selection_data);
 
 		public byte[] Data {
 			get {
-				IntPtr data_ptr = gtksharp_selection_data_get_data_pointer (Handle);
+				IntPtr data_ptr = gtksharp_gtk_selection_data_get_data_pointer (Handle);
 				byte[] result = new byte [Length];
 				Marshal.Copy (data_ptr, result, 0, Length);
 				return result;
