@@ -10,7 +10,7 @@ windows:
 linux: glade-sharp.dll
 
 glade-sharp.dll: *.cs generated/*.cs
-	$(MCS) --unsafe --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o glade-sharp.dll --recurse '*.cs'
+	$(MCS) --unsafe -nowarn:0660,0661 --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o glade-sharp.dll --recurse '*.cs'
 
 clean:
 	rm -f *.dll

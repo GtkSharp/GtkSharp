@@ -9,7 +9,7 @@ windows:
 linux: art-sharp.dll
 
 art-sharp.dll: generated/*.cs
-	$(MCS) --unsafe --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -o art-sharp.dll --recurse '*.cs'
+	$(MCS) --unsafe -nowarn:0660,0661 --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -o art-sharp.dll --recurse '*.cs'
 
 clean:
 	rm -f *.dll
