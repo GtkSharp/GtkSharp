@@ -309,7 +309,7 @@ namespace GtkSharp.Generation {
 					
 					if (table.IsEnum (type))
 						call_parm = name + "_as_int";
-					else if (table.IsObject (type) || table.IsOpaque (type) || cs_type == "GLib.Value") {
+					else if (table.IsObject (type) || table.IsInterface (type) || table.IsOpaque (type) || cs_type == "GLib.Value") {
 						call_parm = this [i].PassAs + " " + call_parm.Replace (".Handle", "_handle");
 						import_sig += this [i].PassAs + " ";
 					}
@@ -361,7 +361,7 @@ namespace GtkSharp.Generation {
 						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
 				}
 
-				if ((is_get || p.PassAs == "out") && (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
+				if ((is_get || p.PassAs == "out") && (gen is ObjectGen || gen is InterfaceGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
 					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
 
 				if (p.PassAs == "out" && gen is EnumGen)
@@ -392,12 +392,12 @@ namespace GtkSharp.Generation {
 				}
 
 				IGeneratable gen = p.Generatable;
-				if (ref_owned_needed && gen is ObjectGen && p.PassAs == "out") {
+				if (ref_owned_needed && (gen is ObjectGen || gen is InterfaceGen) && p.PassAs == "out") {
 					ref_owned_needed = false;
 					sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
 				}
 
-				if (p.PassAs == "out" && (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
+				if (p.PassAs == "out" && (gen is ObjectGen || gen is InterfaceGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
 			}
 		}
