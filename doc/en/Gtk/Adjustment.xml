@@ -91,12 +91,19 @@
         <Parameter Name="upper" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Updates the <see cref="P:Gtk.Adjustment.Value" /> to ensure that the range between lower and upper is in the current page (i.e. between value and value + page_size).</summary>
-        <param name="lower">To be added: an object of type 'double'</param>
-        <param name="upper">To be added: an object of type 'double'</param>
+        <summary>Used to inform the Adjustment's view that a new visible range should be displayed.</summary>
+        <param name="lower">The lower value of the new range.</param>
+        <param name="upper">The upper value of the new range.</param>
         <remarks>
-          <para>To be added: The docs for this function are very confusing, and not 100% in sync with the code of gtk+ 2.0.5.</para>
-          <para>If the range is larger than the page size, then only the start of it will be in the current page. The <see cref="F:Gtk.Adjustment.ValueChanged" /> event will be fired if the value changes as a result of this method.</para>
+			 <para>
+			 This method should be used to set the currently visible range to (<paramref name="lower"/>, <paramref name="upper"/>). If necessary, the current <see cref="P:Gtk.Adjustment.Value" /> is changed to ensure that it is visible within the new scope.
+			 </para>
+			 <para>
+			 If the specified range is larger than the <see cref="T:Gtk.Adjustment.PageSize"/>, then only the start of it will make up the new &quot;current page&quot;.
+			 </para>
+			 <para>
+			 The <see cref="F:Gtk.Adjustment.ValueChanged" /> event will be fired if the <see cref="P:Gtk.Adjustment.Value" /> changes as a result of this method. <see cref="M:Gtk.Adjustment.Change" /> must be called manually if the <see cref="F:Gtk.Adjustment.Changed" /> event should be fired.
+			 </para>
         </remarks>
       </Docs>
     </Member>
