@@ -461,10 +461,20 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the default size of an object, with the specified width and height arguments.</summary>
         <param name="width">To be added: an object of type 'int'</param>
         <param name="height">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            It is used for setting the default size an object will have. The first argument, 
+            int width, defines the default width of the object ( in pixels ). A similar situation
+            happens with the second argument, int height.
+          </para>
+          <para>
+            It only affects the initial size of the Window, so the user can resizes it. If the
+            Window is hidden and re-shown, it will remmeber the size it had before get hidding.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Present">
@@ -518,9 +528,13 @@
         <Parameter Name="position" Type="Gtk.WindowPosition" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the position for a Window, based on the Gtk.WindowPosition position argument.</summary>
         <param name="position">To be added: an object of type 'Gtk.WindowPosition'</param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Is is used for placing the Window in some area, depending on the Gtk.WindowPosition position argument.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddAccelGroup">
@@ -605,10 +619,16 @@
         <Parameter Name="type" Type="Gtk.WindowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new Window object, based on the Gtk.WindowType type argument.</summary>
         <param name="type">To be added: an object of type 'Gtk.WindowType'</param>
         <returns>To be added: an object of type 'Gtk.Window'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Creates a new Window object, wich can be of type TopLevel ( most of the cases )
+            or PopUp. Take care with the use of PopUp type, since it is not controlled by the window
+            manager.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -630,10 +650,16 @@
         <Parameter Name="title" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new TopLevel Window object, with the specified string argument as the title.</summary>
         <param name="title">To be added: an object of type 'string'</param>
         <returns>To be added: an object of type 'Gtk.Window'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            Creates a new TopLevel Window object, using the string title argument to specify the Window title.
+            You get the same if you use the public Window ( Gtk.WindowType type ) constructor and later
+            set the string Title property.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultIconList">
@@ -858,10 +884,17 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets if a Window will be decorated or not ( borderless ).</summary>
         <param name="value">To be added: an object of type 'bool'</param>
         <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>With this property you control if a window will be decorated or not.</para>
+          <para>
+            By default, windows are decorated with a title bar and resize controls. Some window managers
+            allow to disable these decorations, creating a borderless Window. If you set this property as false,
+            Gtk# will try to convince the window manager not to decorate the Window. 
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Resizable">
@@ -874,10 +907,15 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets if a Window will be resizable by the user or not.</summary>
         <param name="value">To be added: an object of type 'bool'</param>
         <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            By default, windows are resizable, so you can change the size of them. But if you set this property
+            to false, the user won't be able to change the size of them.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowPosition">
@@ -890,10 +928,15 @@
         <Parameter Name="value" Type="Gtk.WindowPosition" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Property used for setting/getting the window position.</summary>
         <param name="value">To be added: an object of type 'Gtk.WindowPosition'</param>
         <returns>To be added: an object of type 'Gtk.WindowPosition'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            This property will alow you to define where a Window must be displayed on the screen.
+            It work with the Gtk.WindowPosition enum, soy maybe you should check it before use it.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultHeight">
@@ -906,10 +949,16 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Property used for defining the default height of a window.</summary>
         <param name="value">To be added: an object of type 'int'</param>
         <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            This property will allow you to define the default height for your Window.
+            It only define the default one, so if the Window is resized, it won't be able to do
+            anything.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DestroyWithParent">
@@ -970,10 +1019,18 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Property used for setting the Window Title.</summary>
         <param name="value">To be added: an object of type 'string'</param>
         <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+            This property will allow you to set the Window Title. The Title of a window
+            will be displayed in its title bar. Since the title bar is rendered by the window managers on
+            X Window System, the way it appears will depend on the user preferences. This title should help
+            the users to distinguish a window from others opened. A good title will have the application name
+            an the actual document, for example.
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Type">
