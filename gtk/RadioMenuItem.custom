@@ -1,11 +1,20 @@
+//  Gtk.RadioMenuItem.custom - Gtk RadioMenuItem customizations
 //
-//  RadioMenuItem.custom
+//  Authors:  John Luke  <jluke@cfl.rr.com>
+//            Mike Kestner <mkestner@ximian.com>
 //
-//	Author:  John Luke  <jluke@cfl.rr.com>
-//
+//  Copyright (c) 2004 Novell, Inc.
 
-	// creates a new group for this RadioMenuItem
-	public RadioMenuItem (string label)
-	{
-		Raw = gtk_radio_menu_item_new_with_mnemonic (IntPtr.Zero, label);
-	}
+		public RadioMenuItem (string label) : base (IntPtr.Zero)
+		{
+			if (GetType() != typeof (RadioMenuItem)) {
+				CreateNativeObject (new string [0], new GLib.Value [0]);
+				AccelLabel al = new AccelLabel ("");
+				al.TextWithMnemonic = label;
+				al.SetAlignment (0.0f, 0.5f);
+				Add (al);
+				al.AccelWidget = this;
+			}
+
+			Raw = gtk_radio_menu_item_new_with_mnemonic (IntPtr.Zero, label);
+		}

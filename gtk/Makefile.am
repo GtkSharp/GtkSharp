@@ -33,6 +33,7 @@ customs = 				\
 	Adjustment.custom		\
 	Button.custom			\
 	Calendar.custom			\
+	CheckMenuItem.custom		\
 	Clipboard.custom		\
 	ColorSelection.custom		\
 	ColorSelectionDialog.custom	\
@@ -45,6 +46,7 @@ customs = 				\
 	HBox.custom			\
 	IconFactory.custom		\
 	IconSet.custom			\
+	ImageMenuItem.custom		\
 	Label.custom			\
 	Layout.custom			\
 	ListStore.custom		\

@@ -1,4 +1,4 @@
-// Gtk.MenuItem.custom - Gtk MenuItem class customizations
+// Gtk.CheckMenuItem.custom - Gtk CheckMenuItem class customizations
 //
 // Author: Mike Kestner <mkestner@ximian.com> 
 //
@@ -7,11 +7,11 @@
 // This code is inserted after the automatically generated code.
 		
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_menu_item_new_with_mnemonic (string label);
+		static extern IntPtr gtk_check_menu_item_new_with_mnemonic (string label);
 
-		public MenuItem (string label) : base (IntPtr.Zero)
+		public CheckMenuItem (string label) : base (IntPtr.Zero)
 		{
-			if (GetType() != typeof (MenuItem)) {
+			if (GetType() != typeof (CheckMenuItem)) {
 				CreateNativeObject (new string [0], new GLib.Value [0]);
 				AccelLabel al = new AccelLabel ("");
 				al.TextWithMnemonic = label;
@@ -20,5 +20,5 @@
 				al.AccelWidget = this;
 			}
 
-			Raw = gtk_menu_item_new_with_mnemonic (label);
+			Raw = gtk_check_menu_item_new_with_mnemonic (label);
 		}
