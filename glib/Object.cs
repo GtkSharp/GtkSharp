@@ -201,58 +201,6 @@ namespace GLib {
 		}
 
 		/// <summary>
-		///	Equals Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Checks equivalence of two Objects.
-		/// </remarks>
-
-		public override bool Equals (object o)
-		{
-			if (!(o is Object))
-				return false;
-
-			return (Handle == ((Object) o).Handle);
-		}
-
-		public static bool operator == (Object a, Object b)
-		{
-			object oa = a;
-			object ob = b;
-
-			if (ob == null){
-				if (oa == null)
-					return true;
-				else
-					return false;
-			} else {
-				if (oa == null)
-					return false;
-				else
-					return a.Equals (b);
-			}
-		}
-
-		public static bool operator != (Object a, Object b)
-		{
-			object oa = a;
-			object ob = b;
-
-			if (ob == null){
-				if (oa == null)
-					return false;
-				else
-					return true;
-			} else {
-				if (oa == null)
-					return true;
-				else
-					return !a.Equals (b);
-			}
-		}
-		
-		/// <summary>
 		///	GetHashCode Method
 		/// </summary>
 		///

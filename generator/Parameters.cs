@@ -478,8 +478,14 @@ namespace GtkSharp.Generation {
 				return "str1ng";
 			case "event":
 				return "evnt";
+			case "null":
+				return "is_null";
 			case "object":
 				return "objekt";
+			case "params":
+				return "parms";
+			case "ref":
+				return "reference";
 			case "in":
 				return "in_param";
 			case "out":

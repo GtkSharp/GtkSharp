@@ -16,7 +16,7 @@ SOURCES = \
 all: gconf-sharp.dll
 
 gconf-sharp.dll: $(SOURCES)
-	$(MCS) $(SOURCES) /r:glib-sharp.dll /target:library /out:gconf-sharp.dll
+	$(MCS) $(SOURCES) -L ../../glib /r:glib-sharp.dll /target:library /out:gconf-sharp.dll
 
 install: all
 	cp gconf-sharp.dll $(DESTDIR)@prefix@/lib

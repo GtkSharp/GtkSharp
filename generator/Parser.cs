@@ -64,6 +64,9 @@ namespace GtkSharp.Generation {
 				XmlElement elem = (XmlElement) def;
 				IGeneratable igen = null;
 				
+				if (elem.HasAttribute("hidden"))
+					continue;
+
 				switch (def.Name) {
 
 				case "alias":

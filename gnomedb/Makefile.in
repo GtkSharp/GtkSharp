@@ -5,12 +5,12 @@ DESTDIR=
 @ENABLE_GNOMEDB_FALSE@ all: 
 
 windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gnome/gnome-sharp.dll /r:../gda/gda-sharp.dll /out:gnomedb-sharp.dll /recurse:*.cs
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../art/art-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gnome/gnome-sharp.dll /r:../gda/gda-sharp.dll /out:gnomedb-sharp.dll /recurse:*.cs
 
 linux: gnomedb-sharp.dll
 
 gnomedb-sharp.dll: Application.cs generated/*.cs
-	$(MCS) --unsafe --target library -L ../glib -r glib-sharp.dll -r gtk-sharp.dll -r gnome-sharp.dll -r gda-sharp.dll -o gnomedb-sharp.dll --recurse '*.cs'
+	$(MCS) --unsafe --target library -L ../glib -L ../pango -L ../atk -L ../art -L ../gdk -L ../gtk -L ../gnome -L ../gda -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r art-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -r gnome-sharp.dll -r gda-sharp.dll -o gnomedb-sharp.dll --recurse '*.cs'
 
 clean:
 	rm -f *.dll

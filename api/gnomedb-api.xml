@@ -2,7 +2,7 @@
 <api>
   <namespace name="GnomeDb" library="gnomedb-2">
     <enum name="ComponentType" cname="GnomeDbComponentType" type="enum">
-      <member cname="GNOME_DB_COMPONENT_TYPE_INVALID" name="Invalid"/>
+      <member cname="GNOME_DB_COMPONENT_TYPE_INVALID" name="Invalid" value="-1"/>
       <member cname="GNOME_DB_COMPONENT_TYPE_EXE" name="Exe"/>
       <member cname="GNOME_DB_COMPONENT_TYPE_SHLIB" name="Shlib"/>
       <member cname="GNOME_DB_COMPONENT_TYPE_FACTORY" name="Factory"/>
@@ -94,6 +94,66 @@
         <return-type type="GType"/>
       </method>
       <constructor cname="gnome_db_connection_selector_new"/>
+    </object>
+    <object name="Control" cname="GnomeDbControl" parent="BonoboControl" hidden="1">
+      <field cname="priv" type="GnomeDbControlPrivate*"/>
+      <signal name="Activated" cname="activated" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbControl*" name="control"/>
+        </parameters>
+      </signal>
+      <signal name="GetProperty" cname="get_property" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbControl*" name="control"/>
+          <parameter type="GdaValue*" name="value"/>
+          <parameter type="guint" name="id"/>
+        </parameters>
+      </signal>
+      <signal name="SetProperty" cname="set_property" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbControl*" name="control"/>
+          <parameter type="const-GdaValue*" name="value"/>
+          <parameter type="guint" name="id"/>
+        </parameters>
+      </signal>
+      <method name="Activate" cname="gnome_db_control_activate">
+        <return-type type="void"/>
+      </method>
+      <method name="Construct" cname="gnome_db_control_construct">
+        <return-type type="GnomeDbControl*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="Deactivate" cname="gnome_db_control_deactivate">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="gnome_db_control_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_control_new">
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </constructor>
+      <method name="SetStatus" cname="gnome_db_control_set_status">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="msg"/>
+        </parameters>
+      </method>
+      <method name="SetUi" cname="gnome_db_control_set_ui">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="app_prefix"/>
+          <parameter type="const-gchar*" name="ui_xml_file"/>
+          <parameter type="BonoboUIVerb*" name="verbs"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
     </object>
     <object name="ControlWidget" cname="GnomeDbControlWidget" parent="GtkVBox">
       <field cname="priv" type="GnomeDbControlWidgetPrivate*"/>
@@ -565,6 +625,56 @@
         <return-type type="GType"/>
       </method>
       <constructor cname="gnome_db_table_editor_new"/>
+    </object>
+    <object name="Window" cname="GnomeDbWindow" parent="BonoboWindow" hidden="1">
+      <field cname="priv" type="GnomeDbWindowPrivate*"/>
+      <property name="Contents" cname="contents" type="GtkWidget" doc-string=" NULL" readable="true" writeable="true"/>
+      <property name="Status" cname="status" type="gchar*" doc-string=" NULL" writeable="true"/>
+      <signal name="Close" cname="close" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbWindow*" name="window"/>
+        </parameters>
+      </signal>
+      <method name="Close" cname="gnome_db_window_close">
+        <return-type type="void"/>
+      </method>
+      <method name="GetContents" cname="gnome_db_window_get_contents">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_window_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUiComponent" cname="gnome_db_window_get_ui_component">
+        <return-type type="BonoboUIComponent*"/>
+      </method>
+      <method name="GetUiContainer" cname="gnome_db_window_get_ui_container">
+        <return-type type="Bonobo_UIContainer"/>
+      </method>
+      <constructor cname="gnome_db_window_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="app_prefix"/>
+          <parameter type="const-gchar*" name="ui_xml_file"/>
+          <parameter type="BonoboUIVerb*" name="verbs"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </constructor>
+      <method name="SetContents" cname="gnome_db_window_set_contents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="contents"/>
+        </parameters>
+      </method>
+      <method name="SetStatus" cname="gnome_db_window_set_status">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="status"/>
+        </parameters>
+      </method>
+      <method name="Show" cname="gnome_db_window_show">
+        <return-type type="void"/>
+      </method>
     </object>
     <struct name="ComponentInfo" cname="GnomeDbComponentInfo">
       <field cname="id" type="gchar*"/>

@@ -201,21 +201,21 @@
         <return-type type="GList*"/>
         <parameters>
           <parameter type="GdaCommand*" name="cmd"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="ExecuteNonQuery" cname="gda_connection_execute_non_query">
         <return-type type="gint"/>
         <parameters>
           <parameter type="GdaCommand*" name="cmd"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="ExecuteSingleCommand" cname="gda_connection_execute_single_command">
         <return-type type="GdaDataModel*"/>
         <parameters>
           <parameter type="GdaCommand*" name="cmd"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="GetClient" cname="gda_connection_get_client">
@@ -243,7 +243,7 @@
         <return-type type="GdaDataModel*"/>
         <parameters>
           <parameter type="GdaConnectionSchema" name="schema"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="GetServerVersion" cname="gda_connection_get_server_version">
@@ -294,19 +294,19 @@
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </signal>
-      <signal name="BeginEdition" cname="begin_edit" when="LAST">
+      <signal name="BeginEditing" cname="begin_edit" when="LAST">
         <return-type type="void"/>
         <parameters>
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </signal>
-      <signal name="CancelEdition" cname="cancel_edit" when="LAST">
+      <signal name="CancelEditing" cname="cancel_edit" when="LAST">
         <return-type type="void"/>
         <parameters>
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </signal>
-      <signal name="EndEdition" cname="end_edit" when="LAST">
+      <signal name="EndEditing" cname="end_edit" when="LAST">
         <return-type type="void"/>
         <parameters>
           <parameter type="GdaDataModel*" name="model"/>
@@ -432,6 +432,12 @@
           <parameter type="gboolean" name="standalone"/>
         </parameters>
       </method>
+      <method name="ToXmlNode" cname="gda_data_model_to_xml_node" hidden="1">
+        <return-type type="xmlNodePtr"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
       <method name="UpdateRow" cname="gda_data_model_update_row">
         <return-type type="gboolean"/>
         <parameters>
@@ -452,6 +458,12 @@
           <parameter type="gint" name="cols"/>
         </parameters>
       </constructor>
+      <method name="SetNColumns" cname="gda_data_model_array_set_n_columns">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="cols"/>
+        </parameters>
+      </method>
     </object>
     <object name="DataModelHash" cname="GdaDataModelHash" parent="GdaDataModel">
       <field cname="priv" type="GdaDataModelHashPrivate*"/>
@@ -488,6 +500,12 @@
           <parameter type="gint" name="cols"/>
         </parameters>
       </constructor>
+      <method name="SetNColumns" cname="gda_data_model_hash_set_n_columns">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="cols"/>
+        </parameters>
+      </method>
     </object>
     <object name="DataModelList" cname="GdaDataModelList" parent="GdaDataModel">
       <field cname="priv" type="GdaDataModelListPrivate*"/>
@@ -565,6 +583,89 @@
         </parameters>
       </method>
     </object>
+    <object name="Export" cname="GdaExport" parent="GObject" hidden="1">
+      <field cname="priv" type="GdaExportPrivate*"/>
+      <signal name="ObjectSelected" cname="object_selected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaExport*" name="exp"/>
+          <parameter type="GdaConnectionSchema" name="schema"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </signal>
+      <signal name="ObjectUnselected" cname="object_unselected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaExport*" name="exp"/>
+          <parameter type="GdaConnectionSchema" name="schema"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </signal>
+      <signal name="Finished" cname="finished" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaExport*" name="exp"/>
+          <parameter type="GdaXmlDatabase*" name="xmldb"/>
+        </parameters>
+      </signal>
+      <signal name="Finished" cname="finished" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaExport*" name="exp"/>
+          <parameter type="GdaXmlDatabase*" name="xmldb"/>
+        </parameters>
+      </signal>
+      <method name="GetConnection" cname="gda_export_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetSelectedTables" cname="gda_export_get_selected_tables">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetTables" cname="gda_export_get_tables">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetType" cname="gda_export_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gda_export_new">
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </constructor>
+      <method name="Run" cname="gda_export_run">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaExportFlags" name="flags"/>
+        </parameters>
+      </method>
+      <method name="SelectTable" cname="gda_export_select_table">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="table"/>
+        </parameters>
+      </method>
+      <method name="SelectTableList" cname="gda_export_select_table_list">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="tables"/>
+        </parameters>
+      </method>
+      <method name="SetConnection" cname="gda_export_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
+      <method name="Stop" cname="gda_export_stop">
+        <return-type type="void"/>
+      </method>
+      <method name="UnselectTable" cname="gda_export_unselect_table">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="table"/>
+        </parameters>
+      </method>
+    </object>
     <object name="Select" cname="GdaSelect" parent="GdaDataModelArray">
       <field cname="priv" type="GdaSelectPrivate*"/>
       <method name="GetType" cname="gda_select_get_type" shared="true">
@@ -635,7 +736,7 @@
         <parameters>
           <parameter type="GdaConnection*" name="cnc"/>
           <parameter type="GdaCommand*" name="cmd"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="GetDatabase" cname="gda_server_provider_get_database">
@@ -649,7 +750,7 @@
         <parameters>
           <parameter type="GdaConnection*" name="cnc"/>
           <parameter type="GdaConnectionSchema" name="schema"/>
-          <parameter type="GdaParameterList*" name="parameters"/>
+          <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </method>
       <method name="GetServerVersion" cname="gda_server_provider_get_server_version">
@@ -668,7 +769,7 @@
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="GdaConnection*" name="cnc"/>
-          <parameter type="GdaQuarkList*" name="parameters"/>
+          <parameter type="GdaQuarkList*" name="params"/>
           <parameter type="const-gchar*" name="username"/>
           <parameter type="const-gchar*" name="password"/>
         </parameters>
@@ -1104,7 +1205,7 @@
       <method name="SetReferences" cname="gda_field_attributes_set_references">
         <return-type type="void"/>
         <parameters>
-          <parameter type="const-gchar*" name="references"/>
+          <parameter type="const-gchar*" name="ref"/>
         </parameters>
       </method>
       <method name="SetScale" cname="gda_field_attributes_set_scale">
@@ -1256,6 +1357,11 @@
           <parameter type="gint" name="count"/>
         </parameters>
       </constructor>
+      <constructor cname="gda_row_new_from_list">
+        <parameters>
+          <parameter type="const-GList*" name="values"/>
+        </parameters>
+      </constructor>
       <method name="SetId" cname="gda_row_set_id">
         <return-type type="void"/>
         <parameters>
@@ -1365,7 +1471,7 @@
       <method name="GetVtype" cname="gda_value_get_vtype">
         <return-type type="GdaValueType"/>
       </method>
-      <method name="IsNullValue" cname="gda_value_is_null">
+      <method name="IsNull" cname="gda_value_is_null">
         <return-type type="gboolean"/>
       </method>
       <method name="IsNumber" cname="gda_value_is_number">
@@ -1682,7 +1788,7 @@
           <parameter type="gchar*" name="value"/>
           <parameter type="gchar*" name="alias"/>
           <parameter type="gchar*" name="type"/>
-          <parameter type="gchar*" name="txt_null"/>
+          <parameter type="gchar*" name="null"/>
         </parameters>
       </constructor>
     </struct>
@@ -1707,7 +1813,7 @@
         <parameters>
           <parameter type="gchar*" name="value"/>
           <parameter type="gchar*" name="type"/>
-          <parameter type="gboolean" name="is_null"/>
+          <parameter type="gboolean" name="null"/>
         </parameters>
       </method>
       <method name="AddFieldFromText" cname="gda_xql_dml_add_field_from_text">
@@ -1764,7 +1870,7 @@
           <parameter type="gchar*" name="field"/>
           <parameter type="gchar*" name="value"/>
           <parameter type="gchar*" name="type"/>
-          <parameter type="gboolean" name="is_null"/>
+          <parameter type="gboolean" name="null"/>
         </parameters>
       </method>
       <method name="AddTargetFromText" cname="gda_xql_dml_add_target_from_text">
@@ -1960,7 +2066,7 @@
         <parameters>
           <parameter type="gchar*" name="value"/>
           <parameter type="gchar*" name="type"/>
-          <parameter type="gchar*" name="txt_null"/>
+          <parameter type="gchar*" name="null"/>
         </parameters>
       </method>
       <method name="AddFieldFromText" cname="gda_xql_func_add_field_from_text">
@@ -2014,7 +2120,7 @@
       <method name="AddRef" cname="gda_xql_item_add_ref">
         <return-type type="void"/>
         <parameters>
-          <parameter type="gchar*" name="reference"/>
+          <parameter type="gchar*" name="ref"/>
         </parameters>
       </method>
       <method name="FindId" cname="gda_xql_item_find_id">
@@ -2026,7 +2132,7 @@
       <method name="FindRef" cname="gda_xql_item_find_ref">
         <return-type type="GdaXqlItem*"/>
         <parameters>
-          <parameter type="gchar*" name="reference"/>
+          <parameter type="gchar*" name="ref"/>
         </parameters>
       </method>
       <method name="FindRoot" cname="gda_xql_item_find_root">
@@ -2044,7 +2150,7 @@
       <method name="GetRef" cname="gda_xql_item_get_ref">
         <return-type type="GdaXqlItem*"/>
         <parameters>
-          <parameter type="gchar*" name="reference"/>
+          <parameter type="gchar*" name="ref"/>
         </parameters>
       </method>
       <method name="GetTag" cname="gda_xql_item_get_tag">

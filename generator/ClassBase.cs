@@ -51,20 +51,27 @@ namespace GtkSharp.Generation {
 				if (member.HasAttribute ("hidden"))
 					continue;
 
+				string name;
 				switch (node.Name) {
 				case "method":
-					string name = member.GetAttribute("name");
+					name = member.GetAttribute("name");
 					while (methods.ContainsKey(name))
 						name += "mangled";
 					methods.Add (name, new Method (LibraryName, member, this));
 					break;
 
 				case "property":
-					props.Add (member.GetAttribute ("name"), new Property (member, this));
+					name = member.GetAttribute("name");
+					while (props.ContainsKey(name))
+						name += "mangled";
+					props.Add (name, new Property (member, this));
 					break;
 
 				case "signal":
-					sigs.Add (member.GetAttribute ("name"), new Signal (member, this));
+					name = member.GetAttribute("name");
+					while (sigs.ContainsKey(name))
+						name += "mangled";
+					sigs.Add (name, new Signal (member, this));
 					break;
 
 				case "implements":

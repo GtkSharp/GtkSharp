@@ -189,8 +189,14 @@ namespace GtkSharp.Generation {
 				return "str1ng";
 			} else if (name == "event") {
 				return "evnt";
+			} else if (name == "null") {
+				return "is_null";
 			} else if (name == "object") {
 				return "objekt";
+			} else if (name == "ref") {
+				return "reference";
+			} else if (name == "params") {
+				return "parms";
 			} else if (name == "in") {
 				return "inn";
 			} else {
