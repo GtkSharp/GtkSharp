@@ -7,13 +7,30 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Not thread safe</ThreadSafetyStatement>
   <Docs>
-    <summary>Represents an image in memory</summary>
+    <summary>Image representation.</summary>
     <remarks>
-	<para>
-	  The Gdk.Pixbuf class is used to represent an image in
-	  memory.  The in-memory representation uses either a three
-	  byte RGB representation or a four byte RGBA representation. 
-	</para>
+      <para>
+	The Gdk.Pixbuf class is used to represent an image in
+	memory.  The in-memory representation uses either a three
+	byte RGB representation or a four byte RGBA representation.  
+      </para>
+      <para>
+	Pixbufs can be created from a number of sources: image files
+	in an assorted set of file formats (png, tiff, jpg, gif, xpm,
+	pcx, ico, xpm, xbm);  Drawables (which can be windows on the X
+	server, or off-screen images in the X server) or in-memory
+	images.
+      </para>
+      <para>
+	A pixbuf can be rendered, scaled or composited into another
+	pixbuf, into a window on the X server, or on a drawable in the
+	X server.  Various rendering methods are provided for this
+	purpose.
+      </para>
+      <para>
+	Pixbufs can also be saved to a number of different file
+	formats. 
+      </para>
     </remarks>
   </Docs>
   <Base>
@@ -63,7 +80,10 @@
 	    The return value is an initialized Pixbuf class
 	  </para>
 	</returns>
-        <remarks></remarks>
+        <remarks>
+	  This creates a Pixbuf from a class that implements the
+	  Gdk.Pixdata interface. 
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorGetType">
@@ -1548,19 +1568,32 @@
       <Docs>
         <summary>Height of the image</summary>
         <returns><para>The height in pixels of the image</para></returns>
-        <remarks>None.</remarks>
+        <remarks>
+	  <para>
+	    See also the <see cref="P:Gdk.Pixbuf.Width"/>, <see
+	      cref="P:Gdk.Pixbuf.Rowstride"/> and <see
+	      cref="P:Gdk.Pixbuf.NChannels"/> for more information about
+	    the layout of the image.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pixels">
-      <MemberSignature Language="C#" Value="public byte Pixels { get; };" />
+      <MemberSignature Language="C#" Value="public byte [] Pixels { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Byte</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'byte'</returns>
-        <remarks>To be added</remarks>
+        <summary>The image pixel information</summary>
+        <returns>Returns the array with the pixel information</returns>
+        <remarks>
+	  See also the <see cref="P:Gdk.Pixbuf.Width"/>, <see
+	  cref="P:Gdk.Pixbuf.Height"/>, <see
+	  cref="P:Gdk.Pixbuf.Rowstride"/> and <see
+	  cref="P:Gdk.Pixbuf.NChannels"/> for more information about
+	  the layout of the image.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="HasAlpha">
@@ -1591,7 +1624,12 @@
       <Docs>
         <summary>The width of the image</summary>
         <returns><para>The width in pixels of the image</para></returns>
-        <remarks>None.</remarks>
+        <remarks>
+	  <para>
+	    This is the width of the image in pixels.  See the <see
+	    cref="P:Gdk.Pixbuf.Rowstride"/> property as well.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="NChannels">
@@ -1604,6 +1642,8 @@
         <summary>The number of channels on a Pixbuf</summary>
         <returns>Returns the number of channels on a Pixbuf</returns>
         <remarks>
+	  The possible values are 3 (for RGB encoding) and 4 (for RGB
+	  with an alpha transparency channel encoding.
 	</remarks>
       </Docs>
     </Member>
@@ -1618,7 +1658,12 @@
         <returns>The rowstride property for the Pixbuf</returns>
         <remarks>
 	  <para>
-	    Queries the rowstride of a pixbuf, which is the number of bytes between rows.
+	    Queries the rowstride of a pixbuf.  The rowstring is the
+	    number of bytes occupied by a row of pixels.  Sometimes
+	    for alignment purposes, the rowstride might be bigger than
+	    the actual width of the image.   Applications that
+	    manually process data from the image would scan lines by
+	    adding the value of the Rowstride.
 	  </para>
 	</remarks>
       </Docs>
