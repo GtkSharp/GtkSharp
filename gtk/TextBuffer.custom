@@ -22,3 +22,16 @@ public void PasteClipboard (Gtk.Clipboard clipboard)
 	gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);
 }
 
+public void InsertWithTags (string text, params TextTag[] tags)
+{
+	TextIter iter;
+	
+	this.Insert (EndIter, text);
+	iter = this.GetIterAtOffset (EndIter.Offset - text.Length);
+
+	foreach (TextTag t in tags)
+	{
+		this.ApplyTag (t, iter, EndIter);
+	}
+}
+
