@@ -1,7 +1,9 @@
+ASSEMBLY=gtk-dotnet.dll
+
 all: windows
 
 windows:
-	$(CSC) /unsafe /nowarn:0660,0661 /target:library /out:gtk-dotnet.dll /recurse:*.cs
+	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
 
 clean:
-	rm -f *.dll
+	rm -f $(ASSEMBLY)
