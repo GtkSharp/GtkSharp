@@ -38,8 +38,7 @@ namespace Gtk {
 		public NodeView (NodeStore store) : base (IntPtr.Zero)
 		{
 			string[] names = { "model" };
-			GLib.Value[] vals =  { new GLib.Value (this, "model") };
-			vals [0].Val = store;
+			GLib.Value[] vals =  { new GLib.Value (store) };
 			CreateNativeObject (names, vals);
 			vals [0].Dispose ();
 			this.store = store;
