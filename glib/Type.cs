@@ -39,6 +39,9 @@ namespace GLib {
 		public static readonly GType String = new GType ((IntPtr) TypeFundamentals.TypeString);
 		public static readonly GType Boolean = new GType ((IntPtr) TypeFundamentals.TypeBoolean);
 		public static readonly GType Int = new GType ((IntPtr) TypeFundamentals.TypeInt);
+		public static readonly GType Int64 = new GType ((IntPtr) TypeFundamentals.TypeInt64);
+		public static readonly GType UInt64 = new GType ((IntPtr) TypeFundamentals.TypeUInt64);
+
 		public static readonly GType Double = new GType ((IntPtr) TypeFundamentals.TypeDouble);
 		public static readonly GType Float = new GType ((IntPtr) TypeFundamentals.TypeFloat);
 		public static readonly GType Char = new GType ((IntPtr) TypeFundamentals.TypeChar);

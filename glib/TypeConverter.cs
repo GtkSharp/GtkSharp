@@ -36,6 +36,10 @@ namespace GLib {
 				return GType.Boolean;
 			if (type.Equals (typeof (int)))
 				return GType.Int;
+			if (type.Equals (typeof (long)))
+				return GType.Int64;
+			if (type.Equals (typeof (ulong)))
+				return GType.UInt64;
 			if (type.Equals (typeof (double)))
 				return GType.Double;
 			if (type.Equals (typeof (float)))

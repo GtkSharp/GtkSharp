@@ -127,6 +127,23 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_int64 (ref Value val, long data);
+
+		public Value (long val) : this (GType.Int64)
+		{
+			g_value_set_int64 (ref this, val);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_uint64 (ref Value val, ulong data);
+
+		public Value (ulong val) : this (GType.UInt64)
+		{
+			g_value_set_uint64 (ref this, val);
+		}
+
+
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_object (ref Value val, IntPtr data);
 
 		public Value (GLib.Object val) : this (val == null ? GType.Object : val.NativeType)
@@ -254,6 +271,23 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
+		static extern long g_value_get_int64 (ref Value val);
+
+		public static explicit operator long (Value val)
+		{
+			return g_value_get_int64 (ref val);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern ulong g_value_get_uint64 (ref Value val);
+
+		public static explicit operator ulong (Value val)
+		{
+			return g_value_get_uint64 (ref val);
+		}
+
+
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_object (ref Value val);
 
 		public static explicit operator GLib.Object (Value val)
@@ -334,6 +368,10 @@ namespace GLib {
 					return (bool) this;
 				else if (type == GType.Int)
 					return (int) this;
+				else if (type == GType.Int64)
+					return (long) this;
+				else if (type == GType.UInt64)
+					return (ulong) this;
 				else if (type == GType.Double)
 					return (double) this;
 				else if (type == GType.Float)
@@ -358,6 +396,10 @@ namespace GLib {
 					g_value_set_boolean (ref this, (bool) value);
 				else if (type == GType.Int)
 					g_value_set_int (ref this, (int) value);
+				else if (type == GType.Int64)
+					g_value_set_int64 (ref this, (long) value);
+				else if (type == GType.UInt64)
+					g_value_set_uint64 (ref this, (ulong) value);
 				else if (type == GType.Double)
 					g_value_set_double (ref this, (double) value);
 				else if (type == GType.Float)
