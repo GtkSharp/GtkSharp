@@ -37,7 +37,7 @@ namespace GLib {
 			if (s == null)
 				return "";
 
-			return Marshaller.PtrToStringGFree (g_markup_escape_text (s, s.Length));
+			return Marshaller.PtrToStringGFree (g_markup_escape_text (s, -1));
 		}
 	}
 }

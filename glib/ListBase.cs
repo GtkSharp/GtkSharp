@@ -153,6 +153,23 @@ namespace GLib {
 			return ret;
 		}
 
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern void g_free (IntPtr item);
+
+		[DllImport ("libglib-2.0-0.dll")]
+		static extern void g_object_unref (IntPtr item);
+
+		public void Empty ()
+		{
+			for (uint i = 0; i < Count; i++)
+			{
+				if (element_type == typeof (GLib.Object))
+					g_object_unref (NthData (i));
+				else
+					g_free (NthData (i));
+			}
+			Dispose ();
+		}
 
 		private class ListEnumerator : IEnumerator
 		{
