@@ -562,9 +562,12 @@ sub addStaticFuncElems
 
 		if ($mname =~ /($ns_prefix)_([a-zA-Z]+)_\w+/) {
 			$classname = $2;
-			$prefix = $1 . "_" . $2 . "_";
+			$key = $prefix = $1 . "_" . $2 . "_";
+			$key =~ s/_//g;
 			$cnt = 1;
-			if ($classname ne "set" && $classname ne "get" &&
+			if (exists ($enums{$key})) {
+				$cnt = 1; 
+			} elsif ($classname ne "set" && $classname ne "get" &&
 			    $classname ne "scan" && $classname ne "find" &&
 			    $classname ne "add" && $classname ne "remove" &&
 			    $classname ne "free" && $classname ne "register" &&
@@ -576,8 +579,9 @@ sub addStaticFuncElems
 				$mdef = delete $fdefs{$mname};
 
 				if (!$global_el) {
-					$global_el = $doc->createElement('Class');
+					$global_el = $doc->createElement('class');
 					$global_el->setAttribute('name', "Global");
+					$global_el->setAttribute('cname', $ns . "Global");
 					$ns_elem->appendChild($global_el);
 				}
 				$el = addNameElem($global_el, 'method', $mname, $ns_prefix);
@@ -587,8 +591,9 @@ sub addStaticFuncElems
 				parseParms ($el, $mdef, 0);
 				next;
 			} else {
-				$class_el = $doc->createElement('Class');
+				$class_el = $doc->createElement('class');
 				$class_el->setAttribute('name', StudlyCaps($classname));
+				$class_el->setAttribute('cname', StudlyCaps($prefix));
 				$ns_elem->appendChild($class_el);
 
 				for ($j = 0; $j < $cnt; $j++) {
@@ -641,6 +646,7 @@ sub addParamsElem
 	$parent->appendChild($parms_elem);
 	foreach $parm (@params) {
 		$parm =~ s/\s+(\*+)/\1 /g;
+		$parm =~ s/(\*+)\s*const/\1/g;
 		$parm =~ s/const\s+/const-/g;
 		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
 			my $ret = $1; my $cbn = $2; my $params = $3;

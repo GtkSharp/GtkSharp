@@ -208,7 +208,7 @@
       <field cname="numsubtrees" type="gint"/>
       <field cname="numactions" type="gint"/>
     </struct>
-    <Class name="Global">
+    <class name="Global" cname="GnomeGlobal">
       <method name="BonoboModuleInfoGet" cname="gnome_bonobo_module_info_get" shared="true">
         <return-type type="const-GnomeModuleInfo*"/>
       </method>
@@ -290,13 +290,13 @@
       <method name="UtilUserShell" cname="gnome_util_user_shell" shared="true">
         <return-type type="char*"/>
       </method>
-    </Class>
-    <Class name="Config">
+    </class>
+    <class name="Config" cname="GnomeConfig_">
       <method name="AssembleVector" cname="gnome_config_assemble_vector" shared="true">
         <return-type type="char*"/>
         <parameters>
           <parameter type="int" name="argc"/>
-          <parameter type="const-char*" name="const-argv"/>
+          <parameter type="const-char*" name="argv"/>
         </parameters>
       </method>
       <method name="CleanFile_" cname="gnome_config_clean_file_" shared="true">
@@ -450,7 +450,7 @@
           <parameter type="gboolean" name="priv"/>
         </parameters>
       </method>
-      <method name="SetSetHandler" cname="gnome_config_set_set_handler" shared="true">
+      <method name="SetSetHandler" cname="gnome_config_set_set_handler" shared="true" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="void" name="(*func)(void*"/>
@@ -465,7 +465,7 @@
           <parameter type="gboolean" name="priv"/>
         </parameters>
       </method>
-      <method name="SetSyncHandler" cname="gnome_config_set_sync_handler" shared="true">
+      <method name="SetSyncHandler" cname="gnome_config_set_sync_handler" shared="true" hidden="1">
         <return-type type="void"/>
         <parameters>
           <parameter type="void" name="(*func)(void*"/>
@@ -499,8 +499,8 @@
           <parameter type="gboolean" name="priv"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Gconf">
+    </class>
+    <class name="Gconf" cname="GnomeGconf_">
       <method name="GetAppSettingsRelative" cname="gnome_gconf_get_app_settings_relative" shared="true">
         <return-type type="gchar*"/>
         <parameters>
@@ -514,8 +514,8 @@
           <parameter type="const-gchar*" name="subkey"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Help">
+    </class>
+    <class name="Help" cname="GnomeHelp_">
       <method name="Display" cname="gnome_help_display" shared="true">
         <return-type type="gboolean"/>
         <parameters>
@@ -554,8 +554,8 @@
       <method name="ErrorQuark" cname="gnome_help_error_quark" shared="true">
         <return-type type="GQuark"/>
       </method>
-    </Class>
-    <Class name="Score">
+    </class>
+    <class name="Score" cname="GnomeScore_">
       <method name="GetNotable" cname="gnome_score_get_notable" shared="true">
         <return-type type="gint"/>
         <parameters>
@@ -580,8 +580,8 @@
           <parameter type="/*" name="Pass"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Sound">
+    </class>
+    <class name="Sound" cname="GnomeSound_">
       <method name="ConnectionGet" cname="gnome_sound_connection_get" shared="true">
         <return-type type="int"/>
       </method>
@@ -607,8 +607,8 @@
       <method name="Shutdown" cname="gnome_sound_shutdown" shared="true">
         <return-type type="void"/>
       </method>
-    </Class>
-    <Class name="Triggers">
+    </class>
+    <class name="Triggers" cname="GnomeTriggers_">
       <method name="AddTrigger" cname="gnome_triggers_add_trigger" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -639,8 +639,8 @@
           <parameter type="const-char*" array="true" name="supinfo"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Url">
+    </class>
+    <class name="Url" cname="GnomeUrl_">
       <method name="ErrorQuark" cname="gnome_url_error_quark" shared="true">
         <return-type type="GQuark"/>
       </method>
@@ -651,8 +651,8 @@
           <parameter type="GError**" name="error"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="User">
+    </class>
+    <class name="User" cname="GnomeUser_">
       <method name="AccelsDirGet" cname="gnome_user_accels_dir_get" shared="true">
         <return-type type="const-char*"/>
       </method>
@@ -662,7 +662,7 @@
       <method name="PrivateDirGet" cname="gnome_user_private_dir_get" shared="true">
         <return-type type="const-char*"/>
       </method>
-    </Class>
+    </class>
   </namespace>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
@@ -3930,7 +3930,7 @@
       <field cname="ac_mods" type="GdkModifierType"/>
       <field cname="widget" type="GtkWidget*"/>
     </struct>
-    <Class name="Global">
+    <class name="Global" cname="GnomeGlobal">
       <method name="AcceleratorsSync" cname="gnome_accelerators_sync" shared="true">
         <return-type type="void"/>
       </method>
@@ -3953,8 +3953,8 @@
       <method name="TypeInit" cname="gnome_type_init" shared="true">
         <return-type type="void"/>
       </method>
-    </Class>
-    <Class name="Gdk">
+    </class>
+    <class name="GdkHelper" cname="GnomeGdk_">
       <method name="PixbufNewFromUri" cname="gnome_gdk_pixbuf_new_from_uri" shared="true">
         <return-type type="GdkPixbuf*"/>
         <parameters>
@@ -3976,8 +3976,8 @@
           <parameter type="GnomeGdkPixbufAsyncHandle*" name="handle"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Gtk">
+    </class>
+    <class name="GtkHelper" cname="GnomeGtk_">
       <method name="ModuleInfoGet" cname="gnome_gtk_module_info_get" shared="true">
         <return-type type="const-GnomeModuleInfo*"/>
       </method>
@@ -3989,8 +3989,8 @@
           <parameter type="gpointer" name="user_data"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Popup">
+    </class>
+    <class name="Popup" cname="GnomePopup_">
       <method name="MenuAppend" cname="gnome_popup_menu_append" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -4047,8 +4047,8 @@
           <parameter type="GtkAccelGroup*" name="accelgroup"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Window">
+    </class>
+    <class name="Window" cname="GnomeWindow_">
       <method name="IconInit" cname="gnome_window_icon_init" shared="true">
         <return-type type="void"/>
       </method>
@@ -4093,7 +4093,7 @@
           <parameter type="const-gchar*" name="extension"/>
         </parameters>
       </method>
-    </Class>
+    </class>
     <object name="Stock" cname="GnomeStock">
       <static-string cname="GNOME_STOCK_ABOUT" name="About" value="gnome-stock-about"/>
       <static-string cname="GNOME_STOCK_ATTACH" name="Attach" value="gnome-stock-attach"/>

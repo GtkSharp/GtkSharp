@@ -182,7 +182,7 @@ sub fixupNamespace {
 	foreach $rule (@{$self->{rules}}) {
 		my ($classes_ref, $data_list_ref) = @$rule;
 		for ($node = $ns_node->firstChild; $node; $node = $node->nextSibling ()) {
-			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface" or $node->nodeName eq "struct" or $node->nodeName eq "boxed" or $node->nodeName eq "callback");
+			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface" or $node->nodeName eq "struct" or $node->nodeName eq "boxed" or $node->nodeName eq "callback" or $node->nodeName eq "class");
 			my $class, $methods_ref, $attr;
 			foreach $attr ($node->attributes) {
 				if ($attr->name eq "cname") {

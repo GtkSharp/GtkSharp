@@ -112,6 +112,10 @@ namespace GtkSharp.Generation {
 				return "out_param";
 			case "fixed":
 				return "mfixed";
+			case "byte":
+				return "_byte";
+			case "new":
+				return "_new";
 			default:
 				break;
 			}

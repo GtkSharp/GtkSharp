@@ -1383,7 +1383,7 @@
       <field cname="new_value" type="GValue"/>
     </struct>
     <alias name="State" cname="AtkState" type="guint64"/>
-    <Class name="Global">
+    <class name="Global" cname="AtkGlobal">
       <method name="AddFocusTracker" cname="atk_add_focus_tracker" shared="true">
         <return-type type="guint"/>
         <parameters>
@@ -1434,8 +1434,26 @@
           <parameter type="guint" name="listener_id"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Focus">
+      <method name="RoleForName" cname="atk_role_for_name" shared="true">
+        <return-type type="AtkRole"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="RoleGetName" cname="atk_role_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkRole" name="role"/>
+        </parameters>
+      </method>
+      <method name="RoleRegister" cname="atk_role_register" shared="true">
+        <return-type type="AtkRole"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+    </class>
+    <class name="Focus" cname="AtkFocus_">
       <method name="TrackerInit" cname="atk_focus_tracker_init" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -1448,28 +1466,8 @@
           <parameter type="AtkObject*" name="object"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Role">
-      <method name="ForName" cname="atk_role_for_name" shared="true">
-        <return-type type="AtkRole"/>
-        <parameters>
-          <parameter type="const-gchar*" name="name"/>
-        </parameters>
-      </method>
-      <method name="GetName" cname="atk_role_get_name" shared="true">
-        <return-type type="const-gchar*"/>
-        <parameters>
-          <parameter type="AtkRole" name="role"/>
-        </parameters>
-      </method>
-      <method name="Register" cname="atk_role_register" shared="true">
-        <return-type type="AtkRole"/>
-        <parameters>
-          <parameter type="const-gchar*" name="name"/>
-        </parameters>
-      </method>
-    </Class>
-    <Class name="State">
+    </class>
+    <class name="StateManager" cname="AtkState_">
       <method name="TypeForName" cname="atk_state_type_for_name" shared="true">
         <return-type type="AtkStateType"/>
         <parameters>
@@ -1488,6 +1486,6 @@
           <parameter type="const-gchar*" name="name"/>
         </parameters>
       </method>
-    </Class>
+    </class>
   </namespace>
 </api>

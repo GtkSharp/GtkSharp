@@ -103,6 +103,10 @@ namespace GtkSharp.Generation {
 					igen = new ObjectGen (ns, elem);
 					break;
 
+				case "class":
+					igen = new ClassGen (ns, elem);
+					break;
+
 				case "struct":
 					if (elem.HasAttribute ("opaque"))
 						igen = new OpaqueGen (ns, elem);
@@ -120,6 +124,7 @@ namespace GtkSharp.Generation {
 					SymbolTable.Table.AddType (igen);
 				}
 			}
+
 		}
 
 		private void ParseSymbol (XmlElement symbol)

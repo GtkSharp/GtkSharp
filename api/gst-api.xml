@@ -3057,7 +3057,7 @@
       <field cname="pc" type="void*"/>
       <field cname="magic_number" type="int"/>
     </struct>
-    <Class name="Class">
+    <class name="Class" cname="GstClass_">
       <method name="SignalConnect" cname="gst_class_signal_connect" shared="true">
         <return-type type="guint"/>
         <parameters>
@@ -3075,8 +3075,8 @@
           <parameter type="xmlNodePtr" name="self"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Global">
+    </class>
+    <class name="Global" cname="GstGlobal">
       <method name="CpuGetFlags" cname="gst_cpu_get_flags" shared="true">
         <return-type type="GstCPUFlags"/>
       </method>
@@ -3085,6 +3085,28 @@
       </method>
       <method name="ExtraGetFilenameType" cname="gst_extra_get_filename_type" shared="true">
         <return-type type="GType"/>
+      </method>
+      <method name="FormatGetByNick" cname="gst_format_get_by_nick" shared="true">
+        <return-type type="GstFormat"/>
+        <parameters>
+          <parameter type="const-gchar*" name="nick"/>
+        </parameters>
+      </method>
+      <method name="FormatGetDefinitions" cname="gst_format_get_definitions" shared="true">
+        <return-type type="const-GList*"/>
+      </method>
+      <method name="FormatGetDetails" cname="gst_format_get_details" shared="true">
+        <return-type type="const-GstFormatDefinition*"/>
+        <parameters>
+          <parameter type="GstFormat" name="format"/>
+        </parameters>
+      </method>
+      <method name="FormatRegister" cname="gst_format_register" shared="true">
+        <return-type type="GstFormat"/>
+        <parameters>
+          <parameter type="const-gchar*" name="nick"/>
+          <parameter type="const-gchar*" name="description"/>
+        </parameters>
       </method>
       <method name="LibraryLoad" cname="gst_library_load" shared="true">
         <return-type type="gboolean"/>
@@ -3109,32 +3131,8 @@
           <parameter type="GError**" name="error"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Format">
-      <method name="GetByNick" cname="gst_format_get_by_nick" shared="true">
-        <return-type type="GstFormat"/>
-        <parameters>
-          <parameter type="const-gchar*" name="nick"/>
-        </parameters>
-      </method>
-      <method name="GetDefinitions" cname="gst_format_get_definitions" shared="true">
-        <return-type type="const-GList*"/>
-      </method>
-      <method name="GetDetails" cname="gst_format_get_details" shared="true">
-        <return-type type="const-GstFormatDefinition*"/>
-        <parameters>
-          <parameter type="GstFormat" name="format"/>
-        </parameters>
-      </method>
-      <method name="Register" cname="gst_format_register" shared="true">
-        <return-type type="GstFormat"/>
-        <parameters>
-          <parameter type="const-gchar*" name="nick"/>
-          <parameter type="const-gchar*" name="description"/>
-        </parameters>
-      </method>
-    </Class>
-    <Class name="Print">
+    </class>
+    <class name="Print" cname="GstPrint_">
       <method name="ElementArgs" cname="gst_print_element_args" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -3151,8 +3149,8 @@
           <parameter type="GstPad*" name="pad"/>
         </parameters>
       </method>
-    </Class>
-    <Class name="Util">
+    </class>
+    <class name="Util" cname="GstUtil_">
       <method name="DumpMem" cname="gst_util_dump_mem" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -3239,6 +3237,6 @@
           <parameter type="const-gchar*" name="value_str"/>
         </parameters>
       </method>
-    </Class>
+    </class>
   </namespace>
 </api>
