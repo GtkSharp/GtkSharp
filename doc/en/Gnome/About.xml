@@ -1,5 +1,5 @@
 <Type Name="About" FullName="Gnome.About">
-  <TypeSignature Language="C#" Value="public class About : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class About : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,77 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Display author, documenter and translator credits for an application.</summary>
+    <remarks>
+      <para>The <see cref="T:Gnome.About"/> widget is used as the standard way of displaying credits in an application.
+	  Typically, it will be called when a user selects the About... option from the Help menu.
+	  With one simple function call, the application can then display all of the appropriate information.</para>
+	  <para>Compile the following example with: mcs GnomeAboutSample.cs -r gtk-sharp -r gnome-sharp -r gdk-sharp</para>
+	</remarks>
+	<example>
+	  <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+using Gnome;
+
+class GnomeAboutSample
+{
+	About ab;
+	Program program;
+        
+	static void Main(string[] args)
+	{
+		new GnomeAboutSample(args);   
+	}
+    
+	GnomeAboutSample (string[] args)
+	{
+		program =
+			new Program("GnomeAboutSample", "0.1", Gnome.Modules.UI , args);
+
+		App app = new App("sample", "sample");
+		app.SetDefaultSize (250, 250);
+		app.DeleteEvent += new DeleteEventHandler (on_app_delete);
+            
+		Button btn = new Button ("Show About");
+		btn.Clicked += new EventHandler (on_btn_clicked);
+		app.Contents = btn;
+            
+		app.ShowAll();
+		program.Run();    
+	}
+        
+	private void on_btn_clicked (object obj, EventArgs args)
+	{
+		string[] authors = {"The Author", "Co-Author"};
+		string[] documenters = {"The Documenters", "Another Documenter"};
+		Gdk.Pixbuf pixbuf = new Gdk.Pixbuf ("MonoIcon.png");
+            
+		ab = new Gnome.About ("GnomeAboutTest", "0.1", "Copyright", "Comments",
+				authors, documenters, "translator", pixbuf);
+		ab.Close += new EventHandler (OnAboutClose);
+		ab.Response += new ResponseHandler (OnAboutResponse);
+		ab.Run ();
+	}
+        
+	private void OnAboutClose (object o, EventArgs args)
+	{
+		Console.WriteLine ("Close Event");
+	}
+
+	private void OnAboutResponse(object o, ResponseArgs args)
+	{
+		Console.WriteLine (args.ResponseId);
+	}
+        
+	private void on_app_delete (object o, DeleteEventArgs args)
+	{
+		program.Quit ();
+	}
+}	    
+	  </code>
+	</example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
@@ -46,16 +115,16 @@
         <Parameter Name="logo_pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="version">To be added: an object of type 'string'</param>
-        <param name="copyright">To be added: an object of type 'string'</param>
-        <param name="comments">To be added: an object of type 'string'</param>
-        <param name="authors">To be added: an object of type 'string'</param>
-        <param name="documenters">To be added: an object of type 'string'</param>
-        <param name="translator_credits">To be added: an object of type 'string'</param>
-        <param name="logo_pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <remarks>To be added</remarks>
+        <summary>Construct a credits box for an <see cref="T:Gnome.Application"/>.</summary>
+        <param name="name">an object of type <see cref="T:System.String"/></param>
+        <param name="version">an object of type <see cref="T:System.String"/></param>
+        <param name="copyright">an object of type <see cref="T:System.String"/></param>
+        <param name="comments">an object of type <see cref="T:System.String"/></param>
+        <param name="authors">an object of type <see cref="T:System.String"/></param>
+        <param name="documenters">an object of type <see cref="T:System.String"/></param>
+        <param name="translator_credits">an object of type <see cref="T:System.String"/></param>
+        <param name="logo_pixbuf">an object of type <see cref="T:Gdk.Pixbuf"/></param>
+        <remarks>The <paramref name="authors"/> array cannot be empty.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -101,17 +170,17 @@
         <Parameter Name="logo_pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="version">To be added: an object of type 'string'</param>
-        <param name="copyright">To be added: an object of type 'string'</param>
-        <param name="comments">To be added: an object of type 'string'</param>
-        <param name="authors">To be added: an object of type 'string []'</param>
-        <param name="documenters">To be added: an object of type 'string []'</param>
-        <param name="translator_credits">To be added: an object of type 'string'</param>
-        <param name="logo_pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gnome.About'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new instance of <see cref="Gnome.About"/>.</summary>
+        <param name="name">an object of type <see cref="T:System.String"/></param>
+        <param name="version">an object of type <see cref="T:System.String"/></param>
+        <param name="copyright">an object of type <see cref="T:System.String"/></param>
+        <param name="comments">an object of type <see cref="T:System.String"/></param>
+        <param name="authors">an object of type <see cref="T:System.String []"/></param>
+        <param name="documenters">an object of type <see cref="T:System.String []"/></param>
+        <param name="translator_credits">an object of type <see cref="T:System.String"/></param>
+        <param name="logo_pixbuf">an object of type <see cref="T:Gdk.Pixbuf"/></param>
+        <returns>an object of type <see cref="T:Gnome.About"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -120,9 +189,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.About'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new instance of <see cref="T:Gnome.About"/></summary>
+        <returns>an object of type <see cref="T:Gnome.About"/></returns>
+        <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -132,8 +201,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gnome.About</summary>
-        <returns>The GLib Type for the Gnome.About class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gnome.About"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gnome.About"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -147,10 +216,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The name of the application.</summary>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TranslatorCredits">
@@ -163,10 +232,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The translator for the current locale.</summary>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copyright">
@@ -179,10 +248,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary> The copyright statement of the application.</summary>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Logo">
@@ -195,10 +264,10 @@
         <Parameter Name="value" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary> The logo for the application.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Pixbuf"/></param>
+        <returns>an object of type <see cref="T:Gdk.Pixbuf"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Version">
@@ -211,10 +280,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The version string of the application.</summary>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Comments">
@@ -227,10 +296,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>A short miscellaneous string.</summary>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
