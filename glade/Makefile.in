@@ -1,0 +1,21 @@
+MCS=mcs
+DESTDIR=
+
+@ENABLE_GLADE_TRUE@ all: linux
+@ENABLE_GLADE_FALSE@ all: 
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /out:glade-sharp.dll /recurse:*.cs
+
+linux: glade-sharp.dll
+
+glade-sharp.dll: generated/*.cs
+	$(MCS) --unsafe --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o glade-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -f generated/*
+
+install: all
+@ENABLE_GLADE_TRUE@	cp glade-sharp.dll $(DESTDIR)@prefix@/lib
+

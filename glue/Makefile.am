@@ -12,17 +12,40 @@ BASESOURCES = \
 	paned.c			\
 	style.c			\
 	type.c			\
-	widget.c		\
-	canvasitem.c
+	widget.c	
 
+GNOMESOURCES = \
+	canvasitem.c \
+	canvaspoints.c \
+	program.c
+
+# fixme: Makefile.am = THE SUCK
 if ENABLE_GNOME
+
+if ENABLE_GLADE
 libgtksharpglue_la_SOURCES = 	\
 	$(BASESOURCES) \
-	program.c \
+	$(GNOMESOURCES) \
+	gladexml.c
 	#
 else
 libgtksharpglue_la_SOURCES = 	\
+	$(BASESOURCES) \
+	$(GNOMESOURCES) \
+	#
+endif
+
+else
+
+if ENABLE_GLADE
+libgtksharpglue_la_SOURCES = 	\
+	$(BASESOURCES) \
+	gladexml.c
+else
+libgtksharpglue_la_SOURCES = 	\
 	$(BASESOURCES) 
+endif
+
 endif
 
 INCLUDES = @BASE_DEPENDENCIES_CFLAGS@ -I$(top_srcdir)

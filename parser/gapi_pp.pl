@@ -62,8 +62,26 @@ foreach $fname (@hdrs) {
 			}
 		} elsif ($line =~ /^#\s*ifn?\s*\!?def/) {
 			#warn "Ignored #if:\n$line";
-		} elsif ($line =~ /typedef\s+struct\s+\w*\s*\{/) {
-			while ($line !~ /^}\s*\w+;/) {$line = <INFILE>;}
+		} elsif ($line =~ /typedef struct\s*\{/) {
+			my $first_line = $line;
+			my @lines = ();
+			$line = <INFILE>;
+			while ($line !~ /^}\s*(\w+);/) {
+				push @lines, $line;
+				$line = <INFILE>;
+			}
+			$line =~ /^}\s*(\w+);/;
+			my $name = $1;
+			print "typedef struct _$name $name;\n";
+			print "struct _$name {\n";
+			foreach $line (@lines) {
+				if ($line =~ /(\s*.+\;)/) {
+					$field = $1;
+					$field =~ s/(\w+) const/const $1/;
+					print "$field\n";
+				}
+			}
+			print "};\n";
 		} elsif ($line =~ /^enum\s+\{/) {
 			while ($line !~ /^};/) {$line = <INFILE>;}
 		} elsif ($line =~ /(\s+)union\s*{/) {

@@ -67,15 +67,18 @@ if test "x$enable_gnome" = "xno"; then
 	PKG_CHECK_MODULES(BASE_DEPENDENCIES, gtk+-2.0 >= $GTK_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION)
 fi
 
-#GTK_CFLAGS=`$PKG_CONFIG --cflags gtk+-2.0`
-#GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
-#GMODULE_CFLAGS=`$PKG_CONFIG --cflags gmodule-2.0`
-#GMODULE_LIBS=`$PKG_CONFIG --libs gmodule-2.0`
+GLADE_REQUIRED_VERSION=2.0.0
+PKG_CHECK_MODULES(GLADE_DEPENDENCIES, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=yes, enable_glade=no)
+if test "x$enable_glade" = "xyes"; then
+	BASE_DEPENDENCIES_CFLAGS="$BASE_DEPENDENCIES_CFLAGS $GLADE_DEPENDENCIES_CFLAGS"
+	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $GLADE_DEPENDENCIES_LIBS"
+fi
 
 AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
 AC_SUBST(BASE_DEPENDENCIES_LIBS)
 
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
+AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -86,6 +89,7 @@ pango/Makefile
 atk/Makefile
 gdk/Makefile
 gtk/Makefile
+glade/Makefile
 gnome/Makefile
 sample/Makefile
 ])

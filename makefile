@@ -1,6 +1,6 @@
 EXTRA_DIRS =
 
-DIRS=generator glib pango atk gdk gtk gnome sample
+DIRS=generator glib pango atk gdk gtk glade gnome sample
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.3705/csc.exe
 MCS=mcs

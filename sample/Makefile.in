@@ -4,8 +4,12 @@ MCS=mcs
 @ENABLE_GNOME_TRUE@ GNOME_ASSEMBLY=-r gnome-sharp.dll
 @ENABLE_GNOME_TRUE@ GNOME_TARGETS=gnome-hello-world.exe canvas-example.exe fifteen.exe 
 
-local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk $(GNOME_PATH) 
-all_assemblies=-r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll $(GNOME_ASSEMBLY) -r System.Drawing
+@ENABLE_GLADE_TRUE@ GLADE_PATH=-L ../glade
+@ENABLE_GLADE_TRUE@ GLADE_ASSEMBLY=-r glade-sharp.dll
+@ENABLE_GLADE_TRUE@ GLADE_TARGETS=glade-viewer.exe
+
+local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk $(GNOME_PATH) $(GLADE_PATH) 
+all_assemblies=-r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) -r System.Drawing
 
 
 all: linux
@@ -14,7 +18,7 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) 
+linux: gtk-hello-world.exe button.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS) 
 
 gtk-hello-world.exe: HelloWorld.cs
 	$(MCS) --unsafe -o gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
@@ -42,6 +46,9 @@ scribble.exe: Scribble.cs
 
 treeviewdemo.exe: TreeViewDemo.cs
 	$(MCS) --unsafe -o treeviewdemo.exe $(local_paths) $(all_assemblies) TreeViewDemo.cs
+
+glade-viewer.exe: GladeViewer.cs
+	$(MCS) --unsafe -o glade-viewer.exe $(local_paths) $(all_assemblies) GladeViewer.cs
 
 clean:
 	rm -f *.exe
