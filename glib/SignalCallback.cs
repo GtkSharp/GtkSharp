@@ -28,7 +28,7 @@ namespace GtkSharp {
 
 		// protected instance members
 		protected GLib.Object _obj;
-		protected MulticastDelegate _handler;
+		protected Delegate _handler;
 		protected int _key;
 		protected Type _argstype;
 
@@ -40,7 +40,7 @@ namespace GtkSharp {
 		///	Initializes instance data.
 		/// </remarks>
 
-		public SignalCallback (GLib.Object obj, MulticastDelegate eh, Type argstype)
+		public SignalCallback (GLib.Object obj, Delegate eh, Type argstype)
 		{
 			_key = _NextKey++;
 			_obj = obj;
@@ -49,5 +49,14 @@ namespace GtkSharp {
 			_Instances [_key] = this;
 		}
 
+		public void AddDelegate (Delegate d)
+		{
+			_handler = Delegate.Combine (_handler, d);
+		}
+
+		public void RemoveDelegate (Delegate d)
+		{
+			_handler = Delegate.Remove (_handler, d);
+		}
 	}
 }

@@ -168,7 +168,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
 			sw.Write("\t\tpublic " + sname + "(GLib.Object obj, IntPtr raw, ");
-			sw.WriteLine("String name, MulticastDelegate eh, Type argstype) : base(obj, eh, argstype)");
+			sw.WriteLine("String name, Delegate eh, Type argstype) : base(obj, eh, argstype)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
 			sw.WriteLine("\t\t\t\t_Delegate = new " + dname + "(" + cbname + ");");

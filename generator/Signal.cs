@@ -163,13 +163,16 @@ namespace GtkSharp.Generation {
 			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + argsname);
 			if (argsname != "System.EventArgs")
 				sw.Write("," + container_type.NS.ToLower() + "-sharp");
-			sw.WriteLine("\"));");
+			sw.WriteLine("\"));\n\t\t\t\telse");
+			sw.WriteLine("\t\t\t\t\t((GtkSharp.SignalCallback) Signals [{0}]).AddDelegate (value);", cname);
 			sw.WriteLine("\t\t\t\tEventList.AddHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\tremove {");
 			sw.WriteLine("\t\t\t\tEventList.RemoveHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
 			sw.WriteLine("\t\t\t\t\tSignals.Remove(" + cname + ");");
+			sw.WriteLine("\t\t\t\telse");
+			sw.WriteLine("\t\t\t\t\t((GtkSharp.SignalCallback) Signals [{0}]).RemoveDelegate (value);", cname);
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
