@@ -34,11 +34,13 @@ endif
 
 TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
+DEBUGS = $(addsuffix .mdb, $(TARGETS))
+
 assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOMEVFS_ASSEMBLY) $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix /r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
-CLEANFILES = $(TARGETS)
+CLEANFILES = $(TARGETS) $(DEBUGS)
 
 gtk-hello-world.exe: $(srcdir)/HelloWorld.cs $(assemblies)
 	$(CSC)  /out:gtk-hello-world.exe $(references) $(srcdir)/HelloWorld.cs

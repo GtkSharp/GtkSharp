@@ -1,7 +1,8 @@
 assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
 references = $(addprefix /r:, $(assemblies))
 TARGETS = GtkDemo.exe
-CLEANFILES = $(TARGETS)
+DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
+CLEANFILES = $(TARGETS) $(DEBUGS)
 noinst_SCRIPTS = $(TARGETS)
 
 EXTRA_DIST = $(sources) $(image_names)
