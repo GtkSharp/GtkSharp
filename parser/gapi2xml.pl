@@ -306,7 +306,7 @@ sub addFieldElems
 					$elem = addNameElem($parent, 'field', $1);
 					$elem->setAttribute('bits', "$2");
 				} else {
-					$elem = addNameElem($parent, 'field', $symb);
+					$elem = addNameElem($parent, 'field', $tok);
 				}
 				$elem->setAttribute('type', "$type");
 			}
