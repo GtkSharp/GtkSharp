@@ -83,37 +83,6 @@ namespace GtkDemo
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 			
-			menu = Create_Menu (1, false);
-			menu.AccelGroup = accel_group;
-
-			menu.Append (new SeparatorMenuItem ());
-
-			menuitem = new CheckMenuItem ("Accelerate Me");
-			menu.Append (menuitem);
-			AccelKey ak = new AccelKey ();
-			ak.Key = (Gdk.Key) 0xFFBE;
-			menuitem.AddAccelerator ("activate", accel_group, ak);
-			
-			menuitem = new CheckMenuItem ("Accelerator locked");
-			menu.Append (menuitem);
-			AccelKey ak2 = new AccelKey ();
-			ak2.Key = (Gdk.Key) 0xFFBF;
-			menuitem.AddAccelerator ("activate", accel_group, ak2);
-
-			menuitem = new CheckMenuItem ("Accelerator Frozen");
-			menu.Append (menuitem);
-			AccelKey ak3 = new AccelKey ();
-			ak3.Key = (Gdk.Key) 0xFFC0;
-			menuitem.AddAccelerator ("activate", accel_group, ak2);
-			menuitem.AddAccelerator ("activate", accel_group, ak3);
-			
-			OptionMenu option_menu = new OptionMenu ();
-			option_menu.Menu = menu;
-			option_menu.SetHistory (3);
-			box2.PackStart (option_menu, true, true, 0);
-			
-			box1.PackStart (new HSeparator (), false, false, 0);
-			
 			box2 = new VBox (false, 10);
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, false, true, 0);

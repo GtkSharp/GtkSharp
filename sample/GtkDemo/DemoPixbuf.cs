@@ -121,7 +121,7 @@ namespace GtkDemo
 				k = 2 * k * k;
 				k = Math.Max (0.25, k);
 
-				Rectangle r1, r2, dest;
+				Rectangle r1;  /*, r2, dest*/
 
 				r1 = new Rectangle (xpos, ypos,(int) (iw * k),
 					(int) (ih * k));
