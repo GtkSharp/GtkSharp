@@ -14,7 +14,7 @@ static extern void g_type_init ();
 [StructLayout(LayoutKind.Sequential)]
 struct PropertyArg {
 	public string name;
-	public IntPtr value;
+	public GLib.Value value;
 }
 
 [DllImport("gnomesharpglue")]
@@ -42,9 +42,9 @@ public Program (string app_id, string app_version, ModuleInfo module, string[] a
 		else if (type == true.GetType ())
 			value = new GLib.Value ((bool) prop);
 		else
-			value = null;
+			value = GLib.Value.Empty;
 		vals[i] = value;
-		args[i].value = value.Handle; 
+		args[i].value = value; 
 	}
 	
 	/* FIXME: Is there a way to access this in .NET? */ 

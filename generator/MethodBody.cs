@@ -75,7 +75,7 @@ namespace GtkSharp.Generation {
 					
 					if (igen is EnumGen)
 						call_parm = p.Name + "_as_int";
-					else if (UsesHandle (igen) || p.CSType == "GLib.Value") {
+					else if (UsesHandle (igen)) {
 						call_parm = p.PassAs + " " + call_parm.Replace (".Handle", "_handle");
 					}
 				}
@@ -91,6 +91,7 @@ namespace GtkSharp.Generation {
 
 			string call_string = String.Join (", ", result);
 			call_string = call_string.Replace ("out ref", "out");
+			call_string = call_string.Replace ("out out ", "out ");
 			call_string = call_string.Replace ("ref ref", "ref");
 			return call_string;
 		}
@@ -111,11 +112,11 @@ namespace GtkSharp.Generation {
 
 				if (is_get) {
 					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
-					if (p.PassAs != "out" && (UsesHandle (gen) || p.CSType == "GLib.Value"))
+					if (p.PassAs != "out" && UsesHandle (gen))
 						sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
 				}
 
-				if ((is_get || p.PassAs == "out") && (UsesHandle (gen) || p.CSType == "GLib.Value"))
+				if ((is_get || p.PassAs == "out") && UsesHandle (gen))
 					sw.WriteLine(indent + "\t\t\tIntPtr " + name + "_handle;");
 
 				if (p.PassAs == "out" && gen is EnumGen)
@@ -161,7 +162,7 @@ namespace GtkSharp.Generation {
 
 				IGeneratable gen = p.Generatable;
 
-				if (p.PassAs == "out" && (UsesHandle (gen) || p.CSType == "GLib.Value"))
+				if (p.PassAs == "out" && UsesHandle (gen))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
 			}
 		}

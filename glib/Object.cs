@@ -197,11 +197,13 @@ namespace GLib {
 			}
 		}
 
-		public GLib.GType GetGType () {
-			if (_obj == IntPtr.Zero)
-				return GType.Invalid;
+		public GLib.GType NativeType {
+			get {
+				if (_obj == IntPtr.Zero)
+					return GType.Invalid;
 
-			return new GLib.GType (gtksharp_get_type_id (_obj));
+				return new GLib.GType (gtksharp_get_type_id (_obj));
+			}
 		}
 
 		public IntPtr Handle {
@@ -261,19 +263,21 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_get_property (IntPtr obj, string name, IntPtr val);
+		static extern void g_object_get_property (IntPtr obj, string name, ref GLib.Value val);
 
-		protected void GetProperty (String name, GLib.Value val)
+		protected GLib.Value GetProperty (string name)
 		{
-			g_object_get_property (Raw, name, val.Handle);
+			Value val = new Value (this, name);
+			g_object_get_property (Raw, name, ref val);
+			return val;
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_property (IntPtr obj, string name, IntPtr val);
+		static extern void g_object_set_property (IntPtr obj, string name, ref GLib.Value val);
 
-		protected void SetProperty (String name, GLib.Value val)
+		protected void SetProperty (string name, GLib.Value val)
 		{
-			g_object_set_property (Raw, name, val.Handle);
+			g_object_set_property (Raw, name, ref val);
 		}
 
 		[DllImport("glibsharpglue")]
@@ -285,7 +289,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		protected static extern void g_signal_chain_from_overridden (IntPtr args, IntPtr retval);
+		protected static extern void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);
 
 		[DllImport("glibsharpglue")]
 		static extern bool gtksharp_is_object (IntPtr obj);

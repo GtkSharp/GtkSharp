@@ -93,7 +93,7 @@ namespace GtkSharp.Generation {
 			AddType (new CustomMarshalerGen ("time_t", "System.DateTime", "GLib.time_t_CustomMarshaler"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GList", "GLib.List"));
-			AddType (new ManualGen ("GValue", "GLib.Value"));
+			AddType (new ByRefGen ("GValue", "GLib.Value"));
 			AddType (new ManualGen ("GObject", "GLib.Object"));
 		}
 		

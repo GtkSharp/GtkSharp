@@ -63,8 +63,8 @@
 		}
 
 		public object GetValue (Gtk.TreeIter iter, int column) {
-			GLib.Value val = new GLib.Value ();
-			GetValue (iter, column, val);
+			GLib.Value val = GLib.Value.Empty;
+			GetValue (iter, column, ref val);
 			object ret = val.Val;
 			val.Dispose ();
 			return ret;

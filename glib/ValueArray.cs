@@ -67,27 +67,27 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_array_append (IntPtr raw, IntPtr val);
+		static extern void g_value_array_append (IntPtr raw, ref GLib.Value val);
 
 		public void Append (GLib.Value val)
 		{
-			g_value_array_append (Handle, val.Handle);
+			g_value_array_append (Handle, ref val);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_array_insert (IntPtr raw, uint idx, IntPtr val);
+		static extern void g_value_array_insert (IntPtr raw, uint idx, ref GLib.Value val);
 
 		public void Insert (uint idx, GLib.Value val)
 		{
-			g_value_array_insert (Handle, idx, val.Handle);
+			g_value_array_insert (Handle, idx, ref val);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_array_prepend (IntPtr raw, IntPtr val);
+		static extern void g_value_array_prepend (IntPtr raw, ref GLib.Value val);
 
 		public void Prepend (GLib.Value val)
 		{
-			g_value_array_prepend (Handle, val.Handle);
+			g_value_array_prepend (Handle, ref val);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -113,7 +113,9 @@ namespace GLib {
 
 		public object this [int index] { 
 			get { 
-				return new GLib.Value (g_value_array_get_nth (Handle, (uint) index), IntPtr.Zero);
+				GLib.Value val = Value.Empty;
+				Marshal.PtrToStructure (g_value_array_get_nth (Handle, (uint) index), val);
+				return val;
 			}
 		}
 

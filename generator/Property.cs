@@ -132,8 +132,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
-				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
-				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
+				sw.WriteLine("\t\t\t\tGLib.Value val = GetProperty (" + cname + ");");
 				if (table.IsObject (c_type)) {
 					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
 					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
@@ -150,6 +149,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("val;");
 				}
 
+				sw.WriteLine("\t\t\t\tval.Dispose ();");
 				sw.WriteLine("\t\t\t\treturn ret;");
 				sw.WriteLine("\t\t\t}");
 			}
@@ -160,20 +160,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
-				sw.Write("\t\t\t\tSetProperty(" + cname + ", ");
+				sw.Write("\t\t\t\tGLib.Value val = ");
 				if (table.IsEnum(c_type)) {
-					sw.WriteLine("new GLib.Value(Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", table.IsEnumFlags (c_type) ? "true" : "false");
+					sw.WriteLine("new GLib.Value(Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0}));", table.IsEnumFlags (c_type) ? "true" : "false");
 				} else if (table.IsBoxed (c_type)) {
-					sw.WriteLine("(GLib.Value) (value));");
+					sw.WriteLine("(GLib.Value) value;");
 				} else if (table.IsOpaque (c_type)) {
-					sw.WriteLine("new GLib.Value(Handle, " + cname + ", value));");
+					sw.WriteLine("new GLib.Value(Handle, " + cname + ", value);");
 				} else {
 					sw.Write("new GLib.Value(");
 					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {
 						sw.Write(v_type + " ");
 					}
-					sw.WriteLine("value));");
+					sw.WriteLine("value);");
 				}
+				sw.WriteLine("\t\t\t\tSetProperty(" + cname + ", val);");
+				sw.WriteLine("\t\t\t\tval.Dispose ();");
 				sw.WriteLine("\t\t\t}");
 			}
 

@@ -177,7 +177,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
 			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", ReturnType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
-			if (!IsVoid)
+			if (IsVoid)
+				sw.WriteLine ("\t\t\tGLib.Value ret = GLib.Value.Empty;");
+			else
 				sw.WriteLine ("\t\t\tGLib.Value ret = new GLib.Value (" + ReturnGType + ");");
 
 			sw.WriteLine ("\t\t\tGLib.ValueArray inst_and_params = new GLib.ValueArray (" + parms.Count + ");");
@@ -187,7 +189,7 @@ namespace GtkSharp.Generation {
 			string cleanup = "";
 			for (int i = 1; i < parms.Count; i++) {
 				if (parms [i].PassAs == "out") {
-					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value ();");
+					sw.WriteLine ("\t\t\tvals [" + i + "] = GLib.Value.Empty;");
 					cleanup += "\t\t\t" + parms [i].Name + " = (" + parms [i].CSType + ") vals [" + i + "];\n";
 				} else if (parms [i].IsLength && parms [i - 1].IsString)
 					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
@@ -197,7 +199,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\tinst_and_params.Append (vals [" + i + "]);");
 			}
 
-			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (inst_and_params.ArrayPtr, " + (IsVoid ? "IntPtr.Zero" : "ret.Handle") + ");");
+			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);");
 			if (cleanup != "")
 				sw.WriteLine (cleanup);
 			if (!IsVoid)

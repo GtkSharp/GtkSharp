@@ -9,6 +9,7 @@ references =
 sources = 				\
 	AliasGen.cs			\
 	BoxedGen.cs			\
+	ByRefGen.cs			\
 	CallbackGen.cs			\
 	ClassBase.cs			\
 	ClassGen.cs			\

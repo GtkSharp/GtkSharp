@@ -10,12 +10,14 @@
 		
 		public Pango.Weight Weight {
 			get {
-				GLib.Value val = new GLib.Value ();
-				GetProperty ("weight", val);
+				GLib.Value val = GetProperty ("weight");
 				Pango.Weight ret = (Pango.Weight) (int) val;
+				val.Dispose ();
 				return ret;
 			}
 			set {
-				SetProperty ("weight", new GLib.Value ((int) value));
+				GLib.Value val = new GLib.Value ((int) value);
+				SetProperty ("weight", val);
+				val.Dispose ();
 			}
 		}

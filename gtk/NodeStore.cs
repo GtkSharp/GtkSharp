@@ -39,7 +39,7 @@ namespace Gtk {
 		delegate IntPtr GetColumnTypeDelegate (int col);
 		delegate bool GetNodeDelegate (out int node_idx, IntPtr path);
 		delegate IntPtr GetPathDelegate (int node_idx);
-		delegate void GetValueDelegate (int node_idx, int col, IntPtr val);
+		delegate void GetValueDelegate (int node_idx, int col, ref GLib.Value val);
 		delegate bool NextDelegate (ref int node_idx);
 		delegate bool ChildrenDelegate (out int child, int parent);
 		delegate bool HasChildDelegate (int node_idx);
@@ -124,17 +124,16 @@ namespace Gtk {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_init (IntPtr handle, IntPtr type);
+		static extern void g_value_init (ref GLib.Value val, IntPtr type);
 
-		void get_value_cb (int node_idx, int col, IntPtr val)
+		void get_value_cb (int node_idx, int col, ref GLib.Value val)
 		{
-			GLib.Value gval = new GLib.Value (val, IntPtr.Zero);
 			ITreeNode node = node_hash [node_idx] as ITreeNode;
 			if (node == null)
 				return;
-			g_value_init (gval.Handle, ctypes [col].Val);
+			g_value_init (ref val, ctypes [col].Val);
 			object col_val = getters[col].GetValue (node, null);
-			gval.Val = col_val;
+			val.Val = col_val;
 		}
 
 		bool next_cb (ref int node_idx)
