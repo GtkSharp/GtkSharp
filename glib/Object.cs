@@ -62,7 +62,7 @@ namespace GLib {
 				return;
 
 			GC.SuppressFinalize (this);
-			g_object_unref (_obj);
+			//g_object_unref (_obj);
 			_obj = IntPtr.Zero;
 		}
 
@@ -216,6 +216,16 @@ namespace GLib {
 			return (Handle == ((Object) o).Handle);
 		}
 
+		public static bool operator == (Object a, Object b)
+		{
+			return a.Equals (b);
+		}
+
+		public static bool operator != (Object a, Object b)
+		{
+			return !a.Equals (b);
+		}
+		
 		/// <summary>
 		///	GetHashCode Method
 		/// </summary>
