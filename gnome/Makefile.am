@@ -59,6 +59,7 @@ customs =					\
 	CanvasText.custom			\
 	CanvasWidget.custom			\
 	Druid.custom				\
+	DruidPageEdge.custom			\
 	Font.custom				\
 	FontFamily.custom			\
 	IconList.custom				\
