@@ -19,7 +19,7 @@ windows:
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
 linux: gtk-hello-world.exe button.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
-@ENABLE_GNOME_TRUE@	make -C gconf 
+@ENABLE_GNOME_TRUE@	$(MAKE) -C gconf 
 
 gtk-hello-world.exe: HelloWorld.cs
 	$(MCS) --unsafe -o gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
@@ -56,11 +56,11 @@ glade-test.exe: GladeTest.cs test.glade
 
 clean:
 	rm -f *.exe
-@ENABLE_GNOME_TRUE@	make -C gconf clean 
+@ENABLE_GNOME_TRUE@	$(MAKE) -C gconf clean 
 
 unix:
 	@echo "'make unix' is broken for now."
 
 install: linux
-@ENABLE_GNOME_TRUE@	make -C gconf install 
+@ENABLE_GNOME_TRUE@	$(MAKE) -C gconf install 
 	
