@@ -12,6 +12,7 @@ references =
 sources =		 			\
 	Argv.cs					\
 	Boxed.cs				\
+	ClassInitializerAttribute.cs		\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\

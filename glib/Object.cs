@@ -122,10 +122,7 @@ namespace GLib {
 				if (baseinfo == minfo)
 					continue;
 
-				foreach (object attr in baseinfo.GetCustomAttributes (true)) {
-					if (attr.ToString () != "GLib.DefaultSignalHandlerAttribute")
-						continue;
-
+				foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), true)) {
 					DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
 					MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic);
 					object[] parms = new object [1];
@@ -135,6 +132,15 @@ namespace GLib {
 				}
 			}
 					
+		}
+
+		private static void InvokeClassInitializers (GType gtype, System.Type t)
+		{
+			object[] parms = {gtype, t};
+			BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+			foreach (MethodInfo minfo in t.GetMethods(flags))
+				foreach (object attr in minfo.GetCustomAttributes (typeof (ClassInitializerAttribute), true))
+					minfo.Invoke (null, parms);
 		}
 
 		[DllImport("glibsharpglue-2")]
@@ -147,6 +153,7 @@ namespace GLib {
 			GLib.ObjectManager.RegisterType (name, t.FullName, t.Assembly.GetName().Name);
 			GType gtype = new GType (gtksharp_register_type (name, parent_gtype.Val));
 			ConnectDefaultHandlers (gtype, t);
+			InvokeClassInitializers (gtype, t);
 			g_types[t] = gtype;
 			return gtype;
 		}

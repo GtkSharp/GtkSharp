@@ -29,6 +29,11 @@ namespace GtkSamples {
 		}
 	}
 
+	[Binding (Gdk.Key.Escape, "HandleBinding", "Escape")]
+	[Binding (Gdk.Key.Left, "HandleBinding", "Left")]
+	[Binding (Gdk.Key.Right, "HandleBinding", "Right")]
+	[Binding (Gdk.Key.Up, "HandleBinding", "Up")]
+	[Binding (Gdk.Key.Down, "HandleBinding", "Down")]
 	public class MyButton : Gtk.Button {
 
 		public MyButton () : base ("I'm a subclassed button") {}
@@ -36,6 +41,11 @@ namespace GtkSamples {
 		protected override void OnClicked ()
 		{
 			Console.WriteLine ("Button::Clicked default handler fired.");
+		}
+
+		private void HandleBinding (string text)
+		{
+			Console.WriteLine ("Got a bound keypress: " + text);
 		}
 	}
 }

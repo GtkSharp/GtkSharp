@@ -231,3 +231,65 @@ protected virtual void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustme
 {
 }
 
+private class BindingInvoker {
+	System.Reflection.MethodInfo mi;
+	object[] parms;
+
+	public BindingInvoker (System.Reflection.MethodInfo mi, object[] parms)
+	{
+		this.mi = mi;
+		this.parms = parms;
+	}
+
+	public void Invoke (Widget w)
+	{
+		mi.Invoke (w, parms);
+	}
+}
+
+private delegate void BindingHandler (IntPtr handle, IntPtr user_data);
+
+private static void BindingCallback (IntPtr handle, IntPtr user_data)
+{
+	Widget w = GLib.Object.GetObject (handle, false) as Widget;
+	BindingInvoker invoker = ((GCHandle) user_data).Target as BindingInvoker;
+	invoker.Invoke (w);
+}
+
+static BindingHandler binding_delegate;
+static BindingHandler BindingDelegate {
+	get {
+		if (binding_delegate == null)
+			binding_delegate = new BindingHandler (BindingCallback);
+		return binding_delegate;
+	}
+}
+
+[DllImport ("gtksharpglue-2")]
+static extern void gtksharp_widget_add_binding_signal (IntPtr gvalue, string name, BindingHandler handler);
+
+[DllImport ("gtksharpglue-2")]
+static extern void gtksharp_widget_register_binding (IntPtr gvalue, string name, uint key, int mod, IntPtr data);
+
+[GLib.ClassInitializer]
+static void ClassInit (GLib.GType gtype, Type t)
+{
+	object[] attrs = t.GetCustomAttributes (typeof (BindingAttribute), true);
+
+	if (attrs.Length == 0)
+		return;
+
+	string signame = t.Name.Replace (".", "_") + "_bindings";
+
+	gtksharp_widget_add_binding_signal (gtype.Val, signame, BindingDelegate);
+
+	foreach (BindingAttribute attr in attrs) {
+		System.Reflection.MethodInfo mi = t.GetMethod (attr.Handler, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+		if (mi == null)
+			throw new Exception ("Instance method " + attr.Handler + " not found in " + t);
+
+		BindingInvoker inv = new BindingInvoker (mi, attr.Parms);
+		gtksharp_widget_register_binding (gtype.Val, signame, (uint) attr.Key, (int) attr.Mod, (IntPtr) GCHandle.Alloc (inv));
+	}
+}
+

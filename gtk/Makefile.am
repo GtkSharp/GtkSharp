@@ -19,6 +19,7 @@ DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 sources = 				\
 	ActionEntry.cs			\
 	Application.cs			\
+	BindingAttribute.cs		\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
 	NodeCellDataFunc.cs		\

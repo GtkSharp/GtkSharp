@@ -19,6 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtk/gtkbindings.h>
 #include <gtk/gtkwidget.h>
 
 /* Forward declarations */
@@ -35,6 +36,8 @@ void _gtksharp_marshal_VOID__OBJECT_OBJECT (GClosure *closure, GValue *return_va
 int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
 void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
 int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
+void gtksharp_widget_add_binding_signal (GType gtype, const char *sig_name, GCallback cb);
+void gtksharp_widget_register_binding (GType gtype, const char *sig_name, guint key, int mod, gpointer data);
 /* */
 
 GdkRectangle*
@@ -138,5 +141,22 @@ gtksharp_widget_connect_set_scroll_adjustments_signal (GType gtype, gpointer cb)
 		"set_scroll_adjustments", gtype, G_SIGNAL_RUN_LAST,
 		g_cclosure_new (cb, NULL, NULL), NULL, NULL, _gtksharp_marshal_VOID__OBJECT_OBJECT,
 		G_TYPE_NONE, 2, parm_types);
+}
+
+void
+gtksharp_widget_add_binding_signal (GType gtype, const gchar *sig_name, GCallback cb)
+{
+	GType parm_types[] = {G_TYPE_LONG};
+	g_signal_newv (sig_name, gtype, G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, g_cclosure_new (cb, NULL, NULL), NULL, NULL, g_cclosure_marshal_VOID__LONG, G_TYPE_NONE, 1, parm_types);
+}
+
+void
+gtksharp_widget_register_binding (GType gtype, const gchar *signame, guint key, int mod, gpointer data)
+{
+	GObjectClass *klass = g_type_class_peek (gtype);
+	if (klass == NULL)
+		klass = g_type_class_ref (gtype);
+	GtkBindingSet *set = gtk_binding_set_by_class (klass);
+	gtk_binding_entry_add_signal (set, key, mod, signame, 1, G_TYPE_LONG, data);
 }
 
