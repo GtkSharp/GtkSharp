@@ -1,5 +1,5 @@
 <Type Name="FileSelection" FullName="Gtk.FileSelection">
-  <TypeSignature Language="C#" Value="public class FileSelection : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class FileSelection : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,16 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Creates a new dialog for the user to select one or more files, directories, or cancel.</summary>
+    <remarks><para>FileSelection should be used to retrieve file or directory names from the user. It will create a new dialog window containing a directory list, and a file list corresponding to the current working directory.
+    </para>
+    <para>
+    The filesystem can be navigated using the directory list or the drop-down history menu. Alternatively, the TAB key can be used to navigate using filename completion - common in text based editors such as emacs and jed.</para>
+    <para>
+    Simple file operations; create directory, delete file, and rename file, are available from buttons at the top of the dialog.</para>
+    <para>
+    The functionality of the FileSelection can be extended by using the available accessors to the buttons and drop downs.
+    </para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
@@ -39,9 +47,9 @@
         <Parameter Name="pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pattern">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Restrict the visible files and directories to those that match the given <paramref name="pattern"/>.</summary>
+        <param name="pattern">A simple wildcard pattern such as '*.txt'.</param>
+        <remarks><para>This method attempts to match <paramref name="pattern"/> to a valid filenames or subdirectories in the current directory. If a match can be made, the matched filename will appear in the text entry field of the file selection dialog. If a partial match can be made, the "Files" list will contain those file names which have been partially matched, and the "Folders" list will show those directories with a partial match.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFileopButtons">
@@ -52,8 +60,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Ensures that the file operation buttons are visible.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="HideFileopButtons">
@@ -64,8 +72,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Ensures that the file operation buttons are hidden.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -120,10 +128,10 @@
         <Parameter Name="title" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="title">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.FileSelection'</returns>
-        <remarks>To be added</remarks>
+        <summary>The main way to construct a new file selector.</summary>
+        <param name="title">A title that will appear in the window's title bar.</param>
+        <returns>A new FileSelection</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -132,9 +140,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.FileSelection'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -180,9 +188,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'rename file' button of this file selector.</summary>
+        <returns></returns>
+        <remarks><para>This button may or may not be visible, see <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/> and <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="FileopDelFile">
@@ -192,9 +200,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'delete' button of this file selector.</summary>
+        <returns></returns>
+        <remarks><para>This button may or may not be visible, see <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/> and <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="FileopCDir">
@@ -204,9 +212,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'create directory' button of this file selector.</summary>
+        <returns></returns>
+        <remarks><para>This button may or may not be visible, see <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/> and <see cref="M:Gtk.FileSelection.ShowFileopButtons()"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="FileopFile">
@@ -228,9 +236,9 @@
         <ReturnType>Gtk.Entry</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Entry'</returns>
-        <remarks>To be added</remarks>
+        <summary>The main text entry widget of this file selector.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FileopDialog">
@@ -252,9 +260,9 @@
         <ReturnType>Gtk.Menu</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Menu'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.Menu"/> that is displayed by the <see cref="P:Gtk.FileSelection.HistoryPulldown"/>.</summary>
+        <returns>A menu containing the file system paths higher than the selected directory, and the user's directory history.</returns>
+        <remarks><para>Note that this widget does not just contain history, it contains a list of directories above the current directory in the filesystem as well as user directory history.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="HistoryPulldown">
@@ -264,9 +272,9 @@
         <ReturnType>Gtk.OptionMenu</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.OptionMenu'</returns>
-        <remarks>To be added</remarks>
+        <summary>The drop down menu containing directories in the filesystem above the selected directory, and the user's directory history.</summary>
+        <returns>The <see cref="T:Gtk.OptionMenu"/> at the top of the file selector.</returns>
+        <remarks><para>This widget displays the menu returned by <see cref="P:Gtk.FileSelection.HistoryMenu"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="HelpButton">
@@ -276,9 +284,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>A help button, not displayed by default.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelButton">
@@ -288,9 +296,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'cancel' of this file selector.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OkButton">
@@ -300,9 +308,9 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'OK' button of this file selector.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionText">
@@ -336,9 +344,9 @@
         <ReturnType>Gtk.TreeView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeView'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.TreeView"/> widget that displays files in this file selector.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DirList">
@@ -348,9 +356,9 @@
         <ReturnType>Gtk.TreeView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TreeView'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.TreeView"/> widget that displays directories in this file selector.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Selections">
@@ -360,9 +368,9 @@
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string[]'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the files that are selected</summary>
+        <returns>An array of file paths</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFileops">
@@ -375,10 +383,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether buttons are displayed for doing file operations.</summary>
+        <param name="value">Set to <langword name="true"/> to display the file buttons.</param>
+        <returns><langword name="true"/> for buttons to be shown, <langword name="false"/> otherwise.</returns>
+        <remarks><para>This manipulates whether the buttons for creating a directory, deleting files and renaming files, are displayed.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Filename">
@@ -391,10 +399,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the selected filename.</summary>
+        <param name="value">Sets a default path for the file requestor.</param>
+        <returns>The selected filename in the on-disk encoding.</returns>
+        <remarks><para>If <paramref name="value"/> includes a directory path, then the requestor will open with that path as its current working directory. The encoding of filename is the on-disk encoding, which may not be UTF-8.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectMultiple">
@@ -407,10 +415,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage whether more than one file can be selected.</summary>
+        <param name="value">Set to <langword name="true"/> to allow more than one file to be selected in the file list, <langword name="false"/> to only allow selection of a single file.</param>
+        <returns><langword name="true"/> if multiple selections are allowed, <langword name="false"/> otherwise.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,5 +1,5 @@
 <Type Name="AspectFrame" FullName="Gtk.AspectFrame">
-  <TypeSignature Language="C#" Value="public class AspectFrame : Gtk.Frame, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class AspectFrame : Gtk.Frame, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A frame that constrains its child to a particular aspect ratio.</summary>
+    <remarks><para>The AspectFrame is useful when you want pack a widget so that it can resize but always retains the same aspect ratio. For instance, one might be drawing a small preview of a larger image. AspectFrame derives from <see cref="T:Gtk.Frame"/>, so it can draw a label and a frame around the child. The frame will be "shrink-wrapped" to the size of the child.</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Frame</BaseTypeName>
@@ -42,12 +42,12 @@
         <Parameter Name="obey_child" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="xalign">To be added: an object of type 'float'</param>
-        <param name="yalign">To be added: an object of type 'float'</param>
-        <param name="ratio">To be added: an object of type 'float'</param>
-        <param name="obey_child">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Set the size and alignment properties of this AspectFrame.</summary>
+        <param name="xalign">Horizontal alignment of the child within the allocation of the AspectFrame.</param>
+        <param name="yalign">Vertical alignment of the child within the allocation of the AspectFrame.</param>
+        <param name="ratio">The desired aspect ratio.</param>
+        <param name="obey_child">If <langword name="true"/>, ratio is ignored, and the aspect ratio is taken from the requistion of the child.</param>
+        <remarks><para>Alignment values range from 0.0 (left/top aligned) to 1.0 (right/bottom aligned).</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -106,14 +106,14 @@
         <Parameter Name="obey_child" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="label">To be added: an object of type 'string'</param>
-        <param name="xalign">To be added: an object of type 'float'</param>
-        <param name="yalign">To be added: an object of type 'float'</param>
-        <param name="ratio">To be added: an object of type 'float'</param>
-        <param name="obey_child">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'Gtk.AspectFrame'</returns>
-        <remarks>To be added</remarks>
+        <summary>The main way to construct a new AspectFrame.</summary>
+        <param name="label">A title for the frame, can be <langword name="null"/>.</param>
+        <param name="xalign">Horizontal alignment of the child within the allocation of the AspectFrame.</param>
+        <param name="yalign">Vertical alignment of the child within the allocation of the AspectFrame.</param>
+        <param name="ratio">The desired aspect ratio.</param>
+        <param name="obey_child">If <langword name="true"/>, ratio is ignored, and the aspect ratio is taken from the requistion of the child.</param>
+        <returns>A new AspectFrame</returns>
+        <remarks><para>Alignment values range from 0.0 (left/top aligned) to 1.0 (right/bottom aligned).</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -122,9 +122,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.AspectFrame'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -149,10 +149,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>Vertical alignment of the child widget in the AspectFrame.</summary>
+        <param name="value">A value between 0.0 (top aligned) and 1.0 (bottom aligned).</param>
+        <returns>A value between 0.0 and 1.0.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Xalign">
@@ -165,10 +165,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>Horiontal alignment of the child widget in the AspectFrame.</summary>
+        <param name="value">A value between 0.0 (left aligned) and 1.0 (right aligned).</param>
+        <returns>A value between 0.0 and 1.0.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Ratio">
@@ -181,10 +181,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>The aspect ratio of the child widget's size.</summary>
+        <param name="value">A ratio between 0.0 and 1.0</param>
+        <returns>The aspect ratio between 0.0 and 1.0 representing the child's size constraints.</returns>
+        <remarks><para>Setting this ratio is ignored if <see cref="P:Gtk.AspectFrame.ObeyChild"/> is set to <langword name="true"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ObeyChild">
@@ -197,10 +197,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Allow the frame to use its child widget's aspect ratio.</summary>
+        <param name="value"><langword name="true"/> for the AspectFrame to use the child widget's size ratio, <langword name="false"/> for <see cref="P:Gtk.AspectFrame.Ratio"/> to control the ratio.</param>
+        <returns>The current size ratio of the child widget</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,5 +1,5 @@
 <Type Name="CheckMenuItem" FullName="Gtk.CheckMenuItem">
-  <TypeSignature Language="C#" Value="public class CheckMenuItem : Gtk.MenuItem, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class CheckMenuItem : Gtk.MenuItem, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A menu item with a check box.</summary>
+    <remarks><para>A CheckMenuItem is a menu item that maintains the state of a boolean value in addition to a <see cref="T:Gtk.MenuItem"/>'s usual role in activating application code.</para>
+    <para>A check box indicating the state of the boolean value is displayed at the left side of the <see cref="T:Gtk.MenuItem"/>. Activating the <see cref="T:Gtk.MenuItem"/> toggles the value.</para>
+    <para>Whether the CheckMenuItem is 'on' or not can be determined with the <see cref="P:Gtk.CheckMenuItem.Active"/> property.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.MenuItem</BaseTypeName>
@@ -39,10 +42,10 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="label">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.CheckMenuItem'</returns>
-        <remarks>To be added</remarks>
+        <summary>A static way of creating a new CheckMenuItem</summary>
+        <param name="label">The name of the menu item</param>
+        <returns>A new CheckMenuItem</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Toggle">
@@ -53,8 +56,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Toggles the state of the check box between active and inactive.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -107,9 +110,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.CheckMenuItem'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a CheckMenuItem with no label</summary>
+        <returns>A new CheckMenuItem</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -120,10 +123,10 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="label">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.CheckMenuItem'</returns>
-        <remarks>To be added</remarks>
+        <summary>Create a new CheckMenuItem with the specified <paramref name="label"/>.</summary>
+        <param name="label">The text to appear on the menu item.</param>
+        <returns>A new CheckMenuItem</returns>
+        <remarks><para>The text label will be created using <see cref="M:Gtk.Label.NewWithNmemonic"/>, so underscores in the label indicate the mnemonic for the menu item.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -148,10 +151,12 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manages whether the CheckMenuItem is in the 'inconsistent' state.</summary>
+        <param name="value"><langword name="true"/> to mark the check box as inconsistent, <langword name="false"/> otherwise.</param>
+        <returns><langword name="true"/> if this CheckMenuItem is in the inconsistent state, <langword name="false"/> otherwise.</returns>
+        <remarks><para>If the user has selected a range of elements (such as some text or spreadsheet cells) that are affected by a boolean setting, and the current values in that range are inconsistent, you may want to display the check in an "in between" state. This property turns on "in between" display.</para>
+        <para>Normally you would turn off the inconsistent state again if the user explicitly selects a setting. This has to be done manually, this property only affects visual appearance, it doesn't affect the semantics of the widget.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Active">
@@ -164,10 +169,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>The 'active' state of the CheckMenuItem</summary>
+        <param name="value"><langword name="true"/> if the menu item has been set active, <langword name="false"/> otherwise.</param>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Toggled">
@@ -176,8 +181,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An event that is fired whenever the state of the CheckMenuItem is toggled.</summary>
+        <remarks><para>Connect to this event with a standard <see cref="T:System.EventHandler"/>.</para></remarks>
       </Docs>
     </Member>
   </Members>
