@@ -27,7 +27,7 @@ namespace Gnome {
 		public event GtkSharp.UpdateHandler Update {
 			add {
 				if (EventList["update"] == null)
-					Signals["update"] = new GtkSharp.Gnome.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
+					Signals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
 				EventList.AddHandler("update", value);
 			}
 

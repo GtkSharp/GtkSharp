@@ -2,7 +2,6 @@
 // <c> 2001-2002 Mike Kestner
 
 namespace GtkSharp {
-namespace Gnome {
 	using System;
 	using System.Runtime.InteropServices;
 
@@ -55,5 +54,4 @@ namespace Gnome {
 			}
 		}
 	}
-}
 }
