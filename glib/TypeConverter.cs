@@ -4,11 +4,10 @@
 //
 // (c) 2002 Rachel Hestilow
 
-namespace GLibSharp {
+namespace GLib {
 	using System;
 	using System.Collections;
 	using System.Reflection;
-	using GLib;
 
 	public class TypeConverter {
 
@@ -40,7 +39,7 @@ namespace GLibSharp {
 			if (type.IsValueType)
 				return GType.Pointer;
 
-			return GType.None;
+			return ManagedValue.GType;
 		}
 	}
 }

@@ -10,7 +10,6 @@ namespace GLib {
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
-	using GLibSharp;
 
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Value : IDisposable {
@@ -175,9 +174,7 @@ namespace GLib {
 			pad_1 = pad_2 = 0;
 
 			GType gtype = TypeConverter.LookupType (obj.GetType ());
-			if (gtype == GType.None) {
-				g_value_init (ref this, ManagedValue.GType.Val);
-			} else if (gtype == GType.Object) {
+			if (gtype == GType.Object) {
 				g_value_init (ref this, ((GLib.Object) obj).NativeType.Val);
 			} else {
 				g_value_init (ref this, gtype.Val);
@@ -320,8 +317,8 @@ namespace GLib {
 			}
 			set {
 				IntPtr buf;
-				GType type = GLibSharp.TypeConverter.LookupType (value.GetType());
-				if (type == GType.None)
+				GType type = TypeConverter.LookupType (value.GetType());
+				if (type == ManagedValue.GType)
 					g_value_set_boxed (ref this, ManagedValue.WrapObject (value));
 				else if (type == GType.String)
 					g_value_set_string (ref this, (string) value);

@@ -1,7 +1,11 @@
-// Generated File.  Do not modify.
-// <c> 2001-2002 Mike Kestner
+// GLib.ObjectManager.cs - GLib ObjectManager class implementation
+//
+// Author: Mike Kestner <mkestner@speakeasy.net>
+//
+// Copyright <c> 2001-2002 Mike Kestner
+// Copyright <c> 2004 Novell, Inc.
 
-namespace GtkSharp {
+namespace GLib {
 
 	using System;
 	using System.Collections;

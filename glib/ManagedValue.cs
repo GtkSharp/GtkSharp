@@ -4,7 +4,7 @@
 //
 // (c) 2002 Rachel Hestilow
 
-namespace GLibSharp {
+namespace GLib {
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
@@ -25,7 +25,7 @@ namespace GLibSharp {
 	// arbitrary pointer values is fine. Still, it might be useful
 	// to use GCHandle later on.
 	
-	public class ManagedValue {
+	internal class ManagedValue {
 		private class ValueHolder {
 			public object val;
 			public int ref_count;

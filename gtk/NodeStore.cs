@@ -305,14 +305,10 @@ namespace Gtk {
 						int col = tnva.Column;
 						pi = mi as PropertyInfo;
 						getters [col] = pi;
-						GLib.GType ctype = GLibSharp.TypeConverter.LookupType (pi.PropertyType);
-                                		if (ctype == GLib.GType.None) {
-                                        		ctypes[col] = GLibSharp.ManagedValue.GType;
-                                		} else if (ctype == GLib.GType.Invalid) {
+						GLib.GType ctype = GLib.TypeConverter.LookupType (pi.PropertyType);
+                                		if (ctype == GLib.GType.Invalid)
                                         		throw new Exception ("Unknown type");
-                                		} else {
-                                        		ctypes[col] = ctype;
-                                		}
+                                        	ctypes[col] = ctype;
 						break;
 					default:
 						Console.WriteLine ("Unknown custom attr: " + attr);
