@@ -159,7 +159,7 @@ namespace GtkSharp.Generation {
 			body = new MethodBody (parms, container_type.NS);
 			call = "(" + (IsShared ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + body.GetCallString (is_set) + ")";
 
-			if (body.ThrowsException)
+			if (body.ThrowsException && !(container_type is InterfaceGen))
 				safety = "unsafe ";
 			else
 				safety = "";
