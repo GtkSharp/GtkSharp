@@ -181,7 +181,7 @@ foreach $cname (sort(keys(%edefs))) {
 	}
 	
 	foreach $val (@vals) {
-		if ($val =~ /$common\_(\w+)\s*=\s*(\d+.*)/) {
+		if ($val =~ /$common\_(\w+)\s*=\s*(\-?\d+.*)/) {
 			$name = $1;
 			if ($2 =~ /1u?\s*<<\s*(\d+)/) {
 				$enumval = "1 << $1";
