@@ -11,6 +11,9 @@
       <member cname="ATK_XY_SCREEN" name="Screen"/>
       <member cname="ATK_XY_WINDOW" name="Window"/>
     </enum>
+    <enum name="HyperlinkStateFlags" cname="AtkHyperlinkStateFlags" type="flags">
+      <member cname="ATK_HYPERLINK_IS_INLINE" name="Inline" value="1 &lt;&lt; 0"/>
+    </enum>
     <enum name="KeyEventType" cname="AtkKeyEventType" type="enum">
       <member cname="ATK_KEY_EVENT_PRESS" name="Press"/>
       <member cname="ATK_KEY_EVENT_RELEASE" name="Release"/>
@@ -24,6 +27,7 @@
       <member cname="ATK_LAYER_MDI" name="Mdi"/>
       <member cname="ATK_LAYER_POPUP" name="Popup"/>
       <member cname="ATK_LAYER_OVERLAY" name="Overlay"/>
+      <member cname="ATK_LAYER_WINDOW" name="Window"/>
     </enum>
     <enum name="RelationType" cname="AtkRelationType" type="enum">
       <member cname="ATK_RELATION_NULL" name="Null"/>
@@ -33,6 +37,11 @@
       <member cname="ATK_RELATION_LABELLED_BY" name="LabelledBy"/>
       <member cname="ATK_RELATION_MEMBER_OF" name="MemberOf"/>
       <member cname="ATK_RELATION_NODE_CHILD_OF" name="NodeChildOf"/>
+      <member cname="ATK_RELATION_FLOWS_TO" name="FlowsTo"/>
+      <member cname="ATK_RELATION_FLOWS_FROM" name="FlowsFrom"/>
+      <member cname="ATK_RELATION_SUBWINDOW_OF" name="SubwindowOf"/>
+      <member cname="ATK_RELATION_EMBEDS" name="Embeds"/>
+      <member cname="ATK_RELATION_EMBEDDED_BY" name="EmbeddedBy"/>
       <member cname="ATK_RELATION_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="Role" cname="AtkRole" type="enum">
@@ -105,6 +114,11 @@
       <member cname="ATK_ROLE_UNKNOWN" name="Unknown"/>
       <member cname="ATK_ROLE_VIEWPORT" name="Viewport"/>
       <member cname="ATK_ROLE_WINDOW" name="Window"/>
+      <member cname="ATK_ROLE_HEADER" name="Header"/>
+      <member cname="ATK_ROLE_FOOTER" name="Footer"/>
+      <member cname="ATK_ROLE_PARAGRAPH" name="Paragraph"/>
+      <member cname="ATK_ROLE_RULER" name="Ruler"/>
+      <member cname="ATK_ROLE_APPLICATION" name="Application"/>
       <member cname="ATK_ROLE_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="StateType" cname="AtkStateType" type="enum">
@@ -137,6 +151,7 @@
       <member cname="ATK_STATE_TRANSIENT" name="Transient"/>
       <member cname="ATK_STATE_VERTICAL" name="Vertical"/>
       <member cname="ATK_STATE_VISIBLE" name="Visible"/>
+      <member cname="ATK_STATE_MANAGES_DESCENDANTS" name="ManagesDescendants"/>
       <member cname="ATK_STATE_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="TextAttribute" cname="AtkTextAttribute" type="enum">
@@ -229,6 +244,12 @@
         </parameters>
       </method>
       <method name="GetKeybinding" cname="atk_action_get_keybinding">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetLocalizedName" cname="atk_action_get_localized_name">
         <return-type type="const-gchar*"/>
         <parameters>
           <parameter type="gint" name="i"/>
@@ -601,7 +622,7 @@
       <method name="GetColumnAtIndex" cname="atk_table_get_column_at_index">
         <return-type type="gint"/>
         <parameters>
-          <parameter type="gint" name="index"/>
+          <parameter type="gint" name="index_"/>
         </parameters>
       </method>
       <method name="GetColumnDescription" cname="atk_table_get_column_description">
@@ -639,7 +660,7 @@
       <method name="GetRowAtIndex" cname="atk_table_get_row_at_index">
         <return-type type="gint"/>
         <parameters>
-          <parameter type="gint" name="index"/>
+          <parameter type="gint" name="index_"/>
         </parameters>
       </method>
       <method name="GetRowDescription" cname="atk_table_get_row_description">
@@ -780,6 +801,12 @@
           <parameter type="AtkText*" name="text"/>
         </parameters>
       </signal>
+      <signal name="TextAttributesChanged" cname="text_attributes_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+        </parameters>
+      </signal>
       <method name="AddSelection" cname="atk_text_add_selection">
         <return-type type="gboolean"/>
         <parameters>
@@ -803,7 +830,7 @@
         <return-type type="const-gchar*"/>
         <parameters>
           <parameter type="AtkTextAttribute" name="attr"/>
-          <parameter type="gint" name="index"/>
+          <parameter type="gint" name="index_"/>
         </parameters>
       </method>
       <method name="AttributeRegister" cname="atk_text_attribute_register" shared="true">
@@ -994,6 +1021,9 @@
           <parameter type="gint" name="i"/>
         </parameters>
       </method>
+      <method name="IsInline" cname="atk_hyperlink_is_inline">
+        <return-type type="gboolean"/>
+      </method>
       <method name="IsValid" cname="atk_hyperlink_is_valid">
         <return-type type="gboolean"/>
       </method>
@@ -1080,6 +1110,20 @@
           <parameter type="AtkObject*" name="accessible"/>
         </parameters>
       </signal>
+      <signal name="ActiveDescendantChanged" cname="active_descendant_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkObject*" name="accessible"/>
+          <parameter type="gpointer*" name="child"/>
+        </parameters>
+      </signal>
+      <method name="AddRelationship" cname="atk_object_add_relationship">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkRelationType" name="relationship"/>
+          <parameter type="AtkObject*" name="target"/>
+        </parameters>
+      </method>
       <method name="ConnectPropertyChangeHandler" cname="atk_object_connect_property_change_handler">
         <return-type type="guint"/>
         <parameters>
@@ -1142,6 +1186,13 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="guint" name="handler_id"/>
+        </parameters>
+      </method>
+      <method name="RemoveRelationship" cname="atk_object_remove_relationship">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkRelationType" name="relationship"/>
+          <parameter type="AtkObject*" name="target"/>
         </parameters>
       </method>
       <method name="SetDescription" cname="atk_object_set_description">
@@ -1438,6 +1489,12 @@
         <return-type type="AtkRole"/>
         <parameters>
           <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="RoleGetLocalizedName" cname="atk_role_get_localized_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkRole" name="role"/>
         </parameters>
       </method>
       <method name="RoleGetName" cname="atk_role_get_name" shared="true">

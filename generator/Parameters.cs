@@ -128,6 +128,8 @@ namespace GtkSharp.Generation {
 				string[] segs = name.Split('_');
 				string studly = "";
 				foreach (string s in segs) {
+					if (s.Trim () == "")
+						continue;
 					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
 				}
 				return studly;

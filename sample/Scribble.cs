@@ -76,7 +76,7 @@ namespace GtkSamples {
 									       allocation.height,
 											 -1);
 			Console.WriteLine ("Darea.Style={0}", darea.Style);
-			pixmap.DrawRectangle (darea.Style.WhiteGC, 1, 0, 0,
+			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
 									    allocation.width, allocation.height);
 
 			SignalArgs sa = (SignalArgs) args;
@@ -91,7 +91,7 @@ namespace GtkSamples {
 			update_rect.width = 10;
 			update_rect.height = 10;
 			
-			pixmap.DrawRectangle (darea.Style.BlackGC, 1,
+			pixmap.DrawRectangle (darea.Style.BlackGC, true,
 										 update_rect.x, update_rect.y,
 										 update_rect.width, update_rect.height);
 			darea.QueueDrawArea (update_rect.x, update_rect.y,

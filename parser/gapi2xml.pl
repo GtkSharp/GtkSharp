@@ -572,7 +572,7 @@ sub addStaticFuncElems
 			    $classname ne "add" && $classname ne "remove" &&
 			    $classname ne "free" && $classname ne "register" &&
 			    $classname ne "execute" && $classname ne "show" &&
-			    $classname ne "parse") {
+			    $classname ne "parse" && $classname ne "string") {
 				while ($mnames[$i+$cnt] =~ /$prefix/) { $cnt++; }
 			}
 			if ($cnt == 1) {

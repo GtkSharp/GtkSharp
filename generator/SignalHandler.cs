@@ -132,6 +132,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
+					// sw.WriteLine("\t\t\tConsole.WriteLine (\"" + sname + " arg{0}: \" + arg{0});", idx);
 					string ctype = (string) parms[idx];
 					ClassBase wrapper = table.GetClassGen (ctype);
 					if ((wrapper != null && !(wrapper is StructBase)) || table.IsManuallyWrapped (ctype)) {
