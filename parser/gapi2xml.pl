@@ -55,8 +55,8 @@ while ($line = <STDIN>) {
 		# fixme: siiigh
 		$2 = "GdkDrawable" if ($1 eq "_GdkDrawable");
 		$types{$2} = $1;
-	} elsif ($line =~ /typedef\s+(\w+\s+\**)(\w+);/) {
-		$types{$2} = $1;
+	} elsif ($line =~ /typedef\s+(\w+)\s+(\**)(\w+);/) {
+		$types{$3} = $1 . $2;
 	} elsif ($line =~ /typedef\s+enum/) {
 		$ename = $1;
 		$edef = $line;
