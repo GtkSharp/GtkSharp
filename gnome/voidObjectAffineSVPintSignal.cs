@@ -7,7 +7,7 @@ namespace GtkSharp {
 
 	internal delegate void voidObjectAffineSVPintDelegate(IntPtr arg0, IntPtr arg1, ref Art.SVP arg2, int arg3, int key);
 
-	internal class voidObjectAffineSVPintSignal : SignalCallback {
+	internal class voidObjectAffineSVPintSignal : GLib.SignalCallback {
 
 		private static voidObjectAffineSVPintDelegate _Delegate;
 
@@ -17,7 +17,7 @@ namespace GtkSharp {
 				throw new Exception("Unexpected signal key " + key);
 
 			voidObjectAffineSVPintSignal inst = (voidObjectAffineSVPintSignal) _Instances[key];
-			SignalArgs args = (SignalArgs) Activator.CreateInstance (inst._argstype);
+			GLib.SignalArgs args = (GLib.SignalArgs) Activator.CreateInstance (inst._argstype);
 			args.Args = new object[3];
 			if (arg1 != IntPtr.Zero) {
 				double[] affine = new double[6];
@@ -38,12 +38,12 @@ namespace GtkSharp {
 
 		[DllImport("libgobject-2.0-0.dll")]		static extern void g_signal_connect_data(IntPtr obj, String name, voidObjectAffineSVPintDelegate cb, int key, IntPtr p, int flags);
 
-		public voidObjectAffineSVPintSignal(GLib.Object obj, IntPtr raw, String name, MulticastDelegate eh, Type argstype) : base(obj, eh, argstype)
+		public voidObjectAffineSVPintSignal(GLib.Object obj, String name, MulticastDelegate eh, Type argstype) : base(obj, eh, argstype)
 		{
 			if (_Delegate == null) {
 				_Delegate = new voidObjectAffineSVPintDelegate(voidObjectAffineSVPintCallback);
 			}
-			g_signal_connect_data(raw, name, _Delegate, _key, new IntPtr(0), 0);
+			g_signal_connect_data(_obj.Handle, name, _Delegate, _key, new IntPtr(0), 0);
 		}
 
 		~voidObjectAffineSVPintSignal()

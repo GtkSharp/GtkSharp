@@ -10,19 +10,9 @@ namespace Gnome {
 
 	using System;
 
-	/// <summary> CanvasUpdateHandler Delegate </summary>
-	/// <remarks>
-	///	Delegate signature for CanvasUpdate Event handlers
-	/// </remarks>
-
 	public delegate void UpdateHandler (object o, UpdateArgs args);
 
-	/// <summary> CanvasUpdateArgs Class </summary>
-	/// <remarks>
-	///	Arguments for CanvasUpdate Event handlers
-	/// </remarks>
-
-	public class UpdateArgs : GtkSharp.SignalArgs {
+	public class UpdateArgs : GLib.SignalArgs {
 
 		public double [] Affine {
 			get {

@@ -10,19 +10,9 @@ namespace Gnome {
 
 	using System;
 
-	/// <summary> BoundsHandler Delegate </summary>
-	/// <remarks>
-	///	Delegate signature for Bounds Event handlers
-	/// </remarks>
-
 	public delegate void BoundsHandler(object o, BoundsArgs args);
 
-	/// <summary> BoundsArgs Class </summary>
-	/// <remarks>
-	///	Arguments for Bounds Event handlers
-	/// </remarks>
-
-	public class BoundsArgs : GtkSharp.SignalArgs {
+	public class BoundsArgs : GLib.SignalArgs {
 
 		public double [] X1 {
 			get {

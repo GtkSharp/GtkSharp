@@ -10,19 +10,9 @@ namespace Gnome {
 
 	using System;
 
-	/// <summary> PointHandler Delegate </summary>
-	/// <remarks>
-	///	Delegate signature for Point Event handlers
-	/// </remarks>
-
 	public delegate void PointHandler(object o, PointArgs args);
 
-	/// <summary> PointArgs Class </summary>
-	/// <remarks>
-	///	Arguments for Point Event handlers
-	/// </remarks>
-
-	public class PointArgs : GtkSharp.SignalArgs {
+	public class PointArgs : GLib.SignalArgs {
 
 		public double X {
 			get {

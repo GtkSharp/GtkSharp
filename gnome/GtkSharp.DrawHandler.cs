@@ -10,19 +10,9 @@ namespace Gnome {
 
 	using System;
 
-	/// <summary> DrawHandler Delegate </summary>
-	/// <remarks>
-	///	Delegate signature for Draw Event handlers
-	/// </remarks>
-
 	public delegate void DrawHandler(object o, DrawArgs args);
 
-	/// <summary> DrawArgs Class </summary>
-	/// <remarks>
-	///	Arguments for Draw Event handlers
-	/// </remarks>
-
-	public class DrawArgs : GtkSharp.SignalArgs {
+	public class DrawArgs : GLib.SignalArgs {
 
 		public Gdk.Drawable Drawable {
 			get {

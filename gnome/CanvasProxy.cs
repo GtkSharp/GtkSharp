@@ -20,7 +20,7 @@ namespace Gnome {
 		public event UpdateHandler Update {
 			add {
 				if (AfterHandlers["update"] == null)
-					AfterSignals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
+					AfterSignals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, "update", value, System.Type.GetType("EventArgs"));
 				AfterHandlers.AddHandler("update", value);
 			}
 
@@ -34,7 +34,7 @@ namespace Gnome {
 		public event EventHandler Realize {
 			add {
 				if (AfterHandlers["realize"] == null)
-					AfterSignals["realize"] = new GnomeSharp.voidObjectSignal(this, Handle, "realize", value, System.Type.GetType("EventArgs"), 1);
+					AfterSignals["realize"] = new GnomeSharp.voidObjectSignal(this, "realize", value, System.Type.GetType("EventArgs"), 1);
 				AfterHandlers.AddHandler("realize", value);
 			}
 			remove {
@@ -47,7 +47,7 @@ namespace Gnome {
 		public event EventHandler Unrealize {
 			add {
 				if (AfterHandlers["unrealize"] == null)
-					AfterSignals["unrealize"] = new GnomeSharp.voidObjectSignal(this, Handle, "unrealize", value, System.Type.GetType("EventArgs"), 1);
+					AfterSignals["unrealize"] = new GnomeSharp.voidObjectSignal(this, "unrealize", value, System.Type.GetType("EventArgs"), 1);
 				AfterHandlers.AddHandler("unrealize", value);
 			}
 			remove {
@@ -60,7 +60,7 @@ namespace Gnome {
 		public event EventHandler Map {
 			add {
 				if (AfterHandlers["map"] == null)
-					AfterSignals["map"] = new GnomeSharp.voidObjectSignal(this, Handle, "map", value, System.Type.GetType("EventArgs"), 1);
+					AfterSignals["map"] = new GnomeSharp.voidObjectSignal(this, "map", value, System.Type.GetType("EventArgs"), 1);
 				AfterHandlers.AddHandler("map", value);
 			}
 			remove {
@@ -73,7 +73,7 @@ namespace Gnome {
 		public event EventHandler Unmap {
 			add {
 				if (AfterHandlers["unmap"] == null)
-					AfterSignals["unmap"] = new GnomeSharp.voidObjectSignal(this, Handle, "unmap", value, System.Type.GetType("EventArgs"), 1);
+					AfterSignals["unmap"] = new GnomeSharp.voidObjectSignal(this, "unmap", value, System.Type.GetType("EventArgs"), 1);
 				AfterHandlers.AddHandler("unmap", value);
 			}
 			remove {

@@ -1,8 +1,23 @@
 2004-05-05  Mike Kestner  <mkestner@ximian.com>
 
+	* generator/Signal.cs : rmv Handle param to SignalCallback ctor calls.
+	s/GtkSharp.Signal*/GLib.Signal*.
+	* generator/SignalHandler.cs : rmv Handle param to ctors as it's 
+	redundant.  s/GtkSharp.Signal*/GLib.Signal*. Use new Connect/Disconnect
+	instead of generating DllImports into libgobject directly.
+	* glib/SignalArgs.cs : move the the GLib namespace.
+	* glib/SignalCallback.cs : expose Connect and Disconnect methods to
+	hide some pinvokes that were previously generated. Also move to the
+	GLib namespace.
+	gnome/*Handler.cs : update to new SignalHandler API.
+	gnome/CanvasProxy.cs : ditto
+	gnome/void*Signal.cs : ditto
+
+2004-05-04  Mike Kestner  <mkestner@ximian.com>
+
 	* sample/gconf/Makefile.am : fix some whitespace.  I love you, auto*.
 
-2004-05-05  Mike Kestner  <mkestner@ximian.com>
+2004-05-04  Mike Kestner  <mkestner@ximian.com>
 
 	* configure.in : fix gtkhtml versioning *again*.
 	* sample/gconf/Makefile.am : conditional build on ENABLE_GNOME.

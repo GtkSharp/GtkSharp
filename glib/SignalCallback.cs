@@ -1,22 +1,14 @@
-// GtkSharp.SignalCallback.cs - Signal callback base class implementation
+// GLib.SignalCallback.cs - Signal callback base class implementation
 //
-// Authors: Mike Kestner <mkestner@speakeasy.net>
+// Authors: Mike Kestner <mkestner@ximian.com>
 //
-// (c) 2001 Mike Kestner
+// Copyright (c) 2001 Mike Kestner
+// Copyright (c) 2004 Novell, Inc.
 
-namespace GtkSharp {
+namespace GLib {
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
-	using GLib;
-
-	/// <summary>
-	///	SignalCallback Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Base Class for GSignal to C# event marshalling.
-	/// </remarks>
 
 	public abstract class SignalCallback : IDisposable {
 
@@ -31,14 +23,7 @@ namespace GtkSharp {
 		protected Delegate _handler;
 		protected int _key;
 		protected System.Type _argstype;
-
-		/// <summary>
-		///	SignalCallback Constructor
-		/// </summary>
-		///
-		/// <remarks>
-		///	Initializes instance data.
-		/// </remarks>
+		protected uint _HandlerID;
 
 		protected SignalCallback (GLib.Object obj, Delegate eh, System.Type argstype)
 		{
@@ -57,6 +42,26 @@ namespace GtkSharp {
 		public void RemoveDelegate (Delegate d)
 		{
 			_handler = Delegate.Remove (_handler, d);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern uint g_signal_connect_data(IntPtr obj, string name, Delegate cb, int key, IntPtr p, int flags);
+
+		protected void Connect (string name, Delegate cb, int flags)
+		{
+			_HandlerID = g_signal_connect_data(_obj.Handle, name, cb, _key, new IntPtr(0), flags);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_handler_disconnect (IntPtr instance, uint handler);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
+
+		protected void Disconnect ()
+		{
+			if (g_signal_handler_is_connected (_obj.Handle, _HandlerID))
+				g_signal_handler_disconnect (_obj.Handle, _HandlerID);
 		}
 
 		public void Dispose ()

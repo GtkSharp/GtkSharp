@@ -155,7 +155,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\tpublic delegate void " + EventHandlerName + "(object o, " + EventArgsName + " args);");
 			sw.WriteLine ();
-			sw.WriteLine ("\tpublic class " + EventArgsName + " : GtkSharp.SignalArgs {");
+			sw.WriteLine ("\tpublic class " + EventArgsName + " : GLib.SignalArgs {");
 			if (parms != null) {
 				for (int i = 1; i < parms.Count; i++) {
 					sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
@@ -253,22 +253,22 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\t\tif (value.Method.GetCustomAttributes(typeof(GLib.ConnectBeforeAttribute), false).Length > 0) {");
 			sw.WriteLine("\t\t\t\t\tif (BeforeHandlers[" + cname + "] == null)");
 			sw.Write("\t\t\t\t\t\tBeforeSignals[" + cname + "] = new " + qual_marsh);
-			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + EventArgsQualifiedName);
+			sw.Write("(this, " + cname + ", value, System.Type.GetType(\"" + EventArgsQualifiedName);
 			if (EventArgsQualifiedName != "System.EventArgs")
 				sw.Write("," + gen_info.AssemblyName);
 			sw.WriteLine("\"), 0);");
 			sw.WriteLine("\t\t\t\t\telse");
-			sw.WriteLine("\t\t\t\t\t\t((GtkSharp.SignalCallback) BeforeSignals [{0}]).AddDelegate (value);", cname);
+			sw.WriteLine("\t\t\t\t\t\t((GLib.SignalCallback) BeforeSignals [{0}]).AddDelegate (value);", cname);
 			sw.WriteLine("\t\t\t\t\tBeforeHandlers.AddHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t\t} else {");
 			sw.WriteLine("\t\t\t\t\tif (AfterHandlers[" + cname + "] == null)");
 			sw.Write("\t\t\t\t\t\tAfterSignals[" + cname + "] = new " + qual_marsh);
-			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + EventArgsQualifiedName);
+			sw.Write("(this, " + cname + ", value, System.Type.GetType(\"" + EventArgsQualifiedName);
 			if (EventArgsQualifiedName != "System.EventArgs")
 				sw.Write("," + gen_info.AssemblyName);
 			sw.WriteLine("\"), 1);");
 			sw.WriteLine("\t\t\t\t\telse");
-			sw.WriteLine("\t\t\t\t\t\t((GtkSharp.SignalCallback) AfterSignals [{0}]).AddDelegate (value);", cname);
+			sw.WriteLine("\t\t\t\t\t\t((GLib.SignalCallback) AfterSignals [{0}]).AddDelegate (value);", cname);
 			sw.WriteLine("\t\t\t\t\tAfterHandlers.AddHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t\t}");
 			sw.WriteLine("\t\t\t}");
@@ -279,7 +279,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\t\t\tevent_list = BeforeHandlers;");
 			sw.WriteLine("\t\t\t\t\tsignals = BeforeSignals;");
 			sw.WriteLine("\t\t\t\t}");
-			sw.WriteLine("\t\t\t\tGtkSharp.SignalCallback cb = signals [{0}] as GtkSharp.SignalCallback;", cname);
+			sw.WriteLine("\t\t\t\tGLib.SignalCallback cb = signals [{0}] as GLib.SignalCallback;", cname);
 			sw.WriteLine("\t\t\t\tevent_list.RemoveHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t\tif (cb == null)");
 			sw.WriteLine("\t\t\t\t\treturn;");
