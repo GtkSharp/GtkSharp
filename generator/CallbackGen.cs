@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t{");
 			int count = (parms != null) ? parms.Count : 0;
 			if (count > 0)
-				sw.WriteLine ("\t\t\tobject[] _args = new object[{0}];", count - 1);
+				sw.WriteLine ("\t\t\tobject[] _args = new object[{0}];", count);
 			int idx = 0;
 			bool need_sep = false;
 			string call_str = "";
@@ -102,7 +102,7 @@ namespace GtkSharp.Generation {
 			{
 				string parm_name = parms[i].Name;
 				string ctype = parms[i].CType;
-				if (ctype == "gpointer" && (parm_name.EndsWith ("data") || parm_name.EndsWith ("data_or_owner"))) 
+				if ((i == count - 1) && ctype == "gpointer" && (parm_name.EndsWith ("data") || parm_name.EndsWith ("data_or_owner"))) 
 					continue;
 				string cstype = parms[i].CSType;
 				// FIXME: Too much code copy/pasted here. Refactor?

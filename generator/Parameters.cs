@@ -21,13 +21,18 @@ namespace GtkSharp.Generation {
 
 		public string CType {
 			get {
-				return elem.GetAttribute("type");
+				string type = elem.GetAttribute("type");
+				if (type == "void*")
+					type = "gpointer";
+				return type;
 			}
 		}
 
 		public string CSType {
 			get {
 				string cstype = SymbolTable.GetCSType( elem.GetAttribute("type"));
+				if (cstype == "void")
+					cstype = "System.IntPtr";
 				if (elem.HasAttribute("array")) 
 					cstype += "[]";
 				return cstype;
@@ -36,7 +41,10 @@ namespace GtkSharp.Generation {
 
 		public string MarshalType {
 			get {
-				return SymbolTable.GetMarshalType( elem.GetAttribute("type"));
+				string type = SymbolTable.GetMarshalType( elem.GetAttribute("type"));
+				if (type == "void")
+					type = "System.IntPtr";
+				return type;
 			}
 		}
 
@@ -188,7 +196,11 @@ namespace GtkSharp.Generation {
 				XmlElement p_elem = (XmlElement) parm;
 				string type = p_elem.GetAttribute("type");
 				string cs_type = SymbolTable.GetCSType(type);
+				if (cs_type == "void")
+					cs_type = "System.IntPtr";
 				string m_type = SymbolTable.GetMarshalType(type);
+				if (m_type == "void")
+					m_type = "System.IntPtr";
 				string name = MangleName(p_elem.GetAttribute("name"));
 				string call_parm, call_parm_name;
 
@@ -262,14 +274,14 @@ namespace GtkSharp.Generation {
 				}
 				else
 				{
-					if (!(type == "GError**" || (has_callback && type == "gpointer" && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))))) {
+					if (!(type == "GError**" || (has_callback && (type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))))) {
 						signature += (cs_type + " " + name);
 						signature_types += cs_type;
 						last_was_user_data = false; 
 					} else if (type == "GError**") {
 						call_parm = call_parm.Replace (name, "error");
 						last_was_user_data = false; 
-					} else if (type == "gpointer" && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))) {
+					} else if ((type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))) {
 						call_parm = "IntPtr.Zero"; 
 						last_was_user_data = true;
 					} else
