@@ -12,7 +12,7 @@ namespace GtkSharpTutorial {
 	using System;
 	using System.Drawing;
 
-	public class checkbuttons
+	public class togglebuttons
 	{
 
 		static void delete_event (object obj, DeleteEventArgs args)
