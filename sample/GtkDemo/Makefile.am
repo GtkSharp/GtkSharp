@@ -41,7 +41,8 @@ images = \
 /resource:$(srcdir)/images/floppybuddy.gif,floppybuddy.gif
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
+resources = $(addprefix /resource:, $(sources))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
-	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references) $(images)
+	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references) $(images) $(resources)
 

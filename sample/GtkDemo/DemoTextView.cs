@@ -97,13 +97,13 @@ namespace GtkDemo
 			textView.AddChildAtAnchor (scale, scaleAnchor);
 			scale.ShowAll ();
 
-			Gtk.Image image = new Gtk.Image ("images/floppybuddy.gif");
+			Gtk.Image image = new Gtk.Image (Gdk.Pixbuf.LoadFromResource ("floppybuddy.gif"));
 			textView.AddChildAtAnchor (image, animationAnchor);
 			image.ShowAll ();
 
 			Entry entry = new Entry ();
 			textView.AddChildAtAnchor (entry, entryAnchor);
-			image.ShowAll ();
+			entry.ShowAll ();
 		}
 
 		private void CreateTags (TextBuffer buffer)

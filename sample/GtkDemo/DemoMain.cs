@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Reflection;
 
 using Gdk;
 using Gtk;
@@ -57,25 +58,34 @@ namespace GtkDemo
 
 		private void LoadFile (string filename)
 		{
-			if (File.Exists (filename))
+			Stream file = Assembly.GetExecutingAssembly ().GetManifestResourceStream (filename);
+			if (file != null)
 			{
-				Stream file = File.OpenRead (filename);
-				StreamReader sr = new StreamReader (file);
-				string s = sr.ReadToEnd ();
-				sr.Close ();
-				file.Close ();
-
-				infoBuffer.Text = filename;
-				sourceBuffer.Text = s;
-
-				Fontify ();
+				LoadStream (file, filename);
+			}
+			else if (File.Exists (filename))
+			{
+				file = File.OpenRead (filename);
+				LoadStream (file, filename);
 			}
 			else
 			{
 				infoBuffer.Text = String.Format ("{0} was not found.", filename);
 				sourceBuffer.Text = String.Empty;
-				Fontify ();
 			}
+
+			Fontify ();
+		}
+
+		private void LoadStream (Stream file, string filename)
+		{
+			StreamReader sr = new StreamReader (file);
+			string s = sr.ReadToEnd ();
+			sr.Close ();
+			file.Close ();
+
+			infoBuffer.Text = filename;
+			sourceBuffer.Text = s;
 		}
 
 		private void Fontify ()
