@@ -14,4 +14,10 @@ gtksharp_text_iter_create (void)
 	return iter;
 }
 
-
+void
+gtksharp_test_array (int len, int* types)
+{
+	int i;
+	for (i = 0; i < len; i++)
+		g_print ("type %i\n", types[i]);
+}

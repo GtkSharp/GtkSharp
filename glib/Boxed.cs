@@ -47,6 +47,9 @@ namespace GLib {
 			get {
 				return raw;
 			}
+			set {
+				raw = value;
+			}
 		}
 
 		/// <summary>

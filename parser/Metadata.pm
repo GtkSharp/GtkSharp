@@ -24,13 +24,17 @@ sub new {
 sub parseClass {
 	my ($node, $classes) = @_;
 	my %methods = ();
+	my %signals = ();
 	my @attrs = $node->attributes;
 	my $class_name = $attrs[0]->value;
-	${$classes}{$class_name} = \%methods;
+	${$classes}{$class_name} = [\%methods, \%signals];
 
 	for ($method_node = $node->firstChild; $method_node != undef; $method_node = $method_node->nextSibling ()) {
-		next if $method_node->nodeName ne "method";
-		$methods{$method_node->firstChild->nodeValue} = 1;
+		if ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor") {
+			$methods{$method_node->firstChild->nodeValue} = 1;
+		} elsif ($method_node->nodeName eq "signal") {
+			$signals{$method_node->firstChild->nodeValue} = 1;
+		}	
 	}
 }
 
@@ -84,23 +88,35 @@ sub load {
 sub fixupParams {
 	my ($method_node, $data_list_ref) = @_;
 	my ($params_node, $node);
-	for ($node = $method_node->firstChild; $node; $node = $node->nextSibling ()) {
-		if ($node->nodeName eq "parameters") {
-			$params_node = $node;
-			last;
+
+	foreach $data (@$data_list_ref) {
+		if ($$data[1] eq "method" or $$data[1] eq "signal") {
+			$method_node->setAttribute ($$data[5], $$data[6]);
+			next;
 		}
-	}
-	return if not $params_node;
-	for ($node = $params_node->firstChild; $node; $node = $node->nextSibling ()) {
-		my $param_type;
-		foreach $attr ($node->attributes) {
-			if ($attr->name eq "type") {
-				$param_type = $attr->value;
+
+		for ($node = $method_node->firstChild; $node; $node = $node->nextSibling ()) {
+			if ($node->nodeName eq "parameters") {
+				$params_node = $node;
 				last;
 			}
 		}
+		next if not $params_node;
+		if ($$data[1] eq "parameters") {
+			$params_node->setAttribute ($$data[5], $$data[6]);
+			next;
+		}
 
-		foreach $data (@$data_list_ref) {
+
+		for ($node = $params_node->firstChild; $node; $node = $node->nextSibling ()) {
+			my $param_type;
+			foreach $attr ($node->attributes) {
+				if ($attr->name eq "type") {
+					$param_type = $attr->value;
+					last;
+				}
+			}
+	
 			if ($param_type eq $$data[4]) {
 				$node->setAttribute ($$data[5], $$data[6]);
 			}
@@ -114,7 +130,7 @@ sub fixupNamespace {
 	foreach $rule (@{$self->{rules}}) {
 		my ($classes_ref, $data_list_ref) = @$rule;
 		for ($node = $ns_node->firstChild; $node; $node = $node->nextSibling ()) {
-			next if $node->nodeName ne "object";
+			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface");
 			my $class, $methods_ref, $attr;
 			foreach $attr ($node->attributes) {
 				if ($attr->name eq "cname") {
@@ -124,21 +140,38 @@ sub fixupNamespace {
 			}
 
 			my %classes = %$classes_ref;
-			$methods_ref = $classes{$class};
-			next if not $methods_ref;
+			$methods_ref = $classes{$class}[0];
+			$signals_ref = $classes{$class}[1];
+			next if not ($methods_ref or $signals_ref);
 
 			for ($method_node = $node->firstChild; $method_node; $method_node = $method_node->nextSibling ()) {
-				next if $method_node->nodeName ne "method";
+				next if not ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor");
 				my $method;
 				foreach $attr ($method_node->attributes) {
-					if ($attr->name eq "name") {
+					if (($attr->name eq "name" and $method_node->nodeName eq "method") or ($attr->name eq "cname" and $method_node->nodeName eq "constructor")) {
 						$method = $attr->value;
 						last;
 					}
 				}
-				next if not ${$methods_ref}{$method};
+				next if not ${%$methods_ref}{$method};
+
 				fixupParams ($method_node, $data_list_ref);
 			}
+			
+			for ($signal_node = $node->firstChild; $signal_node; $signal_node = $signal_node->nextSibling ()) {
+				next if $signal_node->nodeName ne "signal";
+				my $signal;
+				foreach $attr ($signal_node->attributes) {
+					if ($attr->name eq "name") {
+						$signal = $attr->value;
+						last;
+					}
+				}
+				next if not ${$signals_ref}{$signal};
+
+				fixupParams ($signal_node, $data_list_ref);
+			}
+
 		}
 	}
 }
@@ -152,8 +185,9 @@ sub fixup {
 	return if not ($api_node and $api_node->nodeName eq "api");
 	for ($ns_node = $api_node->firstChild; $ns_node; $ns_node = $ns_node->nextSibling ()) {
 		next if $ns_node->nodeName ne "namespace";
-		next if not ($ns_node->attributes and (scalar (@{$ns_node->attributes})) + 1);
+		next if not $ns_node->attributes;
 		my @attrs = $ns_node->attributes;
+		next if not @attrs;
 		my $namespace = $attrs[0]->value;
 		if (-f "$namespace.metadata") {
 			if (not ($metadata and $metadata->{namespace} eq $namespace)) {

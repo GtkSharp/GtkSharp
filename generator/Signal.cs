@@ -15,17 +15,22 @@ namespace GtkSharp.Generation {
 
 		private string ns;
 		private string marsh;
+		private string name;
 		private XmlElement elem;
 
 		public Signal (string ns, XmlElement elem) 
 		{
 			this.ns = ns;
 			this.elem = elem;
+			this.name = elem.GetAttribute ("name");
 		}
 
 		public string Name {
 			get {
-				return elem.GetAttribute ("name");
+				return name; 
+			}
+			set {
+				name = value;
 			}
 		}
 
@@ -39,6 +44,13 @@ namespace GtkSharp.Generation {
 			}
 			
 			return true;
+		}
+
+		public void GenerateDecl (StreamWriter sw)
+		{
+			if (elem.HasAttribute("new_flag"))
+				sw.Write("new ");
+			sw.WriteLine ("\t\tevent EventHandler " + Name + ";");
 		}
 
 		public void Generate (StreamWriter sw)

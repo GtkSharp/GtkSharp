@@ -49,9 +49,6 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			signature_types = signature = import_sig = call_string = "";
-			bool need_sep = false;
-			
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -69,16 +66,58 @@ namespace GtkSharp.Generation {
 					Console.Write("Name: " + name + " Type: " + type + " ");
 					return false;
 				}
+			}
+			
+			return true;
+		}
 
+		public void CreateSignature (bool is_set)
+		{
+			signature_types = signature = import_sig = call_string = "";
+			bool need_sep = false;
+			
+			int len = 0;
+			XmlElement last_param;
+			foreach (XmlNode parm in elem.ChildNodes) {
+				if (parm.Name != "parameter") {
+					continue;
+				}
+				len++;
+				last_param = (XmlElement) parm;
+			}
+
+			int i = 0;
+			foreach (XmlNode parm in elem.ChildNodes) {
+				if (parm.Name != "parameter") {
+					continue;
+				}
+
+				XmlElement p_elem = (XmlElement) parm;
+				string type = p_elem.GetAttribute("type");
+				string cs_type = SymbolTable.GetCSType(type);
+				string m_type = SymbolTable.GetMarshalType(type);
+				string name = MangleName(p_elem.GetAttribute("name"));
+				string call_parm;
+				
+				if (is_set && i == 0)
+					call_parm = SymbolTable.CallByName(type, "value");
+				else
+					call_parm = SymbolTable.CallByName(type, name);
+				
 				if (p_elem.HasAttribute("array")) {
 					cs_type += "[]";
+					m_type += "[]";
+				}
+
+				if (IsVarArgs && i == (len - 1) && VAType == "length_param") {
+					cs_type = "params " + cs_type + "[]";
 					m_type += "[]";
 				}
 				
 				if (need_sep) {
 					call_string += ", ";
 					import_sig += ", ";
-					if (type != "GError**")
+					if (type != "GError**" && !(IsVarArgs && i == (len - 1) && VAType == "length_param"))
 					{
 						signature += ", ";
 						signature_types += ":";
@@ -88,24 +127,40 @@ namespace GtkSharp.Generation {
 				}
 
 				if (p_elem.HasAttribute("pass_as")) {
-					signature += p_elem.GetAttribute("pass_as") + " ";
+					string pass_as = p_elem.GetAttribute("pass_as");
+					signature += pass_as + " ";
+					// We only need to do this for value types 
+					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
+					{
+						import_sig += pass_as + " ";
+						call_string += "out ";
+					}
 				}
-				
-				if (type == "GError**") {
+				else if (type == "GError**")
+				{
 					call_string += "out ";				
 					import_sig += "out ";				
-				} else {
-					signature += (cs_type + " " + name);
-					signature_types += cs_type;
 				}
-				call_string += call_parm;
+				
+				if (IsVarArgs && i == (len - 2) && VAType == "length_param")
+				{
+					call_string += MangleName(last_param.GetAttribute("name")) + ".Length";
+				}
+				else
+				{
+					if (type != "GError**") {
+						signature += (cs_type + " " + name);
+						signature_types += cs_type;
+					}
+					call_string += call_parm;
+				}
 				import_sig += (m_type + " " + name);
+
+				i++;
 			}
-			
-			return true;
 		}
 
-		public void Initialize (StreamWriter sw, bool is_get)
+		public void Initialize (StreamWriter sw, bool is_get, string indent)
 		{
 			string name = "";
 			foreach (XmlNode parm in elem.ChildNodes) {
@@ -115,28 +170,64 @@ namespace GtkSharp.Generation {
 
 				XmlElement p_elem = (XmlElement) parm;
 
-				string type = SymbolTable.GetCSType(p_elem.GetAttribute ("type"));
+				string c_type = p_elem.GetAttribute ("type");
+				string type = SymbolTable.GetCSType(c_type);
 				name = MangleName(p_elem.GetAttribute("name"));
 				if (is_get) {
-					sw.WriteLine ("\t\t\t" + type + " " + name + ";");
+					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
 				}
 
-				if (is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) {
-					sw.WriteLine("\t\t\t" + name + " = new " + type + "();"); 
+				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsBoxed (c_type))) {
+					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
 				}
 			}
 
 			if (ThrowsException)
-				sw.WriteLine ("\t\t\tIntPtr error;");
+				sw.WriteLine (indent + "\t\t\tIntPtr error;");
 		}
+/*
+		public void Finish (StreamWriter sw)
+		{
+			foreach (XmlNode parm in elem.ChildNodes) {
+				if (parm.Name != "parameter") {
+					continue;
+				}
+				
+				XmlElement p_elem = (XmlElement) parm;
+				string c_type = p_elem.GetAttribute ("type");
+				string name = MangleName(p_elem.GetAttribute("name"));
 
-		public void HandleException (StreamWriter sw)
+				if ((p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) {
+					string call_parm = SymbolTable.CallByName(c_type, name);
+					string local_parm = GetPossibleLocal (call_parm);
+					if (call_parm != local_parm)
+						sw.WriteLine ("\t\t\t{0} = {1};", call_parm, local_parm);
+				}
+			}
+		}
+*/
+
+		public void HandleException (StreamWriter sw, string indent)
 		{
 			if (!ThrowsException)
 				return;
-			sw.WriteLine ("\t\t\tif (error != IntPtr.Zero) throw new GLib.GException (error);");
+			sw.WriteLine (indent + "\t\t\tif (error != IntPtr.Zero) throw new GLib.GException (error);");
 		}
 		
+		public int Count {
+			get {
+				int length = 0;
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (parm.Name != "parameter") {
+						continue;
+					}
+	
+					length++;
+				}
+				return length;
+			}
+		}
+
 		public bool IsAccessor {
 			get {
 				int length = 0;
@@ -166,6 +257,18 @@ namespace GtkSharp.Generation {
 				XmlElement p_elem = (XmlElement) elem.ChildNodes[elem.ChildNodes.Count - 1];
 				string type = p_elem.GetAttribute("type");
 				return (type == "GError**");
+			}
+		}
+
+		public bool IsVarArgs {
+			get {
+				return elem.HasAttribute ("va_type");
+			}
+		}
+
+		public string VAType {
+			get {
+				return elem.GetAttribute ("va_type");
 			}
 		}
 

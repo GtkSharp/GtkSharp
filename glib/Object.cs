@@ -20,7 +20,7 @@ namespace GLib {
 	///	Wrapper class for GObject.
 	/// </remarks>
 
-	public class Object  {
+	public class Object : IWrapper {
 
 		// Private class and instance members
 		IntPtr _obj;
@@ -108,6 +108,9 @@ namespace GLib {
 		public IntPtr Handle {
 			get {
 				return _obj;
+			}
+			set {
+				_obj = value;
 			}
 		}
 

@@ -10,26 +10,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class InterfaceGen : GenBase, IGeneratable  {
+	public class InterfaceGen : ClassBase, IGeneratable  {
 
 		public InterfaceGen (string ns, XmlElement elem) : base (ns, elem) {}
-
-		public String MarshalType {
-			get
-			{
-				return "";
-			}
-		}
-
-		public String CallByName (String var_name)
-		{
-			return "";
-		}
-
-		public String FromNative(String var)
-		{
-			return "";
-		}
 
 		public void Generate ()
 		{
@@ -38,22 +21,26 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ();
 
-			sw.WriteLine ("\tpublic interface " + Name + " {");
+			sw.WriteLine ("\tpublic interface " + Name + " : GLib.IWrapper {");
 			sw.WriteLine ();
+			
+			foreach (Signal sig in sigs.Values) {
+				if (sig.Validate ())
+					sig.GenerateDecl (sw);
+			}
 
-			foreach (XmlNode node in Elem.ChildNodes) {
-				if (node.Name != "member") {
+			foreach (Method method in methods.Values) {
+				if (IgnoreMethod (method))
 					continue;
-				}
-				//FIXME: Generate the methods.
-				XmlElement member = (XmlElement) node;
+
+				if (method.Validate ())
+					method.GenerateDecl (sw);
 			}
 
 			sw.WriteLine ("\t}");
 			CloseWriter (sw);
 			Statistics.IFaceCount++;
 		}
-		
 	}
 }
 

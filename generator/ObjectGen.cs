@@ -11,12 +11,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class ObjectGen : GenBase, IGeneratable  {
+	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList ctors = new ArrayList();
-		private Hashtable props = new Hashtable();
-		private Hashtable sigs = new Hashtable();
-		private Hashtable methods = new Hashtable();
 
 		public ObjectGen (string ns, XmlElement elem) : base (ns, elem) 
 		{
@@ -33,46 +30,19 @@ namespace GtkSharp.Generation {
 				case "constructor":
 					ctors.Add (new Ctor (ns, member));
 					break;
-
-				case "method":
-					methods.Add (member.GetAttribute ("name"), new Method (ns, member));
-					break;
-
-				case "property":
-					props.Add (member.GetAttribute ("name"), new Property (member));
-					break;
-
-				case "signal":
-					sigs.Add (member.GetAttribute ("name"), new Signal (ns, member));
-					break;
-
+					
 				default:
-					Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
+					if (!IsNodeNameHandled (node.Name))
+						Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
 					break;
 				}
 			}
 		}
 
-		public string MarshalType {
-			get {
-				return "IntPtr";
-			}
-		}
-
-		public string CallByName (string var_name)
-		{
-			return var_name + ".Handle";
-		}
-
-		public string FromNative(string var)
-		{
-			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
-		}
-
 		private ObjectGen Parent {
 			get {
 				string parent = Elem.GetAttribute("parent");
-				return SymbolTable.GetObjectGen(parent);
+				return (ObjectGen) SymbolTable.GetClassGen(parent);
 			}
 		}
 
@@ -89,6 +59,11 @@ namespace GtkSharp.Generation {
 			string cs_parent = SymbolTable.GetCSType(Elem.GetAttribute("parent"));
 			if (cs_parent != "")
 				sw.Write (" : " + cs_parent);
+			if (interfaces != null) {
+				foreach (string iface in interfaces) {
+					sw.Write (", " + SymbolTable.GetCSType (iface));
+				}
+			}
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
@@ -96,6 +71,14 @@ namespace GtkSharp.Generation {
 			GenProperties (sw);
 			GenSignals (sw);
 			GenMethods (sw);
+			
+			if (interfaces != null) {
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.GetClassGen (iface);
+					igen.GenMethods (sw);
+				}
+			}
+
 			AppendCustom(Namespace, Name, sw);
 
 			sw.WriteLine ("\t}");
@@ -103,7 +86,7 @@ namespace GtkSharp.Generation {
 			CloseWriter (sw);
 			Statistics.ObjectCount++;
 		}
-		
+
 		private bool Validate ()
 		{
 			string parent = Elem.GetAttribute("parent");
@@ -133,6 +116,13 @@ namespace GtkSharp.Generation {
 					if (!method.Validate())
 						return false;
 
+			if (interfaces != null) {
+				foreach (string iface in interfaces) {
+					if (SymbolTable.GetCSType(parent) == null)
+						return false;
+				}
+			}
+
 			return true;
 		}
 
@@ -156,55 +146,6 @@ namespace GtkSharp.Generation {
 				sw.WriteLine();
 			}
 
-		}
-
-		private void GenProperties (StreamWriter sw)
-		{		
-			if (props == null)
-				return;
-
-			foreach (Property prop in props.Values) {
-				if (prop.Validate ())
-					prop.Generate (sw);
-				else
-					Console.WriteLine(" in Object " + Name);
-			}
-		}
-
-		private void GenSignals (StreamWriter sw)
-		{		
-			if (sigs == null)
-				return;
-
-			sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-			
-			foreach (Signal sig in sigs.Values) {
-				if (sig.Validate ())
-					sig.Generate (sw);
-				else
-					Console.WriteLine(" in Object " + Name);
-			}
-		}
-
-		private void GenMethods (StreamWriter sw)
-		{		
-			if (methods == null)
-				return;
-
-			foreach (Method method in methods.Values) {
-				string mname = method.Name;
-				if ((mname.StartsWith("Set") || mname.StartsWith("Get")) &&
-				    (props != null) && props.ContainsKey(mname.Substring(3))) {
-				    	continue;
-				} else if ((sigs != null) && sigs.ContainsKey(mname)) {
-					method.Name = "Emit" + mname;
-				}
-
-				if (method.Validate ())
-					method.Generate (sw);
-				else
-					Console.WriteLine(" in Object " + Name);
-			}
 		}
 	}
 }

@@ -25,17 +25,17 @@ namespace GtkSharp.Samples {
 			MenuBar mb = new MenuBar ();
 			Menu file_menu = new Menu ();
 			MenuItem exit_item = new MenuItem("Exit");
-			exit_item.Activate += new EventHandler (exit_cb);
+			exit_item.Activated += new EventHandler (exit_cb);
 			file_menu.Append (exit_item);
 			MenuItem file_item = new MenuItem("File");
-			file_item.SetSubmenu (file_menu);
+			file_item.Submenu = file_menu;
 			mb.Append (file_item);
 			box.PackStart(mb, false, false, 0);
 
 			Button btn = new Button ("Yep, that's a menu");
 			box.PackStart(btn, true, true, 0);
 			
-			win.EmitAdd (box);
+			win.Add (box);
 			win.ShowAll ();
 
 			Application.Run ();

@@ -234,16 +234,16 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public static ObjectGen GetObjectGen(string c_type)
+		public static ClassBase GetClassGen(string c_type)
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
-			if (IsObject(c_type)) {
-				return (ObjectGen) complex_types[c_type];
+			if (IsInterface(c_type) || IsObject (c_type)) {
+				return (ClassBase) complex_types[c_type];
 			}
 			return null;
 		}
-				
+			
 		public static bool IsObject(string c_type)
 		{
 			c_type = Trim(c_type);

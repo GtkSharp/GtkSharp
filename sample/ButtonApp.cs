@@ -21,7 +21,7 @@ namespace GtkSamples {
 			win.DeleteEvent += new EventHandler (Window_Delete);
 			Button btn = new Button ("Click Me");
 			btn.Clicked += new EventHandler (btn_click);
-			win.EmitAdd (btn);
+			win.Add (btn);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;

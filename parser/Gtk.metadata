@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <metadata>
+
+<!-- out parameters -->
 <rule>
   <class name="GtkTextBuffer">
     <method>GetIterAtLineOffset</method>
@@ -28,4 +30,892 @@
     </attribute>
   </data>
 </rule>
+<rule>
+  <class name="GtkEditable">
+    <method>InsertText</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="type">gint*</filter>
+      <name>pass_as</name>
+      <value>out</value>
+    </attribute>
+  </data>
+</rule>
+
+<!-- variable arguments -->
+<rule>
+  <class name="GtkTreeStore">
+    <constructor>gtk_tree_store_newv</constructor>
+  </class>
+  <data>
+    <attribute target="parameters">
+      <name>va_type</name>
+      <value>length_param</value>
+    </attribute>
+  </data>
+</rule>
+
+<!-- renames -->
+<rule>
+  <class name="GtkEditable">
+    <method>GetEditable</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>GetIsEditable</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEditable">
+    <method>SetEditable</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>SetIsEditable</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkContainer">
+    <signal>Add</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Added</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkContainer">
+    <signal>Remove</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Removed</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEditable">
+    <signal>InsertText</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>TextInserted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEditable">
+    <signal>DeleteText</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>TextDeleted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Show</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Shown</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Hide</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Hidden</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Map</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Mapped</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Unmap</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Unmapped</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Realize</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Realized</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>Unrealize</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Unrealized</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>GrabFocus</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>FocusGrabbed</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>SizeAllocate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>SizeAllocated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>MnemonicActivate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>MnemonicActivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>SizeRequest</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>SizeRequested</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWidget">
+    <signal>ChildNotify</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildNotified</value>
+    </attribute>
+  </data>
+</rule>
+
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>InsertPixbuf</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>PixbufInserted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>ApplyTag</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>TagApplied</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>RemoveTag</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>TagRemoved</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>InsertChildAnchor</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildAnchorInserted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>RemoveChildAnchor</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildAnchorRemoved</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkItem">
+    <signal>Select</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Selected</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkItem">
+    <signal>Deselect</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Deselected</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkItem">
+    <signal>Toggle</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Toggled</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkList">
+    <signal>SelectChild</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildSelected</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkList">
+    <signal>UnselectChild</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildUnselected</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTree">
+    <signal>SelectChild</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildSelected</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTree">
+    <signal>UnselectChild</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildUnselected</value>
+    </attribute>
+  </data>
+</rule>
+
+<rule>
+  <class name="GtkTipsQuery">
+    <signal>StartQuery</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>QueryStarted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTipsQuery">
+    <signal>StopQuery</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>QueryStopped</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeItem">
+    <signal>Collapse</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Collapsed</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeItem">
+    <signal>Expand</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Expanded</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkContainer">
+    <signal>SetFocusChild</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>FocusChildSet</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEntry">
+    <signal>PasteClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardPasted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEntry">
+    <signal>CutClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardCut</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkEntry">
+    <signal>CopyClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardCopied</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkOldEditable">
+    <signal>PasteClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardPasted</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkOldEditable">
+    <signal>CutClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardCut</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkOldEditable">
+    <signal>CopyClipboard</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ClipboardCopied</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>Activate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Activated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>Deactivate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Deactivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>Deactivate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Deactivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>ToggleSizeRequest</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ToggleSizeRequested</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>ToggleSizeAllocate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ToggleSizeAllocated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>RemoveWidget</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>WidgetRemoved</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>SizeAllocate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>SizeAllocated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>MnemonicActivate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>MnemonicActivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>SizeRequest</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>SizeRequested</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuItem">
+    <signal>ChildNotify</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ChildNotified</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkToggleButton">
+    <method>Toggled</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Toggle</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkButton">
+    <method>Pressed</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Press</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkButton">
+    <method>Clicked</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Click</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkButton">
+    <method>Released</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Release</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkButton">
+    <signal>Enter</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Entered</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkButton">
+    <signal>Leave</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Left</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkMenuShell">
+    <signal>Deactivate</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Deactivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkCellEditable">
+    <signal>RemoveWidget</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>WidgetRemoved</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkCellEditable">
+    <method>EditingDone</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>FinishEditing</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWindow">
+    <signal>ActivateDefault</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>DefaultActivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkWindow">
+    <signal>ActivateFocus</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>FocusActivated</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkAdjustment">
+    <method>Changed</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Change</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkAdjustment">
+    <method>ValueChanged</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ChangeValue</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkObject">
+    <signal>Destroy</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>Destroyed</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeView">
+    <method>RowActivated</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ActivateRow</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeView">
+    <method>RowExpanded</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>RowExpand</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>RowDeleted</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>DeleteRow</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>RowHasChildToggled</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ToggleRowHasChild</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>RowInserted</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>InsertRow</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>RowChanged</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ChangeRow</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeModel">
+    <method>RowsReordered</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ReorderRows</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeSortable">
+    <method>SortColumnChanged</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>ChangeSortColumn</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkDialog">
+    <method>Response</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Respond</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>EndUserAction</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>UserActionEnded</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTextBuffer">
+    <signal>BeginUserAction</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>UserActionBegun</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkCheckMenuItem">
+    <method>Toggled</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Toggle</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkContainer">
+    <signal>CheckResize</signal>
+  </class>
+  <data>
+    <attribute target="signal">
+      <name>name</name>
+      <value>ResizeChecked</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
+  <class name="GtkTreeViewColumn">
+    <method>Clicked</method>
+  </class>
+  <data>
+    <attribute target="method">
+      <name>name</name>
+      <value>Click</value>
+    </attribute>
+  </data>
+</rule>
+
 </metadata>

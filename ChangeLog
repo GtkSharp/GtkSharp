@@ -1,3 +1,51 @@
+2002-06-21  Rachel Hestilow  <hestilow@ximian.com>
+
+	* generator/ClassBase.cs: New base class for classes and interfaces.
+	
+	* generator/InterfaceGen.cs: Inherit from ClassBase, generate declarations.
+
+	* generator/ObjectGen.cs: Move half of this into ClassBase.
+
+	* generator/Method.cs: Turn all applicable Get/Set functions into .NET
+	accessors. Remove redundant == overload and move into Equals, as 
+	it was confusing "!= null".
+
+	* generator/Parameters.cs: Alter signature creation to accept "is_set"
+	option, add support for variable arguments. Add properties "Count",
+	"IsVarArgs", "VAType".
+
+	* generator/Ctor.cs: Fixup for changes in Parameters (indenting,
+	signature creation).
+	
+	* generator/Signal.cs: Support generating declarations.
+	
+	* generator/SymbolTable: Change GetObjectGen to GetClassGen.
+	
+	* glib/IWrapper.cs: Move "Handle" declaration to here, so
+	both classes and interfaces can benefit from it.
+	
+	* glib/Object.cs: Inherit from IWrapper.cs
+
+	* parser/Metadata.pm: Support attribute changes on constructors,
+	methods, signals, and paramater lists.
+
+	* parser/gapi2xml.pl: Parse init funcs for interfaces. Ignore "_"
+	functions here.
+
+	* parser/gapi_pp.pl: Remove boxed_type_register check, as it will
+	be caught in the init funcs.
+
+	* parser/Atk.metadata: Added.
+
+	* parser/Gtk.metadata: Add all needed signal/method collision
+	renames. Rename GtkEditable.Editable accessors to IsEditable,
+	as .NET does not like accessors with the same name as their
+	declaring type. Tag TreeStore constructor as varargs.
+
+	* samples/ButtonApp.cs: s/EmitAdd/Add.
+
+	* samples/Menu.cs: s/EmitAdd/Add, s/Activate/Activated.
+
 2002-06-21  Mike Kestner <mkestner@speakeasy.net>
 
 	* */makefile.win32 : add /doc flags

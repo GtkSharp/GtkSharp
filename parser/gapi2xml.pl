@@ -88,7 +88,7 @@ while ($line = <STDIN>) {
 		$sdef =~ s!/\*.*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
 		$sdefs{$sname} = $sdef;
-	} elsif ($line =~ /^(\w+)_class_init\b/) {
+	} elsif ($line =~ /^(\w+)_(class|base)_init\b/) {
 		$class = StudlyCaps($1);
 		$pedef = $line;
 		while ($line = <STDIN>) {
@@ -96,16 +96,25 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^}/);
 		}
 		$pedefs{$class} = $pedef;
-	} elsif ($line =~ /g_boxed_type_register_static/) {
-		$boxdef = $line;
-		while ($line !~ /;/) {
-			$boxdef .= ($line = <STDIN>);
+	} elsif ($line =~ /^(\w+)_get_type\b/) {
+		$class = StudlyCaps($1);
+		$pedef = $line;
+		while ($line = <STDIN>) {
+			$pedef .= $line;
+			if ($line =~ /g_boxed_type_register_static/) {
+				$boxdef = $line;
+				while ($line !~ /;/) {
+					$boxdef .= ($line = <STDIN>);
+				}
+				$boxdef =~ s/\n\s*//g;
+				$boxdef =~ /\(\"(\w+)\"/;
+				my $boxtype = $1;
+				$boxtype =~ s/($ns)Type(\w+)/$ns$2/;
+				$boxdefs{$boxtype} = $boxdef;
+			}
+			last if ($line =~ /^}/);
 		}
-		$boxdef =~ s/\n\s*//g;
-		$boxdef =~ /\(\"(\w+)\"/;
-		my $boxtype = $1;
-		$boxtype =~ s/($ns)Type(\w+)/$ns$2/;
-		$boxdefs{$boxtype} = $boxdef;
+		$typefuncs{$class} = $pedef;
 	} elsif ($line =~ /^(const|G_CONST_RETURN)?\s*\w+\s*\**\s*(\w+)\s*\(/) {
 		$fname = $2;
 		$fdef = "";
@@ -216,12 +225,21 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$iface = $ifaces{$type};
 	($inst, $dontcare) = split(/:/, delete $objects{$type});
+	$initfunc = $pedefs{$inst};
 	$ifacetype = delete $types{$iface};
 	delete $types{$inst};
-
+	
 	$ifacecnt++;
 	$iface_el = addNameElem($ns_elem, 'interface', $inst, $ns);
 	addFuncElems($iface_el, $inst);
+
+	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
+	if ($initfunc) {
+		print "parsing $inst\n";
+		parseInitFunc($iface_el, $initfunc);
+	} else {
+		warn "Don't have an init func for $inst.\n" if $debug;
+	}
 }
 
 
@@ -234,6 +252,7 @@ foreach $type (sort(keys(%objects))) {
 	($inst, $class) = split(/:/, $objects{$type});
 	$class = $inst . "Class" if (!$class);
 	$initfunc = $pedefs{$inst};
+	$typefunc = $typefuncs{$inst};
 	$insttype = delete $types{$inst};
 	$classtype = delete $types{$class};
 
@@ -264,6 +283,13 @@ foreach $type (sort(keys(%objects))) {
 		parseInitFunc($obj_el, $initfunc);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
+	}
+
+	# Get the interfaces from the class_init func.
+	if ($typefunc) {
+		parseTypeFunc($obj_el, $typefunc);
+	} else {
+		warn "Don't have a GetType func for $inst.\n" if $debug;
 	}
 
 	addFuncElems($obj_el, $inst);
@@ -379,12 +405,12 @@ sub addFuncElems
 	$fcnt = keys(%fdefs);
 
 	foreach $mname (keys(%fdefs)) {
-		next if ($mname !~ /$prefix/);
+		next if ($mname !~ /^$prefix/);
 
 		if ($mname =~ /$prefix(new)/) {
 			$el = addNameElem($obj_el, 'constructor', $mname); 
 			$drop_1st = 0;
-		} elsif ($fdefs{$mname} =~ /\(\s*$inst\b/) {
+		} elsif ($fdefs{$mname} =~ /\(\s*(const)?\s*$inst\b/) {
 			$el = addNameElem($obj_el, 'method', $mname, $prefix);
 			$fdefs{$mname} =~ /(.*?)\w+\s*\(/;
 			addReturnElem($el, $1);
@@ -579,6 +605,18 @@ sub addSignalElem
 
 }
 
+sub addImplementsElem
+{
+	my ($spec, $node) = @_;
+	$spec =~ s/\n\s*//g; 
+	if ($spec =~ /,\s*(\w+)_TYPE_(\w+),/) {
+		$impl_elem = $doc->createElement('interface');
+		$name = StudlyCaps (lc ("$1_$2"));
+		$impl_elem->setAttribute ("cname", "$name");
+		$node->appendChild($impl_elem);
+	}
+}
+
 
 sub parseInitFunc
 {
@@ -607,6 +645,35 @@ sub parseInitFunc
 			} until ($init_lines[$linenum] =~ /;/);
 			addSignalElem ($sig, $classdef, $obj_el);
 			$sigcnt++;
+		}
+		$linenum++;
+	}
+}
+
+sub parseTypeFunc
+{
+	my ($obj_el, $typefunc) = @_;
+
+	my @type_lines = split (/\n/, $typefunc);
+
+	my $linenum = 0;
+	$impl_node = undef;
+	while ($linenum < @type_lines) {
+
+		my $line = $type_lines[$linenum];
+			
+		if ($line =~ /#define/) {
+			# FIXME: This ignores the bool helper macro thingie.
+		} elsif ($line =~ /g_type_add_interface_static/) {
+			my $prop = $line;
+			do {
+				$prop .= $type_lines[++$linenum];
+			} until ($type_lines[$linenum] =~ /;/);
+			if (not $impl_node) {
+				$impl_node = $doc->createElement ("implements");
+				$obj_el->appendChild ($impl_node);
+			}
+			addImplementsElem ($prop, $impl_node);
 		}
 		$linenum++;
 	}

@@ -27,10 +27,13 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			if ((parms != null) && !parms.Validate ()) {
-				Console.Write("ctor ");
-				Statistics.ThrottledCount++;
-				return false;       	
+			if (parms != null) {
+				if (!parms.Validate ()) {
+					Console.Write("ctor ");
+					Statistics.ThrottledCount++;
+					return false;
+				}
+				parms.CreateSignature (false);
 			}
 
 			return true;
@@ -79,19 +82,19 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\tpublic static " + safety + name + " " + mname + sig);
 				sw.WriteLine("\t\t{");
 				if (parms != null)
-					parms.Initialize(sw, false);
+					parms.Initialize(sw, false, "");
 				sw.WriteLine("\t\t\tIntPtr ret = " + cname + call + ";");
 				if (parms != null)
-					parms.HandleException (sw);
+					parms.HandleException (sw, "");
 				sw.WriteLine("\t\t\treturn new " + name + "(ret);");
 			} else {
 				sw.WriteLine("\t\tpublic " + safety + name + sig);
 				sw.WriteLine("\t\t{");
 				if (parms != null)
-					parms.Initialize(sw, false); 
+					parms.Initialize(sw, false, ""); 
 				sw.WriteLine("\t\t\tRaw = " + cname + call + ";");
 				if (parms != null)
-					parms.HandleException (sw);
+					parms.HandleException (sw, "");
 			}
 			
 			sw.WriteLine("\t\t}");
