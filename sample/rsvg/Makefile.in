@@ -1,10 +1,12 @@
-all:
-@ENABLE_RSVG_TRUE@	mcs svghelloworld.cs           \
-@ENABLE_RSVG_TRUE@	-r ../../gnome/gnome-sharp.dll \
-@ENABLE_RSVG_TRUE@	-r ../../gtk/gtk-sharp.dll     \
-@ENABLE_RSVG_TRUE@	-r ../../gdk/gdk-sharp.dll     \
-@ENABLE_RSVG_TRUE@	-r ../../rsvg/rsvg-sharp.dll   \
+@ENABLE_RSVG_FALSE@all:
+@ENABLE_RSVG_TRUE@all: svghelloworld.exe
 
+svghelloworld.exe: svghelloworld.cs
+	mcs svghelloworld.cs           \
+	-r ../../gnome/gnome-sharp.dll \
+	-r ../../gtk/gtk-sharp.dll     \
+	-r ../../gdk/gdk-sharp.dll     \
+	-r ../../rsvg/rsvg-sharp.dll
 
 clean:
 	rm -f *.exe
