@@ -4,10 +4,10 @@ else
 TARGET=
 endif
 
-ASSEMBLY = gconf-sharp-peditors.dll
-assemblydir = $(libdir)
-assembly_DATA = $(TARGET)
-CLEANFILES = $(ASSEMBLY)
+ASSEMBLY = $(ASSEMBLY_NAME).dll
+ASSEMBLY_NAME = gconf-sharp-peditors
+noinst_DATA = $(TARGET)
+CLEANFILES = $(ASSEMBLY) gtk-sharp.pub
 DISTCLEANFILES = AssemblyInfo.cs
 
 EXTRA_DIST =				\
@@ -32,6 +32,21 @@ sources = 				\
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
-$(ASSEMBLY): $(build_sources)
+gtk-sharp.pub: $(top_srcdir)/gtk-sharp.pub
+	cp $(top_srcdir)/gtk-sharp.pub .
+
+$(ASSEMBLY): $(build_sources) gtk-sharp.pub
 	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
+
+install-data-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
+
+uninstall-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
 

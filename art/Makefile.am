@@ -16,11 +16,10 @@ ASSEMBLY_NAME = art-sharp
 references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll 
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-assemblydir = $(libdir)
 apidir = $(datadir)/gapi
-assembly_DATA = $(TARGET)
+noinst_DATA = $(TARGET)
 api_DATA = $(APIS)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.pub
 
 DISTCLEANFILES = art-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
@@ -54,6 +53,21 @@ generated-stamp: $(API) $(srcdir)/$(ADDITIONAL_API) ../generator/gapi_codegen.ex
 	--include $(INCLUDE_API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) \
 	&& touch generated-stamp
 
-$(ASSEMBLY): $(build_sources) generated-stamp
+gtk-sharp.pub: $(top_srcdir)/gtk-sharp.pub
+	cp $(top_srcdir)/gtk-sharp.pub .
+
+$(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.pub
 	$(CSC) --unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) generated/*.cs
+
+install-data-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
+
+uninstall-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir) || exit 1;	\
+	fi
 

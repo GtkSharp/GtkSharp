@@ -9,11 +9,10 @@ ASSEMBLY_NAME = gdk-sharp
 references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-assemblydir = $(libdir)
 gapidir = $(datadir)/gapi
-assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
+noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API) $(ADDITIONAL_API)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c
+CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.pub
 DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 			\
@@ -80,6 +79,17 @@ generated-stamp: $(API) $(srcdir)/$(ADDITIONAL_API) ../generator/gapi_codegen.ex
 	--gluelib-name=gdksharpglue --glue-filename=glue/generated.c						\
 	&& touch generated-stamp
 
-$(ASSEMBLY): $(build_sources) generated-stamp
+gtk-sharp.pub: $(top_srcdir)/gtk-sharp.pub
+	cp $(top_srcdir)/gtk-sharp.pub .
+
+$(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.pub
 	$(CSC) --unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) generated/*.cs
+
+install-data-local:
+	echo "$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir)";	\
+	$(GACUTIL) /i $(ASSEMBLY) /f /root $(DESTDIR)$(libdir) || exit 1;
+
+uninstall-local:
+	echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir)";	\
+	$(GACUTIL) /u $(ASSEMBLY_NAME) /root $(DESTDIR)$(libdir) || exit 1;
 
