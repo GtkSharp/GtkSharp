@@ -169,10 +169,10 @@ namespace GtkDemo
         private void OnTreeChanged (object o, EventArgs args)
 		{
 
-		TreeIter iter = new TreeIter ();
+		TreeIter iter;
 		TreeModel model;
 
-		if (treeView.Selection.GetSelected (out model, ref iter))
+		if (treeView.Selection.GetSelected (out model, out iter))
 		{
 			TreePath path;
 			path = store.GetPath (iter);

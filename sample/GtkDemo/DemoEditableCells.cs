@@ -190,10 +190,10 @@ namespace GtkDemo
 
 		private void RemoveItem (object o, EventArgs args)
 		{
- 			TreeIter iter = new TreeIter ();
+ 			TreeIter iter;
  			TreeModel model;
 
- 			if (treeView.Selection.GetSelected (out model, ref iter))
+ 			if (treeView.Selection.GetSelected (out model, out iter))
 			{
  				TreePath path = store.GetPath (iter);
  				store.Remove (out iter);
