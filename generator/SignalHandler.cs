@@ -109,7 +109,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate static " + dname + " _Delegate;");
 			sw.WriteLine();
-			sw.Write("\t\tprivate static " + s_ret + " ");
+			sw.Write("\t\tprivate static " + p_ret + " ");
 			sw.WriteLine(cbname + "(" + pinv + ", int key)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (!_Instances.Contains(key))");
@@ -157,7 +157,7 @@ namespace GtkSharp.Generation {
 					else
 						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
 
-					sw.WriteLine("\t\t\treturn (" + s_ret + ") args.RetVal;");
+					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + SymbolTable.CallByName (retval, "args.RetVal") + ";");
 				}
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();
