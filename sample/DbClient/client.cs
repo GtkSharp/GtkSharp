@@ -27,6 +27,7 @@ class Client {
 	static Stack statusIds;
 	static VBox box;
 	static IdConnection conn;
+	static bool noConn;
 	
 	static void Main ()
 	{
@@ -106,7 +107,26 @@ class Client {
 
 		PopMessage ();
 		PushMessage ("");
-		ArrayList dataList = Conn.SelectAll ();
+		ArrayList dataList = null;
+		try {
+			dataList = Conn.SelectAll ();
+		} catch (Exception e) {
+			Console.WriteLine ("Error accesing DB.\n");
+			Console.WriteLine (e.Message);
+			Console.Write ("\nYou should set up a PostgreSQL database for user 'monotest', ");
+			Console.Write ("password\n'monotest' and dbname 'monotest' accesible ");
+			Console.WriteLine ("through the loopback interface.\n");
+			Console.WriteLine ("The database should have a table called customers " + 
+					   "created with the following\ncommand:\n");
+			Console.WriteLine ("CREATE TABLE \"customers\" (");
+			Console.WriteLine ("\t\"id\" integer NOT NULL,");
+			Console.WriteLine ("\t\"name\" character varying(256) NOT NULL,");
+			Console.WriteLine ("\t\"address\" character varying(256) NOT NULL");
+			Console.WriteLine (");\n");
+			Console.WriteLine ("CREATE UNIQUE INDEX id_idx ON customers USING btree (id);\n");
+
+			Environment.Exit (1);
+		}
 		
 		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, false);
 		DrawTitles (tableau);
