@@ -30,9 +30,9 @@
         <Parameter Name="theta" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
-        <param name="theta">a <see cref="T:System.Double" /></param>
+        <summary>Sets up a rotation matrix.</summary>
+        <param name="dst">Where to store the resulting affine transformation.</param>
+        <param name="theta">Rotation angle in degrees.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -46,10 +46,10 @@
         <Parameter Name="src" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src">a <see cref="T:System.Double[]" /></param>
-        <returns>a <see cref="T:System.Double" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Finds the expansion factor, i.e. the square root of the factor by which the affine transform affects area.</summary>
+        <param name="src">The affine transformation.</param>
+        <returns>The expansion factor.</returns>
+        <remarks>In an affine transform composed of scaling, rotation, shearing, and translation, returns the amount of scaling.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Identity">
@@ -62,8 +62,8 @@
         <Parameter Name="dst" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
+        <summary>Set up the identity matrix.</summary>
+        <param name="dst">Where to store the resulting affine transform.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -80,12 +80,12 @@
         <Parameter Name="vert" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst_affine">a <see cref="T:System.Double[]" /></param>
-        <param name="src_affine">a <see cref="T:System.Double[]" /></param>
-        <param name="horz">a <see cref="T:System.Int32" /></param>
-        <param name="vert">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Flips the affine transform.</summary>
+        <param name="dst_affine">Where to store the resulting affine transform.</param>
+        <param name="src_affine">The original affine transformation.</param>
+        <param name="horz">Whether or not to flip horizontally.</param>
+        <param name="vert">Whether or not to flip vertically.</param>
+        <remarks>Both horz and vert false results in a simple copy operation. True for both results in an 180 degree rotation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToStringArray">
@@ -99,10 +99,10 @@
         <Parameter Name="src" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String[]" /></param>
-        <param name="src">a <see cref="T:System.Double[]" /></param>
-        <remarks>To be added</remarks>
+        <summary>Converts an affine transform into a bit of PostScript code that implements the transform.</summary>
+        <param name="str">The resulting string.</param>
+        <param name="src">The affine transform.</param>
+        <remarks>Special cases of scaling, rotation, and translation are detected, and the corresponding PostScript operators used (this greatly aids understanding the output generated). The identity transform is mapped to the null string.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Invert">
@@ -116,10 +116,10 @@
         <Parameter Name="src_affine" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst_affine">a <see cref="T:System.Double[]" /></param>
-        <param name="src_affine">a <see cref="T:System.Double[]" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets up the inverse of the given transformation.</summary>
+        <param name="dst_affine">Where the resulting affine is stored.</param>
+        <param name="src_affine">The original affine transformation.</param>
+        <remarks>The inverse is in the classical sense; src_affine multiplied with dst_affine, or dst_affine multiplied with src_affine will be (to within roundoff error) the identify affine. See <see cref="M:Art.Affine.Identity(double[])" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Multiply">
@@ -134,10 +134,10 @@
         <Parameter Name="src2" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
-        <param name="src1">a <see cref="T:System.Double[]" /></param>
-        <param name="src2">a <see cref="T:System.Double[]" /></param>
+        <summary>Multiplies two affine transforms together, i.e. the resulting dst is equivalent to doing first src1 then src2.</summary>
+        <param name="dst">Where to store the resulting affine transform.</param>
+        <param name="src1">The first affine transform to multiply.</param>
+        <param name="src2">The second affine transform to multiply.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -152,9 +152,9 @@
         <Parameter Name="theta" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
-        <param name="theta">a <see cref="T:System.Double" /></param>
+        <summary>Setup a shearing matrix</summary>
+        <param name="dst">Where to store the resulting affine transformation.</param>
+        <param name="theta">Shear angle in degrees.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -168,10 +168,10 @@
         <Parameter Name="src" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src">a <see cref="T:System.Double[]" /></param>
+        <summary>Determines wether a matrix is rectilinear, i.e. grid-aligned rectangles are transformed to other grid-aligned rectangles.</summary>
+        <param name="src">The affine transformation to test.</param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The implementation has epsilon-tolerance for roundoff errors.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Equal">
@@ -185,11 +185,11 @@
         <Parameter Name="matrix2" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="matrix1">a <see cref="T:System.Double[]" /></param>
-        <param name="matrix2">a <see cref="T:System.Double[]" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Determine if two matrices are equal.</summary>
+        <param name="matrix1">An affine transformation.</param>
+        <param name="matrix2">Another affine transformation.</param>
+        <returns>True if the matrices are equal, otherwise false.</returns>
+        <remarks>Equality is verified with epsilon-tolerance for roundoff errors.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Translate">
@@ -204,10 +204,10 @@
         <Parameter Name="ty" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
-        <param name="tx">a <see cref="T:System.Double" /></param>
-        <param name="ty">a <see cref="T:System.Double" /></param>
+        <summary>Sets up a translation matrix.</summary>
+        <param name="dst">Where to store the resulting affine transform.</param>
+        <param name="tx">X translation amount.</param>
+        <param name="ty">Y translation amount.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -223,10 +223,10 @@
         <Parameter Name="sy" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dst">a <see cref="T:System.Double[]" /></param>
-        <param name="sx">a <see cref="T:System.Double" /></param>
-        <param name="sy">a <see cref="T:System.Double" /></param>
+        <summary>Sets up a scaling matrix.</summary>
+        <param name="dst">Where to store the resulting affine transform.</param>
+        <param name="sx">X scale factor.</param>
+        <param name="sy">Y scale factor.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -252,10 +252,10 @@
         <Parameter Name="affine" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src">a <see cref="T:Art.Point" /></param>
-        <param name="affine">a <see cref="T:System.Double" /></param>
-        <returns>a <see cref="T:Art.Point" /></returns>
+        <summary>Apply an affine transform to an <see cref="T:Art.Point" />.</summary>
+        <param name="src">The original point.</param>
+        <param name="affine">The affine transform.</param>
+        <returns>The resulting point after performing the transform.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
