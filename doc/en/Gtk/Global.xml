@@ -149,9 +149,9 @@
         <ReturnType>Gdk.Event</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains a copy of the event currently being processed by Gtk#.</summary>
         <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>For example, if you get a <see cref="E:Gtk.Button.Clicked" /> event from <see cref="T:Gtk.Button" />, the current event will be the <see cref="T:Gdk.EventButton" /> that triggered the <see cref="E:Gtk.Button.Clicked" /> signal.  If there is no current event, the function returns <see langword="null" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentEventTime">
@@ -161,7 +161,7 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns a uint representing the unix time of the current event.</summary>
+        <summary>Returns a <see cref="T:System.UInt32" /> representing the unix time of the current event.</summary>
         <returns>Returns the unix time for the current event.</returns>
         <remarks>None.</remarks>
       </Docs>
@@ -319,9 +319,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Checks if any events are pending.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This can be used to update the GUI and invoke timeouts etc. while doing some time intensive computation.
+
+<example>
+            <code lang="C#">
+	/* computation going on */
+...
+        while (Gtk.Global.EventsPending)
+	{
+	  Gtk.Application.RunIteration ();
+	}
+...
+	/* computation continued */
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="TypeClass">
