@@ -628,6 +628,40 @@ namespace GLib {
 					throw new Exception ("Unknown type");
 				}
 			}
+			set {
+				GLib.TypeFundamentals type = GLibSharp.TypeConverter.LookupType (value.GetType());
+				switch (type) {
+				case TypeFundamentals.TypeNone:
+					g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (value));
+					break;
+				case TypeFundamentals.TypeString:
+					g_value_set_string (_val, (string) value);
+					break;
+				case TypeFundamentals.TypeBoolean:
+					g_value_set_boolean (_val, (bool) value);
+					break;
+				case TypeFundamentals.TypeInt:
+					g_value_set_int (_val, (int) value);
+					break;
+				case TypeFundamentals.TypeDouble:
+					g_value_set_double (_val, (double) value);
+					break;
+				case TypeFundamentals.TypeFloat:
+					g_value_set_float (_val, (float) value);
+					break;
+				case TypeFundamentals.TypeChar:
+					g_value_set_char (_val, (char) value);
+					break;
+				case TypeFundamentals.TypeUInt:
+					g_value_set_uint (_val, (uint) value);
+					break;
+				case TypeFundamentals.TypeObject:
+					g_value_set_object (_val, ((GLib.Object) value).Handle);
+					break;
+				default:
+					throw new Exception ("Unknown type");
+				}
+			}
 		}
 
 		/// <summary>

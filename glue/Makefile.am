@@ -12,6 +12,7 @@ BASESOURCES = 			\
 	fileselection.c		\
 	layout.c		\
 	list.c			\
+	nodestore.c		\
 	object.c		\
 	paned.c			\
 	selection.c		\
