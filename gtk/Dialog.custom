@@ -2,11 +2,20 @@
 // Gtk.Dialog.custom - Gtk Dialog class customizations
 //
 // Author: Duncan Mak  (duncan@ximian.com)
+//	   Mike Kestner (mkestner@speakeasy.net)
 //
-// Copyright (C) 2002 Ximian, Inc. 
+// Copyright (C) 2002 Ximian, Inc. and Mike Kestner 
 //
 // This code is inserted after the automatically generated code.
 //
+
+// Manually wrap until we figure out how to gen ellipses.
+[DllImport("gtk-x11-2.0")]
+static extern IntPtr gtk_dialog_new_with_buttons (string title, IntPtr i, int flags, IntPtr dummy);
+public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base()
+{
+	Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
+}
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_dialog_get_vbox (IntPtr i);
