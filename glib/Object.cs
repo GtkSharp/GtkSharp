@@ -179,6 +179,7 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
+		[Obsolete]
 		protected Object (GType gtype)
 		{
 			Raw = g_object_new (gtype.Val, IntPtr.Zero);
@@ -187,7 +188,7 @@ namespace GLib {
 		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, string[] names, GLib.Value[] vals);
 
-		protected void CreateNativeObject (string[] names, GLib.Value[] vals)
+		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, names, vals);
 		}

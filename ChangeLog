@@ -1,5 +1,18 @@
 2004-11-08  Dan Winship  <danw@novell.com>
 
+	* glib/Object.cs (CreateNativeObject): virtualize
+
+	* gtk/Gtk.metadata: disable the generated GType ctor on Gtk.Widget
+
+	* gtk/Widget.custom (Widget, CreateNativeObject,
+	Widget_ParentSet): Connect to our own ParentSet event from
+	CreateNativeObject and the GType ctor, and keep a static Hashtable
+	of parented widgets, so that adding a managed widget to a
+	container keeps both the GObject and the managed object alive.
+
+	* generator/ObjectGen.cs (GenCtors): handle the disable_gtype_ctor
+	flag. Also, mark GType ctors [Obsolete]
+
 	* generator/ChildProperty.cs: 
 	* generator/Property.cs: Fix child property names.
 
