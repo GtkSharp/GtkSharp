@@ -170,7 +170,6 @@ namespace GLib {
 
 		public static DateTime time_tToDateTime (IntPtr time_t)
 		{
-			Console.WriteLine ("in time_tToDateTime from");
 			return local_epoch.AddSeconds ((int)time_t + utc_offset);
 		}
 
