@@ -150,7 +150,7 @@ namespace GLib {
 				return null;
 			}
 			uint parent_gtype = (uint) pi.GetValue (null, null);
-			string name = t.Namespace + t.Name;
+			string name = t.Namespace.Replace(".", "_") + t.Name;
 			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
 			return new GLib.Type (gtksharp_register_type (name, parent_gtype));
 		}
