@@ -1,14 +1,20 @@
 <Type Name="Pixbuf" FullName="Gdk.Pixbuf">
-  <TypeSignature Language="C#" Value="public class Pixbuf : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Pixbuf : GLib.Object, IWrapper, IDisposable" Maintainer="miguel" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Not thread safe</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Represents an image in memory</summary>
+    <remarks>
+	<para>
+	  The Gdk.Pixbuf class is used to represent an image in
+	  memory.  The in-memory representation uses either a three
+	  byte RGB representation or a four byte RGBA representation. 
+	</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -47,11 +53,17 @@
         <Parameter Name="copy_pixels" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixdata">To be added: an object of type 'Gdk.Pixdata'</param>
-        <param name="copy_pixels">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+            Creates a Pixbuf from a Pixdata
+	</summary>
+        <param name="pixdata">Source Gdk.Pixdata</param>
+        <param name="copy_pixels">Whether to make a private copy of the data</param>
+        <returns>
+	  <para>
+	    The return value is an initialized Pixbuf class
+	  </para>
+	</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorGetType">
@@ -62,9 +74,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Glib Type ID for the PixbufError interface.
+	</summary>
+        <returns>
+	  <para>
+	    This returns the internal GLib type ID for the PixbufError
+	    interface
+	  </para>
+	</returns>
+        <remarks>
+	  <para>
+	    Internal, to be used only with interop with Gtk+ code.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AlphaModeGetType">
@@ -75,13 +98,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	    Glib Type ID for the AlphaMode interface
+	</summary>
+        <returns>
+	  <para>
+	    This returns the internal GLib type ID for the AlphaMode
+	    interface
+	    </para>
+	</returns>
+        <remarks>
+	  <para>
+	    Internal, to be used only with interop with Gtk+ code.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="NewFromXpmData">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf NewFromXpmData (string data);" />
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf
+      NewFromXpmData (string data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf</ReturnType>
@@ -90,10 +125,23 @@
         <Parameter Name="data" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="data">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Creates a Pixbuf from an XPM image.
+	</summary>
+        <param name="data">The string containing the XPM image</param>
+        <returns>
+	  <para>
+	    An initialized Pixbuf class from the XPM image.
+	  </para>
+	</returns>
+        <remarks>
+	  <para>
+	    XPM files are typically used in C programs to embed images
+	    in a textual form.  They are not typically used with Mono
+	    programs and Gtk# programs as they can embed images
+	    directly using /resource:file.png.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddAlpha">
@@ -109,13 +157,34 @@
         <Parameter Name="b" Type="System.Byte" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="substitute_color">To be added: an object of type 'bool'</param>
-        <param name="r">To be added: an object of type 'byte'</param>
-        <param name="g">To be added: an object of type 'byte'</param>
-        <param name="b">To be added: an object of type 'byte'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds an alpha channel to the Pixbuf</summary>
+        <param name="substitute_color"> Whether to set a color to zero
+        opacity. If this is <see langword="false"/>, then the (r, g, b) arguments will be ignored.</param>
+        <param name="r">Red value to substitute</param>
+        <param name="g">Green value to substitute</param>
+        <param name="b">Blue value to substitute</param>
+        <returns><para>A new pixbuf with an alpha channel.</para></returns>
+        <remarks>
+	  <para>
+	    Takes an existing pixbuf and adds an alpha channel to
+	    it. If the existing pixbuf already had an alpha channel,
+	    the channel values are copied from the original;
+	    otherwise, the alpha channel is initialized to 255 (full
+	    opacity).
+	  </para>
+	  <para>
+	    If <paramref name="substitute_color" /> is <see
+	    langword="true"/>, then the color specified by (<paramref
+	    name="r"/>, <paramref name="g"/>, <paramref name="b"/>)
+	    will be assigned zero opacity. That is, if you pass (255,
+	    255, 255) for the substitute color, all white pixels will
+	    become fully transparent.
+	  </para>
+	  <para>
+	    The original image is not modified, a copy of the image is
+	    made and returned.  
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompositeColorSimple">
@@ -134,16 +203,31 @@
         <Parameter Name="color2" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest_width">To be added: an object of type 'int'</param>
-        <param name="dest_height">To be added: an object of type 'int'</param>
-        <param name="interp_type">To be added: an object of type 'Gdk.InterpType'</param>
-        <param name="overall_alpha">To be added: an object of type 'int'</param>
-        <param name="check_size">To be added: an object of type 'int'</param>
-        <param name="color1">To be added: an object of type 'uint'</param>
-        <param name="color2">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Scaling with checkboard rendering</summary>
+        <param name="dest_width">The width of destination image</param>
+        <param name="dest_height">The height of destination image</param>
+        <param name="interp_type">The interpolation type for the transformation.</param>
+        <param name="overall_alpha">Overall alpha for source image (0..255)</param>
+        <param name="check_size">The size of checks in the checkboard (must be a power of two)</param>
+        <param name="color1">The color of check at upper left</param>
+        <param name="color2">The color of the other check</param>
+        <returns>
+	  <para>
+	    The new Pixbuf, or <see langword="null"/> if not enough
+	    memory could be allocated for it.
+	  </para>
+	</returns>
+        <remarks>
+	  <para>
+	    Creates a new Pixbuf by scaling <paramref name="src"/> to
+	    <paramref name="dest_width"/> x
+	    <paramref name="dest_height"/> and compositing the result with a checkboard
+	    of colors <paramref name="color1"/> and <paramref name="color2"/>.
+	  </para>
+	  <para>
+	    The colors must be in RGB format.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScaleSimple">
@@ -158,12 +242,38 @@
         <Parameter Name="interp_type" Type="Gdk.InterpType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest_width">To be added: an object of type 'int'</param>
-        <param name="dest_height">To be added: an object of type 'int'</param>
-        <param name="interp_type">To be added: an object of type 'Gdk.InterpType'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Scales a Pixbuf</summary>
+        <param name="dest_width">The width of destination image</param>
+        <param name="dest_height">The height of destination image</param>
+        <param name="interp_type">The interpolation type for the transformation</param>
+        <returns>
+	  <para>
+	    A new Pixbuf object, or <see langword="null"/> if no
+	    memory is available for the transformation.
+	  </para>
+	</returns>
+        <remarks>
+	  <para>
+	    Create a new GdkPixbuf containing a copy of src scaled to
+	    <paramref name="dest_width"/> x <paramref
+	    name="dest_height"/>. It leaves the current Pixbuf
+	    unaffected.  <paramref name="interp_type"/> should be <see
+	    cref="F:Gdk.InterpType.Nearest"/> if you want maximum
+	    speed (but when scaling down <see
+	    cref="F:Gdk.InterpType.Nearest"/> is usually unusably
+	    ugly).  The default <paramref name="interp_type"/> should
+	    be <see cref="F:Gdk.InterpType.Bilinear"/> which offers
+	    reasonable quality and speed.
+	  </para>
+	  <para>
+	    You can scale a sub-portion of the Pixbuf by creating a
+	    sub-pixbuf using a Pixbuf constructor.
+	  </para>
+	  <para>
+	    For more complicated scale/compositions see <see
+	    cref="M:Gdk.Pixbuf.Scale"/> and <see cref="M:Gdk.Pixbuf.Composite"/>
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompositeColor">
@@ -191,24 +301,37 @@
         <Parameter Name="color2" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="dest_width">To be added: an object of type 'int'</param>
-        <param name="dest_height">To be added: an object of type 'int'</param>
-        <param name="offset_x">To be added: an object of type 'double'</param>
-        <param name="offset_y">To be added: an object of type 'double'</param>
-        <param name="scale_x">To be added: an object of type 'double'</param>
-        <param name="scale_y">To be added: an object of type 'double'</param>
-        <param name="interp_type">To be added: an object of type 'Gdk.InterpType'</param>
-        <param name="overall_alpha">To be added: an object of type 'int'</param>
-        <param name="check_x">To be added: an object of type 'int'</param>
-        <param name="check_y">To be added: an object of type 'int'</param>
-        <param name="check_size">To be added: an object of type 'int'</param>
-        <param name="color1">To be added: an object of type 'uint'</param>
-        <param name="color2">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Scale and Compose a Pixbuf with control over the checks</summary>
+        <param name="dest">The destination Pixbuf to render to.</param>
+        <param name="dest_x">The left coordinate for region to render</param>
+        <param name="dest_y">The top coordinate for region to render</param>
+        <param name="dest_width">The width of the region to render</param>
+        <param name="dest_height">The height of the region to render</param>
+        <param name="offset_x">The offset in the X direction (currently rounded to an integer)</param>
+        <param name="offset_y">The offset in the Y direction (currently rounded to an integer)</param>
+        <param name="scale_x">The scale factor in the X direction</param>
+        <param name="scale_y">The scale factor in the Y direction</param>
+        <param name="interp_type">The interpolation type for the transformation.</param>
+        <param name="overall_alpha">Overall alpha for source image (0..255)</param>
+        <param name="check_x">The X offset for the checkboard (origin of checkboard is at -check_x, -check_y)</param>
+        <param name="check_y">The Y offset for the checkboard</param>
+        <param name="check_size">The size of checks in the checkboard (must be a power of two)</param>
+        <param name="color1">The color of check at upper left</param>
+        <param name="color2">The color of the other check</param>
+        <remarks>
+	  <para>
+	    Creates a transformation of the Pixbuf by scaling by
+	    <paramref name="scale_x"/> and <paramref name="scale_y"/>
+	    then translating by <paramref name="offset_x"/> and
+	    <paramref name="offset_y"/>, then composites the rectangle
+	    (<paramref name="dest_x"/> ,<paramref name="dest_y"/>,
+	    <paramref name="dest_width"/>, <paramref
+	    name="dest_height"/>) of the resulting image with a
+	    checkboard of the colors <paramref name="color1"/> and
+	    <paramref name="color2"/> and renders it onto the
+	    destination imag e.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFromImage">
@@ -228,17 +351,109 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src">To be added: an object of type 'Gdk.Image'</param>
-        <param name="cmap">To be added: an object of type 'Gdk.Colormap'</param>
-        <param name="src_x">To be added: an object of type 'int'</param>
-        <param name="src_y">To be added: an object of type 'int'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets an image from a Gdk.Image</summary>
+        <param name="image">Source Image (A <see cref="T:Gdk.Image"/>)</param>
+        <param name="cmap">A colormap (if src does not have one set) (A <see cref="T:Gdk.Colormap"/></param>
+        <param name="src_x">Source X coordinate within drawable.</param>
+        <param name="src_y">Source Y coordinate within drawable.</param>
+        <param name="dest_x">Destination X coordinate in pixbuf, or 0
+        if dest is <see langword="null"/>.</param>
+        <param name="dest_y">Destination Y coordinate in pixbuf, or 0
+        if dest is <see langword="null"/>.</param>
+        <param name="width">Width in pixels of region to get.</param>
+        <param name="height">Height in pixels of region to get.</param>
+
+        <returns>
+	  <para>
+	    The value of the Pixbuf (the same one that was passed) or
+	    <see langword="null"/> on error.   See the remarks below
+	    for details on the possible ways on which this function
+	    might fail.
+	  </para>
+	</returns>	  
+        <remarks>
+	  <para>
+	    Transfers image data from a <see cref="T:Gdk.Image"/> and
+	    converts it to an RGB(A) representation inside a <see
+	    cref="T:Gdk.Pixbuf"/>. In other words, copies image data
+	    from the Image (which might be potentially shared using
+	    shared memory between the client and the server) to a
+	    client-side RGB(A) buffer (the Pixbuf). This allows you to
+	    efficiently read individual pixels on the client side.
+	  </para>
+	  <para>
+	    If the <paramref name="image"/> has no colormap (<see
+	    cref="P:Gdk.Image.Colormap"/> returns <see
+	    langword="null"/>), then a suitable colormap must be
+	    specified. Typically a <see cref="T:Gdk.Window"/> or a
+	    pixmap created by passing a <see cref="T:Gdk.Window"/> to
+	    the <see cref="T:Gdk.Pixmap"/> constructor will already
+	    have a colormap associated with it.  If the <paramref
+	    name="image"/> has a colormap, the <paramref
+	    name="cmap"/> argument will be ignored. If the <paramref
+	    name="image"/> is a bitmap (1 bit per pixel pixmap),
+	    then a colormap is not required; pixels with a value of 1
+	    are assumed to be white, and pixels with a value of 0 are
+	    assumed to be black.  For taking screenshots, the <see
+	    cref="P:Gdk.Colormap.System"/> property returns the
+	    correct colormap to use.
+	  </para>
+
+	  <para>
+	    If the specified destination pixbuf <paramref
+	    name="dest"/> is <see langword="null"/>, then this
+	    function will create an RGB Pixbuf with 8 bits per channel
+	    and no alpha, with the same size specified by the width
+	    and height arguments. In this case, the <paramref
+	    name="dest_x"/> and <paramref name="dest_y"/> arguments
+	    must be specified as 0. If the specified destination
+	    pixbuf is not <see langword="null"/> and it contains alpha
+	    information, then the filled pixels will be set to full
+	    opacity (alpha = 255).
+	  </para>
+
+	  <para>
+	    If the specified <paramref name="image"/> is a pixmap,
+	    then the requested source rectangle must be completely
+	    contained within the pixmap, otherwise the function will
+	    return <see langword="null"/>. For pixmaps only (not for
+	    windows) passing -1 for <paramref name="width"/> or
+	    <paramref name="height"/> is allowed, to mean the full
+	    width or height of the pixmap.
+	  </para>
+
+	  <para>
+	    If the specified <paramref name="image"/> is a window,
+	    and the window is off the screen, then there is no image
+	    data in the obscured/offscreen regions to be placed in the
+	    pixbuf.  The contents of portions of the <see
+	    cref="T:Gdk.Pixbuf"/> corresponding to the offscreen
+	    region are undefined.
+	  </para>
+
+	  <para>
+	    If the window you are obtaining data from is partially
+	    obscured by other windows, then the contents of the Pixbuf
+	    areas corresponding to the obscured regions are undefined.
+	  </para>
+
+	  <para>
+	    If the target image is not mapped (typically because
+	    it's iconified/minimized or not on the current workspace),
+	    then <see langword="null"/> will be returned.
+	  </para>
+
+	  <para>
+	    If memory can't be allocated for the return value, <see
+	      langword="null"/> will be returned instead.
+	  </para>
+
+	  <para>
+	    (In short, there are several ways this function can fail,
+	    and if it fails it returns <see langword="null"/>; so
+	    check the return value.)
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderToDrawable">
@@ -261,19 +476,40 @@
         <Parameter Name="y_dither" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="drawable">To be added: an object of type 'Gdk.Drawable'</param>
-        <param name="gc">To be added: an object of type 'Gdk.GC'</param>
-        <param name="src_x">To be added: an object of type 'int'</param>
-        <param name="src_y">To be added: an object of type 'int'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <param name="dither">To be added: an object of type 'Gdk.RgbDither'</param>
-        <param name="x_dither">To be added: an object of type 'int'</param>
-        <param name="y_dither">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Renders the image into a Drawable</summary>
+        <param name="drawable">Destination drawable.</param>
+        <param name="gc">GC used for rendering.</param>
+        <param name="src_x">Source X coordinate within pixbuf.</param>
+        <param name="src_y">Source Y coordinate within pixbuf.</param>
+        <param name="dest_x">Destination X coordinate within drawable.</param>
+        <param name="dest_y">Destination Y coordinate within drawable.</param>
+        <param name="width">Width of region to render, in pixels, or -1 to use pixbuf width</param>
+        <param name="height">Height of region to render, in pixels, or -1 to use pixbuf height</param>
+        <param name="dither">Dithering mode for GdkRGB.</param>
+        <param name="x_dither">X offset for dither.</param>
+        <param name="y_dither"> Y offset for dither.</param>
+        <remarks>
+	  <para>
+	    Renders a rectangular portion of the Pixbuf into the
+	    <paramref name="drawable"/> while using the specified
+	    <paramref name="gc"/>.  This is done using GdkRGB, so the
+	    specified drawable must have the <see cref="T:Gdk.RGB"/>
+	    visual and colormap.  Note that this function will ignore
+	    the opacity information for images with an alpha channel;
+	    the GC must already have the clipping mask set if you want
+	    transparent regions to show through.
+	  </para>
+	  <para>
+	    For an explanation of dither offsets, see the GdkRGB
+	    documentation.  In brief, the dither offset is important
+	    when re-rendering partial regions of an image to a
+	    rendered version of the full image, or for when the
+	    offsets to a base position change, as in scrolling. The
+	    dither matrix has to be shifted for consistent visual
+	    results. If you do not have any of these cases, the dither
+	    offsets can be both zero.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFromDrawable">
@@ -283,7 +519,7 @@
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="src" Type="Gdk.Drawable" />
+        <Parameter Name="drawable" Type="Gdk.Drawable" />
         <Parameter Name="cmap" Type="Gdk.Colormap" />
         <Parameter Name="src_x" Type="System.Int32" />
         <Parameter Name="src_y" Type="System.Int32" />
@@ -293,17 +529,116 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src">To be added: an object of type 'Gdk.Drawable'</param>
-        <param name="cmap">To be added: an object of type 'Gdk.Colormap'</param>
-        <param name="src_x">To be added: an object of type 'int'</param>
-        <param name="src_y">To be added: an object of type 'int'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets image from a Gdk.Drawable</summary>
+        <param name="drawable">Source drawable (A <see cref="T:Gdk.Drawable"/>)</param>
+        <param name="cmap">A colormap (if src does not have one set) (A <see cref="T:Gdk.Colormap"/></param>
+        <param name="src_x">Source X coordinate within drawable.</param>
+        <param name="src_y">Source Y coordinate within drawable.</param>
+        <param name="dest_x">Destination X coordinate in pixbuf, or 0
+        if dest is <see langword="null"/>.</param>
+        <param name="dest_y">Destination Y coordinate in pixbuf, or 0
+        if dest is <see langword="null"/>.</param>
+        <param name="width">Width in pixels of region to get.</param>
+        <param name="height">Height in pixels of region to get.</param>
+        <returns>
+	  <para>
+	    The value of the Pixbuf (the same one that was passed) or
+	    <see langword="null"/> on error.   See the remarks below
+	    for details on the possible ways on which this function
+	    might fail.
+	  </para>
+	  </returns>
+        <remarks>
+	  <para>
+	    Transfers image data from a <see cref="T:Gdk.Drawable"/>
+	    and converts it to an RGB(A) representation inside a <see
+	    cref="T:Gdk.Pixbuf"/>. In other words, copies image data
+	    from a server-side drawable to a client-side RGB(A)
+	    buffer. This allows you to efficiently read individual
+	    pixels on the client side.
+	  </para>
+	  <para>
+	    If the <paramref name="drawable"/> has no colormap (<see
+	    cref="P:Gdk.Drawable.Colormap"/> returns <see
+	    langword="null"/>), then a suitable colormap must be
+	    specified. Typically a <see cref="T:Gdk.Window"/> or a
+	    pixmap created by passing a <see cref="T:Gdk.Window"/> to
+	    the <see cref="T:Gdk.Pixmap"/> constructor will already
+	    have a colormap associated with it.  If the <paramref
+	    name="drawable"/> has a colormap, the <paramref
+	    name="cmap"/> argument will be ignored. If the <paramref
+	    name="drawable"/> is a bitmap (1 bit per pixel pixmap),
+	    then a colormap is not required; pixels with a value of 1
+	    are assumed to be white, and pixels with a value of 0 are
+	    assumed to be black.  For taking screenshots, the <see
+	    cref="P:Gdk.Colormap.System"/> property returns the
+	    correct colormap to use.
+	  </para>
+
+	  <para>
+	    If the specified destination pixbuf <paramref
+	    name="dest"/> is <see langword="null"/>, then this
+	    function will create an RGB Pixbuf with 8 bits per channel
+	    and no alpha, with the same size specified by the width
+	    and height arguments. In this case, the <paramref
+	    name="dest_x"/> and <paramref name="dest_y"/> arguments
+	    must be specified as 0. If the specified destination
+	    pixbuf is not <see langword="null"/> and it contains alpha
+	    information, then the filled pixels will be set to full
+	    opacity (alpha = 255).
+	  </para>
+
+	  <para>
+	    If the specified <paramref name="drawable"/> is a pixmap,
+	    then the requested source rectangle must be completely
+	    contained within the pixmap, otherwise the function will
+	    return <see langword="null"/>. For pixmaps only (not for
+	    windows) passing -1 for <paramref name="width"/> or
+	    <paramref name="height"/> is allowed, to mean the full
+	    width or height of the pixmap.
+	  </para>
+
+	  <para>
+	    If the specified <paramref name="drawable"/> is a window,
+	    and the window is off the screen, then there is no image
+	    data in the obscured/offscreen regions to be placed in the
+	    pixbuf.  The contents of portions of the <see
+	    cref="T:Gdk.Pixbuf"/> corresponding to the offscreen
+	    region are undefined.
+	  </para>
+
+	  <para>
+	    If the window you are obtaining data from is partially
+	    obscured by other windows, then the contents of the Pixbuf
+	    areas corresponding to the obscured regions are undefined.
+	  </para>
+
+	  <para>
+	    If the target drawable is not mapped (typically because
+	    it's iconified/minimized or not on the current workspace),
+	    then <see langword="null"/> will be returned.
+	  </para>
+
+	  <para>
+	    If memory can't be allocated for the return value, <see
+	      langword="null"/> will be returned instead.
+	  </para>
+
+	  <para>
+	    (In short, there are several ways this function can fail,
+	    and if it fails it returns <see langword="null"/>; so
+	    check the return value.)
+	  </para>
+
+	  <para>
+	    This function calls <see
+	    cref="M:Gdk.Drawable.GetImage(int,int,int,int)"/>
+	    internally and converts the resulting image to a <see
+	    cref="T:Gdk.Pixbuf"/>, so the documentation for <see
+	    cref="M:Gdk.Drawable.GetImage(int,int,int,int)"/> is also
+	    relevant.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -314,9 +649,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Copies the Pixbuf</summary>
+        <returns>
+	  <para>
+	    A copy of the data in the Pixbuf, or <see langword="null"/> on failure
+	  </para>
+	</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMaskForColormap">
@@ -389,19 +728,30 @@
         <Parameter Name="overall_alpha" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="dest_width">To be added: an object of type 'int'</param>
-        <param name="dest_height">To be added: an object of type 'int'</param>
-        <param name="offset_x">To be added: an object of type 'double'</param>
-        <param name="offset_y">To be added: an object of type 'double'</param>
-        <param name="scale_x">To be added: an object of type 'double'</param>
-        <param name="scale_y">To be added: an object of type 'double'</param>
-        <param name="interp_type">To be added: an object of type 'Gdk.InterpType'</param>
-        <param name="overall_alpha">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Scale and Compose a Pixbuf</summary>
+        <param name="dest">The destination Pixbuf to render to.</param>
+        <param name="dest_x">The left coordinate for region to render</param>
+        <param name="dest_y">The top coordinate for region to render</param>
+        <param name="dest_width">The width of the region to render</param>
+        <param name="dest_height">The height of the region to render</param>
+        <param name="offset_x">The offset in the X direction (currently rounded to an integer)</param>
+        <param name="offset_y">The offset in the Y direction (currently rounded to an integer)</param>
+        <param name="scale_x">The scale factor in the X direction</param>
+        <param name="scale_y">The scale factor in the Y direction</param>
+        <param name="interp_type">The interpolation type for the transformation.</param>
+        <param name="overall_alpha">Overall alpha for source image (0..255)</param>
+        <remarks>
+	  <para>
+	    Creates a transformation of the Pixbuf by scaling by
+	    <paramref name="scale_x"/> and <paramref name="scale_y"/>
+	    then translating by <paramref name="offset_x"/> and
+	    <paramref name="offset_y"/>, then composites the rectangle
+	    (<paramref name="dest_x"/>, <paramref name="dest_y"/>,
+	    <paramref name="dest_width"/>, <paramref
+	    name="dest_height"/>) of the resulting image onto the
+	    destination image.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Scale">
@@ -423,18 +773,36 @@
         <Parameter Name="interp_type" Type="Gdk.InterpType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <param name="dest_width">To be added: an object of type 'int'</param>
-        <param name="dest_height">To be added: an object of type 'int'</param>
-        <param name="offset_x">To be added: an object of type 'double'</param>
-        <param name="offset_y">To be added: an object of type 'double'</param>
-        <param name="scale_x">To be added: an object of type 'double'</param>
-        <param name="scale_y">To be added: an object of type 'double'</param>
-        <param name="interp_type">To be added: an object of type 'Gdk.InterpType'</param>
-        <remarks>To be added</remarks>
+        <summary>Scale transformation.</summary>
+        <param name="dest">The destination Pixbuf where the results
+        are rendered</param>
+        <param name="dest_x">The left coordinate for region to render</param>
+        <param name="dest_y">The top coordinate for region to render</param>
+        <param name="dest_width">The width of the region to render</param>
+        <param name="dest_height">The height of the region to render</param>
+        <param name="offset_x">The offset in the X direction (currently rounded to an integer)</param>
+        <param name="offset_y">The offset in the Y direction (currently rounded to an integer)</param>
+        <param name="scale_x">The scale factor in the X direction</param>
+        <param name="scale_y">The scale factor in the Y direction</param>
+        <param name="interp_type">The interpolation type for the transformation.</param>
+	<remarks>
+	  <para>
+	    Creates a transformation of the Pixbuf by scaling to
+	    <paramref name="scale_x"/> and <paramref name="scale_y"/>
+	    then translating by <paramref name="offset_x"/> and
+	    <paramref name="offset_y"/>, then renders the rectangle
+	    (<paramref name="dest_x"/>, <paramref name="dest_y"/>,
+	    <paramref name="dest_width"/>, <paramref
+	    name="dest_height"/>) of the resulting image onto the
+	    destination image replacing the previous contents.
+	  </para>
+	  <para>
+	    Try to use <see cref="M:Gdk.Pixbuf.ScaleSimple"/>, this
+	    function is the industrial-strength power tool you can
+	    fall back to if <see cref="M:Gdk.Pixbuf.ScaleSimple"/> is
+	    not powerful enough.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyArea">
@@ -453,15 +821,21 @@
         <Parameter Name="dest_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src_x">To be added: an object of type 'int'</param>
-        <param name="src_y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <param name="dest_pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="dest_x">To be added: an object of type 'int'</param>
-        <param name="dest_y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Copies a region from one Pixbuf to another</summary>
+        <param name="src_x">Source X coordinate within src_pixbuf.</param>
+        <param name="src_y">Source Y coordinate within src_pixbuf</param>
+        <param name="width">Width of the area to copy.</param>
+        <param name="height">Height of the area to copy.</param>
+        <param name="dest_pixbuf">Destination Pixbuf.</param>
+        <param name="dest_x">X coordinate within dest_pixbuf.</param>
+        <param name="dest_y">Y coordinate within dest_pixbuf.</param>
+        <remarks>
+	  <para>
+	    Copies a rectangular area from src_pixbuf to
+	    dest_pixbuf. Conversion of pixbuf formats is done
+	    automatically.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Fill">
@@ -474,9 +848,17 @@
         <Parameter Name="pixel" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixel">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	    Fills a pixbuf with a single color
+	</summary>
+        <param name="pixel">RGBA value for the pixel to set (0xffffffff is opaque white, 0x00000000 transparent black)</param>
+        <remarks>
+	  <para>
+	    Clears a pixbuf to the given RGBA value, converting the
+	    RGBA value into the pixbuf's pixel format. The alpha will
+	    be ignored if the Pixbuf does not have an alpha channel.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetOption">
@@ -489,10 +871,15 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="key">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Looks up an option in the Pixbuf</summary>
+        <param name="key">the key to lookup</param>
+        <returns>The value associated with the <paramref name="key"/></returns>
+        <remarks>
+	  <para>
+	    Looks up key in the list of options that may have been
+	    attached to the pixbuf when it was loaded.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMask">
@@ -526,11 +913,25 @@
         <Parameter Name="pixelate" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dest">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="saturation">To be added: an object of type 'float'</param>
-        <param name="pixelate">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Saturation and pixelation of a Pixbuf</summary>
+        <param name="dest">Target Pixbuf where the resulting image is stored</param>
+        <param name="saturation">saturation factor</param>
+        <param name="pixelate">whether to pixelation will take place</param>
+        <remarks>
+	  <para>
+	    Modifies saturation and optionally pixelates the Pixbuf,
+	    placing the result in <paramref name="dest"/>.  <paramref
+	    name="dest"/> may be the same Pixbuf with no ill
+	    effects. If <paramref name="saturation"/> is 1.0 then
+	    saturation is not changed. If it's less than 1.0,
+	    saturation is reduced (the image is darkened); if greater
+	    than 1.0, saturation is increased (the image is
+	    brightened). If <paramref name="pixelate"/> is <see
+	    langword="true"/>, then pixels are faded in a checkerboard
+	    pattern to create a pixelated image. src and dest must
+	    have the same image format, size, and rowstride.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderToDrawableAlpha">
@@ -612,10 +1013,17 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of the Pixbuf, using the
+        GLib-provided type</returns>
+        <remarks>
+	  <para>
+	    This is a constructor used by derivative types of <see
+	    cref="T:Gdk.Pixbuf"/> that would have their own GLib type
+	    assigned to it.  This is not typically used by C# code. 
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -626,10 +1034,15 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of Pixbuf, wrapping the C object.</returns>
+        <remarks>
+	  <para>
+	    This is an internal constructor, and should not be used by
+	    user code. 
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -644,14 +1057,20 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="colorspace">To be added: an object of type 'Gdk.Colorspace'</param>
-        <param name="has_alpha">To be added: an object of type 'bool'</param>
-        <param name="bits_per_sample">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor</summary>
+        <param name="colorspace">The colorspace (<see cref="T:Gdk.Colorspace"/>)</param>
+        <param name="has_alpha">Whether the image should have transparency information.</param>
+        <param name="bits_per_sample">Number of bits per color sample.</param>
+        <param name="width">Width of image in pixels.</param>
+        <param name="height">Height of image in pixels.</param>
+        <remarks>
+	  <para>
+	    Creates a new <see cref="T:Gdk.Pixbuf"/> structure and allocates a buffer
+	    for it. The  buffer has an optimal rowstride. Note that the
+	    buffer is not cleared; you will have to fill it completely
+	    yourself.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -690,10 +1109,16 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates Pixbuf from image file.</summary>
+        <param name="filename">Filename with the image</param>
+        <remarks>
+	  <para>
+	    Creates a new pixbuf by loading an image from a file. The
+	    file format is detected automatically (multiple formats are
+	    supported: JPG, PNG, TIFF, XPM, XBM).  If the file is not
+	    found, a <see cref="T:GLib.GException"/> will be thrown.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -726,14 +1151,22 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src_pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <param name="src_x">To be added: an object of type 'int'</param>
-        <param name="src_y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a sub-Pixbuf from an existing one.</summary>
+        <param name="src_pixbuf">The containing <see cref="T:Gdk.Pixbuf"/>.</param>
+        <param name="src_x">X coord in src_pixbuf</param>
+        <param name="src_y">Y coord in src_pixbuf</param>
+        <param name="width">Width of region in src_pixbuf</param>
+        <param name="height">Height of region in src_pixbuf</param>
+        <remarks>
+	  <para>
+	    Creates a new pixbuf which represents a sub-region of
+	    <paramref name="src_pixbuf"/>. The new pixbuf shares its
+	    pixels with the original pixbuf, so writing to one affects
+	    both. The new pixbuf holds a reference to <paramref
+	    name="src_pixbuf"/>, so <paramref name="src_pixbuf"/> will
+	    not be finalized until the new pixbuf is finalized.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -748,21 +1181,26 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf ( input);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (System.IO.Stream input);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="input" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="input">To be added: an object of type ''</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a Pixbuf from an image stored in a Stream </summary>
+        <param name="input">Input stream.</param>
+        <remarks>
+	  <para>
+	    A pixbuf is constructed from an image file in the incoming
+	    stream.  The image file can be in any of the formats
+	    supported by the Pixbuf.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf ( assembly, string resource);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (System.Reflection.Assembly assembly, string resource);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -770,11 +1208,34 @@
         <Parameter Name="resource" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="assembly">To be added: an object of type ''</param>
-        <param name="resource">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Loads an image from an assembly resource</summary>
+        <param name="assembly">The assembly to load the image from (or
+        <see langword="null"/> for the default assembly.</param>
+        <param name="resource">The resource name given to the image to
+        load. </param>
+        <remarks>
+	  <para>
+	    A Pixbuf is constructed from the image file stored in the
+	    resources of specified assembly.  If the specified
+	    assembly is null, then the code will load the resource
+	    from the same assembly as the calling assembly (It uses
+	    <see
+	    cref="M:System.Reflection.Assembly.GetCallingAssembly()"/>
+	    to determine the calling assembly).
+	  </para>
+	  <para>
+	    To link an image file into your program, invoke the
+	    compiler with the /resource: flag, like this:
+	    <example>
+	      mcs -resource:logo.png program.cs
+	    </example>
+	    if you want to specify a pathname different than the ID,
+	    you can pass those two flags:
+	    <example>
+	      mcs -resource:/usr/local/bin/logo.png,logo.png program.cs
+	    </example>
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -784,9 +1245,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The GLib Type for Gdk.Pixbuf</summary>
+        <returns>The GLib TYpe for the Gdk.Pixbuf class.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BitsPerSample">
@@ -796,9 +1257,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Number of bits per color sample in a pixbuf.</summary>
+        <returns>The number of bits per color sample in the pixbuf</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Height">
@@ -808,9 +1269,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Height of the image</summary>
+        <returns><para>The height in pixels of the image</para></returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pixels">
@@ -832,9 +1293,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns whether the Pixbuf contains an alpha channel</summary>
+        <returns><see langword="true"/> if the image contains an Alpha
+        channel, <see langword="false"/> otherwise.</returns>
+        <remarks>
+	  <para>
+	    The Pixbuf object handles images in either the RGB format,
+	    or the RGBA format.  The alpha channel value is a value
+	    between 0 and 255 and controls the opacity of a given pixel.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Width">
@@ -844,9 +1312,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The width of the image</summary>
+        <returns><para>The width in pixels of the image</para></returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NChannels">
@@ -856,9 +1324,10 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The number of channels on a Pixbuf</summary>
+        <returns>Returns the number of channels on a Pixbuf</returns>
+        <remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Rowstride">
@@ -868,9 +1337,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Rowstride of the Pixbuf</summary>
+        <returns>The rowstride property for the Pixbuf</returns>
+        <remarks>
+	  <para>
+	    Queries the rowstride of a pixbuf, which is the number of bytes between rows.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Colorspace">
@@ -880,9 +1353,13 @@
         <ReturnType>Gdk.Colorspace</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Colorspace'</returns>
-        <remarks>To be added</remarks>
+        <summary>The colorspace for this Pixbuf</summary>
+        <returns>The colorspace used by this Pixbuf</returns>
+        <remarks>
+	  <para>
+	    Currently Pixbuf only support the RGB colorspace.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
