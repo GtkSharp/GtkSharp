@@ -11,7 +11,11 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>A factory for menus.</summary>
-    <remarks />
+    <remarks>
+      To use this class, make an array of 
+      <see cref="T:Gtk.MenuEntry"/> objects which describe a menu, then invoke
+      <see cref="M:Gtk.ItemFactory.CreateMenuEntries"/> to generate the menu.
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
@@ -487,10 +491,13 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds an item factory which has been constructed using the 
+	  "&lt;name&gt;" prefix of <paramref name="path"/> as the path argument 
+	  building a new item factory.
+	</summary>
         <param name="path">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.ItemFactory" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gtk.ItemFactory" />, or <see langword="null"/></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateMenuEntries">
@@ -504,10 +511,10 @@
         <Parameter Name="entries" Type="Gtk.MenuEntry" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="n_entries">a <see cref="T:System.UInt32" /></param>
-        <param name="entries">a <see cref="T:Gtk.MenuEntry" /></param>
-        <remarks>To be added</remarks>
+        <summary>Creates menu items from a set of entries.</summary>
+        <param name="n_entries">a <see cref="T:System.UInt32" />, the number of entries</param>
+        <param name="entries">an array of <see cref="T:Gtk.MenuEntry" /> objects</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateItemsAc">
@@ -523,12 +530,13 @@
         <Parameter Name="callback_type" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="n_entries">a <see cref="T:System.UInt32" /></param>
-        <param name="entries">a <see cref="T:Gtk.ItemFactoryEntry" /></param>
-        <param name="callback_data">a <see cref="T:System.IntPtr" /></param>
+        <summary>Creates menu items from entries.</summary>
+        <param name="n_entries">a <see cref="T:System.UInt32" />, the number of menu items</param>
+        <param name="entries">a <see cref="T:Gtk.ItemFactoryEntry" />, a list of information about menu items</param>
+        <param name="callback_data">a <see cref="T:System.IntPtr" />, pointer to data that should be passed to
+	  the callback functions of all entries</param>
         <param name="callback_type">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>FIXME: See bugzilla 70887.</remarks>
       </Docs>
     </Member>
   </Members>
