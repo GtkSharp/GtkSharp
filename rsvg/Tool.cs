@@ -101,7 +101,7 @@
                     System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom(file_name, x_zoom, y_zoom, out error);
 
                     if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );;
+                        throw new GLib.GException( error );
                     } else {
                         return new Gdk.Pixbuf( raw_pixbuf );
                     }
@@ -114,7 +114,7 @@
                     System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_size(file_name, width, height, out error);
 
                     if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );;
+                        throw new GLib.GException( error );
                     } else {
                         return new Gdk.Pixbuf( raw_pixbuf );
                     }
@@ -127,7 +127,7 @@
                     System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_max_size(file_name, max_width, max_height, out error);
 
                     if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );;
+                        throw new GLib.GException( error );
                     } else {
                         return new Gdk.Pixbuf( raw_pixbuf );
                     }
@@ -140,7 +140,7 @@
                     System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom_with_max(file_name, x_zoom, y_zoom, max_width, max_height, out error);
 
                     if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );;
+                        throw new GLib.GException( error );
                     } else {
                         return new Gdk.Pixbuf( raw_pixbuf );
                     }

@@ -28,7 +28,7 @@ sources =			\
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
-customs =
+customs = Pixbuf.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
