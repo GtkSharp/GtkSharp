@@ -660,9 +660,18 @@
         <Parameter Name="clipboard" Type="Gtk.Clipboard" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="clipboard">an object of type <see cref="T:Gtk.Clipboard" /></param>
-        <remarks>To be added</remarks>
+        <summary>Copies the buffer's selected text to the given <see cref="T:Gtk.Clipboard" />.</summary>
+        <param name="clipboard">The <see cref="T:Gtk.Clipboard" /> to copy the text to.</param>
+        <remarks>
+          <para>Copying a <see cref="T:Gtk.TextView" />'s selected text:</para>
+          <example>
+            <code lang="C#"> void Copy (Gtk.TextView view) {
+	Gtk.TextBuffer buffer = view.Buffer;
+	Gtk.Clipboard board = Clipboard.Get (Gdk.Selection.Clipboard);
+	buffer.CopyClipboard (board);
+} </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveMark">
