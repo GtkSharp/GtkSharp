@@ -1,0 +1,20 @@
+MCS=mcs
+DESTDIR=
+
+@ENABLE_GNOMEDB_TRUE@ all: linux
+@ENABLE_GNOMEDB_FALSE@ all: 
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gnome/gnome-sharp.dll /r:../gda/gda-sharp.dll /out:gnomedb-sharp.dll /recurse:*.cs
+
+linux: gnomedb-sharp.dll
+
+gnomedb-sharp.dll: generated/*.cs
+	$(MCS) --unsafe --target library -L ../glib -r glib-sharp.dll -r gtk-sharp.dll -r gnome-sharp.dll -r gda-sharp.dll -o gnomedb-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -rf generated
+
+install: all
+@ENABLE_GNOMEDB_TRUE@	cp gnomedb-sharp.dll $(DESTDIR)@prefix@/lib

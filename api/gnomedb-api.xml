@@ -1,0 +1,603 @@
+<?xml version="1.0"?>
+<api>
+  <namespace name="GnomeDb" library="gnomedb-2">
+    <enum name="ComponentType" cname="GnomeDbComponentType" type="enum">
+      <member cname="GNOME_DB_COMPONENT_TYPE_INVALID" name="Invalid"/>
+      <member cname="GNOME_DB_COMPONENT_TYPE_EXE" name="Exe"/>
+      <member cname="GNOME_DB_COMPONENT_TYPE_SHLIB" name="Shlib"/>
+      <member cname="GNOME_DB_COMPONENT_TYPE_FACTORY" name="Factory"/>
+    </enum>
+    <enum name="FormType" cname="GnomeDbFormType" type="enum">
+      <member cname="GNOME_DB_FORM_TYPE_NAVIGATOR" name="Navigator"/>
+      <member cname="GNOME_DB_FORM_TYPE_LIST" name="List"/>
+    </enum>
+    <callback name="GridForeachFunc" cname="GnomeDbGridForeachFunc">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GnomeDbGrid*" name="grid"/>
+        <parameter type="gint" name="row"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <callback name="SqlEditorRunFunc" cname="GnomeDbSqlEditorRunFunc">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GnomeDbSqlEditorCommand*" name="cmd"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <object name="Browser" cname="GnomeDbBrowser" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbBrowserPrivate*"/>
+      <property name="Connection" cname="connection" type="GdaConnection" doc-string=" NULL" readable="true" writeable="true"/>
+      <signal name="ProgressMessage" cname="progress_message" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbBrowser*" name="browser"/>
+          <parameter type="const-gchar*" name="msg"/>
+        </parameters>
+      </signal>
+      <method name="GetConnection" cname="gnome_db_browser_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_browser_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_browser_new"/>
+      <method name="Refresh" cname="gnome_db_browser_refresh">
+        <return-type type="void"/>
+      </method>
+      <method name="SetConnection" cname="gnome_db_browser_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Combo" cname="GnomeDbCombo" parent="GtkCombo">
+      <field cname="priv" type="GnomeDbComboPrivate*"/>
+      <property name="Model" cname="model" type="GdaDataModel" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_db_combo_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_combo_new"/>
+      <method name="SetModel" cname="gnome_db_combo_set_model">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+          <parameter type="gint" name="pos"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="ConnectionProperties" cname="GnomeDbConnectionProperties" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbConnectionPropertiesPrivate*"/>
+      <method name="GetConnection" cname="gnome_db_connection_properties_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_connection_properties_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_connection_properties_new">
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </constructor>
+      <method name="SetConnection" cname="gnome_db_connection_properties_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="ConnectionSelector" cname="GnomeDbConnectionSelector" parent="GtkOptionMenu">
+      <field cname="priv" type="GnomeDbConnectionSelectorPrivate*"/>
+      <method name="GetType" cname="gnome_db_connection_selector_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_connection_selector_new"/>
+    </object>
+    <object name="ControlWidget" cname="GnomeDbControlWidget" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbControlWidgetPrivate*"/>
+      <method name="Activate" cname="gnome_db_control_widget_activate">
+        <return-type type="void"/>
+      </method>
+      <method name="Construct" cname="gnome_db_control_widget_construct">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="id"/>
+          <parameter type="Bonobo_UIContainer" name="uic"/>
+        </parameters>
+      </method>
+      <method name="Deactivate" cname="gnome_db_control_widget_deactivate">
+        <return-type type="void"/>
+      </method>
+      <method name="GetId" cname="gnome_db_control_widget_get_id">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetObjref" cname="gnome_db_control_widget_get_objref">
+        <return-type type="Bonobo_Unknown"/>
+      </method>
+      <method name="GetType" cname="gnome_db_control_widget_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUiContainer" cname="gnome_db_control_widget_get_ui_container">
+        <return-type type="Bonobo_UIContainer"/>
+      </method>
+      <method name="IsAlive" cname="gnome_db_control_widget_is_alive">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gnome_db_control_widget_new">
+        <parameters>
+          <parameter type="const-gchar*" name="id"/>
+          <parameter type="Bonobo_UIContainer" name="uic"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gnome_db_control_widget_new_from_corba">
+        <parameters>
+          <parameter type="Bonobo_Control" name="control"/>
+          <parameter type="Bonobo_UIContainer" name="uic"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="DataSourceSelector" cname="GnomeDbDataSourceSelector" parent="GtkOptionMenu">
+      <field cname="priv" type="GnomeDbDataSourceSelectorPrivate*"/>
+      <method name="GetType" cname="gnome_db_data_source_selector_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_data_source_selector_new">
+        <parameters>
+          <parameter type="const-gchar*" name="provider"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="DsnConfig" cname="GnomeDbDsnConfig" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbDsnConfigPrivate*"/>
+      <method name="GetInfo" cname="gnome_db_dsn_config_get_info">
+        <return-type type="GdaDataSourceInfo*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_dsn_config_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_dsn_config_new"/>
+      <method name="SetInfo" cname="gnome_db_dsn_config_set_info">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GdaDataSourceInfo*" name="dsn_info"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="DsnConfigDruid" cname="GnomeDbDsnConfigDruid" parent="GnomeDruid">
+      <field cname="priv" type="GnomeDbDsnConfigDruidPrivate*"/>
+      <signal name="Finished" cname="finished" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbDsnConfigDruid*" name="druid"/>
+          <parameter type="gboolean" name="error"/>
+        </parameters>
+      </signal>
+      <method name="GetDsn" cname="gnome_db_dsn_config_druid_get_dsn">
+        <return-type type="const-GdaDataSourceInfo*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_dsn_config_druid_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_dsn_config_druid_new"/>
+    </object>
+    <object name="Error" cname="GnomeDbError" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbErrorPrivate*"/>
+      <method name="Clear" cname="gnome_db_error_clear">
+        <return-type type="void"/>
+      </method>
+      <method name="GetPosition" cname="gnome_db_error_get_position">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetType" cname="gnome_db_error_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_error_new"/>
+      <method name="Next" cname="gnome_db_error_next">
+        <return-type type="void"/>
+      </method>
+      <method name="Prev" cname="gnome_db_error_prev">
+        <return-type type="void"/>
+      </method>
+      <method name="Show" cname="gnome_db_error_show">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="errors"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="ErrorDialog" cname="GnomeDbErrorDialog" parent="GtkDialog">
+      <field cname="priv" type="GnomeDbErrorDialogPrivate*"/>
+      <property name="Title" cname="title" type="gchar*" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetTitle" cname="gnome_db_error_dialog_get_title">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_error_dialog_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_error_dialog_new">
+        <parameters>
+          <parameter type="gchar*" name="title"/>
+        </parameters>
+      </constructor>
+      <method name="SetTitle" cname="gnome_db_error_dialog_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="ShowErrors" cname="gnome_db_error_dialog_show_errors">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="error_list"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Form" cname="GnomeDbForm" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbFormPrivate*"/>
+      <signal name="ModelChanged" cname="model_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbForm*" name="form"/>
+        </parameters>
+      </signal>
+      <method name="GetFormType" cname="gnome_db_form_get_form_type">
+        <return-type type="GnomeDbFormType"/>
+      </method>
+      <method name="GetModel" cname="gnome_db_form_get_model">
+        <return-type type="GdaDataModel*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_form_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_form_new"/>
+      <method name="SetFormType" cname="gnome_db_form_set_form_type">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbFormType" name="type"/>
+        </parameters>
+      </method>
+      <method name="SetModel" cname="gnome_db_form_set_model">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="GrayBar" cname="GnomeDbGrayBar" parent="GtkEventBox">
+      <field cname="priv" type="GnomeDbGrayBarPrivate*"/>
+      <property name="Text" cname="text" type="gchar*" doc-string=" NULL" readable="true" writeable="true"/>
+      <method name="GetType" cname="gnome_db_gray_bar_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_gray_bar_new">
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </constructor>
+      <method name="SetText" cname="gnome_db_gray_bar_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Grid" cname="GnomeDbGrid" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbGridPrivate*"/>
+      <property name="Model" cname="model" type="GdaDataModel" doc-string=" NULL" readable="true" writeable="true"/>
+      <signal name="RowSelected" cname="row_selected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </signal>
+      <signal name="SelectionCleared" cname="selection_cleared" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid"/>
+        </parameters>
+      </signal>
+      <method name="ForeachSelected" cname="gnome_db_grid_foreach_selected">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbGridForeachFunc" name="foreach_func"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="GetModel" cname="gnome_db_grid_get_model">
+        <return-type type="GdaDataModel*"/>
+      </method>
+      <method name="GetSelection" cname="gnome_db_grid_get_selection">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetSelectionMode" cname="gnome_db_grid_get_selection_mode">
+        <return-type type="GtkSelectionMode"/>
+      </method>
+      <method name="GetShowTitle" cname="gnome_db_grid_get_show_title">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetTitle" cname="gnome_db_grid_get_title">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_grid_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="HideColumnTitles" cname="gnome_db_grid_hide_column_titles">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="gnome_db_grid_new"/>
+      <constructor cname="gnome_db_grid_new_with_model">
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
+      </constructor>
+      <method name="SelectAll" cname="gnome_db_grid_select_all">
+        <return-type type="void"/>
+      </method>
+      <method name="SetModel" cname="gnome_db_grid_set_model">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
+      </method>
+      <method name="SetSelectionMode" cname="gnome_db_grid_set_selection_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkSelectionMode" name="mode"/>
+        </parameters>
+      </method>
+      <method name="SetShowTitle" cname="gnome_db_grid_set_show_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="show"/>
+        </parameters>
+      </method>
+      <method name="SetTitle" cname="gnome_db_grid_set_title">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+      <method name="ShowColumnTitles" cname="gnome_db_grid_show_column_titles">
+        <return-type type="void"/>
+      </method>
+      <method name="UnselectAll" cname="gnome_db_grid_unselect_all">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="List" cname="GnomeDbList" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbListPrivate*"/>
+      <property name="Model" cname="model" type="GdaDataModel" doc-string=" NULL" readable="true" writeable="true"/>
+      <signal name="RowSelected" cname="row_selected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbList*" name="list"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </signal>
+      <signal name="SelectionCleared" cname="selection_cleared" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbList*" name="list"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </signal>
+      <method name="GetModel" cname="gnome_db_list_get_model">
+        <return-type type="GdaDataModel*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_list_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_list_new"/>
+      <constructor cname="gnome_db_list_new_with_model">
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+          <parameter type="gint" name="col"/>
+        </parameters>
+      </constructor>
+      <method name="SetModel" cname="gnome_db_list_set_model">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+          <parameter type="gint" name="col"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Login" cname="GnomeDbLogin" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbLoginPrivate*"/>
+      <property name="Dsn" cname="dsn" type="gchar*" doc-string=" NULL" readable="true"/>
+      <property name="Username" cname="username" type="gchar*" doc-string=" NULL" readable="true"/>
+      <property name="Password" cname="password" type="gchar*" doc-string=" NULL" readable="true"/>
+      <method name="GetDsn" cname="gnome_db_login_get_dsn">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPassword" cname="gnome_db_login_get_password">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_login_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUsername" cname="gnome_db_login_get_username">
+        <return-type type="const-gchar*"/>
+      </method>
+      <constructor cname="gnome_db_login_new">
+        <parameters>
+          <parameter type="const-gchar*" name="dsn"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="LoginDialog" cname="GnomeDbLoginDialog" parent="GtkDialog">
+      <field cname="priv" type="GnomeDbLoginDialogPrivate*"/>
+      <property name="Dsn" cname="dsn" type="gchar*" doc-string=" NULL" readable="true"/>
+      <property name="Username" cname="username" type="gchar*" doc-string=" NULL" readable="true"/>
+      <property name="Password" cname="password" type="gchar*" doc-string=" NULL" readable="true"/>
+      <method name="GetDsn" cname="gnome_db_login_dialog_get_dsn">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPassword" cname="gnome_db_login_dialog_get_password">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_login_dialog_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetUsername" cname="gnome_db_login_dialog_get_username">
+        <return-type type="const-gchar*"/>
+      </method>
+      <constructor cname="gnome_db_login_dialog_new">
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </constructor>
+      <method name="Run" cname="gnome_db_login_dialog_run">
+        <return-type type="gboolean"/>
+      </method>
+    </object>
+    <object name="ProviderSelector" cname="GnomeDbProviderSelector" parent="GtkOptionMenu">
+      <field cname="priv" type="GnomeDbProviderSelectorPrivate*"/>
+      <method name="GetType" cname="gnome_db_provider_selector_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_provider_selector_new"/>
+    </object>
+    <object name="ReportEditor" cname="GnomeDbReportEditor" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbReportEditorPrivate*"/>
+      <method name="GetType" cname="gnome_db_report_editor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_report_editor_new"/>
+    </object>
+    <object name="SqlEditor" cname="GnomeDbSqlEditor" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbSqlEditorPrivate*"/>
+      <method name="Debug" cname="gnome_db_sql_editor_debug">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar*" name="text"/>
+        </parameters>
+      </method>
+      <method name="DebugSetup" cname="gnome_db_sql_editor_debug_setup">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextView*" name="dtv"/>
+        </parameters>
+      </method>
+      <method name="ForeachCommand" cname="gnome_db_sql_editor_foreach_command">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gboolean" name="run_at_pref"/>
+          <parameter type="GnomeDbSqlEditorRunFunc" name="run_command"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="GetAllCommands" cname="gnome_db_sql_editor_get_all_commands">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="gboolean" name="run_at_pref"/>
+        </parameters>
+      </method>
+      <method name="GetAllText" cname="gnome_db_sql_editor_get_all_text">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetCommandAtCursor" cname="gnome_db_sql_editor_get_command_at_cursor">
+        <return-type type="GnomeDbSqlEditorCommand*"/>
+      </method>
+      <method name="GetText" cname="gnome_db_sql_editor_get_text">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GtkTextIter*" name="start"/>
+          <parameter type="GtkTextIter*" name="end"/>
+        </parameters>
+      </method>
+      <method name="GetTextBuffer" cname="gnome_db_sql_editor_get_text_buffer">
+        <return-type type="GtkTextBuffer*"/>
+      </method>
+      <method name="GetTextView" cname="gnome_db_sql_editor_get_text_view">
+        <return-type type="GtkTextView*"/>
+      </method>
+      <method name="GetType" cname="gnome_db_sql_editor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="InsertText" cname="gnome_db_sql_editor_insert_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextIter*" name="iter"/>
+          <parameter type="gchar*" name="text"/>
+          <parameter type="gint" name="len"/>
+        </parameters>
+      </method>
+      <method name="LoadFromFile" cname="gnome_db_sql_editor_load_from_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_db_sql_editor_new"/>
+      <method name="SaveToFile" cname="gnome_db_sql_editor_save_to_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SetEditable" cname="gnome_db_sql_editor_set_editable">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="setting"/>
+        </parameters>
+      </method>
+      <method name="SetText" cname="gnome_db_sql_editor_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="len"/>
+        </parameters>
+      </method>
+      <method name="UseSyntaxHiLighting" cname="gnome_db_sql_editor_use_syntax_hi_lighting">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="hi_lighting"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="TableEditor" cname="GnomeDbTableEditor" parent="GtkVBox">
+      <field cname="priv" type="GnomeDbTableEditorPrivate*"/>
+      <method name="GetType" cname="gnome_db_table_editor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gnome_db_table_editor_new"/>
+    </object>
+    <struct name="ComponentInfo" cname="GnomeDbComponentInfo">
+      <field cname="id" type="gchar*"/>
+      <field cname="location" type="gchar*"/>
+      <field cname="type" type="GnomeDbComponentType"/>
+      <field cname="description" type="gchar*"/>
+      <field cname="repo_ids" type="GList*"/>
+      <field cname="username" type="gchar*"/>
+      <field cname="hostname" type="gchar*"/>
+      <field cname="domain" type="gchar*"/>
+      <field cname="properties" type="GdaParameterList*"/>
+    </struct>
+    <struct name="SqlEditorClass" cname="GnomeDbSqlEditorClass">
+      <field cname="parent_class" type="GtkVBoxClass"/>
+      <callback cname="text_changed">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDbSqlEditor*" name="sql_editor"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="SqlEditorCommand" cname="GnomeDbSqlEditorCommand">
+      <field cname="offset" type="gint"/>
+      <field cname="sql_statement" type="gchar*"/>
+      <field cname="error" type="gint"/>
+    </struct>
+    <object name="Stock" cname="GnomeDbStock">
+      <static-string cname="GNOME_DB_STOCK_CONNECT" name="Connect" value="gnome-db-connect"/>
+      <static-string cname="GNOME_DB_STOCK_DATABASE" name="Database" value="gnome-db-database"/>
+      <static-string cname="GNOME_DB_STOCK_DESIGNER" name="Designer" value="gnome-db-designer"/>
+      <static-string cname="GNOME_DB_STOCK_DISCONNECT" name="Disconnect" value="gnome-db-disconnect"/>
+      <static-string cname="GNOME_DB_STOCK_SQL" name="Sql" value="gnome-db-sql"/>
+      <static-string cname="GNOME_DB_STOCK_TABLES" name="Tables" value="gnome-db-tables"/>
+    </object>
+  </namespace>
+</api>
