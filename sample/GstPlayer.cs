@@ -11,6 +11,12 @@ public class GstTest
 {
 	static void Main(string[] args)
 	{
+		if (args.Length != 1)
+		{
+			Console.WriteLine ("usage: Gst.Player.exe FILE.ogg");
+			return;
+		}
+		
 		Application.Init ();
 
 		/* create a new bin to hold the elements */
