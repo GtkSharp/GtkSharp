@@ -7,8 +7,13 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Represents a graphics context</summary>
+    <remarks>
+      <para>The Gdk.GC class is used to represent a graphics
+      context. It is an opaque structure with no user-visible
+      elements.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -33,9 +38,11 @@
         <Parameter Name="src_gc" Type="Gdk.GC" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="src_gc">To be added: an object of type 'Gdk.GC'</param>
-        <remarks>To be added</remarks>
+        <summary>Copy the set of values from one graphics context onto another graphics context.</summary>
+        <param name="src_gc">An object of type 'Gdk.GC'</param>
+        <remarks>
+          <para>Copy the set of values from one graphics context onto another graphics context.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetTsOrigin">
@@ -49,10 +56,15 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Set the origin when using tiles or stipples with the GC.</summary>
+        <param name="x">the x-coordinate of the origin.</param>
+        <param name="y">the y-coordinate of the origin.</param>
+        <remarks>
+          <para>Set the origin when using tiles or stipples with the
+          GC. The tile or stipple will be aligned such that the upper
+          left corner of the tile or stipple will coincide with this
+          point.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetClipOrigin">
@@ -66,10 +78,14 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the origin of the clip mask.</summary>
+        <param name="x">the x-coordinate of the origin.</param>
+        <param name="y">the y-coordinate of the origin.</param>
+        <remarks>
+          <para>Sets the origin of the clip mask. The coordinates are
+          interpreted relative to the upper-left corner of the
+          destination drawable of the current operation.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Offset">
@@ -83,10 +99,15 @@
         <Parameter Name="y_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x_offset">To be added: an object of type 'int'</param>
-        <param name="y_offset">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Set the x and y offsets on the Gdk.GC</summary>
+        <param name="x_offset">amount by which to offset the GC in the X direction</param>
+        <param name="y_offset">amount by which to offset the GC in the Y direction</param>
+        <remarks>
+          <para>Offset attributes such as the clip and tile-stipple
+          origins of the GC so that drawing at x - x_offset, y -
+          y_offset with the offset GC has the same effect as drawing
+          at x, y with the original GC.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDashes">
@@ -101,11 +122,18 @@
         <Parameter Name="n" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dash_offset">To be added: an object of type 'int'</param>
-        <param name="dash_list">To be added: an object of type 'byte[]'</param>
-        <param name="n">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the way dashed-lines are drawn.</summary>
+        <param name="dash_offset">the dash offset.</param>
+        <param name="dash_list">an array of dash lengths.</param>
+        <param name="n">the number of elemenst in dash_list.</param>
+        <remarks>
+          <para>Sets the way dashed-lines are drawn. Lines will be
+          drawn with alternating on and off segments of the lengths
+          specified in dash_list. The manner in which the on and off
+          segments are drawn is determined by the line_style value of
+          the GC. (This can be changed with
+          Gdk.GC.SetLineAttributes())</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValues">
@@ -119,10 +147,16 @@
         <Parameter Name="values_mask" Type="Gdk.GCValuesMask" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="values">To be added: an object of type 'Gdk.GCValues'</param>
-        <param name="values_mask">To be added: an object of type 'Gdk.GCValuesMask'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets attributes of a graphics context in bulk.</summary>
+        <param name="values">struct containing the new values</param>
+        <param name="values_mask">mask indicating which struct fields are to be used</param>
+        <remarks>
+          <para>Sets attributes of a graphics context in bulk. For
+          each flag set in values_mask, the corresponding field will
+          be read from values and set as the new value for gc. If
+          you're only setting a few values on gc, calling individual
+          "setter" functions is likely more convenient.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetLineAttributes">
@@ -138,12 +172,16 @@
         <Parameter Name="join_style" Type="Gdk.JoinStyle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="line_width">To be added: an object of type 'int'</param>
-        <param name="line_style">To be added: an object of type 'Gdk.LineStyle'</param>
-        <param name="cap_style">To be added: an object of type 'Gdk.CapStyle'</param>
-        <param name="join_style">To be added: an object of type 'Gdk.JoinStyle'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets various attributes of how lines are drawn.</summary>
+        <param name="line_width">the width of lines.</param>
+        <param name="line_style">the dash-style for lines.</param>
+        <param name="cap_style">the manner in which the ends of lines are drawn.</param>
+        <param name="join_style">the way in which lines are joined together.</param>
+        <remarks>
+          <para>Sets various attributes of how lines are drawn. See
+          the corresponding members of Gdk.GC.Values for full
+          explanations of the arguments.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValues">
@@ -156,9 +194,11 @@
         <Parameter Name="values" Type="Gdk.GCValues" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="values">To be added: an object of type 'Gdk.GCValues'</param>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the current values from a graphics context.</summary>
+        <param name="values">the GdkGCValues structure in which to store the results.</param>
+        <remarks>
+          <para>Retrieves the current values from a graphics context.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -266,10 +306,19 @@
         <Parameter Name="value" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the foreground color of a GC using an unallocated color.</summary>
+        <param name="value"></param>
+        <returns>an object of type 'Gdk.Color'</returns>
+        <remarks>
+          <para>Set the foreground color of a GC using an unallocated
+          color. The pixel value for the color will be determined
+          using GdkRGB. If the colormap for the GC has not previously
+          been initialized for GdkRGB, then for pseudo-color colormaps
+          (colormaps with a small modifiable number of colors), a
+          colorcube will be allocated in the colormap.</para>
+          <para>Calling this function for a GC without a colormap is
+          an error.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClipRectangle">
@@ -282,10 +331,14 @@
         <Parameter Name="value" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Rectangle'</param>
-        <returns>To be added: an object of type 'Gdk.Rectangle'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the clip mask for a graphics context from a rectangle.</summary>
+        <param name="value">the rectangle to clip to.</param>
+        <returns>an object of type 'Gdk.Rectangle'</returns>
+        <remarks>
+          <para>Sets the clip mask for a graphics context from a
+          rectangle. The clip mask is interpreted relative to the clip
+          origin. (See Gdk.GC.SetClipOrigin()).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Tile">
@@ -298,10 +351,13 @@
         <Parameter Name="value" Type="Gdk.Pixmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixmap'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set a tile pixmap for a graphics context.</summary>
+        <param name="value">the new tile pixmap.</param>
+        <returns>an object of type 'Gdk.Pixmap'</returns>
+        <remarks>
+          <para>Set a tile pixmap for a graphics context. This will
+          only be used if the fill mode is GDK_TILED.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClipMask">
@@ -314,10 +370,14 @@
         <Parameter Name="value" Type="Gdk.Bitmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Bitmap'</param>
-        <returns>To be added: an object of type 'Gdk.Bitmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the clip mask for a graphics context from a bitmap.</summary>
+        <param name="value">a bitmap.</param>
+        <returns>a bitmap.</returns>
+        <remarks>
+          <para>Sets the clip mask for a graphics context from a
+          bitmap. The clip mask is interpreted relative to the clip
+          origin. (See Gdk.GC.SetClipOrigin()).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Fill">
@@ -330,10 +390,12 @@
         <Parameter Name="value" Type="Gdk.Fill" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Fill'</param>
-        <returns>To be added: an object of type 'Gdk.Fill'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the fill mode for a graphics context.</summary>
+        <param name="value">the new fill mode.</param>
+        <returns>the new fill mode.</returns>
+        <remarks>
+          <para>Set the fill mode for a graphics context.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Colormap">
@@ -346,10 +408,14 @@
         <Parameter Name="value" Type="Gdk.Colormap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Colormap'</param>
-        <returns>To be added: an object of type 'Gdk.Colormap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the colormap for the GC to the given colormap.</summary>
+        <param name="value"> a Gdk.Colormap</param>
+        <returns> a Gdk.Colormap</returns>
+        <remarks>
+          <para>Sets the colormap for the GC to the given
+          colormap. The depth of the colormap's visual must match the
+          depth of the drawable for which the GC was created.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RgbBgColor">
@@ -362,10 +428,19 @@
         <Parameter Name="value" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the background color of a GC using an unallocated color.</summary>
+        <param name="value">a Gdk.Color</param>
+        <returns>a Gdk.Color</returns>
+        <remarks>
+          <para>Set the background color of a GC using an unallocated
+          color. The pixel value for the color will be determined
+          using GdkRGB. If the colormap for the GC has not previously
+          been initialized for GdkRGB, then for pseudo-color colormaps
+          (colormaps with a small modifiable number of colors), a
+          colorcube will be allocated in the colormap.</para>
+          <para>Calling this function for a GC without a colormap is
+          an error.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Foreground">
@@ -378,10 +453,12 @@
         <Parameter Name="value" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the foreground color for a graphics context.</summary>
+        <param name="value">the new foreground color.</param>
+        <returns>the new foreground color.</returns>
+        <remarks>
+          <para>Sets the foreground color for a graphics context.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClipRegion">
@@ -394,10 +471,14 @@
         <Parameter Name="value" Type="Gdk.Region" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Region'</param>
-        <returns>To be added: an object of type 'Gdk.Region'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the clip mask for a graphics context from a region structure.</summary>
+        <param name="value">the Gdk.Region</param>
+        <returns>the Gdk.Region</returns>
+        <remarks>
+          <para>Sets the clip mask for a graphics context from a
+          region structure. The clip mask is interpreted relative to
+          the clip origin. (See Gdk.GC.SetClipOrigin()).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Subwindow">
@@ -410,10 +491,13 @@
         <Parameter Name="value" Type="Gdk.SubwindowMode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.SubwindowMode'</param>
-        <returns>To be added: an object of type 'Gdk.SubwindowMode'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets how drawing with this GC on a window will affect child windows of that window.</summary>
+        <param name="value">the subwindow mode.</param>
+        <returns>the subwindow mode.</returns>
+        <remarks>
+          <para>Sets how drawing with this GC on a window will affect
+          child windows of that window.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Stipple">
@@ -426,10 +510,14 @@
         <Parameter Name="value" Type="Gdk.Pixmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixmap'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the stipple bitmap for a graphics context.</summary>
+        <param name="value">the new stipple bitmap.</param>
+        <returns>the new stipple bitmap.</returns>
+        <remarks>
+          <para>Set the stipple bitmap for a graphics context. The
+          stipple will only be used if the fill mode is GDK_STIPPLED
+          or GDK_OPAQUE_STIPPLED.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Function">
@@ -442,10 +530,14 @@
         <Parameter Name="value" Type="Gdk.Function" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Function'</param>
-        <returns>To be added: an object of type 'Gdk.Function'</returns>
-        <remarks>To be added</remarks>
+        <summary>Determines how the current pixel values and the pixel values being drawn are combined to produce the final pixel values.</summary>
+        <param name="value">a function.</param>
+        <returns>a function.</returns>
+        <remarks>
+          <para>Determines how the current pixel values and the pixel
+          values being drawn are combined to produce the final pixel
+          values.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Background">
@@ -458,10 +550,13 @@
         <Parameter Name="value" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the background color for a graphics context.</summary>
+        <param name="value">the new background color.</param>
+        <returns>the new background color.</returns>
+        <remarks>
+          <para>Sets the background color for a graphics
+          context.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Exposures">
@@ -474,10 +569,15 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets whether or not this GC should geenrate exposure events.</summary>
         <param name="value">To be added: an object of type 'bool'</param>
         <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>Sets whether copying non-visible portions of a
+          drawable using this graphics context generate exposure
+          events for the corresponding regions of the destination
+          drawable. (See Gdk.Drawable).</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
