@@ -44,7 +44,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("gulong", "ulong");
 			simple_types.Add ("GQuark", "int");
 			simple_types.Add ("int", "int");
-			simple_types.Add ("char", "char");
+			simple_types.Add ("char", "string");
 			simple_types.Add ("double", "double");
 			simple_types.Add ("float", "float");
 			simple_types.Add ("gunichar", "string");
