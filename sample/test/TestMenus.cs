@@ -118,8 +118,8 @@ namespace WidgetViewer {
 			for (int i = 0, j = 1; i < 5; i++, j++) {
 
 				label = String.Format ("item {0} - {1}", depth, j);
-// 				menuitem = RadioMenuItem.NewWithLabel (group, label);
-// 				group = ((RadioMenuItem) menuitem).Group;
+				menuitem = RadioMenuItem.NewWithLabel (group, label);
+				group = ((RadioMenuItem) menuitem).Group;
 				menuitem = new MenuItem (label);
 				menu.Append (menuitem);
 				
