@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Standard and pixmap cursors</summary>
+    <remarks>The <see cref="T:Gdk.Cursor" /> represents cursors.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -27,9 +27,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Cursor'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a reference to the cursor</summary>
+        <returns>Same cursor that was passed in.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Unref">
@@ -40,8 +40,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes a reference from cursor, deallocating the cursor if no references remain.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Display">
@@ -51,9 +51,9 @@
         <ReturnType>Gdk.Display</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the display on which the <see cref="T:Gdk.Cursor" /> is defined.</summary>
+        <returns>The <see cref="T:Gdk.Display" /> where the cursor is defined.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -78,10 +78,13 @@
         <Parameter Name="cursor_type" Type="Gdk.CursorType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="cursor_type">a <see cref="T:Gdk.CursorType" /></param>
+        <summary>Creates a cursor from standard definitions.</summary>
+        <param name="cursor_type">The cursor type.</param>
         <returns>a <see cref="T:Gdk.Cursor" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Creates a new cursor from the set of builtin cursors for the default display. See gdk_cursor_new_for_display().
+<para>
+To make the cursor invisible, use gdk_cursor_new_from_pixmap() to create a cursor with no pixels in it.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -113,15 +116,24 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="source">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="fg">a <see cref="T:Gdk.Color" /></param>
-        <param name="bg">a <see cref="T:Gdk.Color" /></param>
-        <param name="x">a <see cref="T:System.Int32" /></param>
-        <param name="y">a <see cref="T:System.Int32" /></param>
+        <summary>Creates a new cursor from a given pixmap and mask.</summary>
+        <param name="source">The <see cref="T:Gdk.Pixmap" />  the pixmap specifying the cursor. </param>
+        <param name="mask">The <see cref="T:Gdk.Pixmap" /> specifying the mask, which must be the same size as source.</param>
+        <param name="fg">the foreground color, used for the bits in the source which are 1. The color does not have to be allocated first.</param>
+        <param name="bg"> the background color, used for the bits in the source which are 0. The color does not have to be allocated first.</param>
+        <param name="x"> the horizontal offset of the 'hotspot' of the cursor.</param>
+        <param name="y"> the vertical offset of the 'hotspot' of the cursor.</param>
         <returns>a <see cref="T:Gdk.Cursor" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Creates a new cursor from a given pixmap and mask. Both the pixmap and mask must have a depth of 1 (i.e. each pixel has only 2 values - on or off). The standard cursor size is 16 by 16 pixels. 
+
+<example>
+            <code lang="C#">
+Gdk.Pixmap pixmap = GetPixmap ();
+Gdk.Bitmap mask = GetMask ();
+Gdk.Cursor cursor = new Gdk.Cursor (pixmap, mask);
+
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">

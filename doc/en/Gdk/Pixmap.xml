@@ -10,8 +10,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Offscreen drawable.</summary>
+    <remarks>Pixmaps are offscreen drawables. They can be drawn upon with the standard drawing primitives, then copied to another drawable (such as a <see cref="T:Gdk.Window" />) with <see cref="M:Gdk.Pixmap.Draw()" />. 
+<para>
+The depth of a pixmap is the number of bits per pixels. Bitmaps are simply pixmaps with a depth of 1. (That is, they are monochrome bitmaps - each pixel can be either on or off).
+</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gdk.Drawable</BaseTypeName>
@@ -36,10 +39,13 @@
         <Parameter Name="anid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="anid">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Looks up the <see cref="T:Gdk.Pixmap" /> that wraps the given native pixmap handle.</summary>
+        <param name="anid">	 a native pixmap handle.</param>
+        <returns> the <see cref="T:Gdk.Window" /> wrapper for the native window, or <see langword="null" /> if there is none.</returns>
+        <remarks>Looks up the GdkPixmap that wraps the given native pixmap handle.
+<para>
+For example in the X backend, a native pixmap handle is an Xlib XID.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ForeignNew">
@@ -52,10 +58,13 @@
         <Parameter Name="anid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="anid">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Wraps a native window for the default display in a <see cref="T:Gdk.Pixmap" />. This may fail if the pixmap has been destroyed.</summary>
+        <param name="anid"> a native pixmap handle.</param>
+        <returns>The newly-created <see cref="T:Gdk.Pixmap" /> wrapper for the native pixmap or <see langword="null" /> if the pixmap has been destroyed.</returns>
+        <remarks>Wraps a native window for the default display in a GdkPixmap. This may fail if the pixmap has been destroyed.
+<para>
+For example in the X backend, a native pixmap handle is an Xlib XID.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -161,11 +170,14 @@
         <Parameter Name="anid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="anid">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gdk.Pixmap" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Wraps a native pixmap in a <see cref="T:Gdk.Pixmap" />. This may fail if the pixmap has been destroyed.</summary>
+        <param name="display">The <see cref="T:Gdk.Display" /> where the pixmap is located.</param>
+        <param name="anid">	 a native pixmap handle.</param>
+        <returns>The newly-created <see cref="T:Gdk.Pixmap" /> wrapper for the native pixmap or <see langword="null" /> if the pixmap has been destroyed.</returns>
+        <remarks>Wraps a native pixmap in a GdkPixmap. This may fail if the pixmap has been destroyed.
+<para>
+For example in the X backend, a native pixmap handle is an Xlib XID.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ColormapCreateFromXpm">
@@ -182,14 +194,14 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="drawable">a <see cref="T:Gdk.Drawable" /></param>
-        <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
-        <param name="mask">a <see cref="T:Gdk.Bitmap" /></param>
-        <param name="transparent_color">a <see cref="T:Gdk.Color" /></param>
-        <param name="filename">a <see cref="T:System.String" /></param>
+        <summary>Create a pixmap from a XPM file.</summary>
+        <param name="drawable">a <see cref="T:Gdk.Drawable" />, used to determine default values for the new pixmap.</param>
+        <param name="colormap">The <see cref="T:Gdk.Colormap" /> that the new pixmap will be use. If omitted, the colormap for <paramref name="drawable" /> will be used.</param>
+        <param name="mask">a <see cref="T:Gdk.Bitmap" /> a pointer to a place to store a bitmap representing the transparency mask of the XPM file. Can be <see langword="null" />, in which case transparency will be ignored.</param>
+        <param name="transparent_color">The color to be used for the pixels that are transparent in the input file. Can be <see langword="null" />, in which case a default color will be used.</param>
+        <param name="filename">The filename</param>
         <returns>a <see cref="T:Gdk.Pixmap" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Create a pixmap from a XPM file using a particular colormap.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateFromXpmD">
@@ -253,13 +265,14 @@
         <Parameter Name="depth" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="drawable">a <see cref="T:Gdk.Drawable" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <param name="depth">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixmap" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new pixmap with the given size and depth.</summary>
+        <param name="drawable">A <see cref="T:Gdk.Drawable" />, used to determine default values for the new pixmap.
+ Can be <see langword="null" /> if <paramref name="depth" /> is specified</param>
+        <param name="width">The width of the new pixmap in pixels.</param>
+        <param name="height">	The height of the new pixmap in pixels.</param>
+        <param name="depth">The depth (number of bits per pixel) of the new pixmap. If -1, and drawable is not <see langword="null" />, the depth of the new pixmap will be equal to that of drawable.</param>
+        <returns>The new pixmap with the given size and depth</returns>
+        <remarks>Create a new pixmap with a given size and depth. </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -299,12 +312,12 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="drawable">a <see cref="T:Gdk.Drawable" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixmap" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Create a new pixmap using a reference drawable for depth.</summary>
+        <param name="drawable">A <see cref="T:Gdk.Drawable" />, used to determine default values for the new pixmap.</param>
+        <param name="width">The width of the new pixmap in pixels.</param>
+        <param name="height">The height of the new pixmap in pixels.</param>
+        <returns>The new <see cref="T:Gdk.Pixmap" />.</returns>
+        <remarks>Creates a new pixmap with a given size and depth.</remarks>
       </Docs>
     </Member>
   </Members>
