@@ -148,9 +148,9 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override string CallByName (string var_name)
+		public override string CallByName (string name)
 		{
-			return var_name + ".Handle";
+			return name + " == null ? IntPtr.Zero : " + name + ".Handle";
 		}
 
 		public virtual string CallByName ()

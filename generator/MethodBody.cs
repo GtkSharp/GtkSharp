@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 					else if (igen is LPUGen || igen is LPGen)
 						call_parm = p.Name + "_as_ptr";
 					else if (UsesHandle (igen)) {
-						call_parm = p.PassAs + " " + call_parm.Replace (".Handle", "_handle");
+						call_parm = p.PassAs + " " + p.Name + "_handle";
 					}
 				}
 
