@@ -1,0 +1,51 @@
+// Container.custom - customizations to Gtk.Container
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_container_get_children (IntPtr raw);
+
+public Widget[] Children {
+	get {
+		IntPtr list_ptr = gtk_container_get_children (Handle);
+		if (list_ptr == IntPtr.Zero)
+			return null;
+
+		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
+		Widget[] result = new Widget [list.Count];
+		for (int i = 0; i < list.Count; i++)
+			result [i] = list [i] as Widget;
+		return result;
+	}
+}
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern bool gtk_container_get_focus_chain (IntPtr raw, out IntPtr list_ptr);
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_container_set_focus_chain (IntPtr raw, IntPtr list_ptr);
+
+public Widget[] FocusChain {
+	get {
+		IntPtr list_ptr;
+		bool success = gtk_container_get_focus_chain (Handle, out list_ptr);
+		if (!success)
+			return null;
+
+		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
+		Widget[] result = new Widget [list.Count];
+		for (int i = 0; i < list.Count; i++)
+			result [i] = list [i] as Widget;
+		return result;
+	}
+	set {
+		GLib.List list = new GLib.List (IntPtr.Zero, typeof (Gtk.Widget));
+		foreach (Widget val in value)
+			list.Append (val.Handle);
+		gtk_container_set_focus_chain (Handle, list.Handle);
+	}
+		
+}
+

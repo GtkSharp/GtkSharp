@@ -1,3 +1,24 @@
-// Gtk.TreeSelection.Custom - Gtk TreeSelection calss customizations
-// this file was emptied when the generator became capable of generating its contents,
-// but was not removed in the event future customizations are needed.
+// TreeSelection.custom - customizations to Gtk.TreeSelection
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_tree_selection_get_selected_rows (IntPtr raw, out IntPtr model);
+
+		public TreePath[] GetSelectedRows (out TreeModel model)
+		{
+			IntPtr model_handle;
+			IntPtr list_ptr = gtk_tree_selection_get_selected_rows (Handle, out model_handle);
+			model = (Gtk.TreeModel) GLib.Object.GetObject(model_handle);
+			if (list_ptr == IntPtr.Zero)
+				return null;
+
+			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
+			TreePath[] result = new TreePath [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = (TreePath) list [i];
+			return result;
+		}
+

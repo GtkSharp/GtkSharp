@@ -16,14 +16,27 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_tree_view_get_columns (IntPtr raw);
+
+		public TreeViewColumn[] Columns {
+			get {
+				IntPtr raw_ret = gtk_tree_view_get_columns (Handle);
+				if (raw_ret == IntPtr.Zero)
+					return null;
+				GLib.List list = new GLib.List (raw_ret, typeof (Gtk.TreeViewColumn));
+				TreeViewColumn[] result = new TreeViewColumn [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as TreeViewColumn;
+				return result;
+			}
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_tree_view_get_model (IntPtr raw);
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_tree_view_set_model (IntPtr raw, IntPtr raw_model);
 
-		/// <summary>Model Property</summary>
-		/// <remarks>Gets the model being displayed by the TreeView
-		/// </remarks>
 		public Gtk.TreeModel Model {
 			get {
 				IntPtr raw_ret = gtk_tree_view_get_model (Handle);

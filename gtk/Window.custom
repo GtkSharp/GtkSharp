@@ -1,8 +1,9 @@
 // Gtk.Window.custom - Gtk Window class customizations
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@ximian.com>
 //
-// (c) 2001 Mike Kestner
+// Copyright (c) 2001 Mike Kestner
+// Copyright (c) 2004 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 
@@ -20,27 +21,33 @@
 			}
 		}
 
-		/// <summary>
-		///	Window Constructor
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Constructs a new Window of type TopLevel with the 
-		///	specified Title.
-		/// </remarks>
-
 		public Window (String title) : this (WindowType.Toplevel)
 		{
 			this.Title = title;
 		}
 
-		/// <summary>
-		///	DefaultSize Property
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	The default Size of the Window in Screen Coordinates.
-		/// </remarks>
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_window_get_default_icon_list();
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_window_set_default_icon_list(IntPtr list);
+
+		public static Gdk.Pixbuf[] DefaultIconList {
+			get {
+				IntPtr raw_ret = gtk_window_get_default_icon_list();
+				GLib.List list = new GLib.List(raw_ret, typeof (Gdk.Pixbuf));
+				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Gdk.Pixbuf;
+				return result;
+			}
+			set {
+				GLib.List list = new GLib.List(IntPtr.Zero, typeof (Gdk.Pixbuf));
+				foreach (Gdk.Pixbuf val in value)
+					list.Append (val.Handle);
+				gtk_window_set_default_icon_list(list.Handle);
+			}
+		}
 
 		public System.Drawing.Size DefaultSize {
 			get {
@@ -50,6 +57,29 @@
 			set {
 				DefaultWidth = value.Width;
 				DefaultHeight = value.Height;
+			}
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_window_get_icon_list(IntPtr raw);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_window_set_icon_list(IntPtr raw, IntPtr list);
+
+		public Gdk.Pixbuf[] IconList {
+			get {
+				IntPtr raw_ret = gtk_window_get_icon_list(Handle);
+				GLib.List list = new GLib.List(raw_ret, typeof (Gdk.Pixbuf));
+				Gdk.Pixbuf[] result = new Gdk.Pixbuf [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Gdk.Pixbuf;
+				return result;
+			}
+			set {
+				GLib.List list = new GLib.List(IntPtr.Zero, typeof (Gdk.Pixbuf));
+				foreach (Gdk.Pixbuf val in value)
+					list.Append (val.Handle);
+				gtk_window_set_icon_list(Handle, list.Handle);
 			}
 		}
 
@@ -71,4 +101,20 @@
 				return new System.Drawing.Size (
 						x, y);
 			}
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_window_list_toplevels();
+
+		public static Window[] ListToplevels ()
+		{
+			IntPtr raw_ret = gtk_window_list_toplevels();
+			if (raw_ret == IntPtr.Zero)
+				return null;
+
+			GLib.List list = new GLib.List(raw_ret, typeof (Gtk.Window));
+			Window[] result = new Window [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Window;
+			return result;
 		}
