@@ -1,8 +1,9 @@
 // GtkSharp.Generation.SignalHandler.cs - The SignalHandler marshaling Class.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@ximian.com>
 //
 // (c) 2002-2003 Mike Kestner
+// (c) 2004 Novell, Inc.
 
 namespace GtkSharp.Generation {
 
@@ -184,14 +185,14 @@ namespace GtkSharp.Generation {
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
 			sw.Write("\t\tpublic " + Name + "(GLib.Object obj, IntPtr raw, ");
-			sw.WriteLine("string name, Delegate eh, Type argstype) : base(obj, eh, argstype)");
+			sw.WriteLine("string name, Delegate eh, Type argstype, int connect_flags) : base(obj, eh, argstype)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
 			sw.WriteLine("\t\t\t\t_Delegate = new " + DelegateName + "(" + CallbackName + ");");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\t_raw = raw;");
 			sw.Write("\t\t\t_HandlerID = g_signal_connect_data(raw, name, ");
-			sw.WriteLine("_Delegate, _key, new IntPtr(0), 1);");
+			sw.WriteLine("_Delegate, _key, new IntPtr(0), connect_flags);");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
 			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");

@@ -124,9 +124,7 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			if (has_sigs && Elem.HasAttribute("parent"))
-			{
-				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();\n");
+			if (has_sigs && Elem.HasAttribute("parent")) {
 				GenSignals (gen_info, null);
 			}
 

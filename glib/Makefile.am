@@ -9,6 +9,7 @@ references =
 
 sources =		 			\
 	Boxed.cs				\
+	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\
 	EnumWrapper.cs				\

@@ -22,71 +22,69 @@ namespace Gnome {
 		{
 		}
 
-		private Hashtable Signals = new Hashtable ();
-
 		public event UpdateHandler Update {
 			add {
-				if (EventList["update"] == null)
-					Signals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
-				EventList.AddHandler("update", value);
+				if (AfterHandlers["update"] == null)
+					AfterSignals["update"] = new GtkSharp.voidObjectAffineSVPintSignal(this, Handle, "update", value, System.Type.GetType("EventArgs"));
+				AfterHandlers.AddHandler("update", value);
 			}
 
 			remove {
-				EventList.RemoveHandler ("update", value);
-				if (EventList ["update"] == null)
-					Signals.Remove ("update");
+				AfterHandlers.RemoveHandler ("update", value);
+				if (AfterHandlers ["update"] == null)
+					AfterSignals.Remove ("update");
 			}
 		}
 
 		public event EventHandler Realize {
 			add {
-				if (EventList["realize"] == null)
-					Signals["realize"] = new GnomeSharp.voidObjectSignal(this, Handle, "realize", value, System.Type.GetType("EventArgs"));
-				EventList.AddHandler("realize", value);
+				if (AfterHandlers["realize"] == null)
+					AfterSignals["realize"] = new GnomeSharp.voidObjectSignal(this, Handle, "realize", value, System.Type.GetType("EventArgs"), 1);
+				AfterHandlers.AddHandler("realize", value);
 			}
 			remove {
-				EventList.RemoveHandler("realize", value);
-				if (EventList["realize"] == null)
-					Signals.Remove("realize");
+				AfterHandlers.RemoveHandler("realize", value);
+				if (AfterHandlers["realize"] == null)
+					AfterSignals.Remove("realize");
 			}
 		}
 
 		public event EventHandler Unrealize {
 			add {
-				if (EventList["unrealize"] == null)
-					Signals["unrealize"] = new GnomeSharp.voidObjectSignal(this, Handle, "unrealize", value, System.Type.GetType("EventArgs"));
-				EventList.AddHandler("unrealize", value);
+				if (AfterHandlers["unrealize"] == null)
+					AfterSignals["unrealize"] = new GnomeSharp.voidObjectSignal(this, Handle, "unrealize", value, System.Type.GetType("EventArgs"), 1);
+				AfterHandlers.AddHandler("unrealize", value);
 			}
 			remove {
-				EventList.RemoveHandler("unrealize", value);
-				if (EventList["unrealize"] == null)
-					Signals.Remove("unrealize");
+				AfterHandlers.RemoveHandler("unrealize", value);
+				if (AfterHandlers["unrealize"] == null)
+					AfterSignals.Remove("unrealize");
 			}
 		}
 
 		public event EventHandler Map {
 			add {
-				if (EventList["map"] == null)
-					Signals["map"] = new GnomeSharp.voidObjectSignal(this, Handle, "map", value, System.Type.GetType("EventArgs"));
-				EventList.AddHandler("map", value);
+				if (AfterHandlers["map"] == null)
+					AfterSignals["map"] = new GnomeSharp.voidObjectSignal(this, Handle, "map", value, System.Type.GetType("EventArgs"), 1);
+				AfterHandlers.AddHandler("map", value);
 			}
 			remove {
-				EventList.RemoveHandler("map", value);
-				if (EventList["map"] == null)
-					Signals.Remove("map");
+				AfterHandlers.RemoveHandler("map", value);
+				if (AfterHandlers["map"] == null)
+					AfterSignals.Remove("map");
 			}
 		}
 
 		public event EventHandler Unmap {
 			add {
-				if (EventList["unmap"] == null)
-					Signals["unmap"] = new GnomeSharp.voidObjectSignal(this, Handle, "unmap", value, System.Type.GetType("EventArgs"));
-				EventList.AddHandler("unmap", value);
+				if (AfterHandlers["unmap"] == null)
+					AfterSignals["unmap"] = new GnomeSharp.voidObjectSignal(this, Handle, "unmap", value, System.Type.GetType("EventArgs"), 1);
+				AfterHandlers.AddHandler("unmap", value);
 			}
 			remove {
-				EventList.RemoveHandler("unmap", value);
-				if (EventList["unmap"] == null)
-					Signals.Remove("unmap");
+				AfterHandlers.RemoveHandler("unmap", value);
+				if (AfterHandlers["unmap"] == null)
+					AfterSignals.Remove("unmap");
 			}
 		}
 
@@ -96,9 +94,9 @@ namespace Gnome {
 			}
 
 			remove {
-				EventList.RemoveHandler ("coverage", value);
-				if (EventList ["coverage"] == null)
-					Signals.Remove ("coverage");
+				AfterHandlers.RemoveHandler ("coverage", value);
+				if (AfterHandlers ["coverage"] == null)
+					AfterSignals.Remove ("coverage");
 			}
 		}
 
@@ -109,9 +107,9 @@ namespace Gnome {
 			}
 
 			remove {
-				EventList.RemoveHandler ("draw", value);
-				if (EventList ["draw"] == null)
-					Signals.Remove ("draw");
+				AfterHandlers.RemoveHandler ("draw", value);
+				if (AfterHandlers ["draw"] == null)
+					AfterSignals.Remove ("draw");
 			}
 		}
 
@@ -121,9 +119,9 @@ namespace Gnome {
 			}
 
 			remove {
-				EventList.RemoveHandler ("render", value);
-				if (EventList ["render"] == null)
-					Signals.Remove ("render");
+				AfterHandlers.RemoveHandler ("render", value);
+				if (AfterHandlers ["render"] == null)
+					AfterSignals.Remove ("render");
 			}
 		}
 
@@ -133,9 +131,9 @@ namespace Gnome {
 			}
 
 			remove {
-				EventList.RemoveHandler ("point", value);
-				if (EventList ["point"] == null)
-					Signals.Remove ("point");
+				AfterHandlers.RemoveHandler ("point", value);
+				if (AfterHandlers ["point"] == null)
+					AfterSignals.Remove ("point");
 			}
 		}
 
@@ -145,9 +143,9 @@ namespace Gnome {
 			}
 
 			remove {
-				EventList.RemoveHandler ("bounds", value);
-				if (EventList ["bounds"] == null)
-					Signals.Remove ("bounds");
+				AfterHandlers.RemoveHandler ("bounds", value);
+				if (AfterHandlers ["bounds"] == null)
+					AfterSignals.Remove ("bounds");
 			}
 		}
 	}

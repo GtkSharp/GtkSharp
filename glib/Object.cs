@@ -3,10 +3,8 @@
 // Authors: Mike Kestner <mkestner@speakeasy.net>
 //
 // (c) 2001-2003 Mike Kestner
-//
-// TODO:
-//   Could remove `disposed' for a check if an object is on the dispose_queue_list.
-//
+// (c) 2004 Novell, Inc.
+
 namespace GLib {
 
 	using System;
@@ -15,28 +13,15 @@ namespace GLib {
 	using System.Reflection;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	Object Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Wrapper class for GObject.
-	/// </remarks>
-
 	public class Object : IWrapper, IDisposable {
 
-		// Private class and instance members
 		IntPtr _obj;
-		EventHandlerList _events;
 		bool disposed = false;
 		Hashtable data;
 		static Hashtable Objects = new Hashtable();
 		static Queue PendingDestroys = new Queue ();
 		static bool idle_queued;
 
-		//
-		// The destructor is invoked by a thread
-		//
 		~Object ()
 		{
 			Dispose ();
@@ -67,16 +52,6 @@ namespace GLib {
 			return false;
 		}
 
-		/// <summary>
-		///	Dispose Method 
-		/// </summary>
-		///
-		/// <remarks>
-		///	Disposes of the raw object. Only override this if
-		///	the Raw object should not be unref'd when the object
-		///	is garbage collected.
-		/// </remarks>
-
 		public void Dispose ()
 		{
 			if (disposed)
@@ -98,22 +73,6 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_ref (IntPtr raw);
-
-		/// <summary>
-		///	GetObject Shared Method 
-		/// </summary>
-		///
-		/// <remarks>
-		///	Used to obtain a CLI typed object associated with a 
-		///	given raw object pointer. This method is primarily
-		///	used to wrap object references that are returned 
-		///	by either the signal system or raw class methods that
-		///	return GObject references.
-		/// </remarks>
-		///
-		/// <returns>
-		///	The wrapper instance.
-		/// </returns>
 
 		public static Object GetObject(IntPtr o, bool owned_ref)
 		{
@@ -166,16 +125,6 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
-		/// <summary>
-		///	RegisterGType Shared Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Shared method to register types with the GType system.
-		///	This method should be called from the class constructor
-		///	of subclasses.
-		/// </remarks>
-
 		public static GType RegisterGType (System.Type t)
 		{
 			System.Type parent = t.BaseType;
@@ -192,23 +141,7 @@ namespace GLib {
 			return gtype;
 		}
 
-		/// <summary>
-		///	Object Constructor
-		/// </summary>
-		///
-		/// <remarks>
-		///	Dummy constructor needed for derived classes.
-		/// </remarks>
-
 		protected Object () {}
-
-		/// <summary>
-		///	Object Constructor
-		/// </summary>
-		///
-		/// <remarks>
-		///	Creates an object from a raw object reference.
-		/// </remarks>
 
 		public Object (IntPtr raw)
 		{
@@ -218,29 +151,10 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
-		/// <summary>
-		///	Object Constructor
-		/// </summary>
-		///
-		/// <remarks>
-		///	Creates an object from a specified GType.
-		/// </remarks>
-
 		protected Object (GType gtype)
 		{
 			Raw = g_object_new (gtype.Val, IntPtr.Zero);
 		}
-
-		/// <summary>
-		///	Raw Property
-		/// </summary>
-		///
-		/// <remarks>
-		///	The raw GObject reference associated with this wrapper.
-		///	Only subclasses of Object can access this read/write
-		///	property.  For public read-only access, use the
-		///	Handle property.
-		/// </remarks>
 
 		protected virtual IntPtr Raw {
 			get {
@@ -251,14 +165,6 @@ namespace GLib {
 				_obj = value;
 			}
 		}	
-
-		/// <summary>
-		///	GType Property
-		/// </summary>
-		///
-		/// <remarks>
-		///	The type associated with this object class.
-		/// </remarks>
 
 		[DllImport("glibsharpglue")]
 		private static extern IntPtr gtksharp_get_type_id (IntPtr obj);
@@ -278,14 +184,6 @@ namespace GLib {
 			}
 		}
 
-		/// <summary>
-		///	GetGType Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Returns the GType of this object.
-		/// </remarks>
-
 		public GLib.GType GetGType () {
 			if (_obj == IntPtr.Zero)
 				return GType.Invalid;
@@ -293,59 +191,52 @@ namespace GLib {
 			return new GLib.GType (gtksharp_get_type_id (_obj));
 		}
 
-		/// <summary>
-		///	Handle Property
-		/// </summary>
-		///
-		/// <remarks>
-		///	The raw GObject reference associated with this object.
-		///	Subclasses can use Raw property for read/write
-		///	access.
-		/// </remarks>
-
 		public IntPtr Handle {
 			get {
 				return _obj;
 			}
 		}
 
-		/// <summary>
-		///	EventList Property
-		/// </summary>
-		///
-		/// <remarks>
-		///	A list object containing all the events for this 
-		///	object indexed by the Gtk+ signal name.
-		/// </remarks>
-
-		protected EventHandlerList EventList {
+		Hashtable before_signals;
+		protected Hashtable BeforeSignals {
 			get {
-				if (_events == null)
-					_events = new EventHandlerList ();
-				return _events;
+				if (before_signals == null)
+					before_signals = new Hashtable ();
+				return before_signals;
 			}
 		}
 
-		/// <summary>
-		///	GetHashCode Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Calculates a hashing value.
-		/// </remarks>
+		Hashtable after_signals;
+		protected Hashtable AfterSignals {
+			get {
+				if (after_signals == null)
+					after_signals = new Hashtable ();
+				return after_signals;
+			}
+		}
+
+		EventHandlerList before_handlers;
+		protected EventHandlerList BeforeHandlers {
+			get {
+				if (before_handlers == null)
+					before_handlers = new EventHandlerList ();
+				return before_handlers;
+			}
+		}
+
+		EventHandlerList after_handlers;
+		protected EventHandlerList AfterHandlers {
+			get {
+				if (after_handlers == null)
+					after_handlers = new EventHandlerList ();
+				return after_handlers;
+			}
+		}
 
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();
 		}
-
-		/// <summary>
-		///	Data property
-		/// </summary>
-		///
-		/// <remarks>
-		///	Stores and Accesses arbitrary data on the Object.
-		/// </remarks>
 
 		public Hashtable Data {
 			get { 
@@ -357,35 +248,17 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_get_property (
-				IntPtr obj, string name, IntPtr val);
+		static extern void g_object_get_property (IntPtr obj, string name, IntPtr val);
 
-		/// <summary>
-		///	GetProperty Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Accesses a Value Property.
-		/// </remarks>
-
-		public void GetProperty (String name, GLib.Value val)
+		protected void GetProperty (String name, GLib.Value val)
 		{
 			g_object_get_property (Raw, name, val.Handle);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_property (
-				IntPtr obj, string name, IntPtr val);
+		static extern void g_object_set_property (IntPtr obj, string name, IntPtr val);
 
-		/// <summary>
-		///	SetProperty Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Accesses a Value Property.
-		/// </remarks>
-
-		public void SetProperty (String name, GLib.Value val)
+		protected void SetProperty (String name, GLib.Value val)
 		{
 			g_object_set_property (Raw, name, val.Handle);
 		}
