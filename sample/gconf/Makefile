@@ -4,8 +4,9 @@ SOURCES = \
 	#
 
 MCS = mcs
-RUNTIME = /usr/bin/mono
-GCONFDIR=../../gconf
+RUNTIME = mono
+top_builddir=../..
+GCONFDIR=$(top_builddir)/gconf
 
 all: sample.exe
 
