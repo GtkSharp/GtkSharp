@@ -292,9 +292,15 @@
 					continue;
 				// The widget to field binding must be 1:1, so only check
 				// the first attribute.
-				WidgetAttribute widget = (WidgetAttribute) attrs[0];
-				if (widget.Specified) field.SetValue (target, GetWidget (widget.Name), flags, null, null);
-				else field.SetValue (target, GetWidget (field.Name), flags, null, null);
+				WidgetAttribute attr = (WidgetAttribute) attrs[0];
+				Gtk.Widget widget;
+				if (attr.Specified) 
+					widget = GetWidget (attr.Name);
+				else 
+					widget = GetWidget (field.Name);
+
+				if (widget != null)
+					field.SetValue (target, widget, flags, null, null);
 			}
 		}
 		
