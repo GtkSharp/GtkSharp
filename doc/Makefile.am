@@ -1,5 +1,7 @@
+SUBDIRS = updater 
+
 ASSEMBLER = monodoc --assemble
-UPDATER = monodoc --update
+UPDATER = $(RUNTIME) updater/updater.exe
 
 DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg gtkhtml vte
 NAMESPACES=GLib Pango Atk Gdk Gtk Glade Art Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
