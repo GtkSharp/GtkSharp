@@ -9,15 +9,16 @@ namespace GtkDemo
 		public DemoEntryCompletion () : base ("Demo Entry Completion", null, DialogFlags.DestroyWithParent)
 		{
 			this.BorderWidth = 10;
+			this.Resizable = false;
 
 			Label label = new Label ("Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
 			label.UseMarkup = true;
 			this.VBox.PackStart (label, false, true, 0);
 
 			Entry entry = new Entry ();
-			// FIXME: no way to set model
-			//entry.Completion = new EntryCompletion ();
-			//entry.SetModel (CreateCompletionModel ());
+			entry.Completion = new EntryCompletion ();
+			entry.Completion.Model = CreateCompletionModel ();
+			entry.Completion.TextColumn = 0;
 			this.VBox.PackStart (entry, false, true, 0);
 
 			this.AddButton (Stock.Close, ResponseType.Close);
