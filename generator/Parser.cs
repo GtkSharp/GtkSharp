@@ -64,6 +64,11 @@ namespace GtkSharp.Generation {
 				switch (def.Name) {
 
 				case "alias":
+					string aname = elem.GetAttribute("cname");
+					string atype = elem.GetAttribute("type");
+					if ((aname == "") || (atype == ""))
+						continue;
+					SymbolTable.AddAlias (aname, atype);
 					break;
 					
 				case "boxed":

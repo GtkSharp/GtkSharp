@@ -11,6 +11,7 @@ namespace GtkSharp.Generation {
 
 	public class SymbolTable {
 		
+		private static Hashtable alias = new Hashtable ();
 		private static Hashtable complex_types = new Hashtable ();
 		private static Hashtable simple_types;
 		private static Hashtable dlls;
@@ -72,6 +73,12 @@ namespace GtkSharp.Generation {
 			dlls.Add("Gtk", "gtk-x11-2.0");
 		}
 		
+		public static void AddAlias (string name, string type)
+		{
+			type = type.TrimEnd(' ', '\t');
+			alias [name] = type;
+		}
+		
 		public static void AddType (IGeneratable gen)
 		{
 			complex_types [gen.CName] = gen;
@@ -97,9 +104,18 @@ namespace GtkSharp.Generation {
 			return trim_type;
 		}
 
+		private static string DeAlias (string type)
+		{
+			while (alias.ContainsKey(type))
+				type = (string) alias[type];
+
+			return type;
+		}
+
 		public static string FromNative(string c_type, string val)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return val;
 			} else if (complex_types.ContainsKey(c_type)) {
@@ -113,6 +129,7 @@ namespace GtkSharp.Generation {
 		public static string GetCSType(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return (string) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
@@ -126,6 +143,7 @@ namespace GtkSharp.Generation {
 		public static string GetName(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				string stype = (string) simple_types[c_type];
 				int dotidx = stype.IndexOf(".");
@@ -150,6 +168,7 @@ namespace GtkSharp.Generation {
 		public static string GetMarshalType(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return (string) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
@@ -163,6 +182,7 @@ namespace GtkSharp.Generation {
 		public static string CallByName(string c_type, string var_name)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return var_name;
 			} else if (complex_types.ContainsKey(c_type)) {
@@ -176,6 +196,7 @@ namespace GtkSharp.Generation {
 		public static bool IsBoxed(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is BoxedGen) {
@@ -188,6 +209,7 @@ namespace GtkSharp.Generation {
 		public static bool IsEnum(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is EnumGen) {
@@ -200,6 +222,7 @@ namespace GtkSharp.Generation {
 		public static bool IsInterface(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is InterfaceGen) {
@@ -212,6 +235,7 @@ namespace GtkSharp.Generation {
 		public static ObjectGen GetObjectGen(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (IsObject(c_type)) {
 				return (ObjectGen) complex_types[c_type];
 			}
@@ -221,6 +245,7 @@ namespace GtkSharp.Generation {
 		public static bool IsObject(string c_type)
 		{
 			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is ObjectGen) {
