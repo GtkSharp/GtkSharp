@@ -92,7 +92,7 @@ namespace GtkSamples {
 		public Gtk.Window CreateWindow ()
 		{
 			Gnome.App win = new Gnome.App ("gnome-hello-world", "Gnome# Hello World");
-			win.DeleteEvent += new EventHandler (Window_Delete);
+			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 
 			win.Menus = CreateMenus ();
 			
@@ -118,7 +118,7 @@ namespace GtkSamples {
 			return 0;
 		}
 
-		static void Window_Delete (object obj, EventArgs args)
+		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
 			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
