@@ -42,6 +42,7 @@ namespace GtkSharp.Generation {
 			// Const returned strings must be generated 
 			// differently from memory-managed strings
 			AddType (new ConstStringGen ("const-gchar"));
+			AddType (new ConstStringGen ("const-xmlChar"));
 			AddType (new ConstStringGen ("const-char"));
 			AddType (new StringGen ("gchar"));
 			AddType (new SimpleGen ("gfloat", "float"));
@@ -132,7 +133,7 @@ namespace GtkSharp.Generation {
 			string trim_type = type.TrimEnd('*');
 
 			// HACK: Similar to above, but for const strings
-			if (trim_type == "const-gchar" || trim_type == "const-char") return trim_type;
+			if (trim_type == "const-gchar" || trim_type == "const-char" || trim_type == "const-xmlChar") return trim_type;
 			
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;

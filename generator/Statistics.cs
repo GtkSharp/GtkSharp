@@ -144,21 +144,22 @@ namespace GtkSharp.Generation {
 		
 		public static void Report()
 		{
+			Console.WriteLine();
 			Console.WriteLine("Generation Summary:");
-			Console.WriteLine("\tEnums: " + enums);
-			Console.WriteLine("\tStructs: " + structs);
-			Console.WriteLine("\tBoxed: " + boxed);
-			Console.WriteLine("\tOpaques: " + opaques);
-			Console.WriteLine("\tInterfaces: " + interfaces);
-			Console.WriteLine("\tCallbacks: " + cbs);
-			Console.WriteLine("\tObjects: " + objects);
-			Console.WriteLine("\tProperties: " + props);
-			Console.WriteLine("\tSignals: " + sigs);
-			Console.WriteLine("\tMethods: " + methods);
-			Console.WriteLine("\tConstructors: " + ctors);
-			Console.WriteLine("\tThrottled: " + throttled);
-			Console.WriteLine("\tIgnored: " + ignored);
-			Console.WriteLine("Total Nodes: " + (enums+structs+boxed+opaques+interfaces+cbs+objects+props+sigs+methods+ctors+throttled+ignored));
+			Console.Write("  Enums: " + enums);
+			Console.Write("  Structs: " + structs);
+			Console.Write("  Boxed: " + boxed);
+			Console.Write("  Opaques: " + opaques);
+			Console.Write("  Interfaces: " + interfaces);
+			Console.Write("  Objects: " + objects);
+			Console.WriteLine("  Callbacks: " + cbs);
+			Console.Write("  Properties: " + props);
+			Console.Write("  Signals: " + sigs);
+			Console.Write("  Methods: " + methods);
+			Console.Write("  Constructors: " + ctors);
+			Console.WriteLine("  Throttled: " + throttled);
+			Console.WriteLine("Total Nodes: " + (enums+structs+boxed+opaques+interfaces+cbs+objects+props+sigs+methods+ctors+throttled));
+			Console.WriteLine();
 		}
 	}
 }
