@@ -34,7 +34,7 @@ namespace GtkSharp.Generation {
 				string cstype = SymbolTable.Table.GetCSType( elem.GetAttribute("type"));
 				if (cstype == "void")
 					cstype = "System.IntPtr";
-				if (elem.HasAttribute("array")) {
+				if (IsArray) {
 					cstype += "[]";
 					cstype = cstype.Replace ("ref ", "");
 				}
@@ -45,6 +45,12 @@ namespace GtkSharp.Generation {
 		public IGeneratable Generatable {
 			get {
 				return SymbolTable.Table[CType];
+			}
+		}
+
+		public bool IsArray {
+			get {
+				return elem.HasAttribute("array");
 			}
 		}
 
@@ -80,12 +86,18 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsUserData {
+			get {
+				return CType == "gpointer" && (Name.EndsWith ("data") || Name.EndsWith ("data_or_owner"));
+			}
+		}
+
 		public string MarshalType {
 			get {
 				string type = SymbolTable.Table.GetMarshalType( elem.GetAttribute("type"));
 				if (type == "void")
 					type = "System.IntPtr";
-				if (elem.HasAttribute("array")) {
+				if (IsArray) {
 					type += "[]";
 					type = type.Replace ("ref ", "");
 				}
@@ -221,44 +233,19 @@ namespace GtkSharp.Generation {
 			import_sig = call_string = signature = signature_types = "";	
 			bool need_sep = false;
 			bool has_callback = hide_data;
-			bool last_was_user_data = false;
-			bool has_user_data = false;
 			
 			SymbolTable table = SymbolTable.Table;
-			int len = 0;
-			Parameter last_param = null;
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
-					continue;
-				}
-				XmlElement p_elem = (XmlElement) parm;
-				if (p_elem.GetAttribute("type") == "gpointer" && (p_elem.GetAttribute("name").EndsWith ("data") || p_elem.GetAttribute("name").EndsWith ("data_or_owner")))
-					has_user_data = true;
-				len++;
-				last_param = new Parameter ((XmlElement) parm);
-			}
 
-			int i = 0;
-			Parameter prev = null;
+			for (int i = 0; i < Count; i++) {
 
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
-					continue;
-				}
+				string type = this [i].CType;
+				string cs_type = this [i].CSType;
+				string m_type = this [i].MarshalType;
+				string name = this [i].Name;
 
-				XmlElement p_elem = (XmlElement) parm;
-				Parameter curr = new Parameter (p_elem);
-
-				string type = curr.CType;
-				string cs_type = curr.CSType;
-				string m_type = curr.MarshalType;
-				string name = curr.Name;
-
-				if (prev != null && prev.IsString && curr.IsLength) {
-					call_string += ", " + prev.Name + ".Length";
+				if (i > 0 && this [i - 1].IsString && this [i].IsLength) {
+					call_string += ", " + this [i - 1].Name + ".Length";
 					import_sig += ", " + m_type + " " + name;
-					prev = curr;
-					i++;
 					continue;
 				}
 
@@ -273,13 +260,13 @@ namespace GtkSharp.Generation {
 				} else
 					call_parm = table.CallByName(type, call_parm_name);
 				
-				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !table.IsStruct (type))
+				if (this [i].NullOk && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !table.IsStruct (type))
 					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) ? "null" : "IntPtr.Zero");
 				
-				if (p_elem.HasAttribute("array"))
+				if (this [i].IsArray)
 					call_parm = call_parm.Replace ("ref ", "");
 
-				if (IsVarArgs && i == (len - 1) && VAType == "length_param") {
+				if (IsVarArgs && i == (Count - 1) && VAType == "length_param") {
 					cs_type = "params " + cs_type + "[]";
 					m_type += "[]";
 				}
@@ -287,7 +274,7 @@ namespace GtkSharp.Generation {
 				if (need_sep) {
 					call_string += ", ";
 					import_sig += ", ";
-					if (!(type == "GError**" || last_was_user_data) && !(IsVarArgs && i == (len - 1) && VAType == "length_param"))
+					if (type != "GError**"  && !(IsVarArgs && i == (Count - 1) && VAType == "length_param"))
 					{
 						signature += ", ";
 						signature_types += ":";
@@ -296,52 +283,39 @@ namespace GtkSharp.Generation {
 					need_sep = true;
 				}
 
-				if (p_elem.HasAttribute("pass_as")) {
-					string pass_as = p_elem.GetAttribute("pass_as");
-					signature += pass_as + " ";
+				if (this [i].PassAs != "") {
+					signature += this [i].PassAs + " ";
 					// We only need to do this for value types
 					if (type != "GError**" && m_type != "IntPtr" && m_type != "System.IntPtr")
 					{
-						import_sig += pass_as + " ";
-						call_string += pass_as + " ";
+						import_sig += this [i].PassAs + " ";
+						call_string += this [i].PassAs + " ";
 					}
 					
 					if (table.IsEnum (type))
 						call_parm = name + "_as_int";
-				}
-				else if (type == "GError**")
-				{
+				} else if (type == "GError**") {
 					call_string += "out ";				
 					import_sig += "out ";				
 				}
 				
-				if (IsVarArgs && i == (len - 2) && VAType == "length_param")
-				{
-					call_string += last_param.Name + ".Length";
-					last_was_user_data = false; 
-				}
-				else
-				{
+				if (IsVarArgs && i == (Count - 2) && VAType == "length_param") {
+					call_string += this [Count - 1].Name + ".Length";
+				} else {
 					if (!(type == "GError**" || (has_callback && (type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))))) {
 						signature += (cs_type + " " + name);
 						signature_types += cs_type;
-						last_was_user_data = false; 
 					} else if (type == "GError**") {
 						call_parm = call_parm.Replace (name, "error");
-						last_was_user_data = false; 
 					} else if ((type == "gpointer" || type == "void*") && (i == Count - 1) && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))) {
 						call_parm = "IntPtr.Zero"; 
-						last_was_user_data = true;
-					} else
-						last_was_user_data = false; 
+					}
 					
 					call_string += call_parm;
 				}
 				if (table.IsCallback (type))
 					m_type = impl_ns + "Sharp" + m_type.Substring(m_type.IndexOf("."));
 				import_sig += (m_type + " " + name);
-				prev = curr;
-				i++;
 			}
 
 			// FIXME: lame
@@ -357,11 +331,8 @@ namespace GtkSharp.Generation {
 
 		public void Initialize (StreamWriter sw, bool is_get, bool is_set, string indent)
 		{
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter")
-					continue;
+			foreach (Parameter p in param_list) {
 
-				Parameter p = new Parameter ((XmlElement) parm);
 				IGeneratable gen = p.Generatable;
 				string name = p.Name;
 				if (is_set)
