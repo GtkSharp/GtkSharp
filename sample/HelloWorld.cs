@@ -17,13 +17,13 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Gtk.Window win = new Gtk.Window ("Gtk# Hello World");
-			win.DeleteEvent += new EventHandler (Window_Delete);
+			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;
 		}
 
-		static void Window_Delete (object obj, EventArgs args)
+		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
 			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();

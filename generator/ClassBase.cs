@@ -84,7 +84,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public String MarshalType {
+		public virtual String MarshalType {
 			get
 			{
 				return "IntPtr";

@@ -17,7 +17,7 @@ namespace GtkSharp.Samples {
 		{
 			Application.Init();
 			Window win = new Window ("Menu Sample App");
-			win.DeleteEvent += new EventHandler (delete_cb);
+			win.DeleteEvent += new DeleteEventHandler (delete_cb);
 			win.DefaultSize = new Size(200, 150);
 
 			VBox box = new VBox (false, 2);
@@ -41,7 +41,7 @@ namespace GtkSharp.Samples {
 			Application.Run ();
 		}
 
-		static void delete_cb (object o, EventArgs args)
+		static void delete_cb (object o, DeleteEventArgs args)
 		{
 			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();

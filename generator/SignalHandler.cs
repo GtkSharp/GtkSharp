@@ -14,6 +14,7 @@ namespace GtkSharp.Generation {
 	public class SignalHandler {
 		
 		private static Hashtable handlers = new Hashtable ();
+		private string args_type;
 		
 		public static String GetName(XmlElement sig)
 		{
@@ -23,22 +24,23 @@ namespace GtkSharp.Generation {
 				return "";
 			}
 			
-			String retval = ret_elem.GetAttribute("type");
+			string retval = ret_elem.GetAttribute("type");
 			if (retval == "") {
 				Console.Write("Invalid return-type ");
 				return "";
 			}
 			
-			String s_ret = SymbolTable.GetCSType(retval);
-			String p_ret = SymbolTable.GetMarshalType(retval);
+			string s_ret = SymbolTable.GetCSType(retval);
+			string p_ret = SymbolTable.GetMarshalType(retval);
 			if ((s_ret == "") || (p_ret == "")) {
 				Console.Write("Funky type: " + retval);
 				return "";
 			}
 			
-			String key = retval;
-			String pinv = "";
-			String name = SymbolTable.GetName(retval);
+			string key = retval;
+			string pinv = "";
+			string name = SymbolTable.GetName(retval);
+			string argfields = "";
 			int pcnt = 0;
 			
 			ArrayList parms = new ArrayList();
@@ -53,8 +55,8 @@ namespace GtkSharp.Generation {
 				if (!(parm is XmlElement) || parm.Name != "parameter") continue;
 
 				XmlElement elem = (XmlElement) parm;
-				String type = elem.GetAttribute("type");
-				String ptype = SymbolTable.GetMarshalType(type);
+				string type = elem.GetAttribute("type");
+				string ptype = SymbolTable.GetMarshalType(type);
 				if (ptype == "") {
 					Console.Write("Funky type: " + type);
 					return "";
@@ -99,8 +101,6 @@ namespace GtkSharp.Generation {
 			String sname = name + "Signal";
 			String dname = name + "Delegate";
 			String cbname = name + "Callback";
-			String hndlrname = name + "Handler";
-			String argsname = name + "Args";
 
 			handlers[name] = sname;
 
@@ -124,11 +124,6 @@ namespace GtkSharp.Generation {
 			sw.Write("\tpublic delegate " + p_ret + " ");
 			sw.WriteLine(dname + "(" + pinv + ", int key);");
 			sw.WriteLine();
-			sw.WriteLine("\tpublic delegate void " + hndlrname + "(object o, " + argsname + " args);");
-			sw.WriteLine();
-			sw.WriteLine("\tpublic class " + argsname + " : EventArgs {");
-			sw.WriteLine("\t}");
-			sw.WriteLine();
 			sw.WriteLine("\tpublic class " + sname + " : SignalCallback {");
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate static " + dname + " _Delegate;");
@@ -140,37 +135,47 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unexpected signal key\");");
 			sw.WriteLine();
 			sw.WriteLine("\t\t\t" + sname + " inst = (" + sname + ") _Instances[key];");
-			sw.WriteLine("\t\t\tSignalArgs args = new SignalArgs();");
-			if (parms.Count > 1) {
-				sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
-			}
-			for (int idx=1; idx < parms.Count; idx++) {
-				if (SymbolTable.IsObject((String)parms[idx])) {
-					sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
-					sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
-				} else {
-					string ctype = (string) parms[idx];
-					sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
-					ClassBase wrapper = SymbolTable.GetClassGen (ctype);
-					if ((wrapper != null && !(wrapper is InterfaceGen)) || SymbolTable.IsManuallyWrapped (ctype) || SymbolTable.IsBoxed (ctype)) {
-						sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
-						sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
+			if ((s_ret == "void") && (parms.Count == 1)) {
+				sw.WriteLine("\t\t\tEventHandler h = (EventHandler) inst._handler;");
+				sw.WriteLine("\t\t\th (inst._obj, new EventArgs ());");
+				sw.WriteLine("\t\t}");
+				sw.WriteLine();
+			} else {
+				sw.WriteLine("\t\t\tSignalArgs args = (SignalArgs) Activator.CreateInstance (inst._argstype);");
+				if (parms.Count > 1) {
+					sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
+				}
+				for (int idx=1; idx < parms.Count; idx++) {
+					if (SymbolTable.IsObject((String)parms[idx])) {
+						sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
+						sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
+					} else {
+						string ctype = (string) parms[idx];
+						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
+						ClassBase wrapper = SymbolTable.GetClassGen (ctype);
+						if ((wrapper != null && !(wrapper is InterfaceGen)) || SymbolTable.IsManuallyWrapped (ctype) || SymbolTable.IsBoxed (ctype)) {
+							sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
+							sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
+						}
 					}
 				}
+				sw.WriteLine("\t\t\tobject[] argv = new object[2];");
+				sw.WriteLine("\t\t\targv[0] = inst._obj;");
+				sw.WriteLine("\t\t\targv[1] = args;");
+				sw.WriteLine("\t\t\tinst._handler.DynamicInvoke(argv);");
+				if (retval != "void") {
+					sw.WriteLine("\t\t\treturn (" + s_ret + ") args.RetVal;");
+				}
+				sw.WriteLine("\t\t}");
+				sw.WriteLine();
 			}
-			sw.WriteLine("\t\t\tinst._handler (inst._obj, args);");
-			if (retval != "void") {
-				sw.WriteLine("\t\t\treturn (" + s_ret + ") args.RetVal;");
-			}
-			sw.WriteLine("\t\t}");
-			sw.WriteLine();
 			sw.Write("\t\t[DllImport(\"gobject-2.0\")]");
 			sw.Write("\t\tstatic extern void g_signal_connect_data(");
 			sw.Write("IntPtr obj, String name, " + dname + " cb, int key, IntPtr p,");
 			sw.WriteLine(" int flags);");
 			sw.WriteLine();
 			sw.Write("\t\tpublic " + sname + "(GLib.Object obj, IntPtr raw, ");
-			sw.WriteLine("String name, EventHandler eh) : base(obj, eh)");
+			sw.WriteLine("String name, MulticastDelegate eh, Type argstype) : base(obj, eh, argstype)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (_Delegate == null) {");
 			sw.WriteLine("\t\t\t\t_Delegate = new " + dname + "(" + cbname + ");");

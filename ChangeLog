@@ -1,3 +1,19 @@
+2002-07-16  Mike Kestner <mkestner@speakeasy.net>
+
+	* generator/ClassBase.cs : make MarshalType virtual.
+	* generator/Parameters.cs : add Parameter class and Indexer.
+	* generator/Signal.cs : Now use Parameters. 
+	(GetHandlerName): New abstraction of name handling.
+	(GenerateDecls): use GetHandlerName.
+	(GenComments): make private.
+	(GenHandler): New. Generate custom event handlers and args.
+	(Generate): use GenHandler. Pass args type to SignalHandler.
+	* generate/SignalHandler.cs : store args type. Generate handler
+	  dependent args and use MulticastDelegate.DynamicInvoke.
+	* generate/StructGen.cs : override MarshalType.
+	* glib/SignalCallback.cs : store a MulticastDelegate and args type
+	* sample/*.cs : use new DeleteEventHandler
+	
 2002-07-13  Rachel Hestilow  <hestilow@ximian.com>
 
 	* generator/Parameters.cs: Allow nulls if null_ok set.

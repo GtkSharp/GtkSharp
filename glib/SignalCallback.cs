@@ -28,8 +28,9 @@ namespace GtkSharp {
 
 		// protected instance members
 		protected GLib.Object _obj;
-		protected EventHandler _handler;
+		protected MulticastDelegate _handler;
 		protected int _key;
+		protected Type _argstype;
 
 		/// <summary>
 		///	SignalCallback Constructor
@@ -39,11 +40,12 @@ namespace GtkSharp {
 		///	Initializes instance data.
 		/// </remarks>
 
-		public SignalCallback (GLib.Object obj, EventHandler eh)
+		public SignalCallback (GLib.Object obj, MulticastDelegate eh, Type argstype)
 		{
 			_key = _NextKey++;
 			_obj = obj;
 			_handler = eh;
+			_argstype = argstype;
 			_Instances [_key] = this;
 		}
 

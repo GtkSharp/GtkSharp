@@ -10,6 +10,54 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
+	public class Parameter {
+
+		private XmlElement elem;
+
+		public Parameter (XmlElement e)
+		{
+			elem = e;
+		}
+
+		public string CSType {
+			get {
+				return SymbolTable.GetCSType( elem.GetAttribute("type"));
+			}
+		}
+
+		public string Name {
+			get {
+				string name = elem.GetAttribute("name");
+				switch (name) {
+				case "string":
+					return "str1ng";
+				case "event":
+					return "evnt";
+				case "object":
+					return "objekt";
+				default:
+					break;
+				}
+
+				return name;
+			}
+		}
+
+		public string StudlyName {
+			get {
+				string name = elem.GetAttribute("name");
+				string[] segs = name.Split('_');
+				string studly = "";
+				foreach (string s in segs) {
+					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
+				}
+				return studly;
+				
+			}
+		}
+
+	}
+
 	public class Parameters  {
 		
 		private XmlElement elem;
@@ -26,6 +74,17 @@ namespace GtkSharp.Generation {
 		public string CallString {
 			get {
 				return call_string;
+			}
+		}
+
+		public Parameter this [int idx] {
+			get {
+				int count = 0;
+				foreach (XmlNode node in elem.ChildNodes) {
+					if ((node is XmlElement) && (idx == count++))
+						return new Parameter ((XmlElement) node);
+				}
+				return null;
 			}
 		}
 

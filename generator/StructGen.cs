@@ -14,7 +14,7 @@ namespace GtkSharp.Generation {
 		
 		public StructGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public new string MarshalType {
+		public override string MarshalType {
 			get
 			{
 				return QualifiedName;

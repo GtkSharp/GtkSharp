@@ -18,7 +18,7 @@ namespace GtkSamples {
 			Application.Init ();
 			Window win = new Window ("Button Tester");
 			win.DefaultSize = new Size (200, 150);
-			win.DeleteEvent += new EventHandler (Window_Delete);
+			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			Button btn = new Button ("Click Me");
 			btn.Clicked += new EventHandler (btn_click);
 			win.Add (btn);
@@ -32,11 +32,10 @@ namespace GtkSamples {
 			Console.WriteLine ("Button Clicked");
 		}
 
-		static void Window_Delete (object obj, EventArgs args)
+		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 	}
