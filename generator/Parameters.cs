@@ -49,8 +49,23 @@ namespace GtkSharp.Generation {
 
 		public bool IsLength {
 			get {
-				return ((CSType == "int" || CSType == "uint" || CSType == "long" || CSType == "ulong" || CSType == "short" || CSType == "ushort") && 
-					(Name.EndsWith("len") || Name.EndsWith("length")));
+				
+				if (Name.EndsWith("len") || Name.EndsWith("length"))
+					switch (CSType) {
+					case "int":
+					case "uint":
+					case "long":
+					case "ulong":
+					case "short":
+					case "ushort": 
+						return true;
+						break;
+					default:
+						return false;
+						break;
+					}
+				else
+					return false;
 			}
 		}
 
