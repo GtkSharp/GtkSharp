@@ -42,6 +42,8 @@ namespace GLibSharp {
 			PropertyInfo pi = type.GetProperty ("GType", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 			if (pi != null)
 				return (GType) pi.GetValue (null, null); 
+			if (type.IsSubclassOf (typeof (GLib.Opaque)))
+				return GType.Pointer;
 			if (type.IsValueType)
 				return GType.Pointer;
 

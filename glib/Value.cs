@@ -392,6 +392,10 @@ namespace GLib {
 			else if (type == GType.Object)
 				g_value_set_object (_val, ((GLib.Object) obj).Handle);
 			else if (type == GType.Pointer) {
+				if (obj is IWrapper) {
+					g_value_set_pointer (_val, ((IWrapper)obj).Handle);
+					return;
+				}
 				buf = Marshal.AllocHGlobal (Marshal.SizeOf (obj.GetType()));
 				Marshal.StructureToPtr (obj, buf, false);
 				g_value_set_pointer (_val, buf);
