@@ -65,7 +65,7 @@ class GnomeDbClient {
 			}
 
 			cnc = client.OpenConnection (dialog.Dsn, dialog.Username, dialog.Password,
-						     Gda.ConnectionOptions.Only);
+						     Gda.ConnectionOptions.ReadOnly);
 			if (cnc != null)
 				browser.Connection = cnc;
 		}
