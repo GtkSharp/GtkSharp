@@ -253,20 +253,10 @@ namespace GtkDemo
 
 		private void InsertText (TextBuffer buffer)
 		{
-			
-		/* demo_find_file() looks in the the current directory first,
-		 * so you can run gtk-demo without installing GTK, then looks
-		 * in the location where the file is installed.
-		 */
-			
-			// Error handling here, check for file existence, etc.
-			Pixbuf pixbuf = null;
-			
-			if (File.Exists ("images/gtk-logo-rgb.gif"))
-			{
-				pixbuf = new Pixbuf ("images/gtk-logo-rgb.gif");
-				pixbuf.ScaleSimple (32, 32, InterpType.Bilinear);
-			}
+			// we use resources for portability and convenience
+			Pixbuf pixbuf = Gdk.Pixbuf.LoadFromResource ("gtk-logo-rgb.gif");
+			pixbuf.ScaleSimple (32, 32, InterpType.Bilinear);
+
 		/* get start of buffer; each insertion will revalidate the
 		 * iterator to point to just after the inserted text.
 		 */

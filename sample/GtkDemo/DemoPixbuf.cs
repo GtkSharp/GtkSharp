@@ -59,15 +59,10 @@ namespace GtkDemo
 		// drawing area
 		DrawingArea drawingArea;
 
-		string FindFile (string name)
-		{
-			return name;
-		}
-	
 		// Loads the images for the demo 
 		void LoadPixbuf ()
 		{
-			background = new Pixbuf (FindFile (BackgroundName));
+			background = Gdk.Pixbuf.LoadFromResource (BackgroundName);
 
 			backWidth = background.Width;
 			backHeight = background.Height;
@@ -75,7 +70,7 @@ namespace GtkDemo
 			images = new Pixbuf[ImageNames.Length];
 		
 			for (int i = 0; i < ImageNames.Length; i++) 
-				images[i] = new Pixbuf (FindFile (ImageNames[i]));
+				images[i] = Gdk.Pixbuf.LoadFromResource (ImageNames[i]);
 		}
 
 		// Expose callback for the drawing area

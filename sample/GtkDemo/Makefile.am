@@ -25,8 +25,23 @@ sources = 					\
 	DemoTextView.cs		\
 	DemoTreeStore.cs
 
+images = \
+/resource:$(srcdir)/images/gnome-foot.png,gnome-foot.png \
+/resource:$(srcdir)/images/MonoIcon.png,MonoIcon.png \
+/resource:$(srcdir)/images/gnome-calendar.png,gnome-calendar.png \
+/resource:$(srcdir)/images/gnome-gmush.png,gnome-mush.png \
+/resource:$(srcdir)/images/gnu-keys.png,gnu-keys.png \
+/resource:$(srcdir)/images/gnome-applets.png,gnome-applets.png \
+/resource:$(srcdir)/images/gnome-gsame.png,gnome-gsame.png \
+/resource:$(srcdir)/images/alphatest.png,alphatest.png \
+/resource:$(srcdir)/images/gnome-gimp.png,gnome-gimp.png \
+/resource:$(srcdir)/images/apple-red.png,apple-red.png \
+/resource:$(srcdir)/images/background.jpg,background.jpg \
+/resource:$(srcdir)/images/gtk-logo-rgb.gif,gtk-logo-rgb.gif \
+/resource:$(srcdir)/images/floppybuddy.gif,floppybuddy.gif
+
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
-	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references)
+	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references) $(images)
 

@@ -57,16 +57,25 @@ namespace GtkDemo
 
 		private void LoadFile (string filename)
 		{
-			Stream file = File.OpenRead (filename);
-			StreamReader sr = new StreamReader (file);
-			string s = sr.ReadToEnd ();
-			sr.Close ();
-			file.Close ();
+			if (File.Exists (filename))
+			{
+				Stream file = File.OpenRead (filename);
+				StreamReader sr = new StreamReader (file);
+				string s = sr.ReadToEnd ();
+				sr.Close ();
+				file.Close ();
 
-			infoBuffer.Text = filename;
-			sourceBuffer.Text = s;
+				infoBuffer.Text = filename;
+				sourceBuffer.Text = s;
 
-			Fontify ();
+				Fontify ();
+			}
+			else
+			{
+				infoBuffer.Text = String.Format ("{0} was not found.", filename);
+				sourceBuffer.Text = String.Empty;
+				Fontify ();
+			}
 		}
 
 		private void Fontify ()
@@ -76,7 +85,7 @@ namespace GtkDemo
 		// TODO: Display system error
 		private void SetupDefaultIcon ()
 		{
-			Gdk.Pixbuf pixbuf = new Gdk.Pixbuf ("images/gtk-logo-rgb.gif");
+			Gdk.Pixbuf pixbuf = Gdk.Pixbuf.LoadFromResource ("gtk-logo-rgb.gif");
 		
 			if (pixbuf != null)
 			{
