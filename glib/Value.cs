@@ -38,7 +38,7 @@ namespace GLib {
 		// import the glue function to allocate values on heap
 
 		[DllImport("gtksharpglue")]
-		static extern IntPtr gtksharp_value_create(TypeFundamentals type);
+		static extern IntPtr gtksharp_value_create(uint type);
 
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_value_create_from_property(IntPtr obj, string name);
@@ -61,7 +61,7 @@ namespace GLib {
 		/// </remarks>
 
 		public Value () {
-			_val = gtksharp_value_create (TypeFundamentals.TypeInvalid);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeInvalid);
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace GLib {
 
 		public Value (bool val)
 		{
-			_val = gtksharp_value_create(TypeFundamentals.TypeBoolean);
+			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoolean);
 			g_value_set_boolean (_val, val);
 		}
 
@@ -109,7 +109,7 @@ namespace GLib {
 
 		public Value (GLib.Boxed val)
 		{
-			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
+			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoxed);
 			//g_value_set_boxed (_val, val.Handle);
 		}
 
@@ -121,7 +121,7 @@ namespace GLib {
 
 		public Value (GLib.Opaque val)
 		{
-			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
+			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoxed);
 			g_value_set_boxed (_val, val.Handle);
 		}
 
@@ -138,7 +138,7 @@ namespace GLib {
 
 		public Value (double val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeDouble);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeDouble);
 			g_value_set_double (_val, val);
 		}
 
@@ -155,7 +155,7 @@ namespace GLib {
 
 		public Value (float val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeFloat);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeFloat);
 			g_value_set_float (_val, val);
 		}
 
@@ -172,7 +172,7 @@ namespace GLib {
 
 		public Value (int val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeInt);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeInt);
 			g_value_set_int (_val, val);
 		}
 
@@ -189,7 +189,7 @@ namespace GLib {
 
 		public Value (GLib.Object val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeObject);
+			_val = gtksharp_value_create (val.GetGType ());
 			g_value_set_object (_val, val.Handle);
 		}
 
@@ -206,7 +206,7 @@ namespace GLib {
 
 		public Value (IntPtr val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypePointer);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypePointer);
 			g_value_set_pointer (_val, val); 
 		}
 
@@ -223,7 +223,7 @@ namespace GLib {
 
 		public Value (string val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeString);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeString);
 			g_value_set_string (_val, val); 
 		}
 
@@ -240,7 +240,7 @@ namespace GLib {
 
 		public Value (uint val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeUInt);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeUInt);
 			g_value_set_uint (_val, val); 
 		}
 
@@ -254,7 +254,7 @@ namespace GLib {
 
 		public Value (ushort val)
 		{
-			_val = gtksharp_value_create (TypeFundamentals.TypeUInt);
+			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeUInt);
 			g_value_set_uint (_val, val); 
 		}
 

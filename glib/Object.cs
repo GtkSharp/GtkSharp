@@ -193,10 +193,25 @@ namespace GLib {
 		[DllImport("libgtksharpglue.so")]
 		private static extern uint gtksharp_get_type_id (IntPtr obj);
 
-		public static int GType {
+		public static uint GType {
 			get {
 				return 0;
 			}
+		}
+
+		/// <summary>
+		///	GetGType Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Returns the GType of this object.
+		/// </remarks>
+
+		public uint GetGType () {
+			if (_obj == IntPtr.Zero)
+				return (uint) TypeFundamentals.TypeInvalid;
+			else
+				return gtksharp_get_type_id (_obj);
 		}
 
 		/// <summary>
