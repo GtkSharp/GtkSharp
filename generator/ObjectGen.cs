@@ -221,6 +221,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic static GLib.Object CreateObject (IntPtr raw)");
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (raw == IntPtr.Zero)");
+			sw.WriteLine ("\t\t\t\treturn null;");
+			sw.WriteLine ();
 			sw.WriteLine ("\t\t\tstring typename = gtksharp_get_type_name (raw);");
 			sw.WriteLine ("\t\t\tif (!types.ContainsKey(typename))");
 			sw.WriteLine ("\t\t\t\treturn null;");
