@@ -172,8 +172,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Should be paired with a call to <see cref="M:Gtk.TextBuffer.BeginUserAction()" />.</summary>
+        <remarks>See <see cref="M:Gtk.TextBuffer.BeginUserAction()" /> for an explanation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertChildAnchor">
@@ -242,8 +242,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Called to indicate that the buffer operations between here and a call to <see cref="M:Gtk.TextBuffer.EndUserAction()" /> are part of a single user-visible operation.</summary>
+        <remarks>
+          <para>The operations between <see cref="M:Gtk.TextBuffer.BeginUserAction()" /> and <see cref="M:Gtk.TextBuffer.EndUserAction()" /> can then be grouped when creating an undo stack. <see cref="T:Gtk.TextBuffer" /> maintains a count of calls to <see cref="M:Gtk.TextBuffer.BeginUserAction()" /> that have not been closed with a call to <see cref="M:Gtk.TextBuffer.EndUserAction()" />, and emits <see cref="E:Gtk.TextBuffer.UserActionBegun" /> and <see cref="E:Gtk.TextBuffer.UserActionEnded" /> signals only for the outermost pair of calls. This allows you to build user actions from other user actions.
+</para>
+          <para>The "interactive" buffer mutation functions, such as <see cref="M:Gtk.TextBuffer.InsertInteractive()" />, automatically call begin/end user action around the buffer operations they perform, so there is no need to add extra calls if you user action consists solely of a single call to one of those functions.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PasteClipboard">
@@ -509,9 +514,9 @@
         <Parameter Name="clipboard" Type="Gtk.Clipboard" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes a <see cref="T:Gtk.Clipboard" /> added with <see cref="M:Gtk.TextBuffer.AddSelectionClipboard()" />.</summary>
         <param name="clipboard">an object of type <see cref="T:Gtk.Clipboard" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Delete">
@@ -580,9 +585,9 @@
         <Parameter Name="clipboard" Type="Gtk.Clipboard" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds <parmred name="clipboard" /> to the list of clipboards in which the selection contents of buffer are available.</summary>
         <param name="clipboard">an object of type <see cref="T:Gtk.Clipboard" /></param>
-        <remarks>To be added</remarks>
+        <remarks>In most cases, clipboard will be the <see cref="T:Gtk.Clipboard" /> of type <see cref="F:Gdk.Selection.Primary" /> for a view of buffer.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteMark">
@@ -838,10 +843,10 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Copies the currently-selected text to a clipboard, then deletes said text if it is editable.</summary>
         <param name="clipboard">an object of type <see cref="T:Gtk.Clipboard" /></param>
         <param name="default_editable">an object of type <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -1053,8 +1058,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a UserAction ends on the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TagRemoved">
@@ -1065,8 +1070,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a tag is removed from the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UserActionBegun">
@@ -1077,8 +1082,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a UserAction is begun on the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MarkSet">
@@ -1089,8 +1094,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a mark is set in the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TagApplied">
@@ -1101,8 +1106,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a tag is applied to the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ChildAnchorInserted">
@@ -1113,8 +1118,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a ChildAnchor has been inserted in the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MarkDeleted">
@@ -1125,8 +1130,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a mark has been deleted from the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DeleteRange">
@@ -1137,8 +1142,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a range of text has been deleted from the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PixbufInserted">
@@ -1149,8 +1154,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a Pixbuf is inserted into the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -1161,8 +1166,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the text in the buffer has been changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InsertText">
@@ -1173,8 +1178,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when text is inserted into the buffer.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ModifiedChanged">
@@ -1185,8 +1190,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the Modified status of the buffer is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetIterAtOffset">
@@ -1331,9 +1336,9 @@
         <Parameter Name="clipboard" Type="Gtk.Clipboard" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Pastes the contents of a clipboard at the insertion point.</summary>
         <param name="clipboard">a <see cref="T:Gtk.Clipboard" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -1652,11 +1657,11 @@
         <Parameter Name="tags" Type="Gtk.TextTag[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Inserts <paramref name="text" /> into buffer at <paramref name="iter" />, applying the list of <paramref name="tags" /> to the newly-inserted text.</summary>
         <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
         <param name="text">a <see cref="T:System.String" /></param>
         <param name="tags">a <see cref="T:Gtk.TextTag" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Equivalent to calling <see cref="M:Gtk.TextBuffer.Insert()" />, then <see cref="Gtk.TextBuffer.ApplyTag()" /> on the inserted text; It is just a convenience function.</remarks>
       </Docs>
     </Member>
   </Members>
