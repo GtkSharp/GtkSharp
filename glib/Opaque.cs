@@ -54,7 +54,7 @@ namespace GLib {
 
 		public static Opaque GetOpaque(IntPtr o)
 		{
-			Opaque obj = (Opaque)Opaques[(int)o];
+			Opaque obj = (Opaque)Opaques[o];
 			if (obj != null) return obj;
 			return null; //FIXME: Call TypeParser here eventually.
 		}

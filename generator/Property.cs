@@ -211,11 +211,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + SetterHeader (modifiers, cs_type, name) + " {");
 				sw.Write(indent + "\tGLib.Value val = ");
 				if (table.IsEnum(c_type)) {
-					sw.WriteLine("new GLib.Value(this, " + qpname + ", new GLib.EnumWrapper ((int) value, {0}));", table.IsEnumFlags (c_type) ? "true" : "false");
+					sw.WriteLine("new GLib.Value(new GLib.EnumWrapper ((int) value, {0}), \"{1}\");", table.IsEnumFlags (c_type) ? "true" : "false", c_type);
 				} else if (table.IsBoxed (c_type)) {
 					sw.WriteLine("(GLib.Value) value;");
 				} else if (table.IsOpaque (c_type)) {
-					sw.WriteLine("new GLib.Value(Handle, " + qpname + ", value);");
+					sw.WriteLine("new GLib.Value(value, \"{0}\");", c_type);
 				} else {
 					sw.Write("new GLib.Value(");
 					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {

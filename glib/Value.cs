@@ -47,6 +47,9 @@ namespace GLib {
 		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, string name);
 
+		[DllImport("glibsharpglue-2.0")]
+		static extern IntPtr gtksharp_value_create_from_type_name(ref GLib.Value val, string type_name);
+
 		public void Dispose () 
 		{
 			g_value_unset (ref this);
@@ -82,20 +85,15 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed (ref Value val, IntPtr data);
 
-/*
-		public Value (GLib.Boxed val)
+		public Value (Opaque val, string type_name)
 		{
-			_val = gtksharp_value_create(GType.Boxed);
-			//g_value_set_boxed (_val, val.Handle);
+			type = IntPtr.Zero;
+			pad_1 = pad_2 = 0;
+			gtksharp_value_create_from_type_name (ref this, type_name);
+			g_value_set_boxed (ref this, val.Handle);
 		}
 
-		public Value (IntPtr obj, string prop_name, Boxed val)
-		{
-			_val = gtksharp_value_create_from_property (obj, prop_name);
-			//g_value_set_boxed (_val, val.Handle);
-		}
-*/
-
+		[Obsolete]
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
 			type = IntPtr.Zero;
@@ -172,6 +170,18 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_char (ref Value val, char data);
 		
+		public Value (EnumWrapper wrap, string type_name)
+		{
+			type = IntPtr.Zero;
+			pad_1 = pad_2 = 0;
+			gtksharp_value_create_from_type_name (ref this, type_name);
+			if (wrap.flags)
+				g_value_set_flags (ref this, (uint) (int) wrap); 
+			else
+				g_value_set_enum (ref this, (int) wrap); 
+		}
+
+		[Obsolete]
 		public Value (GLib.Object obj, string prop_name, EnumWrapper wrap)
 		{
 			type = IntPtr.Zero;

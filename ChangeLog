@@ -1,3 +1,18 @@
+2004-11-16  Dan Winship  <danw@novell.com>
+
+	* glib/Value.cs: add new constructors for enum and boxed values
+	that take the name of the type rather than an object/property
+	name pair; this way they work for both GObject properties and
+	GtkContainer child properties.
+
+	* glib/glue/value.c (gtksharp_value_create_from_type_name): glue
+	for that
+
+	* glib/Opaque.cs (GetOpaque): Fix this.
+
+	* generator/Property.cs (Generate): Use the new GLib.Value
+	constructors. (Fixes setting of enum-valued child properties.)
+
 2004-11-15  Dan Winship  <danw@novell.com>
 
 	* gtk/glue/container.c (gtksharp_container_get_focus_child): New
