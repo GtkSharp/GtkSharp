@@ -84,9 +84,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public IDictionaryEnumerator GetEnumerator()
-		{
-			return complex_types.GetEnumerator();
+		public IEnumerable Generatables {
+			get {
+				return complex_types.Values;
+			}
 		}
 		
 		private String Trim(String type)

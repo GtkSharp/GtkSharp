@@ -23,9 +23,7 @@ namespace GtkSharp.Generation {
 			SymbolTable table = p.Parse ();
 			Console.WriteLine (table.Count + " types parsed.");
 			
-			IDictionaryEnumerator de = table.GetEnumerator();
-			while (de.MoveNext()) {
-				IGeneratable gen = (IGeneratable) de.Value;
+			foreach (IGeneratable gen in table.Generatables) {
 				gen.Generate (table);
 			}
 
