@@ -49,9 +49,7 @@ namespace GLib {
 		
 		~ListBase ()
 		{
-			Console.WriteLine ("entering dispose");
 			Dispose ();
-			Console.WriteLine ("leaving dispose");
 		}
 		
 		public bool Managed {
