@@ -67,10 +67,6 @@ namespace GLib {
 
 		public void Dispose () {
 			if (_val != IntPtr.Zero && needs_dispose) {
-				IntPtr rawtype = gtksharp_value_get_value_type (_val);
-				if (rawtype == ManagedValue.GType.Val) {
-					ManagedValue.Free (g_value_get_boxed (_val)); 
-				}
 			
 				lock (idle_queue) {
 					idle_queue.Enqueue (_val);
