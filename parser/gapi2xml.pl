@@ -125,7 +125,9 @@ while ($line = <STDIN>) {
 		}
 		$fdef .= $line;
 		$fdef =~ s/\n\s*//g;
-		$fdefs{$fname} = $fdef;
+		if ($fdef !~ /^_/) {
+			$fdefs{$fname} = $fdef;
+		}
 	} elsif ($line =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)/) {
 		if ($1 eq "INSTANCE") {
 			$objects{$2} = $3 . $objects{$2};
@@ -362,6 +364,7 @@ foreach $key (sort (keys (%ptrs))) {
 }
 
 addFuncElems();
+addStaticFuncElems();
 
 # This should probably be done in a more generic way
 foreach $define (sort (keys (%defines))) {
@@ -466,11 +469,11 @@ sub addFuncElems
 				$obj_el = $elem_table{$key};
 				$inst = $key;
 				last;
-			} elsif (exists ($enums{$key})) {
-				last if ($mname =~ /_get_type/);
+			} elsif (exists ($enums{$key}) && ($mname =~ /_get_type/)) {
+				delete $fdefs{$mname};
+				last;
 			}
 		}
-		printf ("unmatched method %s\n", $mname) if (!$obj_el);
 		next if (!$obj_el);
 
 		$mdef = delete $fdefs{$mname};
@@ -491,33 +494,116 @@ sub addFuncElems
 			}
 		}
 
-		if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
-			@parms = ();
-			$parm = "";
-			$pcnt = 0;
-			foreach $char (split(//, $1)) {
-				if ($char eq "(") {
-					$pcnt++;
-				} elsif ($char eq ")") {
-					$pcnt--;
-				} elsif (($pcnt == 0) && ($char eq ",")) {
-					@parms = (@parms, $parm);
-					$parm = "";
-					next;
-				}
-				$parm .= $char;
-			}
+		parseParms ($el, $mdef, $drop_1st);
 
-			if ($parm) {
+	}
+}
+
+sub parseParms
+{
+	my ($el, $mdef, $drop_1st) = @_;
+
+	if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
+		@parms = ();
+		$parm = "";
+		$pcnt = 0;
+		foreach $char (split(//, $1)) {
+			if ($char eq "(") {
+				$pcnt++;
+			} elsif ($char eq ")") {
+				$pcnt--;
+			} elsif (($pcnt == 0) && ($char eq ",")) {
 				@parms = (@parms, $parm);
+				$parm = "";
+				next;
 			}
-			# @parms = split(/,/, $1);
-			($dump, @parms) = @parms if $drop_1st;
-			if (@parms > 0) {
-				addParamsElem($el, @parms);
+			$parm .= $char;
+		}
+
+		if ($parm) {
+			@parms = (@parms, $parm);
+		}
+		# @parms = split(/,/, $1);
+		($dump, @parms) = @parms if $drop_1st;
+		if (@parms > 0) {
+			addParamsElem($el, @parms);
+		}
+	}
+}
+
+sub addStaticFuncElems
+{
+	my ($global_el, $ns_prefix);
+
+	@mnames = sort (keys (%fdefs));
+	$mcount = @mnames;
+
+	return if ($mcount == 0);
+
+	$ns_prefix = "";
+	$global_el = "";
+
+	for ($i = 0; $i < $mcount; $i++) {
+		$mname = $mnames[$i];
+		$prefix = $mname;
+		next if ($prefix =~ /^_/);
+
+		if ($ns_prefix eq "") {
+			my (@toks) = split(/_/, $prefix);
+			for ($j = 0; $j < @toks; $j++) {
+				if (join ("", @toks[0 .. $j]) eq lc($ns)) {
+					$ns_prefix = join ("_", @toks[0 .. $j]);
+					last;
+				}
+			}
+			next if ($ns_prefix eq "");
+		}
+		next if ($mname !~ /^$ns_prefix/);
+
+		if ($mname =~ /($ns_prefix)_([a-zA-Z]+)_\w+/) {
+			$classname = $2;
+			$prefix = $1 . "_" . $2 . "_";
+			$cnt = 1;
+			if ($classname ne "set" && $classname ne "get" &&
+			    $classname ne "scan" && $classname ne "find" &&
+			    $classname ne "add" && $classname ne "remove" &&
+			    $classname ne "free" && $classname ne "register" &&
+			    $classname ne "execute" && $classname ne "show" &&
+			    $classname ne "parse") {
+				while ($mnames[$i+$cnt] =~ /$prefix/) { $cnt++; }
+			}
+			if ($cnt == 1) {
+				$mdef = delete $fdefs{$mname};
+
+				if (!$global_el) {
+					$global_el = $doc->createElement('Class');
+					$global_el->setAttribute('name', "Global");
+					$ns_elem->appendChild($global_el);
+				}
+				$el = addNameElem($global_el, 'method', $mname, $ns_prefix);
+				$mdef =~ /(.*?)\w+\s*\(/;
+				addReturnElem($el, $1);
+				$el->setAttribute("shared", "true");
+				parseParms ($el, $mdef, 0);
+				next;
+			} else {
+				$class_el = $doc->createElement('Class');
+				$class_el->setAttribute('name', StudlyCaps($classname));
+				$ns_elem->appendChild($class_el);
+
+				for ($j = 0; $j < $cnt; $j++) {
+					$mdef = delete $fdefs{$mnames[$i+$j]};
+
+					$el = addNameElem($class_el, 'method', $mnames[$i+$j], $prefix);
+					$mdef =~ /(.*?)\w+\s*\(/;
+					addReturnElem($el, $1);
+					$el->setAttribute("shared", "true");
+					parseParms ($el, $mdef, 0);
+				}
+				$i += ($cnt - 1);
+				next;
 			}
 		}
-		
 	}
 }
 

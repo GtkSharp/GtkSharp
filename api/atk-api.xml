@@ -1383,5 +1383,111 @@
       <field cname="new_value" type="GValue"/>
     </struct>
     <alias name="State" cname="AtkState" type="guint64"/>
+    <Class name="Global">
+      <method name="AddFocusTracker" cname="atk_add_focus_tracker" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="AtkEventListener" name="focus_tracker"/>
+        </parameters>
+      </method>
+      <method name="AddGlobalEventListener" cname="atk_add_global_event_listener" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GSignalEmissionHook" name="listener"/>
+          <parameter type="const-gchar*" name="event_type"/>
+        </parameters>
+      </method>
+      <method name="AddKeyEventListener" cname="atk_add_key_event_listener" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="AtkKeySnoopFunc" name="listener"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="GetDefaultRegistry" cname="atk_get_default_registry" shared="true">
+        <return-type type="AtkRegistry*"/>
+      </method>
+      <method name="GetRoot" cname="atk_get_root" shared="true">
+        <return-type type="AtkObject*"/>
+      </method>
+      <method name="GetToolkitName" cname="atk_get_toolkit_name" shared="true">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetToolkitVersion" cname="atk_get_toolkit_version" shared="true">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="RemoveFocusTracker" cname="atk_remove_focus_tracker" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="tracker_id"/>
+        </parameters>
+      </method>
+      <method name="RemoveGlobalEventListener" cname="atk_remove_global_event_listener" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="listener_id"/>
+        </parameters>
+      </method>
+      <method name="RemoveKeyEventListener" cname="atk_remove_key_event_listener" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="listener_id"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Focus">
+      <method name="TrackerInit" cname="atk_focus_tracker_init" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkEventListenerInit" name="add_function"/>
+        </parameters>
+      </method>
+      <method name="TrackerNotify" cname="atk_focus_tracker_notify" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkObject*" name="object"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Role">
+      <method name="ForName" cname="atk_role_for_name" shared="true">
+        <return-type type="AtkRole"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetName" cname="atk_role_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkRole" name="role"/>
+        </parameters>
+      </method>
+      <method name="Register" cname="atk_role_register" shared="true">
+        <return-type type="AtkRole"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="State">
+      <method name="TypeForName" cname="atk_state_type_for_name" shared="true">
+        <return-type type="AtkStateType"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="TypeGetName" cname="atk_state_type_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkStateType" name="type"/>
+        </parameters>
+      </method>
+      <method name="TypeRegister" cname="atk_state_type_register" shared="true">
+        <return-type type="AtkStateType"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+    </Class>
   </namespace>
 </api>

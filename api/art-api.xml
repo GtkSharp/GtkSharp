@@ -749,5 +749,318 @@
       <field cname="dash" type="double*"/>
     </struct>
     <alias name="ArtBoolean" cname="art_boolean" type="int"/>
+    <Class name="Affine">
+      <method name="Equal" cname="art_affine_equal" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="double" array="true" name="matrix1"/>
+          <parameter type="double" array="true" name="matrix2"/>
+        </parameters>
+      </method>
+      <method name="Expansion" cname="art_affine_expansion" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="src"/>
+        </parameters>
+      </method>
+      <method name="Flip" cname="art_affine_flip" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst_affine"/>
+          <parameter type="const-double" array="true" name="src_affine"/>
+          <parameter type="int" name="horz"/>
+          <parameter type="int" name="vert"/>
+        </parameters>
+      </method>
+      <method name="Identity" cname="art_affine_identity" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+        </parameters>
+      </method>
+      <method name="Invert" cname="art_affine_invert" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst_affine"/>
+          <parameter type="const-double" array="true" name="src_affine"/>
+        </parameters>
+      </method>
+      <method name="Multiply" cname="art_affine_multiply" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="const-double" array="true" name="src1"/>
+          <parameter type="const-double" array="true" name="src2"/>
+        </parameters>
+      </method>
+      <method name="Point" cname="art_affine_point" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtPoint*" name="dst"/>
+          <parameter type="const-ArtPoint*" name="src"/>
+          <parameter type="const-double" array="true" name="affine"/>
+        </parameters>
+      </method>
+      <method name="Rectilinear" cname="art_affine_rectilinear" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="src"/>
+        </parameters>
+      </method>
+      <method name="Rotate" cname="art_affine_rotate" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="double" name="theta"/>
+        </parameters>
+      </method>
+      <method name="Scale" cname="art_affine_scale" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="double" name="sx"/>
+          <parameter type="double" name="sy"/>
+        </parameters>
+      </method>
+      <method name="Shear" cname="art_affine_shear" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="double" name="theta"/>
+        </parameters>
+      </method>
+      <method name="ToString" cname="art_affine_to_string" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="char" array="true" name="str"/>
+          <parameter type="const-double" array="true" name="src"/>
+        </parameters>
+      </method>
+      <method name="Translate" cname="art_affine_translate" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" array="true" name="dst"/>
+          <parameter type="double" name="tx"/>
+          <parameter type="double" name="ty"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Global">
+      <method name="BezPathToVec" cname="art_bez_path_to_vec" shared="true">
+        <return-type type="ArtVpath*"/>
+        <parameters>
+          <parameter type="const-ArtBpath*" name="bez"/>
+          <parameter type="double" name="flatness"/>
+        </parameters>
+      </method>
+      <method name="BezierToVec" cname="art_bezier_to_vec" shared="true">
+        <return-type type="ArtPoint*"/>
+        <parameters>
+          <parameter type="double" name="x0"/>
+          <parameter type="double" name="y0"/>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="double" name="x2"/>
+          <parameter type="double" name="y2"/>
+          <parameter type="double" name="x3"/>
+          <parameter type="double" name="y3"/>
+          <parameter type="ArtPoint*" name="p"/>
+          <parameter type="int" name="level"/>
+        </parameters>
+      </method>
+      <method name="GraySvpAa" cname="art_gray_svp_aa" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </method>
+      <method name="RectListFromUta" cname="art_rect_list_from_uta" shared="true">
+        <return-type type="ArtIRect*"/>
+        <parameters>
+          <parameter type="ArtUta*" name="uta"/>
+          <parameter type="int" name="max_width"/>
+          <parameter type="int" name="max_height"/>
+          <parameter type="int*" name="p_nrects"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Rgb">
+      <method name="AAffine" cname="art_rgb_a_affine" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="dst_rowstride"/>
+          <parameter type="const-art_u8*" name="src"/>
+          <parameter type="int" name="src_width"/>
+          <parameter type="int" name="src_height"/>
+          <parameter type="int" name="src_rowstride"/>
+          <parameter type="art_u32" name="rgb"/>
+          <parameter type="const-double" array="true" name="affine"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="Affine" cname="art_rgb_affine" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="dst_rowstride"/>
+          <parameter type="const-art_u8*" name="src"/>
+          <parameter type="int" name="src_width"/>
+          <parameter type="int" name="src_height"/>
+          <parameter type="int" name="src_rowstride"/>
+          <parameter type="const-double" array="true" name="affine"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="BitmapAffine" cname="art_rgb_bitmap_affine" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="dst_rowstride"/>
+          <parameter type="const-art_u8*" name="src"/>
+          <parameter type="int" name="src_width"/>
+          <parameter type="int" name="src_height"/>
+          <parameter type="int" name="src_rowstride"/>
+          <parameter type="art_u32" name="rgba"/>
+          <parameter type="const-double" array="true" name="affine"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="FillRun" cname="art_rgb_fill_run" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="art_u8" name="r"/>
+          <parameter type="art_u8" name="g"/>
+          <parameter type="art_u8" name="b"/>
+          <parameter type="int" name="n"/>
+        </parameters>
+      </method>
+      <method name="PixbufAffine" cname="art_rgb_pixbuf_affine" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="dst_rowstride"/>
+          <parameter type="const-ArtPixBuf*" name="pixbuf"/>
+          <parameter type="const-double" array="true" name="affine"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="RgbaAffine" cname="art_rgb_rgba_affine" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="int" name="dst_rowstride"/>
+          <parameter type="const-art_u8*" name="src"/>
+          <parameter type="int" name="src_width"/>
+          <parameter type="int" name="src_height"/>
+          <parameter type="int" name="src_rowstride"/>
+          <parameter type="const-double" array="true" name="affine"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="RunAlpha" cname="art_rgb_run_alpha" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="art_u8" name="r"/>
+          <parameter type="art_u8" name="g"/>
+          <parameter type="art_u8" name="b"/>
+          <parameter type="int" name="alpha"/>
+          <parameter type="int" name="n"/>
+        </parameters>
+      </method>
+      <method name="SvpAa" cname="art_rgb_svp_aa" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="art_u32" name="fg_color"/>
+          <parameter type="art_u32" name="bg_color"/>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+      <method name="SvpAlpha" cname="art_rgb_svp_alpha" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="art_u32" name="rgba"/>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Rgba">
+      <method name="FillRun" cname="art_rgba_fill_run" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="art_u8" name="r"/>
+          <parameter type="art_u8" name="g"/>
+          <parameter type="art_u8" name="b"/>
+          <parameter type="int" name="n"/>
+        </parameters>
+      </method>
+      <method name="RgbaComposite" cname="art_rgba_rgba_composite" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dst"/>
+          <parameter type="const-art_u8*" name="src"/>
+          <parameter type="int" name="n"/>
+        </parameters>
+      </method>
+      <method name="RunAlpha" cname="art_rgba_run_alpha" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="buf"/>
+          <parameter type="art_u8" name="r"/>
+          <parameter type="art_u8" name="g"/>
+          <parameter type="art_u8" name="b"/>
+          <parameter type="int" name="alpha"/>
+          <parameter type="int" name="n"/>
+        </parameters>
+      </method>
+    </Class>
   </namespace>
 </api>

@@ -208,6 +208,461 @@
       <field cname="numsubtrees" type="gint"/>
       <field cname="numactions" type="gint"/>
     </struct>
+    <Class name="Global">
+      <method name="BonoboModuleInfoGet" cname="gnome_bonobo_module_info_get" shared="true">
+        <return-type type="const-GnomeModuleInfo*"/>
+      </method>
+      <method name="ExecuteAsync" cname="gnome_execute_async" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char*" array="true" name="argv"/>
+        </parameters>
+      </method>
+      <method name="ExecuteAsyncFds" cname="gnome_execute_async_fds" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char*" array="true" name="argv"/>
+          <parameter type="gboolean" name="close_fds"/>
+        </parameters>
+      </method>
+      <method name="ExecuteAsyncWithEnv" cname="gnome_execute_async_with_env" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char*" array="true" name="argv"/>
+          <parameter type="int" name="envc"/>
+          <parameter type="char*" array="true" name="envv"/>
+        </parameters>
+      </method>
+      <method name="ExecuteAsyncWithEnvFds" cname="gnome_execute_async_with_env_fds" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="char*" array="true" name="argv"/>
+          <parameter type="int" name="envc"/>
+          <parameter type="char*" array="true" name="envv"/>
+          <parameter type="gboolean" name="close_fds"/>
+        </parameters>
+      </method>
+      <method name="ExecuteShell" cname="gnome_execute_shell" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="const-char*" name="commandline"/>
+        </parameters>
+      </method>
+      <method name="ExecuteShellFds" cname="gnome_execute_shell_fds" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="const-char*" name="commandline"/>
+          <parameter type="gboolean" name="close_fds"/>
+        </parameters>
+      </method>
+      <method name="ExecuteTerminalShell" cname="gnome_execute_terminal_shell" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="const-char*" name="commandline"/>
+        </parameters>
+      </method>
+      <method name="ExecuteTerminalShellFds" cname="gnome_execute_terminal_shell_fds" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="dir"/>
+          <parameter type="const-char*" name="commandline"/>
+          <parameter type="gboolean" name="close_fds"/>
+        </parameters>
+      </method>
+      <method name="PrependTerminalToVector" cname="gnome_prepend_terminal_to_vector" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="argc"/>
+          <parameter type="char***" name="argv"/>
+        </parameters>
+      </method>
+      <method name="UtilUserShell" cname="gnome_util_user_shell" shared="true">
+        <return-type type="char*"/>
+      </method>
+    </Class>
+    <Class name="Config">
+      <method name="AssembleVector" cname="gnome_config_assemble_vector" shared="true">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="int" name="argc"/>
+          <parameter type="const-char*" name="const-argv"/>
+        </parameters>
+      </method>
+      <method name="CleanFile_" cname="gnome_config_clean_file_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="CleanKey_" cname="gnome_config_clean_key_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="CleanSection_" cname="gnome_config_clean_section_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="DropAll" cname="gnome_config_drop_all" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="DropFile_" cname="gnome_config_drop_file_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetBoolWithDefault_" cname="gnome_config_get_bool_with_default_" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetFloatWithDefault_" cname="gnome_config_get_float_with_default_" shared="true">
+        <return-type type="gdouble"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetIntWithDefault_" cname="gnome_config_get_int_with_default_" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetStringWithDefault_" cname="gnome_config_get_string_with_default_" shared="true">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetTranslatedStringWithDefault_" cname="gnome_config_get_translated_string_with_default_" shared="true">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="GetVectorWithDefault_" cname="gnome_config_get_vector_with_default_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gint*" name="argcp"/>
+          <parameter type="char***" name="argvp"/>
+          <parameter type="gboolean*" name="def"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="HasSection_" cname="gnome_config_has_section_" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="InitIterator_" cname="gnome_config_init_iterator_" shared="true">
+        <return-type type="void*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="InitIteratorSections_" cname="gnome_config_init_iterator_sections_" shared="true">
+        <return-type type="void*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="IteratorNext" cname="gnome_config_iterator_next" shared="true">
+        <return-type type="void*"/>
+        <parameters>
+          <parameter type="void*" name="iterator_handle"/>
+          <parameter type="char**" name="key"/>
+          <parameter type="char**" name="value"/>
+        </parameters>
+      </method>
+      <method name="MakeVector" cname="gnome_config_make_vector" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="string"/>
+          <parameter type="int*" name="argcp"/>
+          <parameter type="char***" name="argvp"/>
+        </parameters>
+      </method>
+      <method name="PopPrefix" cname="gnome_config_pop_prefix" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="PushPrefix" cname="gnome_config_push_prefix" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+        </parameters>
+      </method>
+      <method name="SetBool_" cname="gnome_config_set_bool_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gboolean" name="value"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetFloat_" cname="gnome_config_set_float_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="gdouble" name="value"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetInt_" cname="gnome_config_set_int_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="int" name="value"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetSetHandler" cname="gnome_config_set_set_handler" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="void" name="(*func)(void*"/>
+          <parameter type="void*" name="data"/>
+        </parameters>
+      </method>
+      <method name="SetString_" cname="gnome_config_set_string_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="const-char*" name="value"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetSyncHandler" cname="gnome_config_set_sync_handler" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="void" name="(*func)(void*"/>
+          <parameter type="void*" name="data"/>
+        </parameters>
+      </method>
+      <method name="SetTranslatedString_" cname="gnome_config_set_translated_string_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="const-char*" name="value"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetVector_" cname="gnome_config_set_vector_" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+          <parameter type="int" name="argc"/>
+          <parameter type="const-char*" array="true" name="argv"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+      <method name="Sync" cname="gnome_config_sync" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="SyncFile_" cname="gnome_config_sync_file_" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="char*" name="path"/>
+          <parameter type="gboolean" name="priv"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Gconf">
+      <method name="GetAppSettingsRelative" cname="gnome_gconf_get_app_settings_relative" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GnomeProgram*" name="program"/>
+          <parameter type="const-gchar*" name="subkey"/>
+        </parameters>
+      </method>
+      <method name="GetGnomeLibsSettingsRelative" cname="gnome_gconf_get_gnome_libs_settings_relative" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="subkey"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Help">
+      <method name="Display" cname="gnome_help_display" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="file_name"/>
+          <parameter type="const-char*" name="link_id"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="DisplayDesktop" cname="gnome_help_display_desktop" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeProgram*" name="program"/>
+          <parameter type="const-char*" name="doc_id"/>
+          <parameter type="const-char*" name="file_name"/>
+          <parameter type="const-char*" name="link_id"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="DisplayUri" cname="gnome_help_display_uri" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="help_uri"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="DisplayWithDocId" cname="gnome_help_display_with_doc_id" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GnomeProgram*" name="program"/>
+          <parameter type="const-char*" name="doc_id"/>
+          <parameter type="const-char*" name="file_name"/>
+          <parameter type="const-char*" name="link_id"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="ErrorQuark" cname="gnome_help_error_quark" shared="true">
+        <return-type type="GQuark"/>
+      </method>
+    </Class>
+    <Class name="Score">
+      <method name="GetNotable" cname="gnome_score_get_notable" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="const-gchar*" name="gamename"/>
+          <parameter type="/*" name="Will"/>
+          <parameter type="gchar***" name="names"/>
+          <parameter type="gfloat**" name="scores"/>
+          <parameter type="time_t**" name="scoretimes"/>
+        </parameters>
+      </method>
+      <method name="Init" cname="gnome_score_init" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="const-gchar*" name="gamename"/>
+        </parameters>
+      </method>
+      <method name="Log" cname="gnome_score_log" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gfloat" name="score"/>
+          <parameter type="const-gchar*" name="level"/>
+          <parameter type="/*" name="Pass"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Sound">
+      <method name="ConnectionGet" cname="gnome_sound_connection_get" shared="true">
+        <return-type type="int"/>
+      </method>
+      <method name="Init" cname="gnome_sound_init" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="hostname"/>
+        </parameters>
+      </method>
+      <method name="Play" cname="gnome_sound_play" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="SampleLoad" cname="gnome_sound_sample_load" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="sample_name"/>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="Shutdown" cname="gnome_sound_shutdown" shared="true">
+        <return-type type="void"/>
+      </method>
+    </Class>
+    <Class name="Triggers">
+      <method name="AddTrigger" cname="gnome_triggers_add_trigger" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeTrigger*" name="nt"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Do" cname="gnome_triggers_do" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="msg"/>
+          <parameter type="const-char*" name="level"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="VaddTrigger" cname="gnome_triggers_vadd_trigger" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeTrigger*" name="nt"/>
+          <parameter type="char*" array="true" name="supinfo"/>
+        </parameters>
+      </method>
+      <method name="Vdo" cname="gnome_triggers_vdo" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="msg"/>
+          <parameter type="const-char*" name="level"/>
+          <parameter type="const-char*" array="true" name="supinfo"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Url">
+      <method name="ErrorQuark" cname="gnome_url_error_quark" shared="true">
+        <return-type type="GQuark"/>
+      </method>
+      <method name="Show" cname="gnome_url_show" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="url"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="User">
+      <method name="AccelsDirGet" cname="gnome_user_accels_dir_get" shared="true">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="DirGet" cname="gnome_user_dir_get" shared="true">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="PrivateDirGet" cname="gnome_user_private_dir_get" shared="true">
+        <return-type type="const-char*"/>
+      </method>
+    </Class>
   </namespace>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
@@ -3475,6 +3930,170 @@
       <field cname="ac_mods" type="GdkModifierType"/>
       <field cname="widget" type="GtkWidget*"/>
     </struct>
+    <Class name="Global">
+      <method name="AcceleratorsSync" cname="gnome_accelerators_sync" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="IceInit" cname="gnome_ice_init" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="InteractionKeyReturn" cname="gnome_interaction_key_return" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="key"/>
+          <parameter type="gboolean" name="cancel_shutdown"/>
+        </parameters>
+      </method>
+      <method name="MasterClient" cname="gnome_master_client" shared="true">
+        <return-type type="GnomeClient*"/>
+      </method>
+      <method name="MdiModeGetType" cname="gnome_mdi_mode_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="TypeInit" cname="gnome_type_init" shared="true">
+        <return-type type="void"/>
+      </method>
+    </Class>
+    <Class name="Gdk">
+      <method name="PixbufNewFromUri" cname="gnome_gdk_pixbuf_new_from_uri" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-char*" name="uri"/>
+        </parameters>
+      </method>
+      <method name="PixbufNewFromUriAsync" cname="gnome_gdk_pixbuf_new_from_uri_async" shared="true">
+        <return-type type="GnomeGdkPixbufAsyncHandle*"/>
+        <parameters>
+          <parameter type="const-char*" name="uri"/>
+          <parameter type="GnomeGdkPixbufLoadCallback" name="load_callback"/>
+          <parameter type="GnomeGdkPixbufDoneCallback" name="done_callback"/>
+          <parameter type="gpointer" name="callback_data"/>
+        </parameters>
+      </method>
+      <method name="PixbufNewFromUriCancel" cname="gnome_gdk_pixbuf_new_from_uri_cancel" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeGdkPixbufAsyncHandle*" name="handle"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Gtk">
+      <method name="ModuleInfoGet" cname="gnome_gtk_module_info_get" shared="true">
+        <return-type type="const-GnomeModuleInfo*"/>
+      </method>
+      <method name="WidgetAddPopupItems" cname="gnome_gtk_widget_add_popup_items" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Popup">
+      <method name="MenuAppend" cname="gnome_popup_menu_append" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="popup"/>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="MenuAttach" cname="gnome_popup_menu_attach" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="popup"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="MenuDoPopup" cname="gnome_popup_menu_do_popup" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="popup"/>
+          <parameter type="GtkMenuPositionFunc" name="pos_func"/>
+          <parameter type="gpointer" name="pos_data"/>
+          <parameter type="GdkEventButton*" name="event"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="GtkWidget*" name="for_widget"/>
+        </parameters>
+      </method>
+      <method name="MenuDoPopupModal" cname="gnome_popup_menu_do_popup_modal" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="popup"/>
+          <parameter type="GtkMenuPositionFunc" name="pos_func"/>
+          <parameter type="gpointer" name="pos_data"/>
+          <parameter type="GdkEventButton*" name="event"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="GtkWidget*" name="for_widget"/>
+        </parameters>
+      </method>
+      <method name="MenuGetAccelGroup" cname="gnome_popup_menu_get_accel_group" shared="true">
+        <return-type type="GtkAccelGroup*"/>
+        <parameters>
+          <parameter type="GtkMenu*" name="menu"/>
+        </parameters>
+      </method>
+      <method name="MenuNew" cname="gnome_popup_menu_new" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+        </parameters>
+      </method>
+      <method name="MenuNewWithAccelgroup" cname="gnome_popup_menu_new_with_accelgroup" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GnomeUIInfo*" name="uiinfo"/>
+          <parameter type="GtkAccelGroup*" name="accelgroup"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Window">
+      <method name="IconInit" cname="gnome_window_icon_init" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="IconSetDefaultFromFile" cname="gnome_window_icon_set_default_from_file" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="IconSetDefaultFromFileList" cname="gnome_window_icon_set_default_from_file_list" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char**" name="filenames"/>
+        </parameters>
+      </method>
+      <method name="IconSetFromDefault" cname="gnome_window_icon_set_from_default" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="w"/>
+        </parameters>
+      </method>
+      <method name="IconSetFromFile" cname="gnome_window_icon_set_from_file" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="w"/>
+          <parameter type="const-char*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="IconSetFromFileList" cname="gnome_window_icon_set_from_file_list" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="w"/>
+          <parameter type="const-char**" name="filenames"/>
+        </parameters>
+      </method>
+      <method name="ToplevelSetTitle" cname="gnome_window_toplevel_set_title" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="window"/>
+          <parameter type="const-gchar*" name="doc_name"/>
+          <parameter type="const-gchar*" name="app_name"/>
+          <parameter type="const-gchar*" name="extension"/>
+        </parameters>
+      </method>
+    </Class>
     <object name="Stock" cname="GnomeStock">
       <static-string cname="GNOME_STOCK_ABOUT" name="About" value="gnome-stock-about"/>
       <static-string cname="GNOME_STOCK_ATTACH" name="Attach" value="gnome-stock-attach"/>

@@ -265,5 +265,98 @@
       <field cname="children" type="GladeChildInfo*"/>
       <field cname="n_children" type="guint"/>
     </struct>
+    <Class name="Global">
+      <method name="EnumFromString" cname="glade_enum_from_string" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-char*" name="string"/>
+        </parameters>
+      </method>
+      <method name="FlagsFromString" cname="glade_flags_from_string" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-char*" name="string"/>
+        </parameters>
+      </method>
+      <method name="GetWidgetName" cname="glade_get_widget_name" shared="true">
+        <return-type type="const-char*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="GetWidgetTree" cname="glade_get_widget_tree" shared="true">
+        <return-type type="GladeXML*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="ModuleCheckVersion" cname="glade_module_check_version" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="version"/>
+        </parameters>
+      </method>
+      <method name="RegisterCustomProp" cname="glade_register_custom_prop" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-gchar*" name="prop_name"/>
+          <parameter type="GladeApplyCustomPropFunc" name="apply_prop"/>
+        </parameters>
+      </method>
+      <method name="RegisterWidget" cname="glade_register_widget" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="GladeNewFunc" name="new"/>
+          <parameter type="GladeBuildChildrenFunc" name="build_children"/>
+          <parameter type="GladeFindInternalChildFunc" name="find_internal_child"/>
+        </parameters>
+      </method>
+      <method name="SetCustomHandler" cname="glade_set_custom_handler" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GladeXMLCustomWidgetHandler" name="handler"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Parser">
+      <method name="ParseBuffer" cname="glade_parser_parse_buffer" shared="true">
+        <return-type type="GladeInterface*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="buffer"/>
+          <parameter type="gint" name="len"/>
+          <parameter type="const-gchar*" name="domain"/>
+        </parameters>
+      </method>
+      <method name="ParseFile" cname="glade_parser_parse_file" shared="true">
+        <return-type type="GladeInterface*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file"/>
+          <parameter type="const-gchar*" name="domain"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Standard">
+      <method name="BuildChildren" cname="glade_standard_build_children" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GladeXML*" name="self"/>
+          <parameter type="GtkWidget*" name="parent"/>
+          <parameter type="GladeWidgetInfo*" name="info"/>
+        </parameters>
+      </method>
+      <method name="BuildWidget" cname="glade_standard_build_widget" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GladeXML*" name="xml"/>
+          <parameter type="GType" name="widget_type"/>
+          <parameter type="GladeWidgetInfo*" name="info"/>
+        </parameters>
+      </method>
+    </Class>
   </namespace>
 </api>

@@ -177,5 +177,111 @@
       <field cname="fy" type="double"/>
       <field cname="stops" type="RsvgGradientStops*"/>
     </struct>
+    <Class name="Css">
+      <method name="ParamArgOffset" cname="rsvg_css_param_arg_offset" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParamMatch" cname="rsvg_css_param_match" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="const-char*" name="param_name"/>
+        </parameters>
+      </method>
+      <method name="ParseColor" cname="rsvg_css_parse_color" shared="true">
+        <return-type type="guint32"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParseFontsize" cname="rsvg_css_parse_fontsize" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ParseLength" cname="rsvg_css_parse_length" shared="true">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="int*" name="fixed"/>
+        </parameters>
+      </method>
+      <method name="ParseOpacity" cname="rsvg_css_parse_opacity" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Global">
+      <method name="ErrorQuark" cname="rsvg_error_quark" shared="true">
+        <return-type type="GQuark"/>
+      </method>
+      <method name="ParsePath" cname="rsvg_parse_path" shared="true">
+        <return-type type="RsvgBpathDef*"/>
+        <parameters>
+          <parameter type="const-char*" name="path_str"/>
+        </parameters>
+      </method>
+      <method name="RenderPaintServer" cname="rsvg_render_paint_server" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtRender*" name="ar"/>
+          <parameter type="RsvgPaintServer*" name="ps"/>
+          <parameter type="const-RsvgPSCtx*" name="ctx"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Pixbuf">
+      <method name="FromFile" cname="rsvg_pixbuf_from_file" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtMaxSize" cname="rsvg_pixbuf_from_file_at_max_size" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gint" name="max_width"/>
+          <parameter type="gint" name="max_height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtSize" cname="rsvg_pixbuf_from_file_at_size" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtZoom" cname="rsvg_pixbuf_from_file_at_zoom" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="double" name="x_zoom"/>
+          <parameter type="double" name="y_zoom"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="FromFileAtZoomWithMax" cname="rsvg_pixbuf_from_file_at_zoom_with_max" shared="true">
+        <return-type type="GdkPixbuf*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+          <parameter type="double" name="x_zoom"/>
+          <parameter type="double" name="y_zoom"/>
+          <parameter type="gint" name="max_width"/>
+          <parameter type="gint" name="max_height"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+    </Class>
   </namespace>
 </api>

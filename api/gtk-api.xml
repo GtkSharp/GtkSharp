@@ -11517,6 +11517,1320 @@
       <field cname="shape_mask" type="GdkBitmap*"/>
     </struct>
     <struct name="WindowGeometryInfo" cname="GtkWindowGeometryInfo" opaque="true" hidden="1"/>
+    <Class name="Accel">
+      <method name="GroupsActivate" cname="gtk_accel_groups_activate" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GObject*" name="object"/>
+          <parameter type="guint" name="accel_key"/>
+          <parameter type="GdkModifierType" name="accel_mods"/>
+        </parameters>
+      </method>
+      <method name="GroupsFromObject" cname="gtk_accel_groups_from_object" shared="true">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="GObject*" name="object"/>
+        </parameters>
+      </method>
+      <method name="MapAddEntry" cname="gtk_accel_map_add_entry" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="accel_path"/>
+          <parameter type="guint" name="accel_key"/>
+          <parameter type="GdkModifierType" name="accel_mods"/>
+        </parameters>
+      </method>
+      <method name="MapAddFilter" cname="gtk_accel_map_add_filter" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filter_pattern"/>
+        </parameters>
+      </method>
+      <method name="MapChangeEntry" cname="gtk_accel_map_change_entry" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="accel_path"/>
+          <parameter type="guint" name="accel_key"/>
+          <parameter type="GdkModifierType" name="accel_mods"/>
+          <parameter type="gboolean" name="replace"/>
+        </parameters>
+      </method>
+      <method name="MapForeach" cname="gtk_accel_map_foreach" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkAccelMapForeach" name="foreach_func"/>
+        </parameters>
+      </method>
+      <method name="MapForeachUnfiltered" cname="gtk_accel_map_foreach_unfiltered" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkAccelMapForeach" name="foreach_func"/>
+        </parameters>
+      </method>
+      <method name="MapLoad" cname="gtk_accel_map_load" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+        </parameters>
+      </method>
+      <method name="MapLoadFd" cname="gtk_accel_map_load_fd" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="fd"/>
+        </parameters>
+      </method>
+      <method name="MapLoadScanner" cname="gtk_accel_map_load_scanner" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GScanner*" name="scanner"/>
+        </parameters>
+      </method>
+      <method name="MapLookupEntry" cname="gtk_accel_map_lookup_entry" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="accel_path"/>
+          <parameter type="GtkAccelKey*" name="key"/>
+        </parameters>
+      </method>
+      <method name="MapSave" cname="gtk_accel_map_save" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="file_name"/>
+        </parameters>
+      </method>
+      <method name="MapSaveFd" cname="gtk_accel_map_save_fd" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="fd"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Accelerator">
+      <method name="GetDefaultModMask" cname="gtk_accelerator_get_default_mod_mask" shared="true">
+        <return-type type="guint"/>
+      </method>
+      <method name="Name" cname="gtk_accelerator_name" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="guint" name="accelerator_key"/>
+          <parameter type="GdkModifierType" name="accelerator_mods"/>
+        </parameters>
+      </method>
+      <method name="Parse" cname="gtk_accelerator_parse" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="accelerator"/>
+          <parameter type="guint*" name="accelerator_key"/>
+          <parameter type="GdkModifierType*" name="accelerator_mods"/>
+        </parameters>
+      </method>
+      <method name="SetDefaultModMask" cname="gtk_accelerator_set_default_mod_mask" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkModifierType" name="default_mod_mask"/>
+        </parameters>
+      </method>
+      <method name="Valid" cname="gtk_accelerator_valid" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guint" name="keyval"/>
+          <parameter type="GdkModifierType" name="modifiers"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Global">
+      <method name="BindingParseBinding" cname="gtk_binding_parse_binding" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GScanner*" name="scanner"/>
+        </parameters>
+      </method>
+      <method name="BindingsActivate" cname="gtk_bindings_activate" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkObject*" name="object"/>
+          <parameter type="guint" name="keyval"/>
+          <parameter type="GdkModifierType" name="modifiers"/>
+        </parameters>
+      </method>
+      <method name="CellTypeGetType" cname="gtk_cell_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="CheckVersion" cname="gtk_check_version" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="guint" name="required_major"/>
+          <parameter type="guint" name="required_minor"/>
+          <parameter type="guint" name="required_micro"/>
+        </parameters>
+      </method>
+      <method name="ClistDragPosGetType" cname="gtk_clist_drag_pos_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="DisableSetlocale" cname="gtk_disable_setlocale" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="EventsPending" cname="gtk_events_pending" shared="true">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetCurrentEvent" cname="gtk_get_current_event" shared="true">
+        <return-type type="GdkEvent*"/>
+      </method>
+      <method name="GetCurrentEventState" cname="gtk_get_current_event_state" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdkModifierType*" name="state"/>
+        </parameters>
+      </method>
+      <method name="GetCurrentEventTime" cname="gtk_get_current_event_time" shared="true">
+        <return-type type="guint32"/>
+      </method>
+      <method name="GetDefaultLanguage" cname="gtk_get_default_language" shared="true">
+        <return-type type="PangoLanguage*"/>
+      </method>
+      <method name="GetEventWidget" cname="gtk_get_event_widget" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="IdentifierGetType" cname="gtk_identifier_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="MatchTypeGetType" cname="gtk_match_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PreviewTypeGetType" cname="gtk_preview_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PrivateFlagsGetType" cname="gtk_private_flags_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PropagateEvent" cname="gtk_propagate_event" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="RgbToHsv" cname="gtk_rgb_to_hsv" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="r"/>
+          <parameter type="gdouble" name="g"/>
+          <parameter type="gdouble" name="b"/>
+          <parameter type="gdouble*" name="h"/>
+          <parameter type="gdouble*" name="s"/>
+          <parameter type="gdouble*" name="v"/>
+        </parameters>
+      </method>
+      <method name="SetLocale" cname="gtk_set_locale" shared="true">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="SideTypeGetType" cname="gtk_side_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SignalRunTypeGetType" cname="gtk_signal_run_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="TypeClass" cname="gtk_type_class" shared="true">
+        <return-type type="gpointer"/>
+        <parameters>
+          <parameter type="GtkType" name="type"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Ctree">
+      <method name="ExpanderStyleGetType" cname="gtk_ctree_expander_style_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ExpansionTypeGetType" cname="gtk_ctree_expansion_type_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="LineStyleGetType" cname="gtk_ctree_line_style_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PosGetType" cname="gtk_ctree_pos_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </Class>
+    <Class name="Decorated">
+      <method name="WindowCalculateFrameSize" cname="gtk_decorated_window_calculate_frame_size" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="window"/>
+        </parameters>
+      </method>
+      <method name="WindowInit" cname="gtk_decorated_window_init" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="window"/>
+        </parameters>
+      </method>
+      <method name="WindowMoveResizeWindow" cname="gtk_decorated_window_move_resize_window" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="window"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="WindowSetTitle" cname="gtk_decorated_window_set_title" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWindow*" name="window"/>
+          <parameter type="const-gchar*" name="title"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Drag">
+      <method name="Begin" cname="gtk_drag_begin" shared="true">
+        <return-type type="GdkDragContext*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GtkTargetList*" name="targets"/>
+          <parameter type="GdkDragAction" name="actions"/>
+          <parameter type="gint" name="button"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="CheckThreshold" cname="gtk_drag_check_threshold" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gint" name="start_x"/>
+          <parameter type="gint" name="start_y"/>
+          <parameter type="gint" name="current_x"/>
+          <parameter type="gint" name="current_y"/>
+        </parameters>
+      </method>
+      <method name="DestFindTarget" cname="gtk_drag_dest_find_target" shared="true">
+        <return-type type="GdkAtom"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="GtkTargetList*" name="target_list"/>
+        </parameters>
+      </method>
+      <method name="DestGetTargetList" cname="gtk_drag_dest_get_target_list" shared="true">
+        <return-type type="GtkTargetList*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="DestSet" cname="gtk_drag_dest_set" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GtkDestDefaults" name="flags"/>
+          <parameter type="const-GtkTargetEntry*" name="targets"/>
+          <parameter type="gint" name="n_targets"/>
+          <parameter type="GdkDragAction" name="actions"/>
+        </parameters>
+      </method>
+      <method name="DestSetProxy" cname="gtk_drag_dest_set_proxy" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkWindow*" name="proxy_window"/>
+          <parameter type="GdkDragProtocol" name="protocol"/>
+          <parameter type="gboolean" name="use_coordinates"/>
+        </parameters>
+      </method>
+      <method name="DestSetTargetList" cname="gtk_drag_dest_set_target_list" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GtkTargetList*" name="target_list"/>
+        </parameters>
+      </method>
+      <method name="DestUnset" cname="gtk_drag_dest_unset" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="Finish" cname="gtk_drag_finish" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="gboolean" name="success"/>
+          <parameter type="gboolean" name="del"/>
+          <parameter type="guint32" name="time"/>
+        </parameters>
+      </method>
+      <method name="GetData" cname="gtk_drag_get_data" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="GdkAtom" name="target"/>
+          <parameter type="guint32" name="time"/>
+        </parameters>
+      </method>
+      <method name="GetSourceWidget" cname="gtk_drag_get_source_widget" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+        </parameters>
+      </method>
+      <method name="Highlight" cname="gtk_drag_highlight" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="SetIconDefault" cname="gtk_drag_set_icon_default" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+        </parameters>
+      </method>
+      <method name="SetIconPixbuf" cname="gtk_drag_set_icon_pixbuf" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="GdkPixbuf*" name="pixbuf"/>
+          <parameter type="gint" name="hot_x"/>
+          <parameter type="gint" name="hot_y"/>
+        </parameters>
+      </method>
+      <method name="SetIconPixmap" cname="gtk_drag_set_icon_pixmap" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="GdkColormap*" name="colormap"/>
+          <parameter type="GdkPixmap*" name="pixmap"/>
+          <parameter type="GdkBitmap*" name="mask"/>
+          <parameter type="gint" name="hot_x"/>
+          <parameter type="gint" name="hot_y"/>
+        </parameters>
+      </method>
+      <method name="SetIconStock" cname="gtk_drag_set_icon_stock" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="const-gchar*" name="stock_id"/>
+          <parameter type="gint" name="hot_x"/>
+          <parameter type="gint" name="hot_y"/>
+        </parameters>
+      </method>
+      <method name="SetIconWidget" cname="gtk_drag_set_icon_widget" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDragContext*" name="context"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gint" name="hot_x"/>
+          <parameter type="gint" name="hot_y"/>
+        </parameters>
+      </method>
+      <method name="SourceSet" cname="gtk_drag_source_set" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkModifierType" name="start_button_mask"/>
+          <parameter type="const-GtkTargetEntry*" name="targets"/>
+          <parameter type="gint" name="n_targets"/>
+          <parameter type="GdkDragAction" name="actions"/>
+        </parameters>
+      </method>
+      <method name="SourceSetIcon" cname="gtk_drag_source_set_icon" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkColormap*" name="colormap"/>
+          <parameter type="GdkPixmap*" name="pixmap"/>
+          <parameter type="GdkBitmap*" name="mask"/>
+        </parameters>
+      </method>
+      <method name="SourceSetIconPixbuf" cname="gtk_drag_source_set_icon_pixbuf" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkPixbuf*" name="pixbuf"/>
+        </parameters>
+      </method>
+      <method name="SourceSetIconStock" cname="gtk_drag_source_set_icon_stock" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="stock_id"/>
+        </parameters>
+      </method>
+      <method name="SourceUnset" cname="gtk_drag_source_unset" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="Unhighlight" cname="gtk_drag_unhighlight" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Gc">
+      <method name="Get" cname="gtk_gc_get" shared="true">
+        <return-type type="GdkGC*"/>
+        <parameters>
+          <parameter type="gint" name="depth"/>
+          <parameter type="GdkColormap*" name="colormap"/>
+          <parameter type="GdkGCValues*" name="values"/>
+          <parameter type="GdkGCValuesMask" name="values_mask"/>
+        </parameters>
+      </method>
+      <method name="Release" cname="gtk_gc_release" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkGC*" name="gc"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Grab">
+      <method name="Add" cname="gtk_grab_add" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="GetCurrent" cname="gtk_grab_get_current" shared="true">
+        <return-type type="GtkWidget*"/>
+      </method>
+      <method name="Remove" cname="gtk_grab_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Icon">
+      <method name="SizeFromName" cname="gtk_icon_size_from_name" shared="true">
+        <return-type type="GtkIconSize"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="SizeGetName" cname="gtk_icon_size_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="GtkIconSize" name="size"/>
+        </parameters>
+      </method>
+      <method name="SizeLookup" cname="gtk_icon_size_lookup" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkIconSize" name="size"/>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+        </parameters>
+      </method>
+      <method name="SizeRegister" cname="gtk_icon_size_register" shared="true">
+        <return-type type="GtkIconSize"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="SizeRegisterAlias" cname="gtk_icon_size_register_alias" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="alias"/>
+          <parameter type="GtkIconSize" name="target"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Idle">
+      <method name="Add" cname="gtk_idle_add" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="AddFull" cname="gtk_idle_add_full" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="gint" name="priority"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="GtkCallbackMarshal" name="marshal"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="AddPriority" cname="gtk_idle_add_priority" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="gint" name="priority"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="Remove" cname="gtk_idle_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="idle_handler_id"/>
+        </parameters>
+      </method>
+      <method name="RemoveByData" cname="gtk_idle_remove_by_data" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Init">
+      <method name="AbiCheck" cname="gtk_init_abi_check" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="argc"/>
+          <parameter type="char***" name="argv"/>
+          <parameter type="int" name="num_checks"/>
+          <parameter type="size_t" name="sizeof_GtkWindow"/>
+          <parameter type="size_t" name="sizeof_GtkBox"/>
+        </parameters>
+      </method>
+      <method name="Add" cname="gtk_init_add" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="Check" cname="gtk_init_check" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="int*" name="argc"/>
+          <parameter type="char***" name="argv"/>
+        </parameters>
+      </method>
+      <method name="CheckAbiCheck" cname="gtk_init_check_abi_check" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="int*" name="argc"/>
+          <parameter type="char***" name="argv"/>
+          <parameter type="int" name="num_checks"/>
+          <parameter type="size_t" name="sizeof_GtkWindow"/>
+          <parameter type="size_t" name="sizeof_GtkBox"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Input">
+      <method name="AddFull" cname="gtk_input_add_full" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="gint" name="source"/>
+          <parameter type="GdkInputCondition" name="condition"/>
+          <parameter type="GdkInputFunction" name="function"/>
+          <parameter type="GtkCallbackMarshal" name="marshal"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="Remove" cname="gtk_input_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="input_handler_id"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Key">
+      <method name="SnooperInstall" cname="gtk_key_snooper_install" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GtkKeySnoopFunc" name="snooper"/>
+          <parameter type="gpointer" name="func_data"/>
+        </parameters>
+      </method>
+      <method name="SnooperRemove" cname="gtk_key_snooper_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="snooper_handler_id"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Main">
+      <method name="DoEvent" cname="gtk_main_do_event" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="Iteration" cname="gtk_main_iteration" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IterationDo" cname="gtk_main_iteration_do" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gboolean" name="blocking"/>
+        </parameters>
+      </method>
+      <method name="Level" cname="gtk_main_level" shared="true">
+        <return-type type="guint"/>
+      </method>
+      <method name="Quit" cname="gtk_main_quit" shared="true">
+        <return-type type="void"/>
+      </method>
+    </Class>
+    <Class name="Paint">
+      <method name="Arrow" cname="gtk_paint_arrow" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="GtkArrowType" name="arrow_type"/>
+          <parameter type="gboolean" name="fill"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Box" cname="gtk_paint_box" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="BoxGap" cname="gtk_paint_box_gap" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GtkPositionType" name="gap_side"/>
+          <parameter type="gint" name="gap_x"/>
+          <parameter type="gint" name="gap_width"/>
+        </parameters>
+      </method>
+      <method name="Check" cname="gtk_paint_check" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Diamond" cname="gtk_paint_diamond" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Expander" cname="gtk_paint_expander" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="GtkExpanderStyle" name="expander_style"/>
+        </parameters>
+      </method>
+      <method name="Extension" cname="gtk_paint_extension" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GtkPositionType" name="gap_side"/>
+        </parameters>
+      </method>
+      <method name="FlatBox" cname="gtk_paint_flat_box" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Focus" cname="gtk_paint_focus" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Handle" cname="gtk_paint_handle" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GtkOrientation" name="orientation"/>
+        </parameters>
+      </method>
+      <method name="Hline" cname="gtk_paint_hline" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x1"/>
+          <parameter type="gint" name="x2"/>
+          <parameter type="gint" name="y"/>
+        </parameters>
+      </method>
+      <method name="Layout" cname="gtk_paint_layout" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="gboolean" name="use_text"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="PangoLayout*" name="layout"/>
+        </parameters>
+      </method>
+      <method name="Option" cname="gtk_paint_option" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Polygon" cname="gtk_paint_polygon" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="GdkPoint*" name="points"/>
+          <parameter type="gint" name="npoints"/>
+          <parameter type="gboolean" name="fill"/>
+        </parameters>
+      </method>
+      <method name="ResizeGrip" cname="gtk_paint_resize_grip" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="GdkWindowEdge" name="edge"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Shadow" cname="gtk_paint_shadow" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="ShadowGap" cname="gtk_paint_shadow_gap" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GtkPositionType" name="gap_side"/>
+          <parameter type="gint" name="gap_x"/>
+          <parameter type="gint" name="gap_width"/>
+        </parameters>
+      </method>
+      <method name="Slider" cname="gtk_paint_slider" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GtkOrientation" name="orientation"/>
+        </parameters>
+      </method>
+      <method name="Tab" cname="gtk_paint_tab" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GtkShadowType" name="shadow_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+      <method name="Vline" cname="gtk_paint_vline" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkStyle*" name="style"/>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GtkStateType" name="state_type"/>
+          <parameter type="GdkRectangle*" name="area"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="const-gchar*" name="detail"/>
+          <parameter type="gint" name="y1"/>
+          <parameter type="gint" name="y2"/>
+          <parameter type="gint" name="x"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Quit">
+      <method name="Add" cname="gtk_quit_add" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="guint" name="main_level"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="AddDestroy" cname="gtk_quit_add_destroy" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="main_level"/>
+          <parameter type="GtkObject*" name="object"/>
+        </parameters>
+      </method>
+      <method name="AddFull" cname="gtk_quit_add_full" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="guint" name="main_level"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="GtkCallbackMarshal" name="marshal"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="Remove" cname="gtk_quit_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="quit_handler_id"/>
+        </parameters>
+      </method>
+      <method name="RemoveByData" cname="gtk_quit_remove_by_data" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Rc">
+      <method name="AddDefaultFile" cname="gtk_rc_add_default_file" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="FindModuleInPath" cname="gtk_rc_find_module_in_path" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="module_file"/>
+        </parameters>
+      </method>
+      <method name="FindPixmapInPath" cname="gtk_rc_find_pixmap_in_path" shared="true">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GtkSettings*" name="settings"/>
+          <parameter type="GScanner*" name="scanner"/>
+          <parameter type="const-gchar*" name="pixmap_file"/>
+        </parameters>
+      </method>
+      <method name="GetDefaultFiles" cname="gtk_rc_get_default_files" shared="true">
+        <return-type type="gchar**"/>
+      </method>
+      <method name="GetImModuleFile" cname="gtk_rc_get_im_module_file" shared="true">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetImModulePath" cname="gtk_rc_get_im_module_path" shared="true">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetModuleDir" cname="gtk_rc_get_module_dir" shared="true">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetStyle" cname="gtk_rc_get_style" shared="true">
+        <return-type type="GtkStyle*"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="GetStyleByPaths" cname="gtk_rc_get_style_by_paths" shared="true">
+        <return-type type="GtkStyle*"/>
+        <parameters>
+          <parameter type="GtkSettings*" name="settings"/>
+          <parameter type="const-char*" name="widget_path"/>
+          <parameter type="const-char*" name="class_path"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </method>
+      <method name="GetThemeDir" cname="gtk_rc_get_theme_dir" shared="true">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="Parse" cname="gtk_rc_parse" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="ParseColor" cname="gtk_rc_parse_color" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GScanner*" name="scanner"/>
+          <parameter type="GdkColor*" name="color"/>
+        </parameters>
+      </method>
+      <method name="ParsePriority" cname="gtk_rc_parse_priority" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GScanner*" name="scanner"/>
+          <parameter type="GtkPathPriorityType*" name="priority"/>
+        </parameters>
+      </method>
+      <method name="ParseState" cname="gtk_rc_parse_state" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="GScanner*" name="scanner"/>
+          <parameter type="GtkStateType*" name="state"/>
+        </parameters>
+      </method>
+      <method name="ParseString" cname="gtk_rc_parse_string" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="rc_string"/>
+        </parameters>
+      </method>
+      <method name="ReparseAll" cname="gtk_rc_reparse_all" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="ReparseAllForSettings" cname="gtk_rc_reparse_all_for_settings" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkSettings*" name="settings"/>
+          <parameter type="gboolean" name="force_load"/>
+        </parameters>
+      </method>
+      <method name="ScannerNew" cname="gtk_rc_scanner_new" shared="true">
+        <return-type type="GScanner*"/>
+      </method>
+      <method name="SetDefaultFiles" cname="gtk_rc_set_default_files" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gchar**" name="filenames"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Selection">
+      <method name="AddTarget" cname="gtk_selection_add_target" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkAtom" name="selection"/>
+          <parameter type="GdkAtom" name="target"/>
+          <parameter type="guint" name="info"/>
+        </parameters>
+      </method>
+      <method name="AddTargets" cname="gtk_selection_add_targets" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkAtom" name="selection"/>
+          <parameter type="const-GtkTargetEntry*" name="targets"/>
+          <parameter type="guint" name="ntargets"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="gtk_selection_clear" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkEventSelection*" name="event"/>
+        </parameters>
+      </method>
+      <method name="ClearTargets" cname="gtk_selection_clear_targets" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkAtom" name="selection"/>
+        </parameters>
+      </method>
+      <method name="Convert" cname="gtk_selection_convert" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkAtom" name="selection"/>
+          <parameter type="GdkAtom" name="target"/>
+          <parameter type="guint32" name="time"/>
+        </parameters>
+      </method>
+      <method name="IncrEvent" cname="gtk_selection_incr_event" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdkWindow*" name="window"/>
+          <parameter type="GdkEventProperty*" name="event"/>
+        </parameters>
+      </method>
+      <method name="Notify" cname="gtk_selection_notify" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkEventSelection*" name="event"/>
+        </parameters>
+      </method>
+      <method name="OwnerSet" cname="gtk_selection_owner_set" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkAtom" name="selection"/>
+          <parameter type="guint32" name="time"/>
+        </parameters>
+      </method>
+      <method name="PropertyNotify" cname="gtk_selection_property_notify" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkEventProperty*" name="event"/>
+        </parameters>
+      </method>
+      <method name="RemoveAll" cname="gtk_selection_remove_all" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+        </parameters>
+      </method>
+      <method name="Request" cname="gtk_selection_request" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkEventSelection*" name="event"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Stock">
+      <method name="Add" cname="gtk_stock_add" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GtkStockItem*" name="items"/>
+          <parameter type="guint" name="n_items"/>
+        </parameters>
+      </method>
+      <method name="AddStatic" cname="gtk_stock_add_static" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GtkStockItem*" name="items"/>
+          <parameter type="guint" name="n_items"/>
+        </parameters>
+      </method>
+      <method name="ListIds" cname="gtk_stock_list_ids" shared="true">
+        <return-type type="GSList*"/>
+      </method>
+      <method name="Lookup" cname="gtk_stock_lookup" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="stock_id"/>
+          <parameter type="GtkStockItem*" name="item"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Submenu">
+      <method name="DirectionGetType" cname="gtk_submenu_direction_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="PlacementGetType" cname="gtk_submenu_placement_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </Class>
+    <Class name="Text">
+      <method name="ByteBeginsUtf8Char" cname="gtk_text_byte_begins_utf8_char" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="byte"/>
+        </parameters>
+      </method>
+      <method name="LayoutDraw" cname="gtk_text_layout_draw" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextLayout*" name="layout"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="cursor_gc"/>
+          <parameter type="gint" name="x_offset"/>
+          <parameter type="gint" name="y_offset"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GList**" name="widgets"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Timeout">
+      <method name="Add" cname="gtk_timeout_add" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="guint32" name="interval"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="AddFull" cname="gtk_timeout_add_full" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="guint32" name="interval"/>
+          <parameter type="GtkFunction" name="function"/>
+          <parameter type="GtkCallbackMarshal" name="marshal"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="Remove" cname="gtk_timeout_remove" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="timeout_handler_id"/>
+        </parameters>
+      </method>
+    </Class>
+    <Class name="Tree">
+      <method name="GetRowDragData" cname="gtk_tree_get_row_drag_data" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+          <parameter type="GtkTreeModel**" name="tree_model"/>
+          <parameter type="GtkTreePath**" name="path"/>
+        </parameters>
+      </method>
+      <method name="SetRowDragData" cname="gtk_tree_set_row_drag_data" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </method>
+    </Class>
     <object name="Stock" cname="GtkStock">
       <static-string cname="GTK_STOCK_ADD" name="Add" value="gtk-add"/>
       <static-string cname="GTK_STOCK_APPLY" name="Apply" value="gtk-apply"/>
