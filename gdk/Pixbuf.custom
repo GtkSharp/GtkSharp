@@ -82,7 +82,7 @@
 		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn)
 		{
 			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
-			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
+			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn, this);
 			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 

@@ -31,6 +31,10 @@ namespace GtkSharp.Generation {
 			set { force_static = value; }
 		}
 	
+		public Parameters Params {
+			get { return parms; }
+		}
+
 		public Ctor (string libname, XmlElement elem, ClassBase container_type) {
 			this.libname = libname;
 			this.elem = elem;

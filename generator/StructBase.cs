@@ -262,7 +262,10 @@ namespace GtkSharp.Generation {
 
 			foreach (Ctor ctor in Ctors) {
 				ctor.ForceStatic = true;
+				if (ctor.Params != null)
+					ctor.Params.Static = true;
 			}
+
 			base.GenCtors (sw);
 		}
 

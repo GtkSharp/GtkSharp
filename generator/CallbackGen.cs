@@ -84,15 +84,34 @@ namespace GtkSharp.Generation {
 			XmlElement ret_elem = Elem["return-type"];
 			string rettype = ret_elem.GetAttribute("type");
 			string m_ret = SymbolTable.GetMarshalReturnType (rettype);
+			ClassBase ret_wrapper = SymbolTable.GetClassGen (rettype);
 
 			sw.WriteLine ("\tpublic delegate " + m_ret + " " + wrapper + "(" + import_sig + ");");
 			sw.WriteLine ();
 			
 			sw.WriteLine ("\tpublic class " + Name + "Wrapper : GLib.DelegateWrapper {");
+			if (m_ret != "void") {
+				if (SymbolTable.IsEnum (rettype)) {
+					sw.WriteLine ("\t\tstatic int _dummy;");
+				} else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen)) {
+					// Do nothing
+				} else if (!SymbolTable.IsStruct (rettype) && !SymbolTable.IsBoxed (rettype)) {
+					sw.WriteLine ("\t\tstatic {0} _dummy;", s_ret);
+				}
+			}
+			
 			sw.WriteLine ();
 
 			sw.WriteLine ("\t\tpublic " + m_ret + " NativeCallback (" + import_sig + ")");
 			sw.WriteLine ("\t\t{");
+			sw.Write ("\t\t\tif (RemoveIfNotAlive ()) return ");
+			if (SymbolTable.IsStruct (rettype) || SymbolTable.IsBoxed (rettype))
+				sw.WriteLine ("IntPtr.Zero;");
+			else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
+				sw.WriteLine ("IntPtr.Zero;");
+			else
+				sw.WriteLine (m_ret != "void" ? "_dummy;" : ";");
+
 			int count = (parms != null) ? parms.Count : 0;
 			if (count > 0)
 				sw.WriteLine ("\t\t\tobject[] _args = new object[{0}];", count);
@@ -129,8 +148,7 @@ namespace GtkSharp.Generation {
 			sw.Write ("\t\t\t");
 			string invoke = "_managed (" + call_str + ")";
 			if (m_ret != "void") {
-					ClassBase parm_wrapper = SymbolTable.GetClassGen (rettype);
-					if (parm_wrapper != null && (parm_wrapper is ObjectGen || parm_wrapper is OpaqueGen))
+					if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
 						sw.WriteLine ("return (({0}) {1}).Handle;", s_ret, invoke);
 					else if (SymbolTable.IsStruct (rettype) || SymbolTable.IsBoxed (rettype)) {
 						// Shoot. I have no idea what to do here.
@@ -150,7 +168,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tprotected {0} _managed;", NS + "." + Name);
 			sw.WriteLine ();
 
-			sw.WriteLine ("\t\tpublic {0} ({1} managed) : base ()", Name + "Wrapper", NS + "." + Name);
+			sw.WriteLine ("\t\tpublic {0} ({1} managed, object o) : base (o)", Name + "Wrapper", NS + "." + Name);
 			sw.WriteLine ("\t\t{");
 
 			sw.WriteLine ("\t\t\tNativeDelegate = new {0} (NativeCallback);", wrapper);

@@ -9,6 +9,7 @@ namespace GtkSharp {
 
 		public void NativeCallback (IntPtr clipboard, uint objid)
 		{
+			if (RemoveIfNotAlive ()) return;
 			object[] _args = new object[2];
 			_args[0] = (Gtk.Clipboard) GLib.Opaque.GetOpaque(clipboard);
 			if (_args[0] == null)
@@ -21,7 +22,7 @@ namespace GtkSharp {
 		public GtkClipboardClearFuncNative NativeDelegate;
 		protected Gtk.ClipboardClearFunc _managed;
 
-		public GtkClipboardClearFuncWrapper (Gtk.ClipboardClearFunc managed) : base ()
+		public GtkClipboardClearFuncWrapper (Gtk.ClipboardClearFunc managed, object o) : base (o)
 		{
 			NativeDelegate = new GtkClipboardClearFuncNative (NativeCallback);
 			_managed = managed;

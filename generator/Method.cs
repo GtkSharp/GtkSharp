@@ -170,6 +170,7 @@ namespace GtkSharp.Generation {
 			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && s_ret == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
 			if (parms != null) {
+				parms.Static = is_shared;
 				parms.CreateSignature (is_set);
 				sig = "(" + parms.Signature + ")";
 				isig = "(" + (is_shared ? "" : container_type.MarshalType + " raw, ") + parms.ImportSig + ");";

@@ -123,6 +123,7 @@ namespace GtkSharp.Generation {
 		private string signature;
 		private string signature_types;
 		private bool hide_data;
+		private bool is_static;
 
 		public Parameters (XmlElement elem) {
 			
@@ -167,6 +168,10 @@ namespace GtkSharp.Generation {
 		public bool HideData {
 			get { return hide_data; }
 			set { hide_data = value; }
+		}
+
+		public bool Static {
+			set { is_static = value; }
 		}
 
 		public bool Validate ()
@@ -394,7 +399,7 @@ namespace GtkSharp.Generation {
 					{
 						sw.Write ("if ({0} != null) ", name);
 					}
-					sw.WriteLine ("{1}_wrapper = new {0} ({1});", type, name);
+					sw.WriteLine ("{1}_wrapper = new {0} ({1}, {2});", type, name, is_static ? "null" : "this");
 				}
 			}
 		}
