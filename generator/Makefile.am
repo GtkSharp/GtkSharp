@@ -17,7 +17,6 @@ sources = 				\
 	CodeGenerator.cs		\
 	ConstStringGen.cs		\
 	Ctor.cs				\
-	CustomMarshalerGen.cs		\
 	EnumGen.cs			\
 	Field.cs			\
 	GenBase.cs			\
