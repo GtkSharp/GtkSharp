@@ -22,7 +22,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class AliasGen : SimpleGen  {
+	public class AliasGen : SimpleBase {
 		
 		public AliasGen (string ctype, string type) : base (ctype, type) {}
 	}

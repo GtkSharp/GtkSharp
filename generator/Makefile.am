@@ -21,9 +21,6 @@ sources = 				\
 	Field.cs			\
 	GenBase.cs			\
 	GenerationInfo.cs		\
-	GObjectGen.cs			\
-	GStringGen.cs			\
-	GUnicharGen.cs			\
 	IGeneratable.cs			\
 	ImportSignature.cs		\
 	InterfaceGen.cs			\
@@ -31,6 +28,7 @@ sources = 				\
 	LPUGen.cs			\
 	ManagedCallString.cs		\
 	ManualGen.cs			\
+	MarshalGen.cs			\
 	MethodBody.cs			\
 	Method.cs			\
 	ObjectGen.cs			\
@@ -49,7 +47,6 @@ sources = 				\
 	StructBase.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\
-	TimeTGen.cs			\
 	VirtualMethod.cs		\
 	VMSignature.cs
 

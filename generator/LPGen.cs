@@ -23,7 +23,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class LPGen : SimpleBase {
+	public class LPGen : SimpleGen {
 		
 		public LPGen (string ctype) : base (ctype, "long") {}
 

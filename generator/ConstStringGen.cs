@@ -23,7 +23,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class ConstStringGen : SimpleGen {
+	public class ConstStringGen : SimpleBase {
 		
 		public ConstStringGen (string ctype) : base (ctype, "string")
 		{

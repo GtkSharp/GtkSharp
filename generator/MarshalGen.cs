@@ -1,4 +1,4 @@
-// GtkSharp.Generation.GUnicharGen.cs - The gunichar Generatable.
+// GtkSharp.Generation.MarshalGen.cs - Simple marshaling Generatable.
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -23,24 +23,33 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class GUnicharGen : SimpleBase {
+	public class MarshalGen : SimpleBase {
 		
-		public GUnicharGen () : base ("gunichar", "char") {}
+		string mtype;
+		string call_fmt;
+		string from_fmt;
 
+		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt) : base (ctype, type)
+		{
+			this.mtype = mtype;
+			this.call_fmt = call_fmt;
+			this.from_fmt = from_fmt;
+		}
+		
 		public override string MarshalType {
 			get {
-				return "uint";
+				return mtype;
 			}
 		}
 
-		public override string CallByName (string var_name)
+		public override string CallByName (string var)
 		{
-			return "GLib.Marshaller.CharToGUnichar (" + var_name + ")";
+			return String.Format (call_fmt, var);
 		}
 		
-		public override string FromNative(string var)
+		public override string FromNative (string var)
 		{
-			return "GLib.Marshaller.GUnicharToChar (" + var + ")";
+			return String.Format (from_fmt, var);
 		}
 	}
 }

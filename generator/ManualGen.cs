@@ -1,8 +1,9 @@
-// GtkSharp.Generation.ManualGen.cs - The Manually wrapped type Generatable.
+// GtkSharp.Generation.ManualGen.cs - Ungenerated handle type Generatable.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2003 Mike Kestner
+// Copyright (c) 2004 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -25,30 +26,32 @@ namespace GtkSharp.Generation {
 
 	public class ManualGen : SimpleBase {
 		
-		string handle;
+		string from_fmt;
 
-		public ManualGen (string ctype, string type) : this (ctype, type, "Handle") {}
-
-		public ManualGen (string ctype, string type, string handle) : base (ctype, type)
+		public ManualGen (string ctype, string type) : base (ctype, type) 
 		{
-			this.handle = handle;
+			from_fmt = "new " + QualifiedName + "({0})";
+		}
+
+		public ManualGen (string ctype, string type, string from_fmt) : base (ctype, type)
+		{
+			this.from_fmt = from_fmt;
 		}
 		
 		public override string MarshalType {
-			get
-			{
+			get {
 				return "IntPtr";
 			}
 		}
 
 		public override string CallByName (string var_name)
 		{
-			return var_name + "." + handle;
+			return var_name + ".Handle";
 		}
 		
 		public override string FromNative(string var)
 		{
-			return "new " + QualifiedName + "(" + var + ")";
+			return String.Format (from_fmt, var);
 		}
 	}
 }
