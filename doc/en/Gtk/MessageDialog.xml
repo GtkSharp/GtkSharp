@@ -12,16 +12,15 @@
       <para>
         <see cref="T:Gtk.MessageDialog" /> presents a <see cref="T:Gtk.Dialog" /> with an image representing the 
 	<see cref="T:Gtk.MessageType" /> (Error, Question, etc.) alongside some message text.
-	It's simply a convenience <see cref="T:Gtk.Widget" />; you could construct the equivalent of 
+	It is available as a convenience. You could construct the equivalent of 
 	<see cref="T:Gtk.MessageDialog" /> from <see cref="T:Gtk.Dialog" /> without too much effort, but 
 	<see cref="T:Gtk.MessageDialog" /> saves typing.
       </para>
       <para>
-	The MessageDialog is displayed using <see cref="M:Gtk.Dialog.Run()" />, which
-	automatically makes the <see cref="T:Gtk.MessageDialog" /> from 
-	<see cref="T:Gtk.Dialog" /> modal and waits for the user to respond to it.
+	The <see cref="T:Gtk.MessageDialog" /> is displayed using <see cref="M:Gtk.Dialog.Run()" />, which
+	automatically makes the <see cref="T:Gtk.MessageDialog" /> modal and waits for the user to respond to it.
 	<see cref="M:Gtk.Dialog.Run()" /> returns when any <see cref="T:Gtk.Button" /> 
-	in the <see cref="T:Gtk.Dialog" /> is clicked.
+	in the <see cref="T:Gtk.Dialog" /> is clicked or the <see cref="T:Gtk.MessageDialog" /> is closed.
       </para>
       <para>
         A message dialog
@@ -34,11 +33,14 @@ MessageDialog md = new MessageDialog (parent_window,
 	
 int result = md.Run ();
   	  </code>
-        </example>
-      </para>
+        </example></para>
       <para>
-      If you would like a non modal dialog just set the Modal property of the dialog, ie my_dialog.Modal = false;
-      </para>
+        If you would like the <see cref="T:Gtk.MessageDialog" /> to not be modal, set the property <see cref="P:Gtk.Dialog.Modal" /> to <see langword="false" />.
+		<example>
+          <code language="C#">
+md.Modal = false;
+		  </code>
+        </example></para>
     </remarks>
   </Docs>
   <Base>
@@ -77,8 +79,8 @@ int result = md.Run ();
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -106,12 +108,12 @@ int result = md.Run ();
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="parent_window" Type="Gtk.Window" />
-		<Parameter Name="flags" Type="Gtk.DialogFlags" />
-		<Parameter Name="type" Type="Gtk.MessageType" />
-		<Parameter Name="bt" Type="Gtk.ButtonsType" />
-		<Parameter Name="msg" Type="System.String" />
-	</Parameters>
+        <Parameter Name="parent_window" Type="Gtk.Window" />
+        <Parameter Name="flags" Type="Gtk.DialogFlags" />
+        <Parameter Name="type" Type="Gtk.MessageType" />
+        <Parameter Name="bt" Type="Gtk.ButtonsType" />
+        <Parameter Name="msg" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>Creates an instance of <see cref="T:Gtk.MessageDialog" /></summary>
         <param name="parent_window">an object of type <see cref="T:Gtk.Window" /></param>
@@ -161,8 +163,8 @@ MessageDialog md = new MessageDialog
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
