@@ -62,6 +62,7 @@ customs =					\
 	IconList.custom				\
 	IconTextItem.custom			\
 	IconTheme.custom			\
+	Print.custom				\
 	PrintDialog.custom			\
 	PrintJob.custom				\
 	Program.custom

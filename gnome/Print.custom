@@ -1,0 +1,25 @@
+// Pixbuf.custom - Gdk Pixbuf class customizations
+//
+// Authors: 
+//	Larry Ewing <lewing@ximian.com
+//
+// (C) 2004 Novell, Inc. (Larry Ewing)
+//
+// This code is inserted after the automatically generated code
+
+	[DllImport("gnomeprint-2-2")]
+	static extern unsafe int gnome_print_rgbimage(IntPtr pc, byte * data, int width, int height, int rowstride);
+
+	[DllImport("gnomeprint-2-2")]
+	static extern unsafe int gnome_print_rgbaimage(IntPtr pc, byte * data, int width, int height, int rowstride);
+
+	public static int Pixbuf (Gnome.PrintContext pc, Gdk.Pixbuf image) {
+		int ret = 0;
+
+		if (image.NChannels == 4)
+			ret = gnome_print_rgbaimage(pc.Handle, image.Pixels, image.Width, image.Height, image.Rowstride);
+		else 
+			ret = gnome_print_rgbimage(pc.Handle, image.Pixels, image.Width, image.Height, image.Rowstride);
+
+		return ret;
+	}
