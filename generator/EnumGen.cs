@@ -51,7 +51,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in Elem.ChildNodes) {
-				if (node.Name != "member") {
+				if (!(node is XmlElement) || node.Name != "member") {
 					continue;
 				}
 				

@@ -48,7 +48,7 @@ namespace GtkSharp.Generation {
 			Hashtable clash_map = new Hashtable();
 				
 			foreach (XmlNode node in Elem.ChildNodes) {
-				
+				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
 
 				switch (node.Name) {

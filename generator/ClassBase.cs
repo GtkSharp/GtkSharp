@@ -39,6 +39,7 @@ namespace GtkSharp.Generation {
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 			foreach (XmlNode node in elem.ChildNodes) {
+				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
 
 				switch (node.Name) {

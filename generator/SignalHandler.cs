@@ -50,7 +50,7 @@ namespace GtkSharp.Generation {
 			}
 				
 			foreach (XmlNode parm in params_elem.ChildNodes) {
-				if (parm.Name != "parameter") continue;
+				if (!(parm is XmlElement) || parm.Name != "parameter") continue;
 
 				XmlElement elem = (XmlElement) parm;
 				String type = elem.GetAttribute("type");

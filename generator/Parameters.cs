@@ -50,7 +50,7 @@ namespace GtkSharp.Generation {
 		public bool Validate ()
 		{
 			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
+				if (!(parm is XmlElement) || parm.Name != "parameter") {
 					continue;
 				}
 
@@ -233,7 +233,7 @@ namespace GtkSharp.Generation {
 				int length = 0;
 				string pass_as = "";
 				foreach (XmlNode parm in elem.ChildNodes) {
-					if (parm.Name != "parameter") {
+					if (!(parm is XmlElement) || parm.Name != "parameter") {
 						continue;
 					}
 	
@@ -254,7 +254,12 @@ namespace GtkSharp.Generation {
 				if ((elem.ChildNodes == null) || (elem.ChildNodes.Count < 1))
 					return false;
 
-				XmlElement p_elem = (XmlElement) elem.ChildNodes[elem.ChildNodes.Count - 1];
+				XmlElement p_elem = null;
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (!(parm is XmlElement) || parm.Name != "parameter")
+						continue;
+					p_elem = (XmlElement) parm;
+				}
 				string type = p_elem.GetAttribute("type");
 				return (type == "GError**");
 			}

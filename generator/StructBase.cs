@@ -175,7 +175,7 @@ namespace GtkSharp.Generation {
 			bool need_comma = false;
 			
 			foreach (XmlNode parm in parms.ChildNodes) {
-				if (parm.Name != "parameter") {
+				if (!(parm is XmlElement) || parm.Name != "parameter") {
 					Console.Write(parm.Name + " node ");
 					return false;
 				}
@@ -209,7 +209,7 @@ namespace GtkSharp.Generation {
 			bool need_comma = false;
 			
 			foreach (XmlNode parm in parms.ChildNodes) {
-				if (parm.Name != "parameter") {
+				if (!(parm is XmlElement) || parm.Name != "parameter") {
 					continue;
 				}
 

@@ -49,7 +49,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in Elem.ChildNodes) {
-				
+				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
 
 				switch (node.Name) {

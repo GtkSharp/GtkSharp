@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 			}
 
 			foreach (XmlNode ns in root.ChildNodes) {
-				if (ns.Name != "namespace") {
+				if (!(ns is XmlElement) || ns.Name != "namespace") {
 					continue;
 				}
 

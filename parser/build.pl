@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-$file = "../generator/gtkapi.xml";
+$file = "gtkapi.xml";
 
 unlink ($file);
 
