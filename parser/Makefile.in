@@ -7,6 +7,7 @@ MCS=mcs
 SCRIPTS = \
 	gapi.pl \
 	gapi_pp.pl \
+	gapi-fixup \
 	gapi-parser \
 	gapi2xml.pl
 
@@ -29,16 +30,17 @@ distclean:
 	rm -f gapi.pc
 
 prefix=@prefix@
+install=@INSTALL@
 DESTDIR=
 
 install: all
 	for i in $(SCRIPTS) gapi_format_xml gapi-fixup.exe; do \
 		../mkinstalldirs $(DESTDIR)$(prefix)/bin && \
-		cp $$i $(DESTDIR)$(prefix)/bin; \
+		$(install) $$i $(DESTDIR)$(prefix)/bin; \
 	done
 	for i in $(MODULES); do \
 		../mkinstalldirs $(DESTDIR)$(prefix)/share/perl5/GAPI && \
-		cp $$i $(DESTDIR)$(prefix)/share/perl5/GAPI; \
+		$(install) $$i $(DESTDIR)$(prefix)/share/perl5/GAPI; \
 	done
 	../mkinstalldirs $(DESTDIR)$(prefix)/lib/pkgconfig && \
-	cp gapi.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(install) -m 644 gapi.pc $(DESTDIR)$(prefix)/lib/pkgconfig

@@ -57,6 +57,10 @@ AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
 	fi
 )
 
+PKG_CHECK_MODULES(MONO_DEPENDENCY, mono)
+
+MONO=`which mono`
+AC_SUBST(MONO)
 
 ## Versions of dependencies
 GNOME_REQUIRED_VERSION=2.0.0
@@ -111,6 +115,7 @@ AC_OUTPUT([
 glue/Makefile
 parser/Makefile
 generator/Makefile
+generator/gapi-codegen
 glib/Makefile
 pango/Makefile
 atk/Makefile
@@ -132,6 +137,7 @@ sample/Makefile
 sample/rsvg/Makefile
 gtk-sharp.pc
 parser/gapi.pc
+parser/gapi-fixup
 Makefile
 ])
 

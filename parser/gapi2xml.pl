@@ -84,8 +84,9 @@ while ($line = <STDIN>) {
 		$fdef .= $line;
 		$fdef =~ s/\n\s+//g;
 		$fpdefs{$fname} = $fdef;
-	} elsif ($line =~ /struct\s+(\w+)/) {
-		$sname = $1;
+	} elsif ($line =~ /^(private)?struct\s+(\w+)/) {
+		next if ($line =~ /;/);
+		$sname = $2;
 		$sdef = $line;
 		while ($line = <STDIN>) {
 			$sdef .= $line;
@@ -192,17 +193,17 @@ foreach $cname (sort(keys(%edefs))) {
 	}
 	
 	foreach $val (@vals) {
-		if ($val =~ /$common\_(\w+)\s*=\s*(\-?\d+.*)/) {
+		if ($val =~ /$common\_?(\w+)\s*=\s*(\-?\d+.*)/) {
 			$name = $1;
 			if ($2 =~ /1u?\s*<<\s*(\d+)/) {
 				$enumval = "1 << $1";
 			} else {
 				$enumval = $2;
 			}
-		} elsif ($val =~ /$common\_(\w+)/) {
+		} elsif ($val =~ /$common\_?(\w+)/) {
 			$name = $1; $enumval = "";
 		} else {
-			die "Unexpected enum value: $val\n";
+			die "Unexpected enum value: $val for common value $common\n";
 		}
 
 		$val_elem = addNameElem($enum_elem, 'member');

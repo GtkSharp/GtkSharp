@@ -2,22 +2,21 @@ MCS=mcs
 RUNTIME=mono
 DESTDIR=
 
-all: linux
-
-windows: *.cs
-	$(CSC) /unsafe /out:codegen.exe *.cs
-	./codegen gtkapi.xml
-
-linux: gapi_codegen.exe
+all: gapi_codegen.exe
 
 clean:
 	rm -f *.exe
 
+distclean:
+	rm gapi-codegen
+
 prefix=@prefix@
+install=@INSTALL@
 
 install: all
 	../mkinstalldirs $(DESTDIR)$(prefix)/bin && \
-	cp gapi_codegen.exe $(DESTDIR)$(prefix)/bin
+	$(install) gapi_codegen.exe $(DESTDIR)$(prefix)/bin && \
+	$(install) gapi-codegen $(DESTDIR)$(prefix)/bin
 
 gapi_codegen.exe: *.cs
 	$(MCS) --unsafe -o gapi_codegen.exe -r System.Xml *.cs
