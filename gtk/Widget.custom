@@ -18,6 +18,8 @@ public Gdk.Rectangle Allocation {
 
 [DllImport ("gtksharpglue")]
 static extern IntPtr gtksharp_gtk_widget_get_window (IntPtr widget);
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_widget_set_window (IntPtr widget, IntPtr window);
 public Gdk.Window GdkWindow {
 	get {
 		IntPtr raw_ret = gtksharp_gtk_widget_get_window (Handle);
@@ -27,6 +29,10 @@ public Gdk.Window GdkWindow {
 			return ret;
 		}
 		return null;
+	}
+	set {
+		Gdk.Window window = value as Gdk.Window;
+		gtksharp_gtk_widget_set_window (Handle, window.Handle);
 	}
 }
 
@@ -48,5 +54,20 @@ public Gtk.StateType State {
 	}
 	get {
 		return (Gtk.StateType) gtksharp_gtk_widget_get_state (Handle);
+	}
+}
+
+[DllImport("gtksharpglue")]
+static extern int gtksharp_gtk_widget_get_flags (IntPtr raw);
+
+[DllImport("gtksharpglue")]
+static extern void gtksharp_gtk_widget_set_flags (IntPtr raw, int flags);
+
+public int Flags {
+	get {
+		return gtksharp_gtk_widget_get_flags (Handle);
+	}
+	set {
+		gtksharp_gtk_widget_set_flags (Handle, (int) value);
 	}
 }
