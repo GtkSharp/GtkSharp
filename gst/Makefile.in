@@ -1,0 +1,20 @@
+MCS=mcs
+DESTDIR=
+
+all: linux
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:gst-sharp.dll /recurse:*.cs
+
+linux: gst-sharp.dll
+
+gst-sharp.dll: *.cs
+	$(MCS) --unsafe --target library -r glib-sharp.dll -o gst-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -rf generated
+
+install: all
+	cp gst-sharp.dll $(DESTDIR)@prefix@/lib || exit 1
+
