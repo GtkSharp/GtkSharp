@@ -10,8 +10,16 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      <para>
+The Gda.Connection class offers access to all operations involving an opened connection to a database. Gda.Connection objects are obtained via the Gda.Client class.
+</para>
+    </summary>
+    <remarks>
+      <para>
+Once obtained, applications can use Gda.Connection to execute commands, run transactions, and get information about all objects stored in the underlying database.
+</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -48,10 +56,18 @@
         <Parameter Name="xaction" Type="Gda.Transaction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Rollbacks the given transaction.
+</para>
+        </summary>
         <param name="xaction">a <see cref="T:Gda.Transaction" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" /> true if the operation was successfull, false otherwise</returns>
+        <remarks>
+          <para>
+This means that all changes made to the underlying data source since the last call to <see cref="M:Gda.Connection.BeginTransaction" /> or <see cref="M:Gda.Connection.CommitTransaction" /> will be discarded.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTransaction">
@@ -64,10 +80,18 @@
         <Parameter Name="xaction" Type="Gda.Transaction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Starts a transaction on the data source, identified by the xaction parameter.
+</para>
+        </summary>
         <param name="xaction">a <see cref="T:Gda.Transaction" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" /> true if the transaction was started successfully, false otherwise</returns>
+        <remarks>
+          <para>
+Before starting a transaction, you can check whether the underlying provider does support transactions or not by using the <see cref="M:Gda.Connection.Supports" /> method.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ExecuteNonQuery">
@@ -81,10 +105,14 @@
         <Parameter Name="parms" Type="Gda.ParameterList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Executes a single command on the underlying database, and gets the number of rows affected.
+</para>
+        </summary>
         <param name="cmd">a <see cref="T:Gda.Command" /></param>
         <param name="parms">a <see cref="T:Gda.ParameterList" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <returns>a <see cref="T:System.Int32" /> the numer of affected rows by the executed command, or -1 on error</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -98,9 +126,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Changes the current database for the given connection. This operation is not available in all providers.
+</para>
+        </summary>
         <param name="name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" /> true if successful, false otherwise</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -114,9 +146,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Drops a database from the given connection.
+</para>
+        </summary>
         <param name="name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" /> true if successful, false otherwise</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -130,9 +166,17 @@
         <Parameter Name="error_list" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+This is just another convenience method which lets you add a list of GdaError's to the given connection. 
+</para>
+        </summary>
         <param name="error_list">a <see cref="T:GLib.List" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+As with <see cref="M:Gda.Connection.AddError" /> , this method makes the connection object emit the "error" signal. The only difference is that, instead of a notification for each error, this function only does one notification for the whole list of errors. 
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CommitTransaction">
@@ -145,10 +189,18 @@
         <Parameter Name="xaction" Type="Gda.Transaction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Commits the given transaction to the backend database.
+</para>
+        </summary>
         <param name="xaction">a <see cref="T:Gda.Transaction" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" /> true if the transaction was finished successfully, false otherwise</returns>
+        <remarks>
+          <para>
+You need to do <see cref="M:Gda.Connection.BeginTransaction" /> first.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddError">
@@ -161,9 +213,17 @@
         <Parameter Name="error" Type="Gda.Error" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Adds an error to the given connection. This function is usually called by providers, to inform clients of errors that happened during some operation.
+</para>
+        </summary>
         <param name="error">a <see cref="T:Gda.Error" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+As soon as a provider (or a client, it does not matter) calls this function, the connection object (and the associated Gda.Client object) emits the "error" signal, to which clients can connect to be informed of errors.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateDatabase">
@@ -176,9 +236,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Creates a new database named name on the given connection.
+</para>
+        </summary>
         <param name="name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" /> true if successful, false otherwise</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -192,9 +256,13 @@
         <Parameter Name="feature" Type="Gda.ConnectionFeature" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Asks the underlying provider for if a specific feature is supported.
+</para>
+        </summary>
         <param name="feature">a <see cref="T:Gda.ConnectionFeature" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" /> true if the provider supports it, false if not</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -209,11 +277,18 @@
         <Parameter Name="parms" Type="Gda.ParameterList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Executes a single command on the given connection.
+</para>
+        </summary>
         <param name="cmd">a <see cref="T:Gda.Command" /></param>
         <param name="parms">a <see cref="T:Gda.ParameterList" /></param>
         <returns>a <see cref="T:Gda.DataModel" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+This method lets you retrieve a simple data model from the underlying difference, instead of having to retrieve a list of them, as is the case with <see cref="M:Gda.Connection.ExecuteCommand" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -224,8 +299,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>
+          <para>
+Closes the connection to the underlying data source. After calling this function, you should not use anymore the Gda.Connection object, since it may have been destroyed.
+</para>
+        </summary>
+        <returns>a <see cref="T:System.Boolean" /> true if succesfull, false otherwise.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -240,11 +319,19 @@
         <Parameter Name="parms" Type="Gda.ParameterList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Executes a command on the underlying data source.
+</para>
+        </summary>
         <param name="cmd">a <see cref="T:Gda.Command" /></param>
         <param name="parms">a <see cref="T:Gda.ParameterList" /></param>
-        <returns>a <see cref="T:GLib.List" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:GLib.List" /> of <see cref="T:Gda.DataModel" /></returns>
+        <remarks>
+          <para>
+This method provides the way to send several commands at once to the data source being accessed by the given <see cref="T:Gda.Command" /> object. The <see cref="T:Gda.Command" /> specified can contain a list of commands in its "text" property (usually a set of SQL commands separated by ';').
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSchema">
@@ -258,11 +345,19 @@
         <Parameter Name="parms" Type="Gda.ParameterList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Asks the underlying data source for a list of database objects.
+</para>
+        </summary>
         <param name="schema">a <see cref="T:Gda.ConnectionSchema" /></param>
         <param name="parms">a <see cref="T:Gda.ParameterList" /></param>
-        <returns>a <see cref="T:Gda.DataModel" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gda.DataModel" /> containing the data required</returns>
+        <remarks>
+          <para>
+This is the function that lets applications ask the different providers about all their database objects (tables, views, procedures, etc). The set of database objects that are retrieved are given by the 2 parameters of this function: schema, which specifies the specific schema required, and params, which is a list of parameters that can be used to give more detail about the objects to be returned.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateBlob">
@@ -275,9 +370,13 @@
         <Parameter Name="blob" Type="Gda.Blob" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Creates a BLOB (Binary Large OBject) with read/write access.
+</para>
+        </summary>
         <param name="blob">a <see cref="T:Gda.Blob" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <returns>a <see cref="T:System.Boolean" /> false if database does not support BLOBs, true otherwise and the Gda.Blob is created and ready to be used</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -308,7 +407,11 @@
         <Parameter Name="options" Type="Gda.ConnectionOptions" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Creates a new Gda.Connection object.
+</para>
+        </summary>
         <param name="client">a <see cref="T:Gda.Client" /></param>
         <param name="provider">a <see cref="T:Gda.ServerProvider" /></param>
         <param name="dsn">a <see cref="T:System.String" /></param>
@@ -316,7 +419,10 @@
         <param name="password">a <see cref="T:System.String" /></param>
         <param name="options">a <see cref="T:Gda.ConnectionOptions" /></param>
         <returns>a <see cref="T:Gda.Connection" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+It is not intended to be used directly by applications.  Use <see cref="M:Gda.Client.OpenConnection" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CncString">
@@ -327,9 +433,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the connection string used to open this connection.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+The connection string is the string sent over to the underlying database provider, which describes the parameters to be used to open a connection on the underlying data source.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Errors">
@@ -340,9 +454,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Retrieves a list of the last errors ocurred in the connection.
+</para>
+        </summary>
         <returns>a <see cref="T:GLib.List" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+You can make a copy of the list using <see cref="M:Gda.Error.ListCopy" />.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Options">
@@ -353,7 +475,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the <see cref="T:Gda.ConnectionOptions" /> used to open this connection.
+</para>
+        </summary>
         <returns>a <see cref="T:Gda.ConnectionOptions" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -366,7 +492,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the Data Source Name the connection object is connected to.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -379,7 +509,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the name of the currently active database in the given Gda.Connection.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -392,7 +526,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the user name used to open this connection.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -405,7 +543,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the Gda.Client object associated with a connection. This is always the client that created the connection, as returned by <see cref="M:Gda.Client.OpenConnection" /></para>
+          <para>
+Associates a Gda.Client with this connection. This property (setter) is not intended to be called by applications.
+</para>
+        </summary>
         <returns>a <see cref="T:Gda.Client" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -418,7 +562,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the password used to open this connection.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -431,7 +579,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the version string of the underlying database server.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -444,7 +596,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Gets the provider id that this connection is connected to.
+</para>
+        </summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -469,8 +625,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>
+          <para>
+Checks whether a connection is open or not.
+</para>
+        </summary>
+        <returns>a <see cref="T:System.Boolean" /> true if the connection is open, false if it's not</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
