@@ -13,7 +13,7 @@ public Widget[] Children {
 		if (list_ptr == IntPtr.Zero)
 			return new Widget [0];
 
-		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
+		GLib.List list = new GLib.List (list_ptr);
 		Widget[] result = new Widget [list.Count];
 		for (int i = 0; i < list.Count; i++)
 			result [i] = list [i] as Widget;
@@ -34,14 +34,14 @@ public Widget[] FocusChain {
 		if (!success)
 			return new Widget [0];
 
-		GLib.List list = new GLib.List (list_ptr, typeof (Gtk.Widget));
+		GLib.List list = new GLib.List (list_ptr);
 		Widget[] result = new Widget [list.Count];
 		for (int i = 0; i < list.Count; i++)
 			result [i] = list [i] as Widget;
 		return result;
 	}
 	set {
-		GLib.List list = new GLib.List (IntPtr.Zero, typeof (Gtk.Widget));
+		GLib.List list = new GLib.List (IntPtr.Zero);
 		foreach (Widget val in value)
 			list.Append (val.Handle);
 		gtk_container_set_focus_chain (Handle, list.Handle);
