@@ -1,4 +1,4 @@
-PREFIX=/usr
+prefix=/usr
 BROWSER=../../monodoc/browser/browser.exe
 ASSEMBLER=../../monodoc/browser/assembler.exe
 GENERATOR=../../monodoc/generator/generator.exe
@@ -12,7 +12,7 @@ gtk-sharp-docs.zip gtk-sharp-docs.tree:
 	mono $(ASSEMBLER) --ecma en -o gtk-sharp-docs
 
 install: gtk-sharp-docs.zip gtk-sharp-docs.tree 
-	cp gtk-sharp-docs.zip gtk-sharp-docs.tree $(PREFIX)/lib/monodoc/sources
+	cp gtk-sharp-docs.zip gtk-sharp-docs.tree $(prefix)/lib/monodoc/sources
 
 clean:
 	rm *.tree
