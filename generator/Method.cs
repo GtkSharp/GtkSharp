@@ -27,53 +27,25 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class Method  {
+	public class Method : MethodBase  {
 		
-		private string libname;
-		private XmlElement elem;
 		private ReturnValue retval;
-		private Parameters parms;
-		private Signature sig;
-		private ImportSignature isig;
-		private MethodBody body;
-		private ClassBase container_type;
 
 		private bool initialized = false;
 		private string call;
 		private string name;
 		private string protection = "public";
 		private bool is_get, is_set;
-		private bool needs_ref = false;
 		private bool deprecated = false;
 
-		public Method (string libname, XmlElement elem, ClassBase container_type) 
+		public Method (XmlElement elem, ClassBase container_type) : base (elem, container_type)
 		{
-			this.elem = elem;
 			this.retval = new ReturnValue (elem["return-type"]);
-			if (elem["parameters"] != null) {
-				parms = new Parameters (elem["parameters"], container_type.NS);
-				parms.Static = IsShared;
-			}
-			this.container_type = container_type;
 			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated"))
 				deprecated = elem.GetAttribute ("deprecated") == "1";
 			this.name = elem.GetAttribute("name");
 			if (name == "GetType")
 				name = "GetGType";
-			if (elem.HasAttribute ("library"))
-				this.libname = elem.GetAttribute ("library");
-			else
-				this.libname = libname;
-			
-			// caller does not own reference?
-			if (elem.HasAttribute ("needs_ref"))
-				this.needs_ref = (elem.GetAttribute ("needs_ref") == "1");
-		}
-
-		public string CName {
-			get {
-				return elem.GetAttribute ("cname");
-			}
 		}
 
 		public bool IsDeprecated {
@@ -91,12 +63,6 @@ namespace GtkSharp.Generation {
 		public bool IsSetter {
 			get {
 				return is_set;
-			}
-		}
-
-		private bool IsShared {
-			get {
-				return elem.GetAttribute ("shared") == "true";
 			}
 		}
 
@@ -121,21 +87,6 @@ namespace GtkSharp.Generation {
 		public string ReturnType {
 			get {
 				return retval.CSType;
-			}
-		}
-
-		string Safety {
-			get {
-				if (body.ThrowsException && !(container_type is InterfaceGen))
-					return "unsafe ";
-				else
-					return "";
-			}
-		}
-
-		public Signature Signature {
-			get {
-				return sig;
 			}
 		}
 
@@ -168,32 +119,26 @@ namespace GtkSharp.Generation {
 			if (initialized)
 				return true;
 
+			Parameters parms = Parameters;
 			is_get = (((parms != null && ((parms.IsAccessor && retval.CSType == "void") || (parms.Count == 0 && retval.CSType != "void"))) || (parms == null && retval.CSType != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
 			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && retval.CSType == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
-			sig = new Signature (parms);
-			isig = new ImportSignature (parms, container_type.NS);
-			body = new MethodBody (parms, container_type.NS);
-			call = "(" + (IsShared ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + body.GetCallString (is_set) + ")";
+			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
 			initialized = true;
 			return true;
 		}
 		
-		public bool Validate ()
+		public override bool Validate ()
 		{
-			if (!Initialize ())
+			if (!Initialize () || !base.Validate ())
 				return false;
-
-			if (parms != null && !parms.Validate ()) {
-				Console.Write ("in method " + Name + " ");
-				return false;
-			}
 
 			if (!retval.Validate ()) {
 				Console.Write(" in method " + Name + " ");
 				return false;
 			}
+
 			return true;
 		}
 		
@@ -205,18 +150,18 @@ namespace GtkSharp.Generation {
 			else
 				complement = 'G';
 			
-			return container_type.GetMethod (complement + elem.GetAttribute("name").Substring (1));
+			return container_type.GetMethod (complement + name.Substring (1));
 		}
 		
 		public string Declaration {
 			get {
-				return retval.CSType + " " + Name + " (" + (sig != null ? sig.ToString() : "") + ");";
+				return retval.CSType + " " + Name + " (" + (Signature != null ? Signature.ToString() : "") + ");";
 			}
 		}
 
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
-			if (elem.GetAttribute ("shared") == "true")
+			if (IsStatic)
 				sw.Write("static ");
 			sw.Write (Safety);
 			Method dup = null;
@@ -225,16 +170,16 @@ namespace GtkSharp.Generation {
 			if (implementor != null)
 				dup = implementor.GetMethodRecursively (Name);
 
-			if (Name == "ToString" && parms == null)
+			if (Name == "ToString" && Parameters == null)
 				sw.Write("override ");
 			else if (Name == "GetGType" && container_type is ObjectGen)
 				sw.Write("new ");
-			else if (elem.HasAttribute("new_flag") || (dup != null && dup.Initialize () && ((dup.Signature != null && sig != null && dup.Signature.ToString() == sig.ToString()) || (dup.Signature == null && sig == null))))
+			else if (Modifiers == "new " || (dup != null && dup.Initialize () && ((dup.Signature != null && Signature != null && dup.Signature.ToString() == Signature.ToString()) || (dup.Signature == null && Signature == null))))
 				sw.Write("new ");
 
 			if (is_get || is_set) {
 				if (retval.CSType == "void")
-					sw.Write (parms.AccessorReturnType);
+					sw.Write (Parameters.AccessorReturnType);
 				else
 					sw.Write(retval.CSType);
 				sw.Write(" ");
@@ -244,9 +189,9 @@ namespace GtkSharp.Generation {
 					sw.Write (Name);
 				sw.WriteLine(" { ");
 			} else if (IsAccessor) {
-				sw.Write (sig.AccessorType + " " + Name + "(" + sig.AsAccessor + ")");
+				sw.Write (Signature.AccessorType + " " + Name + "(" + Signature.AsAccessor + ")");
 			} else {
-				sw.Write(retval.CSType + " " + Name + "(" + (sig != null ? sig.ToString() : "") + ")");
+				sw.Write(retval.CSType + " " + Name + "(" + (Signature != null ? Signature.ToString() : "") + ")");
 			}
 		}
 
@@ -255,8 +200,7 @@ namespace GtkSharp.Generation {
 			if (!Initialize ()) 
 				return;
 
-			if (elem.HasAttribute("shared") &&
-			    (elem.GetAttribute("shared") == "true"))
+			if (IsStatic)
 				return;
 
 			if (is_get || is_set)
@@ -290,10 +234,10 @@ namespace GtkSharp.Generation {
 
 		public void GenerateImport (StreamWriter sw)
 		{
-			string import_sig = IsShared ? "" : container_type.MarshalType + " raw";
-			import_sig += !IsShared && parms != null ? ", " : "";
-			import_sig += isig.ToString();
-			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
+			string import_sig = IsStatic ? "" : container_type.MarshalType + " raw";
+			import_sig += !IsStatic && Parameters != null ? ", " : "";
+			import_sig += ImportSignature.ToString();
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
 			if (retval.MarshalType.StartsWith ("[return:"))
 				sw.WriteLine("\t\t" + retval.MarshalType + " static extern " + Safety + retval.CSType + " " + CName + "(" + import_sig + ");");
 			else
@@ -308,22 +252,21 @@ namespace GtkSharp.Generation {
 			if (!Initialize ()) 
 				return;
 
-			if (implementor != null && elem.HasAttribute("shared") &&
-			    (elem.GetAttribute ("shared") == "true"))
+			if (implementor != null && IsStatic)
 				return;
 
 			/* we are generated by the get Method, if there is one */
 			if (is_set || is_get)
 			{
-				if (!elem.HasAttribute("new_flag") && container_type.GetPropertyRecursively (Name.Substring (3)) != null)
+				if (Modifiers != "new " && container_type.GetPropertyRecursively (Name.Substring (3)) != null)
 					return;
 				comp = GetComplement ();
-				if (comp != null && comp.Validate () && is_set && parms.AccessorReturnType == comp.ReturnType)
+				if (comp != null && comp.Validate () && is_set && Parameters.AccessorReturnType == comp.ReturnType)
 					return;
-				if (comp != null && is_set && parms.AccessorReturnType != comp.ReturnType)
+				if (comp != null && is_set && Parameters.AccessorReturnType != comp.ReturnType)
 				{
 					is_set = false;
-					call = "(Handle, " + body.GetCallString (false) + ")";
+					call = "(Handle, " + Body.GetCallString (false) + ")";
 					comp = null;
 				}
 				/* some setters take more than one arg */
@@ -332,7 +275,7 @@ namespace GtkSharp.Generation {
 			}
 			
 			GenerateImport (gen_info.Writer);
-			if (comp != null && retval.CSType == comp.parms.AccessorReturnType)
+			if (comp != null && retval.CSType == comp.Parameters.AccessorReturnType)
 				comp.GenerateImport (gen_info.Writer);
 
 			if (IsDeprecated)
@@ -353,7 +296,7 @@ namespace GtkSharp.Generation {
 			
 			if (is_get || is_set)
 			{
-				if (comp != null && retval.CSType == comp.parms.AccessorReturnType)
+				if (comp != null && retval.CSType == comp.Parameters.AccessorReturnType)
 				{
 					gen_info.Writer.WriteLine ();
 					gen_info.Writer.Write ("\t\t\tset");
@@ -375,8 +318,8 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine(" {");
 			if (IsAccessor)
-				body.InitAccessor (sw, sig, indent);
-			body.Initialize(gen_info, is_get, is_set, indent);
+				Body.InitAccessor (sw, Signature, indent);
+			Body.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
 			IGeneratable ret_igen = table [retval.CType];
@@ -400,22 +343,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(retval.CSType + " ret = " + table.FromNativeReturn(retval.CType, raw_parms) + ";");
 			}
 
-			body.Finish (sw, indent);
-			body.HandleException (sw, indent);
+			Body.Finish (sw, indent);
+			Body.HandleException (sw, indent);
 
-			if (is_get && parms != null) 
-				sw.WriteLine (indent + "\t\t\treturn " + parms.AccessorName + ";");
+			if (is_get && Parameters != null) 
+				sw.WriteLine (indent + "\t\t\treturn " + Parameters.AccessorName + ";");
 			else if (retval.MarshalType != "void")
 				sw.WriteLine (indent + "\t\t\treturn ret;");
 			else if (IsAccessor)
-				body.FinishAccessor (sw, sig, indent);
+				Body.FinishAccessor (sw, Signature, indent);
 
 			sw.Write(indent + "\t\t}");
 		}
 
 		bool IsAccessor { 
 			get { 
-				return retval.CSType == "void" && sig.IsAccessor; 
+				return retval.CSType == "void" && Signature.IsAccessor; 
 			} 
 		}
 	}

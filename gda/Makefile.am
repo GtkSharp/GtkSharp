@@ -12,7 +12,8 @@ references = ../glib/glib-sharp.dll
 sources = 				\
 	Application.cs
 
-customs = 
+customs = 				\
+	XmlConnection.custom
 
 add_dist = gda-sharp-2.0.pc.in
 

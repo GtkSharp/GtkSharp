@@ -1,9 +1,9 @@
 // GtkSharp.Generation.Ctor.cs - The Constructor Generation Class.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2001-2003 Mike Kestner
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -27,147 +27,88 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class Ctor  {
+	public class Ctor : MethodBase  {
 
-		private string libname;
-		private XmlElement elem;
-		private Parameters parms;
-		private Signature sig = null;
-		private ImportSignature isig = null;
-		private MethodBody body = null;
 		private bool preferred;
-		private string clashName = null;
-		private ClassBase container_type;
-		private bool force_static;
+		private string name;
 		private bool needs_chaining = false;
+
+		public Ctor (XmlElement elem, ClassBase implementor) : base (elem, implementor) 
+		{
+			if (elem.HasAttribute ("preferred"))
+				preferred = true;
+			if (implementor is ObjectGen)
+				needs_chaining = true;
+			name = implementor.Name;
+		}
 
 		public bool Preferred {
 			get { return preferred; }
 			set { preferred = value; }
 		}
 
-		public bool ForceStatic {
-			get { return force_static; }
-			set { force_static = value; }
-		}
-	
-		public Parameters Params {
-			get { return parms; }
-		}
+		public string StaticName {
+			get {
+				if (!IsStatic)
+					return String.Empty;
 
-		public Ctor (string libname, XmlElement elem, ClassBase container_type) {
-			this.libname = libname;
-			this.elem = elem;
-			this.container_type = container_type;
-			XmlElement parms_elem = elem ["parameters"];
-			if (parms_elem != null)
-				parms = new Parameters (parms_elem, container_type.NS);
-			if (elem.HasAttribute ("preferred"))
-				preferred = true;
-			if (container_type is ObjectGen)
-				needs_chaining = true;
-		}
+				string[] toks = CName.Substring(CName.IndexOf("new")).Split ('_');
+				string result = String.Empty;
 
-		public bool Validate ()
-		{
-			if (parms != null) {
-				if (!parms.Validate ()) {
-					Console.Write("in ctor ");
-					Statistics.ThrottledCount++;
-					return false;
-				}
+				foreach (string tok in toks)
+					result += tok.Substring(0,1).ToUpper() + tok.Substring(1);
+				return result;
 			}
-			sig = new Signature (parms);
-			isig = new ImportSignature (parms, container_type.NS);
-			body = new MethodBody (parms, container_type.NS);
-
-			return true;
 		}
 
-		public void InitClashMap (Hashtable clash_map)
+		public void GenerateImport (StreamWriter sw)
 		{
-			if (clash_map.ContainsKey (sig.Types)) {
-				int num = (int) clash_map[sig.Types];
-				clash_map[sig.Types] = ++num;
-			}
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
+			sw.WriteLine("\t\tstatic extern " + Safety + "IntPtr " + CName + "(" + ImportSignature + ");");
+			sw.WriteLine();
+		}
+
+		public void GenerateStatic (GenerationInfo gen_info)
+		{
+			StreamWriter sw = gen_info.Writer;
+			sw.WriteLine("\t\tpublic static " + Safety + Modifiers +  name + " " + StaticName + "(" + Signature + ")");
+			sw.WriteLine("\t\t{");
+
+			Body.Initialize(gen_info, false, false, ""); 
+
+			sw.Write("\t\t\treturn ");
+			if (container_type is StructBase)
+				sw.Write ("{0}.New (", name);
 			else
-				clash_map[sig.Types] = 0;
+				sw.Write ("new {0} (", name);
+			sw.WriteLine (CName + "(" + Body.GetCallString (false) + "));");
 		}
 
-		public void Initialize (Hashtable clash_map)
-		{
-			int clashes = (int) clash_map[sig.Types];
-			string cname = elem.GetAttribute("cname");
-			if (force_static || (clashes > 0 && !Preferred)) {
-				string mname = cname.Substring(cname.IndexOf("new"));
-				mname = mname.Substring(0,1).ToUpper() + mname.Substring(1);
-				int idx;
-				while ((idx = mname.IndexOf("_")) > 0) {
-					mname = mname.Substring(0, idx) + mname.Substring(idx+1, 1).ToUpper() + mname.Substring(idx+2);
-				}
-				clashName = mname + "(" + sig.ToString () + ")";
-			}
-		}
-		
 		public void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer;
 
-			string cname = elem.GetAttribute("cname");
-			string name = ((XmlElement)elem.ParentNode).GetAttribute("name");
-			string safety;
-			if (body.ThrowsException)
-				safety = "unsafe ";
-			else
-				safety = "";
-
 			SymbolTable table = SymbolTable.Table;
 
-			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
-			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + "(" + isig.ToString () + ");");
-			sw.WriteLine();
+			GenerateImport (sw);
 			
-			if (clashName != null) {
-				string modifiers = "";
-				Ctor dup = null;
-				ObjectGen parent = (ObjectGen) container_type.Parent;
-				while (dup == null && parent != null) {
-					foreach (Ctor c in parent.Ctors) {
-						if (c.clashName == clashName) {
-							dup = c;
-							modifiers = "new ";
-							break;
-						}
-					}
-					parent = (ObjectGen) parent.Parent;
-				}
-				
-				sw.WriteLine("\t\tpublic static " + safety + modifiers +  name + " " + clashName);
-				sw.WriteLine("\t\t{");
-
-				body.Initialize(gen_info, false, false, ""); 
-
-				sw.Write("\t\t\treturn ");
-				if (container_type is StructBase)
-					sw.Write ("{0}.New (", name);
-				else
-					sw.Write ("new {0} (", name);
-				sw.WriteLine (cname + "(" + body.GetCallString (false) + "));");
-			} else {
-				sw.WriteLine("\t\tpublic {0}{1} ({2}) {3}", safety, name, sig.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
+			if (IsStatic)
+				GenerateStatic (gen_info);
+			else {
+				sw.WriteLine("\t\tpublic {0}{1} ({2}) {3}", Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");
 
 				if (needs_chaining) {
 					sw.WriteLine ("\t\t\tif (GetType () != typeof (" + name + ")) {");
 					
-					if (Params == null || Params.Count == 0) {
+					if (Parameters == null || Parameters.Count == 0) {
 						sw.WriteLine ("\t\t\t\tCreateNativeObject (new string [0], new GLib.Value[0]);");
 						sw.WriteLine ("\t\t\t\treturn;");
 					} else {
 						ArrayList names = new ArrayList ();
 						ArrayList values = new ArrayList ();
-						for (int i = 0; i < Params.Count; i++) {
-							Parameter p = Params[i];
+						for (int i = 0; i < Parameters.Count; i++) {
+							Parameter p = Parameters[i];
 							if (container_type.GetPropertyRecursively (p.StudlyName) != null) {
 								names.Add (p.Name);
 								values.Add (p.Name);
@@ -177,11 +118,11 @@ namespace GtkSharp.Generation {
 							}
 						}
 
-						if (names.Count == Params.Count) {
+						if (names.Count == Parameters.Count) {
 							sw.WriteLine ("\t\t\t\tArrayList vals = new ArrayList();");
 							sw.WriteLine ("\t\t\t\tArrayList names = new ArrayList();");
 							for (int i = 0; i < names.Count; i++) {
-								Parameter p = Params [i];
+								Parameter p = Parameters [i];
 								string indent = "\t\t\t\t";
 								if (p.NullOk && p.Generatable is ObjectGen) {
 									sw.WriteLine (indent + "if (" + p.Name + " != null) {");
@@ -208,9 +149,9 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t\t}");
 				}
 	
-				body.Initialize(gen_info, false, false, ""); 
-				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, cname, body.GetCallString (false));
-				body.HandleException (sw, "");
+				Body.Initialize(gen_info, false, false, ""); 
+				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, CName, Body.GetCallString (false));
+				Body.HandleException (sw, "");
 			}
 			
 			sw.WriteLine("\t\t}");

@@ -83,7 +83,7 @@ namespace GtkSharp.Generation {
 					name = member.GetAttribute("name");
 					while (methods.ContainsKey(name))
 						name += "mangled";
-					methods.Add (name, new Method (LibraryName, member, this));
+					methods.Add (name, new Method (member, this));
 					break;
 
 				case "property":
@@ -105,7 +105,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "constructor":
-					ctors.Add (new Ctor (LibraryName, member, this));
+					ctors.Add (new Ctor (member, this));
 					break;
 
 				default:
@@ -332,45 +332,52 @@ namespace GtkSharp.Generation {
 
 		public ArrayList Ctors { get { return ctors; } }
 
+		bool HasStaticCtor (string name) 
+		{
+			if (Parent != null && Parent.HasStaticCtor (name))
+				return true;
+
+			foreach (Ctor ctor in Ctors)
+				if (ctor.StaticName == name)
+					return true;
+
+			return false;
+		}
+
 		private void InitializeCtors ()
 		{
 			if (ctors_initted)
 				return;
 
+			if (Parent != null)
+				Parent.InitializeCtors ();
+
 			ArrayList valid_ctors = new ArrayList();
 			clash_map = new Hashtable();
 
-			bool has_preferred = false;
 			foreach (Ctor ctor in ctors) {
 				if (ctor.Validate ()) {
-					ctor.InitClashMap (clash_map);
-					if (ctor.Preferred)
-						has_preferred = true;
-					
+					if (clash_map.Contains (ctor.Signature.Types)) {
+						Ctor clash = clash_map [ctor.Signature.Types] as Ctor;
+						Ctor alter = ctor.Preferred ? clash : ctor;
+						alter.IsStatic = true;
+						if (Parent != null && Parent.HasStaticCtor (alter.StaticName))
+							alter.Modifiers = "new ";
+					} else
+						clash_map [ctor.Signature.Types] = ctor;
+
 					valid_ctors.Add (ctor);
-				}
-				else
-					Console.WriteLine("in Object " + QualifiedName);
+				} else
+					Console.WriteLine("in Type " + QualifiedName);
 			}
+
 			ctors = valid_ctors;
-				
-			if (!has_preferred && ctors.Count > 0)
-				((Ctor) ctors[0]).Preferred = true;
-
-			foreach (Ctor ctor in ctors) 
-				ctor.Initialize (clash_map);
-
 			ctors_initted = true;
 		}
 
 		protected virtual void GenCtors (GenerationInfo gen_info)
 		{
-			ClassBase klass = this;
-			while (klass != null) {
-				klass.InitializeCtors ();
-				klass = klass.Parent;
-			}
-			
+			InitializeCtors ();
 			foreach (Ctor ctor in ctors)
 				ctor.Generate (gen_info);
 		}
