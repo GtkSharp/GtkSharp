@@ -19,3 +19,20 @@ public void DrawRectangle(Gdk.GC gc, int filled, Gdk.Rectangle area)
 {
 	gdk_draw_rectangle(Handle, gc.Handle, filled, area.x, area.y, area.width, area.height);
 }
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern void gdk_draw_polygon(IntPtr raw, IntPtr gc, int filled, Gdk.Point[] points, int npoints);
+
+public void DrawPolygon(Gdk.GC gc, int filled, Gdk.Point[] points)
+{
+	gdk_draw_polygon(Handle, gc.Handle, filled, points, points.Length);
+}
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern void gdk_draw_lines(IntPtr raw, IntPtr gc, Gdk.Point[] points, int npoints);
+
+public void DrawLines(Gdk.GC gc, Gdk.Point[] points)
+{
+	gdk_draw_lines(Handle, gc.Handle, points, points.Length);
+}
+
