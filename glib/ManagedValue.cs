@@ -39,7 +39,7 @@ namespace GLibSharp {
 		private static FreeFunc free;
 		private static uint boxed_type = 0;
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		private static extern uint g_boxed_type_register_static (string typename, CopyFunc copy_func, FreeFunc free_func);
 		
 		public static uint GType {

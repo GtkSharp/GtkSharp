@@ -275,7 +275,7 @@ namespace GLib {
 		static extern void g_value_set_enum (IntPtr val, int data);
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_flags (IntPtr val, uint data);
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_char (IntPtr val, char data);
 		
 		/// <summary>
@@ -304,7 +304,7 @@ namespace GLib {
 		///   type.
 		/// </remarks>
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed_take_ownership (IntPtr val, IntPtr data);
 
 		public Value (object obj)
