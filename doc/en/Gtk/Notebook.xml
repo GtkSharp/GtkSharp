@@ -30,6 +30,46 @@
 	any flicker caused by widget relayout by the application.
       </para>
     </remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class NotebookSample
+{
+	static void Main ()
+	{
+		new NotebookSample ();	
+	}
+	
+	NotebookSample ()
+	{
+		Application.Init ();
+		
+		Window win = new Window ("NotebookSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+		win.SetDefaultSize (400, 400);
+		
+		Notebook nb = new Notebook ();
+		for (int i = 0; i &lt; 5; i ++)
+		{
+			string label = String.Format ("Page {0}", i+1);
+			nb.AppendPage (new Button (label), new Label (label));
+		}
+		
+		win.Add (nb);
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}      
+	  </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -288,8 +328,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -332,10 +372,10 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="expand">To be added: an object of type 'bool'</param>
-        <param name="fill">To be added: an object of type 'bool'</param>
-        <param name="pack_type">To be added: an object of type 'Gtk.PackType'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="expand">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="fill">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="pack_type">an object of type <see cref="T:Gtk.PackType" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -350,8 +390,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -366,8 +406,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="page_num">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="page_num">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -383,8 +423,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="menu_text">To be added: an object of type 'string'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="menu_text">an object of type <see cref="T:System.String" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -400,8 +440,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tab_label">To be added: an object of type 'Gtk.Widget'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -430,9 +470,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tab_label">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="menu_label">To be added: an object of type 'Gtk.Widget'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -448,8 +488,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="menu_label">To be added: an object of type 'Gtk.Widget'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -467,10 +507,10 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="expand">To be added: an object of type 'bool'</param>
-        <param name="fill">To be added: an object of type 'bool'</param>
-        <param name="pack_type">To be added: an object of type 'Gtk.PackType'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="expand">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="fill">an object of type <see cref="T:System.Boolean" /></param>
+        <param name="pack_type">an object of type <see cref="T:Gtk.PackType" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -508,9 +548,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Notebook'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gtk.Notebook" /> object.</summary>
+        <returns>an object of type <see cref="T:Gtk.Notebook" /></returns>
+        <remarks>This is the default constructor for <see cref="T:Gtk.Notebook" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -520,8 +560,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Notebook</summary>
-        <returns>The GLib Type for the Gtk.Notebook class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.Notebook" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.Notebook" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -534,8 +574,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -548,8 +588,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -562,8 +602,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -576,8 +616,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -590,8 +630,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -604,8 +644,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -618,8 +658,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -632,8 +672,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -646,8 +686,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -660,8 +700,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.PositionType'</param>
-        <returns>To be added: an object of type 'Gtk.PositionType'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.PositionType" /></param>
+        <returns>an object of type <see cref="T:Gtk.PositionType" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -674,8 +714,8 @@
       <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -773,10 +813,10 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tab_label">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="menu_label">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="position">To be added: an object of type 'int'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="menu_label">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="position">an object of type <see cref="T:System.Int32" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -792,8 +832,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tab_label">To be added: an object of type 'Gtk.Widget'</param>
+        <param name="child">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="tab_label">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -833,7 +873,7 @@
       </ReturnValue>
       <Docs>
         <summary>Obtains the widget that represents the current page.</summary>
-        <returns>The Gtk.Widget object in the current page.</returns>
+        <returns>The <see cref="T:Gtk.Widget" /> object in the current page.</returns>
         <remarks>
           <para>
             This property uses <see cref="P:Gtk.Notebook.CurrentPage" /> and <see cref="M:Gtk.Notebook.GetNthPage" /> together to
