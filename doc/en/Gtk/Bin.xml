@@ -1,5 +1,6 @@
 <Type Name="Bin" FullName="Gtk.Bin">
-  <TypeSignature Language="C#" Value="public class Bin : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Value="public class Bin :
+  Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone, Miguel de Icaza" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -9,9 +10,140 @@
   <Docs>
     <summary>A container with just one child.</summary>
     <remarks>
-      <para>A Bin widget is a <see cref="T:Gtk.Container" /> with just one child. It is used to create subclasses, since it provides common code needed for handling a single child <see cref="T:Gtk.Widget" />.</para>
-      <para>Many GTK+ widgets are subclasses of Bin, including <see cref="T:Gtk.Window" />, <see cref="T:Gtk.Button" />, <see cref="T:Gtk.Frame" />, <see cref="T:Gtk.HandleBox" />, and <see cref="T:Gtk.ScrolledWindow" />.</para>
-      <para>To place a child widget inside this container, use the standard <see cref="M:Gtk.Container.Add" /> method.</para>
+
+      <para>
+        A Bin widget is a <see cref="T:Gtk.Container" /> with just one
+	child. It is used to create subclasses, since it provides
+	common code needed for handling a single child <see
+	cref="T:Gtk.Widget" />.
+      </para>
+  
+      <para>
+        Many GTK+ widgets are subclasses of Bin, including <see
+        cref="T:Gtk.Window" />, <see cref="T:Gtk.Button" />, <see
+        cref="T:Gtk.Frame" />, <see cref="T:Gtk.HandleBox" />, and
+        <see cref="T:Gtk.ScrolledWindow" />.</para>
+
+      <para>
+        To place a child widget inside this container, use the
+        standard <see cref="M:Gtk.Container.Add" /> method.</para>
+
+      <para>
+        For the widget to be useful, it should participate in size
+        negotiation and size allocation using the events <see
+        cref="E:Gtk.Widget.SizeAllocated"/> and <see
+        cref="E:Gtk.Widget.SizeRequested"/>.</para>
+
+      <para>
+        Since Gtk.Bin is an abstract class in C, it is necessary to
+        register a Type.  Sample follows.
+      </para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+//
+// A simple Bin class: a simple container that adds padding.
+//
+class MyPadder : Bin {
+	int pad = 50;
+	static GLib.Type type;
+	Widget child;
+	
+	static MyPadder ()
+	{
+	        //
+	        // Register the type on the static constructor, so it is
+		// available on the instance constructors
+		//
+		type = RegisterGType (typeof (MyPadder));
+	}
+	
+	public MyPadder () : base (type)
+	{
+		// To track our child widget.
+		Added += new AddedHandler (MyAdded);
+
+		// Participate in size negotiation
+		SizeRequested += new SizeRequestedHandler (OnSizeRequested);
+		SizeAllocated += new SizeAllocatedHandler (OnSizeAllocated);
+	}
+
+	//
+	// Invoked to query our size
+	//
+	void OnSizeRequested (object o, SizeRequestedArgs args)
+	{
+		if (child != null){
+			int width = args.Requisition.width;
+			int height = args.Requisition.height;
+			
+			child.GetSizeRequest (out width, out height);
+			if (width == -1 || height == -1)
+				width = height = 80;
+			SetSizeRequest (width + pad * 2, height + pad * 2);
+		} 
+		
+	}
+
+	//
+	// Invoked to propagate our size
+	//
+	void OnSizeAllocated (object o, SizeAllocatedArgs args)
+	{
+		if (child != null){
+			Gdk.Rectangle mine = args.Allocation;
+			Gdk.Rectangle his = mine;
+
+			his.x += pad;
+			his.y += pad;
+			his.width -= pad * 2;
+			his.height -= pad * 2;
+			child.SizeAllocate (his);
+		}
+	}
+
+	//
+	// Public property of the Padding widget
+	//
+	public int Pad {
+		get {
+			return pad;
+		}
+
+		set {
+			pad = value;
+			QueueResize ();
+		}
+	}
+
+	void MyAdded (object o, AddedArgs args)
+	{
+		child = args.Widget;
+	}
+}
+
+class Y {
+	static void Main ()
+	{
+		Application.Init ();
+
+		Window w = new Window ("Hello");
+		MyPadder x = new MyPadder ();
+		x.Pad = 100;
+		Button b = new Button ("Hola");
+		w.Add (x);
+		x.Add (b);
+
+		w.ShowAll ();
+		
+		Application.Run ();
+	}
+}
+        </code>        
+      </example>
     </remarks>
   </Docs>
   <Base>
@@ -59,17 +191,6 @@
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Bin ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Internal constructor</summary>
-        <returns />
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
