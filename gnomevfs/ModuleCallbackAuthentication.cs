@@ -22,8 +22,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
-	public class ModuleCallbackAuthentication : ModuleCallback
-	{
+	public class ModuleCallbackAuthentication : ModuleCallback {
 		public enum AuthenticationType {
 			Basic,
 			Digest
@@ -34,7 +33,7 @@ namespace Gnome.Vfs {
 			public string Uri;
 			public string Realm;
 			public bool PreviousAttemptFailed;
-			public AuthenticationType authType;
+			public AuthenticationType AuthType;
 			private IntPtr _reserved1;
 			private IntPtr _reserved2;
 		}
@@ -54,6 +53,49 @@ namespace Gnome.Vfs {
 		private delegate void ModuleCallbackAsyncAuthenticationNative (ref ModuleCallbackAuthenticationIn authIn, int inSize,
 									       ref ModuleCallbackAuthenticationOut authOut, int outSize,
 									       IntPtr data, IntPtr resp, IntPtr resp_data);
+
+		private string uri;
+		private string realm;
+		private bool previousAttemptFailed;
+		private AuthenticationType authType;
+		private string username;
+		private string password;
+
+		public string Uri {
+			get {
+				return uri;
+			}
+		}
+		
+		public string Realm {
+			get {
+				return realm;
+			}
+		}
+		
+		public bool PreviousAttemptFailed {
+			get {
+				return previousAttemptFailed;
+			}
+		}
+		
+		public AuthenticationType AuthType {
+			get {
+				return authType;
+			}
+		}
+		
+		public string Username {
+			set {
+				username = value;
+			}
+		}
+		
+		public string Password {
+			set {
+				password = value;
+			}
+		}
 
 		public override event ModuleCallbackHandler Callback;
 		
@@ -123,7 +165,20 @@ namespace Gnome.Vfs {
 		private void OnNativeCallback (ref ModuleCallbackAuthenticationIn authIn, int inSize,
 					       ref ModuleCallbackAuthenticationOut authOut, int outSize, IntPtr data)
 		{
-			Console.WriteLine ("OnNativeCallback");
+			// Copy the authIn fields.
+			uri = authIn.Uri;
+			realm = authIn.Realm;
+			previousAttemptFailed = authIn.PreviousAttemptFailed;
+			authType = authIn.AuthType;
+			
+			// Activate the callback.
+			ModuleCallbackHandler handler = Callback;
+			if (handler != null) {
+				handler (this);
+				// Copy the values back to the authOut.
+				authOut.Username = username;
+				authOut.Password = password;
+			}
 		}
 	}
 }

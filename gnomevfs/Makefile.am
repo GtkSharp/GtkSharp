@@ -41,7 +41,10 @@ sources = 					\
 	MimeType.cs				\
 	ModuleCallback.cs			\
 	ModuleCallbackAuthentication.cs		\
+	ModuleCallbackFillAuthentication.cs	\
 	ModuleCallbackFullAuthentication.cs	\
+	ModuleCallbackSaveAuthentication.cs	\
+	ModuleCallbackStatusMessage.cs		\
 	Monitor.cs				\
 	Sync.cs					\
 	Vfs.cs					\

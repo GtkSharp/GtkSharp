@@ -22,8 +22,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
-	public class ModuleCallbackFullAuthentication : ModuleCallback
-	{
+	public class ModuleCallbackFullAuthentication : ModuleCallback {
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct ModuleCallbackFullAuthenticationIn {
 			public ModuleCallbackFullAuthenticationFlags Flags;
