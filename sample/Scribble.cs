@@ -69,10 +69,13 @@ namespace GtkSamples {
 			Gdk.EventConfigure ev = args.Event;
 			Gdk.Window window = ev.window;
 			Gdk.Rectangle allocation = darea.Allocation;
+
+		Console.WriteLine ("Darea=[{0}]" , darea);
 			pixmap = new Gdk.Pixmap (window,
 									       allocation.width,
 									       allocation.height,
 											 -1);
+			Console.WriteLine ("Darea.Style={0}", darea.Style);
 			pixmap.DrawRectangle (darea.Style.WhiteGC, 1, 0, 0,
 									    allocation.width, allocation.height);
 

@@ -165,7 +165,7 @@ class Client {
 		t.Attach (label, 2, 3, 0, 1);
 	}
 
-	static void Db_Insert (Gtk.Object o)
+	static void Db_Insert ()
 	{
 		if (dialog != null) {
 			return;
@@ -384,17 +384,17 @@ class Client {
 
 	static void Insert_Activated (object o, EventArgs args)
 	{
-		Db_Insert (o as Gtk.Object);
+		Db_Insert ();
 	}
 
 	static void Remove_Activated (object o, EventArgs args)
 	{
-		Db_Remove (o as Gtk.Object);
+		Db_Remove ();
 	}
 
 	static void Update_Activated (object o, EventArgs args)
 	{
-		Db_Update (o as Gtk.Object);
+		Db_Update ();
 	}
 
 	static void Quit_Activated (object o, EventArgs args)

@@ -33,6 +33,10 @@ namespace GLib {
 
 	public class Idle {
 
+		private Idle ()
+		{
+		}
+		
 		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_idle_add (IdleHandler d, IntPtr data);
 

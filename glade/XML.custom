@@ -268,12 +268,12 @@
 			
 			foreach (System.Reflection.FieldInfo field in fields)
 			{
-				object[] attrs = field.GetCustomAttributes (typeof (GladeWidgetAttribute), true);
+				object[] attrs = field.GetCustomAttributes (typeof (WidgetAttribute), true);
 				if (attrs == null || attrs.Length == 0)
 					continue;
 				// The widget to field binding must be 1:1, so only check
 				// the first attribute.
-				GladeWidgetAttribute widget = (GladeWidgetAttribute) attrs[0];
+				WidgetAttribute widget = (WidgetAttribute) attrs[0];
 				if (widget.Specified) field.SetValue (target, GetWidget (widget.Name), flags, null, null);
 				else field.SetValue (target, GetWidget (field.Name), flags, null, null);
 			}

@@ -1,4 +1,4 @@
-// GladeWidgetAttribute.cs 
+// WidgetAttribute.cs 
 //
 // Author: Rachel Hestilow <hestilow@ximian.com> 
 //
@@ -8,18 +8,18 @@ namespace Glade {
 	using System;
 	
 	[AttributeUsage (AttributeTargets.Field)]
-	public class GladeWidgetAttribute : Attribute
+	public class WidgetAttribute : Attribute
 	{
 		private string name;
 		private bool specified;
 		
-		public GladeWidgetAttribute (string name)
+		public WidgetAttribute (string name)
 		{
 			specified = true;
 			this.name = name;
 		}
 
-		public GladeWidgetAttribute ()
+		public WidgetAttribute ()
 		{
 			specified = false;
 		}
