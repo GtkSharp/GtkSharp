@@ -61,7 +61,7 @@ public Program (string app_id, string app_version, ModuleInfo module, string[] a
 	Type mono_runtime_type = Type.GetType ("Mono.Runtime");
 	if (mono_runtime_type != null){
 		object [] iargs = new object [0];
-		System.Reflection.MethodInfo mi = mono_runtime_type.GetMethod ("InstallSignalHandlers");
+		System.Reflection.MethodInfo mi = mono_runtime_type.GetMethod ("InstallSignalHandlers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 	
 		mi.Invoke (null, iargs);
 	}
