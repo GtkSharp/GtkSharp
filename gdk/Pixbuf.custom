@@ -31,7 +31,10 @@
 		static public Pixbuf LoadResource (System.Reflection.Assembly assembly, string resource)
 		{
 			if (assembly == null)
-				return LoadResource (resource);
+				return LoadResource (System.Reflection.Assembly.GetCallingAssembly (), resource);
+
+			if (resource == null)
+				throw new ArgumentNullException ("resource");
 
 			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
 			if (s == null)
@@ -42,6 +45,9 @@
 
 		static public Pixbuf LoadResource (string resource)
 		{
+			if (resource == null)
+				throw new ArgumentNullException ("resource");
+
 			return LoadResource (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
