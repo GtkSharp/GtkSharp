@@ -428,7 +428,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=80.24.221.71;" +
+		string connectionString = "hostaddr=127.0.0.1;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
