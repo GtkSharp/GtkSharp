@@ -182,8 +182,10 @@ namespace GLib {
 				return _obj;
 			}
 			set {
-				Objects [value] = new WeakReference (this);
 				_obj = value;
+				if (value == IntPtr.Zero)
+					return;
+				Objects [value] = new WeakReference (this);
 			}
 		}	
 
