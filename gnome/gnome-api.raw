@@ -69,7 +69,7 @@
       </parameters>
     </callback>
     <object name="Program" cname="GnomeProgram" parent="GObject">
-      <field cname="_priv" type="GnomeProgramPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeProgramPrivate*"/>
       <property name="PoptTable" cname="popt-table" type="gpointer" writeable="true" construct-only="true"/>
       <property name="PoptFlags" cname="popt-flags" type="gint" writeable="true" construct-only="true"/>
       <property name="PoptContext" cname="popt-context" type="gpointer" readable="true"/>
@@ -181,37 +181,37 @@
       </method>
     </object>
     <boxed name="ModuleInfo" cname="GnomeModuleInfo">
-      <field cname="name" type="const-char*"/>
-      <field cname="version" type="const-char*"/>
-      <field cname="description" type="const-char*"/>
-      <field cname="requirements" type="GnomeModuleRequirement*"/>
-      <field cname="instance_init" type="GnomeModuleHook"/>
-      <field cname="pre_args_parse" type="GnomeModuleHook"/>
-      <field cname="post_args_parse" type="GnomeModuleHook"/>
-      <field cname="options" type="struct-poptOption*"/>
-      <field cname="init_pass" type="GnomeModuleInitHook"/>
-      <field cname="class_init" type="GnomeModuleClassInitHook"/>
-      <field cname="opt_prefix" type="const-char*"/>
-      <field cname="expansion1" type="gpointer"/>
+      <field name="Name" cname="name" type="const-char*"/>
+      <field name="Version" cname="version" type="const-char*"/>
+      <field name="Description" cname="description" type="const-char*"/>
+      <field name="Requirements" cname="requirements" type="GnomeModuleRequirement*"/>
+      <field name="InstanceInit" cname="instance_init" type="GnomeModuleHook"/>
+      <field name="PreArgsParse" cname="pre_args_parse" type="GnomeModuleHook"/>
+      <field name="PostArgsParse" cname="post_args_parse" type="GnomeModuleHook"/>
+      <field name="Options" cname="options" type="struct-poptOption*"/>
+      <field name="InitPass" cname="init_pass" type="GnomeModuleInitHook"/>
+      <field name="ClassInit" cname="class_init" type="GnomeModuleClassInitHook"/>
+      <field name="OptPrefix" cname="opt_prefix" type="const-char*"/>
+      <field name="Expansion1" cname="expansion1" type="gpointer"/>
       <method name="GetType" cname="gnome_module_info_get_type" shared="true">
         <return-type type="GType"/>
       </method>
     </boxed>
     <struct name="ModuleRequirement" cname="GnomeModuleRequirement">
-      <field cname="required_version" type="const-char*"/>
-      <field cname="module_info" type="const-GnomeModuleInfo*"/>
+      <field name="RequiredVersion" cname="required_version" type="const-char*"/>
+      <field name="ModuleInfo" cname="module_info" type="const-GnomeModuleInfo*"/>
     </struct>
     <struct name="Trigger" cname="GnomeTrigger">
-      <field cname="type" type="GnomeTriggerType"/>
-      <field cname="function" type="GnomeTriggerActionFunction"/>
-      <field cname="level" type="gchar*"/>
+      <field name="Type" cname="type" type="GnomeTriggerType"/>
+      <field name="Function" cname="function" type="GnomeTriggerActionFunction"/>
+      <field name="Level" cname="level" type="gchar*"/>
     </struct>
     <struct name="TriggerList" cname="GnomeTriggerList">
-      <field cname="nodename" type="char*"/>
-      <field cname="subtrees" type="GnomeTriggerList**"/>
-      <field cname="actions" type="GnomeTrigger**"/>
-      <field cname="numsubtrees" type="gint"/>
-      <field cname="numactions" type="gint"/>
+      <field name="Nodename" cname="nodename" type="char*"/>
+      <field name="Subtrees" cname="subtrees" type="GnomeTriggerList**"/>
+      <field name="Actions" cname="actions" type="GnomeTrigger**"/>
+      <field name="Numsubtrees" cname="numsubtrees" type="gint"/>
+      <field name="Numactions" cname="numactions" type="gint"/>
     </struct>
     <class name="Global" cname="GnomeGlobal">
       <method name="BonoboModuleInfoGet" cname="gnome_bonobo_module_info_get" shared="true">
@@ -709,40 +709,40 @@
   </namespace>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
-      <field cname="root" type="GnomeCanvasItem*"/>
-      <field cname="redraw_area" type="ArtUta*"/>
-      <field cname="current_item" type="GnomeCanvasItem*"/>
-      <field cname="new_current_item" type="GnomeCanvasItem*"/>
-      <field cname="grabbed_item" type="GnomeCanvasItem*"/>
-      <field cname="focused_item" type="GnomeCanvasItem*"/>
-      <field cname="pixmap_gc" type="GdkGC*"/>
-      <field cname="pick_event" type="GdkEvent"/>
-      <field cname="scroll_x1" type="double"/>
-      <field cname="scroll_y1" type="double"/>
-      <field cname="scroll_x2" type="double"/>
-      <field cname="scroll_y2" type="double"/>
-      <field cname="pixels_per_unit" type="double"/>
-      <field cname="idle_id" type="guint"/>
-      <field cname="root_destroy_id" type="guint"/>
-      <field cname="redraw_x1" type="int"/>
-      <field cname="redraw_y1" type="int"/>
-      <field cname="redraw_x2" type="int"/>
-      <field cname="redraw_y2" type="int"/>
-      <field cname="draw_xofs" type="int"/>
-      <field cname="draw_yofs" type="int"/>
-      <field cname="zoom_xofs" type="int"/>
-      <field cname="zoom_yofs" type="int"/>
-      <field cname="state" type="int"/>
-      <field cname="grabbed_event_mask" type="guint"/>
-      <field cname="close_enough" type="int"/>
-      <field cname="center_scroll_region" bits="1" type="unsigned int"/>
-      <field cname="need_update" bits="1" type="unsigned int"/>
-      <field cname="need_redraw" bits="1" type="unsigned int"/>
-      <field cname="need_repick" bits="1" type="unsigned int"/>
-      <field cname="left_grabbed_item" bits="1" type="unsigned int"/>
-      <field cname="in_repick" bits="1" type="unsigned int"/>
-      <field cname="aa" bits="1" type="unsigned int"/>
-      <field cname="dither" type="GdkRgbDither"/>
+      <field name="Root" cname="root" type="GnomeCanvasItem*"/>
+      <field name="RedrawArea" cname="redraw_area" type="ArtUta*"/>
+      <field name="CurrentItem" cname="current_item" type="GnomeCanvasItem*"/>
+      <field name="NewCurrentItem" cname="new_current_item" type="GnomeCanvasItem*"/>
+      <field name="GrabbedItem" cname="grabbed_item" type="GnomeCanvasItem*"/>
+      <field name="FocusedItem" cname="focused_item" type="GnomeCanvasItem*"/>
+      <field name="PixmapGc" cname="pixmap_gc" type="GdkGC*"/>
+      <field name="PickEvent" cname="pick_event" type="GdkEvent"/>
+      <field name="ScrollX1" cname="scroll_x1" type="double"/>
+      <field name="ScrollY1" cname="scroll_y1" type="double"/>
+      <field name="ScrollX2" cname="scroll_x2" type="double"/>
+      <field name="ScrollY2" cname="scroll_y2" type="double"/>
+      <field name="PixelsPerUnit" cname="pixels_per_unit" type="double"/>
+      <field name="IdleId" cname="idle_id" type="guint"/>
+      <field name="RootDestroyId" cname="root_destroy_id" type="guint"/>
+      <field name="RedrawX1" cname="redraw_x1" type="int"/>
+      <field name="RedrawY1" cname="redraw_y1" type="int"/>
+      <field name="RedrawX2" cname="redraw_x2" type="int"/>
+      <field name="RedrawY2" cname="redraw_y2" type="int"/>
+      <field name="DrawXofs" cname="draw_xofs" type="int"/>
+      <field name="DrawYofs" cname="draw_yofs" type="int"/>
+      <field name="ZoomXofs" cname="zoom_xofs" type="int"/>
+      <field name="ZoomYofs" cname="zoom_yofs" type="int"/>
+      <field name="State" cname="state" type="int"/>
+      <field name="GrabbedEventMask" cname="grabbed_event_mask" type="guint"/>
+      <field name="CloseEnough" cname="close_enough" type="int"/>
+      <field name="CenterScrollRegion" cname="center_scroll_region" bits="1" type="unsigned int"/>
+      <field name="NeedUpdate" cname="need_update" bits="1" type="unsigned int"/>
+      <field name="NeedRedraw" cname="need_redraw" bits="1" type="unsigned int"/>
+      <field name="NeedRepick" cname="need_repick" bits="1" type="unsigned int"/>
+      <field name="LeftGrabbedItem" cname="left_grabbed_item" bits="1" type="unsigned int"/>
+      <field name="InRepick" cname="in_repick" bits="1" type="unsigned int"/>
+      <field name="Aa" cname="aa" bits="1" type="unsigned int"/>
+      <field name="Dither" cname="dither" type="GdkRgbDither"/>
       <property name="Aa" cname="aa" type="gboolean" readable="true" writeable="true" construct-only="true"/>
       <signal name="DrawBackground" cname="draw_background" when="LAST">
         <return-type type="void"/>
@@ -1011,9 +1011,9 @@
       </method>
     </object>
     <object name="CanvasClipgroup" cname="GnomeCanvasClipgroup" parent="GnomeCanvasGroup">
-      <field cname="path" type="GnomeCanvasPathDef*"/>
-      <field cname="wind" type="ArtWindRule"/>
-      <field cname="svp" type="ArtSVP*"/>
+      <field name="Path" cname="path" type="GnomeCanvasPathDef*"/>
+      <field name="Wind" cname="wind" type="ArtWindRule"/>
+      <field name="Svp" cname="svp" type="ArtSVP*"/>
       <property name="Path" cname="path" type="gpointer" readable="true" writeable="true"/>
       <property name="Wind" cname="wind" type="guint" readable="true" writeable="true"/>
       <method name="GetType" cname="gnome_canvas_clipgroup_get_type" shared="true">
@@ -1026,8 +1026,8 @@
       </method>
     </object>
     <object name="CanvasGroup" cname="GnomeCanvasGroup" parent="GnomeCanvasItem">
-      <field cname="item_list" type="GList*"/>
-      <field cname="item_list_end" type="GList*"/>
+      <field name="ItemList" cname="item_list" type="GList*"/>
+      <field name="ItemListEnd" cname="item_list_end" type="GList*"/>
       <property name="X" cname="x" type="gdouble" readable="true" writeable="true"/>
       <property name="Y" cname="y" type="gdouble" readable="true" writeable="true"/>
       <method name="GetType" cname="gnome_canvas_group_get_type" shared="true">
@@ -1035,13 +1035,13 @@
       </method>
     </object>
     <object name="CanvasItem" cname="GnomeCanvasItem" parent="GtkObject">
-      <field cname="canvas" type="GnomeCanvas*"/>
-      <field cname="parent" type="GnomeCanvasItem*"/>
-      <field cname="xform" type="double*"/>
-      <field cname="x1" type="double"/>
-      <field cname="y1" type="double"/>
-      <field cname="x2" type="double"/>
-      <field cname="y2" type="double"/>
+      <field name="Canvas" cname="canvas" type="GnomeCanvas*"/>
+      <field name="Parent" cname="parent" type="GnomeCanvasItem*"/>
+      <field name="Xform" cname="xform" type="double*"/>
+      <field name="X1" cname="x1" type="double"/>
+      <field name="Y1" cname="y1" type="double"/>
+      <field name="X2" cname="x2" type="double"/>
+      <field name="Y2" cname="y2" type="double"/>
       <property name="Parent" cname="parent" type="GnomeCanvasItem" readable="true" writeable="true"/>
       <signal name="Event" cname="event" when="LAST">
         <return-type type="gboolean"/>
@@ -1291,30 +1291,30 @@
       </method>
     </object>
     <object name="CanvasLine" cname="GnomeCanvasLine" parent="GnomeCanvasItem">
-      <field cname="coords" type="double*"/>
-      <field cname="first_coords" type="double*"/>
-      <field cname="last_coords" type="double*"/>
-      <field cname="gc" type="GdkGC*"/>
-      <field cname="stipple" type="GdkBitmap*"/>
-      <field cname="fill_svp" type="ArtSVP*"/>
-      <field cname="first_svp" type="ArtSVP*"/>
-      <field cname="last_svp" type="ArtSVP*"/>
-      <field cname="width" type="double"/>
-      <field cname="shape_a" type="double"/>
-      <field cname="shape_b" type="double"/>
-      <field cname="shape_c" type="double"/>
-      <field cname="cap" type="GdkCapStyle"/>
-      <field cname="join" type="GdkJoinStyle"/>
-      <field cname="line_style" type="GdkLineStyle"/>
-      <field cname="fill_pixel" type="gulong"/>
-      <field cname="fill_rgba" type="guint32"/>
-      <field cname="num_points" type="int"/>
-      <field cname="fill_color" type="guint"/>
-      <field cname="spline_steps" type="int"/>
-      <field cname="width_pixels" bits="1" type="guint"/>
-      <field cname="first_arrow" bits="1" type="guint"/>
-      <field cname="last_arrow" bits="1" type="guint"/>
-      <field cname="smooth" bits="1" type="guint"/>
+      <field name="Coords" cname="coords" type="double*"/>
+      <field name="FirstCoords" cname="first_coords" type="double*"/>
+      <field name="LastCoords" cname="last_coords" type="double*"/>
+      <field name="Gc" cname="gc" type="GdkGC*"/>
+      <field name="Stipple" cname="stipple" type="GdkBitmap*"/>
+      <field name="FillSvp" cname="fill_svp" type="ArtSVP*"/>
+      <field name="FirstSvp" cname="first_svp" type="ArtSVP*"/>
+      <field name="LastSvp" cname="last_svp" type="ArtSVP*"/>
+      <field name="Width" cname="width" type="double"/>
+      <field name="ShapeA" cname="shape_a" type="double"/>
+      <field name="ShapeB" cname="shape_b" type="double"/>
+      <field name="ShapeC" cname="shape_c" type="double"/>
+      <field name="Cap" cname="cap" type="GdkCapStyle"/>
+      <field name="Join" cname="join" type="GdkJoinStyle"/>
+      <field name="LineStyle" cname="line_style" type="GdkLineStyle"/>
+      <field name="FillPixel" cname="fill_pixel" type="gulong"/>
+      <field name="FillRgba" cname="fill_rgba" type="guint32"/>
+      <field name="NumPoints" cname="num_points" type="int"/>
+      <field name="FillColor" cname="fill_color" type="guint"/>
+      <field name="SplineSteps" cname="spline_steps" type="int"/>
+      <field name="WidthPixels" cname="width_pixels" bits="1" type="guint"/>
+      <field name="FirstArrow" cname="first_arrow" bits="1" type="guint"/>
+      <field name="LastArrow" cname="last_arrow" bits="1" type="guint"/>
+      <field name="Smooth" cname="smooth" bits="1" type="guint"/>
       <property name="Points" cname="points" type="GnomeCanvasPoints" readable="true" writeable="true"/>
       <property name="FillColor" cname="fill_color" type="gchar*" readable="true" writeable="true"/>
       <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" readable="true" writeable="true"/>
@@ -1337,7 +1337,7 @@
       </method>
     </object>
     <object name="CanvasPixbuf" cname="GnomeCanvasPixbuf" parent="GnomeCanvasItem">
-      <field cname="priv" type="gpointer"/>
+      <field name="Priv" cname="priv" type="gpointer"/>
       <property name="Pixbuf" cname="pixbuf" type="GdkPixbuf" readable="true" writeable="true"/>
       <property name="Width" cname="width" type="gdouble" readable="true" writeable="true"/>
       <property name="WidthSet" cname="width_set" type="gboolean" readable="true" writeable="true"/>
@@ -1355,7 +1355,7 @@
       </method>
     </object>
     <object name="CanvasPolygon" cname="GnomeCanvasPolygon" parent="GnomeCanvasShape">
-      <field cname="path_def" type="GnomeCanvasPathDef*"/>
+      <field name="PathDef" cname="path_def" type="GnomeCanvasPathDef*"/>
       <property name="Points" cname="points" type="GnomeCanvasPoints" readable="true" writeable="true"/>
       <method name="GetType" cname="gnome_canvas_polygon_get_type" shared="true">
         <return-type type="GType"/>
@@ -1371,11 +1371,11 @@
       </method>
     </object>
     <object name="CanvasRE" cname="GnomeCanvasRE" parent="GnomeCanvasShape">
-      <field cname="x1" type="double"/>
-      <field cname="y1" type="double"/>
-      <field cname="x2" type="double"/>
-      <field cname="y2" type="double"/>
-      <field cname="path_dirty" bits="1" type="unsigned int"/>
+      <field name="X1" cname="x1" type="double"/>
+      <field name="Y1" cname="y1" type="double"/>
+      <field name="X2" cname="x2" type="double"/>
+      <field name="Y2" cname="y2" type="double"/>
+      <field name="PathDirty" cname="path_dirty" bits="1" type="unsigned int"/>
       <property name="X1" cname="x1" type="gdouble" readable="true" writeable="true"/>
       <property name="Y1" cname="y1" type="gdouble" readable="true" writeable="true"/>
       <property name="X2" cname="x2" type="gdouble" readable="true" writeable="true"/>
@@ -1390,7 +1390,7 @@
       </method>
     </object>
     <object name="CanvasRichText" cname="GnomeCanvasRichText" parent="GnomeCanvasItem">
-      <field cname="_priv" type="GnomeCanvasRichTextPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeCanvasRichTextPrivate*"/>
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true"/>
       <property name="X" cname="x" type="gdouble" readable="true" writeable="true"/>
       <property name="Y" cname="y" type="gdouble" readable="true" writeable="true"/>
@@ -1456,7 +1456,7 @@
       </method>
     </object>
     <object name="CanvasShape" cname="GnomeCanvasShape" parent="GnomeCanvasItem">
-      <field cname="priv" type="GnomeCanvasShapePriv*"/>
+      <field name="Priv" cname="priv" type="GnomeCanvasShapePriv*"/>
       <property name="FillColor" cname="fill_color" type="gchar*" writeable="true"/>
       <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" readable="true" writeable="true"/>
       <property name="FillColorRgba" cname="fill_color_rgba" type="guint" readable="true" writeable="true"/>
@@ -1486,41 +1486,41 @@
       </method>
     </object>
     <object name="CanvasText" cname="GnomeCanvasText" parent="GnomeCanvasItem">
-      <field cname="font_desc" type="PangoFontDescription*"/>
-      <field cname="attr_list" type="PangoAttrList*"/>
-      <field cname="underline" type="PangoUnderline"/>
-      <field cname="strikethrough" type="gboolean"/>
-      <field cname="rise" type="int"/>
-      <field cname="scale" type="double"/>
-      <field cname="text" type="char*"/>
-      <field cname="stipple" type="GdkBitmap*"/>
-      <field cname="gc" type="GdkGC*"/>
-      <field cname="layout" type="PangoLayout*"/>
-      <field cname="pixel" type="gulong"/>
-      <field cname="x" type="double"/>
-      <field cname="y" type="double"/>
-      <field cname="clip_width" type="double"/>
-      <field cname="clip_height" type="double"/>
-      <field cname="xofs" type="double"/>
-      <field cname="yofs" type="double"/>
-      <field cname="affine" array_len="6" type="double"/>
-      <field cname="anchor" type="GtkAnchorType"/>
-      <field cname="justification" type="GtkJustification"/>
-      <field cname="cx" type="int"/>
-      <field cname="cy" type="int"/>
-      <field cname="clip_cx" type="int"/>
-      <field cname="clip_cy" type="int"/>
-      <field cname="clip_cwidth" type="int"/>
-      <field cname="clip_cheight" type="int"/>
-      <field cname="max_width" type="int"/>
-      <field cname="height" type="int"/>
-      <field cname="rgba" type="guint32"/>
-      <field cname="clip" bits="1" type="guint"/>
-      <field cname="underline_set" bits="1" type="guint"/>
-      <field cname="strike_set" bits="1" type="guint"/>
-      <field cname="rise_set" bits="1" type="guint"/>
-      <field cname="scale_set" bits="1" type="guint"/>
-      <field cname="priv" type="GnomeCanvasTextPrivate*"/>
+      <field name="FontDesc" cname="font_desc" type="PangoFontDescription*"/>
+      <field name="AttrList" cname="attr_list" type="PangoAttrList*"/>
+      <field name="Underline" cname="underline" type="PangoUnderline"/>
+      <field name="Strikethrough" cname="strikethrough" type="gboolean"/>
+      <field name="Rise" cname="rise" type="int"/>
+      <field name="Scale" cname="scale" type="double"/>
+      <field name="Text" cname="text" type="char*"/>
+      <field name="Stipple" cname="stipple" type="GdkBitmap*"/>
+      <field name="Gc" cname="gc" type="GdkGC*"/>
+      <field name="Layout" cname="layout" type="PangoLayout*"/>
+      <field name="Pixel" cname="pixel" type="gulong"/>
+      <field name="X" cname="x" type="double"/>
+      <field name="Y" cname="y" type="double"/>
+      <field name="ClipWidth" cname="clip_width" type="double"/>
+      <field name="ClipHeight" cname="clip_height" type="double"/>
+      <field name="Xofs" cname="xofs" type="double"/>
+      <field name="Yofs" cname="yofs" type="double"/>
+      <field name="Affine" cname="affine" array_len="6" type="double"/>
+      <field name="Anchor" cname="anchor" type="GtkAnchorType"/>
+      <field name="Justification" cname="justification" type="GtkJustification"/>
+      <field name="Cx" cname="cx" type="int"/>
+      <field name="Cy" cname="cy" type="int"/>
+      <field name="ClipCx" cname="clip_cx" type="int"/>
+      <field name="ClipCy" cname="clip_cy" type="int"/>
+      <field name="ClipCwidth" cname="clip_cwidth" type="int"/>
+      <field name="ClipCheight" cname="clip_cheight" type="int"/>
+      <field name="MaxWidth" cname="max_width" type="int"/>
+      <field name="Height" cname="height" type="int"/>
+      <field name="Rgba" cname="rgba" type="guint32"/>
+      <field name="Clip" cname="clip" bits="1" type="guint"/>
+      <field name="UnderlineSet" cname="underline_set" bits="1" type="guint"/>
+      <field name="StrikeSet" cname="strike_set" bits="1" type="guint"/>
+      <field name="RiseSet" cname="rise_set" bits="1" type="guint"/>
+      <field name="ScaleSet" cname="scale_set" bits="1" type="guint"/>
+      <field name="Priv" cname="priv" type="GnomeCanvasTextPrivate*"/>
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true"/>
       <property name="Markup" cname="markup" type="gchar*" writeable="true"/>
       <property name="X" cname="x" type="gdouble" readable="true" writeable="true"/>
@@ -1557,19 +1557,19 @@
       </method>
     </object>
     <object name="CanvasWidget" cname="GnomeCanvasWidget" parent="GnomeCanvasItem">
-      <field cname="widget" type="GtkWidget*"/>
-      <field cname="x" type="double"/>
-      <field cname="y" type="double"/>
-      <field cname="width" type="double"/>
-      <field cname="height" type="double"/>
-      <field cname="anchor" type="GtkAnchorType"/>
-      <field cname="cx" type="int"/>
-      <field cname="cy" type="int"/>
-      <field cname="cwidth" type="int"/>
-      <field cname="cheight" type="int"/>
-      <field cname="destroy_id" type="guint"/>
-      <field cname="size_pixels" bits="1" type="guint"/>
-      <field cname="in_destroy" bits="1" type="guint"/>
+      <field name="Widget" cname="widget" type="GtkWidget*"/>
+      <field name="X" cname="x" type="double"/>
+      <field name="Y" cname="y" type="double"/>
+      <field name="Width" cname="width" type="double"/>
+      <field name="Height" cname="height" type="double"/>
+      <field name="Anchor" cname="anchor" type="GtkAnchorType"/>
+      <field name="Cx" cname="cx" type="int"/>
+      <field name="Cy" cname="cy" type="int"/>
+      <field name="Cwidth" cname="cwidth" type="int"/>
+      <field name="Cheight" cname="cheight" type="int"/>
+      <field name="DestroyId" cname="destroy_id" type="guint"/>
+      <field name="SizePixels" cname="size_pixels" bits="1" type="guint"/>
+      <field name="InDestroy" cname="in_destroy" bits="1" type="guint"/>
       <property name="Widget" cname="widget" type="GtkWidget" readable="true" writeable="true"/>
       <property name="X" cname="x" type="gdouble" readable="true" writeable="true"/>
       <property name="Y" cname="y" type="gdouble" readable="true" writeable="true"/>
@@ -1583,12 +1583,12 @@
     </object>
     <struct name="CanvasBpathPriv" cname="GnomeCanvasBpathPriv" opaque="true"/>
     <struct name="CanvasBuf" cname="GnomeCanvasBuf">
-      <field cname="buf" type="guchar*"/>
-      <field cname="rect" type="ArtIRect"/>
-      <field cname="buf_rowstride" type="int"/>
-      <field cname="bg_color" type="guint32"/>
-      <field cname="is_bg" bits="1" type="unsigned int"/>
-      <field cname="is_buf" bits="1" type="unsigned int"/>
+      <field name="Buf" cname="buf" type="guchar*"/>
+      <field name="Rect" cname="rect" type="ArtIRect"/>
+      <field name="BufRowstride" cname="buf_rowstride" type="int"/>
+      <field name="BgColor" cname="bg_color" type="guint32"/>
+      <field name="IsBg" cname="is_bg" bits="1" type="unsigned int"/>
+      <field name="IsBuf" cname="is_buf" bits="1" type="unsigned int"/>
       <method name="EnsureBuf" cname="gnome_canvas_buf_ensure_buf">
         <return-type type="void"/>
       </method>
@@ -1736,9 +1736,9 @@
       </method>
     </struct>
     <boxed name="CanvasPoints" cname="GnomeCanvasPoints">
-      <field cname="coords" type="double*"/>
-      <field cname="num_points" type="int"/>
-      <field cname="ref_count" type="int"/>
+      <field name="Coords" cname="coords" type="double*"/>
+      <field name="NumPoints" cname="num_points" type="int"/>
+      <field name="RefCount" cname="ref_count" type="int"/>
       <method name="Free" cname="gnome_canvas_points_free">
         <return-type type="void"/>
       </method>
@@ -1973,7 +1973,7 @@
       </parameters>
     </callback>
     <object name="About" cname="GnomeAbout" parent="GtkDialog">
-      <field cname="_priv" type="GnomeAboutPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeAboutPrivate*"/>
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true"/>
       <property name="Version" cname="version" type="gchar*" readable="true" writeable="true"/>
       <property name="Copyright" cname="copyright" type="gchar*" readable="true" writeable="true"/>
@@ -2012,17 +2012,17 @@
       </constructor>
     </object>
     <object name="App" cname="GnomeApp" parent="GtkWindow">
-      <field cname="name" type="gchar*"/>
-      <field cname="prefix" type="gchar*"/>
-      <field cname="dock" type="GtkWidget*"/>
-      <field cname="statusbar" type="GtkWidget*"/>
-      <field cname="vbox" type="GtkWidget*"/>
-      <field cname="menubar" type="GtkWidget*"/>
-      <field cname="contents" type="GtkWidget*"/>
-      <field cname="layout" type="BonoboDockLayout*"/>
-      <field cname="accel_group" type="GtkAccelGroup*"/>
-      <field cname="enable_layout_config" bits="1" type="guint"/>
-      <field cname="_priv" type="GnomeAppPrivate*"/>
+      <field name="Name" cname="name" type="gchar*"/>
+      <field name="Prefix" cname="prefix" type="gchar*"/>
+      <field name="Dock" cname="dock" type="GtkWidget*"/>
+      <field name="Statusbar" cname="statusbar" type="GtkWidget*"/>
+      <field name="Vbox" cname="vbox" type="GtkWidget*"/>
+      <field name="Menubar" cname="menubar" type="GtkWidget*"/>
+      <field name="Contents" cname="contents" type="GtkWidget*"/>
+      <field name="Layout" cname="layout" type="BonoboDockLayout*"/>
+      <field name="AccelGroup" cname="accel_group" type="GtkAccelGroup*"/>
+      <field name="EnableLayoutConfig" cname="enable_layout_config" bits="1" type="guint"/>
+      <field name="Priv" cname="_priv" type="GnomeAppPrivate*"/>
       <property name="AppId" cname="app_id" type="gchar*" readable="true" writeable="true" construct-only="true"/>
       <method name="AddDockItem" cname="gnome_app_add_dock_item">
         <return-type type="void"/>
@@ -2436,7 +2436,7 @@
       </method>
     </object>
     <object name="AppBar" cname="GnomeAppBar" parent="GtkHBox">
-      <field cname="_priv" type="GnomeAppBarPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeAppBarPrivate*"/>
       <signal name="UserResponse" cname="user_response" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -2516,34 +2516,34 @@
       </method>
     </object>
     <object name="Client" cname="GnomeClient" parent="GtkObject">
-      <field cname="smc_conn" type="gpointer"/>
-      <field cname="client_id" type="gchar*"/>
-      <field cname="previous_id" type="gchar*"/>
-      <field cname="config_prefix" type="gchar*"/>
-      <field cname="global_config_prefix" type="gchar*"/>
-      <field cname="static_args" type="GList*"/>
-      <field cname="clone_command" type="gchar**"/>
-      <field cname="current_directory" type="gchar*"/>
-      <field cname="discard_command" type="gchar**"/>
-      <field cname="environment" type="GHashTable*"/>
-      <field cname="process_id" type="pid_t"/>
-      <field cname="program" type="gchar*"/>
-      <field cname="resign_command" type="gchar**"/>
-      <field cname="restart_command" type="gchar**"/>
-      <field cname="restart_style" type="GnomeRestartStyle"/>
-      <field cname="shutdown_command" type="gchar**"/>
-      <field cname="user_id" type="gchar*"/>
-      <field cname="interaction_keys" type="GSList*"/>
-      <field cname="input_id" type="gint"/>
-      <field cname="save_style" bits="2" type="GnomeSaveStyle"/>
-      <field cname="interact_style" bits="2" type="GnomeInteractStyle"/>
-      <field cname="state" bits="3" type="GnomeClientState"/>
-      <field cname="shutdown" bits="1" type="guint"/>
-      <field cname="fast" bits="1" type="guint"/>
-      <field cname="save_phase_2_requested" bits="1" type="guint"/>
-      <field cname="save_successfull" bits="1" type="guint"/>
-      <field cname="save_yourself_emitted" bits="1" type="guint"/>
-      <field cname="reserved" type="gpointer"/>
+      <field name="SmcConn" cname="smc_conn" type="gpointer"/>
+      <field name="ClientId" cname="client_id" type="gchar*"/>
+      <field name="PreviousId" cname="previous_id" type="gchar*"/>
+      <field name="ConfigPrefix" cname="config_prefix" type="gchar*"/>
+      <field name="GlobalConfigPrefix" cname="global_config_prefix" type="gchar*"/>
+      <field name="StaticArgs" cname="static_args" type="GList*"/>
+      <field name="CloneCommand" cname="clone_command" type="gchar**"/>
+      <field name="CurrentDirectory" cname="current_directory" type="gchar*"/>
+      <field name="DiscardCommand" cname="discard_command" type="gchar**"/>
+      <field name="Environment" cname="environment" type="GHashTable*"/>
+      <field name="ProcessId" cname="process_id" type="pid_t"/>
+      <field name="Program" cname="program" type="gchar*"/>
+      <field name="ResignCommand" cname="resign_command" type="gchar**"/>
+      <field name="RestartCommand" cname="restart_command" type="gchar**"/>
+      <field name="RestartStyle" cname="restart_style" type="GnomeRestartStyle"/>
+      <field name="ShutdownCommand" cname="shutdown_command" type="gchar**"/>
+      <field name="UserId" cname="user_id" type="gchar*"/>
+      <field name="InteractionKeys" cname="interaction_keys" type="GSList*"/>
+      <field name="InputId" cname="input_id" type="gint"/>
+      <field name="SaveStyle" cname="save_style" bits="2" type="GnomeSaveStyle"/>
+      <field name="InteractStyle" cname="interact_style" bits="2" type="GnomeInteractStyle"/>
+      <field name="State" cname="state" bits="3" type="GnomeClientState"/>
+      <field name="Shutdown" cname="shutdown" bits="1" type="guint"/>
+      <field name="Fast" cname="fast" bits="1" type="guint"/>
+      <field name="SavePhase2Requested" cname="save_phase_2_requested" bits="1" type="guint"/>
+      <field name="SaveSuccessfull" cname="save_successfull" bits="1" type="guint"/>
+      <field name="SaveYourselfEmitted" cname="save_yourself_emitted" bits="1" type="guint"/>
+      <field name="Reserved" cname="reserved" type="gpointer"/>
       <signal name="SaveYourself" cname="save_yourself" when="LAST">
         <return-type type="gboolean"/>
         <parameters>
@@ -2764,7 +2764,7 @@
       </method>
     </object>
     <object name="ColorPicker" cname="GnomeColorPicker" deprecated="1" parent="GtkButton">
-      <field cname="_priv" type="GnomeColorPickerPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeColorPickerPrivate*"/>
       <signal name="ColorSet" cname="color_set" when="FIRST">
         <return-type type="void"/>
         <parameters>
@@ -2869,7 +2869,7 @@
       </method>
     </object>
     <object name="DateEdit" cname="GnomeDateEdit" parent="GtkHBox">
-      <field cname="_priv" type="GnomeDateEditPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeDateEditPrivate*"/>
       <property name="Time" cname="time" type="ulong" readable="true" writeable="true"/>
       <property name="DateeditFlags" cname="dateedit_flags" type="GnomeDateEditFlags" readable="true" writeable="true"/>
       <property name="LowerHour" cname="lower_hour" type="gint" readable="true" writeable="true"/>
@@ -2943,12 +2943,12 @@
       </method>
     </object>
     <object name="Dialog" cname="GnomeDialog" deprecated="1" parent="GtkWindow">
-      <field cname="vbox" type="GtkWidget*"/>
-      <field cname="buttons" type="GList*"/>
-      <field cname="action_area" type="GtkWidget*"/>
-      <field cname="accelerators" type="GtkAccelGroup*"/>
-      <field cname="click_closes" bits="1" type="unsigned int"/>
-      <field cname="just_hide" bits="1" type="unsigned int"/>
+      <field name="Vbox" cname="vbox" type="GtkWidget*"/>
+      <field name="Buttons" cname="buttons" type="GList*"/>
+      <field name="ActionArea" cname="action_area" type="GtkWidget*"/>
+      <field name="Accelerators" cname="accelerators" type="GtkAccelGroup*"/>
+      <field name="ClickCloses" cname="click_closes" bits="1" type="unsigned int"/>
+      <field name="JustHide" cname="just_hide" bits="1" type="unsigned int"/>
       <signal name="Close" cname="close" when="LAST">
         <return-type type="gboolean"/>
         <parameters>
@@ -3102,12 +3102,12 @@
       </method>
     </object>
     <object name="Druid" cname="GnomeDruid" parent="GtkContainer">
-      <field cname="help" type="GtkWidget*"/>
-      <field cname="back" type="GtkWidget*"/>
-      <field cname="next" type="GtkWidget*"/>
-      <field cname="cancel" type="GtkWidget*"/>
-      <field cname="finish" type="GtkWidget*"/>
-      <field cname="_priv" type="GnomeDruidPrivate*"/>
+      <field name="Help" cname="help" type="GtkWidget*"/>
+      <field name="Back" cname="back" type="GtkWidget*"/>
+      <field name="Next" cname="next" type="GtkWidget*"/>
+      <field name="Cancel" cname="cancel" type="GtkWidget*"/>
+      <field name="Finish" cname="finish" type="GtkWidget*"/>
+      <field name="Priv" cname="_priv" type="GnomeDruidPrivate*"/>
       <signal name="Cancel" cname="cancel" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -3191,7 +3191,7 @@
       </method>
     </object>
     <object name="DruidPage" cname="GnomeDruidPage" parent="GtkBin">
-      <field cname="_priv" type="GnomeDruidPagePrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeDruidPagePrivate*"/>
       <signal name="Next" cname="next" when="LAST">
         <return-type type="gboolean"/>
         <parameters>
@@ -3261,18 +3261,18 @@
       </method>
     </object>
     <object name="DruidPageEdge" cname="GnomeDruidPageEdge" parent="GnomeDruidPage">
-      <field cname="title" type="gchar*"/>
-      <field cname="text" type="gchar*"/>
-      <field cname="logo_image" type="GdkPixbuf*"/>
-      <field cname="watermark_image" type="GdkPixbuf*"/>
-      <field cname="top_watermark_image" type="GdkPixbuf*"/>
-      <field cname="background_color" type="GdkColor"/>
-      <field cname="textbox_color" type="GdkColor"/>
-      <field cname="logo_background_color" type="GdkColor"/>
-      <field cname="title_color" type="GdkColor"/>
-      <field cname="text_color" type="GdkColor"/>
-      <field cname="position" bits="2" type="GnomeEdgePosition"/>
-      <field cname="_priv" type="GnomeDruidPageEdgePrivate*"/>
+      <field name="Title" cname="title" type="gchar*" access="public"/>
+      <field name="Text" cname="text" type="gchar*" access="public"/>
+      <field name="LogoImage" cname="logo_image" type="GdkPixbuf*" access="public"/>
+      <field name="WatermarkImage" cname="watermark_image" type="GdkPixbuf*" access="public"/>
+      <field name="TopWatermarkImage" cname="top_watermark_image" type="GdkPixbuf*" access="public"/>
+      <field name="BackgroundColor" cname="background_color" type="GdkColor" access="public"/>
+      <field name="TextboxColor" cname="textbox_color" type="GdkColor" access="public"/>
+      <field name="LogoBackgroundColor" cname="logo_background_color" type="GdkColor" access="public"/>
+      <field name="TitleColor" cname="title_color" type="GdkColor" access="public"/>
+      <field name="TextColor" cname="text_color" type="GdkColor" access="public"/>
+      <field name="Position" cname="position" bits="2" type="GnomeEdgePosition" access="public"/>
+      <field name="Priv" cname="_priv" type="GnomeDruidPageEdgePrivate*"/>
       <method name="Construct" cname="gnome_druid_page_edge_construct">
         <return-type type="void"/>
         <parameters>
@@ -3371,15 +3371,15 @@
       </method>
     </object>
     <object name="DruidPageStandard" cname="GnomeDruidPageStandard" parent="GnomeDruidPage">
-      <field cname="vbox" type="GtkWidget*"/>
-      <field cname="title" type="gchar*"/>
-      <field cname="logo" type="GdkPixbuf*"/>
-      <field cname="top_watermark" type="GdkPixbuf*"/>
-      <field cname="title_foreground" type="GdkColor"/>
-      <field cname="background" type="GdkColor"/>
-      <field cname="logo_background" type="GdkColor"/>
-      <field cname="contents_background" type="GdkColor"/>
-      <field cname="_priv" type="GnomeDruidPageStandardPrivate*"/>
+      <field name="Vbox" cname="vbox" type="GtkWidget*" access="public"/>
+      <field name="Title" cname="title" type="gchar*" access="public"/>
+      <field name="Logo" cname="logo" type="GdkPixbuf*" access="public"/>
+      <field name="TopWatermark" cname="top_watermark" type="GdkPixbuf*" access="public"/>
+      <field name="TitleForeground" cname="title_foreground" type="GdkColor" access="public"/>
+      <field name="Background" cname="background" type="GdkColor" access="public"/>
+      <field name="LogoBackground" cname="logo_background" type="GdkColor" access="public"/>
+      <field name="ContentsBackground" cname="contents_background" type="GdkColor" access="public"/>
+      <field name="Priv" cname="_priv" type="GnomeDruidPageStandardPrivate*"/>
       <property name="Title" cname="title" type="gchar*" readable="true" writeable="true"/>
       <property name="Logo" cname="logo" type="GdkPixbuf" readable="true" writeable="true"/>
       <property name="TopWatermark" cname="top_watermark" type="GdkPixbuf" readable="true" writeable="true"/>
@@ -3455,7 +3455,7 @@
       </method>
     </object>
     <object name="Entry" cname="GnomeEntry" deprecated="1" parent="GtkCombo">
-      <field cname="_priv" type="GnomeEntryPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeEntryPrivate*"/>
       <signal name="Activate" cname="activate" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -3521,9 +3521,9 @@
       </method>
     </object>
     <object name="FileEntry" cname="GnomeFileEntry" parent="GtkVBox">
-      <field cname="fsw" type="GtkWidget*"/>
-      <field cname="default_path" type="char*"/>
-      <field cname="_priv" type="GnomeFileEntryPrivate*"/>
+      <field name="Fsw" cname="fsw" type="GtkWidget*"/>
+      <field name="DefaultPath" cname="default_path" type="char*"/>
+      <field name="Priv" cname="_priv" type="GnomeFileEntryPrivate*"/>
       <signal name="BrowseClicked" cname="browse_clicked" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -3621,7 +3621,7 @@
       </method>
     </object>
     <object name="FontPicker" cname="GnomeFontPicker" deprecated="1" parent="GtkButton">
-      <field cname="_priv" type="GnomeFontPickerPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeFontPickerPrivate*"/>
       <property name="Title" cname="title" type="gchar*" readable="true" writeable="true"/>
       <property name="Mode" cname="mode" type="GnomeFontPickerMode" readable="true" writeable="true"/>
       <property name="FontName" cname="font_name" type="gchar*" readable="true" writeable="true"/>
@@ -3704,7 +3704,7 @@
       </method>
     </object>
     <object name="HRef" cname="GnomeHRef" parent="GtkButton">
-      <field cname="_priv" type="GnomeHRefPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeHRefPrivate*"/>
       <property name="Url" cname="url" type="gchar*" readable="true" writeable="true"/>
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true"/>
       <method name="Construct" cname="gnome_href_construct">
@@ -3752,7 +3752,7 @@
       </method>
     </object>
     <object name="IconEntry" cname="GnomeIconEntry" parent="GtkVBox">
-      <field cname="_priv" type="GnomeIconEntryPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeIconEntryPrivate*"/>
       <signal name="Changed" cname="changed" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -3839,9 +3839,9 @@
       </method>
     </object>
     <object name="IconList" cname="GnomeIconList" parent="GnomeCanvas">
-      <field cname="adj" type="GtkAdjustment*"/>
-      <field cname="hadj" type="GtkAdjustment*"/>
-      <field cname="_priv" type="GnomeIconListPrivate*"/>
+      <field name="Adj" cname="adj" type="GtkAdjustment*"/>
+      <field name="Hadj" cname="hadj" type="GtkAdjustment*"/>
+      <field name="Priv" cname="_priv" type="GnomeIconListPrivate*"/>
       <signal name="SelectIcon" cname="select_icon" when="FIRST">
         <return-type type="void"/>
         <parameters>
@@ -4118,7 +4118,7 @@
       </method>
     </object>
     <object name="IconSelection" cname="GnomeIconSelection" parent="GtkVBox">
-      <field cname="_priv" type="GnomeIconSelectionPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeIconSelectionPrivate*"/>
       <method name="AddDefaults" cname="gnome_icon_selection_add_defaults">
         <return-type type="void"/>
       </method>
@@ -4164,17 +4164,17 @@
       </method>
     </object>
     <object name="IconTextItem" cname="GnomeIconTextItem" parent="GnomeCanvasItem">
-      <field cname="x" type="int"/>
-      <field cname="y" type="int"/>
-      <field cname="width" type="int"/>
-      <field cname="fontname" type="char*"/>
-      <field cname="text" type="char*"/>
-      <field cname="editing" bits="1" type="unsigned int"/>
-      <field cname="selected" bits="1" type="unsigned int"/>
-      <field cname="focused" bits="1" type="unsigned int"/>
-      <field cname="is_editable" bits="1" type="unsigned int"/>
-      <field cname="is_text_allocated" bits="1" type="unsigned int"/>
-      <field cname="_priv" type="GnomeIconTextItemPrivate*"/>
+      <field name="X" cname="x" type="int"/>
+      <field name="Y" cname="y" type="int"/>
+      <field name="Width" cname="width" type="int"/>
+      <field name="Fontname" cname="fontname" type="char*"/>
+      <field name="Text" cname="text" type="char*"/>
+      <field name="Editing" cname="editing" bits="1" type="unsigned int"/>
+      <field name="Selected" cname="selected" bits="1" type="unsigned int"/>
+      <field name="Focused" cname="focused" bits="1" type="unsigned int"/>
+      <field name="IsEditable" cname="is_editable" bits="1" type="unsigned int"/>
+      <field name="IsTextAllocated" cname="is_text_allocated" bits="1" type="unsigned int"/>
+      <field name="Priv" cname="_priv" type="GnomeIconTextItemPrivate*"/>
       <signal name="TextChanged" cname="text_changed" when="LAST">
         <return-type type="gboolean"/>
         <parameters>
@@ -4282,7 +4282,7 @@
       </signal>
     </object>
     <object name="Pixmap" cname="GnomePixmap" deprecated="1" parent="GtkImage">
-      <field cname="_priv" type="GnomePixmapPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomePixmapPrivate*"/>
       <method name="GetType" cname="gnome_pixmap_get_type" deprecated="1" shared="true">
         <return-type type="GType"/>
       </method>
@@ -4345,7 +4345,7 @@
       </constructor>
     </object>
     <object name="PixmapEntry" cname="GnomePixmapEntry" parent="GnomeFileEntry">
-      <field cname="_priv" type="GnomePixmapEntryPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomePixmapEntryPrivate*"/>
       <property name="DoPreview" cname="do_preview" type="gboolean" readable="true" writeable="true"/>
       <method name="Construct" cname="gnome_pixmap_entry_construct">
         <return-type type="void"/>
@@ -4404,12 +4404,12 @@
       </method>
     </object>
     <object name="PropertyBox" cname="GnomePropertyBox" deprecated="1" parent="GnomeDialog">
-      <field cname="notebook" type="GtkWidget*"/>
-      <field cname="ok_button" type="GtkWidget*"/>
-      <field cname="apply_button" type="GtkWidget*"/>
-      <field cname="cancel_button" type="GtkWidget*"/>
-      <field cname="help_button" type="GtkWidget*"/>
-      <field cname="reserved" type="gpointer"/>
+      <field name="Notebook" cname="notebook" type="GtkWidget*"/>
+      <field name="OkButton" cname="ok_button" type="GtkWidget*"/>
+      <field name="ApplyButton" cname="apply_button" type="GtkWidget*"/>
+      <field name="CancelButton" cname="cancel_button" type="GtkWidget*"/>
+      <field name="HelpButton" cname="help_button" type="GtkWidget*"/>
+      <field name="Reserved" cname="reserved" type="gpointer"/>
       <signal name="Apply" cname="apply" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -4452,7 +4452,7 @@
       </method>
     </object>
     <object name="Scores" cname="GnomeScores" parent="GtkDialog">
-      <field cname="_priv" type="GnomeScoresPrivate*"/>
+      <field name="Priv" cname="_priv" type="GnomeScoresPrivate*"/>
       <method name="Construct" cname="gnome_scores_construct">
         <return-type type="void"/>
         <parameters>
@@ -4548,7 +4548,7 @@
       </method>
     </object>
     <object name="ThumbnailFactory" cname="GnomeThumbnailFactory" parent="GObject">
-      <field cname="priv" type="GnomeThumbnailFactoryPrivate*"/>
+      <field name="Priv" cname="priv" type="GnomeThumbnailFactoryPrivate*"/>
       <method name="CanThumbnail" cname="gnome_thumbnail_factory_can_thumbnail">
         <return-type type="gboolean"/>
         <parameters>
@@ -4606,8 +4606,8 @@
     <alias name="AppProgressKey" cname="GnomeAppProgressKey" type="gpointer"/>
     <struct name="GdkPixbufAsyncHandle" cname="GnomeGdkPixbufAsyncHandle" opaque="true"/>
     <struct name="IconDataPoint" cname="GnomeIconDataPoint">
-      <field cname="x" type="int"/>
-      <field cname="y" type="int"/>
+      <field name="X" cname="x" type="int"/>
+      <field name="Y" cname="y" type="int"/>
     </struct>
     <struct name="MDIMode" cname="GnomeMDIMode" opaque="true">
       <method name="GetType" cname="gnome_mdi_mode_get_type" shared="true">
@@ -4681,24 +4681,24 @@
       </method>
     </struct>
     <struct name="UIBuilderData" cname="GnomeUIBuilderData">
-      <field cname="connect_func" type="GnomeUISignalConnectFunc"/>
-      <field cname="data" type="gpointer"/>
-      <field cname="is_interp" type="gboolean"/>
-      <field cname="relay_func" type="GtkCallbackMarshal"/>
-      <field cname="destroy_func" type="GtkDestroyNotify"/>
+      <field name="ConnectFunc" cname="connect_func" type="GnomeUISignalConnectFunc"/>
+      <field name="Data" cname="data" type="gpointer"/>
+      <field name="IsInterp" cname="is_interp" type="gboolean"/>
+      <field name="RelayFunc" cname="relay_func" type="GtkCallbackMarshal"/>
+      <field name="DestroyFunc" cname="destroy_func" type="GtkDestroyNotify"/>
     </struct>
     <struct name="UIInfo" cname="GnomeUIInfo">
-      <field cname="type" type="GnomeUIInfoType"/>
-      <field cname="label" type="const-gchar*"/>
-      <field cname="hint" type="const-gchar*"/>
-      <field cname="moreinfo" type="gpointer"/>
-      <field cname="user_data" type="gpointer"/>
-      <field cname="unused_data" type="gpointer"/>
-      <field cname="pixmap_type" type="GnomeUIPixmapType"/>
-      <field cname="pixmap_info" type="gconstpointer"/>
-      <field cname="accelerator_key" type="guint"/>
-      <field cname="ac_mods" type="GdkModifierType"/>
-      <field cname="widget" type="GtkWidget*"/>
+      <field name="Type" cname="type" type="GnomeUIInfoType"/>
+      <field name="Label" cname="label" type="const-gchar*"/>
+      <field name="Hint" cname="hint" type="const-gchar*"/>
+      <field name="Moreinfo" cname="moreinfo" type="gpointer"/>
+      <field name="UserData" cname="user_data" type="gpointer"/>
+      <field name="UnusedData" cname="unused_data" type="gpointer"/>
+      <field name="PixmapType" cname="pixmap_type" type="GnomeUIPixmapType"/>
+      <field name="PixmapInfo" cname="pixmap_info" type="gconstpointer"/>
+      <field name="AcceleratorKey" cname="accelerator_key" type="guint"/>
+      <field name="AcMods" cname="ac_mods" type="GdkModifierType"/>
+      <field name="Widget" cname="widget" type="GtkWidget*"/>
     </struct>
     <class name="Global" cname="GnomeGlobal">
       <method name="AcceleratorsSync" cname="gnome_accelerators_sync" shared="true">
@@ -6070,11 +6070,11 @@
       </constructor>
     </object>
     <object name="PrintRGBP" cname="GnomePrintRGBP" parent="GnomePrintContext">
-      <field cname="margins" type="ArtDRect"/>
-      <field cname="dpix" type="gdouble"/>
-      <field cname="dpiy" type="gdouble"/>
-      <field cname="band_height" type="gint"/>
-      <field cname="meta" type="GnomePrintContext*"/>
+      <field name="Margins" cname="margins" type="ArtDRect"/>
+      <field name="Dpix" cname="dpix" type="gdouble"/>
+      <field name="Dpiy" cname="dpiy" type="gdouble"/>
+      <field name="BandHeight" cname="band_height" type="gint"/>
+      <field name="Meta" cname="meta" type="GnomePrintContext*"/>
       <method name="Construct" cname="gnome_print_rgbp_construct">
         <return-type type="gint"/>
         <parameters>
@@ -6232,24 +6232,24 @@
       </method>
     </object>
     <struct name="GPFamilyEntry" cname="GPFamilyEntry">
-      <field cname="refcount" type="gint"/>
-      <field cname="name" type="gchar*"/>
-      <field cname="fonts" type="GSList*"/>
-      <field cname="is_alias" type="gboolean"/>
+      <field name="Refcount" cname="refcount" type="gint"/>
+      <field name="Name" cname="name" type="gchar*"/>
+      <field name="Fonts" cname="fonts" type="GSList*"/>
+      <field name="IsAlias" cname="is_alias" type="gboolean"/>
     </struct>
     <struct name="GPFontEntry" cname="GPFontEntry">
-      <field cname="type" type="GPFontEntryType"/>
-      <field cname="refcount" type="gint"/>
-      <field cname="face" type="GnomeFontFace*"/>
-      <field cname="name" type="gchar*"/>
-      <field cname="familyname" type="gchar*"/>
-      <field cname="speciesname" type="gchar*"/>
-      <field cname="file" type="gchar*"/>
-      <field cname="index" type="gint"/>
-      <field cname="unused" type="gchar*"/>
-      <field cname="italic_angle" type="gint"/>
-      <field cname="Weight" type="GnomeFontWeight"/>
-      <field cname="is_alias" type="gboolean"/>
+      <field name="Type" cname="type" type="GPFontEntryType"/>
+      <field name="Refcount" cname="refcount" type="gint"/>
+      <field name="Face" cname="face" type="GnomeFontFace*"/>
+      <field name="Name" cname="name" type="gchar*"/>
+      <field name="Familyname" cname="familyname" type="gchar*"/>
+      <field name="Speciesname" cname="speciesname" type="gchar*"/>
+      <field name="File" cname="file" type="gchar*"/>
+      <field name="Index" cname="index" type="gint"/>
+      <field name="Unused" cname="unused" type="gchar*"/>
+      <field name="ItalicAngle" cname="italic_angle" type="gint"/>
+      <field name="Weight" cname="Weight" type="GnomeFontWeight"/>
+      <field name="IsAlias" cname="is_alias" type="gboolean"/>
       <method name="Ref" cname="gp_font_entry_ref">
         <return-type type="void"/>
       </method>
@@ -6258,18 +6258,18 @@
       </method>
     </struct>
     <struct name="GPFontEntryAlias" cname="GPFontEntryAlias">
-      <field cname="entry" type="GPFontEntry"/>
-      <field cname="ref" type="GPFontEntry*"/>
+      <field name="Entry" cname="entry" type="GPFontEntry"/>
+      <field name="Ref" cname="ref" type="GPFontEntry*"/>
     </struct>
     <struct name="GPFontMap" cname="GPFontMap">
-      <field cname="refcount" type="gint"/>
-      <field cname="num_fonts" type="gint"/>
-      <field cname="fontdict" type="GHashTable*"/>
-      <field cname="familydict" type="GHashTable*"/>
-      <field cname="fonts" type="GSList*"/>
-      <field cname="families" type="GSList*"/>
-      <field cname="fontlist" type="GList*"/>
-      <field cname="familylist" type="GList*"/>
+      <field name="Refcount" cname="refcount" type="gint"/>
+      <field name="NumFonts" cname="num_fonts" type="gint"/>
+      <field name="Fontdict" cname="fontdict" type="GHashTable*"/>
+      <field name="Familydict" cname="familydict" type="GHashTable*"/>
+      <field name="Fonts" cname="fonts" type="GSList*"/>
+      <field name="Families" cname="families" type="GSList*"/>
+      <field name="Fontlist" cname="fontlist" type="GList*"/>
+      <field name="Familylist" cname="familylist" type="GList*"/>
       <method name="Get" cname="gp_fontmap_get" shared="true">
         <return-type type="GPFontMap*"/>
       </method>
@@ -6548,21 +6548,21 @@
     </boxed>
     <struct name="PosGlyphList" cname="GnomePosGlyphList" opaque="true"/>
     <struct name="PrintConfigOption" cname="GnomePrintConfigOption">
-      <field cname="id" type="const-gchar*"/>
-      <field cname="description" type="const-gchar*"/>
-      <field cname="index" type="gint"/>
+      <field name="Id" cname="id" type="const-gchar*"/>
+      <field name="Description" cname="description" type="const-gchar*"/>
+      <field name="Index" cname="index" type="gint"/>
     </struct>
     <struct name="PrintModule" cname="GnomePrintModule">
-      <field cname="flags" type="gint"/>
+      <field name="Flags" cname="flags" type="gint"/>
       <method name="Init" cname="gnome_print_module_init" shared="true">
         <return-type type="void"/>
       </method>
     </struct>
     <struct name="PrintPaper" cname="GnomePrintPaper">
-      <field cname="version" bits="8" type="guint"/>
-      <field cname="name" type="guchar*"/>
-      <field cname="width" type="gdouble"/>
-      <field cname="height" type="gdouble"/>
+      <field name="Version" cname="version" bits="8" type="guint"/>
+      <field name="Name" cname="name" type="guchar*"/>
+      <field name="Width" cname="width" type="gdouble"/>
+      <field name="Height" cname="height" type="gdouble"/>
       <method name="FreeList" cname="gnome_print_paper_free_list" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -6598,13 +6598,13 @@
       </method>
     </struct>
     <boxed name="PrintUnit" cname="GnomePrintUnit">
-      <field cname="version" bits="8" type="guint"/>
-      <field cname="base" bits="8" type="guint"/>
-      <field cname="unittobase" type="gdouble"/>
-      <field cname="name" type="guchar*"/>
-      <field cname="abbr" type="guchar*"/>
-      <field cname="plural" type="guchar*"/>
-      <field cname="abbr_plural" type="guchar*"/>
+      <field name="Version" cname="version" bits="8" type="guint"/>
+      <field name="Base" cname="base" bits="8" type="guint"/>
+      <field name="Unittobase" cname="unittobase" type="gdouble"/>
+      <field name="Name" cname="name" type="guchar*"/>
+      <field name="Abbr" cname="abbr" type="guchar*"/>
+      <field name="Plural" cname="plural" type="guchar*"/>
+      <field name="AbbrPlural" cname="abbr_plural" type="guchar*"/>
       <method name="FreeList" cname="gnome_print_unit_free_list" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -7201,15 +7201,15 @@
       <member cname="GNOME_PRINT_WIDGET_CHECKBUTTON" name="Checkbutton"/>
     </enum>
     <object name="CanvasHacktext" cname="GnomeCanvasHacktext" parent="GnomeCanvasItem">
-      <field cname="text" type="char*"/>
-      <field cname="fill_color" type="guint"/>
-      <field cname="fill_pixel" type="gulong"/>
-      <field cname="fill_set" bits="1" type="guint"/>
-      <field cname="size" type="double"/>
-      <field cname="x" type="double"/>
-      <field cname="y" type="double"/>
-      <field cname="fill_rgba" type="guint32"/>
-      <field cname="priv" type="GnomeCanvasHacktextPriv*"/>
+      <field name="Text" cname="text" type="char*"/>
+      <field name="FillColor" cname="fill_color" type="guint"/>
+      <field name="FillPixel" cname="fill_pixel" type="gulong"/>
+      <field name="FillSet" cname="fill_set" bits="1" type="guint"/>
+      <field name="Size" cname="size" type="double"/>
+      <field name="X" cname="x" type="double"/>
+      <field name="Y" cname="y" type="double"/>
+      <field name="FillRgba" cname="fill_rgba" type="guint32"/>
+      <field name="Priv" cname="priv" type="GnomeCanvasHacktextPriv*"/>
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true"/>
       <property name="X" cname="x" type="gdouble" readable="true" writeable="true"/>
       <property name="Y" cname="y" type="gdouble" readable="true" writeable="true"/>
@@ -7290,9 +7290,9 @@
       </method>
     </object>
     <object name="PaperPreview" cname="GnomePaperPreview" parent="GtkHBox">
-      <field cname="canvas" type="GtkWidget*"/>
-      <field cname="item" type="GnomeCanvasItem*"/>
-      <field cname="config" type="GnomePrintConfig*"/>
+      <field name="Canvas" cname="canvas" type="GtkWidget*"/>
+      <field name="Item" cname="item" type="GnomeCanvasItem*"/>
+      <field name="Config" cname="config" type="GnomePrintConfig*"/>
       <method name="GetType" cname="gnome_paper_preview_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7319,15 +7319,15 @@
       </constructor>
     </object>
     <object name="PrinterSelector" cname="GnomePrinterSelector" parent="GPAWidget">
-      <field cname="accel_group" type="GtkAccelGroup*"/>
-      <field cname="printers" type="GtkWidget*"/>
-      <field cname="settings" type="GtkWidget*"/>
-      <field cname="transport" type="GtkWidget*"/>
-      <field cname="state" type="GtkWidget*"/>
-      <field cname="* type" type="GtkWidget*"/>
-      <field cname="* location" type="GtkWidget*"/>
-      <field cname="* comment" type="GtkWidget*"/>
-      <field cname="handler_config" type="gulong"/>
+      <field name="AccelGroup" cname="accel_group" type="GtkAccelGroup*"/>
+      <field name="Printers" cname="printers" type="GtkWidget*"/>
+      <field name="Settings" cname="settings" type="GtkWidget*"/>
+      <field name="Transport" cname="transport" type="GtkWidget*"/>
+      <field name="State" cname="state" type="GtkWidget*"/>
+      <field name="Type" cname="* type" type="GtkWidget*"/>
+      <field name="Location" cname="* location" type="GtkWidget*"/>
+      <field name="Comment" cname="* comment" type="GtkWidget*"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
       <method name="CheckConsistency" cname="gnome_printer_selector_check_consistency">
         <return-type type="gboolean"/>
       </method>
@@ -7542,13 +7542,13 @@
       </method>
     </object>
     <object name="GPACheckbutton" cname="GPACheckbutton" parent="GPAWidget">
-      <field cname="checkbox" type="GtkWidget*"/>
-      <field cname="path" type="gchar*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Checkbox" cname="checkbox" type="GtkWidget*"/>
+      <field name="Path" cname="path" type="gchar*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
       <method name="GetType" cname="gpa_checkbutton_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7561,13 +7561,13 @@
       </constructor>
     </object>
     <object name="GPAOptionMenu" cname="GPAOptionMenu" parent="GPAWidget">
-      <field cname="menu" type="GtkWidget*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="key" type="gchar*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Menu" cname="menu" type="GtkWidget*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Key" cname="key" type="gchar*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
       <method name="GetType" cname="gpa_option_menu_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7579,15 +7579,15 @@
       </constructor>
     </object>
     <object name="GPAPrintToFile" cname="GPAPrintToFile" parent="GPAWidget">
-      <field cname="checkbox" type="GtkWidget*"/>
-      <field cname="entry" type="GtkWidget*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="node_output" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_output" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Checkbox" cname="checkbox" type="GtkWidget*"/>
+      <field name="Entry" cname="entry" type="GtkWidget*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="NodeOutput" cname="node_output" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerOutput" cname="handler_output" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
     </object>
     <object name="GpaPaperPreviewItem" cname="GpaPaperPreviewItem" parent="GnomeCanvasItem">
       <method name="GetType" cname="gpa_paper_preview_item_get_type" shared="true">
@@ -7619,11 +7619,11 @@
       </method>
     </object>
     <object name="GPAPrinterSelector" cname="GPAPrinterSelector" parent="GPAWidget">
-      <field cname="menu" type="GtkWidget*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Menu" cname="menu" type="GtkWidget*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
       <method name="GetType" cname="gpa_printer_selector_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7634,15 +7634,15 @@
       </constructor>
     </object>
     <object name="GPARadiobutton" cname="GPARadiobutton" parent="GPAWidget">
-      <field cname="box" type="GtkWidget*"/>
-      <field cname="group" type="GSList*"/>
-      <field cname="options" type="GPAApplicationOption*"/>
-      <field cname="path" type="gchar*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Box" cname="box" type="GtkWidget*"/>
+      <field name="Group" cname="group" type="GSList*"/>
+      <field name="Options" cname="options" type="GPAApplicationOption*"/>
+      <field name="Path" cname="path" type="gchar*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
       <method name="GetType" cname="gpa_radiobutton_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7655,35 +7655,35 @@
       </constructor>
     </object>
     <object name="GPASettingsSelector" cname="GPASettingsSelector" parent="GPAWidget">
-      <field cname="menu" type="GtkWidget*"/>
-      <field cname="printer" type="GPANode*"/>
-      <field cname="settings" type="GPANode*"/>
-      <field cname="settingslist" type="GSList*"/>
-      <field cname="handler" type="guint"/>
+      <field name="Menu" cname="menu" type="GtkWidget*"/>
+      <field name="Printer" cname="printer" type="GPANode*"/>
+      <field name="Settings" cname="settings" type="GPANode*"/>
+      <field name="Settingslist" cname="settingslist" type="GSList*"/>
+      <field name="Handler" cname="handler" type="guint"/>
       <method name="GetType" cname="gpa_settings_selector_get_type" shared="true">
         <return-type type="GType"/>
       </method>
     </object>
     <object name="GPASpinbutton" cname="GPASpinbutton" parent="GPAWidget">
-      <field cname="spinbutton" type="GtkWidget*"/>
-      <field cname="path" type="gchar*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="loading" type="gboolean"/>
-      <field cname="saving" type="gboolean"/>
-      <field cname="updating" type="gboolean"/>
-      <field cname="lower" type="gdouble"/>
-      <field cname="upper" type="gdouble"/>
-      <field cname="step_increment" type="gdouble"/>
-      <field cname="page_increment" type="gdouble"/>
-      <field cname="page_size" type="gdouble"/>
-      <field cname="climb_rate" type="gdouble"/>
-      <field cname="digits" type="guint"/>
-      <field cname="value" type="gdouble"/>
-      <field cname="unit" type="gchar*"/>
-      <field cname="factor" type="gdouble"/>
+      <field name="Spinbutton" cname="spinbutton" type="GtkWidget*"/>
+      <field name="Path" cname="path" type="gchar*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="Loading" cname="loading" type="gboolean"/>
+      <field name="Saving" cname="saving" type="gboolean"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
+      <field name="Lower" cname="lower" type="gdouble"/>
+      <field name="Upper" cname="upper" type="gdouble"/>
+      <field name="StepIncrement" cname="step_increment" type="gdouble"/>
+      <field name="PageIncrement" cname="page_increment" type="gdouble"/>
+      <field name="PageSize" cname="page_size" type="gdouble"/>
+      <field name="ClimbRate" cname="climb_rate" type="gdouble"/>
+      <field name="Digits" cname="digits" type="guint"/>
+      <field name="Value" cname="value" type="gdouble"/>
+      <field name="Unit" cname="unit" type="gchar*"/>
+      <field name="Factor" cname="factor" type="gdouble"/>
       <method name="GetType" cname="gpa_spinbutton_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -7711,18 +7711,18 @@
       </method>
     </object>
     <object name="GPATransportSelector" cname="GPATransportSelector" parent="GPAWidget">
-      <field cname="menu" type="GtkWidget*"/>
-      <field cname="node" type="GPANode*"/>
-      <field cname="config" type="GPANode*"/>
-      <field cname="handler" type="gulong"/>
-      <field cname="handler_config" type="gulong"/>
-      <field cname="file_button" type="GtkWidget*"/>
-      <field cname="file_name" type="gchar*"/>
-      <field cname="file_name_force" type="gboolean"/>
-      <field cname="file_name_label" type="GtkWidget*"/>
-      <field cname="file_selector" type="GtkFileChooser*"/>
-      <field cname="custom_entry" type="GtkWidget*"/>
-      <field cname="updating" type="gboolean"/>
+      <field name="Menu" cname="menu" type="GtkWidget*"/>
+      <field name="Node" cname="node" type="GPANode*"/>
+      <field name="Config" cname="config" type="GPANode*"/>
+      <field name="Handler" cname="handler" type="gulong"/>
+      <field name="HandlerConfig" cname="handler_config" type="gulong"/>
+      <field name="FileButton" cname="file_button" type="GtkWidget*"/>
+      <field name="FileName" cname="file_name" type="gchar*"/>
+      <field name="FileNameForce" cname="file_name_force" type="gboolean"/>
+      <field name="FileNameLabel" cname="file_name_label" type="GtkWidget*"/>
+      <field name="FileSelector" cname="file_selector" type="GtkFileChooser*"/>
+      <field name="CustomEntry" cname="custom_entry" type="GtkWidget*"/>
+      <field name="Updating" cname="updating" type="gboolean"/>
       <virtual_method name="CheckConsistency" cname="check_consistency">
         <return-type type="gboolean"/>
         <parameters>
@@ -7737,7 +7737,7 @@
       </method>
     </object>
     <object name="GPAWidget" cname="GPAWidget" parent="GtkBin">
-      <field cname="config" type="GnomePrintConfig*"/>
+      <field name="Config" cname="config" type="GnomePrintConfig*"/>
       <virtual_method name="Construct" cname="construct">
         <return-type type="gint"/>
         <parameters>
@@ -7761,9 +7761,9 @@
       </constructor>
     </object>
     <struct name="GPAApplicationOption" cname="GPAApplicationOption">
-      <field cname="id" type="const-gchar*"/>
-      <field cname="description" type="const-gchar*"/>
-      <field cname="index" type="gint"/>
+      <field name="Id" cname="id" type="const-gchar*"/>
+      <field name="Description" cname="description" type="const-gchar*"/>
+      <field name="Index" cname="index" type="gint"/>
     </struct>
     <struct name="CanvasHacktextPriv" cname="GnomeCanvasHacktextPriv" opaque="true"/>
     <class name="Print" cname="GnomePrint_">

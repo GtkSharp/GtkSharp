@@ -1,3 +1,27 @@
+2004-12-16  Dan Winship  <danw@novell.com>
+
+	* parser/gapi_pp.pl: Don't strip out /*< public >*/ and
+	/*< private >*/ comments.
+
+	* parser/gapi2xml.pl: Use those comments to determine the
+	accessibility of struct/object fields, and set the "access"
+	attribute on fields with non-default accessibiliy (private for
+	structs, public for objects). Also, output a StudlyName for each
+	field as well as a c_name.
+
+	* */*-api.raw: Regen
+
+	* generator/Field.cs (StudlyName): Use the parser-generated studly
+	name rather than studlifying Name, which might have been mangled
+	to avoid conflicts with an all-lowercase keyword.
+	(Generate): Respect the access property on all field types rather
+	than always making certain types public. Don't bother outputting
+	wrapper properties for private fields, since the only code that
+	could use them is the generated code, which won't.
+
+	See doc/ChangeLog for the (very minimal) fallout from these
+	changes.
+
 2004-12-16  Mike Kestner  <mkestner@novell.com>
 
 	* sample/NodeViewDemo.cs : rework of TreeViewDemo to use NodeStore.

@@ -129,15 +129,7 @@ namespace GtkSharp.Generation {
 
 		public string StudlyName {
 			get {
-				string name = Name;
-				string[] segs = name.Split('_');
-				string studly = "";
-				foreach (string s in segs) {
-					if (s.Trim () == "")
-						continue;
-					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
-				}
-				return studly;
+				return elem.GetAttribute ("name");
 			}
 		}
 
@@ -160,7 +152,7 @@ namespace GtkSharp.Generation {
 			string wrapped = table.GetCSType (CType);
 			string wrapped_name = SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
 			if (IsArray) {
-				sw.WriteLine ("\t\tpublic {0} {1};", CSType, StudlyName);
+				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (IsPadding) {
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 			} else if (IsBit) {
@@ -169,34 +161,29 @@ namespace GtkSharp.Generation {
 			} else if (table.IsCallback (CType)) {
 				// FIXME
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
-			} else if (table.IsObject (CType)) {
+			} else if (table.IsObject (CType) || table.IsOpaque (CType)) {
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
-				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(CType, Name) + ";");
-				sw.WriteLine ("\t\t\t\treturn ret;");
-				sw.WriteLine ("\t\t\t}");
-				sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
-				sw.WriteLine ("\t\t}");
-			} else if (table.IsOpaque (CType)) {
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
-				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(CType, Name) + ";");
-				sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + Name + ");");
-				sw.WriteLine ("\t\t\t\treturn ret;");
-				sw.WriteLine ("\t\t\t}");
 
-				sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
-				sw.WriteLine ("\t\t}");
+				if (Access != "private") {
+					sw.WriteLine ("\t\t" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine ("\t\t\tget { ");
+					sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(CType, Name) + ";");
+					if (table.IsOpaque (CType))
+						sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + Name + ");");
+					sw.WriteLine ("\t\t\t\treturn ret;");
+					sw.WriteLine ("\t\t\t}");
+
+					sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
+					sw.WriteLine ("\t\t}");
+				}
 			} else if (IsPointer && (table.IsStruct (CType) || table.IsBoxed (CType))) {
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
-				sw.WriteLine ("\t\t}");
+				if (Access != "private") {
+					sw.WriteLine ("\t\t" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
+					sw.WriteLine ("\t\t}");
+				}
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);

@@ -498,10 +498,10 @@
       </parameters>
     </callback>
     <object name="Colormap" cname="GdkColormap" parent="GObject">
-      <field cname="size" type="gint"/>
-      <field cname="colors" type="GdkColor*"/>
-      <field cname="visual" type="GdkVisual*"/>
-      <field cname="windowing_data" type="gpointer"/>
+      <field name="Size" cname="size" type="gint" access="public"/>
+      <field name="Colors" cname="colors" type="GdkColor*" access="public"/>
+      <field name="Visual" cname="visual" type="GdkVisual*"/>
+      <field name="WindowingData" cname="windowing_data" type="gpointer"/>
       <method name="AllocColor" cname="gdk_colormap_alloc_color">
         <return-type type="gboolean"/>
         <parameters>
@@ -569,14 +569,14 @@
       </method>
     </object>
     <object name="Device" cname="GdkDevice" parent="GObject">
-      <field cname="name" type="gchar*"/>
-      <field cname="source" type="GdkInputSource"/>
-      <field cname="mode" type="GdkInputMode"/>
-      <field cname="has_cursor" type="gboolean"/>
-      <field cname="num_axes" type="gint"/>
-      <field cname="axes" type="GdkDeviceAxis*"/>
-      <field cname="num_keys" type="gint"/>
-      <field cname="keys" type="GdkDeviceKey*"/>
+      <field name="Name" cname="name" type="gchar*"/>
+      <field name="Source" cname="source" type="GdkInputSource"/>
+      <field name="Mode" cname="mode" type="GdkInputMode"/>
+      <field name="HasCursor" cname="has_cursor" type="gboolean"/>
+      <field name="NumAxes" cname="num_axes" type="gint"/>
+      <field name="Axes" cname="axes" type="GdkDeviceAxis*"/>
+      <field name="NumKeys" cname="num_keys" type="gint"/>
+      <field name="Keys" cname="keys" type="GdkDeviceKey*"/>
       <method name="FreeHistory" cname="gdk_device_free_history" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -645,18 +645,18 @@
       </method>
     </object>
     <object name="Display" cname="GdkDisplay" parent="GObject">
-      <field cname="queued_events" type="GList*"/>
-      <field cname="queued_tail" type="GList*"/>
-      <field cname="button_click_time" array_len="2" type="guint32"/>
-      <field cname="button_window" array_len="2" type="GdkWindow*"/>
-      <field cname="button_number" array_len="2" type="gint"/>
-      <field cname="double_click_time" type="guint"/>
-      <field cname="core_pointer" type="GdkDevice*"/>
-      <field cname="pointer_hooks" type="const-GdkDisplayPointerHooks*"/>
-      <field cname="closed" bits="1" type="guint"/>
-      <field cname="double_click_distance" type="guint"/>
-      <field cname="button_x" array_len="2" type="gint"/>
-      <field cname="button_y" array_len="2" type="gint"/>
+      <field name="QueuedEvents" cname="queued_events" type="GList*"/>
+      <field name="QueuedTail" cname="queued_tail" type="GList*"/>
+      <field name="ButtonClickTime" cname="button_click_time" array_len="2" type="guint32"/>
+      <field name="ButtonWindow" cname="button_window" array_len="2" type="GdkWindow*"/>
+      <field name="ButtonNumber" cname="button_number" array_len="2" type="gint"/>
+      <field name="DoubleClickTime" cname="double_click_time" type="guint"/>
+      <field name="CorePointer" cname="core_pointer" type="GdkDevice*"/>
+      <field name="PointerHooks" cname="pointer_hooks" type="const-GdkDisplayPointerHooks*"/>
+      <field name="Closed" cname="closed" bits="1" type="guint"/>
+      <field name="DoubleClickDistance" cname="double_click_distance" type="guint"/>
+      <field name="ButtonX" cname="button_x" array_len="2" type="gint"/>
+      <field name="ButtonY" cname="button_y" array_len="2" type="gint"/>
       <signal name="Closed" cname="closed" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -855,16 +855,16 @@
       </method>
     </object>
     <object name="DragContext" cname="GdkDragContext" parent="GObject">
-      <field cname="protocol" type="GdkDragProtocol"/>
-      <field cname="is_source" type="gboolean"/>
-      <field cname="source_window" type="GdkWindow*"/>
-      <field cname="dest_window" type="GdkWindow*"/>
-      <field cname="targets" type="GList*"/>
-      <field cname="actions" type="GdkDragAction"/>
-      <field cname="suggested_action" type="GdkDragAction"/>
-      <field cname="action" type="GdkDragAction"/>
-      <field cname="start_time" type="guint32"/>
-      <field cname="windowing_data" type="gpointer"/>
+      <field name="Protocol" cname="protocol" type="GdkDragProtocol" access="public"/>
+      <field name="IsSource" cname="is_source" type="gboolean" access="public"/>
+      <field name="SourceWindow" cname="source_window" type="GdkWindow*" access="public"/>
+      <field name="DestWindow" cname="dest_window" type="GdkWindow*" access="public"/>
+      <field name="Targets" cname="targets" type="GList*" access="public"/>
+      <field name="Actions" cname="actions" type="GdkDragAction" access="public"/>
+      <field name="SuggestedAction" cname="suggested_action" type="GdkDragAction" access="public"/>
+      <field name="Action" cname="action" type="GdkDragAction" access="public"/>
+      <field name="StartTime" cname="start_time" type="guint32" access="public"/>
+      <field name="WindowingData" cname="windowing_data" type="gpointer"/>
       <method name="GetType" cname="gdk_drag_context_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -1476,11 +1476,11 @@
       </method>
     </object>
     <object name="GC" cname="GdkGC" parent="GObject">
-      <field cname="clip_x_origin" type="gint"/>
-      <field cname="clip_y_origin" type="gint"/>
-      <field cname="ts_x_origin" type="gint"/>
-      <field cname="ts_y_origin" type="gint"/>
-      <field cname="colormap" type="GdkColormap*"/>
+      <field name="ClipXOrigin" cname="clip_x_origin" type="gint"/>
+      <field name="ClipYOrigin" cname="clip_y_origin" type="gint"/>
+      <field name="TsXOrigin" cname="ts_x_origin" type="gint"/>
+      <field name="TsYOrigin" cname="ts_y_origin" type="gint"/>
+      <field name="Colormap" cname="colormap" type="GdkColormap*"/>
       <virtual_method name="GetValues" cname="get_values">
         <return-type type="void"/>
         <parameters>
@@ -1681,18 +1681,18 @@
       </method>
     </object>
     <object name="Image" cname="GdkImage" parent="GObject">
-      <field cname="type" type="GdkImageType"/>
-      <field cname="visual" type="GdkVisual*"/>
-      <field cname="byte_order" type="GdkByteOrder"/>
-      <field cname="width" type="gint"/>
-      <field cname="height" type="gint"/>
-      <field cname="depth" type="guint16"/>
-      <field cname="bpp" type="guint16"/>
-      <field cname="bpl" type="guint16"/>
-      <field cname="bits_per_pixel" type="guint16"/>
-      <field cname="mem" type="gpointer"/>
-      <field cname="colormap" type="GdkColormap*"/>
-      <field cname="windowing_data" type="gpointer"/>
+      <field name="Type" cname="type" type="GdkImageType" access="public"/>
+      <field name="Visual" cname="visual" type="GdkVisual*" access="public"/>
+      <field name="ByteOrder" cname="byte_order" type="GdkByteOrder" access="public"/>
+      <field name="Width" cname="width" type="gint" access="public"/>
+      <field name="Height" cname="height" type="gint" access="public"/>
+      <field name="Depth" cname="depth" type="guint16" access="public"/>
+      <field name="Bpp" cname="bpp" type="guint16" access="public"/>
+      <field name="Bpl" cname="bpl" type="guint16" access="public"/>
+      <field name="BitsPerPixel" cname="bits_per_pixel" type="guint16" access="public"/>
+      <field name="Mem" cname="mem" type="gpointer" access="public"/>
+      <field name="Colormap" cname="colormap" type="GdkColormap*" access="public"/>
+      <field name="WindowingData" cname="windowing_data" type="gpointer" access="public"/>
       <method name="Get" cname="gdk_image_get" deprecated="1" shared="true">
         <return-type type="GdkImage*"/>
         <parameters>
@@ -1746,7 +1746,7 @@
       </method>
     </object>
     <object name="Keymap" cname="GdkKeymap" parent="GObject">
-      <field cname="display" type="GdkDisplay*"/>
+      <field name="Display" cname="display" type="GdkDisplay*"/>
       <signal name="DirectionChanged" cname="direction_changed" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -1900,9 +1900,9 @@
       </constructor>
     </object>
     <object name="Screen" cname="GdkScreen" parent="GObject">
-      <field cname="closed" bits="1" type="guint"/>
-      <field cname="normal_gcs" array_len="32" type="GdkGC*"/>
-      <field cname="exposure_gcs" array_len="32" type="GdkGC*"/>
+      <field name="Closed" cname="closed" bits="1" type="guint"/>
+      <field name="NormalGcs" cname="normal_gcs" array_len="32" type="GdkGC*"/>
+      <field name="ExposureGcs" cname="exposure_gcs" array_len="32" type="GdkGC*"/>
       <signal name="SizeChanged" cname="size_changed" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -2016,20 +2016,20 @@
       </method>
     </object>
     <object name="Visual" cname="GdkVisual" parent="GObject">
-      <field cname="type" type="GdkVisualType"/>
-      <field cname="depth" type="gint"/>
-      <field cname="byte_order" type="GdkByteOrder"/>
-      <field cname="colormap_size" type="gint"/>
-      <field cname="bits_per_rgb" type="gint"/>
-      <field cname="red_mask" type="guint32"/>
-      <field cname="red_shift" type="gint"/>
-      <field cname="red_prec" type="gint"/>
-      <field cname="green_mask" type="guint32"/>
-      <field cname="green_shift" type="gint"/>
-      <field cname="green_prec" type="gint"/>
-      <field cname="blue_mask" type="guint32"/>
-      <field cname="blue_shift" type="gint"/>
-      <field cname="blue_prec" type="gint"/>
+      <field name="Type" cname="type" type="GdkVisualType"/>
+      <field name="Depth" cname="depth" type="gint"/>
+      <field name="ByteOrder" cname="byte_order" type="GdkByteOrder"/>
+      <field name="ColormapSize" cname="colormap_size" type="gint"/>
+      <field name="BitsPerRgb" cname="bits_per_rgb" type="gint"/>
+      <field name="RedMask" cname="red_mask" type="guint32"/>
+      <field name="RedShift" cname="red_shift" type="gint"/>
+      <field name="RedPrec" cname="red_prec" type="gint"/>
+      <field name="GreenMask" cname="green_mask" type="guint32"/>
+      <field name="GreenShift" cname="green_shift" type="gint"/>
+      <field name="GreenPrec" cname="green_prec" type="gint"/>
+      <field name="BlueMask" cname="blue_mask" type="guint32"/>
+      <field name="BlueShift" cname="blue_shift" type="gint"/>
+      <field name="BluePrec" cname="blue_prec" type="gint"/>
       <method name="GetBest" cname="gdk_visual_get_best" shared="true">
         <return-type type="GdkVisual*"/>
       </method>
@@ -2622,21 +2622,21 @@
       </method>
     </object>
     <struct name="BRESINFO" cname="BRESINFO">
-      <field cname="minor_axis" type="int"/>
-      <field cname="d" type="int"/>
-      <field cname="m" type="int"/>
-      <field cname="m1" type="int"/>
-      <field cname="incr1" type="int"/>
-      <field cname="incr2" type="int"/>
+      <field name="MinorAxis" cname="minor_axis" type="int"/>
+      <field name="D" cname="d" type="int"/>
+      <field name="M" cname="m" type="int"/>
+      <field name="M1" cname="m1" type="int"/>
+      <field name="Incr1" cname="incr1" type="int"/>
+      <field name="Incr2" cname="incr2" type="int"/>
     </struct>
     <struct name="EdgeTable" cname="EdgeTable">
-      <field cname="ymax" type="int"/>
-      <field cname="ymin" type="int"/>
-      <field cname="scanlines" type="ScanLineList"/>
+      <field name="Ymax" cname="ymax" type="int"/>
+      <field name="Ymin" cname="ymin" type="int"/>
+      <field name="Scanlines" cname="scanlines" type="ScanLineList"/>
     </struct>
     <struct name="EdgeTableEntry" cname="EdgeTableEntry" opaque="true"/>
     <object name="Bitmap" cname="GdkBitmap">
-      <field cname="parent_instance" type="GObject"/>
+      <field name="ParentInstance" cname="parent_instance" type="GObject"/>
       <method name="CreateFromData" cname="gdk_bitmap_create_from_data" shared="true">
         <return-type type="GdkBitmap*"/>
         <parameters>
@@ -2648,10 +2648,10 @@
       </method>
     </object>
     <boxed name="Color" cname="GdkColor">
-      <field cname="pixel" type="guint32"/>
-      <field cname="red" type="guint16"/>
-      <field cname="green" type="guint16"/>
-      <field cname="blue" type="guint16"/>
+      <field name="Pixel" cname="pixel" type="guint32"/>
+      <field name="Red" cname="red" type="guint16"/>
+      <field name="Green" cname="green" type="guint16"/>
+      <field name="Blue" cname="blue" type="guint16"/>
       <method name="Alloc" cname="gdk_color_alloc" deprecated="1" shared="true">
         <return-type type="gint"/>
         <parameters>
@@ -2707,8 +2707,8 @@
       </method>
     </boxed>
     <boxed name="Cursor" cname="GdkCursor">
-      <field cname="type" type="GdkCursorType"/>
-      <field cname="ref_count" type="guint"/>
+      <field name="Type" cname="type" type="GdkCursorType"/>
+      <field name="RefCount" cname="ref_count" type="guint"/>
       <method name="GetDisplay" cname="gdk_cursor_get_display">
         <return-type type="GdkDisplay*"/>
       </method>
@@ -2752,13 +2752,13 @@
       </method>
     </boxed>
     <struct name="DeviceAxis" cname="GdkDeviceAxis">
-      <field cname="use" type="GdkAxisUse"/>
-      <field cname="min" type="gdouble"/>
-      <field cname="max" type="gdouble"/>
+      <field name="Use" cname="use" type="GdkAxisUse"/>
+      <field name="Min" cname="min" type="gdouble"/>
+      <field name="Max" cname="max" type="gdouble"/>
     </struct>
     <struct name="DeviceKey" cname="GdkDeviceKey">
-      <field cname="keyval" type="guint"/>
-      <field cname="modifiers" type="GdkModifierType"/>
+      <field name="Keyval" cname="keyval" type="guint"/>
+      <field name="Modifiers" cname="modifiers" type="GdkModifierType"/>
     </struct>
     <struct name="DisplayPointerHooks" cname="GdkDisplayPointerHooks">
       <callback cname="get_pointer">
@@ -2781,172 +2781,172 @@
       </callback>
     </struct>
     <struct name="EventAny" cname="GdkEventAny">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
     </struct>
     <struct name="EventButton" cname="GdkEventButton">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="time" type="guint32"/>
-      <field cname="x" type="gdouble"/>
-      <field cname="y" type="gdouble"/>
-      <field cname="axes" type="gdouble*"/>
-      <field cname="state" type="guint"/>
-      <field cname="button" type="guint"/>
-      <field cname="device" type="GdkDevice*"/>
-      <field cname="x_root" type="gdouble"/>
-      <field cname="y_root" type="gdouble"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="X" cname="x" type="gdouble"/>
+      <field name="Y" cname="y" type="gdouble"/>
+      <field name="Axes" cname="axes" type="gdouble*"/>
+      <field name="State" cname="state" type="guint"/>
+      <field name="Button" cname="button" type="guint"/>
+      <field name="Device" cname="device" type="GdkDevice*"/>
+      <field name="XRoot" cname="x_root" type="gdouble"/>
+      <field name="YRoot" cname="y_root" type="gdouble"/>
     </struct>
     <struct name="EventClient" cname="GdkEventClient">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="message_type" type="GdkAtom"/>
-      <field cname="data_format" type="gushort"/>
-      <field cname="b" array_len="20" type="char"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="MessageType" cname="message_type" type="GdkAtom"/>
+      <field name="DataFormat" cname="data_format" type="gushort"/>
+      <field name="B" cname="b" array_len="20" type="char"/>
     </struct>
     <struct name="EventConfigure" cname="GdkEventConfigure">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="width" type="gint"/>
-      <field cname="height" type="gint"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
+      <field name="Width" cname="width" type="gint"/>
+      <field name="Height" cname="height" type="gint"/>
     </struct>
     <struct name="EventCrossing" cname="GdkEventCrossing">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="subwindow" type="GdkWindow*"/>
-      <field cname="time" type="guint32"/>
-      <field cname="x" type="gdouble"/>
-      <field cname="y" type="gdouble"/>
-      <field cname="x_root" type="gdouble"/>
-      <field cname="y_root" type="gdouble"/>
-      <field cname="mode" type="GdkCrossingMode"/>
-      <field cname="detail" type="GdkNotifyType"/>
-      <field cname="focus" type="gboolean"/>
-      <field cname="state" type="guint"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Subwindow" cname="subwindow" type="GdkWindow*"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="X" cname="x" type="gdouble"/>
+      <field name="Y" cname="y" type="gdouble"/>
+      <field name="XRoot" cname="x_root" type="gdouble"/>
+      <field name="YRoot" cname="y_root" type="gdouble"/>
+      <field name="Mode" cname="mode" type="GdkCrossingMode"/>
+      <field name="Detail" cname="detail" type="GdkNotifyType"/>
+      <field name="Focus" cname="focus" type="gboolean"/>
+      <field name="State" cname="state" type="guint"/>
     </struct>
     <struct name="EventDND" cname="GdkEventDND">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="context" type="GdkDragContext*"/>
-      <field cname="time" type="guint32"/>
-      <field cname="x_root" type="gshort"/>
-      <field cname="y_root" type="gshort"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Context" cname="context" type="GdkDragContext*"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="XRoot" cname="x_root" type="gshort"/>
+      <field name="YRoot" cname="y_root" type="gshort"/>
     </struct>
     <struct name="EventExpose" cname="GdkEventExpose">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="area" type="GdkRectangle"/>
-      <field cname="region" type="GdkRegion*"/>
-      <field cname="count" type="gint"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Area" cname="area" type="GdkRectangle"/>
+      <field name="Region" cname="region" type="GdkRegion*"/>
+      <field name="Count" cname="count" type="gint"/>
     </struct>
     <struct name="EventFocus" cname="GdkEventFocus">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="in" type="gint16"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="In" cname="in" type="gint16"/>
     </struct>
     <struct name="EventKey" cname="GdkEventKey">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="time" type="guint32"/>
-      <field cname="state" type="guint"/>
-      <field cname="keyval" type="guint"/>
-      <field cname="length" type="gint"/>
-      <field cname="string" type="gchar*"/>
-      <field cname="hardware_keycode" type="guint16"/>
-      <field cname="group" type="guint8"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="State" cname="state" type="guint"/>
+      <field name="Keyval" cname="keyval" type="guint"/>
+      <field name="Length" cname="length" type="gint"/>
+      <field name="String" cname="string" type="gchar*"/>
+      <field name="HardwareKeycode" cname="hardware_keycode" type="guint16"/>
+      <field name="Group" cname="group" type="guint8"/>
     </struct>
     <struct name="EventMotion" cname="GdkEventMotion">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="time" type="guint32"/>
-      <field cname="x" type="gdouble"/>
-      <field cname="y" type="gdouble"/>
-      <field cname="axes" type="gdouble*"/>
-      <field cname="state" type="guint"/>
-      <field cname="is_hint" type="gint16"/>
-      <field cname="device" type="GdkDevice*"/>
-      <field cname="x_root" type="gdouble"/>
-      <field cname="y_root" type="gdouble"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="X" cname="x" type="gdouble"/>
+      <field name="Y" cname="y" type="gdouble"/>
+      <field name="Axes" cname="axes" type="gdouble*"/>
+      <field name="State" cname="state" type="guint"/>
+      <field name="IsHint" cname="is_hint" type="gint16"/>
+      <field name="Device" cname="device" type="GdkDevice*"/>
+      <field name="XRoot" cname="x_root" type="gdouble"/>
+      <field name="YRoot" cname="y_root" type="gdouble"/>
     </struct>
     <struct name="EventNoExpose" cname="GdkEventNoExpose">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
     </struct>
     <struct name="EventProperty" cname="GdkEventProperty">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="atom" type="GdkAtom"/>
-      <field cname="time" type="guint32"/>
-      <field cname="state" type="guint"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Atom" cname="atom" type="GdkAtom"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="State" cname="state" type="guint"/>
     </struct>
     <struct name="EventProximity" cname="GdkEventProximity">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="time" type="guint32"/>
-      <field cname="device" type="GdkDevice*"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="Device" cname="device" type="GdkDevice*"/>
     </struct>
     <struct name="EventScroll" cname="GdkEventScroll">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="time" type="guint32"/>
-      <field cname="x" type="gdouble"/>
-      <field cname="y" type="gdouble"/>
-      <field cname="state" type="guint"/>
-      <field cname="direction" type="GdkScrollDirection"/>
-      <field cname="device" type="GdkDevice*"/>
-      <field cname="x_root" type="gdouble"/>
-      <field cname="y_root" type="gdouble"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="X" cname="x" type="gdouble"/>
+      <field name="Y" cname="y" type="gdouble"/>
+      <field name="State" cname="state" type="guint"/>
+      <field name="Direction" cname="direction" type="GdkScrollDirection"/>
+      <field name="Device" cname="device" type="GdkDevice*"/>
+      <field name="XRoot" cname="x_root" type="gdouble"/>
+      <field name="YRoot" cname="y_root" type="gdouble"/>
     </struct>
     <struct name="EventSelection" cname="GdkEventSelection">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="selection" type="GdkAtom"/>
-      <field cname="target" type="GdkAtom"/>
-      <field cname="property" type="GdkAtom"/>
-      <field cname="time" type="guint32"/>
-      <field cname="requestor" type="GdkNativeWindow"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Selection" cname="selection" type="GdkAtom"/>
+      <field name="Target" cname="target" type="GdkAtom"/>
+      <field name="Property" cname="property" type="GdkAtom"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="Requestor" cname="requestor" type="GdkNativeWindow"/>
     </struct>
     <struct name="EventSetting" cname="GdkEventSetting">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="action" type="GdkSettingAction"/>
-      <field cname="name" type="char*"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="Action" cname="action" type="GdkSettingAction"/>
+      <field name="Name" cname="name" type="char*"/>
     </struct>
     <struct name="EventVisibility" cname="GdkEventVisibility">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="state" type="GdkVisibilityState"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="State" cname="state" type="GdkVisibilityState"/>
     </struct>
     <struct name="EventWindowState" cname="GdkEventWindowState">
-      <field cname="type" type="GdkEventType"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="send_event" type="gint8"/>
-      <field cname="changed_mask" type="GdkWindowState"/>
-      <field cname="new_window_state" type="GdkWindowState"/>
+      <field name="Type" cname="type" type="GdkEventType"/>
+      <field name="Window" cname="window" type="GdkWindow*"/>
+      <field name="SendEvent" cname="send_event" type="gint8"/>
+      <field name="ChangedMask" cname="changed_mask" type="GdkWindowState"/>
+      <field name="NewWindowState" cname="new_window_state" type="GdkWindowState"/>
     </struct>
     <boxed name="Font" cname="GdkFont" deprecated="1">
-      <field cname="type" type="GdkFontType"/>
-      <field cname="ascent" type="gint"/>
-      <field cname="descent" type="gint"/>
+      <field name="Type" cname="type" type="GdkFontType"/>
+      <field name="Ascent" cname="ascent" type="gint"/>
+      <field name="Descent" cname="descent" type="gint"/>
       <method name="Equal" cname="gdk_font_equal" deprecated="1">
         <return-type type="gboolean"/>
         <parameters>
@@ -2996,47 +2996,47 @@
       </method>
     </boxed>
     <struct name="GCValues" cname="GdkGCValues">
-      <field cname="foreground" type="GdkColor"/>
-      <field cname="background" type="GdkColor"/>
-      <field cname="font" type="GdkFont*"/>
-      <field cname="function" type="GdkFunction"/>
-      <field cname="fill" type="GdkFill"/>
-      <field cname="tile" type="GdkPixmap*"/>
-      <field cname="stipple" type="GdkPixmap*"/>
-      <field cname="clip_mask" type="GdkPixmap*"/>
-      <field cname="subwindow_mode" type="GdkSubwindowMode"/>
-      <field cname="ts_x_origin" type="gint"/>
-      <field cname="ts_y_origin" type="gint"/>
-      <field cname="clip_x_origin" type="gint"/>
-      <field cname="clip_y_origin" type="gint"/>
-      <field cname="graphics_exposures" type="gint"/>
-      <field cname="line_width" type="gint"/>
-      <field cname="line_style" type="GdkLineStyle"/>
-      <field cname="cap_style" type="GdkCapStyle"/>
-      <field cname="join_style" type="GdkJoinStyle"/>
+      <field name="Foreground" cname="foreground" type="GdkColor"/>
+      <field name="Background" cname="background" type="GdkColor"/>
+      <field name="Font" cname="font" type="GdkFont*"/>
+      <field name="Function" cname="function" type="GdkFunction"/>
+      <field name="Fill" cname="fill" type="GdkFill"/>
+      <field name="Tile" cname="tile" type="GdkPixmap*"/>
+      <field name="Stipple" cname="stipple" type="GdkPixmap*"/>
+      <field name="ClipMask" cname="clip_mask" type="GdkPixmap*"/>
+      <field name="SubwindowMode" cname="subwindow_mode" type="GdkSubwindowMode"/>
+      <field name="TsXOrigin" cname="ts_x_origin" type="gint"/>
+      <field name="TsYOrigin" cname="ts_y_origin" type="gint"/>
+      <field name="ClipXOrigin" cname="clip_x_origin" type="gint"/>
+      <field name="ClipYOrigin" cname="clip_y_origin" type="gint"/>
+      <field name="GraphicsExposures" cname="graphics_exposures" type="gint"/>
+      <field name="LineWidth" cname="line_width" type="gint"/>
+      <field name="LineStyle" cname="line_style" type="GdkLineStyle"/>
+      <field name="CapStyle" cname="cap_style" type="GdkCapStyle"/>
+      <field name="JoinStyle" cname="join_style" type="GdkJoinStyle"/>
     </struct>
     <struct name="Geometry" cname="GdkGeometry">
-      <field cname="min_width" type="gint"/>
-      <field cname="min_height" type="gint"/>
-      <field cname="max_width" type="gint"/>
-      <field cname="max_height" type="gint"/>
-      <field cname="base_width" type="gint"/>
-      <field cname="base_height" type="gint"/>
-      <field cname="width_inc" type="gint"/>
-      <field cname="height_inc" type="gint"/>
-      <field cname="min_aspect" type="gdouble"/>
-      <field cname="max_aspect" type="gdouble"/>
-      <field cname="win_gravity" type="GdkGravity"/>
+      <field name="MinWidth" cname="min_width" type="gint"/>
+      <field name="MinHeight" cname="min_height" type="gint"/>
+      <field name="MaxWidth" cname="max_width" type="gint"/>
+      <field name="MaxHeight" cname="max_height" type="gint"/>
+      <field name="BaseWidth" cname="base_width" type="gint"/>
+      <field name="BaseHeight" cname="base_height" type="gint"/>
+      <field name="WidthInc" cname="width_inc" type="gint"/>
+      <field name="HeightInc" cname="height_inc" type="gint"/>
+      <field name="MinAspect" cname="min_aspect" type="gdouble"/>
+      <field name="MaxAspect" cname="max_aspect" type="gdouble"/>
+      <field name="WinGravity" cname="win_gravity" type="GdkGravity"/>
     </struct>
     <struct name="KeymapKey" cname="GdkKeymapKey">
-      <field cname="keycode" type="guint"/>
-      <field cname="group" type="gint"/>
-      <field cname="level" type="gint"/>
+      <field name="Keycode" cname="keycode" type="guint"/>
+      <field name="Group" cname="group" type="gint"/>
+      <field name="Level" cname="level" type="gint"/>
     </struct>
     <alias name="NativeWindow" cname="GdkNativeWindow" type="guint32"/>
     <struct name="PangoAttrEmbossed" cname="GdkPangoAttrEmbossed">
-      <field cname="attr" type="PangoAttribute"/>
-      <field cname="embossed" type="gboolean"/>
+      <field name="Attr" cname="attr" type="PangoAttribute"/>
+      <field name="Embossed" cname="embossed" type="gboolean"/>
       <constructor cname="gdk_pango_attr_embossed_new">
         <parameters>
           <parameter type="gboolean" name="embossed"/>
@@ -3044,8 +3044,8 @@
       </constructor>
     </struct>
     <struct name="PangoAttrStipple" cname="GdkPangoAttrStipple">
-      <field cname="attr" type="PangoAttribute"/>
-      <field cname="stipple" type="GdkBitmap*"/>
+      <field name="Attr" cname="attr" type="PangoAttribute"/>
+      <field name="Stipple" cname="stipple" type="GdkBitmap*"/>
       <constructor cname="gdk_pango_attr_stipple_new">
         <parameters>
           <parameter type="GdkBitmap*" name="stipple"/>
@@ -3053,13 +3053,13 @@
       </constructor>
     </struct>
     <struct name="PixmapObject" cname="GdkPixmapObject">
-      <field cname="parent_instance" type="GdkDrawable"/>
-      <field cname="impl" type="GdkDrawable*"/>
-      <field cname="depth" type="gint"/>
+      <field name="ParentInstance" cname="parent_instance" type="GdkDrawable"/>
+      <field name="Impl" cname="impl" type="GdkDrawable*"/>
+      <field name="Depth" cname="depth" type="gint"/>
     </struct>
     <struct name="Point" cname="GdkPoint">
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
     </struct>
     <struct name="PointerHooks" cname="GdkPointerHooks">
       <callback cname="get_pointer">
@@ -3076,10 +3076,10 @@
       </callback>
     </struct>
     <boxed name="Rectangle" cname="GdkRectangle">
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="width" type="gint"/>
-      <field cname="height" type="gint"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
+      <field name="Width" cname="width" type="gint"/>
+      <field name="Height" cname="height" type="gint"/>
       <method name="GetType" cname="gdk_rectangle_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -3099,10 +3099,10 @@
       </method>
     </boxed>
     <struct name="Region" cname="GdkRegion">
-      <field cname="size" type="long"/>
-      <field cname="numRects" type="long"/>
-      <field cname="rects" type="GdkRegionBox*"/>
-      <field cname="extents" type="GdkRegionBox"/>
+      <field name="Size" cname="size" type="long"/>
+      <field name="NumRects" cname="numRects" type="long"/>
+      <field name="Rects" cname="rects" type="GdkRegionBox*"/>
+      <field name="Extents" cname="extents" type="GdkRegionBox"/>
       <method name="Copy" cname="gdk_region_copy">
         <return-type type="GdkRegion*"/>
       </method>
@@ -3215,15 +3215,15 @@
       </method>
     </struct>
     <struct name="RegionBox" cname="GdkRegionBox">
-      <field cname="x1" type="gint"/>
-      <field cname="y1" type="gint"/>
-      <field cname="x2" type="gint"/>
-      <field cname="y2" type="gint"/>
+      <field name="X1" cname="x1" type="gint"/>
+      <field name="Y1" cname="y1" type="gint"/>
+      <field name="X2" cname="x2" type="gint"/>
+      <field name="Y2" cname="y2" type="gint"/>
     </struct>
     <struct name="RgbCmap" cname="GdkRgbCmap">
-      <field cname="colors" array_len="256" type="guint32"/>
-      <field cname="n_colors" type="gint"/>
-      <field cname="info_list" type="GSList*"/>
+      <field name="Colors" cname="colors" array_len="256" type="guint32"/>
+      <field name="NColors" cname="n_colors" type="gint"/>
+      <field name="InfoList" cname="info_list" type="GSList*" access="private"/>
       <method name="Free" cname="gdk_rgb_cmap_free">
         <return-type type="void"/>
       </method>
@@ -3235,65 +3235,65 @@
       </constructor>
     </struct>
     <struct name="Segment" cname="GdkSegment">
-      <field cname="x1" type="gint"/>
-      <field cname="y1" type="gint"/>
-      <field cname="x2" type="gint"/>
-      <field cname="y2" type="gint"/>
+      <field name="X1" cname="x1" type="gint"/>
+      <field name="Y1" cname="y1" type="gint"/>
+      <field name="X2" cname="x2" type="gint"/>
+      <field name="Y2" cname="y2" type="gint"/>
     </struct>
     <alias name="Selection" cname="GdkSelection" type="GdkAtom"/>
     <alias name="SelectionType" cname="GdkSelectionType" type="GdkAtom"/>
     <struct name="Span" cname="GdkSpan">
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="width" type="gint"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
+      <field name="Width" cname="width" type="gint"/>
     </struct>
     <alias name="Target" cname="GdkTarget" type="GdkAtom"/>
     <struct name="TimeCoord" cname="GdkTimeCoord">
-      <field cname="time" type="guint32"/>
-      <field cname="axes" array_len="GDK_MAX_TIMECOORD_AXES" type="gdouble"/>
+      <field name="Time" cname="time" type="guint32"/>
+      <field name="Axes" cname="axes" array_len="GDK_MAX_TIMECOORD_AXES" type="gdouble"/>
     </struct>
     <alias name="WChar" cname="GdkWChar" type="guint32"/>
     <struct name="WindowAttr" cname="GdkWindowAttr">
-      <field cname="title" type="gchar*"/>
-      <field cname="event_mask" type="gint"/>
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="width" type="gint"/>
-      <field cname="height" type="gint"/>
-      <field cname="wclass" type="GdkWindowClass"/>
-      <field cname="visual" type="GdkVisual*"/>
-      <field cname="colormap" type="GdkColormap*"/>
-      <field cname="window_type" type="GdkWindowType"/>
-      <field cname="cursor" type="GdkCursor*"/>
-      <field cname="wmclass_name" type="gchar*"/>
-      <field cname="wmclass_class" type="gchar*"/>
-      <field cname="override_redirect" type="gboolean"/>
+      <field name="Title" cname="title" type="gchar*"/>
+      <field name="EventMask" cname="event_mask" type="gint"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
+      <field name="Width" cname="width" type="gint"/>
+      <field name="Height" cname="height" type="gint"/>
+      <field name="Wclass" cname="wclass" type="GdkWindowClass"/>
+      <field name="Visual" cname="visual" type="GdkVisual*"/>
+      <field name="Colormap" cname="colormap" type="GdkColormap*"/>
+      <field name="WindowType" cname="window_type" type="GdkWindowType"/>
+      <field name="Cursor" cname="cursor" type="GdkCursor*"/>
+      <field name="WmclassName" cname="wmclass_name" type="gchar*"/>
+      <field name="WmclassClass" cname="wmclass_class" type="gchar*"/>
+      <field name="OverrideRedirect" cname="override_redirect" type="gboolean"/>
     </struct>
     <struct name="WindowObject" cname="GdkWindowObject">
-      <field cname="parent_instance" type="GdkDrawable"/>
-      <field cname="impl" type="GdkDrawable*"/>
-      <field cname="parent" type="GdkWindowObject*"/>
-      <field cname="user_data" type="gpointer"/>
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="extension_events" type="gint"/>
-      <field cname="filters" type="GList*"/>
-      <field cname="children" type="GList*"/>
-      <field cname="bg_color" type="GdkColor"/>
-      <field cname="bg_pixmap" type="GdkPixmap*"/>
-      <field cname="paint_stack" type="GSList*"/>
-      <field cname="update_area" type="GdkRegion*"/>
-      <field cname="update_freeze_count" type="guint"/>
-      <field cname="window_type" type="guint8"/>
-      <field cname="depth" type="guint8"/>
-      <field cname="resize_count" type="guint8"/>
-      <field cname="state" type="GdkWindowState"/>
-      <field cname="guffaw_gravity" bits="1" type="guint"/>
-      <field cname="input_only" bits="1" type="guint"/>
-      <field cname="modal_hint" bits="1" type="guint"/>
-      <field cname="destroyed" bits="2" type="guint"/>
-      <field cname="accept_focus" bits="1" type="guint"/>
-      <field cname="event_mask" type="GdkEventMask"/>
+      <field name="ParentInstance" cname="parent_instance" type="GdkDrawable"/>
+      <field name="Impl" cname="impl" type="GdkDrawable*"/>
+      <field name="Parent" cname="parent" type="GdkWindowObject*"/>
+      <field name="UserData" cname="user_data" type="gpointer"/>
+      <field name="X" cname="x" type="gint"/>
+      <field name="Y" cname="y" type="gint"/>
+      <field name="ExtensionEvents" cname="extension_events" type="gint"/>
+      <field name="Filters" cname="filters" type="GList*"/>
+      <field name="Children" cname="children" type="GList*"/>
+      <field name="BgColor" cname="bg_color" type="GdkColor"/>
+      <field name="BgPixmap" cname="bg_pixmap" type="GdkPixmap*"/>
+      <field name="PaintStack" cname="paint_stack" type="GSList*"/>
+      <field name="UpdateArea" cname="update_area" type="GdkRegion*"/>
+      <field name="UpdateFreezeCount" cname="update_freeze_count" type="guint"/>
+      <field name="WindowType" cname="window_type" type="guint8"/>
+      <field name="Depth" cname="depth" type="guint8"/>
+      <field name="ResizeCount" cname="resize_count" type="guint8"/>
+      <field name="State" cname="state" type="GdkWindowState"/>
+      <field name="GuffawGravity" cname="guffaw_gravity" bits="1" type="guint"/>
+      <field name="InputOnly" cname="input_only" bits="1" type="guint"/>
+      <field name="ModalHint" cname="modal_hint" bits="1" type="guint"/>
+      <field name="Destroyed" cname="destroyed" bits="2" type="guint"/>
+      <field name="AcceptFocus" cname="accept_focus" bits="1" type="guint"/>
+      <field name="EventMask" cname="event_mask" type="GdkEventMask"/>
       <method name="GetType" cname="gdk_window_object_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -4821,40 +4821,40 @@
       </method>
     </object>
     <object name="PixbufAniAnim" cname="GdkPixbufAniAnim" parent="GdkPixbufAnimation">
-      <field cname="total_time" type="int"/>
-      <field cname="n_frames" type="int"/>
-      <field cname="n_pixbufs" type="int"/>
-      <field cname="pixbufs" type="GdkPixbuf**"/>
-      <field cname="sequence" type="int*"/>
-      <field cname="delay" type="int*"/>
-      <field cname="width" type="int"/>
-      <field cname="height" type="int"/>
+      <field name="TotalTime" cname="total_time" type="int"/>
+      <field name="NFrames" cname="n_frames" type="int"/>
+      <field name="NPixbufs" cname="n_pixbufs" type="int"/>
+      <field name="Pixbufs" cname="pixbufs" type="GdkPixbuf**"/>
+      <field name="Sequence" cname="sequence" type="int*"/>
+      <field name="Delay" cname="delay" type="int*"/>
+      <field name="Width" cname="width" type="int"/>
+      <field name="Height" cname="height" type="int"/>
       <method name="GetType" cname="gdk_pixbuf_ani_anim_get_type" shared="true">
         <return-type type="GType"/>
       </method>
     </object>
     <object name="PixbufAniAnimIter" cname="GdkPixbufAniAnimIter" parent="GdkPixbufAnimationIter">
-      <field cname="ani_anim" type="GdkPixbufAniAnim*"/>
-      <field cname="start_time" type="GTimeVal"/>
-      <field cname="current_time" type="GTimeVal"/>
-      <field cname="position" type="gint"/>
-      <field cname="current_frame" type="gint"/>
-      <field cname="elapsed" type="gint"/>
+      <field name="AniAnim" cname="ani_anim" type="GdkPixbufAniAnim*"/>
+      <field name="StartTime" cname="start_time" type="GTimeVal"/>
+      <field name="CurrentTime" cname="current_time" type="GTimeVal"/>
+      <field name="Position" cname="position" type="gint"/>
+      <field name="CurrentFrame" cname="current_frame" type="gint"/>
+      <field name="Elapsed" cname="elapsed" type="gint"/>
       <method name="GetType" cname="gdk_pixbuf_ani_anim_iter_get_type" shared="true">
         <return-type type="GType"/>
       </method>
     </object>
     <object name="PixbufGifAnim" cname="GdkPixbufGifAnim" parent="GdkPixbufAnimation">
-      <field cname="n_frames" type="int"/>
-      <field cname="total_time" type="int"/>
-      <field cname="frames" type="GList*"/>
-      <field cname="width" type="int"/>
-      <field cname="height" type="int"/>
-      <field cname="bg_red" type="guchar"/>
-      <field cname="bg_green" type="guchar"/>
-      <field cname="bg_blue" type="guchar"/>
-      <field cname="loop" type="int"/>
-      <field cname="loading" type="gboolean"/>
+      <field name="NFrames" cname="n_frames" type="int"/>
+      <field name="TotalTime" cname="total_time" type="int"/>
+      <field name="Frames" cname="frames" type="GList*"/>
+      <field name="Width" cname="width" type="int"/>
+      <field name="Height" cname="height" type="int"/>
+      <field name="BgRed" cname="bg_red" type="guchar"/>
+      <field name="BgGreen" cname="bg_green" type="guchar"/>
+      <field name="BgBlue" cname="bg_blue" type="guchar"/>
+      <field name="Loop" cname="loop" type="int"/>
+      <field name="Loading" cname="loading" type="gboolean"/>
       <method name="FrameComposite" cname="gdk_pixbuf_gif_anim_frame_composite">
         <return-type type="void"/>
         <parameters>
@@ -4866,18 +4866,18 @@
       </method>
     </object>
     <object name="PixbufGifAnimIter" cname="GdkPixbufGifAnimIter" parent="GdkPixbufAnimationIter">
-      <field cname="gif_anim" type="GdkPixbufGifAnim*"/>
-      <field cname="start_time" type="GTimeVal"/>
-      <field cname="current_time" type="GTimeVal"/>
-      <field cname="position" type="gint"/>
-      <field cname="current_frame" type="GList*"/>
-      <field cname="first_loop_slowness" type="gint"/>
+      <field name="GifAnim" cname="gif_anim" type="GdkPixbufGifAnim*"/>
+      <field name="StartTime" cname="start_time" type="GTimeVal"/>
+      <field name="CurrentTime" cname="current_time" type="GTimeVal"/>
+      <field name="Position" cname="position" type="gint"/>
+      <field name="CurrentFrame" cname="current_frame" type="GList*"/>
+      <field name="FirstLoopSlowness" cname="first_loop_slowness" type="gint"/>
       <method name="GetType" cname="gdk_pixbuf_gif_anim_iter_get_type" shared="true">
         <return-type type="GType"/>
       </method>
     </object>
     <object name="PixbufLoader" cname="GdkPixbufLoader" parent="GObject">
-      <field cname="priv" type="gpointer"/>
+      <field name="Priv" cname="priv" type="gpointer"/>
       <signal name="SizePrepared" cname="size_prepared" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -4973,25 +4973,25 @@
       </method>
     </struct>
     <struct name="PixbufFrame" cname="GdkPixbufFrame">
-      <field cname="pixbuf" type="GdkPixbuf*"/>
-      <field cname="x_offset" type="int"/>
-      <field cname="y_offset" type="int"/>
-      <field cname="delay_time" type="int"/>
-      <field cname="elapsed" type="int"/>
-      <field cname="action" type="GdkPixbufFrameAction"/>
-      <field cname="need_recomposite" type="gboolean"/>
-      <field cname="bg_transparent" type="gboolean"/>
-      <field cname="composited" type="GdkPixbuf*"/>
-      <field cname="revert" type="GdkPixbuf*"/>
+      <field name="Pixbuf" cname="pixbuf" type="GdkPixbuf*"/>
+      <field name="XOffset" cname="x_offset" type="int"/>
+      <field name="YOffset" cname="y_offset" type="int"/>
+      <field name="DelayTime" cname="delay_time" type="int"/>
+      <field name="Elapsed" cname="elapsed" type="int"/>
+      <field name="Action" cname="action" type="GdkPixbufFrameAction"/>
+      <field name="NeedRecomposite" cname="need_recomposite" type="gboolean"/>
+      <field name="BgTransparent" cname="bg_transparent" type="gboolean"/>
+      <field name="Composited" cname="composited" type="GdkPixbuf*"/>
+      <field name="Revert" cname="revert" type="GdkPixbuf*"/>
     </struct>
     <struct name="Pixdata" cname="GdkPixdata">
-      <field cname="magic" type="guint32"/>
-      <field cname="length" type="gint32"/>
-      <field cname="pixdata_type" type="guint32"/>
-      <field cname="rowstride" type="guint32"/>
-      <field cname="width" type="guint32"/>
-      <field cname="height" type="guint32"/>
-      <field cname="pixel_data" type="guint8*"/>
+      <field name="Magic" cname="magic" type="guint32"/>
+      <field name="Length" cname="length" type="gint32"/>
+      <field name="PixdataType" cname="pixdata_type" type="guint32"/>
+      <field name="Rowstride" cname="rowstride" type="guint32"/>
+      <field name="Width" cname="width" type="guint32"/>
+      <field name="Height" cname="height" type="guint32"/>
+      <field name="PixelData" cname="pixel_data" type="guint8*"/>
       <method name="Deserialize" cname="gdk_pixdata_deserialize">
         <return-type type="gboolean"/>
         <parameters>

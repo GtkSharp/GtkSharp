@@ -59,7 +59,7 @@ foreach $fname (@hdrs) {
 		
 		next if ($line =~ /$ignoreit_regex/);
 
-		$line =~ s/\/\*.*?\*\///g;
+		$line =~ s/\/\*[^<].*?\*\///g;
 		
 		next if ($line !~ /\S/);
 
@@ -77,7 +77,7 @@ foreach $fname (@hdrs) {
 				$def =~ s/\\\n//g;
 				print $def;
 			}
-		} elsif ($line =~ /^\s*\/\*/) {
+		} elsif ($line =~ /^\s*\/\*[^<]/) {
 			while ($line !~ /\*\//) {$line = <INFILE>;}
 		} elsif ($line =~ /^extern/) {
 			while ($line !~ /;/) {$line = <INFILE>;}
@@ -158,7 +158,7 @@ foreach $fname (@hdrs) {
 				$do_print = 0;
 			}
 		} else {
-			if ($braces or $line =~ /;/) {
+			if ($braces or $line =~ /;|\/\*/) {
 				if ($deprecated == -1) {
 					print $line;
 				} else {

@@ -66,10 +66,10 @@
       </parameters>
     </callback>
     <struct name="AlphaGamma" cname="ArtAlphaGamma">
-      <field cname="gamma" type="double"/>
-      <field cname="invtable_size" type="int"/>
-      <field cname="table" array_len="256" type="int"/>
-      <field cname="invtable" array_len="1" type="art_u8"/>
+      <field name="Gamma" cname="gamma" type="double" access="private"/>
+      <field name="InvtableSize" cname="invtable_size" type="int" access="private"/>
+      <field name="Table" cname="table" array_len="256" type="int" access="private"/>
+      <field name="Invtable" cname="invtable" array_len="1" type="art_u8" access="private"/>
       <method name="Free" cname="art_alphagamma_free">
         <return-type type="void"/>
       </method>
@@ -80,13 +80,13 @@
       </constructor>
     </struct>
     <struct name="Bpath" cname="ArtBpath">
-      <field cname="code" type="ArtPathcode"/>
-      <field cname="x1" type="double"/>
-      <field cname="y1" type="double"/>
-      <field cname="x2" type="double"/>
-      <field cname="y2" type="double"/>
-      <field cname="x3" type="double"/>
-      <field cname="y3" type="double"/>
+      <field name="Code" cname="code" type="ArtPathcode"/>
+      <field name="X1" cname="x1" type="double"/>
+      <field name="Y1" cname="y1" type="double"/>
+      <field name="X2" cname="x2" type="double"/>
+      <field name="Y2" cname="y2" type="double"/>
+      <field name="X3" cname="x3" type="double"/>
+      <field name="Y3" cname="y3" type="double"/>
       <method name="AffineTransform" cname="art_bpath_affine_transform">
         <return-type type="ArtBpath*"/>
         <parameters>
@@ -95,10 +95,10 @@
       </method>
     </struct>
     <struct name="DRect" cname="ArtDRect">
-      <field cname="x0" type="double"/>
-      <field cname="y0" type="double"/>
-      <field cname="x1" type="double"/>
-      <field cname="y1" type="double"/>
+      <field name="X0" cname="x0" type="double"/>
+      <field name="Y0" cname="y0" type="double"/>
+      <field name="X1" cname="x1" type="double"/>
+      <field name="Y1" cname="y1" type="double"/>
       <method name="AffineTransform" cname="art_drect_affine_transform">
         <return-type type="void"/>
         <parameters>
@@ -150,29 +150,29 @@
       </method>
     </struct>
     <struct name="GradientLinear" cname="ArtGradientLinear">
-      <field cname="a" type="double"/>
-      <field cname="b" type="double"/>
-      <field cname="c" type="double"/>
-      <field cname="spread" type="ArtGradientSpread"/>
-      <field cname="n_stops" type="int"/>
-      <field cname="stops" type="ArtGradientStop*"/>
+      <field name="A" cname="a" type="double"/>
+      <field name="B" cname="b" type="double"/>
+      <field name="C" cname="c" type="double"/>
+      <field name="Spread" cname="spread" type="ArtGradientSpread"/>
+      <field name="NStops" cname="n_stops" type="int"/>
+      <field name="Stops" cname="stops" type="ArtGradientStop*"/>
     </struct>
     <struct name="GradientRadial" cname="ArtGradientRadial">
-      <field cname="affine" array_len="6" type="double"/>
-      <field cname="fx" type="double"/>
-      <field cname="fy" type="double"/>
-      <field cname="n_stops" type="int"/>
-      <field cname="stops" type="ArtGradientStop*"/>
+      <field name="Affine" cname="affine" array_len="6" type="double"/>
+      <field name="Fx" cname="fx" type="double"/>
+      <field name="Fy" cname="fy" type="double"/>
+      <field name="NStops" cname="n_stops" type="int"/>
+      <field name="Stops" cname="stops" type="ArtGradientStop*"/>
     </struct>
     <struct name="GradientStop" cname="ArtGradientStop">
-      <field cname="offset" type="double"/>
-      <field cname="color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
+      <field name="Offset" cname="offset" type="double"/>
+      <field name="Color" cname="color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
     </struct>
     <struct name="IRect" cname="ArtIRect">
-      <field cname="x0" type="int"/>
-      <field cname="y0" type="int"/>
-      <field cname="x1" type="int"/>
-      <field cname="y1" type="int"/>
+      <field name="X0" cname="x0" type="int"/>
+      <field name="Y0" cname="y0" type="int"/>
+      <field name="X1" cname="x1" type="int"/>
+      <field name="Y1" cname="y1" type="int"/>
       <method name="Copy" cname="art_irect_copy">
         <return-type type="void"/>
         <parameters>
@@ -198,7 +198,7 @@
       </method>
     </struct>
     <struct name="ImageSource" cname="ArtImageSource">
-      <field cname="super" type="ArtRenderCallback"/>
+      <field name="Super" cname="super" type="ArtRenderCallback"/>
       <callback cname="negotiate">
         <return-type type="void"/>
         <parameters>
@@ -207,7 +207,7 @@
       </callback>
     </struct>
     <struct name="MaskSource" cname="ArtMaskSource">
-      <field cname="super" type="ArtRenderCallback"/>
+      <field name="Super" cname="super" type="ArtRenderCallback"/>
       <callback cname="can_drive">
         <return-type type="int"/>
         <parameters>
@@ -228,16 +228,16 @@
       </callback>
     </struct>
     <struct name="PixBuf" cname="ArtPixBuf">
-      <field cname="format" type="ArtPixFormat"/>
-      <field cname="n_channels" type="int"/>
-      <field cname="has_alpha" type="int"/>
-      <field cname="bits_per_sample" type="int"/>
-      <field cname="pixels" type="art_u8*"/>
-      <field cname="width" type="int"/>
-      <field cname="height" type="int"/>
-      <field cname="rowstride" type="int"/>
-      <field cname="destroy_data" type="void*"/>
-      <field cname="destroy" type="ArtDestroyNotify"/>
+      <field name="Format" cname="format" type="ArtPixFormat"/>
+      <field name="NChannels" cname="n_channels" type="int"/>
+      <field name="HasAlpha" cname="has_alpha" type="int"/>
+      <field name="BitsPerSample" cname="bits_per_sample" type="int"/>
+      <field name="Pixels" cname="pixels" type="art_u8*"/>
+      <field name="Width" cname="width" type="int"/>
+      <field name="Height" cname="height" type="int"/>
+      <field name="Rowstride" cname="rowstride" type="int"/>
+      <field name="DestroyData" cname="destroy_data" type="void*"/>
+      <field name="Destroy" cname="destroy" type="ArtDestroyNotify"/>
       <method name="Duplicate" cname="art_pixbuf_duplicate">
         <return-type type="ArtPixBuf*"/>
       </method>
@@ -302,33 +302,33 @@
     </struct>
     <alias name="PixMaxDepth" cname="ArtPixMaxDepth" type="unsigned char"/>
     <struct name="Point" cname="ArtPoint">
-      <field cname="x" type="double"/>
-      <field cname="y" type="double"/>
+      <field name="X" cname="x" type="double"/>
+      <field name="Y" cname="y" type="double"/>
     </struct>
     <struct name="Render" cname="ArtRender">
-      <field cname="x0" type="int"/>
-      <field cname="y0" type="int"/>
-      <field cname="x1" type="int"/>
-      <field cname="y1" type="int"/>
-      <field cname="pixels" type="art_u8*"/>
-      <field cname="rowstride" type="int"/>
-      <field cname="n_chan" type="int"/>
-      <field cname="depth" type="int"/>
-      <field cname="alpha_type" type="ArtAlphaType"/>
-      <field cname="clear" type="art_boolean"/>
-      <field cname="clear_color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
-      <field cname="opacity" type="art_u32"/>
-      <field cname="compositing_mode" type="ArtCompositingMode"/>
-      <field cname="alphagamma" type="ArtAlphaGamma*"/>
-      <field cname="alpha_buf" type="art_u8*"/>
-      <field cname="buf_depth" type="int"/>
-      <field cname="buf_alpha" type="ArtAlphaType"/>
-      <field cname="image_buf" type="art_u8*"/>
-      <field cname="n_run" type="int"/>
-      <field cname="run" type="ArtRenderMaskRun*"/>
-      <field cname="n_span" type="int"/>
-      <field cname="span_x" type="int*"/>
-      <field cname="need_span" type="art_boolean"/>
+      <field name="X0" cname="x0" type="int"/>
+      <field name="Y0" cname="y0" type="int"/>
+      <field name="X1" cname="x1" type="int"/>
+      <field name="Y1" cname="y1" type="int"/>
+      <field name="Pixels" cname="pixels" type="art_u8*"/>
+      <field name="Rowstride" cname="rowstride" type="int"/>
+      <field name="NChan" cname="n_chan" type="int"/>
+      <field name="Depth" cname="depth" type="int"/>
+      <field name="AlphaType" cname="alpha_type" type="ArtAlphaType"/>
+      <field name="Clear" cname="clear" type="art_boolean"/>
+      <field name="ClearColor" cname="clear_color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
+      <field name="Opacity" cname="opacity" type="art_u32"/>
+      <field name="CompositingMode" cname="compositing_mode" type="ArtCompositingMode"/>
+      <field name="Alphagamma" cname="alphagamma" type="ArtAlphaGamma*"/>
+      <field name="AlphaBuf" cname="alpha_buf" type="art_u8*"/>
+      <field name="BufDepth" cname="buf_depth" type="int"/>
+      <field name="BufAlpha" cname="buf_alpha" type="ArtAlphaType"/>
+      <field name="ImageBuf" cname="image_buf" type="art_u8*"/>
+      <field name="NRun" cname="n_run" type="int"/>
+      <field name="Run" cname="run" type="ArtRenderMaskRun*"/>
+      <field name="NSpan" cname="n_span" type="int"/>
+      <field name="SpanX" cname="span_x" type="int*"/>
+      <field name="NeedSpan" cname="need_span" type="art_boolean"/>
       <method name="AddImageSource" cname="art_render_add_image_source">
         <return-type type="void"/>
         <parameters>
@@ -436,12 +436,12 @@
       </callback>
     </struct>
     <struct name="RenderMaskRun" cname="ArtRenderMaskRun">
-      <field cname="x" type="int"/>
-      <field cname="alpha" type="int"/>
+      <field name="X" cname="x" type="int"/>
+      <field name="Alpha" cname="alpha" type="int"/>
     </struct>
     <struct name="SVP" cname="ArtSVP">
-      <field cname="n_segs" type="int"/>
-      <field cname="segs" array_len="1" type="ArtSVPSeg"/>
+      <field name="NSegs" cname="n_segs" type="int"/>
+      <field name="Segs" cname="segs" array_len="1" type="ArtSVPSeg"/>
       <method name="AddSegment" cname="art_svp_add_segment">
         <return-type type="int"/>
         <parameters>
@@ -581,14 +581,14 @@
       </method>
     </struct>
     <struct name="SVPRenderAAStep" cname="ArtSVPRenderAAStep">
-      <field cname="x" type="int"/>
-      <field cname="delta" type="int"/>
+      <field name="X" cname="x" type="int"/>
+      <field name="Delta" cname="delta" type="int"/>
     </struct>
     <struct name="SVPSeg" cname="ArtSVPSeg">
-      <field cname="n_points" type="int"/>
-      <field cname="dir" type="int"/>
-      <field cname="bbox" type="ArtDRect"/>
-      <field cname="points" type="ArtPoint*"/>
+      <field name="NPoints" cname="n_points" type="int"/>
+      <field name="Dir" cname="dir" type="int"/>
+      <field name="Bbox" cname="bbox" type="ArtDRect"/>
+      <field name="Points" cname="points" type="ArtPoint*"/>
       <method name="Compare" cname="art_svp_seg_compare" shared="true">
         <return-type type="int"/>
         <parameters>
@@ -627,11 +627,11 @@
       </method>
     </struct>
     <struct name="Uta" cname="ArtUta">
-      <field cname="x0" type="int"/>
-      <field cname="y0" type="int"/>
-      <field cname="width" type="int"/>
-      <field cname="height" type="int"/>
-      <field cname="utiles" type="ArtUtaBbox*"/>
+      <field name="X0" cname="x0" type="int"/>
+      <field name="Y0" cname="y0" type="int"/>
+      <field name="Width" cname="width" type="int"/>
+      <field name="Height" cname="height" type="int"/>
+      <field name="Utiles" cname="utiles" type="ArtUtaBbox*"/>
       <method name="AddLine" cname="art_uta_add_line">
         <return-type type="void"/>
         <parameters>
@@ -689,9 +689,9 @@
     </struct>
     <alias name="UtaBbox" cname="ArtUtaBbox" type="unsigned int"/>
     <struct name="Vpath" cname="ArtVpath">
-      <field cname="code" type="ArtPathcode"/>
-      <field cname="x" type="double"/>
-      <field cname="y" type="double"/>
+      <field name="Code" cname="code" type="ArtPathcode"/>
+      <field name="X" cname="x" type="double"/>
+      <field name="Y" cname="y" type="double"/>
       <method name="AddPoint" cname="art_vpath_add_point">
         <return-type type="void"/>
         <parameters>
@@ -744,9 +744,9 @@
       </method>
     </struct>
     <struct name="VpathDash" cname="ArtVpathDash">
-      <field cname="offset" type="double"/>
-      <field cname="n_dash" type="int"/>
-      <field cname="dash" type="double*"/>
+      <field name="Offset" cname="offset" type="double"/>
+      <field name="NDash" cname="n_dash" type="int"/>
+      <field name="Dash" cname="dash" type="double*"/>
     </struct>
     <alias name="ArtBoolean" cname="art_boolean" type="int"/>
     <alias name="ArtU16" cname="art_u16" type="unsigned short"/>

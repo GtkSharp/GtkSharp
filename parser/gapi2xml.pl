@@ -119,7 +119,7 @@ while ($line = <STDIN>) {
 			$sdef .= $line;
 			last if ($line =~ /^(deprecated)?}/);
 		}
-		$sdef =~ s!/\*.*?(\*/|\n)!!g;
+		$sdef =~ s!/\*[^<].*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
 		$sdefs{$sname} = $sdef;
 	} elsif ($line =~ /^(\w+)_(class|base)_init\b/) {
@@ -193,7 +193,7 @@ while ($line = <STDIN>) {
 		} elsif ($line =~ /\#define\s+(\w+)\s+\"(.*)\"/) {
 			$defines{$1} = $2;
 		}
-	} else {
+	} elsif ($line !~ /\/\*/) {
 		print $line;
 	}
 }
@@ -320,7 +320,7 @@ foreach $type (sort(keys(%objects))) {
 	$instdef = $sdefs{$1} if ($insttype =~ /struct\s+(\w+)/);
 	$classdef = $sdefs{$1} if ($classtype =~ /struct\s+(\w+)/);
 	$classdef =~ s/deprecated//g;
-	$instdef =~ s/\s+(\*+)/\1 /g;
+	$instdef =~ s/\s+(\*+)([^\/])/\1 \2/g;
 	warn "Strange Class $inst\n" if (!$instdef && $debug);
 
 	$classcnt++;
@@ -338,11 +338,11 @@ foreach $type (sort(keys(%objects))) {
 	if ($instdef =~ /^struct/) {
 		$instdef =~ /\{(.*)\}/;
 		$fieldstr = $1;
-		$fieldstr =~ s|/\*.*?\*/||g;
+		$fieldstr =~ s|/\*[^<].*?\*/||g;
 		@fields = split(/;/, $fieldstr);
-		$fields[0] =~ /(\w+)/;
-		$obj_el->setAttribute('parent', "$1");
-		addFieldElems($obj_el, @fields[1..$#fields]);
+		addFieldElems($obj_el, 'private', @fields);
+		$obj_el->setAttribute('parent', $obj_el->firstChild->getAttribute('type'));
+		$obj_el->removeChild($obj_el->firstChild);
 	} elsif ($instdef =~ /privatestruct/) {
 		# just get the parent for private structs
 		$instdef =~ /\{\s*(\w+)/;
@@ -414,7 +414,7 @@ foreach $key (sort (keys (%types))) {
 		$struct_el->setAttribute('opaque', 'true');
 	} else {
 		$def =~ /\{(.+)\}/;
-		addFieldElems($struct_el, split(/;/, $1));
+		addFieldElems($struct_el, 'public', split(/;/, $1));
 	}
 }
 
@@ -470,9 +470,14 @@ print "props: $propcnt childprops: $childpropcnt signals: $sigcnt\n\n";
 
 sub addFieldElems
 {
-	my ($parent, @fields) = @_;
+	my ($parent, $defaultaccess, @fields) = @_;
+	my $access = $defaultaccess;
 
 	foreach $field (@fields) {
+		if ($field =~ m!^/\*< (public|private) >.*\*/(.*)$!) {
+			$access = $1;
+			$field = $2;
+		}
 		next if ($field !~ /\S/);
 		$field =~ s/\s+(\*+)/\1 /g;
 		$field =~ s/(\w+)\s+const /const \1 /g;
@@ -489,15 +494,19 @@ sub addFieldElems
 			my $type = $1 . $2; $symb = $3;
 			foreach $tok (split (/,\s*/, $symb)) {
 				if ($tok =~ /(\w+)\s*\[(.*)\]/) {
-					$elem = addNameElem($parent, 'field', $1);
+					$elem = addNameElem($parent, 'field', $1, "");
 					$elem->setAttribute('array_len', "$2");
 				} elsif ($tok =~ /(\w+)\s*\:\s*(\d+)/) {
-					$elem = addNameElem($parent, 'field', $1);
+					$elem = addNameElem($parent, 'field', $1, "");
 					$elem->setAttribute('bits', "$2");
 				} else {
-					$elem = addNameElem($parent, 'field', $tok);
+					$elem = addNameElem($parent, 'field', $tok, "");
 				}
 				$elem->setAttribute('type', "$type");
+
+				if ($access ne $defaultaccess) {
+					$elem->setAttribute('access', "$access");
+				}
 			}
 		} else {
 			die "$field\n";
@@ -695,7 +704,7 @@ sub addNameElem
 
 	my $elem = $doc->createElement($type);
 	$node->appendChild($elem);
-	if ($prefix) {
+	if (defined $prefix) {
 		my $match;
 		if ($cname =~ /$prefix(\w+)/) {
 			$match = $1;
@@ -905,6 +914,7 @@ sub addVirtualMethods
 {
 	my ($class, $node) = @_;
 	$class =~ s/\n\s*//g;
+	$class =~ s/\/\*.*?\*\///g;
 
 	while ($class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\*\s*(\w+)\)\s*\((.*?)\);/) {
 		$ret = $1 . $2; $cname = $3; $parms = $4;
