@@ -18,9 +18,12 @@
 
 
 %usings = (
-	'Gdk', "System,System.Collections,System.Runtime.InteropServices,GLib",
-	'Gtk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk");
+	'GLib', "System,System.Collections,System.Runtime.InteropServices,GLib",
+	'Gdk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk",
+	'Gtk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk,Gtk",
+	'GtkSharp', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk,Gtk");
 
+`mkdir -p ../glib/generated`;
 `mkdir -p ../gdk/generated`;
 `mkdir -p ../gtk/generated`;
 
@@ -241,7 +244,6 @@ sub gen_object
 		}
 	}
 
-	print "Generating Class $typename in $dir/$typename.cs\n";
 	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
 	
 	print OUTFILE "// Generated file: Do not modify\n\n";
@@ -299,13 +301,12 @@ sub gen_object
 	print OUTFILE `cat $custom` if -e $custom;
 	print OUTFILE "\t}\n}\n";
 	close (OUTFILE);
-	print "done\n";
 }
 
 sub gen_signal
 {
 	my ($name, $def, $dll) = @_;
-	my ($cname, @plist, $ret, $sret, $mret, $code);
+	my ($marsh, $cname, @plist, $ret, $sret, $mret, $code);
 
 	$def =~ /define-signal (\w+)/;
 	$cname = "\"$1\"";
@@ -315,6 +316,8 @@ sub gen_signal
 
 	$def =~ /parameters\s*'\((.*)\)\)\)/;
 	@plist = split(/\)'\(/, $1);
+
+	$marsh = get_sighandler ($def);
 
 	if (($ret eq "none") && (@plist == 1)) {
 		$marsh = "SimpleSignal";
@@ -494,6 +497,7 @@ sub gen_param_strings
 			$ptype = $1;
 			$pname = $2;
 			$pname =~ s/object/objekt/;
+			$pname =~ s/event/ev3nt/;
 			if ($sig) { 
 				$sig .= ', '; 
 				$call .= ', '; 
@@ -518,3 +522,66 @@ sub gen_param_strings
 	return ($call, $pinv, $sig);
 }
 
+sub get_sighandler
+{
+	my ($def) = @_;
+	my ($key, $name, $sname, $dname, $dir, $ns, $nspace, $tok);
+
+	$def =~ /return-type \"(\w+)\"/;
+	my $ret = $1;
+
+	$def =~ /parameters'\((.*)\)\)\)/;
+	my @parms = split(/\)'\(/, $1);
+
+	for ($i = 1; $i < @parms; $i++) {
+		$parms[$i] =~ /^\"(\w+)/;
+		$key .= ":$1";
+	}
+	$key = $ret . $key;
+
+	if (exists($sighandlers{$key})) {
+		return $sighandlers{$key};
+	}
+
+	my ($call, $pinv, $sig) = gen_param_strings($def);
+
+	if ($key =~ /Gtk/) {
+		$dir = "../gtk/generated";
+		$nspace = "Gtk";
+	} elsif ($key =~ /Gdk/) {
+		$dir = "../gdk/generated";
+		$nspace = "Gdk";
+	} else {
+		$dir = "../glib/generated";
+		$nspace = "GLib";
+	}
+
+	$name = "";
+	foreach $tok (split(/:/, $key)) {
+		if (exists($objects{$tok})) {
+			$name .= "Object";
+		} elsif (exists($maptypes{$tok})) {
+			$name .= "$maptypes{$tok}";
+		} else {
+			die "Whassup with $tok?";
+		}
+	}
+	$sname = $name . "Signal";
+	$dname = $name . "Delegate";
+
+	$sighandlers{$key} = $name;
+
+	open (SIGFILE, ">$dir/$sname.cs") || die "can't open file";
+	
+	print SIGFILE "// Generated file: Do not modify\n\n";
+	print SIGFILE "namespace GtkSharp {\n\n";
+	foreach $ns (split (/,/, $usings{$nspace})) {
+		print SIGFILE "\tusing $ns;\n";
+	}
+	print SIGFILE "\tpublic delegate $marshaltypes{$ret} ";
+	print SIGFILE "$dname($pinv, int key);\n\n";
+	print SIGFILE "}\n";
+	close (SIGFILE);
+
+	return $sighandlers{$key};
+}

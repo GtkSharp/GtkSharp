@@ -1,3 +1,16 @@
+2001-11-24  Mike Kestner <mkestner@speakeasy.net>
+
+	* codegen/defs-parse.pl : mkdir the glib/generated dir.
+	(gen_signal): Call new get_sighandler sub. Doesn't use the returned
+	  value yet.  s/event/ev3nt on arg names.
+	(get_sighandler): new sub to lookup or gen a signal helper/delegate.
+	  Only generates the delegate so far.
+	* codegen/hardcoded.defs : Added a stub for Gdk.Event.
+	* gdk/Event.cs : Killed, now a generated struct.
+	* gdk/SimpleEvent.cs (SimpleEventCallback): Use Marshal.PtrToStructure
+	  to create the Event, not a ctor(IntPtr).
+	* glib/SignalCallback.cs : New abstract base class for signal helpers.
+
 2001-11-14  Mike Kestner <mkestner@speakeasy.net>
 
 	* codegen/defs-parse.pl : Add System.Collections to usings. 

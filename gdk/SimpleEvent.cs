@@ -71,8 +71,9 @@ namespace Gdk {
 				throw new Exception ("Unexpected event key");
 
 			SimpleEvent se = (SimpleEvent) _Instances [inst_key];
-			EventArgs args = new SimpleEventArgs (
-							new Gdk.Event (e));
+			Event evnt = new Event ();
+			Marshal.PtrToStructure (e, evnt);
+			EventArgs args = new SimpleEventArgs (evnt);
 			se._handler (se._obj, args);
 			return true; //FIXME: How do we manage the return value?
 		}
