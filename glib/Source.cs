@@ -34,7 +34,12 @@ namespace GLib {
 
 		internal void Remove ()
 		{
-			Source.source_handlers.Remove (this);
+			ArrayList keys = new ArrayList ();
+			foreach (uint code in Source.source_handlers.Keys)
+				if (Source.source_handlers [code] == this)
+					keys.Add (code);
+			foreach (object key in keys)
+				Source.source_handlers.Remove (key);
 			real_handler = null;
 			proxy_handler = null;
 		}
@@ -50,9 +55,7 @@ namespace GLib {
 
 		public static bool Remove (uint tag)
 		{
-			if (source_handlers.Contains (tag))
-				source_handlers.Remove (tag);
-			
+			source_handlers.Remove (tag);
 			return g_source_remove (tag);
 		}
 	}
