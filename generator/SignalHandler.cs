@@ -145,20 +145,28 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
-					if (SymbolTable.IsObject((String)parms[idx])) {
-						sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
-						sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
+					string ctype = (string) parms[idx];
+					/* ok, this should do the "create a new wrapper" thing for
+					 * objects as well, but because the signature only
+					 * specifies GObject, we can't. So wait for introspection */
+					ClassBase wrapper = SymbolTable.GetClassGen (ctype);
+					if ((wrapper != null && !(wrapper is StructBase)) || SymbolTable.IsManuallyWrapped (ctype)) {
+						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
+						sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
+						sw.WriteLine("\t\t\telse {");
+						if (wrapper != null && wrapper is ObjectGen)
+							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = GLib.Object.GetObject(arg" + idx + ");");
+						else
+							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
+						if ((wrapper != null && (wrapper is OpaqueGen)) || SymbolTable.IsManuallyWrapped (ctype)) {
+							sw.WriteLine("\t\t\t\tif (args.Args[" + (idx-1) + "] == null)");
+							sw.WriteLine("\t\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
+						}
+						sw.WriteLine("\t\t\t}");
 					} else {
-						string ctype = (string) parms[idx];
-						ClassBase wrapper = SymbolTable.GetClassGen (ctype);
-						if (wrapper != null && (wrapper is StructBase)) {
+						if (wrapper != null && (wrapper is StructBase))
 							sw.WriteLine("\t\t\targ{0}._Initialize ();", idx);
-						}
 						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
-						if ((wrapper != null && ((wrapper is ObjectGen) || (wrapper is OpaqueGen))) || SymbolTable.IsManuallyWrapped (ctype)) {
-							sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
-							sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
-						}
 					}
 				}
 				sw.WriteLine("\t\t\tobject[] argv = new object[2];");
@@ -166,6 +174,12 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\targv[1] = args;");
 				sw.WriteLine("\t\t\tinst._handler.DynamicInvoke(argv);");
 				if (retval != "void") {
+					sw.WriteLine ("\t\t\tif (args.RetVal == null)");
+					if (s_ret == "bool")
+						sw.WriteLine ("\t\t\t\treturn false;");
+					else
+						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
+
 					sw.WriteLine("\t\t\treturn (" + s_ret + ") args.RetVal;");
 				}
 				sw.WriteLine("\t\t}");
