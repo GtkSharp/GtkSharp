@@ -327,7 +327,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
 				}
 
-				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type))) {
+				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type) || type == "GLib.Value")) {
 					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
 				}
 
