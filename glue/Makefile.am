@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libgtksharpglue.la
 
 BASESOURCES = \
+	adjustment.c		\
 	value.c			\
 	fileselection.c		\
 	dialog.c		\
