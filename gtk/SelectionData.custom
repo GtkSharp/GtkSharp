@@ -24,7 +24,10 @@
 
 		public string Text {
 			get {
-				return GLibSharp.Marshaller.PtrToStringGFree (gtk_selection_data_get_text (Handle));
+				IntPtr text = gtk_selection_data_get_text (Handle);
+				if (text == IntPtr.Zero)
+					return null;
+				return GLibSharp.Marshaller.PtrToStringGFree (text);
 			}
 			set {
 				gtk_selection_data_set_text (Handle, value, value.Length);
