@@ -7,25 +7,25 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>An object for rendering a single cell on a <see cref="T:Gdk.Drawable"/></summary>
+    <summary>An object for rendering a single cell on a <see cref="T:Gdk.Drawable" /></summary>
     <remarks>
 	  <para>
-	    The <see cref="T:Gtk.CellRenderer"/> is a base class of a set of objects used for rendering a cell to a <see cref="T:Gdk.Drawable"/>.
-		These objects are used primarily by the <see cref="T:Gtk.TreeView"/> widget, though they are not tied to them in any specific way.
-		It is worth noting that <see cref="T:Gtk.CellRenderer"/> is not a <see cref="T:Gtk.Widget"/> and cannot be treated as such.
+	    The <see cref="T:Gtk.CellRenderer" /> is a base class of a set of objects used for rendering a cell to a <see cref="T:Gdk.Drawable" />.
+		These objects are used primarily by the <see cref="T:Gtk.TreeView" /> widget, though they are not tied to them in any specific way.
+		It is worth noting that <see cref="T:Gtk.CellRenderer" /> is not a <see cref="T:Gtk.Widget" /> and cannot be treated as such.
 	  </para>
 	  <para>
-	    The primary use of a <see cref="T:Gtk.CellRenderer"/> is for drawing a certain graphical elements on a <see cref="T:Gdk.Drawable"/>.
-		Typically, one <see cref="T:Gtk.CellRenderer"/> is used to draw many cells on the screen.
-		To this extent, it is not expected that a <see cref="T:Gtk.CellRenderer"/> keep any permanent state around.
+	    The primary use of a <see cref="T:Gtk.CellRenderer" /> is for drawing a certain graphical elements on a <see cref="T:Gdk.Drawable" />.
+		Typically, one <see cref="T:Gtk.CellRenderer" /> is used to draw many cells on the screen.
+		To this extent, it is not expected that a <see cref="T:Gtk.CellRenderer" /> keep any permanent state around.
 		Instead, any state is set just prior to use.
-		Then, the cell is measured using <see cref="M:Gtk.CellRendererGetSize(Gtk.Widget,Gdk.Rectangle,System.Int32,System.Int32,System.Int32,System.Int32)"/>.
-		Finally, the cell is rendered in the correct location using <see cref="M:Gtk.CellRendererRender(Gdk.Window,Gtk.Widget,Gdk.Rectangle,Gdk.Rectangle,Gdk.Rectangle,Gtk.CellRendererState)"/>.
+		Then, the cell is measured using <see cref="M:Gtk.CellRendererGetSize(Gtk.Widget,Gdk.Rectangle,System.Int32,System.Int32,System.Int32,System.Int32)" />.
+		Finally, the cell is rendered in the correct location using <see cref="M:Gtk.CellRendererRender(Gdk.Window,Gtk.Widget,Gdk.Rectangle,Gdk.Rectangle,Gdk.Rectangle,Gtk.CellRendererState)" />.
 	  </para>
 	  <para>
-	    There are a number of rules that must be followed when writing a new <see cref="T:Gtk.CellRenderer"/>.
-		First and foremost, it is important that a certain set of properties will always yield a <see cref="T:Gtk.CellRenderer"/> of the same size, barring a <see cref="T:Gtk.Style"/> change.
-		The <see cref="T:Gtk.CellRenderer"/> also has a number of generic properties that are expected to be honored by all children.
+	    There are a number of rules that must be followed when writing a new <see cref="T:Gtk.CellRenderer" />.
+		First and foremost, it is important that a certain set of properties will always yield a <see cref="T:Gtk.CellRenderer" /> of the same size, barring a <see cref="T:Gtk.Style" /> change.
+		The <see cref="T:Gtk.CellRenderer" /> also has a number of generic properties that are expected to be honored by all children.
 	  </para>
 	</remarks>
   </Docs>
@@ -49,26 +49,26 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="window" Type="Gdk.Window" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="expose_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
+		<Parameter Name="window" Type="Gdk.Window" />
+		<Parameter Name="widget" Type="Gtk.Widget" />
+		<Parameter Name="background_area" Type="Gdk.Rectangle" />
+		<Parameter Name="cell_area" Type="Gdk.Rectangle" />
+		<Parameter Name="expose_area" Type="Gdk.Rectangle" />
+		<Parameter Name="flags" Type="Gtk.CellRendererState" />
+	</Parameters>
       <Docs>
-        <summary>Invokes the virtual render function of the <see cref="T:Gtk.CellRenderer"/>.</summary>
-        <param name="window">an object of type <see cref="T:Gdk.Window"/></param>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
-        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="expose_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState"/></param>
+        <summary>Invokes the virtual render function of the <see cref="T:Gtk.CellRenderer" />.</summary>
+        <param name="window">an object of type <see cref="T:Gdk.Window" /></param>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="expose_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
         <remarks>
-          The three passed-in rectangles are areas of <paramref name="window"/>.
-		  Most renderers will draw within <paramref name="cell_area"/>;
-		  <paramref name="background_area"/> includes the blank space around the cell, and also the area containing the tree expander; so the <paramref name="background_area"/> rectangles for all cells tile to cover the entire window.
-		  <paramref name="expose_area"/> is a clip rectangle.
+          The three passed-in rectangles are areas of <paramref name="window" />.
+		  Most renderers will draw within <paramref name="cell_area" />;
+		  <paramref name="background_area" /> includes the blank space around the cell, and also the area containing the tree expander; so the <paramref name="background_area" /> rectangles for all cells tile to cover the entire window.
+		  <paramref name="expose_area" /> is a clip rectangle.
 		</remarks>
       </Docs>
     </Member>
@@ -79,25 +79,25 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="x_offset" Type="System.Int32" RefType="out" />
-        <Parameter Name="y_offset" Type="System.Int32" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" RefType="out" />
-        <Parameter Name="height" Type="System.Int32" RefType="out" />
-      </Parameters>
+		<Parameter Name="widget" Type="Gtk.Widget" />
+		<Parameter Name="cell_area" Type="Gdk.Rectangle" />
+		<Parameter Name="x_offset" Type="System.Int32" />
+		<Parameter Name="y_offset" Type="System.Int32" />
+		<Parameter Name="width" Type="System.Int32" />
+		<Parameter Name="height" Type="System.Int32" />
+	</Parameters>
       <Docs>
-        <summary>Obtains the <paramref name="width"/> and <paramref name="height"/> needed to render the cell.</summary>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="x_offset">an object of type <see cref="T:System.Int32"/></param>
-        <param name="y_offset">an object of type <see cref="T:System.Int32"/></param>
-        <param name="width">an object of type <see cref="T:System.Int32"/></param>
-        <param name="height">an object of type <see cref="T:System.Int32"/></param>
+        <summary>Obtains the <paramref name="width" /> and <paramref name="height" /> needed to render the cell.</summary>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="x_offset">an object of type <see cref="T:System.Int32" /></param>
+        <param name="y_offset">an object of type <see cref="T:System.Int32" /></param>
+        <param name="width">an object of type <see cref="T:System.Int32" /></param>
+        <param name="height">an object of type <see cref="T:System.Int32" /></param>
         <remarks>
-		  Used by view widgets to determine the appropriate size for the <paramref name="cell_area"/> passed to gtk_cell_renderer_render().
-		  If <paramref name="cell_area"/> is not <see langword="null"/>, fills in the x and y offsets (if set) of the cell relative to this location.
-		  Please note that the values set in <paramref name="width"/> and <paramref name="height"/>, as well as those in <paramref name="x_offset"/> and <paramref name="y_offset"/> are inclusive of the xpad and ypad properties.
+		  Used by view widgets to determine the appropriate size for the <paramref name="cell_area" /> passed to gtk_cell_renderer_render().
+		  If <paramref name="cell_area" /> is not <see langword="null" />, fills in the x and y offsets (if set) of the cell relative to this location.
+		  Please note that the values set in <paramref name="width" /> and <paramref name="height" />, as well as those in <paramref name="x_offset" /> and <paramref name="y_offset" /> are inclusive of the xpad and ypad properties.
 		</remarks>
       </Docs>
     </Member>
@@ -108,13 +108,13 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
+		<Parameter Name="width" Type="System.Int32" />
+		<Parameter Name="height" Type="System.Int32" />
+	</Parameters>
       <Docs>
         <summary>Sets the renderer size to be explicit, independent of the properties set.</summary>
-        <param name="width">an object of type <see cref="T:System.Int32"/></param>
-        <param name="height">an object of type <see cref="T:System.Int32"/></param>
+        <param name="width">an object of type <see cref="T:System.Int32" /></param>
+        <param name="height">an object of type <see cref="T:System.Int32" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -125,13 +125,13 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="width" Type="System.Int32" RefType="out" />
-        <Parameter Name="height" Type="System.Int32" RefType="out" />
-      </Parameters>
+		<Parameter Name="width" Type="System.Int32" />
+		<Parameter Name="height" Type="System.Int32" />
+	</Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="width">an object of type <see cref="T:System.Int32"/></param>
-        <param name="height">an object of type <see cref="T:System.Int32"/></param>
+        <param name="width">an object of type <see cref="T:System.Int32" /></param>
+        <param name="height">an object of type <see cref="T:System.Int32" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -142,22 +142,22 @@
         <ReturnType>Gtk.CellEditable</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
+		<Parameter Name="evnt" Type="Gdk.Event" />
+		<Parameter Name="widget" Type="Gtk.Widget" />
+		<Parameter Name="path" Type="System.String" />
+		<Parameter Name="background_area" Type="Gdk.Rectangle" />
+		<Parameter Name="cell_area" Type="Gdk.Rectangle" />
+		<Parameter Name="flags" Type="Gtk.CellRendererState" />
+	</Parameters>
       <Docs>
-        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer"/> for possible processing.</summary>
-        <param name="evnt">an object of type <see cref="T:Gdk.Event"/></param>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
-        <param name="path">an object of type <see cref="T:System.String"/></param>
-        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState"/></param>
-        <returns>an object of type <see cref="T:Gtk.CellEditable"/></returns>
+        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
+        <param name="evnt">an object of type <see cref="T:Gdk.Event" /></param>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="path">an object of type <see cref="T:System.String" /></param>
+        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
+        <returns>an object of type <see cref="T:Gtk.CellEditable" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -168,23 +168,23 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
+		<Parameter Name="evnt" Type="Gdk.Event" />
+		<Parameter Name="widget" Type="Gtk.Widget" />
+		<Parameter Name="path" Type="System.String" />
+		<Parameter Name="background_area" Type="Gdk.Rectangle" />
+		<Parameter Name="cell_area" Type="Gdk.Rectangle" />
+		<Parameter Name="flags" Type="Gtk.CellRendererState" />
+	</Parameters>
       <Docs>
-        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer"/> for possible processing.</summary>
-        <param name="evnt">an object of type <see cref="T:Gdk.Event"/></param>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
-        <param name="path">an object of type <see cref="T:System.String"/></param>
-        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle"/></param>
-        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState"/></param>
-        <returns>an object of type <see cref="T:System.Boolean"/></returns>
-        <remarks>Some <see cref="T:Gtk.CellRenderer"/>s may use events; for example, <see cref="T:Gtk.CellRendererToggle"/> toggles when it gets a mouse click.</remarks>
+        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
+        <param name="evnt">an object of type <see cref="T:Gdk.Event" /></param>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="path">an object of type <see cref="T:System.String" /></param>
+        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
+        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>Some <see cref="T:Gtk.CellRenderer" />s may use events; for example, <see cref="T:Gtk.CellRendererToggle" /> toggles when it gets a mouse click.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -204,8 +204,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
+		<Parameter Name="raw" Type="System.IntPtr" />
+	</Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -222,7 +222,7 @@
       <Parameters />
       <Docs>
         <summary>Internal constructor</summary>
-        <returns>an object of type <see cref="T:Gtk.CellRenderer"/></returns>
+        <returns>an object of type <see cref="T:Gtk.CellRenderer" /></returns>
         <remarks>This is an internal constructor, and should not be used by user code. Normally this would be called by an inherited class.</remarks>
       </Docs>
     </Member>
@@ -233,8 +233,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.CellRenderer"/></summary>
-        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.CellRenderer"/> class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.CellRenderer" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.CellRenderer" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -245,12 +245,11 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Int32" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The fixed height.</summary>
-        <param name="value">an object of type <see cref="T:System.Int32"/></param>
-        <returns>an object of type <see cref="T:System.Int32"/></returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -261,12 +260,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Boolean" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Display the cell.</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean"/></param>
-        <returns>an object of type <see cref="T:System.Boolean"/></returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -277,12 +275,11 @@
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Single" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The x-align.</summary>
-        <param name="value">an object of type <see cref="T:System.Single"/></param>
-        <returns>an object of type <see cref="T:System.Single"/></returns>
+        <param name="value">an object of type <see cref="T:System.Single" /></param>
+        <returns>an object of type <see cref="T:System.Single" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -293,12 +290,11 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Int32" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The fixed width.</summary>
-        <param name="value">an object of type <see cref="T:System.Int32"/></param>
-        <returns>an object of type <see cref="T:System.Int32"/></returns>
+        <param name="value">an object of type <see cref="T:System.Int32" /></param>
+        <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -309,12 +305,11 @@
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Single" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The y-align.</summary>
-        <param name="value">an object of type <see cref="T:System.Single"/></param>
-        <returns>an object of type <see cref="T:System.Single"/></returns>
+        <param name="value">an object of type <see cref="T:System.Single" /></param>
+        <returns>an object of type <see cref="T:System.Single" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -325,12 +320,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Boolean" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Row has children.</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean"/></param>
-        <returns>an object of type <see cref="T:System.Boolean"/></returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -341,12 +335,11 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.UInt32" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The ypad.</summary>
-        <param name="value">an object of type <see cref="T:System.UInt32"/></param>
-        <returns>an object of type <see cref="T:System.UInt32"/></returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -357,12 +350,11 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.UInt32" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>The xpad.</summary>
-        <param name="value">an object of type <see cref="T:System.UInt32"/></param>
-        <returns>an object of type <see cref="T:System.UInt32"/></returns>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -373,12 +365,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Boolean" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Row is an expander row, and is expanded.</summary>
-        <param name="value">an object of type <see cref="T:System.Boolean"/></param>
-        <returns>an object of type <see cref="T:System.Boolean"/></returns>
+        <param name="value">an object of type <see cref="T:System.Boolean" /></param>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -389,12 +380,11 @@
         <ReturnType>Gtk.CellRendererMode</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="Gtk.CellRendererMode" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Editable mode of the CellRenderer.</summary>
-        <param name="value">an object of type <see cref="T:Gtk.CellRendererMode"/></param>
-        <returns>an object of type <see cref="T:Gtk.CellRendererMode"/></returns>
+        <param name="value">an object of type <see cref="T:Gtk.CellRendererMode" /></param>
+        <returns>an object of type <see cref="T:Gtk.CellRendererMode" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -403,8 +393,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-        <Parameter Name="gtype" Type="GLib.Type" />
-      </Parameters>
+		<Parameter Name="gtype" Type="GLib.Type" />
+	</Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
@@ -421,8 +411,7 @@
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="Gdk.Color" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Cell background color as a <see cref="T:Gdk.Color" />.</summary>
         <param name="value">a <see cref="T:Gdk.Color" /></param>
@@ -437,8 +426,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.String" />
-      </Parameters>
+	</Parameters>
       <Docs>
         <summary>Cell background color as a <see cref="T:System.String" />.</summary>
         <param name="value">a <see cref="T:System.String" /></param>
