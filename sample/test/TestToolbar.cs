@@ -16,10 +16,12 @@ namespace WidgetViewer {
 
 		static Window window = null;
 		static Toolbar toolbar = null;
+		static bool showTooltips = true;
 		
 		public static Gtk.Window Create ()
 		{
 			window = new Window ("Toolbar");
+			window.Resizable = false;
 
 			toolbar = new Toolbar ();
 			toolbar.InsertStock (Stock.New, "Stock icon: New", "Toolbar/New",
@@ -27,6 +29,14 @@ namespace WidgetViewer {
 
 			toolbar.InsertStock (Stock.Open, "Stock icon: Open", "Toolbar/Open",
 					     new SignalFunc (set_large_icon), IntPtr.Zero, -1);
+
+			toolbar.AppendSpace ();
+
+			toolbar.AppendItem ("Toggle tooltips", "toggle showing of tooltips", "Toolbar/Tooltips",
+					    new Image (Stock.DialogInfo, IconSize.LargeToolbar),
+					    new SignalFunc (toggle_tooltips), IntPtr.Zero);
+			
+			toolbar.AppendSpace ();
 
 			toolbar.AppendItem ("Horizontal", "Horizontal layout", "Toolbar/Horizontal",
 					    new Image (Stock.GoForward, IconSize.LargeToolbar),
@@ -66,50 +76,53 @@ namespace WidgetViewer {
 
 		static void set_small_icon ()
 		{
-			Console.WriteLine ("set small icon");
 			toolbar.IconSize = IconSize.SmallToolbar;
 		}
 
 		static void set_large_icon ()
 		{
-			Console.WriteLine ("set large icon");
 			toolbar.IconSize = IconSize.LargeToolbar;
 		}
 
 		static void set_icon_only ()
 		{
-			Console.WriteLine ("set icon only");			
-			toolbar.Style = ToolbarStyle.Icons;
+			toolbar.ToolbarStyle = ToolbarStyle.Icons;
 		}
 
 		static void set_text_only ()
 		{
-			Console.WriteLine ("set text only");
-			toolbar.Style = ToolbarStyle.Text;
+			toolbar.ToolbarStyle = ToolbarStyle.Text;
 		}
 
 		static void set_horizontal ()
 		{
-			Console.WriteLine ("set horizontal");
 			toolbar.Orientation = Orientation.Horizontal;
 		}
 
 		static void set_vertical ()
 		{
-			Console.WriteLine ("set vertical");
 			toolbar.Orientation = Orientation.Vertical;
 		}
 		
 		static void set_both ()
 		{
-			Console.WriteLine ("set both");
-			toolbar.Style = ToolbarStyle.Both;
+			toolbar.ToolbarStyle = ToolbarStyle.Both;
 		}
 
 		static void set_both_horiz ()
 		{
-			Console.WriteLine ("set both horiz.");
-			toolbar.Style = ToolbarStyle.BothHoriz;
+			toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
+		}
+
+		static void toggle_tooltips ()
+		{
+			if (showTooltips == true)
+				showTooltips = false;
+			else
+				showTooltips = true;
+
+			toolbar.Tooltips = showTooltips;
+			Console.WriteLine ("Show tooltips: " + showTooltips);
 		}
 
 		static void Close_Button ()

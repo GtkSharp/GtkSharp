@@ -42,7 +42,7 @@ namespace WidgetViewer {
 
 			window.ColorSelection.ColorChanged += new EventHandler (Color_Changed);
 			window.OkButton.Clicked += new EventHandler (Color_Selection_OK);
-			window.CancelButton.Clicked += new EventHandler (Color_Selection_Cancel);			
+			window.CancelButton.Clicked += new EventHandler (Color_Selection_Cancel); 
 
 			options.ShowAll ();
 

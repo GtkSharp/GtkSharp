@@ -23,7 +23,7 @@ namespace WidgetViewer {
 		{
 			Application.Init ();
 			window = new Window ("Gtk# Widget viewer");
-			window.DeleteEvent += new EventHandler (Window_Delete);
+			window.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			window.SetDefaultSize (250, 200);
 			
 			VBox box1 = new VBox (false, 0);
@@ -67,27 +67,25 @@ namespace WidgetViewer {
 		static void AddWindow (Window dialog)
 		{
 			viewer = dialog;
-			viewer.DeleteEvent += new EventHandler (Viewer_Delete);
+			viewer.DeleteEvent += new DeleteEventHandler (Viewer_Delete);
 			viewer.ShowAll ();
 		}
 
-		static void Window_Delete (object o, EventArgs args)
+		static void Window_Delete (object o, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
-		static void Viewer_Delete (object o, EventArgs args)
+		static void Viewer_Delete (object o, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			viewer.Destroy ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		static void Close_Button (object o, EventArgs args)
 		{
-			Window_Delete (o, args);
+			Window_Delete (o, (DeleteEventArgs) args);
 		}
 
 		static void Check_Buttons (object o, EventArgs args)
