@@ -7,8 +7,16 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Application class</summary>
+    <remarks>
+      <para>
+	Provides the initialization and event loop iteration related
+	methods for the GTK widget library.  Since GTK+ is an event 
+	driven toolkit, Applications register callbacks against various
+	events to handle user input. These callbacks are invoked from
+	the main event loop when events are detected.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -24,8 +32,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Quits the current main loop</summary>
+        <remarks>
+	  <para>
+	    Makes the innermost invocation of the main loop return when it regains control.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RunIteration">
@@ -36,8 +48,41 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary></summary>
+        <remarks>
+	  <para>
+	    Runs a single iteration of the mainloop. If no events are
+	    waiting to be processed GTK+ will block until the next
+	    event is noticed.  If you don't want to block look at <see
+	    cref="M:Gtk.Application.RunIteration(bool)"/> or check if
+	    any events are pending with <see
+	    cref="M:Gtk.Application.EventsPending()"/> first.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RunIteration">
+      <MemberSignature Language="C#" Value="public static void RunIteration (bool block);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="block" Type="System.Boolean;" />
+      </Parameters>
+      <Docs>
+        <summary></summary>
+        <param name="block">A boolean value, whether the iteration should block or not</param>
+        <remarks>
+	  <para>
+	    Runs a single iteration of the mainloop. If <paramref
+	    name="block"/> is true, then if no events are
+	    waiting to be processed GTK+ will block until the next
+	    event is noticed;  If <paramref name="block"/> is false,
+	    then it if no events are waiting to be processed Gtk+ the
+	    routine will return immediately.  
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="EventsPending">
@@ -48,9 +93,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether there are events on the queue</summary>
+        <returns>true if events are available to be processed, false otherwise</returns>
+        <remarks>
+	  <para>
+	    Checks if any events are pending. This can be used to
+	    update the GUI and invoke timeouts etc. while doing some
+	    time intensive computation.
+	  </para>
+	  <example>
+	    <code lang="C#">
+	      void LongComputation ()
+	      {
+	           while (!done){
+	               ComputationChunk ();
+
+	               // Flush pending events to keep the GUI reponsive
+	               while (Application.EventsPending ())
+	                  Application.RunIteration ();
+	           }
+	      }
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Run">
@@ -61,20 +126,80 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Runs the main loop</summary>
+        <remarks>
+	  <para>
+	    Runs the main loop until <see
+	    cref="M:Gtk.Application.Quit()"/> is called. You can nest
+	    calls to <see cref="Gtk.Application.Run()"/>.  In that
+	    case <see cref="M:Gtk.Application.Quit()"/> will make the
+	    innermost invocation of the main loop return.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Init">
-      <MemberSignature Language="C#" Value="public static void Init ();" />
+      <MemberSignature Language="C#" Value="public static void Init (ref string [] args);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="args" Type="System.String[]&amp;" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Initializes GTK+ for operation.</summary>
+        <param name="args">The arguments to pass to the toolkit</param>
+        <remarks>
+	  <para>
+	    Call this function before using any other GTK+ functions
+	    in your GUI applications. It will initialize everything
+	    needed to operate the toolkit.
+	  </para>
+	  <para>
+	    This function will terminate your program if it was unable
+	    to initialize the GUI for some reason. If you want your
+	    program to fall back to a textual interface you want to
+	    call <see cref="M:Gtk.Application.InitCheck()"/> instead.
+	  </para>
+	  <para>
+	    The args values will be modified after Gtk has removed the
+	    command line options that it handles itself.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitCheck">
+      <MemberSignature Language="C#" Value="public static bool InitCheck (ref string [] args);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.String[]&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Initializes GTK+ for operation, probes window system.</summary>
+        <returns>true if the toolkit was initialized, false if the
+        windowing system can not be initilized.</returns>
+        <param name="args">The arguments to pass to the toolkit</param>
+        <remarks>
+	  <para>
+	    You use this call to initialize GTK+ for your GUI
+	    applications.  This method will allow your application to
+	    be both GUI/text.  A true return value means that the
+	    toolkit was initialized, a false value means that the
+	    toolkit could not be initialized.  If you do not want to
+	    do dual GUI/text applications, you can use <see
+	    cref="M:Gtk.Application.Init()"/> instead. 
+	  </para>
+	  <para>
+	    This function will terminate your program if it was unable
+	    to initialize the GUI for some reason. If you want your
+	    program to fall back to a textual interface you want to
+	    call <see cref="M:Gtk.Application.InitCheck()"/> instead.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -89,18 +214,32 @@
       </Docs>
     </Member>
     <Member MemberName="Init">
-      <MemberSignature Language="C#" Value="public static void Init (ref String[] args);" />
+      <MemberSignature Language="C#" Value="public static void Init ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="args" Type="System.String[]&amp;" />
-      </Parameters>
+      <Parameters/>
       <Docs>
-        <summary>To be added</summary>
-        <param name="args">To be added: an object of type 'String[]&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Initializes GTK+ for operation.</summary>
+        <remarks>
+	  <para>
+	    Call this function before using any other GTK+ functions
+	    in your GUI applications. It will initialize everything
+	    needed to operate the toolkit.
+	  </para>
+	  <para>
+	    This function will terminate your program if it was unable
+	    to initialize the GUI for some reason. If you want your
+	    program to fall back to a textual interface you want to
+	    call <see cref="M:Gtk.Application.InitCheck()"/> instead.
+	  </para>
+	  <para>
+	    If you want to pass arguments from the command line use
+	    the <see cref="T:Gtk.Application.Init(ref string[])"/>
+	    method instead. 
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
