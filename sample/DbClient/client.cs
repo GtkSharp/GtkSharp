@@ -335,7 +335,7 @@ class Client {
 		dialog = null;
 	}
 
-		static Gtk.MenuBar CreateMenu ()
+	static Gtk.MenuBar CreateMenu ()
 	{
 		MenuBar mb = new MenuBar ();
 		Menu file_menu = new Menu ();		

@@ -56,13 +56,6 @@ public class Fifteen
 		box.PackStart (new HSeparator (), false, false, 0);
 		HBox hbox = new HBox (false, 4);
 		box.PackStart (hbox, true, false, 4);
-		hbox.Direction = TextDirection.Rtl;
-
-		// Close button
-		Button close = new Button ("_Close");
-		close.BorderWidth = 8;
-		close.Clicked += new EventHandler (Quit);
-		hbox.PackStart (close, true, true, 4);
 
 		// Scramble button here.
 		Button scramble = new Button ("_Scramble");
@@ -71,6 +64,12 @@ public class Fifteen
 		scramble.CanDefault = true;
 		hbox.PackStart (scramble, true, true, 4);
 		scramble.GrabDefault ();
+
+		// Close button
+		Button close = new Button ("_Close");
+		close.BorderWidth = 8;
+		close.Clicked += new EventHandler (Quit);
+		hbox.PackStart (close, true, true, 4);
 		
 		window.ShowAll ();
 		fifteen.Run ();
@@ -90,7 +89,7 @@ public class Fifteen
 		scramble_item.Image = new Gtk.Image (Stock.Refresh, IconSize.Menu);
 		scramble_item.Activated += new EventHandler (Scramble);
 		
-		ImageMenuItem quit_item = new ImageMenuItem ("Quit");
+		ImageMenuItem quit_item = new ImageMenuItem ("_Quit");
 		quit_item.Image = new Gtk.Image (Stock.Quit, IconSize.Menu);
 		quit_item.Activated += new EventHandler (Quit);
 
@@ -114,7 +113,7 @@ public class Fifteen
 		return mb;
 	}
 
-		static void About_Box (object o, EventArgs args)
+	static void About_Box (object o, EventArgs args)
 	{
 		string [] authors = new string [] {
 			"Duncan Mak (duncan@ximian.com)",
@@ -199,7 +198,7 @@ public class BoardPiece : Gnome.CanvasGroup
 		rect.Y2 = 0.0;
 		rect.X2 = PIECE_SIZE;
 		rect.Y2 = PIECE_SIZE;
-		rect.FillColor = Get_Color (i);
+		rect.FillColor = Color;
 		rect.OutlineColor = "black";
 		rect.WidthPixels = 0;
 		
@@ -215,17 +214,19 @@ public class BoardPiece : Gnome.CanvasGroup
 		this.CanvasEvent += new CanvasEventHandler (Piece_Event);
 	}
 
-	static string Get_Color (int piece)
-	{
-		int y = piece / 4;
-		int x = piece % 4;
+	public string Color {
+		get {
+			int y = Number / 4;
+			int x = Number % 4;
 
-		int r = ((4 - x) * 255) / 4;
-		int g = ((4 - y) * 255) / 4;
-		int b = 128;
+			int r = ((4 - x) * 255) / 4;
+			int g = ((4 - y) * 255) / 4;
+			int b = 128;
 
-		return String.Format ("#{0:x2}{1:x2}{2:x2}", r, g, b);
+			return String.Format ("#{0:x2}{1:x2}{2:x2}", r, g, b);
+		}
 	}
+			
 
 	static void Piece_Event (object o, CanvasEventArgs args)
 	{
