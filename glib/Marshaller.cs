@@ -161,6 +161,7 @@ namespace GLib {
 		}
 
 		static DateTime local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
+		static int utc_offset = (int) (DateTime.Now.Subtract (DateTime.UtcNow).TotalSeconds);
 
 		public static IntPtr DateTimeTotime_t (DateTime time)
 		{
@@ -169,7 +170,8 @@ namespace GLib {
 
 		public static DateTime time_tToDateTime (IntPtr time_t)
 		{
-			return local_epoch.AddSeconds ((int)time_t);
+			Console.WriteLine ("in time_tToDateTime from");
+			return local_epoch.AddSeconds ((int)time_t + utc_offset);
 		}
 
 		[DllImport("glibsharpglue")]
