@@ -76,6 +76,64 @@ namespace Gdk {
 				return gtksharp_gdk_event_get_send_event (Handle) == 0 ? false : true;
 			}
 		}
+
+		public static Event GetEvent (IntPtr raw)
+		{
+			switch (gtksharp_gdk_event_get_event_type (raw)) {
+			case EventType.Expose:
+				return new EventExpose (raw);
+			case EventType.MotionNotify:
+				return new EventMotion (raw);
+			case EventType.ButtonPress:
+			case EventType.TwoButtonPress:
+			case EventType.ThreeButtonPress:
+			case EventType.ButtonRelease:
+				return new EventButton (raw);
+			case EventType.KeyPress:
+			case EventType.KeyRelease:
+				return new EventKey (raw);
+			case EventType.EnterNotify:
+			case EventType.LeaveNotify:
+				return new EventCrossing (raw);
+			case EventType.FocusChange:
+				return new EventFocus (raw);
+			case EventType.Configure:
+				return new EventConfigure (raw);
+			case EventType.PropertyNotify:
+				return new EventProperty (raw);
+			case EventType.SelectionClear:
+			case EventType.SelectionRequest:
+			case EventType.SelectionNotify:
+				return new EventSelection (raw);
+			case EventType.ProximityIn:
+			case EventType.ProximityOut:
+				return new EventProximity (raw);
+			case EventType.DragEnter:
+			case EventType.DragLeave:
+			case EventType.DragMotion:
+			case EventType.DragStatus:
+			case EventType.DropStart:
+			case EventType.DropFinished:
+				return new EventDND (raw);
+			case EventType.ClientEvent:
+				return new EventClient (raw);
+			case EventType.VisibilityNotify:
+				return new EventVisibility (raw);
+			case EventType.Scroll:
+				return new EventScroll (raw);
+			case EventType.WindowState:
+				return new EventWindowState (raw);
+			case EventType.Setting:
+				return new EventSetting (raw);
+			case EventType.Map:
+			case EventType.Unmap:
+			case EventType.NoExpose:
+			case EventType.Delete:
+			case EventType.Destroy:
+			default:
+				return new Gdk.Event (raw);
+			}
+		}
 	}
 }
 

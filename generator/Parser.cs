@@ -150,7 +150,12 @@ namespace GtkSharp.Generation {
 				result = new ManualGen (cname, name);
 			else if (type == "alias")
 				result = new AliasGen (cname, name);
-			else
+			else if (type == "marshal") {
+				string mtype = symbol.GetAttribute ("marshal_type");
+				string call = symbol.GetAttribute ("call_fmt");
+				string from = symbol.GetAttribute ("from_fmt");
+				result = new MarshalGen (cname, name, mtype, call, from);
+			} else
 				Console.WriteLine ("Parser::ParseSymbol - Unexpected symbol type " + type);
 
 			return result;
