@@ -90,6 +90,9 @@ namespace GtkSharp.Generation {
 		{
 		}
 		
+		public void Generate (GenerationInfo gen_info)
+		{
+		}
 	}
 }
 

@@ -29,8 +29,17 @@ namespace GtkSharp.Generation {
 		
 		public void Generate ()
 		{
-			StreamWriter sw = CreateWriter ();
+			GenerationInfo gen_info = new GenerationInfo (NSElem);
+			Generate (gen_info);
+		}
 
+		public void Generate (GenerationInfo gen_info)
+		{
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+
+			sw.WriteLine ("namespace " + NS + " {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
@@ -40,15 +49,17 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
-			GenMethods (sw, null, null, true);
-			GenCtors (sw);
+			GenMethods (gen_info, null, null);
+			GenCtors (gen_info);
 			sw.WriteLine ("#endregion");
 			
-			AppendCustom(sw);
+			AppendCustom(sw, gen_info.CustomDir);
 
 			sw.WriteLine ("\t}");
+			sw.WriteLine ("}");
 
-			CloseWriter (sw);
+			sw.Close ();
+			gen_info.Writer = null;
 			Statistics.OpaqueCount++;
 		}
 
@@ -63,12 +74,12 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected override void GenCtors (StreamWriter sw)
+		protected override void GenCtors (GenerationInfo gen_info)
 		{
-			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
-			sw.WriteLine();
+			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			gen_info.Writer.WriteLine();
 
-			base.GenCtors (sw);
+			base.GenCtors (gen_info);
 		}
 
 	}

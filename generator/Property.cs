@@ -50,9 +50,10 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		public void Generate (StreamWriter sw)
+		public void Generate (GenerationInfo gen_info)
 		{
 			SymbolTable table = SymbolTable.Table;
+			StreamWriter sw = gen_info.Writer;
 
 			string c_type = elem.GetAttribute("type");
 			string cs_type = table.GetCSType(c_type);
@@ -112,7 +113,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
 			if (has_getter) {
 				sw.Write("\t\t\tget ");
-				getter.GenerateBody(sw, "\t");
+				getter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
@@ -140,7 +141,7 @@ namespace GtkSharp.Generation {
 
 			if (has_setter) {
 				sw.Write("\t\t\tset ");
-				setter.GenerateBody(sw, "\t");
+				setter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");

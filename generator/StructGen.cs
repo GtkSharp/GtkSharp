@@ -14,9 +14,15 @@ namespace GtkSharp.Generation {
 		
 		public StructGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public override void Generate ()
+		public void Generate ()
 		{
-			base.Generate ();
+			GenerationInfo gen_info = new GenerationInfo (NSElem);
+			Generate (gen_info);
+		}
+
+		public override void Generate (GenerationInfo gen_info)
+		{
+			base.Generate (gen_info);
 			Statistics.StructCount++;
 		}		
 	}

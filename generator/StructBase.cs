@@ -206,10 +206,13 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		public virtual void Generate ()
+		public virtual void Generate (GenerationInfo gen_info)
 		{
-			StreamWriter sw = CreateWriter ();
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			
+			sw.WriteLine ("namespace " + NS + " {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
@@ -221,18 +224,22 @@ namespace GtkSharp.Generation {
 
 			GenFields (sw);
 			sw.WriteLine ();
-			GenCtors (sw);
-			GenMethods (sw, null, null, true);
+			GenCtors (gen_info);
+			GenMethods (gen_info, null, null);
 
 			sw.WriteLine ("#endregion");
-			AppendCustom(sw);
+			AppendCustom(sw, gen_info.CustomDir);
 			
 			sw.WriteLine ("\t}");
-			CloseWriter (sw);
+			sw.WriteLine ("}");
+			sw.Close ();
+			gen_info.Writer = null;
 		}
 		
-		protected override void GenCtors (StreamWriter sw)
+		protected override void GenCtors (GenerationInfo gen_info)
 		{
+			StreamWriter sw = gen_info.Writer;
+
 			sw.WriteLine ("\t\tpublic static {0} Zero = new {0} ();", QualifiedName);
 			sw.WriteLine();
 			sw.WriteLine ("\t\tpublic static " + QualifiedName + " New(IntPtr raw) {");
@@ -261,7 +268,7 @@ namespace GtkSharp.Generation {
 					ctor.Params.Static = true;
 			}
 
-			base.GenCtors (sw);
+			base.GenCtors (gen_info);
 		}
 
 	}

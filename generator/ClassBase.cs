@@ -147,27 +147,27 @@ namespace GtkSharp.Generation {
 			return CallByName (var);
 		}
 		
-		protected void GenProperties (StreamWriter sw)
+		protected void GenProperties (GenerationInfo gen_info)
 		{		
 			if (props == null)
 				return;
 
 			foreach (Property prop in props.Values) {
 				if (prop.Validate ())
-					prop.Generate (sw);
+					prop.Generate (gen_info);
 				else
 					Console.WriteLine("in Object " + QualifiedName);
 			}
 		}
 
-		public void GenSignals (StreamWriter sw, ClassBase implementor)
+		public void GenSignals (GenerationInfo gen_info, ClassBase implementor)
 		{		
 			if (sigs == null)
 				return;
 
 			foreach (Signal sig in sigs.Values) {
 				if (sig.Validate ())
-					sig.Generate (sw, implementor);
+					sig.Generate (gen_info, implementor);
 				else
 					Console.WriteLine("in Object " + QualifiedName);
 			}
@@ -194,7 +194,7 @@ namespace GtkSharp.Generation {
 				     (props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
-		public void GenMethods (StreamWriter sw, Hashtable collisions, ClassBase implementor, bool gen_docs)
+		public void GenMethods (GenerationInfo gen_info, Hashtable collisions, ClassBase implementor)
 		{		
 			if (methods == null)
 				return;
@@ -205,7 +205,7 @@ namespace GtkSharp.Generation {
 
 				if (method.Validate ())
 				{
-					String oname = null, oprotection = null;
+					string oname = null, oprotection = null;
 					if (collisions != null && collisions.Contains (method.Name))
 					{
 						oname = method.Name;
@@ -213,7 +213,7 @@ namespace GtkSharp.Generation {
 						method.Name = Name + "." + method.Name;
 						method.Protection = "";
 					}
-					method.Generate (sw, implementor, gen_docs);
+					method.Generate (gen_info, implementor);
 					if (oname != null)
 					{
 						method.Name = oname;
@@ -343,7 +343,7 @@ namespace GtkSharp.Generation {
 			ctors_initted = true;
 		}
 
-		protected virtual void GenCtors (StreamWriter sw)
+		protected virtual void GenCtors (GenerationInfo gen_info)
 		{
 			ClassBase klass = this;
 			while (klass != null) {
@@ -352,11 +352,11 @@ namespace GtkSharp.Generation {
 			}
 			
 			foreach (Ctor ctor in ctors)
-				ctor.Generate (sw);
+				ctor.Generate (gen_info);
 
 			if (!clash_map.ContainsKey("") && hasDefaultConstructor) {
-				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
-				sw.WriteLine();
+				gen_info.Writer.WriteLine("\t\tprotected " + Name + "() : base(){}");
+				gen_info.Writer.WriteLine();
 			}
 
 		}

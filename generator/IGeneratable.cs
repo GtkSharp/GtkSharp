@@ -6,28 +6,28 @@
 
 namespace GtkSharp.Generation {
 
-	using System;
-
 	public interface IGeneratable  {
 
-		String CName {get;}
+		string CName {get;}
 
-		String MarshalType {get;}
+		string MarshalType {get;}
 
-		String MarshalReturnType {get;}
+		string MarshalReturnType {get;}
 
-		String Name {get;}
+		string Name {get;}
 
-		String QualifiedName {get;}
+		string QualifiedName {get;}
 
-		String CallByName (String var_name);
+		string CallByName (string var_name);
 		
-		String FromNative (String var);
+		string FromNative (string var);
 
-		String FromNativeReturn (String var);
+		string FromNativeReturn (string var);
 
-		String ToNativeReturn (String var);
+		string ToNativeReturn (string var);
 
 		void Generate ();
+
+		void Generate (GenerationInfo gen_info);
 	}
 }

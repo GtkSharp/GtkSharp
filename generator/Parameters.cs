@@ -329,8 +329,9 @@ namespace GtkSharp.Generation {
 				signature = signature.Remove (signature.Length - 2, 2);
 		}
 
-		public void Initialize (StreamWriter sw, bool is_get, bool is_set, string indent)
+		public void Initialize (GenerationInfo gen_info, bool is_get, bool is_set, string indent)
 		{
+			StreamWriter sw = gen_info.Writer;
 			foreach (Parameter p in param_list) {
 
 				IGeneratable gen = p.Generatable;
@@ -349,7 +350,7 @@ namespace GtkSharp.Generation {
 
 				if (gen is CallbackGen) {
 					CallbackGen cbgen = gen as CallbackGen;
-					string wrapper = cbgen.GenWrapper(impl_ns);
+					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
 					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", wrapper, name);
 					sw.Write (indent + "\t\t\t");
 					if (p.NullOk)

@@ -92,8 +92,9 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public void Generate (StreamWriter sw)
+		public void Generate (GenerationInfo gen_info)
 		{
+			StreamWriter sw = gen_info.Writer;
 			string sigtypes = "";
 			string sig = "()";
 			string call = "()";
@@ -136,7 +137,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{");
 
 				if (parms != null)
-					parms.Initialize(sw, false, false, ""); 
+					parms.Initialize(gen_info, false, false, ""); 
 
 				sw.Write("\t\t\treturn ");
 				if (container_type is StructBase)
@@ -149,7 +150,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{");
 
 				if (parms != null)
-					parms.Initialize(sw, false, false, ""); 
+					parms.Initialize(gen_info, false, false, ""); 
 				sw.WriteLine("\t\t\t{0} = {1}{2};", container_type.AssignToName, cname, call);
 				if (parms != null)
 					parms.HandleException (sw, "");

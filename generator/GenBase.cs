@@ -51,6 +51,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public XmlElement NSElem {
+			get {
+				return ns;
+			}
+		}
+
 		public string QualifiedName {
 			get {
 				return NS + "." + Name;
@@ -90,10 +96,10 @@ namespace GtkSharp.Generation {
 			sw.Close();
 		}
 		
-		public void AppendCustom (StreamWriter sw)
+		public void AppendCustom (StreamWriter sw, string custom_dir)
 		{
 			char sep = Path.DirectorySeparatorChar;
-			string custom = ".." + sep + NS.ToLower() + sep + Name + ".custom";
+			string custom = custom_dir + sep + Name + ".custom";
 			if (File.Exists(custom)) {
 				sw.WriteLine ("#region Customized extensions");
 				sw.WriteLine ("#line 1 \"" + Name + ".custom\"");

@@ -248,8 +248,6 @@ namespace GtkSharp.Generation {
 			if (elem.HasAttribute("shared"))
 				return;
 
-			GenerateComments (sw);
-
 			if (is_get || is_set)
 			{
 				Method comp = GetComplement ();
@@ -279,32 +277,14 @@ namespace GtkSharp.Generation {
 			Statistics.MethodCount++;
 		}
 
-		void GenerateComments (StreamWriter sw)
-		{
-			string summary, sname;
-			sw.WriteLine();
-			if (is_get || is_set) {
-				summary = "Property";
-				sname = Name.Substring (3);
-			} else {
-				summary = "Method";
-				sname = Name;
-			}
-		}
-
 		public void GenerateImport (StreamWriter sw)
 		{
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
-			sw.Write("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
+			sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
 			sw.WriteLine();
 		}
 
-		public void Generate (StreamWriter sw, ClassBase implementor)
-		{
-			Generate (sw, implementor, true);
-		}
-		
-		public void Generate (StreamWriter sw, ClassBase implementor, bool gen_docs)
+		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
 			Method comp = null;
 
@@ -334,51 +314,49 @@ namespace GtkSharp.Generation {
 					comp = null;
 			}
 			
-			GenerateImport (sw);
+			GenerateImport (gen_info.Writer);
 			if (comp != null && s_ret == comp.parms.AccessorReturnType)
-				comp.GenerateImport (sw);
+				comp.GenerateImport (gen_info.Writer);
 			
-			if (gen_docs)
-				GenerateComments (sw);
-
-			sw.Write("\t\t");
+			gen_info.Writer.Write("\t\t");
 			if (protection != "")
-				sw.Write("{0} ", protection);
-			GenerateDeclCommon (sw, implementor);
+				gen_info.Writer.Write("{0} ", protection);
+			GenerateDeclCommon (gen_info.Writer, implementor);
 
 			if (is_get || is_set)
 			{
-				sw.Write ("\t\t\t");
-				sw.Write ((is_get) ? "get" : "set");
-				GenerateBody (sw, "\t");
+				gen_info.Writer.Write ("\t\t\t");
+				gen_info.Writer.Write ((is_get) ? "get" : "set");
+				GenerateBody (gen_info, "\t");
 			}
 			else
-				GenerateBody (sw, "");
+				GenerateBody (gen_info, "");
 			
 			if (is_get || is_set)
 			{
 				if (comp != null && s_ret == comp.parms.AccessorReturnType)
 				{
-					sw.WriteLine ();
-					sw.Write ("\t\t\tset");
-					comp.GenerateBody (sw, "\t");
+					gen_info.Writer.WriteLine ();
+					gen_info.Writer.Write ("\t\t\tset");
+					comp.GenerateBody (gen_info, "\t");
 				}
-				sw.WriteLine ();
-				sw.WriteLine ("\t\t}");
+				gen_info.Writer.WriteLine ();
+				gen_info.Writer.WriteLine ("\t\t}");
 			}
 			else
-				sw.WriteLine();
+				gen_info.Writer.WriteLine();
 			
-			sw.WriteLine();
+			gen_info.Writer.WriteLine();
 
 			Statistics.MethodCount++;
 		}
 
-		public void GenerateBody (StreamWriter sw, string indent)
+		public void GenerateBody (GenerationInfo gen_info, string indent)
 		{
+			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine(" {");
 			if (parms != null)
-				parms.Initialize(sw, is_get, is_set, indent);
+				parms.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
 

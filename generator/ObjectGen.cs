@@ -53,8 +53,17 @@ namespace GtkSharp.Generation {
 
 		public void Generate ()
 		{
-			StreamWriter sw = CreateWriter ();
+			GenerationInfo gen_info = new GenerationInfo (NSElem);
+			Generate (gen_info);
+		}
 
+		public void Generate (GenerationInfo gen_info)
+		{
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+
+			sw.WriteLine ("namespace " + NS + " {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
@@ -76,8 +85,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
-			GenCtors (sw);
-			GenProperties (sw);
+			GenCtors (gen_info);
+			GenProperties (gen_info);
 			
 			bool has_sigs = (sigs != null);
 			if (!has_sigs) {
@@ -93,10 +102,10 @@ namespace GtkSharp.Generation {
 			if (has_sigs && Elem.HasAttribute("parent"))
 			{
 				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-				GenSignals (sw, null);
+				GenSignals (gen_info, null);
 			}
 
-			GenMethods (sw, null, null, true);
+			GenMethods (gen_info, null, null);
 			
 			if (interfaces != null) {
 				Hashtable all_methods = new Hashtable ();
@@ -115,8 +124,8 @@ namespace GtkSharp.Generation {
 					if (Parent != null && Parent.Implements (iface))
 						continue;
 					ClassBase igen = table.GetClassGen (iface);
-					igen.GenMethods (sw, collisions, this, false);
-					igen.GenSignals (sw, this);
+					igen.GenMethods (gen_info, collisions, this);
+					igen.GenSignals (gen_info, this);
 				}
 			}
 
@@ -126,29 +135,31 @@ namespace GtkSharp.Generation {
 			}
 
 			sw.WriteLine ("#endregion");
-			AppendCustom(sw);
+			AppendCustom (sw, gen_info.CustomDir);
 
 			sw.WriteLine ("\t}");
+			sw.WriteLine ("}");
 
-			CloseWriter (sw);
+			sw.Close ();
+			gen_info.Writer = null;
 			Statistics.ObjectCount++;
 		}
 
-		protected override void GenCtors (StreamWriter sw)
+		protected override void GenCtors (GenerationInfo gen_info)
 		{
 			if (!Elem.HasAttribute("parent"))
 				return;
 
-			sw.WriteLine("\t\t~" + Name + "()");
-			sw.WriteLine("\t\t{");
-			sw.WriteLine("\t\t\tDispose();");
-			sw.WriteLine("\t\t}");
-			sw.WriteLine();
-			sw.WriteLine("\t\tprotected " + Name + "(GLib.Type gtype) : base(gtype) {}");
-			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
-			sw.WriteLine();
+			gen_info.Writer.WriteLine("\t\t~" + Name + "()");
+			gen_info.Writer.WriteLine("\t\t{");
+			gen_info.Writer.WriteLine("\t\t\tDispose();");
+			gen_info.Writer.WriteLine("\t\t}");
+			gen_info.Writer.WriteLine();
+			gen_info.Writer.WriteLine("\t\tprotected " + Name + "(GLib.Type gtype) : base(gtype) {}");
+			gen_info.Writer.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			gen_info.Writer.WriteLine();
 
-			base.GenCtors (sw);
+			base.GenCtors (gen_info);
 		}
 
 		/* Keep this in sync with the one in glib/ObjectManager.cs */

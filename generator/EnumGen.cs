@@ -49,7 +49,18 @@ namespace GtkSharp.Generation {
 		
 		public void Generate ()
 		{
-			StreamWriter sw = CreateWriter ();
+			GenerationInfo gen_info = new GenerationInfo (NSElem);
+			Generate (gen_info);
+		}
+
+		public void Generate (GenerationInfo gen_info)
+		{
+			StreamWriter sw = gen_info.OpenStream (Name);
+
+			sw.WriteLine ("namespace " + NS + " {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
+			sw.WriteLine ();
 
 			if (Elem.GetAttribute("type") == "flags") {
 				sw.WriteLine ();
@@ -104,7 +115,8 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("#endregion");
-			CloseWriter (sw);
+			sw.WriteLine ("}");
+			sw.Close ();
 			Statistics.EnumCount++;
 		}
 		

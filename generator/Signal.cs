@@ -122,8 +122,9 @@ namespace GtkSharp.Generation {
 			return ns + "Sharp." + handler;
 		}
 
-		public void Generate (StreamWriter sw, ClassBase implementor)
+		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
+			StreamWriter sw = gen_info.Writer;
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 			string ns;
 			if (implementor == null)
