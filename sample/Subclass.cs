@@ -45,12 +45,12 @@ namespace GtkSamples {
 
 		static uint gtype = 0;
 
-		public MyButton () : base (GType) {}
+		public MyButton () : base (new GLib.Type (GType)) {}
 
 		public static new uint GType {
 			get {
 				if (gtype == 0)
-					gtype = RegisterGType (typeof (MyButton));
+					gtype = RegisterGType (typeof (MyButton)).Value;
 				return gtype;
 			}
 		}
