@@ -23,14 +23,15 @@
 		[DllImport("gtksharpglue")]
 		static extern void gtksharp_cellrenderer_override_get_size (GLib.GType gtype, GetSizeDelegate cb);
 		
-		delegate void GetSizeDelegate (IntPtr item, IntPtr widget, ref Gdk.Rectangle cell_area, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
+		delegate void GetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
                 
 		static GetSizeDelegate GetSizeCallback;
 		
-		static void GetSize_cb (IntPtr item, IntPtr widget, ref Gdk.Rectangle cell_area, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height)
+		static void GetSize_cb (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height)
 		{
 			CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
 			Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
+			Gdk.Rectangle cell_area = Gdk.Rectangle.New (cell_area_ptr);
 			int a, b, c, d;
 
 			obj.OnGetSize (widg, cell_area, out a, out b, out c, out d);
@@ -38,12 +39,10 @@
 				Marshal.WriteInt32 (x_offset, a);
 			if (y_offset != IntPtr.Zero)
 				Marshal.WriteInt32 (y_offset, b);
-			if (!(cell_area.Equals (Gdk.Rectangle.Zero))) {
-				if (width != IntPtr.Zero)
-					Marshal.WriteInt32 (width, c);
-				if (height != IntPtr.Zero)
-					Marshal.WriteInt32 (height, d);
-			}
+			if (width != IntPtr.Zero)
+				Marshal.WriteInt32 (width, c);
+			if (height != IntPtr.Zero)
+				Marshal.WriteInt32 (height, d);
 		}
 
 		protected static void OverrideGetSize (GLib.GType gtype)
