@@ -1,6 +1,7 @@
 using System;
 using Gda;
 using GnomeDb;
+using GdaSharp;
 using Gtk;
 using GtkSharp;
 
@@ -56,7 +57,7 @@ class GnomeDbClient {
 		if (dialog.Run () == true) {
 			if (client == null) {
 				client = new Gda.Client ();
-				client.Error += new GtkSharp.ErrorHandler (Client_Error);
+				client.Error += new GdaSharp.ErrorHandler (Client_Error);
 			}
 
 			cnc = client.OpenConnection (dialog.Dsn, dialog.Username, dialog.Password);

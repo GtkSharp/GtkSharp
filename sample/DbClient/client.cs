@@ -89,7 +89,7 @@ class Client {
 		toolbar.AppendSpace ();		
 
 		toolbar.InsertStock (Stock.Quit, "Quit", String.Empty,
-				     new SignalFunc (Quit), -1);
+				     new Gtk.SignalFunc (Quit), IntPtr.Zero, -1);
 
 		toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
 	}
