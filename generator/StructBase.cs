@@ -85,15 +85,15 @@ namespace GtkSharp.Generation {
 			}
 			char[] ast = {'*'};
 			c_type = c_type.TrimEnd(ast);
-			String cs_type = SymbolTable.GetCSType(c_type);
+			String m_type = SymbolTable.GetMarshalType(c_type);
 			
-			if (cs_type == "") {
+			if (m_type == "") {
 				Console.WriteLine ("Field has unknown Type {0}", c_type);
 				Statistics.ThrottledCount++;
 				return false;
 			}
 			
-			sw.Write ("\t\t public " + cs_type);
+			sw.Write ("\t\t public " + m_type);
 			if (field.HasAttribute("array_len")) {
 				sw.Write ("[]");
 			}

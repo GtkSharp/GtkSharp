@@ -34,6 +34,7 @@ namespace GtkSamples {
 
 		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
+			Console.WriteLine(args.Event);
 			Application.Quit ();
 			args.RetVal = true;
 		}
