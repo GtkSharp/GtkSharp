@@ -168,7 +168,7 @@ namespace GLib {
 				else
 					g_free (NthData (i));
 			}
-			Dispose ();
+			FreeList ();
 		}
 
 		private class ListEnumerator : IEnumerator
