@@ -14,7 +14,7 @@ gtk-sharp-docs.zip gtk-sharp-docs.tree: en/*/*.xml en/*.xml
 
 update:
 	for i in $(DIRS); do                    		\
-		mono $(UPDATER) ../$$i/*.dll -o ./en -f || exit 1;	\
+		mono --debug $(UPDATER) ../$$i/*.dll -o ./en -f || exit 1;	\
         done
 
 install: gtk-sharp-docs.zip gtk-sharp-docs.tree 

@@ -2,7 +2,9 @@
   <TypeSignature Language="C#" Value="public class TreeViewColumn : Gtk.Object, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
@@ -51,29 +53,6 @@
         <param name="cell">an object of type <see cref="T:Gtk.CellRenderer" /></param>
         <param name="expand">an object of type <see cref="T:System.Boolean" /></param>
         <remarks>If expand is <see langword="false" />, then the cell is allocated no more space than it needs. Any unused space is divided evenly between cells for which expand is <see langword="true" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CellGetSize">
-      <MemberSignature Language="C#" Value="public void CellGetSize (Gdk.Rectangle cell_area, int x_offset, int y_offset, int width, int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="x_offset" Type="System.Int32" />
-        <Parameter Name="y_offset" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the width and height needed to render the column.</summary>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="x_offset">an object of type <see cref="T:System.Int32" /></param>
-        <param name="y_offset">an object of type <see cref="T:System.Int32" /></param>
-        <param name="width">an object of type <see cref="T:System.Int32" /></param>
-        <param name="height">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>This is used primarily by the <see cref="T:Gtk.TreeView" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CellSetCellData">
@@ -538,26 +517,6 @@
         <remarks></remarks>
       </Docs>
     </Member>
-    <Member MemberName="CellGetPosition">
-      <MemberSignature Language="C#" Value="public bool CellGetPosition (Gtk.CellRenderer cell_renderer, int start_pos, int width);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cell_renderer" Type="Gtk.CellRenderer" />
-        <Parameter Name="start_pos" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the horizontal position and size of a cell in a column.</summary>
-        <param name="cell_renderer">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="start_pos">a <see cref="T:System.Int32" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>If the cell is not found in the column, <param name="start_pos" /> and <param name="width" /> are not changed and <see langword="false" /> is returned.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public TreeViewColumn (string title, Gtk.CellRenderer cell, Array attrs);" />
       <MemberType>Constructor</MemberType>
@@ -592,6 +551,49 @@
         <param name="attrs">a <see cref="T:System.Object[]" /></param>
         <returns>a <see cref="T:Gtk.TreeViewColumn" /></returns>
         <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CellGetPosition">
+      <MemberSignature Language="C#" Value="public bool CellGetPosition (Gtk.CellRenderer cell_renderer, out int start_pos, out int width);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell_renderer" Type="Gtk.CellRenderer" />
+        <Parameter Name="start_pos" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Obtains the horizontal position and size of a cell in a column.</summary>
+        <param name="cell_renderer">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="start_pos">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>If the cell is not found in the column, <param name="start_pos" /> and <param name="width" /> are not changed and <see langword="false" /> is returned.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CellGetSize">
+      <MemberSignature Language="C#" Value="public void CellGetSize (Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="x_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y_offset" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Obtains the width and height needed to render the column.</summary>
+        <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
+        <param name="x_offset">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="y_offset">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
+        <remarks>This is used primarily by the <see cref="T:Gtk.TreeView" />.</remarks>
       </Docs>
     </Member>
   </Members>

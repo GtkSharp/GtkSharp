@@ -2,7 +2,9 @@
   <TypeSignature Language="C#" Value="public class AccelGroup : GLib.Object, IWrapper, IDisposable" Maintainer="RJS" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
@@ -19,7 +21,7 @@
       <para>
         Note that accelerators are different from
         mnemonics. Accelerators are shortcuts for activating a menu
-        item; they appear alongside the menu item they're a shortcut
+        item; they appear alongside the menu item they are a shortcut
         for. For example "Ctrl+Q" might appear alongside the "Quit"
         menu item. Mnemonics are shortcuts for GUI elements such as
         text entries or buttons; they appear as underlined
@@ -124,25 +126,6 @@
         <param name="accel_mods">Modifier combination of the accelerator.</param>
         <returns>
           <see langword="true" /> if there was an accelerator which could be removed, <see langword="false" /> otherwise.</returns>
-      </Docs>
-    </Member>
-    <Member MemberName="Query">
-      <MemberSignature Language="C#" Value="public Gtk.AccelGroupEntry Query (uint accel_key, Gdk.ModifierType accel_mods, uint n_entries);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.AccelGroupEntry</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="accel_key" Type="System.UInt32" />
-        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
-        <Parameter Name="n_entries" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Queries an accelerator group for all entries matching accel_key and accel_mods.</summary>
-        <param name="accel_key">Key value of the accelerator.</param>
-        <param name="accel_mods">Modifier combination of the accelerator.</param>
-        <param name="n_entries">Location to return the number of entries found, or <see langword="null" />.</param>
-        <returns>An array of <paramref name="n_entries" /><see cref="T:Gtk.AccelGroupEntry" /> elements, or <see langword="null" />.</returns>
       </Docs>
     </Member>
     <Member MemberName="Lock">
@@ -283,6 +266,26 @@
         <param name="find_func">a <see cref="T:Gtk.AccelGroupFindFunc" /></param>
         <returns>a <see cref="T:Gtk.AccelKey" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Query">
+      <MemberSignature Language="C#" Value="public Gtk.AccelGroupEntry Query (uint accel_key, Gdk.ModifierType accel_mods, out uint n_entries);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.AccelGroupEntry</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accel_key" Type="System.UInt32" />
+        <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
+        <Parameter Name="n_entries" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Queries an accelerator group for all entries matching <paramref name="accel_key" /> and <paramref name="accel_mods" />.</summary>
+        <param name="accel_key">Key value of the accelerator.</param>
+        <param name="accel_mods">Modifier combination of the accelerator.</param>
+        <param name="n_entries">Location to return the number of entries found, or <see langword="null" />.</param>
+        <returns>An array of <paramref name="n_entries" /><see cref="T:Gtk.AccelGroupEntry" /> elements, or <see langword="null" />.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

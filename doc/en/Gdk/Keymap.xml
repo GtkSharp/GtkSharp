@@ -2,7 +2,9 @@
   <TypeSignature Language="C#" Value="public class Keymap : GLib.Object, IWrapper, IDisposable" Maintainer="ct" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
@@ -31,62 +33,6 @@
   </Interfaces>
   <Attributes />
   <Members>
-    <Member MemberName="GetEntriesForKeyval">
-      <MemberSignature Language="C#" Value="public bool GetEntriesForKeyval (uint keyval, Gdk.KeymapKey keys, int n_keys);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="keys" Type="Gdk.KeymapKey" />
-        <Parameter Name="n_keys" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-        Gets a list of keycode/group/level combinations that generate a `keyval`. 
-        The returned list is stored in the `Gdk.KeymapKey keys` parameter/reference. 
-        `uint keyval` is the final value for the combinations being collected.
-        `int n_keys` is the total number of combinations found and returned in `Gdk.KeymapKey keys`.
-        Level determining the top/bottom symbol and group determining the left/right symbol. 
-        On US keyboards, shift changes level and there are no groups. Group can determine language mode, for example, Hebrew/English.
-        </summary>
-        <param name="keyval">An object of type 'uint', such as GDK_a, GDK_up, GDK_RETURN, etc.</param>
-        <param name="keys">An object of type 'Gdk.KeymapKey', the list of key sequences.</param>
-        <param name="n_keys">An object of type 'int', number of elements returned.</param>
-        <returns>An object of type 'bool', returns true if keys were found and returned.</returns>
-        <remarks>
-        None
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEntriesForKeycode">
-      <MemberSignature Language="C#" Value="public bool GetEntriesForKeycode (uint hardware_keycode, Gdk.KeymapKey keys, uint keyvals, int n_entries);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="hardware_keycode" Type="System.UInt32" />
-        <Parameter Name="keys" Type="Gdk.KeymapKey" />
-        <Parameter Name="keyvals" Type="System.UInt32" />
-        <Parameter Name="n_entries" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>
-        Stores in `Gdk.KeymapKey keys` a reference to a list of the keys bound to `hardware_keycode`. The nth Gdk.KeymapKey in `keys` is associated
-        with the nth keyval in `keyvals`. When a keycode is pressed by the user, the keyval from `keys` is selected.
-        </summary>
-        <param name="hardware_keycode">An object of type 'uint', a keyboard code</param>
-        <param name="keys">An object of type 'Gdk.KeymapKey', return reference for the list of keys</param>
-        <param name="keyvals">An object of type 'uint', return reference for the list of corresponding keyvals for `keys`</param>
-        <param name="n_entries">An object of type 'int', number of values stored in `keys` and `keyvals`</param>
-        <returns>An object of type 'bool', true if entries were found.</returns>
-        <remarks>
-        None
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="LookupKey">
       <MemberSignature Language="C#" Value="public uint LookupKey (Gdk.KeymapKey key);" />
       <MemberType>Method</MemberType>
@@ -102,39 +48,6 @@
         </summary>
         <param name="key">An object of type 'Gdk.KeymapKey', initalized keycode/group/level triplet.</param>
         <returns>An object of type 'uint', a keyval or 0 if none was found.</returns>
-        <remarks>
-        None
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TranslateKeyboardState">
-      <MemberSignature Language="C#" Value="public bool TranslateKeyboardState (uint hardware_keycode, Gdk.ModifierType state, int group, uint keyval, int effective_group, int level, Gdk.ModifierType consumed_modifiers);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="hardware_keycode" Type="System.UInt32" />
-        <Parameter Name="state" Type="Gdk.ModifierType" />
-        <Parameter Name="group" Type="System.Int32" />
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="effective_group" Type="System.Int32" />
-        <Parameter Name="level" Type="System.Int32" />
-        <Parameter Name="consumed_modifiers" Type="Gdk.ModifierType" />
-      </Parameters>
-      <Docs>
-        <summary>
-        Translates the contents of a Gdk.KeymapKey into a keyval/group/level. Modifiers affecting the translation are returned 
-        in `consumed_modifiers`. `effective_group` is the group used in translation. Key level is determined by `state`.
-        </summary>
-        <param name="hardware_keycode">An object of type 'uint', a keyboard code.</param>
-        <param name="state">An object of type 'Gdk.ModifierType', a modifier state.</param>
-        <param name="group">An object of type 'int', active keyboard group.</param>
-        <param name="keyval">An object of type 'uint', return reference for `keyval`.</param>
-        <param name="effective_group">An object of type 'int', return reference for `effective group`.</param>
-        <param name="level">An object of type 'int', return reference for the new level.</param>
-        <param name="consumed_modifiers">An object of type 'Gdk.ModifierType', return reference for modifiers used to determine group/level.</param>
-        <returns>An object of type 'bool', return `true` if keys were found and returned.</returns>
         <remarks>
         None
         </remarks>
@@ -279,6 +192,83 @@
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <returns>a <see cref="T:Gdk.Keymap" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TranslateKeyboardState">
+      <MemberSignature Language="C#" Value="public bool TranslateKeyboardState (uint hardware_keycode, Gdk.ModifierType state, int group, out uint keyval, out int effective_group, out int level, out Gdk.ModifierType consumed_modifiers);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hardware_keycode" Type="System.UInt32" />
+        <Parameter Name="state" Type="Gdk.ModifierType" />
+        <Parameter Name="group" Type="System.Int32" />
+        <Parameter Name="keyval" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="effective_group" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="level" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="consumed_modifiers" Type="Gdk.ModifierType&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Translates the contents of a Gdk.KeymapKey into a keyval/group/level. Modifiers affecting the translation are returned 
+        in `consumed_modifiers`. `effective_group` is the group used in translation. Key level is determined by `state`.</summary>
+        <param name="hardware_keycode">An object of type <see cref="T:System.UInt32" />, a keyboard code.</param>
+        <param name="state">An object of type <see cref="T:Gdk.ModifierType" />, a modifier state.</param>
+        <param name="group">An object of type <see cref="T:System.Int32" />, active keyboard group.</param>
+        <param name="keyval">An object of type <see cref="T:System.UInt32" />, return reference for `keyval`.</param>
+        <param name="effective_group">An object of type <see cref="T:System.Int32" />, return reference for `effective group`.</param>
+        <param name="level">An object of type <see cref="T:System.Int32" />, return reference for the new level.</param>
+        <param name="consumed_modifiers">An object of type <see cref="T:Gdk.ModifierType" />, return reference for modifiers used to determine group/level.</param>
+        <returns>An object of type <see cref="T:System.Boolean" />, return <see langword="true" /> if keys were found and returned.</returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEntriesForKeycode">
+      <MemberSignature Language="C#" Value="public bool GetEntriesForKeycode (uint hardware_keycode, Gdk.KeymapKey keys, out uint keyvals, out int n_entries);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hardware_keycode" Type="System.UInt32" />
+        <Parameter Name="keys" Type="Gdk.KeymapKey" />
+        <Parameter Name="keyvals" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="n_entries" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Stores in <paramref name="keys" /> a reference to a list of the keys bound to <paramref name="hardware_keycode" />. The nth Gdk.KeymapKey in <paramref name="keys" /> is associated
+-        with the nth keyval in <paramref name="keyvals" />. When a keycode is pressed by the user, the keyval from <paramref name="keys" /> is selected.</summary>
+        <param name="hardware_keycode">An object of type <see cref="T:System.UInt32" />, a keyboard code.</param>
+        <param name="keys">An object of type <see cref="T:Gdk.KeymapKey" />, return reference for the list of keys.</param>
+        <param name="keyvals">An object of type <see cref="T:System.UInt32" />, return reference for the list of corresponding keyvals for <paramref name="keys" /></param>
+        <param name="n_entries">An object of type <see cref="T:System.Int32" />, number of values stored in <paramref name="keys" /> and <paramref name="keyvals" />.</param>
+        <returns>An object of type <see cref="T:System.Boolean" />, true if entries were found.</returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEntriesForKeyval">
+      <MemberSignature Language="C#" Value="public bool GetEntriesForKeyval (uint keyval, Gdk.KeymapKey keys, out int n_keys);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyval" Type="System.UInt32" />
+        <Parameter Name="keys" Type="Gdk.KeymapKey" />
+        <Parameter Name="n_keys" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Gets a list of keycode/group/level combinations that generate a <paramref name="keyval" />. 
+-        The returned list is stored in the <paramref name="keys" /> parameter/reference. 
+-        <paramref name="keyval" /> is the final value for the combinations being collected.
+-        <paramref name="n_keys" /> is the total number of combinations found and returned in <paramref name="keys" />.
+-        Level determining the top/bottom symbol and group determining the left/right symbol. 
+-        On US keyboards, shift changes level and there are no groups. Group can determine language mode, for example, Hebrew/English.</summary>
+        <param name="keyval">An object of type <see cref="T:System.UInt32" />, such as GDK_a, GDK_up, GDK_RETURN, etc.</param>
+        <param name="keys">An object of type <see cref="T:Gdk.KeymapKey" />, the list of key sequences.</param>
+        <param name="n_keys">An object of type <see cref="T:System.Int32" />, number of elements returned.</param>
+        <returns>An object of type <see cref="T:System.Boolean" />, returns <see langword="true" /> if keys were found and returned.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

@@ -2,7 +2,9 @@
   <TypeSignature Language="C#" Value="public sealed struct GlyphString;" Maintainer="auto" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
@@ -78,25 +80,6 @@
         <summary>To be added</summary>
         <param name="raw">To be added: an object of type 'IntPtr'</param>
         <returns>To be added: an object of type 'Pango.GlyphString'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetLogicalWidths">
-      <MemberSignature Language="C#" Value="public void GetLogicalWidths (string text, int embedding_level, int logical_widths);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-        <Parameter Name="embedding_level" Type="System.Int32" />
-        <Parameter Name="logical_widths" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="embedding_level">To be added: an object of type 'int'</param>
-        <param name="logical_widths">To be added: an object of type 'int'</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -205,31 +188,8 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="XToIndex">
-      <MemberSignature Language="C#" Value="public void XToIndex (string text, Pango.Analysis analysis, int x_pos, int index_, int trailing);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="text" Type="System.String" />
-        <Parameter Name="analysis" Type="Pango.Analysis" />
-        <Parameter Name="x_pos" Type="System.Int32" />
-        <Parameter Name="index_" Type="System.Int32" />
-        <Parameter Name="trailing" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="analysis">a <see cref="T:Pango.Analysis" /></param>
-        <param name="x_pos">a <see cref="T:System.Int32" /></param>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
-        <param name="trailing">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="IndexToX">
-      <MemberSignature Language="C#" Value="public void IndexToX (string text, Pango.Analysis analysis, int index_, bool trailing, int x_pos);" />
+      <MemberSignature Language="C#" Value="public void IndexToX (string text, Pango.Analysis analysis, int index_, bool trailing, out int x_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -239,7 +199,7 @@
         <Parameter Name="analysis" Type="Pango.Analysis" />
         <Parameter Name="index_" Type="System.Int32" />
         <Parameter Name="trailing" Type="System.Boolean" />
-        <Parameter Name="x_pos" Type="System.Int32" />
+        <Parameter Name="x_pos" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
         <summary>To be added</summary>
@@ -247,7 +207,49 @@
         <param name="analysis">a <see cref="T:Pango.Analysis" /></param>
         <param name="index_">a <see cref="T:System.Int32" /></param>
         <param name="trailing">a <see cref="T:System.Boolean" /></param>
+        <param name="x_pos">a <see cref="T:System.Int32&amp;" /></param>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XToIndex">
+      <MemberSignature Language="C#" Value="public void XToIndex (string text, Pango.Analysis analysis, int x_pos, out int index_, out int trailing);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="analysis" Type="Pango.Analysis" />
+        <Parameter Name="x_pos" Type="System.Int32" />
+        <Parameter Name="index_" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="trailing" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <param name="analysis">a <see cref="T:Pango.Analysis" /></param>
         <param name="x_pos">a <see cref="T:System.Int32" /></param>
+        <param name="index_">a <see cref="T:System.Int32&amp;" /></param>
+        <param name="trailing">a <see cref="T:System.Int32&amp;" /></param>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLogicalWidths">
+      <MemberSignature Language="C#" Value="public void GetLogicalWidths (string text, int embedding_level, out int logical_widths);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="embedding_level" Type="System.Int32" />
+        <Parameter Name="logical_widths" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="text">a <see cref="T:System.String" /></param>
+        <param name="embedding_level">a <see cref="T:System.Int32" /></param>
+        <param name="logical_widths">a <see cref="T:System.Int32&amp;" /></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

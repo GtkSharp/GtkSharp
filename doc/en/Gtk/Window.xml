@@ -2,7 +2,9 @@
   <TypeSignature Language="C#" Value="public class Window : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
@@ -40,7 +42,7 @@
         <summary>Returns a list of all existing toplevel windows.</summary>
         <returns>List of toplevel widgets.</returns>
         <remarks>
-         <para>
+          <para>
 	  The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, <see langword="null" />) first, and then unref all the widgets afterwards.
          </para>
         </remarks>
@@ -65,7 +67,7 @@
         <param name="root_y">Y position where the user clicked to initiate the drag.</param>
         <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
         <remarks>
-         <para>
+          <para>
 	  This method is used if an application has window movement grips. When GDK can support it, the window movement will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window movement, potentially not all that well, depending on the windowing system.
          </para>
         </remarks>
@@ -90,10 +92,10 @@
         <param name="right">Location to store the width of the frame at the returns, or <see langword="null" />.</param>
         <param name="bottom">Location to store the height of the frame at the bottom, or <see langword="null" />.</param>
         <remarks>
-         <para>
+          <para>
 	  It will not return the size of the window border drawn by the window manager, which is the normal case when using a windowing system. See <see cref="M:Gdk.Window.GetFrameExtents" /> to get the standard window border extents.) See also <see cref="P:Gtk.Window.HasFrame" />, <see cref="M:Gtk.Window.SetFrameDimensions" />.
          </para>
-	 <para>
+          <para>
 	  Note: this is a special-purpose method intended for the framebuffer port; see <see cref="M:Gtk.Window.SetFrameDimensions" />.
 	 </para>
         </remarks>
@@ -109,10 +111,10 @@
       <Docs>
         <summary>Asks to iconify (i.e. minimize) the specified <paramref name="window" />.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely iconified afterward, because other entities (e.g. the user or window manager) could deiconify it again, or there may not be a window manager in which case iconification isn't possible, etc. But normally the window will end up iconified. Just do not write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
 	 </para>
         </remarks>
@@ -128,10 +130,10 @@
       <Docs>
         <summary>Asks to unstick <paramref name="window" />, which means that it will appear on only one of the user's desktops.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely unstuck afterward, because other entities (e.g. the user or window manager) could stick it again. But normally the window will end up stuck. Just do not write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
 	 </para>
         </remarks>
@@ -147,12 +149,11 @@
       <Docs>
         <summary>Asks to unmaximize <paramref name="window" />.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely unmaximized afterward, because other entities (e.g. the user or window manager) could maximize it again, and not all window managers honor requests to unmaximize. But normally the window will end up unmaximized. Just don't write code that crashes if not.
 	 </para>
-	 <para>
-	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />
-	 </para>
+          <para>
+	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" /></para>
         </remarks>
       </Docs>
     </Member>
@@ -171,10 +172,10 @@
         <param name="width">Return location for width, or <see langword="null" />.</param>
         <param name="height">Return location for height, or <see langword="null" />.</param>
         <remarks>
-	 <para>
+          <para>
 	  If window is not onscreen, it returns the size GTK# will suggest to the window manager for the initial window size (but this is not reliably the same as the size the window manager will actually select). The size obtained by <see cref="M:Gtk.Window.GetSize" /> is the last size received in a GdkEventConfigure, that is, GTK# uses its locally-stored size, rather than querying the X server for the size. As a result, if you call <see cref="M:Gtk.Window.Resize" /> then immediately call <see cref="M:Gtk.Window.GetSize" />, the size would not have taken effect yet. After the window manager processes the resize request, GTK# receives notification that the size has changed via a configure event, and the size of the window gets updated.
 	 </para>
-	 <para>
+          <para>
 	  Note 1: Nearly any use of this method creates a race condition, because the size of the window may change between the time that you get the size and the time that you perform some action assuming that size is the current size. To avoid race conditions, connect to <see cref="F:Gtk.Widget.ConfigureEvent" /> on the window and adjust your size-dependent state to match the size delivered in the GdkEventConfigure.
 	 </para>
         </remarks>
@@ -195,7 +196,7 @@
         <param name="width">Location to store the default width, or <see langword="null" />.</param>
         <param name="height">Location to store the default height, or <see langword="null" />.</param>
         <remarks>
-	 <para>
+          <para>
 	  A value of -1 for the width or height indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the window will be used.
 	 </para>
         </remarks>
@@ -216,13 +217,13 @@
         <param name="width">Width in pixels to resize the window to.</param>
         <param name="height">Height in pixels to resize the window to.</param>
         <remarks>
-	 <para>
+          <para>
 	  The default geometry constraint is that windows may not be smaller than their size request; to override this constraint, call <see cref="M:Gtk.Widget.SetSizeRequest" /> to set the window's request to a smaller value.
 	 </para>
-	 <para>
+          <para>
 	  If <see cref="M:Gtk.Window.Resize" /> is called before showing a window for the first time, it overrides any default size set with <see cref="M:Gtk.Window.SetDefaultSize" />. Windows may not be resized smaller than 1 by 1 pixels.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ActivateFocus">
@@ -234,7 +235,8 @@
       <Parameters />
       <Docs>
         <summary>Activates the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
-        <returns><see langword="true" /> if a <paramref name="widget" /> got activated.</returns>
+        <returns>
+          <see langword="true" /> if a <paramref name="widget" /> got activated.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -250,21 +252,22 @@
       <Docs>
         <summary>Parses a standard X Window System geometry string.</summary>
         <param name="geometry"></param>
-        <returns><see langword="true" /> if string was parsed successfully.</returns>
+        <returns>
+          <see langword="true" /> if string was parsed successfully.</returns>
         <remarks>
-	 <para>
-	 <see cref="M:Gtk.Window.ParseGeometry" /> does work on all GTK# ports including Win32 but is primarily intended for an X environment.
+          <para>
+            <see cref="M:Gtk.Window.ParseGeometry" /> does work on all GTK# ports including Win32 but is primarily intended for an X environment.
 	 </para>
-	 <para>
+          <para>
 	  If either a size or a position can be extracted from the geometry string, <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" /> and calls <see cref="M:Gtk.Window.SetDefaultSize" /> and/or <see cref="M:Gtk.Window.Move" /> to resize/move the window.
 	 </para>
-	 <para>
+          <para>
 	  If <see cref="M:Gtk.Window.ParseGeometry" /> returns <see langword="true" />, it will also set the GDK_HINT_USER_POS and/or GDK_HINT_USER_SIZE hints indicating to the window manager that the size/position of the window was user-specified. This causes most window managers to honor the geometry.
 	 </para>
-	 <para>
+          <para>
 	  Note that for <see cref="M:Gtk.Window.ParseGeometry" /> to work as expected, it has to be called when the window has its "final" size, i.e. after calling <see cref="M:Gtk.Widget.ShowAll" /> on the contents and <see cref="M:Gtk.Window.SetGeometryHints" /> on the window.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveAccelGroup">
@@ -292,13 +295,13 @@
       <Docs>
         <summary>Asks to stick <paramref name="window" />, which means that it will appear on all user desktops.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely stuck afterward, because other entities (e.g. the user or window manager) could unstick it again, and some window managers do not support sticking windows. But normally the window will end up stuck. Just don't write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track stickiness via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. It's permitted to call this method before showing a window.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFrameDimensions">
@@ -320,10 +323,10 @@
         <param name="right">The width of the right border.</param>
         <param name="bottom">The height of the bottom border.</param>
         <remarks>
-	 <para>
+          <para>
 	  Note: this is a special-purpose method intended for the framebuffer port; see <see cref="P:Gtk.Window.HasFrame" />. It will have no effect on the window border drawn by the window manager, which is the normal case when using the X Window system.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddMnemonic">
@@ -364,10 +367,10 @@
         <param name="root_y">Y position where the user clicked to initiate the drag</param>
         <param name="timestamp">Timestamp from the click event that initiated the drag.</param>
         <remarks>
-	 <para>
+          <para>
 	  This method is used if an application has window resizing controls. When GDK can support it, the resize will be done using the standard mechanism for the window manager or windowing system. Otherwise, GDK will try to emulate window resizing, potentially not all that well, depending on the windowing system.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPosition">
@@ -385,22 +388,22 @@
         <param name="root_x">Return location for X coordinate of gravity-determined reference point.</param>
         <param name="root_y">Return location for Y coordinate of gravity-determined reference point.</param>
         <remarks>
-	 <para>
+          <para>
 	  If you haven't changed the window gravity, its gravity will be GDK_GRAVITY_NORTH_WEST. This means that <see cref="M:Gtk.Window.GetPosition" /> gets the position of the top-left corner of the window manager frame for the window. <see cref="M:Gtk.Window.Move" /> sets the position of this same top-left corner.
 	 </para>
-	 <para>
-	  <see cref="M:Gtk.Window.GetPosition" /> is not 100% reliable because the X Window System does not specify a way to obtain the geometry of the decorations placed on a window by the window manager. Thus GTK# is using a "best guess" that works with most window managers.
+          <para>
+            <see cref="M:Gtk.Window.GetPosition" /> is not 100% reliable because the X Window System does not specify a way to obtain the geometry of the decorations placed on a window by the window manager. Thus GTK# is using a "best guess" that works with most window managers.
 	 </para>
-	 <para>
+          <para>
 	  Moreover, nearly all window managers are historically broken with respect to their handling of window gravity. So moving a window to its current position as returned by <see cref="M:Gtk.Window.GetPostion" /> tends to result in moving the window slightly. Window managers are slowly getting better over time.
 	 </para>
-	 <para>
+          <para>
 	  If a window has gravity GDK_GRAVITY_STATIC the window manager frame is not relevant, and thus <see cref="M:Gtk.Window.GetPosition" /> will always produce accurate results. However you can't use static gravity to do things like place a window in a corner of the screen, because static gravity ignores the window manager decorations.
 	 </para>
-	 <para>
+          <para>
 	  If you are saving and restoring your application's window positions, you should know that it's impossible for applications to do this without getting it somewhat wrong because applications do not have sufficient knowledge of window manager state. The Correct Mechanism is to support the session management protocol (see the "GnomeClient" object in the GNOME libraries for example) and allow the window manager to save your window sizes and positions.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Deiconify">
@@ -413,13 +416,13 @@
       <Docs>
         <summary>Asks to deiconify (i.e. unminimizw) the specified <paramref name="window" />.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely deiconified afterward, because other entities (e.g. the user or window manager) could iconify it again before your code which assumes deiconification gets to run.
 	 </para>
-	 <para>
+          <para>
 	  You can track iconification via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. 
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MnemonicActivate">
@@ -436,7 +439,8 @@
         <summary>Activates the targets associated with the mnemonic.</summary>
         <param name="keyval">The mnemonic.</param>
         <param name="modifier">The modifiers.</param>
-        <returns><see langword="true" /> if the activation is done.</returns>
+        <returns>
+          <see langword="true" /> if the activation is done.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -449,12 +453,13 @@
       <Parameters />
       <Docs>
         <summary>Activates the default <paramref name="widget" /> for the <paramref name="window" />.</summary>
-        <returns><see langword="true" /> if a <paramref name="widget" /> is activated.</returns>
+        <returns>
+          <see langword="true" /> if a <paramref name="widget" /> is activated.</returns>
         <remarks>
-	 <para>
+          <para>
 	  That is unless the current focused <paramref name="widget" /> has been configured to receive the default (see <see cref="F:Gtk.WidgetFlags.ReceivesDefault" />) action in which case the case the focused <paramref name="widget" /> is activated.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Maximize">
@@ -467,13 +472,13 @@
       <Docs>
         <summary>Asks to maximize <paramref name="window" />, so that it becomes full-screen.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely maximized afterward, because other entities (e.g. the user or window manager) could unmaximize it again, and not all window managers support maximization. But normally the window will end up maximized. Just don't write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track maximization via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on GtkWidget. It's permitted to call this method before showing a window, in which case the window will be maximized when it appears onscreen initially.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveMnemonic">
@@ -523,10 +528,10 @@
         <param name="wmclass_name">Window name hint.</param>
         <param name="wmclass_class">Window class hint.</param>
         <remarks>
-	 <para>
+          <para>
 	  According to the ICCCM, you should always set these to the same value for all windows in an application, and GTK# sets them to that value by default, so calling this method is sort of pointless. However, you may want to call <see cref="P:Gtk.Window.Role" /> on each window in your application, for the benefit of the session manager. Setting the role allows the window manager to restore window positions when loading a saved session.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveEmbeddedXid">
@@ -559,19 +564,19 @@
         <param name="width">Width in pixels, or -1 to unset the default width.</param>
         <param name="height">Height in pixels, or -1 to unset the default height.</param>
         <remarks>
-	 <para>
+          <para>
 	  If the window's "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the window (<see cref="M:Gtk.Window.SetGeometryHints" /> can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
 	 </para>
-	 <para>
+          <para>
 	  Unlike <see cref="M:Gtk.Widget.SetSizeRequest" /> which sets a size request for a <paramref name="widget" /> and thus would keep users from shrinking the window, this method only sets the initial size, just as if the user had resized the window themselves. Users can still shrink the window again as they normally would. Setting a default size of -1 means to use the "natural" default size (the size request of the window). 
 	 </para>
-	 <para>
+          <para>
 	  For more control over a window's initial size and how resizing works, investigate <see cref="M:Gtk.Window.SetGeometryHints" />.
 	 </para>
-	 <para>
+          <para>
 	  For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the window, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the window itself, not the geometry widget. 
 	 </para>
-	 <para>
+          <para>
 	  The default size of a window only affects the first time a window is shown; if a window is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
 	 </para>
         </remarks>
@@ -587,13 +592,13 @@
       <Docs>
         <summary>Presents a <paramref name="window" /> to the user.</summary>
         <remarks>
-	 <para>
+          <para>
 	  This may mean raising the window in the stacking order, deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus, possibly dependent on the user's platform, window manager, and preferences. If window is hidden, this method calls <see cref="M:Gtk.Widget.Show" /> as well. 
 	 </para>
-	 <para>
+          <para>
 	  This method should be used when the user tries to open a window that's already open. Say for example the preferences dialog is currently open, and the user chooses Preferences from the menu a second time; use <see cref="M:Gtk.Window.Present" /> to move the already-open dialog where the user can see it.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReshowWithInitialSize">
@@ -606,10 +611,10 @@
       <Docs>
         <summary>Hides <paramref name="window" />, then reshows it, resetting the default size and position of the <paramref name="window" />.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Used by GUI builders only.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Move">
@@ -627,19 +632,19 @@
         <param name="x">X coordinate to move window to.</param>
         <param name="y">Y coordinate to move window to.</param>
         <remarks>
-	 <para>
+          <para>
 	  Window managers are free to ignore this; most window managers ignore requests for initial window positions (instead using a user-defined placement algorithm) and honor requests after the window has already been shown.
 	 </para>
-	 <para>
+          <para>
 	  Note: the position is the position of the gravity-determined reference point for the window. The gravity determines two things: first, the location of the reference point in root window coordinates; and second, which point on the window is positioned at the reference point. 
 	 </para>
-	 <para>
+          <para>
 	  By default the gravity is GDK_GRAVITY_NORTH_WEST, so the reference point is simply the x, y supplied to <see cref="M:Gtk.Window.Move" />. The top-left corner of the window decorations (aka window frame or border) will be placed at <paramref name="x" />, <paramref name="y" />. Therefore, to position a window at the top left of the screen, you want to use the default gravity (which is GDK_GRAVITY_NORTH_WEST) and move the window to 0,0.
 	 </para>
-	 <para>
+          <para>
 	  To position a window at the bottom right corner of the screen, you would set GDK_GRAVITY_SOUTH_EAST, which means that the reference point is at x + the window width and y + the window height, and the bottom-right corner of the window border will be placed at that reference point.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetPosition">
@@ -655,7 +660,7 @@
         <summary>Sets the position constraint for a <paramref name="window" />.</summary>
         <param name="position">A position constraint.</param>
         <remarks>
-	 <para>
+          <para>
 	  Is is used for placing the window in some area, depending on the <paramref name="position" /> constraint.
 	 </para>
         </remarks>
@@ -674,10 +679,10 @@
         <summary>Associate <paramref name="accel_group" /> with <paramref name="window" />.</summary>
         <param name="accel_group">A <see cref="T:Gtk.AccelGroup" />.</param>
         <remarks>
-	 <para>
+          <para>
 	  Such that calling <see cref="T:Gtk.AccelGroupActivate" /> on <paramref name="window" /> will activate accelerators in <paramref name="accel_group" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetGeometryHints">
@@ -697,10 +702,10 @@
         <param name="geometry">Struct containing geometry information.</param>
         <param name="geom_mask">Mask indicating which struct fields should be paid attention to.</param>
         <remarks>
-	 <para>
+          <para>
 	  You can set a minimum and maximum size; allowed resize increments (e.g. for xterm, you can only resize by the size of a character); aspect ratios; and more. See <see cref="T:Gdk.Geometry" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -727,7 +732,7 @@
         <param name="raw">Pointer to the C object.</param>
         <returns>An instance of Window, wrapping the C object.</returns>
         <remarks>
-	 <para>This is an internal constructor, and should not be used by user code.</para>
+          <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
@@ -743,7 +748,7 @@
         <param name="type">A <see cref="T:Gtk.WindowType" />.</param>
         <returns>A <see cref="T:Gtk.Window" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  Creates a new Window object, wich can be of type TopLevel ( most of the cases ) or PopUp. Take care with the use of PopUp type, since it is not controlled by the window manager.
 	 </para>
         </remarks>
@@ -772,7 +777,7 @@
         <param name="title">A string.</param>
         <returns>A <see cref="T:Gtk.Window" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  Creates a new TopLevel Window object, using <paramref name="string" /> as the title. You get the same if you use the public Window ( Gtk.WindowType type ) constructor and later set the string Title property.
 	 </para>
         </remarks>
@@ -790,10 +795,10 @@
         <param name="value">A list of <see cref="T:Gdk.Pixbuf" />.</param>
         <returns>A copy of  default icon list.</returns>
         <remarks>
-	 <para>
+          <para>
 	  This method allows you to set up the icon for all windows in your app at once. 
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -820,10 +825,10 @@
         <param name="value">Widget to be the default, or <see langword="null" /> to unset the default <paramref name="widget" /> for the toplevel.</param>
         <returns>A <see cref="T:Gtk.Widget" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  The default <paramref name="widget" /> is the widget that's activated when the user presses Enter in a dialog (for example). When setting (rather than unsetting) the default <paramref name="widget" /> it's generally easier to call <see cref="M:Gtk.Widget.GrabFocus" /> on the <paramref name="widget" />. Before making a default <paramref name="widget" />, you must set the <see cref="F:Gtk.WidgetFlags.CanDefault" /> flag on the <paramref name="widget" /> you'd like to make the default.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HasFrame">
@@ -834,17 +839,18 @@
       </ReturnValue>
       <Parameters></Parameters>
       <Docs>
-        <summary>If this function is called on a window with setting of <see langword="true" />, before it is realized or showed, it will have a "frame" window around widget->window, accessible in window->frame. Or it access the "frame" window exterior to widget->window.</summary>
+        <summary>If this function is called on a window with setting of <see langword="true" />, before it is realized or showed, it will have a "frame" window around widget-&gt;window, accessible in window-&gt;frame. Or it access the "frame" window exterior to widget-&gt;window.</summary>
         <param name="value">A <see langword="boolean" />.</param>
-        <returns><see langword="true" /> if a frame has been added to the window via <see cref="P:Gtk.Window.HasFrame" />.</returns>
+        <returns>
+          <see langword="true" /> if a frame has been added to the window via <see cref="P:Gtk.Window.HasFrame" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  Using the event <see cref="F:Gtk.WIndow.FrameEvent" /> you can receive all events targeted at the frame. This method is used by the linux-fb port to implement managed windows, but it could concievably be used by X-programs that want to do their  own window decorations.
 	 </para>
-	 <para>
+          <para>
 	  Note: This is a special-purpose method for the framebuffer port, this caues to GTK# to draw its own window border. For most applications you want <see cref="P:Gtk.Window.Decorated" /> instead, which tells the window manager whether to  draw the window border. 
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Gravity">
@@ -859,10 +865,10 @@
         <param name="value">A window gravity.</param>
         <returns>A window gravity.</returns>
         <remarks>
-	 <para>
+          <para>
 	  The default window gravity is <see cref="F:Gdk.Gravity.NorthWest" /> which is typically "do what you mean". See <see cref="M:Gtk.Window.Move" /> and <see cref="T:Gdk.Gravity" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MnemonicModifier">
@@ -891,10 +897,10 @@
         <param name="value">The window type.</param>
         <returns>The ttype hint for <paramref name="window" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  By setting the type hint for the window, you allow the window manager to decorate and handle the window in a way which is suitable to the function of the window in your application. This property should be called before the window becomes visible.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TransientFor">
@@ -909,13 +915,13 @@
         <param name="value">Parent window.</param>
         <returns></returns>
         <remarks>
-	 <para>
+          <para>
 	  Dialog windows should be transient for the main window they were spawned from, this allows windows managers to e.g. keep the dialog on top of the main window, or center the dialog over the main window.
 	 </para>
-	 <para>
+          <para>
 	  On Windows(tm), this function will and put the child window on top of the parent, much as the window would have done in X.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Focus">
@@ -927,16 +933,17 @@
       <Parameters></Parameters>
       <Docs>
         <summary>Sets a <paramref name="widget" /> to be the focus widget for the window if it is not the current focus widget, and its focusable, or retrieves the current focused <paramref name="widget" /> within the window.</summary>
-        <param name="value"><paramref name="Widget" /> to be the new focus widget, or <see langword="null" /> to unset any focus widget for the toplevel window.</param>
+        <param name="value">
+          <paramref name="Widget" /> to be the new focus widget, or <see langword="null" /> to unset any focus widget for the toplevel window.</param>
         <returns>The currently focused <paramref name="widget" />, or <see langword="null" /> if there is none.</returns>
         <remarks>
-	 <para>
+          <para>
 	  To set the focus to a particular <paramref name="widget" /> in the toplevel, it is usually more convenient to use <see cref="M:Gtk.Widget.GrabFocus" />.
 	 </para>
-	 <para>
+          <para>
 	  Note: when retrieving the current focused <paramref name="widget" /> is the <paramref name="widget" /> that would have the focus if the toplevel focused; if the toplevel window is not focused then <see cref="P:Gtk.Widget.HasFocus" /> will not be <see langword="true" /> for the <paramref name="widget" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IconList">
@@ -951,22 +958,22 @@
         <param name="value">A list of <see cref="T:Gdk.Pixbuf" />.</param>
         <returns>Copy of window's icon list.</returns>
         <remarks>
-	 <para>
+          <para>
 	  The icon is used when window is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window framw, or display it in other contexts.
 	 </para>
-	 <para>
-	  <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
+          <para>
+            <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
 	 </para>
-	 <para>
+          <para>
 	  Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them).
 	 </para>
-	 <para>
+          <para>
 	  Note that transient windows (those who have been set transient for another window using <see cref="P:Gtk.Window.TransientFor" /> will inherit their icon from their transient parent. So there's no need to explicity set the icon on transient windows.
 	 </para>
-	 <para>
+          <para>
 	  When retrieving the list is copied, but the reference count on each won't be incremented.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Role">
@@ -981,14 +988,13 @@
         <param name="value">Unique identifier for the window to be used when restoring a session.</param>
         <returns>The role of the window if set, or <see langword="null" />. The returned is owned by the widget and must not be modified or freed.</returns>
         <remarks>
-	<para>
+          <para>
 	 This property is only useful on X11, not with other GTK# targets.
 	</para>
 	 In combination with the window title, the window role allows a window manager to identify "the same" window when an application is restarted. So for example you might set the "toolbox" role on your app's toolbox window, so that when the user restarts their session, the session manager can put the toolbox back in the same place.
 	<para>
 	 If a window already has a unique title, you don't need to set the role, since the WM can use the title to identigy the window when restoring the session.
-	</para>
-	</remarks>
+	</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Decorated">
@@ -1000,13 +1006,15 @@
       <Parameters></Parameters>
       <Docs>
         <summary>Sets or obtains whether the window has been set to have decorations.</summary>
-        <param name="value"><see langword="true" /> to decorate the window.</param>
-        <returns><see langword="true" /> if the window has been set to have decorations.</returns>
+        <param name="value">
+          <see langword="true" /> to decorate the window.</param>
+        <returns>
+          <see langword="true" /> if the window has been set to have decorations.</returns>
         <remarks>
-	 <para>
+          <para>
 	  With this property you control if a window will be decorated or not.
 	 </para>
-	 <para>
+          <para>
 	  By default, windows are decorated with a title bar and resize controls. Some window managers allow to disable these decorations, creating a borderless Window. If you set this property as false, Gtk# will try to convince the window manager not to decorate the window.
 	 </para>
         </remarks>
@@ -1021,10 +1029,12 @@
       <Parameters></Parameters>
       <Docs>
         <summary>Sets or obtains whether a window will be resizable by the user or not.</summary>
-        <param name="value"><see langword="true" /> if the user can resize this window.</param>
-        <returns><see langword="true" /> if the user can resize the window.</returns>
+        <param name="value">
+          <see langword="true" /> if the user can resize this window.</param>
+        <returns>
+          <see langword="true" /> if the user can resize the window.</returns>
         <remarks>
-	 <para>
+          <para>
 	  By default, windows are resizable, so you can change the size of them. But if you set this property to false, the user won't be able to change the size of them.
 	 </para>
         </remarks>
@@ -1042,7 +1052,7 @@
         <param name="value">An object of type <see cref="T:Gtk.WindowPosition" />.</param>
         <returns>An object of type <see cref="T:Gtk.WindowPosition" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  This property will alow you to define where a Window must be displayed on the screen. It work with the Gtk.WindowPosition enum, so maybe you should check it before use it.
 	 </para>
         </remarks>
@@ -1060,7 +1070,7 @@
         <param name="value">An object of type <see cref="T:System.Int32" />.</param>
         <returns>An object of type <see cref="T:System.Int32" />.</returns>
         <remarks>
-	 <para>
+          <para>
 	  This property will allow you to define the default height for your Window. It only define the default one, so if the Window is resized, it won't be able to do anything.
 	 </para>
         </remarks>
@@ -1078,10 +1088,10 @@
         <param name="value">an object of type <see cref="T:System.Int32" /></param>
         <returns>an object of type <see cref="T:System.Int32" /></returns>
         <remarks>
-	 <para>
+          <para>
 	  This is useful for dialogs that shouldn't persist beyond the livefime of the main window they're associated with, for example.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Modal">
@@ -1094,15 +1104,16 @@
       <Docs>
         <summary>Sets or obtains the modal status of <paramref name="window" />.</summary>
         <param name="value">Whether the window is modal.</param>
-        <returns><see langword="true" /> if the window is set to be modal and establishes a grab when shown.</returns>
+        <returns>
+          <see langword="true" /> if the window is set to be modal and establishes a grab when shown.</returns>
         <remarks>
-	 <para>
+          <para>
 	  Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use <see cref="P:Gtk.Window.TransientFor" /> to make the dialog transient for the parent; most window managers will then disallow lowering the dialog below the parent.
 	 </para>
-	 <para>
+          <para>
 	  There are two status: modal (<see langword="true" />) and non-modal (<see langword="false" />).
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AllowGrow">
@@ -1115,7 +1126,8 @@
       <Docs>
         <summary>Sets or obtains if the <paramref name="window" /> can be resized to a larger size by the user.</summary>
         <param name="value">if <see langword="true" /> the <paramref name="window" /> can be resized.</param>
-        <returns><see langword="true" /> if the <paramref name="window" /> can be resized.</returns>
+        <returns>
+          <see langword="true" /> if the <paramref name="window" /> can be resized.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -1131,7 +1143,7 @@
         <param name="value">Title of the <paramref name="window" />.</param>
         <returns>The title of the <paramref name="window" />, or <see langword="null" /> if none has been set explicitely. The returned string is owned by the <paramref name="widget" /> and must not be modified or freed.</returns>
         <remarks>
-	 <para>
+          <para>
 	  This property will allow you to set the window title. The title of a <paramref name="window" /> will be displayed in its title bar. Since the title bar is rendered by the window managers on X Window System, the way it appears will depend on the user preferences. This title should help the users to distinguish a window from others opened. A good title will have the application name an the actual document, for example.
 	 </para>
         </remarks>
@@ -1275,7 +1287,7 @@
         <param name="gtype">GLib type for the type</param>
         <returns>Creates a new instance of Window, using the GLib-provided type</returns>
         <remarks>
-	 <para>
+          <para>
 	  This is a constructor used by derivative types of <see cref="T:Gtk.Window" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.
 	 </para>
         </remarks>
@@ -1411,7 +1423,8 @@
       <Docs>
         <summary>Sets an icon to be used as fallback for windows that haven't had <see cref="P:Gtk.Window.IconList" /> called on them from a file on disk.</summary>
         <param name="filename">Location of icon file.</param>
-        <returns><see langword="true" /> if setting the icon succeded.</returns>
+        <returns>
+          <see langword="true" /> if setting the icon succeded.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -1425,13 +1438,13 @@
       <Docs>
         <summary>Asks to place <paramref name="window" /> in the fullscreen state.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely full screen afterward, because other entities (e.g. the user or window manager) could unfullscreen it again, and not all window managers honor requests to fullscreen windows. But normally the window will end up restored to its normal state. Just don't write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconFromFile">
@@ -1446,12 +1459,13 @@
       <Docs>
         <summary>Sets the icon for <paramref name="window" />.</summary>
         <param name="filename">Location of icon file.</param>
-        <returns><see langword="true" /> if setting the icon succeded.</returns>
+        <returns>
+          <see langword="true" /> if setting the icon succeded.</returns>
         <remarks>
-	 <para>
+          <para>
 	  This method is equivalent to calling <see cref="M:Gtk.Window.ParseGeometry" /> with pixbuf created by loading the image from <paramref name="filename" />.
 	 </para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Unfullscreen">
@@ -1464,13 +1478,26 @@
       <Docs>
         <summary>Asks to toggle off the fullscreen state for <paramref name="window" />.</summary>
         <remarks>
-	 <para>
+          <para>
 	  Note that you shouldn't assume the window is definitely not full screen afterward, because other entities (e.g. the user or window manager) could fullscreen it again, and not all window managers honor requests to unfullscreen windows. But normally the window will end up restored to its normal state. Just don't write code that crashes if not.
 	 </para>
-	 <para>
+          <para>
 	  You can track the fullscreen state via the <see cref="F:Gtk.Widget.WindowStateEvent" /> event on <see cref="T:Gtk.Widget" />.
 	 </para>
-	</remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Raw">
+      <MemberSignature Language="C#" Value="protected override IntPtr Raw { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
