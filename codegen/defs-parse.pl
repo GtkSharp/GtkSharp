@@ -302,6 +302,8 @@ sub gen_prop ()
 	if (exists ($objects{$1}) || ($1 =~ /GObject/)) {
 		$sret = $maptypes{$1};
 		$mret = "GLib.Object";
+	} elsif ($maptypes{$1} eq "String") {
+		$sret = $mret = "String";
 	} elsif (exists ($maptypes{$1})) {
 		$sret = $maptypes{$1};
 		$mret = $marshaltypes{$1};
@@ -330,7 +332,7 @@ sub gen_prop ()
 		$code .= "\t\t\t\tGetProperty (\"$cname\", out val);\n";
 		$code .= "\t\t\t\treturn ";
 		if ($sret ne $mret) { 
-			$code .= "($sret) ";
+			$code .= "($sret)";
 		}
 		$code .= "val;\n\t\t\t}\n";
 	}
