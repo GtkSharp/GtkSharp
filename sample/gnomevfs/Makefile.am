@@ -1,3 +1,4 @@
+if ENABLE_GNOMEVFS
 TARGETS =			\
 	TestAsync.exe		\
 	TestAsyncStream.exe	\
@@ -13,6 +14,9 @@ TARGETS =			\
 	TestUnlink.exe		\
 	TestVolumes.exe		\
 	TestXfer.exe
+else
+TARGETS =
+endif
 
 assemblies=../../glib/glib-sharp.dll ../../gnomevfs/gnome-vfs-sharp.dll
 references = $(addprefix /r:, $(assemblies)) /r:Mono.GetOptions
