@@ -156,7 +156,7 @@ namespace GtkSharp.Generation {
 				if (prop.Validate ())
 					prop.Generate (sw);
 				else
-					Console.WriteLine(" in Object " + QualifiedName);
+					Console.WriteLine("in Object " + QualifiedName);
 			}
 		}
 
@@ -169,7 +169,7 @@ namespace GtkSharp.Generation {
 				if (sig.Validate ())
 					sig.Generate (sw, implementor);
 				else
-					Console.WriteLine(" in Object " + QualifiedName);
+					Console.WriteLine("in Object " + QualifiedName);
 			}
 		}
 
@@ -221,7 +221,7 @@ namespace GtkSharp.Generation {
 					}
 				}
 				else
-					Console.WriteLine(" in Object " + QualifiedName);
+					Console.WriteLine("in Object " + QualifiedName);
 			}
 		}
 
@@ -316,29 +316,29 @@ namespace GtkSharp.Generation {
 		{
 			if (ctors_initted)
 				return;
-			
+
+			ArrayList valid_ctors = new ArrayList();
 			clash_map = new Hashtable();
 
-			if (ctors != null) {
-				bool has_preferred = false;
-				foreach (Ctor ctor in ctors) {
-					if (ctor.Validate ()) {
-						ctor.InitClashMap (clash_map);
-						if (ctor.Preferred)
-							has_preferred = true;
-					}
-					else
-						Console.WriteLine(" in Object " + QualifiedName);
+			bool has_preferred = false;
+			foreach (Ctor ctor in ctors) {
+				if (ctor.Validate ()) {
+					ctor.InitClashMap (clash_map);
+					if (ctor.Preferred)
+						has_preferred = true;
+					
+					valid_ctors.Add (ctor);
 				}
-				
-				if (!has_preferred && ctors.Count > 0)
-					((Ctor) ctors[0]).Preferred = true;
-
-				foreach (Ctor ctor in ctors) 
-					if (ctor.Validate ()) {
-						ctor.Initialize (clash_map);
-					}
+				else
+					Console.WriteLine("in Object " + QualifiedName);
 			}
+			ctors = valid_ctors;
+				
+			if (!has_preferred && ctors.Count > 0)
+				((Ctor) ctors[0]).Preferred = true;
+
+			foreach (Ctor ctor in ctors) 
+				ctor.Initialize (clash_map);
 
 			ctors_initted = true;
 		}
@@ -351,12 +351,8 @@ namespace GtkSharp.Generation {
 				klass = klass.Parent;
 			}
 			
-			if (ctors != null) {
-				foreach (Ctor ctor in ctors) {
-					if (ctor.Validate ())
-						ctor.Generate (sw);
-				}
-			}
+			foreach (Ctor ctor in ctors)
+				ctor.Generate (sw);
 
 			if (!clash_map.ContainsKey("") && hasDefaultConstructor) {
 				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
