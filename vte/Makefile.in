@@ -1,0 +1,41 @@
+APIS = vte-api.xml
+
+INCLUDE_APIS = \
+	../gdk/gdk-api.xml \
+	../gtk/gtk-api.xml \
+	../atk/atk-api.xml
+
+RUNTIME=mono
+MCS=mcs
+ASSEMBLY=vte-sharp.dll
+			
+@ENABLE_VTE_TRUE@ all: $(ASSEMBLY)
+@ENABLE_VTE_FALSE@ all:
+
+generated-stamp: vte-api.xml
+	gapi-fixup --api=$(APIS) --metadata=Vte.metadata && \
+	gapi-codegen --generate $(APIS) --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=vte-sharp && touch generated-stamp
+ 
+vte-sharp.dll: generated-stamp
+	$(MCS) --unsafe --target library -L $(GTKSHARP_PREFIX)/lib \
+	-r glib-sharp.dll -r gtk-sharp.dll -r gdk-sharp.dll \
+	/r:atk-sharp.dll \
+	--recurse '@srcdir@/*.cs' -o vte-sharp.dll
+ 
+clean:
+	rm -f $(ASSEMBLY)
+	rm -f generated-stamp
+	rm -rf generated
+
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
+ 
+install: all
+@ENABLE_VTE_TRUE@   ../mkinstalldirs $(libdir) &&       \
+@ENABLE_VTE_TRUE@   ../mkinstalldirs $(apidir) &&       \
+@ENABLE_VTE_TRUE@   for i in $(APIS); do                    \
+@ENABLE_VTE_TRUE@       cp $$i $(apidir) || true;       \
+@ENABLE_VTE_TRUE@   done &&                 \
+@ENABLE_VTE_TRUE@   cp $(ASSEMBLY) $(libdir)

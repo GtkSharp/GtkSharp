@@ -106,6 +106,13 @@ if test "x$enable_gtkhtml" = "xyes"; then
 	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $GTKHTML_DEPENDENCIES_LIBS"
 fi
 
+VTE_REQUIRED_VERSION=0.11.10
+PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
+if test "x$enable_vte" = "xyes"; then
+	BASE_DEPENDENCIES_CFLAGS="$BASE_DEPENDENCIES_CFLAGS $VTE_DEPENDENCIES_CFLAGS"
+	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $VTE_DEPENDENCIES_LIBS"
+fi
+
 AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
 AC_SUBST(BASE_DEPENDENCIES_LIBS)
 
@@ -115,6 +122,7 @@ AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
+AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
 
 
 AC_SUBST(CFLAGS)
@@ -141,6 +149,7 @@ gconf/tools/Makefile
 gst/Makefile
 gtkhtml/Makefile
 rsvg/Makefile
+vte/Makefile
 sample/Makefile
 sample/rsvg/Makefile
 gtk-sharp.pc
@@ -162,6 +171,7 @@ echo "      * gda-sharp.dll: $enable_gda"
 echo "      * gnomedb-sharp.dll: $enable_gnomedb"
 echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
+echo "      * vte-sharp.dll: $enable_vte "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"
