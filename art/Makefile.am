@@ -58,7 +58,7 @@ gtk-sharp.pub: $(top_srcdir)/gtk-sharp.pub
 	cp $(top_srcdir)/gtk-sharp.pub .
 
 $(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.pub
-	$(CSC) --unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) generated/*.cs
+	$(CSC) /unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) generated/*.cs
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\
