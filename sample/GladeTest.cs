@@ -36,17 +36,17 @@ namespace GladeSamples {
 			args.RetVal = true;
 		}
 		
-		public void OnButton1Clicked (Object b, EventArgs e) 
+		public void OnButton1Clicked (System.Object b, EventArgs e) 
 		{
 			Console.WriteLine ("Button 1 clicked");
 		}
 
-		public static void OnButton2Clicked (Object b, EventArgs e) 
+		public static void OnButton2Clicked (System.Object b, EventArgs e) 
 		{
 			Console.WriteLine ("Button 2 clicked");
 		}
 		
-		public void OnButton2Entered (Object b, EventArgs e) 
+		public void OnButton2Entered (System.Object b, EventArgs e) 
 		{
 			Console.WriteLine ("Button 2 entered");
 		}
