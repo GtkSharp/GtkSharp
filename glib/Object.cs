@@ -15,12 +15,6 @@ namespace GLib {
 	using System.Reflection;
 	using System.Runtime.InteropServices;
 
-	[AttributeUsage(AttributeTargets.All)]
-	public sealed class WrapperClassAttribute : Attribute {
-
-		public WrapperClassAttribute () : base () {}
-	}
-
 	/// <summary>
 	///	Object Class
 	/// </summary>
