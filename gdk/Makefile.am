@@ -35,7 +35,8 @@ sources = 			\
 	EventVisibility.cs	\
 	EventWindowState.cs	\
 	Key.cs			\
-	Size.cs
+	Size.cs			\
+	TextProperty.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
