@@ -1,5 +1,5 @@
 <Type Name="VisualType" FullName="Gdk.VisualType">
-  <TypeSignature Language="C#" Value="public sealed struct VisualType;" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public sealed struct VisualType;" Maintainer="miguel" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,20 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Describe the how pixel values are converted into RGB values for display.</summary>
+    <remarks>
+      <para>
+        Visuals are a very important concept that is often
+        overlooked. Roughly, a visual defines the memory
+        representation that a piece of hardware uses to store the
+        contents of an image. X supports different kinds of visuals to
+        suit the different kinds of hardware out there.
+      </para>
+      <para>
+        Some of this information comes from Federico Mena's excellent
+        "X Concepts" document from http://www.nuclecu.unam.mx/~federico/docs/x-concepts.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Enum</BaseTypeName>
@@ -34,8 +46,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Static gray visuals are those in which you cannot change the gray intensities of the hardware.</summary>
+        <remarks>
+	  Plain monochrome (B/W) displays or fixed 4-gray displays may
+          be of the static gray kind. Grayscale visuals are those in
+          which you can change the gray intensities used by the
+          hardware. Exotic 12-bit grayscale displays (as used for
+          medical visualization) that let you change the gray
+          intensities may be of the grayscale type.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Grayscale">
@@ -46,8 +65,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Grayscale visuals are used for displays that use a single channel of color information.</summary>
+        <remarks>
+            Black and white or grayscale monitors (including amber and
+            green monitors) may use this type of visual. These visuals
+            can be either static gray or grayscale.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StaticColor">
@@ -58,8 +81,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An indexed color visual, where colors can not be changed.</summary>
+        <remarks>
+           Static color visuals are those in which you cannot change
+           the actual colors that the indexes correspond to (a static
+           palette). Remember the old CGA cards with four fixed colors
+           in graphics mode?  These could be considered of the static
+           color type.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PseudoColor">
@@ -70,8 +99,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An indexed color visual, where colors can change.</summary>
+        <remarks>
+          Pseudo color visuals are those in which you can change the
+          actual colors that the indexes correspond to. Each index
+          maps to an RGB triplet that defines the color that will be
+          displayed on the screen. You can change these RGB triplets
+          for each index. Pseudo color visuals are very common in
+          graphics cards. Graphics cards with 256 colors that you can
+          change, for example, VGA cards, are of the pseudo color
+          type.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TrueColor">
@@ -82,8 +120,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>True color visuals use the exact RGB values you specified
+        for a pixel</summary> 
+        <remarks>
+          <para>
+            TrueColor visuals store explicit RGB values for every
+            pixel, instead of storing a single value like indexed
+            visuals.
+          </para>
+          <para>
+           TrueColor visuals map the RGB into the screens RGB values
+           without any changes.  There is no transformation applied to
+           it.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DirectColor">
@@ -94,8 +144,30 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>DirectColor visuals use RGB encoding, with a
+        correction palette.</summary>
+        <remarks>
+          <para>
+            TrueColor visuals store explicit RGB values for every
+            pixel, instead of storing a single value like indexed
+            visuals.
+          </para>
+          <para>
+            The values in a direct color visual go through an
+            indirection step before being sent to the display. Each of
+            the R/G/B values you specify is an index in separate
+            tables, and those tables contain a translated value. So an
+            RGB triplet gets translated into an R'G'B' triplet,
+            i.e. the three tables together define an f(r, g, b) ->
+            (r', g', b') function. For most purposes, your tables will
+            be filled by the identity function and you will get
+            linearly increasing intensity values for each of the RGB
+            channels. Things can become quite interesting, however,
+            when you modify the tables to have a nonlinear mapping. If
+            you fill them using an exponential function, you can do
+            color correction on hardware
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="value__">
