@@ -23,34 +23,6 @@
   </Interfaces>
   <Attributes />
   <Members>
-    <Member MemberName="needs_ref">
-      <MemberSignature Language="C#" Value="protected bool needs_ref;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="o" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Used to obtain a CLI typed object associated with a given raw object pointer.</summary>
-        <param name="o">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:GLib.Object" /></returns>
-        <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return GObject references.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="SetProperty">
       <MemberSignature Language="C#" Value="public void SetProperty (string name, GLib.Value val);" />
       <MemberType>Method</MemberType>
@@ -111,30 +83,6 @@
         <remarks></remarks>
       </Docs>
     </Member>
-    <Member MemberName="Unref">
-      <MemberSignature Language="C#" Value="public virtual void Unref ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Ref">
-      <MemberSignature Language="C#" Value="public virtual void Ref ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Dispose">
       <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
       <MemberType>Method</MemberType>
@@ -157,17 +105,6 @@
       <Docs>
         <summary>Disposes the resources associated with the object.</summary>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Object ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Creates a new <see cref="T:GLib.Object" /> instance.</summary>
-        <returns>an object of type <see cref="T:GLib.Object" /></returns>
-        <remarks>This is the default constructor for <see cref="T:GLib.Object" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -252,22 +189,6 @@
         <remarks>This method should be called from the class constructor of subclasses.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Object (GLib.Type gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.Type" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="gtype">GLib type for the type</param>
-        <returns>Creates a new instance of Object, using the GLib-provided type</returns>
-        <remarks>
-          <para>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Data">
       <MemberSignature Language="C#" Value="public System.Collections.Hashtable Data { get; };" />
       <MemberType>Property</MemberType>
@@ -290,6 +211,49 @@
         <summary>A list object containing all the events for this object indexed by the Gtk signal name.</summary>
         <returns>a <see cref="T:System.ComponentModel.EventHandlerList" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o, bool owned_ref);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.IntPtr" />
+        <Parameter Name="owned_ref" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <summary>Used to obtain a CLI typed object associated with a given raw object pointer.</summary>
+        <param name="o">a <see cref="T:System.IntPtr" /></param>
+        <param name="owned_ref">a <see cref="T:System.Boolean" /></param>
+        <returns>a <see cref="T:GLib.Object" /></returns>
+        <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return GObject references.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Object ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Creates a new <see cref="T:GLib.Object" /> instance.</summary>
+        <returns>a <see cref="T:GLib.Object" /></returns>
+        <remarks>This is a constructor used by derivative types of <see cref="T:GLib.Object" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Object (GLib.Type gtype);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
+      <Docs>
+        <summary>Creates a new <see cref="T:GLib.Object" /> instance, using the GLib-provided type.</summary>
+        <param name="gtype">a <see cref="T:GLib.Type" /></param>
+        <returns>a <see cref="T:GLib.Object" /></returns>
+        <remarks>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
     </Member>
   </Members>
