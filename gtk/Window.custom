@@ -1,0 +1,55 @@
+// Gtk.Window.custom - Gtk Window class customizations
+//
+// Author: Mike Kestner <mkestner@speakeasy.net>
+//
+// (c) 2001 Mike Kestner
+//
+// This code is inserted after the automatically generated code.
+
+
+		/// <summary>
+		///	Window Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a new Window of type TopLevel.
+		/// </remarks>
+
+		public Window ()
+		{
+			RawObject = gtk_window_new (WindowType.Toplevel);
+		}
+
+		/// <summary>
+		///	Window Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a new Window of type TopLevel with the 
+		///	specified Title.
+		/// </remarks>
+
+		public Window (String title) : this ()
+		{
+			this.Title = title;
+		}
+
+		/// <summary>
+		///	DefaultSize Property
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	The default Size of the Window in Screen Coordinates.
+		/// </remarks>
+
+		public System.Drawing.Size DefaultSize {
+			get {
+				return new System.Drawing.Size (
+						DefaultWidth, DefaultHeight);
+			}
+			set {
+				DefaultWidth = value.Width;
+				DefaultHeight = value.Height;
+			}
+		}
+

@@ -16,6 +16,11 @@
 	'guint32', "uint", 'const-gchar', "IntPtr", 'GObject', "IntPtr",
 	'gchar', "IntPtr", 'gfloat', "float", 'gdouble', "double");
 
+
+%usings = (
+	'Gdk', "System,System.Runtime.InteropServices,GLib",
+	'Gtk', "System,System.Runtime.InteropServices,GLib,Gdk");
+
 `mkdir -p ../gdk/generated`;
 `mkdir -p ../gtk/generated`;
 
@@ -227,7 +232,10 @@ sub gen_object
 	
 	print OUTFILE "// Generated file: Do not modify\n\n";
 	print OUTFILE "namespace $namespace {\n\n";
-	print OUTFILE "\t/// <summary> $typename Class </summary>\n";
+	foreach $ns (split (/,/, $usings{$namespace})) {
+		print OUTFILE "\tusing $ns;\n";
+	}
+	print OUTFILE "\n\t/// <summary> $typename Class </summary>\n";
 	print OUTFILE "\t/// <remarks>\n\t///\t FIXME: Generate docs\n";
 	print OUTFILE "\t/// </remarks>\n\n";
 	print OUTFILE "\tpublic ";
@@ -256,6 +264,8 @@ sub gen_object
 		print OUTFILE gen_method ($key, $methods{$key}, "gtk-1.3.dll");
 	}
 
+	$custom = "../" . lc ($namespace) . "/$typename.custom";
+	print OUTFILE `cat $custom` if -e $custom;
 	print OUTFILE "\t}\n}\n";
 	close (OUTFILE);
 	print "done\n";
