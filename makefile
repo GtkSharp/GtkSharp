@@ -1,4 +1,4 @@
-DIRS=glue generator glib pango atk gdk gtk sample
+DIRS=generator glib pango atk gdk gtk sample
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.3705/csc.exe
 MCS=mcs
@@ -13,18 +13,29 @@ windows:
 unix:
 	@echo "'make unix' is broken for now."
 
-linux: 
+linux: native binding
+
+binding:
 	for i in $(DIRS); do				\
 		(cd $$i; MCS="$(MCS)" make) || exit 1;\
 	done;
 
+native:
+	(cd glue; make) || exit 1;
+
 clean:
+	(cd glue; make clean) || exit 1;
 	for i in $(DIRS); do				\
 		(cd $$i; make clean) || exit 1;	\
 	done;
 
-install:
+install: install-native install-binding
+
+install-binding:
 	for i in $(DIRS); do				\
 		(cd $$i; make install) || exit 1;	\
 	done;
+
+install-native:
+	(cd glue; make install) || exit 1;	\
 
