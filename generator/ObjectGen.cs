@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 		
 		public String FromNative(String var)
 		{
-			return "GLib.Object.GetObject(" + var + ")";
+			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
 		
 		public void Generate (SymbolTable table)
@@ -185,7 +185,38 @@ namespace GtkSharp.Generation {
 			
 			return true;
 		}
-		
+
+		public bool GenSignal (XmlElement sig, SymbolTable table, StreamWriter sw)
+		{
+			String cname = "\"" + sig.GetAttribute("cname") + "\"";
+
+			String marsh = "blah"; // SignalHandler.GetName(sig);
+			if (marsh == "") {
+				return false;
+			}
+
+			sw.WriteLine("\t\t/// <summary> " + cname + " Event </summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			// FIXME: Generate some signal docs
+			sw.WriteLine("\t\t/// </remarks>");
+			sw.WriteLine();
+			sw.WriteLine("\t\tpublic event EventHandler " + cname + " {");
+			sw.WriteLine("\t\t\tadd {");
+			sw.WriteLine("\t\t\t\tif (Events [" + cname + "] == null)");
+			sw.Write("\t\t\t\t\tSignals[" + cname + "] = new " + marsh);
+			sw.WriteLine("(this, Handle, " + cname + ", value);");
+			sw.WriteLine("\t\t\t\tEvents.AddHandler(" + cname + ", value);");
+			sw.WriteLine("\t\t\t}");
+			sw.WriteLine("\t\t\tremove {");
+			sw.WriteLine("\t\t\t\tEvents.RemoveHandler(" + cname + ", value);");
+			sw.WriteLine("\t\t\t\tif (Events[" + cname + "] == null)");
+			sw.WriteLine("\t\t\t\t\tSignals.Remove(" + cname + ");");
+			sw.WriteLine("\t\t\t}");
+			sw.WriteLine("\t\t}");
+			sw.WriteLine();
+			
+			return true;
+		}
 	}
 }
 

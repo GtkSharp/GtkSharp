@@ -144,10 +144,13 @@ namespace GtkSharp.Generation {
 				return false;       	
 			}
 			
-			String rettype = "void";
-			if (method.HasAttribute("return-type")) {
-				rettype = method.GetAttribute("return-type");
+			XmlElement ret_elem = method["return-type"];
+			if (ret_elem == null) {
+				Console.Write("Missing return type in method ");
+				return false;
 			}
+			
+			String rettype = ret_elem.GetAttribute("type");
 			
 			String m_ret = table.GetMarshalType(rettype);
 			String s_ret = table.GetCSType(rettype);

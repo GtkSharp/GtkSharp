@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 
 		public String FromNative(String var)
 		{
-			return "GLib.Boxed.GetBoxed(" + var + ")";
+			return "(" + QualifiedName + ") GtkSharp.Boxed.GetBoxed(" + var + ")";
 		}
 
 		public void Generate (SymbolTable table)
