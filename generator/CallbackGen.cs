@@ -114,13 +114,6 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("\t\tpublic " + m_ret + " NativeCallback (" + import_sig + ")");
 			sw.WriteLine ("\t\t{");
-			sw.Write ("\t\t\tif (RemoveIfNotAlive ()) return ");
-			if (table.IsStruct (rettype) || table.IsBoxed (rettype))
-				sw.WriteLine ("IntPtr.Zero;");
-			else if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
-				sw.WriteLine ("IntPtr.Zero;");
-			else
-				sw.WriteLine (m_ret != "void" ? "_dummy;" : ";");
 
 			int count = (parms != null) ? parms.Count : 0;
 			if (count > 0)

@@ -11,6 +11,7 @@ namespace GLib {
 
 	using System;
 	using System.Collections;
+	using System.Runtime.InteropServices;
 
 	/// <summary>
 	///	DelegateWrapper Class
@@ -23,9 +24,14 @@ namespace GLib {
 	public class DelegateWrapper
 	{
 		// Keys in the hashtable are instances of classes derived from this one.
-		// Values are WeakReference instances to the object that creates the
-		// delegate or instances of derived classes (if created from static methods).
-		static Hashtable weakReferences = new Hashtable ();
+		// Values are each instance's destroy notification delegate
+		static Hashtable instances = new Hashtable ();
+
+		// This list holds references to wrappers for static
+		// methods. These will never expire.
+		static ArrayList static_instances = new ArrayList ();
+
+		static int notify_count = 0;
 		
 		// The object 'o' is the object that creates the instance of the DelegateWrapper
 		// derived class or null if created from a static method.
@@ -33,26 +39,58 @@ namespace GLib {
 		// method.
 		protected DelegateWrapper (object o)
 		{
-			if (o == null)
-				o = this; // Never expires. Used in static methods.
+			if (o != null) {
+				// If o is a GObject, we can get
+				// destroy notification. Otherwise
+				// no additional references to
+				// the wrapper are kept.
+				// FIXME: This should work because
+				// currently only GObjects store
+				// callbacks over the long-term
 
-			weakReferences [this] = new WeakReference (o);
+				if (o is GLib.Object) {
+					AddDestroyNotify ((GLib.Object) o);
+				}
+			} else {
+				// If o is null, we cannot ask for a destroy
+				// notification, so the wrapper never expires.
+
+				lock (typeof (DelegateWrapper)) {
+					static_instances.Add (this);
+				}
+			}
 		}
 
-		// IMPORTANT: this method must be the first one called from the callback methods that
-		// are invoked from unmanaged code.
-		// If this method returns true, the object that created the delegate wrapper no longer
-		// exists and the instance of the delegate itself is removed from the hash table.
-		protected bool RemoveIfNotAlive ()
-		{
-			WeakReference r = null;
-			r = weakReferences [this] as WeakReference;
-			if (r != null && !r.IsAlive) {
-				weakReferences.Remove (this);
-				r = null;
-			}
+		private delegate void DestroyNotify (IntPtr data);
 
-			return (r == null);
+		[DllImport("libgobject-2.0-0.dll")]
+		private static extern void g_object_set_data (IntPtr obj, string name, IntPtr data, DestroyNotify destroy);
+		
+		private void AddDestroyNotify (GLib.Object o) {
+			// This is a bit of an ugly hack. There is no
+			// way of getting a destroy notification
+			// explicitly, so we set some data and ask
+			// for notification when it is removed
+
+			string name = String.Format ("_GtkSharpDelegateWrapper_{0}", notify_count);
+			DestroyNotify destroy = new DestroyNotify (this.OnDestroy);
+
+			g_object_set_data (o.Handle, name, IntPtr.Zero, destroy);
+			lock (typeof (DelegateWrapper)) {
+				instances[this] = destroy;
+				notify_count++;
+			}
+		}
+
+		// This callback is invoked by GLib to indicate that the
+		// object that owned the native delegate wrapper no longer
+		// exists and the instance of the delegate itself is removed from the hash table.
+		private void OnDestroy (IntPtr data) {
+			lock (typeof (DelegateWrapper)) {
+				if (instances.ContainsKey (this)) {
+					instances.Remove (this);
+				}
+			}
 		}
 	}
 }

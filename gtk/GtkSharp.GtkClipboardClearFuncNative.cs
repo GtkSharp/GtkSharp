@@ -9,7 +9,6 @@ namespace GtkSharp {
 
 		public void NativeCallback (IntPtr clipboard, uint objid)
 		{
-			if (RemoveIfNotAlive ()) return;
 			object[] _args = new object[2];
 			_args[0] = (Gtk.Clipboard) GLib.Object.GetObject(clipboard, false);
 			if (_args[0] == null)
