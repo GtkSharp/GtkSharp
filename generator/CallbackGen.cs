@@ -14,7 +14,7 @@ namespace GtkSharp.Generation {
 
 		private Parameters parms;
 
-		public CallbackGen (String ns, XmlElement elem) : base (ns, elem) 
+		public CallbackGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
 			if (elem ["parameters"] != null)
 				parms = new Parameters (elem ["parameters"]);

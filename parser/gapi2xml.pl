@@ -12,25 +12,20 @@ $debug=1;
 use XML::LibXML;
 use Metadata;
 
-if (!$ARGV[0]) {
-	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile> [--out-ns outns]\n";
+if (!$ARGV[2]) {
+	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile> <libname>\n";
 }
 
 $ns = $ARGV[0];
-
-if ($ARGV[2] && $ARGV[2] eq "--out-ns") {
-	$out_ns = $ARGV[3];
-} else {
-	$out_ns = $ns;
-}
+$libname = $ARGV[2];
 
 ##############################################################
-# If a filename was provided see if it exists.  We parse existing files into
+# Check if the filename provided exists.  We parse existing files into
 # a tree and append the namespace to the root node.  If the file doesn't 
 # exist, we create a doc tree and root node to work with.
 ##############################################################
 
-if ($ARGV[1] && -e $ARGV[1]) {
+if (-e $ARGV[1]) {
 	#parse existing file and get root node.
 	$doc = XML::LibXML->new->parse_file($ARGV[1]);
 	$root = $doc->getDocumentElement();
@@ -41,7 +36,8 @@ if ($ARGV[1] && -e $ARGV[1]) {
 }
 
 $ns_elem = $doc->createElement('namespace');
-$ns_elem->setAttribute('name', $out_ns);
+$ns_elem->setAttribute('name', $ns);
+$ns_elem->setAttribute('library', $libname);
 $root->appendChild($ns_elem);
 
 ##############################################################

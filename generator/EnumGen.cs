@@ -12,7 +12,7 @@ namespace GtkSharp.Generation {
 
 	public class EnumGen : GenBase, IGeneratable  {
 		
-		public EnumGen (String ns, XmlElement elem) : base (ns, elem) {}
+		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String MarshalType {
 			get

@@ -12,7 +12,7 @@ namespace GtkSharp.Generation {
 
 	public class InterfaceGen : ClassBase, IGeneratable  {
 
-		public InterfaceGen (string ns, XmlElement elem) : base (ns, elem) {}
+		public InterfaceGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 
 		public void Generate ()
 		{

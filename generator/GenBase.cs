@@ -12,10 +12,10 @@ namespace GtkSharp.Generation {
 
 	public abstract class GenBase {
 		
-		private string ns;
+		private XmlElement ns;
 		private XmlElement elem;
 
-		protected GenBase (string ns, XmlElement elem)
+		protected GenBase (XmlElement ns, XmlElement elem)
 		{
 			this.ns = ns;
 			this.elem = elem;
@@ -33,34 +33,40 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string LibraryName {
+			get {
+				return ns.GetAttribute ("library");
+			}
+		}
+
 		public string Name {
 			get {
 				return elem.GetAttribute ("name");
 			}
 		}
 
-		public string Namespace {
+		public string NS {
 			get {
-				return ns;
+				return ns.GetAttribute ("name");
 			}
 		}
 
 		public string QualifiedName {
 			get {
-				return ns + "." + Name;
+				return NS + "." + Name;
 			}
 		}
 
 		protected StreamWriter CreateWriter () 
 		{
 			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + ns.ToLower() + sep + "generated";
+			string dir = ".." + sep + NS.ToLower() + sep + "generated";
 			if (!Directory.Exists(dir)) {
 				Console.WriteLine ("creating " + dir);
 				Directory.CreateDirectory(dir);
 			}
 			String filename = dir + sep + Name + ".cs";
-			Console.WriteLine ("creating " + filename);
+			// Console.WriteLine ("creating " + filename);
 			
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -68,7 +74,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("// Generated File.  Do not modify.");
 			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
-			sw.WriteLine ("namespace " + ns + " {");
+			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
 
 			return sw;
@@ -82,10 +88,10 @@ namespace GtkSharp.Generation {
 			sw.Close();
 		}
 		
-		public static void AppendCustom (string ns, string name, StreamWriter sw)
+		public void AppendCustom (StreamWriter sw)
 		{
 			char sep = Path.DirectorySeparatorChar;
-			string custom = ".." + sep + ns.ToLower() + sep + name + ".custom";
+			string custom = ".." + sep + NS.ToLower() + sep + Name + ".custom";
 			if (File.Exists(custom)) {
 				FileStream custstream = new FileStream(custom, FileMode.Open, FileAccess.Read);
 				StreamReader sr = new StreamReader(custstream);

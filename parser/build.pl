@@ -4,19 +4,14 @@ $file = "../generator/gtkapi.xml";
 
 unlink ($file);
 
-%ns = ( "Atk"   => "atk-1.0.2/atk",
-	"Pango" => "pango-1.0.2/pango",
-	"Gdk"   => "gtk+-2.0.3/gdk",
-	"Gdk.Imaging" => "gtk+-2.0.3/gdk-pixbuf",
-	"Gtk"   => "gtk+-2.0.3/gtk");
+%srcs = ( "atk-1.0.0/atk" => "Atk:atk-1.0",
+	  "pango-1.0.0/pango" => "Pango:pango-1.0",
+	  "gtk+-2.0.0/gdk" => "Gdk:gdk-x11-2.0",
+	  "gtk+-2.0.0/gdk-pixbuf" => "Gdk:gdk_pixbuf-2.0",
+	  "gtk+-2.0.0/gtk" => "Gtk:gtk-x11-2.0");
 
-%c_ns = ( "Gdk.Imaging" => "Gdk");
-
-foreach $key (keys %ns) {
-	$dir = $ns{$key};
-	if (not ($c_key = $c_ns{$key})) {
-		$c_key = $key;
-	}
-	system ("./gapi_pp.pl $dir | ./gapi2xml.pl $c_key $file --out-ns $key");
+foreach $dir (keys %srcs) {
+	($ns, $lib) = split (/:/, $srcs{$dir});
+	system ("./gapi_pp.pl $dir | ./gapi2xml.pl $ns $file $lib");
 }
 

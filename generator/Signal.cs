@@ -13,14 +13,12 @@ namespace GtkSharp.Generation {
 
 	public class Signal {
 
-		private string ns;
 		private string marsh;
 		private string name;
 		private XmlElement elem;
 
-		public Signal (string ns, XmlElement elem) 
+		public Signal (XmlElement elem) 
 		{
-			this.ns = ns;
 			this.elem = elem;
 			this.name = elem.GetAttribute ("name");
 		}

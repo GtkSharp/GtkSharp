@@ -12,9 +12,9 @@ namespace GtkSharp.Generation {
 
 	public class StructGen : StructBase, IGeneratable  {
 		
-		public StructGen (String ns, XmlElement elem) : base (ns, elem) {}
+		public StructGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public String MarshalType {
+		public new string MarshalType {
 			get
 			{
 				return QualifiedName;
@@ -33,23 +33,8 @@ namespace GtkSharp.Generation {
 
 		public void Generate ()
 		{
-			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + ns.ToLower() + sep + "generated";
-			if (!Directory.Exists(dir)) {
-				Directory.CreateDirectory(dir);
-			}
-			String filename = dir + sep + Name + ".cs";
+			StreamWriter sw = CreateWriter ();
 			
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
-			
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001 Mike Kestner");
-			sw.WriteLine ();
-			
-			sw.WriteLine ("namespace " + ns + " {");
-			sw.WriteLine ();
-				
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
@@ -59,7 +44,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic class " + Name + " {");
 			sw.WriteLine ();
 				
-			foreach (XmlNode node in elem.ChildNodes) {
+			foreach (XmlNode node in Elem.ChildNodes) {
 				
 				XmlElement member = (XmlElement) node;
 
@@ -87,14 +72,10 @@ namespace GtkSharp.Generation {
 				}		
 			}
 			
-			GenBase.AppendCustom(ns, Name, sw);
+			AppendCustom(sw);
 			
 			sw.WriteLine ("\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("}");
-			
-			sw.Flush();
-			sw.Close();
+			CloseWriter (sw);
 			Statistics.StructCount++;
 		}		
 	}

@@ -12,38 +12,9 @@ namespace GtkSharp.Generation {
 	using System.Text.RegularExpressions;
 	using System.Xml;
 
-	public class StructBase  {
+	public class StructBase : ClassBase {
 		
-		protected String ns;
-		protected XmlElement elem;
-		
-		public StructBase (String ns, XmlElement elem) {
-			
-			this.ns = ns;
-			this.elem = elem;
-		}
-
-		public String Name {
-			get
-			{
-				return elem.GetAttribute("name");
-			}
-		}
-		
-		public String QualifiedName {
-			get
-			{
-				return ns + "." + elem.GetAttribute("name");
-			}
-		}
-		
-		public String CName {
-			get
-			{
-				return elem.GetAttribute("cname");
-			}
-		}
-		
+		public StructBase (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 
 		protected bool GenCtor(XmlElement ctor, StreamWriter sw, Hashtable clash_map)
 		{
@@ -75,7 +46,7 @@ namespace GtkSharp.Generation {
 			
 			String cname = ctor.GetAttribute("cname");
 			
-			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.WriteLine("\t\tstatic extern IntPtr " + cname + isig);
 			sw.WriteLine();
@@ -178,7 +149,7 @@ namespace GtkSharp.Generation {
 				return true;
 			}
 
-			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
 			sw.WriteLine();

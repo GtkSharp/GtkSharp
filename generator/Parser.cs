@@ -72,27 +72,27 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "boxed":
-					SymbolTable.AddType (new BoxedGen (ns_name, elem));
+					SymbolTable.AddType (new BoxedGen (ns, elem));
 					break;
 
 				case "callback":
-					SymbolTable.AddType (new CallbackGen (ns_name, elem));
+					SymbolTable.AddType (new CallbackGen (ns, elem));
 					break;
 
 				case "enum":
-					SymbolTable.AddType (new EnumGen (ns_name, elem));
+					SymbolTable.AddType (new EnumGen (ns, elem));
 					break;
 
 				case "interface":
-					SymbolTable.AddType (new InterfaceGen (ns_name, elem));
+					SymbolTable.AddType (new InterfaceGen (ns, elem));
 					break;
 
 				case "object":
-					SymbolTable.AddType (new ObjectGen (ns_name, elem));
+					SymbolTable.AddType (new ObjectGen (ns, elem));
 					break;
 
 				case "struct":
-					SymbolTable.AddType (new StructGen (ns_name, elem));
+					SymbolTable.AddType (new StructGen (ns, elem));
 					break;
 
 				default:

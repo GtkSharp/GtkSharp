@@ -13,7 +13,7 @@ namespace GtkSharp.Generation {
 
 	public class Method  {
 		
-		private string ns;
+		private string libname;
 		private XmlElement elem;
 		private Parameters parms;
 		private ClassBase container_type;
@@ -24,9 +24,9 @@ namespace GtkSharp.Generation {
 		private string name, cname, safety;
 		private bool is_get, is_set;
 
-		public Method (string ns, XmlElement elem, ClassBase container_type) 
+		public Method (string libname, XmlElement elem, ClassBase container_type) 
 		{
-			this.ns = ns;
+			this.libname = libname;
 			this.elem = elem;
 			if (elem["parameters"] != null)
 				parms = new Parameters (elem["parameters"]);
@@ -211,7 +211,7 @@ namespace GtkSharp.Generation {
 
 		protected void GenerateImport (StreamWriter sw)
 		{
-			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
+			sw.WriteLine("\t\t[DllImport(\"" + libname + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
 			sw.WriteLine();

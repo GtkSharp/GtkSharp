@@ -18,13 +18,13 @@ namespace GtkSharp.Generation {
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = null;
 
-		protected ClassBase (string ns, XmlElement elem) : base (ns, elem) {
+		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 			foreach (XmlNode node in elem.ChildNodes) {
 				XmlElement member = (XmlElement) node;
 
 				switch (node.Name) {
 				case "method":
-					methods.Add (member.GetAttribute ("name"), new Method (ns, member, this));
+					methods.Add (member.GetAttribute ("name"), new Method (LibraryName, member, this));
 					break;
 
 				case "property":
@@ -32,7 +32,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "signal":
-					sigs.Add (member.GetAttribute ("name"), new Signal (ns, member));
+					sigs.Add (member.GetAttribute ("name"), new Signal (member));
 					break;
 
 				case "implements":

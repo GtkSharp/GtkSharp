@@ -162,11 +162,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public static string GetDllName(string ns)
-		{
-			return (string) dlls[ns];
-		}
-		
 		public static string GetMarshalType(string c_type)
 		{
 			c_type = Trim(c_type);

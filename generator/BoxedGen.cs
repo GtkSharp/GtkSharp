@@ -13,14 +13,7 @@ namespace GtkSharp.Generation {
 
 	public class BoxedGen : StructBase, IGeneratable  {
 		
-		public BoxedGen (String ns, XmlElement elem) : base (ns, elem) {}
-		
-		public String MarshalType {
-			get
-			{
-				return "IntPtr";
-			}
-		}
+		public BoxedGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String CallByName (String var_name)
 		{
@@ -34,22 +27,7 @@ namespace GtkSharp.Generation {
 
 		public void Generate ()
 		{
-			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + ns.ToLower() + sep + "generated";
-			if (!Directory.Exists(dir)) {
-				Directory.CreateDirectory(dir);
-			}
-			String filename = dir + sep + Name + ".cs";
-			
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
-			
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
-			sw.WriteLine ();
-			
-			sw.WriteLine ("namespace " + ns + " {");
-			sw.WriteLine ();
+			StreamWriter sw = CreateWriter ();
 				
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
@@ -65,7 +43,7 @@ namespace GtkSharp.Generation {
 				
 			Hashtable clash_map = new Hashtable();
 				
-			foreach (XmlNode node in elem.ChildNodes) {
+			foreach (XmlNode node in Elem.ChildNodes) {
 				
 				XmlElement member = (XmlElement) node;
 
@@ -97,13 +75,9 @@ namespace GtkSharp.Generation {
 				}		
 			}
 			
-			GenBase.AppendCustom(ns, Name, sw);
+			AppendCustom(sw);
 			sw.WriteLine ("\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("}");
-			
-			sw.Flush();
-			sw.Close();
+			CloseWriter (sw);
 			Statistics.BoxedCount++;
 		}		
 	}

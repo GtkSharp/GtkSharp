@@ -13,12 +13,12 @@ namespace GtkSharp.Generation {
 
 	public class Ctor  {
 
-		private string ns;
+		private string libname;
 		private XmlElement elem;
 		private Parameters parms;
 
-		public Ctor (string ns, XmlElement elem) {
-			this.ns = ns;
+		public Ctor (string libname, XmlElement elem) {
+			this.libname = libname;
 			this.elem = elem;
 			XmlElement parms_elem = elem ["parameters"];
 			if (parms_elem != null)
@@ -67,7 +67,7 @@ namespace GtkSharp.Generation {
 			else
 				safety = "";
 
-			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + "\")]");
+			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
 			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + isig);
 			sw.WriteLine();
 			

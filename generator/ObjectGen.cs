@@ -15,7 +15,7 @@ namespace GtkSharp.Generation {
 
 		private ArrayList ctors = new ArrayList();
 
-		public ObjectGen (string ns, XmlElement elem) : base (ns, elem) 
+		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
 
@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "constructor":
-					ctors.Add (new Ctor (ns, member));
+					ctors.Add (new Ctor (LibraryName, member));
 					break;
 					
 				default:
@@ -79,7 +79,7 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			AppendCustom(Namespace, Name, sw);
+			AppendCustom(sw);
 
 			sw.WriteLine ("\t}");
 
