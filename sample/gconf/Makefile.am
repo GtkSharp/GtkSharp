@@ -1,3 +1,9 @@
+if ENABLE_GNOME
+	TARGET=sample.exe
+else
+	TARGET=
+endif
+
 FILES = 		\
 	Settings.cs 	\
 	$(srcdir)/main.cs
@@ -9,7 +15,7 @@ REFERENCES = /r:../../glib/glib-sharp.dll /r:../../pango/pango-sharp.dll /r:../.
 top_builddir=../..
 GCONFDIR=$(top_builddir)/gconf
 
-noinst_SCRIPTS = sample.exe
+noinst_SCRIPTS = $(TARGET)
 
 sample.exe: $(SCHEMA) $(srcdir)/sample.glade $(FILES)
 	$(CSC) /out:sample.exe $(FILES) $(REFERENCES) $(RESOURCES)
