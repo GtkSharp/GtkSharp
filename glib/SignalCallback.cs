@@ -25,6 +25,7 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
+	[Obsolete ("Replaced by GLib.Signal.")]
 	public abstract class SignalCallback : IDisposable {
 
 		// A counter used to produce unique keys for instances.

@@ -19,7 +19,6 @@ sources =		 			\
 	EnumWrapper.cs				\
 	FileUtils.cs				\
 	GException.cs				\
-	GLibSharp.voidObjectIntPtrSignal.cs	\
 	GString.cs				\
 	Idle.cs					\
 	IWrapper.cs				\
@@ -37,6 +36,7 @@ sources =		 			\
 	ObjectManager.cs			\
 	Opaque.cs				\
 	PropertyAttribute.cs			\
+	Signal.cs				\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
 	SignalCallback.cs			\

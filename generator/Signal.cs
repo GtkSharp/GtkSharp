@@ -34,7 +34,6 @@ namespace GtkSharp.Generation {
 		private ReturnValue retval;
 		private Parameters parms;
 		private ClassBase container_type;
-		SignalHandler sig_handler;
 
 		public Signal (XmlElement elem, ClassBase container_type)
 		{
@@ -43,7 +42,6 @@ namespace GtkSharp.Generation {
 			retval = new ReturnValue (elem ["return-type"]);
 			parms = new Parameters (elem["parameters"]);
 			this.container_type = container_type;
-			sig_handler = new SignalHandler (elem, container_type.NS);
 		}
 
 		public string Name {
@@ -57,7 +55,7 @@ namespace GtkSharp.Generation {
 
 		public bool Validate ()
 		{
-			if (Name == "" || !sig_handler.Validate ()) {
+			if (Name == "") {
 				Console.Write ("bad signal " + Name);
 				Statistics.ThrottledCount++;
 				return false;
@@ -80,9 +78,62 @@ namespace GtkSharp.Generation {
  			sw.WriteLine ("\t\tevent " + EventHandlerQualifiedName + " " + Name + ";");
 		}
 
+		private string BaseName {
+			get {
+				string result = SymbolTable.Table.GetName (retval.CType);
+				foreach (Parameter p in parms) {
+					result += p.PassAs;
+					if (p.Generatable is ObjectGen || p.Generatable is InterfaceGen)
+						result += "Object";
+					else
+						result += SymbolTable.Table.GetName(p.CType);
+				}		 
+				result = result.Replace ("[]", "Array");
+				return result;
+			}
+		}
+
+		public string CName {
+			get {
+				return "\"" + elem.GetAttribute("cname") + "\"";
+			}
+		}
+
+		public string CallbackName {
+			get {
+				return Name + "SignalCallback";
+			}
+		}
+
+		private string CallbackSig {
+			get {
+				string result = "";
+				for (int i = 0; i < parms.Count; i++) {
+					if (i > 0)
+						result += ", ";
+
+					if (parms[i].PassAs != "")
+						result += parms[i].PassAs + " ";
+					result += (parms[i].MarshalType + " arg" + i);
+				}
+				result += ", IntPtr gch";
+
+				result = result.Replace ("out ref", "out");
+				result = result.Replace ("ref ref", "ref");
+
+				return result;
+			}
+		}
+				
+		public string DelegateName {
+			get {
+				return Name + "SignalDelegate";
+			}
+		}
+
                 private string EventArgsName {
                         get {
-                                if (sig_handler.Name == "voidObjectSignal")
+                                if (IsEventHandler)
                                         return "EventArgs";
                                 else
                                         return Name + "Args";
@@ -91,7 +142,7 @@ namespace GtkSharp.Generation {
                                                                                                                         
                 private string EventArgsQualifiedName {
                         get {
-                                if (sig_handler.Name == "voidObjectSignal")
+                                if (IsEventHandler)
                                         return "System.EventArgs";
                                 else
                                         return container_type.NS + "." + Name + "Args";
@@ -100,7 +151,7 @@ namespace GtkSharp.Generation {
                                                                                                                         
                 private string EventHandlerName {
                         get {
-                                if (sig_handler.Name == "voidObjectSignal")
+                                if (IsEventHandler)
                                         return "EventHandler";
                                 else if (SymbolTable.Table [container_type.NS + Name + "Handler"] != null)
                                         return Name + "EventHandler";
@@ -111,12 +162,18 @@ namespace GtkSharp.Generation {
                                                                                                                         
                 private string EventHandlerQualifiedName {
                         get {
-                                if (sig_handler.Name == "voidObjectSignal")
+                                if (IsEventHandler)
                                         return "System.EventHandler";
                                 else
                                         return container_type.NS + "." + EventHandlerName;
                         }
                 }
+
+		public bool IsEventHandler {
+			get {
+				return retval.CSType == "void" && parms.Count == 1 && (parms [0].Generatable is ObjectGen || parms [0].Generatable is InterfaceGen);
+			}
+		}
 
 		private bool IsVoid {
 			get {
@@ -146,6 +203,52 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public void GenCallback (StreamWriter sw)
+		{
+			SymbolTable table = SymbolTable.Table;
+
+			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + DelegateName + " (" + CallbackSig + ");");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + CallbackName + " (" + CallbackSig + ")");
+			sw.WriteLine("\t\t{");
+			sw.WriteLine("\t\t\tGLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;");
+			sw.WriteLine("\t\t\tif (sig == null)");
+			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unknown signal GC handle received \" + gch);");
+			sw.WriteLine();
+			sw.WriteLine("\t\t\t{0} args = new {0} ();", EventArgsQualifiedName);
+			if (parms.Count > 1)
+				sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count - 1) + "];");
+			string finish = "";
+			for (int idx = 1; idx < parms.Count; idx++) {
+				Parameter p = parms [idx];
+				IGeneratable igen = p.Generatable;
+				if (p.PassAs == "out")
+					finish += "\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
+				else if ((igen is ClassBase && !(igen is StructBase)) || igen is ManualGen) {
+					sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
+					sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
+					sw.WriteLine("\t\t\telse {");
+					sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+					sw.WriteLine("\t\t\t}");
+				} else
+					sw.WriteLine("\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+			}
+			sw.WriteLine("\t\t\t{0} handler = ({0}) sig.Handler;", EventHandlerQualifiedName);
+			sw.WriteLine("\t\t\thandler (GLib.Object.GetObject (arg0), args);");
+			sw.WriteLine (finish);
+			if (!IsVoid) {
+				sw.WriteLine ("\t\t\tif (args.RetVal == null)");
+				if (retval.CSType == "bool")
+					sw.WriteLine ("\t\t\t\treturn false;");
+				else
+					sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
+
+				sw.WriteLine("\t\t\treturn " + table.ToNativeReturn (retval.CType, "((" + retval.CSType + ")args.RetVal)") + ";");
+			}
+			sw.WriteLine("\t\t}");
+			sw.WriteLine();
+		}
+
 		private bool NeedNew (ClassBase implementor)
 		{
 			return elem.HasAttribute ("new_flag") ||
@@ -155,7 +258,7 @@ namespace GtkSharp.Generation {
 
 		public void GenEventHandler (GenerationInfo gen_info)
 		{
-			if (EventHandlerName == "EventHandler")
+			if (IsEventHandler)
 				return;
 
 			string ns = container_type.NS;
@@ -233,8 +336,8 @@ namespace GtkSharp.Generation {
 		{
 			ImportSignature isig = new ImportSignature (parms, container_type.NS);
 			ManagedCallString call = new ManagedCallString (parms);
-			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "Delegate (" + isig.ToString () + ");\n");
-			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "Delegate", Name + "Callback");
+			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + isig.ToString () + ");\n");
+			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
@@ -245,71 +348,39 @@ namespace GtkSharp.Generation {
 			if (!IsVoid && retval.CSType != retval.ToNativeType)
 				sw.WriteLine ("\t\t\treturn {0};", SymbolTable.Table.ToNativeReturn (retval.CType, "raw_ret"));
 			sw.WriteLine ("\t\t}\n");
-			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 			sw.WriteLine ("\t\tprivate static void Override" + Name + " (GLib.GType gtype)");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tif (" + Name + "Callback == null)");
-			sw.WriteLine ("\t\t\t\t" + Name + "Callback = new " + Name + "Delegate (" + Name.ToLower() + "_cb);");
-			sw.WriteLine ("\t\t\tOverrideVirtualMethod (gtype, " + cname + ", " + Name + "Callback);");
+			sw.WriteLine ("\t\t\tif (" + Name + "VMCallback == null)");
+			sw.WriteLine ("\t\t\t\t" + Name + "VMCallback = new " + Name + "VMDelegate (" + Name.ToLower() + "_cb);");
+			sw.WriteLine ("\t\t\tOverrideVirtualMethod (gtype, " + CName + ", " + Name + "VMCallback);");
 			sw.WriteLine ("\t\t}\n");
 		}
 
 		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
 			StreamWriter sw = gen_info.Writer;
-			string cname = "\"" + elem.GetAttribute("cname") + "\"";
-			string ns;
-			if (implementor == null) {
-				ns = container_type.NS;
-				GenEventHandler (gen_info);
-			} else
-				ns = implementor.NS;
 
-			sig_handler.Generate (ns, gen_info);
+			if (implementor == null)
+				GenEventHandler (gen_info);
+
+			if (!IsEventHandler)
+				GenCallback (sw);
 			GenDefaultHandlerDelegate (sw, implementor);
 			GenVirtualMethod (sw, implementor);
-			string qual_marsh = ns + "Sharp." + sig_handler.Name;
+			string marsh = IsEventHandler ? "" : ", new " + DelegateName + "(" + CallbackName + ")";
 
-			sw.WriteLine("\t\t[GLib.Signal("+ cname + ")]");
+			sw.WriteLine("\t\t[GLib.Signal("+ CName + ")]");
 			sw.Write("\t\tpublic ");
 			if (NeedNew (implementor))
 				sw.Write("new ");
 			sw.WriteLine("event " + EventHandlerQualifiedName + " " + Name + " {");
 			sw.WriteLine("\t\t\tadd {");
-			sw.WriteLine("\t\t\t\tif (value.Method.GetCustomAttributes(typeof(GLib.ConnectBeforeAttribute), false).Length > 0) {");
-			sw.WriteLine("\t\t\t\t\tif (BeforeHandlers[" + cname + "] == null)");
-			sw.Write("\t\t\t\t\t\tBeforeSignals[" + cname + "] = new " + qual_marsh);
-			sw.WriteLine("(this, " + cname + ", value, typeof (" + EventArgsQualifiedName + "), 0);");
-			sw.WriteLine("\t\t\t\t\telse");
-			sw.WriteLine("\t\t\t\t\t\t((GLib.SignalCallback) BeforeSignals [{0}]).AddDelegate (value);", cname);
-			sw.WriteLine("\t\t\t\t\tBeforeHandlers.AddHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t\t} else {");
-			sw.WriteLine("\t\t\t\t\tif (AfterHandlers[" + cname + "] == null)");
-			sw.Write("\t\t\t\t\t\tAfterSignals[" + cname + "] = new " + qual_marsh);
-			sw.WriteLine("(this, " + cname + ", value, typeof (" + EventArgsQualifiedName + "), 1);");
-			sw.WriteLine("\t\t\t\t\telse");
-			sw.WriteLine("\t\t\t\t\t\t((GLib.SignalCallback) AfterSignals [{0}]).AddDelegate (value);", cname);
-			sw.WriteLine("\t\t\t\t\tAfterHandlers.AddHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t\t}");
+			sw.WriteLine("\t\t\t\tGLib.Signal sig = GLib.Signal.Lookup (this, " + CName + marsh + ");");
+			sw.WriteLine("\t\t\t\tsig.AddDelegate (value);");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\tremove {");
-			sw.WriteLine("\t\t\t\tSystem.ComponentModel.EventHandlerList event_list = AfterHandlers;");
-			sw.WriteLine("\t\t\t\tHashtable signals = AfterSignals;");
-			sw.WriteLine("\t\t\t\tif (value.Method.GetCustomAttributes(typeof(GLib.ConnectBeforeAttribute), false).Length > 0) {");
-			sw.WriteLine("\t\t\t\t\tevent_list = BeforeHandlers;");
-			sw.WriteLine("\t\t\t\t\tsignals = BeforeSignals;");
-			sw.WriteLine("\t\t\t\t}");
-			sw.WriteLine("\t\t\t\tGLib.SignalCallback cb = signals [{0}] as GLib.SignalCallback;", cname);
-			sw.WriteLine("\t\t\t\tevent_list.RemoveHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t\tif (cb == null)");
-			sw.WriteLine("\t\t\t\t\treturn;");
-			sw.WriteLine();
-			sw.WriteLine("\t\t\t\tcb.RemoveDelegate (value);");
-			sw.WriteLine();
-			sw.WriteLine("\t\t\t\tif (event_list[" + cname + "] == null) {");
-			sw.WriteLine("\t\t\t\t\tsignals.Remove(" + cname + ");");
-			sw.WriteLine("\t\t\t\t\tcb.Dispose ();");
-			sw.WriteLine("\t\t\t\t}");
+			sw.WriteLine("\t\t\t\tGLib.Signal sig = GLib.Signal.Lookup (this, " + CName + marsh + ");");
+			sw.WriteLine("\t\t\t\tsig.RemoveDelegate (value);");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();

@@ -245,6 +245,8 @@ namespace GLib {
 		}
 
 		Hashtable before_signals;
+
+		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
 		protected Hashtable BeforeSignals {
 			get {
 				if (before_signals == null)
@@ -254,6 +256,7 @@ namespace GLib {
 		}
 
 		Hashtable after_signals;
+		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
 		protected Hashtable AfterSignals {
 			get {
 				if (after_signals == null)
@@ -263,6 +266,7 @@ namespace GLib {
 		}
 
 		EventHandlerList before_handlers;
+		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
 		protected EventHandlerList BeforeHandlers {
 			get {
 				if (before_handlers == null)
@@ -272,6 +276,7 @@ namespace GLib {
 		}
 
 		EventHandlerList after_handlers;
+		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
 		protected EventHandlerList AfterHandlers {
 			get {
 				if (after_handlers == null)
@@ -280,13 +285,25 @@ namespace GLib {
 			}
 		}
 
+		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
+
+		void NotifyCallback (IntPtr handle, IntPtr pspec, IntPtr gch)
+		{
+			GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+			if (sig == null)
+				throw new Exception("Unknown signal GC handle received " + gch);
+
+			NotifyArgs args = new NotifyArgs ();
+			args.Args = new object[1];
+			args.Args[0] = pspec;
+			NotifyHandler handler = (NotifyHandler) sig.Handler;
+			handler (GLib.Object.GetObject (handle), args);
+		}
+
 		void ConnectNotification (string signal, NotifyHandler handler)
 		{
-			if (AfterHandlers[signal] == null)
-				AfterSignals[signal] = new GLibSharp.voidObjectIntPtrSignal (this, signal, handler, typeof (NotifyArgs), 1);
-			else
-				((GLib.SignalCallback) AfterSignals[signal]).AddDelegate (handler);
-			AfterHandlers.AddHandler (signal, handler);
+			Signal sig = Signal.Lookup (this, signal, new NotifyDelegate (NotifyCallback));
+			sig.AddDelegate (handler);
 		}
 
 		public void AddNotification (string property, NotifyHandler handler)
@@ -301,17 +318,8 @@ namespace GLib {
 
 		void DisconnectNotification (string signal, NotifyHandler handler)
 		{
-			GLib.SignalCallback cb = AfterSignals[signal] as GLib.SignalCallback;
-			AfterHandlers.RemoveHandler (signal, handler);
-
-			if (cb == null)
-				return;
-			cb.RemoveDelegate (handler);
-
-			if (AfterHandlers[signal] == null) {
-				AfterSignals.Remove (signal);
-				cb.Dispose ();
-			}
+			Signal sig = Signal.Lookup (this, signal, new NotifyDelegate (NotifyCallback));
+			sig.RemoveDelegate (handler);
 		}
 
 		public void RemoveNotification (string property, NotifyHandler handler)

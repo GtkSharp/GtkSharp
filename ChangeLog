@@ -1,3 +1,19 @@
+2005-02-02  Mike Kestner  <mkestner@novell.com>
+
+	* generator/Makefile.am : remove source file.
+	* generator/Signal.cs : generate marshaling callbacks and use new
+	GLib.Signal marshaling class for events.
+	* generator/SignalHandler.cs : kill. byebye SignalCallback subclasses.
+	* glib/Makefile.am : update source files.
+	* glib/GLibSharp.voidObjectIntPtrSignal.cs : kill.
+	* glib/Object.cs : mark the old Before/After props Obsolete. Use
+	GLib.Signal for the notify prop methods.
+	* glib/Signal.cs : new signal marshaling class.  It manages all the 
+	ConnectBefore/After stuff internally and connects itself to the native
+	object using GCHandles and DestroyNotify lifecycle management.
+	* glib/SignalCallback.cs : mark Obsolete.
+	[Fixes #72018 and #69847]
+
 2005-02-01  Fredrik Nilsson  <jymdman@home.se>
 
 	* glib/Marshaller.cs : DateTime marshaling fix.
