@@ -74,7 +74,7 @@ glade-viewer.exe: $(srcdir)/GladeViewer.cs
 	$(CSC)  -out:glade-viewer.exe $(references) $(srcdir)/GladeViewer.cs
 
 glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade
-	$(CSC)  -resource:$(srcdir)/test.glade -out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
+	$(CSC)  -resource:$(srcdir)/test.glade,test.glade -out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
 cairo-sample.exe: $(srcdir)/CairoSample.cs
 	$(CSC) -out:cairo-sample.exe $(references) -r:Mono.Cairo $(srcdir)/CairoSample.cs
