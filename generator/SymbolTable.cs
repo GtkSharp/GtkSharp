@@ -44,6 +44,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("int", "int");
 			simple_types.Add ("char", "char");
 			simple_types.Add ("double", "double");
+			simple_types.Add ("float", "float");
 			simple_types.Add ("gunichar", "String");
 			simple_types.Add ("uint1", "bool");
 			simple_types.Add ("GPtrArray", "IntPtr[]");
@@ -75,21 +76,44 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public IDictionaryEnumerator GetEnumerator ()
+		public IDictionaryEnumerator GetEnumerator()
 		{
 			return complex_types.GetEnumerator();
 		}
 		
-		public String GetCSType (String c_type)
+		public String GetCSType(String c_type)
 		{
 			if (simple_types.ContainsKey(c_type)) {
-				return (String) simple_types [c_type];
+				return (String) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.QualifiedName;
 			} else {
 				return "";
 			}
+		}
+		
+		public String GetMarshalType(String c_type)
+		{
+			if (simple_types.ContainsKey(c_type)) {
+				return (String) simple_types[c_type];
+			} else if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				return gen.MarshalType;
+			} else {
+				return "";
+			}
+		}
+		
+		public bool IsObject(String c_type)
+		{
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is ObjectGen) {
+					return true;
+				}
+			}
+			return false;
 		}
 		
 	}

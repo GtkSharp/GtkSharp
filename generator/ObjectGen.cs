@@ -101,6 +101,9 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "property":
+					if (!GenProperty(member, table, sw)) {
+						Console.WriteLine("in object " + CName);
+					}
 					break;
 					
 				case "signal":
@@ -119,7 +122,63 @@ namespace GtkSharp.Generation {
 			
 			sw.Flush();
 			sw.Close();
-		}		
+		}
+		
+		public bool GenProperty (XmlElement prop, SymbolTable table, StreamWriter sw)
+		{
+			String c_type = prop.GetAttribute("type");
+
+			char[] ast = {'*'};
+			c_type = c_type.TrimEnd(ast);
+			String cs_type = table.GetCSType(c_type);
+			String m_type;
+			
+			if (table.IsObject(c_type)) {
+				m_type = "GLib.Object";
+			} else {
+				m_type = table.GetMarshalType(c_type);
+			}
+			
+			if ((cs_type == "") || (m_type == "")) {
+				Console.Write("Property has unknown Type {0} ", c_type);
+				return false;
+			}
+			
+			if (prop.HasAttribute("construct-only") && !prop.HasAttribute("readable")) {
+				return true;
+			}
+			
+			XmlElement parent = (XmlElement) prop.ParentNode;
+			String name = prop.GetAttribute("name");
+			if (name == parent.GetAttribute("name")) {
+				name += "Prop";
+			}
+
+			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
+			if (prop.HasAttribute("readable")) {
+				sw.WriteLine("\t\t\tget {");
+				sw.WriteLine("\t\t\t\t" + m_type + " val;");
+				sw.WriteLine("\t\t\t\tGetProperty(\"" + prop.GetAttribute("cname") + "\", out val);");
+				sw.Write("\t\t\t\treturn ");
+				if (cs_type != m_type) {
+					sw.Write("(" + cs_type + ") ");
+				}
+				sw.WriteLine("val;");
+				sw.WriteLine("\t\t\t}");
+			}
+			
+			if (prop.HasAttribute("writeable") && !prop.HasAttribute("construct-only")) {
+				sw.WriteLine("\t\t\tset {");
+				sw.WriteLine("\t\t\t\tSetProperty(\"" + prop.GetAttribute("cname") + "\", (" + m_type + ") value);");
+				sw.WriteLine("\t\t\t}");
+			}
+			
+			sw.WriteLine("\t\t}");
+			sw.WriteLine();
+			
+			return true;
+		}
+		
 	}
 }
 

@@ -425,46 +425,45 @@ sub addPropElem
 {
 	my ($spec, $node) = @_;
 	my ($name, $mode, $docs);
-	$spec =~ /g_param_spec_(\w+)\s*\((.*)/;
+	$spec =~ /g_param_spec_(\w+)\s*\((.*)\s*\)\s*\)/;
 	my $type = $1;
-	my $params = $2;
+	my @params = split(/,/, $2);
 
-	if ($type =~ /boolean|^u*int|pointer/) {
-		$params =~ /\"(.+)\",.+\".+\".+\"(.+)\".*(,\s*G_PARAM_\w+.*)\)\s*\)/;
-		$name = $1; $docs = $2; $mode = $3;
+	# FIXME: Handle non-literals.  Needs work in the pp too.
+	$name = $params[0];
+	$name =~ s/\"//g;
+
+	while ($params[2] !~ /\"\s*\)?$/) {
+		die "Unable to reconstruct doc string.\n" if (!$params[3]);
+		$params[2] .= ",$params[3]";
+		@params = (@params[0..2],@params[4..$#params]);
+	}
+	$docs = $params[2];
+	$docs =~ s/\"//g;
+	$docs =~ s/\s+/ /g;
+	$mode = $params[$#params];
+
+	if ($type =~ /boolean|float|double|^u?int|pointer/) {
 		$type = "g$type";
 	} elsif ($type =~ /string/) {
-		$params =~ /\"(.+)\",.+\".+\".+\"(.+)\".*(,\s*G_PARAM_\w+.*)\)\s*\)/;
-		$name = $1; $docs = $2; $mode = $3;
 		$type = "gchar*";
-	} elsif ($type =~ /enum|flags/) {
-		$params =~ /\"(.+)\",.+,.+\"(.+)\".*,\s+(\w+),.*,(\s*G_PARAM_\w+.*)\)\s*\)/;
-		$name = $1; $docs = $2; $type = $3; $mode = $4;
+	} elsif ($type =~ /enum|flags|object/) {
+		$type = $params[3];
 		$type =~ s/TYPE_//;
-		$type = StudlyCaps(lc($type));
-	} elsif ($type =~ /object/) {
-		$params =~ /\"(.+)\",.+,.+\"(.+)\".*,\s+(\w+),(\s*G_PARAM_\w+.*)\)\s*\)/;
-		$name = $1; $docs = $2; $type = $3; $mode = $4;
-		$type =~ s/TYPE_//;
+		$type =~ s/\s+//g;
 		$type = StudlyCaps(lc($type));
 	}
-
 
 	$prop_elem = $doc->createElement('property');
 	$node->appendChild($prop_elem);
-	$prop_elem->setAttribute('name', $name);
+	$prop_elem->setAttribute('name', StudlyCaps($name));
+	$prop_elem->setAttribute('cname', $name);
 	$prop_elem->setAttribute('type', $type);
 	$prop_elem->setAttribute('doc-string', $docs);
 
-	if ($mode =~ /READ/) {
-		$prop_elem->setAttribute('readable', "true");
-	}
-	if ($mode =~ /WRIT/) {
-		$prop_elem->setAttribute('writeable', "true");
-	}
-	if ($mode =~ /CONS/) {
-		$prop_elem->setAttribute('construct-only', "true");
-	}
+	$prop_elem->setAttribute('readable', "true") if ($mode =~ /READ/);
+	$prop_elem->setAttribute('writeable', "true") if ($mode =~ /WRIT/);
+	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONS/);
 }
 
 sub addSignalElem
@@ -526,26 +525,23 @@ sub parseInitFunc
 
 		my $line = $init_lines[$linenum];
 			
-		while ($linenum < @init_lines) {
-			$line = $init_lines[$linenum];
-			if ($line =~ /g_object_class_install_prop/) {
-				my $prop = $line;
-				do {
-					$prop .= $init_lines[++$linenum];
-				} until ($init_lines[$linenum] =~ /;/);
-				addPropElem ($prop, $obj_el);
-				$propcnt++;
-			} elsif ($line =~ /g(tk)?_signal_new/) {
-				my $sig = $line;
-				do {
-					$sig .= $init_lines[++$linenum];
-				} until ($init_lines[$linenum] =~ /;/);
-				addSignalElem ($sig, $classdef, $obj_el);
-				$sigcnt++;
-			}
-			$linenum++;
+		if ($line =~ /#define/) {
+			# FIXME: This ignores the bool helper macro thingie.
+		} elsif ($line =~ /g_object_class_install_prop/) {
+			my $prop = $line;
+			do {
+				$prop .= $init_lines[++$linenum];
+			} until ($init_lines[$linenum] =~ /;/);
+			addPropElem ($prop, $obj_el);
+			$propcnt++;
+		} elsif ($line =~ /g(tk)?_signal_new/) {
+			my $sig = $line;
+			do {
+				$sig .= $init_lines[++$linenum];
+			} until ($init_lines[$linenum] =~ /;/);
+			addSignalElem ($sig, $classdef, $obj_el);
+			$sigcnt++;
 		}
-
 		$linenum++;
 	}
 }
