@@ -7,8 +7,45 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A text entry field with a dropdown list</summary>
+    <remarks>
+      <para>
+        The GtkCombo widget consists of a single-line text entry field and a
+        drop-down list. The drop-down list is displayed when the user clicks
+        on a small arrow button to the right of the entry field.
+      </para>
+      <para>
+        The drop-down list is a GtkList widget and can be accessed using the
+        list member of the GtkCombo. List elements can contain arbitrary
+        widgets, but if an element is not a plain label, then you must use
+        the gtk_list_set_item_string() function. This sets the string which
+        will be placed in the text entry field when the item is selected.
+      </para>
+      <para>
+        By default, the user can step through the items in the list using the
+        arrow (cursor) keys, though this behaviour can be turned off with
+        gtk_combo_set_use_arrows().
+      </para>
+      <example>
+        <para>
+          Creating a GtkCombo widget with simple text items:
+        </para>
+        <code lang="c#">
+          Gtk.Combo MakeCombo () {
+            GLib.List l = new GLib.List (IntPtr.Zero, typeof(string));
+            l.Append(Marshal.StringToHGlobalAnsi("String 1"));
+            l.Append(Marshal.StringToHGlobalAnsi("String 2"));
+            Gtk.Combo combo = new Gtk.Combo
+              (new GLib.Type((uint)TypeFundamentals.TypeString));
+            combo.PopdownStrings = l;
+            return combo;
+          }
+        </code>
+        <para>
+          See <see cref="T:GLib.List" /> for more about GLib.List.
+        </para>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.HBox</BaseTypeName>
@@ -39,7 +76,7 @@
         <Parameter Name="args" Type="System.String []" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Convenience function to set all of the items in the popup list.</summary>
         <param name="args">To be added: an object of type 'string []'</param>
         <remarks>To be added</remarks>
       </Docs>
@@ -55,7 +92,7 @@
         <Parameter Name="item_value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the string to place in the Gtk.Entry field when a particular list item is selected. This is needed if the list item is not a simple label.</summary>
         <param name="item">To be added: an object of type 'Gtk.Item'</param>
         <param name="item_value">To be added: an object of type 'string'</param>
         <remarks>To be added</remarks>
@@ -69,7 +106,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Stops the Gtk.Combo widget from showing the popup list when the Gtk.Entry emits the "activate" signal, i.e. when the Return key is pressed. This may be useful if, for example, you want the Return key to close a dialog instead.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -107,7 +144,7 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new Combo.</summary>
         <returns>To be added: an object of type 'Gtk.Combo'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -131,7 +168,7 @@
         <ReturnType>Gtk.Button</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The Button asociated with the Combo.</summary>
         <returns>To be added: an object of type 'Gtk.Button'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -143,7 +180,7 @@
         <ReturnType>Gtk.Entry</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The Entry asociated with the Combo.</summary>
         <returns>To be added: an object of type 'Gtk.Entry'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -158,7 +195,7 @@
         <Parameter Name="value" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Property to set all of the items in the popup list.</summary>
         <param name="value">To be added: an object of type 'GLib.List'</param>
         <returns>To be added: an object of type 'GLib.List'</returns>
         <remarks>To be added</remarks>
@@ -174,7 +211,7 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Does nothing. ---- To get out ----</summary>
         <param name="value">To be added: an object of type 'bool'</param>
         <returns>To be added: an object of type 'bool'</returns>
         <remarks>To be added</remarks>
@@ -190,10 +227,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list.</summary>
         <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <returns>TRUE if the arrow keys can be used to step through the items in the list.</returns>
+        <remarks>This is on by default.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnableArrowsAlways">
@@ -222,9 +259,9 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <summary>Specifies whether the value entered in the text entry field must match one of the values in the list. If this is set then the user will not be able to perform any other action until a valid value has been entered.</summary>
+        <param name="value">TRUE if the value entered must match one of the values in the list.</param>
+        <returns>TRUE if the value entered must match one of the values in the list.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -238,9 +275,9 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <summary>Specifies if an empty field is acceptable.</summary>
+        <param name="value">TRUE if an empty value is considered valid.</param>
+        <returns>TRUE if an empty value is considered valid.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -254,9 +291,9 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list. This is true by default.</summary>
+        <param name="value">TRUE if the arrow keys can be used to step through the items in the list.</param>
+        <returns>TRUE if the arrow keys can be used to step through the items in the list.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -270,10 +307,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Specifies whether the text entered into the Entry field and the text in the list items is case sensitive.</summary>
+        <param name="value">TRUE if the text in the list items is case sensitive.</param>
+        <returns>TRUE if the text in the list items is case sensitive.</returns>
+        <remarks>This may be useful, for example, when you have set true ValueInList to limit the values entered, but you are not worried about differences in case.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
