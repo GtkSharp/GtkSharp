@@ -132,7 +132,7 @@ namespace GtkDemo
 		 */
 
 			TextTag tag  = new TextTag("heading");
-			//tag.Weigth = Pango.Weight.Bold;
+			tag.FontDesc.Weight = Pango.Weight.Bold;
 			tag.Size = (int) Pango.Scale.PangoScale * 15;
 			buffer.TagTable.Add(tag);
 
@@ -141,12 +141,10 @@ namespace GtkDemo
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("bold");
-			// An object reference is required for the non-static field `Weight'
-			//tag.Weight = Pango.Weight.Bold;
+			tag.FontDesc.Weight = Pango.Weight.Bold;
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("big");
-			// Expression denotes a `type' where a `variable, value' was expected
 			tag.Size = (int) Pango.Scale.PangoScale * 20;
 			buffer.TagTable.Add(tag);
 
@@ -173,16 +171,16 @@ namespace GtkDemo
 			int gray50_width = 2;
 			int gray50_height = 2;
 			string gray50_bits = new  string ((char) 0x02, (char) 0x01);
-			//Bitmap stipple = Bitmap.CreateFromData(null, (string) gray50_bits, gray50_width, gray50_height );
-
+			// Pixmap stipple = Pixmap.CreateFromData (null, (string) gray50_bits, gray50_width, gray50_height, 16, Color.Zero, Color.Zero);
+			
 			tag  = new TextTag("background_stipple");
-			// tag.BackgroundStipple =  stipple;
+			// tag.BackgroundStipple = stipple;
 			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("foreground_stipple");
 			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
-			// tag.ForegroundStipple =  stipple;			
+			// tag.ForegroundStipple = stipple;			
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("big_gap_before_line");
@@ -250,7 +248,7 @@ namespace GtkDemo
 
 			tag  = new TextTag("rtl_quote");
 			tag.WrapMode = WrapMode.Word;
-			//tag.Direction = TextMode.Dir.Rtl
+			tag.Direction = TextDirection.Rtl;
 			tag.Indent = 30;
 			tag.LeftMargin = 20; 
 			tag.RightMargin = 20;
@@ -266,10 +264,13 @@ namespace GtkDemo
 		 */
 			
 			// Error handling here, check for file existence, etc.
-
-			Pixbuf pixbuf = new Pixbuf ("images/gtk-logo-rgb.gif");
-			pixbuf.ScaleSimple (32, 32, InterpType.Bilinear);
-
+			Pixbuf pixbuf = null;
+			
+			if (File.Exists ("images/gtk-logo-rgb.gif"))
+			{
+				pixbuf = new Pixbuf ("images/gtk-logo-rgb.gif");
+				pixbuf.ScaleSimple (32, 32, InterpType.Bilinear);
+			}
 		/* get start of buffer; each insertion will revalidate the
 		 * iterator to point to just after the inserted text.
 		 */

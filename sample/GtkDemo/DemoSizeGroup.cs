@@ -81,7 +81,7 @@ namespace GtkDemo
   			checkButton.Active = true;
  			checkButton.Toggled += new EventHandler (ButtonToggleCb);
 
-			Button CloseButton = Button.NewFromStock (Stock.Close);
+			Button CloseButton = new Button (Stock.Close);
 			window.AddActionWidget  (CloseButton, 5);
 			window.Response += new ResponseHandler (ResponseCallback);
 		

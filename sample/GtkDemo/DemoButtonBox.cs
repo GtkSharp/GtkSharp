@@ -84,11 +84,11 @@ namespace GtkDemo
 			bbox.Layout = layout;
 			bbox.Spacing= spacing;
 		
-			Button buttonOk = Button.NewFromStock (Stock.Ok);
+			Button buttonOk = new Button (Stock.Ok);
 			bbox.Add (buttonOk);
-			Button buttonCancel = Button.NewFromStock (Stock.Cancel);
+			Button buttonCancel = new Button (Stock.Cancel);
 			bbox.Add (buttonCancel);
-			Button buttonHelp = Button.NewFromStock (Stock.Help);
+			Button buttonHelp = new Button (Stock.Help);
 			bbox.Add (buttonHelp);
 		
 			return frame;

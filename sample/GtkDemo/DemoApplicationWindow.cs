@@ -79,11 +79,11 @@ namespace GtkDemo
 		{
 			Toolbar toolbar = new Toolbar ();
 			
-			Button open = Button.NewFromStock (Stock.Open);
+			Button open = new Button (Stock.Open);
 			open.Clicked += new EventHandler (OnToolbarClicked);
 			toolbar.AppendWidget (open, "Open", "Open");
 			
-			Button quit = Button.NewFromStock (Stock.Quit);
+			Button quit = new Button (Stock.Quit);
 			quit.Clicked += new EventHandler (OnToolbarClicked);
 			toolbar.AppendWidget (quit, "Quit", "Quit");
 			
