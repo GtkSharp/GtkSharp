@@ -19,6 +19,15 @@ guint gtksharp_gdk_event_key_get_state (GdkEventKey *event);
 guint gtksharp_gdk_event_key_get_keyval (GdkEventKey *event);
 guint16 gtksharp_gdk_event_key_get_hardware_keycode (GdkEventKey *event);
 guint8 gtksharp_gdk_event_key_get_group (GdkEventKey *event);
+guint32 gtksharp_gdk_event_button_get_time (GdkEventButton *event);
+guint gtksharp_gdk_event_button_get_state (GdkEventButton *event);
+guint gtksharp_gdk_event_button_get_button (GdkEventButton *event);
+gdouble gtksharp_gdk_event_button_get_x (GdkEventButton *event);
+gdouble gtksharp_gdk_event_button_get_y (GdkEventButton *event);
+gdouble gtksharp_gdk_event_button_get_x_root (GdkEventButton *event);
+gdouble gtksharp_gdk_event_button_get_y_root (GdkEventButton *event);
+gdouble* gtksharp_gdk_event_button_get_axes (GdkEventButton *event);
+GdkDevice* gtksharp_gdk_event_button_get_device (GdkEventButton *event);
 /* */
 
 GdkEventType
@@ -48,7 +57,7 @@ gtksharp_gdk_event_key_get_time (GdkEventKey *event)
 guint
 gtksharp_gdk_event_key_get_state (GdkEventKey *event)
 {
-	return event->time;
+	return event->state;
 }
 
 guint
@@ -67,5 +76,59 @@ guint8
 gtksharp_gdk_event_key_get_group (GdkEventKey *event)
 {
 	return event->group;
+}
+
+guint32
+gtksharp_gdk_event_button_get_time (GdkEventButton *event)
+{
+	return event->time;
+}
+
+guint
+gtksharp_gdk_event_button_get_state (GdkEventButton *event)
+{
+	return event->state;
+}
+
+guint
+gtksharp_gdk_event_button_get_button (GdkEventButton *event)
+{
+	return event->button;
+}
+
+GdkDevice*
+gtksharp_gdk_event_button_get_device (GdkEventButton *event)
+{
+	return event->device;
+}
+
+gdouble
+gtksharp_gdk_event_button_get_x (GdkEventButton *event)
+{
+	return event->x;
+}
+
+gdouble
+gtksharp_gdk_event_button_get_y (GdkEventButton *event)
+{
+	return event->y;
+}
+
+gdouble
+gtksharp_gdk_event_button_get_x_root (GdkEventButton *event)
+{
+	return event->x_root;
+}
+
+gdouble
+gtksharp_gdk_event_button_get_y_root (GdkEventButton *event)
+{
+	return event->y_root;
+}
+
+gdouble*
+gtksharp_gdk_event_button_get_axes (GdkEventButton *event)
+{
+	return event->axes;
 }
 

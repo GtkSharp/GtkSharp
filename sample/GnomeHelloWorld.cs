@@ -151,13 +151,7 @@ namespace GtkSamples {
 		void icon_selected_cb (object obj, Gnome.IconSelectedArgs args)
 		{
 			int idx = args.Num;
-			Event ev_any = args.Event;
-			EventButton ev = EventButton.New (ev_any.Handle);
-
-			// test the accessor, this is unnecessary in real code
-			Gdk.WindowType type = ev.window.WindowType;
-			if (type != Gdk.WindowType.Child)
-				Console.WriteLine ("Struct field accessors appear to be broken.");
+			EventButton ev = new EventButton (args.Event.Handle);
 
 			if (ev.Type == EventType.TwoButtonPress && ev.Button == 1) {
 				g_spawn_command_line_async ("mono " + entries[idx].program, IntPtr.Zero); 

@@ -98,7 +98,7 @@ namespace GtkSamples {
 		}
 		
 		void Item_Event (object obj, Gnome.CanvasEventArgs args) {
-			EventButton ev = EventButton.New (args.Event.Handle);
+			EventButton ev = new EventButton (args.Event.Handle);
 			CanvasRE item = (CanvasRE) obj;
 
 			switch (ev.Type) {
