@@ -30,8 +30,12 @@ while ($def = get_def()) {
 		gen_enum (split (/\n/, $def));
 	} elsif ($def =~ /^\(define-struct (\w+)/) {
 		$name = $1;
+		$def =~ /c-name "(\w+)"/;
+		$cname=$1;
 		$def =~ s/\n\s*//g;
-		gen_struct ($name, $def);
+		$structs{$name} = $def;
+		$maptypes{$cname} = $name;
+		$marshaltypes{$cname} = $name;
 	} elsif ($def =~ /^\(define-object (\w+)/) {
 		$name = $1;
 		$def =~ /c-name "(\w+)"/;
@@ -61,8 +65,12 @@ while ($def = get_def()) {
 
 }
 
-foreach $key (sort (keys (%objects))) {
-	next if ($key ne "GtkWindow");
+foreach $key (keys (%structs)) {
+	gen_struct ($key, $structs{$key});
+}
+
+foreach $key (keys (%objects)) {
+	next if ($key !~ /GtkWindow\b|GtkAccelGroup|GtkBin\b/);
 	gen_object (split (/\n/, $objects{$key}));
 }
 
@@ -178,7 +186,10 @@ sub gen_struct
 	
 	print OUTFILE "// Generated file: Do not modify\n\n";
 	print OUTFILE "namespace $namespace {\n\n";
-	print OUTFILE "\t/// <summary> $name Structure </summary>\n";
+	foreach $ns (split (/,/, $usings{$namespace})) {
+		print OUTFILE "\tusing $ns;\n";
+	}
+	print OUTFILE "\n\t/// <summary> $name Structure </summary>\n";
 	print OUTFILE "\t/// <remarks>\n\t///\tFIXME: Add docs.\n";
 	print OUTFILE "\t/// </remarks>\n\n";
 
@@ -188,7 +199,10 @@ sub gen_struct
 		foreach $parm (split(/\)'\(/, $1)) {
 			$parm =~ s/\*//g;
 			$parm =~ /"(\S*)" "(\S*)"/;
-			print OUTFILE "\t\tpublic $maptypes{$1} $2;\n";
+			$ptype = $1;
+			$pname = $2; 
+			$pname =~ s/object/objekt/;
+			print OUTFILE "\t\tpublic $maptypes{$ptype} $pname;\n";
 		}
 	}
 
@@ -412,30 +426,33 @@ sub gen_method
 sub gen_param_strings
 {
 	my ($def) = @_;
-	my ($call, $parm, $pinv, $sig);
+	my ($call, $parm, $pinv, $pname, $ptype, $sig);
 
 	$call = $pinv = $sig = "";
 	if ($def =~ /parameters'\((.*)\)\)\)/) {
 		foreach $parm (split(/\)'\(/, $1)) {
 			$parm =~ s/\*//g;
 			$parm =~ /"(\S*)" "(\S*)"/;
+			$ptype = $1;
+			$pname = $2;
+			$pname =~ s/object/objekt/;
 			if ($sig) { 
 				$sig .= ', '; 
 				$call .= ', '; 
 				$pinv .= ', '; 
 			}
-			$pinv .= "$marshaltypes{$1} $2";
-			$sig .= "$maptypes{$1} $2";
-			if ($maptypes{$1} eq $marshaltypes{$1}) {
-				$call .= "$2";
-			} elsif (exists ($objects{$1})) {
-				$call .= "$2.Handle";
-			} elsif ($1 =~ /gchar/) {
-				$call .= "Marshal.StringToHGlobalAnsi($2)";
-			} elsif ($marshaltypes{$1} = "int") {
-				$call .= "(int) $2";
+			$pinv .= "$marshaltypes{$ptype} $pname";
+			$sig .= "$maptypes{$ptype} $pname";
+			if ($maptypes{$ptype} eq $marshaltypes{$ptype}) {
+				$call .= "$pname";
+			} elsif (exists ($objects{$ptype})) {
+				$call .= "$pname.Handle";
+			} elsif ($ptype =~ /gchar/) {
+				$call .= "Marshal.StringToHGlobalAnsi($pname)";
+			} elsif ($marshaltypes{$ptype} = "int") {
+				$call .= "(int) $pname";
 			} else {
-				die "Unexpected type encountered $1\n";
+				die "Unexpected type encountered $ptype\n";
 			}
 		}
 	}
