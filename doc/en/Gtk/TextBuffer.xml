@@ -694,10 +694,19 @@
         <param name="name">the name of the mark</param>
         <param name="where">the new location for mark</param>
         <remarks>
+          <para>It is possible to use built-in marks to implement a "Select All" method on a buffer (e.g. <see cref="M:Gtk.TextView.Buffer" />).</para>
           <para>
-            see <see cref="M:Gtk.TextBuffer.MoveMark(Gtk.TextMark,Gtk.TextIter)" />
-            for more details.
+            <example>
+              <code lang="C#">
+	private void SelectAll (TextBuffer buffer)
+	{
+		buffer.MoveMark ("insert", buffer.StartIter);
+		buffer.MoveMark ("selection_bound", buffer.EndIter);
+	}
+  </code>
+            </example>
           </para>
+          <para>See <see cref="M:Gtk.TextBuffer.MoveMark(Gtk.TextMark,Gtk.TextIter)" /> for more details.</para>
         </remarks>
       </Docs>
     </Member>
