@@ -1,22 +1,35 @@
 // Gdk.Color.custom - Gdk Color class customizations
 //
-// Author: Jasper van Putten <Jaspervp@gmx.net>
+// Author: Jasper van Putten <Jaspervp@gmx.net>, Miguel de Icaza.
 //
 // (c) 2002 Jasper van Putten
+// (c) 2003 Miguel de Icaza.
 //
 // This code is inserted after the automatically generated code.
 
 
-/// <summary>
-/// ToString method
-/// </summary>
-///
-/// <remarks>
-/// returns a string representation of this color
-///
-/// </remarks>
-
 public override string ToString ()
 {
 	return String.Format ("rgb:{0:x}/{1:x}/{2:x}", red, green, blue);
+}
+
+public Color (byte r, byte g, byte b)
+{
+	red = (ushort) (r << 8 | r);
+	green = (ushort) (g << 8 | g);
+	blue = (ushort) (b << 8 | b);
+	pixel = 0;
+}
+
+public Color (System.Drawing.Color color)
+{
+	byte r, g, b;
+	r = color.R;
+	g = color.G;
+	b = color.B;
+
+	red = (ushort) (r << 8 | r);
+	green = (ushort) (g << 8 | g);
+	blue = (ushort) (b << 8 | b);
+	pixel = 0;
 }
