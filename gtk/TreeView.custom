@@ -1,0 +1,22 @@
+// Gtk.TreeView.Custom - Gtk TreeView class customizations
+//
+// Author: Kristian Rietveld <kris@gtk.org>
+//
+// (c) 2002 Kristian Rietveld
+//
+// This code is inserted after the automatically generated code.
+
+
+		[DllImport("gtk-x11-2.0")]
+		static extern IntPtr gtk_tree_view_get_model (IntPtr raw);
+
+		/// <summary>Model Property</summary>
+		/// <remarks>Gets the model being displayed by the TreeView
+		/// </remarks>
+		public Gtk.TreeModel Model {
+			get {
+				IntPtr raw_ret = gtk_tree_view_get_model (Handle);
+				Gtk.TreeModel ret = (Gtk.TreeModel) GLib.Object.GetObject (raw_ret);
+				return ret;
+			}
+		}

@@ -1,0 +1,111 @@
+// Gtk.TreeStore.Custom - Gtk TreeStore class customizations
+//
+// Author: Kristian Rietveld <kris@gtk.org>
+//
+// (c) 2002 Kristian Rietveld
+//
+// This code is inserted after the automatically generated code.
+
+
+		/// <summary>
+		///	Appends a row.
+		/// </summary>
+		///
+		/// <remarks>
+		///	Appends a row to the root level of the TreeStore.
+		/// </remarks>
+
+		[DllImport ("gtk-x11-2.0")]
+		static extern void gtk_tree_store_append (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+
+		public void Append (out Gtk.TreeIter iter) {
+			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
+		}
+
+		/// <summary>
+		///	Inserts a row.
+		/// </summary>
+		///
+		/// <remarks>
+		///	Inserts a row in the root level of the TreeStore at
+		///	the given position.
+		/// </remarks>
+
+		[DllImport ("gtk-x11-2.0")]
+		static extern void gtk_tree_store_insert (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int position);
+
+		public void Insert (out Gtk.TreeIter iter, int position) {
+			gtk_tree_store_insert (Handle, out iter, IntPtr.Zero, position);
+		}
+
+		/// <summary>
+		///	Prepends a row.
+		/// </summary>
+		///
+		/// <remarks>
+		///	Prepends a row to the root level of the TreeStore.
+		/// </remarks>
+
+		[DllImport ("gtk-x11-2.0")]
+		static extern void gtk_tree_store_prepend (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+
+		public void Prepend (out Gtk.TreeIter iter) {
+			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
+		}
+
+		/// <summary>
+		///	Inserts a row.
+		/// </summary>
+		///
+		/// <remarks>
+		///	Inserts a row in the root level of TreeStore before the
+		///	given sibling.
+		/// </remarks>
+
+		[DllImport ("gtk-x11-2.0")]
+		static extern void gtk_tree_store_insert_before (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
+
+		public void InsertBefore (out Gtk.TreeIter iter, Gtk.TreeIter sibling) {
+			gtk_tree_store_insert_before (Handle, out iter, IntPtr.Zero, ref sibling);
+		}
+
+		/// <summary>
+		///	Inserts a row.
+		/// </summary>
+		///
+		/// <remarks>
+		///	Inserts a row in the root level of TreeStore before the
+		///	given sibling.
+		/// </remarks>
+
+		[DllImport ("gtk-x11-2.0")]
+		static extern void gtk_tree_store_insert_after (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
+
+		public void InsertAfter (out Gtk.TreeIter iter, Gtk.TreeIter sibling) {
+			gtk_tree_store_insert_after (Handle, out iter, IntPtr.Zero, ref sibling);
+		}
+
+
+		[DllImport("gtk-x11-2.0")]
+		static extern bool gtk_tree_model_iter_children (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
+		public bool IterChildren (out Gtk.TreeIter iter) {
+			bool raw_ret = gtk_tree_model_iter_children (Handle, out iter, IntPtr.Zero);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("gtk-x11-2.0")]
+		static extern int gtk_tree_model_iter_n_children (IntPtr raw, IntPtr iter);
+		public int IterNChildren () {
+			int raw_ret = gtk_tree_model_iter_n_children (Handle, IntPtr.Zero);
+			int ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("gtk-x11-2.0")]
+		static extern bool gtk_tree_model_iter_nth_child (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int n);
+		public bool IterNthChild (out Gtk.TreeIter iter, int n) {
+			bool raw_ret = gtk_tree_model_iter_nth_child (Handle, out iter, IntPtr.Zero, n);
+			bool ret = raw_ret;
+			return ret;
+		}
