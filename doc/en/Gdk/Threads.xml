@@ -1,5 +1,5 @@
 <Type Name="Threads" FullName="Gdk.Threads">
-  <TypeSignature Language="C#" Value="public class Threads" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Threads" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -10,8 +10,39 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Threads</summary>
+    <remarks>
+      <para>Functions for using GDK in multi-threaded programs</para>
+      <para>For thread safety, Gdk relies on the thread primitives in GLib, and on the thread-safe GLib main loop.</para>
+      <para>GLib is completely thread safe (all global data is automatically locked), but individual data structure instances are not automatically locked for performance reasons. So e.g. you must coordinate accesses to the same GHashTable from multiple threads.</para>
+      <para>Gtk# is "thread aware" but not thread safe — it provides a global lock controlled by <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> which protects all use of Gtk. That is, only one thread can use Gtk at any given time.</para>
+      <para>You must call <see cref="M:Gdk.Threads.Init()" /> before executing any other Gtk or Gdk functions in a threaded Gtk# program.</para>
+      <para>Idles, timeouts, and input functions are executed outside of the main Gtk lock. So, if you need to call Gtk inside of such a callback, you must surround the callback with a <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> pair. (However, signals are still executed within the main Gtk lock.)</para>
+      <para>In particular, this means, if you are writing widgets that might be used in threaded programs, you must surround timeouts and idle functions in this matter.</para>
+      <para>As always, you must also surround any calls to Gtk not made within a signal handler with a <see cref="M:Gdk.Threads.Enter()" />/<see cref="M:Gdk.Threads.Leave()" /> pair.
+Before calling <see cref="M:Gdk.Threads.Leave()" /> from a thread other than your main thread, you probably want to call gdk_flush() to send all pending commands to the windowing system. (The reason you do not need to do this from the main thread is that GDK always automatically flushes pending commands when it runs out of incoming events to process and has to sleep while waiting for more events.)</para>
+      <para>A minimal main program for a threaded GTK+ application looks like:
+<example>
+          <code lang="C#">
+static void Main (string[] args)
+{
+  Window window;
+
+  Gdk.Threads.Init ();
+  Gtk.Application.Init ();
+
+  window = new Window ("Sample");
+  window.Show ();
+
+  Gdk.Threads.Enter ();
+  Gtk.Application.Run ();
+  Gdk.Threads.Leave ();
+
+  return 0;
+}
+</code>
+        </example></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -27,8 +58,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Leaves a critical region begun with Gdk.Threads.Enter().</summary>
+        <remarks>This marks the end of a critical section begun with Gdk.Threads.Enter.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Enter">
@@ -39,8 +70,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This marks the beginning of a critical section in which Gdk and Gtk functions can be called.</summary>
+        <remarks>Only one thread at a time can be in such a critial section.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Init">
@@ -51,8 +82,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This call must be made before any use of the main loop from Gtk#; to be safe, call it before <see cref="M:Gtk.Application.Init()" />.</summary>
+        <remarks>Initializes <see cref="N:Gdk" /> so that it can be used from multiple threads in conjunction with <see cref="M:Gdk.Threads.Enter()" /> and <see cref="M:Gdk.Threads.Leave()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -62,7 +93,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Threads'</returns>
+        <returns>an object of type <see cref="T:Gdk.Threads" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
