@@ -142,6 +142,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
 		}
 
+		public void InitAccessor (StreamWriter sw, Signature sig, string indent)
+		{
+			sw.WriteLine (indent + "\t\t\t" + sig.AccessorType + " " + sig.AccessorName + ";");
+		}
+
 		public void Finish (StreamWriter sw, string indent)
 		{
 			if (parameters == null)
@@ -159,6 +164,11 @@ namespace GtkSharp.Generation {
 				if (p.PassAs == "out" && (UsesHandle (gen) || p.CSType == "GLib.Value"))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");
 			}
+		}
+
+		public void FinishAccessor (StreamWriter sw, Signature sig, string indent)
+		{
+			sw.WriteLine (indent + "\t\t\treturn " + sig.AccessorName + ";");
 		}
 
 		public void HandleException (StreamWriter sw, string indent)

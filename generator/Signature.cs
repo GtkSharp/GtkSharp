@@ -70,6 +70,57 @@ namespace GtkSharp.Generation {
 				return String.Join (":", result);
 			}
 		}
+
+		public bool IsAccessor {
+			get {
+				int count = 0;
+				foreach (Parameter p in parms) {
+					if (p.PassAs == "out")
+						count++;
+					
+					if (count > 1)
+						return false;
+				}
+				return count == 1;
+			}
+		}
+
+		public string AccessorType {
+			get {
+				foreach (Parameter p in parms) 
+					if (p.PassAs == "out")
+						return p.CSType;
+				
+				return null;
+			}
+		}
+
+		public string AccessorName {
+			get {
+				foreach (Parameter p in parms) 
+					if (p.PassAs == "out")
+						return p.Name;
+				
+				return null;
+			}
+		}
+
+		public string AsAccessor {
+			get {
+				string[] result = new string [parms.Count - 1];
+				int i = 0;
+
+				foreach (Parameter p in parms) {
+					if (p.PassAs == "out")
+						continue;
+
+					result [i] = p.PassAs != "" ? p.PassAs + " " : "";
+					result [i++] += p.CSType + " " + p.Name;
+				}
+				
+				return String.Join (", ", result);
+			}
+		}
 	}
 }
 

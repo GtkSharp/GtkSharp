@@ -220,6 +220,8 @@ namespace GtkSharp.Generation {
 				else
 					sw.Write (Name);
 				sw.WriteLine(" { ");
+			} else if (IsAccessor) {
+				sw.Write (sig.AccessorType + " " + Name + "(" + sig.AsAccessor + ")");
 			} else {
 				sw.Write(s_ret + " " + Name + "(" + (sig != null ? sig.ToString() : "") + ")");
 			}
@@ -342,6 +344,8 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine(" {");
+			if (IsAccessor)
+				body.InitAccessor (sw, sig, indent);
 			body.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
@@ -366,7 +370,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
 				}
 			}
-			
+
 			body.Finish (sw, indent);
 			body.HandleException (sw, indent);
 
@@ -374,8 +378,16 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "\t\t\treturn " + parms.AccessorName + ";");
 			else if (m_ret != "void")
 				sw.WriteLine (indent + "\t\t\treturn ret;");
+			else if (IsAccessor)
+				body.FinishAccessor (sw, sig, indent);
 
 			sw.Write(indent + "\t\t}");
+		}
+
+		bool IsAccessor { 
+			get { 
+				return s_ret == "void" && sig.IsAccessor; 
+			} 
 		}
 	}
 }
