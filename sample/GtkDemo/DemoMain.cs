@@ -153,9 +153,9 @@ namespace GtkDemo
                                                             
         private TreeStore FillTree ()
         {
-		// title, filename, italic
+			// title, filename, italic
         	store = new TreeStore (typeof (string), typeof (string), typeof (bool));
-		TreeIter parent; 
+			TreeIter parent; 
        	
         	store.AppendValues ("Application Window", "DemoApplicationWindow.cs", false);
         	store.AppendValues ("Button Boxes", "DemoButtonBox.cs", false);
@@ -163,20 +163,22 @@ namespace GtkDemo
         	store.AppendValues ("Color Selector", "DemoColorSelection.cs", false);
         	store.AppendValues ("Dialog and Message Boxes", "DemoDialog.cs", false);
         	store.AppendValues ("Drawing Area", "DemoDrawingArea.cs", false);
+        	store.AppendValues ("Entry Completion", "DemoEntryCompletion.cs", false);
+        	store.AppendValues ("Expander", "DemoExpander.cs", false);
         	store.AppendValues ("Images", "DemoImages.cs", false);
-        	store.AppendValues ("Item Factory (5% complete)", "DemoItemFactory.cs", false);
         	store.AppendValues ("Menus", "DemoMenus.cs", false);
         	store.AppendValues ("Paned Widget", "DemoPanes.cs", false);
         	store.AppendValues ("Pixbuf", "DemoPixbuf.cs", false);
         	store.AppendValues ("Size Groups", "DemoSizeGroup.cs", false);
         	store.AppendValues ("Stock Item and Icon Browser (10% complete)", "DemoStockBrowser.cs", false);
         	parent = store.AppendValues ("Text Widget");
-		store.AppendValues (parent, "HyperText (50%)", "DemoHyperText.cs", false);
-		store.AppendValues (parent, "Multiple Views", "DemoTextView.cs", false);
+				store.AppendValues (parent, "HyperText (50%)", "DemoHyperText.cs", false);
+				store.AppendValues (parent, "Multiple Views", "DemoTextView.cs", false);
         	parent = store.AppendValues ("Tree View");
-        	store.AppendValues (parent, "Editable Cells", "DemoEditableCells.cs", false);
-        	store.AppendValues (parent, "List Store", "DemoListStore.cs", false);
-        	store.AppendValues (parent, "Tree Store", "DemoTreeStore.cs", false);
+        		store.AppendValues (parent, "Editable Cells", "DemoEditableCells.cs", false);
+        		store.AppendValues (parent, "List Store", "DemoListStore.cs", false);
+        		store.AppendValues (parent, "Tree Store", "DemoTreeStore.cs", false);
+        	store.AppendValues ("UIManager", "DemoUIManager.cs", false);
         	
         	return store;
         }
@@ -222,47 +224,53 @@ namespace GtkDemo
         			new DemoDrawingArea ();
         			break;
         		case "6":
-        			new DemoImages ();
+        			new DemoEntryCompletion ();
         			break;
         		case "7":
-        			new DemoItemFactory ();
+        			new DemoExpander ();
         			break;
         		case "8":
-        			new DemoMenus ();
+        			new DemoImages ();
         			break;
         		case "9":
-        			new DemoPanes ();
+        			new DemoMenus ();
         			break;
         		case "10":
-        			new DemoPixbuf ();
+        			new DemoPanes ();
         			break;
         		case "11":
-        			new DemoSizeGroup ();
+        			new DemoPixbuf ();
         			break;
         		case "12":
-        			new DemoStockBrowser ();
+        			new DemoSizeGroup ();
         			break;
         		case "13":
-				ToggleRow (args.Path);
-				break;
-        		case "13:0":
-        			new DemoHyperText ();
-        			break;
-        		case "13:1":
-        			new DemoTextView ();
+        			new DemoStockBrowser ();
         			break;
         		case "14":
 				ToggleRow (args.Path);
-        			break;
+				break;
         		case "14:0":
-        			new DemoEditableCells ();
+        			new DemoHyperText ();
         			break;
         		case "14:1":
+        			new DemoTextView ();
+        			break;
+        		case "15":
+				ToggleRow (args.Path);
+        			break;
+        		case "15:0":
+        			new DemoEditableCells ();
+        			break;
+        		case "15:1":
         			new DemoListStore ();
         			break;
-        		case "14:2":
+        		case "15:2":
         			new DemoTreeStore ();
         			break;
+				case "16":
+					new DemoUIManager ();
+					break;
         		default:
         			break;
 		}

@@ -6,25 +6,27 @@ noinst_SCRIPTS = $(TARGETS)
 
 EXTRA_DIST = $(sources) $(image_names)
 
-sources = 					\
+sources = \
 	DemoApplicationWindow.cs	\
 	DemoButtonBox.cs		\
-	DemoColorSelection.cs		\
+	DemoColorSelection.cs	\
 	DemoDialog.cs			\
 	DemoDrawingArea.cs		\
-	DemoEditableCells.cs		\
+	DemoEditableCells.cs	\
+	DemoEntryCompletion.cs	\
+	DemoExpander.cs			\
 	DemoHyperText.cs		\
 	DemoImages.cs			\
-	DemoItemFactory.cs		\
 	DemoListStore.cs		\
-	DemoMain.cs			\
+	DemoMain.cs				\
 	DemoMenus.cs			\
 	DemoPanes.cs			\
 	DemoPixbuf.cs			\
 	DemoSizeGroup.cs		\
 	DemoStockBrowser.cs		\
-	DemoTextView.cs		\
-	DemoTreeStore.cs
+	DemoTextView.cs			\
+	DemoTreeStore.cs		\
+	DemoUIManager.cs
 
 images = \
 	images/gnome-foot.png,gnome-foot.png \
