@@ -1,5 +1,749 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <api>
+  <namespace name="Art" library="art_lgpl">
+    <enum name="AlphaType" cname="ArtAlphaType" type="enum">
+      <member cname="ART_ALPHA_NONE" name="None"/>
+      <member cname="ART_ALPHA_SEPARATE" name="Separate" value="1"/>
+      <member cname="ART_ALPHA_PREMUL" name="Premul" value="2"/>
+    </enum>
+    <enum name="CompositingMode" cname="ArtCompositingMode" type="enum">
+      <member cname="ART_COMPOSITE_NORMAL" name="Normal"/>
+      <member cname="ART_COMPOSITE_MULTIPLY" name="Multiply"/>
+      <member cname="ART_COMPOSITE_CUSTOM" name="Custom"/>
+    </enum>
+    <enum name="FilterLevel" cname="ArtFilterLevel" type="enum">
+      <member cname="ART_FILTER_NEAREST" name="Nearest"/>
+      <member cname="ART_FILTER_TILES" name="Tiles"/>
+      <member cname="ART_FILTER_BILINEAR" name="Bilinear"/>
+      <member cname="ART_FILTER_HYPER" name="Hyper"/>
+    </enum>
+    <enum name="GradientSpread" cname="ArtGradientSpread" type="enum">
+      <member cname="ART_GRADIENT_PAD" name="Pad"/>
+      <member cname="ART_GRADIENT_REFLECT" name="Reflect"/>
+      <member cname="ART_GRADIENT_REPEAT" name="Repeat"/>
+    </enum>
+    <enum name="ImageSourceFlags" cname="ArtImageSourceFlags" type="enum">
+      <member cname="ART_IMAGE_SOURCE_CAN_CLEAR" name="Clear" value="1"/>
+      <member cname="ART_IMAGE_SOURCE_CAN_COMPOSITE" name="Composite" value="2"/>
+    </enum>
+    <enum name="PathStrokeCapType" cname="ArtPathStrokeCapType" type="enum">
+      <member cname="ART_PATH_STROKE_CAP_BUTT" name="Butt"/>
+      <member cname="ART_PATH_STROKE_CAP_ROUND" name="Round"/>
+      <member cname="ART_PATH_STROKE_CAP_SQUARE" name="Square"/>
+    </enum>
+    <enum name="PathStrokeJoinType" cname="ArtPathStrokeJoinType" type="enum">
+      <member cname="ART_PATH_STROKE_JOIN_MITER" name="Miter"/>
+      <member cname="ART_PATH_STROKE_JOIN_ROUND" name="Round"/>
+      <member cname="ART_PATH_STROKE_JOIN_BEVEL" name="Bevel"/>
+    </enum>
+    <enum name="Pathcode" cname="ArtPathcode" type="enum">
+      <member cname="ART_MOVETO" name="Moveto"/>
+      <member cname="ART_MOVETO_OPEN" name="MovetoOpen"/>
+      <member cname="ART_CURVETO" name="Curveto"/>
+      <member cname="ART_LINETO" name="Lineto"/>
+      <member cname="ART_END" name="End"/>
+    </enum>
+    <enum name="PixFormat" cname="ArtPixFormat" type="enum">
+      <member cname="ART_PIX_RGB" name="Rgb"/>
+    </enum>
+    <enum name="WindRule" cname="ArtWindRule" type="enum">
+      <member cname="ART_WIND_RULE_NONZERO" name="Nonzero"/>
+      <member cname="ART_WIND_RULE_INTERSECT" name="Intersect"/>
+      <member cname="ART_WIND_RULE_ODDEVEN" name="Oddeven"/>
+      <member cname="ART_WIND_RULE_POSITIVE" name="Positive"/>
+    </enum>
+    <callback name="DestroyNotify" cname="ArtDestroyNotify">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="void*" name="func_data"/>
+        <parameter type="void*" name="data"/>
+      </parameters>
+    </callback>
+    <struct name="AlphaGamma" cname="ArtAlphaGamma">
+      <field cname="gamma" type="double"/>
+      <field cname="invtable_size" type="int"/>
+      <field cname="table" array_len="256" type="int"/>
+      <field cname="invtable" array_len="1" type="art_u8"/>
+      <method name="Free" cname="art_alphagamma_free">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="art_alphagamma_new">
+        <parameters>
+          <parameter type="double" name="gamma"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="Bpath" cname="ArtBpath">
+      <field cname="code" type="ArtPathcode"/>
+      <field cname="x1" type="double"/>
+      <field cname="y1" type="double"/>
+      <field cname="x2" type="double"/>
+      <field cname="y2" type="double"/>
+      <field cname="x3" type="double"/>
+      <field cname="y3" type="double"/>
+      <method name="AffineTransform" cname="art_bpath_affine_transform">
+        <return-type type="ArtBpath*"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="matrix"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="DRect" cname="ArtDRect">
+      <field cname="x0" type="double"/>
+      <field cname="y0" type="double"/>
+      <field cname="x1" type="double"/>
+      <field cname="y1" type="double"/>
+      <method name="AffineTransform" cname="art_drect_affine_transform">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtDRect*" name="src"/>
+          <parameter type="const-double" array="true" name="matrix"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="art_drect_copy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtDRect*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Empty" cname="art_drect_empty">
+        <return-type type="int"/>
+      </method>
+      <method name="Intersect" cname="art_drect_intersect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtDRect*" name="src1"/>
+          <parameter type="const-ArtDRect*" name="src2"/>
+        </parameters>
+      </method>
+      <method name="Svp" cname="art_drect_svp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+      <method name="SvpUnion" cname="art_drect_svp_union">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+      <method name="ToIrect" cname="art_drect_to_irect" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtIRect*" name="dst"/>
+          <parameter type="ArtDRect*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Union" cname="art_drect_union">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtDRect*" name="src1"/>
+          <parameter type="const-ArtDRect*" name="src2"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GradientLinear" cname="ArtGradientLinear">
+      <field cname="a" type="double"/>
+      <field cname="b" type="double"/>
+      <field cname="c" type="double"/>
+      <field cname="spread" type="ArtGradientSpread"/>
+      <field cname="n_stops" type="int"/>
+      <field cname="stops" type="ArtGradientStop*"/>
+    </struct>
+    <struct name="GradientRadial" cname="ArtGradientRadial">
+      <field cname="affine" array_len="6" type="double"/>
+      <field cname="fx" type="double"/>
+      <field cname="fy" type="double"/>
+      <field cname="n_stops" type="int"/>
+      <field cname="stops" type="ArtGradientStop*"/>
+    </struct>
+    <struct name="GradientStop" cname="ArtGradientStop">
+      <field cname="offset" type="double"/>
+      <field cname="color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
+    </struct>
+    <struct name="IRect" cname="ArtIRect">
+      <field cname="x0" type="int"/>
+      <field cname="y0" type="int"/>
+      <field cname="x1" type="int"/>
+      <field cname="y1" type="int"/>
+      <method name="Copy" cname="art_irect_copy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtIRect*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Empty" cname="art_irect_empty">
+        <return-type type="int"/>
+      </method>
+      <method name="Intersect" cname="art_irect_intersect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtIRect*" name="src1"/>
+          <parameter type="const-ArtIRect*" name="src2"/>
+        </parameters>
+      </method>
+      <method name="Union" cname="art_irect_union">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtIRect*" name="src1"/>
+          <parameter type="const-ArtIRect*" name="src2"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="ImageSource" cname="ArtImageSource">
+      <field cname="super" type="ArtRenderCallback"/>
+      <callback cname="negotiate">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtImageSource*" name="self,"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="MaskSource" cname="ArtMaskSource">
+      <field cname="super" type="ArtRenderCallback"/>
+      <callback cname="can_drive">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="ArtMaskSource*" name="self,"/>
+        </parameters>
+      </callback>
+      <callback cname="invoke_driver">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtMaskSource*" name="self,"/>
+        </parameters>
+      </callback>
+      <callback cname="prepare">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtMaskSource*" name="self,"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="PixBuf" cname="ArtPixBuf">
+      <field cname="format" type="ArtPixFormat"/>
+      <field cname="n_channels" type="int"/>
+      <field cname="has_alpha" type="int"/>
+      <field cname="bits_per_sample" type="int"/>
+      <field cname="pixels" type="art_u8*"/>
+      <field cname="width" type="int"/>
+      <field cname="height" type="int"/>
+      <field cname="rowstride" type="int"/>
+      <field cname="destroy_data" type="void*"/>
+      <field cname="destroy" type="ArtDestroyNotify"/>
+      <method name="Duplicate" cname="art_pixbuf_duplicate">
+        <return-type type="ArtPixBuf*"/>
+      </method>
+      <method name="Free" cname="art_pixbuf_free">
+        <return-type type="void"/>
+      </method>
+      <method name="FreeShallow" cname="art_pixbuf_free_shallow">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="art_pixbuf_new_const_rgb">
+        <parameters>
+          <parameter type="const-art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_pixbuf_new_const_rgba">
+        <parameters>
+          <parameter type="const-art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_pixbuf_new_rgb">
+        <parameters>
+          <parameter type="art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_pixbuf_new_rgb_dnotify">
+        <parameters>
+          <parameter type="art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="void*" name="dfunc_data"/>
+          <parameter type="ArtDestroyNotify" name="dfunc"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_pixbuf_new_rgba">
+        <parameters>
+          <parameter type="art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_pixbuf_new_rgba_dnotify">
+        <parameters>
+          <parameter type="art_u8*" name="pixels"/>
+          <parameter type="int" name="width"/>
+          <parameter type="int" name="height"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="void*" name="dfunc_data"/>
+          <parameter type="ArtDestroyNotify" name="dfunc"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <alias name="PixMaxDepth" cname="ArtPixMaxDepth" type="art_u8 "/>
+    <struct name="Point" cname="ArtPoint">
+      <field cname="x" type="double"/>
+      <field cname="y" type="double"/>
+    </struct>
+    <struct name="Render" cname="ArtRender">
+      <field cname="x0" type="int"/>
+      <field cname="y0" type="int"/>
+      <field cname="x1" type="int"/>
+      <field cname="y1" type="int"/>
+      <field cname="pixels" type="art_u8*"/>
+      <field cname="rowstride" type="int"/>
+      <field cname="n_chan" type="int"/>
+      <field cname="depth" type="int"/>
+      <field cname="alpha_type" type="ArtAlphaType"/>
+      <field cname="clear" type="art_boolean"/>
+      <field cname="clear_color" array_len="ART_MAX_CHAN + 1" type="ArtPixMaxDepth"/>
+      <field cname="opacity" type="art_u32"/>
+      <field cname="compositing_mode" type="ArtCompositingMode"/>
+      <field cname="alphagamma" type="ArtAlphaGamma*"/>
+      <field cname="alpha_buf" type="art_u8*"/>
+      <field cname="buf_depth" type="int"/>
+      <field cname="buf_alpha" type="ArtAlphaType"/>
+      <field cname="image_buf" type="art_u8*"/>
+      <field cname="n_run" type="int"/>
+      <field cname="run" type="ArtRenderMaskRun*"/>
+      <field cname="n_span" type="int"/>
+      <field cname="span_x" type="int*"/>
+      <field cname="need_span" type="art_boolean"/>
+      <method name="AddImageSource" cname="art_render_add_image_source">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtImageSource*" name="image_source"/>
+        </parameters>
+      </method>
+      <method name="AddMaskSource" cname="art_render_add_mask_source">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtMaskSource*" name="mask_source"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="art_render_clear">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtPixMaxDepth*" name="clear_color"/>
+        </parameters>
+      </method>
+      <method name="ClearRgb" cname="art_render_clear_rgb">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u32" name="clear_rgb"/>
+        </parameters>
+      </method>
+      <method name="GradientLinear" cname="art_render_gradient_linear">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtGradientLinear*" name="gradient"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+        </parameters>
+      </method>
+      <method name="GradientRadial" cname="art_render_gradient_radial">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtGradientRadial*" name="gradient"/>
+          <parameter type="ArtFilterLevel" name="level"/>
+        </parameters>
+      </method>
+      <method name="ImageSolid" cname="art_render_image_solid">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtPixMaxDepth*" name="color"/>
+        </parameters>
+      </method>
+      <method name="Invoke" cname="art_render_invoke">
+        <return-type type="void"/>
+      </method>
+      <method name="InvokeCallbacks" cname="art_render_invoke_callbacks">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="art_u8*" name="dest"/>
+          <parameter type="int" name="y"/>
+        </parameters>
+      </method>
+      <method name="Mask" cname="art_render_mask">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="const-art_u8*" name="mask_buf"/>
+          <parameter type="int" name="rowstride"/>
+        </parameters>
+      </method>
+      <method name="MaskSolid" cname="art_render_mask_solid">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="opacity"/>
+        </parameters>
+      </method>
+      <constructor cname="art_render_new">
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <parameter type="art_u8*" name="pixels"/>
+          <parameter type="int" name="rowstride"/>
+          <parameter type="int" name="n_chan"/>
+          <parameter type="int" name="depth"/>
+          <parameter type="ArtAlphaType" name="alpha_type"/>
+          <parameter type="ArtAlphaGamma*" name="alphagamma"/>
+        </parameters>
+      </constructor>
+      <method name="Svp" cname="art_render_svp">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="RenderCallback" cname="ArtRenderCallback">
+      <callback cname="render">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtRenderCallback*" name="self,"/>
+        </parameters>
+      </callback>
+      <callback cname="done">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtRenderCallback*" name="self,"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="RenderMaskRun" cname="ArtRenderMaskRun">
+      <field cname="x" type="int"/>
+      <field cname="alpha" type="int"/>
+    </struct>
+    <struct name="SVP" cname="ArtSVP">
+      <field cname="n_segs" type="int"/>
+      <field cname="segs" array_len="1" type="ArtSVPSeg"/>
+      <method name="AddSegment" cname="art_svp_add_segment">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="int*" name="pn_segs_max"/>
+          <parameter type="int**" name="pn_points_max"/>
+          <parameter type="int" name="n_points"/>
+          <parameter type="int" name="dir"/>
+          <parameter type="ArtPoint*" name="points"/>
+          <parameter type="ArtDRect*" name="bbox"/>
+        </parameters>
+      </method>
+      <method name="Diff" cname="art_svp_diff">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp2"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="art_svp_free">
+        <return-type type="void"/>
+      </method>
+      <method name="FromVpath" cname="art_svp_from_vpath" shared="true">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="ArtVpath*" name="vpath"/>
+        </parameters>
+      </method>
+      <method name="Intersect" cname="art_svp_intersect">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp2"/>
+        </parameters>
+      </method>
+      <method name="Intersector" cname="art_svp_intersector">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSvpWriter*" name="out"/>
+        </parameters>
+      </method>
+      <method name="Minus" cname="art_svp_minus">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp2"/>
+        </parameters>
+      </method>
+      <method name="PointDist" cname="art_svp_point_dist">
+        <return-type type="double"/>
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <method name="PointWind" cname="art_svp_point_wind">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <method name="RenderAa" cname="art_svp_render_aa">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+          <callback cname="callback">
+            <return-type type="void"/>
+            <parameters>
+              <parameter type="void*" name="callback_data"/>
+              <parameter type="int" name="y"/>
+              <parameter type="int" name="start"/>
+              <parameter type="ArtSVPRenderAAStep*" name="steps"/>
+              <parameter type="int" name="n_steps"/>
+            </parameters>
+          </callback>
+          <parameter type="void*" name="callback_data"/>
+        </parameters>
+      </method>
+      <method name="RenderAaIter" cname="art_svp_render_aa_iter">
+        <return-type type="ArtSVPRenderAAIter*"/>
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+        </parameters>
+      </method>
+      <method name="RewindUncrossed" cname="art_svp_rewind_uncrossed">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="ArtWindRule" name="rule"/>
+        </parameters>
+      </method>
+      <method name="Uncross" cname="art_svp_uncross">
+        <return-type type="ArtSVP*"/>
+      </method>
+      <method name="Union" cname="art_svp_union">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp2"/>
+        </parameters>
+      </method>
+      <method name="VpathStroke" cname="art_svp_vpath_stroke" shared="true">
+        <return-type type="ArtSVP*"/>
+        <parameters>
+          <parameter type="ArtVpath*" name="vpath"/>
+          <parameter type="ArtPathStrokeJoinType" name="join"/>
+          <parameter type="ArtPathStrokeCapType" name="cap"/>
+          <parameter type="double" name="line_width"/>
+          <parameter type="double" name="miter_limit"/>
+          <parameter type="double" name="flatness"/>
+        </parameters>
+      </method>
+      <method name="VpathStrokeRaw" cname="art_svp_vpath_stroke_raw" shared="true">
+        <return-type type="ArtVpath*"/>
+        <parameters>
+          <parameter type="ArtVpath*" name="vpath"/>
+          <parameter type="ArtPathStrokeJoinType" name="join"/>
+          <parameter type="ArtPathStrokeCapType" name="cap"/>
+          <parameter type="double" name="line_width"/>
+          <parameter type="double" name="miter_limit"/>
+          <parameter type="double" name="flatness"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="SVPRenderAAIter" cname="ArtSVPRenderAAIter" opaque="true">
+      <method name="Done" cname="art_svp_render_aa_iter_done">
+        <return-type type="void"/>
+      </method>
+      <method name="Step" cname="art_svp_render_aa_iter_step">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="p_start"/>
+          <parameter type="ArtSVPRenderAAStep**" name="p_steps"/>
+          <parameter type="int*" name="p_n_steps"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="SVPRenderAAStep" cname="ArtSVPRenderAAStep">
+      <field cname="x" type="int"/>
+      <field cname="delta" type="int"/>
+    </struct>
+    <struct name="SVPSeg" cname="ArtSVPSeg">
+      <field cname="n_points" type="int"/>
+      <field cname="dir" type="int"/>
+      <field cname="bbox" type="ArtDRect"/>
+      <field cname="points" type="ArtPoint*"/>
+      <method name="Compare" cname="art_svp_seg_compare" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-void*" name="s1"/>
+          <parameter type="const-void*" name="s2"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="SvpWriter" cname="ArtSvpWriter">
+      <callback cname="add_segment">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="ArtSvpWriter*" name="self,"/>
+        </parameters>
+      </callback>
+      <callback cname="add_point">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSvpWriter*" name="self,"/>
+        </parameters>
+      </callback>
+      <callback cname="close_segment">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtSvpWriter*" name="self,"/>
+        </parameters>
+      </callback>
+      <method name="RewindNew" cname="art_svp_writer_rewind_new" shared="true">
+        <return-type type="ArtSvpWriter*"/>
+        <parameters>
+          <parameter type="ArtWindRule" name="rule"/>
+        </parameters>
+      </method>
+      <method name="RewindReap" cname="art_svp_writer_rewind_reap">
+        <return-type type="ArtSVP*"/>
+      </method>
+    </struct>
+    <struct name="Uta" cname="ArtUta">
+      <field cname="x0" type="int"/>
+      <field cname="y0" type="int"/>
+      <field cname="width" type="int"/>
+      <field cname="height" type="int"/>
+      <field cname="utiles" type="ArtUtaBbox*"/>
+      <method name="AddLine" cname="art_uta_add_line">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x0"/>
+          <parameter type="double" name="y0"/>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="int*" name="rbuf"/>
+          <parameter type="int" name="rbuf_rowstride"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="art_uta_free">
+        <return-type type="void"/>
+      </method>
+      <method name="FromIrect" cname="art_uta_from_irect" shared="true">
+        <return-type type="ArtUta*"/>
+        <parameters>
+          <parameter type="ArtIRect*" name="bbox"/>
+        </parameters>
+      </method>
+      <method name="FromSvp" cname="art_uta_from_svp" shared="true">
+        <return-type type="ArtUta*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+      <method name="FromVpath" cname="art_uta_from_vpath" shared="true">
+        <return-type type="ArtUta*"/>
+        <parameters>
+          <parameter type="const-ArtVpath*" name="vec"/>
+        </parameters>
+      </method>
+      <constructor cname="art_uta_new">
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+        </parameters>
+      </constructor>
+      <constructor cname="art_uta_new_coords">
+        <parameters>
+          <parameter type="int" name="x0"/>
+          <parameter type="int" name="y0"/>
+          <parameter type="int" name="x1"/>
+          <parameter type="int" name="y1"/>
+        </parameters>
+      </constructor>
+      <method name="Union" cname="art_uta_union">
+        <return-type type="ArtUta*"/>
+        <parameters>
+          <parameter type="ArtUta*" name="uta2"/>
+        </parameters>
+      </method>
+    </struct>
+    <alias name="UtaBbox" cname="ArtUtaBbox" type="art_u32 "/>
+    <struct name="Vpath" cname="ArtVpath">
+      <field cname="code" type="ArtPathcode"/>
+      <field cname="x" type="double"/>
+      <field cname="y" type="double"/>
+      <method name="AddPoint" cname="art_vpath_add_point">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="pn_points"/>
+          <parameter type="int*" name="pn_points_max"/>
+          <parameter type="ArtPathcode" name="code"/>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <method name="AffineTransform" cname="art_vpath_affine_transform">
+        <return-type type="ArtVpath*"/>
+        <parameters>
+          <parameter type="const-double" array="true" name="matrix"/>
+        </parameters>
+      </method>
+      <method name="BboxDrect" cname="art_vpath_bbox_drect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtDRect*" name="drect"/>
+        </parameters>
+      </method>
+      <method name="BboxIrect" cname="art_vpath_bbox_irect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="ArtIRect*" name="irect"/>
+        </parameters>
+      </method>
+      <method name="Dash" cname="art_vpath_dash">
+        <return-type type="ArtVpath*"/>
+        <parameters>
+          <parameter type="const-ArtVpathDash*" name="dash"/>
+        </parameters>
+      </method>
+      <method name="FromSvp" cname="art_vpath_from_svp" shared="true">
+        <return-type type="ArtVpath*"/>
+        <parameters>
+          <parameter type="const-ArtSVP*" name="svp"/>
+        </parameters>
+      </method>
+      <constructor cname="art_vpath_new_circle">
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+          <parameter type="double" name="r"/>
+        </parameters>
+      </constructor>
+      <method name="Perturb" cname="art_vpath_perturb">
+        <return-type type="ArtVpath*"/>
+      </method>
+    </struct>
+    <struct name="VpathDash" cname="ArtVpathDash">
+      <field cname="offset" type="double"/>
+      <field cname="n_dash" type="int"/>
+      <field cname="dash" type="double*"/>
+    </struct>
+    <alias name="" cname="art_boolean" type="int "/>
+  </namespace>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
       <field cname="root" type="GnomeCanvasItem*"/>
@@ -18548,8 +19292,6 @@
       <member cname="GTK_HTML_COMMAND_TEXT_COLOR_APPLY" name="TextColorApply"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_ON" name="SaveDataOn"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_OFF" name="SaveDataOff"/>
-      <member cname="GTK_HTML_COMMAND_SAVED" name="Saved"/>
-      <member cname="GTK_HTML_COMMAND_IS_SAVED" name="IsSaved"/>
     </enum>
     <enum name="HTMLCursorSkipType" cname="GtkHTMLCursorSkipType" type="enum">
       <member cname="GTK_HTML_CURSOR_SKIP_ONE" name="One"/>

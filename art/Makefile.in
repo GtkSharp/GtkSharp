@@ -1,0 +1,20 @@
+MCS=mcs
+DESTDIR=
+
+all: linux
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gdk/gdk-imaging-sharp.dll /out:art-sharp.dll /recurse:*.cs
+
+linux: art-sharp.dll
+
+art-sharp.dll: generated/*.cs
+	$(MCS) --unsafe --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -o art-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -f generated/*
+
+install: all
+	cp art-sharp.dll $(DESTDIR)@prefix@/lib
+

@@ -394,6 +394,10 @@ namespace GtkSharp.Generation {
 				return "evnt";
 			case "object":
 				return "objekt";
+			case "in":
+				return "in_param";
+			case "out":
+				return "out_param";
 			default:
 				break;
 			}

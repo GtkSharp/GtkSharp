@@ -13,7 +13,8 @@ unlink ($file);
 	  "libgnomecanvas-2.0.1/libgnomecanvas" => "Gnome:gnomecanvas-2",
 	  "libgnomeui-2.0.1/libgnomeui" => "Gnome:gnomeui-2",
 	  "gtkhtml/src" => "Gtk:gtkhtml-3.0",
-	  "libglade-2.0.0/glade" => "Glade:glade-2.0");
+	  "libglade-2.0.0/glade" => "Glade:glade-2.0",
+	  "libart_lgpl-2.3.10" => "Art:art_lgpl");
 
 foreach $dir (keys %srcs) {
 	($ns, $lib) = split (/:/, $srcs{$dir});
