@@ -100,5 +100,13 @@ namespace Gnome.Vfs {
 					throw new VfsException (result);
 			}
 		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern string gnome_vfs_format_file_size_for_display (long size);
+		
+		public static string FormatFileSizeForDisplay (long size)
+		{
+			return gnome_vfs_format_file_size_for_display (size);
+		}
 	}
 }

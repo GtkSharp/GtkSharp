@@ -51,7 +51,8 @@ namespace Gnome.Vfs {
 			public IntPtr reserved5;
 		}
 	
-		private FileInfoNative info;
+		// This needs to be internal so other Gnome.Vfs code can use it for native calls.
+		internal FileInfoNative info;
 
 		[DllImport ("gnomevfs-2")]
 		private static extern FileInfoNative gnome_vfs_file_info_new ();

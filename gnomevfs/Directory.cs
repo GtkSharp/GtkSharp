@@ -83,12 +83,15 @@ namespace Gnome.Vfs {
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_make_directory (string uri, uint perm);
+		private static extern Result gnome_vfs_make_directory_for_uri (IntPtr raw, uint perm);
 		
 		public static Result Create (Uri uri, FilePermissions perm)
 		{
-			return Create (uri.ToString (), perm);
+			return gnome_vfs_make_directory_for_uri (uri.Handle, (uint)perm);
 		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_make_directory (string uri, uint perm);
 		
 		public static Result Create (string uri, FilePermissions perm)
 		{
@@ -96,12 +99,15 @@ namespace Gnome.Vfs {
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_remove_directory (string uri);
+		private static extern Result gnome_vfs_remove_directory_from_uri (IntPtr raw);
 		
 		public static Result Delete (Uri uri)
 		{
-			return Delete (uri.ToString ());
+			return gnome_vfs_remove_directory_from_uri (uri.Handle);
 		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_remove_directory (string uri);
 		
 		public static Result Delete (string uri)
 		{
