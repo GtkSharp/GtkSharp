@@ -14,10 +14,18 @@ namespace GtkSharp.Generation {
 	public class Property {
 
 		private XmlElement elem;
+		private ClassBase container_type;
 
-		public Property (XmlElement elem)
+		public string Name {
+			get {
+				return elem.GetAttribute ("name");
+			}
+		}
+
+		public Property (XmlElement elem, ClassBase container_type)
 		{
 			this.elem = elem;
+			this.container_type = container_type;
 		}
 
 		public bool Validate ()
@@ -45,6 +53,10 @@ namespace GtkSharp.Generation {
 		{
 			string c_type = elem.GetAttribute("type");
 			string cs_type = SymbolTable.GetCSType(c_type);
+			string modifiers = "";
+
+			if (elem.HasAttribute("new_flag") || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
+				modifiers = "new ";
 
 			XmlElement parent = (XmlElement) elem.ParentNode;
 			string name = elem.GetAttribute("name");
@@ -76,7 +88,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t/// <remarks>");
 			sw.WriteLine("\t\t/// </remarks>");
 
-			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
+			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
 			if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");

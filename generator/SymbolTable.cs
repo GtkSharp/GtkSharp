@@ -14,6 +14,7 @@ namespace GtkSharp.Generation {
 		private static Hashtable alias = new Hashtable ();
 		private static Hashtable complex_types = new Hashtable ();
 		private static Hashtable simple_types;
+		private static Hashtable manually_wrapped_types;
 		private static Hashtable dlls;
 		
 		static SymbolTable ()
@@ -27,6 +28,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("gshort", "short");
 			simple_types.Add ("guint32", "uint");
 			simple_types.Add ("const-gchar", "string");
+			simple_types.Add ("const-char", "string");
 			simple_types.Add ("gchar", "string");
 			simple_types.Add ("GObject", "GLib.Object");
 			simple_types.Add ("gfloat", "float");
@@ -62,11 +64,14 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GArray", "System.IntPtr");
 			simple_types.Add ("GData", "System.IntPtr");
 			simple_types.Add ("GTypeModule", "GLib.Object");
-			simple_types.Add ("GSList", "GLib.SList");
 			simple_types.Add ("GHashTable", "System.IntPtr");
 			simple_types.Add ("va_list", "System.IntPtr");
 			simple_types.Add ("GParamSpec", "System.IntPtr");
-			
+
+			manually_wrapped_types = new Hashtable ();
+			manually_wrapped_types.Add ("GdkEvent", "Gdk.Event");
+			manually_wrapped_types.Add ("GSList", "GLib.SList");
+
 			dlls = new Hashtable();
 			dlls.Add("Pango", "pango-1.0");
 			dlls.Add("Atk", "atk-1.0");
@@ -123,6 +128,13 @@ namespace GtkSharp.Generation {
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.FromNative(val);
+			} else if (manually_wrapped_types.ContainsKey(c_type)) {
+				// FIXME: better way of handling this?
+				if (c_type == "GSList") {
+					return "new GLib.SList (" + val + ")";
+				} else {
+					return "(" + GetCSType (c_type) + ") GLib.Object.GetObject(" + val + ")";
+				}
 			} else {
 				return "";
 			}
@@ -137,6 +149,8 @@ namespace GtkSharp.Generation {
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.QualifiedName;
+			} else if (manually_wrapped_types.ContainsKey(c_type)) {
+				return (string) manually_wrapped_types[c_type];
 			} else {
 				return "";
 			}
@@ -146,8 +160,12 @@ namespace GtkSharp.Generation {
 		{
 			c_type = Trim(c_type);
 			c_type = DeAlias(c_type);
-			if (simple_types.ContainsKey(c_type)) {
-				string stype = (string) simple_types[c_type];
+			if (simple_types.ContainsKey(c_type) || manually_wrapped_types.ContainsKey(c_type)) {
+				string stype;
+				if (simple_types.ContainsKey(c_type))
+					stype = (string) simple_types[c_type];
+				else
+					stype = (string) manually_wrapped_types[c_type];
 				int dotidx = stype.IndexOf(".");
 				if (dotidx == -1) {
 					return stype;
@@ -168,6 +186,8 @@ namespace GtkSharp.Generation {
 			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return (string) simple_types[c_type];
+			} else if (manually_wrapped_types.ContainsKey(c_type)) {
+				return "IntPtr";
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.MarshalType;
@@ -182,6 +202,8 @@ namespace GtkSharp.Generation {
 			c_type = DeAlias(c_type);
 			if (simple_types.ContainsKey(c_type)) {
 				return var_name;
+			} else if (manually_wrapped_types.ContainsKey(c_type)) {
+				return var_name + ".Handle";
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.CallByName(var_name);
@@ -251,6 +273,14 @@ namespace GtkSharp.Generation {
 			}
 			return false;
 		}
+
+		public static bool IsManuallyWrapped(string c_type)
+		{
+			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
+			return manually_wrapped_types.ContainsKey(c_type);
+		}
+
 	}
 }
 

@@ -486,7 +486,7 @@ sub addParamsElem
 		$parm =~ /(\S+)\s+(\S+)/;
 		$parm_elem->setAttribute('type', $1);
 		my $name = $2;
-		if ($name =~ /(\w+)\[\]/) {
+		if ($name =~ /(\w+)\[.*\]/) {
 			$name = $1;
 			$parm_elem->setAttribute('array', "true");
 		}
@@ -518,7 +518,7 @@ sub addPropElem
 	$name = $params[0];
 	$name =~ s/\"//g;
 
-	while ($params[2] !~ /\"\s*\)?$/) {
+	while ($params[2] !~ /(\"|NULL)\s*\)?$/) {
 		die "Unable to reconstruct doc string.\n" if (!$params[3]);
 		$params[2] .= ",$params[3]";
 		@params = (@params[0..2],@params[4..$#params]);

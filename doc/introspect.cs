@@ -37,7 +37,7 @@ namespace GtkSharp.DocGeneration {
 			primitives["System.Void"] = "void";
 
 			/* FIXME: mcs does not support Assembly.GetReferencedAssemblies*/
-			foreach (string asm in new string[] {"glib", "atk", "pango", "gdk"}) {
+			foreach (string asm in new string[] {"glib", "atk", "pango", "gdk", "gtk", "gnome"}) {
 				string key = asm + "-sharp";
 				assemblies[key] = Assembly.Load (key);
 			}
@@ -63,9 +63,10 @@ namespace GtkSharp.DocGeneration {
 			} else
 				isArray = false;
 
+			if (type.IsArray) Console.WriteLine ("hi " + full);
 			if (primitives.Contains (full)) {
 				string ret = (string) primitives[full];
-				if (isArray) ret += "[]";
+				if (isArray || type.IsArray) ret += "[]";
 				return ret;
 			} else {
 				if (String.Compare (full, 0, current_ns, 0, current_ns.Length) == 0) {
@@ -93,6 +94,7 @@ namespace GtkSharp.DocGeneration {
 
 			MethodBase method = null;
 			MethodBase[] methods;
+
 			if (isCtor)
 			{
 				MemberInfo[] bases = type.FindMembers (MemberTypes.Constructor | MemberTypes.Method, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, ".ctor");
@@ -138,7 +140,8 @@ namespace GtkSharp.DocGeneration {
 				XmlElement arg_node = (XmlElement) doc.CreateNode ("element", "argument", "");
 				args_node.AppendChild (arg_node);
 				arg_node.SetAttribute ("modifiers", modifiers);
-				arg_node.SetAttribute ("type", StringifyType (signature[i]));
+				if (p.ParameterType.IsArray) { Console.WriteLine (p.ParameterType); }
+				arg_node.SetAttribute ("type", StringifyType (p.ParameterType));
 				arg_node.SetAttribute ("name", p.Name);
 				i++;
 			}

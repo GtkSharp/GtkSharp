@@ -86,6 +86,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + isig);
 			sw.WriteLine();
 			
+			sw.WriteLine("\t\t/// <summary> " + name + " Constructor </summary>");
+			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
 			if (clashes > 0 && !Preferred) {
 				String mname = cname.Substring(cname.IndexOf("new"));
 				mname = mname.Substring(0,1).ToUpper() + mname.Substring(1);

@@ -7,6 +7,8 @@ libgtksharpglue_la_SOURCES = 	\
 	textiter.c		\
 	fileselection.c		\
 	error.c			\
+	event.c			\
+	slist.c			\
 	#
 
 libgtksharpglue.dll: $(libgtksharpglue_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def

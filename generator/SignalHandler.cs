@@ -90,6 +90,8 @@ namespace GtkSharp.Generation {
 				dir = ".." + sep + "atk" + sep + "generated";
 			} else if (key.IndexOf("Pango") >= 0) {
 				dir = ".." + sep + "pango" + sep + "generated";
+			} else if (key.IndexOf("Gnome") >= 0) {
+				dir = ".." + sep + "gnome" + sep + "generated";
 			} else {
 				dir = ".." + sep + "glib" + sep + "generated";
 			}
@@ -140,7 +142,13 @@ namespace GtkSharp.Generation {
 					sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
 					sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
 				} else {
-					sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = arg" + idx + ";");
+					string ctype = (string) parms[idx];
+					sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
+					ClassBase wrapper = SymbolTable.GetClassGen (ctype);
+					if ((wrapper != null && !(wrapper is InterfaceGen)) || SymbolTable.IsManuallyWrapped (ctype) || SymbolTable.IsBoxed (ctype)) {
+						sw.WriteLine("\t\t\tif (args.Args[" + (idx-1) + "] == null)");
+						sw.WriteLine("\t\t\t\targs.Args[{0}] = new {1}(arg{2});", idx-1, SymbolTable.GetCSType (ctype), idx);
+					}
 				}
 			}
 			sw.WriteLine("\t\t\tinst._handler (inst._obj, args);");

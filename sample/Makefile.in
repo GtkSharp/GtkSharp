@@ -1,7 +1,7 @@
 MCS=mcs
 
-local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk
-all_assemblies=-r glib-sharp -r pango-sharp -r atk-sharp -r gdk-sharp -r gtk-sharp -r System.Drawing
+local_paths=-L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -L ../gnome
+all_assemblies=-r glib-sharp -r pango-sharp -r atk-sharp -r gdk-sharp -r gtk-sharp -r gnome-sharp -r System.Drawing
 
 
 all: linux
@@ -10,10 +10,13 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe menu.exe
+linux: gtk-hello-world.exe button.exe menu.exe gnome-hello-world.exe
 
 gtk-hello-world.exe: HelloWorld.cs
 	$(MCS) --unsafe -o gtk-hello-world.exe $(local_paths) $(all_assemblies) HelloWorld.cs
+
+gnome-hello-world.exe: GnomeHelloWorld.cs
+	$(MCS) --unsafe -o gnome-hello-world.exe $(local_paths) $(all_assemblies) GnomeHelloWorld.cs
 
 button.exe: ButtonApp.cs
 	$(MCS) --unsafe -o button.exe $(local_paths) $(all_assemblies) ButtonApp.cs

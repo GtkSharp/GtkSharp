@@ -30,6 +30,13 @@ namespace GtkSharp.Generation {
 			}
 		}	
 
+		public ClassBase Parent {
+			get {
+				string parent = Elem.GetAttribute("parent");
+				return SymbolTable.GetClassGen(parent);
+			}
+		}
+
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 			foreach (XmlNode node in elem.ChildNodes) {
 				XmlElement member = (XmlElement) node;
@@ -40,7 +47,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "property":
-					props.Add (member.GetAttribute ("name"), new Property (member));
+					props.Add (member.GetAttribute ("name"), new Property (member, this));
 					break;
 
 				case "signal":
@@ -170,5 +177,35 @@ namespace GtkSharp.Generation {
 		{
 			return (Method) methods[name];
 		}
+
+		public Property GetProperty (string name)
+		{
+			return (Property) props[name];
+		}
+
+		public virtual Method GetMethodRecursively (string name)
+		{
+			ClassBase klass = this;
+			Method m = null;
+			while (klass != null && m == null) {
+				m = (Method) klass.GetMethod (name);
+				klass = klass.Parent;
+			}
+
+			return m;
+		}
+
+		public virtual Property GetPropertyRecursively (string name)
+		{
+			ClassBase klass = this;
+			Property p = null;
+			while (klass != null && p == null) {
+				p = (Property) klass.GetProperty (name);
+				klass = klass.Parent;
+			}
+
+			return p;
+		}
+
 	}
 }

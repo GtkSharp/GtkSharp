@@ -39,13 +39,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private ObjectGen Parent {
-			get {
-				string parent = Elem.GetAttribute("parent");
-				return (ObjectGen) SymbolTable.GetClassGen(parent);
-			}
-		}
-
 		public void Generate ()
 		{
 			StreamWriter sw = CreateWriter ();

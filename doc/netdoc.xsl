@@ -131,7 +131,7 @@
 	<xsl:variable name="lcletters">abcdefghijklmnopqrstuvwxyz</xsl:variable>
 	<xsl:variable name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
 	<xsl:choose>
-	<xsl:when test="$ns = 'GLib' or $ns = 'Atk' or $ns = 'Pango' or $ns = 'Gdk' or $ns = 'Gtk'">
+	<xsl:when test="$ns = 'GLib' or $ns = 'Atk' or $ns = 'Pango' or $ns = 'Gdk' or $ns = 'Gtk' or $ns = 'Gnome'">
 		<a><xsl:attribute name="href"><xsl:value-of select="translate($ns, $ucletters, $lcletters)"/>-sharp-docs.html#<xsl:value-of select="substring-after ($klass, '.')"/></xsl:attribute><xsl:value-of select="$klass"/></a>
 	</xsl:when>
 	<xsl:otherwise><xsl:value-of select="$klass"/>

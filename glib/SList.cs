@@ -60,5 +60,20 @@ namespace GLib {
 				return l;
 			}
 		}
+		
+		[DllImport("gtksharp")]
+		static extern IntPtr gtksharp_slist_get_data (IntPtr l);
+		[DllImport("gtksharp")]
+		static extern IntPtr gtksharp_slist_get_next (IntPtr l);
+		
+		public SList (IntPtr raw)
+		{
+			IntPtr l = raw;
+			while (l != IntPtr.Zero) {
+				Add (gtksharp_slist_get_data (l));
+				l = gtksharp_slist_get_next (l);
+			}
+		}
+
 	}
 }
