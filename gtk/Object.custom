@@ -47,6 +47,14 @@
 			}
 		}
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		private static extern void gtk_object_destroy (IntPtr raw);
+
+		public virtual void Destroy ()
+		{
+			gtk_object_destroy (Handle);
+		}
+
 		public bool IsFloating {
 			get {
 				return gtksharp_object_is_floating (Handle);

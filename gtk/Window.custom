@@ -26,6 +26,8 @@
 		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref (IntPtr raw);
 
+		static Hashtable windows = new Hashtable ();
+
 		protected override IntPtr Raw {
 			get {
 				return base.Raw;
@@ -35,7 +37,14 @@
 				if (value == IntPtr.Zero)
 					return;
 				g_object_ref (value);
+				windows [value] = this;
 			}
+		}
+
+		public override void Destroy ()
+		{
+			base.Destroy ();
+			windows [Handle] = null;
 		}
 
 		public Window (String title) : this (WindowType.Toplevel)

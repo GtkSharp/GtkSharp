@@ -1,5 +1,15 @@
 2004-12-17  Mike Kestner  <mkestner@novell.com>
 
+	* gtk/Gtk.metadata : hide Object and Widget.Destroy.
+	* gtk/Object.custom : manual virtual Destroy impl.
+	* gtk/Widget.custom : manual virtual Destroy impl.
+	* gtk/Window.custom : hold a managed ref for all toplevels. Release
+	it in a Destroy override.  Window is frequently subclassed and is
+	never parented, so this keeps a managed ref around to avoid GC.
+	[Fixes #70120]
+
+2004-12-17  Mike Kestner  <mkestner@novell.com>
+
 	* gdk/Gdk.metadata : mark out param on Window.GetFrameExtents.
 	* gdk/WindowAttr.custom : new typed Mask prop.
 	* gtk/Widget.custom : new typed WidgetFlags prop. mark Flags obsolete.

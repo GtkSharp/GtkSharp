@@ -28,6 +28,14 @@ protected Widget (GLib.GType gtype) : base(gtype)
 	ParentSet += new ParentSetHandler (Widget_ParentSet);
 }
 
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_widget_destroy (IntPtr raw);
+
+public override void Destroy ()
+{
+	gtk_widget_destroy (Handle);
+}
+
 protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 {
 	base.CreateNativeObject (names, vals);
