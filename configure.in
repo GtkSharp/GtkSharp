@@ -169,29 +169,34 @@ RSVG_REQUIRED_VERSION=2.0.1
 PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
 
 if test "x$enable_gnome" = "xyes"; then
+GTKHTML_REQUIRED_VERSION=3.6.0
+PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.6 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+if test "x$enable_gtkhtml" = "xyes"; then
+GTKHTML_VERSION=3.6
+GTKHTML_SOVERSION=18
+else
+GTKHTML_REQUIRED_VERSION=3.2.0
+PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+if test "x$enable_gtkhtml" = "xyes"; then
+GTKHTML_VERSION=3.1
+GTKHTML_SOVERSION=11
+else
 GTKHTML_REQUIRED_VERSION=3.0.10
 PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.0 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
 if test "x$enable_gtkhtml" = "xyes"; then
-	GTKHTML_VERSION=3.0
-	GTKHTML_SOVERSION=4
+GTKHTML_VERSION=3.0
+GTKHTML_SOVERSION=4
 else
-	GTKHTML_REQUIRED_VERSION=3.2.0
-	PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
-	if test "x$enable_gtkhtml" = "xyes"; then
-		GTKHTML_VERSION=3.1
-		GTKHTML_SOVERSION=11
-	else
-		GTKHTML_VERSION=
-		GTKHTML_SOVERSION=
-	fi
+GTKHTML_VERSION=
+GTKHTML_SOVERSION=
 fi
-else
-	enable_gtkhtml=no
-	GTKHTML_VERSION=
-	GTKHTML_SOVERSION=
+fi
 fi
 AC_SUBST(GTKHTML_VERSION)
 AC_SUBST(GTKHTML_SOVERSION)
+else
+enable_gtkhtml=no
+fi
 
 if test "x$enable_gnome" = "xyes"; then
 VTE_REQUIRED_VERSION=0.11.10
