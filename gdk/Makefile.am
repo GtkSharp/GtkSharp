@@ -60,6 +60,7 @@ customs = 			\
 	Region.custom		\
 	Screen.custom		\
 	Selection.custom	\
+	WindowAttr.custom	\
 	Window.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))

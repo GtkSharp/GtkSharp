@@ -103,9 +103,19 @@ static extern int gtksharp_gtk_widget_get_flags (IntPtr raw);
 [DllImport("gtksharpglue-2")]
 static extern void gtksharp_gtk_widget_set_flags (IntPtr raw, int flags);
 
+[Obsolete]
 public int Flags {
 	get {
 		return gtksharp_gtk_widget_get_flags (Handle);
+	}
+	set {
+		gtksharp_gtk_widget_set_flags (Handle, (int) value);
+	}
+}
+
+public WidgetFlags WidgetFlags {
+	get {
+		return (WidgetFlags) gtksharp_gtk_widget_get_flags (Handle);
 	}
 	set {
 		gtksharp_gtk_widget_set_flags (Handle, (int) value);
