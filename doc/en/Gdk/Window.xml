@@ -21,7 +21,7 @@
   <Base>
     <BaseTypeName>Gdk.Drawable</BaseTypeName>
   </Base>
-  <Interfaces>
+    <Interfaces>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
@@ -39,8 +39,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Calls <see cref="M:Gdk.Window.ProcessUpdates"/> for all windows in the application.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Lookup">
@@ -53,10 +53,10 @@
         <Parameter Name="anid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="anid">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <summary>For internal use only. Looks up the Window that wraps the given native window handle.</summary>
+        <param name="anid">A <see cref="T:System.UInt32"/>, a native window ID.</param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ForeignNew">
@@ -69,10 +69,12 @@
         <Parameter Name="anid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="anid">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <summary>For internal use only.
+	  Wraps a native window for the default display in a <see cref="T:Gdk.Window"/>.
+	  This may fail if the window has been destroyed.</summary>
+        <param name="anid">A <see cref="T:System.UInt32"/></param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetChildShapes">
@@ -83,8 +85,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Sets the shape mask of this window to the union of shape masks
+	  for all children of the window, ignoring the shape mask of the window
+	  itself. Contrast with <see cref="M:Gdk.Window.MergeChildShapes"/>
+	  which includes the shape mask of the window in the masks to be 
+	  merged.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="InvalidateRegion">
@@ -98,10 +104,32 @@
         <Parameter Name="invalidate_children" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="region">To be added: an object of type 'Gdk.Region'</param>
-        <param name="invalidate_children">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Adds <paramref name="region"/> to the update area for the window. 
+	  The update area is the
+	  region that needs to be redrawn, or "dirty region." 
+	</summary>
+        <param name="region">A <see cref="T:Gdk.Region"/></param>
+        <param name="invalidate_children">A <see cref="T:System.Boolean"/></param>
+        <remarks>
+	  <p>The call <see cref="M:Gdk.Window.ProcessUpdates"/> sends one or 
+	    more expose events to the window, which together cover the entire 
+	  update area. An application would normally redraw the contents of 
+	  <paramref name="window"/> in response to those expose events.</p>
+
+	  <p>GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates"/> on your behalf
+	    whenever your program returns to the main loop and becomes idle, so
+	    normally there's no need to do that manually, you just need to
+	    invalidate regions that you know should be redrawn.</p>
+
+	  <p>The <paramref name="invalidate_children"/> parameter controls 
+	    whether the region of
+	    each child window that intersects <paramref name="region"/> will 
+	    also be invalidated.
+	    If <see langword="false"/>, then the update area for child windows will remain
+	    unaffected. See <see cref="M:Gdk.Window.InvalidateMaybeRecurse"/> if you need
+	    fine grained control over which children are invalidated.</p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Reparent">
@@ -116,11 +144,13 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="new_parent">To be added: an object of type 'Gdk.Window'</param>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Reparents this window into the given 
+	  <paramref name="new_parent"/>. The window being
+	  reparented will be unmapped as a side effect.</summary>
+        <param name="new_parent">A <see cref="T:Gdk.Window"/>, new parent to move this window into</param>
+        <param name="x">A <see cref="T:System.Int32"/>, X location inside the new parent</param>
+        <param name="y">A <see cref="T:System.Int32"/>, Y location inside the new parent</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Scroll">
@@ -134,10 +164,20 @@
         <Parameter Name="dy" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dx">To be added: an object of type 'int'</param>
-        <param name="dy">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Scroll the contents of this window, both pixels and 
+	  children, by the given
+	  amount. The window itself does not move.  Portions of the window that the scroll
+	  operation brings in from offscreen areas are invalidated. The invalidated
+	  region may be bigger than what would strictly be necessary.  (For X11, a
+	  minimum area will be invalidated if the window has no subwindows, or if the
+	  edges of the window's parent do not extend beyond the edges of the window. In
+	  other cases, a multi-step process is used to scroll the window which may
+	  produce temporary visual artifacts and unnecessary invalidations.)
+	</summary>
+        <param name="dx">A <see cref="T:System.Int32"/>, amount to scroll in the X direction</param>
+        <param name="dy">A <see cref="T:System.Int32"/>, amount to scroll in the Y direction</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetStaticGravities">
@@ -150,10 +190,15 @@
         <Parameter Name="use_static" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="use_static">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Set the bit gravity of the given window to static, and flag it so
+	  all children get static subwindow gravity. This is used if you are
+	  implementing scary features that involve deep knowledge of the
+	  windowing system. Don't worry about it unless you have to.
+	</summary>
+        <param name="use_static">A <see cref="T:System.Boolean"/></param>
+        <returns>A <see cref="T:System.Boolean"/>, true if the server supports static gravity</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Lower">
@@ -164,8 +209,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  <p>Lowers this window to the bottom of the Z-order (stacking order), so that
+	    other windows with the same parent window appear above this window.
+	    This is true whether or not the other windows are visible.
+	  </p><p>
+	    If this window is a toplevel, the window manager may choose to deny the
+	    request to move the window in the Z-order, <see cref="M:Gtk.Window.Lower"/> only
+	    requests the restack, but does not guarantee it.
+	  </p><p>
+	    Note that <see cref="M:Gdk.Window.Show"/> raises the window again, so don't call this
+	    function before <see cref="M:Gdk.Window.Show"/>. (Try <see cref="M:Gdk.Window.ShowUnraised"/>.)
+	  </p>
+	</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="MoveResize">
@@ -181,12 +238,18 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Equivalent to calling <see cref="M:Gdk.Window.Move"/> and 
+	  <see cref="M:Gdk.Window.Resize"/> in succession,
+	  except that both operations are performed at once, avoiding strange
+	  visual effects. (i.e. the user may be able to see the window first
+	  move, then resize, if you don't use this method.)
+	</summary>
+        <param name="x">A <see cref="T:System.Int32"/>, new X position relative to window's parent</param>
+        <param name="y">A <see cref="T:System.Int32"/>, new Y position relative to window's parent</param>
+        <param name="width">A <see cref="T:System.Int32"/>, new width</param>
+        <param name="height">A <see cref="T:System.Int32"/>, new height</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Destroy">
@@ -197,8 +260,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Destroys the window system resources associated with this window 
+	  and decrements this window's
+	  reference count. The window system resources for all children of this 
+	  window are also
+	  destroyed, but the children's reference counts are not decremented.
+	</summary>
+        <remarks>
+	  Note that a window will not be destroyed automatically 
+	  when its reference count reaches zero. You must call this 
+	  function yourself before that happens.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetGeometryHints">
@@ -212,10 +285,35 @@
         <Parameter Name="geom_mask" Type="Gdk.WindowHints" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="geometry">To be added: an object of type 'Gdk.Geometry'</param>
-        <param name="geom_mask">To be added: an object of type 'Gdk.WindowHints'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Sets the geometry hints for this window. Hints flagged in <paramref name="geom_mask"/>
+	    are set, hints not flagged in <paramref name="geom_mask"/> are unset.
+	    To unset all hints, use a <paramref name="geom_mask"/> of 0 and a <paramref name="geometry"/> of <see langword="null"/>.
+	  
+	</summary>
+        <param name="geometry">A <see cref="T:Gdk.Geometry"/></param>
+        <param name="geom_mask">A <see cref="T:Gdk.WindowHints"/></param>
+        <remarks>
+	  <p>
+	    This function provides hints to the windowing system about
+	    acceptable sizes for a toplevel window. The purpose of 
+	    this is to constrain user resizing, but the windowing system
+	    will typically  (but is not required to) also constrain the
+	    current size of the window to the provided values and
+	    constrain programatic resizing via <see cref="M:Gdk.Window.Resize"/> or
+	    <see cref="M:Gdk.Window.MoveResize"/>.
+	  </p><p>
+	    Note that on X11, this effect has no effect on windows
+	    of type GDK_WINDOW_TEMP or windows where override_redirect
+	    has been turned on via <see cref="M:Gdk.Window.SetOverrideRedirect"/>
+	    since these windows are not resizable by the user.
+	  </p><p>
+	    Since you can't count on the windowing system doing the
+	    constraints for programmatic resizes, you should generally
+	    call <see cref="M:Gdk.Window.ConstrainSize"/>
+	    yourself to determine appropriate sizes.
+	  </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Iconify">
@@ -226,8 +324,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  Asks to iconify (minimize) the window. The window manager may choose
+	  to ignore the request, but normally will honor it. Using
+	  <see cref="M:Gtk.Window.Iconify"/> is preferred, if you have a 
+	  <see cref="T:Gtk.Window"/> widget.
+	</summary>
+        <remarks>
+	  This function only makes sense when this window is a toplevel window.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddFilter">
@@ -240,9 +345,15 @@
         <Parameter Name="function" Type="Gdk.FilterFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="function">To be added: an object of type 'Gdk.FilterFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Adds an event filter to this window, allowing you to intercept events
+	  before they reach GDK. This is a low-level operation and makes it
+	  easy to break GDK and/or GTK+, so you have to know what you're
+	  doing. Pass <see langword="null"/> for this window to get all events 
+	  for all windows, instead of events for a specific window.
+	</summary>
+        <param name="function">A <see cref="T:Gdk.FilterFunc"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="InvalidateMaybeRecurse">
@@ -256,10 +367,37 @@
         <Parameter Name="user_data" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="region">To be added: an object of type 'Gdk.Region'</param>
-        <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds <paramref name="region"/> to the update area for the 
+	  window. The update area is the region that needs to be 
+	  redrawn, or "dirty region." 
+	</summary>
+        <param name="region">A <see cref="T:Gdk.Region"/></param>
+        <param name="user_data">A <see cref="T:IntPtr"/></param>
+        <remarks>
+	  <p>function to use to decide if to recurse to a child,
+            %NULL means never recurse.
+	  </p>
+	  <p>The call<see cref="M:Gdk.Window.ProcessUpdates"/>
+	    sends one or more expose events to the
+	    window, which together cover the entire update area. An
+	    application would normally redraw the contents of the whole window
+	    in response to those expose events.</p>
+
+	  <p>GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates"/> on 
+	    your behalf whenever your program returns to the main loop 
+	    and becomes idle, so normally there's no need to do that 
+	    manually, you just need to invalidate regions that you know 
+	    should be redrawn.</p>
+
+	  <p>(TODO: See bugzilla.ximian.com bug # 66241, to which the following
+	    text pertains.)
+	    <i>The <paramref name="child_func"/> parameter controls whether the region of
+	      each child window that intersects <paramref name="region"/> will also be invalidated.
+	      Only children for which <paramref name="child_func"/> returns TRUE will have the area
+	      invalidated.</i>
+	  </p>
+
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginMoveDrag">
@@ -275,12 +413,18 @@
         <Parameter Name="timestamp" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="button">To be added: an object of type 'int'</param>
-        <param name="root_x">To be added: an object of type 'int'</param>
-        <param name="root_y">To be added: an object of type 'int'</param>
-        <param name="timestamp">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Begins a window move operation (for a toplevel window).  
+	  You might use this function to implement a "window move grip," for
+	  example. The function works best with window managers that support
+	  the Extended Window Manager Hints spec (see
+	  http://www.freedesktop.org), but has a fallback implementation for
+	  other window managers.
+	</summary>
+        <param name="button">A <see cref="T:System.Int32"/>, the button being used to drag</param>
+        <param name="root_x">A <see cref="T:System.Int32"/>,  root window X coordinate of mouse click that began the drag</param>
+        <param name="root_y">A <see cref="T:System.Int32"/>m  root window Y coordinate of mouse click that began the drag</param>
+        <param name="timestamp">A <see cref="T:System.UInt32"/>, timestamp of mouse click that began the drag</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="BeginPaintRegion">
@@ -293,9 +437,51 @@
         <Parameter Name="region" Type="Gdk.Region" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="region">To be added: an object of type 'Gdk.Region'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Indicates that you are beginning the process of redrawing @region.
+	</summary>
+        <param name="region">A <see cref="T:Gdk.Region"/></param>
+        <remarks>
+	  <p>
+	    A backing store (offscreen buffer) large enough to contain <paramref name="region"/>
+	    will be created. The backing store will be initialized with the
+	    background color or background pixmap for this window. Then, all
+	    drawing operations performed on this window will be diverted to the
+	    backing store.  When you call <see cref="M:Gdk.Window.EndPaint"/>, the backing
+	    store will be copied to this window, making it visible onscreen. Only
+	    the part of this window contained in <paramref name="region"/> will be modified; that is,
+	    drawing operations are clipped to <paramref name="region"/>.
+	  </p><p>
+	    The net result of all this is to remove flicker, because the user
+	    sees the finished product appear all at once when you call
+	    <see cref="M:Gdk.Window.EndPaint"/>. If you draw to the window directly without
+	    calling <see cref="M:Gdk.Window.BeginPaintRegion"/>, the user may see flicker
+	    as individual drawing operations are performed in sequence.  The
+	    clipping and background-initializing features of
+	    <see cref="M:Gdk.Window.BeginPaintRegion"/> are conveniences for the
+	    programmer, so you can avoid doing that work yourself.
+	  </p><p>
+	    When using GTK+, the widget system automatically places calls to
+	    <see cref="M:Gdk.Window.BeginPaintRegion"/> and <see cref="M:Gdk.Window.EndPaint"/> around
+	    emissions of the expose_event signal. That is, if you're writing an
+	    expose event handler, you can assume that the exposed area in
+	    #GdkEventExpose has already been cleared to the window background,
+	    is already set as the clip region, and already has a backing store.
+	    Therefore in most cases, application code need not call
+	    <see cref="M:Gdk.Window.BeginPaintRegion"/>. (You can disable the automatic
+	    calls around expose events on a widget-by-widget basis by calling
+	    gtk_widget_set_double_buffered().)
+	  </p><p>
+	    If you call this function multiple times before calling the
+	    matching <see cref="M:Gdk.Window.EndPaint"/>, the backing stores are pushed onto
+	    a stack. <see cref="M:Gdk.Window.EndPaint"/> copies the topmost backing store
+	    onscreen, subtracts the topmost region from all other regions in
+	    the stack, and pops the stack. All drawing operations affect only
+	    the topmost backing store in the stack. One matching call to
+	    <see cref="M:Gdk.Window.EndPaint"/> is required for each call to
+	    <see cref="M:Gdk.Window.BeginPaintRegion"/>.
+	  </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearAreaE">
@@ -311,12 +497,18 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Like <see cref="M:Gdk.Window.ClearArea"/>, but also generates an 
+	  expose event for the cleared area.
+	</summary>
+        <param name="x">A <see cref="T:System.Int32"/>, x coordinate of rectangle to clear</param>
+        <param name="y">A <see cref="T:System.Int32"/>, y coordinate of rectangle to clear</param>
+        <param name="width">A <see cref="T:System.Int32"/>, width of rectangle to clear</param>
+        <param name="height">A <see cref="T:System.Int32"/>, height of rectangle to clear</param>
+        <remarks>
+	  This function has a stupid name because it dates back to the mists
+	  time, pre-GDK-1.0.
+	  </remarks>
       </Docs>
     </Member>
     <Member MemberName="Unstick">
@@ -327,8 +519,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Reverse operation for <see cref="M:Gdk.Window.Stick"/>.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Resize">
@@ -343,9 +535,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <param name="width">A <see cref="T:System.Int32"/></param>
+        <param name="height">A <see cref="T:System.Int32"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetPointer">
@@ -361,11 +553,11 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int&amp;'</param>
-        <param name="y">To be added: an object of type 'int&amp;'</param>
-        <param name="mask">To be added: an object of type 'Gdk.ModifierType&amp;'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <param name="x">A <see cref="T:int&amp;"/></param>
+        <param name="y">A <see cref="T:int&amp;"/></param>
+        <param name="mask">A <see cref="T:Gdk.ModifierType&amp;"/></param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ShapeCombineRegion">
@@ -381,10 +573,10 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="shape_region">To be added: an object of type 'Gdk.Region'</param>
-        <param name="offset_x">To be added: an object of type 'int'</param>
-        <param name="offset_y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <param name="shape_region">A <see cref="T:Gdk.Region"/></param>
+        <param name="offset_x">A <see cref="T:System.Int32"/></param>
+        <param name="offset_y">A <see cref="T:System.Int32"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ThawUpdates">
@@ -396,7 +588,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Unmaximize">
@@ -408,7 +600,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Show">
@@ -420,7 +612,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Stick">
@@ -431,8 +623,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  "Pins" a window such that it's on all workspaces and does not scroll
+	  with viewports, for window managers that have scrollable viewports.
+	  (When using <see cref="T:Gtk.Window"/>, 
+	  <see cref="M:Gtk.Window.Stick"/> may be more useful.)
+	</summary>
+        <remarks>
+	  On the X11 platform, this function depends on window manager
+	  support, so may have no effect with many window managers. However,
+	  GDK will do the best it can to convince the window manager to stick
+	  the window. For window managers that don't support this operation,
+	  there's nothing you can do to force it to happen.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Raise">
@@ -443,8 +646,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  Raises the window to the top of the Z-order (stacking order), so 
+	  that other windows with the same parent window appear below 
+	  this window. This is true whether or not the windows are visible.
+	</summary>
+        <remarks>
+	  If this window is a toplevel, the window manager may choose to deny 
+	  the request to move the window in the Z-order. This method only
+	  requests the restack; it does not guarantee a restack.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="InvalidateRect">
@@ -458,10 +669,15 @@
         <Parameter Name="invalidate_children" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rect">To be added: an object of type 'Gdk.Rectangle'</param>
-        <param name="invalidate_children">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  A convenience wrapper around 
+	  <see cref="M:Gdk.Window.InvalidateRegion"/> which
+	  invalidates a rectangular region. See
+	  <see cref="M:Gdk.Window.InvalidateRegion"/> for details.
+	</summary>
+        <param name="rect">A <see cref="T:Gdk.Rectangle"/></param>
+        <param name="invalidate_children">A <see cref="T:System.Boolean"/>, whether to invalidate child windows</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Maximize">
@@ -472,8 +688,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  Maximizes the window. If the window was already maximized, then
+	  this function does nothing.
+	</summary>
+        <remarks>
+	  <p>On X11, asks the window manager to maximize the window, if the window
+	    manager supports this operation. Not all window managers support
+	    this, and some deliberately ignore it or don't have a concept of
+	    "maximized"; so you can't rely on the maximization actually
+	    happening. But it will happen with most standard window managers,
+	    and GDK makes a best effort to get it to happen.
+	  </p><p>
+	    On Windows, reliably maximizes the window.
+	  </p>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetBackPixmap">
@@ -487,10 +717,29 @@
         <Parameter Name="parent_relative" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixmap">To be added: an object of type 'Gdk.Pixmap'</param>
-        <param name="parent_relative">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Sets the background pixmap of this window. May also be used to set a background of
+	  "None" on this window, by setting a background pixmap of <see langword="null"/>.
+	  A background pixmap will be tiled, positioning the first tile at the origin of
+	  this window, or if <paramref name="parent_relative"/> is true, the tiling will be done based on the
+	  origin of the parent window (useful to align tiles in a parent with tiles
+in a child).
+	</summary>
+        <param name="pixmap">A <see cref="T:Gdk.Pixmap"/></param>
+        <param name="parent_relative">A <see cref="T:System.Boolean"/></param>
+        <remarks>
+	  <p>
+	    A background pixmap of <see langword="null"/> means that the window will have no
+	    background.  A window with no background will never have its
+	    background filled by the windowing system, instead the window will
+	    contain whatever pixels were already in the corresponding area of
+	    the display.
+	  </p><p>
+	    The windowing system will normally fill a window with its background
+	    when the window is obscured then exposed, or when you call
+	    <see cref="M:Gdk.Window.Clear"/>.
+	  </p>
+	  </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearArea">
@@ -506,12 +755,12 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Clears an area of this window to the background color or background pixmap.</summary>
+        <param name="x">A <see cref="T:System.Int32"/>, x coordinate of rectangle to clear</param>
+        <param name="y">A <see cref="T:System.Int32"/>, y coordinate of rectangle to clear</param>
+        <param name="width">A <see cref="T:System.Int32"/>, width of rectangle to clear</param>
+        <param name="height">A <see cref="T:System.Int32"/>, height of rectangle to clear</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Deiconify">
@@ -522,8 +771,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Attempt to deiconify (unminimize) this window. On X11 the window manager may
+	  choose to ignore the request to deiconify. When using GTK+,
+	  use <see cref="M:Gtk.Window.Deiconify"/> instead of the <see cref="T:Gdk.Window"/> variant. Or better yet,
+	  you probably want to use <see cref="M:Gtk.Window.Present"/>,
+	  which raises the window, focuses it,
+	  unminimizes it, and puts it on the current desktop.
+	</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetIcon">
@@ -538,11 +794,19 @@
         <Parameter Name="mask" Type="Gdk.Bitmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_window">To be added: an object of type 'Gdk.Window'</param>
-        <param name="pixmap">To be added: an object of type 'Gdk.Pixmap'</param>
-        <param name="mask">To be added: an object of type 'Gdk.Bitmap'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Sets the icon of this window as a pixmap or window. 
+	</summary>
+        <param name="icon_window">A <see cref="T:Gdk.Window"/></param>
+        <param name="pixmap">A <see cref="T:Gdk.Pixmap"/></param>
+        <param name="mask">A <see cref="T:Gdk.Bitmap"/></param>
+        <remarks>
+	  If using GTK+, investigate
+	  <see cref="M:Gtk.Window.SetDefaultIconList"/> first, and then <see cref="M:Gtk.Window.SetIconList"/>
+	  and <see cref="M:Gtk.Window.SetIcon"/>. If those don't meet your needs, look at
+	  <see cref="M:Gdk.Window.SetIconList"/>. Only if all those are too high-level do you
+	  want to fall back to this method.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Hide">
@@ -553,8 +817,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> 
+	  For toplevel windows, withdraws them, so they will no longer be
+	  known to the window manager; for all windows, unmaps them, so
+	  they won't be displayed. Normally done automatically as
+	  part of <see cref="M:Gtk.Window.Hide"/>.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Withdraw">
@@ -565,8 +833,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  Withdraws a window (unmaps it and asks the window manager to 
+	  forget about it).
+	</summary>
+        <remarks> This function is not really useful as <see cref="M:Gdk.Window.Hide"/> automatically
+	  withdraws toplevel windows before hiding them.
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDecorations">
@@ -579,9 +852,28 @@
         <Parameter Name="decorations" Type="Gdk.WMDecoration" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="decorations">To be added: an object of type 'Gdk.WMDecoration'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  "Decorations" are the features the window manager adds to a toplevel
+	  <see cref="T:Gdk.Window"/>.
+	  This function sets the traditional Motif window manager hints that tell the
+	  window manager which decorations you would like your window to have.
+	  Usually you should use <see cref="M:Gtk.Window.SetDecorated"/> on a 
+	  <see cref="T:Gtk.Window"/> instead of
+	  using the GDK function directly.
+	</summary>
+        <param name="decorations">A <see cref="T:Gdk.WMDecoration"/></param>
+        <remarks>
+	  <p>
+	    The <paramref name="decorations"/> argument is the logical OR of the fields in
+	    the <see cref="T:Gdk.WMDecoration"/> enumeration. If <see cref="P:GFdk.WMDecoration.All"/> is included in the
+	    mask, the other bits indicate which decorations should be turned off.
+	    If  <see cref="P:GFdk.WMDecoration.All"/> is not included, then the other bits indicate
+	    which decorations should be turned on.
+	  </p><p>
+	    Most window managers honor a decorations hint of 0 to disable all decorations,
+	    but very few honor all possible combinations of bits.
+	  </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProcessUpdates">
@@ -594,9 +886,18 @@
         <Parameter Name="update_children" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="update_children">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Sends one or more expose events to the window.</summary> 
+        <param name="update_children">A <see cref="T:System.Boolean"/>, whether to process updates for child windows</param>
+        <remarks>The areas in each expose event will cover the entire 
+	  update area for the window (see
+	  <see cref="T:Gdk.Window.InvalidateRegion"/> for details). 
+	  Normally GDK calls <see cref="T:Gdk.Window.ProcessAllUpdates"/>
+	  on your behalf, so there's no
+	  need to call this function unless you want to force expose events
+	  to be delivered immediately and synchronously (vs. the usual
+	  case, where GDK delivers them in an idle handler). Occasionally
+	  this is useful to produce nicer scrolling behavior, for example.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="MergeChildShapes">
@@ -607,8 +908,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  <p>Merges the shape masks for any child windows into the
+	    shape mask for this window. i.e. the union of all masks
+	    for this window and its children will become the new mask
+	    for this window. See <see cref="M:Gdk.Window.ShapeCombineMask"/>.
+	  </p><p>
+	    This function is distinct from <see cref="M:Gdk.Window.SetChildShapes"/>
+	    because it includes this window's shape mask in the set of shapes to
+	    be merged.
+	  </p>
+	</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="BeginResizeDrag">
@@ -625,13 +936,20 @@
         <Parameter Name="timestamp" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="edge">To be added: an object of type 'Gdk.WindowEdge'</param>
-        <param name="button">To be added: an object of type 'int'</param>
-        <param name="root_x">To be added: an object of type 'int'</param>
-        <param name="root_y">To be added: an object of type 'int'</param>
-        <param name="timestamp">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Begins a window resize operation (for a toplevel window).
+	  You might use this function to implement a "window resize grip," for
+	  example; in fact <see cref="T:Gtk.Statusbar"/> uses it. The function works best
+	  with window managers that support the Extended Window Manager Hints spec
+	  (see http://www.freedesktop.org), but has a fallback implementation
+	  for other window managers.
+	</summary>
+        <param name="edge">A <see cref="T:Gdk.WindowEdge"/></param>
+        <param name="button">A <see cref="T:System.Int32"/></param>
+        <param name="root_x">A <see cref="T:System.Int32"/></param>
+        <param name="root_y">A <see cref="T:System.Int32"/></param>
+        <param name="timestamp">A <see cref="T:System.UInt32"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="EndPaint">
@@ -642,8 +960,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Indicates that the backing store created by the most recent call to
+	  <see cref="M:Gdk.Window.BeginPaintRegion"/>() should be copied onscreen and
+	  deleted, leaving the next-most-recent backing store or no backing
+	  store at all as the active paint region. See
+	  <see cref="M:Gdk.Window.BeginPaintRegion"/>() for full details.
+	</summary>
+        <remarks> 
+	  It is an error to call this function without a matching
+	  <see cref="M:Gdk.Window.BeginPaintRegion"/>() first.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginPaintRect">
@@ -656,9 +983,13 @@
         <Parameter Name="rectangle" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rectangle">To be added: an object of type 'Gdk.Rectangle'</param>
-        <remarks>To be added</remarks>
+        <summary> 
+	  A convenience wrapper around <see cref="M:Gdk.Window.BeginPaintRegion"/>() which
+	  creates a rectangular region for you. See
+	  <see cref="M:Gdk.Window.BeginPaintRegion"/>() for details.
+	</summary>
+        <param name="rectangle">A <see cref="T:Gdk.Rectangle"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ShowUnraised">
@@ -669,8 +1000,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>
+	  Shows a <see cref="T:Gdk.Window"/> onscreen, but does not modify its stacking
+	  order. In contrast, <see cref="M:Gdk.Window.Show()"/> will raise the window
+	  to the top of the window stack.
+
+</summary>
+        <remarks>
+	  On the X11 platform, in Xlib terms, this function calls
+	  XMapWindow() (it also updates some internal GDK state, which means
+	  that you can't really use XMapWindow() directly on a GDK window).
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveFilter">
@@ -683,9 +1023,9 @@
         <Parameter Name="function" Type="Gdk.FilterFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="function">To be added: an object of type 'Gdk.FilterFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Remove a filter previously added with <see cref="M:Gdk.Window.AddFilter"/>.</summary>
+        <param name="function">A <see cref="T:Gdk.FilterFunc"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -696,8 +1036,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clears the entire window to the background color or background pixmap.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Focus">
@@ -710,9 +1050,12 @@
         <Parameter Name="timestamp" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="timestamp">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary> Sets keyboard focus to this window. If the window is not onscreen this
+	  will not work. In most cases, <see cref="M:Gtk.Window.Present"/>
+	  should be used on
+	  a <see cref="T:Gtk.Window"/>, rather than calling this function.</summary>
+        <param name="timestamp">A <see cref="T:System.UInt32"/>, timestamp of the event calling this method</param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="FreezeUpdates">
@@ -723,8 +1066,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Temporarily freezes a window such that it won't receive expose
+	  events.  The window will begin receiving expose events again when
+	  <see cref="M:Gdk.Window.ThawUpdates"/> is called. If <see cref="M:Gdk.Window.FreezeUpdates"/>
+	  has been called more than once, <see cref="M:Gdk.Window.ThawUpdates"/> must be called
+	  an equal number of times to begin processing exposes.
+	</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="RegisterDnd">
@@ -736,7 +1085,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ShapeCombineMask">
@@ -751,11 +1100,31 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mask">To be added: an object of type 'Gdk.Bitmap'</param>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  <p>Applies a shape mask to this window. 
+	  Pixels in this window corresponding to
+	  set bits in the <paramref name="mask"/> will be visible; pixels in this window
+	  corresponding to unset bits in the <paramref name="mask"/> will be transparent. This
+	  gives a non-rectangular window.</p>
+	  <p>If <paramref name="mask"/> is <see langword="null"/>, the shape 
+	    mask will be unset, and the 
+	    <paramref name="x"/>/<paramref name="y"/> parameters are not 
+	    used.</p>
+	</summary>
+        <param name="mask">A <see cref="T:Gdk.Bitmap"/>, a shape mask</param>
+        <param name="x">A <see cref="T:System.Int32"/>, X position of shape mask with respect to this window</param>
+        <param name="y">A <see cref="T:System.Int32"/>, Y position of shape mask with respect to this window</param>
+        <remarks>
+	  <p>
+	    On the X11 platform, this uses an X server extension which is
+	    widely available on most common platforms, but not available on
+	    very old X servers, and occasionally the implementation will be
+	    buggy. On servers without the shape extension, this function
+	    will do nothing.
+	  </p><p>
+	    This function works on both toplevel and child windows.
+	  </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Move">
@@ -769,10 +1138,20 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Repositions a window relative to its parent window.
+	</summary>
+        <param name="x">A <see cref="T:System.Int32"/></param>
+        <param name="y">A <see cref="T:System.Int32"/></param>
+        <remarks>
+	  <p>For toplevel windows, window managers may ignore or modify the move;
+	  you should probably use <see cref="M:Gtk.Window.Move"/> on a <see cref="T:Gtk.Window"/> widget
+	  anyway, instead of using GDK functions. For child windows,
+	  the move will reliably succeed.</p>
+	  <p>If you're also planning to resize the window, use <see cref="M:Gdk.Window.MoveResize"/>
+	    to both move and resize simultaneously, for a nicer visual effect.
+	  </p>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFrameExtents">
@@ -785,9 +1164,14 @@
         <Parameter Name="rect" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rect">To be added: an object of type 'Gdk.Rectangle'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Obtains the bounding box of the window, including window manager
+	  titlebar/borders if any. The frame position is given in root window
+	  coordinates. To get the position of the window itself (rather than
+	  the frame) in root window coordinates, use <see cref="M:Gdk.Window.GetOrigin"/>.
+	</summary>
+        <param name="rect">A <see cref="T:Gdk.Rectangle"/></param>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -828,12 +1212,12 @@
         <Parameter Name="attributes_mask" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="parent">To be added: an object of type 'Gdk.Window'</param>
-        <param name="attributes">To be added: an object of type 'Gdk.WindowAttr'</param>
-        <param name="attributes_mask">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <summary>Basic constructor</summary>
+        <param name="parent">A <see cref="T:Gdk.Window"/></param>
+        <param name="attributes">A <see cref="T:Gdk.WindowAttr"/></param>
+        <param name="attributes_mask">A <see cref="T:System.Int32"/></param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="DebugUpdates">
@@ -845,10 +1229,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>For debugging use only.</summary>
+        <param name="value">A <see cref="T:System.Boolean"/></param>
+        <returns>A <see cref="T:System.Boolean"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Functions">
@@ -861,9 +1245,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.WMFunction'</param>
-        <returns>To be added: an object of type 'Gdk.WMFunction'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:Gdk.WMFunction"/></param>
+        <returns>A <see cref="T:Gdk.WMFunction"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="OverrideRedirect">
@@ -876,9 +1260,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:System.Boolean"/></param>
+        <returns>A <see cref="T:System.Boolean"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Group">
@@ -891,9 +1275,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Window'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:Gdk.Window"/></param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="TransientFor">
@@ -906,9 +1290,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Window'</param>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:Gdk.Window"/></param>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Toplevel">
@@ -919,8 +1303,8 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Cursor">
@@ -952,9 +1336,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.EventMask'</param>
-        <returns>To be added: an object of type 'Gdk.EventMask'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:Gdk.EventMask"/></param>
+        <returns>A <see cref="T:Gdk.EventMask"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="IconName">
@@ -967,9 +1351,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:System.String"/></param>
+        <returns>A <see cref="T:System.String"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="WindowType">
@@ -980,8 +1364,8 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.WindowType'</returns>
-        <remarks>To be added</remarks>
+        <returns>A <see cref="T:Gdk.WindowType"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="State">
@@ -992,8 +1376,8 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.WindowState'</returns>
-        <remarks>To be added</remarks>
+        <returns>A <see cref="T:Gdk.WindowState"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Title">
@@ -1006,9 +1390,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:System.String"/></param>
+        <returns>A <see cref="T:System.String"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ModalHint">
@@ -1021,9 +1405,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:System.Boolean"/></param>
+        <returns>A <see cref="T:System.Boolean"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="TypeHint">
@@ -1036,9 +1420,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.WindowTypeHint'</param>
-        <returns>To be added: an object of type 'Gdk.WindowTypeHint'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:Gdk.WindowTypeHint"/></param>
+        <returns>A <see cref="T:Gdk.WindowTypeHint"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="UpdateArea">
@@ -1049,8 +1433,8 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Region'</returns>
-        <remarks>To be added</remarks>
+        <returns>A <see cref="T:Gdk.Region"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Role">
@@ -1063,9 +1447,9 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <param name="value">A <see cref="T:System.String"/></param>
+        <returns>A <see cref="T:System.String"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Background">
@@ -1079,7 +1463,7 @@
       <Docs>
         <summary>Sets the background color for the window.</summary>
         <param name="value">The color</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
+        <returns>A <see cref="T:Gdk.Color"/></returns>
         <remarks>Sets the background color of window. (However, when using GTK+, set the background of a widget with <see cref="M:Gtk.Widget.ModifyBg(Gtk.StateType, Gdk.Color)" /> - if you're an application - or <see cref="M:Gtk.Style.SetBackground(Gdk.Window, Gtk.StateType)" /> - if you're implementing a custom widget.
 <para>
 The color must be allocated; 
@@ -1094,8 +1478,8 @@ The color must be allocated;
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Window'</returns>
-        <remarks>To be added</remarks>
+        <returns>A <see cref="T:Gdk.Window"/></returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SkipPagerHint">
@@ -1110,7 +1494,7 @@ The color must be allocated;
         <summary>To be added</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SkipTaskbarHint">
@@ -1125,7 +1509,7 @@ The color must be allocated;
         <summary>To be added</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="LookupForDisplay">
@@ -1143,7 +1527,7 @@ The color must be allocated;
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <param name="anid">a <see cref="T:System.UInt32" /></param>
         <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ForeignNewForDisplay">
@@ -1161,7 +1545,7 @@ The color must be allocated;
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <param name="anid">a <see cref="T:System.UInt32" /></param>
         <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Fullscreen">
@@ -1173,7 +1557,7 @@ The color must be allocated;
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Unfullscreen">
@@ -1185,7 +1569,7 @@ The color must be allocated;
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetOrigin">
@@ -1203,7 +1587,7 @@ The color must be allocated;
         <param name="x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="y">a <see cref="T:System.Int32&amp;" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetInternalPaintInfo">
@@ -1222,7 +1606,7 @@ The color must be allocated;
         <param name="real_drawable">a <see cref="T:Gdk.Drawable&amp;" /></param>
         <param name="x_offset">a <see cref="T:System.Int32&amp;" /></param>
         <param name="y_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="AtPointer">
@@ -1240,7 +1624,7 @@ The color must be allocated;
         <param name="win_x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="win_y">a <see cref="T:System.Int32&amp;" /></param>
         <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ConstrainSize">
@@ -1265,7 +1649,7 @@ The color must be allocated;
         <param name="height">a <see cref="T:System.Int32" /></param>
         <param name="new_width">a <see cref="T:System.Int32&amp;" /></param>
         <param name="new_height">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetGeometry">
@@ -1288,7 +1672,7 @@ The color must be allocated;
         <param name="width">a <see cref="T:System.Int32&amp;" /></param>
         <param name="height">a <see cref="T:System.Int32&amp;" /></param>
         <param name="depth">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetRootOrigin">
@@ -1305,7 +1689,7 @@ The color must be allocated;
         <summary>To be added</summary>
         <param name="x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetDecorations">
@@ -1318,10 +1702,12 @@ The color must be allocated;
         <Parameter Name="decorations" Type="Gdk.WMDecoration&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="decorations">a <see cref="T:Gdk.WMDecoration&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Returns the decorations set on the window with <see cref="M:Gdk.Window.SetDecorations"/>.
+	</summary>
+        <param name="decorations">a <see cref="T:Gdk.WMDecoration&amp;" /> to put the decorations in</param>
+        <returns>a <see cref="T:System.Boolean" />, true if the window has decorations set, false otherwise.</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetPosition">
@@ -1338,7 +1724,7 @@ The color must be allocated;
         <summary>To be added</summary>
         <param name="x">a <see cref="T:System.Int32&amp;" /></param>
         <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="IsVisible">
@@ -1351,7 +1737,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="IsViewable">
@@ -1364,7 +1750,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -1391,7 +1777,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:Gdk.Window[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Children">
@@ -1416,7 +1802,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:Gdk.Pixbuf[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="MoveResize">
@@ -1431,7 +1817,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <param name="rect">a <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ClearArea">
@@ -1448,7 +1834,7 @@ The color must be allocated;
         <summary>To be added</summary>
         <param name="rect">a <see cref="T:Gdk.Rectangle" /></param>
         <param name="expose">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="UserData">
@@ -1461,7 +1847,7 @@ The color must be allocated;
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
   </Members>
