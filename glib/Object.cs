@@ -207,10 +207,7 @@ namespace GLib {
 
 		internal GLib.GType NativeType {
 			get {
-				if (_obj == IntPtr.Zero)
-					return GType.Invalid;
-
-				return new GLib.GType (gtksharp_get_type_id (_obj));
+				return LookupGType ();
 			}
 		}
 

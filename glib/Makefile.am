@@ -26,6 +26,7 @@ sources =		 			\
 	ManagedValue.cs				\
 	Markup.cs				\
 	Marshaller.cs				\
+	MissingIntPtrCtorException.cs		\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
