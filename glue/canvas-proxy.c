@@ -90,6 +90,15 @@ gtksharp_canvas_proxy_class_init (CanvasProxyClass *class)
 					    g_cclosure_marshal_VOID__OBJECT,
 					    G_TYPE_NONE, 0);
 
+	/* ArtUta *(* coverage) (GnomeCanvasItem *item); */
+	proxy_signals [COVERAGE] = g_signal_new ("coverage",
+						 G_TYPE_FROM_CLASS (object_class),
+						 G_SIGNAL_RUN_LAST,
+						 G_STRUCT_OFFSET (GnomeCanvasItemClass, coverage),
+						 NULL, NULL,
+						 g_cclosure_user_marshal_POINTER__OBJECT,
+						 G_TYPE_POINTER, 0);
+
 	/* void (* draw) (GnomeCanvasItem *item, GdkDrawable *drawable, */
  	/*	       int x, int y, int width, int height); */
 	proxy_signals [DRAW] = g_signal_new ("draw",
