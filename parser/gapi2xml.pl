@@ -650,7 +650,9 @@ sub addParamsElem
 
 	my $parms_elem = $doc->createElement('parameters');
 	$parent->appendChild($parms_elem);
+	my $parm_num = 0;
 	foreach $parm (@params) {
+		$parm_num++;
 		$parm =~ s/\s+(\*+)/\1 /g;
 		$parm =~ s/(\*+)\s*const/\1/g;
 		$parm =~ s/const\s+/const-/g;
@@ -670,9 +672,14 @@ sub addParamsElem
 		}
 		$parm_elem = $doc->createElement('parameter');
 		$parms_elem->appendChild($parm_elem);
-		$parm =~ /(\S+)\s+(\S+)/;
-		$parm_elem->setAttribute('type', $1);
-		my $name = $2;
+		my $name = "";
+		if ($parm =~ /(\S+)\s+(\S+)/) {
+			$parm_elem->setAttribute('type', $1);
+			$name = $2;
+		} elsif ($parm =~ /(\S+)/) {
+			$parm_elem->setAttribute('type', $1);
+			$name = "arg" . $parm_num;
+		}
 		if ($name =~ /(\w+)\[.*\]/) {
 			$name = $1;
 			$parm_elem->setAttribute('array', "true");
