@@ -1,16 +1,32 @@
 <Type Name="Socket" FullName="Gtk.Socket">
-  <TypeSignature Language="C#" Value="public class Socket : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Socket : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
-    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyPublicKey>
+    </AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Container for widgets from other processes.</summary>
+    <remarks>
+      <para>Together with <see cref="T:Gtk.Plug" />, <see cref="T:Gtk.Socket" /> provides the ability to embed widgets from one process into another process in a fashion that is transparent to the user. One process creates a <see cref="T:Gtk.Socket" /> widget and, passes the window ID of that widget to the other process, which then creates a <see cref="T:Gtk.Plug" /> with that window ID. Any widgets contained in the <see cref="T:Gtk.Plug" /> then will appear inside the first applications window.</para>
+      <para>The window ID of the <see cref="T:Gtk.Socket" /> is obtained by using <see cref="M:Gtk.Socket.GetId()" />. Before using this function, the socket must have been realized, and therefore, have been added to its parent.</para>
+      <example>
+        <code language="C#">
+Gtk.Socket socket = new Gtk.Socket;
+socket.Show ();
+parent.Add (socket);
+Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
+        </code>
+      </example>
+      <para>Note that if you pass the window ID of the socket to another process that will create a plug in the socket, you must make sure that the socket widget is not destroyed until that plug is created. Violating this rule will cause unpredictable consequences, the most likely consequence being that the plug will appear as a separate toplevel window. You can check if the plug has been created by examining the plug_window field of the <see cref="T:Gtk.Socket" /> structure. If this field is non-<see langword="null" />, then the plug has been successfully created inside of the socket.</para>
+      <para>When Gtk# is notified that the embedded window has been destroyed, then it will destroy the socket as well. You should always, therefore, be prepared for your sockets to be destroyed at any time when the main event loop is running.</para>
+      <para>The communication between a <see cref="T:Gtk.Socket" /> and a <see cref="T:Gtk.Plug" /> follows the XEmbed protocol. This protocol has also been implemented in other toolkits, e.g. Qt, allowing the same level of integration when embedding a Qt widget in GTK or vice versa.</para>
+      <para>A socket can also be used to swallow arbitrary pre-existing top-level windows using <see cref="M:Gtk.Socket.Steal()" />, though the integration when this is done will not be as close as between a <see cref="T:Gtk.Plug" /> and a <see cref="T:Gtk.Socket" />.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -41,9 +57,13 @@
         <Parameter Name="window_id" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="window_id">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds an XEMBED client, such as a <see cref="T:Gtk.Plug" />, to the <see cref="T:Gtk.Socket" />.</summary>
+        <param name="window_id">an object of type <see cref="T:System.UInt32" /></param>
+        <remarks>
+          <para>The client may be in the same process or in a different process.</para>
+          <para>To embed a <see cref="T:Gtk.Plug" /> in a <see cref="T:Gtk.Socket" />, you can either create the <see cref="T:Gtk.Plug" /> with <see cref="C:Gtk.Plug()" />, call <see cref="M:Gtk.Plug.GetId()" /> to get the window ID of the plug, and then pass that to the <see cref="M:Gtk.Socket.AddId()" />, or you can call <see cref="M:Gtk.Socket.GetId()" /> to get the window ID for the socket, and call <see cref="C:Gtk.Plug()" /> passing in that ID.</para>
+          <para>The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -80,9 +100,10 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Socket'</returns>
-        <remarks>To be added</remarks>
+        <summary>Default constructor</summary>
+        <returns>an object of type <see cref="T:Gtk.Socket" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -92,8 +113,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Socket</summary>
-        <returns>The GLib Type for the Gtk.Socket class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.Socket" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.Socket" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -104,9 +125,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The window ID of a <see cref="T:Gtk.Socket" /> widget.</summary>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <remarks>This can be used to create a client embedded inside the socket, for instance with <see cref="C:Gtk.Plug()" />. The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PlugAdded">
@@ -117,8 +138,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is emitted when a client is successfully added to the socket.</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PlugRemoved">
@@ -129,8 +151,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is emitted when a client is removed from the socket.</summary>
+        <remarks>The default action is to destroy the <see cref="T:Gtk.Socket" /> widget, so if you want to reuse it you must add a signal handler that returns <see langword="true" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
