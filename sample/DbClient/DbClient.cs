@@ -7,10 +7,105 @@ using Gdk;
 using Gnome;
 using GtkSharp;
 
+public class BrowseTab : VBox 
+{
+	private Button goFirst;
+	private Button goPrev;
+	private Button goNext;
+	private Button goLast;
+	private TextView id;
+	private TextView nameData;
+	private TextView address;
+
+	public BrowseTab () : base (false, 0)
+	{
+		Table table = new Table (3, 3, true);
+		table.Attach (new Label ("ID: "), 0, 1, 0, 1);
+		table.Attach (new Label ("Name: "), 0, 1, 1, 2);
+		table.Attach (new Label ("Address: "), 0, 1, 2, 3);
+		table.Attach (ID, 1, 2, 0, 1);
+		table.Attach (NameData, 1, 2, 1, 2);
+		table.Attach (Address, 1, 2, 2, 3);
+
+		HBox hbox = new HBox (false, 0);
+		hbox.PackStart (ButtonFirst);
+		hbox.PackStart (ButtonPrev);
+		hbox.PackStart (ButtonNext);
+		hbox.PackStart (ButtonLast);
+
+		this.PackStart (table, false, false, 0);
+		this.PackStart (hbox, false, false, 0);
+	}
+
+	public Widget ButtonFirst
+	{
+		get {
+			if (goFirst == null)
+				goFirst = Button.NewFromStock (Stock.GotoFirst);
+			return goFirst;
+		}
+	}
+	
+	public Widget ButtonPrev
+	{
+		get {
+			if (goPrev == null)
+				goPrev = Button.NewFromStock (Stock.GoBack);
+			return goPrev;
+		}
+	}
+
+	public Widget ButtonNext
+	{
+		get {
+			if (goNext == null)
+				goNext = Button.NewFromStock (Stock.GoForward);
+			return goNext;
+		}
+	}
+
+	public Widget ButtonLast
+	{
+		get {
+			if (goLast == null)
+				goLast = Button.NewFromStock (Stock.GotoLast);
+			return goLast;
+		}
+	}
+
+	public Widget ID
+	{
+		get {
+			if (id == null)
+				id = new TextView ();
+			return id;
+		}
+	}
+
+	public Widget NameData
+	{
+		get {
+			if (nameData == null)
+				nameData = new TextView ();
+			return nameData;
+		}
+	}
+
+	public Widget Address
+	{
+		get {
+			if (address == null)
+				address = new TextView ();
+			return address;
+		}
+	}
+}
+
 public class GtkDbClient {
 
 	static Window window;
 	static Notebook notebook = null;
+	static BrowseTab browse;
 	
 	static void Main ()
 	{
@@ -23,7 +118,8 @@ public class GtkDbClient {
 		box.PackStart (CreateMenu (), false, false, 0);
 		box.PackStart (notebook, false, false, 0);
 		
-		AddPage ("Browse", new Label ("Browse"));
+		browse = new BrowseTab ();
+		AddPage ("Browse", browse);
 		AddPage ("Insert", new Label ("Insert"));
 		AddPage ("Remove", new Label ("Remove"));
 		AddPage ("Update", new Label ("Update"));
