@@ -166,13 +166,13 @@ namespace GLib {
 			type = GType.Invalid;
 			pad_1 = pad_2 = 0;
 
-			GType type = TypeConverter.LookupType (obj.GetType ());
-			if (type == GType.None) {
+			GType gtype = TypeConverter.LookupType (obj.GetType ());
+			if (gtype == GType.None) {
 				g_value_init (ref this, ManagedValue.GType.Val);
-			} else if (type == GType.Object) {
+			} else if (gtype == GType.Object) {
 				g_value_init (ref this, ((GLib.Object) obj).NativeType.Val);
 			} else {
-				g_value_init (ref this, type.Val);
+				g_value_init (ref this, gtype.Val);
 			}
 
 			Val = obj;
