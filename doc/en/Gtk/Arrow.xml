@@ -1,15 +1,26 @@
 <Type Name="Arrow" FullName="Gtk.Arrow">
-  <TypeSignature Language="C#" Value="public class Arrow : Gtk.Misc, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Arrow : Gtk.Misc, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Kevin Breit" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Arrow is not a thread safe object</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
-  </Docs>
+    <summary>Produces an Arrow pointing in one of four cardinal directions.</summary>
+    <remarks>
+      <para>
+	  Arrow should be used to draw simple arrows that need to point in one of the four cardinal directions (Up, Down, Left, or Right). The style of the arrow can be one of the following: None, In, Out, EtchedIn and EtchedOut. Note that these directions and style types may be ammended in versions of Gtk to come.
+	</para>
+	<para>
+	  Arrow will fill any space alloted to it, but since it is inherited from <see cref="C:Gtk.Misc"/>, it can be padded 
+ and/or aligned, fill exactly the space the programmer desires.
+	</para>
+	<para>
+          The direction or style of an arrow can be changed after creation by using <see cref="M:Gtk.Arrow.Set"/>. 
+	</para>
+      </remarks>
+    </Docs>
   <Base>
     <BaseTypeName>Gtk.Misc</BaseTypeName>
   </Base>
@@ -39,7 +50,7 @@
       <Docs>
         <summary>To be added</summary>
         <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Set">
@@ -53,10 +64,13 @@
         <Parameter Name="shadow_type" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="arrow_type">To be added: an object of type 'Gtk.ArrowType'</param>
-        <param name="shadow_type">To be added: an object of type 'Gtk.ShadowType'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the direction and style of the Arrow.</summary>
+        <param name="arrow_type">A valid ArrowType.</param>
+        <param name="shadow_type">A valid ShadowType.</param>
+        <remarks>
+          <para>The cardinal directions are: Up, Down, Left and Right.</para>
+          <para>The shadow types are: None, In, Out, EtchedIn and EtchedOut.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -67,8 +81,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disposes of this widge</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -79,10 +93,10 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gtk.Arrow'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <param name="gtype"></param>
+        <returns>A new Arrow</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -93,10 +107,12 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gtk.Arrow'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal construction</summary>
+        <param name="raw">A pointer to a GtkArrow, as returned by the Gtk+ C API.</param>
+        <returns>A C# Gtk.Arrow that wraps the <paramref name="raw"/> parameter</returns>
+        <remarks>
+          <para>If you don't already know that you need this constructor, it should not be used.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -108,11 +124,11 @@
         <Parameter Name="shadow_type" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="arrow_type">To be added: an object of type 'Gtk.ArrowType'</param>
-        <param name="shadow_type">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.Arrow'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor</summary>
+        <param name="arrow_type">A valid ArrowType.</param>
+        <param name="shadow_type">A valid ShadowType.</param>
+        <returns>A new Arrow</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -121,9 +137,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Arrow'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor</summary>
+        <returns>A new Arrow</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -133,9 +149,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the type of this object, as registered with the GLib object system.</summary>
+        <returns>A number that uniquely identifies this type in the GLib object system</returns>
+        <remarks><para>Mostly for internal use.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShadowType">
@@ -148,10 +164,17 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Used to change the appearance of an outline typically provided by a Frame.</summary>
+        <param name="value">A valid Shadow type.</param>
+        <returns>Returns a new ShadowType.</returns>
+        <remarks>
+          <para>
+            Changes the appearance of an outline typically provided by a <see cref="T:Gtk.Frame"/>.
+        </para>
+        <para>
+          The shadow types are: None, In, Out, EtchedIn and EtchedOut.
+        </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ArrowType">
@@ -164,10 +187,17 @@
         <Parameter Name="value" Type="Gtk.ArrowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ArrowType'</param>
-        <returns>To be added: an object of type 'Gtk.ArrowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Used to change the direction of an Arrow.</summary>
+        <param name="value">A valid ArrowType.</param>
+        <returns>A new Arrow.</returns>
+        <remarks>
+          <para>
+            Changes the direction of an Arrow.
+          </para>
+          <para>
+            The cardinal directions are: Up, Down, Left and Right.
+          </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
