@@ -183,7 +183,7 @@ public class Fifteen
 
 		for (int i = 0; i < SCRAMBLE_MOVES; i++) {
 		retry:
-			int dir = rand.Next ();
+			int dir = rand.Next (4);
 			int x = 0, y = 0;
 
 			if ((dir == 0) && (position > 3)) // up
@@ -194,8 +194,9 @@ public class Fifteen
 				x = -1;
 			else if ((dir == 3) && ((position % 4) != 3)) // right
 				x = 1;
-			else
+			else {
 				goto retry;
+			}
 
 			int old_position = position + y * 4 + x;
 			board [position] = board [old_position];
