@@ -52,3 +52,35 @@
 		}
 	}
 
+	public void MoveResize (Gdk.Rectangle rect) {
+		gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
+	}
+
+	public void ClearArea (Gdk.Rectangle rect, bool expose) {
+		if (expose)
+			gdk_window_clear_area_e (Handle, rect.X, rect.Y, rect.Width, rect.Height);
+		else
+			gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
+	}
+
+#if MANLY_ENOUGH_TO_INCLUDE
+	public Cairo.Graphics CairoGraphics (out int offset_x, out int offset_y)
+	{
+		IntPtr real_drawable;
+		Cairo.Graphics o = new Cairo.Graphics ();
+
+		gdk_window_get_internal_paint_info (Handle, out real_drawable, out offset_x, out offset_y);
+		IntPtr x11 = gdk_x11_drawable_get_xid (real_drawable);
+		IntPtr display = gdk_x11_drawable_get_xdisplay (real_drawable);
+		o.SetTargetDrawable (display, x11);
+
+		return o;
+	}
+
+
+	public override Cairo.Graphics CairoGraphics ()
+	{
+		int x, y;
+		return CairoGraphics (out x, out y);
+	}
+#endif

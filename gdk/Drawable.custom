@@ -26,3 +26,20 @@ public void DrawLines(Gdk.GC gc, Gdk.Point[] points)
 	gdk_draw_lines(Handle, gc.Handle, points, points.Length);
 }
 
+[DllImport("libgdk-win32-2.0-0.dll")]
+internal static extern IntPtr gdk_x11_drawable_get_xdisplay (IntPtr raw);
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+internal static extern IntPtr gdk_x11_drawable_get_xid (IntPtr raw);
+
+#if MANLY_ENOUGH_TO_INCLUDE
+	public virtual Cairo.Graphics CairoGraphics ()
+	{
+		Cairo.Graphics o = new Cairo.Graphics ();
+
+		IntPtr display = gdk_x11_drawable_get_xdisplay (Handle);
+		o.SetTargetDrawable (display, gdk_x11_drawable_get_xid (Handle));
+
+		return o;
+	}
+#endif
