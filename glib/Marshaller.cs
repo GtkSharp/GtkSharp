@@ -42,6 +42,9 @@ namespace GLib {
 
 		public static string Utf8PtrToString (IntPtr ptr) 
 		{
+			if (ptr == IntPtr.Zero)
+				return null;
+
 			int len = (int) g_utf8_strlen (ptr, -1);
 			byte[] bytes = new byte [len];
 			Marshal.Copy (ptr, bytes, 0, len);
