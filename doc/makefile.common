@@ -1,0 +1,20 @@
+TARGETS = glib pango atk gdk gtk
+output_files = $(TARGETS:=-sharp-docs.html)
+input_files = $(TARGETS:=-sharp-docs.xml)
+stage1_files = $(TARGETS:=-sharp-docs-stage1.xml)
+stage2_files = $(TARGETS:=-sharp-docs-stage2.xml)
+
+all: $(output_files)
+
+stage1: $(stage1_files)
+
+clean: 
+	rm -f $(output_files) $(stage1_files) $(stage2_files) introspect.exe
+
+$(stage1_files): %-docs-stage1.xml: %-docs.xml netdoc_pp.pl $(input_files) 
+	./netdoc_pp.pl $< > $@
+
+$(output_files): %.html: %-stage2.xml netdoc.xsl
+	xsltproc netdoc.xsl $< > $@
+
+

@@ -1,0 +1,10 @@
+include makefile.common
+
+ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
+CSC=$(ROOT)/microsoft.net/framework/v1.0.3705/csc.exe
+
+$(stage2_files): %stage2.xml: %stage1.xml introspect.exe
+	./introspect $< $@
+
+introspect.exe: introspect.cs
+	$(CSC) /out:introspect.exe introspect.cs

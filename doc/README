@@ -1,0 +1,15 @@
+This is the makeshift doc generator until NDoc works.
+Stylistic matters are of very little concern, but the docs should
+still be XHTML conformant.
+
+The build system is multi-stage, it effectively works like this:
+* Original docs (built by mcs for now): glib-sharp-docs.xml, ...
+* netdoc_pp.pl preprocesses these into a cleaner format:
+   glib-sharp-docs-stage1.xml, ...
+* introspect.exe adds type information from the assembly at hand:
+   glib-sharp-docs-stage2.xml, ...
+* netdoc.xsl (via xsltproc) translates this xml file into XHTML:
+   glib-sharp-docs.html
+
+Plans for the future are listed in TODO.
+
