@@ -132,9 +132,9 @@ namespace GLib {
 			//g_value_set_boxed (_val, val.Handle);
 		}
 
-		public Value (GLib.Opaque val)
+		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
-			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoxed);
+			_val = gtksharp_value_create_from_property (obj, prop_name);
 			g_value_set_boxed (_val, val.Handle);
 		}
 

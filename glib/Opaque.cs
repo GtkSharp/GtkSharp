@@ -130,9 +130,5 @@ namespace GLib {
 		{
 			return Handle.GetHashCode ();
 		}
-
-		public static explicit operator System.IntPtr (Opaque opaque) {
-			return opaque.Handle;
-		}
 	}
 }
