@@ -9,7 +9,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>Filesystem interface layer for Unix-style systems.</summary>
     <remarks></remarks>
   </Docs>
   <Base>
@@ -49,9 +49,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:GLib.SList" /></returns>
-        <remarks></remarks>
+        <summary>Queries the list of bookmarks in the file system.</summary>
+        <returns>a <see cref="T:GLib.SList" />, a list of 
+	  <see cref="T:Gtk.FilePath"/> objects, or 
+	  <see langword="null"/> if there are no configured bookmarks.</returns>
+        <remarks>
+	  See also <see cref="M:Gtk.FileSystem.RemoveBookmark"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveBookmark">
@@ -64,10 +68,18 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Removes a bookmark folder from the user's bookmarks list.  
+	</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks></remarks>
+        <remarks>
+	  If the operation succeeds, the 
+	  <see cref="E:Gtk.FileSystem.BookmarksChanged"/> 
+	  signal will be emitted.  If you try to remove
+	  a <paramref name="path"/> which does not exist in the bookmarks 
+	  list, the operation will fail and an exception will be thrown.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetParent">
@@ -81,11 +93,16 @@
         <Parameter Name="parent" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Gets the name of the parent folder of a path. 
+	</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <param name="parent">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks></remarks>
+        <remarks>
+	  If the path has no parent, as when you request the parent of a file system root, 
+	  then <paramref name="parent"/> will be set to <see langword="null"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="MakePath">
@@ -99,7 +116,10 @@
         <Parameter Name="display_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Makes a new path called <paramref name="display_name"/>
+	  starting from path <paramref name="base_path"/>.
+	</summary>
         <param name="base_path">a <see cref="T:Gtk.FilePath" /></param>
         <param name="display_name">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.FilePath" /></returns>
@@ -117,7 +137,7 @@
         <Parameter Name="types" Type="Gtk.FileInfoType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets an object to represent the folder at path <paramref name="path"/>.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <param name="types">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gtk.FileFolder" /></returns>
@@ -134,9 +154,10 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts <paramref name="path"/> to a filename string.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
+        <returns>a <see cref="T:System.String" />, or <see langword="null"/>
+	if the path is not local.</returns>
         <remarks></remarks>
       </Docs>
     </Member>
@@ -150,7 +171,7 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts a URI to a <see cref="T:Gtk.FilePath" /> object.</summary>
         <param name="uri">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.FilePath" /></returns>
         <remarks></remarks>
@@ -166,7 +187,7 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts <paramref name="path"/> to a URI.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks></remarks>
@@ -182,7 +203,10 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Determines what volume of the filesystem 
+	  <paramref name="path"/> is located on.
+	</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:Gtk.FileSystemVolume" /></returns>
         <remarks></remarks>
@@ -198,7 +222,7 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Converts <paramref name="filename"/> into a <see cref="T:Gtk.FilePath" />.</summary>
         <param name="filename">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.FilePath" /></returns>
         <remarks></remarks>
@@ -216,7 +240,7 @@
         <Parameter Name="pixel_size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns an icon to represent this filesystem.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <param name="pixel_size">a <see cref="T:System.Int32" /></param>
@@ -235,11 +259,28 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds a path for a folder to the user's bookmarks list.  
+	</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
-        <param name="position">a <see cref="T:System.Int32" /></param>
+        <param name="position">a <see cref="T:System.Int32" />, index in 
+	  the bookmarks list at which the <paramref name="path"/> should 
+	  be inserted; use 0 for the beginning, and -1 or the number of 
+	  bookmarks itself for the end of the list.</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks></remarks>
+        <remarks>
+	  <para>If the operation
+	    succeeds, the <see cref="E:Gtk.FileSystem.BookmarksChanged"/>
+	    signal will be emitted.  Bookmark paths are
+	    unique; if you try to insert a <paramref name="path"/> that 
+	    already exists, the operation will fail and an exception will 
+	    be thrown.</para>
+	  <para>To reorder the list of bookmarks, use
+	    <see cref="M:Gtk.FileSystem.RemoveBookmark"/> to
+	    remove the path in question, and call 
+	    <see cref="M:Gtk.FileSystem.InsertBookmark"/> with
+	    the new position for the path.</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PathIsLocal">
@@ -252,7 +293,9 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Checks to see whether a path is local; that is,
+	whether <see cref="M:Gtk.FileSystem.PathToFilename"/> would
+	return non-<see langword="null"/>.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks></remarks>
@@ -266,7 +309,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets a list of all the <see cref="T:Gtk.FileSystemVolume"/>s
+	on the system.</summary>
         <returns>a <see cref="T:GLib.SList" /></returns>
         <remarks></remarks>
       </Docs>
@@ -284,13 +328,37 @@
         <Parameter Name="file_part" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="base_path">a <see cref="T:Gtk.FilePath" /></param>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="folder">a <see cref="T:Gtk.FilePath" /></param>
-        <param name="file_part">a <see cref="T:System.String" /></param>
+        <summary>
+	  Given a string entered by a user, parse it (possibly using
+	  heuristics) into a folder path and a UTF-8 encoded
+	  filename part suitable for passing to 
+	  <see cref="M:Gtk.FileSystem.MakePath"/>.
+	</summary>
+        <param name="base_path">a <see cref="T:Gtk.FilePath" />, reference folder with respect to which relative paths should be interpreted.</param>
+        <param name="str">a <see cref="T:System.String" />, the string to parse</param>
+        <param name="folder">a <see cref="T:Gtk.FilePath" />, a location to store folder portion of result, or <see langword="null"/></param>
+        <param name="file_part">a <see cref="T:System.String" />, location to store file portion of result, or <see langword="null"/></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks></remarks>
+        <remarks>
+	  <para>
+	    Note that the returned filename point may point to a subfolder
+	    of the returned folder. Adding a trailing path separator is needed
+	    to enforce the interpretation as a folder name.
+	  </para>
+	  <para>
+	    If parsing fails because the syntax of <paramref name="str"/> is not understood,
+	    an exception <see cref="Gtk.FileSystemError.BadFilename"/> will
+	    be thrown and <see langword="false"/> returned.
+	  </para>
+	  <para>
+	    If parsing fails because a path was encountered that doesn't
+	    exist on the filesystem, then an exception
+	    <see cref="Gtk.FileSystemError.Nonexistent"/> will be thrown
+	    and <see langword="false"/> returned. 
+	    (This only applies to parsing relative paths,
+	    not to interpretation of <paramref name="file_part"/>. No check is made as
+	    to whether <paramref name="file_part"/> exists.)
+	  </para>	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateFolder">
@@ -303,7 +371,7 @@
         <Parameter Name="path" Type="Gtk.FilePath" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Makes a new folder at <paramref name="path"/>.</summary>
         <param name="path">a <see cref="T:Gtk.FilePath" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks></remarks>
@@ -367,7 +435,7 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Public constructor.</summary>
         <returns>a <see cref="T:Gtk.FileSystemUnix" /></returns>
         <remarks></remarks>
       </Docs>
@@ -393,7 +461,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Emitted when a related <see cref="M:Gtk.FileSystemVolume"/>
+	is mounted.</summary>
         <remarks></remarks>
       </Docs>
     </Member>
@@ -405,7 +474,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired whenever the bookmarks to particular locations change.</summary>
         <remarks></remarks>
       </Docs>
     </Member>
