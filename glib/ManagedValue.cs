@@ -56,27 +56,23 @@ namespace GLib {
 		
 		static IntPtr Copy (IntPtr ptr)
 		{
-			Console.WriteLine ("Copying ManagedGValue: " + ptr);
 			GCHandle gch = (GCHandle) ptr;
 			return (IntPtr) GCHandle.Alloc (gch.Target);
 		}
 
 		static void Free (IntPtr ptr)
 		{
-			Console.WriteLine ("Freeing ManagedGValue: " + ptr);
 			GCHandle gch = (GCHandle) ptr;
 			gch.Free ();
 		}
 
 		public static IntPtr WrapObject (object obj)
 		{
-			Console.WriteLine ("Wrapping Object in ManagedGValue: " + obj);
 			return (IntPtr) GCHandle.Alloc (obj);
 		}
 
 		public static object ObjectForWrapper (IntPtr ptr)
 		{
-			Console.WriteLine ("Getting object of ManagedGValue: " + ptr);
 			return ((GCHandle)ptr).Target;
 		}
 	}
