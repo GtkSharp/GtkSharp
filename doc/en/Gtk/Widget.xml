@@ -171,28 +171,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Intersect">
-      <MemberSignature Language="C#" Value="public bool Intersect (Gdk.Rectangle area, Gdk.Rectangle intersection);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="area" Type="Gdk.Rectangle" />
-        <Parameter Name="intersection" Type="Gdk.Rectangle" />
-      </Parameters>
-      <Docs>
-        <summary>Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />.</summary>
-        <param name="area"> A rectangle.</param>
-        <param name="intersection"> A rectangle to store intersection of <paramref name="widget" /> and <paramref name="area" />.</param>
-        <returns><see langword="true" /> if there was an intersection.</returns>
-        <remarks>
-          <para>
-          Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />, storing the intersection in <paramref name="intersection" />, and returns <see langword="true" /> if there was an intersection. <paramref name="intersection" /> may be <see langword="null" /> if you're only interested in whether there was an intersection.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ChildFocus">
       <MemberSignature Language="C#" Value="public bool ChildFocus (Gtk.DirectionType direction);" />
       <MemberType>Method</MemberType>
@@ -205,7 +183,8 @@
       <Docs>
         <summary>Move focus to particular <paramref name="widget" />.</summary>
         <param name="direction">Direction of focus movement.</param>
-        <returns><see langword="true" /> if focus ended up inside widget.</returns>
+        <returns>
+          <see langword="true" /> if focus ended up inside widget.</returns>
         <remarks>
           <para>
           This function is used by custom widget implementations; if you're writing an app, you'd use <see cref="M:Gtk.Widget.GrabFocus" /> to move the focus to a particular widget, and <see cref="M:Gtk.Container.SetFocusChain" /> to change the focus tab order. So you may want to investigate those functions instead.
@@ -333,27 +312,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="StyleGetProperty">
-      <MemberSignature Language="C#" Value="public void StyleGetProperty (string property_name, GLib.Value value);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="property_name" Type="System.String" />
-        <Parameter Name="value" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the <paramref name="value" /> of a style property of <paramref name="widget" />.</summary>
-        <param name="property_name">The name of a style property.</param>
-        <param name="value">Location to return the property value.</param>
-        <remarks>
-          <para>
-          Gets the <paramref name="value" /> of a style property of <paramref name="widget" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="StyleGetValist">
       <MemberSignature Language="C#" Value="public void StyleGetValist (string first_property_name, IntPtr var_args);" />
       <MemberType>Method</MemberType>
@@ -465,27 +423,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetPointer">
-      <MemberSignature Language="C#" Value="public void GetPointer (int x, int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" />
-        <Parameter Name="y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the location of the mouse pointer in <paramref name="widget" /> coordinates.</summary>
-        <param name="x">Return location for the X coordinate, or <see langword="null" />.</param>
-        <param name="y">Return location for the Y coordinate, or <see langword="null" />.</param>
-        <remarks>
-          <para>
-          Widget coordinates are a bit odd; for historical reasons, they are defined as <paramref name="widget" />-&gt;window coordinates for widgets that are not <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets, and are relative to <paramref name="widget" />-&gt;allocation.x, <paramref name="widget" />-&gt;allocation.y for widgets that are <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GrabFocus">
       <MemberSignature Language="C#" Value="public void GrabFocus ();" />
       <MemberType>Method</MemberType>
@@ -514,23 +451,6 @@
         <remarks>
           <para>
           Equivalent to calling <see cref="M:Gtk.Widget.QueueDrawArea" /> for the entire area of a <paramref name="widget" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsFocus">
-      <MemberSignature Language="C#" Value="public bool IsFocus ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Determines if the <paramref name="widget" /> is the focus widget within its toplevel.</summary>
-        <returns><see langword="true" /> if the widget is the focus widget.</returns>
-        <remarks>
-          <para>
-          This does not mean that the <see cref="P:Gtk.Widget.HasFocus" /> flag is necessarily set; <see cref="P:Gtk.Widget.HasFocus" /> will only be set if the toplevel widget additionally has the global input focus.
          </para>
         </remarks>
       </Docs>
@@ -684,34 +604,6 @@
          </para>
           <para>
           This function is typically used when implementing a <see cref="T:Gtk.Container" /> subclass. Also remember that the size request is not necessarily the size a widget will actually be allocated.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TranslateCoordinates">
-      <MemberSignature Language="C#" Value="public bool TranslateCoordinates (Gtk.Widget dest_widget, int src_x, int src_y, int dest_x, int dest_y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="dest_widget" Type="Gtk.Widget" />
-        <Parameter Name="src_x" Type="System.Int32" />
-        <Parameter Name="src_y" Type="System.Int32" />
-        <Parameter Name="dest_x" Type="System.Int32" />
-        <Parameter Name="dest_y" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Translate coordinates relative to <paramref name="widget" />'s allocation to coordinates relative to <paramref name="dest_widget" />'s allocations.</summary>
-        <param name="dest_widget">A <see cref="T:Gtk.Widget" />.</param>
-        <param name="src_x">X position relative to source widget.</param>
-        <param name="src_y">Y position relative to source widget.</param>
-        <param name="dest_x">Location to store X position relative to <paramref name="dest_widget" />.</param>
-        <param name="dest_y">Location to store Y position relative to <paramref name="dest_widget" />.</param>
-        <returns>Returns <see langword="false" /> if either widget was not realized, or there was no common ancestor. In this case, nothing is stored in <paramref name="*dest_x" /> and <paramref name="*dest_y" />. Otherwise <see langword="true" />.</returns>
-        <remarks>
-          <para>
-          In order to perform this operation, both widgets must be realized, and must share a common toplevel. 
          </para>
         </remarks>
       </Docs>
@@ -950,32 +842,6 @@
         <remarks>
           <para>
           Removes an accelerator from <paramref name="widget" />, previously installed with <see cref="M:Gtk.Widget.AddAccelerator" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Path">
-      <MemberSignature Language="C#" Value="public void Path (uint path_length, string path, string path_reversed);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path_length" Type="System.UInt32" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="path_reversed" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the full path to <paramref name="widget" />.</summary>
-        <param name="path_length">Location to store length of the path, or <see langword="null" />.</param>
-        <param name="path">Location to store allocated path string, or <see langword="null" />.</param>
-        <param name="path_reversed">Location to store allocated reverse path string, or <see langword="null" />.</param>
-        <remarks>
-          <para>
-          The path is simply the name of a <paramref name="widget" /> and all its parents in the container hierarchy, separated by periods. The name of a <paramref name="widget" /> comes from <see cref="P:Gtk.Widget.Name" />. Paths are used to apply styles to a <paramref name="widget" /> in gtkrc configuration files. Widget names are the type of the <paramref name="widget" /> by default (e.g. "<see cref="T:Gtk.Button" />") or can be set to an application-specific value with <see cref="P:Gtk.Widget.Name" />.
-         </para>
-          <para>
-          By setting the name of a <paramref name="widget" />, you allow users or theme authors to apply styles to that specific <paramref name="widget" /> in their gtkrc file. <paramref name="path_reversed_p" /> fills in the path in reverse order, i.e. starting with <paramref name="widget" />'s name instead of starting with the name of <paramref name="widget" />'s outermost ancestor.
          </para>
         </remarks>
       </Docs>
@@ -1232,29 +1098,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ClassPath">
-      <MemberSignature Language="C#" Value="public void ClassPath (uint path_length, string path, string path_reversed);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path_length" Type="System.UInt32" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="path_reversed" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Same as <see cref="M:Gtk.Widget.Path" />, but always uses the name of a <paramref name="widget" />'s type, never uses a custom name set with <see cref="P:Gtk.Widget.Name" />.</summary>
-        <param name="path_length">Location to store the length of the class path, or <see langword="null" />.</param>
-        <param name="path">Location to store the class path as an allocated string, or <see langword="null" />.</param>
-        <param name="path_reversed">Location to store the reverse class path as an allocated string, or <see langword="null" />.</param>
-        <remarks>
-          <para>
-          Same as <see cref="M:Gtk.Widget.Path" />, but always uses the name of a <paramref name="widget" />'s type, never uses a custom name set with <see cref="P:Gtk.Widget.Name" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Destroy">
       <MemberSignature Language="C#" Value="public void Destroy ();" />
       <MemberType>Method</MemberType>
@@ -1358,7 +1201,7 @@
         <summary>Obtains the visual of the default colormap.</summary>
         <returns>Returns a visual of the default colormap.</returns>
         <remarks>
-         <para>
+          <para>
           Not really useful; used to be useful before <see cref="M:Gdk.Colormap.GetVisual" /> existed.
          </para>
         </remarks>
@@ -1374,7 +1217,7 @@
         <summary>Obtains the default style used by all widgets initially.</summary>
         <returns>Returns the default style. This <see cref="T:Gtk.Style" /> object is owned by GTK+ and should not be modified or freed.</returns>
         <remarks>
-         <para>
+          <para>
           Returns the default style used by all widgets initially.
          </para>
         </remarks>
@@ -1394,8 +1237,8 @@
         <param name="value">A colormap (see <see cref="T:Gdk.Colormap" />).</param>
         <returns>A <see cref="T:Gdk.Colormap" />.</returns>
         <remarks>
-         <para>
-          <see cref="M:Gtk.Widget.PushColormap" /> is a better function to use if you only want to affect a few widgets, rather than all widgets.
+          <para>
+            <see cref="M:Gtk.Widget.PushColormap" /> is a better function to use if you only want to affect a few widgets, rather than all widgets.
          </para>
         </remarks>
       </Docs>
@@ -1414,7 +1257,7 @@
         <param name="value">A <see cref="P:Gtk.Widget.TextDirection" />.</param>
         <returns>A <see cref="P:Gtk.Widget.TextDirection" />.</returns>
         <remarks>
-         <para>
+          <para>
           Where the direction has not been explicitly set by <see cref="P:Gtk.Widget.Direction" />.
          </para>
         </remarks>
@@ -1482,7 +1325,7 @@
         <param name="value">A <see cref="T:Gtk.TextDirection" />.</param>
         <returns>The reading direction for the widget.</returns>
         <remarks>
-         <para>
+          <para>
           This direction controls the primary direction for widgets containing text, and also the direction in which the children of a container are packed. The ability to set the direction is present in order so that correct localization into languages with right-to-left reading directions can be done. Generally, applications will let the default reading direction present, except for containers where the containers are arranged in an order that is explicitely visual rather than logical (such as buttons for text justification). If the direction is set none, then the value set by <see cref="P:Gtk.Widget.DefaultDirection" /> will be used.
          </para>
         </remarks>
@@ -1502,7 +1345,7 @@
         <param name="value">A colormap (see <see cref="T:Gdk.Colormap" />).</param>
         <returns>A <see cref="T:Gdk.Colormap" />.</returns>
         <remarks>
-         <para>
+          <para>
           Widget must not have been previously realized.
          </para>
         </remarks>
@@ -1522,10 +1365,10 @@
         <param name="value">If <see langword="true" />, <paramref name="widget" /> should be mapped along with its parent.</param>
         <returns>Returns <see langword="true" /> if the widget is mapped with the parent.</returns>
         <remarks>
-         <para>
+          <para>
           The child visibility can be set for widget before it is added to a container with <see cref="P:Gtk.Widget.Parent" />, to avoid mapping children unnecessary before immediately unmapping them. However it will be reset to its default state of <see langword="true" /> when the widget is removed from a container. 
          </para>
-         <para>
+          <para>
           Note that changing the child visibility of a widget does not queue a resize on the widget. Most of the time, the size of a widget is computed from all visible children, whether or not they are mapped. If this is not the case, the container can queue a resize itself. This function is only useful for container implementations and never should be called by an application.
          </para>
         </remarks>
@@ -1545,7 +1388,7 @@
         <param name="value">The name to set.</param>
         <returns>The composite name of <paramref name="widget" />, or <see langword="null" /> if <paramref name="widget" /> is not a composite child. The string should not be freed when it is no longer needed.</returns>
         <remarks>
-         <para>
+          <para>
           The widget must be a composite child of its parent; see <see cref="M:Gtk.Widget.PushCompositeChild" />.
          </para>
         </remarks>
@@ -1561,7 +1404,7 @@
         <summary>Obtains the topmost widget in the container hierarchy <paramref name="widget" /> is a part of.</summary>
         <returns>The topmost ancestor of <paramref name="widget" />, or <paramref name="widget" /> itself if there's no ancestor.</returns>
         <remarks>
-         <para>
+          <para>
           Note the difference in behavior against <see cref="P:Gtk.Widget.GetAncestor" />, would return <see langwod="null" /> if <paramref name="widget" /> wasn't inside a toplevel window, and if the window was inside a GtkWindow-derived widget which was in turn inside the toplevel <see cref="T:Gtk.Window" />. While the second case may seem unlikely, it actually happens when a <see cref="T:Gtk.Plug" /> is embedded inside a <see cref="T:Gtk.Socket" /> within the same application. To reliably find the toplevel <see cref="T:Gtk.Window" />, use <see cref="P:Gtk.Widget.TopLevel" /> and check if the <see cref="F:Gtk.WidgetFlags.TopLevel" /> flag is set on the result.
          </para>
         </remarks>
@@ -1578,7 +1421,8 @@
       </Parameters>
       <Docs>
         <summary>Sets whether a <paramref name="widget" /> size allocation changes, the entire <paramref name="widget" /> is queued for drawing.</summary>
-        <param name="value"><see langword="true" /> the entire widget will be redrawn when it is allocated to a new size. <see langword="false" /> only the new portion of the widget will be redrawn.</param>
+        <param name="value">
+          <see langword="true" /> the entire widget will be redrawn when it is allocated to a new size. <see langword="false" /> only the new portion of the widget will be redrawn.</param>
         <returns>Returns <see langword="true" /> because it is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
         <remarks>
           <para>
@@ -1601,7 +1445,8 @@
       </Parameters>
       <Docs>
         <summary>Use this function to turn off the double buffering.</summary>
-        <param name="value"><see langword="true" /> is on by Default, <see langword="false" /> if you want to turn off double buffering no use call for true because it is default.</param>
+        <param name="value">
+          <see langword="true" /> is on by Default, <see langword="false" /> if you want to turn off double buffering no use call for true because it is default.</param>
         <returns>Returns <see langword="true" /> because double buffering is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
         <remarks>
           <para>
@@ -1623,7 +1468,7 @@
         <summary>Obtains the settings object holding the settings (global property settings, RC file information, etc) used for this <paramref name="widget" />.</summary>
         <returns>The relevant <see cref="T:Gtk.Settings" /> object.</returns>
         <remarks>
-         <para>
+          <para>
           Note that this function can only be called when the <see cref="T:Gtk.Widget" /> is attached to a toplevel, since the settings object is specific to a particular <see cref="T:Gdk.Screen" />.
          </para>
         </remarks>
@@ -1643,7 +1488,7 @@
         <param name="value">The new parent window.</param>
         <returns>The parent window of <paramref name="widget" />.</returns>
         <remarks>
-         <para>
+          <para>
           Sets or obtains <paramref name="widget" />'s parent window.
          </para>
         </remarks>
@@ -1659,10 +1504,10 @@
         <summary>Obtains a <see cref="T:Pango.Context" /> with the appropriate colormap, font description and base direction for <paramref name="widget" />.</summary>
         <returns></returns>
         <remarks>
-         <para>
+          <para>
           Unlike the context returned by <see cref="M:Gtk.Widget.CreatePangoContext" />, this context is owned by the <paramref name="widget" /> (it can be used until the screen for the widget changes or the widget is removed from its toplevel), and will be updated to match any changes to the <paramref name="widget" />'s attributes. 
          </para>
-         <para>
+          <para>
           If you create and keep a <see cref="T:Pango.Layout" /> using this context, you must deal with changes to the context by calling <see cref="T:Pango.Layout.ContextChanged" /> on the layout in response to the <see cref="F:Gtk.Widget.StyleSet" /> and <see cref="F:Gtk.Widget.DirectionChanged" /> signals for the <paramref name="widget" />.
          </para>
         </remarks>
@@ -1682,7 +1527,7 @@
         <param name="value">New state for <paramref name="widget" />.</param>
         <returns>The <see cref="T:Gtk.StateType" /> of the <paramref name="widget" />.</returns>
         <remarks>
-         <para>
+          <para>
           Usually you should set the state using wrapper functions such as <see cref="P:Gtk.Widget.Sensitive" />. This function is for use in widget implementations.
          </para>
         </remarks>
@@ -1698,7 +1543,7 @@
         <summary>Obtains the visual that will be used to render <paramref name="widget" />.</summary>
         <returns>The visual for <paramref name="widget" />.</returns>
         <remarks>
-         <para>
+          <para>
           Obtains the visual that will be used to render <paramref name="widget" />.
          </para>
         </remarks>
@@ -1714,10 +1559,10 @@
         <summary>Obtains the current modifier style for the widget.(As set by <see cref="M:Gtk.Widget.ModifyStyle" />)</summary>
         <returns>The modifier style for the widget. This rc style is owned by the widget.</returns>
         <remarks>
-         <para>
+          <para>
           If no style has previously set, a new <see cref="T:Gtk.RcStyle" /> will be created with all values unset, and set as the modifier style for the widget. If you make changes to this rc style, you must call <see cref="M:Gtk.Widget.ModifyStyle" />, passing in the returned rc style, to make sure that your changes take effect.
          </para>
-         <para>
+          <para>
           Caution: passing the style back to <see cref="M:Gtk.Widget.ModifyStyle" /> will normally end up destroying it, because <see cref="M:Gtk.Widget.ModifyStyle" /> copies the passed-in style and sets the copy as the new modifier style, thus dropping any reference to the old modifier style. Add a reference to the modifier style if you want to keep it alive.
          </para>
         </remarks>
@@ -2545,22 +2390,6 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="RequestSize">
-      <MemberSignature Language="C#" Value="public Drawing.Size RequestSize { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Drawing.Size</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Drawing.Size" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Drawing.Size'</param>
-        <returns>To be added: an object of type 'Drawing.Size'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Widget (GLib.Type gtype);" />
       <MemberType>Constructor</MemberType>
@@ -2575,6 +2404,253 @@
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.Widget" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestSize">
+      <MemberSignature Language="C#" Value="public System.Drawing.Size RequestSize { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Size</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Drawing.Size" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="value">a <see cref="T:System.Drawing.Size" /></param>
+        <returns>a <see cref="T:System.Drawing.Size" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RootWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window RootWindow { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Display">
+      <MemberSignature Language="C#" Value="public Gdk.Display Display { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Display</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Display" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Screen">
+      <MemberSignature Language="C#" Value="public Gdk.Screen Screen { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Screen</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gdk.Screen" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsFocus">
+      <MemberSignature Language="C#" Value="public bool IsFocus { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <summary>Determines if the <paramref name="widget" /> is the focus widget within its toplevel.</summary>
+        <returns><see langword="true" /> if the widget is the focus widget.</returns>
+        <remarks>
+          <para>
+          This does not mean that the <see cref="P:Gtk.Widget.HasFocus" /> flag is necessarily set; <see cref="P:Gtk.Widget.HasFocus" /> will only be set if the toplevel widget additionally has the global input focus.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScreenChanged">
+      <MemberSignature Language="C#" Value="public event GtkSharp.ScreenChangedHandler ScreenChanged;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Intersect">
+      <MemberSignature Language="C#" Value="public bool Intersect (Gdk.Rectangle area, out Gdk.Rectangle intersection);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="area" Type="Gdk.Rectangle" />
+        <Parameter Name="intersection" Type="Gdk.Rectangle&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />.</summary>
+        <param name="area"> A rectangle.</param>
+        <param name="intersection"> A rectangle to store intersection of <paramref name="widget" /> and <paramref name="area" />.</param>
+        <returns><see langword="true" /> if there was an intersection.</returns>
+        <remarks>
+          <para>
+          Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />, storing the intersection in <paramref name="intersection" />, and returns <see langword="true" /> if there was an intersection. <paramref name="intersection" /> may be <see langword="null" /> if you're only interested in whether there was an intersection.
+         </para>
+        </remarks>
+      </Docs>
+   </Member>
+    <Member MemberName="StyleGetProperty">
+      <MemberSignature Language="C#" Value="public void StyleGetProperty (string property_name, out GLib.Value value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="property_name" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Gets the <paramref name="value" /> of a style property of <paramref name="widget" />.</summary>
+        <param name="property_name">The name of a style property.</param>
+        <param name="value">Location to return the property value.</param>
+        <remarks>
+          <para>
+          Gets the <paramref name="value" /> of a style property of <paramref name="widget" />.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetClipboard">
+      <MemberSignature Language="C#" Value="public Gtk.Clipboard GetClipboard (Gdk.Atom selection);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Clipboard</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="selection" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
+        <returns>a <see cref="T:Gtk.Clipboard" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPointer">
+      <MemberSignature Language="C#" Value="public void GetPointer (out int x, out int y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" />
+        <Parameter Name="y" Type="System.Int32&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Obtains the location of the mouse pointer in <paramref name="widget" /> coordinates.</summary>
+        <param name="x">Return location for the X coordinate, or <see langword="null" />.</param>
+        <param name="y">Return location for the Y coordinate, or <see langword="null" />.</param>
+        <remarks>
+          <para>
+          Widget coordinates are a bit odd; for historical reasons, they are defined as <paramref name="widget" />-&gt;window coordinates for widgets that are not <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets, and are relative to <paramref name="widget" />-&gt;allocation.x, <paramref name="widget" />-&gt;allocation.y for widgets that are <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TranslateCoordinates">
+      <MemberSignature Language="C#" Value="public bool TranslateCoordinates (Gtk.Widget dest_widget, int src_x, int src_y, out int dest_x, out int dest_y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dest_widget" Type="Gtk.Widget" />
+        <Parameter Name="src_x" Type="System.Int32" />
+        <Parameter Name="src_y" Type="System.Int32" />
+        <Parameter Name="dest_x" Type="System.Int32&amp;" />
+        <Parameter Name="dest_y" Type="System.Int32&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Translate coordinates relative to <paramref name="widget" />'s allocation to coordinates relative to <paramref name="dest_widget" />'s allocations.</summary>
+        <param name="dest_widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="src_x">X position relative to source widget.</param>
+        <param name="src_y">Y position relative to source widget.</param>
+        <param name="dest_x">Location to store X position relative to <paramref name="dest_widget" />.</param>
+        <param name="dest_y">Location to store Y position relative to <paramref name="dest_widget" />.</param>
+        <returns>Returns <see langword="false" /> if either widget was not realized, or there was no common ancestor. In this case, nothing is stored in <paramref name="*dest_x" /> and <paramref name="*dest_y" />. Otherwise <see langword="true" />.</returns>
+        <remarks>
+          <para>
+          In order to perform this operation, both widgets must be realized, and must share a common toplevel. 
+         </para>
+        </remarks>
+      </Docs>
+   </Member>
+    <Member MemberName="Path">
+      <MemberSignature Language="C#" Value="public void Path (out uint path_length, out string path, out string path_reversed);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path_length" Type="System.UInt32&amp;" />
+        <Parameter Name="path" Type="System.String&amp;" />
+        <Parameter Name="path_reversed" Type="System.String&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Obtains the full path to <paramref name="widget" />.</summary>
+        <param name="path_length">Location to store length of the path, or <see langword="null" />.</param>
+        <param name="path">Location to store allocated path string, or <see langword="null" />.</param>
+        <param name="path_reversed">Location to store allocated reverse path string, or <see langword="null" />.</param>
+        <remarks>
+          <para>
+          The path is simply the name of a <paramref name="widget" /> and all its parents in the container hierarchy, separated by periods. The name of a <paramref name="widget" /> comes from <see cref="P:Gtk.Widget.Name" />. Paths are used to apply styles to a <paramref name="widget" /> in gtkrc configuration files. Widget names are the type of the <paramref name="widget" /> by default (e.g. "<see cref="T:Gtk.Button" />") or can be set to an application-specific value with <see cref="P:Gtk.Widget.Name" />.
+         </para>
+          <para>
+          By setting the name of a <paramref name="widget" />, you allow users or theme authors to apply styles to that specific <paramref name="widget" /> in their gtkrc file. <paramref name="path_reversed_p" /> fills in the path in reverse order, i.e. starting with <paramref name="widget" />'s name instead of starting with the name of <paramref name="widget" />'s outermost ancestor.
+         </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasScreen">
+      <MemberSignature Language="C#" Value="public bool HasScreen ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassPath">
+      <MemberSignature Language="C#" Value="public void ClassPath (out uint path_length, out string path, out string path_reversed);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path_length" Type="System.UInt32&amp;" />
+        <Parameter Name="path" Type="System.String&amp;" />
+        <Parameter Name="path_reversed" Type="System.String&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="path_length">a <see cref="T:System.UInt32&amp;" /></param>
+        <param name="path">a <see cref="T:System.String&amp;" /></param>
+        <param name="path_reversed">a <see cref="T:System.String&amp;" /></param>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
