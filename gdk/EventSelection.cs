@@ -26,19 +26,19 @@ namespace Gdk {
 
 	public class EventSelection : Event {
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern uint gtksharp_gdk_event_selection_get_time (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_selection_get_selection (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_selection_get_target (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_selection_get_property (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern uint gtksharp_gdk_event_selection_get_requestor (IntPtr evt);
 
 		public EventSelection (IntPtr raw) : base (raw) {} 

@@ -19,7 +19,7 @@
 // Boston, MA 02111-1307, USA.
 
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_child_get_property (IntPtr container, IntPtr child, string property, ref GLib.Value value);
 
 public GLib.Value ChildGetProperty (Gtk.Widget child, string property_name) {
@@ -74,7 +74,7 @@ public Widget[] FocusChain {
 		
 }
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern IntPtr gtksharp_container_get_focus_child(IntPtr raw);
 
 [DllImport("libgtk-win32-2.0-0.dll")]
@@ -95,13 +95,13 @@ public Gtk.Widget FocusChild {
 	}
 }
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, IntPtr cb, IntPtr data);
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallDelegate cb);
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
 
 delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
@@ -156,10 +156,10 @@ protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
 	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern IntPtr gtksharp_container_base_child_type(IntPtr raw);
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_override_child_type (GLib.GType type, ChildTypeDelegate cb);
 
 delegate IntPtr ChildTypeDelegate (IntPtr raw);

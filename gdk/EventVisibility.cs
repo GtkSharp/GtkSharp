@@ -26,7 +26,7 @@ namespace Gdk {
 
 	public class EventVisibility : Event {
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern VisibilityState gtksharp_gdk_event_visibility_get_state (IntPtr evt);
 
 		public EventVisibility (IntPtr raw) : base (raw) {} 

@@ -26,16 +26,16 @@ namespace Gdk {
 
 	public class EventDND : Event {
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern uint gtksharp_gdk_event_dnd_get_time (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_dnd_get_context (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern short gtksharp_gdk_event_dnd_get_x_root (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern short gtksharp_gdk_event_dnd_get_y_root (IntPtr evt);
 
 		public EventDND (IntPtr raw) : base (raw) {} 

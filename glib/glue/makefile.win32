@@ -1,5 +1,5 @@
-GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0 libglade-2.0`
-GTK_LIBS=`pkg-config --libs gtk+-win32-2.0 libglade-2.0`
+GTK_CFLAGS=`pkg-config --cflags gobject-2.0`
+GTK_LIBS=`pkg-config --libs gobject-2.0`
 CC=gcc -mno-cygwin -mms-bitfields
 DLLWRAP=dllwrap -mno-cygwin -mms-bitfields --target i386-mingw32 --export-all-symbols
 
@@ -14,16 +14,16 @@ GLUE_OBJS = \
         valuearray.o            \
 	win32dll.o
 
-all: glibsharpglue-2.0.dll
+all: glibsharpglue-2.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-glibsharpglue-2.0.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libglibsharpglue-2.0.a --dllname=glibsharpglue-2.0.dll --driver-name=gcc --output-def=glibsharpglue-2.0.def $(GLUE_OBJS) $(GTK_LIBS)
+glibsharpglue-2.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libglibsharpglue-2.a --dllname=glibsharpglue-2.dll --driver-name=gcc --output-def=glibsharpglue-2.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f glibsharpglue-2.0.dll *.o libglibsharpglue-2.0.a
+	rm -f glibsharpglue-2.dll *.o libglibsharpglue-2.a

@@ -260,7 +260,7 @@ namespace Gtk {
 			return true;
 		}
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_set_tree_model_callbacks (IntPtr raw, ref TreeModelIfaceDelegates cbs);
 
 		private void BuildTreeModelIface ()
@@ -281,7 +281,7 @@ namespace Gtk {
 			gtksharp_node_store_set_tree_model_callbacks (Handle, ref tree_model_iface);
 		}
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern IntPtr gtksharp_node_store_new ();
 
 		public NodeStore (Type node_type) : base (IntPtr.Zero)
@@ -339,7 +339,7 @@ namespace Gtk {
 			}
 		}							
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_changed (IntPtr handle, IntPtr path, int node_idx);
 
 		private void changed_cb (object o, EventArgs args)
@@ -350,7 +350,7 @@ namespace Gtk {
 			gtksharp_node_store_emit_row_changed (Handle, get_path_cb (node.ID), node.ID);
 		}
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_inserted (IntPtr handle, IntPtr path, int node_idx);
 
 		private void child_added_cb (object o, ITreeNode child)
@@ -360,10 +360,10 @@ namespace Gtk {
 			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (child.ID), child.ID);
 		}
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_deleted (IntPtr handle, IntPtr path);
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_has_child_toggled (IntPtr handle, IntPtr path, int node_idx);
 
 		private void child_deleted_cb (object o, int idx)
@@ -439,7 +439,7 @@ namespace Gtk {
 			return GetNodeAtPath (path);
 		}
 
-		[DllImport("gtksharpglue-2.0")]
+		[DllImport("gtksharpglue-2")]
 		static extern IntPtr gtksharp_node_store_get_type ();
 		
 		public static new GLib.GType GType {

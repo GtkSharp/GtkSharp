@@ -137,7 +137,7 @@ namespace GLib {
 					
 		}
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
 		protected static GType RegisterGType (System.Type t)
@@ -185,7 +185,7 @@ namespace GLib {
 			Raw = g_object_new (gtype.Val, IntPtr.Zero);
 		}
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, string[] names, GLib.Value[] vals);
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
@@ -207,7 +207,7 @@ namespace GLib {
 			}
 		}	
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		private static extern IntPtr gtksharp_get_type_id (IntPtr obj);
 
 		public static GLib.GType GType {
@@ -216,7 +216,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
 		protected string TypeName {
@@ -305,7 +305,7 @@ namespace GLib {
 			g_object_set_property (Raw, name, ref val);
 		}
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern void gtksharp_override_virtual_method (IntPtr gtype, string name, Delegate cb);
 
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)
@@ -316,7 +316,7 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		protected static extern void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern bool gtksharp_is_object (IntPtr obj);
 
 		internal static bool IsObject (IntPtr obj)
@@ -324,7 +324,7 @@ namespace GLib {
 			return gtksharp_is_object (obj);
 		}
 
-		[DllImport("glibsharpglue-2.0")]
+		[DllImport("glibsharpglue-2")]
 		static extern int gtksharp_object_get_ref_count (IntPtr obj);
 
 		protected int RefCount {

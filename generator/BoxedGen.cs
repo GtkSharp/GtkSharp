@@ -39,10 +39,10 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			base.Generate (gen_info);
-			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue-2.0\")]");
+			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue-2\")]");
 			sw.WriteLine ("\t\tstatic extern IntPtr glibsharp_value_get_boxed (ref GLib.Value val);");
 			sw.WriteLine ();
-			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue-2.0\")]");
+			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue-2\")]");
 			sw.WriteLine ("\t\tstatic extern void glibsharp_value_set_boxed (ref GLib.Value val, ref " + QualifiedName + " boxed);");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic static explicit operator GLib.Value (" + QualifiedName + " boxed)");

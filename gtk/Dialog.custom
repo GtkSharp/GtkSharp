@@ -48,13 +48,13 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base(In
 	Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
 }
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern IntPtr gtksharp_dialog_get_vbox (IntPtr i);
 public Gtk.VBox VBox {
 	get { return GLib.Object.GetObject (gtksharp_dialog_get_vbox (this.Handle), false) as VBox; }
 }
 
-[DllImport("gtksharpglue-2.0")]
+[DllImport("gtksharpglue-2")]
 static extern IntPtr gtksharp_dialog_get_action_area (IntPtr i);
 public Gtk.HButtonBox ActionArea {
 	get { return GLib.Object.GetObject (gtksharp_dialog_get_action_area (this.Handle), false) as HButtonBox; }

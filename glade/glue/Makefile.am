@@ -1,22 +1,22 @@
 lib_LTLIBRARIES = $(TARGET)
 
 if ENABLE_GLADE
-TARGET = libgladesharpglue-2.0.la
+TARGET = libgladesharpglue-2.la
 else
 TARGET = 
 endif
 
-libgladesharpglue_2_0_la_LDFLAGS = -module -avoid-version -no-undefined
+libgladesharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libgladesharpglue_2_0_la_SOURCES = 	\
+libgladesharpglue_2_la_SOURCES = 	\
 	gladexml.c
 
-libgladesharpglue_2_0_la_LIBADD = $(GLADE_LIBS)
+libgladesharpglue_2_la_LIBADD = $(GLADE_LIBS)
 
 INCLUDES = $(GLADE_CFLAGS) -I$(top_srcdir)
 
-libgladesharpglue.dll: $(libgladesharpglue_2_0_la_OBJECTS) libgladesharpglue.rc libgladesharpglue.def
-	./build-dll libgladesharpglue-2.0 $(VERSION)
+libgladesharpglue.dll: $(libgladesharpglue_2_la_OBJECTS) libgladesharpglue.rc libgladesharpglue.def
+	./build-dll libgladesharpglue-2 $(VERSION)
 
 CLEANFILES = lib*.a lib*.dll
 

@@ -30,6 +30,7 @@ namespace GtkSamples {
 
 			TreeView tv = new TreeView (store);
 			tv.HeadersVisible = true;
+			tv.EnableSearch = false;
 
 			tv.AppendColumn ("Name", new CellRendererText (), "text", 0);
 			tv.AppendColumn ("Type", new CellRendererText (), "text", 1);

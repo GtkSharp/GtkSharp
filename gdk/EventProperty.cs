@@ -26,13 +26,13 @@ namespace Gdk {
 
 	public class EventProperty : Event {
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern uint gtksharp_gdk_event_property_get_time (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_property_get_atom (IntPtr evt);
 
-		[DllImport("gdksharpglue-2.0")]
+		[DllImport("gdksharpglue-2")]
 		static extern PropertyState gtksharp_gdk_event_property_get_state (IntPtr evt);
 
 		public EventProperty (IntPtr raw) : base (raw) {} 

@@ -22,16 +22,16 @@ GLUE_OBJS = \
         widget.o                \
 	win32dll.o
 
-all: gtksharpglue-2.0.dll
+all: gtksharpglue-2.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-gtksharpglue-2.0.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libgtksharpglue-2.0.a --dllname=gtksharpglue-2.0.dll --driver-name=gcc --output-def=gtksharpglue-2.0.def $(GLUE_OBJS) $(GTK_LIBS)
+gtksharpglue-2.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libgtksharpglue-2.a --dllname=gtksharpglue-2.dll --driver-name=gcc --output-def=gtksharpglue-2.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f gtksharpglue-2.0.dll *.o libgtksharpglue-2.0.a
+	rm -f gtksharpglue-2.dll *.o libgtksharpglue-2.a
