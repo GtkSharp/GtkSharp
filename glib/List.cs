@@ -80,7 +80,7 @@ namespace GLib {
 		{
 		}
 
-		public List (IntPtr raw, Type element_type) : base (raw, element_type)
+		public List (IntPtr raw, System.Type element_type) : base (raw, element_type)
 		{
 		}
 	}

@@ -141,18 +141,18 @@ namespace GLib {
 		[DllImport("gtksharpglue")]
 		static extern uint gtksharp_register_type (string name, uint parent_type);
 
-		public static uint RegisterGType (Type t)
+		public static GLib.Type RegisterGType (System.Type t)
 		{
-			Type parent = t.BaseType;
+			System.Type parent = t.BaseType;
 			PropertyInfo pi = parent.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
 			if (pi == null) {
 				Console.WriteLine ("null PropertyInfo");
-				return 0;
+				return null;
 			}
 			uint parent_gtype = (uint) pi.GetValue (null, null);
 			string name = t.Namespace + t.Name;
 			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
-			return gtksharp_register_type (name, parent_gtype);
+			return new GLib.Type (gtksharp_register_type (name, parent_gtype));
 		}
 
 		/// <summary>
@@ -183,9 +183,9 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (uint gtype, IntPtr dummy);
 
-		public Object (uint gtype)
+		public Object (GLib.Type gtype)
 		{
-			Raw = g_object_new (gtype, IntPtr.Zero);
+			Raw = g_object_new (gtype.Value, IntPtr.Zero);
 		}
 
 		/// <summary>

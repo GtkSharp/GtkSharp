@@ -23,7 +23,7 @@ namespace GLib {
 		private IntPtr list_ptr = IntPtr.Zero;
 		private int length = -1;
 		private bool managed = false;
-		protected Type element_type = null;
+		protected System.Type element_type = null;
 
 		abstract internal IntPtr GetData (IntPtr current);
 		abstract internal IntPtr Next (IntPtr current);
@@ -36,7 +36,7 @@ namespace GLib {
 		{
 		}
 
-		internal ListBase (IntPtr list, Type element_type)
+		internal ListBase (IntPtr list, System.Type element_type)
 		{
 			list_ptr = list;
 			this.element_type = element_type;

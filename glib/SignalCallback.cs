@@ -30,7 +30,7 @@ namespace GtkSharp {
 		protected GLib.Object _obj;
 		protected Delegate _handler;
 		protected int _key;
-		protected Type _argstype;
+		protected System.Type _argstype;
 
 		/// <summary>
 		///	SignalCallback Constructor
@@ -40,7 +40,7 @@ namespace GtkSharp {
 		///	Initializes instance data.
 		/// </remarks>
 
-		public SignalCallback (GLib.Object obj, Delegate eh, Type argstype)
+		public SignalCallback (GLib.Object obj, Delegate eh, System.Type argstype)
 		{
 			_key = _NextKey++;
 			_obj = obj;
