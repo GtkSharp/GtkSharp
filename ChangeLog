@@ -1,3 +1,15 @@
+2005-03-15  Dan Winship  <danw@novell.com>
+
+	Re-fix for yesterday's fix that didn't actually work.
+
+	* gtk/ITreeNode.cs: add a "child" arg to TreeNodeRemovedHandler
+
+	* gtk/TreeNode.cs (RemoveChild, OnChildRemoved): update for that
+
+	* gtk/NodeStore.cs (child_deleted_cb): use the passed-in child;
+	GetNodeAtPath won't work because the parent node already removed
+	the child from its list
+
 2005-03-14  Mike Kestner  <mkestner@novell.com>
 
 	* configure.in : rework the gtkhtml check for 3.6.

@@ -25,7 +25,7 @@ namespace Gtk {
 
 	public delegate void TreeNodeAddedHandler (object o, ITreeNode child);
 
-	public delegate void TreeNodeRemovedHandler (object o, int old_position);
+	public delegate void TreeNodeRemovedHandler (object o, ITreeNode child, int old_position);
 
 	public interface ITreeNode {
 

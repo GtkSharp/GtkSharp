@@ -342,7 +342,7 @@ namespace Gtk {
 				RemoveNodeInternal (node [i]);
 		}
 
-		private void child_deleted_cb (object o, int idx)
+		private void child_deleted_cb (object o, ITreeNode child, int idx)
 		{
 			ITreeNode node = o as ITreeNode;
 			
@@ -350,7 +350,6 @@ namespace Gtk {
 			TreePath child_path = path.Copy ();
 			child_path.AppendIndex (idx);
 
-			ITreeNode child = GetNodeAtPath (child_path);
 			RemoveNodeInternal (child);
 
 			gtksharp_node_store_emit_row_deleted (Handle, child_path.Handle);

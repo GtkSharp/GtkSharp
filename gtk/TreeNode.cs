@@ -96,12 +96,12 @@ namespace Gtk {
 
 		public event TreeNodeRemovedHandler ChildRemoved;
 
-		private void OnChildRemoved (int old_position)
+		private void OnChildRemoved (TreeNode child, int old_position)
 		{
 			if (ChildRemoved == null)
 				return;
 
-			ChildRemoved (this, old_position);
+			ChildRemoved (this, child, old_position);
 		}
 
 		public void AddChild (TreeNode child)
@@ -126,7 +126,7 @@ namespace Gtk {
 
 			children.Remove (child);
 			child.SetParent (null);
-			OnChildRemoved (idx);
+			OnChildRemoved (child, idx);
 		}
 	}
 }
