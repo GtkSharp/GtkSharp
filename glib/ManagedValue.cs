@@ -25,30 +25,19 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	using GLib;
 	
-	// FIXME:
-	// This used to use GCHandles, but I rewrote it to debug
-	// some odd interactions. Since the boxed code in GLib is designed
-	// to not interact directly with the pointers, just using our own
-	// arbitrary pointer values is fine. Still, it might be useful
-	// to use GCHandle later on.
-	
 	internal class ManagedValue {
-		private class ValueHolder {
-			public object val;
-			public int ref_count;
-		}
 		
-		private delegate IntPtr CopyFunc (IntPtr ptr);
-		private delegate void FreeFunc (IntPtr ptr);
+		[CDeclCallback]
+		delegate IntPtr CopyFunc (IntPtr gch);
+		[CDeclCallback]
+		delegate void FreeFunc (IntPtr gch);
 		
-		private static Hashtable pointers = new Hashtable ();
-		private static IntPtr cur_ptr = IntPtr.Zero;
-		private static CopyFunc copy;
-		private static FreeFunc free;
-		private static GType boxed_type = GType.Invalid;
+		static CopyFunc copy;
+		static FreeFunc free;
+		static GType boxed_type = GType.Invalid;
 
 		[DllImport("libgobject-2.0-0.dll")]
-		private static extern IntPtr g_boxed_type_register_static (IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
+		static extern IntPtr g_boxed_type_register_static (IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
 		
 		public static GType GType {
 			get {
@@ -65,42 +54,31 @@ namespace GLib {
 			}
 		}
 		
-		public static IntPtr Copy (IntPtr ptr)
+		static IntPtr Copy (IntPtr ptr)
 		{
-			ValueHolder holder = (ValueHolder) pointers[ptr];
-			holder.ref_count++;
-			return ptr;
+			Console.WriteLine ("Copying ManagedGValue: " + ptr);
+			GCHandle gch = (GCHandle) ptr;
+			return (IntPtr) GCHandle.Alloc (gch.Target);
 		}
 
-		public static void Free (IntPtr ptr)
+		static void Free (IntPtr ptr)
 		{
-			ValueHolder holder = (ValueHolder) pointers[ptr];
-			if (holder == null)
-				return;
-			holder.ref_count--;
-			if (holder.ref_count < 1)
-				pointers.Remove (ptr);
+			Console.WriteLine ("Freeing ManagedGValue: " + ptr);
+			GCHandle gch = (GCHandle) ptr;
+			gch.Free ();
 		}
 
 		public static IntPtr WrapObject (object obj)
 		{
-			ValueHolder holder = new ValueHolder ();
-			holder.val = obj;
-			holder.ref_count = 1;
-			cur_ptr = new IntPtr (((int) cur_ptr) + 1);
-			pointers[cur_ptr] = holder;
-			return cur_ptr;
+			Console.WriteLine ("Wrapping Object in ManagedGValue: " + obj);
+			return (IntPtr) GCHandle.Alloc (obj);
 		}
 
 		public static object ObjectForWrapper (IntPtr ptr)
 		{
-			if (!pointers.Contains (ptr))
-				return null;
-
-			ValueHolder holder = (ValueHolder) pointers[ptr];
-			return holder.val;
+			Console.WriteLine ("Getting object of ManagedGValue: " + ptr);
+			return ((GCHandle)ptr).Target;
 		}
-
 	}
 }
 

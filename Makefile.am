@@ -2,6 +2,7 @@ SUBDIRS = sources generator parser glib pango atk gdk gtk glade art gnomevfs gno
 
 EXTRA_DIST = 			\
 	gtk-sharp.snk		\
+	gapi-cdecl-insert	\
 	makefile.win32		\
 	AssemblyInfo.cs.in	\
 	ChangeLog		\

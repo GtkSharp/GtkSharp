@@ -1,3 +1,17 @@
+2005-03-23  Mike Kestner  <mkestner@novell.com>
+
+	* gapi-cdecl-insert : a little perl script to insert modopts
+	* Makefile.am : dist the new script.
+	for cdecl callback delegates on win32.
+	* glade/makefile.win32 : use gapi-cdecl-insert
+	* glade/XML.custom : add [GLib.CDeclCallback] to RawXMLConnectFunc.
+	* glib/makefile.win32 : use gapi-cdecl-insert
+	* glib/CDeclCallbackAttribute.cs : new attr to tag delegates with
+	that will be invoked from native code. We have to mangle the il
+	with a modopt otherwise they are stdcall'd.
+	* glib/ManagedValue.cs : add [GLib.CDeclCallback] to Copy/Free.
+	switch to using GCHandles instead of the current IntPtr hack.
+
 2005-03-15  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Gtk.metadata : hide TreeSortable.SetSortFunc.
