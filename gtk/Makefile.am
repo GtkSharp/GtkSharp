@@ -49,6 +49,7 @@ customs = 				\
 	Layout.custom			\
 	ListStore.custom		\
 	MessageDialog.custom		\
+	MenuItem.custom			\
 	Notebook.custom			\
 	Object.custom			\
 	Paned.custom			\
