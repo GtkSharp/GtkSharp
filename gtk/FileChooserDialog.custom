@@ -3,7 +3,7 @@
 
 		public FileChooserDialog (string title, Window parent, FileChooserAction action)
 		{
-			Raw = gtk_file_chooser_dialog_new (title, parent.Handle, (int)action, IntPtr.Zero);
+			Raw = gtk_file_chooser_dialog_new (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, IntPtr.Zero);
 		}
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
@@ -11,5 +11,5 @@
 		
 		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend)
 		{
-			Raw = gtk_file_chooser_dialog_new_with_backend (title, parent.Handle, (int)action, backend, IntPtr.Zero);
+			Raw = gtk_file_chooser_dialog_new_with_backend (title, parent == null ? IntPtr.Zero : parent.Handle, (int)action, backend, IntPtr.Zero);
 		}
