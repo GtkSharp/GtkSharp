@@ -93,15 +93,15 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GObject", "GLib", "Object"));
 		}
 		
-		public void AddAlias (string name, string type)
-		{
-			type = type.TrimEnd(' ', '\t');
-			alias [name] = type;
-		}
-		
 		public void AddType (IGeneratable gen)
 		{
 			types [gen.CName] = gen;
+		}
+		
+		public void AddTypes (IGeneratable[] gens)
+		{
+			foreach (IGeneratable gen in gens)
+				types [gen.CName] = gen;
 		}
 		
 		public int Count {
@@ -119,8 +119,7 @@ namespace GtkSharp.Generation {
 		
 		public IGeneratable this [string ctype] {
 			get {
-				ctype = DeAlias (ctype);
-				return types [ctype] as IGeneratable;
+				return DeAlias (ctype) as IGeneratable;
 			}
 		}
 
@@ -139,13 +138,16 @@ namespace GtkSharp.Generation {
 			return trim_type;
 		}
 
-		private string DeAlias (string type)
+		private object DeAlias (string type)
 		{
 			type = Trim (type);
-			while (alias.ContainsKey(type))
-				type = (string) alias[type];
+			while (types [type] is AliasGen) {
+				IGeneratable igen = types [type] as AliasGen;
+				types [type] = types [igen.Name];
+				type = igen.Name;
+			}
 
-			return type;
+			return types [type];
 		}
 
 		public string FromNativeReturn(string c_type, string val)
@@ -246,13 +248,8 @@ namespace GtkSharp.Generation {
 	
 		public bool IsEnumFlags(string c_type)
 		{
-			c_type = Trim(c_type);
-			c_type = DeAlias(c_type);
-			if (types.ContainsKey(c_type)) {
-				EnumGen gen = types[c_type] as EnumGen;
-				return (gen != null && gen.Elem.GetAttribute ("type") == "flags");
-			}
-			return false;
+			EnumGen gen = this [c_type] as EnumGen;
+			return (gen != null && gen.Elem.GetAttribute ("type") == "flags");
 		}
 	
 		public bool IsInterface(string c_type)

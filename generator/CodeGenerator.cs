@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2001-2003 Mike Kestner and Ximian Inc.
 
 namespace GtkSharp.Generation {
 
@@ -20,20 +20,30 @@ namespace GtkSharp.Generation {
 			}
 
 			bool generate = false;
+			bool include = false;
+
+			SymbolTable table = SymbolTable.Table;
+			ArrayList gens = new ArrayList ();
 			foreach (string arg in args) {
-					if (arg == "--generate") {
-						generate = true;
-						continue;
-					} else if (arg == "--include") {
-						generate = false;
-						continue;
-					}
-					
-					Parser p = new Parser (arg);
-					p.Parse (generate);
+				if (arg == "--generate") {
+					generate = true;
+					include = false;
+					continue;
+				} else if (arg == "--include") {
+					generate = false;
+					include = true;
+					continue;
+				}
+
+				Parser p = new Parser ();
+				IGeneratable[] curr_gens = p.Parse (arg);
+				table.AddTypes (curr_gens);
+				if (generate)
+					gens.AddRange (curr_gens);
 			}
 			
-			foreach (IGeneratable gen in SymbolTable.Table.Generatables) {
+			foreach (IGeneratable gen in gens) {
+				gen.DoGenerate = true;
 				gen.Generate ();
 			}
 
@@ -42,6 +52,5 @@ namespace GtkSharp.Generation {
 			Statistics.Report();
 			return 0;
 		}
-
 	}
 }
