@@ -39,13 +39,11 @@ namespace GLibSharp {
 				return GType.UInt;
 			if (type.IsSubclassOf (typeof (GLib.Object)))
 				return GType.Object;
-			if (type.IsValueType) {
-				PropertyInfo pi = type.GetProperty ("GType");
-				if (pi == null)
-					return GType.Pointer;
-				else
-					return (GType) pi.GetValue (null, null); 
-			}
+			PropertyInfo pi = type.GetProperty ("GType", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+			if (pi != null)
+				return (GType) pi.GetValue (null, null); 
+			if (type.IsValueType)
+				return GType.Pointer;
 
 			return GType.None;
 		}

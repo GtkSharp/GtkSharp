@@ -372,7 +372,7 @@ namespace GLib {
 			} else {
 				_val = gtksharp_value_create (type.Val);
 			}
-			
+
 			if (type == GType.None)
 				g_value_set_boxed (_val, ManagedValue.WrapObject (obj));
 			else if (type == GType.String)
@@ -396,6 +396,10 @@ namespace GLib {
 				Marshal.StructureToPtr (obj, buf, false);
 				g_value_set_pointer (_val, buf);
 			} else if (g_type_is_a (type.Val, GLib.GType.Boxed.Val)) {
+				if (obj is IWrapper) {
+					g_value_set_boxed (_val, ((IWrapper)obj).Handle);
+					return;
+				}
 				buf = Marshal.AllocHGlobal (Marshal.SizeOf (obj.GetType()));
 				Marshal.StructureToPtr (obj, buf, false);
 				g_value_set_boxed (_val, buf);
