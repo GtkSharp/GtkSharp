@@ -359,9 +359,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(cname + call + ";");
 			} else if (ret_igen is ObjectGen || ret_igen is OpaqueGen) {
 				sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-				sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
-				if (table.IsOpaque (rettype))
-					sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
+				sw.WriteLine(indent +"\t\t\t" + s_ret + " ret;");
+				sw.WriteLine(indent + "\t\t\tif (raw_ret == IntPtr.Zero)");
+				sw.WriteLine(indent + "\t\t\t\tret = null;");
+				sw.WriteLine(indent + "\t\t\telse");
+				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
 			} else if (ret_igen is CustomMarshalerGen) {
 				sw.WriteLine(s_ret + " ret = " + cname + call + ";");
 			} else {
