@@ -11,3 +11,9 @@ gtksharp_combo_get_entry (GtkCombo* combo)
 {
 	return combo->entry;
 }
+
+GtkWidget* 
+gtksharp_combo_get_button (GtkCombo* combo)
+{
+	return combo->button;
+}
