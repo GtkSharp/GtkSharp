@@ -30,8 +30,7 @@ DISTCLEANFILES = gnome-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 sources =					\
 	IconData.cs				\
 	IconTheme.cs				\
-	Modules.cs				\
-	voidObjectAffineSVPintSignal.cs
+	Modules.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
