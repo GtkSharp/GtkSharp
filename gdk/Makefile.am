@@ -42,6 +42,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 customs = 			\
 	Atom.custom		\
 	Color.custom		\
+	Device.custom		\
 	DeviceAxis.custom	\
 	Display.custom		\
 	DisplayManager.custom	\

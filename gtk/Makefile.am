@@ -49,6 +49,7 @@ customs = 				\
 	IconFactory.custom		\
 	IconSet.custom			\
 	ImageMenuItem.custom		\
+	InputDialog.custom		\
 	ItemFactory.custom		\
 	Label.custom			\
 	Layout.custom			\

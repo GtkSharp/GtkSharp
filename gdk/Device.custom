@@ -1,0 +1,106 @@
+// Display.custom - customizations to Gdk.Display
+//
+// Authors: Manuel V. Santos  <mvsl@telefonica.net>
+//
+// Copyright (c) 2004 Manuel V. Santos
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
+		[DllImport("gdksharpglue")]
+		static extern IntPtr gtksharp_gdk_device_get_name (IntPtr device);
+
+		[DllImport("gdksharpglue")]
+		static extern InputSource gtksharp_gdk_device_get_source (IntPtr device);
+
+		[DllImport("gdksharpglue")]
+		static extern InputMode gtksharp_gdk_device_get_mode (IntPtr device);
+
+		[DllImport("gdksharpglue")]		
+		static extern bool gtksharp_gdk_device_has_cursor (IntPtr device);
+
+		[DllImport("gdksharpglue")]
+		static extern int gtksharp_gdk_device_get_num_axes (IntPtr device);
+
+		[DllImport("gdksharpglue")]
+		static extern int gtksharp_gdk_device_get_num_keys (IntPtr device);
+
+		[DllImport("gdksharpglue")]
+		static extern DeviceAxis gtksharp_gdk_device_get_device_axis (IntPtr device, uint axis);
+
+		[DllImport("gdksharpglue")]
+		static extern DeviceKey gtksharp_gdk_device_get_device_key (IntPtr device, uint axis);
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+                static extern void gdk_device_set_source(IntPtr device, int source);
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+                static extern void gdk_device_get_state(IntPtr device, IntPtr window, double [] axes, out int maskAsInt);
+
+		
+		public string Name {
+			get {
+				IntPtr rawName = gtksharp_gdk_device_get_name (Handle);
+				return Marshal.PtrToStringAnsi(rawName); 
+			}
+		}
+                                                                                       
+                public Gdk.InputSource Source {
+			get {
+				return gtksharp_gdk_device_get_source (Handle);
+			}
+			set {
+				gdk_device_set_source(Handle, (int) value);
+			}
+		}
+	
+		public Gdk.InputMode Mode {
+			get {
+				return gtksharp_gdk_device_get_mode (Handle);
+			}
+		}
+
+		public bool HasCursor {
+			get {
+				return gtksharp_gdk_device_has_cursor (Handle);
+			}
+		}
+
+		public int NumAxes {
+			get {
+				return gtksharp_gdk_device_get_num_axes (Handle);
+			}
+		}
+
+		public int NumKeys {
+			get {
+				return gtksharp_gdk_device_get_num_keys (Handle);
+			}
+		}
+
+		public void GetState(Gdk.Window window, out double [] axes, out Gdk.ModifierType mask) {
+			int maskAsInt;
+			axes = new double [this.NumAxes];
+			gdk_device_get_state(Handle, window.Handle, axes, out maskAsInt);
+ 			mask = (Gdk.ModifierType) maskAsInt;
+		}
+
+		public Gdk.DeviceAxis GetDeviceAxis (uint axis) {
+			return gtksharp_gdk_device_get_device_axis (Handle, axis);
+		}
+		
+		public Gdk.DeviceKey GetDeviceKey (uint axis) {
+			return gtksharp_gdk_device_get_device_key (Handle, axis);
+		}

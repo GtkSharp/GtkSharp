@@ -1,10 +1,11 @@
-// Gdk.Point.DeviceAxis - Gdk DeviceAxis class customizations
+// Gtk.InputDialog.custom - Gtk InputDialog class customizations
 //
-// Author: Jasper van Putten <Jaspervp@gmx.net>
+// Author: Manuel V. Santos <mvsl@telefonica.net>
 //
-// Copyright (c) 2002 Jasper van Putten
+// Copyright (C) 2004 Manuel V. Santos. 
 //
 // This code is inserted after the automatically generated code.
+//
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,19 +21,22 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_input_dialog_get_save_button (IntPtr i);
 
-/// <summary>
-/// ToString method
-/// </summary>
-///
-/// <remarks>
-/// returns a string representation of this DeviceAxis
-///
-/// </remarks>
+		public Gtk.Button SaveButton {
+			get { 
+				IntPtr rawButton = gtksharp_input_dialog_get_save_button (Handle);
+				return new Button (rawButton); 
+			}
+		}
 
-public override string ToString ()
-{
-	return "Gdk.DeviceAxis, max:" + this.Max + ",min:" + this.Min + ",use:" + this.Use;
-}
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_input_dialog_get_close_button (IntPtr i);
 
-
+		public Gtk.Button CloseButton {
+			get { 
+				IntPtr rawButton = gtksharp_input_dialog_get_close_button (Handle);
+				return new Button (rawButton); 
+			}
+		}

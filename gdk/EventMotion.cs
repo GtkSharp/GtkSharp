@@ -105,9 +105,12 @@ namespace Gdk {
 
 		public double[] Axes {
 			get {
-				double[] result = new double [2];
+				double[] result = null;
 				IntPtr axes = gtksharp_gdk_event_motion_get_axes (Handle);
-				Marshal.Copy (result, 0, axes, 2);
+				if (axes != IntPtr.Zero) {
+					result = new double [Device.NumAxes];
+					Marshal.Copy (axes, result, 0, result.Length);
+				}
 				return result;
 			}
 		}

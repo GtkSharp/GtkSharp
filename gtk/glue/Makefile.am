@@ -10,6 +10,7 @@ libgtksharpglue_la_SOURCES =	\
 	container.c		\
 	dialog.c		\
 	fileselection.c		\
+	inputdialog.c		\
 	layout.c		\
 	nodestore.c		\
 	object.c		\
