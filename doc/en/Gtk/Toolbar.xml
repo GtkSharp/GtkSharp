@@ -1,5 +1,5 @@
 <Type Name="Toolbar" FullName="Gtk.Toolbar">
-  <TypeSignature Language="C#" Value="public class Toolbar : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Toolbar : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Duncan Mak" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,19 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Create bars of buttons and other widgets.</summary>
+    <remarks>
+      <para>A toolbar is created with a call to <see cref="C:Gtk.Toolbar"/>.</para>
+      <para>
+        Buttons with text and/or images are added with <see cref="M:Gtk.Toolbar.AppendItem"/>, <see cref="M:Gtk.Toolbar.PrependItem"/>, and <see cref="M:Gtk.Toolbar.InsertItem"/>.
+      </para>
+      <para>
+        Any of <see cref="T:Gtk.ToggleButton"/>, <see cref="T:Gtk.RadioButton"/>, or an arbitrary widget can be added to the toolbar with <see cref="M:Gtk.Toolbar.AppendElement"/>, <see cref="M:Gtk.Toolbar.PrependElement"/>, and <see cref="M:Gtk.Toolbar.InsertElement"/>.
+      </para>
+      <para>
+        Widgets can be visibly grouped by adding gaps between widgets using <see cref="M:Gtk.Toolbar.AppendSpace"/>, <see cref="M:Gtk.Toolbar.PrependSpace"/>, and <see cref="M:Gtk.Toolbar.InsertSpace"/>.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -37,7 +48,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+        </summary>
         <returns>To be added: an object of type 'uint'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -71,16 +83,16 @@
         <Parameter Name="callback" Type="Gtk.SignalFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Gtk.ToolbarChildType'</param>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a new element to the end of a toolbar.</summary>
+        <param name="type">A value of type <see cref="T:Gtk.ToolbarChildType"/> that determines what widget will be.</param>
+        <param name="widget">a <see cref="T:Gtk.Widget"/>, or <see cref="langword:null"/>.</param>
+        <param name="text">The element's label.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">a <see cref="T:Gtk.Widget"/> that provides pictorial representation of the element's function.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/></returns>
+        <remarks><para>If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChildType.Widget"/>, <paramref name="widget"/> is used as the new element. If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChild.Radiobutton"/>,<paramref name="widget"/> is used to determine the radio group for the new element. In all other cases, widget must be <see cref="langword:null"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="PrependItem">
@@ -97,13 +109,13 @@
         <Parameter Name="callback" Type="Gtk.SignalFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <summary>Adds a new button to the beginning (top or left edges) of the given toolbar.</summary>
+        <param name="text">Text for the button label.</param>
+        <param name="tooltip_text">A string that appears when the user holds the mouse over this item.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">A <see cref="T:Gtk.Widget"/> that should be used as the button's icon.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -123,15 +135,15 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
+        <summary>Inserts a new item into the toolbar. You must specify the position in the toolbar where it will be inserted.</summary>
+        <param name="text">Text for the button label.</param>
+        <param name="tooltip_text">A string that appears when the user holds the mouse over this item.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">A <see cref="T:Gtk.Widget"/> that should be used as the button's icon.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
         <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="position">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="position">The number of widgets to insert this item after.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/>.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -143,7 +155,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a new space to the beginning of the toolbar.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -155,7 +167,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Unsets a toolbar style set with <see cref="P:Gtk.Toolbar.ToolbarStyle"/>, so that user preferences will be used to determine the toolbar style.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -167,7 +179,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          Unsets toolbar icon size set with <see cref="P:Gtk.Toolbar.IconSize"/>, so that user preferences will be used to determine the icon size.
+      </summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -184,11 +198,11 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="position">To be added: an object of type 'int'</param>
+        <summary>Inserts a widget in the toolbar at the given position.</summary>
+        <param name="widget"> a <see cref="T:Gtk.Widget"/> to add to the toolbar.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Used for context-sensitive help about this toolbar element.</param>
+        <param name="position">The number of widgets to insert this widget after.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -207,14 +221,14 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="stock_id">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
+        <summary>Inserts a stock item at the specified position of the toolbar. If stock_id is not a known stock item ID, it's inserted verbatim, except that underscores used to mark mnemonics are removed.</summary>
+        <param name="stock_id"> The id of the stock item you want to insert</param>
+        <param name="tooltip_text">The text in the tooltip of the toolbar button</param>
+        <param name="tooltip_private_text">The private text of the tooltip</param>
+        <param name="callback">The callback called when the toolbar button is clicked.</param>
         <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="position">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="position">The position the button shall be inserted at. -1 means at the end.</param>
+        <returns>The inserted widget</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -230,10 +244,10 @@
         <Parameter Name="tooltip_private_text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
+        <summary>Adds a widget to the end of the given toolbar.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget"/> to add to the toolbar.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Used for context-sensitive help about this toolbar element.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -245,7 +259,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a new space to the end of the toolbar.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -263,13 +277,13 @@
         <Parameter Name="callback" Type="Gtk.SignalFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <summary>Adds a new button to the end (right or bottom edges) of the given toolbar.</summary>
+        <param name="text">The element's label.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">a <see cref="T:Gtk.Widget"/> that provides pictorial representation of the element's function.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -283,8 +297,8 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="position">To be added: an object of type 'int'</param>
+        <summary>Removes a space from the specified position.</summary>
+        <param name="position">The index of the space to remove.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -300,10 +314,10 @@
         <Parameter Name="tooltip_private_text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
+        <summary>Adds a widget to the beginning of the given toolbar.</summary>
+        <param name="widget">a <see cref="T:Gtk.Widget"/> to add to the toolbar.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Used for context-sensitive help about this toolbar element.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -325,18 +339,20 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Gtk.ToolbarChildType'</param>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
+        <summary>Inserts a new element in the toolbar at the given position.</summary>
+        <param name="type">A value of type <see cref="T:Gtk.ToolbarChildType"/> that determines what widget will be.</param>
+        <param name="widget">a <see cref="T:Gtk.Widget"/>, or <see cref="langword:null"/>.</param>
+        <param name="text">The element's label.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">a <see cref="T:Gtk.Widget"/> that provides pictorial representation of the element's function.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
         <param name="user_data">To be added: an object of type 'IntPtr'</param>
-        <param name="position">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <param name="position">The number of widgets to insert this element after.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/></returns>
+        <remarks><para>
+            If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChildType.Widget"/>, <paramref name="widget"/> is used as the new element. If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChild.Radiobutton"/>,<paramref name="widget"/> is used to determine the radio group for the new element. In all other cases, widget must be <see cref="langword:null"/>.
+        </para></remarks>
       </Docs>
     </Member>
     <Member MemberName="PrependElement">
@@ -355,16 +371,16 @@
         <Parameter Name="callback" Type="Gtk.SignalFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">To be added: an object of type 'Gtk.ToolbarChildType'</param>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="tooltip_text">To be added: an object of type 'string'</param>
-        <param name="tooltip_private_text">To be added: an object of type 'string'</param>
-        <param name="icon">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="callback">To be added: an object of type 'Gtk.SignalFunc'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a new element to the beginning of a toolbar.</summary>
+        <param name="type">A value of type <see cref="T:Gtk.ToolbarChildType"/> that determines what widget will be.</param>
+        <param name="widget">a <see cref="T:Gtk.Widget"/>, or <see cref="langword:null"/>.</param>
+        <param name="text">The element's label.</param>
+        <param name="tooltip_text">The element's tooltip.</param>
+        <param name="tooltip_private_text">Text used for context-sensitive help about this toolbar element.</param>
+        <param name="icon">a <see cref="T:Gtk.Widget"/> that provides pictorial representation of the element's function.</param>
+        <param name="callback">The function to be executed when the button is pressed.</param>
+        <returns>The new toolbar element as a <see cref="T:Gtk.Widget"/></returns>
+        <remarks><para>If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChildType.Widget"/>, <paramref name="widget"/> is used as the new element. If <paramref name="type"/> is <see cref="T:Gtk.ToolbarChild.Radiobutton"/>,<paramref name="widget"/> is used to determine the radio group for the new element. In all other cases, widget must be <see cref="langword:null"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertSpace">
@@ -377,8 +393,8 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="position">To be added: an object of type 'int'</param>
+        <summary>Inserts a new space in the toolbar at the specified position.</summary>
+        <param name="position">The number of widgets after which a space should be inserted.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -402,7 +418,7 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">To be added: an object of type 'uint'</param>
         <returns>To be added: an object of type 'Gtk.Toolbar'</returns>
         <remarks>To be added</remarks>
@@ -416,7 +432,7 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">To be added: an object of type 'IntPtr'</param>
         <returns>To be added: an object of type 'Gtk.Toolbar'</returns>
         <remarks>To be added</remarks>
@@ -428,8 +444,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Toolbar'</returns>
+        <summary>Creates a new toolbar.</summary>
+        <returns>The newly-created toolbar.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -455,9 +471,9 @@
         <Parameter Name="value" Type="Gtk.IconSize" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.IconSize'</param>
-        <returns>To be added: an object of type 'Gtk.IconSize'</returns>
+        <summary>This function sets the size of stock icons in the toolbar. You can call it both before you add the icons and after they've been added. The size you set will override user preferences for the default icon size.</summary>
+        <param name="value">The <see cref="T:Gtk.IconSize"/> that stock icons in the toolbar shall have.</param>
+        <returns>The icon size for the toolbar.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -471,9 +487,9 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <summary>Sets if the tooltips of a toolbar should be active or not.</summary>
+        <param name="value">set to <see cref="langword:false"/> to disable the tooltips, or <see cref="langword:true"/> to enable them.</param>
+        <returns>Whether tooltips are enabled.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -487,9 +503,9 @@
         <Parameter Name="value" Type="Gtk.ToolbarStyle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ToolbarStyle'</param>
-        <returns>To be added: an object of type 'Gtk.ToolbarStyle'</returns>
+        <summary>Alters the view of toolbar to display either icons only, text only, or both.</summary>
+        <param name="value">The new style for toolbar. </param>
+        <returns>The current style of toolbar.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -503,9 +519,9 @@
         <Parameter Name="value" Type="Gtk.Orientation" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Orientation'</param>
-        <returns>To be added: an object of type 'Gtk.Orientation'</returns>
+        <summary>Sets the orientation of the toolbar to either <see cref="T:Gtk.Orientation.Horizontal"/> or <see cref="T:Gtk.Orientation.Vertical"/>.</summary>
+        <param name="value">The orientation of the toolbar.</param>
+        <returns>The orientation of the toolbar.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -515,7 +531,7 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Used if you wish to perform an action when the orientation of a toolbar is changed.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -525,8 +541,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Used if you wish to perform an action when ever the style of a toolbar is adjusted.</summary>
+        <remarks>For example, this would be a useful signal to connect to if you want to display more items on the toolbar when it is in icon-only mode; each item takes less space on the bar.</remarks>
       </Docs>
     </Member>
   </Members>
