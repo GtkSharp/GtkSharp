@@ -7,11 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Display a calendar and/or allow the user to select a date.</summary>
+    <summary>Display a Calendar and/or allow the user to select a date.</summary>
     <remarks>
       <para>With a Calendar widget, dates are presented to the user one month at a time. Additional information and decorations can be added to the Calendar by using the <see cref="T:Gtk.CalendarDisplayOptions" /> enumeration with the <see cref="P:Gtk.DisplayOptions" /> property.</para>
       <para>Days can be highlighted on the Calendar with <see cref="M:Gtk.Calendar.MarkDay" /> or <see cref="M:Gtk.Calendar.SelectDay" />.</para>
-      <para>The following example shows a method that creates a simple calendar displaying day names, headings and week numbers. (These are controlled by passing elements of the <see cref="T:Gtk.CalendarDisplayOptions" /> type to the <see cref="M:Gtk.Calendar.DisplayOptions" /> method).
+      <para>The following example shows a method that creates a simple Calendar displaying day names, headings and week numbers.
     <example>
           <code lang="C#">
 // Create a calendar with some simple display options
@@ -21,14 +21,346 @@ public Calendar CreateCalendar ()
     cal.DisplayOptions = CalendarDisplayOptions.ShowHeading  | 
                          CalendarDisplayOptions.ShowDayNames | 
                          CalendarDisplayOptions.ShowWeekNumbers;
+    cal.DaySelected += new EventHandler(HandleDaySelected);
     return cal;
 }
     </code>
         </example></para>
-      <para>The following example shows a typical event handler or capturing the selected date whenever it changes.
+      <para>The following example shows a typical event handler that outputs the date when one is selected.
     <example>
           <code lang="C#">
 // Typical event handler for capturing the selected date
-void DaySelected (object obj, EventArgs args)
+void HandleDaySelected (object obj, EventArgs args)
 {
-    Ca
+    Calendar activatedCalendar = (Calendar) obj;
+    Console.WriteLine (activatedCalendar.GetDate ().ToString ("yyyy/MM/dd"));
+}
+	 </code>
+        </example></para>
+    </remarks>
+  </Docs>
+  <Base>
+    <BaseTypeName>Gtk.Widget</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Atk.Implementor</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes />
+  <Members>
+    <Member MemberName="UnmarkDay">
+      <MemberSignature Language="C#" Value="public bool UnmarkDay (uint day);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="day" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Removes a visual marker from the specified <paramref name="day" />.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks>
+          <para>Visual markers are added to the Calendar with <see cref="M:Gtk.Calendar.MarkDay" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MarkDay">
+      <MemberSignature Language="C#" Value="public bool MarkDay (uint day);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="day" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Adds a visual marker to the specified <paramref name="day" />.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectDay">
+      <MemberSignature Language="C#" Value="public void SelectDay (uint day);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="day" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Select a specified day on the displayed month.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <remarks>
+          <para>A value of 0 for the <paramref name="day" /> will unselect the currently selected day.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Freeze">
+      <MemberSignature Language="C#" Value="public void Freeze ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Stops the Calendar from visually updating.</summary>
+        <remarks>
+          <para>If used before a large number of graphical updates, (such as calls to <see cref="M:Gtk.Calendar.MarkDay" />), this method may prevent flicker. Once a batch of updates has taken place, call <see cref="M:Gtk.Calendar.Thaw" /> to render them.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDate">
+      <MemberSignature Language="C#" Value="public void GetDate (out uint year, out uint month, out uint day);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="year" Type="System.UInt32&amp;" />
+        <Parameter Name="month" Type="System.UInt32&amp;" />
+        <Parameter Name="day" Type="System.UInt32&amp;" />
+      </Parameters>
+      <Docs>
+        <summary>Get the selected date.</summary>
+        <param name="year">A variable to place the chosen year in.</param>
+        <param name="month">A variable to place the chosen month in.</param>
+        <param name="day">A variable to place the chosen day in.</param>
+        <remarks>
+          <para>NOTE: That month number is ZERO based, (0-11), whereas the day is one based, (1-31).</para>
+          <para>An alternative way to get the date is with the <see cref="M:Gtk.Calendar.GetDate(uint,uint,uint)" /> method.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Thaw">
+      <MemberSignature Language="C#" Value="public void Thaw ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes the effects of calling <see cref="M:Gtk.Calendar.Freeze" />.</summary>
+        <remarks>
+          <para>This draws all graphical updates to the Calendar that have happened since a <see cref="M:Gtk.Calendar.Freeze" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearMarks">
+      <MemberSignature Language="C#" Value="public void ClearMarks ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes all visual marks that have been added to dates.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SelectMonth">
+      <MemberSignature Language="C#" Value="public bool SelectMonth (uint month, uint year);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="month" Type="System.UInt32" />
+        <Parameter Name="year" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Shifts the Calendar to display the specified month.</summary>
+        <param name="month">A zero-based month number.</param>
+        <param name="year">The year the month is in.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="protected virtual void Finalize ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Calendar (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Internal constructor</summary>
+        <param name="raw">Pointer to the C object.</param>
+        <returns>An instance of Calendar, wrapping the C object.</returns>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Calendar ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Creates a new Calendar displaying the current month.</summary>
+        <returns>A new Calendar.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static uint GType { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The GLib Type for Gtk.Calendar</summary>
+        <returns>The GLib Type for the Gtk.Calendar class.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NextYear">
+      <MemberSignature Language="C#" Value="public event EventHandler NextYear;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the current year of the Calendar is increased.</summary>
+        <remarks><para>This may happen when the user explicitly advances the year, or when advancing from December to January.</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DaySelectedDoubleClick">
+      <MemberSignature Language="C#" Value="public event EventHandler DaySelectedDoubleClick;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the user &quot;double clicks&quot; on a day.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrevYear">
+      <MemberSignature Language="C#" Value="public event EventHandler PrevYear;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the current year of the Calendar is decreased.</summary>
+        <remarks><para>This may happen when the user explicitly advances the year, or when clicking 'back' from January to December.</para></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MonthChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler MonthChanged;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the current month changes.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NextMonth">
+      <MemberSignature Language="C#" Value="public event EventHandler NextMonth;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the month of the Calendar moves to the next one.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DaySelected">
+      <MemberSignature Language="C#" Value="public event EventHandler DaySelected;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when a day is selected on the Calendar.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrevMonth">
+      <MemberSignature Language="C#" Value="public event EventHandler PrevMonth;" />
+      <MemberType>Event</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Fired when the Calendar moves to the previous month.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Calendar (GLib.Type gtype);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
+      <Docs>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of Calendar, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.Calendar" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisplayOptions">
+      <MemberSignature Language="C#" Value="public Gtk.CalendarDisplayOptions DisplayOptions { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CalendarDisplayOptions</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="Gtk.CalendarDisplayOptions" />
+      </Parameters>
+      <Docs>
+        <summary>Set the display options for this Calendar.</summary>
+        <param name="flags">One or more values from <see cref="T:Gtk.CalendarDisplayOptions" />, combined using a bit-wise OR.</param>
+        <remarks>
+          <para>This method allows fine control over which parts of the Calendar, such as day names, are displayed. The <see cref="T:Gtk.CalendarDisplayOptions" /> describe the choices in more detail.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDate">
+      <MemberSignature Language="C#" Value="public DateTime GetDate ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.DateTime</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Get the selected date.</summary>
+        <returns>A DateTime object containing the selected day, month and year.</returns>
+        <remarks><para>Selected date information can also be retrieved with the <see cref="M:Gtk.Calendar.GetDate(uint,uint,uint)" /> method.</para></remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
