@@ -838,19 +838,21 @@ sub addSignalElem
 			$parm_elem->setAttribute('name', "p$idx");
 			$parm_elem->setAttribute('type', $argtype);
 		}
-		return;
+		return $class;
 	}
 
-	if ($class =~ /;\s*(\S+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
-		$ret = $1; $parms = $2;
+	if ($class =~ /;\s*(G_CONST_RETURN)?\s*(\S+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
+		$ret = $2; $parms = $3;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
 			addParamsElem($sig_elem, split(/,/, $parms));
 		}
-		$class =~ s/;\s*\S+\s*\**\s*\(\*\s*$method\)\s*\(.*?\);//;
+		$class =~ s/;\s*(G_CONST_RETURN)?\s*\S+\s*\**\s*\(\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
 		die "$method $class";
 	}
+
+	return $class;
 }
 
 sub addVirtualMethods
@@ -912,7 +914,7 @@ sub parseInitFunc
 			do {
 				$sig .= $init_lines[++$linenum];
 			} until ($init_lines[$linenum] =~ /;/);
-			addSignalElem ($sig, $classdef, $obj_el);
+			$classdef = addSignalElem ($sig, $classdef, $obj_el);
 			$sigcnt++;
 		}
 		$linenum++;

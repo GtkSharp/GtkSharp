@@ -1269,15 +1269,6 @@
           <parameter type="GClosure*" name="accel_closure"/>
         </parameters>
       </signal>
-      <virtual_method name="AccelChanged" cname="accel_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkAccelGroup*" name="accel_group"/>
-          <parameter type="guint" name="keyval"/>
-          <parameter type="GdkModifierType" name="modifier"/>
-          <parameter type="GClosure*" name="accel_closure"/>
-        </parameters>
-      </virtual_method>
       <method name="Connect" cname="gtk_accel_group_connect">
         <return-type type="void"/>
         <parameters>
@@ -1413,12 +1404,6 @@
           <parameter type="GtkAdjustment*" name="adjustment"/>
         </parameters>
       </signal>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkAdjustment*" name="adjustment"/>
-        </parameters>
-      </virtual_method>
       <method name="Changed" cname="gtk_adjustment_changed">
         <return-type type="void"/>
       </method>
@@ -1685,24 +1670,6 @@
           <parameter type="GtkButton*" name="button"/>
         </parameters>
       </signal>
-      <virtual_method name="Pressed" cname="pressed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkButton*" name="button"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Clicked" cname="clicked">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkButton*" name="button"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Leave" cname="leave">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkButton*" name="button"/>
-        </parameters>
-      </virtual_method>
       <method name="ActionGetType" cname="gtk_button_action_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -1890,30 +1857,6 @@
           <parameter type="GtkCalendar*" name="calendar"/>
         </parameters>
       </signal>
-      <virtual_method name="MonthChanged" cname="month_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCalendar*" name="calendar"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DaySelectedDoubleClick" cname="day_selected_double_click">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCalendar*" name="calendar"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="NextMonth" cname="next_month">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCalendar*" name="calendar"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="NextYear" cname="next_year">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCalendar*" name="calendar"/>
-        </parameters>
-      </virtual_method>
       <method name="ClearMarks" cname="gtk_calendar_clear_marks">
         <return-type type="void"/>
       </method>
@@ -2141,14 +2084,6 @@
           <parameter type="const-gchar*" name="new_text"/>
         </parameters>
       </signal>
-      <virtual_method name="Edited" cname="edited">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCellRendererText*" name="cell_renderer_text"/>
-          <parameter type="const-gchar*" name="path"/>
-          <parameter type="const-gchar*" name="new_text"/>
-        </parameters>
-      </virtual_method>
       <method name="GetType" cname="gtk_cell_renderer_text_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -2175,13 +2110,6 @@
           <parameter type="const-gchar*" name="path"/>
         </parameters>
       </signal>
-      <virtual_method name="Toggled" cname="toggled">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCellRendererToggle*" name="cell_renderer_toggle"/>
-          <parameter type="const-gchar*" name="path"/>
-        </parameters>
-      </virtual_method>
       <method name="GetActive" cname="gtk_cell_renderer_toggle_get_active">
         <return-type type="gboolean"/>
       </method>
@@ -2240,10 +2168,11 @@
           <parameter type="GtkCheckMenuItem*" name="check_menu_item"/>
         </parameters>
       </signal>
-      <virtual_method name="Toggled" cname="toggled">
+      <virtual_method name="DrawIndicator" cname="draw_indicator">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkCheckMenuItem*" name="check_menu_item"/>
+          <parameter type="GdkRectangle*" name="area"/>
         </parameters>
       </virtual_method>
       <method name="GetActive" cname="gtk_check_menu_item_get_active">
@@ -2375,12 +2304,6 @@
           <parameter type="GtkColorSelection*" name="color_selection"/>
         </parameters>
       </signal>
-      <virtual_method name="ColorChanged" cname="color_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkColorSelection*" name="color_selection"/>
-        </parameters>
-      </virtual_method>
       <method name="GetCurrentAlpha" cname="gtk_color_selection_get_current_alpha">
         <return-type type="guint16"/>
       </method>
@@ -2593,24 +2516,13 @@
           <parameter type="GtkWidget*" name="widget"/>
         </parameters>
       </signal>
-      <virtual_method name="Add" cname="add">
+      <virtual_method name="Forall" cname="forall">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkContainer*" name="container"/>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="CheckResize" cname="check_resize">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkContainer*" name="container"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SetFocusChild" cname="set_focus_child">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkContainer*" name="container"/>
-          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="gboolean" name="include_internals"/>
+          <parameter type="GtkCallback" name="callback"/>
+          <parameter type="gpointer" name="callback_data"/>
         </parameters>
       </virtual_method>
       <virtual_method name="CompositeName" cname="composite_name">
@@ -2846,12 +2758,6 @@
           <parameter type="GtkCurve*" name="curve"/>
         </parameters>
       </signal>
-      <virtual_method name="CurveTypeChanged" cname="curve_type_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkCurve*" name="curve"/>
-        </parameters>
-      </virtual_method>
       <method name="GetType" cname="gtk_curve_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -2913,13 +2819,6 @@
           <parameter type="GtkDialog*" name="dialog"/>
         </parameters>
       </signal>
-      <virtual_method name="Response" cname="response">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkDialog*" name="dialog"/>
-          <parameter type="gint" name="response_id"/>
-        </parameters>
-      </virtual_method>
       <method name="AddActionWidget" cname="gtk_dialog_add_action_widget">
         <return-type type="void"/>
         <parameters>
@@ -3103,42 +3002,6 @@
           <parameter type="GtkEntry*" name="entry"/>
         </parameters>
       </signal>
-      <virtual_method name="PopulatePopup" cname="populate_popup">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkEntry*" name="entry"/>
-          <parameter type="GtkMenu*" name="menu"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveCursor" cname="move_cursor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkEntry*" name="entry"/>
-          <parameter type="GtkMovementStep" name="step"/>
-          <parameter type="gint" name="count"/>
-          <parameter type="gboolean" name="extend_selection"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DeleteFromCursor" cname="delete_from_cursor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkEntry*" name="entry"/>
-          <parameter type="GtkDeleteType" name="type"/>
-          <parameter type="gint" name="count"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="CopyClipboard" cname="copy_clipboard">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkEntry*" name="entry"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ToggleOverwrite" cname="toggle_overwrite">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkEntry*" name="entry"/>
-        </parameters>
-      </virtual_method>
       <implements>
         <interface cname="GtkEditable"/>
         <interface cname="GtkCellEditable"/>
@@ -3518,13 +3381,6 @@
           <parameter type="GtkWidget*" name="child"/>
         </parameters>
       </signal>
-      <virtual_method name="ChildAttached" cname="child_attached">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkHandleBox*" name="handle_box"/>
-          <parameter type="GtkWidget*" name="child"/>
-        </parameters>
-      </virtual_method>
       <method name="GetHandlePosition" cname="gtk_handle_box_get_handle_position">
         <return-type type="GtkPositionType"/>
       </method>
@@ -3634,12 +3490,6 @@
           <parameter type="GtkDirectionType" name="type"/>
         </parameters>
       </signal>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkHSV*" name="hsv"/>
-        </parameters>
-      </virtual_method>
       <method name="GetColor" cname="gtk_hsv_get_color">
         <return-type type="void"/>
         <parameters>
@@ -3942,24 +3792,6 @@
           <parameter type="gint" name="n_chars"/>
         </parameters>
       </signal>
-      <virtual_method name="PreeditStart" cname="preedit_start">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkIMContext*" name="context"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="PreeditChanged" cname="preedit_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkIMContext*" name="context"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="RetrieveSurrounding" cname="retrieve_surrounding">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkIMContext*" name="context"/>
-        </parameters>
-      </virtual_method>
       <virtual_method name="SetClientWindow" cname="set_client_window">
         <return-type type="void"/>
         <parameters>
@@ -4121,13 +3953,6 @@
           <parameter type="GdkDevice*" name="device"/>
         </parameters>
       </signal>
-      <virtual_method name="EnableDevice" cname="enable_device">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkInputDialog*" name="inputd"/>
-          <parameter type="GdkDevice*" name="device"/>
-        </parameters>
-      </virtual_method>
       <method name="GetType" cname="gtk_input_dialog_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -4175,18 +4000,6 @@
           <parameter type="GtkItem*" name="item"/>
         </parameters>
       </signal>
-      <virtual_method name="Select" cname="select">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkItem*" name="item"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Toggle" cname="toggle">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkItem*" name="item"/>
-        </parameters>
-      </virtual_method>
       <method name="Deselect" cname="gtk_item_deselect">
         <return-type type="void"/>
       </method>
@@ -4393,22 +4206,6 @@
       <property name="MnemonicWidget" cname="mnemonic_widget" type="GtkWidget" readable="true" writeable="true"/>
       <property name="CursorPosition" cname="cursor_position" type="gint" readable="true"/>
       <property name="SelectionBound" cname="selection_bound" type="gint" readable="true"/>
-      <virtual_method name="MoveCursor" cname="move_cursor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkLabel*" name="label"/>
-          <parameter type="GtkMovementStep" name="step"/>
-          <parameter type="gint" name="count"/>
-          <parameter type="gboolean" name="extend_selection"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="PopulatePopup" cname="populate_popup">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkLabel*" name="label"/>
-          <parameter type="GtkMenu*" name="menu"/>
-        </parameters>
-      </virtual_method>
       <method name="GetAttributes" cname="gtk_label_get_attributes">
         <return-type type="PangoAttrList*"/>
       </method>
@@ -4578,14 +4375,6 @@
           <parameter type="GtkAdjustment*" name="vadjustment"/>
         </parameters>
       </signal>
-      <virtual_method name="SetScrollAdjustments" cname="set_scroll_adjustments">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkLayout*" name="layout"/>
-          <parameter type="GtkAdjustment*" name="hadjustment"/>
-          <parameter type="GtkAdjustment*" name="vadjustment"/>
-        </parameters>
-      </virtual_method>
       <method name="GetHadjustment" cname="gtk_layout_get_hadjustment">
         <return-type type="GtkAdjustment*"/>
       </method>
@@ -4948,19 +4737,6 @@
           <parameter type="gint" name="allocation"/>
         </parameters>
       </signal>
-      <virtual_method name="Activate" cname="activate">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkMenuItem*" name="menu_item"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ToggleSizeRequest" cname="toggle_size_request">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkMenuItem*" name="menu_item"/>
-          <parameter type="gint*" name="requisition"/>
-        </parameters>
-      </virtual_method>
       <method name="Activate" cname="gtk_menu_item_activate">
         <return-type type="void"/>
       </method>
@@ -5068,31 +4844,17 @@
           <parameter type="GtkMenuShell*" name="menu_shell"/>
         </parameters>
       </signal>
-      <virtual_method name="Deactivate" cname="deactivate">
+      <virtual_method name="SelectItem" cname="select_item">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkMenuShell*" name="menu_shell"/>
+          <parameter type="GtkWidget*" name="menu_item"/>
         </parameters>
       </virtual_method>
-      <virtual_method name="MoveCurrent" cname="move_current">
-        <return-type type="void"/>
+      <virtual_method name="GetPopupDelay" cname="get_popup_delay">
+        <return-type type="gint"/>
         <parameters>
           <parameter type="GtkMenuShell*" name="menu_shell"/>
-          <parameter type="GtkMenuDirectionType" name="direction"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Cancel" cname="cancel">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkMenuShell*" name="menu_shell"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Insert" cname="insert">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkMenuShell*" name="menu_shell"/>
-          <parameter type="GtkWidget*" name="child"/>
-          <parameter type="gint" name="position"/>
         </parameters>
       </virtual_method>
       <method name="ActivateItem" cname="gtk_menu_shell_activate_item">
@@ -5272,28 +5034,6 @@
           <parameter type="GtkDirectionType" name="direction"/>
         </parameters>
       </signal>
-      <virtual_method name="SwitchPage" cname="switch_page">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkNotebook*" name="notebook"/>
-          <parameter type="GtkNotebookPage*" name="page"/>
-          <parameter type="guint" name="page_num"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="FocusTab" cname="focus_tab">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkNotebook*" name="notebook"/>
-          <parameter type="GtkNotebookTab" name="type"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveFocusOut" cname="move_focus_out">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkNotebook*" name="notebook"/>
-          <parameter type="GtkDirectionType" name="direction"/>
-        </parameters>
-      </virtual_method>
       <method name="AppendPage" cname="gtk_notebook_append_page">
         <return-type type="void"/>
         <parameters>
@@ -5512,12 +5252,6 @@
           <parameter type="guint" name="arg_id"/>
         </parameters>
       </virtual_method>
-      <virtual_method name="Destroy" cname="destroy">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkObject*" name="object"/>
-        </parameters>
-      </virtual_method>
       <method name="Destroy" cname="gtk_object_destroy">
         <return-type type="void"/>
       </method>
@@ -5547,12 +5281,6 @@
         </parameters>
       </signal>
       <property name="Menu" cname="menu" type="GtkMenu" readable="true" writeable="true"/>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkOptionMenu*" name="option_menu"/>
-        </parameters>
-      </virtual_method>
       <method name="GetHistory" cname="gtk_option_menu_get_history">
         <return-type type="gint"/>
       </method>
@@ -5645,26 +5373,6 @@
           <parameter type="GtkPaned*" name="paned"/>
         </parameters>
       </signal>
-      <virtual_method name="CycleChildFocus" cname="cycle_child_focus">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkPaned*" name="paned"/>
-          <parameter type="gboolean" name="reverse"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveHandle" cname="move_handle">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkPaned*" name="paned"/>
-          <parameter type="GtkScrollType" name="scroll"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="AcceptPosition" cname="accept_position">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkPaned*" name="paned"/>
-        </parameters>
-      </virtual_method>
       <method name="Add1" cname="gtk_paned_add1">
         <return-type type="void"/>
         <parameters>
@@ -5726,12 +5434,6 @@
           <parameter type="GtkPlug*" name="plug"/>
         </parameters>
       </signal>
-      <virtual_method name="Embedded" cname="embedded">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkPlug*" name="plug"/>
-        </parameters>
-      </virtual_method>
       <method name="Construct" cname="gtk_plug_construct">
         <return-type type="void"/>
         <parameters>
@@ -5956,17 +5658,11 @@
       <property name="UpdatePolicy" cname="update_policy" type="GtkUpdateType" readable="true" writeable="true"/>
       <property name="Adjustment" cname="adjustment" type="GtkAdjustment" readable="true" writeable="true" construct-only="true"/>
       <property name="Inverted" cname="inverted" type="gboolean" readable="true" writeable="true"/>
-      <virtual_method name="ValueChanged" cname="value_changed">
+      <virtual_method name="GetRangeBorder" cname="get_range_border">
         <return-type type="void"/>
         <parameters>
           <parameter type="GtkRange*" name="range"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveSlider" cname="move_slider">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkRange*" name="range"/>
-          <parameter type="GtkScrollType" name="scroll"/>
+          <parameter type="GtkBorder*" name="border_"/>
         </parameters>
       </virtual_method>
       <method name="GetAdjustment" cname="gtk_range_get_adjustment">
@@ -6137,11 +5833,10 @@
       <property name="Digits" cname="digits" type="gint" readable="true" writeable="true"/>
       <property name="DrawValue" cname="draw_value" type="gboolean" readable="true" writeable="true"/>
       <property name="ValuePos" cname="value_pos" type="GtkPositionType" readable="true" writeable="true"/>
-      <virtual_method name="FormatValue" cname="format_value">
-        <return-type type="gchar*"/>
+      <virtual_method name="DrawValue" cname="draw_value">
+        <return-type type="void"/>
         <parameters>
           <parameter type="GtkScale*" name="scale"/>
-          <parameter type="gdouble" name="value"/>
         </parameters>
       </virtual_method>
       <method name="GetDigits" cname="gtk_scale_get_digits">
@@ -6211,14 +5906,6 @@
           <parameter type="GtkDirectionType" name="direction"/>
         </parameters>
       </signal>
-      <virtual_method name="ScrollChild" cname="scroll_child">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkScrolledWindow*" name="scrolled_window"/>
-          <parameter type="GtkScrollType" name="scroll"/>
-          <parameter type="gboolean" name="horizontal"/>
-        </parameters>
-      </virtual_method>
       <method name="AddWithViewport" cname="gtk_scrolled_window_add_with_viewport">
         <return-type type="void"/>
         <parameters>
@@ -6423,12 +6110,6 @@
           <parameter type="GtkSocket*" name="socket_"/>
         </parameters>
       </signal>
-      <virtual_method name="PlugAdded" cname="plug_added">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkSocket*" name="socket_"/>
-        </parameters>
-      </virtual_method>
       <method name="AddId" cname="gtk_socket_add_id">
         <return-type type="void"/>
         <parameters>
@@ -6493,19 +6174,6 @@
           <parameter type="GtkScrollType" name="scroll"/>
         </parameters>
       </signal>
-      <virtual_method name="Input" cname="input">
-        <return-type type="gint"/>
-        <parameters>
-          <parameter type="GtkSpinButton*" name="spin_button"/>
-          <parameter type="gdouble*" name="new_value"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ValueChanged" cname="value_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkSpinButton*" name="spin_button"/>
-        </parameters>
-      </virtual_method>
       <implements>
         <interface cname="GtkEditable"/>
       </implements>
@@ -6664,14 +6332,6 @@
           <parameter type="const-gchar*" name="text"/>
         </parameters>
       </signal>
-      <virtual_method name="TextPushed" cname="text_pushed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkStatusbar*" name="statusbar"/>
-          <parameter type="guint" name="context_id"/>
-          <parameter type="const-gchar*" name="text"/>
-        </parameters>
-      </virtual_method>
       <method name="GetContextId" cname="gtk_statusbar_get_context_id">
         <return-type type="guint"/>
         <parameters>
@@ -7206,52 +6866,6 @@
           <parameter type="GtkTextBuffer*" name="buffer"/>
         </parameters>
       </signal>
-      <virtual_method name="InsertText" cname="insert_text">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-          <parameter type="GtkTextIter*" name="pos"/>
-          <parameter type="const-gchar*" name="text"/>
-          <parameter type="gint" name="length"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="InsertChildAnchor" cname="insert_child_anchor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-          <parameter type="GtkTextIter*" name="pos"/>
-          <parameter type="GtkTextChildAnchor*" name="anchor"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MarkSet" cname="mark_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-          <parameter type="const-GtkTextIter*" name="location"/>
-          <parameter type="GtkTextMark*" name="mark"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ApplyTag" cname="apply_tag">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-          <parameter type="GtkTextTag*" name="tag"/>
-          <parameter type="const-GtkTextIter*" name="start_char"/>
-          <parameter type="const-GtkTextIter*" name="end_char"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="BeginUserAction" cname="begin_user_action">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextBuffer*" name="buffer"/>
-        </parameters>
-      </virtual_method>
       <method name="AddSelectionClipboard" cname="gtk_text_buffer_add_selection_clipboard">
         <return-type type="void"/>
         <parameters>
@@ -7733,15 +7347,6 @@
           <parameter type="const-GtkTextIter*" name="iter"/>
         </parameters>
       </signal>
-      <virtual_method name="Event" cname="event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTextTag*" name="tag"/>
-          <parameter type="GObject*" name="event_object"/>
-          <parameter type="GdkEvent*" name="event"/>
-          <parameter type="const-GtkTextIter*" name="iter"/>
-        </parameters>
-      </virtual_method>
       <method name="Event" cname="gtk_text_tag_event">
         <return-type type="gboolean"/>
         <parameters>
@@ -7795,21 +7400,6 @@
           <parameter type="GtkTextTag*" name="tag"/>
         </parameters>
       </signal>
-      <virtual_method name="TagChanged" cname="tag_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextTagTable*" name="table"/>
-          <parameter type="GtkTextTag*" name="tag"/>
-          <parameter type="gboolean" name="size_changed"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="TagRemoved" cname="tag_removed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextTagTable*" name="table"/>
-          <parameter type="GtkTextTag*" name="tag"/>
-        </parameters>
-      </virtual_method>
       <method name="Add" cname="gtk_text_tag_table_add">
         <return-type type="void"/>
         <parameters>
@@ -7986,49 +7576,6 @@
           <parameter type="GtkMenu*" name="menu"/>
         </parameters>
       </signal>
-      <virtual_method name="SetScrollAdjustments" cname="set_scroll_adjustments">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-          <parameter type="GtkAdjustment*" name="hadjustment"/>
-          <parameter type="GtkAdjustment*" name="vadjustment"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveCursor" cname="move_cursor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-          <parameter type="GtkMovementStep" name="step"/>
-          <parameter type="gint" name="count"/>
-          <parameter type="gboolean" name="extend_selection"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SetAnchor" cname="set_anchor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DeleteFromCursor" cname="delete_from_cursor">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-          <parameter type="GtkDeleteType" name="type"/>
-          <parameter type="gint" name="count"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="CopyClipboard" cname="copy_clipboard">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ToggleOverwrite" cname="toggle_overwrite">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextView*" name="text_view"/>
-        </parameters>
-      </virtual_method>
       <method name="AddChildAtAnchor" cname="gtk_text_view_add_child_at_anchor">
         <return-type type="void"/>
         <parameters>
@@ -8355,12 +7902,6 @@
           <parameter type="GtkToggleButton*" name="toggle_button"/>
         </parameters>
       </signal>
-      <virtual_method name="Toggled" cname="toggled">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkToggleButton*" name="toggle_button"/>
-        </parameters>
-      </virtual_method>
       <method name="GetActive" cname="gtk_toggle_button_get_active">
         <return-type type="gboolean"/>
       </method>
@@ -8435,13 +7976,6 @@
       </signal>
       <property name="Orientation" cname="orientation" type="GtkOrientation" readable="true" writeable="true"/>
       <property name="ToolbarStyle" cname="toolbar_style" type="GtkToolbarStyle" readable="true" writeable="true"/>
-      <virtual_method name="OrientationChanged" cname="orientation_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkToolbar*" name="toolbar"/>
-          <parameter type="GtkOrientation" name="orientation"/>
-        </parameters>
-      </virtual_method>
       <method name="AppendElement" cname="gtk_toolbar_append_element">
         <return-type type="GtkWidget*"/>
         <parameters>
@@ -8734,12 +8268,6 @@
           <parameter type="GtkTreeSelection*" name="selection"/>
         </parameters>
       </signal>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreeSelection*" name="selection"/>
-        </parameters>
-      </virtual_method>
       <method name="CountSelectedRows" cname="gtk_tree_selection_count_selected_rows">
         <return-type type="gint"/>
       </method>
@@ -9130,62 +8658,6 @@
           <parameter type="GtkTreeView*" name="tree_view"/>
         </parameters>
       </signal>
-      <virtual_method name="SetScrollAdjustments" cname="set_scroll_adjustments">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-          <parameter type="GtkAdjustment*" name="hadjustment"/>
-          <parameter type="GtkAdjustment*" name="vadjustment"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="TestExpandRow" cname="test_expand_row">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-          <parameter type="GtkTreeIter*" name="iter"/>
-          <parameter type="GtkTreePath*" name="path"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="RowExpanded" cname="row_expanded">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-          <parameter type="GtkTreeIter*" name="iter"/>
-          <parameter type="GtkTreePath*" name="path"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ColumnsChanged" cname="columns_changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveCursor" cname="move_cursor">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-          <parameter type="GtkMovementStep" name="step"/>
-          <parameter type="gint" name="count"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="UnselectAll" cname="unselect_all">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ToggleCursorRow" cname="toggle_cursor_row">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SelectCursorParent" cname="select_cursor_parent">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkTreeView*" name="tree_view"/>
-        </parameters>
-      </virtual_method>
       <method name="AppendColumn" cname="gtk_tree_view_append_column">
         <return-type type="gint"/>
         <parameters>
@@ -9621,12 +9093,6 @@
       <property name="Reorderable" cname="reorderable" type="gboolean" readable="true" writeable="true"/>
       <property name="SortIndicator" cname="sort_indicator" type="gboolean" readable="true" writeable="true"/>
       <property name="SortOrder" cname="sort_order" type="GtkSortType" readable="true" writeable="true"/>
-      <virtual_method name="Clicked" cname="clicked">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTreeViewColumn*" name="tree_column"/>
-        </parameters>
-      </virtual_method>
       <method name="AddAttribute" cname="gtk_tree_view_column_add_attribute">
         <return-type type="void"/>
         <parameters>
@@ -9900,14 +9366,6 @@
           <parameter type="GtkAdjustment*" name="vadjustment"/>
         </parameters>
       </signal>
-      <virtual_method name="SetScrollAdjustments" cname="set_scroll_adjustments">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkViewport*" name="viewport"/>
-          <parameter type="GtkAdjustment*" name="hadjustment"/>
-          <parameter type="GtkAdjustment*" name="vadjustment"/>
-        </parameters>
-      </virtual_method>
       <method name="GetHadjustment" cname="gtk_viewport_get_hadjustment">
         <return-type type="GtkAdjustment*"/>
       </method>
@@ -10454,215 +9912,8 @@
           <parameter type="GParamSpec**" name="pspecs"/>
         </parameters>
       </virtual_method>
-      <virtual_method name="ShowAll" cname="show_all">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
       <virtual_method name="HideAll" cname="hide_all">
         <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Unmap" cname="unmap">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Unrealize" cname="unrealize">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SizeAllocate" cname="size_allocate">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GtkAllocation*" name="allocation"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ParentSet" cname="parent_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GtkWidget*" name="previous_parent"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="StyleSet" cname="style_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GtkStyle*" name="previous_style"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GrabNotify" cname="grab_notify">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="gboolean" name="was_grabbed"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MnemonicActivate" cname="mnemonic_activate">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="gboolean" name="group_cycling"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Focus" cname="focus">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GtkDirectionType" name="direction"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ButtonPressEvent" cname="button_press_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventButton*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ScrollEvent" cname="scroll_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventScroll*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DeleteEvent" cname="delete_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventAny*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ExposeEvent" cname="expose_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventExpose*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="KeyReleaseEvent" cname="key_release_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventKey*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="LeaveNotifyEvent" cname="leave_notify_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventCrossing*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="FocusInEvent" cname="focus_in_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventFocus*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MapEvent" cname="map_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventAny*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="PropertyNotifyEvent" cname="property_notify_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventProperty*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SelectionRequestEvent" cname="selection_request_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventSelection*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ProximityInEvent" cname="proximity_in_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventProximity*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="VisibilityNotifyEvent" cname="visibility_notify_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventVisibility*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="NoExposeEvent" cname="no_expose_event">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkEventAny*" name="event"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="SelectionGet" cname="selection_get">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GtkSelectionData*" name="selection_data"/>
-          <parameter type="guint" name="info"/>
-          <parameter type="guint" name="time_"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DragBegin" cname="drag_begin">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkDragContext*" name="context"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DragDataGet" cname="drag_data_get">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkDragContext*" name="context"/>
-          <parameter type="GtkSelectionData*" name="selection_data"/>
-          <parameter type="guint" name="info"/>
-          <parameter type="guint" name="time_"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DragLeave" cname="drag_leave">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkDragContext*" name="context"/>
-          <parameter type="guint" name="time_"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="DragDrop" cname="drag_drop">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkDragContext*" name="context"/>
-          <parameter type="gint" name="x"/>
-          <parameter type="gint" name="y"/>
-          <parameter type="guint" name="time_"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="PopupMenu" cname="popup_menu">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="GtkWidget*" name="widget"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GetAccessible" cname="get_accessible">
-        <return-type type="AtkObject*"/>
         <parameters>
           <parameter type="GtkWidget*" name="widget"/>
         </parameters>
@@ -11343,26 +10594,6 @@
           <parameter type="GtkWindow*" name="window"/>
         </parameters>
       </signal>
-      <virtual_method name="SetFocus" cname="set_focus">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-          <parameter type="GtkWidget*" name="focus"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="ActivateFocus" cname="activate_focus">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="MoveFocus" cname="move_focus">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-          <parameter type="GtkDirectionType" name="direction"/>
-        </parameters>
-      </virtual_method>
       <method name="ActivateDefault" cname="gtk_window_activate_default">
         <return-type type="gboolean"/>
       </method>
