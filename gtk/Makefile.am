@@ -67,6 +67,7 @@ customs = 				\
 	IconFactory.custom		\
 	IconSet.custom			\
 	IconTheme.custom		\
+	Image.custom			\
 	ImageMenuItem.custom		\
 	Init.custom			\
 	InputDialog.custom		\
