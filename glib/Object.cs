@@ -10,9 +10,17 @@ namespace Glib {
 	using System.Runtime.InteropServices;
 
 	public class Object  {
+		public static Object GetObject(IntPtr o)
+		{
+			if (o == null) throw new ArgumentNullException ();
+			IntPtr obj = g_object_get_data (o, "gobject#-object-manager");
+			if (obj == null) return new Object(o);
+			else return ((GCHandle)obj).Target();
+		}
+                GCHandle gh;
 		public Object(IntPtr o)
 		{
-			Object=o;
+			Object = o;
 		}
 		protected IntPtr _obj;
 
@@ -30,28 +38,16 @@ namespace Glib {
 			}
 		}       
 
-		protected ObjectManager _objectManager;
-
-		private ObjectManager ObjectManager
-		{
-			get
-			{
-				if (_objectManager == null)
-				{
-					IntPtr o = Data["gobject#-object-manager"];
-					if (o == null) _objectManager = new ObjectManager(_obj);
-					else _objectManager = o;
-				}
-				return _objectManager;
-			}
-		}       
+		private EventHandlerList _events;
 		protected EventHandlerList Events
 		{
 			get
 			{
-				return ObjectManager.Events;
+				if (_events != null) return _events;
+				_events = new EventHandlerList ();
 			}
 		}
+
 		[DllImport("gtk-1.3")]
 		static extern IntPtr g_object_get_data (
 					IntPtr object,
@@ -73,6 +69,12 @@ namespace Glib {
 				g_object_set_data (Object, key, value);
 			}
 		}
+		[DllImport("gtk-1.3")]
+		static extern void g_object_set_data_full (
+					IntPtr object,
+					String key,
+					IntPtr data,
+					DestroyNotify destroy );
 
 /*
 
