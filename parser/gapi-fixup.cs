@@ -74,6 +74,22 @@ namespace GtkSharp.Parsing {
 				}
 			}
 
+			XPathNodeIterator move_iter = meta_nav.Select ("//move-node");
+			while (move_iter.MoveNext ()) {
+				string path = move_iter.Current.GetAttribute ("path", "");
+				string parent = move_iter.Current.Value;
+				XPathNodeIterator parent_iter = api_nav.Select (parent);
+				while (parent_iter.MoveNext ()) {
+					XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
+					XPathNodeIterator path_iter = parent_iter.Current.Clone ().Select (path);
+					while (path_iter.MoveNext ()) {
+						XmlNode node = ((IHasXmlNode)path_iter.Current).GetNode ();
+						parent_node.AppendChild (node.Clone ());
+						node.ParentNode.RemoveChild (node);
+					}
+				}
+			}
+
 			api_doc.Save (api_filename);
 			return 0;
 		}
