@@ -1,5 +1,9 @@
 using System;
+using System.Collections;
 using System.Drawing;
+using System.Data;
+using System.Data.SqlClient;
+
 using Gtk;
 using GtkSharp;
 
@@ -12,6 +16,8 @@ class Client {
 	static Entry id_entry = null;
 	static Entry name_entry = null;
 	static Entry address_entry = null;
+	static VBox box = null;
+	static IdConnection conn = null;
 	
 	static void Main ()
 	{
@@ -20,15 +26,14 @@ class Client {
 		window.DeleteEvent += new DeleteEventHandler (Window_Delete);
 		window.DefaultSize = new Size (300, 200);
 
-		VBox box = new VBox (false, 0);
+		box = new VBox (false, 0);
 		window.Add (box);
 
 		toolbar = new Toolbar ();
 		PackToolbar ();
 		box.PackStart (toolbar, false, false, 0);
 
-		tableau = CreateView ();
-		box.PackStart (tableau, false, false, 0);
+		UpdateView ();
 
 		window.ShowAll ();
 		Application.Run ();
@@ -50,7 +55,7 @@ class Client {
 
 		toolbar.AppendItem ("Refresh", "Refresh the view", String.Empty,
 				    new Gtk.Image (Stock.Refresh, IconSize.LargeToolbar),
-				    new SignalFunc (Db_Update), IntPtr.Zero);
+				    new SignalFunc (UpdateView), IntPtr.Zero);
 
 		toolbar.AppendSpace ();		
 
@@ -66,16 +71,30 @@ class Client {
 		args.RetVal = true;
 	}
 
-	static Gtk.Table CreateView ()
+	static void UpdateView ()
 	{
-		Table t = new Gtk.Table (0, 2, true);
-		DrawTitles (t);
-		t.ColSpacings = 10;
+		if (tableau != null)
+			tableau.Destroy ();
 
-		return t;
+		ArrayList dataList = Conn.SelectAll ();
+		
+		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, true);
+		DrawTitles (tableau);
+		tableau.ColSpacings = 10;
+		uint i = 1;
+		foreach (Record r in dataList) {
+			tableau.Attach (new Label (r.ID.ToString ()), 0, 1, i, i + 1);
+			tableau.Attach (new Label (r.Name), 1, 2, i, i + 1);
+			tableau.Attach (new Label (r.Address), 2, 3, i, i + 1);
+			i++;
+		}
+		
+		tableau.Show ();
+		box.PackStart (tableau, false, false, 0);
+		box.ShowAll ();
 	}
 
-	static void DrawTitles (Table t)
+	static void DrawTitles (Gtk.Table t)
 	{
 		Label label = null;
 
@@ -94,11 +113,6 @@ class Client {
 		label.Markup = "<big><b>Address</b></big>";
 		label.UseMarkup = true;
 		t.Attach (label, 0, 3, 0, 1, AttachOptions.Expand, AttachOptions.Expand, 1, 1);
-	}
-
-	static void UpdateView (Record [] records)
-	{
-		
 	}
 
 	static void Db_Insert ()
@@ -123,6 +137,7 @@ class Client {
 		button = Button.NewFromStock (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
+		dialog.Modal = true;
 
 		dialog.ShowAll ();
 	}
@@ -188,11 +203,6 @@ class Client {
 	{
 	}
 
-
-	static void Db_Update ()
-	{
-	}
-
 	static void Quit ()
 	{
 		Application.Quit ();
@@ -200,14 +210,16 @@ class Client {
 
 	static void Insert_Action (object o, EventArgs args)
 	{
-		Console.WriteLine (String.Format ("ID: {0}\nName: {1}\nAddress: {2}",
-						  id_entry.Text, name_entry.Text, address_entry.Text));
+		Conn.Insert (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
+		UpdateView ();
+		dialog.Destroy ();
 	}
 
 	static void Remove_Action (object o, EventArgs args)
 	{
-		Console.WriteLine (String.Format ("ID: {0}\nName: {1}\nAddress: {2}",
-						  id_entry.Text, name_entry.Text, address_entry.Text));
+		Conn.Delete (UInt32.Parse (id_entry.Text));
+		UpdateView ();
+		dialog.Destroy ();
 	}
 
 	static void Dialog_Cancel (object o, EventArgs args)
@@ -215,18 +227,131 @@ class Client {
 		dialog.Destroy ();
 		dialog = null;
 	}
+	
+	static IdConnection Conn
+	{
+		get {
+			if (conn == null)
+				conn = new IdConnection ();
+			return conn;
+		}
+	}
 }
 
 struct Record {
-
-	public int ID;
+	public uint ID;
 	public string Name;
 	public string Address;
 
-	public Record (int i, string s, string t)
+	public Record (uint i, string s, string t)
 	{
 		ID = i;
 		Name = s;
 		Address = t;
 	}
 }
+
+class IdConnection : IDisposable
+{
+	private SqlConnection cnc;
+	private bool disposed;
+
+	public IdConnection ()
+	{
+		cnc = new SqlConnection ();
+		string connectionString = "hostaddr=127.0.0.1;" +
+					  "user=monotest;" +
+					  "password=monotest;" +
+					  "dbname=monotest";
+						  
+		cnc.ConnectionString = connectionString;
+		try {
+			cnc.Open ();
+		} catch (Exception){
+			cnc = null;
+			throw;
+		}
+	}
+
+	public void Insert (uint id, string name, string address)
+	{
+		string insertCmd = String.Format ("INSERT INTO customers VALUES ({0}, '{1}', '{2}')",
+						   id, name.Trim (), address.Trim ());
+		IDbCommand insertCommand = cnc.CreateCommand();
+		insertCommand.CommandText = insertCmd;
+		insertCommand.ExecuteNonQuery ();
+	}
+
+	public void Delete (uint id)
+	{
+		string deleteCmd = String.Format ("DELETE FROM customers WHERE id = {0}", id);
+		IDbCommand deleteCommand = cnc.CreateCommand();
+		deleteCommand.CommandText = deleteCmd;
+		deleteCommand.ExecuteNonQuery ();
+	}
+
+	public bool Update (uint id, string name, string address)
+	{
+		string updateCmd = String.Format ("UPDATE customers SET name = '{1}', address = '{2}' WHERE id = {0}",
+						   id, name.Trim (), address.Trim ());
+		IDbCommand updateCommand = cnc.CreateCommand();
+		updateCommand.CommandText = updateCmd;
+		bool updated = false;
+		return (updateCommand.ExecuteNonQuery () != 0);
+	}
+
+	public ArrayList SelectAll ()
+	{
+		IDbCommand selectCommand = cnc.CreateCommand();
+		string selectCmd = "SELECT id, name, address FROM customers ORDER by id";
+		selectCommand.CommandText = selectCmd;
+		IDataReader reader = selectCommand.ExecuteReader ();
+		return FillDataList (reader);
+	}
+
+	public Record Select (uint id)
+	{
+		IDbCommand selectCommand = cnc.CreateCommand();
+		string selectCmd = "SELECT id, name, address FROM customers WHERE id = " + id;
+		selectCommand.CommandText = selectCmd;
+		IDataReader reader = selectCommand.ExecuteReader ();
+		ArrayList list = FillDataList (reader);
+		return (Record) list [0];
+	}
+
+	private ArrayList FillDataList (IDataReader reader)
+	{
+		ArrayList list = new ArrayList ();
+		while (reader.Read ()) {
+			Record data = new Record (UInt32.Parse (reader.GetValue (0).ToString ()),
+						  (string) reader.GetValue (1),
+						  (string) reader.GetValue (2));
+			list.Add (data);
+		}
+		return list;
+	}
+
+	protected virtual void Dispose (bool exp)
+	{
+		if (!disposed && cnc != null) {
+			disposed = true;
+			try {
+				cnc.Close ();
+			} catch (Exception) {
+			}
+			cnc = null;
+		}
+	}
+
+	public void Dispose ()
+	{
+		Dispose (true);
+		GC.SuppressFinalize (this);
+	}
+
+	~IdConnection ()
+	{
+		Dispose (false);
+	}
+}
+
