@@ -184,8 +184,11 @@ namespace GtkSharp.Generation {
 				Console.Write("Interface property detected ");
 				Statistics.ThrottledCount++;
 				return true;
-			} else if (table.IsObject(c_type)) {
-				v_type = "GLib.Object";
+			// FIXME: This will cause InvalidCastExceptions but
+			// it's commented out to help expose a compiler bug
+			//
+			// } else if (table.IsObject(c_type)) {
+			// 	v_type = "GLib.Object";
 			}
 			
 			if (cs_type == "") {
@@ -231,7 +234,7 @@ namespace GtkSharp.Generation {
 		public bool GenSignal (XmlElement sig, SymbolTable table, StreamWriter sw, out String name)
 		{
 			String cname = "\"" + sig.GetAttribute("cname") + "\"";
-			name = sig.GetAttribute("name") + "EventHandler";
+			name = sig.GetAttribute("name");
 
 			String marsh = SignalHandler.GetName(sig, table);
 			if (marsh == "") {
