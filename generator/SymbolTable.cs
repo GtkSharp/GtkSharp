@@ -42,7 +42,6 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("guint1", "bool");
 			simple_types.Add ("gpointer", "System.IntPtr");
 			simple_types.Add ("guchar", "byte");
-			simple_types.Add ("GValue", "GLib.Value");
 			simple_types.Add ("GtkType", "int");
 			simple_types.Add ("long", "long");
 			simple_types.Add ("gulong", "ulong");
@@ -78,6 +77,7 @@ namespace GtkSharp.Generation {
 			manually_wrapped_types = new Hashtable ();
 			manually_wrapped_types.Add ("GdkEvent", "Gdk.Event");
 			manually_wrapped_types.Add ("GSList", "GLib.SList");
+			manually_wrapped_types.Add ("GValue", "GLib.Value");
 
 			dlls = new Hashtable();
 			dlls.Add("Pango", "pango-1.0");
@@ -154,6 +154,8 @@ namespace GtkSharp.Generation {
 					return "new GLib.SList (" + val + ")";
 				} else if (c_type == "GdkEvent") {
 					return "new Gdk.Event (" + val + ")";
+				} else if (c_type == "GValue") {
+					return "new GLib.Value (" + val + ")";
 				} else {
 					return "(" + GetCSType (c_type) + ") GLib.Object.GetObject(" + val + ")";
 				}
