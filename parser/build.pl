@@ -12,7 +12,7 @@ unlink ($file);
 	  "libgnome-2.0.1/libgnome" => "Gnome:libgnome-2.so.0",
 	  "libgnomecanvas-2.0.1/libgnomecanvas" => "Gnome:libgnomecanvas-2.so.0",
 	   "libgnomeui-2.0.1/libgnomeui" => "Gnome:libgnomeui-2.so.0",
-	   "gtkhtml/src" => "Gtk:libgtkhtml-2.0.so.0");
+	   "gtkhtml/src" => "Gtk:libgtkhtml-3.0.so.0");
 
 foreach $dir (keys %srcs) {
 	($ns, $lib) = split (/:/, $srcs{$dir});
