@@ -132,7 +132,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine(cbname + "(" + pinv + ", int key)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\tif (!_Instances.Contains(key))");
-			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unexpected signal key\");");
+			sw.WriteLine("\t\t\t\tthrow new Exception(\"Unexpected signal key \" + key);");
 			sw.WriteLine();
 			sw.WriteLine("\t\t\t" + sname + " inst = (" + sname + ") _Instances[key];");
 			if ((s_ret == "void") && (parms.Count == 1)) {
