@@ -20,28 +20,57 @@ namespace Gtk {
 		}
 		
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_init (int argc, IntPtr argv);
+		static extern void gtk_init (ref int argc, ref IntPtr argv);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_init_check (ref int argc, ref IntPtr argv);
 
 		public static void Init ()
 		{
-			gtk_init (0, new IntPtr(0));
+			IntPtr argv = new IntPtr(0);
+			int argc = 0;
+
+			gtk_init (ref argc, ref argv);
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_init (ref int argc, ref String[] argv);
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern bool gtk_init_check (ref int argc, ref String[] argv);
-
-		public static void Init (ref string[] args)
+		static bool do_init (string progname, ref string[] args, bool check)
 		{
-			int argc = args.Length;
-			gtk_init (ref argc, ref args);
+			bool res = false;
+			string[] progargs = new string[args.Length + 1];
+
+			progargs[0] = progname;
+			args.CopyTo (progargs, 1);
+
+			IntPtr buf = GLibSharp.Marshaller.ArgvToArrayPtr (progargs);
+			int argc = progargs.Length;
+
+			if (check)
+				res = gtk_init_check (ref argc, ref buf);
+			else
+				gtk_init (ref argc, ref buf);
+
+			// copy back the resulting argv, minus argv[0], which we're
+			// not interested in.
+
+			if (argc == 0)
+				args = new string[0];
+			else {
+				progargs = GLibSharp.Marshaller.ArrayPtrToArgv (buf, argc);
+				args = new string[argc - 1];
+				Array.Copy (progargs, 1, args, 0, argc - 1);
+			}
+
+			return res;
 		}
 
-		public static bool InitCheck (ref string[] args)
+		public static void Init (string progname, ref string[] args)
 		{
-			int argc = args.Length;
-			return gtk_init_check (ref argc, ref args);
+			do_init (progname, ref args, false);
+		}
+
+		public static bool InitCheck (string progname, ref string[] args)
+		{
+			return do_init (progname, ref args, true);
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]

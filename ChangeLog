@@ -1,3 +1,15 @@
+2004-01-18  Peter Williams  <peter@newton.cx>
+
+	* glib/Marshaller.cs (ArrayPtrToArgv, ArgvToArrayPtr): new
+	functions for marshalling and unmarshalling string arrays 
+	to/from char **. Not pretty, but lets us call gtk_init()
+	in Gtk.
+
+	* gtk/Application.cs (do_init): New helper function to handle
+	passing args to Gtk. Uses above functions.
+	(Init): Use do_init, take a new progname parameter.
+	(InitCheck): Same.
+
 2004-01-18  Mike Kestner  <mkestner@ximian.com>
 
 	* gtk/Gtk.metadata : mark TreeSelection.GetSelectedRows return
