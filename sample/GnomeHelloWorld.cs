@@ -57,58 +57,59 @@ namespace GtkSamples {
 							     entry.desc);
 			}
 
-			icons.IconSelected += new EventHandler (icon_selected_cb);
+			icons.IconSelected += new IconSelectedHandler (icon_selected_cb);
 
 			return icons;
 		}
 
-		Gtk.Widget CreateMenus ()
+		Gtk.MenuBar CreateMenus ()
 		{
+			AccelGroup group = new AccelGroup ();
 			MenuBar bar = new MenuBar ();
 			
 			Menu file_menu = new Menu ();
 			MenuItem file_menu_item = new MenuItem ("_File");
 			file_menu_item.Submenu = file_menu;
 			
-			MenuItem file_exit = new MenuItem ("E_xit");
+			ImageMenuItem file_exit = new ImageMenuItem (Gtk.Stock.Quit, group);
 			file_exit.Activated += new EventHandler (exit_cb);
 			file_menu.Append (file_exit);
 			bar.Append (file_menu_item);
 
 			Menu help_menu = new Menu ();
-			MenuItem help_menu_item = new MenuItem ("_Help");
+			ImageMenuItem help_menu_item = new ImageMenuItem (Gtk.Stock.Help, group);
 			help_menu_item.Submenu = help_menu;
 			
-			MenuItem file_help = new MenuItem ("_About");
+			ImageMenuItem file_help = new ImageMenuItem (Gnome.Stock.About, group);
 			file_help.Activated += new EventHandler (about_cb);
 			help_menu.Append (file_help);
 			bar.Append (help_menu_item);
+			bar.ShowAll ();
 
 			return bar;
 		}
 
 		public Gtk.Window CreateWindow ()
 		{
-			Gtk.Window win = new Gtk.Window ("Gnome# Hello World");
+			Gnome.App win = new Gnome.App ("gnome-hello-world", "Gnome# Hello World");
 			win.DeleteEvent += new EventHandler (Window_Delete);
 
+			win.Menus = CreateMenus ();
+			
 			VBox vbox = new VBox (false, 0);
-			vbox.PackStart (CreateMenus (), false, false, 0);
 			vbox.PackStart (new Label ("The following demos are available.\nTo run a demo, double click on its icon."), false, false, 4);
 			vbox.PackStart (CreateList (), true, true, 4);
+			win.Contents = vbox;
 
-			win.DefaultSize = new Size (250, 130);
-			win.Add (vbox);
+			win.DefaultSize = new Size (250, 200);
 
 			return win;
 		}
 	
 		public static int Main (string[] args)
 		{
-			/* FIXME: Broken params support in mcs, should be fixed soonish */
-			object[] props = new object[0];
 			Program kit = new Program ("gnome-hello-world", "0.0.1", Modules.UI,
-												args, props);
+												args);
 			
 			GnomeHelloWorld hello = new GnomeHelloWorld ();
 			Window win = hello.CreateWindow ();
@@ -126,7 +127,6 @@ namespace GtkSamples {
 		
 		static void exit_cb (object o, EventArgs args)
 		{
-			Console.WriteLine ("hi {0}", Gnome.Program.Get ().AppId);
 			Application.Quit ();
 		}
 		
@@ -150,11 +150,10 @@ namespace GtkSamples {
 		[DllImport("glib-2.0")]
 		static extern bool g_spawn_command_line_async (string command, IntPtr err);
 		
-		void icon_selected_cb (object obj, EventArgs args)
+		void icon_selected_cb (object obj, IconSelectedArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
-			int idx = (int) sa.Args[0];
-			Event ev = (Event) sa.Args[1];
+			int idx = args.Num;
+			Event ev = args.Event;
 
 			if (ev.IsValid && ev.Type == EventType.TwoButtonPress) {
 				g_spawn_command_line_async ("mono " + entries[idx].program, IntPtr.Zero); 

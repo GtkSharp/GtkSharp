@@ -111,14 +111,16 @@ namespace GtkSharp.Generation {
 		protected bool GetFieldInfo (XmlElement field, out string type, out string name)
 		{
 			name = "";
-			if (IsBit (field))
+			string c_type = field.GetAttribute ("type");
+			type = SymbolTable.GetCSType (c_type);
+			if (IsBit (field)) {
 				type = "uint";
-			else if (IsPointer (field)) {
+			} else if (IsPointer (field) && type != "string") {
 				type = "IntPtr";
 				name = "_";
+			} else if (SymbolTable.IsCallback (c_type)) {
+				type = "IntPtr";
 			} else {
-				string c_type = field.GetAttribute ("type");
-				type = SymbolTable.GetCSType (c_type);
 				if (type == "") {
 					Console.WriteLine ("Field has unknown Type {0}", c_type);
 					Statistics.ThrottledCount++;
