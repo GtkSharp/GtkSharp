@@ -18,8 +18,8 @@
 
 
 %usings = (
-	'Gdk', "System,System.Runtime.InteropServices,GLib",
-	'Gtk', "System,System.Runtime.InteropServices,GLib,Gdk");
+	'Gdk', "System,System.Collections,System.Runtime.InteropServices,GLib",
+	'Gtk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk");
 
 `mkdir -p ../gdk/generated`;
 `mkdir -p ../gtk/generated`;
@@ -44,7 +44,7 @@ while ($def = get_def()) {
 		$objects{$cname} = $def;
 		$maptypes{$cname} = $name;
 		$marshaltypes{$cname} = "IntPtr";
-	} elsif ($def =~ /^\(define-(prop|event|method)/) {
+	} elsif ($def =~ /^\(define-(prop|signal|method)/) {
 		$def =~ /of-object "(\w+)"/;
 		$cname=$1;
 		$def =~ s/\n\s*//g;
@@ -226,14 +226,14 @@ sub gen_object
 	$dir = "../" . lc ($namespace = $1) . "/generated";
 
 	%props = ();
-	%events = ();
+	%signals = ();
 	%methods = ();
 	@ctors = ();
 	foreach $def (@defs) {
 		if ($def =~ /define-property (\w+)/) {
 			$props{StudCaps($1)} = $def;
-		} elsif ($def =~ /define-event (\w+)/) {
-			$events{StudCaps($1)} = $def;
+		} elsif ($def =~ /define-signal (\w+)/) {
+			$signals{StudCaps($1)} = $def;
 		} elsif ($def =~ /define-method (\w+)/) {
 			$methods{StudCaps($1)} = $def;
 		} elsif ($def =~ /is-constructor-of/) {
@@ -278,9 +278,21 @@ sub gen_object
 		print OUTFILE gen_prop ($key, $props{$key}, "gtk-1.3.dll");
 	}
 
+	if (%signals) {
+		print OUTFILE "\t\tprivate Hashtable Signals = new Hashtable ();\n\n";
+	}
+
+	foreach $key (sort (keys (%signals))) {
+		print OUTFILE gen_signal ($key, $signals{$key}, "gtk-1.3.dll");
+	}
+
 	foreach $key (sort (keys (%methods))) {
 		next if (($key =~ /^(Get|Set)(\w+)/) && exists($props{$2}));
-		print OUTFILE gen_method ($key, $methods{$key}, "gtk-1.3.dll");
+		my $mod = "";
+		if (exists($signals{$key})) {
+			$mod = "Emit";
+		}
+		print OUTFILE gen_method ("$mod$key", $methods{$key}, "gtk-1.3.dll");
 	}
 
 	$custom = "../" . lc ($namespace) . "/$typename.custom";
@@ -290,7 +302,46 @@ sub gen_object
 	print "done\n";
 }
 
-sub gen_prop ()
+sub gen_signal
+{
+	my ($name, $def, $dll) = @_;
+	my ($cname, @plist, $ret, $sret, $mret, $code);
+
+	$def =~ /define-signal (\w+)/;
+	$cname = "\"$1\"";
+
+	$def =~ /return-type \"(\w+)\"/;
+	$ret = $1;
+
+	$def =~ /parameters\s*'\((.*)\)\)\)/;
+	@plist = split(/\)'\(/, $1);
+
+	if (($ret eq "none") && (@plist == 1)) {
+		$marsh = "SimpleSignal";
+	} elsif (($ret eq "gboolean") && (@plist == 2) && 
+		 ($plist[1] =~ /^\"GdkEvent\*\"/)) {
+		$marsh = "SimpleEvent";
+	} else {
+		return "\t\t// FIXME: Need Marshaller for $name event\n\n";
+	}
+
+	$code = "\t\t/// <summary> $name Event </summary>\n";
+	$code .= "\t\t/// <remarks>\n\t\t///\tFIXME: Get some docs.\n";
+	$code .= "\t\t/// </remarks>\n\n";
+	$code .= "\t\tpublic event EventHandler $name {\n";
+	$code .= "\t\t\tadd {\n";
+	$code .= "\t\t\t\tif (Events [$cname] == null)\n";
+	$code .= "\t\t\t\t\tSignals [$cname] = new $marsh (this, RawObject, ";
+	$code .= "$cname, value);\n";
+	$code .= "\t\t\t\tEvents.AddHandler ($cname, value);\n\t\t\t}\n";
+	$code .= "\t\t\tremove {\n";
+	$code .= "\t\t\t\tEvents.RemoveHandler ($cname, value);\n";
+	$code .= "\t\t\t\tif (Events [$cname] == null)\n";
+	$code .= "\t\t\t\t\tSignals.Remove ($cname);\n\t\t\t}\n\t\t}\n\n";
+	return $code;
+}
+
+sub gen_prop
 {
 	my ($name, $def, $dll) = @_;
 	my ($cname, $mode, $sret, $mret, $docs, $code);
