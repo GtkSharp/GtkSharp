@@ -31,4 +31,11 @@ get-source-code:
 	ln -f -s ../gdk/gdkpixbuf.h          gtk+-2.0.5/gdk-pixbuf/gdkpixbuf.h
 	ln -f -s ../gdk/gdkpixbuf-render.c   gtk+-2.0.5/gdk-pixbuf/gdkpixbuf-render.c
  
- 
+distclean:
+	for i in `ls`; do                     \
+	    if test -d $$i; then              \
+	        if test 'CVS' != $$i; then    \
+	            rm -Rf $$i;               \
+	        fi;                           \
+	    fi;                               \
+	done;
