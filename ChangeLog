@@ -1,3 +1,13 @@
+2003-03-11  Miguel de Icaza  <miguel@ximian.com>
+
+	* gtk/Application.cs (CurrentEvent): Property implementing the
+	suggestion from Paolo.
+
+	* glib/Object.cs (Dispose): Destructor might be invoked in a
+	thread, queue the object for destruction using the Gtk idle
+	handler.   We perform the real destruction of the object in the
+	same thread as the Gtk+ main thread.
+
 2003-03-14  Charles Iliya Krempeaux  <charles@reptile.ca>
 
 	* sources/makefile : Added a "distclean" rule, so
@@ -36,6 +46,8 @@
 	created. 
 
 	(InitCheck): new method, wraps gtk_init_check.
+
+	Removed inline docs from here.  Put them on the documen
 
 2003-03-08  Miguel de Icaza  <miguel@ximian.com>
 

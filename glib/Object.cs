@@ -4,7 +4,10 @@
 //	    Mike Kestner <mkestner@speakeasy.net>
 //
 // (c) 2001 Bob Smith and Mike Kestner
-
+//
+// TODO:
+//   Could remove `disposed' for a check if an object is on the dispose_queue_list.
+//
 namespace GLib {
 
 	using System;
@@ -36,10 +39,38 @@ namespace GLib {
 		bool disposed = false;
 		Hashtable Data;
 		static Hashtable Objects = new Hashtable();
+		static Queue PendingDestroys = new Queue ();
+		static bool idle_queued;
 
+		//
+		// The destructor is invoked by a thread
+		//
 		~Object ()
 		{
 			Dispose ();
+		}
+
+		static bool PerformQueuedUnrefs ()
+		{
+			Object [] objects;
+
+			lock (PendingDestroys){
+				objects = new Object [PendingDestroys.Count];
+				PendingDestroys.CopyTo (objects, 0);
+				PendingDestroys.Clear ();
+			}
+			lock (typeof (Object))
+				idle_queued = false;
+
+			foreach (Object o in objects){
+				if (o._obj == IntPtr.Zero)
+					continue;
+				
+				Objects.Remove (o._obj);
+				o.Unref ();
+				o._obj = IntPtr.Zero;
+			}
+			return false;
 		}
 
 		/// <summary>
@@ -57,25 +88,22 @@ namespace GLib {
 			if (disposed)
 				return;
 
-			DisposeNative ();
 			disposed = true;
+			lock (PendingDestroys){
+				PendingDestroys.Enqueue (this);
+				lock (typeof (Object)){
+					if (!idle_queued){
+						Idle.Add (new IdleHandler (PerformQueuedUnrefs));
+						idle_queued = true;
+					}
+				}
+			}
+			GC.SuppressFinalize (this);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_unref (IntPtr raw);
 		
-		protected virtual void DisposeNative ()
-		{
-			if (_obj == IntPtr.Zero)
-				return;
-
-			Objects.Remove (Raw);
-
-			GC.SuppressFinalize (this);
-			g_object_unref (_obj);
-			_obj = IntPtr.Zero;
-		}
-
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_ref (IntPtr raw);
 
@@ -104,6 +132,8 @@ namespace GLib {
 		///   Decreases the reference count on the native object.
 		///   This method is used by generated classes and structs,
 		///   and should not be used in user code.
+		///
+		///   This method should not be invoked by a thread.
 		/// </remarks>
 		public virtual void Unref ()
 		{
