@@ -113,12 +113,11 @@ namespace GLib {
 		[DllImport("gobject-2.0",
 			   CallingConvention=CallingConvention.Cdecl)]
 		static extern void g_value_set_string (IntPtr val,
-						       IntPtr data);
-		public Value (String val) : this ()
+						       string data);
+		public Value (string val) : this ()
 		{
 			g_value_init (_val, TypeFundamentals.TypeString);
-			g_value_set_string (_val, 
-					    Marshal.StringToHGlobalAnsi (val));
+			g_value_set_string (_val, val); 
 		}
 
 		/// <summary>
@@ -193,14 +192,13 @@ namespace GLib {
 
 		[DllImport("gobject-2.0",
 			   CallingConvention=CallingConvention.Cdecl)]
-		static extern IntPtr g_value_get_string (IntPtr val);
+		static extern string g_value_get_string (IntPtr val);
 
 		public static explicit operator String (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return Marshal.PtrToStringAnsi (
-					g_value_get_string (val._val));
+			return g_value_get_string (val._val);
 		}
 
 		/// <summary>
