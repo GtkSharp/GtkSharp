@@ -10,7 +10,6 @@
 $debug=0;
 
 use XML::LibXML;
-use GAPI::Metadata;
 
 if (!$ARGV[2]) {
 	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile> <libname>\n";
@@ -412,11 +411,6 @@ foreach $define (sort (keys (%defines))) {
 	$string_el->setAttribute('name', StudlyCaps($string_name));
 	$string_el->setAttribute('value', $defines{$define});
 }
-
-##############################################################
-# Add metadata
-##############################################################
-GAPI::Metadata::fixup $doc;
 
 ##############################################################
 # Output the tree

@@ -1,5 +1,3 @@
-SUBDIRS = GAPI
-
 assemblydir = $(bindir)
 pkgconfigdir = $(libdir)/pkgconfig
 assembly_DATA = gapi-fixup.exe

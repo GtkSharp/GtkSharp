@@ -10,13 +10,6 @@ namespace GLibSharp {
 	using System.Reflection;
 	using GLib;
 
-	/// <summary>
-	///	Fundamental type converter 
-	/// </summary>
-	///
-	/// <remarks>
-	///  Utilities for converting between TypeFundamentals and System.Type
-	/// </remarks>
 	public class TypeConverter {
 
 		private TypeConverter () {}
