@@ -16,13 +16,21 @@ namespace GtkSharp.Generation {
 		private string libname;
 		private XmlElement elem;
 		private Parameters parms;
+		private bool preferred;
 
+		public bool Preferred {
+			get { return preferred; }
+			set { preferred = value; }
+		}
+		
 		public Ctor (string libname, XmlElement elem) {
 			this.libname = libname;
 			this.elem = elem;
 			XmlElement parms_elem = elem ["parameters"];
 			if (parms_elem != null)
 				parms = new Parameters (parms_elem);
+			if (elem.HasAttribute ("preferred"))
+				preferred = true;
 		}
 
 		public bool Validate ()
@@ -39,6 +47,18 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
+		public void InitClashMap (Hashtable clash_map)
+		{
+			string sigtypes = (parms != null) ? parms.SignatureTypes : "";
+			if (clash_map.ContainsKey (sigtypes)) {
+				int num = (int) clash_map[sigtypes];
+				clash_map[sigtypes] = ++num;
+				Console.WriteLine ("CLASH: {0} {1}", elem.GetAttribute ("cname"), num);
+			}
+			else
+				clash_map[sigtypes] = 0;
+		}
+		
 		public void Generate (StreamWriter sw, Hashtable clash_map)
 		{
 			string sigtypes = "";
@@ -52,12 +72,7 @@ namespace GtkSharp.Generation {
 				sigtypes = parms.SignatureTypes;
 			}
 
-			bool clash = false;
-			if (clash_map.ContainsKey(sigtypes)) {
-				clash = true;
-			} else {
-				clash_map[sigtypes] = elem;
-			}			
+			int clashes = (int) clash_map[sigtypes];
 			
 			string cname = elem.GetAttribute("cname");
 			string name = ((XmlElement)elem.ParentNode).GetAttribute("name");
@@ -71,7 +86,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + isig);
 			sw.WriteLine();
 			
-			if (clash) {
+			if (clashes > 0 && !Preferred) {
 				String mname = cname.Substring(cname.IndexOf("new"));
 				mname = mname.Substring(0,1).ToUpper() + mname.Substring(1);
 				int idx;

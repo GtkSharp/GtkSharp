@@ -38,9 +38,15 @@ namespace GtkSharp.Generation {
 			if (Elem.GetAttribute("type") == "flags") {
 				sw.WriteLine ("\tusing System;");
 				sw.WriteLine ();
-				sw.WriteLine ("\t[Flags]");
 			}
-			
+
+			sw.WriteLine("\t\t/// <summary> " + Name + " enumeration </summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			sw.WriteLine("\t\t/// </remarks>");
+
+			if (Elem.GetAttribute("type") == "flags") 
+				sw.WriteLine ("\t[Flags]");
+				
 			sw.WriteLine ("\tpublic enum " + Name + " {");
 			sw.WriteLine ();
 				
@@ -50,6 +56,11 @@ namespace GtkSharp.Generation {
 				}
 				
 				XmlElement member = (XmlElement) node;
+
+				sw.WriteLine("\t\t/// <summary />");
+				sw.WriteLine("\t\t/// <remarks>");
+				sw.WriteLine("\t\t/// </remarks>");
+
 				sw.Write ("\t\t" + member.GetAttribute("name"));
 				if (member.HasAttribute("value")) {
 					sw.WriteLine (" = " + member.GetAttribute("value") + ",");

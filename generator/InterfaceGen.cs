@@ -21,6 +21,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ();
 
+			sw.WriteLine("\t\t/// <summary> " + Name + " Interface</summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			sw.WriteLine("\t\t/// </remarks>");
+
 			sw.WriteLine ("\tpublic interface " + Name + " : GLib.IWrapper {");
 			sw.WriteLine ();
 			

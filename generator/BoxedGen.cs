@@ -34,6 +34,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
 			
+			sw.WriteLine("\t\t/// <summary> " + Name + " Boxed Struct</summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			sw.WriteLine("\t\t/// </remarks>");
+
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
 			sw.WriteLine ("\tpublic class " + Name + " : GLib.Boxed {");
 			sw.WriteLine ();

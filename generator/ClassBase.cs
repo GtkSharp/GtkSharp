@@ -101,14 +101,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void GenSignals (StreamWriter sw)
+		public void GenSignals (StreamWriter sw, bool gen_docs)
 		{		
 			if (sigs == null)
 				return;
 
 			foreach (Signal sig in sigs.Values) {
 				if (sig.Validate ())
-					sig.Generate (sw);
+					sig.Generate (sw, gen_docs);
 				else
 					Console.WriteLine(" in Object " + Name);
 			}
@@ -135,7 +135,7 @@ namespace GtkSharp.Generation {
 				     (props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
-		public void GenMethods (StreamWriter sw, Hashtable collisions)
+		public void GenMethods (StreamWriter sw, Hashtable collisions, bool gen_docs)
 		{		
 			if (methods == null)
 				return;
@@ -154,7 +154,7 @@ namespace GtkSharp.Generation {
 						method.Name = Name + "." + method.Name;
 						method.Protection = "";
 					}
-					method.Generate (sw);
+					method.Generate (sw, gen_docs);
 					if (oname != null)
 					{
 						method.Name = oname;

@@ -40,6 +40,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
 			
+			sw.WriteLine("\t\t/// <summary> " + Name + " Struct </summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			sw.WriteLine("\t\t/// </remarks>");
+
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
 			sw.WriteLine ("\tpublic class " + Name + " {");
 			sw.WriteLine ();

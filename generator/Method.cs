@@ -190,6 +190,8 @@ namespace GtkSharp.Generation {
 			if (!Initialize ()) 
 				return;
 
+			GenerateComments (sw);
+
 			if (is_get || is_set)
 			{
 				Method comp = GetComplement ();
@@ -219,6 +221,21 @@ namespace GtkSharp.Generation {
 			Statistics.MethodCount++;
 		}
 
+		void GenerateComments (StreamWriter sw)
+		{
+			string summary, sname;
+			sw.WriteLine();
+			if (is_get || is_set) {
+				summary = "Property";
+				sname = Name.Substring (3);
+			} else {
+				summary = "Method";
+				sname = Name;
+			}
+			sw.WriteLine("\t\t/// <summary> " + sname + " " + summary + " </summary>");
+			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
+		}
+
 		protected void GenerateImport (StreamWriter sw)
 		{
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
@@ -227,6 +244,11 @@ namespace GtkSharp.Generation {
 		}
 
 		public void Generate (StreamWriter sw)
+		{
+			Generate (sw, true);
+		}
+		
+		public void Generate (StreamWriter sw, bool gen_docs)
 		{
 			Method comp = null;
 
@@ -255,12 +277,8 @@ namespace GtkSharp.Generation {
 			if (comp != null && s_ret == comp.parms.AccessorReturnType)
 				comp.GenerateImport (sw);
 			
-			if (!(is_set || is_get))
-			{
-				sw.WriteLine("\t\t/// <summary> " + Name + " Method </summary>");
-				sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
-				sw.WriteLine();
-			}
+			if (gen_docs)
+				GenerateComments (sw);
 
 			sw.Write("\t\t");
 			if (protection != "")

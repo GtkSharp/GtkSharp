@@ -46,21 +46,28 @@ namespace GtkSharp.Generation {
 
 		public void GenerateDecl (StreamWriter sw)
 		{
+			GenComments (sw);
 			if (elem.HasAttribute("new_flag"))
 				sw.Write("new ");
 			sw.WriteLine ("\t\tevent EventHandler " + Name + ";");
 		}
 
-		public void Generate (StreamWriter sw)
+		public void GenComments (StreamWriter sw)
 		{
-			string cname = "\"" + elem.GetAttribute("cname") + "\"";
-			marsh = "GtkSharp." + marsh;
-
+			sw.WriteLine();
 			sw.WriteLine("\t\t/// <summary> " + Name + " Event </summary>");
 			sw.WriteLine("\t\t/// <remarks>");
 			// FIXME: Generate some signal docs
 			sw.WriteLine("\t\t/// </remarks>");
-			sw.WriteLine();
+		}
+		
+		public void Generate (StreamWriter sw, bool gen_docs)
+		{
+			string cname = "\"" + elem.GetAttribute("cname") + "\"";
+			marsh = "GtkSharp." + marsh;
+
+			if (gen_docs)
+				GenComments (sw);
 			sw.Write("\t\tpublic ");
 			if (elem.HasAttribute("new_flag"))
 				sw.Write("new ");

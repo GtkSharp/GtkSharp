@@ -55,6 +55,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
 
+			sw.WriteLine("\t\t/// <summary> " + Name + " Class</summary>");
+			sw.WriteLine("\t\t/// <remarks>");
+			sw.WriteLine("\t\t/// </remarks>");
 			sw.Write ("\tpublic class " + Name);
 			string cs_parent = SymbolTable.GetCSType(Elem.GetAttribute("parent"));
 			if (cs_parent != "")
@@ -84,10 +87,10 @@ namespace GtkSharp.Generation {
 			if (has_sigs)
 			{
 				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-				GenSignals (sw);
+				GenSignals (sw, true);
 			}
 
-			GenMethods (sw, null);
+			GenMethods (sw, null, true);
 			
 			if (interfaces != null) {
 				Hashtable all_methods = new Hashtable ();
@@ -104,8 +107,8 @@ namespace GtkSharp.Generation {
 					
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.GetClassGen (iface);
-					igen.GenMethods (sw, collisions);
-					igen.GenSignals (sw);
+					igen.GenMethods (sw, collisions, false);
+					igen.GenSignals (sw, false);
 				}
 			}
 
@@ -159,13 +162,26 @@ namespace GtkSharp.Generation {
 
 			Hashtable clash_map = new Hashtable();
 
-			if (ctors != null)
+			if (ctors != null) {
+				bool has_preferred = false;
 				foreach (Ctor ctor in ctors) {
-					if (ctor.Validate ())
-						ctor.Generate (sw, clash_map);
+					if (ctor.Validate ()) {
+						ctor.InitClashMap (clash_map);
+						if (ctor.Preferred)
+							has_preferred = true;
+					}
 					else
 						Console.WriteLine(" in Object " + Name);
 				}
+				
+				if (!has_preferred && ctors.Count > 0)
+					((Ctor) ctors[0]).Preferred = true;
+					
+				foreach (Ctor ctor in ctors) {
+					if (ctor.Validate ())
+						ctor.Generate (sw, clash_map);
+				}
+			}
 
 			if (!clash_map.ContainsKey("")) {
 				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
