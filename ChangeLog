@@ -1,3 +1,38 @@
+2003-04-03  Gonzalo Paniagua Javier <gonzalo@ximian.com>
+
+	* generator/CallbackGen.cs: the new generated wrappers have:
+		-(optional) Field of the same type returned by the callback.
+		-A call to RemoveIfNotAlive at the beginning. It returns true,
+		return the dummy field.
+		-Added an object to the ctor signature and pass it to the base
+		class.
+
+	* generator/Ctor.cs: added a Params property.
+
+	* generator/Method.cs: set Static property in Parameters if the method
+	is static.
+
+	* generator/Parameters.cs: added Static property. The call creation of
+	the delegate wrapper (if applicable) uses the new signature. Pass a null
+	as object is the method is static.
+
+	* generator/StructBase.cs: set Static for the parameters of the ctors.
+
+	* glib/DelegateWrapper.cs: the ctor takes an object (the one creating
+	the wrapper or null) and creates a weak reference to it. Store it in
+	a static Hashtable (this way the wrapper itself is not garbage
+	collected).
+	(RemoveIfNotAlive): called from the native delegate callbacks. If the
+	target of the weak reference has been garbage collected, removes itself
+	from the hashtable to let the GC dispose this instance and returns true.
+
+	* gdk/Pixbuf.custom:
+	* gtk/Clipboard.custom:
+	* gtk/GtkSharp.GtkClipboardClearFuncNative.cs:
+	* gtk/GtkSharp.GtkClipboardGetFuncNative.cs:
+	* glade/XML.custom: changed delegate wrappers to match the new
+	signature.
+
 2003-04-04  Lee Mallabone  <gnome@fonicmonkey.net>
 
 	* gdk/Drawable.custom:
