@@ -61,9 +61,9 @@ namespace GLib {
 			}
 		}
 		
-		[DllImport("gtksharp")]
+		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_slist_get_data (IntPtr l);
-		[DllImport("gtksharp")]
+		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_slist_get_next (IntPtr l);
 		
 		public SList (IntPtr raw)
