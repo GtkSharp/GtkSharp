@@ -49,3 +49,18 @@ public void AddAccelerator (string accel_signal, AccelGroup accel_group, AccelKe
 	this.AddAccelerator (accel_signal, accel_group, (uint) accel_key.Key, accel_key.AccelMods, accel_key.AccelFlags);
 
 }
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_widget_set_state (IntPtr raw, int state);
+
+[DllImport("gtksharpglue")]
+static extern int gtksharp_gtk_widget_get_state (IntPtr raw);
+
+public Gtk.StateType State {
+	set {
+		gtk_widget_set_state (Handle, (int) value);
+	}
+	get {
+		return (Gtk.StateType) gtksharp_gtk_widget_get_state (Handle);
+	}
+}
