@@ -71,3 +71,26 @@ public void SetText (string text)
 	gtk_text_buffer_set_text (Handle, text, -1);
 }
 
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, string text, int len, bool default_editable);
+
+public bool InsertInteractive(Gtk.TextIter iter, string text, bool default_editable)
+{
+	return gtk_text_buffer_insert_interactive(Handle, ref iter, text, -1, default_editable);
+}
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern bool gtk_text_buffer_insert_interactive_at_cursor(IntPtr raw, string text, int len, bool default_editable);
+
+public bool InsertInteractiveAtCursor(string text, bool default_editable) 
+{
+	return gtk_text_buffer_insert_interactive_at_cursor(Handle, text, -1, default_editable);
+}
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern void gtk_text_buffer_insert_at_cursor(IntPtr raw, string text, int len);
+
+public void InsertAtCursor(string text) 
+{
+  gtk_text_buffer_insert_at_cursor(Handle, text, -1);
+}
