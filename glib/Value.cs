@@ -291,9 +291,6 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
 		
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_take_boxed (ref Value val, IntPtr data);
-
 		public object Val
 		{
 			get {
@@ -357,7 +354,8 @@ namespace GLib {
 					}
 					buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
 					Marshal.StructureToPtr (value, buf, false);
-					g_value_take_boxed (ref this, buf);
+					g_value_set_boxed (ref this, buf);
+					Marshal.FreeHGlobal (buf);
 				} else
 					throw new Exception ("Unknown type");
 			}
