@@ -14,7 +14,7 @@ RUNTIME=mono
 all: generated-stamp
 
 generated-stamp: $(APIS) ../generator/gapi_codegen.exe
-	$(RUNTIME)../generator/gapi_codegen.exe --generate $(APIS) && touch generated-stamp
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) && touch generated-stamp
 	
 clean:
 
