@@ -22,6 +22,7 @@ namespace GLib {
 	public class Value : IDisposable {
 
 		IntPtr	_val;
+		bool needs_dispose = true;
 
 
 		// Destructor is required since we are allocating unmanaged
@@ -42,7 +43,8 @@ namespace GLib {
 					ManagedValue.Free (g_value_get_boxed (_val)); 
 				}
 			
-				g_free (_val);
+				if (needs_dispose)
+					g_free (_val);
 				_val = IntPtr.Zero; 
 			}
 
@@ -67,6 +69,7 @@ namespace GLib {
 		public Value (IntPtr val, IntPtr dummy)
 		{
 			_val = val;
+			needs_dispose = false;
 		}
 
 		/// <summary>
