@@ -212,7 +212,7 @@ public class BoardPiece : Gnome.CanvasGroup
 		text.FillColor = "black";
 
 		this.Text = text;
-		this.CanvasEvent += new CanvasEventHandler (Piece_Event);
+		this.CanvasEvent += new GnomeSharp.CanvasEventHandler (Piece_Event);
 	}
 
 	public string Color {
@@ -239,7 +239,7 @@ public class BoardPiece : Gnome.CanvasGroup
 		}
 	}
 
-	static void Piece_Event (object o, CanvasEventArgs args)
+	static void Piece_Event (object o, GnomeSharp.CanvasEventArgs args)
 	{
 		BoardPiece piece = (BoardPiece) o;
 		Canvas canvas = piece.Canvas;
