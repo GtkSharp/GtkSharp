@@ -22,47 +22,109 @@ namespace GLib {
 
 		IntPtr	_val;
 
-		// We use g_malloc0 and g_free to put the GValue on the
-		// heap to avoid some marshalling pain.
-		[DllImport("glib-1.3.dll")]
-		static extern IntPtr g_malloc0 (long n_bytes);
+
+		// Destructor is required since we are allocating unmananged
+		// heap resources.
+
 		[DllImport("glib-1.3.dll")]
 		static extern void g_free (IntPtr mem);
 
-		[DllImport("gobject-1.3.dll")]
-		static extern void g_value_init (IntPtr val, 
-						 TypeFundamentals type);
+		~Value ()
+		{
+			g_free (_val);
+		}
+
 		/// <summary>
 		///	Value Constructor
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Constructs a Value from a spectified string.
+		///	Creates an uninitialized Value on the unmanaged heap.
+		///	Use the Init method prior to attempting to assign a
+		///	value to it.
+		/// </remarks>
+
+		[DllImport("glib-1.3.dll")]
+		static extern IntPtr g_malloc0 (long n_bytes);
+
+		public Value ()
+		{
+			_val = g_malloc0 (5 * IntPtr.Size);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified boolean.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_set_boolean (IntPtr val,
+						        bool data);
+		public Value (bool val) : this ()
+		{
+			g_value_init (_val, TypeFundamentals.TypeBoolean);
+			g_value_set_boolean (_val, val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified string.
 		/// </remarks>
 
 		[DllImport("gobject-1.3.dll")]
 		static extern void g_value_set_string (IntPtr val,
 						       String data);
-		[DllImport("gobject-1.3.dll")]
-		static extern void g_value_set_boolean (IntPtr val,
-						        bool data);
-
-		public Value (bool val)
+		public Value (String val) : this ()
 		{
-			_val = g_malloc0 (5 * IntPtr.Size);
-			g_value_init (_val, TypeFundamentals.TypeBoolean);
-			g_value_set_boolean (_val, val);
-		}
-
-		public Value (String str)
-		{
-			_val = g_malloc0 (5 * IntPtr.Size);
 			g_value_init (_val, TypeFundamentals.TypeString);
-			g_value_set_string (_val, str);
+			g_value_set_string (_val, val);
 		}
 
 		/// <summary>
-		///	GetString Method
+		///	Init Method
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Prepares a raw value to hold a specified type.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_init (IntPtr val, 
+						 TypeFundamentals type);
+
+		public void Init (TypeFundamentals type)
+		{
+			g_value_init (_val, type);
+		}
+
+		/// <summary>
+		///	Value to Boolean Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a bool from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	boolean value.  
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern bool g_value_get_boolean (IntPtr val);
+
+		public static explicit operator bool (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_boolean (val._val);
+		}
+
+		/// <summary>
+		///	Value to String Conversion
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -74,22 +136,22 @@ namespace GLib {
 		[DllImport("gobject-1.3.dll")]
 		static extern String g_value_get_string (IntPtr val);
 
-		public String GetString ()
+		public static explicit operator String (Value val)
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return g_value_get_string (_val);
+			return g_value_get_string (val._val);
 		}
 
 		/// <summary>
-		///	RawValue Property
+		///	MarshalAs Property
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Read only. Accesses a pointer to the Raw GValue.
+		///	Read only. Accesses a pointer to the raw GValue.
 		/// </remarks>
 
-		public IntPtr RawValue {
+		public IntPtr MarshalAs {
 			get {
 				return _val;
 			}
