@@ -41,7 +41,7 @@ namespace Gtk {
 			progargs[0] = progname;
 			args.CopyTo (progargs, 1);
 
-			IntPtr buf = GLibSharp.Marshaller.ArgvToArrayPtr (progargs);
+			IntPtr buf = GLib.Marshaller.ArgvToArrayPtr (progargs);
 			int argc = progargs.Length;
 
 			if (check)
@@ -55,7 +55,7 @@ namespace Gtk {
 			if (argc == 0)
 				args = new string[0];
 			else {
-				progargs = GLibSharp.Marshaller.ArrayPtrToArgv (buf, argc);
+				progargs = GLib.Marshaller.ArrayPtrToArgv (buf, argc);
 				args = new string[argc - 1];
 				Array.Copy (progargs, 1, args, 0, argc - 1);
 			}

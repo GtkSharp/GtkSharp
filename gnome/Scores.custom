@@ -1,5 +1,5 @@
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_scores_new(uint n_scores, string names, out float scores, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(GLib.time_t_CustomMarshaler))] System.DateTime times, bool clear);
+		static extern IntPtr gnome_scores_new(uint n_scores, string names, out float scores, IntPtr times, bool clear);
                 
 		public Scores (uint n_scores, string names, out float scores, System.DateTime times, bool clear) : base (IntPtr.Zero)
 		{
@@ -8,5 +8,5 @@
 				scores = Construct (n_scores, names, times, clear);
 				return;
 			}
-			Raw = gnome_scores_new(n_scores, names, out scores, times, clear);
+			Raw = gnome_scores_new(n_scores, names, out scores, GLib.Marshaller.DateTimeTotime_t (times), clear);
 		}

@@ -7,7 +7,6 @@ libglibsharpglue_la_SOURCES = 	\
 	list.c			\
 	object.c		\
 	slist.c			\
-	time_t.c		\
 	type.c			\
 	unichar.c		\
 	value.c			\

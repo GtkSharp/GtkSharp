@@ -90,7 +90,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
 
-			AddType (new CustomMarshalerGen ("time_t", "System.DateTime", "GLib.time_t_CustomMarshaler"));
+			AddType (new TimeTGen ());
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));

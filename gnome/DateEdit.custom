@@ -1,5 +1,5 @@
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_date_edit_new([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(GLib.time_t_CustomMarshaler))] System.DateTime the_time, bool show_time, bool use_24_format);
+		static extern IntPtr gnome_date_edit_new(IntPtr the_time, bool show_time, bool use_24_format);
 
 		public DateEdit () : this (System.DateTime.Now, true, false)
 		{
@@ -20,5 +20,5 @@
 				Construct (the_time, ((show_time) ? DateEditFlags.ShowTime : 0) | ((use_24_format) ? DateEditFlags.Two4Hr : 0));
 				return;
 			}
-			Raw = gnome_date_edit_new(the_time, show_time, use_24_format);
+			Raw = gnome_date_edit_new(GLib.Marshaller.DateTimeTotime_t (the_time), show_time, use_24_format);
 		}

@@ -1,26 +1,17 @@
 // GLibSharp.Marshaller.cs : Marshalling utils 
 //
 // Author: Rachel Hestilow <rachel@nullenvoid.com>
+//         Mike Kestner  <mkestner@ximian.com>
 //
-// (c) 2002, 2003 Rachel Hestilow
+// Copyright (c) 2002, 2003 Rachel Hestilow
+// Copyright (c) 2004 Novell, Inc.
 
-namespace GLibSharp {
+namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 	
-	/// <summary>
-	///  Marshalling utilities 
-	/// </summary>
-	///
-	/// <remarks>
-	///  Utility class for internal wrapper use
-	/// </remarks>
-	
 	public class Marshaller {
 
-		//
-		// Do not allow instances of this
-		//
 		private Marshaller () {}
 		
 		[DllImport("libglib-2.0-0.dll")]
@@ -152,6 +143,18 @@ namespace GLibSharp {
 				return unmarshal_64 (array, argc);
 
 			return unmarshal_32 (array, argc);
+		}
+
+		static DateTime local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
+
+		public static IntPtr DateTimeTotime_t (DateTime time)
+		{
+			return new IntPtr (((int)time.Subtract (local_epoch).TotalSeconds));
+		}
+
+		public static DateTime time_tToDateTime (IntPtr time_t)
+		{
+			return local_epoch.AddSeconds ((int)time_t);
 		}
 	}
 }

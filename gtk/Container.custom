@@ -50,19 +50,48 @@ public Widget[] FocusChain {
 }
 
 [DllImport("gtksharpglue")]
-static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, Gtk.Callback cb, IntPtr data);
+static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data);
 
 [DllImport("gtksharpglue")]
 static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallDelegate cb);
 
-delegate void ForallDelegate (IntPtr container, bool include_internals, Gtk.Callback cb, IntPtr data);
+delegate void ForallDelegate (IntPtr container, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data);
 
 static ForallDelegate ForallCallback;
 
-static void Forall_cb (IntPtr container, bool include_internals, Gtk.Callback cb, IntPtr data)
+public struct CallbackInvoker {
+	GtkSharp.CallbackNative cb;
+	IntPtr data;
+
+	internal CallbackInvoker (GtkSharp.CallbackNative cb, IntPtr data)
+	{
+		this.cb = cb;
+		this.data = data;
+	}
+
+	internal IntPtr Data {
+		get {
+			return data;
+		}
+	}
+
+	internal GtkSharp.CallbackNative Delegate {
+		get {
+			return cb;
+		}
+	}
+
+	public void Invoke (Widget w)
+	{
+		cb (w.Handle, data);
+	}
+}
+
+static void Forall_cb (IntPtr container, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data)
 {
 	Container obj = GLib.Object.GetObject (container, false) as Container;
-	obj.OnForall (include_internals, cb, data);
+	CallbackInvoker invoker = new CallbackInvoker (cb, data);
+	obj.OnForall (include_internals, invoker);
 }
 
 protected static void OverrideForall (GLib.GType gtype)
@@ -72,8 +101,8 @@ protected static void OverrideForall (GLib.GType gtype)
 	gtksharp_container_override_forall (gtype, ForallCallback);
 }
 
-protected virtual void OnForall (bool include_internals, Gtk.Callback cb, IntPtr data)
+protected virtual void OnForall (bool include_internals, CallbackInvoker invoker)
 {
-	gtksharp_container_base_forall (Handle, include_internals, cb, data);
+	gtksharp_container_base_forall (Handle, include_internals, invoker.Delegate, invoker.Data);
 }
 

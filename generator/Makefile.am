@@ -43,6 +43,7 @@ sources = 				\
 	StructBase.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\
+	TimeTGen.cs			\
 	VMSignature.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
