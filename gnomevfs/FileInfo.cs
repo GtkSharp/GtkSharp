@@ -53,6 +53,12 @@ namespace Gnome.Vfs {
 		[DllImport ("gnomevfs-2")]
 		extern static void gnome_vfs_file_info_unref (ref FileInfoNative info);
 
+		internal FileInfo (FileInfoNative info)
+		{
+			this.info = info;
+			uri = null;
+		}
+
 		public FileInfo (string uri) : this (uri, FileInfoOptions.Default) {}
 
 		public FileInfo (string uri, FileInfoOptions options) : this (new Uri (uri), options) {}
