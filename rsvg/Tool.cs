@@ -13,7 +13,7 @@
 
     namespace Rsvg {
 
-        class Tool
+        public class Tool
         {
 
 
