@@ -151,6 +151,10 @@ namespace GtkSamples {
 		void icon_selected_cb (object obj, Gnome.IconSelectedArgs args)
 		{
 			int idx = args.Num;
+
+			if (args.Event == null)
+				return;
+
 			EventButton ev = new EventButton (args.Event.Handle);
 
 			if (ev.Type == EventType.TwoButtonPress && ev.Button == 1) {
