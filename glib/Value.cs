@@ -40,12 +40,29 @@ namespace GLib {
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_value_create(TypeFundamentals type);
 
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_value_create_from_property(IntPtr obj, string name);
+
 		// Constructor to wrap a raw GValue ref.  We need the dummy param
 		// to distinguish this ctor from the TypePointer ctor.
 
 		public Value (IntPtr val, IntPtr dummy)
 		{
 			_val = val;
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value corresponding to the type of the
+		///	specified property.
+		/// </remarks>
+
+		public Value (IntPtr obj, string prop_name)
+		{
+			_val = gtksharp_value_create_from_property (obj, prop_name);
 		}
 
 		/// <summary>

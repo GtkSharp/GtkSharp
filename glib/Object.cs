@@ -165,10 +165,10 @@ namespace GLib {
 		///	Accesses arbitrary data storage on the Object.
 		/// </remarks>
 
-		public object GetData (String key)
+		public object GetData (string key)
 		{
 			if (Data == null)
-				return null;
+				return String.Empty;
 
 			return Data [key];
 		}
@@ -181,7 +181,7 @@ namespace GLib {
 		///	Stores arbitrary data on the Object.
 		/// </remarks>
 
-		public void SetData (String key, object val)
+		public void SetData (string key, object val)
 		{
 			if (Data == null)
 				Data = new Hashtable ();
@@ -199,13 +199,11 @@ namespace GLib {
 
 		[DllImport("gobject-2.0")]
 		static extern void g_object_get_property (
-				IntPtr obj, string name, out IntPtr val);
+				IntPtr obj, string name, IntPtr val);
 
-		public void GetProperty (String name, out GLib.Value val)
+		public void GetProperty (String name, GLib.Value val)
 		{
-			IntPtr v;
-			g_object_get_property (Raw, name, out v);
-			val =  new GLib.Value (v, v);
+			g_object_get_property (Raw, name, val.Handle);
 		}
 
 		/// <summary>

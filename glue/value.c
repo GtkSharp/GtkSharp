@@ -15,4 +15,11 @@ gtksharp_value_create (GType g_type)
 	return val;
 }
 
+GValue *
+gtksharp_value_create_from_property (GObject *obj, const gchar* name)
+{
+	GParamSpec *spec = g_object_class_find_property (
+				G_OBJECT_GET_CLASS (obj), name);
+	return gtksharp_value_create (spec->value_type);
+}
 

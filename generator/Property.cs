@@ -51,6 +51,7 @@ namespace GtkSharp.Generation {
 			if (name == parent.GetAttribute("name")) {
 				name += "Prop";
 			}
+			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 
 			string v_type = "";
 			if (SymbolTable.IsEnum(c_type)) {
@@ -71,8 +72,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
 			if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
-				sw.WriteLine("\t\t\t\tGLib.Value val;");
-				sw.WriteLine("\t\t\t\tGetProperty(\"" + elem.GetAttribute("cname") + "\", out val);");
+				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
+				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
 				sw.Write("\t\t\t\treturn (" + cs_type + ") ");
 				if (v_type != "") {
 					sw.Write("(" + v_type + ") ");
@@ -83,7 +84,7 @@ namespace GtkSharp.Generation {
 
 			if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
-				sw.Write("\t\t\t\tSetProperty(\"" + elem.GetAttribute("cname") + "\", new GLib.Value(");
+				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
 				if (v_type != "") {
 					sw.Write("(" + v_type + ") ");
 				}
