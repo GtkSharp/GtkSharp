@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="Rsvg" library="rsvg-2">
+    <enum name="DefType" cname="RsvgDefType" type="enum">
+      <member cname="RSVG_DEF_LINGRAD" name="Lingrad"/>
+      <member cname="RSVG_DEF_RADGRAD" name="Radgrad"/>
+    </enum>
+    <enum name="Error" cname="RsvgError" type="enum">
+      <member cname="RSVG_ERROR_FAILED" name="Failed"/>
+    </enum>
+    <callback name="SizeFunc" cname="RsvgSizeFunc">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="gint*" name="width"/>
+        <parameter type="gint*" name="height"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <struct name="BpathDef" cname="RsvgBpathDef">
+      <field cname="ref_count" type="int"/>
+      <field cname="bpath" type="ArtBpath*"/>
+      <field cname="n_bpath" type="int"/>
+      <field cname="n_bpath_max" type="int"/>
+      <field cname="moveto_idx" type="int"/>
+      <method name="ArtFinish" cname="rsvg_bpath_def_art_finish">
+        <return-type type="void"/>
+      </method>
+      <method name="Closepath" cname="rsvg_bpath_def_closepath">
+        <return-type type="void"/>
+      </method>
+      <method name="Curveto" cname="rsvg_bpath_def_curveto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x1"/>
+          <parameter type="double" name="y1"/>
+          <parameter type="double" name="x2"/>
+          <parameter type="double" name="y2"/>
+          <parameter type="double" name="x3"/>
+          <parameter type="double" name="y3"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="rsvg_bpath_def_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Lineto" cname="rsvg_bpath_def_lineto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <method name="Moveto" cname="rsvg_bpath_def_moveto">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="x"/>
+          <parameter type="double" name="y"/>
+        </parameters>
+      </method>
+      <constructor cname="rsvg_bpath_def_new"/>
+      <constructor cname="rsvg_bpath_def_new_from">
+        <parameters>
+          <parameter type="ArtBpath*" name="bpath"/>
+        </parameters>
+      </constructor>
+      <method name="Ref" cname="rsvg_bpath_def_ref">
+        <return-type type="RsvgBpathDef*"/>
+      </method>
+    </struct>
+    <struct name="DefVal" cname="RsvgDefVal">
+      <field cname="type" type="RsvgDefType"/>
+      <callback cname="free">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgDefVal*" name="self"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="Defs" cname="RsvgDefs" opaque="true">
+      <method name="Free" cname="rsvg_defs_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Lookup" cname="rsvg_defs_lookup">
+        <return-type type="RsvgDefVal*"/>
+        <parameters>
+          <parameter type="const-char*" name="name"/>
+        </parameters>
+      </method>
+      <constructor cname="rsvg_defs_new"/>
+      <method name="Set" cname="rsvg_defs_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="name"/>
+          <parameter type="RsvgDefVal*" name="val"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GradientStop" cname="RsvgGradientStop">
+      <field cname="offset" type="double"/>
+      <field cname="rgba" type="guint32"/>
+    </struct>
+    <struct name="GradientStops" cname="RsvgGradientStops">
+      <field cname="n_stop" type="int"/>
+      <field cname="stop" type="RsvgGradientStop*"/>
+    </struct>
+    <struct name="Handle" cname="RsvgHandle" opaque="true">
+      <method name="Close" cname="rsvg_handle_close">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="rsvg_handle_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetPixbuf" cname="rsvg_handle_get_pixbuf">
+        <return-type type="GdkPixbuf*"/>
+      </method>
+      <constructor cname="rsvg_handle_new"/>
+      <method name="SetSizeCallback" cname="rsvg_handle_set_size_callback">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="RsvgSizeFunc" name="size_func"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="GDestroyNotify" name="user_data_destroy"/>
+        </parameters>
+      </method>
+      <method name="Write" cname="rsvg_handle_write">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-guchar*" name="buf"/>
+          <parameter type="gsize" name="count"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="LinearGradient" cname="RsvgLinearGradient">
+      <field cname="super" type="RsvgDefVal"/>
+      <field cname="affine" array_len="6" type="double"/>
+      <field cname="x1" type="double"/>
+      <field cname="y1" type="double"/>
+      <field cname="x2" type="double"/>
+      <field cname="y2" type="double"/>
+      <field cname="spread" type="ArtGradientSpread"/>
+      <field cname="stops" type="RsvgGradientStops*"/>
+    </struct>
+    <struct name="PSCtx" cname="RsvgPSCtx">
+      <field cname="dummy" type="int"/>
+    </struct>
+    <struct name="PaintServer" cname="RsvgPaintServer" opaque="true">
+      <method name="Parse" cname="rsvg_paint_server_parse" shared="true">
+        <return-type type="RsvgPaintServer*"/>
+        <parameters>
+          <parameter type="const-RsvgDefs*" name="defs"/>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="rsvg_paint_server_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Unref" cname="rsvg_paint_server_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="RadialGradient" cname="RsvgRadialGradient">
+      <field cname="super" type="RsvgDefVal"/>
+      <field cname="affine" array_len="6" type="double"/>
+      <field cname="cx" type="double"/>
+      <field cname="cy" type="double"/>
+      <field cname="r" type="double"/>
+      <field cname="fx" type="double"/>
+      <field cname="fy" type="double"/>
+      <field cname="stops" type="RsvgGradientStops*"/>
+    </struct>
+  </namespace>
+</api>

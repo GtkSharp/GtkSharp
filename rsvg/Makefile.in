@@ -1,0 +1,36 @@
+COMPILER=mcs
+OUTPUT=rsvg-sharp.dll
+
+@ENABLE_RSVG_TRUE@ all: linux
+@ENABLE_RSVG_FALSE@ all:
+
+linux: $(OUTPUT)
+
+$(OUTPUT): *.cs generated/*.cs
+	$(COMPILER) \
+	    --unsafe\
+	    --target library \
+	    -L ../glib \
+	    -L ../gdk \
+	    -L ../gtk \
+	    -L ../art \
+	    -r glib-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -r art-sharp.dll \
+	    -o $(OUTPUT) \
+	    --recurse '*.cs'
+
+
+
+clean: clean-dll clean-generated
+
+clean-dll:
+	rm -f *.dll
+
+clean-generated:	
+	rm -rf generated
+
+
+
+install: all
+@ENABLE_RSVG_TRUE@	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
+@ENABLE_RSVG_TRUE@	cp $(OUTPUT) $(DESTDIR)@prefix@/lib
+

@@ -88,6 +88,14 @@ if test "x$enable_gda" = "xyes"; then
 	fi
 fi
 
+RSVG_REQUIRED_VERSION=2.0.1
+PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
+if test "x$enable_rsvg" = "xyes"; then
+	BASE_DEPENDENCIES_CFLAGS="$BASE_DEPENDENCIES_CFLAGS $RSVG_DEPENDENCIES_CFLAGS"
+	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $RSVG_DEPENDENCIES_LIBS"
+fi
+
+
 AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
 AC_SUBST(BASE_DEPENDENCIES_LIBS)
 
@@ -95,6 +103,7 @@ AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
+AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -118,6 +127,7 @@ gconf/GConf/Makefile
 gconf/GConf.PropertyEditors/Makefile
 gconf/tools/Makefile
 gst/Makefile
+rsvg/Makefile
 sample/Makefile
 ])
 
@@ -132,6 +142,7 @@ echo "      * gnome-sharp.dll: $enable_gnome"
 echo "      * glade-sharp.dll: $enable_glade"
 echo "      * gda-sharp.dll: $enable_gda"
 echo "      * gnomedb-sharp.dll: $enable_gnomedb"
+echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"
