@@ -22,6 +22,7 @@ namespace GLib {
 
 	using System;
 
+	[Obsolete]
 	public class Boxed {
 		object obj;
 		IntPtr raw; 
