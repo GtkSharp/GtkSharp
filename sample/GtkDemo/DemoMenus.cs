@@ -95,21 +95,21 @@ namespace GtkDemo
 			menuitem = new CheckMenuItem ("Accelerate Me");
 			menu.Append (menuitem);
 			AccelKey ak = new AccelKey ();
-			ak.accel_key = 0xFFBE;
-			menuitem.AddAccelerator ("activate", accel_group, ak, 0, AccelFlags.Visible);
+			ak.Key = (Gdk.Key) 0xFFBE;
+			menuitem.AddAccelerator ("activate", accel_group, ak);
 			
 			menuitem = new CheckMenuItem ("Accelerator locked");
 			menu.Append (menuitem);
 			AccelKey ak2 = new AccelKey ();
-			ak2.accel_key = 0xFFBF;
-			menuitem.AddAccelerator ("activate", accel_group, ak2, 0, AccelFlags.Visible | AccelFlags.Locked);
+			ak2.Key = (Gdk.Key) 0xFFBF;
+			menuitem.AddAccelerator ("activate", accel_group, ak2);
 
 			menuitem = new CheckMenuItem ("Accelerator Frozen");
 			menu.Append (menuitem);
 			AccelKey ak3 = new AccelKey ();
-			ak3.accel_key = 0xFFC0;
-			menuitem.AddAccelerator ("activate", accel_group, ak2, 0, AccelFlags.Visible);
-			menuitem.AddAccelerator ("activate", accel_group, ak3, 0, AccelFlags.Visible);
+			ak3.Key = (Gdk.Key) 0xFFC0;
+			menuitem.AddAccelerator ("activate", accel_group, ak2);
+			menuitem.AddAccelerator ("activate", accel_group, ak3);
 			
 			OptionMenu option_menu = new OptionMenu ();
 			option_menu.Menu = menu;
@@ -152,7 +152,7 @@ namespace GtkDemo
 			for (int i = 0, j = 1; i < 5; i++, j++)
 			{
 				label = String.Format ("item {0} - {1}", depth, j);
-				menuitem = RadioMenuItem.NewWithLabel (group, label);
+				menuitem = new RadioMenuItem (group, label);
 				group = ((RadioMenuItem) menuitem).Group;
 				menuitem = new MenuItem (label);
 				menu.Append (menuitem);

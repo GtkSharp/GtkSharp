@@ -89,7 +89,7 @@ namespace GtkDemo
 
 		        EventExpose ev = args.Event;
 			Widget widget = (Widget) o;
-			Gdk.Rectangle area = ev.area;
+			Gdk.Rectangle area = ev.Area;
 
 			frame.RenderToDrawableAlpha(
 					widget.GdkWindow,
@@ -156,8 +156,8 @@ namespace GtkDemo
 				: Math.Max (127, Math.Abs (255 * Math.Cos (f *
 					2 * Math.PI)))));
 */
-			images[i].Composite (frame, r1.x, r1.y, r1.width,
-				r1.height, xpos, ypos, k, k,
+			images[i].Composite (frame, r1.X, r1.Y, r1.Width,
+				r1.Height, xpos, ypos, k, k,
 				InterpType.Nearest, (int) ((i % 2 == 1)
 				? Math.Max (127, Math.Abs (255 * Math.Sin (f *
 					2 * Math.PI)))

@@ -29,17 +29,17 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabel (new GLib.SList (IntPtr.Zero), "Button 1");
+			radio_button = new RadioButton ("Button 1");
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 2");
+			radio_button = new RadioButton (radio_button, "Button 2");
 			radio_button.Active = true;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 3");
+			radio_button = new RadioButton (radio_button, "Button 3");
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Inconsistent");
+			radio_button = new RadioButton (radio_button, "Inconsistent");
 			radio_button.Inconsistent = true;
 			box2.PackStart (radio_button, true, true, 0);
 
@@ -49,16 +49,16 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 			
-			radio_button = RadioButton.NewWithLabel (new GLib.SList (IntPtr.Zero), "Button 4");
+			radio_button = new RadioButton ("Button 4");
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 5");
+			radio_button = new RadioButton (radio_button, "Button 5");
 			radio_button.Active = true;
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 6");
+			radio_button = new RadioButton (radio_button, "Button 6");
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
@@ -68,7 +68,7 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, false, true, 0);
 
-			Button button = Button.NewFromStock (Stock.Close);
+			Button button = new Button (Stock.Close);
 			button.Clicked += new EventHandler (Close_Button);
 			box2.PackStart (button, true, true, 0);
 			button.CanDefault = true;

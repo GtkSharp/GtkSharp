@@ -71,12 +71,12 @@ namespace GtkDemo
 		{
 			EventExpose eventExpose = args.Event;
 			Gdk.Window window = eventExpose.window;
- 			Rectangle area = eventExpose.area;
+ 			Rectangle area = eventExpose.Area;
 
 			window.DrawRectangle (drawingArea.Style.BackgroundGC(StateType.Normal),
 					true,
-					area.x, area.y,
-					area.width, area.height);
+					area.X, area.Y,
+					area.Width, area.Height);
 			SignalArgs sa = (SignalArgs) args;
 			sa.RetVal = true;
 		}

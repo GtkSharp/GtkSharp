@@ -51,13 +51,13 @@ namespace GtkSamples {
 			Gdk.EventExpose ev = args.Event;
 			Gdk.Window window = ev.window;
 			// FIXME: mcs bug
-			Gdk.Rectangle area = ev.area;
+			Gdk.Rectangle area = ev.Area;
 			// FIXME: array marshalling not done yet so no FG */
 			window.DrawDrawable (darea.Style.BlackGC,
 									   pixmap,
-									   area.x, area.y,
-									   area.x, area.y,
-									   area.width, area.height);
+									   area.X, area.Y,
+									   area.X, area.Y,
+									   area.Width, area.Height);
 
 			args.RetVal = false;
 		}
@@ -70,12 +70,12 @@ namespace GtkSamples {
 
 		Console.WriteLine ("Darea=[{0}]" , darea);
 			pixmap = new Gdk.Pixmap (window,
-									       allocation.width,
-									       allocation.height,
+									       allocation.Width,
+									       allocation.Height,
 											 -1);
 			Console.WriteLine ("Darea.Style={0}", darea.Style);
 			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
-									    allocation.width, allocation.height);
+									    allocation.Width, allocation.Height);
 
 			args.RetVal = true;
 		}
@@ -83,23 +83,23 @@ namespace GtkSamples {
 		static void DrawBrush (double x, double y)
 		{
 			Gdk.Rectangle update_rect = new Gdk.Rectangle ();
-			update_rect.x = (int) x - 5;
-			update_rect.y = (int) y - 5;
-			update_rect.width = 10;
-			update_rect.height = 10;
+			update_rect.X = (int) x - 5;
+			update_rect.Y = (int) y - 5;
+			update_rect.Width = 10;
+			update_rect.Height = 10;
 			
 			pixmap.DrawRectangle (darea.Style.BlackGC, true,
-										 update_rect.x, update_rect.y,
-										 update_rect.width, update_rect.height);
-			darea.QueueDrawArea (update_rect.x, update_rect.y,
-										update_rect.width, update_rect.height);
+										 update_rect.X, update_rect.Y,
+										 update_rect.Width, update_rect.Height);
+			darea.QueueDrawArea (update_rect.X, update_rect.Y,
+										update_rect.Width, update_rect.Height);
 		}
 	
 		static void ButtonPressEvent (object obj, ButtonPressEventArgs args)
 		{
 			Gdk.EventButton ev = args.Event;
-			if (ev.button == 1 && pixmap != null)
-				DrawBrush (ev.x, ev.y);
+			if (ev.Button == 1 && pixmap != null)
+				DrawBrush (ev.X, ev.Y);
 
 			args.RetVal = true;
 		}
@@ -111,14 +111,14 @@ namespace GtkSamples {
 			Gdk.EventMotion ev = args.Event;
 			Gdk.Window window = ev.window;
 
-			if (ev.is_hint != 0) {
+			if (ev.IsHint != 0) {
 				Gdk.ModifierType s;
 				window.GetPointer (out x, out y, out s);
 				state = s;
 			} else {
-				x = (int) ev.x;
-				y = (int) ev.y;
-				state = (Gdk.ModifierType) ev.state;
+				x = (int) ev.X;
+				y = (int) ev.Y;
+				state = (Gdk.ModifierType) ev.State;
 			}
 
 			if ((state & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null)

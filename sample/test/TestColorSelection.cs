@@ -63,7 +63,7 @@ namespace WidgetViewer {
 		static string HexFormat (Gdk.Color color)
 		{
 			StringBuilder s = new StringBuilder ();
-			ushort[] vals = { color.red, color.green, color.blue };
+			ushort[] vals = { color.Red, color.Green, color.Blue };
 			char[] hexchars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 									 'A', 'B', 'C', 'D', 'E', 'F'};
 
@@ -88,12 +88,8 @@ namespace WidgetViewer {
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
 			Gdk.Color selected = window.ColorSelection.CurrentColor;
-			if (selected == Gdk.Color.Zero)
-				Console.WriteLine ("Color selection failed.");
-			else {
-				window.Hide ();
-				Display_Result (selected);
-			}
+			window.Hide ();
+			Display_Result (selected);
 		}
 
 		static void Color_Selection_Cancel (object o, EventArgs args)
@@ -109,9 +105,6 @@ namespace WidgetViewer {
 
 		static void Display_Result (Gdk.Color color)
 		{
-			if (color == Gdk.Color.Zero)
-				Console.WriteLine ("Null color");
-
 			dialog = new Dialog ();
 			dialog.Title = "Selected Color: " + HexFormat (color);
 			dialog.HasSeparator = true;
@@ -124,7 +117,7 @@ namespace WidgetViewer {
 			dialog.VBox.PackStart (da, true, true, 10);
 			dialog.SetDefaultSize (200, 200);
 
-			Button button = Button.NewFromStock (Stock.Ok);
+			Button button = new Button (Stock.Ok);
 			button.Clicked += new EventHandler (Dialog_Ok);
 			button.CanDefault = true;
 			dialog.ActionArea.PackStart (button, true, true, 0);

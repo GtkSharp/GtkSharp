@@ -102,14 +102,14 @@ namespace GtkSamples {
 			EventButton ev = EventButton.New (args.Event.Handle);
 			CanvasRE item = (CanvasRE) obj;
 
-			switch (ev.type) {
+			switch (ev.Type) {
 			case EventType.ButtonPress:
-				if (ev.button == 1) {
-					remember_x = ev.x;
-					remember_y = ev.y;
+				if (ev.Button == 1) {
+					remember_x = ev.X;
+					remember_y = ev.Y;
 					args.RetVal = true;
 					return;
-				} else if (ev.button == 3) {
+				} else if (ev.Button == 3) {
 					item.Destroy ();
 					args.RetVal = true;
 					return;
@@ -120,9 +120,9 @@ namespace GtkSamples {
 				args.RetVal = true;
 				return;
 			case EventType.MotionNotify:
-				Gdk.ModifierType state = (Gdk.ModifierType) ev.state;
+				Gdk.ModifierType state = (Gdk.ModifierType) ev.State;
 				if ((state & Gdk.ModifierType.Button1Mask) != 0) {
-					double new_x = ev.x, new_y = ev.y;
+					double new_x = ev.X, new_y = ev.Y;
 					item.Move (new_x - remember_x, new_y - remember_y);
 					remember_x = new_x;
 					remember_y = new_y;

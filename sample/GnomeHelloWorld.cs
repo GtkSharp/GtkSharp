@@ -160,7 +160,7 @@ namespace GtkSamples {
 			if (type != Gdk.WindowType.Child)
 				Console.WriteLine ("Struct field accessors appear to be broken.");
 
-			if (ev.type == EventType.TwoButtonPress && ev.button == 1) {
+			if (ev.Type == EventType.TwoButtonPress && ev.Button == 1) {
 				g_spawn_command_line_async ("mono " + entries[idx].program, IntPtr.Zero); 
 			}
 		}

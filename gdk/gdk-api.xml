@@ -3585,9 +3585,6 @@
       <member cname="GDK_PIXBUF_ERROR_UNSUPPORTED_OPERATION" name="UnsupportedOperation" />
       <member cname="GDK_PIXBUF_ERROR_FAILED" name="Failed" />
     </enum>
-    <enum name="PixbufFormatFlags" cname="GdkPixbufFormatFlags" type="flags">
-      <member cname="GDK_PIXBUF_FORMAT_WRITABLE" name="Writable" value="1 &lt;&lt; 0" />
-    </enum>
     <enum name="PixbufFrameAction" cname="GdkPixbufFrameAction" type="enum">
       <member cname="GDK_PIXBUF_FRAME_RETAIN" name="Retain" />
       <member cname="GDK_PIXBUF_FRAME_DISPOSE" name="Dispose" />
@@ -3618,45 +3615,6 @@
       <parameters>
         <parameter type="guchar*" name="pixels" array="1" />
         <parameter type="gpointer" name="data" />
-      </parameters>
-    </callback>
-    <callback name="PixbufModuleFillInfoFunc" cname="GdkPixbufModuleFillInfoFunc">
-      <return-type type="void" />
-      <parameters>
-        <parameter type="GdkPixbufFormat*" name="info" />
-      </parameters>
-    </callback>
-    <callback name="PixbufModuleFillVtableFunc" cname="GdkPixbufModuleFillVtableFunc">
-      <return-type type="void" />
-      <parameters>
-        <parameter type="GdkPixbufModule*" name="module" />
-      </parameters>
-    </callback>
-    <callback name="PixbufModulePreparedFunc" cname="GdkPixbufModulePreparedFunc">
-      <return-type type="void" />
-      <parameters>
-        <parameter type="GdkPixbuf*" name="pixbuf" />
-        <parameter type="GdkPixbufAnimation*" name="anim" />
-        <parameter type="gpointer" name="user_data" />
-      </parameters>
-    </callback>
-    <callback name="PixbufModuleSizeFunc" cname="GdkPixbufModuleSizeFunc">
-      <return-type type="void" />
-      <parameters>
-        <parameter type="gint*" name="width" />
-        <parameter type="gint*" name="height" />
-        <parameter type="gpointer" name="user_data" />
-      </parameters>
-    </callback>
-    <callback name="PixbufModuleUpdatedFunc" cname="GdkPixbufModuleUpdatedFunc">
-      <return-type type="void" />
-      <parameters>
-        <parameter type="GdkPixbuf*" name="pixbuf" />
-        <parameter type="int" name="x" />
-        <parameter type="int" name="y" />
-        <parameter type="int" name="width" />
-        <parameter type="int" name="height" />
-        <parameter type="gpointer" name="user_data" />
       </parameters>
     </callback>
     <object name="Pixbuf" cname="GdkPixbuf" parent="GObject">
@@ -3862,9 +3820,6 @@
           <parameter type="int" name="height" />
         </parameters>
       </constructor>
-      <method name="NonAnimNew" cname="gdk_pixbuf_non_anim_new">
-        <return-type type="GdkPixbufAnimation*" />
-      </method>
       <method name="RenderPixmapAndMask" cname="gdk_pixbuf_render_pixmap_and_mask" library="libgdk-win32-2.0-0.dll">
         <return-type type="void" />
         <parameters>
@@ -3976,13 +3931,6 @@
           <parameter type="int" name="dest_width" />
           <parameter type="int" name="dest_height" />
           <parameter type="GdkInterpType" name="interp_type" />
-        </parameters>
-      </method>
-      <method name="SetOption" cname="gdk_pixbuf_set_option">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="const-gchar*" name="key" />
-          <parameter type="const-gchar*" name="value" />
         </parameters>
       </method>
     </object>
@@ -4164,14 +4112,7 @@
         </parameters>
       </method>
     </object>
-    <struct name="PixbufFormat" cname="GdkPixbufFormat">
-      <field cname="name" type="gchar*" />
-      <field cname="signature" type="GdkPixbufModulePattern*" />
-      <field cname="domain" type="gchar*" />
-      <field cname="description" type="gchar*" />
-      <field cname="mime_types" type="gchar**" />
-      <field cname="extensions" type="gchar**" />
-      <field cname="flags" type="guint32" />
+    <struct name="PixbufFormat" cname="GdkPixbufFormat" opaque="true">
       <method name="GetDescription" cname="gdk_pixbuf_format_get_description">
         <return-type type="gchar*" />
       </method>
@@ -4199,95 +4140,6 @@
       <field cname="bg_transparent" type="gboolean" />
       <field cname="composited" type="GdkPixbuf*" />
       <field cname="revert" type="GdkPixbuf*" />
-    </struct>
-    <struct name="PixbufModule" cname="GdkPixbufModule">
-      <field cname="module_name" type="char*" />
-      <field cname="module_path" type="char*" />
-      <field cname="module" type="GModule*" />
-      <field cname="info" type="GdkPixbufFormat*" />
-      <callback cname="load">
-        <return-type type="GdkPixbuf*" />
-        <parameters>
-          <parameter type="FILE*" name="f,GError**" />
-        </parameters>
-      </callback>
-      <callback cname="load_xpm_data">
-        <return-type type="GdkPixbuf*" />
-        <parameters>
-          <parameter type="const-char**" name="data" />
-        </parameters>
-      </callback>
-      <callback cname="begin_load">
-        <return-type type="gpointer" />
-        <parameters>
-          <parameter type="GdkPixbufModuleSizeFunc" name="size_func,GdkPixbufModulePreparedFunc" />
-        </parameters>
-      </callback>
-      <callback cname="stop_load">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="gpointer" name="context,GError**" />
-        </parameters>
-      </callback>
-      <callback cname="load_increment">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="gpointer" name="context,const-guchar*" />
-        </parameters>
-      </callback>
-      <callback cname="load_animation">
-        <return-type type="GdkPixbufAnimation*" />
-        <parameters>
-          <parameter type="FILE*" name="f,GError**" />
-        </parameters>
-      </callback>
-      <callback cname="save">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="FILE*" name="f,GdkPixbuf*" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved1">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved2">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved3">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved4">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved5">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-      <callback cname="_reserved6">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="void" name="arg1" />
-        </parameters>
-      </callback>
-    </struct>
-    <struct name="PixbufModulePattern" cname="GdkPixbufModulePattern">
-      <field cname="prefix" type="unsigned char*" />
-      <field cname="mask" type="unsigned char*" />
-      <field cname="relevance" type="int" />
     </struct>
     <struct name="Pixdata" cname="GdkPixdata">
       <field cname="magic" type="guint32" />

@@ -88,7 +88,7 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, false, true, 0);
 			
-			Button close_button = Button.NewFromStock (Stock.Close);
+			Button close_button = new Button (Stock.Close);
 			close_button.Clicked += new EventHandler (Close_Button);
 			box2.PackStart (close_button, true, true, 0);
 			
@@ -118,7 +118,7 @@ namespace WidgetViewer {
 			for (int i = 0, j = 1; i < 5; i++, j++) {
 
 				label = String.Format ("item {0} - {1}", depth, j);
-				menuitem = RadioMenuItem.NewWithLabel (group, label);
+				menuitem = new RadioMenuItem (group, label);
 				group = ((RadioMenuItem) menuitem).Group;
 				menuitem = new MenuItem (label);
 				menu.Append (menuitem);

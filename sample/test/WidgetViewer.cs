@@ -57,7 +57,7 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, false, false, 0);
 
-			Button close_button = Button.NewFromStock (Stock.Close);
+			Button close_button = new Button (Stock.Close);
 			close_button.Clicked += new EventHandler (Close_Button);
 			box2.PackStart (close_button, true, true, 0);
 

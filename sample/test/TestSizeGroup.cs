@@ -51,7 +51,7 @@ namespace WidgetViewer {
 			table = new Table (2, 2, false);
 			table.BorderWidth = 5;
 			table.RowSpacing = 5;
-			table.ColSpacings = 10;
+			table.ColumnSpacing = 10;
 			frame.Add (table);
 
 			Add_Row (table, 0, size_group, "_Dashing", dashes);
@@ -62,7 +62,7 @@ namespace WidgetViewer {
 			check_button.Active = true;
 			check_button.Toggled += new EventHandler (Button_Toggle_Cb);
 
-			Button close_button = Button.NewFromStock (Stock.Close);
+			Button close_button = new Button (Stock.Close);
 			close_button.Clicked += new EventHandler (Close_Button);
 			window.ActionArea.PackStart (close_button, false, false, 0);
 			
@@ -91,7 +91,7 @@ namespace WidgetViewer {
 		static void Add_Row (Table table, uint row, SizeGroup size_group,
 				     string label_text, string [] options)
 		{
-			Label label = Label.NewWithMnemonic (label_text);
+			Label label = new Label (label_text);
 			label.SetAlignment (0, 1);
 
 			table.Attach (label,

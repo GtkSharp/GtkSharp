@@ -114,25 +114,25 @@ namespace GtkDemo {
 			Gdk.Window window = eventExpose.window;
 			gc1 = new Gdk.GC (window);
 
-			color.red = 30000;
-			color.green = 0;
-			color.blue = 30000;
+			color.Red = 30000;
+			color.Green = 0;
+			color.Blue = 30000;
 			gc1.RgbFgColor = color;
 
 			gc2 = new Gdk.GC (window);
-			color.red = 65535;
-			color.green = 65535;
-			color.blue = 65535;
+			color.Red = 65535;
+			color.Green = 65535;
+			color.Blue = 65535;
 			gc2.RgbFgColor = color;
 
 
 			// Start redrawing the Checkerboard			
 			xcount = 0;
 			i = Spacing;
-			while (i < drawingArea.Allocation.width){
+			while (i < drawingArea.Allocation.Width){
 				j = Spacing;
 				ycount = xcount % 2; //start with even/odd depending on row
-				while (j < drawingArea.Allocation.height){
+				while (j < drawingArea.Allocation.Height){
 					gc = new Gdk.GC (window);
 					if (ycount % 2 != 0){
 						gc = gc1;}
@@ -161,13 +161,13 @@ namespace GtkDemo {
 
 			EventExpose eventExpose = args.Event;
 			Gdk.Window window = eventExpose.window;
- 			Rectangle area = eventExpose.area;
+ 			Rectangle area = eventExpose.Area;
 			
 			window.DrawDrawable (drawingArea1.Style.ForegroundGC(StateType.Normal),
 					pixmap,
-					area.x, area.y,
-					area.x, area.y,
-					area.width, area.height);
+					area.X, area.Y,
+					area.X, area.Y,
+					area.Width, area.Height);
 			SignalArgs sa = (SignalArgs) args;
 			sa.RetVal = false;
 		}
@@ -179,12 +179,12 @@ namespace GtkDemo {
 			Gdk.Window window = eventConfigure.window;
 			Rectangle allocation = drawingArea1.Allocation;
 			pixmap = new Pixmap (window,
-					allocation.width,
-					allocation.height,
+					allocation.Width,
+					allocation.Height,
 					-1);  	
 			// Initialize the pixmap to white
 			pixmap.DrawRectangle (drawingArea1.Style.WhiteGC, true, 0, 0,
-					allocation.width, allocation.height);
+					allocation.Width, allocation.Height);
 			SignalArgs sa = (SignalArgs) args;
 			// We've handled the configure event, no need for further processing.
 			sa.RetVal = true;
@@ -208,14 +208,14 @@ namespace GtkDemo {
 			EventMotion ev = args.Event;
 			Gdk.Window window = ev.window;
 
-			if (ev.is_hint != 0) {
+			if (ev.IsHint != 0) {
 				ModifierType s;
 				window.GetPointer (out x, out y, out s);
 				state = s;
 			} else {
-				x = (int) ev.x;
-				y = (int) ev.y;
-				state = (ModifierType) ev.state;
+				x = (int) ev.X;
+				y = (int) ev.Y;
+				state = (ModifierType) ev.State;
 			}
 
 			if ((state & ModifierType.Button1Mask) != 0 && pixmap != null)
@@ -230,24 +230,24 @@ namespace GtkDemo {
 		static void DrawBrush (double x, double y)
 		{
 			Rectangle update_rect = new Rectangle ();
-			update_rect.x = (int) x - 3;
-			update_rect.y = (int) y - 3;
-			update_rect.width = 6;
-			update_rect.height = 6;
+			update_rect.X = (int) x - 3;
+			update_rect.Y = (int) y - 3;
+			update_rect.Width = 6;
+			update_rect.Height = 6;
 
 			//Paint to the pixmap, where we store our state
 			pixmap.DrawRectangle (drawingArea1.Style.BlackGC, true,
-					update_rect.x, update_rect.y,
-					update_rect.width, update_rect.height);
-			drawingArea1.QueueDrawArea (update_rect.x, update_rect.y,
-					update_rect.width, update_rect.height);
+					update_rect.X, update_rect.Y,
+					update_rect.Width, update_rect.Height);
+			drawingArea1.QueueDrawArea (update_rect.X, update_rect.Y,
+					update_rect.Width, update_rect.Height);
 		}
 	
 		private void ScribbleButtonPress (object o, ButtonPressEventArgs args)
 		{
 			EventButton ev = args.Event;
-			if (ev.button == 1 && pixmap != null)
-				DrawBrush (ev.x, ev.y);
+			if (ev.Button == 1 && pixmap != null)
+				DrawBrush (ev.X, ev.Y);
 			//We've handled the event, stop processing
 			SignalArgs sa = (SignalArgs) args;
 			sa.RetVal = true;

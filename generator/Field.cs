@@ -21,6 +21,12 @@ namespace GtkSharp.Generation {
 			this.elem = elem;
 		}
 
+		public string Access {
+			get {
+				return elem.HasAttribute ("access") ? elem.GetAttribute ("access") : "public";
+			}
+		}
+
 		public int ArrayLength {
 			get {
 				if (!IsArray)
@@ -170,8 +176,10 @@ namespace GtkSharp.Generation {
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else if (Access != "public") {
+				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, Name);
 			} else {
-				sw.WriteLine ("\t\tpublic {0} {1};", CSType, Name);
+				sw.WriteLine ("\t\tpublic {0} {1};", CSType, StudlyName);
 			}
 		
 			return true;

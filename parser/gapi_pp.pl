@@ -10,6 +10,7 @@
 # <c> 2003 Martin Willemoes Hansen
 # <c> 2003 Novell, Inc.
 
+$private_regex = "^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)";
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_(DEPRECATED|COMPAT)|ENABLE_BROKEN|COMPILATION)";
 $ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
@@ -64,6 +65,23 @@ foreach $fname (@hdrs) {
 			while ($line !~ /\*\//) {$line = <INFILE>;}
 		} elsif ($line =~ /^#ifndef\s+\w+_H_*\b/) {
 			while ($line !~ /#define/) {$line = <INFILE>;}
+		} elsif ($line =~ /$private_regex/) {
+			$nested = 0;
+			while ($line = <INFILE>) {
+				last if (!$nested && ($line =~ /#else|#endif/));
+				if ($line =~ /#if/) {
+					$nested++;
+				} elsif ($line =~ /#endif/) {
+					$nested--
+				}
+				next if ($line !~ /^struct/);
+
+				print "private$line";
+				do {
+					$line = <INFILE>;
+					print $line;
+				} until ($line =~ /^\}/);
+			}
 		} elsif ($line =~ /$eatit_regex/) {
 			$nested = 0;
 			while ($line = <INFILE>) {

@@ -25,7 +25,7 @@ namespace WidgetViewer {
 			window.SetDefaultSize (200, 100);
 
 			window.Title = "GtkDialog";
-			Button button = Button.NewFromStock (Stock.Ok);
+			Button button = new Button (Stock.Ok);
 			button.Clicked += new EventHandler (Close_Button);
 			button.CanDefault = true;
 			window.ActionArea.PackStart (button, true, true, 0);
