@@ -1,5 +1,16 @@
 2003-10-06  Mike Kestner  <mkestner@ximian.com>
 
+	* generator/InterfaceGen.cs (Generate): gen the EventHandlers for sigs
+	* generator/Signal.cs (GetHandlerName): kill this and split it into
+	EventHandlerName and EventHandlerArgsName props instead of the ugly
+	out param hack.
+	(GenEventHandler): make public void and add gen_info param. open 
+	stream with gen_info. use new *Name props.
+	(Generate): only gen the EventHandler if we're genning the container,
+	not for implementors.
+
+2003-10-06  Mike Kestner  <mkestner@ximian.com>
+
 	* generator/CodeGenerator.cs (Main): use new ObjectGen.GenerateMappers.
 	* generator/GenerationInfo.cs (Ctor): new (dir, assembly) ctor
 	* generator/ObjectGen.cs : move hash management to Generate from Ctor,

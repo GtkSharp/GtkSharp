@@ -33,8 +33,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			
 			foreach (Signal sig in sigs.Values) {
-				if (sig.Validate ())
+				if (sig.Validate ()) {
 					sig.GenerateDecl (sw);
+					sig.GenEventHandler (gen_info);
+				}
 			}
 
 			foreach (Method method in methods.Values) {
