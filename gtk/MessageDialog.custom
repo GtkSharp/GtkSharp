@@ -1,0 +1,9 @@
+[DllImport ("gtk-x11-2.0")]
+static extern IntPtr gtk_message_dialog_new (IntPtr parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg, params object [] args);
+
+public MessageDialog (Gtk.Window parent_window, DialogFlags flags, MessageType type, ButtonsType bt, string msg)
+{
+	IntPtr p = (parent_window != null) ? parent_window.Handle : ((IntPtr) 0);
+
+	Raw = gtk_message_dialog_new (p, flags, type, bt, msg, null);
+}
