@@ -20,6 +20,7 @@ clean:
 
 distclean:
 	rm -f Makefile gapi_format_xml
+	rm -f gapi.pc
 
 prefix=@prefix@
 DESTDIR=
@@ -33,3 +34,5 @@ install: all
 		../mkinstalldirs $(DESTDIR)$(prefix)/share/perl5/GAPI && \
 		cp $$i $(DESTDIR)$(prefix)/share/perl5/GAPI; \
 	done
+	../mkinstalldirs $(DESTDIR)$(prefix)/lib/pkgconfig && \
+	cp gapi.pc $(DESTDIR)$(prefix)/lib/pkgconfig
