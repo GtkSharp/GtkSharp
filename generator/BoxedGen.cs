@@ -24,7 +24,7 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			base.Generate (gen_info);
-			sw.WriteLine ("\t\t[DllImport(\"gtksharpglue\")]");
+			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue\")]");
 			sw.WriteLine ("\t\tstatic extern IntPtr gtksharp_value_create (GLib.GType gtype);");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
