@@ -168,7 +168,7 @@ namespace GtkSharp.Generation {
 			else
 				safety = "";
 
-			is_get = (((parms != null && ((parms.IsAccessor && s_ret == "void") || (parms.Count == 0 && s_ret != "void"))) || (parms == null && s_ret != "void")) && Name.Length > 3 && Name.Substring(0, 3) == "Get");
+			is_get = (((parms != null && ((parms.IsAccessor && s_ret == "void") || (parms.Count == 0 && s_ret != "void"))) || (parms == null && s_ret != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
 			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && s_ret == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
 			if (parms != null) {
@@ -233,7 +233,10 @@ namespace GtkSharp.Generation {
 					s_ret = parms.AccessorReturnType;
 				sw.Write(s_ret);
 				sw.Write(" ");
-				sw.Write(Name.Substring (3));
+				if (Name.StartsWith ("Get") || Name.StartsWith ("Set"))
+					sw.Write (Name.Substring (3));
+				else
+					sw.Write (Name);
 				sw.WriteLine(" { ");
 			} else {
 				sw.Write(s_ret + " " + Name + sig);
