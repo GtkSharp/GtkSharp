@@ -89,7 +89,7 @@ namespace Gtk {
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_get_current_event ();
 
-		public object CurrentEvent {
+		public static object CurrentEvent {
 			get {
 				IntPtr handle = gtk_get_current_event ();
 				Gdk.EventType type;
