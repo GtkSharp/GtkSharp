@@ -56,7 +56,7 @@
 	  Assuming that this selection data object holds a list
 	  of targets, determines if any of the targets in can be used to
 	  provide text.</summary>
-        <returns>a <see cref="T:System.Boolean"/></returns>
+        <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -96,7 +96,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-	<summary>The unit length of the data in bits.</summary>
+        <summary>The unit length of the data in bits.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>On most systems, this is 8 for a string and 32 for 
 	  an integer.</remarks>
@@ -155,12 +155,14 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-	<summary>Sets the data for a selection.</summary>
-        <param name="type">a <see cref="T:Gdk.Atom" /></param>
-        <param name="format">a <see cref="T:System.Int32" />, the number of bits per data unit</param>
-        <param name="data">a <see cref="T:System.Byte[]" />, the data to be set</param>
-        <param name="length">a <see cref="T:System.Int32" />, the length of the data.</param>
-        <remarks />
+        <summary>Stores new data into this <see cref="T:Gtk.SelectionData" /> object. Should only be called from a selection handler callback.</summary>
+        <param name="type">type of selection data (expressed via a <see cref="T:Gdk.Atom" />)</param>
+        <param name="format">format (number of bits in a unit) - set this to 8 and encode your data as UTF-8</param>
+        <param name="data">a <see cref="T:System.Byte" /> array containing the data to send to this selection object - use 
+<see cref="P:System.Text.Encoding.UTF8" />.GetBytes(string) to encode string data as UTF-8 before passing it here
+</param>
+        <param name="length">length of the data in bytes</param>
+        <remarks>The version <see cref="M:Gtk.SelectionData.Set(Gdk.Atom,System.Int32,System.Byte[])" /> auto-calculates the length for you.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Set">
@@ -175,10 +177,12 @@
         <Parameter Name="data" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-	<summary>Sets the data for a selection.</summary>
-        <param name="type">a <see cref="T:Gdk.Atom" /></param>
-        <param name="format">a <see cref="T:System.Int32" />, the number of bits per data unit</param>
-        <param name="data">a <see cref="T:System.Byte[]" />, the data to be set</param>
+        <summary>Stores new data into this <see cref="T:Gtk.SelectionData" /> object. Should only be called from a selection handler callback.</summary>
+        <param name="type">type of selection data (expressed via a <see cref="T:Gdk.Atom" />)</param>
+        <param name="format">format (number of bits in a unit) - set this to 8 and encode your data as UTF-8
+</param>
+        <param name="data">a <see cref="T:System.Byte" /> array containing the data to send to this selection object - use 
+<see cref="P:System.Text.Encoding.UTF8" />.GetBytes(string) to encode string data as UTF-8 before passing it here</param>
         <remarks />
       </Docs>
     </Member>
@@ -192,7 +196,8 @@
       <Docs>
         <summary>The selected data.</summary>
         <returns>a <see cref="T:Gdk.Atom" /></returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Target">
@@ -218,7 +223,8 @@
       <Docs>
         <summary>Gets the selection data as an array of targets.</summary>
         <returns>a <see cref="T:Gdk.Atom[]" /></returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Type">
