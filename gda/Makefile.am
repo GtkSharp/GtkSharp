@@ -46,7 +46,7 @@ $(API): $(srcdir)/$(srcdir)/$(METADATA)
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
 
 generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
-	rm generated/* &&	\
+	rm -f generated/* &&	\
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) \
 	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) \
 	&& touch generated-stamp

@@ -1,0 +1,37 @@
+// Gtk.HTML.custom - Gtk HTML class customizations
+//
+// Author: Mike Kestner <mkestner@ximian.com> 
+//
+// Copyright (C) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+		
+		[DllImport("gtkhtml-3.0")]
+		static extern IntPtr gtk_html_new();
+
+		public HTML () : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (HTML)) {
+				CreateNativeObject (new string [0], new GLib.Value[0]);
+				Construct (this);
+				return;
+			}
+			Raw = gtk_html_new();
+		}
+
+		[DllImport("gtkhtml-3.0")]
+		static extern IntPtr gtk_html_new_from_string(string Astr, int len);
+
+		public HTML (string Astr) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (HTML)) {
+				CreateNativeObject (new string [0], new GLib.Value[0]);
+				Construct (this);
+				LoadFromString (Astr);
+				return;
+			}
+
+			Raw = gtk_html_new_from_string(Astr, Astr.Length);
+		}
+
+
