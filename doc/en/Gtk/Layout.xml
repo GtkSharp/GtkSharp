@@ -1,5 +1,5 @@
 <Type Name="Layout" FullName="Gtk.Layout">
-  <TypeSignature Language="C#" Value="public class Layout : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Layout : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,10 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Infinite scrollable area containing child widgets and/or custom drawing</summary>
+    <remarks>
+      <see cref="T:Gtk.Layout" /> is similar to <see cref="T:Gtk.DrawingArea" /> in that it is a "blank slate" and does not do anything but paint a blank background by default. It is different in that it supports scrolling natively (you can add it to a <see cref="T:Gtk.ScrolledWindow" />), and it can contain child widgets, since it is a <see cref="T:Gtk.Container" />. However, if you are just going to draw, a <see cref="T:Gtk.DrawingArea" /> is a better choice, since it has lower overhead.
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
@@ -36,14 +38,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="width" Type="System.UInt32&amp;" RefType="out" />
-		<Parameter Name="height" Type="System.UInt32&amp;" RefType="out" />
-	</Parameters>
+        <Parameter Name="width" Type="System.UInt32&amp;" RefType="out" />
+        <Parameter Name="height" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">To be added: an object of type 'uint&amp;'</param>
-        <param name="height">To be added: an object of type 'uint&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the size of the scrollbar area for the <see cref="T:Gtk.Layout" />.</summary>
+        <param name="width">an object of type <see cref="T:System.UInt32" /></param>
+        <param name="height">an object of type <see cref="T:System.UInt32" /></param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSize">
@@ -53,14 +55,14 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="width" Type="System.UInt32" />
-		<Parameter Name="height" Type="System.UInt32" />
-	</Parameters>
+        <Parameter Name="width" Type="System.UInt32" />
+        <Parameter Name="height" Type="System.UInt32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">To be added: an object of type 'uint'</param>
-        <param name="height">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the size of the scrollable area for the <see cref="T:Gtk.Layout" />.</summary>
+        <param name="width">an object of type <see cref="T:System.UInt32" /></param>
+        <param name="height">an object of type <see cref="T:System.UInt32" /></param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Move">
@@ -70,16 +72,16 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="child_widget" Type="Gtk.Widget" />
-		<Parameter Name="x" Type="System.Int32" />
-		<Parameter Name="y" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="child_widget" Type="Gtk.Widget" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child_widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Moves a current child of <see cref="T:Gtk.Layout" /> to a new position.</summary>
+        <param name="child_widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="x">an object of type <see cref="T:System.Int32" /></param>
+        <param name="y">an object of type <see cref="T:System.Int32" /></param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Put">
@@ -89,16 +91,17 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="child_widget" Type="Gtk.Widget" />
-		<Parameter Name="x" Type="System.Int32" />
-		<Parameter Name="y" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="child_widget" Type="Gtk.Widget" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child_widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds <param_ref name="child_widget" /> to the <see cref="T:Gtk.Layout" />, at position (<param_ref name="x" />, <param_ref name="y" />).</summary>
+        <param name="child_widget">an object of type <see cref="T:Gtk.Widget" /></param>
+        <param name="x">an object of type <see cref="T:System.Int32" /></param>
+        <param name="y">an object of type <see cref="T:System.Int32" /></param>
+        <remarks>
+          <see cref="T:Gtk.Layout" /> becomes the new parent container of <param_ref name="child_widget" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -118,8 +121,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -134,15 +137,15 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="hadjustment" Type="Gtk.Adjustment" />
-		<Parameter Name="vadjustment" Type="Gtk.Adjustment" />
-	</Parameters>
+        <Parameter Name="hadjustment" Type="Gtk.Adjustment" />
+        <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <param name="vadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Layout'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:Gtk.Layout" /> object.</summary>
+        <param name="hadjustment">an object of type <see cref="T:Gtk.Adjustment" /></param>
+        <param name="vadjustment">an object of type <see cref="T:Gtk.Adjustment" /></param>
+        <returns>an object of type <see cref="T:Gtk.Layout" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -151,9 +154,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Layout'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns>an object of type <see cref="T:Gtk.Layout" /></returns>
+        <remarks>This is a constructor used by derivative types of <see cref="T:Gtk.Layout" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -163,8 +166,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Layout</summary>
-        <returns>The GLib Type for the Gtk.Layout class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.Layout" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.Layout" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -174,13 +177,12 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The width of the layout.</summary>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Hadjustment">
@@ -189,13 +191,12 @@
       <ReturnValue>
         <ReturnType>Gtk.Adjustment</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.Adjustment" /> for the horizontal position.</summary>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Vadjustment">
@@ -204,13 +205,12 @@
       <ReturnValue>
         <ReturnType>Gtk.Adjustment</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.Adjustment" /> for the vertical position.</summary>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Height">
@@ -219,19 +219,20 @@
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The height of the layout.</summary>
+        <param name="value">an object of type <see cref="T:System.UInt32" /></param>
+        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollAdjustmentsSet">
       <MemberSignature Language="C#" Value="public event GtkSharp.ScrollAdjustmentsSetHandler ScrollAdjustmentsSet;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GtkSharp.ScrollAdjustmentsSetHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GtkSharp.ScrollAdjustmentsSetHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
         <summary>To be added</summary>
@@ -243,8 +244,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
