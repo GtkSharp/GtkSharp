@@ -139,6 +139,8 @@ namespace GLib {
 			// We will always end up at GObject and will break this loop
 			while (true) {
 				type_id = gtksharp_get_parent_type (type_id);
+				if (type_id == 0)
+					return null;
 				typename = Marshal.PtrToStringAnsi (gtksharp_get_type_name_for_id (type_id));
 				if (types.ContainsKey (typename))
 					mangled = (string)types[typename];
