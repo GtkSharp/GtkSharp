@@ -25,27 +25,10 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	/// <summary> 
-	///	GType Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	An arbitrary data type similar to a CORBA Any which is used
-	///	to get and set properties on Objects.
-	/// </remarks>
-
 	[StructLayout(LayoutKind.Sequential)]
 	public struct GType {
 
 		IntPtr val;
-
-		/// <summary>
-		///	GType Constructor
-		/// </summary>
-		///
-		/// <remarks>
-		///	Constructs a new GType from a native GType value.
-		/// </remarks>
 
 		public GType (IntPtr val) {
 			this.val = val;

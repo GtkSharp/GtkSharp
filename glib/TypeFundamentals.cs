@@ -21,14 +21,6 @@
 
 namespace GLib {
 
-	/// <summary>
-	///	TypeFundamentals enumeration
-	/// </summary>
-	///
-	/// <remarks>
-	///	The built-in types available in GLib.
-	/// </remarks>
-
 	public enum TypeFundamentals {
 		TypeInvalid	= 0 << 2,
 		TypeNone	= 1 << 2,

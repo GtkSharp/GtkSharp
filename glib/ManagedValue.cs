@@ -25,14 +25,6 @@ namespace GLib {
 	using System.Runtime.InteropServices;
 	using GLib;
 	
-	/// <summary>
-	///  Managed types boxer	
-	/// </summary>
-	///
-	/// <remarks>
-	///  Utility class for creating GBoxed wrappers around managed types 
-	/// </remarks>
-
 	// FIXME:
 	// This used to use GCHandles, but I rewrote it to debug
 	// some odd interactions. Since the boxed code in GLib is designed

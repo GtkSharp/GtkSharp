@@ -26,26 +26,7 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	IdleHandler Delegate
-	/// </summary>
-	///
-	/// <remarks>
-	///	Delegate used for idle handlerss in the GLib main loop. Return
-	///	true to restart the idle.  Returning false clears the
-	///	idle.
-	/// </remarks>
-
 	public delegate bool IdleHandler ();
-
-	/// <summary>
-	///	Idle Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Allows the installation of Idle Handlers on the GLib main
-	///	loop.
-	/// </remarks>
 
 	public class Idle {
 

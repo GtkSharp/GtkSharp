@@ -24,14 +24,6 @@ namespace GLib {
 
 	using System;
 
-	/// <summary>
-	///   Marks events genrated from glib signals
-	/// </summary>
-	///
-	/// <remarks>
-	///   This attribute indentifies events generated from glib signals 
-	///   and allows obtaining its original name.
-	/// </remarks>
 	[Serializable]
 	public sealed class SignalAttribute : Attribute 
 	{

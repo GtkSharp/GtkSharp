@@ -28,14 +28,6 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	DelegateWrapper Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Wrapper class for delegates.
-	/// </remarks>
-
 	public class DelegateWrapper
 	{
 		// Keys in the hashtable are instances of classes derived from this one.

@@ -24,14 +24,6 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	SList Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Wrapper class for GSList.
-	/// </remarks>
-
 	public class SList : ListBase {
 
 		[DllImport("libglib-2.0-0.dll")]

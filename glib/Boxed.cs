@@ -22,25 +22,9 @@ namespace GLib {
 
 	using System;
 
-	/// <summary> 
-	///	Boxed Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	An abstract base class to derive structures and marshal them.
-	/// </remarks>
-
 	public class Boxed {
 		object obj;
 		IntPtr raw; 
-
-		/// <summary>
-		///	Boxed Constructor
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Constructs a Boxed type from a raw ref.
-		/// </remarks>
 
 		public Boxed (object o)
 		{
@@ -52,13 +36,6 @@ namespace GLib {
 			this.raw = ptr;
 		}
 
-		/// <summary>
-		///	Handle Property
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Gets a marshallable IntPtr.
-		/// </remarks>
 		public virtual IntPtr Handle {
 			get {
 				return raw;

@@ -25,14 +25,6 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	ListBase Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Base class for GList and GSList.
-	/// </remarks>
-
 	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper, ICloneable {
 
 		private IntPtr list_ptr = IntPtr.Zero;
@@ -72,14 +64,6 @@ namespace GLib {
 			set { managed = value; }
 		}
 		
-		/// <summary>
-		///	Handle Property
-		/// </summary>
-		///
-		/// <remarks>
-		///	A raw list reference for marshaling situations.
-		/// </remarks>
-
 		public IntPtr Handle {
 			get {
 				return list_ptr;
