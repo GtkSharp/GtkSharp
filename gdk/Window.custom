@@ -34,12 +34,6 @@
 		}
 	}
 
-	public bool Visible {
-		get {
-			return gdk_window_is_visible (Handle);
-		}
-	}
-
 	public void ClearArea(System.Drawing.Rectangle rect) {
 		gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 	}
@@ -47,12 +41,6 @@
 	public void InvalidateRect(System.Drawing.Rectangle rect, bool invalidate_children) {
 		Gdk.Rectangle grect = new Gdk.Rectangle (rect.X, rect.Y, rect.Width, rect.Height);
 		gdk_window_invalidate_rect (Handle, ref grect, invalidate_children);
-	}
-
-	public bool Viewable {
-		get {
-			return gdk_window_is_viewable (Handle);
-		}
 	}
 
 	public System.Drawing.Point Position {
