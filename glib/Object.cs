@@ -91,6 +91,9 @@ namespace GLib {
 
 		public static Object GetObject(IntPtr o, bool owned_ref)
 		{
+			if (o == IntPtr.Zero)
+				return null;
+
 			Object obj;
 			WeakReference weak_ref = Objects[o] as WeakReference;
 			if (weak_ref != null && weak_ref.IsAlive) {

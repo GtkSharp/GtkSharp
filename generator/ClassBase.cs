@@ -164,7 +164,7 @@ namespace GtkSharp.Generation {
 
 		public override string FromNative(string var)
 		{
-			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
+			return "GLib.Object.GetObject(" + var + ") as " + QualifiedName;
 		}
 		
 		protected void GenProperties (GenerationInfo gen_info)

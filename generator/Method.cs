@@ -327,7 +327,7 @@ namespace GtkSharp.Generation {
 			sw.Write(indent + "\t\t\t");
 			if (retval.MarshalType == "void") {
 				sw.WriteLine(CName + call + ";");
-			} else if (ret_igen is ObjectGen || ret_igen is OpaqueGen) {
+			} else if (ret_igen is OpaqueGen) {
 				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
 				sw.WriteLine(indent +"\t\t\t" + retval.CSType + " ret;");
 				sw.WriteLine(indent + "\t\t\tif (raw_ret == IntPtr.Zero)");
