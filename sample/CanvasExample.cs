@@ -27,9 +27,9 @@ namespace GtkSamples {
 			win.Add (vbox);
 
 			vbox.PackStart (new Label ("Drag - move object.\n" +
-												"Double click - change color\n" +
-												"Right click - delete object"),
-								 false, false, 0);
+						   "Double click - change color\n" +
+						   "Right click - delete object"),
+					false, false, 0);
 			
 			canvas = new Canvas ();
 			canvas.SetSizeRequest (width, height);
@@ -144,18 +144,6 @@ namespace GtkSamples {
 			return;
 		}
 		
-		void Quit (object obj, EventArgs args)
-		{
-			Application.Quit ();
-		}
-
-		void Window_Delete (object obj, DeleteEventArgs args)
-		{
-			SignalArgs sa = (SignalArgs) args;
-			Application.Quit ();
-			sa.RetVal = true;
-		}
-
 		void Quit (object obj, EventArgs args)
 		{
 			Application.Quit ();
