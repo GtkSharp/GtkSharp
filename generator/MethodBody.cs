@@ -86,7 +86,7 @@ namespace GtkSharp.Generation {
 				if (p.CType == "GError**") {
 					result [i] += "out ";				
 				} else if (p.PassAs != "") {
-					if (p.Generatable is LPGen || !p.MarshalType.EndsWith ("IntPtr")) 
+					if (p.Generatable is LPGen || p.Generatable is LPUGen || !p.MarshalType.EndsWith ("IntPtr")) 
 						result [i] += p.PassAs + " ";
 					
 					if (igen is EnumGen)
