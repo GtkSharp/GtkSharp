@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Represents a volume of a filesystem; typically, this corresponds to one physical or logical hard drive.</summary>
+    <remarks></remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -33,11 +33,15 @@
         <Parameter Name="volume" Type="Gtk.FileSystemVolume" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Queries the human-readable name for a volume.  
+	</summary>
         <param name="file_system">a <see cref="T:Gtk.FileSystem" /></param>
         <param name="volume">a <see cref="T:Gtk.FileSystemVolume" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  This string can be displayed
+	  in a list of volumes that can be accessed, for example.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBasePath">
@@ -51,11 +55,12 @@
         <Parameter Name="volume" Type="Gtk.FileSystemVolume" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the base path of this volume.</summary>
         <param name="file_system">a <see cref="T:Gtk.FileSystem" /></param>
         <param name="volume">a <see cref="T:Gtk.FileSystemVolume" /></param>
         <returns>a <see cref="T:Gtk.FilePath" /></returns>
-        <remarks>To be added</remarks>
+        <remarks> For example, a CD-ROM device may yield a path of "/mnt/cdrom"
+	  on Linux.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -69,10 +74,10 @@
         <Parameter Name="volume" Type="Gtk.FileSystemVolume" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Frees memory used by this data structure.</summary>
         <param name="file_system">a <see cref="T:Gtk.FileSystem" /></param>
         <param name="volume">a <see cref="T:Gtk.FileSystemVolume" /></param>
-        <remarks>To be added</remarks>
+        <remarks>XXX: should this even exist?</remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderIcon">
@@ -94,7 +99,7 @@
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <param name="pixel_size">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Mount">
@@ -108,11 +113,16 @@
         <Parameter Name="volume" Type="Gtk.FileSystemVolume" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Tries to mount an unmounted volume.  
+	</summary>
         <param name="file_system">a <see cref="T:Gtk.FileSystem" /></param>
         <param name="volume">a <see cref="T:Gtk.FileSystemVolume" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, true if the volume was mounted successfully, false otherwise.</returns>
+        <remarks>
+	  This may cause the <see cref="M:Gtk.FileSystem.VolumesChanged"/> signal in the 
+	  <paramref name="file_system"/> to be emitted.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIsMounted">
@@ -126,11 +136,12 @@
         <Parameter Name="volume" Type="Gtk.FileSystemVolume" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Queries whether a volume is mounted or not.</summary>
         <param name="file_system">a <see cref="T:Gtk.FileSystem" /></param>
         <param name="volume">a <see cref="T:Gtk.FileSystemVolume" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If the volume is not mounted, it can be mounted with
+	<see cref="M:Gtk.FileSystemVolume.Mount"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -141,10 +152,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>Public constructor. For internal use; do not use.</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" />, pointer to the underlying C object.</param>
         <returns>a <see cref="T:Gtk.FileSystemVolume" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
