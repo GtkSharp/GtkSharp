@@ -40,12 +40,13 @@
         <Parameter Name="coords" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="coords">To be added: an object of type 'Atk.CoordType'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the offset of the character located at coordinates <paramref name="x" /> and <paramref name="y" />. </summary>
+        <param name="x"> screen x-position of character</param>
+        <param name="y"> screen y-position of character</param>
+        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
+        <returns> the offset to the character which is located at the specified x and y coordinates.</returns>
+        <remarks>
+          <paramref name="x" /> and <paramref name="y" /> are interpreted as being relative to the screen or this widget's window depending on <paramref name="coords" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSelection">
@@ -60,12 +61,13 @@
         <Parameter Name="end_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="selection_num">To be added: an object of type 'int'</param>
-        <param name="start_offset">To be added: an object of type 'int'</param>
-        <param name="end_offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Changes the start and end offset of the specified selection.</summary>
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <param name="start_offset"> the new start position of the selection</param>
+        <param name="end_offset"> the new end position of the selection</param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetCaretOffset">
@@ -78,10 +80,11 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the caret (cursor) position to the specified offset.</summary>
+        <param name="offset">position</param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RemoveSelection">
@@ -94,10 +97,11 @@
         <Parameter Name="selection_num" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="selection_num">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Removes the specified selection.</summary>
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetText">
@@ -111,11 +115,11 @@
         <Parameter Name="end_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_offset">To be added: an object of type 'int'</param>
-        <param name="end_offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the specified text.</summary>
+        <param name="start_offset"> start position</param>
+        <param name="end_offset"> end position</param>
+        <returns> the text from <paramref name="start_offset" /> up to, but not including <paramref name="end_offset" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddSelection">
@@ -129,11 +133,12 @@
         <Parameter Name="end_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_offset">To be added: an object of type 'int'</param>
-        <param name="end_offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a selection bounded by the specified offsets.</summary>
+        <param name="start_offset"> the start position of the selected region</param>
+        <param name="end_offset"> the end position of the selected region</param>
+        <returns>
+          <see langword="true" /> if success, <see langword="false" /> otherwise</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DefaultAttributes">
@@ -143,9 +148,9 @@
         <ReturnType>GLib.SList</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.SList'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates an <see cref="T:Atk.AttributeSet" /> which consists of the default values of attributes for the text.</summary>
+        <returns> an <see cref="T:Atk.AttributeSet" /> which contains the default values of attributes, at <paramref name="offset" />.</returns>
+        <remarks>See the enum <see cref="T:Atk.TextAttribute" /> for types of text attributes that can be returned. Note that other attributes may also be returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NSelections">
@@ -155,9 +160,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the number of selected regions.</summary>
+        <returns> The number of selected regions, or -1 if a failure occurred.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CaretOffset">
@@ -167,9 +172,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the offset position of the caret (cursor).</summary>
+        <returns> the offset position of the caret (cursor).</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CharacterCount">
@@ -179,9 +184,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the character count.</summary>
+        <returns> the number of characters.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextChanged">
@@ -192,8 +197,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the text of the object which implements the AtkText interface changes.</summary>
+        <remarks>This signal will have a detail which is either "insert" or "delete" which identifies whether the text change was an insertion or a deletion.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextSelectionChanged">
@@ -204,8 +209,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the selected text of an object which implements AtkText changes.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextCaretMoved">
@@ -216,8 +221,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the caret position of the text of an object which implements AtkText changes.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextAttributesChanged">
@@ -228,8 +233,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the text attributes of the text of an object which implements AtkText changes.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetTextAfterOffset">
@@ -245,13 +250,47 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
+        <summary>Gets the specified text.</summary>
+        <param name="offset">position</param>
         <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
-        <param name="start_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <param name="start_offset"> the start offset of the returned string.</param>
+        <param name="end_offset"> the end offset of the returned string.</param>
+        <returns> the text after <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
+        <remarks>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.Char" /> the character after the offset is returned.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordStart" /> the returned string is from the word start after the offset to the next word start.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word or if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordEnd" /> the returned string is from the word end at or after the offset to the next work end.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word and will contain the word after the word after the offset if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceStart" /> the returned string is from the sentence start after the offset to the next sentence start.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence or if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceEnd" /> the returned string is from the sentence end at or after the offset to the next sentence end.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence and will contain the sentence after the sentence after the offset if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineStart" /> the returned string is from the line start after the offset to the next line start.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEnd" /> the returned string is from the line end at or after the offset to the next line start.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSelection">
@@ -266,12 +305,12 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="selection_num">a <see cref="T:System.Int32" /></param>
-        <param name="start_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the text from the specified selection.</summary>
+        <param name="selection_num"> The selection number. The selected regions are assigned numbers that correspond to how far the region is from the start of the text. The selected region closest to the beginning of the text region is assigned the number 0, etc. Note that adding, moving or deleting a selected region can change the numbering.</param>
+        <param name="start_offset"> passes back the start position of the selected region</param>
+        <param name="end_offset"> passes back the end position of the selected region</param>
+        <returns> the selected text.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetTextBeforeOffset">
@@ -287,13 +326,47 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
+        <summary>Gets the specified text.</summary>
+        <param name="offset">position</param>
         <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
-        <param name="start_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <param name="start_offset"> the start offset of the returned string.</param>
+        <param name="end_offset"> the end offset of the returned string.</param>
+        <returns> the text before <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
+        <remarks>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.Char" /> the character after the offset is returned.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordStart" /> the returned string is from the word start after the offset to the next word start.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word or if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordEnd" /> the returned string is from the word end at or after the offset to the next work end.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word and will contain the word after the word after the offset if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceStart" /> the returned string is from the sentence start after the offset to the next sentence start.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence or if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceEnd" /> the returned string is from the sentence end at or after the offset to the next sentence end.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence and will contain the sentence after the sentence after the offset if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineStart" /> the returned string is from the line start after the offset to the next line start.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEnd" /> the returned string is from the line end at or after the offset to the next line start.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCharacterExtents">
@@ -311,14 +384,14 @@
         <Parameter Name="coords" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="coords">a <see cref="T:Atk.CoordType" /></param>
-        <remarks>To be added</remarks>
+        <summary>Get the bounding box containing the glyph representing the character at a particular text offset.</summary>
+        <param name="offset"> The offset of the text character for which bounding information is required.</param>
+        <param name="x"> Pointer for the x cordinate of the bounding box.</param>
+        <param name="y"> Pointer for the y cordinate of the bounding box.</param>
+        <param name="width"> Pointer for the width of the bounding box</param>
+        <param name="height"> Pointer for the height of the bounding box.</param>
+        <param name="coords"> specify whether coordinates are relative to the screen or widget window</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetRunAttributes">
@@ -333,12 +406,12 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
-        <param name="start_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:GLib.SList" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Creates an <see cref="T:Atk.AttributeSet" /> which consists of the attributes explicitly set at the position offset in the text. <paramref name="start_offset" /> and <paramref name="end_offset" /> are set to the start and end of the range around <paramref name="offset" /> where the attributes are invariant.</summary>
+        <param name="offset"> the offset at which to get the attributes</param>
+        <param name="start_offset"> the address to put the start offset of the range</param>
+        <param name="end_offset"> the address to put the end offset of the range</param>
+        <returns> an <see cref="T:Atk.AttributeSet" /> which contains the attributes explicitly set at <paramref name="offset" />.</returns>
+        <remarks>See the enum <see cref="T:Atk.TextAttribute" /> for types of text attributes that can be returned. Note that other attributes may also be returned.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetTextAtOffset">
@@ -354,13 +427,47 @@
         <Parameter Name="end_offset" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="offset">a <see cref="T:System.Int32" /></param>
+        <summary>Gets the specified text.</summary>
+        <param name="offset"> position</param>
         <param name="boundary_type">a <see cref="T:Atk.TextBoundary" /></param>
-        <param name="start_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="end_offset">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <param name="start_offset"> the start offset of the returned string.</param>
+        <param name="end_offset"> the end offset of the returned string.</param>
+        <returns> the text at <paramref name="offset" /> bounded by the specified <paramref name="boundary_type" />.</returns>
+        <remarks>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.Char" /> the character after the offset is returned.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordStart" /> the returned string is from the word start after the offset to the next word start.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word or if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.WordEnd" /> the returned string is from the word end at or after the offset to the next work end.
+</para>
+          <para>
+The returned string will contain the word after the offset if the offset is inside a word and will contain the word after the word after the offset if the offset is not inside a word.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceStart" /> the returned string is from the sentence start after the offset to the next sentence start.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence or if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.SentenceEnd" /> the returned string is from the sentence end at or after the offset to the next sentence end.
+</para>
+          <para>
+The returned string will contain the sentence after the offset if the offset is inside a sentence and will contain the sentence after the sentence after the offset if the offset is not inside a sentence.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineStart" /> the returned string is from the line start after the offset to the next line start.
+</para>
+          <para>
+If the <paramref name="boundary_type" /> is <see cref="F:Atk.TextBoundary.LineEnd" /> the returned string is from the line end at or after the offset to the next line start.
+</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
