@@ -158,7 +158,7 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			
-			CanvasExample example = new CanvasExample ();
+			new CanvasExample ();
 
 			Application.Run ();
 			return 0;

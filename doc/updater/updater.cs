@@ -1192,7 +1192,6 @@ class Updater {
 			sb.Append ('(');
 
 			int i = 0;
-			string modifier;
 			foreach (ParameterInfo parameter in pi) {
 				bool isPointer = false;
 				if (parameter.ParameterType.IsByRef) {
@@ -1214,7 +1213,6 @@ class Updater {
 
 	string GetParameterModifier (ParameterInfo parameter)
 	{
-		int a = (int) parameter.Attributes;
 		if (parameter.IsOut)
 			return "out ";
 

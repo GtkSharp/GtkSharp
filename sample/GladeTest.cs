@@ -19,7 +19,7 @@ namespace GladeSamples {
 		{
 			Application.Init ();
 
-			GladeTest gt = new GladeTest ();
+			new GladeTest ();
 
 			Application.Run ();
 		}

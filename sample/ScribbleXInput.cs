@@ -153,7 +153,7 @@ namespace GtkSamples {
 			Gdk.EventMotion ev = args.Event;
 			Widget widget = (Widget) obj;
 			if ((ev.State & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null) {
-   				double x,y,pressure;
+   				double pressure;
 				if (!ev.Device.GetAxis (ev.Axes, AxisUse.Pressure, out pressure)) {
 					pressure = 0.5;
 				}

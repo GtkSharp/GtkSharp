@@ -110,7 +110,7 @@ public class Driver : Gtk.Window
 		this.Add (view);
 		this.ShowAll ();
 
-		Gtk.Timeout.Add (50, new Gtk.Function (update_percent));
+		GLib.Timeout.Add (50, new GLib.TimeoutHandler (update_percent));
 	}
 
 	bool increasing = true;

@@ -39,9 +39,6 @@ namespace GtkDemo
 
 		TextView CreateTextView ()
 		{
-			TextTagTable ttt = new TextTagTable ();
-			TextBuffer buffer = new TextBuffer (ttt);
-
 			TextView view = new TextView ();
 			view.WrapMode = WrapMode.Word;
 			view.KeyPressEvent += new KeyPressEventHandler (OnKeyPress);

@@ -77,9 +77,7 @@ namespace GtkDemo
 		// Expose callback for the drawing area
 		void Expose (object o, ExposeEventArgs args)
 		{
-		        EventExpose ev = args.Event;
 			Widget widget = (Widget) o;
-			Gdk.Rectangle area = ev.Area;
 
 			frame.RenderToDrawableAlpha(
 					widget.GdkWindow,

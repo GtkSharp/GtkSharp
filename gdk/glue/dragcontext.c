@@ -39,6 +39,8 @@ gtksharp_drag_context_get_is_source (GdkDragContext *context)
 }
 
 
+GdkWindow *gtksharp_drag_context_get_source_window (GdkDragContext *context);
+
 GdkWindow *
 gtksharp_drag_context_get_source_window (GdkDragContext *context)
 {

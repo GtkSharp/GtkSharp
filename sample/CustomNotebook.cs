@@ -502,7 +502,6 @@ class CustomNotebook : Container {
 
 				int count = pages.Count;
 				foreach (CustomNotebookPage page in pages) {
-					Gdk.Rectangle pageAlloc = page.Allocation;
 					if (page.Requisition.Width <= avgWidth) {
 						count--;
 						tabWidth -= page.Requisition.Width;

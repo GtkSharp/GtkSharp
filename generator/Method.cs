@@ -158,6 +158,11 @@ namespace GtkSharp.Generation {
 			return (a.Signature.Types == b.Signature.Types);
 		}
 
+		public override int GetHashCode ()
+		{
+			return Name.GetHashCode () ^ (Signature == null ? 0 : Signature.Types.GetHashCode ());
+		}
+
 		private bool Initialize ()
 		{
 			if (initialized)

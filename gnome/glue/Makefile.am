@@ -12,10 +12,6 @@ libgnomesharpglue_2_la_SOURCES = 	\
 	canvas.c 		\
 	canvasitem.c 		\
 	canvaspoints.c 		\
-	canvas-proxy.c		\
-	canvas-proxy.h 		\
-	canvas-proxy-marshal.c 	\
-	canvas-proxy-marshal.h 	\
 	program.c		\
 	#
 

@@ -281,7 +281,6 @@ namespace Gtk {
 
 		void ScanType (Type type)
 		{
-			object[] attrs = type.GetCustomAttributes (false);
 			foreach (TreeNodeAttribute attr in type.GetCustomAttributes (typeof (TreeNodeAttribute), false))
 				n_cols = attr.ColumnCount;
 

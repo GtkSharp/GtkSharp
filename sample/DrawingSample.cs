@@ -75,9 +75,6 @@ class PrettyGraphic : DrawingArea {
 			       
 	protected override bool OnExposeEvent (Gdk.EventExpose args)
 	{
-		Gdk.Window win = args.Window;
-		Gdk.Rectangle area = args.Area;
-
 		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
 			Pen p = new Pen (Color.Blue, 1.0f);
 
@@ -95,7 +92,7 @@ class MovingText : DrawingArea {
 	
 	public MovingText ()
 	{
-		Gtk.Timeout.Add (20, new Function (Forever));
+		GLib.Timeout.Add (20, new GLib.TimeoutHandler (Forever));
 		SetSizeRequest (300, 200);
 		f = new Font ("Times", 20);
 	}
@@ -108,9 +105,6 @@ class MovingText : DrawingArea {
 	
 	protected override bool OnExposeEvent (Gdk.EventExpose args)
 	{
-		Gdk.Window win = args.Window;
-		Gdk.Rectangle area = args.Area;
-
 		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
 			using (Brush back = new SolidBrush (Color.White), 
 			       fore = new SolidBrush (Color.Red)){

@@ -83,7 +83,6 @@ namespace GtkSharp.Generation {
 			if (elem.HasAttribute("new_flag") || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
 				modifiers = "new ";
 
-			XmlElement parent = (XmlElement) elem.ParentNode;
 			string name = Name;
 			if (name == container_type.Name) {
 				name += "Prop";

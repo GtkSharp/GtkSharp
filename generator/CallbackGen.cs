@@ -144,7 +144,6 @@ namespace GtkSharp.Generation {
 				}
 
 				string cstype = parms[i].CSType;
-				ClassBase parm_wrapper = table.GetClassGen (ctype);
 				sw.Write("\t\t\t" + cstype + " _arg" + idx);
 				if (parms[i].PassAs == "out") {
 					sw.WriteLine(";");
@@ -174,6 +173,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("(({0}) {1}).Handle;", s_ret, invoke);
 				else if (table.IsStruct (rettype) || table.IsBoxed (rettype)) {
 					// Shoot. I have no idea what to do here.
+					Console.WriteLine ("Struct return type {0} in callback {1}", rettype, CName);
 					sw.WriteLine ("IntPtr.Zero;"); 
 				} else if (table.IsEnum (rettype))
 					sw.WriteLine ("(int) {0};", invoke);

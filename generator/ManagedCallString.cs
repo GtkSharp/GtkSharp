@@ -57,7 +57,6 @@ namespace GtkSharp.Generation {
 
 				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
-				string pass_as = igen is StructGen ? "ref" : p.PassAs;
 
 				ret += indent + igen.QualifiedName + " my" + p.Name;
 				if (igen is StructGen || p.PassAs == "ref")

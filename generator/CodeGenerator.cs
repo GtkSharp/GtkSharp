@@ -36,7 +36,6 @@ namespace GtkSharp.Generation {
 			}
 
 			bool generate = false;
-			bool include = false;
 			string dir = "";
 			string custom_dir = "";
 			string assembly_name = "";
@@ -48,30 +47,28 @@ namespace GtkSharp.Generation {
 			foreach (string arg in args) {
 				if (arg == "--generate") {
 					generate = true;
-					include = false;
 					continue;
 				} else if (arg == "--include") {
 					generate = false;
-					include = true;
 					continue;
 				} else if (arg.StartsWith ("--outdir=")) {
-					include = generate = false;
+					generate = false;
 					dir = arg.Substring (9);
 					continue;
 				} else if (arg.StartsWith ("--customdir=")) {
-					include = generate = false;
+					generate = false;
 					custom_dir = arg.Substring (12);
 					continue;
 				} else if (arg.StartsWith ("--assembly-name=")) {
-					include = generate = false;
+					generate = false;
 					assembly_name = arg.Substring (16);
 					continue;
 				} else if (arg.StartsWith ("--glue-filename=")) {
-					include = generate = false;
+					generate = false;
 					glue_filename = arg.Substring (16);
 					continue;
 				} else if (arg.StartsWith ("--gluelib-name=")) {
-					include = generate = false;
+					generate = false;
 					gluelib_name = arg.Substring (15);
 					continue;
 				}

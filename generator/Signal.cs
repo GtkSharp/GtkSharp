@@ -145,6 +145,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		private bool NeedNew (ClassBase implementor)
+		{
+			return elem.HasAttribute ("new_flag") ||
+				(container_type != null && container_type.GetSignalRecursively (Name) != null) ||
+				(implementor != null && implementor.GetSignalRecursively (Name) != null);
+		}
+
 		public void GenEventHandler (GenerationInfo gen_info)
 		{
 			if (EventHandlerName == "EventHandler")
@@ -188,7 +195,10 @@ namespace GtkSharp.Generation {
 		{
 			VMSignature vmsig = new VMSignature (parms);
 			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
-			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", retval.CSType, "On" + Name, vmsig.ToString ());
+			sw.WriteLine ("\t\tprotected ");
+			if (NeedNew (implementor))
+				sw.WriteLine ("new ");
+			sw.WriteLine ("virtual {0} {1} ({2})", retval.CSType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
 			if (IsVoid)
 				sw.WriteLine ("\t\t\tGLib.Value ret = GLib.Value.Empty;");
@@ -261,7 +271,7 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine("\t\t[GLib.Signal("+ cname + ")]");
 			sw.Write("\t\tpublic ");
-			if (elem.HasAttribute("new_flag") || (container_type != null && container_type.GetSignalRecursively (Name) != null) || (implementor != null && implementor.GetSignalRecursively (Name) != null))
+			if (NeedNew (implementor))
 				sw.Write("new ");
 			sw.WriteLine("event " + EventHandlerQualifiedName + " " + Name + " {");
 			sw.WriteLine("\t\t\tadd {");

@@ -31,6 +31,8 @@ gint gtksharp_gdk_device_get_num_axes (GdkDevice *device);
 gint gtksharp_gdk_device_get_num_keys (GdkDevice *device);
 GdkDeviceAxis* gtksharp_gdk_device_get_axes (GdkDevice *device);
 GdkDeviceKey* gtksharp_gdk_device_get_keys (GdkDevice *device);
+GdkDeviceAxis gtksharp_gdk_device_get_device_axis (GdkDevice *device, guint i);
+GdkDeviceKey gtksharp_gdk_device_get_device_key (GdkDevice *device, guint i);
 /* */
 
 
