@@ -1,4 +1,4 @@
-SOURCES = 		\
+FILES = 		\
 	Settings.cs 	\
 	$(srcdir)/main.cs
 
@@ -11,8 +11,8 @@ GCONFDIR=$(top_builddir)/gconf
 
 noinst_SCRIPTS = sample.exe
 
-sample.exe: $(SCHEMA) $(srcdir)/sample.glade $(SOURCES)
-	$(CSC) /out:sample.exe $(SOURCES) $(REFERENCES) $(RESOURCES)
+sample.exe: $(SCHEMA) $(srcdir)/sample.glade $(FILES)
+	$(CSC) /out:sample.exe $(FILES) $(REFERENCES) $(RESOURCES)
 
 Settings.cs: $(SCHEMA)
 	MONO_PATH=$(top_builddir)/gconf/GConf/gconf-sharp.dll:${MONO_PATH} $(RUNTIME) $(GCONFDIR)/tools/gconfsharp-schemagen.exe Sample $(SCHEMA) > Settings.cs
