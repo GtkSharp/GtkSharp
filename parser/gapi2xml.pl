@@ -33,6 +33,8 @@ if (-e $ARGV[1]) {
 	$doc = XML::LibXML::Document->new();
 	$root = $doc->createElement('api');
 	$doc->setDocumentElement($root);
+	$warning_node = XML::LibXML::Comment->new ("\n\n        This file was automatically generated.\n        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.\n\n");
+	$root->appendChild($warning_node);
 }
 
 $ns_elem = $doc->createElement('namespace');
