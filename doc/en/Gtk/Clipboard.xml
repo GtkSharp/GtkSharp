@@ -1,16 +1,23 @@
 <Type Name="Clipboard" FullName="Gtk.Clipboard">
-  <TypeSignature Language="C#" Value="public class Clipboard : GLib.Opaque, IWrapper" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Clipboard : GLib.Opaque, IWrapper" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
-    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyPublicKey>
+    </AssemblyPublicKey>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>An object that stores clipboard data.</summary>
+    <remarks>
+      <para> The <see cref="T:Gtk.Clipboard" /> object represents a clipboard of data shared between different processes or between different widgets in the same process. Each clipboard is identified by a name encoded as a <see cref="T:Gdk.Atom" />. (Conversion to and from strings can be done with <see cref="M:Gdk.Atom.Intern(System.String,System.Boolean)" /> and <see cref="M:Gdk.Atom.Name()" />.) The default clipboard corresponds to the "CLIPBOARD" atom; another commonly used clipboard is the "PRIMARY" clipboard, which, in X, traditionally contains the currently selected text.</para>
+      <para>To support having a number of different formats on the clipboard at the same time, the clipboard mechanism allows providing callbacks instead of the actual data. When you set the contents of the clipboard, you can either supply the data directly (via methods like <see cref="M:Gtk.Clipboard.SetText()" />), or you can supply a callback to be called at a later time when the data is needed (via <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.SetWithOwner()" />.) Providing a callback also avoids having to make copies of the data when it is not needed.</para>
+      <para><see cref="M:Gtk.Clipboard.SetWithData()" /> and <see cref="M:Gtk.Clipboard.SetWithOwner()" />  are quite similar; the choice between the two depends mostly on which is more convenient in a particular situation. The former is most useful when you want to have a blob of data with callbacks to convert it into the various data types that you advertise. When the clear_func you provided is called, you simply free the data blob. The latter is more useful when the contents of clipboard reflect the internal state of a <see cref="T:GLib.Object" />  (As an example, for the PRIMARY clipboard, when an entry widget provides the contents for the clipboar the contents are simply the text within the selected region.) If the contents change, the entry widget can call <see cref="M:Gtk.Clipboard.SetWithOwner()" /> to update the timestamp for clipboard ownership, without having to worry about clear_func being called.</para>
+      <para>Requesting the data from the clipboard is essentially asynchronous. If the contents of the clipboard are provided within the same process, then a direct function call will be made to retrieve the data, but if they are provided by another process, then the data needs to be retrieved from the other process, which may take some time. To avoid blocking the user interface, the call to request the selection, <see cref="M:Gtk.Clipboard.RequestContents()" /> takes a callback that will be called when the contents are received (or when the request fails.) If you do not want to deal with providing a separate callback, you can also use <see cref="M:Gtk.Clipboard.WaitForContents()" />. What this does is run the GLib main loop recursively waiting for the contents. This can simplify the code flow, but you still have to be aware that other callbacks in your program can be called while this recursive mainloop is running.</para>
+	</remarks>
+	<para> Along with the functions to get the clipboard contents as an arbitrary data chunk, there are also functions to retrieve it as text, <see cref="M:Gtk.Clipboard.RequestText()" /> and <see cref="M:Gtk.Clipboard.WaitForText()" />. These functions take care of determining which formats are advertised by the clipboard provider, asking for the clipboard in the best available format and converting the results into the UTF-8 encoding. (The standard form for representing strings in Gtk#.)</para>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -32,10 +39,10 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="selection">To be added: an object of type 'Gdk.Atom'</param>
-        <returns>To be added: an object of type 'Gtk.Clipboard'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the clipboard object for the given selection.</summary>
+        <param name="selection">an object of type <see cref="T:Gdk.Atom" /></param>
+        <returns>an object of type <see cref="T:Gtk.Clipboard" /></returns>
+        <remarks>See <see cref="M:Gtk.Clipboard.GetForDisplay()" /> for complete details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -46,8 +53,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clears the contents of the clipboard.</summary>
+        <remarks>Generally this should only be called between the time you call <see cref="M:Gtk.Clipboard.SetWithOwner()" /> or <see cref="M:Gtk.Clipboard.SetWithData()" />, and when the clear_func you supplied is called. Otherwise, the clipboard may be owned by someone else.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestText">
@@ -60,9 +67,12 @@
         <Parameter Name="callback" Type="Gtk.ClipboardTextReceivedFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="callback">To be added: an object of type 'Gtk.ClipboardTextReceivedFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Requests the contents of the clipboard as text.</summary>
+        <param name="callback">an object of type <see cref="T:Gtk.ClipboardTextReceivedFunc" /></param>
+        <remarks>
+		  <para>When the text is later received, it will be converted to UTF-8 if necessary, and <paramref name="callback" /> will be called.</para>
+		  <para>The text parameter to <paramref name="callback" /> will contain the resulting text if the request succeeded, or <see langword="null" /> if it failed. This could happen for various reasons, in particular if the clipboard was empty or if the contents of the clipboard could not be converted into text form.</para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="WaitIsTextAvailable">
@@ -73,9 +83,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Test to see if there is text available to be pasted.</summary>
+        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <remarks>
+          <para>This is done by requesting the TARGETS atom and checking if it contains any of the names: STRING, TEXT, COMPOUND_TEXT, UTF8_STRING. This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</para>
+          <para>This function is a little faster than calling <see cref="M:Gtk.ClipboardWaitForText()" /> since it does not need to retrieve the actual text.</para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestContents">
@@ -89,10 +102,10 @@
         <Parameter Name="callback" Type="Gtk.ClipboardReceivedFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="target">To be added: an object of type 'Gdk.Atom'</param>
-        <param name="callback">To be added: an object of type 'Gtk.ClipboardReceivedFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Requests the contents of clipboard as the given target.</summary>
+        <param name="target">an object of type <see cref="T:Gdk.Atom" /></param>
+        <param name="callback">an object of type <see cref="T:Gtk.ClipboardReceivedFunc" /></param>
+        <remarks>When the results of the result are later received the supplied callback will be called.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WaitForContents">
@@ -105,10 +118,10 @@
         <Parameter Name="target" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="target">To be added: an object of type 'Gdk.Atom'</param>
-        <returns>To be added: an object of type 'Gtk.SelectionData'</returns>
-        <remarks>To be added</remarks>
+        <summary>Requests the contents of the clipboard using the given target.</summary>
+        <param name="target">an object of type <see cref="T:Gdk.Atom" /></param>
+        <returns>an object of type <see cref="T:Gtk.SelectionData" /></returns>
+        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WaitForText">
@@ -119,9 +132,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Requests the contents of the clipboard as text and converts the result to UTF-8 if necessary.</summary>
+        <returns>an object of type <see cref="T:System.String" /></returns>
+        <remarks>This function waits for the data to be received using the main loop, so events, timeouts, etc, may be dispatched during the wait.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -146,9 +159,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Clipboard'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns>an object of type <see cref="T:Gtk.Clipboard" /></returns>
+        <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Owner">
@@ -158,9 +171,9 @@
         <ReturnType>GLib.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.Object'</returns>
-        <remarks>To be added</remarks>
+        <summary>The owner of the clipboard, if any; otherwise <see langword="null" />.</summary>
+        <returns>an object of type <see cref="T:GLib.Object" /></returns>
+        <remarks>If the clipboard contents callbacks were set with <see cref="M:Gtk.Clipboard.SetWithOwner()" />, and the <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.Clear()" /> has not been subsequently called, it will return the owner set by <see cref="M:Gtk.Clipboard.SetWithOwner()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetText">
@@ -173,9 +186,9 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
+        <param name="text">an object of type <see cref="T:System.String" /></param>
+        <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -185,9 +198,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The type of the clipboard.</summary>
         <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Display">
@@ -197,9 +210,9 @@
         <ReturnType>Gdk.Display</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The <see cref="T:Gdk.Display" /> associated with the clipboard.</summary>
         <returns>a <see cref="T:Gdk.Display" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetForDisplay">
@@ -213,11 +226,15 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the clipboard object for the given selection.</summary>
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <param name="selection">a <see cref="T:Gdk.Atom" /></param>
         <returns>a <see cref="T:Gtk.Clipboard" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>Cut/copy/paste menu items and keyboard shortcuts should use the default clipboard, returned by passing GDK_SELECTION_CLIPBOARD for selection. (GDK_NONE is supported as a synonym for GDK_SELECTION_CLIPBOARD for backwards compatibility reasons.) The currently-selected object or text should be provided on the clipboard identified by GDK_SELECTION_PRIMARY. Cut/copy/paste menu items conceptually copy the contents of the GDK_SELECTION_PRIMARY clipboard to the default clipboard, i.e. they copy the selection to what the user sees as the clipboard.</para>
+          <para>(Passing GDK_NONE is the same as using gdk_atom_intern ("CLIPBOARD", <see langword="false" />). See http://www.freedesktop.org/standards/clipboards.txt for a detailed discussion of the "CLIPBOARD" vs. "PRIMARY" selections under the X window system. On Win32 the GDK_SELECTION_PRIMARY clipboard is essentially ignored.)</para>
+          <para>It is possible to have arbitrary named clipboards; if you do invent new clipboards, you should prefix the selection name with an underscore (because the ICCCM requires that nonstandard atoms are underscore-prefixed), and namespace it as well. For example, if your application called "Foo" has a special-purpose clipboard, you might call it "_FOO_SPECIAL_CLIPBOARD".</para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -228,8 +245,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -240,10 +257,10 @@
         <Parameter Name="gtype" Type="GLib.Type" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.Type" /></param>
         <returns>a <see cref="T:Gtk.Clipboard" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is an internal constructor, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetWithData">
@@ -259,13 +276,13 @@
         <Parameter Name="clear_func" Type="Gtk.ClipboardClearFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
         <param name="targets">a <see cref="T:Gtk.TargetEntry" /></param>
         <param name="n_targets">a <see cref="T:System.UInt32" /></param>
         <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
         <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetWithOwner">
@@ -282,14 +299,14 @@
         <Parameter Name="owner" Type="GLib.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Virtually sets the contents of the specified clipboard by providing a list of supported formats for the clipboard data and a function to call to get the actual data when it is requested.</summary>
         <param name="targets">a <see cref="T:Gtk.TargetEntry" /></param>
         <param name="n_targets">a <see cref="T:System.UInt32" /></param>
         <param name="get_func">a <see cref="T:Gtk.ClipboardGetFunc" /></param>
         <param name="clear_func">a <see cref="T:Gtk.ClipboardClearFunc" /></param>
         <param name="owner">a <see cref="T:GLib.Object" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The difference between this function and <see cref="M:Gtk.Clipboard.SetWithData()" /> is that a <see cref="T:GLib.Object" /> is passed in.</remarks>
       </Docs>
     </Member>
   </Members>
