@@ -139,20 +139,6 @@
       <member cname="GTK_FILE_CHOOSER_ERROR_NONEXISTENT" name="Nonexistent"/>
       <member cname="GTK_FILE_CHOOSER_ERROR_BAD_FILENAME" name="BadFilename"/>
     </enum>
-    <enum name="FileChooserProp" cname="GtkFileChooserProp" type="enum">
-      <member cname="GTK_FILE_CHOOSER_PROP_FIRST" name="First" value="0x1000"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_ACTION" name="Action"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND" name="FileSystemBackend"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_FILTER" name="Filter"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_LOCAL_ONLY" name="LocalOnly"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET" name="PreviewWidget"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE" name="PreviewWidgetActive"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL" name="UsePreviewLabel"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_EXTRA_WIDGET" name="ExtraWidget"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE" name="SelectMultiple"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_SHOW_HIDDEN" name="ShowHidden"/>
-      <member cname="GTK_FILE_CHOOSER_PROP_LAST" name="Last"/>
-    </enum>
     <enum name="FileFilterFlags" cname="GtkFileFilterFlags" type="flags">
       <member cname="GTK_FILE_FILTER_FILENAME" name="Filename" value="1 &lt;&lt; 0"/>
       <member cname="GTK_FILE_FILTER_URI" name="Uri" value="1 &lt;&lt; 1"/>
@@ -316,19 +302,6 @@
     <enum name="ProgressBarStyle" cname="GtkProgressBarStyle" type="enum">
       <member cname="GTK_PROGRESS_CONTINUOUS" name="Continuous"/>
       <member cname="GTK_PROGRESS_DISCRETE" name="Discrete"/>
-    </enum>
-    <enum name="RBNodeColor" cname="GtkRBNodeColor" type="flags">
-      <member cname="GTK_RBNODE_BLACK" name="Black" value="1 &lt;&lt; 0"/>
-      <member cname="GTK_RBNODE_RED" name="Red" value="1 &lt;&lt; 1"/>
-      <member cname="GTK_RBNODE_IS_PARENT" name="IsParent" value="1 &lt;&lt; 2"/>
-      <member cname="GTK_RBNODE_IS_SELECTED" name="IsSelected" value="1 &lt;&lt; 3"/>
-      <member cname="GTK_RBNODE_IS_PRELIT" name="IsPrelit" value="1 &lt;&lt; 4"/>
-      <member cname="GTK_RBNODE_IS_SEMI_COLLAPSED" name="IsSemiCollapsed" value="1 &lt;&lt; 5"/>
-      <member cname="GTK_RBNODE_IS_SEMI_EXPANDED" name="IsSemiExpanded" value="1 &lt;&lt; 6"/>
-      <member cname="GTK_RBNODE_INVALID" name="Invalid" value="1 &lt;&lt; 7"/>
-      <member cname="GTK_RBNODE_COLUMN_INVALID" name="ColumnInvalid" value="1 &lt;&lt; 8"/>
-      <member cname="GTK_RBNODE_DESCENDANTS_INVALID" name="DescendantsInvalid" value="1 &lt;&lt; 9"/>
-      <member cname="GTK_RBNODE_NON_COLORS" name="NonColors"/>
     </enum>
     <enum name="RcFlags" cname="GtkRcFlags" type="flags">
       <member cname="GTK_RC_FG" name="Fg" value="1 &lt;&lt; 0"/>
@@ -846,14 +819,6 @@
         <parameter type="const-gchar*" name="str"/>
       </parameters>
     </callback>
-    <callback name="RBTreeTraverseFunc" cname="GtkRBTreeTraverseFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkRBTree*" name="tree"/>
-        <parameter type="GtkRBNode*" name="node"/>
-        <parameter type="gpointer" name="data"/>
-      </parameters>
-    </callback>
     <callback name="RcPropertyParser" cname="GtkRcPropertyParser">
       <return-type type="gboolean"/>
       <parameters>
@@ -872,53 +837,10 @@
         <parameter type="gpointer" name="user_data"/>
       </parameters>
     </callback>
-    <callback name="TextSegCheckFunc" cname="GtkTextSegCheckFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkTextLineSegment*" name="seg"/>
-        <parameter type="GtkTextLine*" name="line"/>
-      </parameters>
-    </callback>
-    <callback name="TextSegCleanupFunc" cname="GtkTextSegCleanupFunc">
-      <return-type type="GtkTextLineSegment*"/>
-      <parameters>
-        <parameter type="GtkTextLineSegment*" name="seg"/>
-        <parameter type="GtkTextLine*" name="line"/>
-      </parameters>
-    </callback>
-    <callback name="TextSegDeleteFunc" cname="GtkTextSegDeleteFunc">
-      <return-type type="gboolean"/>
-      <parameters>
-        <parameter type="GtkTextLineSegment*" name="seg"/>
-        <parameter type="GtkTextLine*" name="line"/>
-        <parameter type="gboolean" name="tree_gone"/>
-      </parameters>
-    </callback>
-    <callback name="TextSegLineChangeFunc" cname="GtkTextSegLineChangeFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkTextLineSegment*" name="seg"/>
-        <parameter type="GtkTextLine*" name="line"/>
-      </parameters>
-    </callback>
-    <callback name="TextSegSplitFunc" cname="GtkTextSegSplitFunc">
-      <return-type type="GtkTextLineSegment*"/>
-      <parameters>
-        <parameter type="GtkTextLineSegment*" name="seg"/>
-        <parameter type="gint" name="index"/>
-      </parameters>
-    </callback>
     <callback name="TextTagTableForeach" cname="GtkTextTagTableForeach">
       <return-type type="void"/>
       <parameters>
         <parameter type="GtkTextTag*" name="tag"/>
-        <parameter type="gpointer" name="data"/>
-      </parameters>
-    </callback>
-    <callback name="TextUtilCharChosenFunc" cname="GtkTextUtilCharChosenFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="const-char*" name="text"/>
         <parameter type="gpointer" name="data"/>
       </parameters>
     </callback>
@@ -5590,12 +5512,6 @@
         </parameters>
       </method>
     </object>
-    <object name="FileChooserDefault" cname="GtkFileChooserDefault" parent="GtkVBox">
-      <implements>
-        <interface cname="GtkFileChooser"/>
-        <interface cname="GtkFileChooserEmbed"/>
-      </implements>
-    </object>
     <object name="FileChooserDialog" cname="GtkFileChooserDialog" parent="GtkDialog">
       <field name="Priv" cname="priv" type="GtkFileChooserDialogPrivate*"/>
       <implements>
@@ -5623,11 +5539,6 @@
           <parameter ellipsis="true"/>
         </parameters>
       </constructor>
-    </object>
-    <object name="FileChooserEntry" cname="GtkFileChooserEntry" parent="GtkEntry">
-      <implements>
-        <interface cname="GtkEditable"/>
-      </implements>
     </object>
     <object name="FileChooserWidget" cname="GtkFileChooserWidget" parent="GtkVBox">
       <field name="Priv" cname="priv" type="GtkFileChooserWidgetPrivate*"/>
@@ -8577,36 +8488,6 @@
         </parameters>
       </method>
     </object>
-    <object name="PathBar" cname="GtkPathBar" parent="GtkContainer">
-      <field name="FileSystem" cname="file_system" type="GtkFileSystem*"/>
-      <field name="RootPath" cname="root_path" type="GtkFilePath*"/>
-      <field name="HomePath" cname="home_path" type="GtkFilePath*"/>
-      <field name="DesktopPath" cname="desktop_path" type="GtkFilePath*"/>
-      <field name="RootIcon" cname="root_icon" type="GdkPixbuf*"/>
-      <field name="HomeIcon" cname="home_icon" type="GdkPixbuf*"/>
-      <field name="DesktopIcon" cname="desktop_icon" type="GdkPixbuf*"/>
-      <field name="ButtonList" cname="button_list" type="GList*"/>
-      <field name="FirstScrolledButton" cname="first_scrolled_button" type="GList*"/>
-      <field name="UpSliderButton" cname="up_slider_button" type="GtkWidget*"/>
-      <field name="DownSliderButton" cname="down_slider_button" type="GtkWidget*"/>
-      <field name="SettingsSignalId" cname="settings_signal_id" type="guint"/>
-      <field name="IconSize" cname="icon_size" type="gint"/>
-      <field name="SliderWidth" cname="slider_width" type="gint16"/>
-      <field name="Spacing" cname="spacing" type="gint16"/>
-      <field name="ButtonOffset" cname="button_offset" type="gint16"/>
-      <field name="SliderVisible" cname="slider_visible" bits="1" type="guint"/>
-      <signal name="PathClicked" cname="path-clicked" when="FIRST">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkPathBar*" name="path_bar"/>
-          <parameter type="GtkFilePath*" name="file_path"/>
-          <parameter type="gboolean" name="child_is_hidden"/>
-        </parameters>
-      </signal>
-      <method name="GetType" cname="gtk_path_bar_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
-    </object>
     <object name="Plug" cname="GtkPlug" parent="GtkWindow">
       <field name="SocketWindow" cname="socket_window" type="GdkWindow*"/>
       <field name="ModalityWindow" cname="modality_window" type="GtkWidget*"/>
@@ -11505,20 +11386,6 @@
           <parameter type="gint*" name="buffer_x"/>
           <parameter type="gint*" name="buffer_y"/>
         </parameters>
-      </method>
-    </object>
-    <object name="ThemeEngine" cname="GtkThemeEngine" parent="GTypeModule">
-      <method name="CreateRcStyle" cname="gtk_theme_engine_create_rc_style">
-        <return-type type="GtkRcStyle*"/>
-      </method>
-      <method name="Get" cname="gtk_theme_engine_get" shared="true">
-        <return-type type="GtkThemeEngine*"/>
-        <parameters>
-          <parameter type="const-gchar*" name="name"/>
-        </parameters>
-      </method>
-      <method name="GetType" cname="gtk_theme_engine_get_type" shared="true">
-        <return-type type="GType"/>
       </method>
     </object>
     <object name="ToggleAction" cname="GtkToggleAction" parent="GtkAction">
@@ -15895,23 +15762,6 @@
       </method>
     </struct>
     <alias name="ObjectInitFunc" cname="GtkObjectInitFunc" type="GInstanceInitFunc"/>
-    <struct name="RBNode" cname="GtkRBNode">
-      <field name="Flags" cname="flags" bits="14" type="guint"/>
-      <field name="Parity" cname="parity" bits="1" type="guint"/>
-      <field name="Left" cname="left" type="GtkRBNode*"/>
-      <field name="Right" cname="right" type="GtkRBNode*"/>
-      <field name="Parent" cname="parent" type="GtkRBNode*"/>
-      <field name="Count" cname="count" type="gint"/>
-      <field name="Offset" cname="offset" type="gint"/>
-      <field name="Children" cname="children" type="GtkRBTree*"/>
-    </struct>
-    <struct name="RBTree" cname="GtkRBTree">
-      <field name="Root" cname="root" type="GtkRBNode*"/>
-      <field name="Nil" cname="nil" type="GtkRBNode*"/>
-      <field name="ParentTree" cname="parent_tree" type="GtkRBTree*"/>
-      <field name="ParentNode" cname="parent_node" type="GtkRBNode*"/>
-    </struct>
-    <struct name="RBTreeView" cname="GtkRBTreeView" opaque="true"/>
     <struct name="RadioActionEntry" cname="GtkRadioActionEntry">
       <field name="Name" cname="name" type="const-gchar*"/>
       <field name="StockId" cname="stock_id" type="const-gchar*"/>
@@ -16197,7 +16047,6 @@
       </method>
     </boxed>
     <struct name="TextBTree" cname="GtkTextBTree" opaque="true"/>
-    <struct name="TextCounter" cname="GtkTextCounter" opaque="true"/>
     <boxed name="TextIter" cname="GtkTextIter">
       <field name="Dummy1" cname="dummy1" type="gpointer" access="private"/>
       <field name="Dummy2" cname="dummy2" type="gpointer" access="private"/>
@@ -16614,41 +16463,10 @@
         </parameters>
       </method>
     </boxed>
-    <struct name="TextLineSegment" cname="GtkTextLineSegment">
-      <field name="Type" cname="type" type="GtkTextLineSegmentClass*"/>
-      <field name="Next" cname="next" type="GtkTextLineSegment*"/>
-      <field name="CharCount" cname="char_count" type="int"/>
-      <field name="ByteCount" cname="byte_count" type="int"/>
-      <field name="Chars" cname="chars" array_len="4" type="char"/>
-      <method name="Split" cname="gtk_text_line_segment_split" shared="true">
-        <return-type type="GtkTextLineSegment*"/>
-        <parameters>
-          <parameter type="const-GtkTextIter*" name="iter"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="TextLineSegmentClass" cname="GtkTextLineSegmentClass">
-      <field name="Name" cname="name" type="char*"/>
-      <field name="LeftGravity" cname="leftGravity" type="gboolean"/>
-      <field name="SplitFunc" cname="splitFunc" type="GtkTextSegSplitFunc"/>
-      <field name="DeleteFunc" cname="deleteFunc" type="GtkTextSegDeleteFunc"/>
-      <field name="CleanupFunc" cname="cleanupFunc" type="GtkTextSegCleanupFunc"/>
-      <field name="LineChangeFunc" cname="lineChangeFunc" type="GtkTextSegLineChangeFunc"/>
-      <field name="CheckFunc" cname="checkFunc" type="GtkTextSegCheckFunc"/>
-    </struct>
     <struct name="TextLogAttrCache" cname="GtkTextLogAttrCache" opaque="true"/>
-    <struct name="TextMarkBody" cname="GtkTextMarkBody" opaque="true"/>
     <struct name="TextPendingScroll" cname="GtkTextPendingScroll" opaque="true"/>
-    <struct name="TextTagInfo" cname="GtkTextTagInfo">
-      <field name="Tag" cname="tag" type="GtkTextTag*"/>
-      <field name="TagRoot" cname="tag_root" type="GtkTextBTreeNode*"/>
-      <field name="ToggleCount" cname="toggle_count" type="gint"/>
-    </struct>
-    <struct name="TextToggleBody" cname="GtkTextToggleBody">
-      <field name="Info" cname="info" type="GtkTextTagInfo*"/>
-      <field name="InNodeCounts" cname="inNodeCounts" type="gboolean"/>
-    </struct>
     <struct name="TextWindow" cname="GtkTextWindow" opaque="true"/>
+    <struct name="ThemeEngine" cname="GtkThemeEngine" opaque="true"/>
     <struct name="ToggleActionEntry" cname="GtkToggleActionEntry">
       <field name="Name" cname="name" type="const-gchar*"/>
       <field name="StockId" cname="stock_id" type="const-gchar*"/>
@@ -16676,20 +16494,6 @@
         </parameters>
       </method>
     </struct>
-    <struct name="TreeDataList" cname="GtkTreeDataList">
-      <field name="Next" cname="next" type="GtkTreeDataList*"/>
-      <field name="VInt" cname="v_int" type="gint"/>
-      <method name="CompareFunc" cname="gtk_tree_data_list_compare_func" shared="true">
-        <return-type type="gint"/>
-        <parameters>
-          <parameter type="GtkTreeModel*" name="model"/>
-          <parameter type="GtkTreeIter*" name="a"/>
-          <parameter type="GtkTreeIter*" name="b"/>
-          <parameter type="gpointer" name="user_data"/>
-        </parameters>
-      </method>
-    </struct>
-    <struct name="TreeDataSortHeader" cname="GtkTreeDataSortHeader" opaque="true"/>
     <boxed name="TreeIter" cname="GtkTreeIter">
       <field name="Stamp" cname="stamp" type="gint"/>
       <field name="UserData" cname="user_data" type="gpointer"/>
@@ -17323,6 +17127,22 @@
       <method name="SetLocale" cname="gtk_set_locale" shared="true">
         <return-type type="gchar*"/>
       </method>
+      <method name="TextLayoutDraw" cname="gtk_text_layout_draw" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTextLayout*" name="layout"/>
+          <parameter type="GtkWidget*" name="widget"/>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="cursor_gc"/>
+          <parameter type="gint" name="x_offset"/>
+          <parameter type="gint" name="y_offset"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="GList**" name="widgets"/>
+        </parameters>
+      </method>
     </class>
     <class name="Bindings" cname="GtkBindings_">
       <method name="Activate" cname="gtk_bindings_activate" shared="true">
@@ -17353,37 +17173,6 @@
       </method>
       <method name="PosGetType" cname="gtk_ctree_pos_get_type" shared="true">
         <return-type type="GType"/>
-      </method>
-    </class>
-    <class name="Decorated" cname="GtkDecorated_">
-      <method name="WindowCalculateFrameSize" cname="gtk_decorated_window_calculate_frame_size" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-        </parameters>
-      </method>
-      <method name="WindowInit" cname="gtk_decorated_window_init" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-        </parameters>
-      </method>
-      <method name="WindowMoveResizeWindow" cname="gtk_decorated_window_move_resize_window" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-          <parameter type="gint" name="x"/>
-          <parameter type="gint" name="y"/>
-          <parameter type="gint" name="width"/>
-          <parameter type="gint" name="height"/>
-        </parameters>
-      </method>
-      <method name="WindowSetTitle" cname="gtk_decorated_window_set_title" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkWindow*" name="window"/>
-          <parameter type="const-gchar*" name="title"/>
-        </parameters>
       </method>
     </class>
     <class name="Drag" cname="GtkDrag_">
@@ -18482,30 +18271,6 @@
         <parameters>
           <parameter type="const-gchar*" name="stock_id"/>
           <parameter type="GtkStockItem*" name="item"/>
-        </parameters>
-      </method>
-    </class>
-    <class name="Text" cname="GtkText_">
-      <method name="ByteBeginsUtf8Char" cname="gtk_text_byte_begins_utf8_char" shared="true">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-gchar*" name="byte"/>
-        </parameters>
-      </method>
-      <method name="LayoutDraw" cname="gtk_text_layout_draw" shared="true">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GtkTextLayout*" name="layout"/>
-          <parameter type="GtkWidget*" name="widget"/>
-          <parameter type="GdkDrawable*" name="drawable"/>
-          <parameter type="GdkGC*" name="cursor_gc"/>
-          <parameter type="gint" name="x_offset"/>
-          <parameter type="gint" name="y_offset"/>
-          <parameter type="gint" name="x"/>
-          <parameter type="gint" name="y"/>
-          <parameter type="gint" name="width"/>
-          <parameter type="gint" name="height"/>
-          <parameter type="GList**" name="widgets"/>
         </parameters>
       </method>
     </class>
