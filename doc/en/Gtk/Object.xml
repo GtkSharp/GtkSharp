@@ -10,8 +10,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary> Base class for the Gtk object hierarchy.</summary>
+    <remarks>Base object for the Gtk object hierarchy.
+
+<para>
+The differences between Gtk.Object and GLib.<see cref="T:GLib.Object" /> is a historical one, and it matters little in Gtk#.
+</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -34,8 +38,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Request all holders to the object to release the reference.</summary>
+        <remarks>This method is used to notify objects that might hold a reference to this object to release the reference.
+<para>
+This invokes the <see cref="M:Gtk.Object.OnDestroyed" /> method and triggers the <see cref="E:Gtk.OBject.Destroyed" /> event.
+</para><para>
+The object is only destroyed if all the references to the object are released, this is just a mechanism to request that references be released.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Sink">
@@ -87,10 +96,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'IntPtr'</returns>
-        <remarks>To be added</remarks>
+        <summary>Helper property to associate information with an object.</summary>
+        <param name="value">The value to store/retrieve</param>
+        <returns />
+        <remarks>This is not very useful with the Gtk# binding as it is with the C binding. </remarks>
       </Docs>
     </Member>
     <Member MemberName="Destroyed">
@@ -101,8 +110,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Raised to signal that all references to this object should be removed.</summary>
+        <remarks>This event is triggered if someone has invoked the <see cref="T:Gtk.Object" />'s <see cref="M:Gtk.Object.Destroy" /> method.  It is used to inform that all references to the object must be discarded at this point.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Raw">
@@ -126,8 +135,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Invoked to request that references to the object be released.</summary>
+        <remarks>This method is invoked when someone has called the <see cref="T:Gtk.Object's" />'s <see cref="T:Gtk.Object.Destroy" /> method.  Any references to the object held should be released at this point.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -163,9 +172,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal.</summary>
         <returns>a <see cref="T:Gtk.Object" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Internal constructor.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -10,8 +10,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Main loop event processing class.
+</summary>
+    <remarks>
+Like all GUI toolkits, GTK+ uses an event-driven programming model. When the user is doing nothing, GTK+ sits in the main loop and waits for input. If the user performs some action - say, a mouse click - then the main loop "wakes up" and delivers an event to GTK+. GTK+ forwards the event to one or more widgets.
+<para>
+When widgets receive an event, they frequently emit one or more signals. Signals notify your program that "something interesting happened" by invoking functions you've connected to the signal with g_signal_connect(). Functions connected to a signal are often termed callbacks.
+</para><para>
+When your callbacks are invoked, you would typically take some action - for example, when an Open button is clicked you might display a GtkFileSelectionDialog. After a callback finishes, GTK+ will return to the main loop and await more user input. 
+</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -29,10 +36,11 @@
         <Parameter Name="blocking" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="blocking">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Runs one iteration of the main loop.</summary>
+        <param name="blocking">
+          <see langword="true" /> if you want Gtk# to block if no events are pending.</param>
+        <returns>Returns <see langword="true" /> if the <see cref="M:Gtk.Main.Quit" /> method was invoked to terminate the innermost loop.</returns>
+        <remarks>Runs a single iteration of the mainloop. If no events are available either return or block dependent on the value of blocking.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Level">
@@ -43,9 +51,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the current main loop level.</summary>
+        <returns>The nesting level of the current main loop.</returns>
+        <remarks>Asks for the current nesting level of the main loop. This can be useful when calling the <see cref="T:Gtk.Main.Quit" /> method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Iteration">
@@ -56,9 +64,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Runs an iteration of the main loop: blocks until an event is received.</summary>
+        <returns>
+          <see langword="true" /> if the <see cref="M:Gtk.Main.Quit" /> method was called to terminate the innermost main loop.</returns>
+        <remarks>Runs a single iteration of the main loop. If no events are waiting to be processed Gtk# will block until the next event is noticed. If you don't want to block look at <see cref="M:Gtk.Main.IterationDo()" /> or check if any events are pending with <see cref="M:Gtk.Global.EventsPending()" /> first. </remarks>
       </Docs>
     </Member>
     <Member MemberName="DoEvent">
@@ -71,9 +80,9 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <remarks>To be added</remarks>
+        <summary>Processes a single Gdk Event.</summary>
+        <param name="evnt">	An event to process (normally) passed by GDK.</param>
+        <remarks>Processes a single GDK event. This is public only to allow filtering of events between GDK and GTK+. You will not usually need to call this function directly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Quit">
@@ -84,8 +93,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Terminates the innermost main loop.</summary>
+        <remarks>This terminates the innermost main loop.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
