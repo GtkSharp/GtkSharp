@@ -60,8 +60,8 @@ namespace GtkSharp.Docs {
 						iter = api_nav.Select ("/Type/Members/Member[@MemberName='value__']");
 						if (iter.MoveNext ()) {
 							elem = ((IHasXmlNode)iter.Current).GetNode () as XmlElement;
-							kills += " " + elem.GetAttribute ("MemberName") + "(Field)";
-							kill_elems.Add (elem);
+							elem ["Docs"] ["summary"].InnerXml = "Internal field.";
+							elem ["Docs"] ["remarks"].InnerXml = "Do not use.";
 						}
 					}
 				}
