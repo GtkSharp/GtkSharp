@@ -1,5 +1,5 @@
 <Type Name="Calendar" FullName="Gtk.Calendar">
-  <TypeSignature Language="C#" Value="public class Calendar : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Calendar : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,36 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Display a calendar and/or allow the user to select a date.</summary>
+    <remarks>
+      <para>With a Calendar widget, dates are presented to the user one month at a time. Additional information and decorations can be added to the Calendar by using the <see cref="T:Gtk.CalendarDisplayOptions" /> enumeration with the <see cref="P:Gtk.DisplayOptions" /> property.</para>
+      <para>Days can be highlighted on the Calendar with <see cref="M:Gtk.Calendar.MarkDay" /> or <see cref="M:Gtk.Calendar.SelectDay" />.</para>
+      <para>The following example shows a method that creates a simple calendar displaying day names, headings and week numbers. (These are controlled by passing elements of the <see cref="T:Gtk.CalendarDisplayOptions" /> type to the <see cref="M:Gtk.Calendar.DisplayOptions" /> method).
+    <example>
+          <code lang="C#">
+// Create a calendar with some simple display options
+public Calendar CreateCalendar ()
+{
+    Calendar cal = new Calendar ();
+    cal.DisplayOptions = CalendarDisplayOptions.ShowHeading  | 
+                         CalendarDisplayOptions.ShowDayNames | 
+                         CalendarDisplayOptions.ShowWeekNumbers;
+    return cal;
+}
+    </code>
+        </example></para>
+      <para>The following example shows a typical event handler or capturing the selected date whenever it changes.
+    <example>
+          <code lang="C#">
+// Typical event handler for capturing the selected date
+void DaySelected (object obj, EventArgs args)
+{
+    Calendar activatedCalendar = (Calendar) obj;
+    Console.WriteLine (activatedCalendar.GetDate ().ToString ("yyyy/MM/dd"));
+}
+	 </code>
+        </example></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>
@@ -39,10 +67,14 @@
         <Parameter Name="day" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="day">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Removes a visual marker from the specified <paramref name="day" />.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks>
+          <para>Visual markers are added to the calendar with <see cref="M:Gtk.Calendar.MarkDay" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MarkDay">
@@ -55,13 +87,15 @@
         <Parameter Name="day" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="day">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a visual marker to the specified <paramref name="day" />.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks />
       </Docs>
     </Member>
-    <Member MemberName="DisplayOptions">
+    <Member MemberName="DisplayOptions" Deprecated="true">
       <MemberSignature Language="C#" Value="public void DisplayOptions (Gtk.CalendarDisplayOptions flags);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -71,9 +105,11 @@
         <Parameter Name="flags" Type="Gtk.CalendarDisplayOptions" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="flags">To be added: an object of type 'Gtk.CalendarDisplayOptions'</param>
-        <remarks>To be added</remarks>
+        <summary>Set the display options for this calendar.</summary>
+        <param name="flags">One or more values from <see cref="T:Gtk.CalendarDisplayOptions" />, combined using a bit-wise OR.</param>
+        <remarks>
+          <para>This method allows fine control over which parts of the calendar, such as day names, are displayed. The <see cref="T:Gtk.CalendarDisplayOptions" /> describe the choices in more detail.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectDay">
@@ -86,9 +122,11 @@
         <Parameter Name="day" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="day">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Select a specified day on the displayed month.</summary>
+        <param name="day">A day number from 1 to 31.</param>
+        <remarks>
+          <para>A value of 0 for the <paramref name="day" /> will unselect the currently selected day.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Freeze">
@@ -99,8 +137,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Stops the calendar from visually updating.</summary>
+        <remarks>
+          <para>If used before a large number of graphical updates, (such as calls to <see cref="M:Gtk.Calendar.MarkDay" />), this method may prevent flicker. Once a batch of updates has taken place, call <see cref="M:Gtk.Calendar.Thaw" /> to render them.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDate">
@@ -115,11 +155,13 @@
         <Parameter Name="day" Type="System.UInt32&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="year">To be added: an object of type 'uint&amp;'</param>
-        <param name="month">To be added: an object of type 'uint&amp;'</param>
-        <param name="day">To be added: an object of type 'uint&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Retrieve the selected date.</summary>
+        <param name="year">A variable to place the chosen year in.</param>
+        <param name="month">A variable to place the chosen month in.</param>
+        <param name="day">A variable to place the chosen day in.</param>
+        <remarks>
+          <para>NOTE: That month number is ZERO based, (0-11), whereas the day is one based, (1-31).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Thaw">
@@ -130,8 +172,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes the effects of calling <see cref="M:Gtk.Calendar.Freeze" />.</summary>
+        <remarks>
+          <para>This draws all graphical updates to the calendar that have happened since a <see cref="M:Gtk.Calendar.Freeze" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearMarks">
@@ -142,8 +186,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes all visual marks that have been added to dates.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SelectMonth">
@@ -157,11 +201,13 @@
         <Parameter Name="year" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="month">To be added: an object of type 'uint'</param>
-        <param name="year">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Shifts the calendar to display the specified month.</summary>
+        <param name="month">A zero-based month number.</param>
+        <param name="year">The year the month is in.</param>
+        <returns>
+          <see langword="true" />
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -198,9 +244,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Calendar'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new calendar displaying the current month.</summary>
+        <returns>A new Calendar.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -299,6 +345,35 @@
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.Calendar" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisplayOptions">
+      <MemberSignature Language="C#" Value="public Gtk.CalendarDisplayOptions DisplayOptions { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CalendarDisplayOptions</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="Gtk.CalendarDisplayOptions" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="value">To be added: an object of type 'Gtk.CalendarDisplayOptions'</param>
+        <returns>To be added: an object of type 'Gtk.CalendarDisplayOptions'</returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDate">
+      <MemberSignature Language="C#" Value="public DateTime GetDate ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.DateTime</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>To be added: an object of type 'DateTime'</returns>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>
