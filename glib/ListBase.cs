@@ -163,7 +163,7 @@ namespace GLib {
 		{
 			for (uint i = 0; i < Count; i++)
 			{
-				if (element_type == typeof (GLib.Object))
+				if (typeof (GLib.Object).IsAssignableFrom (element_type))
 					g_object_unref (NthData (i));
 				else
 					g_free (NthData (i));
