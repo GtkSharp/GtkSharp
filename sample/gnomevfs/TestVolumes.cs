@@ -13,12 +13,12 @@ namespace Test.Gnome.Vfs {
 			monitor.VolumeMounted += OnVolumeMounted;
 			monitor.VolumeUnmounted += OnVolumeUnmounted;
 			
-			GLib.List vols = monitor.MountedVolumes;
+			Volume[] vols = monitor.MountedVolumes;
 			Console.WriteLine ("Mounted volumes:");
 			foreach (Volume v in vols)
 				PrintVolume (v);
 			
-			GLib.List drives = monitor.ConnectedDrives;
+			Drive[] drives = monitor.ConnectedDrives;
 			Console.WriteLine ("\nConnected drives:");
 			foreach (Drive d in drives)
 				PrintDrive (d);
