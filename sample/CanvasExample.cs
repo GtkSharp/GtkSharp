@@ -115,6 +115,7 @@ namespace GtkSamples {
 					sa.RetVal = true;
 					return;
 				}
+				break;
 			case EventType.TwoButtonPress:
 				ChangeItemColor (item);
 				sa.RetVal = true;

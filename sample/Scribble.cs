@@ -30,10 +30,10 @@ namespace GtkSamples {
 			darea.MotionNotifyEvent += new MotionNotifyEventHandler (MotionNotifyEvent);
 			darea.ButtonPressEvent += new ButtonPressEventHandler (ButtonPressEvent);
 			darea.Events = (int)EventMask.ExposureMask |
-							   EventMask.LeaveNotifyMask |
-							   EventMask.ButtonPressMask |
-							   EventMask.PointerMotionMask |
-							   EventMask.PointerMotionHintMask;
+							   (int)EventMask.LeaveNotifyMask |
+							   (int)EventMask.ButtonPressMask |
+							   (int)EventMask.PointerMotionMask |
+							   (int)EventMask.PointerMotionHintMask;
 
 			win.ShowAll ();
 			Application.Run ();
