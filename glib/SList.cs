@@ -89,6 +89,10 @@ namespace GLib {
 		{
 		}
 
+		public SList (System.Type element_type) : base (IntPtr.Zero, element_type)
+		{
+		}
+
 		public SList (IntPtr raw, System.Type element_type) : base (raw, element_type)
 		{
 		}
