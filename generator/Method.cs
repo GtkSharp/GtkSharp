@@ -120,10 +120,10 @@ namespace GtkSharp.Generation {
 				return true;
 
 			Parameters parms = Parameters;
-			is_get = (((parms != null && ((parms.IsAccessor && retval.CSType == "void") || (parms.Count == 0 && retval.CSType != "void"))) || (parms == null && retval.CSType != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
-			is_set = ((parms != null && (parms.IsAccessor || (parms.Count == 1 && retval.CSType == "void"))) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
+			is_get = ((((parms.IsAccessor && retval.CSType == "void") || (parms.Count == 0 && retval.CSType != "void")) || (parms.Count == 0 && retval.CSType != "void")) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
+			is_set = ((parms.IsAccessor || (parms.Count == 1 && retval.CSType == "void")) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
-			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms != null ? ", " : "")) + Body.GetCallString (is_set) + ")";
+			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
 			initialized = true;
 			return true;
@@ -170,7 +170,7 @@ namespace GtkSharp.Generation {
 			if (implementor != null)
 				dup = implementor.GetMethodRecursively (Name);
 
-			if (Name == "ToString" && Parameters == null)
+			if (Name == "ToString" && Parameters.Count == 0)
 				sw.Write("override ");
 			else if (Name == "GetGType" && container_type is ObjectGen)
 				sw.Write("new ");
@@ -235,7 +235,7 @@ namespace GtkSharp.Generation {
 		public void GenerateImport (StreamWriter sw)
 		{
 			string import_sig = IsStatic ? "" : container_type.MarshalType + " raw";
-			import_sig += !IsStatic && Parameters != null ? ", " : "";
+			import_sig += !IsStatic && Parameters.Count > 0 ? ", " : "";
 			import_sig += ImportSignature.ToString();
 			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
 			if (retval.MarshalType.StartsWith ("[return:"))
@@ -346,7 +346,7 @@ namespace GtkSharp.Generation {
 			Body.Finish (sw, indent);
 			Body.HandleException (sw, indent);
 
-			if (is_get && Parameters != null) 
+			if (is_get && Parameters.Count > 0) 
 				sw.WriteLine (indent + "\t\t\treturn " + Parameters.AccessorName + ";");
 			else if (retval.MarshalType != "void")
 				sw.WriteLine (indent + "\t\t\treturn ret;");

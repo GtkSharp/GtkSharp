@@ -35,10 +35,8 @@ namespace GtkSharp.Generation {
 		public CallbackGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
 			retval = new ReturnValue (elem ["return-type"]);
-			if (elem ["parameters"] != null) {
-				parms = new Parameters (elem ["parameters"], NS);
-				parms.HideData = true;
-			}
+			parms = new Parameters (elem ["parameters"]);
+			parms.HideData = true;
 		}
 
 		public override string MarshalType {
@@ -78,18 +76,17 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tpublic " + retval.MarshalType + " NativeCallback (" + isig.ToString() + ")");
 			sw.WriteLine ("\t\t{");
 
-			int count = (parms != null) ? parms.Count : 0;
 			bool need_sep = false;
 			string call_str = "";
 			string cleanup_str = "";
-			for (int i = 0, idx = 0; i < count; i++)
+			for (int i = 0, idx = 0; i < parms.Count; i++)
 			{
 				Parameter p = parms [i];
 
 				if (i > 0 && p.IsLength && parms[i-1].IsString)
 					continue;
 
-				if ((i == count - 1) && p.IsUserData) 
+				if ((i == parms.Count - 1) && p.IsUserData) 
 					continue;
 
 				if (p.CType == "GError**") {
@@ -169,10 +166,9 @@ namespace GtkSharp.Generation {
 				return;
 			}
 
-			if ((parms != null) && !parms.Validate ()) {
+			if (!parms.Validate ()) {
 				Console.WriteLine(" in callback " + CName + " **** Stubbing it out ****");
 				Statistics.ThrottledCount++;
-				parms = null;
 			}
 
 			sig = new Signature (parms);

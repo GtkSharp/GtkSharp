@@ -43,7 +43,7 @@ namespace GtkSharp.Generation {
 
 		public override string ToString ()
 		{
-			if (parameters == null)
+			if (parameters.Count == 0)
 				return "";
 
 			string[] parms = new string [parameters.Count];

@@ -38,9 +38,7 @@ namespace GtkSharp.Generation {
 			this.sig = sig;
 			this.ns = ns;
 			retval = new ReturnValue (sig["return-type"]);
-			XmlElement params_elem = sig["parameters"] as XmlElement;
-			if (params_elem != null)
-				parms = new Parameters (params_elem, ns);
+			parms = new Parameters (sig ["parameters"]);
 		}
 
 		public bool Validate ()
@@ -50,7 +48,7 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 			
-			if (parms == null || !parms.Validate ()) {
+			if (!parms.Validate ()) {
 				Console.Write("Missing parameters ");
 				return false;
 			}
@@ -80,12 +78,12 @@ namespace GtkSharp.Generation {
 		private string BaseName {
 			get {
 				string result = SymbolTable.Table.GetName (retval.CType);
-				for (int i = 0; i < parms.Count; i++) {
-					result += parms[i].PassAs;
-					if (parms[i].Generatable is ObjectGen || parms[i].Generatable is InterfaceGen) {
+				foreach (Parameter p in parms) {
+					result += p.PassAs;
+					if (p.Generatable is ObjectGen || p.Generatable is InterfaceGen) {
 						result += "Object";
 					} else {
-						result += SymbolTable.Table.GetName(parms[i].CType);
+						result += SymbolTable.Table.GetName(p.CType);
 					}
 				}		 
 				result = result.Replace ("[]", "Array");

@@ -31,9 +31,6 @@ namespace GtkSharp.Generation {
 
 		public Signature (Parameters parms) 
 		{
-			if (parms == null)
-				return;
-
 			bool has_cb = parms.HideData;
 			for (int i = 0; i < parms.Count; i++) {
 				Parameter p = parms [i];

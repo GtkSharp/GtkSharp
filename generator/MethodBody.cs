@@ -57,7 +57,7 @@ namespace GtkSharp.Generation {
 
 		public string GetCallString (bool is_set)
 		{
-			if (parameters == null)
+			if (parameters.Count == 0)
 				return "";
 
 			string[] result = new string [parameters.Count];
@@ -116,7 +116,7 @@ namespace GtkSharp.Generation {
 
 		public void Initialize (GenerationInfo gen_info, bool is_get, bool is_set, string indent)
 		{
-			if (parameters == null)
+			if (parameters.Count == 0)
 				return;
 
 			StreamWriter sw = gen_info.Writer;
@@ -165,9 +165,6 @@ namespace GtkSharp.Generation {
 
 		public void Finish (StreamWriter sw, string indent)
 		{
-			if (parameters == null)
-				return;
-
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 
@@ -198,7 +195,7 @@ namespace GtkSharp.Generation {
 		
 		public bool ThrowsException {
 			get {
-				if (parameters == null || parameters.Count < 1)
+				if (parameters.Count < 1)
 					return false;
 
 				return parameters [parameters.Count - 1].CType == "GError**";

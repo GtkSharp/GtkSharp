@@ -39,10 +39,9 @@ namespace GtkSharp.Generation {
 		public Signal (XmlElement elem, ClassBase container_type)
 		{
 			this.elem = elem;
-			this.name = elem.GetAttribute ("name");
-			this.retval = new ReturnValue (elem ["return-type"]);
-			if (elem["parameters"] != null)
-				parms = new Parameters (elem["parameters"], container_type.NS);
+			name = elem.GetAttribute ("name");
+			retval = new ReturnValue (elem ["return-type"]);
+			parms = new Parameters (elem["parameters"]);
 			this.container_type = container_type;
 			sig_handler = new SignalHandler (elem, container_type.NS);
 		}
@@ -64,7 +63,7 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 			
-			if (parms != null && !parms.Validate ())
+			if (!parms.Validate ())
 				return false;
 
 			if (!retval.Validate ())
@@ -169,22 +168,20 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic delegate void " + EventHandlerName + "(object o, " + EventArgsName + " args);");
 			sw.WriteLine ();
 			sw.WriteLine ("\tpublic class " + EventArgsName + " : GLib.SignalArgs {");
-			if (parms != null) {
-				for (int i = 1; i < parms.Count; i++) {
-					sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
-					if (parms[i].PassAs != "out") {
-						sw.WriteLine ("\t\t\tget {");
-						sw.WriteLine ("\t\t\t\treturn (" + parms[i].CSType + ") Args[" + (i - 1) + "];");
-						sw.WriteLine ("\t\t\t}");
-					}
-					if (parms[i].PassAs != "") {
-						sw.WriteLine ("\t\t\tset {");
-						sw.WriteLine ("\t\t\t\tArgs[" + (i - 1) + "] = (" + parms[i].CSType + ")value;");
-						sw.WriteLine ("\t\t\t}");
-					}
-					sw.WriteLine ("\t\t}");
-					sw.WriteLine ();
+			for (int i = 1; i < parms.Count; i++) {
+				sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
+				if (parms[i].PassAs != "out") {
+					sw.WriteLine ("\t\t\tget {");
+					sw.WriteLine ("\t\t\t\treturn (" + parms[i].CSType + ") Args[" + (i - 1) + "];");
+					sw.WriteLine ("\t\t\t}");
 				}
+				if (parms[i].PassAs != "") {
+					sw.WriteLine ("\t\t\tset {");
+					sw.WriteLine ("\t\t\t\tArgs[" + (i - 1) + "] = (" + parms[i].CSType + ")value;");
+					sw.WriteLine ("\t\t\t}");
+				}
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
 			}
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("}");

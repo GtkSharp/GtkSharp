@@ -37,9 +37,7 @@ namespace GtkSharp.Generation {
 		{
 			this.elem = elem;
 			this.container_type = container_type;
-			XmlElement parms_elem = elem ["parameters"];
-			if (parms_elem != null)
-				parms = new Parameters (parms_elem, container_type.NS);
+			parms = new Parameters (elem ["parameters"]);
 			IsStatic = elem.GetAttribute ("shared") == "true";
 			if (elem.HasAttribute ("new_flag"))
 				mods = "new ";
@@ -75,8 +73,7 @@ namespace GtkSharp.Generation {
 			}
 			set {
 				is_static = value;
-				if (parms != null)
-					parms.Static = value;
+				parms.Static = value;
 			}
 		}
 
@@ -120,7 +117,7 @@ namespace GtkSharp.Generation {
 
 		public virtual bool Validate ()
 		{
-			if (parms != null && !parms.Validate ()) {
+			if (!parms.Validate ()) {
 				Console.Write("in ctor ");
 				Statistics.ThrottledCount++;
 				return false;

@@ -31,9 +31,6 @@ namespace GtkSharp.Generation {
 
 		public VMSignature (Parameters parms) 
 		{
-			if (parms == null)
-				return;
-
 			bool has_cb = parms.HideData;
 			for (int i = 1; i < parms.Count; i++) {
 				Parameter p = parms [i];

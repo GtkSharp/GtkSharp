@@ -101,7 +101,7 @@ namespace GtkSharp.Generation {
 				if (needs_chaining) {
 					sw.WriteLine ("\t\t\tif (GetType () != typeof (" + name + ")) {");
 					
-					if (Parameters == null || Parameters.Count == 0) {
+					if (Parameters.Count == 0) {
 						sw.WriteLine ("\t\t\t\tCreateNativeObject (new string [0], new GLib.Value[0]);");
 						sw.WriteLine ("\t\t\t\treturn;");
 					} else {

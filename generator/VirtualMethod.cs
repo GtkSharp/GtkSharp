@@ -26,18 +26,19 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
+	// FIXME: handle static VMs
 	public class VirtualMethod  {
 		
-		private XmlElement elem;
-		private ReturnValue retval;
-		private Parameters parms;
+		XmlElement elem;
+		ReturnValue retval;
+		Parameters parms;
 		ImportSignature isig;
 
 		public VirtualMethod (XmlElement elem, ClassBase container_type) 
 		{
 			this.elem = elem;
 			retval = new ReturnValue (elem ["return-type"]);
-			parms = new Parameters (elem["parameters"], container_type.NS);
+			parms = new Parameters (elem["parameters"]);
 			isig = new ImportSignature (parms, container_type.NS);
 		}
 

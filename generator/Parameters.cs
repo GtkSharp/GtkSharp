@@ -216,19 +216,15 @@ namespace GtkSharp.Generation {
 		}
 	}
 
-	public class Parameters  {
+	public class Parameters : IEnumerable {
 		
-		private ArrayList param_list;
-		private XmlElement elem;
-		private string impl_ns;
-		private bool hide_data;
-		private bool is_static;
+		ArrayList param_list = new ArrayList ();
 
-		public Parameters (XmlElement elem, string impl_ns) {
+		public Parameters (XmlElement elem) {
 			
-			this.elem = elem;
-			this.impl_ns = impl_ns;
-			param_list = new ArrayList ();
+			if (elem == null)
+				return;
+
 			foreach (XmlNode node in elem.ChildNodes) {
 				XmlElement parm = node as XmlElement;
 				if (parm != null && parm.Name == "parameter")
@@ -248,28 +244,48 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool hide_data;
 		public bool HideData {
 			get { return hide_data; }
 			set { hide_data = value; }
 		}
 
+		bool is_static;
 		public bool Static {
 			get { return is_static; }
 			set { is_static = value; }
 		}
 
+		bool cleared = false;
+		void Clear ()
+		{
+			cleared = true;
+			param_list.Clear ();
+		}
+
+		public IEnumerator GetEnumerator ()
+		{
+			return param_list.GetEnumerator ();
+		}
+
 		public bool Validate ()
 		{
+			if (cleared)
+				return false;
+
 			foreach (Parameter p in param_list) {
 				
 				if (p.IsEllipsis) {
 					Console.Write("Ellipsis parameter ");
+					Clear ();
+					
 					return false;
 				}
 
 				if ((p.CSType == "") || (p.Name == "") || 
 				    (p.MarshalType == "") || (SymbolTable.Table.CallByName(p.CType, p.Name) == "")) {
 					Console.Write("Name: " + p.Name + " Type: " + p.CType + " ");
+					Clear ();
 					return false;
 				}
 			}
@@ -300,7 +316,6 @@ namespace GtkSharp.Generation {
 					return null;
 			}
 		}
-
 	}
 }
 
