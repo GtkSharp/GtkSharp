@@ -69,7 +69,7 @@ namespace GLib {
                                                                                 
 		public static bool Remove (IdleHandler hndlr)
 		{
-			foreach (int code in Source.source_handlers.Keys){
+			foreach (uint code in Source.source_handlers.Keys){
 				IdleProxy p = (IdleProxy) Source.source_handlers [code];
 				
 				if (p.real_handler == hndlr)
