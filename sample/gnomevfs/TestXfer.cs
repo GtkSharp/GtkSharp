@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 [assembly: Mono.Author("Jeroen Zwartepoorte")]
 [assembly: AssemblyVersion("1.0.*")]
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	class TestXferOptions : Options {
 		[Option("Copy directories recursively", 'r')]
 		public bool recursive = false;

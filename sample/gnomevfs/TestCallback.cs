@@ -3,7 +3,7 @@ using Gnome.Vfs;
 using System;
 using System.Text;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestCallback {
 		private static MainLoop loop;
 	

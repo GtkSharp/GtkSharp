@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestSyncStream {
 		private static MainLoop loop;
 	

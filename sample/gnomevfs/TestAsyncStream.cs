@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestAsyncStream {
 		private static MainLoop loop;
 		private static byte[] buffer;

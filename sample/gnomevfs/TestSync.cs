@@ -2,7 +2,7 @@ using Gnome.Vfs;
 using System;
 using System.Text;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestSync {
 		static void Main (string[] args)
 		{

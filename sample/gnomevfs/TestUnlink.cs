@@ -1,7 +1,7 @@
 using Gnome.Vfs;
 using System;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestUnlink {
 		static void Main (string[] args)
 		{

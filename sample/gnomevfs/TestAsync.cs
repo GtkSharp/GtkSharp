@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using System.Threading;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestAsync {
 		private static MainLoop loop;
 		private static Handle handle;

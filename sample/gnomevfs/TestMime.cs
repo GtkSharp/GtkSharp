@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Test.Gnome.Vfs {
+namespace TestGnomeVfs {
 	public class TestMime {
 		static void Main (string[] args)
 		{
