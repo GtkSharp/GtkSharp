@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A structure that contains different colors.</summary>
+    <remarks>None.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -63,11 +63,11 @@
         <Parameter Name="allocate" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="visual">To be added: an object of type 'Gdk.Visual'</param>
-        <param name="allocate">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'Gdk.Colormap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new colormap for the given visual.</summary>
+        <param name="visual">A <see cref="T:Gdk.Visual" /></param>
+        <param name="allocate">if true, the newly created colormap will be a private colormap, and all colors in it will be allocated for the applications use.</param>
+        <returns>The new <see cref="T:Gdk.Colormap" /></returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="System">
@@ -77,9 +77,9 @@
         <ReturnType>Gdk.Colormap</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Colormap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the system's default colormap for the default screen.</summary>
+        <returns>The system's default colormap for the default screen.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Visual">
@@ -89,9 +89,9 @@
         <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the visual for which a given colormap was created.</summary>
+        <returns>The <see cref="Gdk.Visual" /> of the colormap.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AllocColor">
@@ -106,12 +106,12 @@
         <Parameter Name="best_match" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="color">To be added: an object of type 'Gdk.Color&amp;'</param>
-        <param name="writeable">To be added: an object of type 'bool'</param>
-        <param name="best_match">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Allocates a single color from a colormap.</summary>
+        <param name="color">The color to allocate. On return the pixel field will be filled in if allocation succeeds.</param>
+        <param name="writeable">If true, the color is allocated writeable (their values can later be changed using <see cref="M:Gdk.Color.Change" />). Writeable colors cannot be shared between applications.</param>
+        <param name="best_match">If true, GDK will attempt to do matching against existing colors if the color cannot be allocated as requested.</param>
+        <returns>True if the allocation succeeded.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Screen">
@@ -121,9 +121,9 @@
         <ReturnType>Gdk.Screen</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the screen for which this colormap was created.</summary>
+        <returns>The screen for which this colormap was created.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -150,10 +150,11 @@
         <Parameter Name="result" Type="Gdk.Color&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixel">a <see cref="T:System.UInt64" /></param>
-        <param name="result">a <see cref="T:Gdk.Color&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Locates the RGB color in the colormap corresponding to the given hardware pixel.</summary>
+        <param name="pixel">Pixel value in hardware display format.</param>
+        <param name="result">
+          <see cref="T:Gdk.Color" /> with red, green, blue fields initialized.</param>
+        <remarks>Pixel must be a valid pixel in the colormap; it's a programmer error to call his function with a pixel which is not in the colormap. Hardware pixels are normally obtained from <see cref="M:Gdk.Colormap.AllocColors" />, or from a <see cref="T:Gdk.Image" />. (A <see cref="T:Gdk.Image" /> contains image data in hardware format, a <see cref="T:Gdk.Pixbuf" /> contains image data in a canonical 24-bit RGB format.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="FreeColors">
@@ -167,10 +168,10 @@
         <Parameter Name="ncolors" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="colors">a <see cref="T:Gdk.Color[]" /></param>
-        <param name="ncolors">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Frees previously allocated colors.</summary>
+        <param name="colors">The colors to free.</param>
+        <param name="ncolors">The number of colors in colors.</param>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AllocColors">
@@ -187,14 +188,14 @@
         <Parameter Name="success" Type="System.Boolean[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="colors">a <see cref="T:Gdk.Color[]" /></param>
-        <param name="ncolors">a <see cref="T:System.Int32" /></param>
-        <param name="writeable">a <see cref="T:System.Boolean" /></param>
-        <param name="best_match">a <see cref="T:System.Boolean" /></param>
-        <param name="success">a <see cref="T:System.Boolean[]" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Allocates colors from a colormap.</summary>
+        <param name="colors">The color values to allocate. On return, the pixel values for allocated colors will be filled in.</param>
+        <param name="ncolors">The number of colors in colors.</param>
+        <param name="writeable">If true, the colors are allocated writeable (their values can later be changed using <see cref="M:Gdk.Color.Change" />). Writeable colors cannot be shared between applications.</param>
+        <param name="best_match">If true, GDK will attempt to do matching against existing colors if the colors cannot be allocated as requested.</param>
+        <param name="success">An array of length ncolors. On return, this indicates whether the corresponding color in colors was sucessfully allocated or not.</param>
+        <returns>The number of colors that were not successfully allocated.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">

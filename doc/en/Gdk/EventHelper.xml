@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A utility class that contains methods that operate on Event classes.</summary>
+    <remarks>This class contains static methods.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -29,10 +29,10 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Copies a <see cref="T:Gdk.Event" />.</summary>
+        <param name="evnt">The <see cref="T:Gdk.Event" /> to copy.</param>
+        <returns>The copied <see cref="T:Gdk.Event" />.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Get">
@@ -43,9 +43,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks all open displays for a <see cref="T:Gdk.Event" /> to process, fetching events from the windowing system if necessary. See <see cref="P:Gdk.Display.Event" />.</summary>
+        <returns>The next <see cref="T:Gdk.Event" /> to be processed, or null if no events are pending. The returned <see cref="T:Gdk.Event" /> should be freed with <see cref="M:Gdk.EventHelper.Free" />.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetScreen">
@@ -58,9 +58,9 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
+        <summary>Returns the screen for the event. The screen is typically the screen for <see cref="P:Gdk.Event.Window" />, but for events such as mouse events, it is the screen where the pointer was when the event occurs.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <returns>The <see cref="T:Gdk.Screen" /> for the event.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -72,9 +72,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <summary>If there is an event waiting in the event queue of some open display, returns a copy of it. See <see cref="M:Gdk.Display.PeekEvent" />.</summary>
+        <returns>A copy of the first <see cref="T:Gdk.Event" /> on some event queue, or null if no events are in any queues.</returns>
+        <remarks>The returned <see cref="T:Gdk.Event" /> should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="New">
@@ -87,10 +87,10 @@
         <Parameter Name="type" Type="Gdk.EventType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="type">a <see cref="T:Gdk.EventType" /></param>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new event of the given type. All fields are set to 0.</summary>
+        <param name="type">A <see cref="T:Gdk.EventType" /></param>
+        <returns>A <see cref="T:Gdk.Event" /></returns>
+        <remarks>The returned event should be freed with <see cref="M:Gdk.EventHelper.Free" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SendClientMessageForDisplay">
@@ -105,12 +105,13 @@
         <Parameter Name="winid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="winid">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>On X11, sends an X ClientMessage event to a given window. On Windows, sends a message registered with the name GDK_WIN32_CLIENT_MESSAGE.
+This could be used for communicating between different applications, though the amount of data is limited to 20 bytes on X11, and to just four bytes on Windows.</summary>
+        <param name="display">The <see cref="T:Gdk.Display" /> for the window where the message is to be sent.</param>
+        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T.Gdk.EventClient" />.</param>
+        <param name="winid">The window to send the client message to.</param>
+        <returns>True on success.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -123,9 +124,10 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <remarks>To be added</remarks>
+        <summary>Frees a <see cref="T:Gdk.Event" />.</summary>
+        <param name="evnt">
+          <see cref="T:Gdk.Event" /> to free.</param>
+        <remarks>This should only be called with events returned from functions such as <see cref="M:Gdk.EventHelper.Peek" />, <see cref="M:Gdk.EventHelper.Get" />, <see cref="M:Gdk.EventHelper.GetGraphicsExpose" /> and <see cref="M:Gdk.EventHelper.Copy" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SendClientmessageToall">
@@ -138,9 +140,9 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sends an X ClientMessage event to all toplevel windows on the default <see cref="T:Gdk.Screen" />. Toplevel windows are determined by checking for the WM_STATE property, as described in the Inter-Client Communication Conventions Manual (ICCCM). If no windows are found with the WM_STATE property set, the message is sent to all children of the root window.</summary>
+        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T:Gdk.EventClient" />.</param>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SendClientMessage">
@@ -154,11 +156,11 @@
         <Parameter Name="winid" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="winid">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sends an X ClientMessage event to a given window (which must be on the default <see cref="T:Gdk.Display" />.) This could be used for communicating between different applications, though the amount of data is limited to 20 bytes.</summary>
+        <param name="evnt">The <see cref="T:Gdk.Event" /> to send, which should be a <see cref="T:Gdk.EventClient" />.</param>
+        <param name="winid">The window to send the X ClientMessage event to.</param>
+        <returns>True on success.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetTime">
@@ -171,10 +173,10 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the time stamp from event, if there is one. Otherwise returns the current time. If event is null, returns the current time..</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <returns>Time stamp field from event.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetGraphicsExpose">
@@ -187,10 +189,10 @@
         <Parameter Name="window" Type="Gdk.Window" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="window">a <see cref="T:Gdk.Window" /></param>
-        <returns>a <see cref="T:Gdk.Event" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Waits for a GraphicsExpose or NoExpose event from the X server. This is used in the GtkText and GtkCList widgets in Gtk# to make sure any Graphics Expose events are handled before the widget is scrolled.</summary>
+        <param name="window">The <see cref="T:Gdk.Window" /> to wait for the events for.</param>
+        <returns>A <see cref="T:Gdk.EventExpose" /> if a GraphicsExpose was received, or null if a NoExpose event was received.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetScreen">
@@ -204,10 +206,10 @@
         <Parameter Name="screen" Type="Gdk.Screen" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="screen">a <see cref="T:Gdk.Screen" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the screen for event to screen. The event must have been allocated by GTK+, for instance, by <see cref="M:Gdk.EventHelper.Copy" />.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="screen">A <see cref="T:Gdk.Screen" /></param>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Put">
@@ -220,9 +222,9 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <remarks>To be added</remarks>
+        <summary>Appends a copy of the given event onto the front of the event queue for <see cref="P:Gdk.Event.Window" />'s display, or the default queue if that window is null. See <see cref="M:Gdk.Display.PutEvent" />.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -231,9 +233,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.EventHelper" /></returns>
-        <remarks>To be added</remarks>
+        <summary>This constructor is never used.</summary>
+        <returns>A new <see cref="T:Gdk.EventHelper" /></returns>
+        <remarks>This class contains only static methods, and this constructor should never be used.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCoords">
@@ -248,12 +250,12 @@
         <Parameter Name="y_win" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="x_win">a <see cref="T:System.Double&amp;" /></param>
-        <param name="y_win">a <see cref="T:System.Double&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Extract the event window relative x/y coordinates from an event.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="x_win">Event window x coordinate.</param>
+        <param name="y_win">Event window y coordinate.</param>
+        <returns>True if the event delivered event coordinates.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetState">
@@ -267,10 +269,10 @@
         <Parameter Name="state" Type="Gdk.ModifierType&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="state">a <see cref="T:Gdk.ModifierType&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>If the event contains a "state" field, puts that field in state. Otherwise stores an empty state (0).</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /> or null.</param>
+        <param name="state">The <see cref="T:Gdk.ModifierType" /> of the event.</param>
+        <returns>True if there was a state field in the event.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -286,12 +288,12 @@
         <Parameter Name="value" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="axis_use">a <see cref="T:Gdk.AxisUse" /></param>
-        <param name="value">a <see cref="T:System.Double&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Extract the axis value for a particular axis use from an event.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="axis_use">The axis use to look for.</param>
+        <param name="value">The value found.</param>
+        <returns>True if the specified axis was found, otherwise false.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetRootCoords">
@@ -306,12 +308,12 @@
         <Parameter Name="y_root" Type="System.Double&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <param name="x_root">a <see cref="T:System.Double&amp;" /></param>
-        <param name="y_root">a <see cref="T:System.Double&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Extract the root window relative x/y coordinates from an event.</summary>
+        <param name="evnt">A <see cref="T:Gdk.Event" /></param>
+        <param name="x_root">Root window x coordinate.</param>
+        <param name="y_root">Root window y coordinate.</param>
+        <returns>True if the event delivered root window coordinates.</returns>
+        <remarks>None.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
