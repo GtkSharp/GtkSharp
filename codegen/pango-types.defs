@@ -1,0 +1,271 @@
+;; -*- scheme -*-
+; object definitions ...
+
+(define-object Context
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoContext")
+  (gtype-id "PANGO_TYPE_CONTEXT")
+)
+
+(define-object Font
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoFont")
+  (gtype-id "PANGO_TYPE_FONT")
+)
+
+(define-object FontFace
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoFontFace")
+  (gtype-id "PANGO_TYPE_FONT_FACE")
+)
+
+(define-object FontFamily
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoFontFamily")
+  (gtype-id "PANGO_TYPE_FONT_FAMILY")
+)
+
+(define-object FontMap
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoFontMap")
+  (gtype-id "PANGO_TYPE_FONT_MAP")
+)
+
+(define-object Layout
+  (in-module "Pango")
+  (parent "GObject")
+  (c-name "PangoLayout")
+  (gtype-id "PANGO_TYPE_LAYOUT")
+)
+
+
+;; boxed definitions ...
+
+(define-boxed AttrList
+  (in-module "Pango")
+  (c-name "PangoAttrList")
+  (gtype-id "PANGO_TYPE_ATTR_LIST")
+  (copy-func "pango_attr_list_ref")
+  (release-func "pango_attr_list_unref")
+)
+
+(define-boxed Color
+  (in-module "Pango")
+  (c-name "PangoColor")
+  (gtype-id "PANGO_TYPE_COLOR")
+  (copy-func "pango_color_copy")
+  (release-func "pango_color_free")
+  (fields
+    '("guint16" "red")
+    '("guint16" "green")
+    '("guint16" "blue")
+  )
+)
+
+(define-boxed FontDescription
+  (in-module "Pango")
+  (c-name "PangoFontDescription")
+  (gtype-id "PANGO_TYPE_FONT_DESCRIPTION")
+  (copy-func "pango_font_description_copy")
+  (release-func "pango_font_description_free")
+)
+
+(define-boxed FontMetrics
+  (in-module "Pango")
+  (c-name "PangoFontMetrics")
+  (gtype-id "PANGO_TYPE_FONT_METRICS")
+  (copy-func "pango_font_metrics_ref")
+  (release-func "pango_font_metrics_unref")
+)  
+
+(define-boxed GlyphString
+  (in-module "Pango")
+  (c-name "PangoGlyphString")
+  (gtype-id "PANGO_TYPE_GLYPH_STRING")
+  (copy-func "pango_glyph_string_copy")
+  (release-func "pango_glyph_string_free")
+  (fields
+    '("gint" "num_glyphs")
+    '("PangoGlyphInfo*" "glyphs")
+    '("gint*" "log_clusters")
+  )
+)
+
+(define-boxed Language
+  (in-module "Pango")
+  (c-name "PangoLanguage")
+  (gtype-id "PANGO_TYPE_LANGUAGE")
+)
+
+(define-boxed TabArray
+  (in-module "Pango")
+  (c-name "PangoTabArray")
+  (gtype-id "PANGO_TYPE_TAB_ARRAY")
+  (copy-func "pango_tab_array_copy")
+  (release-func "pango_tab_array_free")
+)
+
+
+;; Enumerations and flags ...
+
+(define-enum AttrType
+  (in-module "Pango")
+  (c-name "PangoAttrType")
+  (gtype-id "PANGO_TYPE_ATTR_TYPE")
+  (values
+    '("invalid" "PANGO_ATTR_INVALID")
+    '("language" "PANGO_ATTR_LANGUAGE")
+    '("family" "PANGO_ATTR_FAMILY")
+    '("style" "PANGO_ATTR_STYLE")
+    '("weight" "PANGO_ATTR_WEIGHT")
+    '("variant" "PANGO_ATTR_VARIANT")
+    '("stretch" "PANGO_ATTR_STRETCH")
+    '("size" "PANGO_ATTR_SIZE")
+    '("font-desc" "PANGO_ATTR_FONT_DESC")
+    '("foreground" "PANGO_ATTR_FOREGROUND")
+    '("background" "PANGO_ATTR_BACKGROUND")
+    '("underline" "PANGO_ATTR_UNDERLINE")
+    '("strikethrough" "PANGO_ATTR_STRIKETHROUGH")
+    '("rise" "PANGO_ATTR_RISE")
+    '("shape" "PANGO_ATTR_SHAPE")
+    '("scale" "PANGO_ATTR_SCALE")
+  )
+)
+
+(define-enum Underline
+  (in-module "Pango")
+  (c-name "PangoUnderline")
+  (gtype-id "PANGO_TYPE_UNDERLINE")
+  (values
+    '("none" "PANGO_UNDERLINE_NONE")
+    '("single" "PANGO_UNDERLINE_SINGLE")
+    '("double" "PANGO_UNDERLINE_DOUBLE")
+    '("low" "PANGO_UNDERLINE_LOW")
+  )
+)
+
+(define-enum CoverageLevel
+  (in-module "Pango")
+  (c-name "PangoCoverageLevel")
+  (gtype-id "PANGO_TYPE_COVERAGE_LEVEL")
+  (values
+    '("none" "PANGO_COVERAGE_NONE")
+    '("fallback" "PANGO_COVERAGE_FALLBACK")
+    '("approximate" "PANGO_COVERAGE_APPROXIMATE")
+    '("exact" "PANGO_COVERAGE_EXACT")
+  )
+)
+
+(define-enum Style
+  (in-module "Pango")
+  (c-name "PangoStyle")
+  (gtype-id "PANGO_TYPE_STYLE")
+  (values
+    '("normal" "PANGO_STYLE_NORMAL")
+    '("oblique" "PANGO_STYLE_OBLIQUE")
+    '("italic" "PANGO_STYLE_ITALIC")
+  )
+)
+
+(define-enum Variant
+  (in-module "Pango")
+  (c-name "PangoVariant")
+  (gtype-id "PANGO_TYPE_VARIANT")
+  (values
+    '("normal" "PANGO_VARIANT_NORMAL")
+    '("small-caps" "PANGO_VARIANT_SMALL_CAPS")
+  )
+)
+
+(define-enum Weight
+  (in-module "Pango")
+  (c-name "PangoWeight")
+  (gtype-id "PANGO_TYPE_WEIGHT")
+  (values
+    '("ultralight" "PANGO_WEIGHT_ULTRALIGHT")
+    '("light" "PANGO_WEIGHT_LIGHT")
+    '("normal" "PANGO_WEIGHT_NORMAL")
+    '("bold" "PANGO_WEIGHT_BOLD")
+    '("ultrabold" "PANGO_WEIGHT_ULTRABOLD")
+    '("heavy" "PANGO_WEIGHT_HEAVY")
+  )
+)
+
+(define-enum Stretch
+  (in-module "Pango")
+  (c-name "PangoStretch")
+  (gtype-id "PANGO_TYPE_STRETCH")
+  (values
+    '("ultra-condensed" "PANGO_STRETCH_ULTRA_CONDENSED")
+    '("extra-condensed" "PANGO_STRETCH_EXTRA_CONDENSED")
+    '("condensed" "PANGO_STRETCH_CONDENSED")
+    '("semi-condensed" "PANGO_STRETCH_SEMI_CONDENSED")
+    '("normal" "PANGO_STRETCH_NORMAL")
+    '("semi-expanded" "PANGO_STRETCH_SEMI_EXPANDED")
+    '("expanded" "PANGO_STRETCH_EXPANDED")
+    '("extra-expanded" "PANGO_STRETCH_EXTRA_EXPANDED")
+    '("ultra-expanded" "PANGO_STRETCH_ULTRA_EXPANDED")
+  )
+)
+
+(define-flags FontMask
+  (in-module "Pango")
+  (c-name "PangoFontMask")
+  (gtype-id "PANGO_TYPE_FONT_MASK")
+  (values
+    '("family" "PANGO_FONT_MASK_FAMILY")
+    '("style" "PANGO_FONT_MASK_STYLE")
+    '("variant" "PANGO_FONT_MASK_VARIANT")
+    '("weight" "PANGO_FONT_MASK_WEIGHT")
+    '("stretch" "PANGO_FONT_MASK_STRETCH")
+    '("size" "PANGO_FONT_MASK_SIZE")
+  )
+)
+
+(define-enum Alignment
+  (in-module "Pango")
+  (c-name "PangoAlignment")
+  (gtype-id "PANGO_TYPE_ALIGNMENT")
+  (values
+    '("left" "PANGO_ALIGN_LEFT")
+    '("center" "PANGO_ALIGN_CENTER")
+    '("right" "PANGO_ALIGN_RIGHT")
+  )
+)
+
+(define-enum WrapMode
+  (in-module "Pango")
+  (c-name "PangoWrapMode")
+  (gtype-id "PANGO_TYPE_WRAP_MODE")
+  (values
+    '("word" "PANGO_WRAP_WORD")
+    '("char" "PANGO_WRAP_CHAR")
+  )
+)
+
+(define-enum TabAlign
+  (in-module "Pango")
+  (c-name "PangoTabAlign")
+  (gtype-id "PANGO_TYPE_TAB_ALIGN")
+  (values
+    '("t" "PANGO_TAB_LEFT")
+  )
+)
+
+(define-enum Direction
+  (in-module "Pango")
+  (c-name "PangoDirection")
+  (gtype-id "PANGO_TYPE_DIRECTION")
+  (values
+    '("ltr" "PANGO_DIRECTION_LTR")
+    '("rtl" "PANGO_DIRECTION_RTL")
+    '("ttb-ltr" "PANGO_DIRECTION_TTB_LTR")
+    '("ttb-rtl" "PANGO_DIRECTION_TTB_RTL")
+  )
+)
+

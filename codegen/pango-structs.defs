@@ -1,0 +1,412 @@
+(define-struct Analysis
+  (in-module "Pango")
+  (c-name "PangoAnalysis")
+  (fields
+    '("PangoEngineShape*" "shape_engine")
+    '("PangoEngineLang*" "lang_engine")
+    '("PangoFont*" "font")
+    '("guint8" "level")
+    '("PangoLanguage*" "language")
+    '("GSList*" "extra_attrs")
+  )
+)
+
+(define-struct AttrColor
+  (in-module "Pango")
+  (c-name "PangoAttrColor")
+  (fields
+    '("PangoAttribute" "attr")
+    '("PangoColor" "color")
+  )
+)
+
+(define-struct AttrFloat
+  (in-module "Pango")
+  (c-name "PangoAttrFloat")
+  (fields
+    '("PangoAttribute" "attr")
+    '("double" "value")
+  )
+)
+
+(define-struct AttrFontDesc
+  (in-module "Pango")
+  (c-name "PangoAttrFontDesc")
+  (fields
+    '("PangoAttribute" "attr")
+    '("PangoFontDescription*" "desc")
+  )
+)
+
+(define-struct AttrInt
+  (in-module "Pango")
+  (c-name "PangoAttrInt")
+  (fields
+    '("PangoAttribute" "attr")
+    '("int" "value")
+  )
+)
+
+(define-struct AttrIterator
+  (in-module "Pango")
+  (c-name "PangoAttrIterator")
+  (fields
+  )
+)
+
+(define-struct AttrLanguage
+  (in-module "Pango")
+  (c-name "PangoAttrLanguage")
+  (fields
+    '("PangoAttribute" "attr")
+    '("PangoLanguage*" "value")
+  )
+)
+
+(define-struct AttrList
+  (in-module "Pango")
+  (c-name "PangoAttrList")
+  (fields
+  )
+)
+
+(define-struct AttrShape
+  (in-module "Pango")
+  (c-name "PangoAttrShape")
+  (fields
+    '("PangoAttribute" "attr")
+    '("PangoRectangle" "ink_rect")
+    '("PangoRectangle" "logical_rect")
+  )
+)
+
+(define-struct AttrString
+  (in-module "Pango")
+  (c-name "PangoAttrString")
+  (fields
+    '("PangoAttribute" "attr")
+    '("char*" "value")
+  )
+)
+
+(define-struct Attribute
+  (in-module "Pango")
+  (c-name "PangoAttribute")
+  (fields
+    '("gpointer" "klass")
+    '("guint" "start_index")
+    '("guint" "end_index")
+  )
+)
+
+(define-struct Color
+  (in-module "Pango")
+  (c-name "PangoColor")
+  (fields
+    '("guint16" "red")
+    '("guint16" "green")
+    '("guint16" "blue")
+  )
+)
+
+(define-struct Coverage
+  (in-module "Pango")
+  (c-name "PangoCoverage")
+  (fields
+  )
+)
+
+(define-struct Engine
+  (in-module "Pango")
+  (c-name "PangoEngine")
+  (fields
+    '("gchar*" "id")
+    '("gchar*" "type")
+    '("gint" "length")
+  )
+)
+
+(define-struct EngineInfo
+  (in-module "Pango")
+  (c-name "PangoEngineInfo")
+  (fields
+    '("gchar*" "id")
+    '("gchar*" "engine_type")
+    '("gchar*" "render_type")
+    '("PangoEngineRange*" "ranges")
+    '("gint" "n_ranges")
+  )
+)
+
+(define-struct EngineLang
+  (in-module "Pango")
+  (c-name "PangoEngineLang")
+  (fields
+    '("PangoEngine" "engine")
+    '("void*" "script_break (const-char* text, int len, PangoAnalysis* analysis, PangoLogAttr* attrs, int attrs_len)")
+  )
+)
+
+(define-struct EngineRange
+  (in-module "Pango")
+  (c-name "PangoEngineRange")
+  (fields
+    '("guint32" "start")
+    '("guint32" "end")
+    '("gchar*" "langs")
+  )
+)
+
+(define-struct EngineShape
+  (in-module "Pango")
+  (c-name "PangoEngineShape")
+  (fields
+    '("PangoEngine" "engine")
+    '("void*" "script_shape (PangoFont* font, const-char* text, int length, PangoAnalysis* analysis, PangoGlyphString* glyphs)")
+    '("PangoCoverage**" "get_coverage (PangoFont* font, PangoLanguage* language)")
+  )
+)
+
+(define-struct FontDescription
+  (in-module "Pango")
+  (c-name "PangoFontDescription")
+  (fields
+  )
+)
+
+(define-struct FontMetrics
+  (in-module "Pango")
+  (c-name "PangoFontMetrics")
+  (fields
+    '("guint" "ref_count")
+    '("int" "ascent")
+    '("int" "descent")
+    '("int" "approximate_char_width")
+    '("int" "approximate_digit_width")
+  )
+)
+
+(define-struct Glyph
+  (in-module "Pango")
+  (c-name "PangoGlyph")
+  (fields
+  )
+)
+
+(define-struct GlyphGeometry
+  (in-module "Pango")
+  (c-name "PangoGlyphGeometry")
+  (fields
+    '("PangoGlyphUnit" "width")
+    '("PangoGlyphUnit" "x_offset")
+    '("PangoGlyphUnit" "y_offset")
+  )
+)
+
+(define-struct GlyphInfo
+  (in-module "Pango")
+  (c-name "PangoGlyphInfo")
+  (fields
+    '("PangoGlyph" "glyph")
+    '("PangoGlyphGeometry" "geometry")
+    '("PangoGlyphVisAttr" "attr")
+  )
+)
+
+(define-struct GlyphString
+  (in-module "Pango")
+  (c-name "PangoGlyphString")
+  (fields
+    '("gint" "num_glyphs")
+    '("PangoGlyphInfo*" "glyphs")
+    '("gint*" "log_clusters")
+    '("gint" "space")
+  )
+)
+
+(define-struct GlyphUnit
+  (in-module "Pango")
+  (c-name "PangoGlyphUnit")
+  (fields
+  )
+)
+
+(define-struct GlyphVisAttr
+  (in-module "Pango")
+  (c-name "PangoGlyphVisAttr")
+  (fields
+    '("guint" "is_cluster_start : 1")
+  )
+)
+
+(define-struct IncludedModule
+  (in-module "Pango")
+  (c-name "PangoIncludedModule")
+  (fields
+    '("void*" "list (PangoEngineInfo** engines, int* n_engines)")
+    '("PangoEngine**" "load (const-char* id)")
+    '("void*" "unload (PangoEngine* engine)")
+  )
+)
+
+(define-struct IndicScript
+  (in-module "Pango")
+  (c-name "PangoIndicScript")
+  (fields
+    '("gchar*" "name")
+    '("gboolean*" "is_prefixing_vowel (gunichar what)")
+    '("gboolean*" "is_vowel_sign (gunichar what)")
+    '("gunichar*" "vowel_sign_to_matra (gunichar what)")
+    '("gboolean*" "is_vowel_half (gunichar what)")
+    '("gboolean*" "vowel_split (gunichar what, gunichar* prefix, gunichar* suffix)")
+  )
+)
+
+(define-struct IntSet
+  (in-module "Pango")
+  (c-name "PangoIntSet")
+  (fields
+    '("int" "start")
+    '("int" "size")
+    '("guint*" "bits")
+  )
+)
+
+(define-struct Item
+  (in-module "Pango")
+  (c-name "PangoItem")
+  (fields
+    '("gint" "offset")
+    '("gint" "length")
+    '("gint" "num_chars")
+    '("PangoAnalysis" "analysis")
+  )
+)
+
+(define-struct Language
+  (in-module "Pango")
+  (c-name "PangoLanguage")
+  (fields
+  )
+)
+
+(define-struct LayoutIter
+  (in-module "Pango")
+  (c-name "PangoLayoutIter")
+  (fields
+  )
+)
+
+(define-struct LayoutLine
+  (in-module "Pango")
+  (c-name "PangoLayoutLine")
+  (fields
+    '("PangoLayout*" "layout")
+    '("gint" "start_index")
+    '("gint" "length")
+    '("GSList*" "runs")
+  )
+)
+
+(define-struct LayoutRun
+  (in-module "Pango")
+  (c-name "PangoLayoutRun")
+  (fields
+    '("PangoItem*" "item")
+    '("PangoGlyphString*" "glyphs")
+  )
+)
+
+(define-struct LogAttr
+  (in-module "Pango")
+  (c-name "PangoLogAttr")
+  (fields
+    '("guint" "is_line_break : 1")
+    '("guint" "is_mandatory_break : 1")
+    '("guint" "is_char_break : 1")
+    '("guint" "is_white : 1")
+    '("guint" "is_cursor_position : 1")
+    '("guint" "is_word_start : 1")
+    '("guint" "is_word_end : 1")
+    '("guint" "is_sentence_boundary : 1")
+    '("guint" "is_sentence_start : 1")
+    '("guint" "is_sentence_end : 1")
+  )
+)
+
+(define-struct Map
+  (in-module "Pango")
+  (c-name "PangoMap")
+  (fields
+  )
+)
+
+(define-struct MapEntry
+  (in-module "Pango")
+  (c-name "PangoMapEntry")
+  (fields
+    '("PangoEngineInfo*" "info")
+    '("gboolean" "is_exact")
+  )
+)
+
+(define-struct OTInfo
+  (in-module "Pango")
+  (c-name "PangoOTInfo")
+  (fields
+  )
+)
+
+(define-struct OTRuleset
+  (in-module "Pango")
+  (c-name "PangoOTRuleset")
+  (fields
+  )
+)
+
+(define-struct OTTag
+  (in-module "Pango")
+  (c-name "PangoOTTag")
+  (fields
+  )
+)
+
+(define-struct Rectangle
+  (in-module "Pango")
+  (c-name "PangoRectangle")
+  (fields
+    '("int" "x")
+    '("int" "y")
+    '("int" "width")
+    '("int" "height")
+  )
+)
+
+(define-struct TabArray
+  (in-module "Pango")
+  (c-name "PangoTabArray")
+  (fields
+  )
+)
+
+(define-struct Win32FontCache
+  (in-module "Pango")
+  (c-name "PangoWin32FontCache")
+  (fields
+  )
+)
+
+(define-struct XFontCache
+  (in-module "Pango")
+  (c-name "PangoXFontCache")
+  (fields
+  )
+)
+
+(define-struct XSubfont
+  (in-module "Pango")
+  (c-name "PangoXSubfont")
+  (fields
+  )
+)
+

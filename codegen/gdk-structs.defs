@@ -1,20 +1,7 @@
-(define-struct ArgContext
+(define-struct Atom
   (in-module "Gdk")
-  (c-name "GdkArgContext")
+  (c-name "GdkAtom")
   (fields
-    '("GPtrArray*" "tables")
-    '("gpointer" "cb_data")
-  )
-)
-
-(define-struct ArgDesc
-  (in-module "Gdk")
-  (c-name "GdkArgDesc")
-  (fields
-    '("const-char*" "name")
-    '("GdkArgType" "type")
-    '("gpointer" "location")
-    '("GdkArgFunc" "callback")
   )
 )
 
@@ -26,16 +13,6 @@
   )
 )
 
-(define-struct ClientFilter
-  (in-module "Gdk")
-  (c-name "GdkClientFilter")
-  (fields
-    '("GdkAtom" "type")
-    '("GdkFilterFunc" "function")
-    '("gpointer" "data")
-  )
-)
-
 (define-struct Color
   (in-module "Gdk")
   (c-name "GdkColor")
@@ -44,15 +21,6 @@
     '("guint16" "red")
     '("guint16" "green")
     '("guint16" "blue")
-  )
-)
-
-(define-struct ColorInfo
-  (in-module "Gdk")
-  (c-name "GdkColorInfo")
-  (fields
-    '("GdkColorInfoFlags" "flags")
-    '("guint" "ref_count")
   )
 )
 
@@ -122,7 +90,7 @@
     '("gint8" "send_event")
     '("GdkAtom" "message_type")
     '("gushort" "data_format")
-    '("char" "data_b[20]")
+    '("gint8" "data_b[20]")
   )
 )
 
@@ -184,15 +152,6 @@
     '("GdkRectangle" "area")
     '("GdkRegion*" "region")
     '("gint" "count")
-  )
-)
-
-(define-struct EventFilter
-  (in-module "Gdk")
-  (c-name "GdkEventFilter")
-  (fields
-    '("GdkFilterFunc" "function")
-    '("gpointer" "data")
   )
 )
 
@@ -356,15 +315,6 @@
   )
 )
 
-(define-struct FontPrivate
-  (in-module "Gdk")
-  (c-name "GdkFontPrivate")
-  (fields
-    '("GdkFont" "font")
-    '("guint" "ref_count")
-  )
-)
-
 (define-struct GCValues
   (in-module "Gdk")
   (c-name "GdkGCValues")
@@ -415,6 +365,13 @@
     '("guint" "keycode")
     '("gint" "group")
     '("gint" "level")
+  )
+)
+
+(define-struct NativeWindow
+  (in-module "Gdk")
+  (c-name "GdkNativeWindow")
+  (fields
   )
 )
 
@@ -489,6 +446,17 @@
   )
 )
 
+(define-struct RegionBox
+  (in-module "Gdk")
+  (c-name "GdkRegionBox")
+  (fields
+    '("gint" "x1")
+    '("gint" "y1")
+    '("gint" "x2")
+    '("gint" "y2")
+  )
+)
+
 (define-struct RgbCmap
   (in-module "Gdk")
   (c-name "GdkRgbCmap")
@@ -517,6 +485,20 @@
   )
 )
 
+(define-struct Selection
+  (in-module "Gdk")
+  (c-name "GdkSelection")
+  (fields
+  )
+)
+
+(define-struct SelectionType
+  (in-module "Gdk")
+  (c-name "GdkSelectionType")
+  (fields
+  )
+)
+
 (define-struct Span
   (in-module "Gdk")
   (c-name "GdkSpan")
@@ -527,12 +509,26 @@
   )
 )
 
+(define-struct Target
+  (in-module "Gdk")
+  (c-name "GdkTarget")
+  (fields
+  )
+)
+
 (define-struct TimeCoord
   (in-module "Gdk")
   (c-name "GdkTimeCoord")
   (fields
     '("guint32" "time")
     '("gdouble" "axes[128]")
+  )
+)
+
+(define-struct WChar
+  (in-module "Gdk")
+  (c-name "GdkWChar")
+  (fields
   )
 )
 
@@ -562,6 +558,13 @@
     '("gchar*" "wmclass_name")
     '("gchar*" "wmclass_class")
     '("gboolean" "override_redirect")
+  )
+)
+
+(define-struct XEvent
+  (in-module "Gdk")
+  (c-name "GdkXEvent")
+  (fields
   )
 )
 

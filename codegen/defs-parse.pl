@@ -9,21 +9,41 @@
 %maptypes = (
 	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
 	'guint32', "uint", 'const-gchar', "String", 'GObject', "GLib.Object",
-	'gchar', "String", 'gfloat', "float", 'gdouble', "double");
+	'gchar', "String", 'gfloat', "float", 'gdouble', "double",
+	'GList', "IntPtr", 'GSList', "IntPtr", 'gpointer', "IntPtr", 
+	'long', "long", 'gint8', "byte", 'guint8', "byte", 'gint16', "short",
+	'guint16', "ushort", 'char', "String", 'GPtrArray', "IntPtr[]",
+	'const-char', "String", 'gushort', "ushort", 'gshort', "short",
+	'guint1', "bool", 'guchar', "byte", 'GValue', "GLib.Value",
+	'GtkType', "int", 'glong', "long", 'gulong', "ulong", 'GQuark', "int",
+	'va_list', "IntPtr", 'GParamSpec', "IntPtr", 'int', "int",
+	'double', "double", 'gunichar', "String", 'uint1', "bool",
+	'GtkSignalFunc', "IntPtr");
 
 %marshaltypes = (
 	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
 	'guint32', "uint", 'const-gchar', "IntPtr", 'GObject', "IntPtr",
-	'gchar', "IntPtr", 'gfloat', "float", 'gdouble', "double");
+	'gchar', "IntPtr", 'gfloat', "float", 'gdouble', "double",
+	'GList', "IntPtr", 'GSList', "IntPtr", 'gpointer', "IntPtr", 
+	'long', "long", 'gint8', "byte", 'guint8', "byte", 'gint16', "short",
+	'guint16', "ushort", 'char', "IntPtr", 'GPtrArray', "IntPtr[]",
+	'const-char', "IntPtr", 'gushort', "ushort", 'gshort', "short",
+	'guint1', "bool", 'guchar', "byte", 'GValue', "GLib.Value",
+	'GtkType', "int", 'glong', "long", 'gulong', "ulong", 'GQuark', "int",
+	'va_list', "IntPtr", 'GParamSpec', "IntPtr", 'int', "int",
+	'double', "double", 'gunichar', "Unicode", 'uint1', "bool",
+	'GtkSignalFunc', "IntPtr");
 
 
 %usings = (
 	'GLib', "System,System.Collections,System.Runtime.InteropServices,GLib",
-	'Gdk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk",
-	'Gtk', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk,Gtk",
-	'GtkSharp', "System,System.Collections,System.Runtime.InteropServices,GLib,Gdk,Gtk");
+	'Pango', "System,System.Collections,System.Runtime.InteropServices,GLib,Pango",
+	'Gdk', "System,System.Collections,System.Runtime.InteropServices,GLib,Pango,Gdk",
+	'Gtk', "System,System.Collections,System.Runtime.InteropServices,GLib,Pango,Gdk,Gtk,GtkSharp",
+	'GtkSharp', "System,System.Collections,System.Runtime.InteropServices,GLib,Pango,Gdk,Gtk");
 
 `mkdir -p ../glib/generated`;
+`mkdir -p ../pango/generated`;
 `mkdir -p ../gdk/generated`;
 `mkdir -p ../gtk/generated`;
 
@@ -50,10 +70,13 @@ while ($def = get_def()) {
 	} elsif ($def =~ /^\(define-(prop|signal|method)/) {
 		$def =~ /of-object "(\w+)"/;
 		$cname=$1;
-		$def =~ s/\r?\n\s*//g;
-		$objects{$cname} .= "\n$def";
+		if (exists($objects{$cname})) {
+			$def =~ s/\r?\n\s*//g;
+			$objects{$cname} .= "\n$def";
+		}
 	} elsif ($def =~ /^\(define-function/) {
-		if ($def =~ /is-constructor-of (\w+)\)/) {
+		if (($def =~ /is-constructor-of (\w+)\)/) &&
+		    (exists($objects{$1}))) {
 			$cname=$1;
 			$def =~ s/\r?\n\s*//g;
 			$objects{$cname} .= "\n$def";
@@ -69,11 +92,12 @@ while ($def = get_def()) {
 }
 
 foreach $key (keys (%structs)) {
+	next if ($key =~ /GtkTree|GtkText/);
 	gen_struct ($key, $structs{$key});
 }
 
 foreach $key (keys (%objects)) {
-	next if ($key !~ /GdkPixbuf\b|GtkWindow\b|GtkAccelGroup|GtkBin\b/);
+	next if ($key =~ /GtkTree|GtkText/);
 	gen_object (split (/\n/, $objects{$key}));
 }
 
@@ -179,6 +203,7 @@ sub gen_struct
 
 	$def =~ /define-struct (\w+)/;
 	$name = $1;
+
 	$def =~ /in-module "(\w+)"/;
 	$namespace = $1;
 
@@ -200,11 +225,26 @@ sub gen_struct
 	if ($def =~ /fields'\((.*)\)\)\)/) {
 		foreach $parm (split(/\)'\(/, $1)) {
 			$parm =~ s/\*//g;
-			$parm =~ /"(\S*)" "(\S*)"/;
-			$ptype = $1;
+			$parm =~ /"(.*)" "(.*)"/;
+			$ptype = $maptypes{$1};
 			$pname = $2; 
+			if ($pname =~ /(\w+)\s*\(.*\)/) {
+				$pname = $1;
+				$ptype = "IntPtr"; # FIXME: delegate?
+			}
 			$pname =~ s/object/objekt/;
-			print OUTFILE "\t\tpublic $maptypes{$ptype} $pname;\n";
+			$pname =~ s/string/str1ng/;
+			$pname =~ s/\bin\b/in_/;
+			if ($pname =~ /(\w+)\s*\[\d+\]/) {
+				$ptype .= "[]";
+				$pname = $1;
+			} elsif ($pname =~ /(\w+)\s*\:\s*(\d+)/) {
+				$pname = $1;
+				if ($2 == 1) {
+					$ptype = "bool";
+				}
+			}
+			print OUTFILE "\t\tpublic $ptype $pname;\n";
 		}
 	}
 
@@ -217,15 +257,16 @@ sub gen_object
 {
 	my ($objdef, @defs) = @_;
 	my ($key, $typename, $parent, $dir, $namespace, $abstract, $def);
-		
+
 	$objdef =~ /define-object (\w+)/;
 	$typename = $1;
-
 	$objdef =~ /parent "(\w+)"/;
 	$parent = $maptypes{$1};
-
 	$objdef =~ /in-module "(\w+)"/;
-	$dir = "../" . lc ($namespace = $1) . "/generated";
+	$namespace = $1;
+	$dir = "../" . lc ($namespace) . "/generated";
+
+	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file $dir/$typename.cs";
 
 	%props = ();
 	%signals = ();
@@ -243,8 +284,6 @@ sub gen_object
 		}
 	}
 
-	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
-	
 	print OUTFILE "// Generated file: Do not modify\n\n";
 	print OUTFILE "namespace $namespace {\n\n";
 	foreach $ns (split (/,/, $usings{$namespace})) {
@@ -318,15 +357,6 @@ sub gen_signal
 	@plist = split(/\)'\(/, $1);
 
 	$marsh = get_sighandler ($def);
-
-	if (($ret eq "none") && (@plist == 1)) {
-		$marsh = "SimpleSignal";
-	} elsif (($ret eq "gboolean") && (@plist == 2) && 
-		 ($plist[1] =~ /^\"GdkEvent\*\"/)) {
-		$marsh = "SimpleEvent";
-	} else {
-		return "\t\t// FIXME: Need Marshaller for $name event\n\n";
-	}
 
 	$code = "\t\t/// <summary> $name Event </summary>\n";
 	$code .= "\t\t/// <remarks>\n\t\t///\tFIXME: Get some docs.\n";
@@ -440,13 +470,13 @@ sub gen_method
 	$def =~ /\(c-name "(\w+)"/;
 	$cname = $1;
 
-	$def =~ /return-type "(\w+)/;
-	if (exists ($maptypes{$1})) {
-		$sret = $maptypes{$1};
-		$mret = $marshaltypes{$1};
-		$ret = $1;
+	$def =~ /return-type "(const-)*(\w+)/;
+	if (exists ($maptypes{$2})) {
+		$sret = $maptypes{$2};
+		$mret = $marshaltypes{$2};
+		$ret = $2;
 	} else {
-		$sret = $mret = $ret = $1;
+		$sret = $mret = $ret = $2;
 	}
 
 	($call, $pinv, $sig) = gen_param_strings($def);
@@ -494,9 +524,10 @@ sub gen_param_strings
 	if ($def =~ /parameters'\((.*)\)\)\)/) {
 		foreach $parm (split(/\)'\(/, $1)) {
 			$parm =~ s/\*//g;
-			$parm =~ /"(\S*)" "(\S*)"/;
+			$parm =~ /"(\S*)"\s+"(\S*)"/;
 			$ptype = $1;
 			$pname = $2;
+			$ptype =~ s/const-//;
 			$pname =~ s/object/objekt/;
 			$pname =~ s/event/ev3nt/;
 			if ($sig) { 
@@ -504,16 +535,24 @@ sub gen_param_strings
 				$call .= ', '; 
 				$pinv .= ', '; 
 			}
-			$pinv .= "$marshaltypes{$ptype} $pname";
+			if ($marshaltypes{$ptype} eq "Unicode") {
+				$pinv .= "IntPtr $pname";
+			} else {
+				$pinv .= "$marshaltypes{$ptype} $pname";
+			}
 			$sig .= "$maptypes{$ptype} $pname";
 			if ($maptypes{$ptype} eq $marshaltypes{$ptype}) {
 				$call .= "$pname";
 			} elsif (exists ($objects{$ptype}) || 
 				 ($ptype =~ /GObject/)) {
 				$call .= "$pname.Handle";
-			} elsif ($ptype =~ /gchar/) {
-				$call .= "Marshal.StringToHGlobalAnsi($pname)";
-			} elsif ($marshaltypes{$ptype} = "int") {
+			} elsif ($maptypes{$ptype} eq "String") {
+				if ($marshaltypes{$ptype} eq "IntPtr") {
+					$call .= "Marshal.StringToHGlobalAnsi($pname)";
+				} else {
+					$call .= "Marshal.StringToHGlobalUni($pname)";
+				}
+			} elsif ($marshaltypes{$ptype} eq "int") {
 				$call .= "(int) $pname";
 			} else {
 				die "Unexpected type encountered $ptype\n";
@@ -529,12 +568,13 @@ sub get_sighandler
 	my ($def) = @_;
 	my ($key, $name, $dir, $ns, $nspace, $tok);
 
-	$def =~ /return-type \"(\w+)\"/;
+	$def =~ /return-type \"(\w+)/;
 	my $ret = $1;
 
 	$def =~ /parameters'\((.*)\)\)\)/;
 	my @parms = split(/\)'\(/, $1);
 
+	$key = "";
 	for ($i = 1; $i < @parms; $i++) {
 		$parms[$i] =~ /^\"(\w+)/;
 		$key .= ":$1";
@@ -572,7 +612,7 @@ sub get_sighandler
 	my $dname = $name . "Delegate";
 	my $cbname = $name . "Callback";
 
-	$sighandlers{$key} = $name;
+	$sighandlers{$key} = $sname;
 
 	open (SIGFILE, ">$dir/$sname.cs") || die "can't open file";
 	
@@ -593,15 +633,13 @@ sub get_sighandler
 	print SIGFILE "\t\t\tSignalArgs args = new SignalArgs ();\n";
 	if ($def =~ /parameters'\((.*)\)\)\)/) {
 		my (@parms) = split(/\)'\(/, $1);
-		print "$sname pcnt=$#parms\n";
 		for ($idx=0; $idx < $#parms; $idx++) {
 			$parms[$idx+1] =~ s/\*//g;
-			$parms[$idx+1] =~ /"(\S*)" "(\S*)"/;
+			$parms[$idx+1] =~ /"(\S*)"\s+"(\S*)"/;
 			$ptype = $1;
 			$pname = $2;
 			$pname =~ s/object/objekt/;
 			$pname =~ s/event/ev3nt/;
-			print "$ptype $pname\n";
 			if (exists($objects{$ptype})) {
 				print SIGFILE "\t\t\targs.Args[$idx] = GLib.Object.GetObject($pname);\n";
 			} elsif (exists($maptypes{$ptype})) {

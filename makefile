@@ -1,4 +1,4 @@
-DIRS=codegen glib gdk gtk sample
+DIRS=generator glib pango gdk gtk sample
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.2914/csc.exe
 

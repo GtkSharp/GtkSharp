@@ -1,7 +1,44 @@
+2002-01-04  Mike Kestner <mkestner@speakeasy.net>
+
+	* makefile : switch to the new generator.
+	* generator/CodeGenerator.cs : New main program class.
+	* generator/IGeneratable.cs : Interface for generation methods/props.
+	* generator/EnumGen.cs : Subclass of IGeneratable for enums.
+	* generator/Parser.cs : The XML parser.
+	* parser/gapi_pp.pl : A source preprocessor for api extraction.
+	* parser/gapi2xml.pl : Produces Xml document for GObject based APIs.
+
 2001-12-31  Mike Kestner <mkestner@speakeasy.net>
 
 	* codegen/defs-parse.pl : Fix EOL handling for DOS \r\n patterns as 
 	reported by David Dawkins.
+
+2001-12-17  Mike Kestner <mkestner@speakeasy.net>
+
+	* makefile : Add the pango subdir.
+	* codegen/defs-parse.pl : Add a buttload of type entries to %maptypes
+	  and %marshaltypes. Ignore props, sigs, and methods for non GObject 
+	  types. Turn on all classes. Major beefup of struct generation. Start
+	  to use the new sighandlers. Rip out const- types. Handle Unicode
+	  string marshalling. 
+	* codegen/gdk-structs.defs : Regenerated.
+	* codegen/get-structs-from-source.pl : Handle typedef x y; Suppress
+	  structs with "Private" in the typename. Handle multiple levels of
+	  typedeffing. Handle function pointers. Suppress comments sanely.
+	* codegen/gtk-props.defs : Fill out the rest of the classes.
+	* codegen/gtk-signals.defs : Fill out the rest of the classes.
+	* codegen/gtk-structs.defs : First pass.  Hacked obscenely.
+	* codegen/hardcoded.defs : Kill.  No hardcoding needed anymore.
+	* codegen/makefile : Use the new defs files.
+	* codegen/pango.defs : Ripped from pygtk.
+	* codegen/pango-structs.defs : New struct defs gen'd with my tool.
+	* codegen/pango-types.defs : Ripped from pygtk.
+	* gdk/makefile : Add the pango-sharp.dll ref.
+	* gdk/SimpleEvent.cs : Killed.
+	* glib/SimpleSignal.cs : Killed.
+	* gtk/makefile : Add the pango-sharp.dll ref.
+	* gtk/Widget.cs : Killed.
+	* pango/makefile : New build dir.
 
 2001-12-11  Mike Kestner <mkestner@speakeasy.net>
 

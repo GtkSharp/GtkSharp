@@ -3,7 +3,8 @@ all:
 	@echo "'make unix' is broken for now."
 
 windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../gdk/gdk-sharp.dll /out:gtk-sharp.dll /recurse:*.cs
+	$(CSC) /unsafe /out:codegen.exe /recurse:*.cs
+	./codegen api.xml
 
 unix:
 	@echo "'make unix' is broken for now."
