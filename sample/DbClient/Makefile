@@ -3,7 +3,7 @@ REFERENCES= glib-sharp gdk-sharp gtk-sharp gnome-sharp System.Data System.Drawin
 
 ###
 
-REFS= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES)))
+REFS= $(addprefix /r:, $(REFERENCES))
 
 all:
 	$(MCS) $(REFS) client.cs
