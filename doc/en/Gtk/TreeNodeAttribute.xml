@@ -1,5 +1,5 @@
 <Type Name="TreeNodeAttribute" FullName="Gtk.TreeNodeAttribute">
-  <TypeSignature Language="C#" Value="public class TreeNodeAttribute : System.Attribute" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TreeNodeAttribute : System.Attribute" Maintainer="Mike Kestner" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey></AssemblyPublicKey>
@@ -7,10 +7,31 @@
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement />
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>An attribute to specify tree node information of a class.</summary>
+    <remarks>
+      <para>
+        This attribute can be applied to a class which implements the 
+        <see cref="T:Gtk.ITreeNode" /> interface to provide additional information 
+	about the node type to the <see cref="T:Gtk.NodeStore"/> which will contain
+	the nodes.
+      </para>
+      <para>
+        In the following example, the class MyTreeNode is tagged as 
+        a tree node with 3 columns:
+        <example>
+          <code lang="C#">
+	[TreeNode(ColumnCount=3)]
+	public class MyTreeNode : ITreeNode {
+
+	...
+
+	}
+          </code>
+        </example>
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Attribute</BaseTypeName>
@@ -28,9 +49,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>TreeNodeAttribute constructor</summary>
         <returns>a <see cref="T:Gtk.TreeNodeAttribute" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Instantiates a <see cref="T:Gtk.TreeNodeAttribute"/></remarks>
       </Docs>
     </Member>
     <Member MemberName="ColumnCount">
@@ -41,9 +62,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>ColumnCount named value.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Specifies the number of columns the node exposes. A 
+	  <see cref="T:Gtk.TreeNodeValueAttribute"/> 
+	  should be added to each of the properties of the class which represent
+	  the individual column values.
+        </remarks>
       </Docs>
     </Member>
   </Members>

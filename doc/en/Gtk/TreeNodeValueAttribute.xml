@@ -1,5 +1,5 @@
 <Type Name="TreeNodeValueAttribute" FullName="Gtk.TreeNodeValueAttribute">
-  <TypeSignature Language="C#" Value="public class TreeNodeValueAttribute : System.Attribute" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TreeNodeValueAttribute : System.Attribute" Maintainer="Mike Kestner" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey></AssemblyPublicKey>
@@ -7,10 +7,29 @@
     <AssemblyCulture>neutral</AssemblyCulture>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement />
+  <ThreadSafetyStatement>>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>An attribute to identify a property as a tree node column value.</summary>
+    <remarks>
+      <para> 
+        This attribute is applied to a property of a tree node class to 
+        indicate that the property holds a column value of the node.
+      </para>
+      <para> 
+	In the following example, the Frombulator property is tagged as Column 2
+	of the node which implements it:
+      </para>
+      <example>
+        <code lang="C#">
+	[TreeNodeValue(Column=2)]
+	public string Frombulator {
+		get {
+			return frombulator;
+		}
+	}
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Attribute</BaseTypeName>
@@ -28,9 +47,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>TreeNodeValueAttribute constructor</summary>
         <returns>a <see cref="T:Gtk.TreeNodeValueAttribute" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Instantiates a <see cref="T:Gtk.TreeNodeValueAttribute" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="Column">
@@ -41,9 +60,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Column named value</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	    The column number of the value which is exposed by the property
+            this <see cref="T:Gtk.TreeNodeValueAttribute" /> marks.
+        </remarks>
       </Docs>
     </Member>
   </Members>
