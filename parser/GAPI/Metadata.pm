@@ -25,18 +25,18 @@ sub parseClass {
 	my ($node, $classes) = @_;
 	my %methods = ();
 	my %signals = ();
-	my %properties = ();
+	my %members = ();
 	my @attrs = $node->attributes;
 	my $class_name = $attrs[0]->value;
-	${$classes}{$class_name} = [\%methods, \%signals, \%properties];
+	${$classes}{$class_name} = [\%methods, \%signals, \%members];
 
 	for ($method_node = $node->firstChild; $method_node != undef; $method_node = $method_node->nextSibling ()) {
 		if ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor") {
 			$methods{$method_node->firstChild->nodeValue} = 1;
 		} elsif ($method_node->nodeName eq "signal") {
 			$signals{$method_node->firstChild->nodeValue} = 1;
-		} elsif ($method_node->nodeName eq "property") {
-			$properties{$method_node->firstChild->nodeValue} = 1;
+		} elsif ($method_node->nodeName eq "property" or $method_node->nodeName eq "member") {
+			$members{$method_node->firstChild->nodeValue} = 1;
 		}	
 	}
 }
@@ -182,7 +182,7 @@ sub fixupNamespace {
 	foreach $rule (@{$self->{rules}}) {
 		my ($classes_ref, $data_list_ref) = @$rule;
 		for ($node = $ns_node->firstChild; $node; $node = $node->nextSibling ()) {
-			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface" or $node->nodeName eq "struct" or $node->nodeName eq "boxed" or $node->nodeName eq "callback" or $node->nodeName eq "class");
+			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface" or $node->nodeName eq "struct" or $node->nodeName eq "boxed" or $node->nodeName eq "callback" or $node->nodeName eq "class" or $node->nodeName eq "enum");
 			my $class, $methods_ref, $attr;
 			foreach $attr ($node->attributes) {
 				if ($attr->name eq "cname") {
@@ -194,13 +194,13 @@ sub fixupNamespace {
 			my %classes = %$classes_ref;
 			$methods_ref = $classes{$class}[0];
 			$signals_ref = $classes{$class}[1];
-			$properties_ref = $classes{$class}[2];
+			$members_ref = $classes{$class}[2];
 
 			if ({%$classes_ref}->{$class}) {
 			    addClassData ($doc, $node, $class, $data_list_ref);
 			}
 
-			next if not ($methods_ref or $signals_ref or $properties_ref);
+			next if not ($methods_ref or $signals_ref or $members_ref);
 
 			for ($method_node = $node->firstChild; $method_node; $method_node = $method_node->nextSibling ()) {
 				next if not ($method_node->nodeName eq "method" or $method_node->nodeName eq "constructor");
@@ -230,26 +230,24 @@ sub fixupNamespace {
 				fixupParams ($signal_node, $data_list_ref);
 			}
 
-			for ($property_node = $node->firstChild; $property_node; $property_node = $property_node->nextSibling ()) {
-				next if $property_node->nodeName ne "property";
-				my $property;
-				foreach $attr ($property_node->attributes) {
+			for ($member_node = $node->firstChild; $member_node; $member_node = $member_node->nextSibling ()) {
+				next if $member_node->nodeName ne "property" and $member_node->nodeName ne "member";
+				my $member;
+				foreach $attr ($member_node->attributes) {
 					if ($attr->name eq "name") {
-						$property = $attr->value;
+						$member = $attr->value;
 						last;
 					}
 				}
-				next if not ${$properties_ref}{$property};
+				next if not ${$members_ref}{$member};
 
 				foreach $data (@$data_list_ref) {
-					if ($$data[1] eq "property") {
-						$property_node->setAttribute ($$data[5], $$data[6]);
+					if ($$data[1] eq "property" or $$data[1] eq "member") {
+						$member_node->setAttribute ($$data[5], $$data[6]);
 						next;
 					}
 				}
-
 			}
-
 		}
 	}
 }
