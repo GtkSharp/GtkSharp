@@ -276,7 +276,7 @@ namespace GtkSharp.Generation {
 				string name = this [i].Name;
 
 				if (i > 0 && this [i - 1].IsArray && this [i].IsCount) {
-					call_string += ", " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length";
+					call_string += ", " + this[i-1].Name + " != null ? " + (cs_type != "int" ? "(" + cs_type + ") " : "") + this [i - 1].Name + ".Length : 0";
 					import_sig += ", " + m_type + " " + name;
 					continue;
 				}
@@ -298,8 +298,8 @@ namespace GtkSharp.Generation {
 				} else
 					call_parm = table.CallByName(type, call_parm_name);
 				
-				if (this [i].NullOk && !cs_type.EndsWith ("IntPtr") && !table.IsStruct (type))
-					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) ? "null" : "IntPtr.Zero");
+				if (this [i].NullOk && (this [i].IsArray || (!cs_type.EndsWith ("IntPtr") && !table.IsStruct (type))))
+					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, table.IsCallback (type) || this[i].IsArray ? "null" : "IntPtr.Zero");
 				
 				if (this [i].IsArray)
 					call_parm = call_parm.Replace ("ref ", "");
