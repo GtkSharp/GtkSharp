@@ -7,6 +7,7 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 	using GLibSharp;
 
@@ -31,9 +32,37 @@ namespace GLib {
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr mem);
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_unset (IntPtr mem);
+
 		~Value ()
 		{
 			Dispose ();
+		}
+
+		static bool idle_queued;
+		static Queue idle_queue = new Queue ();
+
+		static bool DoDispose ()
+		{
+			IntPtr [] vals;
+
+			lock (idle_queue){
+				vals = new IntPtr [idle_queue.Count];
+				idle_queue.CopyTo (vals, 0);
+				idle_queue.Clear ();
+			}
+			lock (typeof (Value))
+				idle_queued = false;
+
+			foreach (IntPtr v in vals) {
+				if (v == IntPtr.Zero)
+					continue;
+
+				g_value_unset (v);
+				g_free (v);
+			}
+			return false;
 		}
 
 		public void Dispose () {
@@ -44,7 +73,15 @@ namespace GLib {
 				}
 			
 				if (needs_dispose)
-					g_free (_val);
+					lock (idle_queue) {
+						idle_queue.Enqueue (_val);
+						lock (typeof (Value)){
+							if (!idle_queued){
+								Idle.Add (new IdleHandler (DoDispose));
+								idle_queued = true;
+							}
+						}
+					}
 				_val = IntPtr.Zero; 
 			}
 
@@ -53,7 +90,6 @@ namespace GLib {
 				buf = IntPtr.Zero;
 			}
 		}
-
 
 		// import the glue function to allocate values on heap
 
