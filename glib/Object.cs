@@ -121,6 +121,42 @@ namespace GLib {
 			Data [key] = val;
 		}
 
+		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Accesses a raw Object Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_object_get_property (IntPtr obj,
+                                             		  String name,
+                                             		  IntPtr val);
+
+		public void GetProperty (String name, Value val)
+		{
+			g_object_get_property (RawObject, name, val.MarshalAs);
+		}
+
+		/// <summary>
+		///	SetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Changes the value of a raw Object Property.
+		/// </remarks>
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_object_set_property (IntPtr obj,
+                                             		  String name,
+                                             		  IntPtr val);
+
+		public void SetProperty (String name, Value val)
+		{
+			g_object_set_property (RawObject, name, val.MarshalAs);
+		}
+
 /*
 		[DllImport("gtk-1.3.dll")]
 		static extern void g_object_set_data_full (
@@ -179,12 +215,6 @@ void        g_object_set_qdata_full (GObject *object,
                                              GDestroyNotify destroy);
 gpointer g_object_steal_qdata (GObject *object,
                                              GQuark quark);
-void        g_object_set_property (GObject *object,
-                                             const gchar *property_name,
-                                             const GValue *value);
-void        g_object_get_property (GObject *object,
-                                             const gchar *property_name,
-                                             GValue *value);
 void        g_object_watch_closure (GObject *object,
                                              GClosure *closure);
 void        g_object_run_dispose (GObject *object);

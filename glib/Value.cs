@@ -57,6 +57,19 @@ namespace GLib {
 		/// </summary>
 		/// 
 		/// <remarks>
+		///	Creates an initialized Value of the specified type.
+		/// </remarks>
+
+		public Value (TypeFundamentals type) : this ()
+		{
+			Init (type);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
 		///	Constructs a Value from a specified boolean.
 		/// </remarks>
 

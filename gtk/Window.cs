@@ -61,7 +61,6 @@ namespace Gtk {
 			this.Title = title;
 		}
 
-/*
 		/// <summary>
 		///	AllowGrow Property
 		/// </summary>
@@ -73,11 +72,14 @@ namespace Gtk {
 
 		public bool AllowGrow {
 			get {
-				Value val = GetProp ("allow-grow");
-				return (val != 0);
+				Value val = new Value (
+						TypeFundamentals.TypeBoolean);
+				GetProperty ("allow-grow", val);
+				return ((bool) val);
 			}
 			set {
-				SetProp ("allow-grow", new GValue (value));
+				Value val = new Value (value);
+				SetProperty ("allow-grow", val);
 			}
 		}
 			
@@ -92,14 +94,18 @@ namespace Gtk {
 
 		public bool AllowShrink {
 			get {
-				GValue val = GetProp ("allow-shrink");
-				return (val != 0);
+				Value val = new Value (
+						TypeFundamentals.TypeBoolean);
+				GetProperty ("allow-shrink", val);
+				return ((bool) val);
 			}
 			set {
-				SetProp ("allow-shrink", new GValue (value));
+				Value val = new Value (value);
+				SetProperty ("allow-shrink", val);
 			}
 		}
 			
+/*
 		/// <summary>
 		///	DefaultSize Property
 		/// </summary>
@@ -117,6 +123,7 @@ namespace Gtk {
 				SetProp ("default-size", new GValue (value));
 			}
 		}
+*/
 
 		/// <summary>
 		///	DestroyWithParent Property
@@ -129,16 +136,19 @@ namespace Gtk {
 
 		public bool DestroyWithParent {
 			get {
-				GValue val = GetProp ("allow-grow");
-				return (val != 0);
+				Value val = new Value (
+						TypeFundamentals.TypeBoolean);
+				GetProperty ("destroy-with-parent", val);
+				return ((bool) val);
 			}
 			set {
-				SetProp ("allow-grow", new GValue (value));
+				Value val = new Value (value);
+				SetProperty ("destroy-with-parent", val);
 			}
 		}
 
 		/// <summary>
-		///	IsModal Property
+		///	Modal Property
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -148,16 +158,19 @@ namespace Gtk {
 		///	is closed.
 		/// </remarks>
 
-		public bool IsModal {
+		public bool Modal {
 			get {
-				GValue val = GetProp ("allow-grow");
-				return (val != 0);
+				Value val = new Value (
+						TypeFundamentals.TypeBoolean);
+				GetProperty ("modal", val);
+				return ((bool) val);
 			}
 			set {
-				SetProp ("allow-grow", new GValue (value));
+				Value val = new Value (value);
+				SetProperty ("modal", val);
 			}
 		}
-*/
+
 		/// <summary>
 		///	Position Property
 		/// </summary>
@@ -179,6 +192,28 @@ namespace Gtk {
 		}
 
 		/// <summary>
+		///	Resizable Property
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Indicates if the Height and Width of the Window can be 
+		///	altered by the user.
+		/// </remarks>
+
+		public bool Resizable {
+			get {
+				Value val = new Value (
+						TypeFundamentals.TypeBoolean);
+				GetProperty ("resizable", val);
+				return ((bool) val);
+			}
+			set {
+				Value val = new Value (value);
+				SetProperty ("resizable", val);
+			}
+		}
+
+		/// <summary>
 		///	Title Property
 		/// </summary>
 		/// 
@@ -194,6 +229,10 @@ namespace Gtk {
 			set {
 				g_object_set (RawObject, "title", 
 					      Marshal.StringToHGlobalAnsi (value), new IntPtr (0));
+/* FIXME: When the String value setting problem is solved.
+				Value val = new Value (value);
+				SetProperty ("title", val);
+*/
 			}
 		}
 	}
