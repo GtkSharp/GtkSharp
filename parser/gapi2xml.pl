@@ -57,17 +57,22 @@ while ($line = <STDIN>) {
 		$types{$2} = $1;
 	} elsif ($line =~ /typedef\s+(\w+)\s+(\**)(\w+);/) {
 		$types{$3} = $1 . $2;
-	} elsif ($line =~ /typedef\s+enum/) {
-		$ename = $1;
+	} elsif ($line =~ /(typedef\s+)?\benum\b/) {
 		$edef = $line;
 		while ($line = <STDIN>) {
 			$edef .= $line;
-			last if ($line =~ /^}\s*(\w+);/);
+			last if ($line =~ /^}\s*(\w+)?;/);
 		}
 		$edef =~ s/\n\s*//g;
 		$edef =~ s|/\*.*?\*/||g;
-		$edef =~ /}\s*(\w+);/;
-		$ename = $1;
+		if ($edef =~ /typedef.*}\s*(\w+);/) {
+			$ename = $1;
+		} elsif ($edef =~ /^enum\s+(\w+)\s*{/) {
+			$ename = $1;
+		} else {
+			print "Unexpected enum format\n$edef";
+			next;
+		}
 		$edefs{$ename} = $edef;
 	} elsif ($line =~ /typedef\s+\w+\s*\**\s*\(\*\s*(\w+)\)\s*\(/) {
 		$fname = $1;
