@@ -1502,11 +1502,30 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Whether the <paramref name="widget" /> responds to input.</summary>
-        <param name="value">If <see langword="true" /> the <paramref name="widget" /> is set to respond to input.</param>
+        <summary>Sets the sensitivity of the <see cref="T:Gtk.Widget" />. A widget is sensitive if the user can interact with it, otherwise, it is grayed.</summary>
+        <param name="value">A System.Boolean value. Set to <see langword="true" /> to enable the <paramref name="widget" /> sensitivity, this is, whether the widget should respond to input or not.</param>
         <returns>
           <see langword="true" /> if the <paramref name="widget" /> responds to input.</returns>
-        <remarks />
+        <remarks>
+          <para>Insensitive widgets are "grayed out" and the user can't
+interact with them. Insensitive widgets are known as
+"inactive", "disabled", or "ghosted" in some other toolkits.
+The sensitivity of a widget determines whether it will receive
+certain events (e.g. button or key presses).</para>
+          <para>
+If the ancestor (parent) widget sesitivity is set to false,
+it does not matter what the sensitivity property have,
+the widget will not be sensitive. Use
+<c>widget.Parent.Sensitive</c>
+to check whether the ancestor widget is sensitive or not.
+</para>
+          <seealso cref="P:Gtk.Widget.Parent" />
+          <seealso cref="M:Gtk.Widget.GetAncestor(uint)" />
+          <para>
+When the sensitive property is set to false, the widget
+property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Events">
@@ -1593,11 +1612,11 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Whether the <paramref name="widget" /> is the default <paramref name="widget" />.</summary>
+        <summary>
+          <see langword="true" /> when the <paramref name="widget" /> currently is receiving the default action.</summary>
         <param name="value">If <paramref name="true" /> the <paramref name="widget" /> is the default <paramref name="widget" />.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> is the default <paramref name="widget" />.</returns>
-        <remarks />
+        <returns>Evaluates to <see langword="true" />if the <paramref name="widget" /> currently is receiving the default action.</returns>
+        <remarks>When the <paramref name="widget" /> is focused will receive the default action, and HasDefault will be <see langword="true" /> even if there is a different widget set as default.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompositeChild">
@@ -1622,11 +1641,41 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Whether the <paramref name="widget" /> can be the default widget.</summary>
-        <param name="value">If <see langword="true" /> the <paramref name="widget" /> can be the default widget.</param>
+        <summary>Evaluates to <see langword="true" /> if the <paramref name="widget" /> is allowed to receive the default focus.</summary>
+        <param name="value">
+          <see cref="System.Boolean" /> value that get or set the capability of the widget to receive the default focus.</param>
         <returns>
-          <see langoword="true" /> if the <paramref name="widget" /> can be the default widget.</returns>
-        <remarks />
+          <see cref="System.Boolean" /> that indicates if the widget can grab the default focus, using <see cref="M:Gtk.Widget.GrabDefault()" />.</returns>
+        <remarks>
+          <para>
+When this property is set to true, the widget itself will reserve space to
+draw the default if possible.
+</para>
+          <para>
+If either the widget's <see cref="P:Gtk.Widget.Sensitive" /> property or
+the <see cref="P:Gtk.Widget.Parent" />'s <see cref="P:Gtk.Widget.Sensitive" /> property evaluates
+to false, the <see cref="P:Gtk.Widget.CanDefault" /> property will return false. Otherwise, the
+<see cref="P:Gtk.Widget.CanDefault" /> property will return its own value.
+</para>
+          <para>Typically, you'd like to set the default widget using
+		    <see cref="M:Gtk.Widget.GrabDefault()" />, but you must set the <see cref="P:Gtk.Widget.CanDefault" />
+			property to true before you call it, in order to force the focus to be grabbed
+			into the widget.
+		  </para>
+          <para>
+		    When certain conditions are met and the user press Enter, the default
+			widget will be focused. Conditions: the <see cref="P:Gtk.Widget.CanDefault" /> property is set
+			to true, the <see cref="M:Gtk.Widget.GrabDefault()" /> has been called and
+			the <see cref="T:Gtk.Window" /> containing the widget have the focus.
+			This state is common when your window is shown for the first time, and no
+			<see cref="M:Gtk.Widget.GrabFocus()" /> call has been made (or when by no
+			other means, the focus has been set to any particular widget).
+		  </para>
+          <para>
+            <see cref="M:Gtk.Widget.GrabDefault()" /> [FIXME] This is a seealso instead see</para>
+          <para>
+            <see cref="P:Gtk.Widget.HasDefault" /> [FIXME] This is a seealso instead see</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanFocus">
@@ -1638,11 +1687,28 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>Whether the <paramref name="widget" /> can accept the input focus.</summary>
-        <param name="value">If <see langword="true" /> the <paramref name="widget" /> can accept the input focus.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> can accept the input focus.</returns>
-        <remarks />
+        <summary>Determines whether the <paramref name="widget" /> is able to receive the focus.</summary>
+        <param name="value">Set to <see langword="true" /> to give focus capability to the <paramref name="widget" />.</param>
+        <returns>Evaluates to <see langword="true" /> if the <paramref name="widget" /> is able to
+handle focus grabs.</returns>
+        <remarks>
+          <para>
+		    If the widget property <see cref="P:Gtk.Widget.Sensitive" /> evaluates
+		    to <see langword="false" />, the <see cref="P:Gtk.Widget.CanFocus" /> property will also return
+			<see langword="false" />. widget
+		    must be a focusable widget, such as an <see cref="T:Gtk.Entry" />; something
+		    like <see cref="T:Gtk.Frame" /> won't work. More precisely, it must have the
+		    property <see cref="P:Gtk.Widget.CanFocus" /> set.
+		  </para>
+          <para>
+		    The <see cref="P:Gtk.Widget.CanFocus" /> property is just the helper that will tell you whether
+			the widget is focusable.
+		  </para>
+          <para>
+		    Evaluate it before you make a call to <see cref="M:Gtk.Widget.GrabFocus()" />,
+			if you are unsure about the "focusability" of the widget.
+		  </para>[FIXME] This two links are seealso instead see: <see cref="P:Gtk.Widget.HasFocus" /> and
+		  <see cref="M:Gtk.Widget.GrabFocus()" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="HeightRequest">
