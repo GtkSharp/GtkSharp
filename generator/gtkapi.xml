@@ -673,20 +673,7 @@
       <property name="Anchor" cname="anchor" type="GtkAnchorType" doc-string=" NULL" readable="true" writeable="true"/>
       <property name="SizePixels" cname="size_pixels" type="gboolean" doc-string=" NULL" readable="true" writeable="true"/>
     </object>
-    <struct name="CanvasPathDef" cname="GnomeCanvasPathDef">
-      <field cname="refcount" type="gint"/>
-      <field cname="bpath" type="ArtBpath*"/>
-      <field cname="end" type="gint"/>
-      <field cname="length" type="gint"/>
-      <field cname="substart" type="gint"/>
-      <field cname="x" type="gdouble"/>
-      <field cname="y" type="gdouble"/>
-      <field cname="sbpath" bits="1" type="guint"/>
-      <field cname="hascpt" bits="1" type="guint"/>
-      <field cname="posset" bits="1" type="guint"/>
-      <field cname="moving" bits="1" type="guint"/>
-      <field cname="allclosed" bits="1" type="guint"/>
-      <field cname="allopen" bits="1" type="guint"/>
+    <struct name="CanvasPathDef" cname="GnomeCanvasPathDef" opaque="true">
       <method name="Unref" cname="gnome_canvas_path_def_unref">
         <return-type type="void"/>
       </method>
@@ -822,24 +809,7 @@
         <return-type type="void"/>
       </method>
     </struct>
-    <struct name="CanvasShapePriv" cname="GnomeCanvasShapePriv">
-      <field cname="path" type="GnomeCanvasPathDef*"/>
-      <field cname="scale" type="gdouble"/>
-      <field cname="fill_set" bits="1" type="guint"/>
-      <field cname="outline_set" bits="1" type="guint"/>
-      <field cname="width_pixels" bits="1" type="guint"/>
-      <field cname="width" type="double"/>
-      <field cname="fill_rgba" type="guint32"/>
-      <field cname="outline_rgba" type="guint32"/>
-      <field cname="cap" type="GdkCapStyle"/>
-      <field cname="join" type="GdkJoinStyle"/>
-      <field cname="wind" type="ArtWindRule"/>
-      <field cname="miterlimit" type="double"/>
-      <field cname="dash" type="ArtVpathDash"/>
-      <field cname="fill_svp" type="ArtSVP*"/>
-      <field cname="outline_svp" type="ArtSVP*"/>
-      <field cname="gdk" type="GnomeCanvasShapePrivGdk*"/>
-    </struct>
+    <struct name="CanvasShapePriv" cname="GnomeCanvasShapePriv" opaque="true"/>
   </namespace>
   <namespace name="Gdk" library="gdk_pixbuf-2.0">
     <enum name="Colorspace" cname="GdkColorspace" type="enum">
@@ -13038,14 +13008,7 @@
       <field cname="pack" bits="1" type="guint"/>
       <field cname="is_secondary" bits="1" type="guint"/>
     </struct>
-    <struct name="Clipboard" cname="GtkClipboard">
-      <field cname="selection" type="GdkAtom"/>
-      <field cname="get_func" type="GtkClipboardGetFunc"/>
-      <field cname="clear_func" type="GtkClipboardClearFunc"/>
-      <field cname="user_data" type="gpointer"/>
-      <field cname="have_owner" type="gboolean"/>
-      <field cname="timestamp" type="guint32"/>
-      <field cname="have_selection" type="gboolean"/>
+    <struct name="Clipboard" cname="GtkClipboard" opaque="true">
       <method name="SetWithOwner" cname="gtk_clipboard_set_with_owner">
         <return-type type="gboolean"/>
         <parameters>
@@ -13119,12 +13082,7 @@
       <field cname="domain_dirname" type="const-gchar*"/>
       <field cname="default_locales" type="const-gchar*"/>
     </struct>
-    <boxed name="IconSet" cname="GtkIconSet">
-      <field cname="ref_count" type="guint"/>
-      <field cname="sources" type="GSList*"/>
-      <field cname="cache" type="GSList*"/>
-      <field cname="cache_size" type="guint"/>
-      <field cname="cache_serial" type="guint"/>
+    <boxed name="IconSet" cname="GtkIconSet" opaque="true">
       <method name="Unref" cname="gtk_icon_set_unref">
         <return-type type="void"/>
       </method>
@@ -13165,15 +13123,7 @@
         </parameters>
       </method>
     </boxed>
-    <boxed name="IconSource" cname="GtkIconSource">
-      <field cname="filename" type="gchar*"/>
-      <field cname="pixbuf" type="GdkPixbuf*"/>
-      <field cname="direction" type="GtkTextDirection"/>
-      <field cname="state" type="GtkStateType"/>
-      <field cname="size" type="GtkIconSize"/>
-      <field cname="any_direction" bits="1" type="guint"/>
-      <field cname="any_state" bits="1" type="guint"/>
-      <field cname="any_size" bits="1" type="guint"/>
+    <boxed name="IconSource" cname="GtkIconSource" opaque="true">
       <method name="SetDirectionWildcarded" cname="gtk_icon_source_set_direction_wildcarded">
         <return-type type="void"/>
         <parameters>
@@ -13286,32 +13236,9 @@
       <field cname="path" type="gchar*"/>
       <field cname="widgets" type="GSList*"/>
     </struct>
-    <struct name="KeyHash" cname="GtkKeyHash">
-      <field cname="keymap" type="GdkKeymap*"/>
-      <field cname="keycode_hash" type="GHashTable*"/>
-      <field cname="reverse_hash" type="GHashTable*"/>
-      <field cname="destroy_notify" type="GDestroyNotify"/>
-    </struct>
-    <struct name="LabelSelectionInfo" cname="GtkLabelSelectionInfo">
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="selection_anchor" type="gint"/>
-      <field cname="selection_end" type="gint"/>
-      <field cname="popup_menu" type="GtkWidget*"/>
-    </struct>
-    <struct name="NotebookPage" cname="GtkNotebookPage">
-      <field cname="child" type="GtkWidget*"/>
-      <field cname="tab_label" type="GtkWidget*"/>
-      <field cname="menu_label" type="GtkWidget*"/>
-      <field cname="last_focus_child" type="GtkWidget*"/>
-      <field cname="default_menu" bits="1" type="guint"/>
-      <field cname="default_tab" bits="1" type="guint"/>
-      <field cname="expand" bits="1" type="guint"/>
-      <field cname="fill" bits="1" type="guint"/>
-      <field cname="pack" bits="1" type="guint"/>
-      <field cname="requisition" type="GtkRequisition"/>
-      <field cname="allocation" type="GtkAllocation"/>
-      <field cname="mnemonic_activate_signal" type="guint"/>
-    </struct>
+    <struct name="KeyHash" cname="GtkKeyHash" opaque="true"/>
+    <struct name="LabelSelectionInfo" cname="GtkLabelSelectionInfo" opaque="true"/>
+    <struct name="NotebookPage" cname="GtkNotebookPage" opaque="true"/>
     <struct name="RBNode" cname="GtkRBNode">
       <field cname="flags" bits="14" type="guint"/>
       <field cname="parity" bits="1" type="guint"/>
@@ -13328,37 +13255,9 @@
       <field cname="parent_tree" type="GtkRBTree*"/>
       <field cname="parent_node" type="GtkRBNode*"/>
     </struct>
-    <struct name="RangeLayout" cname="GtkRangeLayout">
-      <field cname="stepper_a" type="GdkRectangle"/>
-      <field cname="stepper_b" type="GdkRectangle"/>
-      <field cname="stepper_c" type="GdkRectangle"/>
-      <field cname="stepper_d" type="GdkRectangle"/>
-      <field cname="trough" type="GdkRectangle"/>
-      <field cname="slider" type="GdkRectangle"/>
-      <field cname="mouse_location" type="MouseLocation"/>
-      <field cname="mouse_x" type="gint"/>
-      <field cname="mouse_y" type="gint"/>
-      <field cname="grab_location" type="MouseLocation"/>
-      <field cname="grab_button" type="gint"/>
-    </struct>
-    <struct name="RangeStepTimer" cname="GtkRangeStepTimer">
-      <field cname="timeout_id" type="guint"/>
-      <field cname="step" type="GtkScrollType"/>
-    </struct>
-    <struct name="RcContext" cname="GtkRcContext">
-      <field cname="rc_style_ht" type="GHashTable*"/>
-      <field cname="settings" type="GtkSettings*"/>
-      <field cname="rc_sets_widget" type="GSList*"/>
-      <field cname="rc_sets_widget_class" type="GSList*"/>
-      <field cname="rc_sets_class" type="GSList*"/>
-      <field cname="rc_files" type="GSList*"/>
-      <field cname="theme_name" type="gchar*"/>
-      <field cname="key_theme_name" type="gchar*"/>
-      <field cname="font_name" type="gchar*"/>
-      <field cname="pixmap_path" array_len="GTK_RC_MAX_PIXMAP_PATHS" type="gchar*"/>
-      <field cname="default_priority" type="gint"/>
-      <field cname="default_style" type="GtkStyle*"/>
-    </struct>
+    <struct name="RangeLayout" cname="GtkRangeLayout" opaque="true"/>
+    <struct name="RangeStepTimer" cname="GtkRangeStepTimer" opaque="true"/>
+    <struct name="RcContext" cname="GtkRcContext" opaque="true"/>
     <struct name="RcProperty" cname="GtkRcProperty">
       <field cname="type_name" type="GQuark"/>
       <field cname="property_name" type="GQuark"/>
@@ -13580,29 +13479,7 @@
         <return-type type="void"/>
       </method>
     </boxed>
-    <struct name="TextBTree" cname="GtkTextBTree">
-      <field cname="root_node" type="GtkTextBTreeNode*"/>
-      <field cname="table" type="GtkTextTagTable*"/>
-      <field cname="mark_table" type="GHashTable*"/>
-      <field cname="refcount" type="guint"/>
-      <field cname="insert_mark" type="GtkTextMark*"/>
-      <field cname="selection_bound_mark" type="GtkTextMark*"/>
-      <field cname="buffer" type="GtkTextBuffer*"/>
-      <field cname="views" type="BTreeView*"/>
-      <field cname="tag_infos" type="GSList*"/>
-      <field cname="tag_changed_handler" type="guint"/>
-      <field cname="chars_changed_stamp" type="guint"/>
-      <field cname="segments_changed_stamp" type="guint"/>
-      <field cname="last_line" type="GtkTextLine*"/>
-      <field cname="last_line_stamp" type="guint"/>
-      <field cname="end_iter_line" type="GtkTextLine*"/>
-      <field cname="end_iter_segment" type="GtkTextLineSegment*"/>
-      <field cname="end_iter_segment_byte_index" type="int"/>
-      <field cname="end_iter_segment_char_offset" type="int"/>
-      <field cname="end_iter_line_stamp" type="guint"/>
-      <field cname="end_iter_segment_stamp" type="guint"/>
-      <field cname="child_anchor_table" type="GHashTable*"/>
-    </struct>
+    <struct name="TextBTree" cname="GtkTextBTree" opaque="true"/>
     <boxed name="TextIter" cname="GtkTextIter">
       <field cname="dummy1" type="gpointer"/>
       <field cname="dummy2" type="gpointer"/>
@@ -14001,25 +13878,9 @@
       <field cname="lineChangeFunc" type="GtkTextSegLineChangeFunc"/>
       <field cname="checkFunc" type="GtkTextSegCheckFunc"/>
     </struct>
-    <struct name="TextLogAttrCache" cname="GtkTextLogAttrCache">
-      <field cname="chars_changed_stamp" type="gint"/>
-      <field cname="entries" array_len="ATTR_CACHE_SIZE" type="CacheEntry"/>
-    </struct>
-    <struct name="TextMarkBody" cname="GtkTextMarkBody">
-      <field cname="obj" type="GtkTextMark*"/>
-      <field cname="name" type="gchar*"/>
-      <field cname="tree" type="GtkTextBTree*"/>
-      <field cname="line" type="GtkTextLine*"/>
-      <field cname="visible" bits="1" type="guint"/>
-      <field cname="not_deleteable" bits="1" type="guint"/>
-    </struct>
-    <struct name="TextPendingScroll" cname="GtkTextPendingScroll">
-      <field cname="mark" type="GtkTextMark*"/>
-      <field cname="within_margin" type="gdouble"/>
-      <field cname="use_align" type="gboolean"/>
-      <field cname="xalign" type="gdouble"/>
-      <field cname="yalign" type="gdouble"/>
-    </struct>
+    <struct name="TextLogAttrCache" cname="GtkTextLogAttrCache" opaque="true"/>
+    <struct name="TextMarkBody" cname="GtkTextMarkBody" opaque="true"/>
+    <struct name="TextPendingScroll" cname="GtkTextPendingScroll" opaque="true"/>
     <struct name="TextTagInfo" cname="GtkTextTagInfo">
       <field cname="tag" type="GtkTextTag*"/>
       <field cname="tag_root" type="GtkTextBTreeNode*"/>
@@ -14029,14 +13890,7 @@
       <field cname="info" type="GtkTextTagInfo*"/>
       <field cname="inNodeCounts" type="gboolean"/>
     </struct>
-    <struct name="TextWindow" cname="GtkTextWindow">
-      <field cname="type" type="GtkTextWindowType"/>
-      <field cname="widget" type="GtkWidget*"/>
-      <field cname="window" type="GdkWindow*"/>
-      <field cname="bin_window" type="GdkWindow*"/>
-      <field cname="requisition" type="GtkRequisition"/>
-      <field cname="allocation" type="GdkRectangle"/>
-    </struct>
+    <struct name="TextWindow" cname="GtkTextWindow" opaque="true"/>
     <struct name="ToolbarChild" cname="GtkToolbarChild">
       <field cname="type" type="GtkToolbarChildType"/>
       <field cname="widget" type="GtkWidget*"/>
@@ -14076,9 +13930,7 @@
         <return-type type="GtkTreeIter*"/>
       </method>
     </boxed>
-    <boxed name="TreePath" cname="GtkTreePath">
-      <field cname="depth" type="gint"/>
-      <field cname="indices" type="gint*"/>
+    <boxed name="TreePath" cname="GtkTreePath" opaque="true">
       <method name="PrependIndex" cname="gtk_tree_path_prepend_index">
         <return-type type="void"/>
         <parameters>
@@ -14144,10 +13996,7 @@
         <return-type type="gint*"/>
       </method>
     </boxed>
-    <struct name="TreeRowReference" cname="GtkTreeRowReference">
-      <field cname="proxy" type="GObject*"/>
-      <field cname="model" type="GtkTreeModel*"/>
-      <field cname="path" type="GtkTreePath*"/>
+    <struct name="TreeRowReference" cname="GtkTreeRowReference" opaque="true">
       <constructor cname="gtk_tree_row_reference_new_proxy">
         <parameters>
           <parameter type="GObject*" name="proxy"/>
@@ -14185,21 +14034,7 @@
       <field cname="offset_y" type="gint16"/>
       <field cname="shape_mask" type="GdkBitmap*"/>
     </struct>
-    <struct name="WindowGeometryInfo" cname="GtkWindowGeometryInfo">
-      <field cname="geometry" type="GdkGeometry"/>
-      <field cname="mask" type="GdkWindowHints"/>
-      <field cname="widget" type="GtkWidget*"/>
-      <field cname="resize_width" type="gint"/>
-      <field cname="resize_height" type="gint"/>
-      <field cname="initial_x" type="gint"/>
-      <field cname="initial_y" type="gint"/>
-      <field cname="default_width" type="gint"/>
-      <field cname="default_height" type="gint"/>
-      <field cname="initial_pos_set" bits="1" type="guint"/>
-      <field cname="position_constraints_changed" bits="1" type="guint"/>
-      <field cname="default_is_geometry" bits="1" type="guint"/>
-      <field cname="last" type="GtkWindowLastGeometryInfo"/>
-    </struct>
+    <struct name="WindowGeometryInfo" cname="GtkWindowGeometryInfo" opaque="true"/>
     <object name="Stock" cname="GtkStock">
       <static-string cname="GTK_STOCK_ADD" name="Add" value="gtk-add"/>
       <static-string cname="GTK_STOCK_APPLY" name="Apply" value="gtk-apply"/>
@@ -16322,14 +16157,7 @@
         </parameters>
       </method>
     </object>
-    <struct name="GdkPixbufAsyncHandle" cname="GnomeGdkPixbufAsyncHandle">
-      <field cname="vfs_handle" type="GnomeVFSAsyncHandle*"/>
-      <field cname="load_callback" type="GnomeGdkPixbufLoadCallback"/>
-      <field cname="done_callback" type="GnomeGdkPixbufDoneCallback"/>
-      <field cname="callback_data" type="gpointer"/>
-      <field cname="loader" type="GdkPixbufLoader*"/>
-      <field cname="buffer" array_len="LOAD_BUFFER_SIZE" type="char"/>
-    </struct>
+    <struct name="GdkPixbufAsyncHandle" cname="GnomeGdkPixbufAsyncHandle" opaque="true"/>
     <struct name="UIBuilderData" cname="GnomeUIBuilderData">
       <field cname="connect_func" type="GnomeUISignalConnectFunc"/>
       <field cname="data" type="gpointer"/>
@@ -18999,11 +18827,7 @@
       <field cname="attr" type="PangoAttribute"/>
       <field cname="value" type="int"/>
     </struct>
-    <struct name="AttrIterator" cname="PangoAttrIterator">
-      <field cname="next_attribute" type="GSList*"/>
-      <field cname="attribute_stack" type="GList*"/>
-      <field cname="start_index" type="int"/>
-      <field cname="end_index" type="int"/>
+    <struct name="AttrIterator" cname="PangoAttrIterator" opaque="true">
       <method name="Copy" cname="pango_attr_iterator_copy">
         <return-type type="PangoAttrIterator*"/>
       </method>
@@ -19044,10 +18868,7 @@
         </parameters>
       </constructor>
     </struct>
-    <boxed name="AttrList" cname="PangoAttrList">
-      <field cname="ref_count" type="guint"/>
-      <field cname="attributes" type="GSList*"/>
-      <field cname="attributes_tail" type="GSList*"/>
+    <boxed name="AttrList" cname="PangoAttrList" opaque="true">
       <method name="Change" cname="pango_attr_list_change">
         <return-type type="void"/>
         <parameters>
@@ -19137,11 +18958,7 @@
         <return-type type="PangoColor*"/>
       </method>
     </boxed>
-    <struct name="Coverage" cname="PangoCoverage">
-      <field cname="ref_count" type="guint"/>
-      <field cname="n_blocks" type="int"/>
-      <field cname="data_size" type="int"/>
-      <field cname="blocks" type="PangoBlockInfo*"/>
+    <struct name="Coverage" cname="PangoCoverage" opaque="true">
       <method name="Ref" cname="pango_coverage_ref">
         <return-type type="PangoCoverage*"/>
       </method>
@@ -19220,15 +19037,7 @@
         </parameters>
       </callback>
     </struct>
-    <boxed name="FontDescription" cname="PangoFontDescription">
-      <field cname="family_name" type="char*"/>
-      <field cname="style" type="PangoStyle"/>
-      <field cname="variant" type="PangoVariant"/>
-      <field cname="weight" type="PangoWeight"/>
-      <field cname="stretch" type="PangoStretch"/>
-      <field cname="mask" type="guint16"/>
-      <field cname="static_family" bits="1" type="guint"/>
-      <field cname="size" type="int"/>
+    <boxed name="FontDescription" cname="PangoFontDescription" opaque="true">
       <method name="SetVariant" cname="pango_font_description_set_variant">
         <return-type type="void"/>
         <parameters>
@@ -19555,24 +19364,7 @@
         </parameters>
       </method>
     </struct>
-    <struct name="LayoutIter" cname="PangoLayoutIter">
-      <field cname="layout" type="PangoLayout*"/>
-      <field cname="line_list_link" type="GSList*"/>
-      <field cname="line" type="PangoLayoutLine*"/>
-      <field cname="run_list_link" type="GSList*"/>
-      <field cname="run" type="PangoLayoutRun*"/>
-      <field cname="index" type="int"/>
-      <field cname="logical_rect" type="PangoRectangle"/>
-      <field cname="line_extents" type="GSList*"/>
-      <field cname="line_extents_link" type="GSList*"/>
-      <field cname="run_x" type="int"/>
-      <field cname="run_is_shaped" type="gboolean"/>
-      <field cname="run_logical_rect" type="PangoRectangle"/>
-      <field cname="ltr" type="gboolean"/>
-      <field cname="cluster_x" type="int"/>
-      <field cname="cluster_index" type="int"/>
-      <field cname="cluster_start" type="int"/>
-      <field cname="next_cluster_start" type="int"/>
+    <struct name="LayoutIter" cname="PangoLayoutIter" opaque="true">
       <method name="GetRunExtents" cname="pango_layout_iter_get_run_extents">
         <return-type type="void"/>
         <parameters>
@@ -19712,9 +19504,7 @@
       <field cname="is_sentence_start" bits="1" type="guint"/>
       <field cname="is_sentence_end" bits="1" type="guint"/>
     </struct>
-    <struct name="Map" cname="PangoMap">
-      <field cname="n_submaps" type="gint"/>
-      <field cname="submaps" array_len="256" type="PangoSubmap"/>
+    <struct name="Map" cname="PangoMap" opaque="true">
       <method name="GetEntry" cname="pango_map_get_entry">
         <return-type type="PangoMapEntry*"/>
         <parameters>
@@ -19739,11 +19529,7 @@
       <field cname="width" type="int"/>
       <field cname="height" type="int"/>
     </struct>
-    <boxed name="TabArray" cname="PangoTabArray">
-      <field cname="size" type="gint"/>
-      <field cname="allocated" type="gint"/>
-      <field cname="positions_in_pixels" type="gboolean"/>
-      <field cname="tabs" type="PangoTab*"/>
+    <boxed name="TabArray" cname="PangoTabArray" opaque="true">
       <method name="Free" cname="pango_tab_array_free">
         <return-type type="void"/>
       </method>
@@ -19801,12 +19587,7 @@
         </parameters>
       </constructor>
     </boxed>
-    <struct name="Win32FontCache" cname="PangoWin32FontCache">
-      <field cname="forward" type="GHashTable*"/>
-      <field cname="back" type="GHashTable*"/>
-      <field cname="mru" type="GList*"/>
-      <field cname="mru_tail" type="GList*"/>
-      <field cname="mru_count" type="int"/>
+    <struct name="Win32FontCache" cname="PangoWin32FontCache" opaque="true">
       <method name="Unload" cname="pango_win32_font_cache_unload">
         <return-type type="void"/>
         <parameters>
@@ -19824,14 +19605,7 @@
       </method>
       <constructor cname="pango_win32_font_cache_new"/>
     </struct>
-    <struct name="XFontCache" cname="PangoXFontCache">
-      <field cname="display" type="Display*"/>
-      <field cname="forward" type="GHashTable*"/>
-      <field cname="back" type="GHashTable*"/>
-      <field cname="mru" type="GList*"/>
-      <field cname="mru_tail" type="GList*"/>
-      <field cname="mru_count" type="int"/>
-    </struct>
+    <struct name="XFontCache" cname="PangoXFontCache" opaque="true"/>
     <alias name="XSubfont" cname="PangoXSubfont" type="guint16 "/>
   </namespace>
 </api>

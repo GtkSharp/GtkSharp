@@ -330,8 +330,12 @@ foreach $key (sort (keys (%types))) {
 		$struct_el = addNameElem($ns_elem, 'struct', $key, $ns);
 	}
 	$def =~ s/\s+/ /g;
-	$def =~ /\{(.+)\}/;
-	addFieldElems($struct_el, split(/;/, $1));
+	if ($def =~ /privatestruct/) {
+		$struct_el->setAttribute('opaque', 'true');
+	} else {
+		$def =~ /\{(.+)\}/;
+		addFieldElems($struct_el, split(/;/, $1));
+	}
 	addFuncElems($struct_el, $key);
 }
 
