@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <metadata>
   <attr path="//callback[@cname='GtkClipboardGetFunc']/*/*[@type='GtkSelectionData*']" name="pass_as">ref</attr>
+  <attr path="//interface[@cname='GtkEditable']/method[@name='GetEditable']" name="name">GetIsEditable</attr>
+  <attr path="//interface[@cname='GtkEditable']/method[@name='SetEditable']" name="name">SetIsEditable</attr>
   <attr path="//interface[@cname='GtkEditable']/method[@name='InsertText']/*/*[@name='position']" name="pass_as">ref</attr>
+  <attr path="//interface[@cname='GtkEditable']/signal[@name='InsertText']" name="name">TextInserted</attr>
+  <attr path="//interface[@cname='GtkEditable']/signal[@name='DeleteText']" name="name">TextDeleted</attr>
   <attr path="//interface[@cname='GtkTreeModel']/method[@name='GetIter']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="//interface[@cname='GtkTreeModel']/method[@name='GetIterFirst']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="//interface[@cname='GtkTreeModel']/method[@name='GetIterFromString']/*/*[@name='iter']" name="pass_as">out</attr>
@@ -10,11 +14,37 @@
   <attr path="//interface[@cname='GtkTreeModel']/method[@name='IterNthChild']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="//interface[@cname='GtkTreeModel']/method[@name='IterParent']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkButton']/constructor[@cname='gtk_button_new_with_mnemonic']" name="preferred">1</attr>
+  <attr path="//object[@cname='GtkButton']/signal[@name='Activate']" name="name">Activated</attr>
+  <attr path="//object[@cname='GtkButton']/signal[@name='Enter']" name="name">Entered</attr>
+  <attr path="//object[@cname='GtkButton']/signal[@name='Leave']" name="name">Left</attr>
+  <attr path="//object[@cname='GtkButton']/method[@name='Clicked']" name="name">Click</attr>
+  <attr path="//object[@cname='GtkButton']/method[@name='Pressed']" name="name">Press</attr>
+  <attr path="//object[@cname='GtkButton']/method[@name='Released']" name="name">Release</attr>
   <attr path="//object[@cname='GtkCheckButton']/constructor[@cname='gtk_check_button_new_with_mnemonic']" name="preferred">1</attr>
   <attr path="//object[@cname='GtkCheckMenuItem']/constructor[@cname='gtk_check_menu_item_new_with_mnemonic']" name="preferred">1</attr>
+  <attr path="//object[@cname='GtkContainer']/signal[@name='Add']" name="name">Added</attr>
+  <attr path="//object[@cname='GtkContainer']/signal[@name='Remove']" name="name">Removed</attr>
+  <attr path="//object[@cname='GtkContainer']/signal[@name='SetFocusChild']" name="name">FocusChildSet</attr>
+  <attr path="//object[@cname='GtkEntry']/signal[@name='Activate']" name="name">Activated</attr>
+  <attr path="//object[@cname='GtkEntry']/signal[@name='PasteClipboard']" name="name">ClipboardPasted</attr>
+  <attr path="//object[@cname='GtkEntry']/signal[@name='CutClipboard']" name="name">ClipboardCut</attr>
+  <attr path="//object[@cname='GtkEntry']/signal[@name='CopyClipboard']" name="name">ClipboardCopied</attr>
   <attr path="//object[@cname='GtkImageMenuItem']/constructor[@cname='gtk_image_menu_item_new_with_mnemonic']" name="preferred">1</attr>
+  <attr path="//object[@cname='GtkIMContext']/signal[@name='DeleteSurrounding']" name="name">SurroundingDeleted</attr>
+  <attr path="//object[@cname='GtkItem']/signal[@name='Select']" name="name">Selected</attr>
+  <attr path="//object[@cname='GtkItem']/signal[@name='Deselect']" name="name">Deselected</attr>
+  <attr path="//object[@cname='GtkItem']/signal[@name='Toggle']" name="name">Toggled</attr>
   <attr path="//object[@cname='GtkLabel']/constructor[@cname='gtk_label_new']" name="preferred">1</attr>
   <attr path="//object[@cname='GtkMenuItem']/constructor[@cname='gtk_menu_item_new_with_mnemonic']" name="preferred">1</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='Activate']" name="name">Activated</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='Deactivate']" name="name">Deactivated</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='ToggleSizeRequest']" name="name">ToggleSizeRequested</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='ToggleSizeAllocate']" name="name">ToggleSizeAllocated</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='RemoveWidget']" name="name">WidgetRemoved</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='SizeAllocate']" name="name">SizeAllocated</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='MnemonicActivate']" name="name">MnemonicActivated</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='SizeRequest']" name="name">SizeRequested</attr>
+  <attr path="//object[@cname='GtkMenuItem']/signal[@name='ChildNotify']" name="name">ChildNotified</attr>
   <attr path="//object[@cname='GtkListStore']/constructor[@cname='gtk_list_store_newv']/parameters" name="va_type">length_param</attr>
   <attr path="//object[@cname='GtkListStore']/method[@name='Append']/*/*[@name='iter']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkListStore']/method[@name='Insert']/*/*[@name='iter']" name="pass_as">out</attr>
@@ -37,10 +67,20 @@
   <attr path="//object[@cname='GtkTextBuffer']/method[@name='GetIterAtOffset']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTextBuffer']/method[@name='GetSelectionBounds']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTextBuffer']/method[@name='GetStartIter']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/method[@name='GetInsert']" name="name">GetInsertMark</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/signal[@name='ApplyTag']" name="name">TagApplied</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/signal[@name='InsertChildAnchor']" name="name">ChildAnchorInserted</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/signal[@name='InsertPixbuf']" name="name">PixbufInserted</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/signal[@name='RemoveTag']" name="name">TagRemoved</attr>
+  <attr path="//object[@cname='GtkTextBuffer']/signal[@name='RemoveChildAnchor']" name="name">ChildAnchorRemoved</attr>
   <attr path="//object[@cname='GtkTextLayout']/method[@name='GetIterAtLine']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
+  <attr path="//object[@cname='GtkTextTag']/method[@name='Event']" name="name">ProcessEvent</attr>
+  <attr path="//object[@cname='GtkTextTag']/signal[@name='Event']" name="name">TextEvent</attr>
+  <attr path="//object[@cname='GtkTextTag']/property[@name='Weight']" name="type">PangoWeight</attr>
   <attr path="//object[@cname='GtkTextView']/method[@name='GetIterAtLocation']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTextView']/method[@name='GetLineAtY']/*/*[@type='GtkTextIter*']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkToggleButton']/constructor[@cname='gtk_toggle_button_new_with_mnemonic']" name="preferred">1</attr>
+  <attr path="//object[@cname='GtkToggleButton']/method[@name='Toggled']" name="name">Toggle</attr>
   <attr path="//object[@cname='GtkTreeModelSort']/method[@name='ConvertChildIterToIter']/*/*[@name='sort_iter']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTreeModelSort']/method[@name='ConvertIterToChildIter']/*/*[@name='child_iter']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTreeSelection']/method[@name='GetSelected']/*/*" name="pass_as">out</attr>
@@ -60,10 +100,27 @@
   <attr path="//object[@cname='GtkTreeView']/method[@name='GetDragDestRow']/*/*[@name='pos']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkTreeView']/method[@name='GetDragDestRow']/*/*[@name='path']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkWidget']/method[@name='ClassPath']/*/*[@type='gchar**']" name="pass_as">out</attr>
+  <attr path="//object[@cname='GtkWidget']/method[@name='Event']" name="name">ProcessEvent</attr>
   <attr path="//object[@cname='GtkWidget']/method[@name='Intersect']/*/*[@name='intersection']" name="pass_as">out</attr>
+  <attr path="//object[@cname='GtkWidget']/method[@name='IsFocus']" name="name">GetIsFocus</attr>
   <attr path="//object[@cname='GtkWidget']/method[@name='Path']/*/*[@type='gchar**']" name="pass_as">out</attr>
   <attr path="//object[@cname='GtkWidget']/method[@name='SizeRequest']/*/*[@name='requisition']" name="pass_as">ref</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='ChildNotify']" name="name">ChildNotified</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Event']" name="name">WidgetEvent</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Focus']" name="name">Focused</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='GrabFocus']" name="name">FocusGrabbed</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Hide']" name="name">Hidden</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Map']" name="name">Mapped</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='MnemonicActivate']" name="name">MnemonicActivated</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Realize']" name="name">Realized</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Show']" name="name">Shown</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='ShowHelp']" name="name">HelpShown</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='SizeAllocate']" name="name">SizeAllocated</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='SizeRequest']" name="name">SizeRequested</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Unmap']" name="name">Unmapped</attr>
+  <attr path="//object[@cname='GtkWidget']/signal[@name='Unrealize']" name="name">Unrealized</attr>
   <attr path="//struct[@cname='GtkTargetEntry']/field[@cname='flags']" name="type">GtkTargetFlags</attr>
+  <attr path="//class[@cname='GtkAccelerator_']/method[@name='GetDefaultModMask']/return-type" name="type">GdkModifierType</attr>
   <move-node path="//class[@cname='GtkGlobal']/method[@name='PaintArrow']">//object[@cname='GtkStyle']</move-node>
   <move-node path="//class[@cname='GtkGlobal']/method[@name='PaintBox']">//object[@cname='GtkStyle']</move-node>
   <move-node path="//class[@cname='GtkGlobal']/method[@name='PaintBoxGap']">//object[@cname='GtkStyle']</move-node>
