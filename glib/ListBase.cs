@@ -129,7 +129,7 @@ namespace GLib {
 			object[] orig = new object[Count];
 			int i = 0;
 			foreach (object o in this)
-				orig[i] = o;
+				orig[i++] = o;
 			
 			orig.CopyTo (array, index); 
 		}
