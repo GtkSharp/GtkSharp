@@ -1,5 +1,5 @@
 <Type Name="Container" FullName="Gtk.Container">
-  <TypeSignature Language="C#" Value="public class Container : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Container : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,33 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Base class for widgets which contain other widgets</summary>
+    <remarks>
+	  <para>
+	    A Gtk# user interface is constructed by nesting widgets inside widgets.
+		<see cref="T:Gtk.Container"/> widgets are the inner nodes in the resulting tree of widgets: they contain other widgets.
+		So, for example, you might have a <see cref="T:Gtk.Window"/> containing a <see cref="T:Gtk.Frame"/> containing a <see cref="T:Gtk.Label"/>.
+		If you wanted an image instead of a textual label inside the frame, you might replace the <see cref="T:Gtk.Label"/> widget with a <see cref="T:Gtk.Image"/> widget.
+	  </para>
+	  <para>
+	  	There are two major kinds of <see cref="T:Gtk.Container"/> widgets in Gtk#. Both are subclasses of the abstract <see cref="T:Gtk.Container"/> base class.
+	  </para>
+	  <para>
+		The first type of <see cref="T:Gtk.Container"/> widget has a single child widget and derives from <see cref="T:Gtk.Bin"/>.
+		These containers are decorators, which add some kind of functionality to the child.
+		For example, a <see cref="T:Gtk.Button"/> makes its child into a clickable button;
+		a <see cref="T:Gtk.Frame"/> draws a frame around its child and a <see cref="T:Gtk.Window"/> places its child widget inside a top-level <see cref="T:Gtk.Window"/>.
+	  </para>
+	  <para>
+		The second type of <see cref="T:Gtk.Container"/> can have more than one child; its purpose is to manage layout.
+		This means that these containers assign sizes and positions to their children.
+		For example, a <see cref="T:Gtk.HBox"/> arranges its children in a horizontal row, and a <see cref="T:Gtk.Table"/> arranges the widgets it contains in a two-dimensional grid.
+	  </para>
+	  <para>
+		To fulfill its task, a layout <see cref="T:Gtk.Container"/> must negotiate the size requirements with its parent and its children.
+		This negotiation is carried out in two phases, size requisition and size allocation.
+	  </para>
+	</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>
@@ -51,9 +76,13 @@
         <Parameter Name="focusable_widgets" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="focusable_widgets">To be added: an object of type 'GLib.List'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets a focus chain, overriding the one computed automatically by Gtk#.</summary>
+        <param name="focusable_widgets">an object of type <see cref="T:GLib.List"/></param>
+        <remarks>
+          In principle each <see cref="T:Gtk.Widget"/> in the chain should be a descendant of the <see cref="T:Gtk.Container"/>,
+		  but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed.
+		  The necessary checks are done when the focus chain is actually traversed.
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="Foreach">
@@ -66,9 +95,12 @@
         <Parameter Name="callback" Type="Gtk.Callback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="callback">To be added: an object of type 'Gtk.Callback'</param>
-        <remarks>To be added</remarks>
+        <summary>Invokes callback on each non-internal child of <see cref="T:Gtk.Container"/>.</summary>
+        <param name="callback">an object of type <see cref="T:Gtk.Callback"/></param>
+        <remarks>
+          See <see cref="M:Gtk.Container.ForAll(Gtk.Callback)"/> for details on what constitutes an "internal" child.
+		  Most applications should use <see cref="M:Gtk.Container.ForEach(Gtk.Callback)"/>, rather than <see cref="M:Gtk.Container.ForAll(Gtk.Callback)"/>.
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildGetValist">
@@ -83,11 +115,11 @@
         <Parameter Name="var_args" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="first_property_name">To be added: an object of type 'string'</param>
-        <param name="var_args">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the values of one or more child properties for child and container.</summary>
+        <param name="child">an object of type <see cref="T:Gtk.Widget"/></param>
+        <param name="first_property_name">an object of type <see cref="T:System.String"/></param>
+        <param name="var_args">an object of type <see cref="T:System.IntPtr"/></param>
+        <remarks>Gets the values of one or more child properties for child and container.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFocusChain">
@@ -100,10 +132,13 @@
         <Parameter Name="focusable_widgets" Type="GLib.List" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="focusable_widgets">To be added: an object of type 'GLib.List'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the focus chain of the container</summary>
+        <param name="focusable_widgets">an object of type <see cref="T:GLib.List"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
+        <remarks>
+		  If no focus chain has been explicitly set, Gtk# computes the focus chain based on the positions of the children.
+		  In that case, Gtk# stores <see langword="null"/> in focusable_widgets and returns <see langword="false"/>.
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -116,9 +151,14 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds a <see cref="T:Gtk.Widget"/> to the <see cref="T:Gtk.Container"/>.</summary>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
+        <remarks>
+		  Typically used for simple containers such as <see cref="T:Gtk.Window"/>, <see cref="T:Gtk.Frame"/>, or <see cref="T:Gtk.Button"/>;
+		  for more complicated layout containers such as <see cref="T:Gtk.Box"/> or <see cref="T:Gtk.Table"/>, this function will pick default packing parameters that may not be correct.
+		  So consider functions such as <see cref="M:Gtk.Box.PackStart()"/> and <see cref="T:Gtk.Table.Attach()"/> as an alternative to <see cref="T:Gtk.Container.Add()"/> in those cases.
+		  A <see cref="T:Gtk.Widget"/> may be added to only one <see cref="T:Gtk.Container"/> at a time; you can not place the same widget inside two different containers.
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -131,9 +171,9 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Removes a <see cref="T:Gtk.Widget"/> from the <see cref="T:Gtk.Container"/>.</summary>
+        <param name="widget">an object of type <see cref="T:Gtk.Widget"/></param>
+        <remarks><see cref="T:Gtk.Widget"/> must be inside <see cref="T:Gtk.Container"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnsetFocusChain">
@@ -144,8 +184,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes a focus chain.</summary>
+        <remarks>Removes a focus chain explicitly set with <see cref="T:Gtk.Container.SetFocusChain()"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Forall">
@@ -158,9 +198,13 @@
         <Parameter Name="callback" Type="Gtk.Callback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="callback">To be added: an object of type 'Gtk.Callback'</param>
-        <remarks>To be added</remarks>
+        <summary>Invokes callback on each child of <see cref="T:Gtk.Container"/>.</summary>
+        <param name="callback">an object of type <see cref="T:Gtk.Callback"/></param>
+        <remarks>
+		  This includes children that are considered "internal" (implementation details of the <see cref="T:Gtk.Container"/>).
+		  "Internal" children generally were not added by the user of the <see cref="T:Gtk.Container"/>, but were added by the container implementation itself.
+		  Most applications should use <see cref="M:Gtk.Container.ForEach()"/>, rather than <see cref="M:Gtk.Container.ForAll()"/>.
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="ResizeChildren">
@@ -187,11 +231,11 @@
         <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="property_name">To be added: an object of type 'string'</param>
-        <param name="value">To be added: an object of type 'GLib.Value'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets a child property for child and <see cref="T:Gtk.Container"/>.</summary>
+        <param name="child">an object of type <see cref="T:Gtk.Widget"/></param>
+        <param name="property_name">an object of type <see cref="T:System.String"/></param>
+        <param name="value">an object of type <see cref="T:GLib.Value"/></param>
+        <remarks>Sets a child property for child and <see cref="T:Gtk.Container"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildType">
@@ -203,7 +247,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
+        <returns>an object of type <see cref="T:System.UInt32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -219,11 +263,11 @@
         <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="property_name">To be added: an object of type 'string'</param>
-        <param name="value">To be added: an object of type 'GLib.Value'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets a child property for child and <see cref="T:Gtk.Container"/>.</summary>
+        <param name="child">an object of type <see cref="T:Gtk.Widget"/></param>
+        <param name="property_name">an object of type <see cref="T:System.String"/></param>
+        <param name="value">an object of type <see cref="T:GLib.Value"/></param>
+        <remarks>Gets a child property for child and <see cref="T:Gtk.Container"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PropagateExpose">
@@ -237,10 +281,22 @@
         <Parameter Name="evnt" Type="Gdk.EventExpose" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="evnt">To be added: an object of type 'Gdk.EventExpose'</param>
-        <remarks>To be added</remarks>
+        <summary>Send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Windows"/>.</summary>
+        <param name="child">an object of type <see cref="T:Gtk.Widget"/></param>
+        <param name="evnt">an object of type <see cref="T:Gdk.EventExpose"/></param>
+        <remarks>
+		  <para>
+		    When a <see cref="T:Gtk.Container"/> receives an expose event, it must send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Window"/>s.
+			This function provides a convenient way of doing this.
+			A <see cref="T:Gtk.Container"/>, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose()"/> once for each child, passing in the event the <see cref="T:Gtk.Container"/> received.
+		  </para>
+		  <para>
+		    <see cref="M:Gtk.Container.PropagateExpose()"/> takes care of deciding whether an expose event needs to be sent to the child, intersecting the event's area with the child area, and sending the event.
+		  </para>
+		  <para>
+		    In most cases, a <see cref="T:Gtk.Container"/> can either simply inherit the expose implementation from <see cref="T:Gtk.Container"/>, or do some drawing and then chain to the expose implementation from <see cref="T:Gtk.Container"/>.
+		  </para>
+		</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildSetValist">
@@ -255,11 +311,11 @@
         <Parameter Name="var_args" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="first_property_name">To be added: an object of type 'string'</param>
-        <param name="var_args">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets one or more child properties for child and <see cref="T:Gtk.Container"/>.</summary>
+        <param name="child">an object of type <see cref="T:Gtk.Widget"/></param>
+        <param name="first_property_name">an object of type <see cref="T:System.String"/></param>
+        <param name="var_args">an object of type <see cref="T:System.IntPtr"/></param>
+        <remarks>Sets one or more child properties for child and <see cref="T:Gtk.Container"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -297,7 +353,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Container'</returns>
+        <returns>an object of type <see cref="T:Gtk.Container"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -308,8 +364,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Container</summary>
-        <returns>The GLib Type for the Gtk.Container class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.Container"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.Container"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -324,8 +380,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment"/></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -337,7 +393,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.List'</returns>
+        <returns>an object of type <see cref="T:GLib.List"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -352,8 +408,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Adjustment"/></param>
+        <returns>an object of type <see cref="T:Gtk.Adjustment"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -368,8 +424,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Widget"/></param>
+        <returns>an object of type <see cref="T:Gtk.Widget"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -384,8 +440,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
+        <param name="value">an object of type <see cref="T:System.Boolean"/></param>
+        <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -400,8 +456,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.Widget"/></param>
+        <returns>an object of type <see cref="T:Gtk.Widget"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -416,8 +472,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ResizeMode'</param>
-        <returns>To be added: an object of type 'Gtk.ResizeMode'</returns>
+        <param name="value">an object of type <see cref="T:Gtk.ResizeMode"/></param>
+        <returns>an object of type <see cref="T:Gtk.ResizeMode"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -432,8 +488,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'uint'</returns>
+        <param name="value">an object of type <see cref="T:System.UInt32"/></param>
+        <returns>an object of type <see cref="T:System.UInt32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -444,7 +500,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FocusChildSet">
@@ -454,7 +510,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Removed">
@@ -464,7 +520,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ResizeChecked">
@@ -474,7 +530,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
