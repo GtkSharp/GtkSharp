@@ -112,9 +112,11 @@ namespace GtkSamples {
 			Gdk.EventMotion ev = args.Event;
 			Gdk.Window window = ev.window;
 
-			if (ev.is_hint != 0)
-				window.GetPointer (out x, out y, out state);
-			else {
+			if (ev.is_hint != 0) {
+				int s;
+				window.GetPointer (out x, out y, out s);
+				state = (Gdk.ModifierType) s;
+			} else {
 				x = (int) ev.x;
 				y = (int) ev.y;
 				state = (Gdk.ModifierType) ev.state;
