@@ -137,7 +137,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("}");
 			sw.Close ();
-			argsname = "GtkSharp." + argsname;
+			argsname = container_type.NS + "Sharp." + argsname;
 			return container_type.NS + "Sharp." + handler;
 		}
 
