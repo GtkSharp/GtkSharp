@@ -9,7 +9,7 @@ all: gtk-sharp-docs.zip gtk-sharp-docs.tree
 b:
 	mono --debug $(BROWSER)
 
-gtk-sharp-docs.zip gtk-sharp-docs.tree:
+gtk-sharp-docs.zip gtk-sharp-docs.tree: en/*/*.xml
 	mono $(ASSEMBLER) --ecma en -o gtk-sharp-docs
 
 install: gtk-sharp-docs.zip gtk-sharp-docs.tree 
