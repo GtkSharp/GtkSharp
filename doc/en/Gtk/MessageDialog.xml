@@ -1,5 +1,5 @@
 <Type Name="MessageDialog" FullName="Gtk.MessageDialog">
-  <TypeSignature Language="C#" Value="public class MessageDialog : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class MessageDialog : Gtk.Dialog, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,42 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Convenient message window</summary>
+    <remarks>
+			<para>
+				<see cref="T:Gtk.MessageDialog"/> presents a <see cref="T:Gtk.Dialog"/> with an image representing the <see cref="T:Gtk.MessageType"/> (Error, Question, etc.) alongside some message text.
+				It's simply a convenience <see cref="T:Gtk.Widget"/>; you could construct the equivalent of <see cref="T:Gtk.MessageDialog"/> from <see cref="T:Gtk.Dialog"/> without too much effort, but <see cref="T:Gtk.MessageDialog"/> saves typing.
+			</para>
+			<para>
+				The easiest way to do a modal message dialog is to use <see cref="M:Gtk.Dialog.Run()"/>,
+				though you can also pass in the <see cref="F:Gtk.DialogFlags.Modal"/> flag, <see cref="M:Gtk.Dialog.Run()"/> automatically makes the <see cref="T:Gtk.MessageDialog"/> from <see cref="T:Gtk.Dialog"/> modal and waits for the user to respond to it.
+				<see cref="M:Gtk.Dialog.Run()"/> returns when any <see cref="T:Gtk.Button"/> in the <see cref="T:Gtk.Dialog"/> is clicked.
+			</para>
+			<para>A modal dialog
+				<example>
+					<code lang="C#">
+MessageDialog md = new MessageDialog
+	(parent_window, Gtk.DialogFlags.DestroyWithParent,
+	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
+	
+md.Run ();
+md.Destroy ();
+					</code>
+				</example>
+			</para>
+			<para>A non-modal dialog
+				<example>
+					<code lang="C#">
+MessageDialog md = new MessageDialog
+	(parent_window, Gtk.DialogFlags.DestroyWithParent,
+	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
+	
+// Destroy the dialog when the user responds to it (e.g. clicks a button)
+// ::add signal handler code here::
+					</code>
+				</example>
+			</para>
+		</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
@@ -51,7 +85,7 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of MessageDialog, wrapping the C object.</returns>
+        <returns>An instance of <see cref="T:Gtk.MessageDialog"/>, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -63,9 +97,11 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.MessageDialog'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <returns>an object of type <see cref="T:Gtk.MessageDialog"/></returns>
+        <remarks>
+					<para>This is an internal constructor, and should not be used by user code.</para>
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -80,14 +116,23 @@
         <Parameter Name="msg" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="parent_window">To be added: an object of type 'Gtk.Window'</param>
-        <param name="flags">To be added: an object of type 'Gtk.DialogFlags'</param>
-        <param name="type">To be added: an object of type 'Gtk.MessageType'</param>
-        <param name="bt">To be added: an object of type 'Gtk.ButtonsType'</param>
-        <param name="msg">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.MessageDialog'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates an instance of <see cref="T:Gtk.MessageDialog"/></summary>
+        <param name="parent_window">an object of type <see cref="T:Gtk.Window"/></param>
+        <param name="flags">an object of type <see cref="T:Gtk.DialogFlags"/></param>
+        <param name="type">an object of type <see cref="T:Gtk.MessageType"/></param>
+        <param name="bt">an object of type <see cref="T:Gtk.ButtonsType"/></param>
+        <param name="msg">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:Gtk.MessageDialog"/></returns>
+        <remarks><para>
+					Creates an instance of <see cref="T:Gtk.MessageDialog"/>
+					<example>
+						<code lang="C#">
+MessageDialog md = new MessageDialog
+	(parent_window, Gtk.DialogFlags.DestroyWithParent,
+	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
+						</code>
+					</example>
+				</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -97,8 +142,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.MessageDialog</summary>
-        <returns>The GLib Type for the Gtk.MessageDialog class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.MessageDialog"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.MessageDialog"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -109,9 +154,9 @@
         <ReturnType>Gtk.MessageType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.MessageType'</returns>
-        <remarks>To be added</remarks>
+        <summary>The <see cref="T:Gtk.MessageType"/> of the <see cref="T:Gtk.Dialog"/></summary>
+        <returns>an object of type <see cref="T:Gtk.MessageDialog"/></returns>
+        <remarks>The <see cref="T:Gtk.MessageType"/> of the <see cref="T:Gtk.Dialog"/></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -124,7 +169,7 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
-        <returns>Creates a new instance of MessageDialog, using the GLib-provided type</returns>
+        <returns>Creates a new instance of <see cref="T:Gtk.MessageDialog"/>, using the GLib-provided type</returns>
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.MessageDialog" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
