@@ -10,8 +10,8 @@ namespace Gdk {
 		Expose			= 2,
 		MotionNotify		= 3,
 		ButtonPress		= 4,
-		2ButtonPress		= 5,
-		3ButtonPress		= 6,
+		TwoButtonPress		= 5,
+		ThreeButtonPress	= 6,
 		ButtonRelease		= 7,
 		KeyPress		= 8,
 		KeyRelease		= 9,
@@ -60,6 +60,8 @@ namespace Gdk {
 				Marshal.WriteIntPtr(_event, new IntPtr((int)value));
 			}
 		}
+
+/* FIXME: Fix or kill later.
 		public EventAny Any
 		{
 			get
@@ -67,10 +69,11 @@ namespace Gdk {
 				return (EventAll)this;
 			}
 		}
-		public static explicit EventAll (Event e)
+		public static explicit operator EventAll (Event e)
 		{
 			return Marshal.PtrToStructure(e._event, EventAll);
 		}
+*/
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

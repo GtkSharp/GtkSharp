@@ -8,31 +8,38 @@ namespace Gtk {
 
         using System;
         using System.Runtime.InteropServices;
-	using Glib;
+	using GLib;
 	using Gdk;
+
 
         public class Widget : Object {
 		public Widget() {}
-		public ~Widget()
+		~Widget()
 		{
-			foreach (EventHandler e in Events[DeleteEvent])
+			/* FIXME: Find a valid way to Delete the handlers
+			foreach (EventHandler e in Events[DelEvName])
 			{
 				DeleteEvent -= e;
 			}
-		}
-		private static readonly string DeleteEvent = "delete-event";
-		public event EventHandler DeleteEvent
-		{
-			add
-			{
-				AddGdkSimpleEvent(DeleteEvent, value);
-			}
-                        remove 
-			{
-				RemoveGdkSimpleEvent (DeleteEvent, value);
-			}
+			*/
 		}
 
+		private static readonly string DelEvName = "delete-event";
+
+		public event EventHandler DeleteEvent {
+			add {
+				if (Events [DelEvName] == null)
+					ConnectSignal(DelEvName);
+
+				Events.AddHandler(DelEvName, value);
+			}
+                        remove {
+				Events.RemoveHandler(DelEvName, value);
+				if (Events [DelEvName] == null)
+					DisconnectSignal (DelEvName);
+			}
+		}
+/*
 		public void AddSimpleEvent(Object type, string name, EventHandler value)
 		{
 			if (Events[type] == null)
@@ -42,10 +49,7 @@ namespace Gtk {
 			Events.AddHandler(type, value);
 		}
 
-		public void AddSimpleEvent(String type, EventHandle value)
-		: this (type, type, value) {}
-
-		public void RemoveSimpleEvent(Object type, string name, EventHander value)
+		public void RemoveSimpleEvent(Object type, string name, EventHandler value)
 		{
 			Events.RemoveHandler(type, value);
 			if (Events[type] == null)
@@ -53,9 +57,6 @@ namespace Gtk {
 				DisconnectSimpleSignal(name, type);
 			}
 		}
-
-		public void RemoveSimpleEvent(String type, EventHandle value)
-		: this (type, type, value) {}
 
 		public void AddGdkSimpleEvent(Object type, string name, EventHandler value)
 		{
@@ -66,10 +67,7 @@ namespace Gtk {
 			Events.AddHandler(type, value);
 		}
 
-		public void AddGdkSimpleEvent(String type, EventHandle value)
-		: this (type, type, value) {}
-
-		public void RemoveGdkSimpleEvent(Object type, string name, EventHander value)
+		public void RemoveGdkSimpleEvent(Object type, string name, EventHandler value)
 		{
 			Events.RemoveHandler(type, value);
 			if (Events[type] == null)
@@ -77,42 +75,39 @@ namespace Gtk {
 				DisconnectGdkSimpleEventSignal(name, type);
 			}
 		}
-
-		public void RemoveGdkSimpleEvent(String type, EventHandle value)
-		: this (type, type, value) {}
-
-
-		[DllImport("gtk-1.3")]
+*/
+		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_signal_connect_full (
                                         IntPtr obj, string evname,
                                         SimpleDelegate cb, IntPtr unsupported,
-                                        IntPtr data, IntPtr destroycb,
+                                        String data, IntPtr destroycb,
                                         int objsig, int after );
 
-		public void ConnectSimpleSignal(string name, Object signal)
+		public void ConnectSignal(string name)
 		{
-			gtk_signal_connect_full(RawObject, name, Glib.Signals.Simple.Delegate,
-					new IntPtr (0), new IntPtr (signal.GetHashCode()),
+			gtk_signal_connect_full(RawObject, name, SimpleSignal.Delegate,
+					new IntPtr (0), name,
 					new IntPtr (0), 0, 0);
 		}
 
-		public void DisconnectSimpleSignal(string name, Object signal)
+		public void DisconnectSignal(string name)
 		{
-			Glib.Signals.Simple.Unref();
+			SimpleSignal.Unref();
 		}
 
+/*
 		public void ConnectGdkSimpleSignal(string name, Object signal)
 		{
-			gtk_signal_connect_full(RawObject, name, Gdk.Signals.SimpleEvent.Delegate,
-					new IntPtr (0), new IntPtr (signal.GetHashCode()),
+			gtk_signal_connect_full(RawObject, name, SimpleEvent.Delegate,
+					new IntPtr (0), name,
 					new IntPtr (0), 0, 0);
 		}
 
 		public void DisconnectGdkSimpleSignal(string name, Object signal)
 		{
-			Gdk.Signals.SimpleEvent.Unref();
+			SimpleEvent.Unref();
 		}
-
+*/
                 /// <summary>
                 ///     Show Method
                 /// </summary>
@@ -121,7 +116,7 @@ namespace Gtk {
                 ///     Makes the Widget visible on the display.
                 /// </remarks>
 
-                [DllImport("gtk-1.3")]
+                [DllImport("gtk-1.3.dll")]
                 static extern void gtk_widget_show (IntPtr obj);
 
                 public void Show ()

@@ -1,5 +1,3 @@
-CSC=/cygdrive/c/windows/microsoft.net/framework/v1.0.2914/csc.exe
-
 all:
 	@echo "You must use 'make windows' or 'make unix'."
 	@echo "'make unix' is broken for now."

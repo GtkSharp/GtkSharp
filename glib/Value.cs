@@ -1,4 +1,4 @@
-// GLib.GValue.cs - GLib Value class implementation
+// GLib.Value.cs - GLib Value class implementation
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -9,34 +9,56 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	[StructLayout(LayoutKind.Sequential)]
-	public struct GValueStruct {
-		uint 	type;
-		IntPtr	data1;
-		IntPtr	data2;
-		IntPtr	data3;
-		IntPtr	data4;
-	}
+	/// <summary> 
+	///	Value Class
+	/// </summary>
+	///
+	/// <remarks>
+	///	An arbitrary data type similar to a CORBA Any which is used
+	///	to get and set properties on Objects.
+	/// </remarks>
 
-	public class GValue {
+	public class Value {
 
-		GValueStruct	_val;
+		IntPtr	_val;
 
+		// We use g_malloc0 and g_free to put the GValue on the
+		// heap to avoid some marshalling pain.
+		[DllImport("glib-1.3.dll")]
+		static extern IntPtr g_malloc0 (long n_bytes);
+		[DllImport("glib-1.3.dll")]
+		static extern void g_free (IntPtr mem);
+
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_init (IntPtr val, 
+						 TypeFundamentals type);
 		/// <summary>
-		///	GValue Constructor
+		///	Value Constructor
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Constructs a GValue from a string.
+		///	Constructs a Value from a spectified string.
 		/// </remarks>
 
-		[DllImport("gobject-1.3")]
-		static extern void g_value_set_string (ref GValueStruct val,
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_set_string (IntPtr val,
 						       String data);
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_value_set_boolean (IntPtr val,
+						        bool data);
 
-		public GValue (String data)
+		public Value (bool val)
 		{
-			g_value_set_string (ref _val, data);
+			_val = g_malloc0 (5 * IntPtr.Size);
+			g_value_init (_val, TypeFundamentals.TypeBoolean);
+			g_value_set_boolean (_val, val);
+		}
+
+		public Value (String str)
+		{
+			_val = g_malloc0 (5 * IntPtr.Size);
+			g_value_init (_val, TypeFundamentals.TypeString);
+			g_value_set_string (_val, str);
 		}
 
 		/// <summary>
@@ -44,31 +66,30 @@ namespace GLib {
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Extracts a string from a GValue.  Note, this method
-		///	will produce an exception if the GValue does not hold a
+		///	Extracts a string from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
 		///	string value.  
 		/// </remarks>
 
-		[DllImport("gobject-1.3")]
-		static extern String g_value_get_string (ref GValueStruct val);
+		[DllImport("gobject-1.3.dll")]
+		static extern String g_value_get_string (IntPtr val);
 
 		public String GetString ()
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return g_value_get_string (ref _val);
+			return g_value_get_string (_val);
 		}
 
 		/// <summary>
-		///	ValueStruct Property
+		///	RawValue Property
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Accesses a structure which can be easily marshalled
-		///	via PInvoke to set properties on GObjects.
+		///	Read only. Accesses a pointer to the Raw GValue.
 		/// </remarks>
 
-		public GValueStruct ValueStruct {
+		public IntPtr RawValue {
 			get {
 				return _val;
 			}

@@ -39,7 +39,7 @@ namespace Gtk {
 		///	Constructs a new Window of type TopLevel.
 		/// </remarks>
 
-		[DllImport("gtk-1.3")]
+		[DllImport("gtk-1.3.dll")]
 		static extern IntPtr gtk_window_new (WindowType type);
 
 		public Window ()
@@ -73,7 +73,7 @@ namespace Gtk {
 
 		public bool AllowGrow {
 			get {
-				GValue val = GetProp ("allow-grow");
+				Value val = GetProp ("allow-grow");
 				return (val != 0);
 			}
 			set {
@@ -166,7 +166,7 @@ namespace Gtk {
 		///	The Position of the Window in Screen Coordinates.
 		/// </remarks>
 
-		[DllImport("gtk-1.3")]
+		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_window_set_position (IntPtr hnd,
 							    int x, int y);
 
@@ -186,15 +186,14 @@ namespace Gtk {
 		///	The Title displayed in the Window's Title Bar.
 		/// </remarks>
 
-		[DllImport("gobject-1.3")]
-		static extern void g_object_set_property (String title,
-							  ref GValueStruct vs);
+		[DllImport("gobject-1.3.dll")]
+		static extern void g_object_set (IntPtr obj, String name,
+						 IntPtr val, IntPtr term);
 
 		public String Title {
 			set {
-				GValue val = new GValue (value);
-				GValueStruct vs = val.ValueStruct;
-				g_object_set_property ("title", ref vs);
+				g_object_set (RawObject, "title", 
+					      Marshal.StringToHGlobalAnsi (value), new IntPtr (0));
 			}
 		}
 	}

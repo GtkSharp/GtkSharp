@@ -12,6 +12,7 @@ namespace Gtk {
 	public class Button : Widget {
 
 		private static readonly string ClickedEvent = "clicked";
+/*
 		public event EventHandler Clicked
 		{
 			add
@@ -23,7 +24,7 @@ namespace Gtk {
 				RemoveSimpleEvent (ClickedEvent, value);
 			}
 		}
-
+*/
 		/// <summary>
 		///	Button Object Constructor
 		/// </summary>
@@ -37,12 +38,14 @@ namespace Gtk {
 			RawObject = o;
 		}
 
-		public ~Button ()
+		~Button ()
 		{
+			/* FIXME: Find legal way to do this eventually.
 			foreach (EventHandler e in Events[ClickedEvent])
 			{
 				Clicked -= e;
 			}
+			*/
 		}
 
 		/// <summary>

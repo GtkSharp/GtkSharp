@@ -1,13 +1,41 @@
-2001-09-25
+2001-09-27  Mike Kestner <mkestner@speakeasy.net>
+
+	*.cs : Added .dll extension to a load of DllImports.
+	* makefile : now can make the project with one make windows and on
+	both NT and Win98.
+	* gdk/Event.cs : Fixed some invalid symbol names and commented out a 
+	load of stuff.
+	* gdk/SimpleEvent.cs : Relocated file from unnecessary subdir and fixed
+	several event keyword clashing bugs. Need to relocate the EventArgs
+	class out of here into its own file. Fixed loads of typos.
+	* glib/Object.cs : Killed the Constructor, this should be a purely
+	abstract class. made Events property public until I can fix the Signal 
+	proxying system's broken reliance on it.
+	* glib/SimpleSignal.cs : Relocated, namespaces, and named this Class.
+	Loads of bugfixes. Still doesn't work worth a damn, but it builds.
+	* glib/TypeFundamentals.cs : New enum for use in the Value code.
+	* glib/Value.cs : Implemented a more opaque approach with heap allocated
+	memory and g_value_init and friends.  Still doesn't work.  Will probably
+	switch to a more C# like approach and avoid GValues altogether.
+	* gtk/Button.cs : Commented out some brokeness until I can get around
+	to fixing it later.
+	* gtk/Widget.cs : Commented out a bunch of the new signal stuff until
+	I get around to it.
+	* gtk/Window.cs (Title): using g_object_set until I work out the 
+	details of the new Value/SetProperty system.  It looks like g_object_set
+	will end up being easier to use via PInvoke.
+	
+2001-09-25  Bob Smith  <bob@thestuff.net>
+
 	* Added refcounts to delegates to make sure they can be unpined when
 	not needed.
 
-2001-09-21
+2001-09-21  Bob Smith  <bob@thestuff.net>
 
 	* Signal system totally reworked. It should be stable now.
 	* glib/Object.cs: Rewrote the way the wrapper is kept track of.
 
-2001-09-20
+2001-09-20  Bob Smith  <bob@thestuff.net>
 
 	* glib/ObjectManager.cs: Nuked.
 	* glib/Object.cs: Keep track of wrapper.

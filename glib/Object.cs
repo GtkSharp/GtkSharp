@@ -1,8 +1,9 @@
 // Object.cs - GObject class wrapper implementation
 //
-// Author: Bob Smith <bob@thestuff.net>
+// Authors: Bob Smith <bob@thestuff.net>
+//	    Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Bob Smith
+// (c) 2001 Bob Smith and Mike Kestner
 
 namespace GLib {
 
@@ -17,12 +18,7 @@ namespace GLib {
 		{
 			Object obj = (Object)Objects[(int)o];
 			if (obj != null) return obj;
-			return new Object(o); //FIXME: Cast up when we know how.
-		}
-
-		public Object(IntPtr o)
-		{
-			RawObject = o;
+			return null; //FIXME: Call TypeParser here eventually.
 		}
 
 		private IntPtr _obj;
@@ -40,7 +36,7 @@ namespace GLib {
 		}       
 
 		private EventHandlerList _events;
-		protected EventHandlerList Events
+		public EventHandlerList Events
 		{
 			get {
 				if (_events == null)
@@ -49,8 +45,7 @@ namespace GLib {
 			}
 		}
 
-
-		[DllImport("gobject-1.3")]
+		[DllImport("gobject-1.3.dll")]
 		static extern IntPtr g_object_get_data (
 					IntPtr obj,
 					String key );
@@ -71,7 +66,8 @@ namespace GLib {
 			g_object_set_data (_obj, key, value);
 		}
 
-/*		[DllImport("gtk-1.3")]
+/*
+		[DllImport("gtk-1.3.dll")]
 		static extern void g_object_set_data_full (
 					IntPtr obj,
 					String key,
