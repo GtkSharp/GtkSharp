@@ -10,8 +10,16 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      <para>
+An implementation of <see cref="T:Gda.DataModel" /> based on a hash table.
+</para>
+    </summary>
+    <remarks>
+      <para>
+Unlike <see cref="T:Gda.DataModelArray" />, this data model implementation stores the <see cref="T:Gda.Row" /> in a hash table.  So it only retrieves from the database backend exactly the requested rows (while in <see cref="T:Gda.DataModelArray" /> you have to retrieve all the rows until the one requested).
+</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gda.DataModel</BaseTypeName>
@@ -38,7 +46,11 @@
         <Parameter Name="row" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Retrieves the value at a specified column and row.
+</para>
+        </summary>
         <param name="model">a <see cref="T:Gda.DataModel" /></param>
         <param name="col">a <see cref="T:System.Int32" /></param>
         <param name="row">a <see cref="T:System.Int32" /></param>
@@ -57,10 +69,14 @@
         <Parameter Name="row" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Retrieves a row from the underlying hash table.
+</para>
+        </summary>
         <param name="model">a <see cref="T:Gda.DataModel" /></param>
         <param name="row">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gda.Row" /></returns>
+        <returns>a <see cref="T:Gda.Row" /> or null if the requested row is not in the hash table.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -84,7 +100,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>
+Frees all the rows inserted in the model.
+</para>
+        </summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -99,9 +119,13 @@
         <Parameter Name="row" Type="Gda.Row" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rownum">a <see cref="T:System.Int32" /></param>
-        <param name="row">a <see cref="T:Gda.Row" /></param>
+        <summary>
+          <para>
+Inserts a row in the model.
+</para>
+        </summary>
+        <param name="rownum">a <see cref="T:System.Int32" /> the number of the row.</param>
+        <param name="row">a <see cref="T:Gda.Row" /> to insert.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -127,8 +151,12 @@
         <Parameter Name="cols" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="cols">a <see cref="T:System.Int32" /></param>
+        <summary>
+          <para>
+Creates a new DataModelHash with cols columns.
+</para>
+        </summary>
+        <param name="cols">a <see cref="T:System.Int32" /> number of columns for rows in this data model.</param>
         <returns>a <see cref="T:Gda.DataModelHash" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -140,9 +168,17 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>
+          <para>
+Sets the number of columns for rows inserted in this model.
+</para>
+        </summary>
+        <returns>a <see cref="T:System.Int32" /> must be greater than or equal to 0</returns>
+        <remarks>
+          <para>
+This property calls <see cref="M:Gda.DataModelHash.Clear" /> to free the existing rows if any.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
