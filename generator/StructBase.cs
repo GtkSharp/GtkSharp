@@ -15,7 +15,6 @@ namespace GtkSharp.Generation {
 	public class StructBase : ClassBase {
 	
 		ArrayList fields = new ArrayList ();
-		uint bitfields;
 
 		public StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
@@ -43,166 +42,65 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override String MarshalType {
+		public override string MarshalType {
 			get
 			{
 				return "ref " + QualifiedName;
 			}
 		}
 
-		public override String MarshalReturnType {
+		public override string MarshalReturnType {
 			get
 			{
 				return "IntPtr";
 			}
 		}
 
-		public override String CallByName (String var_name)
+		public override string CallByName (string var_name)
 		{
 			return "ref " + var_name;
 		}
 
-		public override String CallByName ()
+		public override string CallByName ()
 		{
 			return "ref this";
 		}
 
-		public override String AssignToName {
+		public override string AssignToName {
 			get { return "raw"; }
 		}
 
-		public override String FromNative(String var)
+		public override string FromNative(string var)
 		{
 			return var;
 		}
 		
-		public override String FromNativeReturn(String var)
+		public override string FromNativeReturn(string var)
 		{
 			return QualifiedName + ".New (" + var + ")";
 		}
 
-		public override String ToNativeReturn(String var)
+		public override string ToNativeReturn(string var)
 		{
 			// FIXME
 			return var;
 		}
 
-		bool IsBit (XmlElement field)
-		{
-			return (field.HasAttribute("bits") && (field.GetAttribute("bits") == "1"));
-		}
-
-		bool IsPointer (XmlElement field)
-		{
-			string c_type = field.GetAttribute("type");
-			return (c_type.EndsWith ("*") || c_type.EndsWith ("pointer"));
-		}
-
-		bool IsPadding (XmlElement field)
-		{
-			string c_name = field.GetAttribute ("cname");
-			return (c_name.StartsWith ("dummy"));
-		}
-
 		protected void GenFields (StreamWriter sw)
 		{
-			bitfields = 0;
+			Field.bitfields = 0;
 			bool need_field = true;
-			foreach (XmlElement field in fields) {
-				if (IsBit (field)) {
+			foreach (XmlElement field_elem in fields) {
+				Field field = new Field (field_elem);
+				if (field.IsBit) {
 					if (need_field)
 						need_field = false;
 					else
 						continue;
 				} else
 					need_field = true;
-				GenField (field, sw);	
+				field.Generate (sw);	
 			}
-		}
-
-		protected bool GetFieldInfo (XmlElement field, out string c_type, out string type, out string name, out string protection)
-		{
-			name = "";
-			protection = "";
-			c_type = field.GetAttribute ("type");
-			type = SymbolTable.Table.GetCSType (c_type);
-			if (IsBit (field)) {
-				type = "uint";
-				protection = "private";
-			} else if ((IsPointer (field) || SymbolTable.Table.IsOpaque (c_type)) && type != "string") {
-				type = "IntPtr";
-				name = "_";
-				protection = "private";
-			} else if (SymbolTable.Table.IsCallback (c_type)) {
-				type = "IntPtr";
-				protection = "private";
-			} else if (IsPadding (field)) {
-				protection = "private";
-			} else {
-				if (type == "") {
-					Console.WriteLine ("Field has unknown Type {0}", c_type);
-					Statistics.ThrottledCount++;
-					return false;
-				}
-
-				protection = "public";
-			}
-			
-			// FIXME: marshalling not implemented here in mono 
-			if (field.HasAttribute("array_len")) {
-				type = "IntPtr";
-				protection = "private";
-			}
-
-			if (IsBit (field))
-				name = String.Format ("_bitfield{0}", bitfields++);
-			else
-				name += SymbolTable.Table.MangleName (field.GetAttribute ("cname"));
-
-			return true;
-		}
-
-		protected bool GenField (XmlElement field, StreamWriter sw)
-		{
-			string c_type, type, name, protection;
-			if (!GetFieldInfo (field, out c_type, out type, out name, out protection))
-				return false;
-			sw.WriteLine ("\t\t{0} {1} {2};", protection, type, SymbolTable.Table.MangleName (name));
-
-			if (field.HasAttribute("array_len"))
-				Console.WriteLine ("warning: array field {0}.{1} probably incorrectly generated", QualifiedName, name);
-			SymbolTable table = SymbolTable.Table;
-
-			string wrapped = table.GetCSType (c_type);
-			string wrapped_name = SymbolTable.Table.MangleName (field.GetAttribute ("cname"));
-			if (table.IsObject (c_type)) {
-				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(c_type, name) + ";");
-				sw.WriteLine ("\t\t\t\treturn ret;");
-				sw.WriteLine ("\t\t\t}");
-				sw.WriteLine ("\t\t\tset { " + name + " = " + table.CallByName (c_type, "value") + "; }");
-				sw.WriteLine ("\t\t}");
-			} else if (table.IsOpaque (c_type)) {
-				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { ");
-				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(c_type, name) + ";");
-				sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + name + ");");
-				sw.WriteLine ("\t\t\t\treturn ret;");
-				sw.WriteLine ("\t\t\t}");
-
-				sw.WriteLine ("\t\t\tset { " + name + " = " + table.CallByName (c_type, "value") + "; }");
-				sw.WriteLine ("\t\t}");
-			} else if (IsPointer (field) && (table.IsStruct (c_type) || table.IsBoxed (c_type))) {
-				sw.WriteLine ();
-				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
-				sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (c_type, name) + "; }");
-				sw.WriteLine ("\t\t}");
-			}
-			
-			return true;
 		}
 
 		public virtual void Generate (GenerationInfo gen_info)
