@@ -264,137 +264,111 @@ namespace GtkDemo
 			TextIter insertIter;
 
 			insertIter = buffer.GetIterAtOffset (0);
-			buffer.Insert (insertIter,
+			buffer.Insert (ref insertIter,
 			"The text widget can display text with all kinds of nifty attributes.It also supports multiple views of the same buffer; this demo is showing the same buffer in two places.\n\n");
 
-			InsertWithTagsByName (buffer, "Font styles. ", new string[] {"heading"});
-			Insert (buffer, "For example, you can have ");
-			InsertWithTagsByName (buffer, "italic", new string[] {"italic"});
-		        Insert (buffer, ", ");
-			InsertWithTagsByName (buffer, "bold", new string[] {"bold"});
-		        Insert (buffer, ", or ");
-			InsertWithTagsByName (buffer, "monospace (typewriter)", new string[] {"monospace"});
-		        Insert (buffer, ", or  ");
-			InsertWithTagsByName (buffer, "big", new string[] {"big"});
-			Insert (buffer, " text");
-			Insert (buffer,
+			buffer.InsertWithTagsByName (ref insertIter, "Font styles. ", "heading");
+			buffer.Insert (ref insertIter, "For example, you can have ");
+			buffer.InsertWithTagsByName (ref insertIter, "italic", "italic");
+		        buffer.Insert (ref insertIter, ", ");
+			buffer.InsertWithTagsByName (ref insertIter, "bold", "bold");
+		        buffer.Insert (ref insertIter, ", or ");
+			buffer.InsertWithTagsByName (ref insertIter, "monospace (typewriter)", "monospace");
+		        buffer.Insert (ref insertIter, ", or  ");
+			buffer.InsertWithTagsByName (ref insertIter, "big", "big");
+			buffer.Insert (ref insertIter, " text");
+			buffer.Insert (ref insertIter,
 			"It's best not to hardcode specific text sizes; you can use relative sizes as with CSS, such as ");
-			InsertWithTagsByName (buffer, "xx-small", new string[] {"xx-small"});
-		        Insert (buffer, ", or");
-			InsertWithTagsByName (buffer, "x-large", new string[] {"x-large"});
-			Insert (buffer,
+			buffer.InsertWithTagsByName (ref insertIter, "xx-small", "xx-small");
+		        buffer.Insert (ref insertIter, ", or");
+			buffer.InsertWithTagsByName (ref insertIter, "x-large", "x-large");
+			buffer.Insert (ref insertIter,
 			" to ensure that your program properly adapts if the user changes the default font size.\n\n");
-			InsertWithTagsByName (buffer, "Colors such as", new string[] {"heading"});
-			InsertWithTagsByName (buffer, "a blue foreground", new string[] {"blue_foreground"});
-		        Insert (buffer, ", or  ");
-			InsertWithTagsByName (buffer, "a red background", new string[] {"red_background"});
-		        Insert (buffer, " or  even ");
-			// Change InsertWithTagsByName to work with 2 and 3 args
-			// InsertWithTagsByName ("a stippled red background",
-			//		    "red_background",
-			//		    "background_stipple");
-		        //Insert (buffer, ", or  ");
-                        //InsertWithTagsByName ("a stippled red background",
-			//		"a stippled blue foreground on solid red background", -1,
-			//		"blue_foreground",
-			//		"red_background",
-			//		"foreground_stipple")
-		        Insert (buffer, " (select that to read it) can be used.\n\n");
-			InsertWithTagsByName (buffer, "Underline, strikethrough, and rise. ", new string[] {"heading"});
-			InsertWithTagsByName (buffer, "Strikethrough", new string[] {"strikethrough"});
-			Insert (buffer, ", ");
-			InsertWithTagsByName (buffer, "underline", new string[] {"underline"});
-			Insert (buffer, ", ");
-			InsertWithTagsByName (buffer, "double_underline", new string[] {"double_underline"});
-			Insert (buffer, ", ");
-			InsertWithTagsByName (buffer, "superscript", new string[] {"superscript"});
-		        Insert (buffer, ", and  ");
-			InsertWithTagsByName (buffer, "subscript", new string[] {"subscript"});
-			Insert (buffer," are all supported.\n\n");
-			InsertWithTagsByName (buffer, "Images. ", new string[] {"heading"});
-			Insert (buffer,"The buffer can have images in it: ");
+			buffer.InsertWithTagsByName (ref insertIter, "Colors such as", "heading");
+			buffer.InsertWithTagsByName (ref insertIter, "a blue foreground", "blue_foreground");
+		        buffer.Insert (ref insertIter, ", or  ");
+			buffer.InsertWithTagsByName (ref insertIter, "a red background", "red_background");
+		        buffer.Insert (ref insertIter, " or  even ");
+			buffer.InsertWithTagsByName (ref insertIter, "a stippled red background",
+						     "red_background",
+						     "background_stipple");
+		        buffer.Insert (ref insertIter, ", or  ");
+                        buffer.InsertWithTagsByName (ref insertIter,
+						     "a stippled blue foreground on solid red background",
+						     "blue_foreground",
+						     "red_background",
+						     "foreground_stipple");
+		        buffer.Insert (ref insertIter, " (select that to read it) can be used.\n\n");
+			buffer.InsertWithTagsByName (ref insertIter, "Underline, strikethrough, and rise. ", "heading");
+			buffer.InsertWithTagsByName (ref insertIter, "Strikethrough", "strikethrough");
+			buffer.Insert (ref insertIter, ", ");
+			buffer.InsertWithTagsByName (ref insertIter, "underline", "underline");
+			buffer.Insert (ref insertIter, ", ");
+			buffer.InsertWithTagsByName (ref insertIter, "double_underline", "double_underline");
+			buffer.Insert (ref insertIter, ", ");
+			buffer.InsertWithTagsByName (ref insertIter, "superscript", "superscript");
+		        buffer.Insert (ref insertIter, ", and  ");
+			buffer.InsertWithTagsByName (ref insertIter, "subscript", "subscript");
+			buffer.Insert (ref insertIter, " are all supported.\n\n");
+			buffer.InsertWithTagsByName (ref insertIter, "Images. ", "heading");
+			buffer.Insert (ref insertIter, "The buffer can have images in it: ");
 			
 			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
-			buffer.InsertPixbuf (insertIter, pixbuf);
+			buffer.InsertPixbuf (ref insertIter, pixbuf);
 			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
-			buffer.InsertPixbuf (insertIter, pixbuf);
+			buffer.InsertPixbuf (ref insertIter, pixbuf);
 			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
-			buffer.InsertPixbuf (insertIter, pixbuf);
+			buffer.InsertPixbuf (ref insertIter, pixbuf);
 
-			Insert (buffer, " for example.\n\n");
-			InsertWithTagsByName (buffer, "Spacing. ", new string[] {"heading"});
-			InsertWithTagsByName (buffer, "You can adjust the amount of space before each line.\n", new string[] {"big_gap_before_line", "wide_margins"});
-			InsertWithTagsByName (buffer, "You can also adjust the amount of space after each line; this line has a whole lot of space after it.\n", new string[] {"big_gap_after_line", "wide_margins"});
-			InsertWithTagsByName (buffer, "You can also adjust the amount of space between wrapped lines; this line has extra space between each wrapped line in the same paragraph. To show off wrapping, some filler text: the quick brown fox jumped over the lazy dog. Blah blah blah blah blah blah blah blah blah.\n", new string[] {"double_spaced_line", "wide_margins"});
-			Insert (buffer, "Also note that those lines have extra-wide margins.\n\n");
-			InsertWithTagsByName (buffer, "Editability. ", new string[] {"heading"});
-			InsertWithTagsByName (buffer, "This line is 'locked down' and can't be edited by the user - just try it! You can't delete this line.\n\n", new string[] {"not_editable"});
-			InsertWithTagsByName (buffer, "Wrapping. ", new string[] {"heading"});
-			Insert (buffer,"This line (and most of the others in this buffer) is word-wrapped, using the proper Unicode algorithm. Word wrap should work in all scripts and languages that GTK+ supports. Let's make this a long paragraph to demonstrate: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah\n\n");
-			InsertWithTagsByName (buffer,  "This line has character-based wrapping, and can wrap between any two character glyphs. Let's make this a long paragraph to demonstrate: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah\n\n", new string[] {"char_wrap"});
-			InsertWithTagsByName (buffer, "This line has all wrapping turned off, so it makes the horizontal scrollbar appear.\n\n\n", new string[] {"no_wrap"});
-			InsertWithTagsByName (buffer, "Justification. ", new string[] {"heading"});
-			InsertWithTagsByName (buffer, "\nThis line has center justification.\n", new string[] {"center"});
-			InsertWithTagsByName (buffer, "This line has right justification.\n", new string[] {"right_justify"});
-			InsertWithTagsByName (buffer, "\nThis line has big wide margins. Text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text.\n", new string[] {"wide_margins"});
-			InsertWithTagsByName (buffer, "Internationalization. ", new string[] {"heading"});
+			buffer.Insert (ref insertIter, " for example.\n\n");
+			buffer.InsertWithTagsByName (ref insertIter, "Spacing. ", "heading");
+			buffer.InsertWithTagsByName (ref insertIter, "You can adjust the amount of space before each line.\n", "big_gap_before_line", "wide_margins");
+			buffer.InsertWithTagsByName (ref insertIter, "You can also adjust the amount of space after each line; this line has a whole lot of space after it.\n", "big_gap_after_line", "wide_margins");
+			buffer.InsertWithTagsByName (ref insertIter, "You can also adjust the amount of space between wrapped lines; this line has extra space between each wrapped line in the same paragraph. To show off wrapping, some filler text: the quick brown fox jumped over the lazy dog. Blah blah blah blah blah blah blah blah blah.\n", "double_spaced_line", "wide_margins");
+			buffer.Insert (ref insertIter, "Also note that those lines have extra-wide margins.\n\n");
+			buffer.InsertWithTagsByName (ref insertIter, "Editability. ", "heading");
+			buffer.InsertWithTagsByName (ref insertIter, "This line is 'locked down' and can't be edited by the user - just try it! You can't delete this line.\n\n", "not_editable");
+			buffer.InsertWithTagsByName (ref insertIter, "Wrapping. ", "heading");
+			buffer.Insert (ref insertIter, "This line (and most of the others in this buffer) is word-wrapped, using the proper Unicode algorithm. Word wrap should work in all scripts and languages that GTK+ supports. Let's make this a long paragraph to demonstrate: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah\n\n");
+			buffer.InsertWithTagsByName (ref insertIter,  "This line has character-based wrapping, and can wrap between any two character glyphs. Let's make this a long paragraph to demonstrate: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah\n\n", "char_wrap");
+			buffer.InsertWithTagsByName (ref insertIter, "This line has all wrapping turned off, so it makes the horizontal scrollbar appear.\n\n\n", "no_wrap");
+			buffer.InsertWithTagsByName (ref insertIter, "Justification. ", "heading");
+			buffer.InsertWithTagsByName (ref insertIter, "\nThis line has center justification.\n", "center");
+			buffer.InsertWithTagsByName (ref insertIter, "This line has right justification.\n", "right_justify");
+			buffer.InsertWithTagsByName (ref insertIter, "\nThis line has big wide margins. Text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text.\n", "wide_margins");
+			buffer.InsertWithTagsByName (ref insertIter, "Internationalization. ", "heading");
 
-			//Insert (buffer, "You can put all sorts of Unicode text in the buffer.\n\nGerman (Deutsch S\303\274d) Gr\303\274\303\237 Gott\nGreek (\316\225\316\273\316\273\316\267\316\275\316\271\316\272\316\254) \316\223\316\265\316\271\316\254 \317\203\316\261\317\202\nHebrew	\327\251\327\234\327\225\327\235\nJapanese (\346\227\245\346\234\254\350\252\236)\n\nThe widget properly handles bidirectional text, word wrapping, DOS/UNIX/Unicode paragraph separators, grapheme boundaries, and so on using the Pango internationalization framework.\n");
-			Insert (buffer, "Here's a word-wrapped quote in a right-to-left language:\n");
+			buffer.Insert (ref insertIter, "You can put all sorts of Unicode text in the buffer.\n\nGerman (Deutsch S\u00fcd) Gr\u00fc\u00df Gott\nGreek (\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac) \u0393\u03b5\u03b9\u03ac \u03c3\u03b1\u03c2\nHebrew	\u05e9\u05dc\u05d5\u05dd\nJapanese (\u65e5\u672c\u8a9e)\n\nThe widget properly handles bidirectional text, word wrapping, DOS/UNIX/Unicode paragraph separators, grapheme boundaries, and so on using the Pango internationalization framework.\n");
+			buffer.Insert (ref insertIter, "Here's a word-wrapped quote in a right-to-left language:\n");
 
-			//InsertWithTagsByName (buffer,  "\331\210\331\202\330\257 \330\250\330\257\330\243 \330\253\331\204\330\247\330\253 \331\205\331\206 \330\243\331\203\330\253\330\261 \330\247\331\204\331\205\330\244\330\263\330\263\330\247\330\252 \330\252\331\202\330\257\331\205\330\247 \331\201\331\212 \330\264\330\250\331\203\330\251 \330\247\331\203\330\263\331\212\331\210\331\206 \330\250\330\261\330\247\331\205\330\254\331\207\330\247 \331\203\331\205\331\206\330\270\331\205\330\247\330\252 \331\204\330\247 \330\252\330\263\330\271\331\211 \331\204\331\204\330\261\330\250\330\255\330\214 \330\253\331\205 \330\252\330\255\331\210\331\204\330\252 \331\201\331\212 \330\247\331\204\330\263\331\206\331\210\330\247\330\252 \330\247\331\204\330\256\331\205\330\263 \330\247\331\204\331\205\330\247\330\266\331\212\330\251 \330\245\331\204\331\211 \331\205\330\244\330\263\330\263\330\247\330\252 \331\205\330\247\331\204\331\212\330\251 \331\205\331\206\330\270\331\205\330\251\330\214 \331\210\330\250\330\247\330\252\330\252 \330\254\330\262\330\241\330\247 \331\205\331\206 \330\247\331\204\331\206\330\270\330\247\331\205 \330\247\331\204\331\205\330\247\331\204\331\212 \331\201\331\212 \330\250\331\204\330\257\330\247\331\206\331\207\330\247\330\214 \331\210\331\204\331\203\331\206\331\207\330\247 \330\252\330\252\330\256\330\265\330\265 \331\201\331\212 \330\256\330\257\331\205\330\251 \331\202\330\267\330\247\330\271 \330\247\331\204\331\205\330\264\330\261\331\210\330\271\330\247\330\252 \330\247\331\204\330\265\330\272\331\212\330\261\330\251. \331\210\330\243\330\255\330\257 \330\243\331\203\330\253\330\261 \331\207\330\260\331\207 \330\247\331\204\331\205\330\244\330\263\330\263\330\247\330\252 \331\206\330\254\330\247\330\255\330\247 \331\207\331\210 \302\273\330\250\330\247\331\206\331\203\331\210\330\263\331\210\331\204\302\253 \331\201\331\212 \330\250\331\210\331\204\331\212\331\201\331\212\330\247.\n\n", new string[] {"rtl_quote"});
-			//InsertWithTagsByName (buffer,  "\x2", new string[] {"rtl_quote"});
-			Insert (buffer, "You can put widgets in the buffer: Here's a button: ");
+			buffer.InsertWithTagsByName (ref insertIter,  "\u0648\u0642\u062f \u0628\u062f\u0623 \u062b\u0644\u0627\u062b \u0645\u0646 \u0623\u0643\u062b\u0631 \u0627\u0644\u0645\u0624\u0633\u0633\u0627\u062a \u062a\u0642\u062f\u0645\u0627 \u0641\u064a \u0634\u0628\u0643\u0629 \u0627\u0643\u0633\u064a\u0648\u0646 \u0628\u0631\u0627\u0645\u062c\u0647\u0627 \u0643\u0645\u0646\u0638\u0645\u0627\u062a \u0644\u0627 \u062a\u0633\u0639\u0649 \u0644\u0644\u0631\u0628\u062d\u060c \u062b\u0645 \u062a\u062d\u0648\u0644\u062a \u0641\u064a \u0627\u0644\u0633\u0646\u0648\u0627\u062a \u0627\u0644\u062e\u0645\u0633 \u0627\u0644\u0645\u0627\u0636\u064a\u0629 \u0625\u0644\u0649 \u0645\u0624\u0633\u0633\u0627\u062a \u0645\u0627\u0644\u064a\u0629 \u0645\u0646\u0638\u0645\u0629\u060c \u0648\u0628\u0627\u062a\u062a \u062c\u0632\u0621\u0627 \u0645\u0646 \u0627\u0644\u0646\u0638\u0627\u0645 \u0627\u0644\u0645\u0627\u0644\u064a \u0641\u064a \u0628\u0644\u062f\u0627\u0646\u0647\u0627\u060c \u0648\u0644\u0643\u0646\u0647\u0627 \u062a\u062a\u062e\u0635\u0635 \u0641\u064a \u062e\u062f\u0645\u0629 \u0642\u0637\u0627\u0639 \u0627\u0644\u0645\u0634\u0631\u0648\u0639\u0627\u062a \u0627\u0644\u0635\u063a\u064a\u0631\u0629\u002e \u0648\u0623\u062d\u062f \u0623\u0643\u062b\u0631 \u0647\u0630\u0647 \u0627\u0644\u0645\u0624\u0633\u0633\u0627\u062a \u0646\u062c\u0627\u062d\u0627 \u0647\u0648 \u00bb\u0628\u0627\u0646\u0643\u0648\u0633\u0648\u0644\u00ab \u0641\u064a \u0628\u0648\u0644\u064a\u0641\u064a\u0627.\n\n", "rtl_quote");
+
+			buffer.Insert (ref insertIter, "You can put widgets in the buffer: Here's a button: ");
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-			buttonAnchor    = buffer.CreateChildAnchor (insertIter);
+			buttonAnchor    = buffer.CreateChildAnchor (ref insertIter);
 
-			Insert (buffer, "and a menu");
+			buffer.Insert (ref insertIter, "and a menu");
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-		        menuAnchor      = buffer.CreateChildAnchor (insertIter);
+		        menuAnchor      = buffer.CreateChildAnchor (ref insertIter);
 
-			Insert (buffer, "and a scale");
+			buffer.Insert (ref insertIter, "and a scale");
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-			scaleAnchor	= buffer.CreateChildAnchor (insertIter);
+			scaleAnchor	= buffer.CreateChildAnchor (ref insertIter);
 
-			Insert (buffer, "and an animation");
+			buffer.Insert (ref insertIter, "and an animation");
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-			animationAnchor	= buffer.CreateChildAnchor (insertIter);
+			animationAnchor	= buffer.CreateChildAnchor (ref insertIter);
 
-			Insert (buffer, " finally a text entry: ");
+			buffer.Insert (ref insertIter, " finally a text entry: ");
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-			entryAnchor	= buffer.CreateChildAnchor (insertIter);
+			entryAnchor	= buffer.CreateChildAnchor (ref insertIter);
 
-			Insert (buffer, "\n");
+			buffer.Insert (ref insertIter, "\n");
 
- 			Insert (buffer, "\n\nThis demo doesn't demonstrate all the GtkTextBuffer features; it leaves out, for example: invisible/hidden text (doesn't work in GTK 2, but planned), tab stops, application-drawn areas on the sides of the widget for displaying breakpoints and such...");
-			//Insert (buffer,);
-			//InsertWithTagsByName (buffer, , new string[] {});
+ 			buffer.Insert (ref insertIter, "\n\nThis demo doesn't demonstrate all the GtkTextBuffer features; it leaves out, for example: invisible/hidden text (doesn't work in GTK 2, but planned), tab stops, application-drawn areas on the sides of the widget for displaying breakpoints and such...");
 
 			buffer.ApplyTag("word_wrap", buffer.StartIter, buffer.EndIter);		
 			
-		}
-
-		private void InsertWithTagsByName (TextBuffer buffer , string insertText, string[] fontName)
-		{
-			TextIter insertIter, beginIter, endIter;
-			int begin, end;
-
-			begin = buffer.CharCount;
-			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
-			buffer.Insert (insertIter, insertText);
-			end = buffer.CharCount;
-			foreach (string fontItem in fontName) {
-				endIter = buffer.GetIterAtOffset (end);
-				beginIter = buffer.GetIterAtOffset (begin);
-				buffer.ApplyTag (fontItem, beginIter, endIter);
-			}	
-		}
-
-		private void Insert (TextBuffer buffer , string insertText)
-		{
-			TextIter insertIter;
-			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
-			buffer.Insert (insertIter, insertText);
 		}
 
   		private void WindowDelete (object o, DeleteEventArgs args)
@@ -431,10 +405,10 @@ namespace GtkDemo
 			TextIter insertIter;
 
 			TextBuffer bufferCB = new TextBuffer (null);
-			Insert (bufferCB, "This buffer is shared by a set of nested text views.\n Nested view:\n");
-			insertIter = bufferCB.GetIterAtMark(bufferCB.InsertMark);
-			TextChildAnchor anchor = bufferCB.CreateChildAnchor (insertIter);
-			Insert (bufferCB, "\nDon't do this in real applications, please.\n");
+			insertIter = bufferCB.GetIterAtOffset (0);
+			bufferCB.Insert (ref insertIter, "This buffer is shared by a set of nested text views.\n Nested view:\n");
+			TextChildAnchor anchor = bufferCB.CreateChildAnchor (ref insertIter);
+			bufferCB.Insert (ref insertIter, "\nDon't do this in real applications, please.\n");
 			TextView viewCB = new TextView (bufferCB);
 			
 			RecursiveAttach (0, viewCB, anchor);

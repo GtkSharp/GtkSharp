@@ -13,7 +13,6 @@ namespace GtkDemo
 	{
 		bool hoveringOverLink = false;
 		Gdk.Cursor handCursor, regularCursor;
-		TextIter lastIter;
 
 		public DemoHyperText () : base ("HyperText")
 		{
@@ -48,7 +47,6 @@ namespace GtkDemo
 			view.MotionNotifyEvent += new MotionNotifyEventHandler (OnMotionNotify);
 			view.VisibilityNotifyEvent += new VisibilityNotifyEventHandler (OnVisibilityNotify);
 			view.ButtonReleaseEvent += new ButtonReleaseEventHandler (OnButtonRelease);
-			view.Buffer.InsertText += new InsertTextHandler (OnTextInserted);
 
 			ShowPage (view.Buffer, 1);
 			return view;
@@ -58,7 +56,7 @@ namespace GtkDemo
 		// appearance of a hyperlink in a web browser: blue and underlined.
 		// Additionally, attaches some data on the tag, to make it recognizable
 		// as a link.
-		void InsertLink (TextBuffer buffer, TextIter iter, string text, int page)
+		void InsertLink (TextBuffer buffer, ref TextIter iter, string text, int page)
 		{
 			TextTag tag = new TextTag ("link");
 			tag.Foreground = "blue";
@@ -66,7 +64,7 @@ namespace GtkDemo
 			tag.Data.Add ("page", page);
 			buffer.TagTable.Add (tag);
 
-			buffer.InsertWithTags (iter, text, tag);
+			buffer.InsertWithTags (ref iter, text, tag);
 		}
 
 		// Fills the buffer with text and interspersed links. In any real
@@ -78,32 +76,32 @@ namespace GtkDemo
 
 			if (page == 1)
 			{
-				buffer.Insert (iter, "Some text to show that simple ");
-				InsertLink (buffer, lastIter, "hypertext", 3);
-				buffer.Insert (lastIter, " can easily be realized with ");
-				InsertLink (buffer, lastIter, "tags", 2);
-				buffer.Insert (lastIter, ".");
+				buffer.Insert (ref iter, "Some text to show that simple ");
+				InsertLink (buffer, ref iter, "hypertext", 3);
+				buffer.Insert (ref iter, " can easily be realized with ");
+				InsertLink (buffer, ref iter, "tags", 2);
+				buffer.Insert (ref iter, ".");
 			}
 			else if (page == 2)
 			{
-				buffer.Insert (iter, 
+				buffer.Insert (ref iter, 
 				"A tag is an attribute that can be applied to some range of text. " +
 				"For example, a tag might be called \"bold\" and make the text inside " +
 				"the tag bold. However, the tag concept is more general than that; " +
 				"tags don't have to affect appearance. They can instead affect the " +
 				"behavior of mouse and key presses, \"lock\" a range of text so the " +
 				"user can't edit it, or countless other things.\n");
-      				InsertLink (buffer, lastIter, "Go back", 1);
+      				InsertLink (buffer, ref iter, "Go back", 1);
 			}
 			else if (page == 3)
 			{
 				TextTag tag = new TextTag ("bold");
 				tag.Weight = Pango.Weight.Bold;
-				buffer.InsertWithTags (iter, "hypertext:\n", tag);
-				buffer.Insert (lastIter,
+				buffer.InsertWithTags (ref iter, "hypertext:\n", tag);
+				buffer.Insert (ref iter,
 				"machine-readable text that is not sequential but is organized" + 
 				"so that related items of information are connected.\n");
-				InsertLink (buffer, lastIter, "Go back", 1);
+				InsertLink (buffer, ref iter, "Go back", 1);
 			}
 		}
 
@@ -191,14 +189,6 @@ namespace GtkDemo
 
 			view.WindowToBufferCoords (TextWindowType.Widget, (int) a.Event.X, (int) a.Event.Y, out x, out y);
 			SetCursorIfAppropriate (view, x, y);
-		}
-
-		// When inserting text, iters are invalidated
-		// but the default handler provides us the iter
-		// at the end of inserted text
-		void OnTextInserted (object sender, InsertTextArgs a)
-		{
-			lastIter = a.Pos;
 		}
 
 		// Also update the cursor image if the window becomes visible

@@ -33,7 +33,8 @@ public string Text {
 
 public void Clear ()
 {
-	Delete (StartIter, EndIter);
+	Gtk.TextIter start = StartIter, end = EndIter;
+	Delete (ref start, ref end);
 }
 
 // overload to paste clipboard contents at cursor editable by default.
@@ -48,22 +49,38 @@ public void PasteClipboard (Gtk.Clipboard clipboard)
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, string text, int len);
 
-public void Insert (Gtk.TextIter iter, string text)
+public void Insert (ref Gtk.TextIter iter, string text)
 {
 	gtk_text_buffer_insert (Handle, ref iter, text, -1);
 }
 
-public void InsertWithTags (TextIter iter, string text, params TextTag[] tags)
+public void InsertWithTags (ref TextIter iter, string text, params TextTag[] tags)
 {
 	TextIter start;
 	int offset = iter.Offset;
-	Insert (iter, text);
+	Insert (ref iter, text);
 
 	start = GetIterAtOffset (offset);
 	iter = GetIterAtOffset (offset + text.Length);
 
 	foreach (TextTag t in tags)
 		this.ApplyTag (t, start, iter);
+}
+
+public void InsertWithTagsByName (ref TextIter iter, string text, params string[] tagnames)
+{
+	TextIter start;
+	int offset = iter.Offset;
+	Insert (ref iter, text);
+
+	start = GetIterAtOffset (offset);
+	iter = GetIterAtOffset (offset + text.Length);
+
+	foreach (string tagname in tagnames) {
+		TextTag tag = TagTable.Lookup (tagname);
+		if (tag != null)
+			this.ApplyTag (tag, start, iter);
+	}
 }
 
 public void SetText (string text)
@@ -74,7 +91,7 @@ public void SetText (string text)
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern bool gtk_text_buffer_insert_interactive(IntPtr raw, ref Gtk.TextIter iter, string text, int len, bool default_editable);
 
-public bool InsertInteractive(Gtk.TextIter iter, string text, bool default_editable)
+public bool InsertInteractive(ref Gtk.TextIter iter, string text, bool default_editable)
 {
 	return gtk_text_buffer_insert_interactive(Handle, ref iter, text, -1, default_editable);
 }

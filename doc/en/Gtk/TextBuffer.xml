@@ -36,12 +36,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Clears the contents in the current buffer</summary>
-        <remarks>
-          <para>
-            This is a convenience call to <see cref="M:Gtk.TextBuffer.Clear(Gtk.TextIter,Gtk.TextIter)" />.
-          </para>
-        </remarks>
+        <summary>Clears the contents of the buffer</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteMark">
@@ -177,13 +173,13 @@
       </Docs>
     </Member>
     <Member MemberName="InsertChildAnchor">
-      <MemberSignature Language="C#" Value="public void InsertChildAnchor (Gtk.TextIter iter, Gtk.TextChildAnchor anchor);" />
+      <MemberSignature Language="C#" Value="public void InsertChildAnchor (ref Gtk.TextIter iter, Gtk.TextChildAnchor anchor);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
       </Parameters>
       <Docs>
@@ -252,14 +248,14 @@
       </Docs>
     </Member>
     <Member MemberName="PasteClipboard">
-      <MemberSignature Language="C#" Value="public void PasteClipboard (Gtk.Clipboard clipboard, Gtk.TextIter override_location, bool default_editable);" />
+      <MemberSignature Language="C#" Value="public void PasteClipboard (Gtk.Clipboard clipboard, ref Gtk.TextIter override_location, bool default_editable);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="clipboard" Type="Gtk.Clipboard" />
-        <Parameter Name="override_location" Type="Gtk.TextIter" />
+        <Parameter Name="override_location" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
@@ -342,13 +338,13 @@
       </Docs>
     </Member>
     <Member MemberName="CreateChildAnchor">
-      <MemberSignature Language="C#" Value="public Gtk.TextChildAnchor CreateChildAnchor (Gtk.TextIter iter);" />
+      <MemberSignature Language="C#" Value="public Gtk.TextChildAnchor CreateChildAnchor (ref Gtk.TextIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextChildAnchor</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
         <summary>
@@ -393,13 +389,13 @@
       </Docs>
     </Member>
     <Member MemberName="InsertRange">
-      <MemberSignature Language="C#" Value="public void InsertRange (Gtk.TextIter iter, Gtk.TextIter start, Gtk.TextIter end);" />
+      <MemberSignature Language="C#" Value="public void InsertRange (ref Gtk.TextIter iter, Gtk.TextIter start, Gtk.TextIter end);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="start" Type="Gtk.TextIter" />
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
@@ -477,14 +473,14 @@
       </Docs>
     </Member>
     <Member MemberName="DeleteInteractive">
-      <MemberSignature Language="C#" Value="public bool DeleteInteractive (Gtk.TextIter start_iter, Gtk.TextIter end_iter, bool default_editable);" />
+      <MemberSignature Language="C#" Value="public bool DeleteInteractive (ref Gtk.TextIter start_iter, ref Gtk.TextIter end_iter, bool default_editable);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="start_iter" Type="Gtk.TextIter" />
-        <Parameter Name="end_iter" Type="Gtk.TextIter" />
+        <Parameter Name="start_iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="end_iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
@@ -520,14 +516,14 @@
       </Docs>
     </Member>
     <Member MemberName="Delete">
-      <MemberSignature Language="C#" Value="public void Delete (Gtk.TextIter start, Gtk.TextIter end);" />
+      <MemberSignature Language="C#" Value="public void Delete (ref Gtk.TextIter start, ref Gtk.TextIter end);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="start" Type="Gtk.TextIter" />
-        <Parameter Name="end" Type="Gtk.TextIter" />
+        <Parameter Name="start" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="end" Type="Gtk.TextIter&amp;" RefType="ref" />
       </Parameters>
       <Docs>
         <summary>
@@ -542,8 +538,8 @@
             actually fires off  the <see cref="E:Gtk.TextBuffer.DeleteRange" /> event, and the default
             handler of that signal deletes the text. Because the
             buffer is modified, all outstanding iterators become
-            invalid after calling this function; however, the start
-            and end will be re-initialized to point to the location
+            invalid after calling this function; however, <paramref name="start" />
+            and <paramref name="end" /> will be re-initialized to point to the location
             where text was deleted.
           </para>
         </remarks>
@@ -705,13 +701,13 @@
       </Docs>
     </Member>
     <Member MemberName="InsertRangeInteractive">
-      <MemberSignature Language="C#" Value="public bool InsertRangeInteractive (Gtk.TextIter iter, Gtk.TextIter start, Gtk.TextIter end, bool default_editable);" />
+      <MemberSignature Language="C#" Value="public bool InsertRangeInteractive (ref Gtk.TextIter iter, Gtk.TextIter start, Gtk.TextIter end, bool default_editable);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="start" Type="Gtk.TextIter" />
         <Parameter Name="end" Type="Gtk.TextIter" />
         <Parameter Name="default_editable" Type="System.Boolean" />
@@ -804,13 +800,13 @@
       </Docs>
     </Member>
     <Member MemberName="InsertPixbuf">
-      <MemberSignature Language="C#" Value="public void InsertPixbuf (Gtk.TextIter iter, Gdk.Pixbuf pixbuf);" />
+      <MemberSignature Language="C#" Value="public void InsertPixbuf (ref Gtk.TextIter iter, Gdk.Pixbuf pixbuf);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
@@ -1231,13 +1227,13 @@
       </Docs>
     </Member>
     <Member MemberName="Insert">
-      <MemberSignature Language="C#" Value="public void Insert (Gtk.TextIter iter, string text);" />
+      <MemberSignature Language="C#" Value="public void Insert (ref Gtk.TextIter iter, string text);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
@@ -1271,13 +1267,13 @@
       </Docs>
     </Member>
     <Member MemberName="InsertInteractive">
-      <MemberSignature Language="C#" Value="public bool InsertInteractive (Gtk.TextIter iter, string text, bool default_editable);" />
+      <MemberSignature Language="C#" Value="public bool InsertInteractive (ref Gtk.TextIter iter, string text, bool default_editable);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="text" Type="System.String" />
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
@@ -1646,21 +1642,40 @@
       </Docs>
     </Member>
     <Member MemberName="InsertWithTags">
-      <MemberSignature Language="C#" Value="public void InsertWithTags (Gtk.TextIter iter, string text, Gtk.TextTag[] tags);" />
+      <MemberSignature Language="C#" Value="public void InsertWithTags (ref Gtk.TextIter iter, string text, Gtk.TextTag[] tags);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="iter" Type="Gtk.TextIter" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="text" Type="System.String" />
         <Parameter Name="tags" Type="Gtk.TextTag[]" />
       </Parameters>
       <Docs>
         <summary>Inserts <paramref name="text" /> into buffer at <paramref name="iter" />, applying the list of <paramref name="tags" /> to the newly-inserted text.</summary>
-        <param name="iter">a <see cref="T:Gtk.TextIter" /></param>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="tags">a <see cref="T:Gtk.TextTag" /></param>
+        <param name="iter">location to insert the text</param>
+        <param name="text">text to insert</param>
+        <param name="tags">tags to apply to <paramref name="text" /></param>
+        <remarks>Equivalent to calling <see cref="M:Gtk.TextBuffer.Insert()" />, then <see cref="Gtk.TextBuffer.ApplyTag()" /> on the inserted text; It is just a convenience function.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertWithTagsByName">
+      <MemberSignature Language="C#" Value="public void InsertWithTagsByName (ref Gtk.TextIter iter, string text, string [] tagnames);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="text" Type="System.String" />
+        <Parameter Name="tagnames" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <summary>Inserts <paramref name="text" /> into buffer at <paramref name="iter" />, applying the list of tags with names <paramref name="tagnamess" /> to the newly-inserted text.</summary>
+        <param name="iter">location to insert the text</param>
+        <param name="text">text to insert</param>
+        <param name="tagnames">names of the tags to apply to <paramref name="text" /></param>
         <remarks>Equivalent to calling <see cref="M:Gtk.TextBuffer.Insert()" />, then <see cref="Gtk.TextBuffer.ApplyTag()" /> on the inserted text; It is just a convenience function.</remarks>
       </Docs>
     </Member>
