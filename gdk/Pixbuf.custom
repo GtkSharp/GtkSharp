@@ -1,3 +1,8 @@
+//
+// Extensions to Pixbuf
+//
+//
+
 		IntPtr LoadFromStream (System.IO.Stream input)
 		{
 			PixbufLoader loader = new PixbufLoader ();
@@ -61,4 +66,82 @@
 			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
 			ret.Unref ();
 			return ret;
+		}
+
+//
+// These are temporary bug fixes: there are a number of entry points that
+// are currently miss-generated.
+//
+
+		[DllImport("gdk_pixbuf-2.0")]
+		static extern IntPtr gdk_pixbuf_new_from_data(
+					byte [] data, int colorspace, bool has_alpha, 
+					int bits_per_sample, int width, int height, int rowstride, 
+					GdkSharp.PixbufDestroyNotifyNative destroy_fn, System.IntPtr destroy_fn_data);
+
+		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn)
+		{
+			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
+			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
+			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
+		}
+
+
+		[DllImport("gdk_pixbuf-2.0")]
+		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, byte [] data, bool copy_pixels, out IntPtr error);
+
+		public unsafe Pixbuf(byte[] data, bool copy_pixels)
+		{
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_new_from_inline(data.Length, data, copy_pixels, out error);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+		}
+
+		[DllImport("gdk_pixbuf-2.0")]
+		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
+		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels)
+		{
+			IntPtr error = IntPtr.Zero;
+			Raw = gdk_pixbuf_new_from_inline(data_length, (IntPtr) data, copy_pixels, out error);
+			if (error != IntPtr.Zero) throw new GLib.GException (error);
+		}
+	
+//
+// ICloneable interface
+//
+
+		public object Clone ()
+		{
+			return Copy ();
+		}
+
+
+//
+// These are factory versions of a couple of existing methods, but simplify
+// the process by reducing the number of steps required.  Here a single 
+// operation will create the Pixbuf instead of two
+//
+
+		/// <summary> GetFromDrawable Method </summary>
+		/// <remarks> To be completed </remarks>
+		public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
+			IntPtr raw_ret = gdk_pixbuf_get_from_drawable((IntPtr) 0, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
+			return new Pixbuf (raw_ret);
+		}
+
+//
+// Add an overload that takes System.Drawing.Color arguments instead of uint32 values for colors
+//
+		public void CompositeColor(Gdk.Pixbuf dest, int dest_x, int dest_y, int dest_width, int dest_height, 
+					   double offset_x, double offset_y, double scale_x, double scale_y, 
+					   Gdk.InterpType interp_type, int overall_alpha, int check_x, int check_y, 
+					   int check_size, System.Drawing.Color color1, System.Drawing.Color color2) 
+	 	{
+			gdk_pixbuf_composite_color(Handle, dest.Handle, dest_x, dest_y, dest_width, dest_height, offset_x, 
+				offset_y, scale_x, scale_y, (int) interp_type, overall_alpha, check_x, check_y, check_size, 
+				(uint) color1.ToArgb (), (uint) color2.ToArgb ());
+		}
+		
+		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, System.Drawing.Color color1, System.Drawing.Color color2) {
+			return CompositeColorSimple (dest_width, dest_height, interp_type, overall_alpha, check_size, (uint) color1.ToArgb (), (uint) color2.ToArgb ());
 		}
