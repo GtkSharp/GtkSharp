@@ -92,8 +92,7 @@ namespace GtkSharp.Generation {
 		
 		private String Trim(String type)
 		{
-			char[] ast = {'*'};
-			String trim_type = type.TrimEnd(ast);
+			String trim_type = type.TrimEnd('*');
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
 		}

@@ -18,7 +18,7 @@ namespace GtkSharp.Generation {
 				Console.WriteLine ("Usage: codegen <filename>");
 				return 0;
 			}
-			
+
 			Parser p = new Parser (args[0]);
 			SymbolTable table = p.Parse ();
 			Console.WriteLine (table.Count + " types parsed.");
