@@ -65,13 +65,13 @@
         <Parameter Name="attrs_len" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="level">a <see cref="T:System.Int32" /></param>
-        <param name="language">a <see cref="T:Pango.Language" /></param>
-        <param name="log_attrs">a <see cref="T:Pango.LogAttr" /></param>
+        <summary>Computes a <see cref="T:Pango.LogAttr" /> for each character in <paramref name="text" />.</summary>
+        <param name="text"> text to process</param>
+        <param name="level"> embedding level, or -1 if unknown</param>
+        <param name="language"> language tag</param>
+        <param name="log_attrs"> array with one PangoLogAttr per character in text, plus one extra, to be filled in</param>
         <param name="attrs_len">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The <paramref name="log_attrs" /> array must have one <see cref="T:Pango.LogAttr" /> for each position in text; if text contains N characters, it has N+1 positions, including the last position at the end of the text. text should be an entire paragraph; logical attributes cannot be computed without context (for example you need to see spaces on either side of a word to know the word is a word).</remarks>
       </Docs>
     </Member>
     <Member MemberName="SkipSpace">
@@ -96,9 +96,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Pango.Global" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ParseWeight">
@@ -193,11 +193,15 @@
         <Parameter Name="next_paragraph_start" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">a <see cref="T:System.String" /></param>
-        <param name="paragraph_delimiter_index">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="next_paragraph_start">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Locates a paragraph boundary in <paramref name="text" />.</summary>
+        <param name="text"> UTF-8 text</param>
+        <param name="paragraph_delimiter_index"> return location for index of delimiter</param>
+        <param name="next_paragraph_start"> return location for start of next paragraph</param>
+        <remarks>
+          <para>
+A boundary is caused by delimiter characters, such as a newline, carriage return, carriage return-newline pair, or Unicode paragraph separator character. The index of the run of delimiters is returned in <paramref name="paragraph_delimiter_index" />. The index of the start of the paragraph (index after all delimiters) is stored in <paramref name="next_paragraph_start" />.
+</para>
+If no delimiters are found, both <paramref name="paragraph_delimiter_index" /> and <paramref name="next_paragraph_start" /> are filled with the length of text (an index one off the end).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScanInt">
