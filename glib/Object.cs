@@ -37,7 +37,7 @@ namespace GLib {
 		protected bool needs_ref = true;
 		EventHandlerList _events;
 		bool disposed = false;
-		Hashtable Data;
+		Hashtable data;
 		static Hashtable Objects = new Hashtable();
 		static Queue PendingDestroys = new Queue ();
 		static bool idle_queued;
@@ -327,35 +327,20 @@ namespace GLib {
 		}
 
 		/// <summary>
-		///	GetData Method
+		///	Data property
 		/// </summary>
 		///
 		/// <remarks>
-		///	Accesses arbitrary data storage on the Object.
+		///	Stores and Accesses arbitrary data on the Object.
 		/// </remarks>
 
-		public object GetData (string key)
-		{
-			if (Data == null)
-				return String.Empty;
-
-			return Data [key];
-		}
-
-		/// <summary>
-		///	SetData Method
-		/// </summary>
-		///
-		/// <remarks>
-		///	Stores arbitrary data on the Object.
-		/// </remarks>
-
-		public void SetData (string key, object val)
-		{
-			if (Data == null)
-				Data = new Hashtable ();
-
-			Data [key] = val;
+		public Hashtable Data {
+			get { 
+				if (data == null)
+					data = new Hashtable ();
+				
+				return data;
+			}
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
