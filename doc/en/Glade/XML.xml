@@ -1,5 +1,5 @@
 <Type Name="XML" FullName="Glade.XML">
-  <TypeSignature Language="C#" Value="public class XML : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class XML : GLib.Object, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>glade-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Allows dynamic loading of user interfaces from XML descriptions</summary>
+    <remarks></remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -30,13 +30,15 @@
         <ReturnType>Glade.XML</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="w" Type="Gtk.Widget" />
-	</Parameters>
+        <Parameter Name="w" Type="Gtk.Widget" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="w">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Glade.XML'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the parent <see cref="T:Glade.XML" /> widget</summary>
+        <param name="w">a <see cref="T:Gtk.Widget" /></param>
+        <returns>
+	  the <see cref="T:Glade.XML" /> object that built <see paramref="w" />, or <see langword="null" /> if <see paramref="w" /> is not built from Glade
+	</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetWidgetName">
@@ -46,13 +48,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="w" Type="Gtk.Widget" />
-	</Parameters>
+        <Parameter Name="w" Type="Gtk.Widget" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="w">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the name of a Glade-built widget</summary>
+        <param name="w">a <see cref="T:Gtk.Widget" /> built from Glade</param>
+        <returns>the name of the <see paramref="w" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCustomHandler">
@@ -62,12 +64,23 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="handler" Type="Glade.XMLCustomWidgetHandler" />
-	</Parameters>
+        <Parameter Name="handler" Type="Glade.XMLCustomWidgetHandler" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler">To be added: an object of type 'Glade.XMLCustomWidgetHandler'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  This function allows you to override the default behaviour
+	  when a Custom widget is found in an interface. 
+	</summary>
+        <param name="handler">the custom widget handler</param>
+        <remarks>
+          <para>
+	    Calling this function allows you to override the default
+	    behaviour when a Custom widget is found in an
+	    interface. This could be used by a language binding to
+	    call some other function, or to limit what functions can
+	    be called to create custom widgets
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BindFields">
@@ -77,8 +90,8 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="type" Type="System.Type" />
-	</Parameters>
+        <Parameter Name="type" Type="System.Type" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="type">To be added: an object of type 'Type'</param>
@@ -92,8 +105,8 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="target" Type="System.Object" />
-	</Parameters>
+        <Parameter Name="target" Type="System.Object" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="target">To be added: an object of type 'object'</param>
@@ -107,12 +120,17 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="handler_class" Type="System.Type" />
-	</Parameters>
+        <Parameter Name="handler_class" Type="System.Type" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler_class">To be added: an object of type 'Type'</param>
-        <remarks>To be added</remarks>
+        <summary>Automatically connect signals</summary>
+        <param name="handler_class">a <see cref="T:System.Type" /> with handler methods</param>
+        <remarks>
+          <para>
+	    Connects the signals defined in the glade file with static handler methods provided by the given <see cref="T:System.Type" />,
+	    <see paramref="handler_class" />.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Autoconnect">
@@ -122,12 +140,16 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="handler" Type="System.Object" />
-	</Parameters>
+        <Parameter Name="handler" Type="System.Object" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler">To be added: an object of type 'object'</param>
-        <remarks>To be added</remarks>
+        <summary>Automatically connect signals</summary>
+        <param name="handler">an <see cref="T:System.Object" /> with handler methods</param>
+        <remarks>
+          <para>
+	    Connects the signals definied in the glade file with static handler methods provided by the given object, <see paramref="handler" />.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetCommonParams">
@@ -137,14 +159,26 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="widget" Type="Gtk.Widget" />
-		<Parameter Name="info" Type="Glade.WidgetInfo" />
-	</Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="info" Type="Glade.WidgetInfo" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="info">To be added: an object of type 'Glade.WidgetInfo'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  Sets the common parameters on a widget, and is responsible for
+	  inserting it into the <see cref="T:Glade.XML" /> object's internal structures.
+	</summary>
+        <param name="widget">the widget to set parameters on</param>
+        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for <see paramref="widget" /></param>
+        <remarks>
+          <para>
+	    Sets the common parameters on <see cref="widget" />, and is responsible
+	    for inserting it into the <see cref="T:Glade.XML" /> object's internal
+	    structures.  It will also add the children to this widget.
+	    Usually this function is only called by
+	    <see cref="T:Glade.XML.BuildWidget(Glade.WidgetInfo)" />, but is exposed for difficult
+	    cases, such as setting up <see cref="T:Gtk.Toolbar" /> buttons and the like.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleInternalChild">
@@ -154,14 +188,26 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="parent" Type="Gtk.Widget" />
-		<Parameter Name="child_info" Type="Glade.ChildInfo" />
-	</Parameters>
+        <Parameter Name="parent" Type="Gtk.Widget" />
+        <Parameter Name="child_info" Type="Glade.ChildInfo" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="parent">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="child_info">To be added: an object of type 'Glade.ChildInfo'</param>
-        <remarks>To be added</remarks>
+        <summary>
+	  This function is intended to be called by the build_children
+	  callback for container widgets.
+	</summary>
+        <param name="parent">the parent widget</param>
+        <param name="child_info">the <see cref="T:Glade.ChildInfo" /> structure for the child</param>
+        <remarks>
+          <para>
+	     This function is intended to be called by the
+	     build_children callback for container widgets.  If the
+	     build_children callback encounters a child with the
+	     internal-child attribute set, then it should call this
+	     function to handle it and then continue on to the next
+	     child.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SignalAutoconnect">
@@ -183,10 +229,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="fname" Type="System.String" />
-		<Parameter Name="root" Type="System.String" />
-		<Parameter Name="domain" Type="System.String" />
-	</Parameters>
+        <Parameter Name="fname" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="fname">To be added: an object of type 'string'</param>
@@ -216,11 +262,11 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="parent" Type="Gtk.Widget" />
-		<Parameter Name="child" Type="Gtk.Widget" />
-		<Parameter Name="name" Type="System.String" />
-		<Parameter Name="value" Type="System.String" />
-	</Parameters>
+        <Parameter Name="parent" Type="Gtk.Widget" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="parent">To be added: an object of type 'Gtk.Widget'</param>
@@ -237,8 +283,8 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="info" Type="Glade.WidgetInfo" />
-	</Parameters>
+        <Parameter Name="info" Type="Glade.WidgetInfo" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="info">To be added: an object of type 'Glade.WidgetInfo'</param>
@@ -253,8 +299,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="filename" Type="System.String" />
-	</Parameters>
+        <Parameter Name="filename" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="filename">To be added: an object of type 'string'</param>
@@ -269,8 +315,8 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="func" Type="Glade.XMLConnectFunc" />
-	</Parameters>
+        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="func">To be added: an object of type 'Glade.XMLConnectFunc'</param>
@@ -284,10 +330,10 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="widget" Type="Gtk.Widget" />
-		<Parameter Name="prop_name" Type="System.String" />
-		<Parameter Name="value_name" Type="System.String" />
-	</Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="prop_name" Type="System.String" />
+        <Parameter Name="value_name" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="widget">To be added: an object of type 'Gtk.Widget'</param>
@@ -303,8 +349,8 @@
         <ReturnType>GLib.List</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="name" Type="System.String" />
-	</Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="name">To be added: an object of type 'string'</param>
@@ -319,8 +365,8 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="name" Type="System.String" />
-	</Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="name">To be added: an object of type 'string'</param>
@@ -335,10 +381,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="pspec" Type="System.IntPtr" />
-		<Parameter Name="str1ng" Type="System.String" />
-		<Parameter Name="value" Type="GLib.Value" />
-	</Parameters>
+        <Parameter Name="pspec" Type="System.IntPtr" />
+        <Parameter Name="str1ng" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="pspec">To be added: an object of type 'IntPtr'</param>
@@ -355,9 +401,9 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="handler_name" Type="System.String" />
-		<Parameter Name="func" Type="Glade.XMLConnectFunc" />
-	</Parameters>
+        <Parameter Name="handler_name" Type="System.String" />
+        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="handler_name">To be added: an object of type 'string'</param>
@@ -382,8 +428,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -398,10 +444,10 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="fname" Type="System.String" />
-		<Parameter Name="root" Type="System.String" />
-		<Parameter Name="domain" Type="System.String" />
-	</Parameters>
+        <Parameter Name="fname" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="fname">To be added: an object of type 'string'</param>
@@ -416,11 +462,11 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="buffer" Type="System.String" />
-		<Parameter Name="size" Type="System.Int32" />
-		<Parameter Name="root" Type="System.String" />
-		<Parameter Name="domain" Type="System.String" />
-	</Parameters>
+        <Parameter Name="buffer" Type="System.String" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="buffer">To be added: an object of type 'string'</param>
@@ -484,8 +530,7 @@
       <ReturnValue>
         <ReturnType>Gtk.Window</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="value">To be added: an object of type 'Gtk.Window'</param>
@@ -498,8 +543,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
@@ -514,10 +559,10 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="s" Type="System.IO.Stream" />
-		<Parameter Name="root" Type="System.String" />
-		<Parameter Name="domain" Type="System.String" />
-	</Parameters>
+        <Parameter Name="s" Type="System.IO.Stream" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="s">a <see cref="T:System.IO.Stream" /></param>
@@ -532,11 +577,11 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="assembly" Type="System.Reflection.Assembly" />
-		<Parameter Name="resource_name" Type="System.String" />
-		<Parameter Name="root" Type="System.String" />
-		<Parameter Name="domain" Type="System.String" />
-	</Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource_name" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>To be added</summary>
         <param name="assembly">a <see cref="T:System.Reflection.Assembly" /></param>
