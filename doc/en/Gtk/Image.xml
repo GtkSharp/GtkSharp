@@ -9,12 +9,13 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>This <see cref="T:Gtk.Widget" /> is used to display an
-  image. It can be used as a container for a <see cref="Gdk.Pixbuf" />
-  or a <see cref="Gdk.PixbufAnimation" /> to get custom interfaces.
-  <see cref="Gtk.Image" /> cannot launch events, it's neccessary to
-  include it inside a <see cref="Gtk.EventBox" /> for that purpose.</summary>
-    <remarks />
+    <summary><see cref="T:Gtk.Widget" /> used to display an image. </summary>
+    <remarks>
+		<see cref="T:Gtk.Image"/> can be used as a container for a <see cref="Gdk.Pixbuf" />
+  		or a <see cref="Gdk.PixbufAnimation" /> to get custom interfaces.
+  		<see cref="Gtk.Image" /> cannot launch events, it is neccessary to
+  		include it inside a <see cref="Gtk.EventBox" /> for that purpose.
+		</remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Misc</BaseTypeName>
@@ -46,10 +47,16 @@
         <Parameter Name="size" Type="Gtk.IconSize" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_set">To be added: an object of type 'Gtk.IconSet'</param>
-        <param name="size">To be added: an object of type 'Gtk.IconSize'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates a <see cref="T:Gtk.Image"/> displaying an <see cref="T:Gtk.IconSet"/>.</summary>
+        <param name="icon_set">an object of type <see cref="T:Gtk.IconSet"/></param>
+        <param name="size">an object of type <see cref="T:Gtk.IconSize"/></param>
+        <remarks>
+					Creates a <see cref="T:Gtk.Image"/> displaying an <see cref="T:Gtk.IconSet"/>.
+					Sample stock sizes are <see cref="F:Gtk.IconSize.Menu"/>, <see cref="F:Gtk.IconSize.SmallToolbar"/>.
+					Instead of using this function, usually it's better to create a <see cref="T:Gtk.IconFactory"/>, put your <see cref="T:Gtk.IconSet"/> in the <see cref="T:Gtk.IconFactory"/>,
+					add the <see cref="T:Gtk.IconFactory"/> to the list of default factories with <see cref="M:Gtk.IconFactory.AddDefault()"/>, and then use <see cref="M:Gtk.Image.SetFromStock(System.String,Gtk.IconSize)"/>.
+					This will allow themes to override the icon you ship with your application.
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFromImage">
@@ -63,10 +70,13 @@
         <Parameter Name="mask" Type="Gdk.Bitmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gdk_image">To be added: an object of type 'Gdk.Image'</param>
-        <param name="mask">To be added: an object of type 'Gdk.Bitmap'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates a <see cref="T:Gtk.Image"/> widget displaying an image with a mask.</summary>
+        <param name="gdk_image">an object of type <see cref="T:Gdk.Image"/></param>
+        <param name="mask">an object of type <see cref="T:Gdk.Bitmap"/></param>
+        <remarks>
+					Creates a <see cref="T:Gtk.Image"/> widget displaying an image with a mask.
+					A <see cref="T:Gdk.Image"/> is a client-side image buffer in the pixel format of the current display.
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFromStock">
@@ -80,10 +90,16 @@
         <Parameter Name="size" Type="Gtk.IconSize" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="stock_id">To be added: an object of type 'string'</param>
-        <param name="size">To be added: an object of type 'Gtk.IconSize'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates a <see cref="T:Gtk.Image"/> displaying a stock icon.</summary>
+        <param name="stock_id">an object of type <see cref="T:System.String"/></param>
+        <param name="size">an object of type <see cref="T:Gtk.IconSize"/></param>
+        <remarks>
+					Creates a <see cref="T:Gtk.Image"/> displaying a stock icon.
+					Sample stock icon names are <see cref="P:Gtk.Stock.Open"/>, <see cref="P:Gtk.Stock.Ok"/>.
+					Sample stock sizes are <see cref="F:Gtk.IconSize.Menu"/>, <see cref="F:Gtk.IconSize.SmallToolbar"/>.
+					If the stock icon name isn't known, a "broken image" icon will be displayed instead.
+					You can register your own stock icon names, see <see cref="M:Gtk.IconFactory.AddDefault()"/> and <see cref="M:Gtk.IconFactory.Add()"/>.
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFromPixmap">
@@ -97,10 +113,13 @@
         <Parameter Name="mask" Type="Gdk.Bitmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pixmap">To be added: an object of type 'Gdk.Pixmap'</param>
-        <param name="mask">To be added: an object of type 'Gdk.Bitmap'</param>
-        <remarks>To be added</remarks>
+        <summary>Creates a <see cref="T:Gtk.Image"/> widget displaying an image with a mask.</summary>
+        <param name="pixmap">an object of type <see cref="T:Gdk.Pixmap"/></param>
+        <param name="mask">an object of type <see cref="T:Gdk.Bitmap"/></param>
+        <remarks>
+					Creates a <see cref="T:Gtk.Image"/> widget displaying an image with a mask.
+					A <see cref="T:Gdk.Image"/> is a client-side image buffer in the pixel format of the current display.
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -279,8 +298,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.Image</summary>
-        <returns>The GLib Type for the Gtk.Image class.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.Image"/></summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.Image"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -294,10 +313,10 @@
         <Parameter Name="value" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <returns>To be added: an object of type 'Gdk.Pixbuf'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a <see cref="T:Gtk.Image"/> displaying <see cref="T:Gdk.Pixbuf"/>.</summary>
+        <param name="value">an object of type <see cref="T:Gdk.Pixbuf"/></param>
+        <returns>an object of type <see cref="T:Gdk.Pixbuf"/></returns>
+        <remarks>Creates a <see cref="T:Gtk.Image"/> displaying <see cref="T:Gdk.Pixbuf"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Animation">
@@ -308,7 +327,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.PixbufAnimation'</returns>
+        <returns>an object of type <see cref="T:Gdk.PixbufAnimation"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -323,8 +342,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.PixbufAnimation'</param>
-        <returns>To be added: an object of type 'Gdk.PixbufAnimation'</returns>
+        <param name="value">an object of type <see cref="T:Gdk.PixbufAnimation"/></param>
+        <returns>an object of type <see cref="T:Gdk.PixbufAnimation"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -339,8 +358,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -355,8 +374,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -389,8 +408,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <param name="value">an object of type <see cref="T:System.Int32"/></param>
+        <returns>an object of type <see cref="T:System.Int32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -405,8 +424,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <param name="value">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.String"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -418,7 +437,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.ImageType'</returns>
+        <returns>an object of type <see cref="T:Gtk.ImageType"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -469,8 +488,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixmap'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
+        <param name="value">an object of type <see cref="T:Gdk.Pixmap"/></param>
+        <returns>an object of type <see cref="T:Gdk.Pixmap"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -510,8 +529,8 @@
         <remarks />
 
               <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Image'</param>
-        <returns>To be added: an object of type 'Gdk.Image'</returns>
+        <param name="value">an object of type <see cref="T:Gdk.Image"/></param>
+        <returns>an object of type <see cref="T:Gdk.Image"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
