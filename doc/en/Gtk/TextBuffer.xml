@@ -1691,10 +1691,19 @@
         <Parameter Name="bound" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary> This function moves the <paramref name="insert"/> and 
+	  <paramref name="selection_bound"/> marks simultaneously.  
+	</summary>
         <param name="ins">a <see cref="T:Gtk.TextIter" /></param>
         <param name="bound">a <see cref="T:Gtk.TextIter" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  If you move them in two steps
+	  with <see cref="M:Gtk.TextBuffer.MoveMark"/>, you will temporarily select a
+	  region in between their old and new locations, which can be pretty
+	  inefficient since the temporarily-selected region will force stuff
+	  to be recalculated. This function moves them as a unit, which can
+	  be optimized.
+	</remarks>
       </Docs>
     </Member>
   </Members>

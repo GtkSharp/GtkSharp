@@ -1176,10 +1176,13 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves up to <paramref name="count"/> visible cursor positions.
+	</summary>
         <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+	<returns>a <see cref="T:System.Boolean" />, true if the iter was moved and is in a dereferenceable position.</returns>
+        <remarks>
+	  See <see cref="M:Gtk.TextIter.ForwardCursorPosition"/> for details.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardVisibleWordStarts">
@@ -1192,10 +1195,10 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Calls <see cref="M:Gtk.TextIter.BackwardVisibleWordStart"/> up to <paramref name="count"/> times.</summary>
         <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end of the text.</returns>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="ForwardVisibleCursorPosition">
@@ -1206,9 +1209,9 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves the iterator forward to the next visible cursor position.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>See <see cref="M:Gtk.TextIter.ForwardCursorPosition"/> for details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardVisibleCursorPositions">
@@ -1221,10 +1224,10 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Moves backward up to <paramref name="count"/> visible cursor positions.</summary>
         <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, true if the cursor was moved and is in a dereferenceable position.</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition"/> for details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardVisibleWordEnd">
@@ -1235,9 +1238,17 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary> 
+	  Moves forward to the next visible word end.
+	  (If the iterator is currently on a
+	  word end, moves forward to the next one after that.) 
+	</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end.</returns>
+        <remarks>
+	  Word breaks are determined by Pango and should be correct for nearly any
+	  language (if not, the correct fix would be to the Pango word break
+	  algorithms).
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardVisibleCursorPosition">
@@ -1248,9 +1259,10 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Moves the iterator back to the previous visible cursor position.
+</summary>
+        <returns>a <see cref="T:System.Boolean" />, true if the iter moved and the new position is dereferenceable</returns>
+        <remarks>See <see cref="M:Gtk.TextIter.BackwardCursorPosition"/> for details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForwardVisibleWordEnds">
@@ -1263,10 +1275,18 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary> 
+	  Moves forward to the next visible word end. (If the 
+	  iterator is currently on a word end, moves forward to the next 
+	  one after that.) 
+	</summary>
         <param name="count">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, true if the iterator moved and is not at the end.</returns>
+        <remarks>
+	  Word breaks are determined by Pango and should be correct for nearly any
+	  language (if not, the correct fix would be to the Pango word break
+	  algorithms).
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackwardVisibleWordStart">
@@ -1277,9 +1297,16 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Moves backward to the previous visible word start. (If the iterator is currently 
+	  on a word start, moves backward to the next one after that.) 
+	</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Word breaks are determined by Pango and should be correct for nearly any
+	  language (if not, the correct fix would be to the Pango word break
+	  algorithms).
+	</remarks>
       </Docs>
     </Member>
   </Members>
