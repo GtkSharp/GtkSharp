@@ -1,56 +1,126 @@
 #!/usr/bin/perl
+# 
+# defs-parse.pl : Gtk+ defs format parser and code generator.
+#
+# Author: Mike Kestner <mkestner@speakeasy.net>
+#
+# <c> 2001 Mike Kestner
 
-while ($line = <STDIN>) {
+%maptypes = (
+	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
+	'guint32', "uint", 'const-gchar', "String", 'GObject', "GLib.Object",
+	'gchar', "String");
 
-	if ($line =~ /^\(define-(enum|flags)/) {
-		parse_enum_flags ();
+%marshaltypes = (
+	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
+	'guint32', "uint", 'const-gchar', "IntPtr", 'GObject', "IntPtr",
+	'gchar', "IntPtr");
+
+while ($def = get_def()) {
+
+	if ($def =~ /^\(define-(enum|flags)/) {
+		gen_enum (split (/\n/, $def));
+	} elsif ($def =~ /^\(define-object (\w+)/) {
+		$name = $1;
+		$def =~ /c-name "(\w+)"/;
+		$cname=$1;
+		$def =~ s/\n\s*//g;
+		$objects{$cname} = $def;
+		$maptypes{$cname} = $name;
+		$marshaltypes{$cname} = "IntPtr";
+	} elsif ($def =~ /^\(define-(prop|event|method)/) {
+		$def =~ /of-object "(\w+)"/;
+		$cname=$1;
+		$def =~ s/\n\s*//g;
+		$objects{$cname} .= "\n$def";
+	} elsif ($def =~ /^\(define-(interface)/) {
+		# Nothing much to do here, I think.
+	} elsif ($def =~ /^\(define-(boxed|function)/) {
+		# Probably need to handle these though...
+	} else {
+		die "Unexpected definition $def\n";
 	}
+
 }
 
-sub parse_enum_flags ()
+foreach $key (sort (keys (%objects))) {
+	next if ($key !~ /(GtkBin|GtkButton|GtkContainer|GtkObject|GtkWidget|GtkWindow)$/);
+	gen_object (split (/\n/, $objects{$key}));
+}
+
+###############
+# subroutines
+###############
+
+# Gets a single definition from the input stream.
+sub get_def
 {
+	while ($line = <STDIN>) {
+		next if ($line !~ /^\(define/);
+		$expr = $line;
+		do { 
+			$line = <STDIN>; 
+			$expr .= $line; 
+		} until ($line =~ /^\)/);
+		return $expr;
+	}
+	return;
+}
+
+# Converts a dash or underscore separated name to StudlyCaps.
+sub StudCaps
+{
+	my ($symb) = @_;
+	$symb =~ s/^([a-z])/\u\1/;
+	$symb =~ s/[-_]([a-z])/\u\1/g;
+	$symb =~ s/[-_](\d)/\1/g;
+	return $symb;
+}
+
+# Code generation for the enum and flags definitions.
+sub gen_enum 
+{
+	my (@lines) = @_;
+	$line = $lines[$pos=0];
 	$line =~ /^\(define-(enum|flags) (\w+)/;
 	$type = $1;
 	$typename = $2;
 
-	$line = <STDIN>;
+	$line = $lines[++$pos];
 	$line =~ /\(in-module "(\w+)"/;
 	$namespace = $1;
 
-	do { $line = <STDIN>; } until ($line =~ /\(values/);
+	$maptypes{"$namespace$typename"} = $typename;
+	$marshaltypes{"$namespace$typename"} = "int";
+
+	do { $line = $lines[++$pos]; } until ($line =~ /\(values/);
 
 	@enums = ();
-	while ($line = <STDIN>) {
+	while ($line = $lines[++$pos]) {
 		last if ($line =~ /^\s*\)/);
-
 		if ($line =~ /\((.+)\)/) {
 			($name, $dontcare, $val) = split (/ /, $1);
 			$name =~ s/\"//g;
-			$name =~ s/^([a-z])/\u\1/;
-			$name =~ s/\-([a-z])/\u\1/g;
-			$name =~ s/\-(\d)/\1/g;
+			$name = StudCaps ($name);
 			@enums = (@enums, "$name:$val");
-		} else {
-			die $line;
 		}
 	}
 
-	$dir = lc ($namespace);
-	if (! -e "../$dir") { 
-		`mkdir ../$dir`; 
-	}
+	$dir = "../generated/" . lc ($namespace);
+	`mkdir -p $dir`;
 
-	open (OUTFILE, ">../$dir/$typename.cs") || die "can't open file";
+	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
 	
 	print OUTFILE "// Generated file: Do not modify\n\n";
 	print OUTFILE "namespace $namespace {\n\n";
 	print OUTFILE "\t/// <summary> $typename Enumeration </summary>\n";
-	print OUTFILE "\t/// <remarks>\n\t///\t Valid values:\n";
+	print OUTFILE "\t/// <remarks> Valid values:\n";
+	print OUTFILE "\t///\t<list type = \"bullet\">\n";
 	foreach $enum (@enums) {
 		($name) = split (/:/, $enum);
-		print OUTFILE "\t///\t\t$name\n"
+		print OUTFILE "\t///\t\t<item> $name </item>\n"
 	}
-	print OUTFILE "\t/// </remarks>\n\n";
+	print OUTFILE "\t///\t</list>\n\t/// </remarks>\n\n";
 
 	if ($type eq "flags") {
 		print OUTFILE "\tusing System;\n\n\t[Flags]\n";
@@ -71,7 +141,190 @@ sub parse_enum_flags ()
 	}
 
 	print OUTFILE "\t}\n\n}\n";
-
 	close (OUTFILE);
+}
+
+# Code generation for objects.
+sub gen_object
+{
+	my ($objdef, @defs) = @_;
+	my ($key, $typename, $parent, $dir, $namespace, $abstract, $def);
+		
+	$objdef =~ /define-object (\w+)/;
+	$typename = $1;
+
+	$objdef =~ /parent "(\w+)"/;
+	$parent = $maptypes{$1};
+
+	$objdef =~ /in-module "(\w+)"/;
+	$dir = "../generated/" . lc ($namespace = $1);
+	`mkdir -p $dir`;
+
+	%props = ();
+	%events = ();
+	%methods = ();
+	foreach $def (@defs) {
+		if ($def =~ /define-property (\w+)/) {
+			$props{StudCaps($1)} = $def;
+		}elsif ($def =~ /define-event (\w+)/) {
+			$events{StudCaps($1)} = $def;
+		}elsif ($def =~ /define-method (\w+)/) {
+			$methods{StudCaps($1)} = $def;
+		}
+	}
+
+	print "Generating Class $typename in ../$dir/$typename.cs\n";
+	open (OUTFILE, ">$dir/$typename.cs") || die "can't open file";
+	
+	print OUTFILE "// Generated file: Do not modify\n\n";
+	print OUTFILE "namespace $namespace {\n\n";
+	print OUTFILE "\t/// <summary> $typename Class </summary>\n";
+	print OUTFILE "\t/// <remarks>\n\t///\t FIXME: Generate docs\n";
+	print OUTFILE "\t/// </remarks>\n\n";
+	print OUTFILE "\tpublic ";
+	if ($abstract) {
+		print OUTFILE "abstract ";
+	}
+	print OUTFILE "class $typename : $parent {\n\n";
+
+	foreach $key (sort (keys (%props))) {
+		print OUTFILE gen_prop ($key, $props{$key}, "gtk-1.3.dll");
+	}
+
+	foreach $key (sort (keys (%methods))) {
+		print OUTFILE gen_method ($key, $methods{$key}, "gtk-1.3.dll");
+	}
+
+	print OUTFILE "\t}\n}\n";
+	close (OUTFILE);
+	print "done\n";
+}
+
+sub gen_prop ()
+{
+	my ($name, $def, $dll) = @_;
+	my ($cname, $mode, $sret, $mret, $docs, $code);
+
+	$def =~ /define-property (\w+)/;
+	$cname = $1;
+
+	$def =~ /prop-type "(\w+)/;
+	if (exists ($objects{$1})) {
+		$sret = $maptypes{$1};
+		$mret = "GLib.Object";
+	} elsif (exists ($maptypes{$1})) {
+		$sret = $maptypes{$1};
+		$mret = $marshaltypes{$1};
+	} else {
+		$sret = $mret = $1;
+	}
+
+	$def =~ /doc-string "(.+)"\)/;
+	$docs = $1;
+
+	$mode = 0;
+	if ($def =~ /\(readable #t\)/) {
+		$mode = 1;
+	}
+
+	if (($def =~ /\(writeable #t\)/) && ($def !~ /\(construct-only #t\)/)) {
+		$mode += 2;
+	}
+
+	$code = "\t\t/// <summary> $name Property </summary>\n";
+	$code .= "\t\t/// <remarks>\n\t\t///\t$docs\n";
+	$code .= "\t\t/// </remarks>\n\n";
+	$code .= "\t\tpublic $sret $name {\n";
+	if ($mode & 1) { 
+		$code .= "\t\t\tget {\n\t\t\t\t$mret val;\n";
+		$code .= "\t\t\t\tGetProperty (\"$cname\", out val);\n";
+		$code .= "\t\t\t\treturn ";
+		if ($sret ne $mret) { 
+			$code .= "($sret) ";
+		}
+		$code .= "val;\n\t\t\t}\n";
+	}
+	if ($mode & 2) { 
+		$code .= "\t\t\tset {\n";
+		$code .= "\t\t\t\tSetProperty (\"$cname\", ($mret) value);\n";
+		$code .= "\t\t\t}\n";
+	}
+	$code .= "\t\t}\n\n";
+	return $code;
+}
+
+# Generate the code for a method definition.
+sub gen_method
+{
+	my ($name, $def, $dll) = @_;
+	my ($cname, $sret, $ret, $mret, $sig, $call, $pinv, $code);
+
+	$def =~ /\(c-name "(\w+)"/;
+	$cname = $1;
+
+	$def =~ /return-type "(\w+)/;
+	if (exists ($maptypes{$1})) {
+		$sret = $maptypes{$1};
+		$mret = $marshaltypes{$1};
+		$ret = $1;
+	} else {
+		$sret = $mret = $ret = $1;
+	}
+
+	($call, $pinv, $sig) = gen_param_strings($def);
+
+	$code = "\t\t/// <summary> $name Method </summary>\n";
+	$code .= "\t\t/// <remarks>\n\t\t///\t FIXME: Generate docs\n";
+	$code .= "\t\t/// </remarks>\n\n";
+	$code .= "\t\t[DllImport(\"$dll\", CharSet=CharSet.Ansi,\n";
+	$code .= "\t\t\t   CallingConvention=CallingConvention.Cdecl)]\n";
+	$code .= "\t\tstatic extern $mret $cname (IntPtr obj$pinv);\n\n";
+	$code .= "\t\tpublic $sret $name ($sig)\n";
+	$code .= "\t\t{\n\t\t\t";
+	if ($sret ne "void") { $code .= "return "; }
+	$call = "$cname (RawObject$call)";
+	if ($sret eq $mret) { 
+		$code .= "$call";
+	} elsif ($sret eq "String") {
+		$code .= "Marshal.PtrToStringAnsi($call)";
+	} elsif ($mret eq "int") {
+		$code .= "($sret) $call";
+	} elsif (exists ($objects{$ret})) {
+		$code .= "($sret) GLib.Object.GetObject($call)";
+	} else {
+		die "Unexpected return type match $sret:$mret\n";
+	}
+	$code .= ";\n\t\t}\n\n";
+	return $code;
+}
+
+# Generate the DllImport, signature, and call parameter strings.
+sub gen_param_strings
+{
+	my ($def) = @_;
+	my ($call, $parm, $pinv, $sig);
+
+	$call = $pinv = $sig = "";
+	if ($def =~ /parameters'\((.*)\)\)\)/) {
+		foreach $parm (split(/\)'\(/, $1)) {
+			$parm =~ s/\*//g;
+			$parm =~ /"(.*)" "(.*)"/;
+			$pinv .= ", $marshaltypes{$1} $2";
+			if ($sig) { $sig .= ', '; }
+			$sig .= "$maptypes{$1} $2";
+			if ($maptypes{$1} eq $marshaltypes{$1}) {
+				$call .= ", $2";
+			} elsif (exists ($objects{$1})) {
+				$call .= ", $2.Handle";
+			} elsif ($1 =~ /gchar/) {
+				$call .= ", Marshal.StringToHGlobalAnsi($2)";
+			} elsif ($marshaltypes{$1} = "int") {
+				$call .= ", (int) $2";
+			} else {
+				die "Unexpected type encountered $1\n";
+			}
+		}
+	}
+	return ($call, $pinv, $sig);
 }
 
