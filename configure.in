@@ -139,7 +139,7 @@ PKG_CHECK_MODULES(GNOMEVFS, gnome-vfs-2.0 >= $GNOME_REQUIRED_VERSION, enable_gno
 AC_SUBST(GNOMEVFS_CFLAGS)
 AC_SUBST(GNOMEVFS_LIBS)
 
-PKG_CHECK_MODULES(GNOME, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
+PKG_CHECK_MODULES(GNOME, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION libpanelapplet-2.0 >= $GNOME_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
 AC_SUBST(GNOME_CFLAGS)
 AC_SUBST(GNOME_LIBS)
 
@@ -189,11 +189,6 @@ AC_SUBST(GTKHTML_SOVERSION)
 VTE_REQUIRED_VERSION=0.11.10
 PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
 
-LIBPANEL_REQUIRED_VERSION=2.6
-PKG_CHECK_MODULES(LIBPANEL, libpanelapplet-2.0 >= $LIBPANEL_REQUIRED_VERSION, enable_panel=yes, enable_panel=no)
-AC_SUBST(LIBPANEL_CFLAGS)
-AC_SUBST(LIBPANEL_LIBS)
-
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
@@ -203,7 +198,6 @@ AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
-AM_CONDITIONAL(ENABLE_PANEL, test "x$enable_panel" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 
 
@@ -284,11 +278,6 @@ vte/Makefile
 vte/AssemblyInfo.cs
 vte/vte-sharp.dll.config
 vte/vte-sharp-2.0.pc
-panelapplet/Makefile
-panelapplet/AssemblyInfo.cs
-panelapplet/panelapplet-sharp.dll.config
-panelapplet/panelapplet-sharp-2.0.pc
-panelapplet/glue/Makefile
 doc/Makefile
 doc/updater/Makefile
 sample/GtkDemo/Makefile
@@ -321,7 +310,6 @@ echo "      * gnomedb-sharp.dll: $enable_gnomedb"
 echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
 echo "      * vte-sharp.dll: $enable_vte "
-echo "      * panelapplet-sharp.dll: $enable_panel "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"

@@ -12,6 +12,7 @@ libgnomesharpglue_2_la_SOURCES = 	\
 	canvas.c 		\
 	canvasitem.c 		\
 	canvaspoints.c 		\
+	panelapplet.c		\
 	program.c		\
 	#
 

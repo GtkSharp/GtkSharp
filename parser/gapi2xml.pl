@@ -264,7 +264,7 @@ foreach $cname (sort(keys(%edefs))) {
 ##############################################################
 
 foreach $cbname (sort(keys(%fpdefs))) {
-	next if ($cbname !~ /$ns/);
+	next if ($cbname =~ /^_/);
 	$cbcnt++;
 	$fdef = $cb = $fpdefs{$cbname};
 	$cb_elem = addNameElem($ns_elem, 'callback', $cbname, $ns);

@@ -28,9 +28,11 @@ CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.snk
 DISTCLEANFILES = gnome-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =					\
+	BonoboUIVerb.cs				\
 	IconData.cs				\
 	IconTheme.cs				\
-	Modules.cs
+	Modules.cs				\
+	PanelAppletFactory.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
@@ -60,6 +62,7 @@ customs =					\
 	IconList.custom				\
 	IconTextItem.custom			\
 	IconTheme.custom			\
+	PanelApplet.custom			\
 	Print.custom				\
 	PrintContext.custom			\
 	PrintDialog.custom			\

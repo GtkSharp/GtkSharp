@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace PanelApplet
+namespace Gnome
 {
 
 	public delegate void ContextMenuItemCallback ();
