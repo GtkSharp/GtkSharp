@@ -92,7 +92,8 @@ namespace GtkSharp.Generation {
 			// but this should work for now
 			AddType (new SimpleGen ("gsize", "uint"));
 			AddType (new SimpleGen ("gssize", "int"));
-			AddType (new SimpleGen ("size_t", "int"));
+			AddType (new SimpleGen ("size_t", "System.UIntPtr"));
+			AddType (new SimpleGen ("ssize_t", "System.IntPtr"));
 			
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GMemChunk", "IntPtr"));
