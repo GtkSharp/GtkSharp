@@ -1,3 +1,22 @@
+2003-07-23  Mike Kestner <mkestner@ximian.com>
+
+	[Equal credit to Ettore Perazzoli <ettore@ximian.com> for fixing
+	all the bugs in the initial patch]
+	* */*.custom : fix incorrect usage of new Object (IntPtr) where
+	Glib.Object.GetObject should've been used.  add ref_owned param
+	to GetObject calls.
+	* generator/CallbackGen.cs : setup ref_owned in bodies
+	* generator/ClassBase.cs : add ref_owned to GetObject FromNative call 
+	* generator/Method.cs : setup ref_owned in bodies
+	* generator/Property.cs : setup ref_owned in bodies
+	* generator/SignalHandler.cs : pass ref_owned to GetObject
+	* generator/StructBase.cs : setup ref_owned in bodies
+	* glib/Object.cs : kill Ref/Unref methods.  Don't want it to be 
+	easy for users to screw with ref counts, or make it look like they
+	should need to.
+	(GetObject): add ref_owned param and ref/unref to remain at 1
+	* glib/Value.cs : pass ref_owned to GetObject
+
 2003-07-23  Martin Willemoes Hansen <mwh@sysrq.dk>
 
 	* generator/ClassBase.cs: Fixed printouts of ctor validation.

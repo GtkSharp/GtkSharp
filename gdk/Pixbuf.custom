@@ -33,18 +33,13 @@
 				Raw = LoadFromStream (s);
 		}
 
-		// scale_simple, composite_color_simple, and addalpha do a gdk_pixbuf_new on the
-		// return first, and we also ref it
-		// in the GetObject.  So get rid of one extra reference.
-
 		
 		[DllImport("gdk_pixbuf-2.0")]
 		static extern IntPtr gdk_pixbuf_scale_simple(IntPtr raw, int dest_width, int dest_height, int interp_type);
 
 		public Gdk.Pixbuf ScaleSimple(int dest_width, int dest_height, Gdk.InterpType interp_type) {
 			IntPtr raw_ret = gdk_pixbuf_scale_simple(Handle, dest_width, dest_height, (int) interp_type);
-			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
-			ret.Unref ();
+			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret, true);
 			return ret;
 		}
 
@@ -53,8 +48,7 @@
 
 		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, uint color1, uint color2) {
 			IntPtr raw_ret = gdk_pixbuf_composite_color_simple(Handle, dest_width, dest_height, (int) interp_type, overall_alpha, check_size, color1, color2);
-			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
-			ret.Unref ();
+			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret, true);
 			return ret;
 		}
 
@@ -63,8 +57,7 @@
 
 		public Gdk.Pixbuf AddAlpha(bool substitute_color, byte r, byte g, byte b) {
 			IntPtr raw_ret = gdk_pixbuf_add_alpha(Handle, substitute_color, r, g, b);
-			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
-			ret.Unref ();
+			Gdk.Pixbuf ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret, true);
 			return ret;
 		}
 

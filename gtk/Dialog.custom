@@ -20,12 +20,12 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base()
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_dialog_get_vbox (IntPtr i);
 public Gtk.VBox VBox {
-	get { return new Gtk.VBox (gtksharp_dialog_get_vbox (this.Handle)); }
+	get { return GLib.Object.GetObject (gtksharp_dialog_get_vbox (this.Handle), false) as VBox; }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_dialog_get_action_area (IntPtr i);
 public Gtk.VBox ActionArea {
-	get { return new Gtk.VBox (gtksharp_dialog_get_action_area (this.Handle)); }
+	get { return GLib.Object.GetObject (gtksharp_dialog_get_action_area (this.Handle), false) as VBox; }
 }
 

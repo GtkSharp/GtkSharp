@@ -11,7 +11,7 @@ namespace GtkSharp {
 		{
 			if (RemoveIfNotAlive ()) return;
 			object[] _args = new object[2];
-			_args[0] = (Gtk.Clipboard) GLib.Object.GetObject(clipboard);
+			_args[0] = (Gtk.Clipboard) GLib.Object.GetObject(clipboard, false);
 			if (_args[0] == null)
 				_args[0] = new Gtk.Clipboard(clipboard);
                         _args[1] = Gtk.Clipboard.clipboard_objects[objid];

@@ -140,7 +140,7 @@ namespace GtkSharp.Generation {
 						sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
 						sw.WriteLine("\t\t\telse {");
 						if (wrapper != null && wrapper is ObjectGen)
-							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = GLib.Object.GetObject(arg" + idx + ");");
+							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = GLib.Object.GetObject(arg" + idx + ", true);");
 						else
 							sw.WriteLine("\t\t\t\targs.Args[" + (idx-1) + "] = " + table.FromNative (ctype, "arg" + idx)  + ";");
 						if ((wrapper != null && (wrapper is OpaqueGen)) || table.IsManuallyWrapped (ctype)) {

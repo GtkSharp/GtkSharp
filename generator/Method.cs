@@ -391,9 +391,9 @@ namespace GtkSharp.Generation {
 				if (table.IsObject (rettype) || table.IsOpaque (rettype))
 				{
 					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
+					if (table.IsObject (rettype))
+						sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
 					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
-					if (needs_ref)
-						sw.WriteLine(indent + "\t\t\tret.Ref ();");
 					if (table.IsOpaque (rettype))
 						sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
 				}
@@ -403,6 +403,8 @@ namespace GtkSharp.Generation {
 					string raw_parms = "raw_ret";
 					if (element_type != null)
 						raw_parms += ", typeof (" + element_type + ")";
+					if (table.IsInterface (rettype))
+						sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
 					sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
 				}
 			}

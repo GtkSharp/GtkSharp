@@ -475,7 +475,7 @@ namespace GLib {
 		{
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
-			return GLib.Object.GetObject(g_value_get_object (val._val));
+			return GLib.Object.GetObject(g_value_get_object (val._val), true);
 		}
 
 		/// <summary>

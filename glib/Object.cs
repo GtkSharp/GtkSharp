@@ -1,9 +1,8 @@
 // Object.cs - GObject class wrapper implementation
 //
-// Authors: Bob Smith <bob@thestuff.net>
-//	    Mike Kestner <mkestner@speakeasy.net>
+// Authors: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Bob Smith and Mike Kestner
+// (c) 2001-2003 Mike Kestner
 //
 // TODO:
 //   Could remove `disposed' for a check if an object is on the dispose_queue_list.
@@ -34,7 +33,6 @@ namespace GLib {
 
 		// Private class and instance members
 		IntPtr _obj;
-		protected bool needs_ref = true;
 		EventHandlerList _events;
 		bool disposed = false;
 		Hashtable data;
@@ -50,6 +48,9 @@ namespace GLib {
 			Dispose ();
 		}
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_unref (IntPtr raw);
+		
 		static bool PerformQueuedUnrefs ()
 		{
 			Object [] objects;
@@ -66,7 +67,7 @@ namespace GLib {
 				if (o._obj == IntPtr.Zero)
 					continue;
 				
-				o.Unref ();
+				g_object_unref (o._obj);
 				o._obj = IntPtr.Zero;
 			}
 			return false;
@@ -102,48 +103,8 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_unref (IntPtr raw);
-		
-		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_ref (IntPtr raw);
 
-		/// <summary>
-		///   Ref Method
-		/// </summary>
-		///
-		/// <remarks>
-		///   Increases the reference count on the native object.
-		///   This method is used by generated classes and structs,
-		///   and should not be used in user code.
-		/// </remarks>
-		public virtual void Ref ()
-		{
-			if (_obj == IntPtr.Zero)
-				return;
-
-			g_object_ref (_obj);
-		}
-
-		/// <summary>
-		///   Unref Method
-		/// </summary>
-		///
-		/// <remarks>
-		///   Decreases the reference count on the native object.
-		///   This method is used by generated classes and structs,
-		///   and should not be used in user code.
-		///
-		///   This method should not be invoked by a thread.
-		/// </remarks>
-		public virtual void Unref ()
-		{
-			if (_obj == IntPtr.Zero)
-				return;
-
-			g_object_unref (_obj);
-		}
-		
-		
 		/// <summary>
 		///	GetObject Shared Method 
 		/// </summary>
@@ -160,23 +121,39 @@ namespace GLib {
 		///	The wrapper instance.
 		/// </returns>
 
-		public static Object GetObject(IntPtr o)
+		public static Object GetObject(IntPtr o, bool owned_ref)
 		{
-			WeakReference obj = Objects[o] as WeakReference;
-			if (obj != null) {
-				// If the target object has not been collected, use it...
-				if (obj.IsAlive)
-					return obj.Target as GLib.Object;
-
-				// ... otherwise we create a new wrapper around the IntPtr.
-				Objects [o] = null;
+			Object obj;
+			WeakReference weak_ref = Objects[o] as WeakReference;
+			if (weak_ref != null && weak_ref.IsAlive) {
+				obj = weak_ref.Target as GLib.Object;
+				if (owned_ref)
+					g_object_unref (obj._obj);
+				return obj;
 			}
 
-			return GtkSharp.ObjectManager.CreateObject(o); 
+			obj = GtkSharp.ObjectManager.CreateObject(o); 
+			if (obj == null)
+				return null;
+
+			if (!owned_ref)
+				g_object_ref (obj.Handle);
+			Objects [o] = new WeakReference (obj);
+			return obj;
 		}
 
 		[DllImport("gtksharpglue")]
 		static extern uint gtksharp_register_type (string name, uint parent_type);
+
+		/// <summary>
+		///	RegisterGType Shared Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Shared method to register types with the GType system.
+		///	This method should be called from the class constructor
+		///	of subclasses.
+		/// </remarks>
 
 		public static GLib.Type RegisterGType (System.Type t)
 		{
@@ -200,9 +177,7 @@ namespace GLib {
 		///	Dummy constructor needed for derived classes.
 		/// </remarks>
 
-		public Object () {
-			needs_ref = false;
-		}
+		protected Object () {}
 
 		/// <summary>
 		///	Object Constructor
@@ -220,7 +195,15 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (uint gtype, IntPtr dummy);
 
-		public Object (GLib.Type gtype)
+		/// <summary>
+		///	Object Constructor
+		/// </summary>
+		///
+		/// <remarks>
+		///	Creates an object from a specified GType.
+		/// </remarks>
+
+		protected Object (GLib.Type gtype)
 		{
 			Raw = g_object_new (gtype.Value, IntPtr.Zero);
 		}
@@ -241,8 +224,6 @@ namespace GLib {
 				return _obj;
 			}
 			set {
-				if (needs_ref)
-					g_object_ref (value);
 				Objects [value] = new WeakReference (this);
 				_obj = value;
 			}

@@ -56,7 +56,7 @@
 
 		static public Glade.XML GetWidgetTree (Gtk.Widget w) {
 			IntPtr ret_raw = glade_get_widget_tree (w.Handle);
-			Glade.XML ret = GLib.Object.GetObject (ret_raw) as Glade.XML;
+			Glade.XML ret = GLib.Object.GetObject (ret_raw, false) as Glade.XML;
 			return ret;
 		}
 
@@ -165,13 +165,13 @@
 					  string signal_name, string signal_data, 
 					  IntPtr connect_object_ptr, int after, IntPtr user_data) {
 				
-				GLib.Object objekt = GLib.Object.GetObject (objekt_ptr);
+				GLib.Object objekt = GLib.Object.GetObject (objekt_ptr, false);
 	
 				/* if an connect_object_ptr is provided, use that as handler */
 				object connect_object = 
 					connect_object_ptr == IntPtr.Zero 
 						? handler_object
-						: GLib.Object.GetObject (connect_object_ptr);
+						: GLib.Object.GetObject (connect_object_ptr, false);
 				
 				/* search for the event to connect */
 				System.Reflection.MemberInfo[] evnts = objekt.GetType ().

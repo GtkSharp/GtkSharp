@@ -127,6 +127,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\tobject[] _args = new object[{0}];", count);
 			int idx = 0;
 			bool need_sep = false;
+			bool need_ref_owned = true;
 			string call_str = "";
 			for (int i = 0; i < count; i++)
 			{
@@ -142,6 +143,10 @@ namespace GtkSharp.Generation {
 				string cstype = parms[i].CSType;
 				// FIXME: Too much code copy/pasted here. Refactor?
 				ClassBase parm_wrapper = table.GetClassGen (ctype);
+				if (need_ref_owned && parm_wrapper != null && ((parm_wrapper is ObjectGen) || (parm_wrapper is InterfaceGen))) {
+					need_ref_owned = false;
+					sw.WriteLine("\t\t\tbool ref_owned = false;");
+				}
 				sw.WriteLine("\t\t\t_args[" + idx + "] = " + table.FromNative (ctype, parm_name) + ";");
 				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || table.IsManuallyWrapped (ctype)) {
 					sw.WriteLine("\t\t\tif (_args[" + idx + "] == null)");

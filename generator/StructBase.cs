@@ -163,8 +163,8 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
+				sw.WriteLine ("\t\t\t\tbool ref_owned = false;");
 				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(c_type, name) + ";");
-				sw.WriteLine ("\t\t\t\tret.Ref ();");
 				sw.WriteLine ("\t\t\t\treturn ret;");
 				sw.WriteLine ("\t\t\t}");
 				sw.WriteLine ("\t\t\tset { " + name + " = " + table.CallByName (c_type, "value") + "; }");

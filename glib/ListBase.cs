@@ -145,7 +145,7 @@ namespace GLib {
 							ret = Activator.CreateInstance (list.element_type, new object[] {data});
 					}
 					else if (Object.IsObject (data))
-						ret = GLib.Object.GetObject (data);
+						ret = GLib.Object.GetObject (data, true);
 
 					return ret;
 				}

@@ -12,13 +12,17 @@
 [DllImport("gnomecanvas-2")]
 static extern System.IntPtr gnome_canvas_item_new (IntPtr group, uint type, IntPtr null_terminator);
 
+[DllImport("libgobject-2.0-0.dll")]
+static extern void g_object_ref (IntPtr raw);
+
 public CanvasItem (Gnome.CanvasGroup group, uint type)
 	: base (gnome_canvas_item_new (group.Handle, type, IntPtr.Zero))
 {
+	g_object_ref (Handle);
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_gnome_canvas_item_get_canvas (IntPtr i);
 public Canvas Canvas {
-	get { return new Gnome.Canvas (gtksharp_gnome_canvas_item_get_canvas (this.Handle)); }
+	get { return GLib.Object.GetObject (gtksharp_gnome_canvas_item_get_canvas (this.Handle), false) as Canvas; }
 }
