@@ -15,7 +15,10 @@
 //
 // This code is inserted after the automatically generated code.
 
-		static private Pixbuf LoadFromStream (System.IO.Stream input)
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_ref (IntPtr handle);
+
+		private void LoadFromStream (System.IO.Stream input)
 		{
 			PixbufLoader loader = new PixbufLoader ();
 			byte [] buffer = new byte [8192];
@@ -25,30 +28,38 @@
 				loader.Write (buffer, (uint) n);
 		
 			loader.Close ();
-			return loader.Pixbuf;
+			Raw = loader.PixbufHandle;
+			if (Raw == IntPtr.Zero)
+				throw new ArgumentException ("Unable to load pixbuf from stream");
+			g_object_ref (Raw);
 		}
 		
-		static public Pixbuf LoadResource (System.Reflection.Assembly assembly, string resource)
+		public Pixbuf (System.IO.Stream stream)
+		{
+			LoadFromStream (stream);
+		}
+
+		public Pixbuf (System.Reflection.Assembly assembly, string resource)
 		{
 			if (assembly == null)
-				return LoadResource (System.Reflection.Assembly.GetCallingAssembly (), resource);
+				assembly = System.Reflection.Assembly.GetCallingAssembly ();
 
 			if (resource == null)
 				throw new ArgumentNullException ("resource");
 
 			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
 			if (s == null)
-				return null;
-			else
-				return LoadFromStream (s);
+				throw new ArgumentException ("resource must be a valid resource name of 'assembly'.");
+
+			LoadFromStream (s);
 		}
 
-		static public Pixbuf LoadResource (string resource)
+		static public Pixbuf LoadFromResource (string resource)
 		{
 			if (resource == null)
 				throw new ArgumentNullException ("resource");
 
-			return LoadResource (System.Reflection.Assembly.GetCallingAssembly (), resource);
+			return new Pixbuf (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
 		
