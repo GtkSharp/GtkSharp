@@ -10,7 +10,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Global API elements for <see cref="N:Pango" /></summary>
+    <summary>Global API elements for <see cref="N:Pango" />. Most of these are utility functions.</summary>
     <remarks />
   </Docs>
   <Base>
@@ -29,10 +29,10 @@
         <Parameter Name="str" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Splits a list of filename strings and normalizes their paths.</summary>
         <param name="str">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>In the underlying C implementation, the string returned is intended as an argument to g_strfreev.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TrimString">
@@ -45,10 +45,10 @@
         <Parameter Name="str" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Trims leading and trailing whitespace from a string.</summary>
         <param name="str">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetLogAttrs">
@@ -84,10 +84,10 @@
         <Parameter Name="pos" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Skips 0 or more characters of whitespace</summary>
         <param name="pos">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, which is true if there are non-whitespace characters before the end of the string.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -113,12 +113,12 @@
         <Parameter Name="warn" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="weight">a <see cref="T:Pango.Weight&amp;" /></param>
-        <param name="warn">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Parses a string into a <see cref="T:Pango.Weight&amp;" /> object.</summary>
+        <param name="str">a <see cref="T:System.String" /> to parse</param>
+        <param name="weight">a <see cref="T:Pango.Weight&amp;" /> object to set up with the weight parsed out of the string</param>
+        <param name="warn">a <see cref="T:System.Boolean" /> for whether to warn on bad input.</param>
+        <returns>a <see cref="T:System.Boolean" /> for whether the string was successfully parsed.</returns>
+        <remarks>The allowed values are "heavy", "ultrabold", "bold", "normal", "light", "ultralight" and integers. Case variations are ignored.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ParseStretch">
@@ -133,12 +133,14 @@
         <Parameter Name="warn" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="stretch">a <see cref="T:Pango.Stretch&amp;" /></param>
-        <param name="warn">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Parses a string into a <see cref="T:Pango.Stretch&amp;" /> object.</summary>
+        <param name="str">a <see cref="T:System.String" /> to parse</param>
+        <param name="stretch">a <see cref="T:Pango.Stretch&amp;" /> to set up with the stretch value parsed out of the string</param>
+        <param name="warn">a <see cref="T:System.Boolean" /> for whether to warn on bad input.</param>
+        <returns>a <see cref="T:System.Boolean" /> for whether the string was successfully parsed.</returns>
+        <remarks>The allowed values are "ultra_condensed", "extra_condensed", "condensed", "semi_condensed", "normal", 
+	  "semi_expanded", "expanded", "extra_expanded" and "ultra_expanded". Case variations are ignored and the '_' 
+	  characters may be omitted.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ParseVariant">
@@ -153,12 +155,12 @@
         <Parameter Name="warn" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="variant">a <see cref="T:Pango.Variant&amp;" /></param>
-        <param name="warn">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Parses a string into a <see cref="T:Pango.Variant&amp;" /> object.</summary>
+        <param name="str">a <see cref="T:System.String" /> to parse</param>
+        <param name="variant">a <see cref="T:Pango.Variant&amp;" />to set up with the variant value parsed out of the string</param>
+        <param name="warn">a <see cref="T:System.Boolean" /> for whether to warn on bad input.</param>
+        <returns>a <see cref="T:System.Boolean" /> for whether the string was successfully parsed.</returns>
+        <remarks>The allowed values are "normal" and "smallcaps" or "small_caps", case variations being ignored.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ParseStyle">
@@ -173,12 +175,12 @@
         <Parameter Name="warn" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <param name="style">a <see cref="T:Pango.Style&amp;" /></param>
-        <param name="warn">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Parses a string into a <see cref="T:Pango.Style&amp;" /> object.</summary>
+        <param name="str">a <see cref="T:System.String" /> to parse</param>
+        <param name="style">a <see cref="T:Pango.Style&amp;" /> to set up with the style parsed out of the string.</param>
+        <param name="warn">a <see cref="T:System.Boolean" /> for whether to warn on bad input.</param>
+        <returns>a <see cref="T:System.Boolean" /> for whether the string was successfully parsed.</returns>
+        <remarks>The allowed values are "normal", "italic" and "oblique", case variations being ignored.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FindParagraphBoundary">
@@ -215,11 +217,10 @@ If no delimiters are found, both <paramref name="paragraph_delimiter_index" /> a
         <Parameter Name="out_param" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="pos">a <see cref="T:System.String" /></param>
-        <param name="out_param">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Scans a string looking for an integer. An integer consists of up to 31 decimal digits.</summary>
+        <param name="pos">a <see cref="T:System.String" />, a string to scan.</param>
+        <param name="out_param">a <see cref="T:System.Int32&amp;" />, an integer to put the result into.</param>
+        <returns>a <see cref="T:System.Boolean" />, false if a parse error occurred.</returns>
       </Docs>
     </Member>
   </Members>
