@@ -44,7 +44,11 @@ class Client {
 				    new Gtk.Image (Stock.Remove, IconSize.LargeToolbar),
 				    new SignalFunc (Db_Remove), IntPtr.Zero);
 
-		toolbar.AppendItem ("Update", "Update the view", String.Empty,
+		toolbar.AppendItem ("Edit", "Edit a row", String.Empty,
+				    new Gtk.Image (Stock.Italic, IconSize.LargeToolbar),
+				    new SignalFunc (Db_Edit), IntPtr.Zero);
+
+		toolbar.AppendItem ("Refresh", "Refresh the view", String.Empty,
 				    new Gtk.Image (Stock.Refresh, IconSize.LargeToolbar),
 				    new SignalFunc (Db_Update), IntPtr.Zero);
 
@@ -101,18 +105,22 @@ class Client {
 	{
 		dialog = new Dialog ();
 		dialog.Title = "Insert row";
-		dialog.VBox.BorderWidth = 5;		
+		dialog.BorderWidth = 3;
+		dialog.VBox.BorderWidth = 5;
+		dialog.HasSeparator = false;
 
-		dialog.VBox.PackStart (DrawForm (Stock.Add), true, true, 0);
+		Frame frame = new Frame ("Insert a row");
+		frame.Add (DrawForm (Stock.DialogInfo));
+		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
-		button = new Button ("_Insert");
+		button = Button.NewFromStock (Stock.Add);
 		button.Clicked += new EventHandler (Insert_Action);
 		button.CanDefault = true;
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		button.GrabDefault ();
 
-		button = new Button ("_Cancel");
+		button = Button.NewFromStock (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
 
@@ -123,18 +131,22 @@ class Client {
 	{
 		dialog = new Dialog ();
 		dialog.Title = "Remove row";
+		dialog.BorderWidth = 3;		
 		dialog.VBox.BorderWidth = 5;
+		dialog.HasSeparator = false;
 
-		dialog.VBox.PackStart (DrawForm (Stock.Remove), true, true, 0);
+		Frame frame = new Frame ("Remove a row");
+		frame.Add (DrawForm (Stock.DialogWarning));
+		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
-		button = new Button ("_Remove");
+		button = Button.NewFromStock (Stock.Remove);
 		button.Clicked += new EventHandler (Remove_Action);
 		button.CanDefault = true;
 		dialog.ActionArea.PackStart (button, true, true, 0);
 		button.GrabDefault ();
 
-		button = new Button ("_Cancel");
+		button = Button.NewFromStock (Stock.Cancel);
 		button.Clicked += new EventHandler (Dialog_Cancel);
 		dialog.ActionArea.PackStart (button, true, true, 0);
 
@@ -145,6 +157,7 @@ class Client {
 	static Widget DrawForm (string image)
 	{
 		HBox hbox = new HBox (false, 2);
+		hbox.BorderWidth = 5;
 		hbox.PackStart (new Gtk.Image (image, IconSize.Dialog), true, true, 0);
 		
 		Table table = new Table (3, 3, false);
@@ -170,6 +183,11 @@ class Client {
 
 		return hbox ;
 	}
+
+	static void Db_Edit ()
+	{
+	}
+
 
 	static void Db_Update ()
 	{
@@ -197,8 +215,6 @@ class Client {
 		dialog.Destroy ();
 		dialog = null;
 	}
-
-	
 }
 
 struct Record {
