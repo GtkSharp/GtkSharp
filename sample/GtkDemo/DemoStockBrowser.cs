@@ -6,6 +6,7 @@
 // (C) 2003 Ximian, Inc.
 
 using System;
+using System.Collections;
 using Gtk;
 
 namespace GtkDemo
@@ -36,12 +37,28 @@ namespace GtkDemo
 			list.Selection.Changed += new EventHandler (OnSelectionChanged);
 			scrolledWindow.Add (list);
 			
-			Frame frame = new Frame ("Selected Item");
-			frame.Add (new Label ("TODO"));
-			hbox.PackStart (frame, false, false, 0);
+			hbox.PackStart (CreateFrame (), false, false, 0);
 			
 			this.ShowAll ();
 		}	
+
+		Frame CreateFrame ()
+		{
+			// Icon and Item / Icon Only / ???
+			// icon / blank
+			// _Add / blank
+			// Gtk.Stock.Cancel
+			// gtk-stock-cancel
+			Frame frame = new Frame ("Selected Item");
+			VBox vbox = new VBox (false, 3);
+			vbox.PackStart (new Label ("???"), false, true, 0);
+			vbox.PackStart (new Image (), false, true, 0);
+			vbox.PackStart (new Label ("_Add"), false, true, 0);
+			vbox.PackStart (new Label ("Gtk.Stock.Add"), false, true, 0);
+			vbox.PackStart (new Label ("gtk-stock-add"), false, true, 0);
+			frame.Add (vbox);
+			return frame;
+		}
 
 		private ListStore CreateStore ()
 		{
@@ -54,30 +71,76 @@ namespace GtkDemo
 			{
 				Gtk.StockItem si = new StockItem ();
 				if (Gtk.StockManager.Lookup (s, ref si)) {
-					Image icon = new Image (s, IconSize.Menu);
+					Gdk.Pixbuf icon = new Image (s, IconSize.Menu).RenderIcon (s, IconSize.Menu, "");
+					// FIXME: si.Label needs to _AccelAware
 					store.AppendValues (icon, GetCLSName (si.StockId), si.Label, GetKeyName (si), si.StockId);
 				}
 				else {
-					Console.WriteLine ("StockItem '{0}' could not be found.", s);
+					//Console.WriteLine ("StockItem '{0}' could not be found.", s);
 				}
 			}
 			
 			return store;
 		}
 
+		// changes 'gtk-stock-close' into 'Gtk.Stock.Close'
+		// should use StudlyCaps from gapi2xml.pl instead
 		string GetCLSName (string stockID)
 		{
-			// TODO: change gtk-stock-close
-			// int Gtk.Stock.Close
-			return stockID;
+			string cls = "";
+			if (stockID.StartsWith ("gtk-"))
+				cls = stockID.Substring (4, stockID.Length - 4);
+
+			char[] split = cls.ToCharArray ();
+			bool raiseNext = false;
+			ArrayList tmp = new ArrayList ();
+			tmp.Add (char.ToUpper (split[0]));
+
+			for (int i = 1; i < split.Length; i ++)
+			{
+				if (split[i] == '-') {
+					raiseNext = true;
+					continue;
+				}
+
+				if (raiseNext) {
+					tmp.Add (char.ToUpper (split[i]));
+					raiseNext = false;
+				}
+				else {
+					tmp.Add (split[i]);
+				}
+			}
+
+			split = new char[tmp.Count];
+			int j = 0;
+			foreach (char c in tmp)
+				split[j++] = c;
+
+			return "Gtk.Stock." + new string (split);
 		}
 
+		// use si.Keyval and si.Modifier
+		// to produce a reasonable representation
+		// of the key binding
 		string GetKeyName (StockItem si)
 		{
-			// TODO: use si.Keyval and si.Modifier
-			// to produce a reasonable representation
-			// of the key binding
-			return "<ctl> + key";
+			string mod = "";
+			string key = "";
+
+			switch (si.Modifier) {
+				// seems to be the only one used
+				case Gdk.ModifierType.ControlMask:
+					mod = "<Control>";
+					break;
+				default:
+					break;
+			}
+
+			if (si.Keyval > 0)
+				key = Gdk.Keyval.Name (si.Keyval);
+
+			return String.Format ("{0} {1}", mod, key);
 		}
 
 		void OnSelectionChanged (object o, EventArgs args)
@@ -99,3 +162,4 @@ namespace GtkDemo
 		}
 	}
 }
+

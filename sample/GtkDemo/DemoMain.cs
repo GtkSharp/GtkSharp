@@ -22,7 +22,7 @@ namespace GtkDemo
 		private TextBuffer sourceBuffer = new TextBuffer (null);
 		private TreeView treeView; 
 		private TreeStore store;
-		private TreeIter oldSelection;
+		private TreeIter oldSelection = TreeIter.Zero;
 
 		public static void Main (string[] args)
 		{
@@ -194,7 +194,8 @@ namespace GtkDemo
         			LoadFile (file);
 
 			model.SetValue (iter, 2, true);
-			model.SetValue (oldSelection, 2, false);
+			if (!oldSelection.Equals (TreeIter.Zero))
+				model.SetValue (oldSelection, 2, false);
 			oldSelection = iter;
 		}
         }
