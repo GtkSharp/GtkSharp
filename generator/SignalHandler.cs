@@ -149,8 +149,7 @@ namespace GtkSharp.Generation {
 			}
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
-			sw.Write("\t\t[DllImport(\"gobject-2.0\", ");
-			sw.WriteLine("CallingConvention=CallingConvention.Cdecl)]");
+			sw.Write("\t\t[DllImport(\"gobject-2.0\")]");
 			sw.Write("\t\tstatic extern void g_signal_connect_data(");
 			sw.Write("IntPtr obj, String name, " + dname + " cb, int key, IntPtr p,");
 			sw.WriteLine(" int flags);");

@@ -46,8 +46,7 @@ namespace GtkSharp.Generation {
 			
 			String cname = ctor.GetAttribute("cname");
 			
-			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + 
-			             "\", CallingConvention=CallingConvention.Cdecl)]");
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
 			sw.WriteLine("\t\tstatic extern IntPtr " + cname + isig);
 			sw.WriteLine();
 			
@@ -149,8 +148,7 @@ namespace GtkSharp.Generation {
 				return true;
 			}
 
-			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + 
-			             "\", CallingConvention=CallingConvention.Cdecl)]");
+			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
 			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
 			sw.WriteLine();
 			

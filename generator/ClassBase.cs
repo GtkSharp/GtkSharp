@@ -125,7 +125,7 @@ namespace GtkSharp.Generation {
 				     (props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
-		protected void GenMethods (StreamWriter sw)
+		public void GenMethods (StreamWriter sw)
 		{		
 			if (methods == null)
 				return;

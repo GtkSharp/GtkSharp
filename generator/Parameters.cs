@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 			bool need_sep = false;
 			
 			int len = 0;
-			XmlElement last_param;
+			XmlElement last_param = null;
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
