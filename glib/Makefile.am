@@ -17,6 +17,7 @@ sources =		 			\
 	EnumWrapper.cs				\
 	FileUtils.cs				\
 	GException.cs				\
+	GString.cs				\
 	Idle.cs					\
 	IWrapper.cs				\
 	ListBase.cs				\
