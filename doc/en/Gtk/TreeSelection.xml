@@ -17,6 +17,53 @@
       <para>TreeSelection can check the selection status of the tree, as well as select and deselect individual rows. Selection is done completely on the view. As a result, multiple views of the same model can have completely different selections. Additionally, you cannot change the selection of a row that is not currently displayed by the view without expanding its parents first.</para>
       <para>One of the important things to remember when monitoring the selection of a view is that the <see cref="E:Gtk.TreeSelection.Changed" /> event is mostly a hint. For example, it may only fire once when a range of rows is selected. It may also fire when nothing has happened, such as when <see cref="M:Gtk.TreeSelection.SelectPath(Gtk.TreePath)" /> is called on a row that is already selected.</para>
     </remarks>
+	<example>
+	  <code lang="C#">
+using System;
+using Gtk;
+ 
+class Selection
+{
+        static void Main ()
+        {
+                Application.Init ();
+                Window win = new Window ("TreeSelection sample");
+                win.DeleteEvent += OnWinDelete;
+ 
+                TreeView tv = new TreeView ();
+                tv.AppendColumn ("Items", new CellRendererText (), "text", 0);
+ 
+                ListStore store = new ListStore (typeof (string));
+                store.AppendValues ("item 1");
+                store.AppendValues ("item 2");
+                tv.Model = store;
+ 
+                tv.Selection.Changed += OnSelectionChanged;
+ 
+                win.Add (tv);
+                win.ShowAll ();
+                Application.Run ();
+        }
+ 
+        static void OnSelectionChanged (object o, EventArgs args)
+        {
+                TreeIter iter;
+                TreeModel model;
+ 
+                if (((TreeSelection)o).GetSelected (out model, out iter))
+                {
+                        string val = (string) model.GetValue (iter, 0);
+                        Console.WriteLine ("{0} was selected", val);
+                }
+        }
+ 
+        static void OnWinDelete (object o, DeleteEventArgs args)
+        {
+                Application.Quit ();
+        }
+}
+	  </code>
+	</example>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
