@@ -6,6 +6,7 @@
 // Copyright (C) 2003, Ximian Inc.
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 
@@ -154,139 +155,70 @@ namespace GtkDemo
         private TreeStore FillTree ()
         {
 			// title, filename, italic
-        	store = new TreeStore (typeof (string), typeof (string), typeof (bool));
-			TreeIter parent; 
+        	store = new TreeStore (typeof (string), typeof (System.Type), typeof (bool));
+			Hashtable parents = new Hashtable ();
+			TreeIter parent;
        	
-        	store.AppendValues ("Application Window", "DemoApplicationWindow.cs", false);
-        	store.AppendValues ("Button Boxes", "DemoButtonBox.cs", false);
-        	store.AppendValues ("Change Display (0%)", "DemoChangeDisplay.cs", false);
-        	store.AppendValues ("Clipboard", "DemoClipboard.cs", false);
-        	store.AppendValues ("Color Selector", "DemoColorSelection.cs", false);
-        	store.AppendValues ("Dialog and Message Boxes", "DemoDialog.cs", false);
-        	store.AppendValues ("Drawing Area", "DemoDrawingArea.cs", false);
-        	store.AppendValues ("Entry Completion", "DemoEntryCompletion.cs", false);
-        	store.AppendValues ("Expander", "DemoExpander.cs", false);
-        	store.AppendValues ("Images", "DemoImages.cs", false);
-        	store.AppendValues ("Menus", "DemoMenus.cs", false);
-        	store.AppendValues ("Paned Widget", "DemoPanes.cs", false);
-        	store.AppendValues ("Pixbuf", "DemoPixbuf.cs", false);
-        	store.AppendValues ("Size Groups", "DemoSizeGroup.cs", false);
-        	store.AppendValues ("Stock Item and Icon Browser (10% complete)", "DemoStockBrowser.cs", false);
-        	parent = store.AppendValues ("Text Widget");
-				store.AppendValues (parent, "HyperText (50%)", "DemoHyperText.cs", false);
-				store.AppendValues (parent, "Multiple Views", "DemoTextView.cs", false);
-        	parent = store.AppendValues ("Tree View");
-        		store.AppendValues (parent, "Editable Cells", "DemoEditableCells.cs", false);
-        		store.AppendValues (parent, "List Store", "DemoListStore.cs", false);
-        		store.AppendValues (parent, "Tree Store", "DemoTreeStore.cs", false);
-        	store.AppendValues ("UIManager", "DemoUIManager.cs", false);
-        	
+			Type[] types = Assembly.GetExecutingAssembly ().GetTypes ();
+			foreach (Type t in types)
+			{
+				if (t.IsDefined (typeof (DemoAttribute), false))
+				{
+					object[] att = t.GetCustomAttributes (typeof (DemoAttribute), false);
+					foreach (DemoAttribute demo in att)
+					{
+						if (demo.Parent != null)
+						{
+							if (!parents.Contains (demo.Parent))
+								parents.Add (demo.Parent, store.AppendValues (demo.Parent));
+
+							parent = (TreeIter) parents[demo.Parent];
+							store.AppendValues (parent, demo.Label, t, false);
+						}
+						else
+						{
+							store.AppendValues (demo.Label, t, false);
+						}
+					}
+				}
+			}
+			store.SetSortColumnId (0, SortType.Ascending);
         	return store;
         }
         
         private void OnTreeChanged (object o, EventArgs args)
-	{
-		TreeIter iter;
-		TreeModel model;
-
-		if (treeView.Selection.GetSelected (out model, out iter))
 		{
-			string file = (string) model.GetValue (iter, 1);
-			if (file != null)
-        			LoadFile (file);
+			TreeIter iter;
+			TreeModel model;
 
-			model.SetValue (iter, 2, true);
-			if (!oldSelection.Equals (TreeIter.Zero))
-				model.SetValue (oldSelection, 2, false);
-			oldSelection = iter;
-		}
+			if (treeView.Selection.GetSelected (out model, out iter))
+			{
+				Type type = (Type) model.GetValue (iter, 1);
+				if (type != null)
+				{
+					object[] atts = type.GetCustomAttributes (typeof (DemoAttribute), false);
+					string file = ((DemoAttribute) atts[0]).Filename;
+        			LoadFile (file);
+				}
+
+				model.SetValue (iter, 2, true);
+				if (!oldSelection.Equals (TreeIter.Zero))
+					model.SetValue (oldSelection, 2, false);
+				oldSelection = iter;
+			}
         }
 
         private void OnRowActivated (object o, RowActivatedArgs args)
         {
-        	switch (args.Path.ToString ()) {
-        		case "0":
-        			new DemoApplicationWindow ();
-        			break;
-        		case "1":
-        			new DemoButtonBox ();
-        			break;
-        		case "2":
-        			//
-        			break;
-				case "3":
-        			new DemoClipboard ();
-					break;
-        		case "4":
-        			new DemoColorSelection ();
-        			break;
-        		case "5":
-        			new DemoDialog ();
-        			break;
-        		case "6":
-        			new DemoDrawingArea ();
-        			break;
-        		case "7":
-        			new DemoEntryCompletion ();
-        			break;
-        		case "8":
-        			new DemoExpander ();
-        			break;
-        		case "9":
-        			new DemoImages ();
-        			break;
-        		case "10":
-        			new DemoMenus ();
-        			break;
-        		case "11":
-        			new DemoPanes ();
-        			break;
-        		case "12":
-        			new DemoPixbuf ();
-        			break;
-        		case "13":
-        			new DemoSizeGroup ();
-        			break;
-        		case "14":
-        			new DemoStockBrowser ();
-        			break;
-        		case "15":
-				ToggleRow (args.Path);
-				break;
-        		case "15:0":
-        			new DemoHyperText ();
-        			break;
-        		case "15:1":
-        			new DemoTextView ();
-        			break;
-        		case "16":
-				ToggleRow (args.Path);
-        			break;
-        		case "16:0":
-        			new DemoEditableCells ();
-        			break;
-        		case "16:1":
-        			new DemoListStore ();
-        			break;
-        		case "16:2":
-        			new DemoTreeStore ();
-        			break;
-				case "17":
-					new DemoUIManager ();
-					break;
-        		default:
-        			break;
-		}
-        }
+			TreeIter iter;
 
-		void ToggleRow (TreePath path)
-		{
-			bool isExpanded = treeView.GetRowExpanded (path);
-			if (isExpanded)
-				treeView.CollapseRow (path);
-			else
-				treeView.ExpandRow (path, false);
-		}
+			if (treeView.Model.GetIter (out iter, args.Path))
+			{
+				Type type = (Type) treeView.Model.GetValue (iter, 1);
+				if (type != null)
+					Activator.CreateInstance (type);
+			}
+        }
 
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{

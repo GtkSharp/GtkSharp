@@ -3,6 +3,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("UIManager", "DemoUIManager.cs")]
 	public class DemoUIManager : Window
 	{
 		VBox vbox;

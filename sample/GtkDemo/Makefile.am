@@ -8,6 +8,7 @@ EXTRA_DIST = $(sources) $(image_names)
 
 sources = \
 	DemoApplicationWindow.cs	\
+	DemoAttribute.cs		\
 	DemoButtonBox.cs		\
 	DemoClipboard.cs		\
 	DemoColorSelection.cs	\

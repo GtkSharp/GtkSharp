@@ -11,6 +11,7 @@ using Gtk;
 
 namespace GtkDemo
 {	
+	[Demo ("Stock Item and Icon Browser", "DemoStockBrowser.cs")]
 	public class DemoStockBrowser : Gtk.Window
 	{
 		class StockInfo

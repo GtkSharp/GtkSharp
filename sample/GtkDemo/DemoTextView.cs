@@ -21,6 +21,7 @@ using Gtk;
 
 namespace GtkDemo
 {
+	[Demo ("Multiple Views", "DemoTextView.cs", "Text Widget")]
 	public class DemoTextView : Gtk.Window
 	{
 		TextView view1;

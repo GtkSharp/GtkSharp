@@ -9,6 +9,7 @@ using Gtk;
 
 namespace GtkDemo
 {
+	[Demo ("Hyper Text", "DemoHyperText.cs", "Text Widget")]
 	public class DemoHyperText : Gtk.Window
 	{
 		bool hoveringOverLink = false;

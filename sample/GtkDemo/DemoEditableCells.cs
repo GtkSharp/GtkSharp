@@ -20,6 +20,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Editable Cells", "DemoEditableCells.cs", "Tree View")]
 	public class DemoEditableCells : Gtk.Window
 	{
 		private ListStore store;

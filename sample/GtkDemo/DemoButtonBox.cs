@@ -16,6 +16,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Button Boxes", "DemoButtonBox.cs")]
 	public class DemoButtonBox : Gtk.Window
 	{
 		public DemoButtonBox () : base ("Button Boxes")

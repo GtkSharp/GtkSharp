@@ -27,7 +27,7 @@ using System;
 
 namespace GtkDemo 
 {
-
+	[Demo ("Pixbuf", "DemoPixbuf.cs")]
 	public class DemoPixbuf : Gtk.Window
 	{
 		const int FrameDelay = 50;

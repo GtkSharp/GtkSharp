@@ -3,6 +3,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Entry Completion", "DemoEntryCompletion.cs")]
 	public class DemoEntryCompletion : Dialog
 	{
 		public DemoEntryCompletion () : base ("Demo Entry Completion", null, DialogFlags.DestroyWithParent)

@@ -21,6 +21,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("List Store", "DemoListStore.cs", "Tree View")]
 	public class DemoListStore : Gtk.Window
 	{
 		ListStore store;

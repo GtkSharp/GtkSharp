@@ -22,6 +22,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Dialog and Message Boxes", "DemoDialog.cs")]
 	public class DemoDialog : Gtk.Window
 	{
 		private Entry entry1;

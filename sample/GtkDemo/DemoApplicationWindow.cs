@@ -17,6 +17,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Application Window", "DemoApplicationWindow.cs")]
 	public class DemoApplicationWindow : Window
 	{
 		// for the statusbar

@@ -18,6 +18,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Color Selection", "DemoColorSelection.cs")]
 	public class DemoColorSelection : Gtk.Window
 	{
 		private Gdk.Color color;

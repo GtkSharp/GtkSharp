@@ -28,6 +28,7 @@ using Gdk;
 
 namespace GtkDemo
 {
+	[Demo ("Drawing Area", "DemoDrawingArea.cs")]
 	public class DemoDrawingArea : Gtk.Window
 	{
 		private static Pixmap pixmap = null;

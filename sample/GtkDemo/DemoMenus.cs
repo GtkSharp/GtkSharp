@@ -45,6 +45,7 @@ using Gtk;
 
 namespace GtkDemo
 {
+	[Demo ("Menus", "DemoMenus.cs")]
 	public class DemoMenus : Gtk.Window
 	{
 		public DemoMenus () : base ("Menus")

@@ -22,6 +22,7 @@ using GLib;
 
 namespace GtkDemo 
 {
+	[Demo ("TreeStore", "DemoTreeStore.cs", "Tree View")]
 	public class DemoTreeStore : Gtk.Window
 	{
 		private TreeStore store;

@@ -3,6 +3,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Clipboard", "DemoClipboard.cs")]
 	public class DemoClipboard : Gtk.Window
 	{
 		Entry pasteEntry, copyEntry;

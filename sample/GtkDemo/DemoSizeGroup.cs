@@ -26,6 +26,7 @@ using Gtk;
 
 namespace GtkDemo
 {
+	[Demo ("Size Group", "DemoSizeGroup.cs")]
 	public class DemoSizeGroup : Dialog
 	{
 		private SizeGroup sizeGroup;

@@ -26,6 +26,7 @@ using Gtk;
 
 namespace GtkDemo
 {
+	[Demo ("Paned Widget", "DemoPanes.cs")]
 	public class DemoPanes : Gtk.Window
 	{
 		private VPaned vpaned;

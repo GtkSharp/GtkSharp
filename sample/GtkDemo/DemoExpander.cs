@@ -3,6 +3,7 @@ using Gtk;
 
 namespace GtkDemo 
 {
+	[Demo ("Expander", "DemoExpander.cs")]
 	public class DemoExpander : Gtk.Dialog
 	{
 		public DemoExpander () : base ("Demo Expander", null, DialogFlags.DestroyWithParent)

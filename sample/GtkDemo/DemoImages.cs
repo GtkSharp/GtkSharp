@@ -34,6 +34,7 @@ using Gdk;
 
 namespace GtkDemo
 {
+	[Demo ("Images", "DemoImages.cs")]
 	public class DemoImages : Gtk.Window
 	{
 		private Gtk.Image progressiveImage;
