@@ -41,7 +41,7 @@
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_file_chooser_dialog_new_with_backend(string title, IntPtr parent, int action, string backend, IntPtr nil);
 		
-		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend, params object[] button_data) : base (IntPtr.Zero)
+		public FileChooserDialog (string backend, string title, Window parent, FileChooserAction action, params object[] button_data) : base (IntPtr.Zero)
 		{
 			if (GetType () != typeof (FileChooserDialog)) {
 				CreateNativeObject (new string[] { "file-system-backend" }, new GLib.Value[] { new GLib.Value (backend) } );
