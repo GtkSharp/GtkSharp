@@ -1,10 +1,19 @@
+if ENABLE_GNOME
 ASSEMBLY = gconf-sharp.dll
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = gconf-sharp.pc
+else
+ASSEMBLY = 
+endif
 assemblydir = $(libdir)
 assembly_DATA = $(ASSEMBLY)
 CLEANFILES = $(ASSEMBLY)
 
+DISTCLEANFILES = gconf-sharp.pc
+
 EXTRA_DIST =			\
-	$(sources)
+	$(sources)		\
+	gconf-sharp.pc.in
 
 references = 			\
 	/r:../../glib/glib-sharp.dll

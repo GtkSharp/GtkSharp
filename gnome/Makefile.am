@@ -3,6 +3,10 @@ SUBDIRS = glue
 if ENABLE_GNOME
 TARGET = $(ASSEMBLY)
 APIS = $(API)
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = gnome-sharp.pc
+
 else
 TARGET = 
 APIS = 
@@ -21,6 +25,8 @@ gapidir = $(datadir)/gapi
 assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+
+DISTCLEANFILES = gnome-sharp.pc
 
 sources =					\
 	CanvasProxy.cs				\
@@ -66,7 +72,8 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	gnome-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

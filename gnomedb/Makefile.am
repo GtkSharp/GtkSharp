@@ -1,6 +1,8 @@
 if ENABLE_GNOMEDB
 TARGET = $(ASSEMBLY)
 APIS = $(API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = gnomedb-sharp.pc
 else
 TARGET = 
 APIS = 
@@ -19,6 +21,8 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
+DISTCLEANFILES = gnomedb-sharp.pc
+
 sources =				\
 	Application.cs
 
@@ -32,7 +36,8 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	gnomedb-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

@@ -1,6 +1,8 @@
 if ENABLE_LIBART
 TARGET = $(ASSEMBLY)
 APIS = $(API) $(ADDITIONAL_API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = art-sharp.pc
 else
 TARGET = 
 APIS = 
@@ -20,6 +22,8 @@ assembly_DATA = $(TARGET)
 api_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
+DISTCLEANFILES = art-sharp.pc
+
 sources =
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
@@ -35,7 +39,8 @@ EXTRA_DIST =			\
 	$(ADDITIONAL_API)	\
 	$(METADATA)		\
 	$(dist_customs)		\
-	$(dist_sources)
+	$(dist_sources)		\
+	art-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

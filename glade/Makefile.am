@@ -3,6 +3,8 @@ SUBDIRS = glue
 if ENABLE_GLADE
 TARGET = $(ASSEMBLY)
 APIS = $(API) $(ADDITIONAL_API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = glade-sharp.pc
 else
 TARGET = 
 APIS = 
@@ -22,6 +24,8 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
+DISTCLEANFILES = glade-sharp.pc
+
 sources =				\
 	HandlerNotFoundExeception.cs	\
 	WidgetAttribute.cs
@@ -38,7 +42,8 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	glade-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

@@ -1,6 +1,8 @@
 if ENABLE_VTE
 TARGET = $(ASSEMBLY)
 APIS = $(API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = vte-sharp.pc
 else
 TARGET = 
 APIS = 
@@ -19,6 +21,8 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
+DISTCLEANFILES = vte-sharp.pc
+
 sources = 
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
@@ -31,7 +35,8 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	vte-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

@@ -1,6 +1,8 @@
 if ENABLE_RSVG
 TARGET = $(ASSEMBLY)
 APIS = $(API)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = rsvg-sharp.pc
 else
 TARGET = 
 APIS = 
@@ -20,6 +22,8 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
+DISTCLEANFILES = rsvg-sharp.pc
+
 sources =			\
 	Tool.cs
 
@@ -33,7 +37,8 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\
-	$(sources)
+	$(sources)		\
+	rsvg-sharp.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)
