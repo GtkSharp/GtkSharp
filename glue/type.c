@@ -71,6 +71,8 @@ gtksharp_register_type (gchar *name, GType parent)
 void
 gtksharp_override_virtual_method (GType g_type, const gchar *name, GCallback callback)
 {
+	if (g_type_class_peek (g_type) == NULL)
+		g_type_class_ref (g_type);
 	guint id = g_signal_lookup (name, g_type);
 	GClosure *closure = g_cclosure_new (callback, NULL, NULL);
 	g_signal_override_class_closure (id, g_type, closure);

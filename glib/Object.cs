@@ -141,6 +141,28 @@ namespace GLib {
 			return GetObject (o, false);
 		}
 
+		private static void ConnectDefaultHandlers (GType gtype, System.Type t)
+		{
+			foreach (MethodInfo minfo in t.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
+				MethodInfo baseinfo = minfo.GetBaseDefinition ();
+				if (baseinfo == minfo)
+					continue;
+
+				foreach (object attr in baseinfo.GetCustomAttributes (true)) {
+					if (attr.ToString () != "GLib.DefaultSignalHandlerAttribute")
+						continue;
+
+					DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
+					MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic);
+					object[] parms = new object [1];
+					parms [0] = gtype;
+					connector.Invoke (null, parms);
+					break;
+				}
+			}
+					
+		}
+
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
@@ -165,7 +187,9 @@ namespace GLib {
 			GType parent_gtype = (GType) pi.GetValue (null, null);
 			string name = t.Namespace.Replace(".", "_") + t.Name;
 			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
-			return new GLib.GType (gtksharp_register_type (name, parent_gtype.Val));
+			GType gtype = new GType (gtksharp_register_type (name, parent_gtype.Val));
+			ConnectDefaultHandlers (gtype, t);
+			return gtype;
 		}
 
 		/// <summary>

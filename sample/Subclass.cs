@@ -1,8 +1,8 @@
-// Subclass.cs - Widget subclass Test implementation
+// Subclass.cs - Widget subclass Test 
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@ximian.com>
 //
-// (c) 2001-2002 Mike Kestner
+// (c) 2001-2003 Mike Kestner, Novell, Inc.
 
 namespace GtkSamples {
 
@@ -17,35 +17,22 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Window win = new Window ("Button Tester");
-			win.DefaultSize = new Size (200, 150);
-			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			Button btn = new MyButton ();
-			btn.Label = "I'm a subclassed button";
-			btn.Clicked += new EventHandler (btn_click);
 			win.Add (btn);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;
 		}
-
-		static void btn_click (object obj, EventArgs args)
-		{
-			Console.WriteLine ("Button Clicked");
-		}
-
-		static void Window_Delete (object obj, DeleteEventArgs args)
-		{
-			Application.Quit ();
-			args.RetVal = true;
-		}
-
 	}
 
 	public class MyButton : Gtk.Button {
 
 		static GLib.GType gtype = GLib.GType.Invalid;
 
-		public MyButton () : base (GType) {}
+		public MyButton () : base (GType) 
+		{
+			Label = "I'm a subclassed button";
+		}
 
 		public static new GLib.GType GType {
 			get {
@@ -53,6 +40,11 @@ namespace GtkSamples {
 					gtype = RegisterGType (typeof (MyButton));
 				return gtype;
 			}
+		}
+
+		protected override void OnClicked ()
+		{
+			Console.WriteLine ("Button::Clicked default handler fired.");
 		}
 	}
 }
