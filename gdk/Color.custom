@@ -33,3 +33,11 @@ public Color (System.Drawing.Color color)
 	blue = (ushort) (b << 8 | b);
 	pixel = 0;
 }
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern uint gdk_color_hash(ref Gdk.Color raw);
+
+public override int GetHashCode() {
+        return (int) gdk_color_hash(ref this);
+}
+
