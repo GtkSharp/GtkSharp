@@ -10,8 +10,14 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Information exchange through the Window Server selection mechanism.</summary>
+    <remarks>The X selection mechanism provides a way to transfer arbitrary chunks of data between programs. A selection is a essentially a named clipboard, identified by a string interned as a GdkAtom. By claiming ownership of a selection, an application indicates that it will be responsible for supplying its contents. The most common selections are PRIMARY and CLIPBOARD.
+<para>
+
+The contents of a selection can be represented in a number of formats, called targets. Each target is identified by an atom. A list of all possible targets supported by the selection owner can be retrieved by requesting the special target TARGETS. When a selection is retrieved, the data is accompanied by a type (an atom), and a format (an integer, representing the number of bits per item). See Properties and Atoms for more information.
+</para><para>
+The functions in this section only contain the lowlevel parts of the selection protocol. A considerably more complicated implementation is needed on top of this. GTK+ contains such an implementation in the functions in gtkselection.h and programmers should use those functions instead of the ones presented here. If you plan to implement selection handling directly on top of the functions here, you should refer to the X Inter-client Communication Conventions Manual (ICCCM). 
+</para></remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -27,8 +33,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An Atom representing the PRIMARY selection.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Secondary">
@@ -39,8 +45,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The atom for the secondary selection</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Clipboard">
@@ -51,8 +57,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The atom representing the clipboard.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OwnerSetForDisplay">
@@ -69,14 +75,14 @@
         <Parameter Name="send_event" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="owner">a <see cref="T:Gdk.Window" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <param name="send_event">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the <see cref="T:Gdk.Window" /> owner as the current owner of the selection selection.</summary>
+        <param name="display">The <see cref="T:Gdk.Display" /></param>
+        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
+        <param name="selection">An atom identifying a selection.</param>
+        <param name="time_">Timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
+        <param name="send_event"> if TRUE, and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
+        <returns>TRUE if the selection owner was successfully changed to owner, otherwise FALSE.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SendNotify">
@@ -93,12 +99,12 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="requestor">a <see cref="T:System.UInt32" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <param name="property">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <summary>Sends a response to SelectionRequest event.</summary>
+        <param name="requestor">window to which to deliver response.</param>
+        <param name="selection">selection that was requested.</param>
+        <param name="target">target that was selected.</param>
+        <param name="property">property in which the selection owner stored the data, or GDK_NONE to indicate that the request was rejected.</param>
+        <param name="time_">timestamp.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -117,13 +123,13 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="requestor">a <see cref="T:System.UInt32" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <param name="property">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <summary>Send a response to SelectionRequest event.</summary>
+        <param name="display">The <see cref="T:Gdk.Display" /></param>
+        <param name="requestor"> window to which to deliver response.</param>
+        <param name="selection"> selection that was requested.</param>
+        <param name="target"> target that was selected.</param>
+        <param name="property"> property in which the selection owner stored the data, or GDK_NONE to indicate that the request was rejected.</param>
+        <param name="time_">timestamp.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -138,11 +144,11 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Determine the owner of the given selection.</summary>
+        <param name="display">The <see cref="T:Gdk.Display" /> where the selection is</param>
+        <param name="selection"> an atom indentifying a selection.</param>
+        <returns> if there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" /></returns>
+        <remarks>Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Convert">
@@ -158,12 +164,12 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="requestor">a <see cref="T:Gdk.Window" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the contents of a selection in a given form.</summary>
+        <param name="requestor">The <see cref="T:Gdk.Window" /></param>
+        <param name="selection">An atom identifying the selection to get the contents of.</param>
+        <param name="target">the form in which to retrieve the selection.</param>
+        <param name="time_">the timestamp to use when retrieving the selection. The selection owner may refuse the request if it did not own the selection at the time indicated by the timestamp.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OwnerSet">
@@ -179,13 +185,14 @@
         <Parameter Name="send_event" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="owner">a <see cref="T:Gdk.Window" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <param name="send_event">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the owner of the given selection.</summary>
+        <param name="owner">a <see cref="T:Gdk.Window" /> or NULL to indicate that the the owner for the given should be unset.</param>
+        <param name="selection">An <see cref="T:Gdk.Atom" /> identifying a selection.</param>
+        <param name="time_">timestamp to use when setting the selection. If this is older than the timestamp given last time the owner was set for the given selection, the request will be ignored.</param>
+        <param name="send_event">If <see langword="true" />  and the new owner is different from the current owner, the current owner will be sent a SelectionClear event.</param>
+        <returns>
+          <see langword="true" /> if the selection owner was successfully changed to owner, otherwise <see langword="false" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OwnerGet">
@@ -198,10 +205,10 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Determines the owner of the given selection.</summary>
+        <param name="selection">an atom indentifying a selection.</param>
+        <returns>If there is a selection owner for this window, and it is a window known to the current process, the <see cref="T:Gdk.Window" /> that owns the selection, otherwise <see langword="null" />. Note that the return value may be owned by a different process if a foreign window was previously created for that window, but a new foreign window will never be created by this call.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -228,12 +235,12 @@
         <Parameter Name="prop_format" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="requestor">a <see cref="T:Gdk.Window" /></param>
-        <param name="data">a <see cref="T:System.Byte&amp;" /></param>
-        <param name="prop_type">a <see cref="T:Gdk.Atom" /></param>
-        <param name="prop_format">a <see cref="T:System.Int32&amp;" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Retrieves selection data that was stored by the selection data in response to a call to gdk_selection_convert(). This function will not be used by applications, who should use the GtkClipboard API instead.</summary>
+        <param name="requestor"> the window on which the data is stored</param>
+        <param name="data"> location to store a pointer to the retrieved data. If the retrieval failed, NULL we be stored here, otherwise, it will be non-NULL and the returned data should be freed with g_free()  when you are finished using it. The length of the allocated memory is one more than the the length of the returned data, and the final byte will always be zero, to ensure nul-termination of strings.</param>
+        <param name="prop_type"> location to store the type of the property.</param>
+        <param name="prop_format"> location to store the format of the property.</param>
+        <returns> the length of the retrieved data.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
