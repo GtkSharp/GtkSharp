@@ -37,15 +37,11 @@ namespace Gtk {
 
 		public NodeView (NodeStore store) : base (IntPtr.Zero)
 		{
-			if (GetType() != typeof (NodeView)) {
-				string[] names = { "model" };
-				GLib.Value[] vals =  { new GLib.Value (store) };
-				CreateNativeObject (names, vals);
-				vals [0].Dispose ();
-			} else {
-				Raw = gtk_tree_view_new_with_model (store.Handle);
-			}
-
+			string[] names = { "model" };
+			GLib.Value[] vals =  { new GLib.Value (this, "model") };
+			vals [0].Val = store;
+			CreateNativeObject (names, vals);
+			vals [0].Dispose ();
 			this.store = store;
 		}
 
