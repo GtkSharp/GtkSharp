@@ -2,6 +2,7 @@ lib_LTLIBRARIES = libgtksharpglue.la
 
 BASESOURCES = 			\
 	adjustment.c		\
+	button.c		\
 	clipboard.c		\
 	colorseldialog.c        \
 	combo.c			\

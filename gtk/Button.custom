@@ -1,0 +1,14 @@
+
+[DllImport("gtksharpglue")]
+static extern int gtksharp_button_get_in_button (IntPtr button);
+[DllImport("gtksharpglue")]
+static extern void gtksharp_button_set_in_button (IntPtr button, int b);
+
+public bool InButton {
+	get {
+		return gtksharp_button_get_in_button (Handle) == 1 ? true : false;
+	}
+	set {
+		gtksharp_button_set_in_button (Handle, value ? 1 : 0);
+	}
+}
