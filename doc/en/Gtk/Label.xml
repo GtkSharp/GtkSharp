@@ -48,8 +48,8 @@
         <ReturnType>Gtk.Label</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="str" Type="System.String" />
-	</Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>Creates a new label widget, containing the text in
         <paramref name="str" />.</summary>
@@ -77,21 +77,21 @@
       </Docs>
     </Member>
     <Member MemberName="GetSelectionBounds">
-      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (int start, int end);" />
+      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="start" Type="System.Int32" />
-		<Parameter Name="end" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="start" Type="System.Int32" RefType="out" />
+        <Parameter Name="end" Type="System.Int32" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'int'</param>
-        <param name="end">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the selected range of characters in the label.</summary>
+        <param name="start"> return location for start of selection, as a character offset</param>
+        <param name="end"> return location for end of selection, as a character offset</param>
+        <returns>returns <see langword="true" /> if there's a selection.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectRegion">
@@ -101,31 +101,59 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="start_offset" Type="System.Int32" />
-		<Parameter Name="end_offset" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="start_offset" Type="System.Int32" />
+        <Parameter Name="end_offset" Type="System.Int32" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_offset">To be added: an object of type 'int'</param>
-        <param name="end_offset">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects a range of characters in the label, if the label is selectable.</summary>
+        <param name="start_offset">start offset (in characters not bytes)</param>
+        <param name="end_offset">end offset (in characters not bytes)</param>
+        <remarks>
+          <para>
+            Selects a range of characters in the label, if the label
+            is selectable. See <see cref="P:Gtk.Label.Selectable" />. If the
+            label is not selectable, this function has no effect. If
+            <see paramref="start_offset" /> or
+            <see paramref="end_offset" /> are -1, then the end of the
+            label will be substituted.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetLayoutOffsets">
-      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (int x, int y);" />
+      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (out int x, out int y);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="x" Type="System.Int32" />
-		<Parameter Name="y" Type="System.Int32" />
-	</Parameters>
+        <Parameter Name="x" Type="System.Int32" RefType="out" />
+        <Parameter Name="y" Type="System.Int32" RefType="out" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Obtains the coordinates where the label will draw the <see cref="T:Pango.Layout" />
+          representing the text in the label
+        </summary>
+        <param name="x">
+          location to store X offset of layout, or <see langword="null" /></param>
+        <param name="y">
+          location to store Y offset of layout, or <see langword="null" /></param>
+        <remarks>
+          <para>
+            Obtains the coordinates where the label will draw the
+            <see cref="T:Pango.Layout" /> representing the text in the label; useful to
+            convert mouse events into coordinates inside the
+            <see cref="T:Pango.Layout" />, e.g. to take some action if some part of the
+            label is clicked. Of course you will need to create a
+            <see cref="T:Gtk.EventBox" /> to receive the events, and pack the label
+            inside it, since labels are a <see cref="F:Gtk.WindowType.NoWindow" />
+            widget. Remember when using the
+            <see cref="T:Pango.Layout" />functions you
+            need to convert to and from pixels using PANGO_PIXELS() or
+            PANGO_SCALE.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -145,8 +173,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
@@ -161,8 +189,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="str" Type="System.String" />
-	</Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>
           Creates a new label with the given text inside it. You can
@@ -186,9 +214,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Label'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor used to extending this class</summary>
+        <returns>the newly created <see cref="T:Gtk.Label" /></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -209,20 +237,18 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
+        <summary>Sets the label's text</summary>
+        <param name="value">the text for this label</param>
         <remarks>
           <para>
-            Sets the label's text from the string <paramref name="str" />. If characters in <paramref name="str" /> are preceded by an
-            underscore, they are underlined indicating that they
-            represent a keyboard accelerator called a mnemonic. The
-            mnemonic key can be used to activate another widget,
-            chosen automatically, or explicitly using
-            <see cref="M:Gtk.Label.MnemonicWidget" />.
+            Sets the label's text. If characters in <paramref name="value" />
+            are preceded by an underscore, they are
+            underlined indicating that they represent a keyboard
+            accelerator called a mnemonic. The mnemonic key can be
+            used to activate another widget, chosen automatically, or
+            explicitly using <see cref="M:Gtk.Label.MnemonicWidget" />.
           </para>
         </remarks>
       </Docs>
@@ -233,15 +259,14 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Parses str which is marked up with the Pango text markup language</summary>
         <param name="value">a markup string (see Pango markup format)</param>
         <returns>a GtkLabel</returns>
         <remarks>
           <para>
-            Parses <paramref name="str" /> which is marked up with the
+            Parses <paramref name="value" /> which is marked up with the
             Pango text markup language, setting the label's text and
             attribute list based on the parse results.
           </para>
@@ -254,8 +279,7 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Toggles line wrapping within the GtkLabel widget.</summary>
         <param name="value">
@@ -273,8 +297,7 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>The text within the GtkLabel widget.</summary>
         <param name="value">The text you want to set.</param>
@@ -293,11 +316,11 @@
         <ReturnType>Pango.Layout</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the PangoLayout used to display the label.</summary>
-        <returns> the PangoLayout for this label</returns>
+        <summary>Gets the <see cref="T:Pango.Layout" /> used to display the label.</summary>
+        <returns> the <see cref="T:Pango.Layout" /> for this label</returns>
         <remarks>
           <para>
-            Gets the PangoLayout used to display the label. The layout
+            Gets the <see cref="T:Pango.Layout" /> used to display the label. The layout
             is useful to e.g. convert text positions to pixel
             positions, in combination with <see cref="M:Gtk.Label.GetLayoutOffset" />. The returned layout
             is owned by the label so need not be freed by the caller.
@@ -311,11 +334,10 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>
-          Parses <paramref name="str" /> which is marked up with the
+          Parses <paramref name="value" /> which is marked up with the
           Pango text markup language, setting the label's text and
           attribute list based on the parse results.
         </summary>
@@ -323,7 +345,7 @@
         <returns>a new label widget</returns>
         <remarks>
           <para>
-            Parses <paramref name="str" /> which is marked up with the
+            Parses <paramref name="value" /> which is marked up with the
             Pango text markup language, setting the label's text and
             attribute list based on the parse results. If characters
             in str are preceded by an underscore, they are underlined
@@ -343,8 +365,7 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Toggle whether or not the label allow the user to select text from the label, for copy-and-paste.</summary>
         <param name="value">
@@ -364,8 +385,7 @@
       <ReturnValue>
         <ReturnType>Gtk.Justification</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>The alignment of the lines in the text of the label relative to each other</summary>
         <param name="value">a <see cref="T:Gtk.Justification" /></param>
@@ -388,9 +408,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The current position of the insertion cursor in characters.</summary>
+        <returns>The current position of the insertion cursor in characters</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionBound">
@@ -400,9 +420,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The position of the opposite end of the selection from the cursor in characters.</summary>
+        <returns>The position of the opposite end of the selection from the cursor in characters.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MnemonicWidget">
@@ -411,13 +431,12 @@
       <ReturnValue>
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Widget'</param>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>The widget to be activated when the label's mnemonic key is pressed.</summary>
+        <param name="value">The widget to be activated when the label's mnemonic key is pressed.</param>
+        <returns>The widget to be activated when the label's mnemonic key is pressed.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="LabelProp">
@@ -426,13 +445,12 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Thee text from a label widget including any embedded underlines indicating mnemonics and Pango markup.</summary>
+        <param name="value">The text of the label widget</param>
+        <returns>The text of the label widget.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Pattern">
@@ -441,13 +459,11 @@
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>A string with _ characters in positions correspond to characters in the text to underline.</summary>
+        <param name="value">A string with _ characters in positions correspond to characters in the text to underline.</param>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MnemonicKeyval">
@@ -457,9 +473,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>The mnemonic accelerator key for this label.</summary>
+        <returns>The mnemonic accelerator key for this label.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Wrap">
@@ -468,13 +484,13 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether lines should be wrapped if the text becomes too wide.</summary>
+        <param name="value">
+          <see langword="true" /> to wrap lines</param>
+        <returns>whether lines should be wrapped</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UseUnderline">
@@ -483,13 +499,19 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Whether an underline in the text indicates the next
+          character should be used for the mnemonic accelerator key.
+        </summary>
+        <param name="value">
+          <see langword="true" /> to use underline</param>
+        <returns>
+          Whether an underline in the text indicates the next
+          character should be used for the mnemonic accelerator key.
+        </returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UseMarkup">
@@ -498,8 +520,7 @@
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
         <summary>Whether the label's text is interpreted as marked up with the Pango text markup language.</summary>
         <param name="value">
@@ -515,43 +536,57 @@
       <ReturnValue>
         <ReturnType>Pango.AttrList</ReturnType>
       </ReturnValue>
-      <Parameters>
-	</Parameters>
+      <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.AttrList'</param>
-        <returns>To be added: an object of type 'Pango.AttrList'</returns>
-        <remarks>To be added</remarks>
+        <summary>The attribute list set on the label.</summary>
+        <param name="value">a <see cref="T:Pango.AttrList" /></param>
+        <returns>the attribute list set on the label</returns>
+        <remarks>
+          <para>
+            This function does not reflect attributes that come from
+            the labels markup (see <see cref="P:Gtk.Label.Markup" />). If you
+            want to get the effective attributes for the label, use
+            <see cref="T:Pango.Layout.Attribute" /> on the label's
+            <see cref="P:Gtk.Label.Layout" /> property.
+          </para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveCursor">
       <MemberSignature Language="C#" Value="public event GtkSharp.MoveCursorHandler MoveCursor;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GtkSharp.MoveCursorHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GtkSharp.MoveCursorHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the cursor is moved.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="PopulatePopup">
       <MemberSignature Language="C#" Value="public event GtkSharp.PopulatePopupHandler PopulatePopup;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>GtkSharp.PopulatePopupHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>GtkSharp.PopulatePopupHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when a right-click pop-up menu is displayed</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyClipboard">
       <MemberSignature Language="C#" Value="public event EventHandler CopyClipboard;" />
       <MemberType>Event</MemberType>
-      <ReturnValue><ReturnType>System.EventHandler</ReturnType></ReturnValue>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when text is copied to the clipboard.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -559,8 +594,8 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
