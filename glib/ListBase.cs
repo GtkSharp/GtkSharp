@@ -18,7 +18,7 @@ namespace GLib {
 	///	Base class for GList and GSList.
 	/// </remarks>
 
-	internal abstract class ListBase : IDisposable, ICollection, GLib.IWrapper, ICloneable {
+	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper, ICloneable {
 
 		private IntPtr list_ptr = IntPtr.Zero;
 		private int length = -1;
@@ -30,13 +30,17 @@ namespace GLib {
 		abstract internal int Length (IntPtr list);
 		abstract internal void Free (IntPtr list);
 
-		protected ListBase (IntPtr list, Type element_type)
+		private ListBase ()
+		{
+		}
+
+		internal ListBase (IntPtr list, Type element_type)
 		{
 			list_ptr = list;
 			this.element_type = element_type;
 		}
 		
-		protected ListBase (IntPtr list)
+		internal ListBase (IntPtr list)
 		{
 			list_ptr = list;
 		}
