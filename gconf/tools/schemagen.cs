@@ -135,6 +135,8 @@ namespace GConf.Tools
 					return (string) classes[key];
 				else
 					return "string";
+			case "list":
+				return "System.Array";
 			default:
 				return null;
 			}
