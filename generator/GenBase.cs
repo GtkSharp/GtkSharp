@@ -75,12 +75,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private XmlElement NSElem {
-			get {
-				return ns;
-			}
-		}
-
 		public string QualifiedName {
 			get {
 				return NS + "." + Name;
