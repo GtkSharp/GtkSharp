@@ -102,10 +102,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine("\tusing GtkSharp;");
 			sw.WriteLine();
-			sw.Write("\tpublic delegate " + p_ret + " ");
+			sw.Write("\tinternal delegate " + p_ret + " ");
 			sw.WriteLine(dname + "(" + pinv + ", int key);");
 			sw.WriteLine();
-			sw.WriteLine("\tpublic class " + sname + " : SignalCallback {");
+			sw.WriteLine("\tinternal class " + sname + " : SignalCallback {");
 			sw.WriteLine();
 			sw.WriteLine("\t\tprivate static " + dname + " _Delegate;");
 			sw.WriteLine();
@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 					else
 						sw.WriteLine ("\t\t\t\tthrow new Exception(\"args.RetVal unset in callback\");");
 
-                                        sw.WriteLine("\t\t\treturn (" + p_ret + ") " + SymbolTable.CallByName (retval, "((" + s_ret + ")args.RetVal)") + ";");
+					sw.WriteLine("\t\t\treturn (" + p_ret + ") " + SymbolTable.CallByName (retval, "((" + s_ret + ")args.RetVal)") + ";");
 				}
 				sw.WriteLine("\t\t}");
 				sw.WriteLine();

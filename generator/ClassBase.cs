@@ -155,14 +155,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void GenSignals (StreamWriter sw, ClassBase implementor, bool gen_docs)
+		public void GenSignals (StreamWriter sw, ClassBase implementor)
 		{		
 			if (sigs == null)
 				return;
 
 			foreach (Signal sig in sigs.Values) {
 				if (sig.Validate ())
-					sig.Generate (sw, implementor, gen_docs);
+					sig.Generate (sw, implementor);
 				else
 					Console.WriteLine(" in Object " + Name);
 			}

@@ -99,7 +99,7 @@ namespace GtkSharp.Generation {
 			if (has_sigs && Elem.HasAttribute("parent"))
 			{
 				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-				GenSignals (sw, null, true);
+				GenSignals (sw, null);
 			}
 
 			GenMethods (sw, null, null, true);
@@ -122,7 +122,7 @@ namespace GtkSharp.Generation {
 						continue;
 					ClassBase igen = SymbolTable.GetClassGen (iface);
 					igen.GenMethods (sw, collisions, this, false);
-					igen.GenSignals (sw, this, false);
+					igen.GenSignals (sw, this);
 				}
 			}
 
