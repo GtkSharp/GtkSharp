@@ -3,18 +3,6 @@
 
 <!-- out parameters -->
 <rule>
-  <class name="GtkFrame">
-    <method>GetLabelAlign</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter level="type">gfloat*</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-	</attribute>
-  </data>
-</rule>
-<rule>
   <class name="GtkTextBuffer">
     <method>GetIterAtLineOffset</method>
     <method>GetIterAtLineIndex</method>
@@ -150,17 +138,6 @@
        <name>pass_as</name>
        <value>out</value>
      </attribute>
-   </data>
-</rule>
-<rule>
-  <class name="GtkTreeSelection">
-    <method>GetSelected</method>
-   </class>
-   <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
    </data>
 </rule>
 <rule>
@@ -459,17 +436,6 @@
 </rule>
 
 <!-- misc -->
-<rule>
-  <class name="GtkFileSelection">
-    <method>GetSelections</method>
-  </class>
-  <data>
-    <attribute target="method">
-     <name>hidden</name>
-     <value>1</value>
-    </attribute>
- </data>
-</rule>
 <rule>
   <class name="GtkHTMLStream">
     <method>Write</method>
@@ -1717,39 +1683,32 @@
   </data>
 </rule>
 
-<!-- hides -->
+<!-- hidden classes -->
 <rule>
-  <class name="GtkArrow">
-    <method>Set</method>
-   </class>
-  <class name="GtkIconSet">
-    <method>GetSizes</method>
-  </class>
-  <class name="GtkTreePath">
-    <method>GetIndices</method>
-  </class>
-   <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-   </data>
-</rule>
-
-<!-- Supress private API bits -->
-<rule>
+  <class name="GtkBindingArg"/>
+  <class name="GtkBindingEntry"/>
+  <class name="GtkBindingSignal"/>
+  <class name="GtkBindingSet"/>
   <class name="GtkBorder"/>
   <class name="GtkBoxChild"/>
+  <class name="GtkClipboardClearFunc"/>
+  <class name="GtkClipboardGetFunc"/>
   <class name="GtkDebugFlag"/>
   <class name="GtkDestDefaults"/>
   <class name="GtkExpanderStyle"/>
   <class name="GtkFixedChild"/>
+  <class name="GtkIdle_"/>
   <class name="GtkItemFactoryItem"/>
   <class name="GtkKeyHash"/>
   <class name="GtkLabelSelectionInfo"/>
   <class name="GtkObjectFlags"/>
+  <class name="GtkPathPriorityType"/>
+  <class name="GtkPathType"/>
+  <class name="GtkProgress"/>
+  <class name="GtkProgressClass"/>
   <class name="GtkRangeLayout"/>
   <class name="GtkRangeStepTimer"/>
+  <class name="GtkRBNodeColor"/>
   <class name="GtkRcContext"/>
   <class name="GtkRcFlags"/>
   <class name="GtkReadyEvent"/>
@@ -1761,15 +1720,6 @@
   <class name="GtkWidgetFlags"/>
   <class name="GtkWidgetShapeInfo"/>
   <class name="GtkWindowGeometryInfo"/>
-  <class name="GtkRBNodeColor"/>
-  <class name="GtkBindingArg"/>
-  <class name="GtkBindingEntry"/>
-  <class name="GtkBindingSignal"/>
-  <class name="GtkBindingSet"/>
-  <class name="GtkPathPriorityType"/>
-  <class name="GtkPathType"/>
-  <class name="GtkProgress"/>
-  <class name="GtkProgressClass"/>
   <data>
     <attribute target="class">
       <name>hidden</name>
@@ -1777,36 +1727,72 @@
     </attribute>
   </data>
 </rule>
+
+<!-- hidden methods -->
 <rule>
-  <class name="GtkClipboardClearFunc"/>
-  <data>
-    <attribute target="class">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkClipboardGetFunc"/>
-  <data>
-    <attribute target="class">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
+  <class name="GtkArrow">
+    <method>Set</method>
+   </class>
   <class name="GtkColorSelection">
+    <method>GetPreviousColor</method>
+    <method>PaletteFromString</method>
+    <method>PaletteToString</method>
     <method>SetChangePaletteWithScreenHook</method>
+    <method>SetChangePaletteHook</method>
+    <method>SetPreviousColor</method>
   </class>
-  <data>
+  <class name="GtkFileSelection">
+    <method>GetSelections</method>
+  </class>
+  <class name="GtkFrame">
+    <method>GetLabelAlign</method>
+    <method>SetLabelAlign</method>
+   </class>
+  <class name="GtkIconSet">
+    <method>GetSizes</method>
+  </class>
+  <class name="GtkRcStyle">
+    <method>Ref</method>
+    <method>Unref</method>
+  </class>
+  <class name="GtkSelectionData">
+    <method>GetText</method>
+    <method>SetText</method>
+    <method>Set</method>
+  </class>
+  <class name="GtkTable">
+    <method>SetColSpacings</method>
+    <method>SetRowSpacings</method>
+   </class>
+  <class name="GtkTreePath">
+    <method>GetIndices</method>
+  </class>
+  <class name="GtkTreeSelection">
+    <method>GetSelected</method>
+   </class>
+  <class name="GtkTreeView">
+    <method>GetPathAtPos</method>
+    <method>GetSearchEqualFunc</method>
+  </class>
+  <class name="GtkWidget">
+    <method>Destroyed</method>
+    <method>ListAccelClosures</method>
+    <method>Ref</method>
+    <method>Unref</method>
+  </class>
+   <data>
     <attribute target="method">
       <name>hidden</name>
       <value>1</value>
     </attribute>
-  </data>
+   </data>
 </rule>
+
+<!-- hidden properties -->
 <rule>
+  <class name="GtkHandleBox">
+    <property>ShadowType</property>
+  </class>
   <class name="GtkRadioButton">
     <property>Group</property>
   </class>
@@ -1816,89 +1802,6 @@
       <value>1</value>
     </attribute>
   </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-    <method>Destroyed</method>
-    <method>Ref</method>
-    <method>Unref</method>
-  </class>
-  <class name="GtkRcStyle">
-    <method>Ref</method>
-    <method>Unref</method>
-  </class>
-  <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkColorSelection">
-    <method>PaletteToString</method>
-    <method>PaletteFromString</method>
-    <method>GetPreviousColor</method>
-    <method>SetPreviousColor</method>
-  </class>
-  <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-    <method>ListAccelClosures</method>
-  </class>
-  <!-- both temporarily disabled because we do not support
-       Native->Managed delegates (only the other way around) -->
-  <class name="GtkColorSelection">
-    <method>SetChangePaletteHook</method>
-  </class>
-  <class name="GtkTreeView">
-    <method>GetSearchEqualFunc</method>
-  </class>
-  <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkSelectionData">
-    <method>GetText</method>
-    <method>SetText</method>
-    <method>Set</method>
-  </class>
-  <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTreeView">
-    <method>GetPathAtPos</method>
-  </class>
-  <data>
-    <attribute target="method">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkIdle_"/>
-   <data>
-    <attribute target="class">
-      <name>hidden</name>
-      <value>1</value>
-    </attribute>
-   </data>
 </rule>
 
 <!-- overloads -->
