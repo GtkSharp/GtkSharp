@@ -311,6 +311,26 @@ namespace GLib {
 		/// </summary>
 		///
 		/// <remarks>
+		///	Accesses a Boxed Property.
+		/// </remarks>
+
+		public void GetProperty (String name, out GtkSharp.Boxed val)
+		{
+			IntPtr raw;
+			g_object_get (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      out raw, new IntPtr (0));
+			val = GtkSharp.Boxed.GetBoxed (raw);
+		}
+
+		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		/// <summary>
+		///	GetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
 		///	Accesses an IntPtr Property.
 		/// </remarks>
 
@@ -473,6 +493,21 @@ namespace GLib {
 			g_object_set (RawObject, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val.Handle, new IntPtr (0));
+		}
+
+		/// <summary>
+		///	SetProperty Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Changes the value of a Boxed Property.
+		/// </remarks>
+
+		public void SetProperty (String name, GtkSharp.Boxed val)
+		{
+			g_object_set (RawObject, 
+				      Marshal.StringToHGlobalAnsi (name), 
+				      val.Raw, new IntPtr (0));
 		}
 
 

@@ -72,6 +72,10 @@ namespace GtkSharp.Generation {
 
 				case "alias":
 					break;
+					
+				case "boxed":
+					table.AddType (new BoxedGen (ns_name, elem));
+					break;
 
 				case "callback":
 					table.AddType (new CallbackGen (ns_name, elem));

@@ -8,7 +8,7 @@
 # <c> 2001 Mike Kestner
 
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_(DEPRECATED|COMPAT)|ENABLE_BROKEN|COMPILATION)";
-$ignoreit_regex = '^\s+\*|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE';
+$ignoreit_regex = '^\s+\*|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
 foreach $dir (@ARGV) {
 	@hdrs = (@hdrs, `ls $dir/*.h`);
@@ -16,7 +16,7 @@ foreach $dir (@ARGV) {
 
 foreach $fname (@hdrs) {
 
-	if ($fname =~ /test|private|internals|gtktextlayout/) {
+	if ($fname =~ /test|private|internals|gtktextlayout|gtkmarshalers/) {
 		@privhdrs = (@privhdrs, $fname);
 		next;
 	}
@@ -57,12 +57,31 @@ foreach $fname (`ls $ARGV[0]/*.c`, @privhdrs) {
 
 	open(INFILE, $fname) || die "Could open $fname\n";
 
+	if ($fname =~ /builtins_ids/) {
+		while ($line = <INFILE>) {
+			next if ($line !~ /\{/);
+
+			chomp($line);
+			$builtin = "BUILTIN" . $line;
+			$builtin .= <INFILE>;
+			print $builtin;
+		}
+		next;
+	}
+
 	while ($line = <INFILE>) {
-		next if ($line !~ /^(struct|\w+_class_init)/);
+		next if ($line !~ /^(struct|\w+_class_init)|g_boxed_type_register_static/);
 
 		if ($line =~ /^struct/) {
 			# need some of these to parse out parent types
 			print "private";
+		} elsif ($line =~ /g_boxed_type_register_static/) {
+			while ($line !~ /;/) {
+				print $line;
+				$line = <INFILE>;
+			}
+			print $line;
+			next;
 		}
 
 		do {

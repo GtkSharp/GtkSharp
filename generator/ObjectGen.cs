@@ -135,6 +135,12 @@ namespace GtkSharp.Generation {
 			
 			if (table.IsObject(c_type)) {
 				m_type = "GLib.Object";
+			} else if (table.IsBoxed(c_type)) {
+				m_type = "GtkSharp.Boxed";
+			} else if (table.IsInterface(c_type)) {
+				// FIXME: Handle interface props properly.
+				Console.Write("Interface property detected ");
+				return true;
 			} else {
 				m_type = table.GetMarshalType(c_type);
 			}

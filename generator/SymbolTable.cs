@@ -105,6 +105,28 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
+		public bool IsBoxed(String c_type)
+		{
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is BoxedGen) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		public bool IsInterface(String c_type)
+		{
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is InterfaceGen) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		public bool IsObject(String c_type)
 		{
 			if (complex_types.ContainsKey(c_type)) {
@@ -115,7 +137,6 @@ namespace GtkSharp.Generation {
 			}
 			return false;
 		}
-		
 	}
 }
 

@@ -1,8 +1,8 @@
-// GtkSharp.Generation.StructGen.cs - The Structure Generatable.
+// GtkSharp.Generation.BoxedGen.cs - The Boxed Type Generatable.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2001-2002 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -10,9 +10,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class StructGen : StructBase, IGeneratable  {
+	public class BoxedGen : StructBase, IGeneratable  {
 		
-		public StructGen (String ns, XmlElement elem) : base (ns, elem) {}
+		public BoxedGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String Name {
 			get
@@ -38,13 +38,13 @@ namespace GtkSharp.Generation {
 		public String MarshalType {
 			get
 			{
-				return "IntPtr";
+				return QualifiedName;
 			}
 		}
 		
 		public String CallByName (String var_name)
 		{
-			return var_name;
+			return var_name + ".Raw";
 		}
 		
 		public void Generate (SymbolTable table)
@@ -58,7 +58,7 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = new StreamWriter (stream);
 			
 			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001 Mike Kestner");
+			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
 			
 			sw.WriteLine ("namespace " + ns + " {");
@@ -70,7 +70,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\tpublic class " + Name + " {");
+			sw.WriteLine ("\tpublic class " + Name + " : GtkSharp.Boxed {");
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in elem.ChildNodes) {

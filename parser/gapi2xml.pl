@@ -89,6 +89,14 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^}/);
 		}
 		$pedefs{$class} = $pedef;
+	} elsif ($line =~ /g_boxed_type_register_static/) {
+		$boxdef = $line;
+		while ($line !~ /;/) {
+			$boxdef .= ($line = <STDIN>);
+		}
+		$boxdef =~ s/\n\s*//g;
+		$boxdef =~ /\(\"(\w+)\"/;
+		$boxdefs{$1} = $boxdef;
 	} elsif ($line =~ /^(const|G_CONST_RETURN)?\s*\w+\s*\**\s*(\w+)\s*\(/) {
 		$fname = $2;
 		$fdef = "";
@@ -110,6 +118,10 @@ while ($line = <STDIN>) {
 		$objects{$1} .= ":$2";
 	} elsif ($line =~ /INSTANCE_GET_INTERFACE.*,\s*(\w+),\s*(\w+)/) {
 		$ifaces{$1} = $2;
+	} elsif ($line =~ /^BUILTIN\s*\{\s*\"(\w+)\".*GTK_TYPE_BOXED/) {
+		$boxdefs{$1} = $line;
+	} elsif ($line =~ /^BUILTIN\s*\{\s*\"(\w+)\".*GTK_TYPE_(ENUM|FLAGS)/) {
+		# ignoring these for now.
 	} else {
 		print $line;
 	}
@@ -275,7 +287,11 @@ foreach $key (sort (keys (%types))) {
 		next;
 	}
 
-	$struct_el = addNameElem($ns_elem, 'struct', $key, $ns);
+	if (exists($boxdefs{$key})) {
+		$struct_el = addNameElem($ns_elem, 'boxed', $key, $ns);
+	} else {
+		$struct_el = addNameElem($ns_elem, 'struct', $key, $ns);
+	}
 	$def =~ s/\s+/ /g;
 	$def =~ /\{(.+)\}/;
 	addFieldElems($struct_el, split(/;/, $1));
@@ -447,7 +463,7 @@ sub addPropElem
 		$type = "g$type";
 	} elsif ($type =~ /string/) {
 		$type = "gchar*";
-	} elsif ($type =~ /enum|flags|object/) {
+	} elsif ($type =~ /boxed|enum|flags|object/) {
 		$type = $params[3];
 		$type =~ s/TYPE_//;
 		$type =~ s/\s+//g;
