@@ -70,7 +70,7 @@ while ($line = <STDIN>) {
 		$types{$3} = $1 . $2;
 	} elsif ($line =~ /typedef\s+enum\s+(\w+)\s+(\w+);/) {
 		$etypes{$1} = $2;
-	} elsif ($line =~ /(typedef\s+)?\benum\b/) {
+	} elsif ($line =~ /^(typedef\s+)?\benum\b/) {
 		$edef = $line;
 		while ($line = <STDIN>) {
 			$edef .= $line;
@@ -147,16 +147,25 @@ while ($line = <STDIN>) {
 		if ($fdef !~ /^_/) {
 			$fdefs{$fname} = $fdef;
 		}
-	} elsif ($line =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)/) {
-		if ($1 eq "INSTANCE") {
-			$objects{$2} = $3 . $objects{$2};
-		} else {
-			$objects{$2} .= ":$3";
+	} elsif ($line =~ /CHECK_(\w*)CAST/) {
+		$cast_macro = $line;
+		while ($line =~ /\\$/) {
+			$line = <STDIN>;
+			$cast_macro .= $line;
 		}
-	} elsif ($line =~ /GTK_CHECK_CAST.*,\s*(\w+),\s*(\w+)/) {
-		$objects{$1} = $2 . $objects{$1};
-	} elsif ($line =~ /GTK_CHECK_CLASS_CAST.*,\s*(\w+),\s*(\w+)/) {
-		$objects{$1} .= ":$2";
+		$cast_macro =~ s/\\\n\s*//g;
+		$cast_macro =~ s/\s+/ /g;
+		if ($cast_macro =~ /G_TYPE_CHECK_(\w+)_CAST.*,\s*(\w+),\s*(\w+)/) {
+			if ($1 eq "INSTANCE") {
+				$objects{$2} = $3 . $objects{$2};
+			} else {
+				$objects{$2} .= ":$3";
+			}
+		} elsif ($cast_macro =~ /GTK_CHECK_CAST.*,\s*(\w+),\s*(\w+)/) {
+			$objects{$1} = $2 . $objects{$1};
+		} elsif ($cast_macro =~ /GTK_CHECK_CLASS_CAST.*,\s*(\w+),\s*(\w+)/) {
+			$objects{$1} .= ":$2";
+		}
 	} elsif ($line =~ /INSTANCE_GET_INTERFACE.*,\s*(\w+),\s*(\w+)/) {
 		$ifaces{$1} = $2;
 	} elsif ($line =~ /^BUILTIN\s*\{\s*\"(\w+)\".*GTK_TYPE_BOXED/) {
@@ -300,7 +309,9 @@ foreach $type (sort(keys(%objects))) {
 	# Extract parent and fields from the struct
 	if ($instdef =~ /^struct/) {
 		$instdef =~ /\{(.*)\}/;
-		@fields = split(/;/, $1);
+		$fieldstr = $1;
+		$fieldstr =~ s|/\*.*?\*/||g;
+		@fields = split(/;/, $fieldstr);
 		$fields[0] =~ /(\w+)/;
 		$obj_el->setAttribute('parent', "$1");
 		addFieldElems($obj_el, @fields[1..$#fields]);
@@ -446,7 +457,7 @@ sub addFieldElems
 			addReturnElem($elem, $1);
 			addParamsElem($elem, $3);
 		} elsif ($field =~ /(unsigned )?(\S+)\s+(.+)/) {
-			$type = $1 . $2; $symb = $3;
+			my $type = $1 . $2; $symb = $3;
 			foreach $tok (split (/,\s*/, $symb)) {
 				if ($tok =~ /(\w+)\s*\[(.*)\]/) {
 					$elem = addNameElem($parent, 'field', $1);
@@ -762,6 +773,35 @@ sub addPropElem
 	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONS/);
 }
 
+sub parseTypeToken
+{
+	my ($tok) = @_;
+
+	if ($tok =~ /G_TYPE_(\w+)/) {
+		my $type = $1;
+		if ($type eq "NONE") {
+			return "void";
+		} elsif ($type eq "INT") {
+			return "gint32";
+		} elsif ($type eq "UINT") {
+			return "guint32";
+		} elsif ($type eq "ENUM" || $type eq "FLAGS") {
+			return "gint32";
+		} elsif ($type eq "STRING") {
+			return "gchar*";
+		} elsif ($type eq "OBJECT") {
+			return "GObject*";
+		} else {
+			return "g" . lc ($type);
+		}
+	} else {
+		$tok =~ s/_TYPE//; 
+		$tok =~ s/\|.*STATIC_SCOPE//; 
+		$tok =~ s/\s+//g;
+		return StudlyCaps (lc($tok));
+	}
+}
+
 sub addSignalElem
 {
 	my ($spec, $class, $node) = @_;
@@ -782,21 +822,22 @@ sub addSignalElem
 		$method = $1;
 	} else {
 		@args = split(/,/, $spec);
-		$args[7] =~ s/_TYPE//; $args[7] =~ s/\s+//g;
-		addReturnElem($sig_elem, StudlyCaps(lc($args[7])));
-		$parmcnt = ($args[8] =~ /\d+/);
-		if ($parmcnt > 0) {
-			$parms_elem = $doc->createElement('parameters');
-			$sig_elem->appendChild($parms_elem);
-			for (my $idx = 0; $idx < $parmcnt; $idx++) {
-				$arg = $args[9+$idx];
-				$arg =~ s/_TYPE//; $arg =~ s/\s+//g;
-				$arg = StudlyCaps(lc($arg));
-				$parm_elem = $doc->createElement('parameter');
-				$parms_elem->appendChild($parm_elem);
-				$parm_elem->setAttribute('name', "p$idx");
-				$parm_elem->setAttribute('type', $arg);
-			}
+		my $rettype = parseTypeToken ($args[7]);
+		addReturnElem($sig_elem, $rettype);
+		$parmcnt = $args[8];
+		$parmcnt =~ s/.*(\d+).*/\1/;
+		$parms_elem = $doc->createElement('parameters');
+		$sig_elem->appendChild($parms_elem);
+		$parm_elem = $doc->createElement('parameter');
+		$parms_elem->appendChild($parm_elem);
+		$parm_elem->setAttribute('name', "inst");
+		$parm_elem->setAttribute('type', "$inst*");
+		for (my $idx = 0; $idx < $parmcnt; $idx++) {
+			my $argtype = parseTypeToken ($args[9+$idx]);
+			$parm_elem = $doc->createElement('parameter');
+			$parms_elem->appendChild($parm_elem);
+			$parm_elem->setAttribute('name', "p$idx");
+			$parm_elem->setAttribute('type', $argtype);
 		}
 		return;
 	}
@@ -846,7 +887,7 @@ sub parseInitFunc
 			} until ($init_lines[$linenum] =~ /\)\s*;/);
 			addPropElem ($prop, $obj_el);
 			$propcnt++;
-		} elsif ($line =~ /g(tk)?_signal_new/) {
+		} elsif ($line =~ /\bg.*_signal_new/) {
 			my $sig = $line;
 			do {
 				$sig .= $init_lines[++$linenum];

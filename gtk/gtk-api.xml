@@ -1251,9 +1251,12 @@
       <field cname="n_accels" type="guint" />
       <field cname="priv_accels" type="GtkAccelGroupEntry*" />
       <signal name="AccelActivate" cname="accel_activate">
-        <return-type type="GBoolean" />
+        <return-type type="gboolean" />
         <parameters>
-          <parameter name="p0" type="GObject" />
+          <parameter name="inst" type="GtkAccelGroup*" />
+          <parameter name="p0" type="GObject*" />
+          <parameter name="p1" type="guint32" />
+          <parameter name="p2" type="GdkModifierType);" />
         </parameters>
       </signal>
       <signal name="AccelChanged" cname="accel_changed" when="FIRST">
@@ -4485,12 +4488,6 @@
       <field cname="lower_arrow_visible" bits="1" type="guint" />
       <field cname="upper_arrow_prelight" bits="1" type="guint" />
       <field cname="lower_arrow_prelight" bits="1" type="guint" />
-      <signal name="MoveScroll" cname="move_scroll" when="LAST">
-        <return-type type="GNone" />
-        <parameters>
-          <parameter name="p0" type="GtkScrollType);" />
-        </parameters>
-      </signal>
       <property name="TearoffTitle" cname="tearoff-title" type="gchar*" readable="true" writeable="true" />
       <method name="AttachToWidget" cname="gtk_menu_attach_to_widget">
         <return-type type="void" />
@@ -4731,12 +4728,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkMenuShell*" name="menu_shell" />
-        </parameters>
-      </signal>
-      <signal name="CycleFocus" cname="cycle_focus" when="LAST">
-        <return-type type="GNone" />
-        <parameters>
-          <parameter name="p0" type="GtkDirectionType);" />
         </parameters>
       </signal>
       <method name="ActivateItem" cname="gtk_menu_shell_activate_item">
@@ -7549,12 +7540,6 @@
           <parameter type="GtkMenu*" name="menu" />
         </parameters>
       </signal>
-      <signal name="SelectAll" cname="select_all" when="LAST">
-        <return-type type="GNone" />
-        <parameters>
-          <parameter name="p0" type="GBoolean" />
-        </parameters>
-      </signal>
       <method name="AddChildAtAnchor" cname="gtk_text_view_add_child_at_anchor">
         <return-type type="void" />
         <parameters>
@@ -9581,9 +9566,10 @@
         </parameters>
       </signal>
       <signal name="EventAfter" cname="event-after">
-        <return-type type="GNone" />
+        <return-type type="void" />
         <parameters>
-          <parameter name="p0" type="GdkEvent|gSignalTypeStaticScope);" />
+          <parameter name="inst" type="GtkWidget*" />
+          <parameter name="p0" type="GdkEvent);" />
         </parameters>
       </signal>
       <signal name="ButtonPressEvent" cname="button_press_event" when="LAST">
@@ -9870,9 +9856,9 @@
         </parameters>
       </signal>
       <signal name="AccelClosuresChanged" cname="accel_closures_changed">
-        <return-type type="GNone" />
+        <return-type type="void" />
         <parameters>
-          <parameter name="p0" type="" />
+          <parameter name="inst" type="GtkWidget*" />
         </parameters>
       </signal>
       <signal name="ScreenChanged" cname="screen_changed" when="LAST">
