@@ -115,8 +115,9 @@ namespace GtkDemo
 
 			foreach (string s in stock_ids)
 			{
-				Gtk.StockItem si = new StockItem ();
-				if (Gtk.StockManager.Lookup (s, ref si)) {
+				Gtk.StockItem si;
+				si = Gtk.Stock.Lookup (s);
+				if (si.StockId != null) {
 					Gdk.Pixbuf icon = this.RenderIcon (s, IconSize.Menu, "");
 					StockInfo info = new StockInfo ();
 					info.Icon = icon;
