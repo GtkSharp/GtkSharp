@@ -38,9 +38,13 @@ class GnomeDbClient {
 		GnomeDb.Application.Run ();
 	}
 
-	static void Client_Error (object o, ErrorArgs args)
+	static void Client_Event (object o, EventNotificationArgs args)
 	{
-		System.Console.WriteLine ("There's been an error");
+		switch (args.Event) {
+		case ClientEvent.Error :
+			System.Console.WriteLine ("There's been an error");
+			break;
+		}
 	}
 	
 	static void Window_Delete (object o, DeleteEventArgs args)
@@ -49,7 +53,7 @@ class GnomeDbClient {
 		args.RetVal = true;
 	}
 
-	static void DB_connect (Gtk.Object o)
+	static void DB_connect ()
 	{
 		GnomeDb.LoginDialog dialog;
 
@@ -57,10 +61,11 @@ class GnomeDbClient {
 		if (dialog.Run () == true) {
 			if (client == null) {
 				client = new Gda.Client ();
-				client.Error += new GdaSharp.ErrorHandler (Client_Error);
+				client.EventNotification += new GdaSharp.EventNotificationHandler (Client_Event);
 			}
 
-			cnc = client.OpenConnection (dialog.Dsn, dialog.Username, dialog.Password);
+			cnc = client.OpenConnection (dialog.Dsn, dialog.Username, dialog.Password,
+						     Gda.ConnectionOptions.Only);
 			if (cnc != null)
 				browser.Connection = cnc;
 		}
