@@ -8,6 +8,11 @@
 
 #include <glib/glist.h>
 
+/* Forward declarations */
+gpointer gtksharp_list_get_data (GList *l);
+GList   *gtksharp_list_get_next (GList *l);
+/* */
+
 gpointer 
 gtksharp_list_get_data (GList *l)
 {

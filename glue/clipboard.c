@@ -4,6 +4,20 @@
 
 #include <gtk/gtk.h>
 
+/* Forward declarations */
+GSList         *gtksharp_clipboard_target_list_add (GSList *list,
+						    char *target,
+						    guint flags,
+						    guint info);
+
+GtkTargetEntry *gtksharp_clipboard_target_list_to_array (GSList *list);
+
+void            gtksharp_clipboard_target_array_free (GtkTargetEntry *targets);
+
+void            gtksharp_clipboard_target_list_free (GSList *list);
+
+/* */
+
 GSList *
 gtksharp_clipboard_target_list_add (GSList *list, char *target, guint flags, guint info)
 {

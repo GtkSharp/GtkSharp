@@ -8,6 +8,11 @@
 #include <libgnomecanvas/gnome-canvas.h>
 #include <libgnomecanvas/gnome-canvas-util.h>
 
+/* Forward declarations */
+GnomeCanvasPoints *gtksharp_gnome_canvas_points_new_from_array (guint num_points,
+								double *coords);
+/* */
+
 GnomeCanvasPoints*
 gtksharp_gnome_canvas_points_new_from_array (guint num_points, double *coords)
 {

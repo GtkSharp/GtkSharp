@@ -7,6 +7,16 @@
 
 #include <gtk/gtkcolorseldialog.h>
 
+/* Forward declarations */
+GtkWidget *gtksharp_color_selection_dialog_get_colorsel (GtkColorSelectionDialog *dialog);
+
+GtkWidget *gtksharp_color_selection_dialog_get_ok_button (GtkColorSelectionDialog *dialog);
+
+GtkWidget *gtksharp_color_selection_dialog_get_cancel_button (GtkColorSelectionDialog *dialog);
+
+GtkWidget *gtksharp_color_selection_dialog_get_help_button (GtkColorSelectionDialog *dialog);
+/* */
+
 GtkWidget*
 gtksharp_color_selection_dialog_get_colorsel (GtkColorSelectionDialog *dialog)
 {

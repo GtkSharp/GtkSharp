@@ -8,6 +8,30 @@
 
 #include <gtk/gtkstyle.h>
 
+/* Forward declarations */
+GdkGC *gtksharp_gtk_style_get_white_gc (GtkStyle *style);
+
+GdkGC *gtksharp_gtk_style_get_black_gc (GtkStyle *style);
+
+GdkGC *gtksharp_gtk_style_get_fg_gc (GtkStyle *style, int i);
+
+GdkGC *gtksharp_gtk_style_get_bg_gc (GtkStyle *style, int i);
+
+GdkColor *gtksharp_gtk_style_get_white (GtkStyle *style);
+
+GdkColor *gtksharp_gtk_style_get_black (GtkStyle *style);
+
+GdkColor *gtksharp_gtk_style_get_fg (GtkStyle *style, int i);
+
+GdkColor *gtksharp_gtk_style_get_bg (GtkStyle *style, int i);
+
+PangoFontDescription *gtksharp_gtk_style_get_font_description (GtkStyle *style);
+
+int gtksharp_gtk_style_get_thickness (GtkStyle *style, int x);
+
+void gtksharp_gtk_style_set_thickness (GtkStyle *style, int thickness);
+/* */
+
 /* FIXME: include all fields */
 
 GdkGC*

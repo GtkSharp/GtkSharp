@@ -8,6 +8,14 @@ typedef struct {
 	GValue *value;
 } PropertyArg;
 
+/* Forward declarations */
+GnomeProgram*
+gtksharp_gnome_program_init (const char *app_id, const char *app_version,
+			     const GnomeModuleInfo *module_info,
+			     int argc, char **argv,
+			     int nargs, PropertyArg* args);
+/* */
+
 static gchar*
 get_default (GObjectClass *klass, const gchar *property)
 {

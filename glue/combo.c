@@ -6,6 +6,11 @@
 
 #include <gtk/gtkcombo.h>
 
+/* Forward declarations */
+GtkWidget *gtksharp_combo_get_entry (GtkCombo* combo);
+GtkWidget *gtksharp_combo_get_button (GtkCombo* combo);
+/* */
+
 GtkWidget* 
 gtksharp_combo_get_entry (GtkCombo* combo)
 {

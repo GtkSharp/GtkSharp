@@ -8,6 +8,12 @@
 #include <glib-object.h>
 #include <gtk/gtkobject.h>
 
+/* Forward declarations */
+void     gtksharp_object_unref_if_floating (GObject *obj);
+gboolean gtksharp_object_is_floating (GObject *obj);
+int      gtksharp_object_get_ref_count (GObject *obj);
+/* */
+
 void
 gtksharp_object_unref_if_floating (GObject *obj)
 {

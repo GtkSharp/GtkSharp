@@ -7,6 +7,10 @@
 
 #include <glib.h>
 
+/* Forward declarations */
+gchar *gtksharp_error_get_message (GError *err);
+/* */
+
 gchar *
 gtksharp_error_get_message (GError *err)
 {

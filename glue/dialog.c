@@ -7,6 +7,11 @@
 
 #include <gtk/gtkdialog.h>
 
+/* Forward declarations */
+GtkWidget *gtksharp_dialog_get_vbox (GtkDialog *dialog);
+GtkWidget *gtksharp_dialog_get_action_area (GtkDialog *dialog);
+/* */
+
 GtkWidget*
 gtksharp_dialog_get_vbox (GtkDialog *dialog)
 {

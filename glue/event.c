@@ -8,6 +8,10 @@
 
 #include <gdk/gdkevents.h>
 
+/* Forward declarations */
+GdkEventType gtksharp_gdk_event_get_event_type (GdkEvent *event);
+/* */
+
 GdkEventType
 gtksharp_gdk_event_get_event_type (GdkEvent *event)
 {

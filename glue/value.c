@@ -7,6 +7,11 @@
 
 #include <glib-object.h>
 
+/* Forward declarations */
+GValue *gtksharp_value_create (GType g_type);
+GValue *gtksharp_value_create_from_property (GObject *obj, const gchar* name);
+/* */
+
 GValue *
 gtksharp_value_create (GType g_type)
 {

@@ -8,7 +8,21 @@
 #include <glib-object.h>
 #include <stdio.h>
 
-gchar *
+/* Forward declarations */
+G_CONST_RETURN gchar   *gtksharp_get_type_name (GObject *obj);
+
+gboolean gtksharp_is_object (gpointer obj);
+
+GType    gtksharp_get_type_id (GObject *obj);
+
+GType    gtksharp_get_parent_type (GType typ);
+
+G_CONST_RETURN gchar   *gtksharp_get_type_name_for_id (GType typ);
+
+GType    gtksharp_register_type (gchar *name, GType parent);
+/* */
+
+G_CONST_RETURN gchar *
 gtksharp_get_type_name (GObject *obj)
 {
 	return G_OBJECT_TYPE_NAME (obj);
@@ -32,7 +46,7 @@ gtksharp_get_parent_type (GType typ)
 	return g_type_parent (typ);
 }
 
-gchar *
+G_CONST_RETURN gchar *
 gtksharp_get_type_name_for_id (GType typ)
 {
 	return g_type_name (typ);
