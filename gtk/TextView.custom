@@ -1,1 +1,22 @@
+// Gtk.TextView.custom - Gtk TextView class customizations
+//
+// Author: Mike Kestner <mkestner@ximian.com> 
+//
+// Copyright (C) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+		
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_text_view_new_with_buffer (IntPtr buffer);
+
+		public TextView (TextBuffer buffer) : base (IntPtr.Zero)
+		{
+			if (GetType() != typeof (TextView)) {
+				CreateNativeObject (new string [0], new GLib.Value [0]);
+				Buffer = buffer;
+				return;
+			}
+
+			Raw = gtk_text_view_new_with_buffer (buffer.Handle);
+		}
 
