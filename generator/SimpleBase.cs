@@ -23,7 +23,7 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class SimpleBase : IGeneratable  {
+	public abstract class SimpleBase : IGeneratable  {
 		
 		string type;
 		string ctype;

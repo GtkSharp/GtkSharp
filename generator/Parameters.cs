@@ -172,16 +172,10 @@ namespace GtkSharp.Generation {
 				if (elem.HasAttribute ("pass_as"))
 					return elem.GetAttribute ("pass_as");
 
-				if (IsArray)
+				if (IsArray || CSType.EndsWith ("IntPtr"))
 					return "";
 
-				if (Generatable is SimpleGen && !(Generatable is ConstStringGen) && CType.EndsWith ("*") && !CSType.EndsWith ("IntPtr"))
-					return "out";
-
-				if ((Generatable is LPGen || Generatable is LPUGen) && CType.EndsWith ("*"))
-					return "out";
-
-				if (Generatable is EnumGen && CType.EndsWith ("*"))
+				if (CType.EndsWith ("*") && (Generatable is SimpleGen || Generatable is EnumGen))
 					return "out";
 
 				return "";
