@@ -438,5 +438,14 @@ namespace Gtk {
 
 			return GetNodeAtPath (path);
 		}
+
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_node_store_get_type ();
+		
+		public static new GLib.GType GType {
+			get {
+				return new GLib.GType (gtksharp_node_store_get_type ());
+			}
+		}
 	}
 }
