@@ -103,7 +103,6 @@ namespace GtkSharp.Generation {
 			int count = (parms != null) ? parms.Count : 0;
 			int idx = 0;
 			bool need_sep = false;
-			bool need_ref_owned = true;
 			string call_str = "";
 			string cleanup_str = "";
 			for (int i = 0; i < count; i++)
@@ -119,10 +118,6 @@ namespace GtkSharp.Generation {
 
 				string cstype = parms[i].CSType;
 				ClassBase parm_wrapper = table.GetClassGen (ctype);
-				if (need_ref_owned && parm_wrapper != null && ((parm_wrapper is ObjectGen) || (parm_wrapper is InterfaceGen))) {
-					need_ref_owned = false;
-					sw.WriteLine("\t\t\tbool ref_owned = false;");
-				}
 				sw.Write("\t\t\t" + cstype + " _arg" + idx);
 				if (parms[i].PassAs == "out") {
 					sw.WriteLine(";");

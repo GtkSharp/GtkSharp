@@ -140,7 +140,6 @@ namespace GtkSharp.Generation {
 			if (parameters == null)
 				return;
 
-			bool ref_owned_needed = true;
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 
@@ -149,10 +148,6 @@ namespace GtkSharp.Generation {
 				}
 
 				IGeneratable gen = p.Generatable;
-				if (ref_owned_needed && (gen is ObjectGen || gen is InterfaceGen) && p.PassAs == "out") {
-					ref_owned_needed = false;
-					sw.WriteLine(indent + "\t\t\tbool ref_owned = false;");
-				}
 
 				if (p.PassAs == "out" && (UsesHandle (gen) || p.CSType == "GLib.Value"))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNativeReturn (p.Name + "_handle") + ";");

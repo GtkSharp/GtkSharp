@@ -134,7 +134,7 @@ namespace GtkSharp.Generation {
 
 		public virtual String FromNative(String var)
 		{
-			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ", ref_owned)";
+			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
 		
 		public virtual String FromNativeReturn(String var)

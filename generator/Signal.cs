@@ -148,35 +148,58 @@ namespace GtkSharp.Generation {
 			sw.Close ();
 		}
 
-		private void GenVirtualMethod (StreamWriter sw)
+		private void GenVirtualMethod (StreamWriter sw, ClassBase implementor)
 		{
 			VMSignature vmsig = new VMSignature (parms);
+			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
 			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", ReturnType, "On" + Name, vmsig.ToString ());
 			sw.WriteLine ("\t\t{");
 			if (!IsVoid)
 				sw.WriteLine ("\t\t\tGLib.Value ret = new GLib.Value ();");
 
 			sw.WriteLine ("\t\t\tIntPtr[] args = new IntPtr [" + parms.Count + "];");
-			sw.WriteLine ("\t\t\targs [0] = Handle;");
-			sw.WriteLine ("\t\t\tGLib.Value[] vals = new GLib.Value [" + (parms.Count - 1) + "];");
+			sw.WriteLine ("\t\t\tGLib.Value[] vals = new GLib.Value [" + parms.Count + "];");
+			sw.WriteLine ("\t\t\tvals [0] = new GLib.Value (this);");
+			sw.WriteLine ("\t\t\targs [0] = vals [0].Handle;");
 			string cleanup = "";
 			for (int i = 1; i < parms.Count; i++) {
 				if (parms [i].PassAs == "out") {
-					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value ();");
-					cleanup += "\t\t\t" + parms [i].Name + " = (" + parms [i].CSType + ") vals [" + (i - 1) + "];\n";
+					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value ();");
+					cleanup += "\t\t\t" + parms [i].Name + " = (" + parms [i].CSType + ") vals [" + i + "];\n";
 				} else if (parms [i].IsLength && parms [i - 1].IsString)
-					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
+					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
 				else
-					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value (" + parms [i].Name + ");");
+					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i].Name + ");");
 
-				sw.WriteLine ("\t\t\targs [" + i + "] = vals [" + (i - 1) + "].Handle;");
+				sw.WriteLine ("\t\t\targs [" + i + "] = vals [" + i + "].Handle;");
 			}
 
-			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (args, " + (IsVoid ? "IntPtr.Zero " : "ret.Handle ") + ");");
+			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (args, " + (IsVoid ? "IntPtr.Zero" : "ret.Handle") + ");");
 			if (cleanup != "")
 				sw.WriteLine (cleanup);
 			if (!IsVoid)
 				sw.WriteLine ("\t\t\treturn (" + ReturnType + ") ret;");
+			sw.WriteLine ("\t\t}\n");
+		}
+
+		private void GenDefaultHandlerDelegate (StreamWriter sw, ClassBase implementor)
+		{
+			ImportSignature isig = new ImportSignature (parms, container_type.NS);
+			ManagedCallString call = new ManagedCallString (parms);
+			sw.WriteLine ("\t\tdelegate " + MarshalReturnType + " " + Name + "Delegate (" + isig.ToString () + ");\n");
+			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "Delegate", Name + "Callback");
+			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
+			sw.Write ("\t\t\t{0}", IsVoid ? "" : "return ");
+			sw.WriteLine ("obj.{0} ({1});", "On" + Name, call.ToString ());
+			sw.WriteLine ("\t\t}\n");
+			string cname = "\"" + elem.GetAttribute("cname") + "\"";
+			sw.WriteLine ("\t\tprotected static void Override" + Name + " (uint gtype)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (" + Name + "Callback == null)");
+			sw.WriteLine ("\t\t\t\t" + Name + "Callback = new " + Name + "Delegate (" + Name.ToLower() + "_cb);");
+			sw.WriteLine ("\t\t\tgtksharp_override_virtual_method (gtype, " + cname + ", " + Name + "Callback);");
 			sw.WriteLine ("\t\t}\n");
 		}
 
@@ -192,7 +215,8 @@ namespace GtkSharp.Generation {
 				ns = implementor.NS;
 
 			sig_handler.Generate (ns, gen_info);
-			GenVirtualMethod (sw);
+			GenDefaultHandlerDelegate (sw, implementor);
+			GenVirtualMethod (sw, implementor);
 			string qual_marsh = ns + "Sharp." + sig_handler.Name;
 
 			sw.WriteLine("\t\t[GLib.Signal("+ cname + ")]");

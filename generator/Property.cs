@@ -121,8 +121,6 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
 				if (table.IsObject (c_type)) {
 					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
-					if (table.IsObject (c_type))
-						sw.WriteLine ("\t\t\t\tbool ref_owned = false;");
 					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
 					if (!table.IsBoxed (c_type) && !table.IsObject (c_type))
 						sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");

@@ -136,6 +136,11 @@ namespace GLib {
 			return obj;
 		}
 
+		public static Object GetObject(IntPtr o)
+		{
+			return GetObject (o, false);
+		}
+
 		[DllImport("gtksharpglue")]
 		static extern uint gtksharp_register_type (string name, uint parent_type);
 
@@ -360,6 +365,9 @@ namespace GLib {
 		{
 			g_object_set_property (Raw, name, val.Handle);
 		}
+
+		[DllImport("gtksharpglue")]
+		protected static extern void gtksharp_override_virtual_method (uint gtype, string name, Delegate cb);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		protected static extern void g_signal_chain_from_overridden (IntPtr[] args, IntPtr retval);
