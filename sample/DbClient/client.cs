@@ -85,7 +85,7 @@ class Client {
 
 		ArrayList dataList = Conn.SelectAll ();
 		
-		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, true);
+		tableau = new Gtk.Table ((uint) dataList.Count + 1, 3, false);
 		DrawTitles (tableau);
 		tableau.ColSpacings = 10;
 		uint i = 1;
@@ -114,12 +114,12 @@ class Client {
 		label = new Label (String.Empty);
 		label.Markup = "<big><b>Name</b></big>";
 		label.UseMarkup = true;
-		t.Attach (label, 0, 2, 0, 1);
+		t.Attach (label, 1, 2, 0, 1);
 
 		label = new Label (String.Empty);
 		label.Markup = "<big><b>Address</b></big>";
 		label.UseMarkup = true;
-		t.Attach (label, 0, 3, 0, 1);
+		t.Attach (label, 2, 3, 0, 1);
 	}
 
 	static void Db_Insert ()
@@ -299,7 +299,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=192.168.1.2;" +
+		string connectionString = "hostaddr=80.24.221.71;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
