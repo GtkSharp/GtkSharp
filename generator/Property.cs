@@ -59,8 +59,8 @@ namespace GtkSharp.Generation {
 				modifiers = "new ";
 
 			XmlElement parent = (XmlElement) elem.ParentNode;
-			string name = elem.GetAttribute("name");
-			if (name == parent.GetAttribute("name")) {
+			string name = Name;
+			if (name == container_type.Name) {
 				name += "Prop";
 			}
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
@@ -85,13 +85,36 @@ namespace GtkSharp.Generation {
 				return;
 			}
 
+			bool has_getter = false;
+			bool has_setter = false;
+			Method getter = container_type.GetMethod("Get" + Name);
+			Method setter = container_type.GetMethod("Set" + Name);
+
+			if (getter != null && getter.Validate() && getter.IsGetter) {
+				has_getter = true;
+				getter.GenerateImport(sw);
+			}
+			if (setter != null && setter.Validate() && setter.IsSetter) {
+				has_setter = true;
+				setter.GenerateImport(sw);
+			}
+
+			if (has_setter && setter.Params[0].CSType != cs_type)
+				cs_type = setter.Params[0].CSType;
+			else if (has_getter && getter.ReturnType != cs_type)
+				cs_type = getter.ReturnType;
+
 			sw.WriteLine();
 			sw.WriteLine("\t\t/// <summary> " + name + " Property </summary>");
 			sw.WriteLine("\t\t/// <remarks>");
 			sw.WriteLine("\t\t/// </remarks>");
 
 			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
-			if (elem.HasAttribute("readable")) {
+			if (has_getter) {
+				sw.Write("\t\t\tget ");
+				getter.GenerateBody(sw, "\t", c_type);
+				sw.WriteLine();
+			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
 				sw.WriteLine("\t\t\t\tGLib.Value val = new GLib.Value (Handle, " + cname + ");");
 				sw.WriteLine("\t\t\t\tGetProperty(" + cname + ", val);");
@@ -113,7 +136,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\t}");
 			}
 
-			if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
+			if (has_setter) {
+				sw.Write("\t\t\tset ");
+				setter.GenerateBody(sw, "\t", c_type);
+				sw.WriteLine();
+			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
 				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
 				if (SymbolTable.IsEnum(c_type)) {

@@ -25,6 +25,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string MarshalType {
+			get {
+				return SymbolTable.GetMarshalType( elem.GetAttribute("type"));
+			}
+		}
+
 		public string Name {
 			get {
 				string name = elem.GetAttribute("name");

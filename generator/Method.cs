@@ -39,6 +39,18 @@ namespace GtkSharp.Generation {
 				this.libname = libname;
 		}
 
+		public bool IsGetter {
+			get {
+				return is_get;
+			}
+		}
+
+		public bool IsSetter {
+			get {
+				return is_set;
+			}
+		}
+
 		public string Name {
 			get {
 				return name;
@@ -60,6 +72,12 @@ namespace GtkSharp.Generation {
 			}
 			set {
 				protection = value;
+			}
+		}
+
+		public string ReturnType {
+			get {
+				return s_ret;
 			}
 		}
 
@@ -258,7 +276,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t/// <remarks> To be completed </remarks>");
 		}
 
-		protected void GenerateImport (StreamWriter sw)
+		public void GenerateImport (StreamWriter sw)
 		{
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
 			sw.Write("\t\tstatic extern " + safety + m_ret + " " + cname + isig);
@@ -337,7 +355,12 @@ namespace GtkSharp.Generation {
 			Statistics.MethodCount++;
 		}
 
-		protected void GenerateBody (StreamWriter sw, string indent)
+		public void GenerateBody (StreamWriter sw, string indent)
+		{
+			GenerateBody(sw, indent, "");
+		}
+
+		public void GenerateBody (StreamWriter sw, string indent, string cast_type)
 		{
 			sw.WriteLine(" {");
 			if (parms != null)
