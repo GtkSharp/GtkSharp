@@ -10,7 +10,9 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>
+      An input method context supporting table-based input methods.
+    </summary>
     <remarks />
   </Docs>
   <Base>
@@ -60,7 +62,7 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Public constructor.</summary>
         <returns>an object of type <see cref="T:Gtk.IMContextSimple" /></returns>
         <remarks />
       </Docs>
@@ -103,11 +105,18 @@
         <Parameter Name="n_seqs" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds an additional table to search to the input context.</summary>
         <param name="max_seq_len">a <see cref="T:System.Int32" /></param>
         <param name="n_seqs">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.UInt16" /></returns>
-        <remarks />
+        <remarks>
+	  <para>
+	    Each row of the table consists of <paramref name="max_seq_len"/> key symbols followed by two <see cref="T:System.UInt16" /> interpreted as the high and low words of a Unicode value. Tables are searched starting from the last added.
+	  </para>
+	  <para>
+	    The table must be sorted in dictionary order on the numeric value of the key symbol fields. (Values beyond the length of the sequence should be zero.)
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>

@@ -68,11 +68,35 @@
         <Parameter Name="n_chars" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Asks the widget that the input context is attached to to delete
+	  characters around the cursor position by emitting the
+	  <see cref="E:Gtk.IMContext.DeleteSurrounding"/> signal. 
+	</summary>
         <param name="offset">a <see cref="T:System.Int32" /></param>
         <param name="n_chars">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true"/> if the signal was handled.</returns>
+        <remarks>
+	  <para>
+	    Note that <paramref name="offset"/> and <paramref name="n_chars"/>
+	    are in characters not in bytes, which differs from the usage other
+	    places in <see cref="T:Gtk.IMContext"/>.
+	  </para>
+	  <para>
+	    In order to use this function, you should first call
+	    <see cref="M:Gtk.IMContext.GetSurrounding"/>
+	    to get the current context, and
+	    call this function immediately afterwards to make sure that you
+	    know what you are deleting. You should also account for the fact
+	    that even if the signal was handled, the input context might not
+	    have deleted all the characters that were requested to be deleted.
+	  </para>
+	  <para>
+	    This function is used by an input method that wants to make
+	    subsitutions in the existing text in response to new input. It is
+	    not useful for applications.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FilterKeypress">
@@ -141,10 +165,17 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Set the client window for the input context; this is the
+	  <see cref="T:Gdk.Window"/> in which the input appears. 
+	</summary>
         <param name="value">a <see cref="T:Gdk.Window" /></param>
         <returns>a <see cref="T:Gdk.Window" /></returns>
-        <remarks />
+        <remarks>
+	  The client window is
+	  used in order to correctly position status windows. It may
+	  also be used for purposes internal to the input method.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CursorLocation">
@@ -156,10 +187,15 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Notify the input method that a change in cursor 
+	  position has been made. 
+	</summary>
         <param name="value">a <see cref="T:Gdk.Rectangle" /></param>
         <returns>a <see cref="T:Gdk.Rectangle" /></returns>
-        <remarks />
+        <remarks>
+	  The location is relative to the client window.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UsePreedit">
@@ -171,10 +207,17 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Whether the IM context should use the preedit string
+	  to display feedback. 
+	</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks />
+        <remarks>
+	  If <paramref name="use_preedit"/> is <see langword="false"/> (default
+	  is <see langword="true"/>), then the IM context may use some other method to display
+	  feedback, such as displaying it in a child of the root window.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PreeditChanged">
@@ -185,7 +228,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Event fired when the preedit string is changed.</summary>
         <remarks />
       </Docs>
     </Member>
