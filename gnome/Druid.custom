@@ -1,0 +1,49 @@
+		[DllImport("gnomeui-2")]
+		static extern IntPtr gnome_druid_new_with_window(string title, IntPtr parent, bool close_on_cancel, out IntPtr window);
+
+		public Druid (string title, bool close_on_cancel, out Gtk.Widget window) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Druid)) {
+				CreateNativeObject (new string[0], new GLib.Vlaue [0]);
+				window = ConstructWithWindow (title, null, close_on_cancel);
+				return;
+			}
+			IntPtr window_handle;
+			Raw = gnome_druid_new_with_window (title, IntPtr.Zero, close_on_cancel, window_handle);
+			window = (Gtk.Widget) GLib.Object.GetObject (window_handle);
+		}
+
+		public Druid (string title, bool close_on_cancel) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Druid)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				ConstructWithWindow (title, null, close_on_cancel);
+				return;
+			}
+			IntPtr window_handle;
+			Raw = gnome_druid_new_with_window (title, IntPtr.Zero, close_on_cancel, out window_handle);
+		}
+
+		public Druid (string title, Gtk.Window parent, bool close_on_cancel) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Druid)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				ConstructWithWindow (title, parent, close_on_cancel);
+				return;
+			}
+			IntPtr window_handle;
+			Raw = gnome_druid_new_with_window (title, (parent != null) ? parent.Handle : IntPtr.Zero, close_on_cancel, out window_handle);
+		}
+
+		public Druid (string title, Gtk.Window parent, bool close_on_cancel, out Gtk.Widget window) : base (IntPtr.Zero)
+		{
+			if (GetType () != typeof (Druid)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				window = ConstructWithWindow (title, parent, close_on_cancel);
+				return;
+			}
+			IntPtr window_handle;
+			Raw = gnome_druid_new_with_window(title, (parent != null) ? parent.Handle : IntPtr.Zero, close_on_cancel, out window_handle);
+			window = (Gtk.Widget)GLib.Object.GetObject (window_handle);
+                }
+
