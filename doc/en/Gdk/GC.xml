@@ -9,9 +9,25 @@
   <Docs>
     <summary>Represents a graphics context</summary>
     <remarks>
-      <para>The Gdk.GC class is used to represent a graphics
-      context. It is an opaque structure with no user-visible
-      elements.
+      <para>
+	  The Gdk.GC class is used to represent a graphics context.
+      </para>
+      <para>
+	A number of resources are used when performing graphics
+	operations in. Most information about performing graphics (for
+	example, foreground color, background color, line style, and
+	so on) is stored in resources called graphics contexts
+	(GCs). Most graphics operations take a GC as an
+	argument.
+      </para>
+      <para>
+	Graphics operations can be performed to either windows (<see
+	cref="T:Gdk.Window"/>) or pixmaps (<see
+	cref="T:Gdk.Pixmap"/>), which collectively are called
+	drawables (see cref="T:Gdk.Drawable"/>.  Each drawable exists
+	on a single screen.  A GC is created for a specific screen and
+	drawable depth and can only be used with drawables of matching
+	screen and depth.
       </para>
     </remarks>
   </Docs>
@@ -39,9 +55,12 @@
       </Parameters>
       <Docs>
         <summary>Copy the set of values from one graphics context onto another graphics context.</summary>
-        <param name="src_gc">An object of type 'Gdk.GC'</param>
+        <param name="src_gc">The GC to copy.</param>
         <remarks>
-          <para>Copy the set of values from one graphics context onto another graphics context.</para>
+          <para>
+	    Copies the settings of the <param name="src_gc"/> graphics
+	    context into this GC.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -60,10 +79,12 @@
         <param name="x">the x-coordinate of the origin.</param>
         <param name="y">the y-coordinate of the origin.</param>
         <remarks>
-          <para>Set the origin when using tiles or stipples with the
-          GC. The tile or stipple will be aligned such that the upper
-          left corner of the tile or stipple will coincide with this
-          point.</para>
+          <para>
+	    Set the origin when using tiles or stipples with the
+	    GC. The tile or stipple will be aligned such that the upper
+	    left corner of the tile or stipple will coincide with this
+	    point.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -337,7 +358,7 @@
         <remarks>
           <para>Sets the clip mask for a graphics context from a
           rectangle. The clip mask is interpreted relative to the clip
-          origin. (See Gdk.GC.SetClipOrigin()).</para>
+          origin. (See <see cref="M:Gdk.GC.SetClipOrigin()"/>).</para>
         </remarks>
       </Docs>
     </Member>
@@ -376,7 +397,7 @@
         <remarks>
           <para>Sets the clip mask for a graphics context from a
           bitmap. The clip mask is interpreted relative to the clip
-          origin. (See Gdk.GC.SetClipOrigin()).</para>
+          origin. (See <see cref="M:Gdk.GC.SetClipOrigin()"/>).</para>
         </remarks>
       </Docs>
     </Member>
@@ -477,7 +498,7 @@
         <remarks>
           <para>Sets the clip mask for a graphics context from a
           region structure. The clip mask is interpreted relative to
-          the clip origin. (See Gdk.GC.SetClipOrigin()).</para>
+          the clip origin. (See <see cref="M:Gdk.GC.SetClipOrigin()"/>).</para>
         </remarks>
       </Docs>
     </Member>
@@ -514,9 +535,10 @@
         <param name="value">the new stipple bitmap.</param>
         <returns>the new stipple bitmap.</returns>
         <remarks>
-          <para>Set the stipple bitmap for a graphics context. The
-          stipple will only be used if the fill mode is GDK_STIPPLED
-          or GDK_OPAQUE_STIPPLED.</para>
+          <para>
+	    Set the stipple bitmap for a graphics context. The
+	    stipple will only be used if the fill mode is <see cref="E:Gdk.Fill.Stippled"/>
+	    or <see cref="Gdk.Fill.OpaqueStippled"/>.
         </remarks>
       </Docs>
     </Member>
@@ -576,7 +598,7 @@
           <para>Sets whether copying non-visible portions of a
           drawable using this graphics context generate exposure
           events for the corresponding regions of the destination
-          drawable. (See Gdk.Drawable).</para>
+          drawable. (See <see cref="T:Gdk.Drawable"/>).</para>
         </remarks>
       </Docs>
     </Member>
