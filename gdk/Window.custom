@@ -104,6 +104,31 @@
 		}
 	} 
 
+	static Hashtable filter_all_hash;
+	static Hashtable FilterAllHash {
+		get {
+			if (filter_all_hash == null)
+				filter_all_hash = new Hashtable ();
+			return filter_all_hash;
+		}
+	}
+
+	public static void AddFilterForAll (FilterFunc func)
+	{
+		GdkSharp.FilterFuncWrapper wrapper = new GdkSharp.FilterFuncWrapper (func, null);
+		FilterAllHash [func] = wrapper;
+		gdk_window_add_filter (IntPtr.Zero, wrapper.NativeDelegate, IntPtr.Zero);
+	}
+
+	public static void RemoveFilterForAll (FilterFunc func)
+	{
+		GdkSharp.FilterFuncWrapper wrapper = FilterAllHash [func] as GdkSharp.FilterFuncWrapper;
+		if (wrapper == null)
+			return;
+		FilterAllHash.Remove (func);
+		gdk_window_remove_filter (IntPtr.Zero, wrapper.NativeDelegate, IntPtr.Zero);
+	}
+
 #if MANLY_ENOUGH_TO_INCLUDE
 	public Cairo.Graphics CairoGraphics (out int offset_x, out int offset_y)
 	{
