@@ -9,8 +9,32 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Identifies a delegate to run before the default signal handler.</summary>
+    <remarks>
+      <para>
+	Use this attribute to attach an event handler to an object and cause it to be invoked before the default signal handler of the object.   While this mechanism can be used to pierce the object's encapsulation and change the behavior of the object without subclassing it, the cleaner approach would be to subclass the object and override the virtual method for the default signal handler.
+</para>
+      <para>
+	In the following example, the ButtonClicked method will be invoked before the <see cref="M:Gtk.Button.OnClicked" /> virtual method is executed.
+</para>
+      <example>
+        <code lang="C#">
+public class Example {
+	public static int Main (string[] args)
+	{
+		Gtk.Button btn = new Gtk.Button ("Click me");
+		btn.Clicked = new EventHandler (ButtonClicked);
+	}
+
+	[GLib.ConnectBefore]
+	private void ButtonClicked (object o, EventArgs args)
+	{
+		Console.WriteLine ("Got Clicked");
+	}
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Attribute</BaseTypeName>
@@ -24,9 +48,10 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Public Constructor.</summary>
         <returns>a <see cref="T:GLib.ConnectBeforeAttribute" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>
