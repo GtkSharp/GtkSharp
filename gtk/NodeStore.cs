@@ -1,8 +1,8 @@
 // NodeStore.cs - Tree store implementation for TreeView.
 //
-// Author: Mike Kestner  <mkestner@ximian.com>
+// Author: Mike Kestner  <mkestner@novell.com>
 //
-// Copyright (c) 2003 Novell, Inc.
+// Copyright (c) 2003-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -83,12 +83,16 @@ namespace Gtk {
  		GLib.GType[] ctypes; 
 		PropertyInfo[] getters;
 		int n_cols = 1;
+		bool list_only = false;
 		ArrayList nodes = new ArrayList ();
 		TreeModelIfaceDelegates tree_model_iface;
 
 		int get_flags_cb ()
 		{
-			return (int) TreeModelFlags.ItersPersist;
+			TreeModelFlags result = TreeModelFlags.ItersPersist;
+			if (list_only)
+				result |= TreeModelFlags.ListOnly;
+			return (int) result;
 		}
 
 		int get_n_columns_cb ()
@@ -281,8 +285,10 @@ namespace Gtk {
 
 		void ScanType (Type type)
 		{
-			foreach (TreeNodeAttribute attr in type.GetCustomAttributes (typeof (TreeNodeAttribute), false))
+			foreach (TreeNodeAttribute attr in type.GetCustomAttributes (typeof (TreeNodeAttribute), false)) {
 				n_cols = attr.ColumnCount;
+				list_only = attr.ListOnly;
+			}
 
  			ctypes = new GLib.GType [n_cols];
  			getters = new PropertyInfo [n_cols];

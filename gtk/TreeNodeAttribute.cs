@@ -1,8 +1,8 @@
 // TreeNodeAttribute.cs - Attribute to specify TreeNode information for a class
 //
-// Author: Mike Kestner  <mkestner@ximian.com>
+// Author: Mike Kestner  <mkestner@novell.com>
 //
-// Copyright (c) 2003 Novell, Inc.
+// Copyright (c) 2003-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -26,6 +26,7 @@ namespace Gtk {
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class TreeNodeAttribute : Attribute {
 		int col_count;
+		bool list_only;
 
 		public int ColumnCount {
 			get {
@@ -33,6 +34,15 @@ namespace Gtk {
 			}
 			set {
 				col_count = value;
+			}
+		}
+
+		public bool ListOnly {
+			get {
+				return list_only;
+			}
+			set {
+				list_only = value;
 			}
 		}
 	}

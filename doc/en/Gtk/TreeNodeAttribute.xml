@@ -30,7 +30,22 @@
 
 	}
           </code>
-        </example></para>
+        </example>
+      </para>
+      <para>
+        In the following example, the class MyListNode is tagged as 
+        a node with 2 columns and no child nodes:
+        <example>
+          <code lang="C#">
+	[TreeNode(ColumnCount=2, ListOnly=true)]
+	public class MyListNode : ITreeNode {
+
+	...
+
+	}
+          </code>
+        </example>
+      </para>
     </remarks>
   </Docs>
   <Base>
@@ -70,6 +85,23 @@
 	  should be added to each of the properties of the class which represent
 	  the individual column values.
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ListOnly">
+      <MemberSignature Language="C#" Value="public bool ListOnly { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>ListOnly named value.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	  Specifies if the node can have children. For list views, this tells the
+	  NodeStore that it is non-hierarchical and it can expose flags so that the
+	  NodeView doesn't include space for expanders in the column layout.
+	</remarks>
       </Docs>
     </Member>
   </Members>
