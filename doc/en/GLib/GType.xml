@@ -10,8 +10,42 @@
   </AssemblyInfo>
   <ThreadSafetyStatement />
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The GLib Runtime type identification and management system. The GType API is the foundation of the GObject system. It provides the facilities for registering and managing all fundamental data types, user-defined object and interface types. </summary>
+    <remarks>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+public class MagrittesWindow : Window {
+	static GLib.GType gtype;
+	Button button;
+	
+	public static new GLib.GType GType
+	{
+		get
+		{
+			if (gtype == GLib.GType.Invalid)
+				gtype = RegisterGType (typeof (MagrittesWindow));
+			return gtype;
+		}
+	}
+	
+	public MagrittesWindow() : base (GType)
+	{
+		button = new Button("This is not a button");
+		button.Clicked += new EventHandler(button_Clicked);
+	
+		this.Title = "This is not a Window";
+		this.SetDefaultSize (400, 300);
+		this.DeleteEvent += new DeleteEventHandler (MyWindow_Delete);
+		this.Add(button);
+		this.ShowAll ();
+	}
+	/* elided for brevity */
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
@@ -28,8 +62,28 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Invalid
+</summary>
+        <remarks>
+          <example>
+            <code lang="C#">
+      public class MyWindow : Window {
+     static GLib.GType gtype;
+     Button button;
+     
+     public static new GLib.GType GType
+     {
+          get
+          {
+               if (gtype == GLib.GType.Invalid)
+                    gtype = RegisterGType (typeof (MyWindow));
+               return gtype;
+          }
+     }
+/* Rest elided for clarity */
+  </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="None">
@@ -41,8 +95,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.None</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="String">
@@ -54,8 +108,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.String</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Boolean">
@@ -67,8 +121,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Boolean.</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Int">
@@ -80,8 +134,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Int</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Double">
@@ -93,8 +147,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Double</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Float">
@@ -106,8 +160,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Float</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Char">
@@ -119,8 +173,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Char</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="UInt">
@@ -132,8 +186,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.UInt</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Object">
@@ -145,8 +199,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Object</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Pointer">
@@ -158,8 +212,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Pointer</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Boxed">
@@ -171,8 +225,8 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>A field of type GType.Boxed</summary>
+        <remarks>Sample see: GLib.GType.Invalid.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Equals">
@@ -185,7 +239,10 @@
         <Parameter Name="o" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <para>Determines whether the current instance and a specified
+   <see cref="T:System.Object" /> represent the same value.</para>
+        </summary>
         <param name="o">a <see cref="T:System.Object" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
@@ -199,9 +256,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Generates a hash code for the current instance.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -212,9 +269,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary> Manufactures a human-readable text string that describes an instance of the class.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -225,10 +282,26 @@
         <Parameter Name="val" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Constructor for GType. Primarily used in generated wrappers for gtk objects.</summary>
         <param name="val">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Generated code from gnome/generated/About.cs:
+
+<example>
+            <code lang="C#">
+                [DllImport("gnomeui-2")]
+                static extern IntPtr gnome_about_get_type();
+                                                                                                                        
+                public static new GLib.GType GType {
+                        get {
+                                IntPtr raw_ret = gnome_about_get_type();
+                                GLib.GType ret = new GLib.GType(raw_ret);
+                                return ret;
+                        }
+                }
+
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="Val">
@@ -239,9 +312,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Read only property retrieves the <see cref="T:System.IntPtr" /> representing the GType object in question.</summary>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
   </Members>

@@ -12,6 +12,17 @@
   <Docs>
     <summary>Message logging functions.</summary>
     <remarks>
+      <example>
+        <code lang="C#">
+//Some common logging methods. 
+// Print the messages for the NULL domain 
+LogFunc logFunc = new LogFunc (Log.PrintLogFunction); 
+Log.SetLogHandler (null, LogLevelFlags.All, logFunc); 
+// Print messages and stack trace for Gtk critical messages 
+logFunc = new LogFunc (Log.PrintTraceLogFunction); 
+Log.SetLogHandler ("Gtk", LogLevelFlags.Critical, logFunc); 
+</code>
+      </example>
     </remarks>
     <example>
       <code language="C#">
