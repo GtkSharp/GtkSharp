@@ -21,3 +21,33 @@ gtksharp_gtk_adjustment_set_bounds (GtkAdjustment *adj,
 	gtk_adjustment_changed (adj);
 }
 
+gdouble
+gtksharp_gtk_adjustment_get_lower (GtkAdjustment *adj)
+{
+	return adj->lower;
+}
+
+gdouble
+gtksharp_gtk_adjustment_get_upper (GtkAdjustment *adj)
+{
+	return adj->upper;
+}
+
+gdouble
+gtksharp_gtk_adjustment_get_step_increment (GtkAdjustment *adj)
+{
+	return adj->step_increment;
+}
+
+gdouble
+gtksharp_gtk_adjustment_get_page_increment (GtkAdjustment *adj)
+{
+	return adj->page_increment;
+}
+
+gdouble
+gtksharp_gtk_adjustment_get_page_size (GtkAdjustment *adj)
+{
+	return adj->page_size;
+}
+
