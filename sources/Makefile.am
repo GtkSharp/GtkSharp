@@ -1,7 +1,6 @@
 EXTRA_DIST =				\
 	README				\
 	gtk-sharp-sources.xml		\
-	gstreamer-parse.patch		\
 	gtkhtml-font-style-enum.patch
 
 
@@ -38,10 +37,6 @@ get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.8.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
 	patch -p0 < gtkhtml-font-style-enum.patch
 	
-get-gst-code:
-	wget http://ftp.gnome.org/pub/GNOME/sources/gstreamer/0.6/gstreamer-0.6.4.tar.gz --output-document=- | tar -xz
-	patch -p0 < gstreamer-parse.patch
-
 get-source-code: get-gtkhtml-code get-gst-code
 	for i in $(DOWNLOADS); do                          \
 		wget $$i --output-document=- | tar -xz ;   \
