@@ -10,8 +10,31 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      Implemented by AtkObject subtypes on behalf of components which
+       display image/pixmap information onscreen, and which provide
+       information (other than just widget borders, etc.) via that
+       image content.
+    </summary>
+    <remarks>
+      <para>
+        <see cref="T:Atk.Image" /> should be implemented by <see
+        cref="T:Atk.Object" /> subtypes on behalf
+        of components which display image/pixmap information onscreen,
+        and which provide information (other than just widget borders,
+        etc.) via that image content. For instance, icons, buttons
+        with icons, toolbar elements, and image viewing panes
+        typically should implement AtkImage.
+      </para>
+      <para>
+        <see cref="T:Atk.Image" /> primarily provides two types of information:
+        coordinate information (useful for screen review mode of
+        screenreaders, and for use by onscreen magnifiers), and
+        descriptive information. The descriptive information is
+        provided for alternative, text-only presentation of the most
+        significant information present in the image.
+      </para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
@@ -31,10 +54,10 @@
         <Parameter Name="description" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="description">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the textual description for this image.</summary>
+        <param name="description">a description to set for image</param>
+        <returns><see langword="true" />, or <see langword="false" /> if operation could not be completed.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ImageDescription">
@@ -44,9 +67,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get a textual description of this image.</summary>
+        <returns>a string representing the image description</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetImagePosition">
@@ -61,11 +84,19 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="coord_type">a <see cref="T:Atk.CoordType" /></param>
-        <remarks>To be added</remarks>
+        <summary>Gets the position of the image in the form of a point specifying the images top-left corner.</summary>
+          <param name="x">x coordinate position</param>
+          <param name="y">y coordinate position</param>
+          <param name="coord_type">
+            specifies whether the coordinates are relative to the
+            screen or to the components top level window
+          </param>
+        <remarks>
+          <para>
+            The values of <paramref name="x" /> and <paramref name="y"
+            />are returned as -1 if the values cannot be obtained.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetImageSize">
@@ -79,10 +110,13 @@
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Get the width and height in pixels for the specified image.</summary>
+        <param name="width">the image width</param>
+        <param name="height">the image height</param>
+        <remarks>
+          The values of <paramref name="width" /> and <paramref name="height" /> are returned as -1 if the values cannot be
+          obtained.
+        </remarks>
       </Docs>
     </Member>
   </Members>

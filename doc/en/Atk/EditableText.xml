@@ -10,8 +10,20 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The ATK interface implemented by components containing user-editable text content</summary>
+    <remarks>
+      <para>
+        <see cref="T:Atk.EditableText" /> should be implemented by UI components which
+        contain text which the user can edit, via the <see
+        cref="T:Atk.Object" /> corresponding to that component (see <see cref="T:Atk.Object" />).
+      </para>
+      <para>
+        <see cref="T:Atk.EditableText" /> is a subclass of <see
+        cref="T:Atk.Text" />, and as such, an
+        object which implements AtkEditableText is by definition an
+        <see cref="T:Atk.Text" /> implementor as well.
+      </para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
@@ -32,10 +44,14 @@
         <Parameter Name="end_pos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_pos">To be added: an object of type 'int'</param>
-        <param name="end_pos">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Delete text</summary>
+        <param name="start_pos">start position</param>
+        <param name="end_pos">end position</param>
+        <remarks>
+          <para>
+            This only deletes text up to, but not including <paramref
+            name="end_pos" />.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PasteText">
@@ -48,9 +64,9 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="position">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Paste text from clipboard to specified position.</summary>
+        <param name="position">position to paste</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CutText">
@@ -64,10 +80,15 @@
         <Parameter Name="end_pos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_pos">To be added: an object of type 'int'</param>
-        <param name="end_pos">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Cut text</summary>
+        <param name="start_pos">start position</param>
+        <param name="end_pos">end position</param>
+        <remarks>
+          <para>
+            This method only cuts the text up to <paremref
+            name="end_pos" />, it does not include the text at that position.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyText">
@@ -81,10 +102,15 @@
         <Parameter Name="end_pos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_pos">To be added: an object of type 'int'</param>
-        <param name="end_pos">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Copy text</summary>
+        <param name="start_pos">start position</param>
+        <param name="end_pos">end position</param>
+        <remarks>
+          <para>
+            This method only copies the text up to <paremref
+            name="end_pos" />, it does not include the text at that position.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetRunAttributes">
@@ -99,12 +125,24 @@
         <Parameter Name="end_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="attrib_set">To be added: an object of type 'GLib.SList'</param>
-        <param name="start_offset">To be added: an object of type 'int'</param>
-        <param name="end_offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the attributes for a specified range.</summary>
+        <param name="attrib_set">an <see cref="T:Atk.AttributeSet" /></param>
+        <param name="start_offset">start of range in which to set attributes</param>
+        <param name="end_offset">end of range in which to set attributes</param>
+        <returns>
+          <see langword="true" /> if attributes successfully set for
+          the specified range, otherwise <see langword="false"/>
+        </returns>
+        <remarks>
+          <para>
+            Sets the attributes for a specified range. See the
+            ATK_ATTRIBUTE macros (such as ATK_ATTRIBUTE_LEFT_MARGIN)
+            for examples of attributes that can be set. Note that
+            other attributes that do not have corresponding
+            ATK_ATTRIBUTE macros may also be set for certain text
+            widgets.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TextContents">
@@ -116,10 +154,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set text contents of text.</summary>
+        <param name="value"> string to set for text contents of text</param>
+        <returns>contents of text</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InsertText">
@@ -132,10 +170,10 @@
         <Parameter Name="str1ng" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="str1ng">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Insert text at a given position.</summary>
+        <param name="str1ng">the text to insert</param>
+        <returns>the position after the text has been inserted</returns>.
+        <remarks />
       </Docs>
     </Member>
   </Members>
