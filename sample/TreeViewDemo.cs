@@ -8,7 +8,6 @@ namespace GtkSamples {
 	using System;
 	using System.Drawing;
 	using System.Reflection;
-	using System.AppDomain;
 
 	using GLib;
 	using Gtk;
