@@ -14,6 +14,7 @@ namespace GtkSharp.Generation {
 	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList ctors = new ArrayList();
+		private ArrayList strings = new ArrayList();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
@@ -32,6 +33,10 @@ namespace GtkSharp.Generation {
 					ctors.Add (new Ctor (LibraryName, member));
 					break;
 					
+				case "static-string":
+					strings.Add (node);
+					break;
+
 				default:
 					if (!IsNodeNameHandled (node.Name))
 						Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
@@ -78,7 +83,7 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			if (has_sigs)
+			if (has_sigs && Elem.HasAttribute("parent"))
 			{
 				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
 				GenSignals (sw, true);
@@ -106,6 +111,11 @@ namespace GtkSharp.Generation {
 				}
 			}
 
+			foreach (XmlElement str in strings) {
+				sw.Write ("\t\tpublic static string " + str.GetAttribute ("name"));
+				sw.WriteLine (" {\n\t\t\t get { return \"" + str.GetAttribute ("value") + "\"; }\n\t\t}");
+			}
+			
 			AppendCustom(sw);
 
 			sw.WriteLine ("\t}");
@@ -151,6 +161,8 @@ namespace GtkSharp.Generation {
 
 		private void GenCtors (StreamWriter sw)
 		{
+			if (!Elem.HasAttribute("parent"))
+				return;
 			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
 			sw.WriteLine();
 

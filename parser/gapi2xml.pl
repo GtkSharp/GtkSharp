@@ -333,6 +333,23 @@ foreach $key (sort (keys (%types))) {
 	addFieldElems($struct_el, split(/;/, $1));
 	addFuncElems($struct_el, $key);
 }
+
+# This should probably be done in a more generic way
+foreach $define (sort (keys (%defines))) {
+	next if $define !~ /[A-Z]_STOCK_/;
+	if ($stocks{$ns}) {
+		$stock_el = $stocks{$ns};
+	} else {
+		$stock_el = addNameElem($ns_elem, "object", $ns . "Stock", $ns);
+		$stocks{$ns} = $stock_el;
+	}
+	$string_el = addNameElem ($stock_el, "static-string", $define);
+	$string_name = lc($define);
+	$string_name =~ s/\w+_stock_//;
+	$string_el->setAttribute('name', StudlyCaps($string_name));
+	$string_el->setAttribute('value', $defines{$define});
+}
+
 ##############################################################
 # Add metadata
 ##############################################################
