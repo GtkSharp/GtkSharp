@@ -16,25 +16,27 @@ gapi_DATA = $(API) $(ADDITIONAL_API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs gnome-vfs-sharp.pc
 
-sources = 				\
-	Async.cs			\
-	AsyncCallback.cs		\
-	AsyncCallbackNative.cs		\
-	AsyncReadCallback.cs		\
-	AsyncReadCallbackNative.cs	\
-	AsyncWriteCallback.cs		\
-	AsyncWriteCallbackNative.cs	\
-	Directory.cs			\
-	FileInfo.cs			\
-	Handle.cs			\
-	MimeType.cs			\
-	Monitor.cs			\
-	Sync.cs				\
-	Vfs.cs				\
-	VfsStream.cs			\
-	VfsStreamAsyncResult.cs		\
-	Xfer.cs				\
-	XferProgressCallback.cs		\
+sources = 					\
+	Async.cs				\
+	AsyncCallback.cs			\
+	AsyncCallbackNative.cs			\
+	AsyncDirectoryLoadCallback.cs		\
+	AsyncDirectoryLoadCallbackNative.cs	\
+	AsyncReadCallback.cs			\
+	AsyncReadCallbackNative.cs		\
+	AsyncWriteCallback.cs			\
+	AsyncWriteCallbackNative.cs		\
+	Directory.cs				\
+	FileInfo.cs				\
+	Handle.cs				\
+	MimeType.cs				\
+	Monitor.cs				\
+	Sync.cs					\
+	Vfs.cs					\
+	VfsStream.cs				\
+	VfsStreamAsyncResult.cs			\
+	Xfer.cs					\
+	XferProgressCallback.cs			\
 	XferProgressCallbackNative.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
