@@ -13,6 +13,67 @@ namespace GtkDemo
 {	
 	public class DemoStockBrowser : Gtk.Window
 	{
+		class StockInfo
+		{
+			internal string Name;
+			internal string Label;
+			internal string Accel;
+			internal string ID;
+			internal Gdk.Pixbuf Icon;
+		}
+
+		// in a real application this would be
+		// split into its own file
+		class StockFrame : Gtk.Frame
+		{
+			StockInfo info;
+			Label category;
+			Label name;
+			Label id;
+			Label label;
+			Image icon;
+
+			internal StockFrame () : base ("Selected Item")
+			{
+				this.SetSizeRequest (200, -1);
+				// Icon and Item / Icon Only / ???
+				category = new Label ("???");
+				// icon / blank
+				icon = new Image ("");
+				// _Add / blank
+				label = new Label ();
+				label.UseUnderline = true;
+				// Gtk.Stock.Cancel
+				name = new Label ();
+				// gtk-stock-cancel
+				id = new Label ();
+
+				VBox vbox = new VBox (false, 3);
+				vbox.PackStart (category, false, true, 0);
+				vbox.PackStart (icon, false, true, 0);
+				vbox.PackStart (label, false, true, 0);
+				vbox.PackStart (name, false, true, 0);
+				vbox.PackStart (id, false, true, 0);
+
+				this.Add (vbox);
+				this.ShowAll ();
+			}
+
+			internal StockInfo Info
+			{
+				get { return info; }
+				set {
+					info = value;
+					name.Text = info.Name;
+					label.Text = info.Label;
+					id.Text = info.ID;
+					icon.Pixbuf = info.Icon;
+				}
+			}
+		}
+
+		StockFrame stockFrame;
+
 		public DemoStockBrowser () : base ("Stock Item Browser Demo")
 		{	
 			this.SetDefaultSize (600, 400);
@@ -37,33 +98,17 @@ namespace GtkDemo
 			list.Selection.Changed += new EventHandler (OnSelectionChanged);
 			scrolledWindow.Add (list);
 			
-			hbox.PackStart (CreateFrame (), false, false, 0);
+			stockFrame = new StockFrame ();
+			hbox.PackStart (stockFrame, false, false, 0);
 			
 			this.ShowAll ();
 		}	
 
-		Frame CreateFrame ()
-		{
-			// Icon and Item / Icon Only / ???
-			// icon / blank
-			// _Add / blank
-			// Gtk.Stock.Cancel
-			// gtk-stock-cancel
-			Frame frame = new Frame ("Selected Item");
-			VBox vbox = new VBox (false, 3);
-			vbox.PackStart (new Label ("???"), false, true, 0);
-			vbox.PackStart (new Image (), false, true, 0);
-			vbox.PackStart (new Label ("_Add"), false, true, 0);
-			vbox.PackStart (new Label ("Gtk.Stock.Add"), false, true, 0);
-			vbox.PackStart (new Label ("gtk-stock-add"), false, true, 0);
-			frame.Add (vbox);
-			return frame;
-		}
-
 		private ListStore CreateStore ()
 		{
-			// image, name, label, accel, id
-			ListStore store = new Gtk.ListStore (typeof (Gtk.Image), typeof(string), typeof(string), typeof(string), typeof (string));
+			// FIXME: tremendous duplication of info
+			// image, name, label, accel, id, StockInfo
+			ListStore store = new Gtk.ListStore (typeof (Gdk.Pixbuf), typeof(string), typeof(string), typeof(string), typeof (string), typeof (StockInfo));
 
 			string[] stock_ids = Gtk.Stock.ListIds ();		
 
@@ -71,9 +116,16 @@ namespace GtkDemo
 			{
 				Gtk.StockItem si = new StockItem ();
 				if (Gtk.StockManager.Lookup (s, ref si)) {
-					Gdk.Pixbuf icon = new Image (s, IconSize.Menu).RenderIcon (s, IconSize.Menu, "");
+					Gdk.Pixbuf icon = this.RenderIcon (s, IconSize.Menu, "");
+					StockInfo info = new StockInfo ();
+					info.Icon = icon;
+					info.Name = GetCLSName (si.StockId);
+					info.Label = si.Label;
+					info.Accel = GetKeyName (si);
+					info.ID = si.StockId;
+
 					// FIXME: si.Label needs to _AccelAware
-					store.AppendValues (icon, GetCLSName (si.StockId), si.Label, GetKeyName (si), si.StockId);
+					store.AppendValues (icon, GetCLSName (si.StockId), si.Label, GetKeyName (si), si.StockId, info);
 				}
 				else {
 					//Console.WriteLine ("StockItem '{0}' could not be found.", s);
@@ -150,7 +202,8 @@ namespace GtkDemo
 
 			if (((TreeSelection) o).GetSelected (out model, out iter))
 			{
-				// update the frame
+				StockInfo info = (StockInfo) model.GetValue (iter, 5);
+				stockFrame.Info = info;
 			}
 		}
 		
