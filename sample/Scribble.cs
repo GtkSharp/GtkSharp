@@ -116,9 +116,9 @@ namespace GtkSamples {
 			Gdk.Window window = ev.window;
 
 			if (ev.is_hint != 0) {
-				int s;
+				Gdk.ModifierType s;
 				window.GetPointer (out x, out y, out s);
-				state = (Gdk.ModifierType) s;
+				state = s;
 			} else {
 				x = (int) ev.x;
 				y = (int) ev.y;
