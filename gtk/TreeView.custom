@@ -10,6 +10,9 @@
 		[DllImport("gtk-x11-2.0")]
 		static extern IntPtr gtk_tree_view_get_model (IntPtr raw);
 
+		[DllImport("gtk-x11-2.0")]
+		static extern IntPtr gtk_tree_view_set_model (IntPtr raw);
+
 		/// <summary>Model Property</summary>
 		/// <remarks>Gets the model being displayed by the TreeView
 		/// </remarks>
@@ -18,5 +21,9 @@
 				IntPtr raw_ret = gtk_tree_view_get_model (Handle);
 				Gtk.TreeModel ret = (Gtk.TreeModel) GLib.Object.GetObject (raw_ret);
 				return ret;
+			}
+
+			set {
+				gtk_tree_view_set_model (Value.Handle);
 			}
 		}
