@@ -49,7 +49,7 @@ namespace GtkSamples {
 
 		IconList CreateList ()
 		{
-			IconList icons = new IconList (64, new Gtk.Adjustment (IntPtr.Zero), 0);
+			IconList icons = new IconList (64, null, 0);
 
 			foreach (DemoEntry entry in entries)
 			{

@@ -229,6 +229,19 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
+		public static bool IsStruct(string c_type)
+		{
+			c_type = Trim(c_type);
+			c_type = DeAlias(c_type);
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is StructGen) {
+					return true;
+				}
+			}
+			return false;
+		}
+	
 		public static bool IsEnum(string c_type)
 		{
 			c_type = Trim(c_type);

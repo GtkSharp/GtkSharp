@@ -97,12 +97,17 @@ namespace GtkSharp.Generation {
 				string cs_type = SymbolTable.GetCSType(type);
 				string m_type = SymbolTable.GetMarshalType(type);
 				string name = MangleName(p_elem.GetAttribute("name"));
-				string call_parm;
+				string call_parm, call_parm_name;;
 				
-				if (is_set && i == 0)
-					call_parm = SymbolTable.CallByName(type, "value");
+				if (is_set && i == 0) 
+					call_parm_name = "value";
 				else
-					call_parm = SymbolTable.CallByName(type, name);
+					call_parm_name = name;
+
+				call_parm = SymbolTable.CallByName(type, call_parm_name);
+				
+				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !SymbolTable.IsStruct (type))
+					call_parm = String.Format ("({0} != null) ? {1} : IntPtr.Zero", call_parm_name, call_parm);
 				
 				if (p_elem.HasAttribute("array")) {
 					cs_type += "[]";
