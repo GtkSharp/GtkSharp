@@ -80,8 +80,8 @@ glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
 glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade $(assemblies)
 	$(CSC)  /resource:$(srcdir)/test.glade,test.glade /out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
-cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
-	$(CSC) /out:cairo-sample.exe $(references) /r:Mono.Cairo $(srcdir)/CairoSample.cs
+cairo-sample.exe: $(srcdir)/CairoSample.cs $(srcdir)/GtkCairo.cs $(assemblies)
+	$(CSC) /out:cairo-sample.exe $(references) /r:Mono.Cairo $(srcdir)/CairoSample.cs $(srcdir)/GtkCairo.cs
 
 testdnd.exe: $(srcdir)/TestDnd.cs $(assemblies)
 	$(CSC) /debug /unsafe /out:testdnd.exe $(references) $(srcdir)/TestDnd.cs
@@ -123,4 +123,5 @@ EXTRA_DIST = 				\
 	DrawingSample.cs		\
 	sysdraw.cs			\
 	drawing-sample.exe.config	\
+	cairo-sample.exe.config		\
 	CustomWidget.cs

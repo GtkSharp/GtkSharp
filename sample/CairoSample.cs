@@ -34,7 +34,7 @@ class X {
 	{
 		int offx, offy;
 
-		using (Cairo.Graphics o = args.Event.window.CairoGraphics (out offx, out offy)){
+		using (Cairo.Graphics o = GtkCairo.GraphicsFromWindow (args.Event.Window, out offx, out offy)){
 			o.SetRGBColor (1, 0, 0);
 			o.Translate (-offx, -offy);
 			o.MoveTo (0, 0);
@@ -52,15 +52,15 @@ class X {
 
 	static void CirclesExposeHandler (object obj, ExposeEventArgs args)
 	{
-		Rectangle area = args.Event.area;
-		Gdk.Window window = args.Event.window;
-		Pixmap p = new Pixmap (window, area.width, area.height, -1);
+		Rectangle area = args.Event.Area;
+		Gdk.Window window = args.Event.Window;
+		Pixmap p = new Pixmap (window, area.Width, area.Height, -1);
 
 		int x, y;
 		//Cairo.Object o = p.CairoGraphics ();
-		using (Cairo.Graphics o = window.CairoGraphics (out x, out y))
+		using (Cairo.Graphics o = GtkCairo.GraphicsFromWindow (window, out x, out y))
 		{
-			o.Translate (-area.x, -area.y);
+			o.Translate (-area.X, -area.Y);
 			DrawCircles (o, rect);
 			
 			//using (Gdk.GC gc = new Gdk.GC (window)){
@@ -101,8 +101,8 @@ class X {
 			o.Restore ();
 
 			// Fill the surface with the check
-			o.SetPattern (check);
-			o.Rectangle (0, 0, rect.width, rect.height);
+			//o.SetPattern (check);
+			o.Rectangle (0, 0, rect.Width, rect.Height);
 			o.Fill ();
 #endif
 		}
@@ -111,7 +111,7 @@ class X {
 		o.Alpha = 0.5;
 		Console.WriteLine (rect);
 		o.MoveTo (0, 0);
-		o.LineTo (rect.width, rect.height);
+		o.LineTo (rect.Width, rect.Height);
 		o.Stroke ();
 	}
 }
