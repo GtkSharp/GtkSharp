@@ -122,6 +122,7 @@ namespace GtkSharp.Generation {
 			m_ret = SymbolTable.GetMarshalType(rettype);
 			s_ret = SymbolTable.GetCSType(rettype);
 			cname = elem.GetAttribute("cname");
+			bool is_shared = elem.HasAttribute("shared");
 			
 			if (ret_elem.HasAttribute("array")) {
 					s_ret += "[]";
@@ -139,12 +140,12 @@ namespace GtkSharp.Generation {
 			if (parms != null) {
 				parms.CreateSignature (is_set);
 				sig = "(" + parms.Signature + ")";
-				isig = "(IntPtr raw, " + parms.ImportSig + ");";
-				call = "(Handle, " + parms.CallString + ")";
+				isig = "(" + (is_shared ? "" : "IntPtr raw, ") + parms.ImportSig + ");";
+				call = "(" + (is_shared ? "" : "Handle, ") + parms.CallString + ")";
 			} else {
 				sig = "()";
-				isig = "(IntPtr raw);";
-				call = "(Handle)";
+				isig = "(" + (is_shared ? "" : "IntPtr raw") + ");";
+				call = "(" + (is_shared ? "" : "Handle") + ")";
 			}
 
 			initialized = true;
@@ -177,6 +178,8 @@ namespace GtkSharp.Generation {
 		
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
+			if (elem.HasAttribute("shared"))
+				sw.Write("static ");
 			sw.Write(safety);
 			Method dup = null;
 			if (Name == "ToString")

@@ -266,6 +266,8 @@ foreach $type (sort(keys(%objects))) {
 	$classcnt++;
 	$obj_el = addNameElem($ns_elem, 'object', $inst, $ns);
 
+	$elem_table{lc($inst)} = $obj_el;
+
 	# Extract parent and fields from the struct
 	if ($instdef =~ /^struct/) {
 		$instdef =~ /\{(.*)\}/;
@@ -293,7 +295,6 @@ foreach $type (sort(keys(%objects))) {
 		warn "Don't have a GetType func for $inst.\n" if $debug;
 	}
 
-	addFuncElems($obj_el, $inst);
 }
 
 ##############################################################
@@ -328,6 +329,9 @@ foreach $key (sort (keys (%types))) {
 	} else {
 		$struct_el = addNameElem($ns_elem, 'struct', $key, $ns);
 	}
+
+	$elem_table{lc($key)} = $struct_el;
+
 	$def =~ s/\s+/ /g;
 	if ($def =~ /privatestruct/) {
 		$struct_el->setAttribute('opaque', 'true');
@@ -335,8 +339,9 @@ foreach $key (sort (keys (%types))) {
 		$def =~ /\{(.+)\}/;
 		addFieldElems($struct_el, split(/;/, $1));
 	}
-	addFuncElems($struct_el, $key);
 }
+
+addFuncElems();
 
 # This should probably be done in a more generic way
 foreach $define (sort (keys (%defines))) {
@@ -418,32 +423,43 @@ sub addFieldElems
 
 sub addFuncElems
 {
-	my ($obj_el, $inst) = @_;
-
-	my $prefix = $inst;
-	$prefix =~ s/([A-Z]+)/_\1/g;
-	$prefix = lc($prefix);
-	$prefix =~ s/^_//;
-	$prefix .= "_";
+	my ($obj_el, $inst, $prefix);
 
 	$fcnt = keys(%fdefs);
 
-	foreach $mname (keys(%fdefs)) {
-		next if ($mname !~ /^$prefix/);
+	foreach $mname (sort (keys (%fdefs))) {
+		next if ($mname =~ /^_/);
+		$obj_el = "";
+		$prefix = $mname;
+		while ($prefix =~ /(\w+)_/) {
+			$prefix = $key = $1;
+			$key =~ s/_//g;
+			if (exists ($elem_table{$key})) {
+				$prefix .= "_";
+				$obj_el = $elem_table{$key};
+				$inst = $key;
+				last;
+			}
+		}
+		next if (!$obj_el);
+
+		$mdef = delete $fdefs{$mname};
 
 		if ($mname =~ /$prefix(new)/) {
 			$el = addNameElem($obj_el, 'constructor', $mname); 
 			$drop_1st = 0;
-		} elsif ($fdefs{$mname} =~ /\(\s*(const)?\s*$inst\b/) {
-			$el = addNameElem($obj_el, 'method', $mname, $prefix);
-			$fdefs{$mname} =~ /(.*?)\w+\s*\(/;
-			addReturnElem($el, $1);
-			$drop_1st = 1;
 		} else {
-			next;
+			$el = addNameElem($obj_el, 'method', $mname, $prefix);
+			$mdef =~ /(.*?)\w+\s*\(/;
+			addReturnElem($el, $1);
+			$mdef =~ /\(\s*(const)?\s*(\w+)/;
+			if (lc($2) ne $inst) {
+				$el->setAttribute("shared", "true");
+				$drop_1st = 0;
+			} else {
+				$drop_1st = 1;
+			}
 		}
-
-		$mdef = delete $fdefs{$mname};
 
 		if (($mdef =~ /\((.*)\)/) && ($1 ne "void")) {
 			@parms = ();
