@@ -13,56 +13,53 @@
 	  Clicking again will cause the toggle button to return to it's normal state.  This is useful if you need to maintain the state of a button.</para>
 	  <example>
 	    <code lang="C#" source="ToggleButton.cs">
-namespace GtkSamples {
+using Gtk;
+using GtkSharp;
+using System;
 
-	using Gtk;
-	using GtkSharp;
-	using System;
-
-	public class ToggleButtonApp  {
+public class ToggleButtonApp  {
 	
-		ToggleButton btn;
+	ToggleButton btn;
 
-		public static int Main (string[] args)
-		{
-			new ToggleButtonApp();
-			return 0;
-		}
-		
-		public ToggleButtonApp()
-		{
-			Application.Init ();
-			Window win = new Window ("ToggleButton Tester");
-			win.SetDefaultSize (200, 150);
-			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
-			btn = new ToggleButton ("Unselected");
-			btn.Active = false;
-			btn.Toggled += new EventHandler (btn_toggled);
-			win.Add (btn);
-			win.ShowAll ();
-			Application.Run ();
-		}
-
-		void btn_toggled (object obj, EventArgs args)
-		{
-			Console.WriteLine ("Button Toggled");
-			if (btn.Active)
-			{
-				btn.Label = "Unselected";
-			}
-			else
-			{
-				btn.Label = "Selected";
-			}
-		}
-
-		static void Window_Delete (object obj, DeleteEventArgs args)
-		{
-			Application.Quit ();
-			args.RetVal = true;
-		}
-
+	public static int Main (string[] args)
+	{
+		new ToggleButtonApp();
+		return 0;
 	}
+		
+	public ToggleButtonApp()
+	{
+		Application.Init ();
+		Window win = new Window ("ToggleButton Tester");
+		win.SetDefaultSize (200, 150);
+		win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+		btn = new ToggleButton ("Unselected");
+		btn.Active = false;
+		btn.Toggled += new EventHandler (btn_toggled);
+		win.Add (btn);
+		win.ShowAll ();
+		Application.Run ();
+	}
+
+	void btn_toggled (object obj, EventArgs args)
+	{
+		Console.WriteLine ("Button Toggled");
+		if (btn.Active)
+		{
+			btn.Label = "Unselected";
+		}
+		else
+		{
+			btn.Label = "Selected";
+		}
+	}
+
+	static void Window_Delete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+		args.RetVal = true;
+	}
+
 }
 		</code>
 	  </example>
@@ -158,6 +155,15 @@ namespace GtkSamples {
             inside the toggle button using <see
             cref="M:Gtk.Container.Add (Gtk.Widget)"/>.
           </para>
+					<para>
+						<example>
+							<code lang="C#">
+Label label = new Label();
+ToggleButton btn = new ToggleButton ();
+btn.Add(label);
+							</code>
+						</example>
+					</para>
         </remarks>
       </Docs>
     </Member>
@@ -172,7 +178,9 @@ namespace GtkSamples {
         <summary>Creates a new <see cref="T:Gtk.ToggleButton"/> with a text label.</summary>
         <param name="label">a <see cref="T:System.String"/> containing the message to be placed in the toggle button.</param>
         <returns>an object of type '<see cref="T:Gtk.ToggleButton"/></returns>
-        <remarks>Creates a new <see cref="T:Gtk.ToggleButton"/> with a text label.</remarks>
+        <remarks>Creates a new <see cref="T:Gtk.ToggleButton"/> with a text label.
+				<example><code lang="C#">ToggleButton btn = new ToggleButton ("ToggleButton");</code></example>
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -249,12 +257,29 @@ namespace GtkSamples {
         <returns>an object of type <see cref="T:System.Boolean" /></returns>
         <remarks>
 		  		<para>Get or set the <see cref="T:Gtk.ToggleButton"/> active.</para>
-		  		<para>Get: Queries a GtkToggleButton and returns it's current state.
+		  		<para>Get: Queries a <see cref="T:Gtk.ToggleButton"/> and returns it's current state.
 						Returns <see langword="true"/> if the toggle button is pressed in and <see langword="false"/> if it is raised.
 					</para>
+					<example>
+						<code lang="C#">
+if (btn.Active) {
+	Console.WriteLine("The ToggleButton is pressed in");
+}
+else {
+	Console.WriteLine("The ToggleButton is raised");
+}
+						</code>
+					</example>
 					<para>Set: Sets the status of the toggle button. Set to <see langword="true"/> if you want the GtkToggleButton to be 'pressed in', and <see langword="false"/> to raise it.
 						This action causes the toggled signal to be emitted.
 					</para>
+					<example>
+						<code lang="C#">
+// set the togglebutton active
+// and appear "pressed in"
+btn.Active = true;
+						</code>
+					</example>
 				</remarks>
       </Docs>
     </Member>
@@ -268,11 +293,11 @@ namespace GtkSamples {
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>The DrawIndicator property</summary>
+        <summary>Determines the drawing style of a <see cref="T:Gtk.RadioButton"/> or <see cref="T:Gtk.CheckButton"/></summary>
         <param name="value">an object of type <see cref="T:System.Boolean"/></param>
         <returns>an object of type <see cref="T:System.Boolean"/></returns>
         <remarks>The DrawIndicator property can be set to <see langword="false"/> to make 
-					<see cref="T:Gtk.CheckButton"/> or <see cref="T:GtkRadioButton"/> look like a normal <see cref="T:Gtk.Button"/>.
+					<see cref="T:Gtk.CheckButton"/> or <see cref="T:Gtk.RadioButton"/> look like a normal <see cref="T:Gtk.Button"/>.
 				</remarks>
       </Docs>
     </Member>
@@ -283,7 +308,19 @@ namespace GtkSamples {
       <Parameters />
       <Docs>
         <summary>Triggered when the <see cref="T:Gtk.ToggleButton"/> is clicked.</summary>
-        <remarks>Should be connected if you wish to perform an action whenever the <see cref="T:Gtk.ToggleButton"/>'s state is changed.</remarks>
+        <remarks>Should be connected if you wish to perform an action whenever the <see cref="T:Gtk.ToggleButton"/>'s state is changed.
+					<example>
+						<code lang="C#">
+ToggleButton btn = new ToggleButton("ToggleButton");
+btn.Toggled += new EventHandler (btn_toggled);
+
+void btn_toggled (object obj, EventArgs args)
+{
+	// code for toggled event here
+}
+						</code>
+					</example>
+				</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
