@@ -25,6 +25,7 @@
 /* Forward declarations */
 void     gtksharp_object_unref_if_floating (GObject *obj);
 gboolean gtksharp_object_is_floating (GObject *obj);
+void gtksharp_object_set_floating (GtkObject *obj, gboolean val);
 /* */
 
 void
@@ -38,5 +39,14 @@ gboolean
 gtksharp_object_is_floating (GObject *obj)
 {
 	return GTK_OBJECT_FLOATING (obj);
+}
+
+void 
+gtksharp_object_set_floating (GtkObject *obj, gboolean val)
+{
+	if (val == TRUE)
+		GTK_OBJECT_SET_FLAGS (obj, GTK_FLOATING);
+	else
+		gtk_object_sink (obj);
 }
 

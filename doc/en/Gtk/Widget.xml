@@ -403,25 +403,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetChildRequisition">
-      <MemberSignature Language="C#" Value="public void GetChildRequisition (Gtk.Requisition requisition);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="requisition" Type="Gtk.Requisition" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains <paramref name="widget" />-&gt;<paramref name="requisition" />.</summary>
-        <param name="requisition">A <see cref="T:Gtk.Requisition" /> to be filled in.</param>
-        <remarks>
-          <para>
-          Obtains <paramref name="widget" />-&gt;<paramref name="requisition" />, unless someone has forced a particular geometry, in which case it returns that geometry instead of the widget's <paramref name="requisition" />. This method differs from <see cref="M:Gtk.Widget.SizeRequest" /> in that it retrieves the last size request value from <paramref name="widget" />-&gt;<paramref name="requisition" />, while the <see cref="M:Gtk.Widget.SizeRequest" /> method computes the size request and fill in <paramref name="widget" />-&gt;<paramref name="requisition" />, and only then returns <paramref name="widget" />-&gt;<paramref name="requisition" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GrabFocus">
       <MemberSignature Language="C#" Value="public void GrabFocus ();" />
       <MemberType>Method</MemberType>
@@ -3969,5 +3950,21 @@ Widgets are required to honor the size allocation they receive; a size request i
         <param name="hadj">a horizontal plane <see cref="T:Gtk.Adjustment" /></param>
         <param name="vadj">a vertical plane <see cref="T:Gtk.Adjustment" /></param>
         <remarks>Override this method in a subclass to support scrolling of the widget within a viewport smaller than the widget's size.</remarks>
+      </Docs>
+    </Member><Member MemberName="ChildRequisition">
+      <MemberSignature Language="C#" Value="public Gtk.Requisition ChildRequisition { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Requisition</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Obtains the widget's requisition.</summary>
+        <returns>a <see cref="T:Gtk.Requisition" /></returns>
+        <remarks>
+          <para>
+          Obtains requisition, unless someone has forced a particular geometry, in which case it returns that geometry instead of the widget's requisition. This method differs from <see cref="M:Gtk.Widget.SizeRequest" /> in that it retrieves the last size request value, while the <see cref="M:Gtk.Widget.SizeRequest" /> method recomputes the size request and fills in the requisition, and then returns the recomputed value.
+         </para>
+        </remarks>
       </Docs>
     </Member></Members></Type>

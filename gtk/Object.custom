@@ -24,6 +24,9 @@
 		[DllImport("gtksharpglue")]
 		private static extern bool gtksharp_object_is_floating (IntPtr raw);
 
+		[DllImport("gtksharpglue")]
+		private static extern bool gtksharp_object_set_floating (IntPtr raw, bool val);
+
 		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref (IntPtr raw);
 
@@ -43,3 +46,13 @@
 //				System.Diagnostics.Debug.WriteLine ("Gtk.Object:set_Raw: object type is: " + (this as GLib.Object).GType.Name + " refcount now: " + RefCount + " needs_ref: " + needs_ref);
 			}
 		}
+
+		public bool IsFloating {
+			get {
+				return gtksharp_object_is_floating (Handle);
+			}
+			set {
+				gtksharp_object_set_floating (Handle, value);
+			}
+		}
+
