@@ -5,10 +5,15 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <ThreadSafetyStatement>This function is thread safe.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Idle handlers for GLib-based main-loops</summary>
+    <remarks>
+      GLib provides an implementation of a "main loop" (an event-based
+      main loop that dispatches requests).  The Idle handler class is
+      used to register a routine to be called when the main loop is
+      idle. 
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -26,21 +31,31 @@
         <Parameter Name="hndlr" Type="GLib.IdleHandler" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hndlr">To be added: an object of type 'GLib.IdleHandler'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Idle ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'GLib.Idle'</returns>
-        <remarks>To be added</remarks>
+        <summary>Installs an idle handler for the main loop.</summary>
+        <param name="hndlr">The delegate method that will be invoked.</param>
+        <returns>The handler code assigned to this idle handler.</returns>
+        <remarks>
+	  <para>
+	    This function installs the <paramref name="hndlr"/> as a
+	    handler to be invoked when the GLib mainloop is idle.  If
+	    the handler returns <see langword="true"/> the handler is
+	    kept for another round of Idle execution, if <see
+	    langword="false"/> is returned, the handler is removed. 
+	  </para>
+	  <para>
+	    This method can be invoked from a differen thread than the
+	    one running the Gtk main loop.  The delegate will be
+	    invoked within the context of the Gtk main loop.
+	  </para>
+	  <para>
+	    The thread-safety of this routine can be used to queue
+	    work by a thread to be performed in the context of the
+	    main Gtk thread.  Gtk# is thread aware, but not thread
+	    safe; See the <link
+	    location="node:gtk-sharp/programming/threads">Gtk# Thread
+	    Programming</link> for details.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,5 +1,5 @@
 <Type Name="List" FullName="GLib.List">
-  <TypeSignature Language="C#" Value="public class List : GLib.ListBase, IDisposable, ICollection, IEnumerable, IWrapper, ICloneable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class List : GLib.ListBase, IDisposable, ICollection, IEnumerable, IWrapper, ICloneable" Maintainer="miguel" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,38 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A list class used by GTK+</summary>
+    <remarks>
+      <para>
+	GLib.List is managed wrapper for the underlying C list
+	implementation used by Gtk+.  Various functions on the Gtk+
+	API take lists or return lists in this form.
+      </para>
+      <para>
+	The list deals with IntPtr objects, these are pointers into
+	unmanaged resources.
+      </para>
+      <example>
+	<para>
+	  For example to create a list of widgets, you would use the
+	  following sample:
+	</para>
+	<code lang="c#">
+	  GLib.List MakeList (Gtk.Widget a, Gtk.Widget b)
+	  {
+	  	GLib.List l = new GLib.List ((IntPtr) 0, typeof (Gtk.Widget));
+		l.Append (a.Handle);
+		l.Append (b.Handle);
+	  }
+	</code>
+	<para>
+	  The <see cref="T:System.Type"/> argument to the GLib.List
+	  constructor, allows the list enumerator code to return
+	  properly wrapped or demarshalled objects from the unmanaged
+	  world into the managed world.
+	</para>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.ListBase</BaseTypeName>
@@ -40,9 +70,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'object'</returns>
-        <remarks>To be added</remarks>
+        <summary>Duplicates the list, shallow copy.</summary>
+        <returns>The duplicated list</returns>
+        <remarks>
+	  <para>
+	    Makes a new copy of the list.  The individual elements on
+	    the list are not duplicated.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -53,11 +88,21 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of List, wrapping the C object.</returns>
+        <summary>Constructs a List</summary>
+        <param name="raw">A handle to a GLib.List.</param>
+        <returns>A new insteace instance of List, wrapping the C list.</returns>
         <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
+          <para>
+	    GLib.List objects are constructed by passing an unmanaged
+	    reference to an existing GLib.List, or they can use
+	    "(IntPtr) 0" as an initial value. 
+	  </para>
+	  <para>
+	    Using this constructor will not track the type information
+	    of the classes or structures kept in the list.  If you
+	    plan on tracking the type information, use the <see
+	    cref="M:GLib.List.List(IntPtr,Type)"/> method.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -71,10 +116,20 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of List, wrapping the C object.</returns>
+        <param name="raw">A handle to a GLib.list</param>
+        <returns>A new instance of List, wrapping the C list.</returns>
         <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
+          <para>
+	    GLib.List objects are constructed by passing an unmanaged
+	    reference to an existing GLib.List, or they can use
+	    "(IntPtr) 0" as an initial value. 
+	  </para>
+	  <para>
+	    Using this constructor will track the type information
+	    of the classes or structures kept in the list.  This
+	    information is used by the List enumerator when returning
+	    data. 
+	  </para>
         </remarks>
       </Docs>
     </Member>
