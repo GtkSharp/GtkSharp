@@ -41,6 +41,7 @@ customs = 				\
 	Entry.custom			\
 	FileSelection.custom		\
 	Frame.custom			\
+	HBox.custom			\
 	IconFactory.custom		\
 	IconSet.custom			\
 	Label.custom			\
@@ -71,6 +72,7 @@ customs = 				\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\
+	VBox.custom			\
 	Viewport.custom			\
 	Widget.custom			\
 	Window.custom
