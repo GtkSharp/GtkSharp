@@ -89,9 +89,10 @@ class LayoutSample : DrawingArea
         <Parameter Name="markup" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="markup">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the layout text and attribute list from marked-up text (see markup format).</summary>
+        <param name="markup">marked-up text</param>
+        <remarks>Replaces the current text and attribute list.
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetText">
@@ -136,10 +137,10 @@ class LayoutSample : DrawingArea
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">To be added: an object of type 'int&amp;'</param>
-        <param name="height">To be added: an object of type 'int&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>Determines the logical width and height of a <see cref="T:Pango.Layout" /> in Pango units (device units divided by <see cref="F:Pango.Scale.PangoScale" />).</summary>
+        <param name="width"> location to store the logical width, or <see langword="null" /></param>
+        <param name="height"> location to store the logical height, or <see langword="null" /></param>
+        <remarks>This is simply a convenience function around <see cref="M:Pango.Layout.GetExtents()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -150,9 +151,9 @@ class LayoutSample : DrawingArea
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Pango.Layout'</returns>
-        <remarks>To be added</remarks>
+        <summary>Copies an existing layout into a new one.</summary>
+        <returns>an object of type <see cref="T:Pango.Layout" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ContextChanged">
@@ -163,8 +164,8 @@ class LayoutSample : DrawingArea
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Forces recomputation of any state in the <see cref="T:Pango.Layout" /> that might depend on the layout's context.</summary>
+        <remarks>This function should be called if you make changes to the context subsequent to creating the layout.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPixelSize">
@@ -233,9 +234,9 @@ class LayoutSample : DrawingArea
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Retrieves the count of lines for the layout.</summary>
+        <returns> the line count</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Indent">
@@ -352,10 +353,10 @@ class LayoutSample : DrawingArea
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>the amount of spacing between the lines of the layout.</summary>
+        <param name="value"> the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)</param>
+        <returns>the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)            </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Justify">
@@ -409,10 +410,10 @@ class LayoutSample : DrawingArea
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.WrapMode'</param>
-        <returns>To be added: an object of type 'Pango.WrapMode'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets or sets the wrap mode</summary>
+        <param name="value"> the new wrap mode</param>
+        <returns> Active wrap mode.</returns>
+        <remarks>The wrap mode only has an effect if a width is set on the layout using <see cref="P:Pango.Layout.Width" />. To turn off wrapping, set the width to -1.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FontDescription">
@@ -445,14 +446,21 @@ class LayoutSample : DrawingArea
         <Parameter Name="new_trailing" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="strong">a <see cref="T:System.Boolean" /></param>
-        <param name="old_index">a <see cref="T:System.Int32" /></param>
-        <param name="old_trailing">a <see cref="T:System.Int32" /></param>
-        <param name="direction">a <see cref="T:System.Int32" /></param>
-        <param name="new_index">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="new_trailing">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Computes a new cursor position from an old position and a count of positions to move visually.</summary>
+        <param name="strong"> whether the moving cursor is the strong cursor or the weak cursor. The strong cursor is the cursor corresponding to text insertion in the base direction for the layout.</param>
+        <param name="old_index">	 the byte index of the grapheme for the old index </param>
+        <param name="old_trailing"> if 0, the cursor was at the trailing edge of the grapheme indicated by old_index, if &gt; 0, the cursor was at the leading edge.</param>
+        <param name="direction">	 direction to move cursor. A negative value indicates motion to the left.</param>
+        <param name="new_index"> location to store the new cursor byte index. A value of -1 indicates that the cursor has been moved off the beginning of the layout. A value of G_MAXINT indicates that the cursor has been moved off the end of the layout.</param>
+        <param name="new_trailing"> number of characters to move forward from the location returned for <paramref name="new_index" /> to get the position where the cursor should be displayed. This allows distinguishing the position at the beginning of one line from the position at the end of the preceding line. <paramref name="new_index" /> is always on the line where the cursor should be displayed.</param>
+        <remarks>
+          <para>If <paramref name="count" /> is positive, then the new strong cursor position will be one position to the right of the old cursor position. If <paramref name="count" /> is negative then the new strong cursor position will be one position to the left of the old cursor position.
+</para>
+          <para>In the presence of bi-directional text, the correspondence between logical and visual order will depend on the direction of the current run, and there may be jumps when the cursor is moved off of the end of a run.
+</para>
+          <para>Motion here is in cursor positions, not in characters, so a single call may move the cursor over multiple characters when multiple characters combine to form a single grapheme.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="XyToIndex">
@@ -532,10 +540,10 @@ class LayoutSample : DrawingArea
         <Parameter Name="logical_rect" Type="Pango.Rectangle&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="ink_rect">a <see cref="T:Pango.Rectangle" /></param>
-        <param name="logical_rect">a <see cref="T:Pango.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <summary>Computes the logical and ink extents</summary>
+        <param name="ink_rect"> rectangle used to store the extents of the layout as drawn or <see langword="null" /> to indicate that the result is not needed.</param>
+        <param name="logical_rect"> rectangle used to store the logical extents of the layout or <see langword="null" /> to indicate that the result is not needed.</param>
+        <remarks>Logical extents are usually what you want for positioning things. The extents are given in layout coordinates; layout coordinates begin at the top left corner of the layout.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IndexToPos">
@@ -568,10 +576,10 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <Parameter Name="attrs" Type="Pango.LogAttr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
         <param name="attrs">a <see cref="T:Pango.LogAttr" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetPixelExtents">
@@ -607,11 +615,11 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <Parameter Name="weak_pos" Type="Pango.Rectangle&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
-        <param name="strong_pos">a <see cref="T:Pango.Rectangle" /></param>
-        <param name="weak_pos">a <see cref="T:Pango.Rectangle" /></param>
-        <remarks>To be added</remarks>
+        <summary>Given an index within a layout, determines the positions that of the strong and weak cursors if the insertion point is at that index.</summary>
+        <param name="index_"> the byte index of the cursor</param>
+        <param name="strong_pos"> location to store the strong cursor position (may be <see langword="null" />)</param>
+        <param name="weak_pos"> location to store the weak cursor position (may be <see langword="null" />)</param>
+        <remarks>The position of each cursor is stored as a zero-width rectangle. The strong cursor location is the location where characters of the directionality equal to the base direction of the layout are inserted. The weak cursor location is the location where characters of the directionality opposite to the base direction of the layout are inserted.</remarks>
       </Docs>
     </Member>
   </Members>
