@@ -58,11 +58,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool DoGenerate {
-			get { return do_generate; }
-			set { do_generate = value; }
-		}
-
 		protected StreamWriter CreateWriter () 
 		{
 			char sep = Path.DirectorySeparatorChar;

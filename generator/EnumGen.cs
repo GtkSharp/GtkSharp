@@ -49,9 +49,6 @@ namespace GtkSharp.Generation {
 		
 		public void Generate ()
 		{
-			if (!DoGenerate)
-				return;
-
 			StreamWriter sw = CreateWriter ();
 
 			if (Elem.GetAttribute("type") == "flags") {

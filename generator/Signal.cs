@@ -79,7 +79,7 @@ namespace GtkSharp.Generation {
 		private string GenHandler (out string argsname)
 		{
 			string handler = GetHandlerName (out argsname);
-			if (handler == "EventHandler" || !container_type.DoGenerate)
+			if (handler == "EventHandler")
 				return handler;
 
 			string ns = container_type.NS;

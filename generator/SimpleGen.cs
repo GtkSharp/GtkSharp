@@ -73,14 +73,6 @@ namespace GtkSharp.Generation {
 			return var;
 		}
 
-		public bool DoGenerate {
-			get {
-				return false;
-			}
-			set {
-			}
-		}
-
 		public void Generate ()
 		{
 		}

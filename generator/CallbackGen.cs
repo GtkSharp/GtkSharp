@@ -192,9 +192,6 @@ namespace GtkSharp.Generation {
 		
 		public void Generate ()
 		{
-			if (!DoGenerate)
-				return;
-
 			XmlElement ret_elem = Elem["return-type"];
 			if (ret_elem == null) {
 				Console.WriteLine("No return type in callback " + CName);

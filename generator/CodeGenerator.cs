@@ -43,7 +43,6 @@ namespace GtkSharp.Generation {
 			}
 			
 			foreach (IGeneratable gen in gens) {
-				gen.DoGenerate = true;
 				gen.Generate ();
 			}
 
