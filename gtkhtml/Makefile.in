@@ -12,7 +12,8 @@ RUNTIME=mono
 MCS=mcs
 ASSEMBLY=gtkhtml-sharp.dll
 
-all: $(ASSEMBLY)
+@ENABLE_GTKHTML_TRUE@ all: $(ASSEMBLY)
+@ENABLE_GTKHTML_FALSE@ all:
 
 generated-stamp: gtkhtml-api.xml *.custom ../generator/gapi_codegen.exe Gtk.metadata
 	$(RUNTIME) ../parser/gapi-fixup.exe --api=gtkhtml-api.xml --metadata=Gtk.metadata && \
