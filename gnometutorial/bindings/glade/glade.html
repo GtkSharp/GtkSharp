@@ -1,178 +1,275 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Glade#</title>
+<link rel="stylesheet" type="text/css" href="../../style.css" />
 </head>
 <body>
-<link rel="stylesheet" type="text/css" href="../../style.css" />
+<table>
+<tr>
+<td><img src="icon.png" /></td>
+<td>
+<h1>Glade - Rapid Application Development with Gnome 2</h1>
 
-<table><tr><td><img src=icon.png></td><td><h1>Glade - Rapid Application Development with Gnome 2</h1>by Johannes Roith (<a href=mailto:johannes@jroith.de>johannes@jroith.de</a>)</td></tr>
+by Johannes Roith (<a
+href="mailto:johannes@jroith.de">johannes@jroith.de</a>)</td>
+</tr>
 </table>
+
 <h3>Introduction</h3>
-In the previous chapter, you learned how create a Gnome GUI. If you've worked with Visual Studio, Delphi/Kylix or Visual Basic you might be missing the easy way of dragging widgets on forms.<br><br>
-You're right, after all, what we want to do is creating good applications <u>faster</u> with mono. Development , where the programmer gets assistance in non-coding tasks from (visual) tools and focuses on the real work is called RAD - Rapid Application Development. Gnome offers a set of such technologies, known as Glade. <br><br>
-Glade consists of 2 part:<br>
+
+In the previous chapter, you learned how create a Gnome GUI. If
+you've worked with Visual Studio, Delphi/Kylix or Visual Basic
+you might be missing the easy way of dragging widgets on
+forms.<br />
+<br />
+You're right, after all, what we want to do is creating good
+applications <u>faster</u> with mono. Development , where the
+programmer gets assistance in non-coding tasks from (visual)
+tools and focuses on the real work is called RAD - Rapid
+Application Development. Gnome offers a set of such technologies,
+known as Glade. <br />
+<br />
+Glade consists of 2 part:<br />
 <ul>
-<li>Glade - a grafical editor to create forms and save them in XML files.</li>
-<li>libglade (called Glade# in Gtk#) - a library to load the XML at runtime <br>
+<li>Glade - a grafical editor to create forms and save them in
+XML files.</li>
+
+<li>libglade (called Glade# in Gtk#) - a library to load the XML
+at runtime<br />
 and dynamically create the form.</li>
 </ul>
-That means, the user will need have libglade installed, and the xml file must be distributed with the application.
-Glade# is the C# binding for libglade and even offers some advanced features - like self-contained glade files -  that are only available in Gtk#.<br>
-<br>Language independence has always been a goal in Gnome Development. For that reason the Glade Interface Builder exports xml, that can be used with any 
-language with glade bindings. This benefit is bought with little more effort compared to Visual Studio, as the code can't be generated automatically.
-<br>
-<br>
-<h3>Creating the UI</h3>
-<table cellpadding=5 border=0><tr><td valign=top><img src="glade-palette.png" border=0></td><td valign=top>
-Before we try to use glade with our Project, first get some experience with it. Fire up the Glade Interface Designer.  You will be greeted by three windows: the main window, a properites and a palette window, containing icons.  Click Project - New and select "Gnome Project".<br><br>
-To create a new window click on the first icon in the palette-window. The new window is shown in the list. You can modify Type, Position, Caption, and other things in the Properties window.
 
-<br><br>
-If you want your application to quit, if the window is closed you'll have to connect a signal with an event handler. Select "Signals" and add a handler for "delete_event" and call it "OnWindowDeleteEvent".
-<br><br>
-Take a button and drop it on the window. As you know, gtk+ has the concept of invisible boxes, to position widgets, and for that reason the button will fill the whole window. Modify some properties and add a signal handler for "clicked" and call it "OnButton1Clicked".<br><br>
-Save to a new directory. Glade will put 2 files there: [projectname].glade and [projectname].gladep, wich does only save some information for the Interface Builder. The "interesting" file is the .glade file, that you can open in any text editor. It's plain XML and looks like that:
-<br><br>
-</td><td valign=top><img src="glade-m.png" border=0> <br> <img src="glade-properties.png" border=0></td></tr></table>
+That means, the user will need have libglade installed, and the
+xml file must be distributed with the application. Glade# is the
+C# binding for libglade and even offers some advanced features -
+like self-contained glade files - that are only available in
+Gtk#.<br />
+<br />
+Language independence has always been a goal in Gnome
+Development. For that reason the Glade Interface Builder exports
+xml, that can be used with any language with glade bindings. This
+benefit is bought with little more effort compared to Visual
+Studio, as the code can't be generated automatically. <br />
+<br />
+<h3>Creating the UI</h3>
+
+<table cellpadding="5" border="0">
+<tr>
+<td valign="top"><img src="glade-palette.png" border="0" /></td>
+<td valign="top">Before we try to use glade with our Project,
+first get some experience with it. Fire up the Glade Interface
+Designer. You will be greeted by three windows: the main window,
+a properites and a palette window, containing icons. Click
+Project - New and select "Gnome Project".<br />
+<br />
+To create a new window click on the first icon in the
+palette-window. The new window is shown in the list. You can
+modify Type, Position, Caption, and other things in the
+Properties window.<br />
+<br />
+If you want your application to quit, if the window is closed
+you'll have to connect a signal with an event handler. Select
+"Signals" and add a handler for "delete_event" and call it
+"OnWindowDeleteEvent".<br />
+<br />
+Take a button and drop it on the window. As you know, gtk+ has
+the concept of invisible boxes, to position widgets, and for that
+reason the button will fill the whole window. Modify some
+properties and add a signal handler for "clicked" and call it
+"OnButton1Clicked".<br />
+<br />
+Save to a new directory. Glade will put 2 files there:
+[projectname].glade and [projectname].gladep, wich does only save
+some information for the Interface Builder. The "interesting"
+file is the .glade file, that you can open in any text editor.
+It's plain XML and looks like that:<br />
+<br />
+</td>
+<td valign="top"><img src="glade-m.png" border="0" /><br />
+ <img src="glade-properties.png" border="0" /></td>
+</tr>
+</table>
 
 <pre class="code">
-&lt;?xml version="1.0" standalone="no"?> &lt;!--*- mode: xml -*-->
-&lt;!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
+&lt;?xml version="1.0" standalone="no"?&gt; &lt;!--*- mode: xml -*--&gt;
+&lt;!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd"&gt;
 
-&lt;glade-interface>
+&lt;glade-interface&gt;
 
-&lt;widget class="GtkWindow" id="window2">
-  &lt;property name="visible">True&lt;/property>
-  &lt;property name="title" translatable="yes">window2&lt;/property>
-  &lt;property name="type">GTK_WINDOW_TOPLEVEL&lt;/property>
-  &lt;property name="window_position">GTK_WIN_POS_NONE&lt;/property>
-  &lt;property name="modal">False&lt;/property>
-  &lt;property name="resizable">True&lt;/property>
-  &lt;property name="destroy_with_parent">False</property>
+&lt;widget class="GtkWindow" id="window2"&gt;
+  &lt;property name="visible"&gt;True&lt;/property&gt;
+  &lt;property name="title" translatable="yes"&gt;window2&lt;/property&gt;
+  &lt;property name="type"&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+  &lt;property name="window_position"&gt;GTK_WIN_POS_NONE&lt;/property&gt;
+  &lt;property name="modal"&gt;False&lt;/property&gt;
+  &lt;property name="resizable"&gt;True&lt;/property&gt;
+  &lt;property name="destroy_with_parent"&gt;False&lt;/property&gt;
 
-  &lt;child>
-    &lt;widget class="GtkButton" id="button1">
-      &lt;property name="border_width">10&lt;/property>
-      &lt;property name="visible">True&lt;/property>
-      &lt;property name="can_focus">True&lt;/property>
-      &lt;property name="label" translatable="yes">button1&lt;/property>
-      &lt;property name="use_underline">True&lt;/property>
-      &lt;property name="relief">GTK_RELIEF_NORMAL&lt;/property>
-    &lt;/widget>
-  &lt;/child>
-&lt;/widget>
+  &lt;child&gt;
+    &lt;widget class="GtkButton" id="button1"&gt;
+      &lt;property name="border_width"&gt;10&lt;/property&gt;
+      &lt;property name="visible"&gt;True&lt;/property&gt;
+      &lt;property name="can_focus"&gt;True&lt;/property&gt;
+      &lt;property name="label" translatable="yes"&gt;button1&lt;/property&gt;
+      &lt;property name="use_underline"&gt;True&lt;/property&gt;
+      &lt;property name="relief"&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+    &lt;/widget&gt;
+  &lt;/child&gt;
+&lt;/widget&gt;
 
-</glade-interface>
+&lt;/glade-interface&gt;
 </pre>
-<br>
+
+<br />
 <h3>It's time to start coding</h3>
-The code is similiar to previous chapters. What has changed is, that most of the code is move to the GladeTest constructor. 
-That's because the main-method is <b>static</b> and therefor doesn't belong to any class. Altough possible, moving code to Main() would only lead to more complicated code.<br>
+
+The code is similiar to previous chapters. What has changed is,
+that most of the code is move to the GladeTest constructor.
+That's because the main-method is <b>static</b> and therefor
+doesn't belong to any class. Altough possible, moving code to
+Main() would only lead to more complicated code.<br />
 <pre class="code">
 namespace GladeSamples {
-	using System;
-	
-	using Gtk;
-	using Gnome;
-	using Glade;
-	using GtkSharp;
+  using System;
+  
+  using Gtk;
+  using Gnome;
+  using Glade;
+  using GtkSharp;
 
-	public class GladeTest
-	{
+  public class GladeTest
+  {
 
-		public static void Main (string[] args)
-		{
-			new GladeTest(args);
-		}
-		public GladeTest (string[] args) 
-		{
+    public static void Main (string[] args)
+    {
+      new GladeTest(args);
+    }
+    public GladeTest (string[] args) 
+    {
 
-			Application.Init();
+      Application.Init();
 
-			/* This loads the glade file glade.glade, selects window2 and connects it to the current object,
-			 *  which is the class GladeTest here. */
+      /* This loads the glade file glade.glade, selects window2 and connects it to the current object,
+       *  which is the class GladeTest here. */
  
-			<b>Glade.XML gxml = new Glade.XML ("file.glade", "window2", null);
-			gxml.Autoconnect (this);</b>
+      <b>Glade.XML gxml = new Glade.XML ("file.glade", "window2", null);
+      gxml.Autoconnect (this);</b>
 
-			Application.Run();
+      Application.Run();
 
-			/* If you want to access the glade objects you have to "import" them.
-			 * This is not required, but else you can only work with the pre-defined signal handlers */
+      /* If you want to access the glade objects you have to "import" them.
+       * This is not required, but else you can only work with the pre-defined signal handlers */
 
-			Button button1 = (Gtk.Button) gxml["button1"];
+      Button button1 = (Gtk.Button) gxml["button1"];
 
-			button1.BorderWidth=10;
+      button1.BorderWidth=10;
 
-      		}
-
-
-		/* Connect the Signals defined in Glade */
+          }
 
 
-		public void OnWindowDeleteEvent (object o, DeleteEventArgs args) 
-		{
-			Application.Quit ();
-			args.RetVal = true;
-		}
-		
-		public void OnButton1Clicked (System.Object obj, EventArgs e) 
-		{
-			Console.WriteLine ("Button 1 clicked");
-		}
+    /* Connect the Signals defined in Glade */
 
-	}
+
+    public void OnWindowDeleteEvent (object o, DeleteEventArgs args) 
+    {
+      Application.Quit ();
+      args.RetVal = true;
+    }
+    
+    public void OnButton1Clicked (System.Object obj, EventArgs e) 
+    {
+      Console.WriteLine ("Button 1 clicked");
+    }
+
+  }
 }
 </pre>
-<br>
-compile with:
-<table border=0><tr><td><img src=sample1.png border></td><td>
+
+<br />
+compile with: 
+<table border="0">
+<tr>
+<td><img src="sample1.png" border="border" /></td>
+<td>
 <pre>
 mcs /unsafe -r gtk-sharp.dll -r glade-sharp.dll glade.cs
 </pre>
-</td></tr></table><br>
-Of course, include the Gnome and Glade namespaces.
+</td>
+</tr>
+</table>
+
+<br />
+Of course, include the Gnome and Glade namespaces. 
 <pre class="code">
 using Gnome;
 using Glade;
 </pre>
 
-The first part inits the Application.<br>
-Then the glade xml file is connected.  The first param is the file, the second the main widget (here: the window). 
-The second line connects gxml to the current object. 
+The first part inits the Application.<br />
+Then the glade xml file is connected. The first param is the
+file, the second the main widget (here: the window). The second
+line connects gxml to the current object. 
 <pre class="code">
 Glade.XML gxml = new Glade.XML ("file.glade", "window2", null);
 gxml.Autoconnect (this);
 </pre>
 
-Altough glade will show all widgets and cares about the events defined, most likely you will want to change properties, or add events during the runtime. 
-For that to work you have to connect a new object to the glade widget. This example also sets the BorderWidth.
+Altough glade will show all widgets and cares about the events
+defined, most likely you will want to change properties, or add
+events during the runtime. For that to work you have to connect a
+new object to the glade widget. This example also sets the
+BorderWidth. 
 <pre class="code">
 Button button1 = (Gtk.Button) gxml["button1"];
 button1.BorderWidth=10;
 </pre>
 
-That's it.<br><br>
-
+That's it.<br />
+<br />
+ 
 <h3>Available Widgets</h3>
-All available widgets are devided in 4 categories. If you want your application to be independent of gnome and portable to windows, or Mac OS X, use only Gtk+ and Gtk+ Additional.
-If you don't need that flexibility I strongly encourage you to make also use of the Gnome category. That includes Font-Selector, Druids, Iconlists and other useful things.<br><br>
-Glade can be extened, for example gnome-db extensions are available.
-<h3>Using Glade in our Project</h3>
-After explaining how it works, like in the other chapters we want to go on with our little Project, introducing the new learned technology and extending the knowledge.
-This chapter removes the few UI bits, done by hand and adds an Interface using Glade. 
-<br><br>
-[TODO]
-<br><br>
 
-<h3>Didn't you say something about this self-contained thing?</h3>
-Yes, I did. And it's quite a good feature. Now, that we're using Glade our application consists not only of 1, but 2 files. Luckily, the CLR has a way, to embedd any file in the executable, like images or text files. 
-Glade offer an additional constructor to load the glade file from a resource, so you don't have to distribute it.  The only difference is the "null" before the filename. 
+All available widgets are devided in 4 categories. If you want
+your application to be independent of gnome and portable to
+windows, or Mac OS X, use only Gtk+ and Gtk+ Additional. If you
+don't need that flexibility I strongly encourage you to make also
+use of the Gnome category. That includes Font-Selector, Druids,
+Iconlists and other useful things.<br />
+<br />
+Glade can be extened, for example gnome-db extensions are
+available. 
+<h3>Using Glade in our Project</h3>
+
+After explaining how it works, like in the other chapters we want
+to go on with our little Project, introducing the new learned
+technology and extending the knowledge. This chapter removes the
+few UI bits, done by hand and adds an Interface using Glade.
+<br />
+<br />
+[TODO] <br />
+<br />
+ 
+<h3>Didn't you say something about this self-contained
+thing?</h3>
+
+Yes, I did. And it's quite a good feature. Now, that we're using
+Glade our application consists not only of 1, but 2 files.
+Luckily, the CLR has a way, to embedd any file in the executable,
+like images or text files. Glade offer an additional constructor
+to load the glade file from a resource, so you don't have to
+distribute it. The only difference is the "null" before the
+filename. 
 <pre class="code">
 Glade.XML gxml = new Glade.XML (<b>null</b>, "file.glade", "window2", null);
 gxml.Autoconnect (this);
 </pre>
-You have then to compile the file in, with the resource switch.
+
+You have then to compile the file in, with the resource switch. 
 <pre>
 mcs /unsafe /resource:glade.glade -r gtk-sharp.dll -r glade-sharp.dll  glade.cs
 </pre>
+</body>
+</html>
+
