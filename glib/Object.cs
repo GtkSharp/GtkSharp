@@ -285,6 +285,7 @@ namespace GLib {
 			return Handle.GetHashCode ();
 		}
 
+		[Obsolete("Can cause instability due to garbage collection of GLib.Objects.")]
 		public Hashtable Data {
 			get { 
 				if (data == null)
