@@ -288,4 +288,20 @@
 		{
 			BindFields (null, type);
 		}
-		
+
+                public static Glade.XML FromStream (System.IO.Stream stream, string root, string domain)
+                {
+                        return new Glade.XML (stream, root, domain);
+                }
+                
+                public static Glade.XML FromAssembly (
+                        System.Reflection.Assembly assembly, string resource_name, string root, string domain)
+                {
+                        return new Glade.XML (assembly, resource_name, root, domain);
+                }
+
+                public static Glade.XML FromAssembly (string resource_name, string root, string domain)
+                {
+                        return new Glade.XML (
+                                System.Reflection.Assembly.GetCallingAssembly (), resource_name, root, domain);
+                }
