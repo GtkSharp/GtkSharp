@@ -44,7 +44,7 @@ class Client {
 		PackToolbar ();
 		box.PackStart (toolbar, false, false, 0);
 
-		UpdateView (null);
+		UpdateView ();
 
 		status = new Statusbar ();
 		box.PackEnd (status, false, false, 0);
@@ -100,7 +100,7 @@ class Client {
 		args.RetVal = true;
 	}
 
-	static void UpdateView (Gtk.Object o)
+	static void UpdateView ()
 	{
 		if (tableau != null)
 			tableau.Destroy ();
@@ -195,7 +195,7 @@ class Client {
 		dialog.ShowAll ();
 	}
 
-	static void Db_Remove (Gtk.Object o)
+	static void Db_Remove ()
 	{
 		if (dialog != null) {
 			return;
@@ -259,7 +259,7 @@ class Client {
 		return hbox ;
 	}
 
-	static void Db_Update (Gtk.Object o)
+	static void Db_Update ()
 	{
 		if (dialog != null) {
 			return;
@@ -288,7 +288,7 @@ class Client {
 		dialog.ShowAll ();
 	}
 
-	static void Quit (Gtk.Object o)
+	static void Quit ()
 	{
 		Application.Quit ();
 	}
@@ -297,7 +297,7 @@ class Client {
 	{
 		try {
 			Conn.Insert (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-			UpdateView (o as Gtk.Object);
+			UpdateView ();
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -309,7 +309,7 @@ class Client {
 	{
 		try {
 			Conn.Delete (UInt32.Parse (id_entry.Text));
-			UpdateView (o as Gtk.Object);
+			UpdateView ();
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -321,7 +321,7 @@ class Client {
 	{
 		try {
 			Conn.Update (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-			UpdateView (o as Gtk.Object);
+			UpdateView ();
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -452,8 +452,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "" +
-					  "" +
+		string connectionString = "hostaddr=127.0.0.1;" +
 					  "user=monotest;" +
 					  "dbname=monotest";
 						  

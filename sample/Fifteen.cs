@@ -248,10 +248,12 @@ public class BoardPiece : Gnome.CanvasGroup
 		switch (args.Event.Type) {
 		case EventType.EnterNotify:
 			piece.Text.FillColor = "white";
+			args.RetVal = true;
 			break;
 
 		case EventType.LeaveNotify:
 			piece.Text.FillColor = "black";
+			args.RetVal = true;
 			break;
 
 		case EventType.ButtonPress:
@@ -286,16 +288,17 @@ public class BoardPiece : Gnome.CanvasGroup
  				piece.Board [piece.Position] = null;
 				piece.Position = new_position;
 				piece.Move (dx * PIECE_SIZE, dy * PIECE_SIZE);
+				canvas.UpdateNow ();
 			} else
 				Print_Position ("to", piece.Position, false);
 
+			args.RetVal = true;
 			break;
 
 		default:
+			args.RetVal = false;
 			break;
 		}
-
-		args.RetVal = false;
 	}
 
 	static void Print_Position (string text, int position, bool newLine)
