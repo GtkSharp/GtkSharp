@@ -9,15 +9,17 @@
   <Docs>
     <summary>The GtkDrawingArea widget is used for creating custom user interface elements.</summary>
     <remarks>
-     <para>
-      The <see cref="T:Gtk.DrawingArea"/> widget is used for creating custom user interface elements. It's essentially a blank widget; you can draw on <paramref name="widget"/>->window. After creating a drawing area, the application may want to connect to: <para><list type="bullet">
-<item> 1)  Mouse and button press signals to respond to input from the user. (Use <see cref="M:Gtk.Widget.AddEvents"/> to enable events you wish to receive).</item>
-<item> 2)  The <paramref name="realize"/> signal to take any necessary actions when the widget is instantiated on a particular display. (Create GDK resources in response to this signal.)</item>
-<item> 3)  The <paramref name="configure_event"/> signal to take any necessary actions when the widget changes size.</item>
-<item> 4)  The <paramref name="expose_event"/> signal to handle redrawing the contents of the widget.</item></list></para>
-     </para>
-     <para>
-      Expose events are normally delivered when a drawing area first comes onscreen, or when it's covered by another window and then uncovered (exposed). You can also force an expose event by adding to the "damage region" of the drawing area's window; <see cref="M:Gtk.Widget.QueueDrawArea"/> and <see cref="M:Gdk.Window.InvalidateRect"/> are equally good ways to do this. You'll then get an expose event for the invalid region. See also <see cref="M:Gdk.Pixbuf.RenderToDrawable"/> for drawing a <see cref="T:Gdk.Pixbuf"/>.
+      <para>
+      The <see cref="T:Gtk.DrawingArea" /> widget is used for creating custom user interface elements. It's essentially a blank widget; you can draw on <paramref name="widget" />-&gt;window. After creating a drawing area, the application may want to connect to: <para>
+          <list type="bullet">
+            <item> 1)  Mouse and button press signals to respond to input from the user. (Use <see cref="M:Gtk.Widget.AddEvents" /> to enable events you wish to receive).</item>
+            <item> 2)  The <paramref name="realize" /> signal to take any necessary actions when the widget is instantiated on a particular display. (Create GDK resources in response to this signal.)</item>
+            <item> 3)  The <paramref name="configure_event" /> signal to take any necessary actions when the widget changes size.</item>
+            <item> 4)  The <paramref name="expose_event" /> signal to handle redrawing the contents of the widget.</item>
+          </list>
+        </para></para>
+      <para>
+      Expose events are normally delivered when a drawing area first comes onscreen, or when it's covered by another window and then uncovered (exposed). You can also force an expose event by adding to the "damage region" of the drawing area's window; <see cref="M:Gtk.Widget.QueueDrawArea" /> and <see cref="M:Gdk.Window.InvalidateRect" /> are equally good ways to do this. You'll then get an expose event for the invalid region. See also <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> for drawing a <see cref="T:Gdk.Pixbuf" />.
      </para>
     </remarks>
   </Docs>
@@ -52,7 +54,7 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
+    <Member MemberName=".ctor" Deprecated="true">
       <MemberSignature Language="C#" Value="protected DrawingArea (uint gtype);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
@@ -91,7 +93,7 @@
       <Parameters />
       <Docs>
         <summary>Constructor.</summary>
-        <returns>An instance of <see cref="T:Gtk.DrawingArea"/>.</returns>
+        <returns>An instance of <see cref="T:Gtk.DrawingArea" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -103,8 +105,24 @@
       </ReturnValue>
       <Docs>
         <summary>The GLib Type for Gtk.DrawingArea</summary>
-        <returns>The GLib TYpe for the Gtk.DrawingArea class.</returns>
+        <returns>The GLib Type for the Gtk.DrawingArea class.</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected DrawingArea (GLib.Type gtype);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
+      <Docs>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type for the type</param>
+        <returns>Creates a new instance of DrawingArea, using the GLib-provided type</returns>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:Gtk.DrawingArea" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
