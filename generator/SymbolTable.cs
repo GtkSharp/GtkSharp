@@ -14,6 +14,40 @@ namespace GtkSharp.Generation {
 		private Hashtable complex_types = new Hashtable ();
 		private Hashtable simple_types;
 		
+		public SymbolTable ()
+		{
+			simple_types = new Hashtable ();
+			simple_types.Add ("gboolean", "bool");
+			simple_types.Add ("gint", "int");
+			simple_types.Add ("guint", "uint");
+			simple_types.Add ("glong", "long");
+			simple_types.Add ("guint32", "uint");
+			simple_types.Add ("const-gchar", "String");
+			simple_types.Add ("gchar", "String");
+			simple_types.Add ("GObject", "GLib.Object");
+			simple_types.Add ("gfloat", "float");
+			simple_types.Add ("gdouble", "double");
+			simple_types.Add ("gint8", "byte");
+			simple_types.Add ("guint8", "byte");
+			simple_types.Add ("gint16", "short");
+			simple_types.Add ("guint1", "bool");
+			simple_types.Add ("guchar", "byte");
+			simple_types.Add ("GValue", "GLib.Value");
+			simple_types.Add ("GtkType", "int");
+			simple_types.Add ("long", "long");
+			simple_types.Add ("gulong", "ulong");
+			simple_types.Add ("GQuark", "int");
+			simple_types.Add ("int", "int");
+			simple_types.Add ("double", "double");
+			simple_types.Add ("gunichar", "String");
+			simple_types.Add ("uint1", "bool");
+			
+			// FIXME: These ought to be handled properly.
+			simple_types.Add ("GSList", "IntPtr");
+			simple_types.Add ("va_list", "IntPtr");
+			simple_types.Add ("GParamSpec", "IntPtr");
+		}
+		
 		public void AddType (IGeneratable gen)
 		{
 			complex_types [gen.CName] = gen;
@@ -33,7 +67,14 @@ namespace GtkSharp.Generation {
 		
 		public String GetCSType (String c_type)
 		{
-			return "";
+			if (simple_types.ContainsKey(c_type)) {
+				return (String) simple_types [c_type];
+			} else if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				return gen.QualifiedName;
+			} else {
+				return "";
+			}
 		}
 		
 	}
