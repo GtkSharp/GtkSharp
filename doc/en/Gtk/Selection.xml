@@ -51,9 +51,9 @@
         <Parameter Name="selection" Type="Gdk.Atom" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Remove all targets registered for the given selection for the widget.</summary>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
+        <param name="selection">a <see cref="T:Gdk.Atom" /> representing the selection.</param>
         <remarks/>
       </Docs>
     </Member>
@@ -67,7 +67,9 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes all handlers and unsets ownership of all 
+	  selections for a widget. Called when widget is being
+	  destroyed.</summary>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <remarks/>
       </Docs>
@@ -83,11 +85,11 @@
         <Parameter Name="evnt" Type="Gdk.EventSelection" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The default handler for the <see cref="E:Gtk.Widget.SelectionClearEvent"/> event. Instead of calling this function, chain up from your <see cref="Gtk.SelectionClearEventHandler"/>. Calling this function from any other context is illegal.</summary>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <param name="evnt">a <see cref="T:Gdk.EventSelection" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks/>
+        <returns>a <see cref="T:System.Boolean" />, true if the event was handled, otherwise false</returns>
+        <remarks>This function will be deprecated in future versions of GTK+ and GTK#.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Convert">
@@ -103,12 +105,14 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Request the contents of a selection. When received, 
+	  a <see cref="E:Gtk.Widget.SelectionReceived"/> event will 
+	  be generated. </summary>
+        <param name="widget">a <see cref="T:Gtk.Widget" />, the requesting widget</param>
+        <param name="selection">a <see cref="T:Gdk.Atom" />, the selection to get</param>
+        <param name="target">a <see cref="T:Gdk.Atom" />, the form of the information ("STRING" for example) (TODO: elaborate possible options)</param>
+        <param name="time_">a <see cref="T:System.UInt32" />, the time the request is being made</param>
+        <returns>a <see cref="T:System.Boolean" />, true if the request succeeded, false if it couldn't be processed.</returns>
         <remarks/>
       </Docs>
     </Member>
@@ -125,12 +129,12 @@
         <Parameter Name="info" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
+        <summary>Add the specified target to the list of supported targets for this selection.</summary>
+        <param name="widget">a <see cref="T:Gtk.Widget" />, the widget for which this target applies</param>
+        <param name="selection">a <see cref="T:Gdk.Atom" />, the selection data</param>
         <param name="target">a <see cref="T:Gdk.Atom" /></param>
         <param name="info">a <see cref="T:System.UInt32" /></param>
-        <remarks/>
+        <remarks>TODO: this could be better-explained.</remarks>
       </Docs>
     </Member>
     <Member MemberName="OwnerSet">
@@ -145,11 +149,11 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Claims ownership of a given selection for a particular widget, or if <paramref name="widget"/> is <see langword="null"/>, release ownership of the selection.</summary>
+        <param name="widget">a <see cref="T:Gtk.Widget" /> or <see langword="null"/></param>
+        <param name="selection">a <see cref="T:Gdk.Atom" /> representing the selection to claim.</param>
+        <param name="time_">a <see cref="T:System.UInt32" />, a timestamp to use in claiming the selection.</param>
+        <returns>a <see cref="T:System.Boolean" />, true if the operation succeeded.</returns>
         <remarks/>
       </Docs>
     </Member>
@@ -166,12 +170,12 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="selection">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <summary>Claims ownership of a given selection on a given display for a particular widget, or if <paramref name="widget"/> is <see langword="null"/>, release ownership of the selection.</summary>
+        <param name="display">a <see cref="T:Gdk.Display" />, the display where the selection is set.</param>
+        <param name="widget">a <see cref="T:Gtk.Widget" /> or <see langword="null"/></param>
+        <param name="selection">a <see cref="T:Gdk.Atom" /> representing the selection to claim.</param>
+        <param name="time_">a <see cref="T:System.UInt32" />, a timestamp to use in claiming the selection.</param>
+        <returns>a <see cref="T:System.Boolean" />, true if the operation succeeded.</returns>
         <remarks/>
       </Docs>
     </Member>
