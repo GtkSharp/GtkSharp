@@ -2,8 +2,9 @@ LIBDIR=/usr/lib
 BROWSER=../../monodoc/browser/browser.exe
 ASSEMBLER=../../monodoc/browser/assembler.exe
 GENERATOR=../../monodoc/generator/generator.exe
+UPDATER=../../monodoc/updater/updater.exe
 
-all: tree
+all: docs
 
 b:
 	mono --debug $(BROWSER)
@@ -13,19 +14,19 @@ tree:
 docs: glib pango atk gtk gdk gnome glade
 
 glib:
-	mono --debug $(GENERATOR) $(LIBDIR)/glib-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/glib-sharp.dll -o en
 pango:
-	mono --debug $(GENERATOR) $(LIBDIR)/pango-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/pango-sharp.dll -o en
 atk:	
-	mono --debug $(GENERATOR) $(LIBDIR)/atk-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/atk-sharp.dll -o en
 gtk:
-	mono --debug $(GENERATOR) $(LIBDIR)/gtk-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/gtk-sharp.dll -o en
 gdk:
-	mono --debug $(GENERATOR) $(LIBDIR)/gdk-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/gdk-sharp.dll -o en
 gnome:
-	mono --debug $(GENERATOR) $(LIBDIR)/gnome-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/gnome-sharp.dll -o en
 glade:	
-	mono --debug $(GENERATOR) $(LIBDIR)/glade-sharp.dll -o en
+	mono --debug $(UPDATER) $(LIBDIR)/glade-sharp.dll -o en
 
 clean:
 	rm *.tree
