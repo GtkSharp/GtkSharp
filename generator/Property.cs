@@ -66,6 +66,10 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
+		protected virtual string QuotedPropertyName (string cname) {
+			return "\"" + cname + "\"";
+		}
+
 		protected virtual string PropertyHeader (ref string indent, string modifiers, string cs_type, string name) {
 			string header;
 
@@ -78,16 +82,16 @@ namespace GtkSharp.Generation {
 			return "get";
 		}
 
-		protected virtual string RawGetter (string cname) {
-			return "GetProperty (" + cname + ")";
+		protected virtual string RawGetter (string qpname) {
+			return "GetProperty (" + qpname + ")";
 		}
 
 		protected virtual string SetterHeader (string modifiers, string cs_type, string name) {
 			return "set";
 		}
 
-		protected virtual string RawSetter (string cname) {
-			return "SetProperty(" + cname + ", val)";
+		protected virtual string RawSetter (string qpname) {
+			return "SetProperty(" + qpname + ", val)";
 		}
 
 		protected virtual string PropertyFooter (string indent) {
@@ -111,7 +115,7 @@ namespace GtkSharp.Generation {
 			if (name == container_type.Name) {
 				name += "Prop";
 			}
-			string cname = "\"" + elem.GetAttribute("cname") + "\"";
+			string qpname = QuotedPropertyName (elem.GetAttribute("cname"));
 
 			string v_type = "";
 			if (table.IsEnum(c_type)) {
@@ -177,7 +181,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine(indent + GetterHeader (modifiers, cs_type, name) + " {");
-				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (cname) + ";");
+				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
 				if (table.IsObject (c_type)) {
 					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
 					sw.WriteLine(indent + "\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
@@ -207,11 +211,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + SetterHeader (modifiers, cs_type, name) + " {");
 				sw.Write(indent + "\tGLib.Value val = ");
 				if (table.IsEnum(c_type)) {
-					sw.WriteLine("new GLib.Value(this, " + cname + ", new GLib.EnumWrapper ((int) value, {0}));", table.IsEnumFlags (c_type) ? "true" : "false");
+					sw.WriteLine("new GLib.Value(this, " + qpname + ", new GLib.EnumWrapper ((int) value, {0}));", table.IsEnumFlags (c_type) ? "true" : "false");
 				} else if (table.IsBoxed (c_type)) {
 					sw.WriteLine("(GLib.Value) value;");
 				} else if (table.IsOpaque (c_type)) {
-					sw.WriteLine("new GLib.Value(Handle, " + cname + ", value);");
+					sw.WriteLine("new GLib.Value(Handle, " + qpname + ", value);");
 				} else {
 					sw.Write("new GLib.Value(");
 					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {
@@ -219,7 +223,7 @@ namespace GtkSharp.Generation {
 					}
 					sw.WriteLine("value);");
 				}
-				sw.WriteLine(indent + "\t" + RawSetter (cname) + ";");
+				sw.WriteLine(indent + "\t" + RawSetter (qpname) + ";");
 				sw.WriteLine(indent + "\tval.Dispose ();");
 				sw.WriteLine(indent + "}");
 			}

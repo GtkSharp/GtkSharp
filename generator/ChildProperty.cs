@@ -28,24 +28,31 @@ namespace GtkSharp.Generation {
 
 		public ChildProperty (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
+		protected override string QuotedPropertyName (string cname) {
+			if (cname.StartsWith ("child_"))
+				return "\"" + cname.Substring (6) + "\"";
+			else
+				return "\"" + cname + "\"";
+		}
+
 		protected override string PropertyHeader (ref string indent, string modifiers, string cs_type, string name) {
 			return "";
 		}
 
 		protected override string GetterHeader (string modifiers, string cs_type, string name) {
-			return "public " + modifiers + cs_type + " Get" + name + " (Widget w)";
+			return "public " + modifiers + cs_type + " Get" + name + " (Widget child)";
 		}
 
-		protected override string RawGetter (string cname) {
-			return "ChildGetProperty (w, " + cname + ")";
+		protected override string RawGetter (string qpname) {
+			return "ChildGetProperty (child, " + qpname + ")";
 		}
 
 		protected override string SetterHeader (string modifiers, string cs_type, string name) {
-			return "public " + modifiers + "void Set" + name + " (Widget w, " + cs_type + " value)";
+			return "public " + modifiers + "void Set" + name + " (Widget child, " + cs_type + " value)";
 		}
 
-		protected override string RawSetter (string cname) {
-			return "ChildSetProperty(w, " + cname + ", val)";
+		protected override string RawSetter (string qpname) {
+			return "ChildSetProperty(child, " + qpname + ", val)";
 		}
 
 		protected override string PropertyFooter (string indent) {
