@@ -9,7 +9,7 @@ all: linux
 
 windows:
 	for i in $(DIRS); do					\
-		CSC=$(CSC) make -C $$i windows || exit 1;	\
+		CSC=$(CSC) $(MAKE) -C $$i windows || exit 1;	\
 	done;
 
 unix:
@@ -19,22 +19,22 @@ linux: native binding
 
 binding:
 	for i in $(DIRS); do				\
-		MCS="$(MCS)" make -C $$i || exit 1;\
+		MCS="$(MCS)" $(MAKE) -C $$i || exit 1;\
 	done;
 
 native:
 	for i in $(NATIVE_DIRS); do			\
-		make -C $$i || exit 1;			\
+		$(MAKE) -C $$i || exit 1;		\
 	done
 
 clean:
 	for i in $(NATIVE_DIRS) $(DIRS); do		\
-		make -C $$i clean || exit 1;		\
+		$(MAKE) -C $$i clean || exit 1;		\
 	done;
 
 distclean: clean
 	for i in $(NATIVE_DIRS); do			\
-		make -C $$i distclean || exit 1;	\
+		$(MAKE) -C $$i distclean || exit 1;	\
 	done
 	for i in $(DIRS); do				\
 		rm -f $$i/Makefile;			\
@@ -50,10 +50,10 @@ install: install-native install-binding
 
 install-binding:
 	for i in $(DIRS); do				\
-		make -C $$i install || exit 1;		\
+		$(MAKE) -C $$i install || exit 1;	\
 	done
 
 install-native:
 	for i in $(NATIVE_DIRS); do			\
-		make -C $$i install || exit 1;		\
+		$(MAKE) -C $$i install || exit 1;	\
 	done
