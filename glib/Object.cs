@@ -66,7 +66,6 @@ namespace GLib {
 				if (o._obj == IntPtr.Zero)
 					continue;
 				
-				Objects.Remove (o._obj);
 				o.Unref ();
 				o._obj = IntPtr.Zero;
 			}
@@ -89,6 +88,7 @@ namespace GLib {
 				return;
 
 			disposed = true;
+			Objects.Remove (_obj);
 			lock (PendingDestroys){
 				PendingDestroys.Enqueue (this);
 				lock (typeof (Object)){
