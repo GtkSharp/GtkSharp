@@ -27,7 +27,24 @@ gnome:
 	mono --debug $(UPDATER) $(LIBDIR)/gnome-sharp.dll -o en
 glade:	
 	mono --debug $(UPDATER) $(LIBDIR)/glade-sharp.dll -o en
+	
+overwrite: glib_overwrite pango_overwrite atk_overwrite gtk_overwrite gdk_overwrite gnome_overwrite glade_overwrite
 
+glib_overwrite:
+	mono --debug $(UPDATER) $(LIBDIR)/glib-sharp.dll -o en -f
+pango_overwrite:
+	mono --debug $(UPDATER) $(LIBDIR)/pango-sharp.dll -o en -f
+atk_overwrite:	
+	mono --debug $(UPDATER) $(LIBDIR)/atk-sharp.dll -o en -f
+gtk_overwrite:
+	mono --debug $(UPDATER) $(LIBDIR)/gtk-sharp.dll -o en -f
+gdk_overwrite:
+	mono --debug $(UPDATER) $(LIBDIR)/gdk-sharp.dll -o en -f
+gnome_overwrite:
+	mono --debug $(UPDATER) $(LIBDIR)/gnome-sharp.dll -o en -f
+glade_overwrite:	
+	mono --debug $(UPDATER) $(LIBDIR)/glade-sharp.dll -o en -f
+	
 clean:
 	rm *.tree
 	rm *zip
