@@ -90,7 +90,7 @@ public class DemoEntryCompletion : Window
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Override this method to run operations before object destruction.</summary>
+        <summary>Disposes the resources associated with the object.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -236,10 +236,14 @@ public class DemoEntryCompletion : Window
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds the <paramref name="cell"/> to the end of the entry-completion widget.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks />
+        <remarks>
+	  If <paramref name="expand"/> is <see langword="false"/>, then the
+	  <paramref name="cell"/> is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand"/> is <see langword="true"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PackStart">
@@ -253,10 +257,14 @@ public class DemoEntryCompletion : Window
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Packs the <paramref name="cell"/> into the beginning of the entry-completion widget.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks />
+        <remarks>
+	  If <paramref name="expand"/> is <see langword="false"/>, then the
+	  <paramref name="cell"/> is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand"/> is <see langword="true"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddAttribute">
@@ -271,11 +279,18 @@ public class DemoEntryCompletion : Window
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds an attribute mapping to the list in this entry-completion widget. 
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="attribute">a <see cref="T:System.String" /></param>
-        <param name="column">a <see cref="T:System.Int32" /></param>
-        <remarks />
+        <param name="attribute">a <see cref="T:System.String" />, parameter on <paramref name="cell"/> to be set from the value</param>
+        <param name="column">a <see cref="T:System.Int32" />, column of the model to get a value from.</param>
+        <remarks>
+	  The <paramref name="column"/> is the column of the model to get a value from, and the <paramref name="attribute"/> is the
+	  parameter on <paramref name="cell"/> to be set from the value. So for example if column 2
+	  of the model contains strings, you could have the "text" attribute of a
+	  <see cref="T:Gtk.EntryCompletion"/> get its values from column 2.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearAttributes">
@@ -288,7 +303,10 @@ public class DemoEntryCompletion : Window
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Clears all existing attributes previously set with
+	  <see cref="M:Gtk.EntryCompletion.SetAttributes"/>.
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <remarks />
       </Docs>
@@ -301,7 +319,7 @@ public class DemoEntryCompletion : Window
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Clears the completion.</summary>
         <remarks />
       </Docs>
     </Member>
