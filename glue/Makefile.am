@@ -20,6 +20,7 @@ BASESOURCES = 			\
 	selectiondata.c		\
 	slist.c			\
 	style.c			\
+	time_t.c		\
 	type.c			\
 	value.c			\
 	valuearray.c		\
