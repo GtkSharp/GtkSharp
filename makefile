@@ -26,10 +26,16 @@ native:
 	(cd glue; make) || exit 1;
 
 clean:
-	(cd glue; make clean) || exit 1;
-	for i in $(DIRS); do				\
+	for i in glue $(DIRS); do				\
 		(cd $$i; make clean) || exit 1;	\
 	done;
+
+distclean: clean
+	(cd glue; make distclean) || exit 1;
+	for i in $(DIRS); do				\
+		rm -f $$i/Makefile;			\
+	done
+	rm -f config.cache config.h config.log config.status libtool
 
 install: install-native install-binding
 
