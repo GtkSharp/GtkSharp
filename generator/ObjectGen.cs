@@ -69,13 +69,43 @@ namespace GtkSharp.Generation {
 
 			GenCtors (sw);
 			GenProperties (sw);
-			GenSignals (sw);
-			GenMethods (sw);
 			
-			if (interfaces != null) {
+			bool has_sigs = (sigs != null);
+			if (!has_sigs) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.GetClassGen (iface);
-					igen.GenMethods (sw);
+					if (igen.Signals != null) {
+						has_sigs = true;
+						break;
+					}
+				}
+			}
+
+			if (has_sigs)
+			{
+				sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
+				GenSignals (sw);
+			}
+
+			GenMethods (sw, null);
+			
+			if (interfaces != null) {
+				Hashtable all_methods = new Hashtable ();
+				Hashtable collisions = new Hashtable ();
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.GetClassGen (iface);
+					foreach (Method m in igen.Methods.Values) {
+						if (all_methods.Contains (m.Name))
+							collisions[m.Name] = true;
+						else
+							all_methods[m.Name] = true;
+					}
+				}
+					
+				foreach (string iface in interfaces) {
+					ClassBase igen = SymbolTable.GetClassGen (iface);
+					igen.GenMethods (sw, collisions);
+					igen.GenSignals (sw);
 				}
 			}
 
@@ -116,12 +146,8 @@ namespace GtkSharp.Generation {
 					if (!method.Validate())
 						return false;
 
-			if (interfaces != null) {
-				foreach (string iface in interfaces) {
-					if (SymbolTable.GetCSType(parent) == null)
-						return false;
-				}
-			}
+			if (SymbolTable.GetCSType(parent) == null)
+				return false;
 
 			return true;
 		}

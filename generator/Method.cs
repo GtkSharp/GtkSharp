@@ -22,6 +22,7 @@ namespace GtkSharp.Generation {
 		private string sig, isig, call;
 		private string rettype, m_ret, s_ret;
 		private string name, cname, safety;
+		private string protection = "public";
 		private bool is_get, is_set;
 
 		public Method (string libname, XmlElement elem, ClassBase container_type) 
@@ -46,6 +47,15 @@ namespace GtkSharp.Generation {
 		public Parameters Params {
 			get {
 				return parms;
+			}
+		}
+
+		public string Protection {
+			get {
+				return protection;
+			}
+			set {
+				protection = value;
 			}
 		}
 
@@ -249,8 +259,10 @@ namespace GtkSharp.Generation {
 			GenerateImport (sw);
 			if (comp != null && s_ret == comp.parms.AccessorReturnType)
 				comp.GenerateImport (sw);
-			
-			sw.Write("\t\tpublic ");
+				
+			sw.Write("\t\t");
+			if (protection != "")
+				sw.Write("{0} ", protection);
 			GenerateDeclCommon (sw);
 
 			if (is_get || is_set)

@@ -1,3 +1,25 @@
+2002-06-23  Rachel Hestilow  <hestilow@ximian.com>
+	
+	* generator/ClassBase.cs: Add accessors for methods and signals.
+	Change GenSignals and GenMethods to public, as csc has a different
+	idea of protected than mcs. Handle interface collisions in
+	GenMethods.
+
+	* generator/Method.cs: Add accessor Protection - "public" by default.
+
+	* generator/ObjectGen.cs: Make sure wrapper's Signals hashtable only
+	gets generated once. Generate a list of collisions for GenMethods.
+	Remove dead foreach loop from Validate.
+
+	* generator/Paramaters.cs (CreateSignature): Initialize last_param.
+
+	* parser/Gtk.metadata: Add property & event collision renames
+	for TextBuffer and OldEditable.
+
+	* sample/makefile.win32: Reference atk-sharp.dll.
+
+	* makefile.win32: Do not build gdk.imaging.
+
 2002-06-22  Mike Kestner <mkestner@speakeasy.net>
 
 	* */makefile.win32 : add docs target

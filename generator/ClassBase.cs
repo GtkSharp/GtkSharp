@@ -18,6 +18,18 @@ namespace GtkSharp.Generation {
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = null;
 
+		public Hashtable Methods {
+			get {
+				return methods;
+			}
+		}	
+
+		public Hashtable Signals {
+			get {
+				return sigs;
+			}
+		}	
+
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 			foreach (XmlNode node in elem.ChildNodes) {
 				XmlElement member = (XmlElement) node;
@@ -89,13 +101,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void GenSignals (StreamWriter sw)
+		public void GenSignals (StreamWriter sw)
 		{		
 			if (sigs == null)
 				return;
 
-			sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-			
 			foreach (Signal sig in sigs.Values) {
 				if (sig.Validate ())
 					sig.Generate (sw);
@@ -125,7 +135,7 @@ namespace GtkSharp.Generation {
 				     (props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
-		public void GenMethods (StreamWriter sw)
+		public void GenMethods (StreamWriter sw, Hashtable collisions)
 		{		
 			if (methods == null)
 				return;
@@ -135,7 +145,22 @@ namespace GtkSharp.Generation {
 				    	continue;
 
 				if (method.Validate ())
+				{
+					String oname = null, oprotection = null;
+					if (collisions != null && collisions.Contains (method.Name))
+					{
+						oname = method.Name;
+						oprotection = method.Protection;
+						method.Name = Name + "." + method.Name;
+						method.Protection = "";
+					}
 					method.Generate (sw);
+					if (oname != null)
+					{
+						method.Name = oname;
+						method.Protection = oprotection;
+					}
+				}
 				else
 					Console.WriteLine(" in Object " + Name);
 			}
