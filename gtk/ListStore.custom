@@ -151,6 +151,27 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_sortable_set_sort_func(IntPtr raw, int col_id, IntPtr sort_func, IntPtr user_data, IntPtr destroy);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_sortable_set_sort_func(IntPtr raw, int col_id, GtkSharp.TreeIterCompareFuncNative sort_func, IntPtr user_data, GtkSharp.DestroyNotifyNative destroy);
+
+		public void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
+		{
+			if (sort_func == null) {
+				PersistentData ["column_" + sort_column_id + "_sort_func"] = null;
+				gtk_tree_sortable_set_sort_func (Handle, sort_column_id, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+				return;
+			}
+
+			GtkSharp.TreeIterCompareFuncWrapper sort_func_wrapper = new GtkSharp.TreeIterCompareFuncWrapper (sort_func);
+			PersistentData ["column_" + sort_column_id + "_sort_func"] = sort_func_wrapper;
+			GtkSharp.DestroyNotifyWrapper destroy_wrapper = null;
+			destroy_wrapper = new GtkSharp.DestroyNotifyWrapper (destroy);
+			gtk_tree_sortable_set_sort_func(Handle, sort_column_id, sort_func_wrapper.NativeDelegate, user_data, destroy_wrapper.NativeDelegate);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_sortable_set_default_sort_func(IntPtr raw, IntPtr sort_func, IntPtr user_data, IntPtr destroy);
 
 		[DllImport("libgtk-win32-2.0-0.dll")]

@@ -97,6 +97,7 @@ customs = 				\
 	TreeModelSort.custom		\
 	TreePath.custom			\
 	TreeSelection.custom		\
+	TreeSortable.custom		\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\
