@@ -11,7 +11,44 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Renders a <see cref="T:Gtk.ToggleButton" /> or a <see cref="T:Gtk.RadioButton" /></summary>
-    <remarks />
+    <remarks>
+      <para>This Class is a <see cref="T:Gtk.CellRenderer" /> implementation that can render a checkbox in your <see cref="T:Gtk.TreeView" /> columns.</para>
+      <para>It is important to note that the <see cref="T:Gtk.CellRendererToggle" /> will not change the corresponding bool field in your <see cref="T:Gtk.TreeModel" /> itself - you'll need to provide a handler, as shown in the following code snippet:
+</para>
+      <example>
+        <code lang="C#">
+private TreeStore store;
+
+void SetupTreeView ()
+{
+	store = new TreeStore (typeof (string), typeof(bool));
+
+	// populate store..
+
+	TreeView tv = new TreeView (store);
+	tv.HeadersVisible = true;
+
+	tv.AppendColumn ("Name", new CellRendererText (), "text", 0);
+
+	CellRendererToggle crt = new CellRendererToggle();
+	crt.Activatable = true;
+	crt.Toggled += crt_toggled;
+	tv.AppendColumn ("CheckMe", crt, "active", 1);
+
+	// add the TreeView to some window...
+}
+
+void crt_toggled(object o, ToggledArgs args) {
+	TreeIter iter;
+
+	if (store.GetIter (out iter, new TreePath(args.Path))) {
+		bool old = (bool) store.GetValue(iter,1);
+		store.SetValue(iter,1,!old);
+	}
+}
+</code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.CellRenderer</BaseTypeName>
