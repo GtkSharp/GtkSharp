@@ -13,8 +13,9 @@ gtk-sharp-docs.zip gtk-sharp-docs.tree: en/*/*.xml
 	mono $(ASSEMBLER) --ecma en -o gtk-sharp-docs
 
 install: gtk-sharp-docs.zip gtk-sharp-docs.tree 
-	install -m 644 gtk-sharp-docs.zip gtk-sharp-docs.tree $(prefix)/lib/monodoc/sources
-	install -m 644 gtk-sharp-docs.source $(prefix)/lib/monodoc/sources
+	install -m 644 gtk-sharp-docs.zip gtk-sharp-docs.tree `monodoc --get-sourcesdir`
+	install -m 644 gtk-sharp-docs.source `monodoc --get-sourcesdir`
+
 clean:
 	rm *.tree
 	rm *zip
