@@ -23,70 +23,24 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class GUnicharGen : IGeneratable  {
+	public class GUnicharGen : SimpleBase {
 		
-		public string CName {
-			get {
-				return "gunichar";
-			}
-		}
+		public GUnicharGen () : base ("gunichar", "char") {}
 
-		public string Name {
-			get {
-				return "char";
-			}
-		}
-
-		public string QualifiedName {
-			get {
-				return "char";
-			}
-		}
-
-		public string MarshalType {
+		public override string MarshalType {
 			get {
 				return "uint";
 			}
 		}
 
-		public string MarshalReturnType {
-			get {
-				return MarshalType;
-			}
-		}
-
-		public string ToNativeReturnType {
-			get {
-				return MarshalType;
-			}
-		}
-
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return "GLib.Marshaller.CharToGUnichar (" + var_name + ")";
 		}
 		
-		public virtual string FromNative(string var)
+		public override string FromNative(string var)
 		{
 			return "GLib.Marshaller.GUnicharToChar (" + var + ")";
-		}
-		
-		public virtual string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
-		}
-		
-		public void Generate ()
-		{
-		}
-		
-		public void Generate (GenerationInfo gen_info)
-		{
 		}
 	}
 }

@@ -23,77 +23,24 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class LPGen : IGeneratable  {
+	public class LPGen : SimpleBase {
 		
-		string ctype;
+		public LPGen (string ctype) : base (ctype, "long") {}
 
-		public LPGen (string ctype)
-		{
-			this.ctype = ctype;
-		}
-
-		public string CName {
-			get {
-				return ctype;
-			}
-		}
-
-		public string Name {
-			get {
-				return "long";
-			}
-		}
-
-		public string QualifiedName {
-			get {
-				return "long";
-			}
-		}
-
-		public string MarshalType {
+		public override string MarshalType {
 			get {
 				return "IntPtr";
 			}
 		}
 
-		public string MarshalReturnType {
-			get {
-				return MarshalType;
-			}
-		}
-
-		public string ToNativeReturnType {
-			get {
-				return MarshalType;
-			}
-		}
-
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return "new IntPtr (" + var_name + ")";
 		}
 		
-		public virtual string FromNative(string var)
+		public override string FromNative(string var)
 		{
 			return "(long) " + var;
-		}
-		
-		public virtual string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
-		}
-		
-		public void Generate ()
-		{
-		}
-		
-		public void Generate (GenerationInfo gen_info)
-		{
 		}
 	}
 }

@@ -1,6 +1,6 @@
 // GtkSharp.Generation.GStringGen.cs - The GString type Generatable.
 //
-// Author: Mike Kestner <mkestner@ximian.com>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2004 Novell, Inc.
 //
@@ -23,70 +23,24 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class GStringGen : IGeneratable {
+	public class GStringGen : SimpleBase {
 
-		public string CName {
-			get {
-				return "GString";
-			}
-		}
+		public GStringGen () : base ("GString", "string") {}
 
-		public string Name {
-			get {
-				return "string";
-			}
-		}
-
-		public string QualifiedName {
-			get {
-				return "string";
-			}
-		}
-
-		public string MarshalType {
+		public override string MarshalType {
 			get {
 				return "IntPtr";
 			}
 		}
 
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return "(new GLib.GString (" + var_name + ")).Handle";
 		}
 		
-		public string FromNative (string var)
+		public override string FromNative (string var)
 		{
 			return "GLib.GString.PtrToString (" + var + ")";
-		}
-		
-		public string FromNativeReturn (string var)
-		{
-			return FromNative (var);
-		}
-
-		public string ToNativeReturn (string var)
-		{
-			return CallByName (var);
-		}
-
-		public string MarshalReturnType {
-			get {
-				return "IntPtr";
-			}
-		}
-		
-		public string ToNativeReturnType {
-			get {
-				return "IntPtr";
-			}
-		}
-		
-		public void Generate ()
-		{
-		}
-		
-		public void Generate (GenerationInfo gen_info)
-		{
 		}
 	}
 

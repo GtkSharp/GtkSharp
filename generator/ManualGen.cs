@@ -23,95 +23,32 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class ManualGen : IGeneratable  {
+	public class ManualGen : SimpleBase {
 		
 		string handle;
-		string ctype;
-		string type;
-		string ns = "";
 
 		public ManualGen (string ctype, string type) : this (ctype, type, "Handle") {}
 
-		public ManualGen (string ctype, string type, string handle)
+		public ManualGen (string ctype, string type, string handle) : base (ctype, type)
 		{
-			string[] toks = type.Split('.');
 			this.handle = handle;
-			this.ctype = ctype;
-			this.type = toks[toks.Length - 1];
-			if (toks.Length > 2)
-				this.ns = String.Join (".", toks, 0, toks.Length - 2);
-			else if (toks.Length == 2)
-				this.ns = toks[0];
 		}
 		
-		public string CName {
-			get
-			{
-				return ctype;
-			}
-		}
-
-		public string Name {
-			get
-			{
-				return type;
-			}
-		}
-
-		public string QualifiedName {
-			get
-			{
-				return ns + "." + type;
-			}
-		}
-
-		public string MarshalType {
+		public override string MarshalType {
 			get
 			{
 				return "IntPtr";
 			}
 		}
 
-		public string MarshalReturnType {
-			get
-			{
-				return "IntPtr";
-			}
-		}
-
-		public string ToNativeReturnType {
-			get
-			{
-				return "IntPtr";
-			}
-		}
-
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return var_name + "." + handle;
 		}
 		
-		public virtual string FromNative(string var)
+		public override string FromNative(string var)
 		{
 			return "new " + QualifiedName + "(" + var + ")";
-		}
-		
-		public virtual string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
-		}
-		
-		public void Generate ()
-		{
-		}
-		
-		public void Generate (GenerationInfo gen_info)
-		{
 		}
 	}
 }
