@@ -32,7 +32,7 @@ public class Fifteen
 		Alignment alignment = new Alignment (0.5f, 0.5f, 0.0f, 0.0f);
 		vbox.PackStart (alignment, true, true, 0);
 
-		Frame frame = new Frame (String.Empty);
+		Frame frame = new Frame (null);
 		frame.ShadowType = ShadowType.In;
 		alignment.Add (frame);
 
@@ -194,9 +194,8 @@ public class Fifteen
 				x = -1;
 			else if ((dir == 3) && ((position % 4) != 3)) // right
 				x = 1;
-			else {
+			else 
 				goto retry;
-			}
 
 			int old_position = position + y * 4 + x;
 			board [position] = board [old_position];
