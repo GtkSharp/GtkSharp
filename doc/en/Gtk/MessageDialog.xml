@@ -10,36 +10,35 @@
     <summary>Convenient message window</summary>
     <remarks>
       <para>
-        <see cref="T:Gtk.MessageDialog" /> presents a <see cref="T:Gtk.Dialog" /> with an image representing the <see cref="T:Gtk.MessageType" /> (Error, Question, etc.) alongside some message text.
-				It's simply a convenience <see cref="T:Gtk.Widget" />; you could construct the equivalent of <see cref="T:Gtk.MessageDialog" /> from <see cref="T:Gtk.Dialog" /> without too much effort, but <see cref="T:Gtk.MessageDialog" /> saves typing.
-			</para>
+        <see cref="T:Gtk.MessageDialog" /> presents a <see cref="T:Gtk.Dialog" /> with an image representing the 
+	<see cref="T:Gtk.MessageType" /> (Error, Question, etc.) alongside some message text.
+	It's simply a convenience <see cref="T:Gtk.Widget" />; you could construct the equivalent of 
+	<see cref="T:Gtk.MessageDialog" /> from <see cref="T:Gtk.Dialog" /> without too much effort, but 
+	<see cref="T:Gtk.MessageDialog" /> saves typing.
+      </para>
       <para>
-				The easiest way to do a modal message dialog is to use <see cref="M:Gtk.Dialog.Run()" />,
-				though you can also pass in the <see cref="F:Gtk.DialogFlags.Modal" /> flag, <see cref="M:Gtk.Dialog.Run()" /> automatically makes the <see cref="T:Gtk.MessageDialog" /> from <see cref="T:Gtk.Dialog" /> modal and waits for the user to respond to it.
-				<see cref="M:Gtk.Dialog.Run()" /> returns when any <see cref="T:Gtk.Button" /> in the <see cref="T:Gtk.Dialog" /> is clicked.
-			</para>
-      <para>A modal dialog
-				<example>
+	The MessageDialog is displayed using <see cref="M:Gtk.Dialog.Run()" />, which
+	automatically makes the <see cref="T:Gtk.MessageDialog" /> from 
+	<see cref="T:Gtk.Dialog" /> modal and waits for the user to respond to it.
+	<see cref="M:Gtk.Dialog.Run()" /> returns when any <see cref="T:Gtk.Button" /> 
+	in the <see cref="T:Gtk.Dialog" /> is clicked.
+      </para>
+      <para>
+        A message dialog
+	<example>
           <code lang="C#">
-MessageDialog md = new MessageDialog
-	(parent_window, Gtk.DialogFlags.DestroyWithParent,
-	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
+MessageDialog md = new MessageDialog (parent_window, 
+                                      DialogFlags.DestroyWithParent,
+	                              MessageType.Error, 
+                                      ButtonsType.Close, "Error loading file");
 	
-md.Run ();
-md.Destroy ();
-					</code>
-        </example></para>
-      <para>A non-modal dialog
-				<example>
-          <code lang="C#">
-MessageDialog md = new MessageDialog
-	(parent_window, Gtk.DialogFlags.DestroyWithParent,
-	Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Error loading file");
-	
-// Destroy the dialog when the user responds to it (e.g. clicks a button)
-// ::add signal handler code here::
-					</code>
-        </example></para>
+int result = md.Run ();
+  	  </code>
+        </example>
+      </para>
+      <para>
+      If you would like a non modal dialog just set the Modal property of the dialog, ie my_dialog.Modal = false;
+      </para>
     </remarks>
   </Docs>
   <Base>
