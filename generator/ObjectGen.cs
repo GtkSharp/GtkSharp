@@ -195,19 +195,26 @@ namespace GtkSharp.Generation {
 			for (int i = 0; i < cname.Length; i++)
 			{
 				if (needs_dot && i > 0 && Char.IsUpper (cname[i])) {
-					ns = expected.ToString ().ToLower (); 
-					expected.Append ('.');
+					if (expected.Length == 1 && expected[0] == 'G') {
+						ns = "glib";
+						expected = new StringBuilder ("GLib.");
+					} else {
+						ns = expected.ToString ().ToLower ();
+						expected.Append ('.');
+					}
 					needs_dot = false;
 				}
 				expected.Append (cname[i]);
 			}
+			expected.AppendFormat (",{0}-sharp", ns);
+
 			return expected.ToString ();
 		}
 
-		private static bool NeedsMap (Hashtable objs)
+		private static bool NeedsMap (Hashtable objs, string assembly_name)
 		{
 			foreach (string key in objs.Keys)
-				if (GetExpected (key) != ((string) objs[key]))
+				if (GetExpected (key) != ((string) objs[key] + "," + assembly_name))
 					return true;
 			
 			return false;
@@ -230,7 +237,7 @@ namespace GtkSharp.Generation {
 
 				DirectoryInfo di = dirs[dir] as DirectoryInfo;
 
-				if (!NeedsMap (di.objects))
+				if (!NeedsMap (di.objects, di.assembly_name))
 					continue;
 	
 				GenerationInfo gen_info = new GenerationInfo (dir, di.assembly_name);
@@ -251,9 +258,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tpublic static void Initialize ()");
 			sw.WriteLine ("\t\t{");
 	
-			foreach (string key in dir_info.objects.Keys)
-				if (GetExpected(key) != ((string) dir_info.objects[key]))
+			Console.WriteLine ("Generating mappers");
+			foreach (string key in dir_info.objects.Keys) {
+				Console.WriteLine ("Expected: " + GetExpected(key));
+				Console.WriteLine ("dir_info.objects[key]+assname: " + ((string) dir_info.objects[key]) + "," + dir_info.assembly_name);
+				if (GetExpected(key) != ((string) dir_info.objects[key] + "," + dir_info.assembly_name))
 					sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + dir_info.objects [key] + "," + dir_info.assembly_name + "\");");
+			}
 					
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ("\t}");
