@@ -45,6 +45,8 @@ customs = 				\
 	Button.custom			\
 	Calendar.custom			\
 	CellRenderer.custom		\
+	CellLayout.custom		\
+	CellView.custom			\
 	CheckMenuItem.custom		\
 	Clipboard.custom		\
 	ColorSelection.custom		\
@@ -54,6 +56,7 @@ customs = 				\
 	Container.custom		\
 	Dialog.custom			\
 	Entry.custom			\
+	EntryCompletion.custom		\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
 	FileSelection.custom		\

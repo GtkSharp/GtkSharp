@@ -21,6 +21,16 @@
 // Boston, MA 02111-1307, USA.
 
 
+		public void SetAttributes (CellRenderer cell, params object[] attrs)
+		{
+			if (attrs.Length % 2 != 0)
+				throw new ArgumentException ("attrs should contain pairs of attribute/col");
+
+			ClearAttributes (cell);
+			for (int i = 0; i < attrs.Length - 1; i += 2) {
+				AddAttribute (cell, (string) attrs [i], (int) attrs [i + 1]);
+			}
+		}
 
 		private void _NewWithAttributes (string title, Gtk.CellRenderer cell, Array attrs) {
 			Title = title;
@@ -76,16 +86,16 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.TreeCellDataFuncNative func, IntPtr func_data, IntPtr destroy);
+		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, IntPtr destroy);
 
-		public void SetCellDataFunc (CellRenderer cell_renderer, TreeCellDataFunc func) 
+		public void SetCellDataFunc (CellRenderer cell_renderer, CellLayoutDataFunc func) 
 		{
 			if (func == null) {
 				ReleaseDataFunc (cell_renderer);
 				return;
 			}
 ;
-			GtkSharp.TreeCellDataFuncWrapper wrapper = new GtkSharp.TreeCellDataFuncWrapper (func, this);
+			GtkSharp.CellLayoutDataFuncWrapper wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func, this);
 			CellDataFuncs [cell_renderer.Handle] = wrapper;
 			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
 		}

@@ -93,7 +93,7 @@
         <param name="func">an object of type <see cref="T:Gtk.TreeCellDataFunc" /></param>
         <param name="func_data">an object of type <see cref="T:System.IntPtr" /></param>
         <param name="destroy">an object of type <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>This function is used instead of the standard attributes mapping for setting the column value, and should set the value of the <see cref="T:Gtk.TreeViewColumn" /> <paramref name="cell_renderer" /> as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.</remarks>
+        <remarks>This function is used instead of the standard attributes mapping for setting the column value, and should set the value of the <see cref="T:Gtk.TreeViewColumn" /><paramref name="cell_renderer" /> as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -403,19 +403,19 @@
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
-      <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell_renderer, Gtk.TreeCellDataFunc func);" />
+      <MemberSignature Language="C#" Value="public virtual void SetCellDataFunc (Gtk.CellRenderer cell_renderer, Gtk.CellLayoutDataFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="cell_renderer" Type="Gtk.CellRenderer" />
-        <Parameter Name="func" Type="Gtk.TreeCellDataFunc" />
+        <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
       </Parameters>
       <Docs>
-        <summary>Sets the <see cref="T:Gtk.TreeViewColumnFunc" /> to use for the column.</summary>
+        <summary>Sets the <see cref="T:Gtk.CellLayoutDataFunc" /> to use for a renderer.</summary>
         <param name="cell_renderer">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="func">a <see cref="T:Gtk.TreeCellDataFunc" /></param>
+        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
         <remarks>This function is used instead of the standard attributes mapping for setting the column value, and should set the value of the <see cref="T:Gtk.TreeViewColumn" /><paramref name="cell_renderer" /> as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.</remarks>
       </Docs>
     </Member>
@@ -578,7 +578,8 @@
       <Docs>
         <summary>Whether this column gets share of extra width allocated to the widget.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Reorder">
@@ -592,7 +593,7 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Re-inserts <paramref name="cell"/> at <paramref name="position"/>.</summary>
+        <summary>Re-inserts <paramref name="cell" /> at <paramref name="position" />.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="position">a <see cref="T:System.Int32" /></param>
         <remarks>The given cell must already be packed into the layout for this method to work properly.</remarks>
@@ -681,34 +682,6 @@
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func, IntPtr func_data, IntPtr destroy);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
-        <Parameter Name="func_data" Type="System.IntPtr" />
-        <Parameter Name="destroy" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  Sets the <see cref="T:Gtk.CellLayoutDataFunc"/> to use for the column.  
-	</summary>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
-        <param name="func_data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:System.IntPtr" /></param>
-        <remarks>
-	  This function is used instead of the standard attributes mapping for
-	  setting the column value, and should set the value of this tree view column's
-	  cell renderer as appropriate. <paramref name="func"/> may be 
-	  <see langword="null"/> to remove an older one.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetCellDataFunc">
       <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell_renderer, Gtk.NodeCellDataFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -723,6 +696,23 @@
         <param name="cell_renderer">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="func">a <see cref="T:Gtk.NodeCellDataFunc" /></param>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetAttributes">
+      <MemberSignature Language="C#" Value="public virtual void SetAttributes (Gtk.CellRenderer cell, object [] attrs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="attrs" Type="System.Object[]" />
+      </Parameters>
+      <Docs>
+        <summary>Sets the attribute to model column bindings for a renderer.</summary>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="attrs">a <see cref="T:System.Object" /></param>
+        <remarks>The <paramref name="attrs"/> array should consist of pairs of attribute name and column index.</remarks>
       </Docs>
     </Member>
   </Members>

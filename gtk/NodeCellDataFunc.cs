@@ -36,12 +36,12 @@ namespace Gtk {
 			managed (col,  renderer,  store.GetNode (iter));
 		}
 
-		internal GtkSharp.TreeCellDataFuncNative NativeDelegate;
+		internal GtkSharp.CellLayoutDataFuncNative NativeDelegate;
 		protected NodeCellDataFunc managed;
 
 		public NodeCellDataFuncWrapper (NodeCellDataFunc managed, object o) : base (o)
 		{
-			NativeDelegate = new GtkSharp.TreeCellDataFuncNative (NativeCallback);
+			NativeDelegate = new GtkSharp.CellLayoutDataFuncNative (NativeCallback);
 			this.managed = managed;
 		}
 	}

@@ -10,7 +10,7 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Manages layout for table cells.</summary>
-    <remarks/>
+    <remarks />
   </Docs>
   <Base />
   <Interfaces>
@@ -31,11 +31,11 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Re-inserts <paramref name="cell"/> at <paramref name="position"/>.</summary>
+        <summary>Re-inserts <paramref name="cell" /> at <paramref name="position" />.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="position">a <see cref="T:System.Int32" /></param>
         <remarks>
-	  Note that <paramref name="cell"/> has already to be packed
+	  Note that <paramref name="cell" /> has already to be packed
 	  into the cell layout for this to function properly.
 	</remarks>
       </Docs>
@@ -52,14 +52,14 @@
       </Parameters>
       <Docs>
         <summary>
-	  Adds the <paramref name="cell"/> to the end of the cell layout. 
+	  Adds the <paramref name="cell" /> to the end of the cell layout. 
 	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell"/> is to be given extra space allocated to this cell layout.</param>
+        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell" /> is to be given extra space allocated to this cell layout.</param>
         <remarks>
-	  If <paramref name="expand"/> is FALSE, then the
+	  If <paramref name="expand" /> is FALSE, then the
 	  cell is allocated no more space than it needs. Any unused space is
-	  divided evenly between cells for which <paramref name="expand"/> is 
+	  divided evenly between cells for which <paramref name="expand" /> is 
 	  TRUE.	
 	</remarks>
       </Docs>
@@ -76,14 +76,14 @@
       </Parameters>
       <Docs>
         <summary>
-	  Packs <paramref name="cell"/> into the beginning of the cell layout. 
+	  Packs <paramref name="cell" /> into the beginning of the cell layout. 
 	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell"/> is to be given extra space allocated to this cell layout.</param>
+        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell" /> is to be given extra space allocated to this cell layout.</param>
         <remarks>
-	  If <paramref name="expand"/> is FALSE, then the
+	  If <paramref name="expand" /> is FALSE, then the
 	  cell is allocated no more space than it needs. Any unused space is
-	  divided evenly between cells for which <paramref name="expand"/> is 
+	  divided evenly between cells for which <paramref name="expand" /> is 
 	  TRUE.	
 	</remarks>
       </Docs>
@@ -107,11 +107,11 @@
         <param name="attribute">a <see cref="T:System.String" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <remarks>
-	  The <paramref name="column"/> is the
-	  column of the model to get a value from, and the <paramref name="attribute"/> is the
-	  parameter on <paramref name="cell"/> to be set from the value. So for example if column 2
+	  The <paramref name="column" /> is the
+	  column of the model to get a value from, and the <paramref name="attribute" /> is the
+	  parameter on <paramref name="cell" /> to be set from the value. So for example if column 2
 	  of the model contains strings, you could have the "text" attribute of a
-	  <see cref="T:Gtk.CellRendererText"/> get its values from column 2.
+	  <see cref="T:Gtk.CellRendererText" /> get its values from column 2.
 	</remarks>
       </Docs>
     </Member>
@@ -126,9 +126,9 @@
       </Parameters>
       <Docs>
         <summary>Clears all existing attributes previously set with
-	  <see cref="M:Gtk.CellLayout.SetAttributes"/>.</summary>
+	  <see cref="M:Gtk.CellLayout.SetAttributes" />.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -140,32 +140,45 @@
       <Parameters />
       <Docs>
         <summary>Unsets all the mappings on all renderers for this cell layout.</summary>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func, IntPtr func_data, IntPtr destroy);" />
+      <MemberSignature Language="C#" Value="public virtual void SetCellDataFunc (Gtk.CellRenderer renderer, Gtk.CellLayoutDataFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="renderer" Type="Gtk.CellRenderer" />
         <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
-        <Parameter Name="func_data" Type="System.IntPtr" />
-        <Parameter Name="destroy" Type="System.IntPtr" />
       </Parameters>
       <Docs>
         <summary>Sets up a data function for this layout.</summary>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="renderer">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
-        <param name="func_data">a <see cref="T:System.IntPtr" />, the user data (FIXME: is this necessary in the Gtk# API?)</param>
-        <param name="destroy">a <see cref="T:System.IntPtr" />, the destroy notification (FIXME: is this necessary in the Gtk# API?)</param>
         <remarks>
 	  The data function is used instead of the standard attributes mapping for setting the
 	  column value, and should set the value of the layout's cell renderer(s)
-	  as appropriate. <paramref name="func"/> may be <see langword="null"/> to remove an older one.
+	  as appropriate. <paramref name="func" /> may be <see langword="null" /> to remove an older one.
 	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAttributes">
+      <MemberSignature Language="C#" Value="public virtual void SetAttributes (Gtk.CellRenderer renderer, object [] attrs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="renderer" Type="Gtk.CellRenderer" />
+        <Parameter Name="attrs" Type="System.Object[]" />
+      </Parameters>
+      <Docs>
+        <summary>Sets the attribute to model column bindings for a renderer.</summary>
+        <param name="renderer">a <see cref="T:Gtk.CellRenderer" /></param>
+        <param name="attrs">a <see cref="T:System.Object" /></param>
+        <remarks>The <paramref name="attrs"/> array should consist of pairs of attribute names and column indices.</remarks>
       </Docs>
     </Member>
   </Members>
