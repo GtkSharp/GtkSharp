@@ -5,7 +5,7 @@ all:
 	@echo "'make unix' is broken for now."
 
 windows:
-	$(CSC) /unsafe /target:library /out:gdk-sharp.dll /recurse:*.cs
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:gdk-sharp.dll /recurse:*.cs
 
 unix:
 	@echo "'make unix' is broken for now."
