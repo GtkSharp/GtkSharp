@@ -7,6 +7,7 @@ BASESOURCES = 			\
 	colorseldialog.c        \
 	combo.c			\
 	dialog.c		\
+	dragcontext.c		\
 	error.c			\
 	event.c			\
 	fileselection.c		\

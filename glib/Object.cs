@@ -66,7 +66,7 @@ namespace GLib {
 			foreach (Object o in objects){
 				if (o._obj == IntPtr.Zero)
 					continue;
-				
+
 				g_object_unref (o._obj);
 				o._obj = IntPtr.Zero;
 			}
@@ -243,6 +243,15 @@ namespace GLib {
 		public static uint GType {
 			get {
 				return 0;
+			}
+		}
+
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
+
+		public string TypeName {
+			get {
+				return Marshal.PtrToStringAnsi (gtksharp_get_type_name (Raw));
 			}
 		}
 

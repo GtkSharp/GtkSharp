@@ -18,7 +18,7 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
+linux: gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf 
 @ENABLE_GNOME_TRUE@	$(MAKE) -C rsvg
 
@@ -33,7 +33,7 @@ canvas-example.exe: CanvasExample.cs
 
 fifteen.exe: Fifteen.cs
 	$(MCS) --unsafe -o fifteen.exe $(local_paths) $(all_assemblies) Fifteen.cs
-	
+
 print.exe: PrintSample.cs
 	$(MCS) --unsafe -o print.exe $(local_paths) $(all_assemblies) PrintSample.cs
 
@@ -67,6 +67,9 @@ glade-viewer.exe: GladeViewer.cs
 glade-test.exe: GladeTest.cs test.glade
 	$(MCS) --unsafe -resource:test.glade -o glade-test.exe $(local_paths) $(all_assemblies) GladeTest.cs
 
+testdnd.exe: TestDnd.cs
+	$(MCS) -g --unsafe -o testdnd.exe $(local_paths) $(all_assemblies) TestDnd.cs
+
 clean:
 	rm -f *.exe
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf clean 
@@ -81,4 +84,4 @@ unix:
 
 install: linux
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf install 
-	
+
