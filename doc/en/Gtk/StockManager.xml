@@ -30,10 +30,18 @@
         <Parameter Name="n_items" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Registers each of the stock items in <paramref name="items"/>. 
+	  If an item already exists with the same stock ID as one of the 
+	  <paramref name="items"/>, the old item gets replaced. The stock 
+	  items are copied, so GTK+ does not hold any pointer into 
+	  <paramref name="items"/> and <paramref name="items"/> can be 
+	  freed. Use <see cref="M:Gtk.StockManager.AddStatic"/> if 
+	  <paramref name="items"/> is persistent and GTK# doesn't need to 
+	  copy the array.
+	</summary>
         <param name="items">a <see cref="T:Gtk.StockItem" /></param>
-        <param name="n_items">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <param name="n_items">a <see cref="T:System.UInt32" />, the number of items in <paramref name="items"/></param>
+        <remarks>(TODO: This API doesn't make sense for the underlying C API, because the C API has an option of adding multiple items. Needs clarification.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddStatic">
@@ -47,10 +55,12 @@
         <Parameter Name="n_items" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Same as <see cref="M:Gtk.StockManager.Add"/> but doesn't copy
+	  <paramref name="items"/>, so <paramref name="items"/> must persist
+	  until application exit.</summary>
         <param name="items">a <see cref="T:Gtk.StockItem" /></param>
         <param name="n_items">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>(TODO:Needs API review; see the Add method also.)</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
