@@ -61,6 +61,8 @@ namespace GLib {
 			if (_obj == IntPtr.Zero)
 				return;
 
+			Objects.Remove (Raw);
+
 			GC.SuppressFinalize (this);
 			g_object_unref (_obj);
 			_obj = IntPtr.Zero;
@@ -104,8 +106,9 @@ namespace GLib {
 
 		public static Object GetObject(IntPtr o)
 		{
-			Object obj = (Object)Objects[o];
-			if (obj != null) return obj;
+			WeakReference obj = Objects[o] as WeakReference;
+			if (obj != null)
+				return obj.Target as GLib.Object;
 			return GtkSharp.ObjectManager.CreateObject(o); 
 		}
 
@@ -117,7 +120,8 @@ namespace GLib {
 		///	Dummy constructor needed for derived classes.
 		/// </remarks>
 
-		public Object () {}
+		public Object () {
+		}
 
 		/// <summary>
 		///	Object Constructor
@@ -148,7 +152,7 @@ namespace GLib {
 				return _obj;
 			}
 			set {
-				Objects [value] = this;
+				Objects [value] = new WeakReference (this);
 				_obj = value;
 			}
 		}       
