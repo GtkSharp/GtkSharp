@@ -186,6 +186,8 @@ while ($line = <STDIN>) {
 			$objects{$1} = $2 . $objects{$1};
 		} elsif ($cast_macro =~ /GTK_CHECK_CLASS_CAST.*,\s*(\w+),\s*(\w+)/) {
 			$objects{$1} .= ":$2";
+		} elsif ($cast_macro =~ /GST_IMPLEMENTS_INTERFACE_CHECK_INSTANCE_CAST.*,\s*(\w+),\s*(\w+)/) {
+			$objects{$1} = $2 . $objects{$1};
 		}
 	} elsif ($line =~ /INSTANCE_GET_INTERFACE.*,\s*(\w+),\s*(\w+)/) {
 		$ifaces{$1} = $2;
