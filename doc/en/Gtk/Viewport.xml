@@ -1,5 +1,5 @@
 <Type Name="Viewport" FullName="Gtk.Viewport">
-  <TypeSignature Language="C#" Value="public class Viewport : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Viewport : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A <see cref="T:Gtk.Container" /> that allows a scrollable view of its child when added to a <see cref="T:Gtk.ScrolledWindow" />.</summary>
+    <remarks>
+      <para>To scroll correctly, a <see cref="T:Gtk.ScrolledWindow" /> ordinarily requires explicit support from the <see cref="T:Gtk.Widget" /> that will be scrolled. However, a Viewport adds scrolling capabilities to an arbitrary child widget. For example, you can add a collection of widgets to a <see cref="T:Gtk.Table" /> container. By simply placing the <see cref="T:Gtk.Table" /> in a Viewport, you need only add the Viewport to a <see cref="T:Gtk.ScrolledWindow" /> to visually scroll the contents of your Table.</para>
+      <para>The "model" of this widget consists of horizontal and vertical <see cref="T:Gtk.Adjustment" /> objects. These do not need to be explicitly set to use the Viewport. Packing a child widget as demonstrated in the example, below, is all that is required.</para>
+      <para>The appearance of the Viewport can be adjusted using the <see cref="P:Gtk.Viewport.ShadowType" /> property.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -66,22 +70,11 @@
         <Parameter Name="vadjustment" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="hadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <param name="vadjustment">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Viewport'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Viewport ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Viewport'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new Viewport with the specified horizontal and vertical Adjustments.</summary>
+        <param name="hadjustment">An <see cref="T:Gtk.Adjustment" /> to model horizontal viewing.</param>
+        <param name="vadjustment">An <see cref="T:Gtk.Adjustment" /> to model vertical viewing.</param>
+        <returns>A new Viewport</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -106,10 +99,10 @@
         <Parameter Name="value" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the horizontal model.</summary>
+        <param name="value">A new <see cref="T:Gtk.Adjustment" /> for horizontal scrolling.</param>
+        <returns>The current state of the horizontal model</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Vadjustment">
@@ -122,10 +115,10 @@
         <Parameter Name="value" Type="Gtk.Adjustment" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Adjustment'</param>
-        <returns>To be added: an object of type 'Gtk.Adjustment'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the vertical model.</summary>
+        <param name="value">A new <see cref="T:Gtk.Adjustment" /> for vertical scrolling.</param>
+        <returns>The current state of the vertical model.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ShadowType">
@@ -138,10 +131,10 @@
         <Parameter Name="value" Type="Gtk.ShadowType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.ShadowType'</param>
-        <returns>To be added: an object of type 'Gtk.ShadowType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Manage the shadow style surrounding the Viewport contents.</summary>
+        <param name="value">A new shadow style.</param>
+        <returns>The current shadow style surrounding the child widget.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollAdjustmentsSet">
@@ -150,8 +143,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This event is fired when the <see cref="P:Gtk.Viewport.VAdjustment" /> or <see cref="P:Gtk.Viewport.HAdjustment" /> properties are set.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -168,6 +161,17 @@
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.Viewport" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Viewport ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>The main way to create a Viewport.</summary>
+        <returns>A new Viewport.</returns>
+        <remarks><para>Horizontal and vertical <see cref="T:Gtk.Adjustment"/> objects are automatically created.</para></remarks>
       </Docs>
     </Member>
   </Members>
