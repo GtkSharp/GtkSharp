@@ -378,11 +378,6 @@ namespace GtkSharp.Generation {
 
 		public void GenerateBody (StreamWriter sw, string indent)
 		{
-			GenerateBody(sw, indent, "");
-		}
-
-		public void GenerateBody (StreamWriter sw, string indent, string cast_type)
-		{
 			sw.WriteLine(" {");
 			if (parms != null)
 				parms.Initialize(sw, is_get, is_set, indent);

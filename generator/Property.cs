@@ -115,7 +115,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tpublic " + modifiers + cs_type + " " + name + " {");
 			if (has_getter) {
 				sw.Write("\t\t\tget ");
-				getter.GenerateBody(sw, "\t", c_type);
+				getter.GenerateBody(sw, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
@@ -141,7 +141,7 @@ namespace GtkSharp.Generation {
 
 			if (has_setter) {
 				sw.Write("\t\t\tset ");
-				setter.GenerateBody(sw, "\t", c_type);
+				setter.GenerateBody(sw, "\t");
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");

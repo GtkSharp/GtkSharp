@@ -13,7 +13,7 @@ namespace GtkSharp.Generation {
 
 	public class SignalHandler {
 		
-		public static String GetName(XmlElement sig, string ns, bool generate)
+		public static string GetName(XmlElement sig, string ns, bool generate)
 		{
 			XmlElement ret_elem = sig["return-type"];
 			if (ret_elem == null) {
