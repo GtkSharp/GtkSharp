@@ -12,6 +12,25 @@
       <para>To scroll correctly, a <see cref="T:Gtk.ScrolledWindow" /> ordinarily requires explicit support from the <see cref="T:Gtk.Widget" /> that will be scrolled. However, a Viewport adds scrolling capabilities to an arbitrary child widget. For example, you can add a collection of widgets to a <see cref="T:Gtk.Table" /> container. By simply placing the <see cref="T:Gtk.Table" /> in a Viewport, you need only add the Viewport to a <see cref="T:Gtk.ScrolledWindow" /> to visually scroll the contents of your Table.</para>
       <para>The "model" of this widget consists of horizontal and vertical <see cref="T:Gtk.Adjustment" /> objects. These do not need to be explicitly set to use the Viewport. Packing a child widget as demonstrated in the example, below, is all that is required.</para>
       <para>The appearance of the Viewport can be adjusted using the <see cref="P:Gtk.Viewport.ShadowType" /> property.</para>
+      <para>The following example creates a <see cref="T:Gtk.Table" /> in a Viewport. When placed in a small <see cref="T:Gtk.Window" />, the widgets can be scrolled.
+      
+      <example><code lang="C#">
+public ScrolledWindow CreateViewport()
+{
+    ScrolledWindow scroller = new ScrolledWindow();
+    Viewport viewer = new Viewport();
+
+    // Create a table with text entries in it
+    Table widgets = new Table(1, 2, false);
+    widgets.Attach(new Entry("This is example Entry 1"), 0, 1, 0, 1);
+    widgets.Attach(new Entry("This is example Entry 2"), 1, 2, 0, 1);
+
+    // Place the widgets in a Viewport, and the Viewport in a ScrolledWindow
+    viewer.Add(widgets);
+    scroller.Add(viewer);
+    return scroller;
+}
+      </code></example></para>
     </remarks>
   </Docs>
   <Base>
