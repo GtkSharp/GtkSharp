@@ -31,21 +31,21 @@ using System.IO;
 using Gtk;
 using Gdk;
 
-namespace GtkDemo {
-	public class DemoImages
+namespace GtkDemo
+{
+	public class DemoImages : Gtk.Window
 	{
-		private Gtk.Window window;
 		private static Gtk.Image progressiveImage;
 		private VBox vbox;
-		public DemoImages ()
+
+		public DemoImages () : base ("images")
 		{
-			window = new Gtk.Window ("Images");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 8;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 8;
 		
 			vbox = new VBox (false, 8);
 			vbox.BorderWidth = 8;
-			window.Add (vbox);
+			this.Add (vbox);
 			
 			Gtk.Label label = new Gtk.Label ("<u>Image loaded from a file</u>");
 			label.UseMarkup = true;
@@ -104,13 +104,14 @@ namespace GtkDemo {
 			vbox.PackStart (button, false, false, 0);
 			button.Toggled += new EventHandler (ToggleSensitivity);
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 		
   		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 
   		private void ToggleSensitivity (object o, EventArgs args)
@@ -121,7 +122,6 @@ namespace GtkDemo {
 				if (widget.GetType () !=  o.GetType () )
 					widget.Sensitive =  !widget.Sensitive;
 		}
-
 
 		private uint timeout_id;
 		private void StartProgressiveLoading ()
@@ -149,17 +149,16 @@ namespace GtkDemo {
 			return true;
 		}
 
-	static void ProgressivePreparedCallback (object obj, EventArgs args) 
+		static void ProgressivePreparedCallback (object obj, EventArgs args) 
 		{
 			Gdk.Pixbuf pixbuf = pixbufLoader.Pixbuf;
 			pixbuf.Fill (0xaaaaaaff);
 			progressiveImage.FromPixbuf = pixbuf;
 		}
 
-	static void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
+		static void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
 		{
 
 		}
-
 	}
 }

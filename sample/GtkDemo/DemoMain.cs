@@ -18,8 +18,8 @@ namespace GtkDemo
 	public class DemoMain
 	{
 		private Gtk.Window window;
-		private TextBuffer infoBuffer = new TextBuffer(null);
-		private TextBuffer sourceBuffer = new TextBuffer(null);
+		private TextBuffer infoBuffer = new TextBuffer (null);
+		private TextBuffer sourceBuffer = new TextBuffer (null);
 		private TreeView treeView; 
 		private TreeStore store;
 		public static void Main (string[] args)
@@ -32,8 +32,8 @@ namespace GtkDemo
 		public DemoMain ()
 		{  
 			SetupDefaultIcon ();
-		    window = new Gtk.Window ("Gtk# Code Demos");
-		    window.SetDefaultSize (600,400);
+		   	window = new Gtk.Window ("Gtk# Code Demos");
+		   	window.SetDefaultSize (600,400);
 			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
 
 			HBox hbox = new HBox (false, 0);
@@ -55,22 +55,21 @@ namespace GtkDemo
 			window.ShowAll ();
 		}
 
-		private void LoadFile(string filename)
+		private void LoadFile (string filename)
 		{
-
-			Stream file = File.OpenRead(filename);
-			StreamReader sr = new StreamReader(file);
-			string s = sr.ReadToEnd();
-			sr.Close();
-			file.Close();
+			Stream file = File.OpenRead (filename);
+			StreamReader sr = new StreamReader (file);
+			string s = sr.ReadToEnd ();
+			sr.Close ();
+			file.Close ();
 
 			infoBuffer.Text = filename;
 			sourceBuffer.Text = s;
 
-			Fontify();
+			Fontify ();
 		}
 
-		private void Fontify()
+		private void Fontify ()
 		{
 		}
 
@@ -84,10 +83,7 @@ namespace GtkDemo
 				// The gtk-logo-rgb icon has a white background, make it transparent
 				Pixbuf transparent  = pixbuf.AddAlpha (true, 0xff, 0xff, 0xff);
 			
-				Gdk.Pixbuf[] list = new Gdk.Pixbuf [1];
-				list[0] = transparent;
-			
-		    	Gtk.Window.DefaultIconList = list;
+				Gtk.Window.DefaultIconList = new Gdk.Pixbuf [] {transparent};
 			}
 		}
 
@@ -119,7 +115,6 @@ namespace GtkDemo
 				FontDescription fontDescription = FontDescription.FromString ("Courier 12");	
 				textView.ModifyFont (fontDescription);
 				textView.WrapMode = Gtk.WrapMode.None;
-
 			}
 			else
 			{
@@ -132,18 +127,17 @@ namespace GtkDemo
 			return scrolledWindow;
         }
                                                             
-
         private TreeView CreateTree ()
-		{
-			treeView = new TreeView ();
-			return treeView;
+	{
+		treeView = new TreeView ();
+		return treeView;
         }
         
         private TreeStore FillTree ()
         {
         	store = new TreeStore (typeof (string));
         	
-        	store.AppendValues ("Application Window (5% complete)");
+        	store.AppendValues ("Application Window (75% complete)");
         	store.AppendValues ("Button Boxes");
         	store.AppendValues ("Change Display");
         	store.AppendValues ("Color Selector");
@@ -158,16 +152,15 @@ namespace GtkDemo
         	store.AppendValues ("Stock Item and Icon Browser (10% complete)");
         	store.AppendValues ("Text Widget (95% complete)");
         	TreeIter iter = store.AppendValues ("Tree View");
-        	store.AppendValues (iter, "Editable Cells (buggy)");
+        	store.AppendValues (iter, "Editable Cells");
         	store.AppendValues (iter, "List Store");
-        	store.AppendValues (iter, "Tree Store (95% complete)");
+        	store.AppendValues (iter, "Tree Store");
         	
         	return store;
         }
         
         private void OnTreeChanged (object o, EventArgs args)
-		{
-
+	{
 		TreeIter iter;
 		TreeModel model;
 
@@ -176,67 +169,66 @@ namespace GtkDemo
 			TreePath path;
 			path = store.GetPath (iter);
 
-		switch (path.ToString()) {
+			switch (path.ToString()) {
 
-        		case "0":
-        			LoadFile ("DemoApplicationWindow.cs");
-        			break;
-        		case "1":
-        			LoadFile ("DemoButtonBox.cs");
-        			break;
-        		case "2":
-        			//
-        			break;
-        		case "3":
-        			LoadFile ("DemoColorSelection.cs");
-        			break;
-        		case "4":
-        			LoadFile ("DemoDialog.cs");
-        			break;
-        		case "5":
-        			LoadFile ("DemoDrawingArea.cs");
-        			break;
-        		case "6":
-        			LoadFile ("DemoImages.cs");
-        			break;
-        		case "7":
-        			LoadFile ("DemoItemFactory.cs");
-        			break;
-        		case "8":
-        			LoadFile ("DemoMenus.cs");
-        			break;
-        		case "9":
-        			LoadFile ("DemoPanes.cs");
-        			break;
-        		case "10":
-        			LoadFile ("DemoPixbuf.cs");
-        			break;
-        		case "11":
-        			LoadFile ("DemoSizeGroup.cs");
-        			break;
-        		case "12":
-        			LoadFile ("DemoStockBrowser.cs");
-        			break;
-        		case "13":
-        			LoadFile ("DemoTextView.cs");
-        			break;
-        		case "14":
-        			// do nothing
-        			break;
-        		case "14:0":
-        			LoadFile ("DemoEditableCells.cs");
-        			break;
-        		case "14:1":
-        			LoadFile ("DemoListStore.cs");
-        			break;
-        		case "14:2":
-        			LoadFile ("DemoTreeStore.cs");
-        			break;
-        		default:
-        			break;
-		}
-
+        			case "0":
+        				LoadFile ("DemoApplicationWindow.cs");
+        				break;
+        			case "1":
+        				LoadFile ("DemoButtonBox.cs");
+        				break;
+        			case "2":
+        				//
+        				break;
+        			case "3":
+        				LoadFile ("DemoColorSelection.cs");
+        				break;
+        			case "4":
+        				LoadFile ("DemoDialog.cs");
+        				break;
+        			case "5":
+        				LoadFile ("DemoDrawingArea.cs");
+        				break;
+        			case "6":
+        				LoadFile ("DemoImages.cs");
+        				break;
+        			case "7":
+        				LoadFile ("DemoItemFactory.cs");
+        				break;
+        			case "8":
+        				LoadFile ("DemoMenus.cs");
+        				break;
+        			case "9":
+        				LoadFile ("DemoPanes.cs");
+        				break;
+        			case "10":
+        				LoadFile ("DemoPixbuf.cs");
+        				break;
+        			case "11":
+        				LoadFile ("DemoSizeGroup.cs");
+        				break;
+        			case "12":
+        				LoadFile ("DemoStockBrowser.cs");
+        				break;
+        			case "13":
+        				LoadFile ("DemoTextView.cs");
+        				break;
+        			case "14":
+        				// do nothing
+        				break;
+        			case "14:0":
+        				LoadFile ("DemoEditableCells.cs");
+        				break;
+        			case "14:1":
+        				LoadFile ("DemoListStore.cs");
+        				break;
+        			case "14:2":
+        				LoadFile ("DemoTreeStore.cs");
+        				break;
+        			default:
+        				break;
 			}
+		}
         }
 
         private void OnRowActivated (object o, RowActivatedArgs args)
@@ -298,9 +290,9 @@ namespace GtkDemo
         			break;
         		default:
         			break;
-			}
+		}
         }
-                                                                                                                             
+
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
 			Application.Quit ();

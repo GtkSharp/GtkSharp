@@ -12,25 +12,20 @@
  */
 
 using System;
-
 using Gtk;
 
 namespace GtkDemo 
 {
-	public class DemoButtonBox 	
+	public class DemoButtonBox : Gtk.Window
 	{
-		private Gtk.Window window;
-		
-		public DemoButtonBox ()
+		public DemoButtonBox () : base ("Button Boxes")
 		{
-			// Create a Window
-			window = new Gtk.Window ("Button Boxes");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 10;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 10;
 
 			// Add Vertical Box
 			VBox mainVbox = new VBox (false,0);
-			window.Add (mainVbox);
+			this.Add (mainVbox);
 
 			// Add Horizontal Frame
 			Frame horizontalFrame =  new Frame ("Horizontal Button Boxes");
@@ -58,7 +53,7 @@ namespace GtkDemo
 			hbox.PackStart(CreateButtonBox (false, "Start (spacing 20)", 20, 85, 20, ButtonBoxStyle.Start));
 			hbox.PackStart(CreateButtonBox (false, "End (spacing 20)", 20, 85, 20, ButtonBoxStyle.End));
 		
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 
 		// Create a Button Box with the specified parameters
@@ -95,8 +90,9 @@ namespace GtkDemo
 
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 	}
 }

@@ -29,63 +29,58 @@ namespace GtkDemo
 {
 
 	public class DemoPixbuf : Gtk.Window
-{
-
-	const int FrameDelay = 50;
-	const int CycleLen = 60;
-	const string BackgroundName = "images/background.jpg";
-	string [] ImageNames = {
-		"images/apple-red.png",
-		"images/gnome-applets.png",
-		"images/gnome-calendar.png",
-		"images/gnome-foot.png",
-		"images/gnome-gmush.png",
-		"images/gnome-gimp.png",
-		"images/gnome-gsame.png",
-		"images/gnu-keys.png"
-	};
+	{
+		const int FrameDelay = 50;
+		const int CycleLen = 60;
+		const string BackgroundName = "images/background.jpg";
 		
-	// current frame
-	Pixbuf frame;
-	int frameNum;
-	
-	// background image
-	Pixbuf background;
-	int backWidth, backHeight;
-
-	// images
-	Pixbuf[] images;
-
-	// drawing area
-	DrawingArea drawingArea;
-
-
-
-
-	string FindFile (string name)
-	{
-		return name;
-	}
-	
-	// Loads the images for the demo 
-	void LoadPixbuf ()
-	{
-		background = new Pixbuf (FindFile (BackgroundName));
-
-		backWidth = background.Width;
-		backHeight = background.Height;
-
-		images = new Pixbuf[ImageNames.Length];
+		string [] ImageNames = {
+			"images/apple-red.png",
+			"images/gnome-applets.png",
+			"images/gnome-calendar.png",
+			"images/gnome-foot.png",
+			"images/gnome-gmush.png",
+			"images/gnome-gimp.png",
+			"images/gnome-gsame.png",
+			"images/gnu-keys.png"
+		};
 		
-		for (int i = 0; i < ImageNames.Length; i++) 
-			images[i] = new Pixbuf (FindFile (ImageNames[i]));
-	}
+		// current frame
+		Pixbuf frame;
+		int frameNum;
+	
+		// background image
+		Pixbuf background;
+		int backWidth, backHeight;
 
+		// images
+		Pixbuf[] images;
 
-	// Expose callback for the drawing area
-	void Expose (object o, ExposeEventArgs args)
-	{
+		// drawing area
+		DrawingArea drawingArea;
 
+		string FindFile (string name)
+		{
+			return name;
+		}
+	
+		// Loads the images for the demo 
+		void LoadPixbuf ()
+		{
+			background = new Pixbuf (FindFile (BackgroundName));
+
+			backWidth = background.Width;
+			backHeight = background.Height;
+
+			images = new Pixbuf[ImageNames.Length];
+		
+			for (int i = 0; i < ImageNames.Length; i++) 
+				images[i] = new Pixbuf (FindFile (ImageNames[i]));
+		}
+
+		// Expose callback for the drawing area
+		void Expose (object o, ExposeEventArgs args)
+		{
 		        EventExpose ev = args.Event;
 			Widget widget = (Widget) o;
 			Gdk.Rectangle area = ev.Area;
@@ -98,120 +93,116 @@ namespace GtkDemo
 					Gdk.PixbufAlphaMode.Full, 8,
 					RgbDither.Normal,
 					100, 100);
-
-
-	}
+		}
 	
+		// timeout handler to regenerate the frame
+		bool timeout ()
+		{
+			background.CopyArea (0, 0, backWidth, backHeight, frame, 0, 0);
 
-	// timeout handler to regenerate the frame
-	bool timeout ()
-	{
-		background.CopyArea (0, 0, backWidth, backHeight, frame, 0, 0);
+			double f = (double) (frameNum % CycleLen) / CycleLen;
 
-		double f = (double) (frameNum % CycleLen) / CycleLen;
+			int xmid = backWidth / 2;
+			int ymid = backHeight / 2;
 
-		int xmid = backWidth / 2;
-		int ymid = backHeight / 2;
+			double radius = Math.Min (xmid, ymid) / 2;
 
-		double radius = Math.Min (xmid, ymid) / 2;
+			for (int i = 0; i < images.Length; i++) {
+				double ang = 2 * Math.PI * i / images.Length - f * 2 *
+					Math.PI;
 
-		for (int i = 0; i < images.Length; i++) {
-			double ang = 2 * Math.PI * i / images.Length - f * 2 *
-				Math.PI;
+				int iw = images[i].Width;
+				int ih = images[i].Height;
 
-			int iw = images[i].Width;
-			int ih = images[i].Height;
+				double r = radius + (radius / 3) * Math.Sin (f * 2 * 
+					Math.PI);
 
-			double r = radius + (radius / 3) * Math.Sin (f * 2 * 
-				Math.PI);
-
-			int xpos = (int) Math.Floor (xmid + r * Math.Cos (ang) -
-				iw / 2 + 0.5);
-			int ypos = (int) Math.Floor (ymid + r * Math.Sin (ang) -
-				ih / 2 + 0.5);
+				int xpos = (int) Math.Floor (xmid + r * Math.Cos (ang) -
+					iw / 2 + 0.5);
+				int ypos = (int) Math.Floor (ymid + r * Math.Sin (ang) -
+					ih / 2 + 0.5);
 			
-			double k = (i % 2 == 1) ? Math.Sin (f * 2 * Math.PI) : 
-				Math.Cos (f * 2 * Math.PI);
-			k = 2 * k * k;
-			k = Math.Max (0.25, k);
+				double k = (i % 2 == 1) ? Math.Sin (f * 2 * Math.PI) : 
+					Math.Cos (f * 2 * Math.PI);
+				k = 2 * k * k;
+				k = Math.Max (0.25, k);
 
-			Rectangle r1, r2, dest;
+				Rectangle r1, r2, dest;
 
-			r1 = new Rectangle (xpos, ypos,(int) (iw * k),
-				(int) (ih * k));
+				r1 = new Rectangle (xpos, ypos,(int) (iw * k),
+					(int) (ih * k));
 
-/* FIXME: Why is that code not working (in the original gtk-demo it works
+	/* FIXME: Why is that code not working (in the original gtk-demo it works
 
-			r2 = new Rectangle (0, 0, backWidth, backHeight);
+				r2 = new Rectangle (0, 0, backWidth, backHeight);
 
-			dest = new Rectangle (0, 0, 0, 0);
-			r1.Intersect (r2, dest);
+				dest = new Rectangle (0, 0, 0, 0);
+				r1.Intersect (r2, dest);
 
-			images[i].Composite (frame, dest.x, dest.y, dest.width,
-				dest.height, xpos, ypos, k, k,
-				InterpType.Nearest, (int) ((i % 2 == 1)
-				? Math.Max (127, Math.Abs (255 * Math.Sin (f *
-					2 * Math.PI)))
-				: Math.Max (127, Math.Abs (255 * Math.Cos (f *
-					2 * Math.PI)))));
-*/
-			images[i].Composite (frame, r1.X, r1.Y, r1.Width,
-				r1.Height, xpos, ypos, k, k,
-				InterpType.Nearest, (int) ((i % 2 == 1)
-				? Math.Max (127, Math.Abs (255 * Math.Sin (f *
-					2 * Math.PI)))
-				: Math.Max (127, Math.Abs (255 * Math.Cos (f *
-					2 * Math.PI)))));
-		}
+				images[i].Composite (frame, dest.x, dest.y, dest.width,
+					dest.height, xpos, ypos, k, k,
+					InterpType.Nearest, (int) ((i % 2 == 1)
+					? Math.Max (127, Math.Abs (255 * Math.Sin (f *
+						2 * Math.PI)))
+					: Math.Max (127, Math.Abs (255 * Math.Cos (f *
+						2 * Math.PI)))));
+	*/
+				images[i].Composite (frame, r1.X, r1.Y, r1.Width,
+					r1.Height, xpos, ypos, k, k,
+					InterpType.Nearest, (int) ((i % 2 == 1)
+					? Math.Max (127, Math.Abs (255 * Math.Sin (f *
+						2 * Math.PI)))
+					: Math.Max (127, Math.Abs (255 * Math.Cos (f *
+						2 * Math.PI)))));
+			}
 
-		drawingArea.QueueDraw ();
-		frameNum++;
+			drawingArea.QueueDraw ();
+			frameNum++;
 		
-		return true;
-	}
-
-
-	private Gtk.Window window;
-
-	public DemoPixbuf () : base ("Gdk Pixbuf Demo")
-	{
-		//window = new DemoPixbuf ();
-		//window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-
-		try {
-			LoadPixbuf ();
-		} catch (Exception e) {
-			MessageDialog md = new MessageDialog (this,
-					DialogFlags.DestroyWithParent,
-					MessageType.Error,
-					ButtonsType.Close,
-					"Error: \n" + e.Message);
-			md.Run ();
-
-			throw;
+			return true;
 		}
 
-		frame = new Pixbuf (Colorspace.Rgb, true, 8, backWidth, 
-				backHeight);
+		public DemoPixbuf () : base ("Gdk Pixbuf Demo")
+		{
+			this.DeleteEvent += new DeleteEventHandler (OnWindowDelete);
 
-		drawingArea = new DrawingArea ();
-		drawingArea.ExposeEvent += new ExposeEventHandler (Expose);
+			try
+			{
+				LoadPixbuf ();
+			} catch (Exception e)
+			{
+				using (MessageDialog md = new MessageDialog (this,
+						DialogFlags.DestroyWithParent,
+						MessageType.Error,
+						ButtonsType.Close,
+						"Error: \n" + e.Message)) {
+					md.Run ();
+					md.Hide ();
+				}
 
-		Add (drawingArea);
-		GLib.Timeout.Add (FrameDelay, new GLib.TimeoutHandler(timeout)); 
+				throw;
+			}
 
-		this.SetDefaultSize (backWidth, backHeight);
-//		this.Resizable = false;
-		ShowAll ();
+			frame = new Pixbuf (Colorspace.Rgb, true, 8, backWidth, 
+					backHeight);
+
+			drawingArea = new DrawingArea ();
+			drawingArea.ExposeEvent += new ExposeEventHandler (Expose);
+
+			Add (drawingArea);
+			GLib.Timeout.Add (FrameDelay, new GLib.TimeoutHandler(timeout)); 
+
+			this.SetDefaultSize (backWidth, backHeight);
+	//		this.Resizable = false;
+			ShowAll ();
+		}
+
+		void OnWindowDelete (object obj, DeleteEventArgs args)
+		{
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
+		}
 	}
-
-	
-	static void windowDelete (object obj, DeleteEventArgs args)
-	{
-		Application.Quit ();
-	}
-
-
-}
 }
 

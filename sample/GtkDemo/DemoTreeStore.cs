@@ -22,21 +22,19 @@ using GLib;
 
 namespace GtkDemo 
 {
-
-	public class DemoTreeStore
+	public class DemoTreeStore : Gtk.Window
 	{
-		private Window window;
 		private TreeStore store;
-		public DemoTreeStore ()
+
+		public DemoTreeStore () : base ("TreeStore Demo")
 		{
-			window = new Window ("TreeStore Demo");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
 
 			VBox vbox = new VBox (false, 8);
 			vbox.BorderWidth = 8;
-			window.Add (vbox);
+			this.Add (vbox);
 
-			vbox.PackStart(new Label ("Jonathan's Holiday Card Planning Sheet"), false, false, 0);
+			vbox.PackStart (new Label ("Jonathan's Holiday Card Planning Sheet"), false, false, 0);
 
 			ScrolledWindow scrolledWindow = new ScrolledWindow ();
 			scrolledWindow.ShadowType = ShadowType.EtchedIn;
@@ -44,7 +42,7 @@ namespace GtkDemo
 			vbox.PackStart (scrolledWindow, true, true, 0);
 
 			// create model 
-			CreateModel();
+			CreateModel ();
 			
 			// create tree view
 			TreeView treeView = new TreeView (store);
@@ -60,10 +58,8 @@ namespace GtkDemo
 				treeView.ExpandRow (new TreePath (i.ToString ()), false);
 			}
 
-			window.SetDefaultSize (650, 400);
-
-			window.ShowAll ();
-
+			this.SetDefaultSize (650, 400);
+			this.ShowAll ();
 		}
 
 		private void ItemToggled (object o, ToggledArgs args)
@@ -72,11 +68,11 @@ namespace GtkDemo
 			int column = (int) cellRendererToggle.Data["column"];
 			
  			Gtk.TreeIter iter;
- 			if (store.GetIterFromString(out iter, args.Path))
+ 			if (store.GetIterFromString (out iter, args.Path))
  			{
- 				bool val = (bool) store.GetValue(iter, column);
- 				Console.WriteLine("toggled {0} with value {1}", args.Path, !val);
- 				store.SetValue(iter, column, !val);
+ 				bool val = (bool) store.GetValue (iter, column);
+ 				Console.WriteLine ("toggled {0} with value {1}", args.Path, !val);
+ 				store.SetValue (iter, column, !val);
  			}
 		}
 
@@ -87,9 +83,9 @@ namespace GtkDemo
 			rendererText.Xalign = 0.0f;
 			GLib.Object ugly = (GLib.Object) rendererText;
 			ugly.Data ["column"] = Column.HolidayName;
-			TreeViewColumn column = new TreeViewColumn("Holiday", rendererText, 
+			TreeViewColumn column = new TreeViewColumn ("Holiday", rendererText, 
 					"text", Column.HolidayName);
-			treeView.InsertColumn(column, (int) Column.HolidayName);
+			treeView.InsertColumn (column, (int) Column.HolidayName);
 
 			// alex column
 			CellRendererToggle rendererToggle = new CellRendererToggle ();
@@ -100,12 +96,11 @@ namespace GtkDemo
 			rendererToggle.Visible = true;
 			rendererToggle.Activatable = true;
 			rendererToggle.Active = true;
-			column = new TreeViewColumn("Alex", rendererToggle, "active", (int) Column.Alex);
+			column = new TreeViewColumn ("Alex", rendererToggle, "active", (int) Column.Alex);
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
 			column.Clickable = true;
-			treeView.InsertColumn(column, (int) Column.Alex);
-
+			treeView.InsertColumn (column, (int) Column.Alex);
 
 			// havoc column
 			rendererToggle = new CellRendererToggle ();
@@ -113,11 +108,11 @@ namespace GtkDemo
 			ugly = (GLib.Object) rendererToggle;
 			ugly.Data ["column"] = Column.Havoc;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
-			column = new TreeViewColumn("Havoc", rendererToggle, "active", (int) Column.Havoc);
+			column = new TreeViewColumn ("Havoc", rendererToggle, "active", (int) Column.Havoc);
 			column.Visible = true;
 			rendererToggle.Activatable = true;
 			rendererToggle.Active = true;
-			treeView.InsertColumn(column, (int) Column.Havoc);
+			treeView.InsertColumn (column, (int) Column.Havoc);
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
 			column.Clickable = true;
@@ -128,11 +123,11 @@ namespace GtkDemo
 			ugly = (GLib.Object) rendererToggle;
 			ugly.Data ["column"] = Column.Tim;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
-			column = new TreeViewColumn("Tim", rendererToggle, "active", (int) Column.Tim);
+			column = new TreeViewColumn ("Tim", rendererToggle, "active", (int) Column.Tim);
 			column.Visible = true;
 			rendererToggle.Activatable = true;
 			rendererToggle.Active = true;
-			treeView.InsertColumn(column, (int) Column.Tim);
+			treeView.InsertColumn (column, (int) Column.Tim);
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
 			column.Clickable = true;
@@ -143,11 +138,11 @@ namespace GtkDemo
 			ugly = (GLib.Object) rendererToggle;
 			ugly.Data ["column"] = Column.Owen;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
-			column = new TreeViewColumn("Owen", rendererToggle, "active", (int) Column.Owen);
+			column = new TreeViewColumn ("Owen", rendererToggle, "active", (int) Column.Owen);
 			column.Visible = true;
 			rendererToggle.Activatable = true;
 			rendererToggle.Active = true;
-			treeView.InsertColumn(column, (int) Column.Owen);
+			treeView.InsertColumn (column, (int) Column.Owen);
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
 			column.Clickable = true;
@@ -158,21 +153,21 @@ namespace GtkDemo
 			ugly = (GLib.Object) rendererToggle;
 			ugly.Data ["column"] = Column.Dave;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
-			column = new TreeViewColumn("Dave", rendererToggle,  "active", (int) Column.Dave);
+			column = new TreeViewColumn ("Dave", rendererToggle,  "active", (int) Column.Dave);
 			column.Visible = true;
 			rendererToggle.Activatable = true;
 			rendererToggle.Active = true;
-			treeView.InsertColumn(column, (int) Column.Dave);
+			treeView.InsertColumn (column, (int) Column.Dave);
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
 			column.Clickable = true;
-
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 
 		private void CreateModel ()
@@ -189,7 +184,6 @@ namespace GtkDemo
 				typeof(bool));
 	
 			// add data to the tree store
-			// STUCK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			foreach (MyTreeItem month in toplevel)
 			{
@@ -202,21 +196,18 @@ namespace GtkDemo
 						false,
 						false);
 				
-					foreach (MyTreeItem hollyday in month.Children)
-					{
-						store.AppendValues (iter, 
-								hollyday.Label,
-								hollyday.Alex,
- 								hollyday.Havoc,
-								hollyday.Tim,
-								hollyday.Owen,
-								hollyday.Dave,
-								true);
-
-
-					}
+				foreach (MyTreeItem hollyday in month.Children)
+				{
+					store.AppendValues (iter, 
+							hollyday.Label,
+							hollyday.Alex,
+ 							hollyday.Havoc,
+							hollyday.Tim,
+							hollyday.Owen,
+							hollyday.Dave,
+							true);
+				}
 			}
-
 		}
 		
 		// tree data
@@ -327,7 +318,6 @@ namespace GtkDemo
 		};
 		
 		// TreeItem structure
-		// report bug array mismatch declaration
 		public class MyTreeItem
 		{
 			public string          Label;

@@ -13,28 +13,23 @@
  */
 
 using System;
-
 using Gdk;
 using Gtk;
 
-
 namespace GtkDemo 
 {
-	public class DemoColorSelection
+	public class DemoColorSelection : Gtk.Window
 	{
-		private Gtk.Window window ;
 		private Gdk.Color color;
-		private ColorSelectionDialog colorSelectionDialog;
 		private Gtk.DrawingArea drawingArea;
 
-		public DemoColorSelection ()
+		public DemoColorSelection () : base ("Color Selection")
 		{
-			window = new Gtk.Window ("Color Selection");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 8;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 8;
 			VBox vbox = new VBox (false,8);
 			vbox.BorderWidth = 8;
-			window.Add (vbox);
+			this.Add (vbox);
 
 			// Create the color swatch area
 			Frame frame = new Frame ();
@@ -56,13 +51,14 @@ namespace GtkDemo
 			alignment.Add (button);
 			vbox.PackStart (alignment);
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}			
 		
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 		
 		// Expose callback for the drawing area		
@@ -72,7 +68,7 @@ namespace GtkDemo
 			Gdk.Window window = eventExpose.Window;
  			Rectangle area = eventExpose.Area;
 
-			window.DrawRectangle (drawingArea.Style.BackgroundGC(StateType.Normal),
+			window.DrawRectangle (drawingArea.Style.BackgroundGC (StateType.Normal),
 					true,
 					area.X, area.Y,
 					area.Width, area.Height);
@@ -81,28 +77,21 @@ namespace GtkDemo
 		
 		private void ChangeColorCallback (object o, EventArgs args)
 		{
-			colorSelectionDialog = new ColorSelectionDialog ("Changing color");
-			colorSelectionDialog.TransientFor = window;
-			colorSelectionDialog.ColorSelection.PreviousColor = color;
-			colorSelectionDialog.ColorSelection.CurrentColor = color;
-			colorSelectionDialog.ColorSelection.HasPalette = true;			
+			using (ColorSelectionDialog colorSelectionDialog = new ColorSelectionDialog ("Changing color")) {
+				colorSelectionDialog.TransientFor = this;
+				colorSelectionDialog.ColorSelection.PreviousColor = color;
+				colorSelectionDialog.ColorSelection.CurrentColor = color;
+				colorSelectionDialog.ColorSelection.HasPalette = true;			
 
-			colorSelectionDialog.CancelButton.Clicked += new EventHandler (Color_Selection_Cancel);
-			colorSelectionDialog.OkButton.Clicked += new EventHandler (Color_Selection_OK);
+				if (colorSelectionDialog.Run () == (int) ResponseType.Ok)
+				{
+					Gdk.Color selected = colorSelectionDialog.ColorSelection.CurrentColor;
+					drawingArea.ModifyBg (StateType.Normal, selected);
+				}
 
-			colorSelectionDialog.ShowAll();
-		}
-
-		private void Color_Selection_OK (object o, EventArgs args)
-		{
-			Gdk.Color selected = colorSelectionDialog.ColorSelection.CurrentColor;
-			drawingArea.ModifyBg (StateType.Normal, selected);
-			colorSelectionDialog.Destroy ();
-		}
-
-		private void Color_Selection_Cancel (object o, EventArgs args)
-		{
-			colorSelectionDialog.Destroy ();
+				colorSelectionDialog.Hide ();
+			}
 		}
 	}
 }
+

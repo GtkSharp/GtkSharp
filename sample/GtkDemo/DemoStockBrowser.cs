@@ -6,24 +6,20 @@
 // (C) 2003 Ximian, Inc.
 
 using System;
-
 using Gtk;
 
 namespace GtkDemo
 {	
-	public class DemoStockBrowser 
+	public class DemoStockBrowser : Gtk.Window
 	{
-		private Gtk.Window window;
-		
-		public DemoStockBrowser ()
+		public DemoStockBrowser () : base ("Stock Item Browser Demo")
 		{	
-			window = new Gtk.Window ("Stock Item Browser Demo");
-			window.SetDefaultSize (600, 400);
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 8;
+			this.SetDefaultSize (600, 400);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 8;
 
 			HBox hbox = new HBox (false, 8);
-			window.Add (hbox);
+			this.Add (hbox);
 
 			ScrolledWindow scrolledWindow = new ScrolledWindow (null, null);
 			scrolledWindow.SetPolicy (PolicyType.Never, PolicyType.Automatic);
@@ -40,15 +36,8 @@ namespace GtkDemo
 			Frame frame = new Frame ();
 			hbox.PackStart (frame, true, true, 0);
 			
-			window.ShowAll ();
+			this.ShowAll ();
 		}	
-
-// 		private TreeModel CreateModel ()
-// 		{
-// 			ListStore store;
-// 			TreeModel model = new TreeModel ();
-// 			return model;
-// 		}
 
 		private ListStore CreateStore ()
 		{
@@ -66,8 +55,9 @@ namespace GtkDemo
 		
   		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 	}
 }

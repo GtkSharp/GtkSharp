@@ -16,26 +16,23 @@
 
 using System;
 using System.Collections;
-
 using Gtk;
 
 namespace GtkDemo 
 {
-	public class DemoEditableCells
+	public class DemoEditableCells : Gtk.Window
 	{
-		private Gtk.Window window;
 		private ListStore store;
 		private TreeView treeView;
 		private ArrayList articles;
 
-		public DemoEditableCells ()
+		public DemoEditableCells () : base ("Color Selection")
 		{
-			window = new Gtk.Window ("Color Selection");
-			window.SetDefaultSize (320, 200);
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.SetDefaultSize (320, 200);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
 
 			VBox vbox = new VBox (false, 5);
-			window.Add (vbox);
+			this.Add (vbox);
 			
 			vbox.PackStart (new Label ("Shopping list (you can edit the cells!)"), false, false, 0);
 			
@@ -63,11 +60,9 @@ namespace GtkDemo
 			button.Clicked += new EventHandler (RemoveItem);
 			hbox.PackStart (button, true, true, 0);
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 		
-
-
 		private void AddColumns ()
 		{
 			CellRendererText renderer;
@@ -79,7 +74,6 @@ namespace GtkDemo
 			treeView.AppendColumn ("Number", renderer, 
 					"text", (int) Column.Number);
 	
-
 			// product column
 			renderer = new CellRendererText ();
 			renderer.Edited += new EditedHandler (TextCellEdited);
@@ -91,7 +85,6 @@ namespace GtkDemo
 
 		private void CreateModel ()
 		{
-
 			// create array
 			articles = new ArrayList ();
 			AddItems ();
@@ -101,7 +94,6 @@ namespace GtkDemo
 			// add items
 			foreach (Item item in articles)
 				store.AppendValues (item.Number, item.Product, item.Editable);
-
 		}
 
 		private void AddItems ()
@@ -126,58 +118,42 @@ namespace GtkDemo
 		
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 
-		// FIXME: This is ugly. 
-		//        Figure out why the following line doesn't work
-		//             Console.WriteLine ("articles[i] {0}", articles[i].Number);
-		//             the code would definitely look better if I havent to do the
-		//             following midle step to get the Number.
-		//             foo.Number = Convert.ToInt32(args.NewText);
-		//,       Figure out why I'm not catching the execptions..
 		private void NumberCellEdited (object o, EditedArgs args)
 		{
 			int i;
+			Item foo;
+
 			try 
 			{
-				i = Convert.ToInt32(args.Path);
-				} 
-			catch (Exception e) 
+				i = Convert.ToInt32 (args.Path);
+				foo = (Item) articles[i];
+ 				foo.Number = int.Parse (args.NewText);
+			}
+			catch (Exception e)
 			{
-				Console.WriteLine ("Exeception {0}",e);
-				return; // This return should exit the callback but it doesn't
-			} 
- 			Console.WriteLine ("--NUMBER--1");
-// 			//Console.WriteLine ("Path {0}", args.Path);
-// 			//Console.WriteLine ("NewText {0}", args.NewText);
-// 			//Console.WriteLine ("articles[i] {0}",articles[i]);
-			Item foo = (Item) articles[i];
-// 			//Console.WriteLine ("foo.Number {0}", foo.Number);
-// 			//Console.WriteLine ("");
- 			foo.Number = Convert.ToInt32(args.NewText);
- 			TreeIter iter = new TreeIter ();
-// 			// How the hell do I assing the column !!!
- 			store.GetIterFromString(out iter, args.Path);
-// 			store.SetValue(iter, (int) Column.Number, foo.Number);
+				Console.WriteLine (e.ToString ());
+				return;
+			}
+
+ 			TreeIter iter;
+ 			store.GetIterFromString (out iter, args.Path);
+ 			store.SetValue (iter, (int) Column.Number, foo.Number);
 		}
 
 
 		private void TextCellEdited (object o, EditedArgs args)
 		{
-			int i = Convert.ToInt32(args.Path);		
-			// Console.WriteLine ("--PRODUCT--");
-			// Console.WriteLine ("Path {0}", args.Path);
-			// Console.WriteLine ("NewText {0}", args.NewText);
-			// Console.WriteLine ("articles[i] {0}",articles[i]);
+			int i = int.Parse (args.Path);		
 			Item foo = (Item) articles[i];
-			// Console.WriteLine ("foo.Product {0}", foo.Product);
-			// Console.WriteLine ("");
 			foo.Product = args.NewText;
-						TreeIter iter = new TreeIter ();
-			store.GetIterFromString(out iter, args.Path);
-			store.SetValue(iter, (int) Column.Product, foo.Product);
+			TreeIter iter;
+			store.GetIterFromString (out iter, args.Path);
+			store.SetValue (iter, (int) Column.Product, foo.Product);
 		}
 
 		private void AddItem (object o, EventArgs args)
@@ -194,10 +170,9 @@ namespace GtkDemo
 
  			if (treeView.Selection.GetSelected (out model, out iter))
 			{
- 				TreePath path = store.GetPath (iter);
+ 				int position = int.Parse (store.GetPath (iter).ToString ());
  				store.Remove (ref iter);
-				//articles.RemoveAt (path.Indices[0]);
-
+				articles.RemoveAt (position);
 			}
 		}
 	}
@@ -229,7 +204,7 @@ namespace GtkDemo
 		private string ProductItem;
 		private bool EditableItem;
 
- 		public Item (int number , string product, bool editable)
+ 		public Item (int number, string product, bool editable)
  		{
  			NumberItem = number;
  			ProductItem = product;

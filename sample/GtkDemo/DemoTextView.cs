@@ -13,8 +13,6 @@
  * formatting features.
  */
 
-
-
 using System;
 using System.IO;
 
@@ -23,21 +21,20 @@ using Gtk;
 
 namespace GtkDemo
 {
-	public class DemoTextView
+	public class DemoTextView : Gtk.Window
 	{
-		private Gtk.Window window;
 		TextView view1;
 		TextView view2;
-		public DemoTextView ()
+
+		public DemoTextView () : base ("TextView Demo")
 		{	
-			window = new Gtk.Window ("TextView Demo");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.SetDefaultSize (450,450);
-			window.BorderWidth = 0;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.SetDefaultSize (450,450);
+			this.BorderWidth = 6;
 
 			VPaned vpaned = new VPaned ();
 			vpaned.BorderWidth = 5;
-			window.Add (vpaned);
+			this.Add (vpaned);
 
 			/* For convenience, we just use the autocreated buffer from
 			 * the first text view; you could also create the buffer
@@ -66,14 +63,15 @@ namespace GtkDemo
 
 			vpaned.ShowAll();
 
-			window.ShowAll ();
-
+			this.ShowAll ();
 		}
+
 		private TextChildAnchor buttonAnchor;
 		private TextChildAnchor menuAnchor;
 		private TextChildAnchor scaleAnchor;
 		private TextChildAnchor animationAnchor;
 		private TextChildAnchor entryAnchor;
+
 		private void AttachWidgets (TextView textView)
 		{
 			Button button = new Button ("Click Me");
@@ -84,11 +82,11 @@ namespace GtkDemo
 			OptionMenu option = new OptionMenu ();
 			Menu menu = new Menu ();
 			MenuItem menuItem = new MenuItem ("Option 1");
- 			menu.Append(menuItem);
+ 			menu.Append (menuItem);
  			menuItem = new MenuItem ("Option 2");
- 			menu.Append(menuItem);
+ 			menu.Append (menuItem);
  			menuItem = new MenuItem ("Option 3");
- 			menu.Append(menuItem);
+ 			menu.Append (menuItem);
 			option.Menu = menu;
  			textView.AddChildAtAnchor (option, menuAnchor);
 			menu.ShowAll ();
@@ -106,7 +104,6 @@ namespace GtkDemo
 			Entry entry = new Entry ();
 			textView.AddChildAtAnchor (entry, entryAnchor);
 			image.ShowAll ();
-
 		}
 
 		private void CreateTags (TextBuffer buffer)
@@ -130,128 +127,128 @@ namespace GtkDemo
 		 * gtk_text_tag_set_priority().
 		 */
 
-			TextTag tag  = new TextTag("heading");
+			TextTag tag  = new TextTag ("heading");
 			tag.Weight = Pango.Weight.Bold;
 			tag.Size = (int) Pango.Scale.PangoScale * 15;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("italic");
+			tag  = new TextTag ("italic");
 			tag.Style = Pango.Style.Italic;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("bold");
+			tag  = new TextTag ("bold");
 			tag.Weight = Pango.Weight.Bold;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("big");
+			tag  = new TextTag ("big");
 			tag.Size = (int) Pango.Scale.PangoScale * 20;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("xx-small");
+			tag  = new TextTag ("xx-small");
 			tag.Scale = Pango.Scale.XX_Small; 
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("x-large");
+			tag  = new TextTag ("x-large");
 			tag.Scale = Pango.Scale.X_Large; 
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("monospace");
+			tag  = new TextTag ("monospace");
 			tag.Family = "monospace";
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("blue_foreground");
+			tag  = new TextTag ("blue_foreground");
 			tag.Foreground = "blue";
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("red_background");
+			tag  = new TextTag ("red_background");
 			tag.Background = "red";
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
 			int gray50_width = 2;
 			int gray50_height = 2;
 			string gray50_bits = new  string ((char) 0x02, (char) 0x01);
 			// Pixmap stipple = Pixmap.CreateFromData (null, (string) gray50_bits, gray50_width, gray50_height, 16, Color.Zero, Color.Zero);
 			
-			tag  = new TextTag("background_stipple");
+			tag  = new TextTag ("background_stipple");
 			// tag.BackgroundStipple = stipple;
 			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("foreground_stipple");
+			tag  = new TextTag ("foreground_stipple");
 			// Cannot convert type 'Gdk.Bitmap' to 'Gdk.Pixmap'
 			// tag.ForegroundStipple = stipple;			
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("big_gap_before_line");
+			tag  = new TextTag ("big_gap_before_line");
 			tag.PixelsAboveLines = 30;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("big_gap_after_line");
+			tag  = new TextTag ("big_gap_after_line");
 			tag.PixelsBelowLines = 30;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("double_spaced_line");
+			tag  = new TextTag ("double_spaced_line");
 			tag.PixelsInsideWrap = 10;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("not_editable");
+			tag  = new TextTag ("not_editable");
 			tag.Editable = false;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("word_wrap");
+			tag  = new TextTag ("word_wrap");
 			tag.WrapMode = WrapMode.Word;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("char_wrap");
+			tag  = new TextTag ("char_wrap");
 			tag.WrapMode = WrapMode.Char;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("no_wrap");
+			tag  = new TextTag ("no_wrap");
 			tag.WrapMode = WrapMode.None;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("center");
+			tag  = new TextTag ("center");
 			tag.Justification = Justification.Center;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("right_justify");
+			tag  = new TextTag ("right_justify");
 			tag.Justification = Justification.Right;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("wide_margins");
+			tag  = new TextTag ("wide_margins");
 			tag.LeftMargin = 50;
 			tag.RightMargin = 50;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("strikethrough");
+			tag  = new TextTag ("strikethrough");
 			tag.Strikethrough = true;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("underline");
+			tag  = new TextTag ("underline");
 			tag.Underline = Pango.Underline.Single;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("double_underline");
+			tag  = new TextTag ("double_underline");
 			tag.Underline = Pango.Underline.Double;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("superscript");
+			tag  = new TextTag ("superscript");
 			tag.Rise = (int) Pango.Scale.PangoScale * 10;
 			tag.Size = (int) Pango.Scale.PangoScale * 8;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("subscript");
+			tag  = new TextTag ("subscript");
 			tag.Rise = (int) Pango.Scale.PangoScale * -10;
 			tag.Size = (int) Pango.Scale.PangoScale * 8;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 
-			tag  = new TextTag("rtl_quote");
+			tag  = new TextTag ("rtl_quote");
 			tag.WrapMode = WrapMode.Word;
 			tag.Direction = TextDirection.Rtl;
 			tag.Indent = 30;
 			tag.LeftMargin = 20; 
 			tag.RightMargin = 20;
-			buffer.TagTable.Add(tag);
+			buffer.TagTable.Add (tag);
 		}  
 
 		private void InsertText (TextBuffer buffer)
@@ -277,7 +274,7 @@ namespace GtkDemo
 			TextIter insertIter;
 
 			insertIter = buffer.GetIterAtOffset (0);
-			buffer.Insert(insertIter,
+			buffer.Insert (insertIter,
 			"The text widget can display text with all kinds of nifty attributes.It also supports multiple views of the same buffer; this demo is showing the same buffer in two places.\n\n");
 
 			InsertWithTagsByName (buffer, "Font styles. ", new string[] {"heading"});
@@ -392,29 +389,29 @@ namespace GtkDemo
 			TextIter insertIter, beginIter, endIter;
 			int begin, end;
 
-
 			begin = buffer.CharCount;
 			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
 			buffer.Insert (insertIter, insertText);
 			end = buffer.CharCount;
-			foreach (string fontItem in fontName){
+			foreach (string fontItem in fontName) {
 				endIter = buffer.GetIterAtOffset (end);
 				beginIter = buffer.GetIterAtOffset (begin);
-				buffer.ApplyTag (fontItem, beginIter, endIter);}		
+				buffer.ApplyTag (fontItem, beginIter, endIter);
+			}	
 		}
 
 		private void Insert (TextBuffer buffer , string insertText)
 		{
 			TextIter insertIter;
-
-			insertIter = buffer.GetIterAtMark(buffer.InsertMark);
+			insertIter = buffer.GetIterAtMark (buffer.InsertMark);
 			buffer.Insert (insertIter, insertText);
 		}
 
   		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 
 		private void RecursiveAttach (int depth, TextView view, TextChildAnchor anchor) 
@@ -426,7 +423,7 @@ namespace GtkDemo
 			  /* Event box is to add a black border around each child view */
 			  EventBox eventBox = new EventBox ();
 			  Gdk.Color blackColor = new Gdk.Color (0x0, 0x0, 0x0);
-			  eventBox.ModifyBg(StateType.Normal,blackColor);
+			  eventBox.ModifyBg (StateType.Normal,blackColor);
 			  
 			  Alignment align = new Alignment (0.5f, 0.5f, 1.0f, 1.0f);
 			  align.BorderWidth = 1;
@@ -436,8 +433,7 @@ namespace GtkDemo
 
 			  view.AddChildAtAnchor (eventBox, anchor);
 
-			  RecursiveAttach(depth+1, childView, anchor);
-
+			  RecursiveAttach (depth+1, childView, anchor);
 		}
 		
 		private void EasterEggCB (object o, EventArgs args)
@@ -445,16 +441,16 @@ namespace GtkDemo
 			TextIter insertIter;
 
 			TextBuffer bufferCB = new TextBuffer (null);
-			Insert(bufferCB, "This buffer is shared by a set of nested text views.\n Nested view:\n");
+			Insert (bufferCB, "This buffer is shared by a set of nested text views.\n Nested view:\n");
 			insertIter = bufferCB.GetIterAtMark(bufferCB.InsertMark);
 			TextChildAnchor anchor = bufferCB.CreateChildAnchor (insertIter);
-			Insert(bufferCB, "\nDon't do this in real applications, please.\n");
+			Insert (bufferCB, "\nDon't do this in real applications, please.\n");
 			TextView viewCB = new TextView (bufferCB);
 			
-			RecursiveAttach(0, viewCB, anchor);
+			RecursiveAttach (0, viewCB, anchor);
 
 			Gtk.Window window = new Gtk.Window (null);
-			ScrolledWindow scrolledWindow = new ScrolledWindow(null, null);
+			ScrolledWindow scrolledWindow = new ScrolledWindow (null, null);
 			scrolledWindow.SetPolicy (PolicyType.Automatic, PolicyType.Automatic);
 
 			window.Add (scrolledWindow);
@@ -462,7 +458,6 @@ namespace GtkDemo
 		
 			window.SetDefaultSize (300, 400);
 			window.ShowAll ();
-
 		}
 	}
 }

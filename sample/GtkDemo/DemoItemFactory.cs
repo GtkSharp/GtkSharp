@@ -21,24 +21,22 @@ using Gdk;
 
 namespace GtkDemo
 {
-	public class DemoItemFactory
+	public class DemoItemFactory : Gtk.Window
 	{
-		private Gtk.Window window;
-
-		public DemoItemFactory ()
+		public DemoItemFactory () : base ("Demo Item Factory")
 		{
-			window = new Gtk.Window (null);
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
 			Gtk.AccelGroup accelGroup = new Gtk.AccelGroup ();
 			//STUCK   OUCH !!!!
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 
 	 	private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 	}
 }

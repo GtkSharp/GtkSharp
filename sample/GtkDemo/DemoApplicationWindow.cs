@@ -19,24 +19,29 @@ using Gtk;
 
 namespace GtkDemo 
 {
-	public class DemoApplicationWindow
+	public class DemoApplicationWindow : Window
 	{
-		private Gtk.Window window;
+		// for the statusbar
+		const int ctx = 1;
+		const string fmt = "Cursor at row {0} column {1} - {2} chars in document";
+		int row, column, count = 0;
+
+		Statusbar statusbar;
+
 		// static ItemFactoryEntry items[] = { new ItemFactoryEntry ("/_File", null, 0, 0, "<Branch>" )};		
 
-	public DemoApplicationWindow ()
+		public DemoApplicationWindow () : base ("Demo Application Window")
 		{
-			window = new Gtk.Window ("Demo Application Window");
-			window.SetDefaultSize (400, 300);
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.SetDefaultSize (400, 300);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
 
 			VBox vbox = new VBox (false, 0);
-			window.Add (vbox);
+			this.Add (vbox);
 
 			// Create the menubar
 
 			AccelGroup accelGroup = new AccelGroup ();
-			window.AddAccelGroup (accelGroup);
+			this.AddAccelGroup (accelGroup);
 			
 			MenuBar menubar = CreateMenu ();
 			vbox.PackStart (menubar, false, false, 0);
@@ -45,10 +50,12 @@ namespace GtkDemo
 			vbox.PackStart (toolbar, false, false, 0);
 			
 			TextView textview = new TextView ();
+			textview.Buffer.MarkSet += new MarkSetHandler (OnMarkSet);
 			vbox.PackStart (textview, true, true, 0);
 			
-			Statusbar statusbar = new Statusbar ();
-			statusbar.Push (1, "Cursor at row 0 column 0 - 0 chars in document");
+			statusbar = new Statusbar ();
+			UpdateStatus ();
+
 			vbox.PackStart (statusbar, false, false, 0);
 
 			//ItemFactory itemFactory = new ItemFactory (typeof (MenuBar),"<main>", accelGroup);
@@ -63,7 +70,7 @@ namespace GtkDemo
 			// create menu items			
 			//STUCK : Didn't find any examples of ItemFactory 
 			
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 		
 		private MenuBar CreateMenu ()
@@ -95,16 +102,32 @@ namespace GtkDemo
 		
 		private void OnToolbarClicked (object o, EventArgs args)
 		{
-			MessageDialog md = new MessageDialog (window, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "You selected a toolbar button.");
-			md.Run ();
-			md.Hide ();
-			md.Dispose ();
+			using (MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "You selected a toolbar button.")) {
+				md.Run ();
+				md.Hide ();
+			}
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
+		}
+
+		void OnMarkSet (object o, MarkSetArgs args)
+		{
+			TextIter iter = args.Location;
+			row = iter.Line + 1;
+			column = iter.VisibleLineOffset;
+			count = args.Mark.Buffer.CharCount;
+			UpdateStatus ();
+		}
+
+		void UpdateStatus ()
+		{
+			statusbar.Pop (ctx);
+			statusbar.Push (ctx, String.Format (fmt, row, column, count));
 		}
 	}
 }

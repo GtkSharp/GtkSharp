@@ -22,32 +22,29 @@
  * to clear the area.
  */
 
-
 using System;
-
 using Gtk;
 using Gdk;
 
-namespace GtkDemo {
-	public class DemoDrawingArea 
+namespace GtkDemo
+{
+	public class DemoDrawingArea : Gtk.Window
 	{
-		private Gtk.Window window;
 		private static Pixmap pixmap = null;
 		private static DrawingArea drawingArea;
 		private static DrawingArea drawingArea1;
 
-		public DemoDrawingArea ()
+		public DemoDrawingArea () : base ("Drawing Area")
 		{
-			window = new Gtk.Window ("Drawing Area");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 8;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 8;
 		
 			VBox vbox = new VBox (false, 8);
 			vbox.BorderWidth = 8;
-			window.Add (vbox);
+			this.Add (vbox);
 			
 			// Create the checkerboard area
-			Label label = new Label(null);
+			Label label = new Label ();
 			label.Markup =  "<u>Checkerboard pattern</u>";
 			vbox.PackStart (label, false, false, 0);
 			
@@ -55,10 +52,10 @@ namespace GtkDemo {
 			frame.ShadowType = ShadowType.In;
 			vbox.PackStart (frame, true, true, 0);
 
-			drawingArea = new DrawingArea();
+			drawingArea = new DrawingArea ();
 			// set a minimum size
 			drawingArea.SetSizeRequest (100,100);
-			frame.Add(drawingArea);
+			frame.Add (drawingArea);
 			drawingArea.ExposeEvent += new ExposeEventHandler (CheckerboardExpose);
 
 			// Create the scribble area
@@ -87,13 +84,14 @@ namespace GtkDemo {
 			drawingArea1.Events = EventMask.LeaveNotifyMask | EventMask.ButtonPressMask |
 			                      EventMask.PointerMotionMask | EventMask.PointerMotionHintMask;
 			
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 			
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 		
 		private void CheckerboardExpose (object o, ExposeEventArgs args)
@@ -122,7 +120,6 @@ namespace GtkDemo {
 			color.Blue = 65535;
 			gc2.RgbFgColor = color;
 
-
 			// Start redrawing the Checkerboard			
 			xcount = 0;
 			i = Spacing;
@@ -146,7 +143,6 @@ namespace GtkDemo {
 			// return true because we've handled this event, so no
 			// further processing is required.
 			args.RetVal = true;
-
 		}
 		
 		private void ScribbleExpose (object o, ExposeEventArgs args)
@@ -217,7 +213,6 @@ namespace GtkDemo {
 			/* We've handled it, stop processing */
 			args.RetVal = true;
 		}
-
 
 		// Draw a rectangle on the screen
 		static void DrawBrush (double x, double y)

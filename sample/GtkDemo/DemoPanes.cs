@@ -22,14 +22,12 @@
 
 
 using System;
-
 using Gtk;
 
 namespace GtkDemo
 {
-	public class DemoPanes
+	public class DemoPanes : Gtk.Window
 	{
-		private Window window;
 		private VPaned vpaned;
 		private HPaned top;
 		private Frame left;
@@ -45,14 +43,14 @@ namespace GtkDemo
 		private CheckButton resizeBottom;
 		private CheckButton shrinkBottom;
 		private Button button;
-		public DemoPanes ()
+
+		public DemoPanes () : base ("Panes")
 		{	
-			window = new Window ("Panes");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			window.BorderWidth = 0;
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.BorderWidth = 0;
 
 			VBox vbox = new VBox (false, 0);
-			window.Add (vbox);
+			this.Add (vbox);
 
 			vpaned = new VPaned ();
 			vbox.PackStart (vpaned, true, true, 0);
@@ -144,39 +142,37 @@ namespace GtkDemo
 			shrinkBottom.Active = true;
 			shrinkBottom.Toggled += new EventHandler (BottomCB);
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}			
 
-		 private void LeftCB (object o, EventArgs args)
+		private void LeftCB (object o, EventArgs args)
                 {
-			top.Remove(left);
-			top.Pack1(left,  resizeLeft.Active, shrinkLeft.Active);
+			top.Remove (left);
+			top.Pack1 (left, resizeLeft.Active, shrinkLeft.Active);
 		}
 		
-		
-		 private void RightCB (object o, EventArgs args)
+		private void RightCB (object o, EventArgs args)
                 {
-			top.Remove(right);
-			top.Pack2(right,  resizeRight.Active, shrinkRight.Active);
+			top.Remove (right);
+			top.Pack2 (right, resizeRight.Active, shrinkRight.Active);
 		}
 
-		 private void TopCB (object o, EventArgs args)
+		private void TopCB (object o, EventArgs args)
                 {
-			vpaned.Remove(top);
-			vpaned.Pack1(top,  resizeTop.Active, shrinkTop.Active);
+			vpaned.Remove (top);
+			vpaned.Pack1 (top, resizeTop.Active, shrinkTop.Active);
 		}
 
-		 private void BottomCB (object o, EventArgs args)
+		private void BottomCB (object o, EventArgs args)
                 {
-			vpaned.Remove(bottom);
-			vpaned.Pack2(bottom,  resizeBottom.Active, shrinkBottom.Active);
+			vpaned.Remove (bottom);
+			vpaned.Pack2 (bottom, resizeBottom.Active, shrinkBottom.Active);
 		}
 
-
- 	    private void WindowDelete (object o, DeleteEventArgs args)
+ 	    	private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
 		}
 	}
 }

@@ -41,25 +41,21 @@
 //        point on the right side
 
 using System;
-
 using Gtk;
 
 namespace GtkDemo
 {
-	public class DemoMenus
+	public class DemoMenus : Gtk.Window
 	{
-		private Gtk.Window window;
-	
-		public DemoMenus ()
+		public DemoMenus () : base ("Menus")
 		{	
-			window = new Window ("Menus");
-			window.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
 			
 			AccelGroup accel_group = new AccelGroup ();
-			window.AddAccelGroup (accel_group);
+			this.AddAccelGroup (accel_group);
 
 			VBox box1 = new VBox (false, 0);
-			window.Add (box1);
+			this.Add (box1);
 
 			MenuBar menubar = new MenuBar ();
 			box1.PackStart (menubar, false, false, 0);
@@ -128,7 +124,7 @@ namespace GtkDemo
 			close_button.CanDefault = true;
 			close_button.GrabDefault ();
 
-			window.ShowAll ();
+			this.ShowAll ();
 		}			
 
 		private Menu Create_Menu (int depth, bool tearoff)
@@ -170,14 +166,15 @@ namespace GtkDemo
 
 		private void Close_Button (object o, EventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
 		}
 		
 		private void WindowDelete (object o, DeleteEventArgs args)
 		{
-			window.Hide ();
-			window.Destroy ();
+			this.Hide ();
+			this.Destroy ();
+			args.RetVal = true;
 		}
 	}
 }

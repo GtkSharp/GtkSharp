@@ -22,24 +22,21 @@
  */
 
 using System;
-
 using Gtk;
 
 namespace GtkDemo
 {
-	public class DemoSizeGroup
+	public class DemoSizeGroup : Dialog
 	{
-		private Dialog window;
 		private SizeGroup sizeGroup;
 
 		public DemoSizeGroup ()
 		{
-			window = new Dialog ();
-			window.Title = "Sized groups";
-			window.Resizable = false;
+			this.Title = "Size groups";
+			this.Resizable = false;
 			
  			VBox vbox = new VBox (false, 5);
- 			window.VBox.PackStart (vbox, true, true, 0);
+ 			this.VBox.PackStart (vbox, true, true, 0);
  			vbox.BorderWidth = 5;
 
  			sizeGroup = new SizeGroup (SizeGroupMode.Horizontal);
@@ -81,10 +78,10 @@ namespace GtkDemo
  			checkButton.Toggled += new EventHandler (ButtonToggleCb);
 
 			Button CloseButton = new Button (Stock.Close);
-			window.AddActionWidget  (CloseButton, 5);
-			window.Response += new ResponseHandler (ResponseCallback);
+			this.AddActionWidget  (CloseButton, ResponseType.Close);
+			this.Response += new ResponseHandler (ResponseCallback);
 		
-			window.ShowAll ();
+			this.ShowAll ();
 		}
 
 		// Convenience function to create an option menu holding a number of strings
@@ -147,11 +144,11 @@ namespace GtkDemo
  		}
 
 		private void ResponseCallback (object obj, ResponseArgs args)
-        
-               {
-		       if (((int) args.ResponseId) == 5) {
-			       window.Hide ();
-			       window.Destroy ();}
-	       }
+		{
+			if ((args.ResponseId) == ResponseType.Close) {
+			       this.Hide ();
+			       this.Destroy ();
+			}
+		}
 	}
 }
