@@ -105,7 +105,7 @@ namespace GLib {
 		///   This method is used by generated classes and structs,
 		///   and should not be used in user code.
 		/// </remarks>
-		protected virtual void Unref ()
+		public virtual void Unref ()
 		{
 			if (_obj == IntPtr.Zero)
 				return;
