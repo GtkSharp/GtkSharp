@@ -16,6 +16,6 @@ gtksharp_gtk_widget_get_allocation (GtkWidget *widget)
 GdkWindow *
 gtksharp_gtk_widget_get_window (GtkWidget *widget)
 {
-	return &widget->window;
+	return widget->window;
 }
 
