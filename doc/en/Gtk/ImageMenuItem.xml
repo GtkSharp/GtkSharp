@@ -15,6 +15,31 @@
       <para>
         <see cref="T:Gtk.ImageMenuItem" /> is a <see cref="T:Gtk.MenuItem" /> which has an icon next to the text label.</para>
       <para>Note that the user can disable display of menu icons, so make sure to still fill in the text label.</para>
+      <example>
+        <code lang="C#">
+	//How to add MenuBar with a Quit stock MenuItem
+	...
+	Window win;	//if your class derive from Window then call this. istead of win.
+	MenuBar menuBar
+	...
+	AccelGroup grup = new AccelGroup ();
+	win.AddAccelGroup(grup);
+
+	menuFile = new Menu ();
+	ImageMenuItem quit_item = new ImageMenuItem(Stock.Quit, group);
+	quit_item.AddAccelerator("activate", grup, new AccelKey(
+		Gdk.Key.q, Gdk.ModifierType.ControlMask, AccelFlags.Visible));
+		
+	//OnMenuFileQuit is the Method runned when the event is trigged
+	quit_item.Activated += new EventHandler (OnMenuFileQuit);
+	menuFile.Append(quit_item); 
+	MenuItem file_item = new MenuItem("_File");
+	file_item.Submenu = menuFile;
+		
+	menuBar.Append(file_item);
+	
+  </code>
+      </example>
     </remarks>
   </Docs>
   <Base>
