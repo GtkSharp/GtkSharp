@@ -12,6 +12,58 @@
   <Docs>
     <summary>Allows dynamic loading of user interfaces from XML descriptions</summary>
     <remarks>
+      <para>
+This object represents an `instantiation' of an XML interface description. When one of these objects is created, the XML file is read, and the interface is created.
+</para>
+      <para>
+The <see cref="T:Glade.XML" /> object can also be used to connect handlers to the named signals in the description. The easiest way to use this feature is to let it automatically connect signal handlers for you. This can be achieved by using the <see cref="M:Glade.XML.Autoconnect()" /> method.
+</para>
+      <para>
+        <see cref="M:Glade.XML.Autoconnect()" /> searches the specified <see cref="T:System.Object" /> or <see cref="T:System.Type" /> for method names matching those defined in the XML interface description file and connects them to the appropriate signals. It also searches for fields having the <see cref="T:Glade.WidgetAttribute" /> attached and tries to bind them to widgets of the same name defined in the XML description.
+</para>
+      <para>
+The following examples supposes that an XML interface description of a simple application exists in the file "gui.glade". The application consists of a main window ("MyWindow") which contains a button and a text entry ("MyEntry"). The handler for the button clicked signal is named "OnMyButtonClicked" and the handler for the window delete event is named "OnMyWindowDeleteEvent".
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+using Glade;
+
+public class GladeApp
+{
+        // declare the widgets you will use from glade	
+        [Glade.WidgetAttribute]
+        Gtk.Entry MyEntry;
+		
+        public static void Main (string[] args)
+        {
+                new GladeApp (args);
+        }
+
+        public GladeApp (string[] args) 
+        {
+                Application.Init();
+
+                Glade.XML gxml = new Glade.XML ("gui.glade", "MyWindow", null);
+                gxml.Autoconnect (this);
+                Application.Run();
+        }
+
+        // Connect the Signals defined in Glade 
+        public void OnMyWindowDeleteEvent (object o, DeleteEventArgs args) 
+        {
+                Application.Quit ();
+                args.RetVal = true;
+        }
+        
+        public void OnMyButtonClicked(object o, EventArgs args)
+        {
+        	Console.WriteLine("In entry: " + MyEntry.Text);
+        }
+}
+</code>
+      </example>
     </remarks>
   </Docs>
   <Base>

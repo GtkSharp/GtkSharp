@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Represents the description of an ideal font.</summary>
+    <remarks>This class is used both to list what fonts are available on the system and also for specifying the characteristics of a font to load.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -34,7 +34,7 @@
       </Parameters>
       <Docs>
         <summary>Creates a new font description from a string representation.</summary>
-        <param name="str">To be added: an object of type 'string'</param>
+        <param name="str">The string representation of the font description.</param>
         <returns>The object of type <see cref="T:Pango.FontDescription" /> created.</returns>
         <remarks>The form of the string representation is "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]", where:
 <list type="bullet">
@@ -76,11 +76,12 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <Parameter Name="new_match" Type="Pango.FontDescription" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Determines which <see cref="T:Pango.FontDescription" /> better matches the current instance.</summary>
         <param name="old_match">To be added: an object of type 'Pango.FontDescription'</param>
         <param name="new_match">To be added: an object of type 'Pango.FontDescription'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <returns>
+          <see langword="true" /> if new_match is a better match.</returns>
+        <remarks>Determines if the style attributes of new_match are a closer match for the current instance than old_match, or if old_match is <see langword="null" />, determines if new_match is a match at all. Approximate matching is done for weight and style; other attributes must match exactly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -106,7 +107,7 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <Parameter Name="replace_existing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Merges the fields of a font description into the current instance without copying the field data (shallow copy).</summary>
         <param name="desc_to_merge">To be added: an object of type 'Pango.FontDescription'</param>
         <param name="replace_existing">To be added: an object of type 'bool'</param>
         <remarks>To be added</remarks>
@@ -120,9 +121,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a filename representation of a font description.</summary>
         <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The filename created is identical to the result from calling <see cref="M:Pango.FontDescription.ToString" />, but with underscores instead of characters that are untypical in filenames, and in lower case only.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Merge">
@@ -136,9 +137,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <Parameter Name="replace_existing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="desc_to_merge">To be added: an object of type 'Pango.FontDescription'</param>
-        <param name="replace_existing">To be added: an object of type 'bool'</param>
+        <summary>Merges the fields of a font description into the current instance.</summary>
+        <param name="desc_to_merge">The <see cref="T:Pango.FontDescription" /> to merge from.</param>
+        <param name="replace_existing">If <see langword="true" />, replace fields in current instance with the corresponding values from desc_to_merge, even if they are already exist.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -181,9 +182,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <Parameter Name="to_unset" Type="Pango.FontMask" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Unsets some of the fields in the <see cref="T:Pango.FontDescription" />.</summary>
         <param name="to_unset">To be added: an object of type 'Pango.FontMask'</param>
-        <remarks>To be added</remarks>
+        <remarks>This merely marks the fields cleared, it does not clear the settings for those fields. To clear a family name set with <see cref="P:Pango.FontDescription.FamilyStatic" /> so that it won't be returned by  <see cref="P:Pango.FontDescription.Family" />, you must actually set <see cref="P:Pango.FontDescription.Family" /> to <see langword="null" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -222,10 +223,10 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The style of the font.</summary>
         <param name="value">To be added: an object of type 'Pango.Style'</param>
         <returns>To be added: an object of type 'Pango.Style'</returns>
-        <remarks>To be added</remarks>
+        <remarks>Most fonts will either have a italic style or an oblique style, but not both, and font matching in Pango will match italic specifications with oblique fonts and vice-versa if an exact match is not found.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Stretch">
@@ -237,10 +238,10 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The stretch of the font.</summary>
         <param name="value">To be added: an object of type 'Pango.Stretch'</param>
         <returns>To be added: an object of type 'Pango.Stretch'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The stretch property specifies how narrow or wide the font should be.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFields">
@@ -250,7 +251,7 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <ReturnType>Pango.FontMask</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Determines which fields in the font description have been set.</summary>
         <returns>To be added: an object of type 'Pango.FontMask'</returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -264,10 +265,10 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The size of the font in pango units.</summary>
         <param name="value">To be added: an object of type 'int'</param>
         <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <remarks>There are <see cref="F:Pango.Scale.PangoScale" /> pango units in one device unit - for fonts, font points are the device unit. Therefore, the size of the font in points is <see cref="P:Pango.FontDescription.Size" /> /  <see cref="F:Pango.Scale.PangoScale" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FamilyStatic">
@@ -279,7 +280,7 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the family name of the font without copying the string.</summary>
         <param name="value">To be added: an object of type 'string'</param>
         <returns>To be added: an object of type 'string'</returns>
         <remarks>To be added</remarks>
@@ -294,7 +295,7 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The variant of the font.</summary>
         <param name="value">To be added: an object of type 'Pango.Variant'</param>
         <returns>To be added: an object of type 'Pango.Variant'</returns>
         <remarks>To be added</remarks>
@@ -309,10 +310,10 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The weight (boldness) of the font.</summary>
         <param name="value">To be added: an object of type 'Pango.Weight'</param>
         <returns>To be added: an object of type 'Pango.Weight'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The weight property specifies how bold or light the font should be. In addition to the values of the <see cref="T:Pango.Weight" /> enumeration, other intermediate numeric values are possible.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Family">
@@ -324,10 +325,10 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The family name of the font.</summary>
         <param name="value">To be added: an object of type 'string'</param>
         <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <remarks>The family name represents a family of related font styles, and will resolve to a particular <see cref="T:Pango.FontFamily" />. In some uses of <see cref="T:Pango.FontDescription" /> , it is also possible to use a comma separated list of family names for this property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
