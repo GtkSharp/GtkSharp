@@ -97,7 +97,7 @@ static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntP
 	obj.ForAll (include_internals, invoker);
 }
 
-protected static void OverrideForall (GLib.GType gtype)
+static void OverrideForall (GLib.GType gtype)
 {
 	if (ForallCallback == null)
 		ForallCallback = new ForallDelegate (Forall_cb);
@@ -127,7 +127,7 @@ static IntPtr ChildType_cb (IntPtr raw)
 	return gtype.Val;
 }
 
-protected static void OverrideChildType (GLib.GType gtype)
+static void OverrideChildType (GLib.GType gtype)
 {
 	if (ChildTypeCallback == null)
 		ChildTypeCallback = new ChildTypeDelegate (ChildType_cb);
