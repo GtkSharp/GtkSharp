@@ -23,6 +23,12 @@ namespace Gdk {
 				return gtksharp_gdk_event_get_event_type (Handle);
 			}
 		}
+
+		public bool IsValid {
+			get {
+				return (Handle != IntPtr.Zero);
+			}
+		}
 	}
 
 }

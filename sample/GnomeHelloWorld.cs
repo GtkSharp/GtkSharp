@@ -152,7 +152,7 @@ namespace GtkSamples {
 			int idx = (int) sa.Args[0];
 			Event ev = (Event) sa.Args[1];
 
-			if (ev.Type == EventType.TwoButtonPress) {
+			if (ev.IsValid && ev.Type == EventType.TwoButtonPress) {
 				g_spawn_command_line_async ("mono " + entries[idx].program, IntPtr.Zero); 
 			}
 		}
