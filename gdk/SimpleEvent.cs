@@ -1,8 +1,9 @@
-// Gdk.Signals.SimpleEvent.cs - Gdk Simple Event Signal implementation
+// Gdk.SimpleEvent.cs - Gdk Simple Event Signal implementation
 //
 // Author: Bob Smith <bob@thestuff.net>
+//	   Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Bob Smith
+// (c) 2001 Bob Smith and Mike Kestner
 
 namespace Gdk {
 	using System;
@@ -104,8 +105,10 @@ namespace Gdk {
 			if (_Delegate == null) {
 				_Delegate = new SimpleEventDelegate (
 							SimpleEventCallback);
+				/* FIXME: Exception thrown for lack of layout
 				_GCHandle = GCHandle.Alloc (
 						_Delegate, GCHandleType.Pinned);
+				*/
 			}
 
 			_key = _NextKey++;
@@ -127,7 +130,9 @@ namespace Gdk {
 			_Instances.Remove (_key);
 
 			if (_Instances.Count == 0) {
+				/* FIXME: when the handle can be obtained
 				_GCHandle.Free();
+				*/
 				_Delegate = null;
 			}
 		}

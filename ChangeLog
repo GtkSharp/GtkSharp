@@ -1,5 +1,16 @@
 2001-10-04  Mike Kestner <mkestner@speakeasy.net>
 
+	* gdk/SimpleEvent.cs : Temporarily uncomment the GCHandle code until
+	a layout is ready and exceptions can be avoided.
+	* gtk/Widget.cs : Killed all the signal and event attaching methods. 
+	They never belonged here, and now they exist in the SimpleEvent.
+	Add a Signals hash to hold refs of the Signal handlers. Killed default
+	ctor and the dtor.  The event Add/Remove methods now create a 
+	SimpleEvent, stuff it in the hash, and remove it when the last handler
+	disappears.
+
+2001-10-04  Mike Kestner <mkestner@speakeasy.net>
+
 	* HACKING : Little bit of cleanup.
 	* gdk/SimpleEvent.cs : Redesigned a bit. Docs.  Replaced refcounting 
 	mechanism with an instance hash and added ctor/dtor.  This class
