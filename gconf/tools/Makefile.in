@@ -1,6 +1,7 @@
 MCS = mcs
 DESTDIR = 
-bindir = @prefix@/bin
+prefix=@prefix@
+bindir = $(prefix)/bin
 
 SOURCES = \
 	schemagen.cs \
@@ -17,8 +18,8 @@ gconfsharp-schemagen: gconfsharp-schemagen.in
 	&& chmod +x gconfsharp-schemagen  
 
 install: all
-	../../mkinstalldirs $(DESTDIR)@prefix@/bin && \
-	chmod +x gconfsharp-schemagen && cp gconfsharp-schemagen.exe gconfsharp-schemagen $(DESTDIR)@prefix@/bin
+	../../mkinstalldirs $(DESTDIR)$(prefix)/bin && \
+	chmod +x gconfsharp-schemagen && cp gconfsharp-schemagen.exe gconfsharp-schemagen $(DESTDIR)$(bindir)
 
 clean:
 	rm -f gconfsharp-schemagen.exe

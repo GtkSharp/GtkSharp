@@ -1,5 +1,6 @@
 MCS=mcs
 DESTDIR=
+prefix=@prefix@
 
 @ENABLE_GLADE_TRUE@ all: linux
 @ENABLE_GLADE_FALSE@ all: 
@@ -17,5 +18,5 @@ clean:
 	rm -rf generated
 
 install: all
-@ENABLE_GLADE_TRUE@	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
-@ENABLE_GLADE_TRUE@	cp glade-sharp.dll $(DESTDIR)@prefix@/lib
+@ENABLE_GLADE_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
+@ENABLE_GLADE_TRUE@	cp glade-sharp.dll $(DESTDIR)$(prefix)/lib

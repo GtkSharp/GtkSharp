@@ -1,5 +1,6 @@
 MCS=mcs
 DESTDIR=
+prefix=@prefix@
 
 @ENABLE_GNOMEDB_TRUE@ all: linux
 @ENABLE_GNOMEDB_FALSE@ all: 
@@ -17,5 +18,5 @@ clean:
 	rm -rf generated
 
 install: all
-@ENABLE_GNOMEDB_TRUE@	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
-@ENABLE_GNOMEDB_TRUE@	cp gnomedb-sharp.dll $(DESTDIR)@prefix@/lib
+@ENABLE_GNOMEDB_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
+@ENABLE_GNOMEDB_TRUE@	cp gnomedb-sharp.dll $(DESTDIR)$(prefix)/lib

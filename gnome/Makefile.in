@@ -1,5 +1,6 @@
 MCS=mcs
 DESTDIR=
+prefix=@prefix@
 
 @ENABLE_GNOME_TRUE@ all: linux
 @ENABLE_GNOME_FALSE@ all: 
@@ -17,6 +18,6 @@ clean:
 	rm -rf generated
 
 install: all
-@ENABLE_GNOME_TRUE@	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
-@ENABLE_GNOME_TRUE@	cp gnome-sharp.dll $(DESTDIR)@prefix@/lib
+@ENABLE_GNOME_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
+@ENABLE_GNOME_TRUE@	cp gnome-sharp.dll $(DESTDIR)$(prefix)/lib
 

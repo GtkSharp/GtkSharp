@@ -1,5 +1,6 @@
 COMPILER=mcs
 OUTPUT=rsvg-sharp.dll
+prefix=@prefix@
 
 @ENABLE_RSVG_TRUE@ all: linux
 @ENABLE_RSVG_FALSE@ all:
@@ -33,6 +34,6 @@ clean-generated:
 
 
 install: all
-@ENABLE_RSVG_TRUE@	../mkinstalldirs $(DESTDIR)@prefix@/lib && \
-@ENABLE_RSVG_TRUE@	cp $(OUTPUT) $(DESTDIR)@prefix@/lib
+@ENABLE_RSVG_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
+@ENABLE_RSVG_TRUE@	cp $(OUTPUT) $(DESTDIR)$(prefix)/lib
 
