@@ -57,10 +57,11 @@ namespace GtkSharp.Generation {
 						result[i] = CallArrayLength (parameters[i + 1], p);
 						continue;
 					}
-				}
-
-				if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
+				} else if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
 					result[i] = CastFromInt (p.CSType) + parameters [i - 1].Name + ".Length";
+					continue;
+				} else if (p.IsArray && p.MarshalType != p.CSType) {
+					result[i] = (is_set && i == 0 ? "native_value" : "native_" + p.Name);
 					continue;
 				}
 
@@ -119,6 +120,12 @@ namespace GtkSharp.Generation {
 
 				if (p.PassAs == "out" && gen is EnumGen)
 					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
+
+				if (p.IsArray && p.MarshalType != p.CSType) {
+					sw.WriteLine(indent + "\t\t\t{0}[] native_{1} = new {0} [{1}.Length];", p.MarshalType.TrimEnd('[', ']'), name);
+					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < {0}.Length; i++)", name);
+					sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", name, p.CallByName (name + "[i]"));
+				}
 
 				if (gen is CallbackGen) {
 					CallbackGen cbgen = gen as CallbackGen;

@@ -125,10 +125,6 @@ namespace GtkSharp.Generation {
 				} else
 					sw.WriteLine(" = " + table.FromNative (ctype, parm_name) + ";");
 
-				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || table.IsManuallyWrapped (ctype)) {
-					sw.WriteLine("\t\t\tif (_arg" + idx + " == null)");
-					sw.WriteLine("\t\t\t\t_arg{0} = new {1}({2});", idx, cstype, parm_name);
-				}
 				if (need_sep)
 					call_str += ", ";
 				else
