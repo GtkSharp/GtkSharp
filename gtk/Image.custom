@@ -54,3 +54,37 @@
 			GLib.Marshaller.Free (native);
 		}
 
+		void LoadFromStream (System.IO.Stream stream)
+		{
+			try {
+				Gdk.PixbufAnimation anim = new Gdk.PixbufAnimation (stream);
+				if (anim.IsStaticImage)
+					Pixbuf = anim.StaticImage;
+				else
+					PixbufAnimation = anim;
+			} catch {
+				Stock = Gtk.Stock.MissingImage;
+			}
+		}
+
+		public Image (System.IO.Stream stream) : this ()
+		{
+			LoadFromStream (stream);
+		}
+
+		public Image (System.Reflection.Assembly assembly, string resource) : this ()
+		{
+			if (assembly == null)
+				assembly = System.Reflection.Assembly.GetCallingAssembly ();
+
+			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
+			if (s == null)
+				throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
+
+			LoadFromStream (s);
+		}
+
+		static public Image LoadFromResource (string resource)
+		{
+			return new Image (System.Reflection.Assembly.GetCallingAssembly (), resource);
+		}

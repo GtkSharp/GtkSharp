@@ -245,5 +245,90 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
+    <Member MemberName="LoadFromResource">
+      <MemberSignature Language="C#" Value="public static Gdk.PixbufAnimation LoadFromResource (string resource);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.PixbufAnimation</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Loads a pixbuf from a resource file.</summary>
+        <param name="resource">the name of the resource</param>
+        <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
+        <remarks>
+	    This loads an animation from a resource in the calling assembly. This is equivalent to
+	    using the <see cref="C:Gdk.PixbufAnimation(System.Reflection.Assembly, System.String)" />
+	    constructor with a <see langword="null" /> assembly.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (System.IO.Stream stream);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <summary>Makes a new animation object from a <see cref="T:System.IO.Stream" />.</summary>
+        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
+        <returns>a <see cref="T:Gdk.PixbufAnimation" /></returns>
+        <remarks>Useful for creating an animation from an image file that resides in memory.
+
+<example>
+            <code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];
+
+/* create a memory stream to the buffer */
+System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);    
+
+/* create an animation from the stream as if it was a file */
+Gdk.PixbufAnimation pba = new Gdk.PixbufAnimation(memorystream);
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PixbufAnimation (System.Reflection.Assembly assembly, string resource);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Constructor for images embedded in an assembly</summary>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly</param>
+        <returns>The <see cref="T:Gdk.PixbufAnimation" /> created from the resource stream</returns>
+        <remarks>
+          <para>
+   This method is used to construct a <see cref="T:Gdk.PixbufAnimation" /> from an embedded resource in an assembly. 
+</para>
+          <para>
+   Typically this is used when application developers want to distribute images in a single executable.
+</para>
+
+If the assembly parameter is <see langword="null" />,  the image will be looked up on the calling assembly.
+
+<para>
+For example:
+</para><example>
+            <code lang="C#">
+Gdk.PixbufAnimation p = new PixbufAnimation (null, "anim.gif");
+  </code>
+          </example><para>Compile with:</para><example>
+            <code lang="Compilation">
+mcs -resource:anim.gif sample.cs
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
   </Members>
 </Type>

@@ -21,9 +21,18 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_ref (IntPtr handle);
+
 		internal IntPtr PixbufHandle {
 			get {
-				return gdk_pixbuf_loader_get_pixbuf (Handle);
+				return g_object_ref (gdk_pixbuf_loader_get_pixbuf (Handle));
+			}
+		}
+
+		internal IntPtr AnimationHandle {
+			get {
+				return g_object_ref (gdk_pixbuf_loader_get_animation (Handle));
 			}
 		}
 
@@ -32,3 +41,40 @@
 			return this.Write (bytes, (uint) bytes.Length);
 		}
 
+		private void LoadFromStream (System.IO.Stream input)
+		{
+			byte [] buffer = new byte [8192];
+			int n;
+
+			while ((n = input.Read (buffer, 0, 8192)) != 0)
+				Write (buffer, (uint) n);
+			Close ();
+		}
+		
+		public PixbufLoader (System.IO.Stream stream) : this ()
+		{
+			LoadFromStream (stream);
+		}
+
+		public PixbufLoader (System.Reflection.Assembly assembly, string resource) : this ()
+		{
+			if (assembly == null)
+				assembly = System.Reflection.Assembly.GetCallingAssembly ();
+
+			if (resource == null)
+				throw new ArgumentNullException ("resource");
+
+			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
+			if (s == null)
+				throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
+
+			LoadFromStream (s);
+		}
+
+		static public PixbufLoader LoadFromResource (string resource)
+		{
+			if (resource == null)
+				throw new ArgumentNullException ("resource");
+
+			return new PixbufLoader (System.Reflection.Assembly.GetCallingAssembly (), resource);
+		}

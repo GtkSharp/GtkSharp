@@ -41,6 +41,7 @@ customs = 			\
 	Keymap.custom		\
 	Pixmap.custom		\
 	Pixbuf.custom		\
+	PixbufAnimation.custom	\
 	PixbufLoader.custom	\
 	Pixdata.custom		\
 	Point.custom		\

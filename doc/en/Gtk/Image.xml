@@ -445,7 +445,7 @@ masked by the given <see cref="Gdk.Pixmap" />.</summary>
       </ReturnValue>
       <Docs>
         <summary>The type of representation being used by the 
-	  <see cref="T:Gtk.Image"/>
+	  <see cref="T:Gtk.Image" />
 	  to store image data. If the Image has no image data,
 	  the return value will be <see cref="P:Gtk.ImageType.Empty" />.
 	</summary>
@@ -580,10 +580,11 @@ masked by the given <see cref="Gdk.Pixmap" />.</summary>
         <Parameter Name="mask" Type="Gdk.Pixmap" />
       </Parameters>
       <Docs>
-        <summary>Same functionality as <see cref="M:Gtk.Image.SetFromImage"/>.</summary>
+        <summary>Same functionality as <see cref="M:Gtk.Image.SetFromImage" />.</summary>
         <param name="val">a <see cref="T:Gdk.Image" /></param>
         <param name="mask">a <see cref="T:Gdk.Pixmap" /></param>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Get">
@@ -598,15 +599,15 @@ masked by the given <see cref="Gdk.Pixmap" />.</summary>
       </Parameters>
       <Docs>
         <summary>
-	  Gets the <see cref="T:Gdk.Image"/> and mask being 
-	  displayed by the <see cref="T:Gtk.Image"/>.
+	  Gets the <see cref="T:Gdk.Image" /> and mask being 
+	  displayed by the <see cref="T:Gtk.Image" />.
 	</summary>
         <param name="val">a <see cref="T:Gdk.Image" /></param>
         <param name="mask">a <see cref="T:Gdk.Pixmap" /></param>
         <remarks>
 	  The storage type of the image must be 
-	  <see cref="T:Gtk.ImageType.Empty"/>.
-	  or <see cref="T:Gtk.ImageType.Image"/>.
+	  <see cref="T:Gtk.ImageType.Empty" />.
+	  or <see cref="T:Gtk.ImageType.Image" />.
 	  (see <see cref="P:Gtk.Image.StorageType" />).
 	</remarks>
       </Docs>
@@ -681,6 +682,68 @@ masked by the given <see cref="Gdk.Pixmap" />.</summary>
         <param name="mask">the mask</param>
         <remarks>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromResource">
+      <MemberSignature Language="C#" Value="public static Gtk.Image LoadFromResource (string resource);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Image</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Loads an image from a resource file.</summary>
+        <param name="resource">the name of the resource</param>
+        <returns>a <see cref="T:Gtk.Image" /></returns>
+	<remarks>
+	    This load an image from a resource in the calling assembly. This is
+	    equivalent to using the
+	    <see cref="C:Gtk.Image(System.Reflection.Assembly, System.String)" />
+	    constructor with a <see langword="null" /> assembly.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Image (System.IO.Stream stream);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <summary>Loads an image from a <see cref="T:System.IO.Stream" />.</summary>
+        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
+        <returns>a <see cref="T:Gtk.Image" /></returns>
+        <remarks>
+	    This is equivalent to calling <see cref="C:Gdk.Pixbuf(System.IO.Stream)" />
+	    or <see cref="C:Gdk.PixbufAnimation(System.IO.Stream)" /> and then creating
+	    an <see cref="T:Gtk.Image" /> from the resulting pixbuf.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Image (System.Reflection.Assembly assembly, string resource);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Loads an image embedded in an assembly</summary>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />, the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly</param>
+        <returns>a <see cref="T:Gtk.Image" /></returns>
+        <remarks>
+	    This is equivalent to calling
+	    <see cref="C:Gdk.Pixbuf(System.Reflection.Assembly,System.String)" /> or
+	    <see cref="C:Gdk.PixbufAnimation(System.Reflection.Assembly,System.String)" />
+	    and then creating an <see cref="T:Gtk.Image" /> from the resulting pixbuf.
+	</remarks>
       </Docs>
     </Member>
   </Members>

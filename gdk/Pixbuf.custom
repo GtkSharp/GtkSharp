@@ -92,54 +92,20 @@
 			gdk_pixbuf_render_to_drawable_alpha(Handle, drawable.Handle, src_x, src_y, dest_x, dest_y, width, height, (int) alpha_mode, alpha_threshold, (int) dither, x_dither, y_dither);
 		}
 
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_ref (IntPtr handle);
-
-		private void LoadFromStream (System.IO.Stream input)
-		{
-			PixbufLoader loader = new PixbufLoader ();
-			byte [] buffer = new byte [8192];
-			int n;
-
-			while ((n = input.Read (buffer, 0, 8192)) != 0)
-				loader.Write (buffer, (uint) n);
-		
-			loader.Close ();
-			Raw = loader.PixbufHandle;
-			if (Raw == IntPtr.Zero)
-				throw new ArgumentException ("Unable to load pixbuf from stream");
-			g_object_ref (Raw);
-		}
-		
-		public Pixbuf (System.IO.Stream stream) : base (IntPtr.Zero)
-		{
-			LoadFromStream (stream);
-		}
+		public Pixbuf (System.IO.Stream stream) : base (new PixbufLoader (stream).PixbufHandle) {}
 
 		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			if (assembly == null)
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
-
-			if (resource == null)
-				throw new ArgumentNullException ("resource");
-
-			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
-			if (s == null)
-				throw new ArgumentException ("resource must be a valid resource name of 'assembly'.");
-
-			LoadFromStream (s);
+			Raw = new PixbufLoader (assembly, resource).PixbufHandle;
 		}
 
 		static public Pixbuf LoadFromResource (string resource)
 		{
-			if (resource == null)
-				throw new ArgumentNullException ("resource");
-
 			return new Pixbuf (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
 
-		
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_scale_simple(IntPtr raw, int dest_width, int dest_height, int interp_type);
 
