@@ -1,0 +1,25 @@
+// Pango.GlyphItem.custom - Pango GlyphItem class customizations
+//
+// Author: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+
+
+		[DllImport("libpango-1.0-0.dll")]
+		static extern IntPtr pango_glyph_item_apply_attrs(ref Pango.GlyphItem raw, string text, IntPtr list);
+
+		public GlyphItem[] ApplyAttrs (string text, Pango.AttrList list)
+		{
+			IntPtr list_handle = pango_glyph_item_apply_attrs (ref this, text, list.Handle);
+			if (list_handle == IntPtr.Zero)
+				return new GlyphItem [0];
+			GLib.SList item_list = new GLib.SList (list_handle, typeof (GlyphItem));
+			GlyphItem[] result = new GlyphItem [item_list.Count];
+			int i = 0;
+			foreach (GlyphItem item in item_list)
+				result [i++] = item;
+			return result;
+		}
+
