@@ -1,3 +1,20 @@
+2004-05-07  Mike Kestner  <mkestner@ximian.com>
+
+	[Derived from a patch by Ben Maurer]
+	* generator/Ctor.cs : generate code to detect subclassing and handle
+	GType registration and native object creation properly.
+	* generator/Parameters.cs : add PropertyName accessor for param attr.
+	* generator/Property.cs : use a new GLib.Value ctor.
+	* glib/ObjectManager.cs : redo hash access.
+	* glib/Object.cs : CreateNativeObject method to invoke g_object_newv
+	and some refactoring of RegisterGType and LookupGType.
+	* glib/Value.cs : make gtype field an IntPtr.
+	* glib/glue/object.c : glue for g_object_newv use.
+	* glib/glue/value.c : new glue for value creation.
+	* gtk/Dialog.custom : fix a ctor declaration for auto-reg.
+	* gtk/Gtk.metadata : mark a couple property_name attrs as examples.
+	* sample/Subclass.cs : use auto-GType-registration now.
+
 2004-05-06  Mike Kestner  <mkestner@ximian.com>
 
 	* gdk/Gdk.metadata : some out and array magic for Property.Get.

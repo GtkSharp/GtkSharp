@@ -15,7 +15,7 @@ namespace GLib {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Value : IDisposable {
 
-		GType type;
+		IntPtr type;
 		long pad_1;
 		long pad_2;
 
@@ -30,6 +30,9 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_value_create_from_property(ref GLib.Value val, IntPtr obj, string name);
 
+		[DllImport("glibsharpglue")]
+		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, string name);
+
 		public void Dispose () 
 		{
 			g_value_unset (ref this);
@@ -42,14 +45,14 @@ namespace GLib {
 
 		public Value (GLib.GType gtype)
 		{
-			type = GType.Invalid;
+			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
 			g_value_init (ref this, gtype.Val);
 		}
 
 		public Value (GLib.Object obj, string prop_name)
 		{
-			type = GType.Invalid;
+			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
 			gtksharp_value_create_from_property (ref this, obj.Handle, prop_name);
 		}
@@ -81,7 +84,7 @@ namespace GLib {
 
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
-			type = GType.Invalid;
+			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
 			gtksharp_value_create_from_property (ref this, obj, prop_name);
 			g_value_set_boxed (ref this, val.Handle);
@@ -155,11 +158,11 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_char (ref Value val, char data);
 		
-		public Value (IntPtr obj, string prop_name, EnumWrapper wrap)
+		public Value (GLib.Object obj, string prop_name, EnumWrapper wrap)
 		{
-			type = GType.Invalid;
+			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_property (ref this, obj, prop_name);
+			gtksharp_value_create_from_type_and_property (ref this, obj.LookupGType ().Val, prop_name);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
@@ -168,7 +171,7 @@ namespace GLib {
 
 		public Value (object obj)
 		{
-			type = GType.Invalid;
+			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
 
 			GType gtype = TypeConverter.LookupType (obj.GetType ());

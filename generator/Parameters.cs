@@ -145,6 +145,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string PropertyName {
+			get {
+				return elem.GetAttribute("property_name");
+			}
+		}
+
 		public string PassAs {
 			get {
 				if (elem.HasAttribute ("pass_as"))
@@ -195,7 +201,6 @@ namespace GtkSharp.Generation {
 				
 			}
 		}
-
 	}
 
 	public class Parameters  {

@@ -45,12 +45,12 @@ namespace GtkSharp {
 
 		public static void RegisterType (string native_name, string managed_name, string assembly)
 		{
-			types.Add(native_name, managed_name + "," + assembly);
+			RegisterType (native_name, managed_name + "," + assembly);
 		}
 
 		public static void RegisterType (string native_name, string mangled)
 		{
-			types.Add(native_name, mangled);
+			types [native_name] = mangled;
 		}
 
 		static string GetExpected (string cname)

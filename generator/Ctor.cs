@@ -23,6 +23,7 @@ namespace GtkSharp.Generation {
 		private string clashName = null;
 		private ClassBase container_type;
 		private bool force_static;
+		private bool needs_chaining = false;
 
 		public bool Preferred {
 			get { return preferred; }
@@ -47,6 +48,8 @@ namespace GtkSharp.Generation {
 				parms = new Parameters (parms_elem, container_type.NS);
 			if (elem.HasAttribute ("preferred"))
 				preferred = true;
+			if (container_type is ObjectGen)
+				needs_chaining = true;
 		}
 
 		public bool Validate ()
@@ -102,6 +105,8 @@ namespace GtkSharp.Generation {
 			else
 				safety = "";
 
+			SymbolTable table = SymbolTable.Table;
+
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
 			sw.WriteLine("\t\tstatic extern " + safety + "IntPtr " + cname + "(" + isig.ToString () + ");");
 			sw.WriteLine();
@@ -133,9 +138,60 @@ namespace GtkSharp.Generation {
 					sw.Write ("new {0} (", name);
 				sw.WriteLine (cname + "(" + body.GetCallString (false) + "));");
 			} else {
-				sw.WriteLine("\t\tpublic " + safety + name + "(" + sig.ToString() + ") : base (IntPtr.Zero)");
+				sw.WriteLine("\t\tpublic {0}{1} ({2}) {3}", safety, name, sig.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");
 
+				if (needs_chaining) {
+					sw.WriteLine ("\t\t\tif (GetType () != typeof (" + name + ")) {");
+					
+					if (Params == null || Params.Count == 0) {
+						sw.WriteLine ("\t\t\t\tCreateNativeObject (new string [0], new GLib.Value[0]);");
+						sw.WriteLine ("\t\t\t\treturn;");
+					} else {
+						ArrayList names = new ArrayList ();
+						ArrayList values = new ArrayList ();
+						for (int i = 0; i < Params.Count; i++) {
+							Parameter p = Params[i];
+							if (container_type.GetPropertyRecursively (p.StudlyName) != null) {
+								names.Add (p.Name);
+								values.Add (p.Name);
+							} else if (p.PropertyName != String.Empty) {
+								names.Add (p.PropertyName);
+								values.Add (p.Name);
+							}
+						}
+
+						if (names.Count == Params.Count) {
+							sw.WriteLine ("\t\t\t\tArrayList vals = new ArrayList();");
+							sw.WriteLine ("\t\t\t\tArrayList names = new ArrayList();");
+							for (int i = 0; i < names.Count; i++) {
+								Parameter p = Params [i];
+								string indent = "\t\t\t\t";
+								if (p.NullOk && p.Generatable is ObjectGen) {
+									sw.WriteLine (indent + "if (" + p.Name + " != null) {");
+									indent += "\t";
+								}
+								sw.WriteLine (indent + "names.Add (\"" + names [i] + "\");");
+								sw.Write (indent + "vals.Add (");
+
+								if (table.IsEnum (p.CType))
+									sw.WriteLine ("new GLib.Value (this, \"" + names[i] + "\", new GLib.EnumWrapper ((int)" + values[i] + ", " + (table.IsEnumFlags (p.CType) ? "true" : "false") + ")));");
+								else
+									sw.WriteLine ("new GLib.Value (" + values[i] + "));");
+
+								if (p.NullOk && p.Generatable is ObjectGen)
+									sw.WriteLine ("\t\t\t\t}");
+							}
+
+							sw.WriteLine ("\t\t\t\tCreateNativeObject ((string[])names.ToArray (typeof (string)), (GLib.Value[])vals.ToArray (typeof (GLib.Value)));");
+							sw.WriteLine ("\t\t\t\treturn;");
+						} else
+							sw.WriteLine ("\t\t\t\tthrow new InvalidOperationException (\"Can't override this constructor.\");");
+					}
+					
+					sw.WriteLine ("\t\t\t}");
+				}
+	
 				body.Initialize(gen_info, false, false, ""); 
 				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, cname, body.GetCallString (false));
 				body.HandleException (sw, "");

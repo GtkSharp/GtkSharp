@@ -14,8 +14,22 @@
 static extern IntPtr gtk_dialog_new_with_buttons (string title, IntPtr i, int flags, IntPtr dummy);
 public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base(IntPtr.Zero)
 {
-	if (GetType() != typeof (Dialog))
-		throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+	if (GetType() != typeof (Dialog)) {
+		GLib.Value[] vals = new GLib.Value [1];
+		string[] names = new string [1];
+		names [0] = "title";
+		vals [0] = new GLib.Value (title);
+		CreateNativeObject (names, vals);
+		TransientFor = parent;
+		if ((flags & DialogFlags.Modal) > 0)
+			Modal = true;
+		if ((flags & DialogFlags.DestroyWithParent) > 0)
+			DestroyWithParent = true;
+		if ((flags & DialogFlags.NoSeparator) > 0)
+			HasSeparator = false;
+		return;
+	}
+
 	Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
 }
 

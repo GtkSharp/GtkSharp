@@ -127,15 +127,9 @@ namespace GLib {
 
 		public static GType RegisterGType (System.Type t)
 		{
-			System.Type parent = t.BaseType;
-			PropertyInfo pi = parent.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
-			if (pi == null) {
-				Console.WriteLine ("null PropertyInfo");
-				return GType.Invalid;
-			}
-			GType parent_gtype = (GType) pi.GetValue (null, null);
-			string name = t.Namespace.Replace(".", "_") + t.Name;
-			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
+			GType parent_gtype = LookupGType (t.BaseType);
+			string name = t.FullName.Replace(".", "_");
+			GtkSharp.ObjectManager.RegisterType (name, t.FullName, t.Assembly.GetName().Name);
 			GType gtype = new GType (gtksharp_register_type (name, parent_gtype.Val));
 			ConnectDefaultHandlers (gtype, t);
 			g_types[t] = gtype;
@@ -144,9 +138,15 @@ namespace GLib {
 
 
 		static Hashtable g_types = new Hashtable ();
-		public static GType GetGType (System.Type t)
+
+		public GType LookupGType ()
 		{
-			if (g_types.ContainsKey (t))
+			return LookupGType (GetType ());
+		}
+
+		private static GType LookupGType (System.Type t)
+		{
+			if (g_types.Contains (t))
 				return (GType) g_types [t];
 			
 			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
@@ -167,6 +167,14 @@ namespace GLib {
 		protected Object (GType gtype)
 		{
 			Raw = g_object_new (gtype.Val, IntPtr.Zero);
+		}
+
+		[DllImport("glibsharpglue")]
+		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, string[] names, GLib.Value[] vals);
+
+		protected void CreateNativeObject (string[] names, GLib.Value[] vals)
+		{
+			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, names, vals);
 		}
 
 		protected virtual IntPtr Raw {

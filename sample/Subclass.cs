@@ -31,20 +31,7 @@ namespace GtkSamples {
 
 	public class MyButton : Gtk.Button {
 
-		static GLib.GType gtype = GLib.GType.Invalid;
-
-		public MyButton () : base (GType) 
-		{
-			Label = "I'm a subclassed button";
-		}
-
-		public static new GLib.GType GType {
-			get {
-				if (gtype == GLib.GType.Invalid)
-					gtype = RegisterGType (typeof (MyButton));
-				return gtype;
-			}
-		}
+		public MyButton () : base ("I'm a subclassed button") {}
 
 		protected override void OnClicked ()
 		{
