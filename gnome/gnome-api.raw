@@ -1059,7 +1059,19 @@
           <parameter type="int" name="flags"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="Realize" cname="realize">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="Unrealize" cname="unrealize">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Map" cname="map">
         <return-type type="void"/>
         <parameters>
           <parameter type="GnomeCanvasItem*" name="item"/>
@@ -1067,6 +1079,12 @@
       </virtual_method>
       <virtual_method name="Unmap" cname="unmap">
         <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Coverage" cname="coverage">
+        <return-type type="ArtUta*"/>
         <parameters>
           <parameter type="GnomeCanvasItem*" name="item"/>
         </parameters>
@@ -1082,6 +1100,13 @@
           <parameter type="int" name="height"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="Render" cname="render">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+          <parameter type="GnomeCanvasBuf*" name="buf"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="Point" cname="point">
         <return-type type="double"/>
         <parameters>
@@ -1091,6 +1116,16 @@
           <parameter type="int" name="cx"/>
           <parameter type="int" name="cy"/>
           <parameter type="GnomeCanvasItem**" name="actual_item"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Bounds" cname="bounds">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item"/>
+          <parameter type="double*" name="x1"/>
+          <parameter type="double*" name="y1"/>
+          <parameter type="double*" name="x2"/>
+          <parameter type="double*" name="y2"/>
         </parameters>
       </virtual_method>
       <method name="AffineAbsolute" cname="gnome_canvas_item_affine_absolute">
@@ -3196,6 +3231,13 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="GnomeDruidPage*" name="druid_page"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetSidebarShown" cname="set_sidebar_shown">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page"/>
+          <parameter type="gboolean" name="sidebar_shown"/>
         </parameters>
       </virtual_method>
       <method name="Back" cname="gnome_druid_page_back">
@@ -6061,10 +6103,24 @@
           <parameter type="GnomePrintTransport*" name="transport"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="Open" cname="open">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GnomePrintTransport*" name="transport"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="Close" cname="close">
         <return-type type="gint"/>
         <parameters>
           <parameter type="GnomePrintTransport*" name="transport"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Write" cname="write">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GnomePrintTransport*" name="transport"/>
+          <parameter type="const-guchar*" name="buf"/>
+          <parameter type="gint" name="len"/>
         </parameters>
       </virtual_method>
       <virtual_method name="PrintFile" cname="print_file">

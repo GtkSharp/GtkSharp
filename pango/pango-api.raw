@@ -243,8 +243,21 @@
           <parameter type="PangoFcFont*" name="font"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="UnlockFace" cname="unlock_face">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="HasChar" cname="has_char">
         <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
+          <parameter type="gunichar" name="wc"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetGlyph" cname="get_glyph">
+        <return-type type="guint"/>
         <parameters>
           <parameter type="PangoFcFont*" name="font"/>
           <parameter type="gunichar" name="wc"/>
@@ -255,6 +268,12 @@
         <parameters>
           <parameter type="PangoFcFont*" name="font"/>
           <parameter type="gunichar" name="wc"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Shutdown" cname="shutdown">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
         </parameters>
       </virtual_method>
       <method name="DescriptionFromPattern" cname="pango_fc_font_description_from_pattern" shared="true">
@@ -271,6 +290,13 @@
     <object name="FcFontMap" cname="PangoFcFontMap" parent="PangoFontMap">
       <virtual_method name="DefaultSubstitute" cname="default_substitute">
         <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFcFontMap*" name="fontmap"/>
+          <parameter type="FcPattern*" name="pattern"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="NewFont" cname="new_font">
+        <return-type type="PangoFcFont*"/>
         <parameters>
           <parameter type="PangoFcFontMap*" name="fontmap"/>
           <parameter type="FcPattern*" name="pattern"/>

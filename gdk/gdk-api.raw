@@ -670,11 +670,23 @@
           <parameter type="GdkDisplay*" name="display"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="GetNScreens" cname="get_n_screens">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdkDisplay*" name="display"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetScreen" cname="get_screen">
         <return-type type="GdkScreen*"/>
         <parameters>
           <parameter type="GdkDisplay*" name="display"/>
           <parameter type="gint" name="screen_num"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDefaultScreen" cname="get_default_screen">
+        <return-type type="GdkScreen*"/>
+        <parameters>
+          <parameter type="GdkDisplay*" name="display"/>
         </parameters>
       </virtual_method>
       <method name="AddClientMessageFilter" cname="gdk_display_add_client_message_filter">
@@ -873,6 +885,18 @@
           <parameter type="GdkGCValuesMask" name="mask"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawRectangle" cname="draw_rectangle">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="gboolean" name="filled"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="DrawArc" cname="draw_arc">
         <return-type type="void"/>
         <parameters>
@@ -887,6 +911,16 @@
           <parameter type="gint" name="angle2"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawPolygon" cname="draw_polygon">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="gboolean" name="filled"/>
+          <parameter type="GdkPoint*" name="points"/>
+          <parameter type="gint" name="npoints"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="DrawText" cname="draw_text">
         <return-type type="void"/>
         <parameters>
@@ -896,6 +930,18 @@
           <parameter type="gint" name="x"/>
           <parameter type="gint" name="y"/>
           <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="text_length"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DrawTextWc" cname="draw_text_wc">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkFont*" name="font"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="const-GdkWChar*" name="text"/>
           <parameter type="gint" name="text_length"/>
         </parameters>
       </virtual_method>
@@ -913,6 +959,15 @@
           <parameter type="gint" name="height"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawPoints" cname="draw_points">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="GdkPoint*" name="points"/>
+          <parameter type="gint" name="npoints"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="DrawSegments" cname="draw_segments">
         <return-type type="void"/>
         <parameters>
@@ -920,6 +975,15 @@
           <parameter type="GdkGC*" name="gc"/>
           <parameter type="GdkSegment*" name="segs"/>
           <parameter type="gint" name="nsegs"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DrawLines" cname="draw_lines">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="GdkPoint*" name="points"/>
+          <parameter type="gint" name="npoints"/>
         </parameters>
       </virtual_method>
       <virtual_method name="DrawGlyphs" cname="draw_glyphs">
@@ -933,10 +997,32 @@
           <parameter type="PangoGlyphString*" name="glyphs"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawImage" cname="draw_image">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="GdkImage*" name="image"/>
+          <parameter type="gint" name="xsrc"/>
+          <parameter type="gint" name="ysrc"/>
+          <parameter type="gint" name="xdest"/>
+          <parameter type="gint" name="ydest"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetDepth" cname="get_depth">
         <return-type type="gint"/>
         <parameters>
           <parameter type="GdkDrawable*" name="drawable"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetSize" cname="get_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
         </parameters>
       </virtual_method>
       <virtual_method name="SetColormap" cname="set_colormap">
@@ -946,8 +1032,20 @@
           <parameter type="GdkColormap*" name="cmap"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="GetColormap" cname="get_colormap">
+        <return-type type="GdkColormap*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetVisual" cname="get_visual">
         <return-type type="GdkVisual*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetScreen" cname="get_screen">
+        <return-type type="GdkScreen*"/>
         <parameters>
           <parameter type="GdkDrawable*" name="drawable"/>
         </parameters>
@@ -962,10 +1060,28 @@
           <parameter type="gint" name="height"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="GetClipRegion" cname="get_clip_region">
+        <return-type type="GdkRegion*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetVisibleRegion" cname="get_visible_region">
         <return-type type="GdkRegion*"/>
         <parameters>
           <parameter type="GdkDrawable*" name="drawable"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetCompositeDrawable" cname="get_composite_drawable">
+        <return-type type="GdkDrawable*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="gint*" name="composite_x_offset"/>
+          <parameter type="gint*" name="composite_y_offset"/>
         </parameters>
       </virtual_method>
       <virtual_method name="DrawPixbuf" cname="draw_pixbuf">
@@ -983,6 +1099,19 @@
           <parameter type="GdkRgbDither" name="dither"/>
           <parameter type="gint" name="x_dither"/>
           <parameter type="gint" name="y_dither"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CopyToImage" cname="_copy_to_image">
+        <return-type type="GdkImage*"/>
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable"/>
+          <parameter type="GdkImage*" name="image"/>
+          <parameter type="gint" name="src_x"/>
+          <parameter type="gint" name="src_y"/>
+          <parameter type="gint" name="dest_x"/>
+          <parameter type="gint" name="dest_y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
         </parameters>
       </virtual_method>
       <method name="DrawArc" cname="gdk_draw_arc">
@@ -1357,6 +1486,14 @@
         <parameters>
           <parameter type="GdkGC*" name="gc"/>
           <parameter type="GdkGCValues*" name="values"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetValues" cname="set_values">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkGC*" name="gc"/>
+          <parameter type="GdkGCValues*" name="values"/>
+          <parameter type="GdkGCValuesMask" name="mask"/>
         </parameters>
       </virtual_method>
       <virtual_method name="SetDashes" cname="set_dashes">

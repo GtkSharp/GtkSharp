@@ -447,6 +447,12 @@
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="GetNColumns" cname="get_n_columns">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="DescribeColumn" cname="describe_column">
         <return-type type="GdaFieldAttributes*"/>
         <parameters>
@@ -461,6 +467,13 @@
         </parameters>
       </virtual_method>
       <virtual_method name="RemoveRow" cname="remove_row">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+          <parameter type="const-GdaRow*" name="row"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UpdateRow" cname="update_row">
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="GdaDataModel*" name="model"/>
@@ -885,7 +898,22 @@
           <parameter type="const-gchar*" name="password"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="CloseConnection" cname="close_connection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="ChangeDatabase" cname="change_database">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CreateDatabase" cname="create_database">
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="GdaServerProvider*" name="provider"/>
@@ -901,7 +929,24 @@
           <parameter type="const-gchar*" name="name"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="ExecuteCommand" cname="execute_command">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="GdaCommand*" name="cmd"/>
+          <parameter type="GdaParameterList*" name="params"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="BeginTransaction" cname="begin_transaction">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="GdaTransaction*" name="xaction"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CommitTransaction" cname="commit_transaction">
         <return-type type="gboolean"/>
         <parameters>
           <parameter type="GdaServerProvider*" name="provider"/>
@@ -917,6 +962,14 @@
           <parameter type="GdaTransaction*" name="xaction"/>
         </parameters>
       </virtual_method>
+      <virtual_method name="Supports" cname="supports">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="GdaConnectionFeature" name="feature"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetSchema" cname="get_schema">
         <return-type type="GdaDataModel*"/>
         <parameters>
@@ -924,6 +977,14 @@
           <parameter type="GdaConnection*" name="cnc"/>
           <parameter type="GdaConnectionSchema" name="schema"/>
           <parameter type="GdaParameterList*" name="params"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CreateBlob" cname="create_blob">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider"/>
+          <parameter type="GdaConnection*" name="cnc"/>
+          <parameter type="GdaBlob*" name="blob"/>
         </parameters>
       </virtual_method>
       <method name="BeginTransaction" cname="gda_server_provider_begin_transaction">

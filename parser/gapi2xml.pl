@@ -918,7 +918,7 @@ sub addVirtualMethods
 				addParamsElem($vm_elem, split(/,/, $parms));
 			}
 		}
-		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\*\s*\w+\)\s*\(.*?\);//;
+		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\*\s*\w+\)\s*\(.*?\);/;/;
 	}
 }
 
