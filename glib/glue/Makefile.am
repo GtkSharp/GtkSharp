@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libglibsharpglue.la
 
-libglibsharpglue_la_LDFLAGS = -module -avoid-version
+libglibsharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libglibsharpglue_la_SOURCES = 	\
 	error.c			\

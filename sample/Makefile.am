@@ -24,7 +24,7 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe drawing-sample.exe custom-widget.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe custom-widget.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
 assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix /r:, $(assemblies))

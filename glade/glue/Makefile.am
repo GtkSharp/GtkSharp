@@ -6,7 +6,7 @@ else
 TARGET = 
 endif
 
-libgladesharpglue_la_LDFLAGS = -module -avoid-version
+libgladesharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgladesharpglue_la_SOURCES = 	\
 	gladexml.c

@@ -6,7 +6,7 @@ libpangosharpglue_la_SOURCES =	\
 # Adding a new glue file?
 # Please remember to update makefile.win32
 
-libpangosharpglue_la_LDFLAGS = -module -avoid-version
+libpangosharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libpangosharpglue_la_LIBADD = $(PANGO_LIBS)
 

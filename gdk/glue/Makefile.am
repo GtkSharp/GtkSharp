@@ -10,7 +10,7 @@ libgdksharpglue_la_SOURCES =	\
 # Adding a new glue file?
 # Please remember to update makefile.win32
 
-libgdksharpglue_la_LDFLAGS = -module -avoid-version
+libgdksharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgdksharpglue_la_LIBADD = $(GTK_LIBS)
 

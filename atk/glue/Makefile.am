@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libatksharpglue.la
 
-libatksharpglue_la_LDFLAGS = -module -avoid-version
+libatksharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libatksharpglue_la_SOURCES = 	\
 	generated.c		\

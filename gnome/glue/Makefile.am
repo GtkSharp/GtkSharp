@@ -6,7 +6,7 @@ else
 TARGET = 
 endif
 
-libgnomesharpglue_la_LDFLAGS = -module -avoid-version
+libgnomesharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgnomesharpglue_la_SOURCES = 	\
 	canvas.c 		\
