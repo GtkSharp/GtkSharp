@@ -20,6 +20,8 @@ BASESOURCES = 			\
 	value.c			\
 	widget.c
 
+# Adding a new glue file?
+# Please remember to update makefile.win32
 
 GNOMESOURCES = \
 	canvasitem.c \

@@ -1,22 +1,27 @@
 GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0`
 GTK_LIBS=`pkg-config --libs gtk+-win32-2.0`
-CC=gcc -b i686-pc-mingw32
-DLLWRAP=dllwrap --mno-cygwin --target i386-mingw32 --export-all-symbols
+CC=gcc -mno-cygwin
+DLLWRAP=dllwrap -mno-cygwin --target i386-mingw32 --export-all-symbols
 
 GLUE_OBJS = \
-	adjustment.o \
-	dialog.o \
-	error.o \
-	event.o \
-	fileselection.o \
-	list.o \
-	object.o \
-	paned.o \
-	slist.o \
-	style.o \
-	type.o \
-	value.o \
-	widget.o \
+        adjustment.o            \
+        clipboard.o             \
+        colorseldialog.o        \
+        combo.o                 \
+        dialog.o                \
+        error.o                 \
+        event.o                 \
+        fileselection.o         \
+        layout.o                \
+        list.o                  \
+        object.o                \
+        paned.o                 \
+        selection.o             \
+        slist.o                 \
+        style.o                 \
+        type.o                  \
+        value.o                 \
+        widget.o                \
 	win32dll.o
 
 all: gtksharpglue.dll

@@ -8,9 +8,9 @@ BOOL APIENTRY DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 	return TRUE;
 }
 
-
+/*
 BOOL APIENTRY DllMainCRTStartup (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 {
 	return TRUE;
 }
-
+*/
