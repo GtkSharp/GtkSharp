@@ -435,9 +435,11 @@
         <param name="value"> a Gdk.Colormap</param>
         <returns> a Gdk.Colormap</returns>
         <remarks>
-          <para>Sets the colormap for the GC to the given
-          colormap. The depth of the colormap's visual must match the
-          depth of the drawable for which the GC was created.</para>
+          <para>
+	    Fetches or changes the colormap of the GC.  The depth of
+	    the colormap's visual must match the depth of the drawable
+	    for which the GC was created.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -480,7 +482,34 @@
         <param name="value">the new foreground color.</param>
         <returns>the new foreground color.</returns>
         <remarks>
-          <para>Sets the foreground color for a graphics context.</para>
+          <para>
+	    Sets the foreground color for a graphics context to the
+	    given color.  The color must have been allocated for this
+	    to work.
+	  </para>
+	  <example>
+	    <code lang="C#">
+	      Gdk.GC my_gc = new Gdk.GC (gdk_window);
+	      
+	      //
+	      // Create the color
+	      //
+	      Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+
+	      //
+	      // Allocate it
+	      //
+	      Gdk.Colormap colormap = Gdk.Colormap.System;
+	      colormap.AllocColor (ref red_color, true, true);
+
+	      my_gc.Foreground = red_color;
+
+	      //
+	      // Draw diagonal, using the GC with the red color
+	      //
+	      gdk_window.DrawLine (my_gc, 0, 0, 100, 100);
+	    </code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
@@ -579,8 +608,43 @@
         <param name="value">the new background color.</param>
         <returns>the new background color.</returns>
         <remarks>
-          <para>Sets the background color for a graphics
-          context.</para>
+          <para>
+	    Sets the background color for a graphics
+	    context.  The color must have been allocated.
+	  </para>
+	  <example>
+	    <code lang="C#">
+	      Gdk.GC my_gc = new Gdk.GC (gdk_window);
+	      
+	      //
+	      // Create the color
+	      //
+	      Gdk.Color back_color = new Gdk.Color (0xff, 0, 0);
+	      Gdk.Color fore_color = new Gdk.Color (0, 0, 0xff);
+
+	      //
+	      // Allocate them
+	      //
+	      Gdk.Colormap colormap = Gdk.Colormap.System;
+	      colormap.AllocColor (ref back_color, true, true);
+	      Gdk.Colormap colormap = Gdk.Colormap.System;
+	      colormap.AllocColor (ref fore_color, true, true);
+
+	      my_gc.Background = back_color;
+	      my_gc.Background = fore_color;
+
+	      //
+	      // Draw a thick line, alternating between foreground and
+	      // background colors
+	      //
+	      my_gc.SetLineAttributes (3, LineStyle.DoubleDash, CapStyle.NotLast, JoinStyle.Round);
+
+	      //
+	      // Draw diagonal, using the GC with the red color
+	      //
+	      gdk_window.DrawLine (my_gc, 0, 0, 100, 100);
+	    </code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
