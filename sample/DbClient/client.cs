@@ -7,6 +7,13 @@ using System.Data.SqlClient;
 using Gtk;
 using GtkSharp;
 
+enum DialogType
+{
+	Insert,
+	Delete,
+	Update
+}
+
 class Client {
 
 	static Window window = null;
@@ -49,9 +56,9 @@ class Client {
 				    new Gtk.Image (Stock.Remove, IconSize.LargeToolbar),
 				    new SignalFunc (Db_Remove), IntPtr.Zero);
 
-		toolbar.AppendItem ("Edit", "Edit a row", String.Empty,
+		toolbar.AppendItem ("Update", "Update a row", String.Empty,
 				    new Gtk.Image (Stock.Italic, IconSize.LargeToolbar),
-				    new SignalFunc (Db_Edit), IntPtr.Zero);
+				    new SignalFunc (Db_Update), IntPtr.Zero);
 
 		toolbar.AppendItem ("Refresh", "Refresh the view", String.Empty,
 				    new Gtk.Image (Stock.Refresh, IconSize.LargeToolbar),
@@ -102,17 +109,17 @@ class Client {
 		label.Markup = "<big><b>ID</b></big>";
 		label.UseMarkup = true;
 
-		t.Attach (label, 0, 1, 0, 1, AttachOptions.Expand, AttachOptions.Expand, 1, 1);
+		t.Attach (label, 0, 1, 0, 1);
 
 		label = new Label (String.Empty);
 		label.Markup = "<big><b>Name</b></big>";
 		label.UseMarkup = true;
-		t.Attach (label, 0, 2, 0, 1, AttachOptions.Expand, AttachOptions.Expand, 1, 1);
+		t.Attach (label, 0, 2, 0, 1);
 
 		label = new Label (String.Empty);
 		label.Markup = "<big><b>Address</b></big>";
 		label.UseMarkup = true;
-		t.Attach (label, 0, 3, 0, 1, AttachOptions.Expand, AttachOptions.Expand, 1, 1);
+		t.Attach (label, 0, 3, 0, 1);
 	}
 
 	static void Db_Insert ()
@@ -124,7 +131,7 @@ class Client {
 		dialog.HasSeparator = false;
 
 		Frame frame = new Frame ("Insert a row");
-		frame.Add (DrawForm (Stock.DialogInfo));
+		frame.Add (MakeDialog (Stock.DialogInfo, DialogType.Insert));
 		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
@@ -151,7 +158,7 @@ class Client {
 		dialog.HasSeparator = false;
 
 		Frame frame = new Frame ("Remove a row");
-		frame.Add (DrawForm (Stock.DialogWarning));
+		frame.Add (MakeDialog (Stock.DialogWarning, DialogType.Delete));
 		dialog.VBox.PackStart (frame, true, true, 0);
 
 		Button button = null;
@@ -169,7 +176,7 @@ class Client {
 
 	}
 
-	static Widget DrawForm (string image)
+	static Widget MakeDialog (string image, DialogType type)
 	{
 		HBox hbox = new HBox (false, 2);
 		hbox.BorderWidth = 5;
@@ -189,18 +196,44 @@ class Client {
 		label = Label.NewWithMnemonic ("_Name");
 		table.Attach (label, 0, 1, 1, 2);
 		name_entry = new Entry ();
+		if (type == DialogType.Delete)
+			name_entry.Sensitive = false;
 		table.Attach (name_entry, 1, 2, 1, 2);
 
 		label = Label.NewWithMnemonic ("_Address");
 		table.Attach (label, 0, 1, 2, 3);
 		address_entry = new Entry ();
+		if (type == DialogType.Delete)
+			address_entry.Sensitive = false;
 		table.Attach (address_entry, 1, 2, 2, 3);
 
 		return hbox ;
 	}
 
-	static void Db_Edit ()
+	static void Db_Update ()
 	{
+		dialog = new Dialog ();
+		dialog.Title = "Update row";
+		dialog.BorderWidth = 3;		
+		dialog.VBox.BorderWidth = 5;
+		dialog.HasSeparator = false;
+
+		Frame frame = new Frame ("Update row");
+		frame.Add (MakeDialog (Stock.DialogWarning, DialogType.Update));
+		dialog.VBox.PackStart (frame, true, true, 0);
+
+		Button button = null;
+		button = Button.NewFromStock (Stock.Apply);
+		button.Clicked += new EventHandler (Update_Action);
+		button.CanDefault = true;
+		dialog.ActionArea.PackStart (button, true, true, 0);
+		button.GrabDefault ();
+
+		button = Button.NewFromStock (Stock.Cancel);
+		button.Clicked += new EventHandler (Dialog_Cancel);
+		dialog.ActionArea.PackStart (button, true, true, 0);
+
+		dialog.ShowAll ();
 	}
 
 	static void Quit ()
@@ -218,6 +251,13 @@ class Client {
 	static void Remove_Action (object o, EventArgs args)
 	{
 		Conn.Delete (UInt32.Parse (id_entry.Text));
+		UpdateView ();
+		dialog.Destroy ();
+	}
+
+	static void Update_Action (object o, EventArgs args)
+	{
+		Conn.Update (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
 		UpdateView ();
 		dialog.Destroy ();
 	}
@@ -259,7 +299,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=127.0.0.1;" +
+		string connectionString = "hostaddr=192.168.1.2;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
