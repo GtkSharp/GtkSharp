@@ -10,8 +10,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Object for rc-file handling--- for example, ~/.gtkrc--- and application style and default setting. Rc files can be used to set the colors of just about any widget, and they can also be used to tile pixmaps onto the background of some widgets.</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -29,10 +29,10 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds all matching RC styles for a given widget, composites them together, and then creates a <see cref="T:Gtk.Style" /> representing the composite appearance.</summary> 
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <returns>a <see cref="T:Gtk.Style" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>(GTK+ actually keeps a cache of previously created styles, so a new style may not be created.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="Parse">
@@ -45,9 +45,9 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Parses an rc file into the internal data structure.</summary>
+        <param name="filename">a <see cref="T:System.String" />, the file to parse.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FindModuleInPath">
@@ -60,10 +60,10 @@
         <Parameter Name="module_file" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Searches for a theme engine in the GTK+ search path. This function is not useful for applications and should not be used.</summary>
         <param name="module_file">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ParseString">
@@ -76,9 +76,9 @@
         <Parameter Name="rc_string" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rc_string">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Parses resource information directly from a string.</summary>
+        <param name="rc_string">a <see cref="T:System.String" /> to parse.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ReparseAllForSettings">
@@ -92,11 +92,11 @@
         <Parameter Name="force_load" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>If the modification time on any previously read file for the given <see cref="T:Gtk.Settings" /> has changed, discard all style information and then reread all previously read RC files.</summary>
         <param name="settings">a <see cref="T:Gtk.Settings" /></param>
-        <param name="force_load">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <param name="force_load">a <see cref="T:System.Boolean" />, force reload whether or not anything changed if TRUE</param>
+        <returns>a <see cref="T:System.Boolean" />, TRUE if the files were re-read.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddDefaultFile">
@@ -109,9 +109,9 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Adds a file to the list of files to be parsed at the end of <see cref="M:Gtk.Init()" />.</summary>
+        <param name="filename">a <see cref="T:System.String" />, the filename to add to the parse list</param>
+        <remarks>If <paramref name="filename" /> is not absolute, it is searched in the current directory.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ReparseAll">
@@ -122,9 +122,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>If the modification time on any previously read file for the default <see cref="T:Gtk.Settings" /> has changed, discard all style information and then reread all previously read RC files.</summary>
+        <returns>a <see cref="T:System.Boolean" />, TRUE if files were re-read.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -133,9 +133,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Public constructor; generates a new RC parser.</summary>
         <returns>a <see cref="T:Gtk.Rc" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ModuleDir">
@@ -145,9 +145,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the name a directory in which GTK# looks for theme engines.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Unlike the underlying GTK+ function, the return value of this method is a string, not a directory handle that must be freed later. (FIXME: the GTK+ docs point at the "GTK_PATH" section of "Running GTK applications", which is very detailed and may or may not need included here.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="ThemeDir">
@@ -157,9 +157,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the standard directory in which themes should be installed. (GTK+ does not actually use this directory itself.)</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Unlike the underlying GTK+ function, the return value of this method is a string, not a directory handle that must be freed later.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImModuleFile">
@@ -169,9 +169,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The path to the IM module file specified by the RC file. This may be overridden by the GTK_IM_MODULE_FILE environment variable.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>(FIXME: does this apply for Gtk# too?) In standard Gtk+ applications, the GTK_IM_MODULE_FILE environment variable overrides the im_module_file specified in the RC files, which in turn overrides the default value sysconfdir/gtk-2.0/gtk.immodules  (sysconfdir is the sysconfdir specified when GTK+ was configured, usually /usr/local/etc.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImModulePath">
@@ -181,9 +181,10 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains the path in which to look for IM modules. 
+</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>(FIXME: "See the documentation of the GTK_PATH environment variable for more details about looking up modules.") This function is useful solely for utilities supplied with GTK+ and should not be used by applications under normal circumstances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultFiles">
@@ -195,10 +196,10 @@
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The current list of RC files that will be parsed at the end of <see cref="M:Gtk.Init()" />.</summary>
         <param name="value">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.String" />, a list of filenames.</returns>
+        <remarks>Unlike the underlying GTK+ function, this function's return string does not use memory owned by the application.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetStyleByPaths">
@@ -214,13 +215,14 @@
         <Parameter Name="type" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates up a <see cref="T:Gtk.Style" /> from styles defined in a RC file by providing the raw components used in matching. This function may be useful when creating pseudo-widgets that should be themed like widgets but don't actually have corresponding GTK# widgets. An example of this would be items inside a GNOME canvas widget.</summary>
         <param name="settings">a <see cref="T:Gtk.Settings" /></param>
-        <param name="widget_path">a <see cref="T:System.String" /></param>
-        <param name="class_path">a <see cref="T:System.String" /></param>
-        <param name="type">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Style" /></returns>
-        <remarks>To be added</remarks>
+        <param name="widget_path">a <see cref="T:System.String" />,  the widget path to use when looking up the style, or NULL  if no matching against the widget path should be done</param>
+        <param name="class_path">a <see cref="T:System.String" />,  the class path to use when looking up the style, or NULL  if no matching against the class path should be done.</param>
+        <param name="type">a <see cref="T:GLib.GType" />,  a type that will be used along with parent types of this type when matching against class styles, or G_TYPE_NONE</param>
+        <returns>a <see cref="T:Gtk.Style" />,a style created by matching with the supplied paths, or NULL if nothing matching was specified and the default style should be used. 
+</returns>
+        <remarks>The returned value is owned by GTK+ as part of an internal cache, so you must call g_object_ref() on the returned value if you want to keep a reference to it. (FIXME: what's the GTK# equivalent of g_object_ref()?)</remarks>
       </Docs>
     </Member>
   </Members>
