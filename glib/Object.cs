@@ -13,18 +13,11 @@ namespace GLib {
 
 	public class Object  {
 		protected static Hashtable Objects = new Hashtable();
-		protected const String GOBJECTKEY = "gobject#-object";
 		public static Object GetObject(IntPtr o)
 		{
-			IntPtr key = g_object_get_data (o, GOBJECTKEY);
-			Object obj;
-			if((int)key != 0)
-			{
-				obj = (Object)Objects[(int)key];
-				if (obj != null) return obj;
-			}
-			obj = new Object(o); //FIXME: Cast up when we know how.
-			return obj; 
+			Object obj = (Object)Objects[(int)o];
+			if (obj != null) return obj;
+			return new Object(o); //FIXME: Cast up when we know how.
 		}
 
 		public Object(IntPtr o)
@@ -40,15 +33,8 @@ namespace GLib {
 				return _obj;
 			}
 			set {
-				IntPtr key = g_object_get_data (value, GOBJECTKEY);
-				if ((int)key != 0)
-				{
-					Object obj = (Object)Objects[(int)key];
-					if (obj != null) Objects.Remove((int)key);
-				}
-				key = new IntPtr(this.GetHashCode());
-				Objects[(int)key] = this;
-				g_object_set_data (value, GOBJECTKEY, key);
+				if ((Object)Objects[(int)value] != null) Objects.Remove((int)value);
+				Objects[(int)value] = this;
 				_obj = value;
 			}
 		}       
