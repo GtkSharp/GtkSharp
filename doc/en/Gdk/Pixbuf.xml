@@ -1409,54 +1409,6 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SaveToBufferv">
-      <MemberSignature Language="C#" Value="public bool SaveToBufferv (string buffer, out uint buffer_size, string type, string option_keys, string option_values);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="buffer" Type="System.String" />
-        <Parameter Name="buffer_size" Type="System.UInt32&amp;" RefType="out" />
-        <Parameter Name="type" Type="System.String" />
-        <Parameter Name="option_keys" Type="System.String" />
-        <Parameter Name="option_values" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.String" /></param>
-        <param name="buffer_size">a <see cref="T:System.UInt32" /></param>
-        <param name="type">a <see cref="T:System.String" /></param>
-        <param name="option_keys">a <see cref="T:System.String" /></param>
-        <param name="option_values">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SaveToCallbackv">
-      <MemberSignature Language="C#" Value="public bool SaveToCallbackv (Gdk.PixbufSaveFunc save_func, IntPtr user_data, string type, string option_keys, string option_values);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="save_func" Type="Gdk.PixbufSaveFunc" />
-        <Parameter Name="user_data" Type="System.IntPtr" />
-        <Parameter Name="type" Type="System.String" />
-        <Parameter Name="option_keys" Type="System.String" />
-        <Parameter Name="option_values" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="save_func">a <see cref="T:Gdk.PixbufSaveFunc" /></param>
-        <param name="user_data">a <see cref="T:System.IntPtr" /></param>
-        <param name="type">a <see cref="T:System.String" /></param>
-        <param name="option_keys">a <see cref="T:System.String" /></param>
-        <param name="option_values">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Unref">
       <MemberSignature Language="C#" Value="public void Unref ();" />
       <MemberType>Method</MemberType>
@@ -1570,6 +1522,80 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <param name="height">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveToBuffer">
+      <MemberSignature Language="C#" Value="public byte [] SaveToBuffer (string type, string [] option_keys, string [] option_values);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.String" />
+        <Parameter Name="option_keys" Type="System.String[]" />
+        <Parameter Name="option_values" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <summary>Saves to a buffer.</summary>
+        <param name="type">an image type, such as png, jpeg, or ico</param>
+        <param name="option_keys">an array of option keys.</param>
+        <param name="option_values">an array of option values.</param>
+        <returns>a <see cref="T:System.Byte[]" /></returns>
+        <remarks>>The <paramref name="option_keys"/> and <paramref name="option_values"/> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save"/> for more details.  Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveToBuffer">
+      <MemberSignature Language="C#" Value="public byte [] SaveToBuffer (string type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Saves to a buffer.</summary>
+        <param name="type">an image type, such as png, jpeg, or ico</param>
+        <returns>a <see cref="T:System.Byte[]" /></returns>
+        <remarks>Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveToCallback">
+      <MemberSignature Language="C#" Value="public void SaveToCallback (Gdk.PixbufSaveFunc save_func, string type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="save_func" Type="Gdk.PixbufSaveFunc" />
+        <Parameter Name="type" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Save using a callback delegate.</summary>
+        <param name="save_func">a <see cref="T:Gdk.PixbufSaveFunc" /></param>
+        <param name="type">an image type, such as png, jpeg, or ico</param>
+        <remarks>Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveToCallback">
+      <MemberSignature Language="C#" Value="public void SaveToCallback (Gdk.PixbufSaveFunc save_func, string type, string [] option_keys, string [] option_values);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="save_func" Type="Gdk.PixbufSaveFunc" />
+        <Parameter Name="type" Type="System.String" />
+        <Parameter Name="option_keys" Type="System.String[]" />
+        <Parameter Name="option_values" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <summary>Save using a callback delegate.</summary>
+        <param name="save_func">a <see cref="T:Gdk.PixbufSaveFunc" /></param>
+        <param name="type">an image type, such as png, jpeg, or ico</param>
+        <param name="option_keys">an array of option keys</param>
+        <param name="option_values">an array of option values</param>
+        <remarks>The <paramref name="option_keys"/> and <paramref name="option_values"/> should contain key/value pairs.  See <see cref="M:Gdk.Pixbuf.Save"/> for more details.  Throws a <see cref="T:GLib.GException"/> if the save is not successful.</remarks>
       </Docs>
     </Member>
   </Members>
