@@ -1687,9 +1687,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets or obtains the default size of <paramref name="window" />.</summary>
         <returns>a <see cref="T:Gdk.Size" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+         A value of -1 for the size indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the <paramref name="window" /> will be used.
+        </para>
+          <para>
+         If the <paramref name="window" />'s "natural" size (its size request) is larger than the default, the default will be ignored. More generally, if the default size does not obey the geometry hints for the <paramref name="window" /> (<see cref="M:Gtk.Window.SetGeometryHints" /> can be used to set these explicitly), the default size will be clamped to the nearest permitted size.
+        </para>
+          <para>
+         Unlike <see cref="M:Gtk.Widget.SizeRequest" />, which sets a size request for a <paramref name="widget" /> and thus would keep users from shrinking the <paramref name="window" />, this method only sets the initial size, just as if the user had resized the <paramref name="window" /> themselves. Users can still shrink the <paramref name="window" /> again as they normally would. Setting a default size of -1 means to use the "natural" default size (the size request of the <paramref name="window" />).
+        </para>
+          <para>
+         For more control over a <paramref name="window" />'s initial size and how resizing works, read <see cref="M:Gtk.Window.SetGeometryHints" />.
+        </para>
+          <para>
+         For some uses, <see cref="M:Gtk.Window.Resize" /> is a more appropriate method. <see cref="M:Gtk.Window.Resize" /> changes the current size of the <paramref name="window" />, rather than the size to be used on initial display. <see cref="M:Gtk.Window.Resize" /> always affects the <paramref name="window" /> itself, not the geometry widget.
+        </para>
+          <para>
+         The default size of a <paramref name="window" /> only affects the first time a <paramref name="window" /> is shown; if a <paramref name="window" /> is hidden and re-shown, it will remember the size it had prior to hiding, rather than using the default size.
+        </para>
+          <para>
+         Windows can't actually be 0x0 in size, they must be at least 1x1, but passing 0 is OK, resulting in a 1x1 default size.
+        </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
