@@ -235,7 +235,8 @@ foreach $type (sort(keys(%ifaces))) {
 	
 	$ifacecnt++;
 	$iface_el = addNameElem($ns_elem, 'interface', $inst, $ns);
-	addFuncElems($iface_el, $inst);
+
+	$elem_table{lc($inst)} = $iface_el;
 
 	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
 	if ($initfunc) {

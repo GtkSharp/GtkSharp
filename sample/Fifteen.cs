@@ -185,7 +185,7 @@ public class BoardPiece : Gnome.CanvasGroup
 	public static bool Debug = false;
 	
 	public BoardPiece (CanvasGroup group, BoardPiece [] board, int x, int y, int i)
-		: base (group, CanvasGroup.Type)
+		: base (group, CanvasGroup.GType)
 	{
 		this.X = (x * PIECE_SIZE);
 		this.Y = (y * PIECE_SIZE);

@@ -96,6 +96,20 @@ namespace GLib {
 		}       
 
 		/// <summary>
+		///	GType Property
+		/// </summary>
+		///
+		/// <remarks>
+		///	The type associated with this object class.
+		/// </remarks>
+
+		public static int GType {
+			get {
+				return 0;
+			}
+		}
+
+		/// <summary>
 		///	Handle Property
 		/// </summary>
 		///

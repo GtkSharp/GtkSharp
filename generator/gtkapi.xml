@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <api>
   <namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
@@ -4905,6 +4905,21 @@
           <parameter type="GtkCellEditable*" name="cell_editable"/>
         </parameters>
       </signal>
+      <method name="FinishEditing" cname="gtk_cell_editable_editing_done">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="gtk_cell_editable_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RemoveWidget" cname="gtk_cell_editable_remove_widget">
+        <return-type type="void"/>
+      </method>
+      <method name="StartEditing" cname="gtk_cell_editable_start_editing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </method>
     </interface>
     <interface name="Editable" cname="GtkEditable">
       <signal name="TextInserted" cname="insert_text" when="LAST">
@@ -4930,9 +4945,119 @@
           <parameter type="GtkEditable*" name="editable"/>
         </parameters>
       </signal>
+      <method name="CopyClipboard" cname="gtk_editable_copy_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="CutClipboard" cname="gtk_editable_cut_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="DeleteSelection" cname="gtk_editable_delete_selection">
+        <return-type type="void"/>
+      </method>
+      <method name="DeleteText" cname="gtk_editable_delete_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </method>
+      <method name="GetChars" cname="gtk_editable_get_chars">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </method>
+      <method name="GetIsEditable" cname="gtk_editable_get_editable">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetPosition" cname="gtk_editable_get_position">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetSelectionBounds" cname="gtk_editable_get_selection_bounds">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint*" name="start"/>
+          <parameter type="gint*" name="end"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_editable_get_type" shared="true">
+        <return-type type="GtkType"/>
+      </method>
+      <method name="InsertText" cname="gtk_editable_insert_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="new_text"/>
+          <parameter type="gint" name="new_text_length"/>
+          <parameter type="gint*" name="position" pass_as="out"/>
+        </parameters>
+      </method>
+      <method name="PasteClipboard" cname="gtk_editable_paste_clipboard">
+        <return-type type="void"/>
+      </method>
+      <method name="SelectRegion" cname="gtk_editable_select_region">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start"/>
+          <parameter type="gint" name="end"/>
+        </parameters>
+      </method>
+      <method name="SetIsEditable" cname="gtk_editable_set_editable">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="is_editable"/>
+        </parameters>
+      </method>
+      <method name="SetPosition" cname="gtk_editable_set_position">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="position"/>
+        </parameters>
+      </method>
     </interface>
-    <interface name="TreeDragDest" cname="GtkTreeDragDest"/>
-    <interface name="TreeDragSource" cname="GtkTreeDragSource"/>
+    <interface name="TreeDragDest" cname="GtkTreeDragDest">
+      <method name="DragDataReceived" cname="gtk_tree_drag_dest_drag_data_received">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="dest"/>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_tree_drag_dest_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RowDropPossible" cname="gtk_tree_drag_dest_row_drop_possible">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="dest_path"/>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+        </parameters>
+      </method>
+    </interface>
+    <interface name="TreeDragSource" cname="GtkTreeDragSource">
+      <method name="DragDataDelete" cname="gtk_tree_drag_source_drag_data_delete">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </method>
+      <method name="DragDataGet" cname="gtk_tree_drag_source_drag_data_get">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_tree_drag_source_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RowDraggable" cname="gtk_tree_drag_source_row_draggable">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </method>
+    </interface>
     <interface name="TreeModel" cname="GtkTreeModel">
       <signal name="RowChanged" cname="row_changed" when="LAST">
         <return-type type="void"/>
@@ -4974,6 +5099,166 @@
           <parameter type="gint*" name="new_order"/>
         </parameters>
       </signal>
+      <method name="FlagsGetType" cname="gtk_tree_model_flags_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Foreach" cname="gtk_tree_model_foreach">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeModelForeachFunc" name="func"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="Get" cname="gtk_tree_model_get">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="GetColumnType" cname="gtk_tree_model_get_column_type">
+        <return-type type="GType"/>
+        <parameters>
+          <parameter type="gint" name="index"/>
+        </parameters>
+      </method>
+      <method name="GetFlags" cname="gtk_tree_model_get_flags">
+        <return-type type="GtkTreeModelFlags"/>
+      </method>
+      <method name="GetIter" cname="gtk_tree_model_get_iter">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </method>
+      <method name="GetIterFirst" cname="gtk_tree_model_get_iter_first">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="GetIterFromString" cname="gtk_tree_model_get_iter_from_string">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="const-gchar*" name="path_string"/>
+        </parameters>
+      </method>
+      <method name="GetNColumns" cname="gtk_tree_model_get_n_columns">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetPath" cname="gtk_tree_model_get_path">
+        <return-type type="GtkTreePath*"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_tree_model_get_type" shared="true">
+        <return-type type="GtkType"/>
+      </method>
+      <method name="GetValist" cname="gtk_tree_model_get_valist">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="va_list" name="var_args"/>
+        </parameters>
+      </method>
+      <method name="GetValue" cname="gtk_tree_model_get_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="gint" name="column"/>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="IterChildren" cname="gtk_tree_model_iter_children">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="IterHasChild" cname="gtk_tree_model_iter_has_child">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="IterNChildren" cname="gtk_tree_model_iter_n_children">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" null_ok="1"/>
+        </parameters>
+      </method>
+      <method name="IterNext" cname="gtk_tree_model_iter_next">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="IterNthChild" cname="gtk_tree_model_iter_nth_child">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter" null_ok="1"/>
+          <parameter type="GtkTreeIter*" name="parent" null_ok="1"/>
+          <parameter type="gint" name="n"/>
+        </parameters>
+      </method>
+      <method name="IterParent" cname="gtk_tree_model_iter_parent">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="child"/>
+        </parameters>
+      </method>
+      <method name="RefNode" cname="gtk_tree_model_ref_node">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="ChangeRow" cname="gtk_tree_model_row_changed">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="DeleteRow" cname="gtk_tree_model_row_deleted">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </method>
+      <method name="ToggleRowHasChild" cname="gtk_tree_model_row_has_child_toggled">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="InsertRow" cname="gtk_tree_model_row_inserted">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
+      <method name="ReorderRows" cname="gtk_tree_model_rows_reordered">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreePath*" name="path"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="gint*" name="new_order"/>
+        </parameters>
+      </method>
+      <method name="UnrefNode" cname="gtk_tree_model_unref_node">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </method>
     </interface>
     <interface name="TreeSortable" cname="GtkTreeSortable">
       <signal name="SortColumnChanged" cname="sort_column_changed" when="LAST">
@@ -4982,6 +5267,46 @@
           <parameter type="GtkTreeSortable*" name="sortable"/>
         </parameters>
       </signal>
+      <method name="GetSortColumnId" cname="gtk_tree_sortable_get_sort_column_id">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint*" name="sort_column_id"/>
+          <parameter type="GtkSortType*" name="order"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_tree_sortable_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="HasDefaultSortFunc" cname="gtk_tree_sortable_has_default_sort_func">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="SetDefaultSortFunc" cname="gtk_tree_sortable_set_default_sort_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeIterCompareFunc" name="sort_func"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="SetSortColumnId" cname="gtk_tree_sortable_set_sort_column_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="sort_column_id"/>
+          <parameter type="GtkSortType" name="order"/>
+        </parameters>
+      </method>
+      <method name="SetSortFunc" cname="gtk_tree_sortable_set_sort_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="sort_column_id"/>
+          <parameter type="GtkTreeIterCompareFunc" name="sort_func"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </method>
+      <method name="ChangeSortColumn" cname="gtk_tree_sortable_sort_column_changed">
+        <return-type type="void"/>
+      </method>
     </interface>
     <object name="AccelGroup" cname="GtkAccelGroup" parent="GObject">
       <field cname="lock_count" type="guint"/>
@@ -15227,7 +15552,7 @@
         </parameters>
       </method>
     </struct>
-    <boxed name="TreeIter" cname="GtkTreeIter">
+    <boxed name="TreeIter" cname="GtkTreeIter" opaque="1">
       <field cname="stamp" type="gint"/>
       <field cname="user_data" type="gpointer"/>
       <field cname="user_data2" type="gpointer"/>
@@ -17928,6 +18253,8 @@
       <member cname="GTK_HTML_COMMAND_TEXT_COLOR_APPLY" name="TextColorApply"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_ON" name="SaveDataOn"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_OFF" name="SaveDataOff"/>
+      <member cname="GTK_HTML_COMMAND_SAVED" name="Saved"/>
+      <member cname="GTK_HTML_COMMAND_IS_SAVED" name="IsSaved"/>
     </enum>
     <enum name="HTMLCursorSkipType" cname="GtkHTMLCursorSkipType" type="enum">
       <member cname="GTK_HTML_CURSOR_SKIP_ONE" name="One"/>
@@ -18884,13 +19211,259 @@
         <parameter type="void " name="AtkObject*, AtkPropertyValues*"/>
       </parameters>
     </callback>
-    <interface name="Action" cname="AtkAction"/>
-    <interface name="Component" cname="AtkComponent"/>
-    <interface name="Document" cname="AtkDocument"/>
-    <interface name="EditableText" cname="AtkEditableText"/>
-    <interface name="Hypertext" cname="AtkHypertext"/>
-    <interface name="Image" cname="AtkImage"/>
-    <interface name="Implementor" cname="AtkImplementor"/>
+    <interface name="Action" cname="AtkAction">
+      <method name="DoAction" cname="atk_action_do_action">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetDescription" cname="atk_action_get_description">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetKeybinding" cname="atk_action_get_keybinding">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetNActions" cname="atk_action_get_n_actions">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetName" cname="atk_action_get_name">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_action_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SetDescription" cname="atk_action_set_description">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+          <parameter type="const-gchar*" name="desc"/>
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Component" cname="AtkComponent">
+      <method name="AddFocusHandler" cname="atk_component_add_focus_handler">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="AtkFocusHandler" name="handler"/>
+        </parameters>
+      </method>
+      <method name="Contains" cname="atk_component_contains">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="GetExtents" cname="atk_component_get_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="GetLayer" cname="atk_component_get_layer">
+        <return-type type="AtkLayer"/>
+      </method>
+      <method name="GetMdiZorder" cname="atk_component_get_mdi_zorder">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetPosition" cname="atk_component_get_position">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="GetSize" cname="atk_component_get_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_component_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GrabFocus" cname="atk_component_grab_focus">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="RefAccessibleAtPoint" cname="atk_component_ref_accessible_at_point">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="RemoveFocusHandler" cname="atk_component_remove_focus_handler">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="handler_id"/>
+        </parameters>
+      </method>
+      <method name="SetExtents" cname="atk_component_set_extents">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="SetPosition" cname="atk_component_set_position">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="SetSize" cname="atk_component_set_size">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Document" cname="AtkDocument">
+      <method name="GetTheDocument" cname="atk_document_get_document">
+        <return-type type="gpointer"/>
+      </method>
+      <method name="GetDocumentType" cname="atk_document_get_document_type">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="atk_document_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </interface>
+    <interface name="EditableText" cname="AtkEditableText">
+      <method name="CopyText" cname="atk_editable_text_copy_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </method>
+      <method name="CutText" cname="atk_editable_text_cut_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </method>
+      <method name="DeleteText" cname="atk_editable_text_delete_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_editable_text_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="InsertText" cname="atk_editable_text_insert_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="string"/>
+          <parameter type="gint" name="length"/>
+          <parameter type="gint*" name="position"/>
+        </parameters>
+      </method>
+      <method name="PasteText" cname="atk_editable_text_paste_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="position"/>
+        </parameters>
+      </method>
+      <method name="SetRunAttributes" cname="atk_editable_text_set_run_attributes">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkAttributeSet*" name="attrib_set"/>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="SetTextContents" cname="atk_editable_text_set_text_contents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="string"/>
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Hypertext" cname="AtkHypertext">
+      <method name="GetLink" cname="atk_hypertext_get_link">
+        <return-type type="AtkHyperlink*"/>
+        <parameters>
+          <parameter type="gint" name="link_index"/>
+        </parameters>
+      </method>
+      <method name="GetLinkIndex" cname="atk_hypertext_get_link_index">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="char_index"/>
+        </parameters>
+      </method>
+      <method name="GetNLinks" cname="atk_hypertext_get_n_links">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetType" cname="atk_hypertext_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </interface>
+    <interface name="Image" cname="AtkImage">
+      <method name="GetImageDescription" cname="atk_image_get_image_description">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetImagePosition" cname="atk_image_get_image_position">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </method>
+      <method name="GetImageSize" cname="atk_image_get_image_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_image_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SetImageDescription" cname="atk_image_set_image_description">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="description"/>
+        </parameters>
+      </method>
+    </interface>
+    <interface name="Implementor" cname="AtkImplementor">
+      <method name="GetType" cname="atk_implementor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RefAccessible" cname="atk_implementor_ref_accessible">
+        <return-type type="AtkObject*"/>
+      </method>
+    </interface>
     <interface name="Selection" cname="AtkSelection">
       <signal name="SelectionChanged" cname="selection_changed" when="LAST">
         <return-type type="void"/>
@@ -18898,8 +19471,63 @@
           <parameter type="AtkSelection*" name="selection"/>
         </parameters>
       </signal>
+      <method name="AddSelection" cname="atk_selection_add_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="ClearSelection" cname="atk_selection_clear_selection">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetSelectionCount" cname="atk_selection_get_selection_count">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetType" cname="atk_selection_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsChildSelected" cname="atk_selection_is_child_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="RefSelection" cname="atk_selection_ref_selection">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="RemoveSelection" cname="atk_selection_remove_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="SelectAllSelection" cname="atk_selection_select_all_selection">
+        <return-type type="gboolean"/>
+      </method>
     </interface>
-    <interface name="StreamableContent" cname="AtkStreamableContent"/>
+    <interface name="StreamableContent" cname="AtkStreamableContent">
+      <method name="GetMimeType" cname="atk_streamable_content_get_mime_type">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </method>
+      <method name="GetNMimeTypes" cname="atk_streamable_content_get_n_mime_types">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetStream" cname="atk_streamable_content_get_stream">
+        <return-type type="GIOChannel*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="mime_type"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_streamable_content_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </interface>
     <interface name="Table" cname="AtkTable">
       <signal name="RowInserted" cname="row_inserted" when="LAST">
         <return-type type="void"/>
@@ -18951,6 +19579,180 @@
           <parameter type="AtkTable*" name="table"/>
         </parameters>
       </signal>
+      <method name="AddColumnSelection" cname="atk_table_add_column_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="AddRowSelection" cname="atk_table_add_row_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="GetCaption" cname="atk_table_get_caption">
+        <return-type type="AtkObject*"/>
+      </method>
+      <method name="GetColumnAtIndex" cname="atk_table_get_column_at_index">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="index"/>
+        </parameters>
+      </method>
+      <method name="GetColumnDescription" cname="atk_table_get_column_description">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetColumnExtentAt" cname="atk_table_get_column_extent_at">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetColumnHeader" cname="atk_table_get_column_header">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetIndexAt" cname="atk_table_get_index_at">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetNColumns" cname="atk_table_get_n_columns">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetNRows" cname="atk_table_get_n_rows">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetRowAtIndex" cname="atk_table_get_row_at_index">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="index"/>
+        </parameters>
+      </method>
+      <method name="GetRowDescription" cname="atk_table_get_row_description">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="GetRowExtentAt" cname="atk_table_get_row_extent_at">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="GetRowHeader" cname="atk_table_get_row_header">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="GetSelectedColumns" cname="atk_table_get_selected_columns">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint**" name="selected"/>
+        </parameters>
+      </method>
+      <method name="GetSelectedRows" cname="atk_table_get_selected_rows">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint**" name="selected"/>
+        </parameters>
+      </method>
+      <method name="GetSummary" cname="atk_table_get_summary">
+        <return-type type="AtkObject*"/>
+      </method>
+      <method name="GetType" cname="atk_table_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsColumnSelected" cname="atk_table_is_column_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="IsRowSelected" cname="atk_table_is_row_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="IsSelected" cname="atk_table_is_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="RefAt" cname="atk_table_ref_at">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="RemoveColumnSelection" cname="atk_table_remove_column_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </method>
+      <method name="RemoveRowSelection" cname="atk_table_remove_row_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </method>
+      <method name="SetCaption" cname="atk_table_set_caption">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkObject*" name="caption"/>
+        </parameters>
+      </method>
+      <method name="SetColumnDescription" cname="atk_table_set_column_description">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+          <parameter type="const-gchar*" name="description"/>
+        </parameters>
+      </method>
+      <method name="SetColumnHeader" cname="atk_table_set_column_header">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="column"/>
+          <parameter type="AtkObject*" name="header"/>
+        </parameters>
+      </method>
+      <method name="SetRowDescription" cname="atk_table_set_row_description">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="const-gchar*" name="description"/>
+        </parameters>
+      </method>
+      <method name="SetRowHeader" cname="atk_table_set_row_header">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="row"/>
+          <parameter type="AtkObject*" name="header"/>
+        </parameters>
+      </method>
+      <method name="SetSummary" cname="atk_table_set_summary">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkObject*" name="accessible"/>
+        </parameters>
+      </method>
     </interface>
     <interface name="Text" cname="AtkText">
       <signal name="TextChanged" cname="text_changed" when="LAST">
@@ -18974,8 +19776,184 @@
           <parameter type="AtkText*" name="text"/>
         </parameters>
       </signal>
+      <method name="AddSelection" cname="atk_text_add_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="AttributeForName" cname="atk_text_attribute_for_name" shared="true">
+        <return-type type="AtkTextAttribute"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="AttributeGetName" cname="atk_text_attribute_get_name" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkTextAttribute" name="attr"/>
+        </parameters>
+      </method>
+      <method name="AttributeGetType" cname="atk_text_attribute_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="AttributeGetValue" cname="atk_text_attribute_get_value" shared="true">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkTextAttribute" name="attr"/>
+          <parameter type="gint" name="index"/>
+        </parameters>
+      </method>
+      <method name="AttributeRegister" cname="atk_text_attribute_register" shared="true">
+        <return-type type="AtkTextAttribute"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="BoundaryGetType" cname="atk_text_boundary_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetCaretOffset" cname="atk_text_get_caret_offset">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetCharacterAtOffset" cname="atk_text_get_character_at_offset">
+        <return-type type="gunichar"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </method>
+      <method name="GetCharacterCount" cname="atk_text_get_character_count">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetCharacterExtents" cname="atk_text_get_character_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+          <parameter type="AtkCoordType" name="coords"/>
+        </parameters>
+      </method>
+      <method name="GetDefaultAttributes" cname="atk_text_get_default_attributes">
+        <return-type type="AtkAttributeSet*"/>
+      </method>
+      <method name="GetNSelections" cname="atk_text_get_n_selections">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetOffsetAtPoint" cname="atk_text_get_offset_at_point">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coords"/>
+        </parameters>
+      </method>
+      <method name="GetRunAttributes" cname="atk_text_get_run_attributes">
+        <return-type type="AtkAttributeSet*"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetSelection" cname="atk_text_get_selection">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="selection_num"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetText" cname="atk_text_get_text">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetTextAfterOffset" cname="atk_text_get_text_after_offset">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="AtkTextBoundary" name="boundary_type"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetTextAtOffset" cname="atk_text_get_text_at_offset">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="AtkTextBoundary" name="boundary_type"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetTextBeforeOffset" cname="atk_text_get_text_before_offset">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+          <parameter type="AtkTextBoundary" name="boundary_type"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_text_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RemoveSelection" cname="atk_text_remove_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="selection_num"/>
+        </parameters>
+      </method>
+      <method name="SetCaretOffset" cname="atk_text_set_caret_offset">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </method>
+      <method name="SetSelection" cname="atk_text_set_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="selection_num"/>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </method>
     </interface>
-    <interface name="Value" cname="AtkValue"/>
+    <interface name="Value" cname="AtkValue">
+      <method name="GetCurrentValue" cname="atk_value_get_current_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="GetMaximumValue" cname="atk_value_get_maximum_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="GetMinimumValue" cname="atk_value_get_minimum_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="atk_value_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SetCurrentValue" cname="atk_value_set_current_value">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GValue*" name="value"/>
+        </parameters>
+      </method>
+    </interface>
     <object name="GObjectAccessible" cname="AtkGObjectAccessible" parent="AtkObject">
       <method name="ForObject" cname="atk_gobject_accessible_for_object" shared="true">
         <return-type type="AtkObject*"/>
