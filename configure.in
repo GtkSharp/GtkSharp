@@ -156,15 +156,11 @@ if test "x$enable_gtkhtml" = "xyes"; then
 	GTKHTML_VERSION=3.0
 	GTKHTML_SOVERSION=4
 else
-	GTKHTML_REQUIRED_VERSION=3.1.12
+	GTKHTML_REQUIRED_VERSION=3.2.0
 	PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
 	if test "x$enable_gtkhtml" = "xyes"; then
 		GTKHTML_VERSION=3.1
-		if $PKG_CONFIG --atleast-version=3.1.18 libgtkhtml-3.1; then
-		  GTKHTML_SOVERSION=11
-		else
-		  GTKHTML_SOVERSION=7
-		fi
+		GTKHTML_SOVERSION=11
 	else
 		GTKHTML_VERSION=
 		GTKHTML_SOVERSION=
