@@ -135,11 +135,11 @@ namespace GtkDemo
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("xx-small");
-			tag.Scale = Pango.Scale.XX_Small;
+			tag.Scale = Pango.Scale.XXSmall;
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("x-large");
-			tag.Scale = Pango.Scale.X_Large;
+			tag.Scale = Pango.Scale.XLarge;
 			buffer.TagTable.Add (tag);
 
 			tag  = new TextTag ("monospace");
