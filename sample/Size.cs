@@ -18,6 +18,7 @@ namespace GtkSamples {
 			Gtk.Window win = new Gtk.Window ("Gtk# Hello World");
 			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			win.SizeAllocated += new SizeAllocatedHandler (Size_Allocated);
+			win.SizeRequested += new SizeRequestedHandler (Size_Requested);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;
@@ -27,6 +28,14 @@ namespace GtkSamples {
 		{
 			Application.Quit ();
 			args.RetVal = true;
+		}
+
+		static void Size_Requested (object obj, SizeRequestedArgs args)
+		{
+			Requisition req = args.Requisition;
+			Console.WriteLine ("Requesting 100 x 100");
+			req.Width = req.Height = 100;
+			args.Requisition = req;
 		}
 
 		static void Size_Allocated (object obj, SizeAllocatedArgs args)

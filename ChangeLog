@@ -1,5 +1,29 @@
 2004-12-16  Dan Winship  <danw@novell.com>
 
+	* generator/ManagedCallString.cs (Setup, Finish, ToString): Add
+	new methods to allow arbitrary setup and teardown code around the
+	managed call. When passing a type with "complicated" marshalling
+	requirements as a ref or out param, first assign the value to a
+	temporary variable (in Setup), then pass the temp as the ref or
+	out param (in ToString), and then assign the new value back to the
+	original argument (in Finish).
+
+	* generator/Signal.cs: 
+	* generator/SignalHandler.cs: Update to generate correct glue for
+	signals with "ref" or "out" params. (#70566)
+
+	* generator/VirtualMethod.cs: Update for ManagedCallString change
+
+	* generator/IGeneratable.cs: add comments explaining what each
+	member does
+
+	* gtk/Gtk.metadata: mark Editable.InsertText's "position" arg pass-by-ref
+
+	* sample/Size.cs: connect to the SizeRequested event and override
+	it, to test/demo the changes
+
+2004-12-16  Dan Winship  <danw@novell.com>
+
 	* parser/gapi_pp.pl: Don't strip out /*< public >*/ and
 	/*< private >*/ comments.
 
@@ -19,8 +43,8 @@
 	wrapper properties for private fields, since the only code that
 	could use them is the generated code, which won't.
 
-	See doc/ChangeLog for the (very minimal) fallout from these
-	changes.
+	Part of #69514. See doc/ChangeLog for the (very minimal) fallout
+	from these changes.
 
 2004-12-16  Mike Kestner  <mkestner@novell.com>
 

@@ -65,8 +65,14 @@ namespace GtkSharp.Generation {
 					if (i > 0)
 						result += ", ";
 
+					if (parms[i].PassAs != "")
+						result += parms[i].PassAs + " ";
 					result += (parms[i].MarshalType + " arg" + i);
 				}
+
+				result = result.Replace ("out ref", "out");
+				result = result.Replace ("ref ref", "ref");
+
 				return result;
 			}
 		}
@@ -75,6 +81,7 @@ namespace GtkSharp.Generation {
 			get {
 				string result = SymbolTable.Table.GetName (retval.CType);
 				for (int i = 0; i < parms.Count; i++) {
+					result += parms[i].PassAs;
 					if (parms[i].Generatable is ObjectGen || parms[i].Generatable is InterfaceGen) {
 						result += "Object";
 					} else {
@@ -140,6 +147,9 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
 				}
 				for (int idx=1; idx < parms.Count; idx++) {
+					if (parms[idx].PassAs == "out")
+						continue;
+
 					string ctype = parms[idx].CType;
 					ClassBase wrapper = table.GetClassGen (ctype);
 					if ((wrapper != null && !(wrapper is StructBase)) || table.IsManuallyWrapped (ctype)) {
@@ -159,6 +169,11 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\targv[0] = inst._obj;");
 				sw.WriteLine("\t\t\targv[1] = args;");
 				sw.WriteLine("\t\t\tinst._handler.DynamicInvoke(argv);");
+				for (int idx=1; idx < parms.Count; idx++) {
+					if (parms[idx].PassAs != "") {
+						sw.WriteLine ("\t\t\targ" + idx + " = " + table.ToNativeReturn (parms[idx].CType, "((" + parms[idx].CSType + ")args.Args[" + (idx - 1) + "])") + ";");
+					}
+				}
 				if (retval.CSType != "void") {
 					sw.WriteLine ("\t\t\tif (args.RetVal == null)");
 					if (retval.CSType == "bool")

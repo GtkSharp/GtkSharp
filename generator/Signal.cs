@@ -165,9 +165,16 @@ namespace GtkSharp.Generation {
 			if (parms != null) {
 				for (int i = 1; i < parms.Count; i++) {
 					sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
-					sw.WriteLine ("\t\t\tget {");
-					sw.WriteLine ("\t\t\t\treturn (" + parms[i].CSType + ") Args[" + (i - 1) + "];");
-					sw.WriteLine ("\t\t\t}");
+					if (parms[i].PassAs != "out") {
+						sw.WriteLine ("\t\t\tget {");
+						sw.WriteLine ("\t\t\t\treturn (" + parms[i].CSType + ") Args[" + (i - 1) + "];");
+						sw.WriteLine ("\t\t\t}");
+					}
+					if (parms[i].PassAs != "") {
+						sw.WriteLine ("\t\t\tset {");
+						sw.WriteLine ("\t\t\t\tArgs[" + (i - 1) + "] = (" + parms[i].CSType + ")value;");
+						sw.WriteLine ("\t\t\t}");
+					}
 					sw.WriteLine ("\t\t}");
 					sw.WriteLine ();
 				}
@@ -222,8 +229,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
+			sw.Write (call.Setup ("\t\t\t"));
 			sw.Write ("\t\t\t{0}", IsVoid ? "" : "return ");
 			sw.WriteLine ("obj.{0} ({1});", "On" + Name, call.ToString ());
+			sw.Write (call.Finish ("\t\t\t"));
 			sw.WriteLine ("\t\t}\n");
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
 			sw.WriteLine ("\t\tprivate static void Override" + Name + " (GLib.GType gtype)");

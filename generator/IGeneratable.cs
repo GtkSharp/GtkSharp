@@ -23,24 +23,37 @@ namespace GtkSharp.Generation {
 
 	public interface IGeneratable  {
 
+		// The C name of the generatable
 		string CName {get;}
 
-		string MarshalType {get;}
-
-		string MarshalReturnType {get;}
-
-		string ToNativeReturnType {get;}
-
+		// The (short) C# name of the generatable
 		string Name {get;}
 
+		// The fully-qualified C# name of the generatable
 		string QualifiedName {get;}
 
+		// The type (possibly including "ref" or "out") to use in the import
+		// signature when passing this generatable to unmanaged code
+		string MarshalType {get;}
+
+		// The type to use as the return type in an import signature when
+		// receiving this generatable back from unmanaged code
+		string MarshalReturnType {get;}
+
+		// The type to use in a managed callback signature when returning this
+		// generatable to unmanaged code
+		string ToNativeReturnType {get;}
+
+		// Generates an expression to convert var_name to MarshalType
 		string CallByName (string var_name);
-		
+
+		// Generates an expression to convert var from MarshalType
 		string FromNative (string var);
 
+		// Generates an expression to convert var from MarshalReturnType
 		string FromNativeReturn (string var);
 
+		// Generates an expression to convert var to ToNativeReturnType
 		string ToNativeReturn (string var);
 
 		void Generate ();

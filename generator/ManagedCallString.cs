@@ -28,6 +28,7 @@ namespace GtkSharp.Generation {
 	public class ManagedCallString {
 		
 		ArrayList parms = new ArrayList ();
+		ArrayList special = new ArrayList ();
 
 		public ManagedCallString (Parameters parms)
 		{
@@ -36,7 +37,35 @@ namespace GtkSharp.Generation {
 				if (p.IsLength && parms [i-1].IsString)
 					continue;
 				this.parms.Add (p);
+
+				IGeneratable igen = p.Generatable;
+				if ((igen is StructGen || p.PassAs != "") &&
+				    (p.Name != igen.FromNative (p.Name)))
+					this.special.Add (true);
+				else
+					this.special.Add (false);
 			}
+		}
+
+		public string Setup (string indent)
+		{
+			string ret = "";
+
+			for (int i = 0; i < parms.Count; i ++) {
+				if ((bool)special[i] == false)
+					continue;
+
+				Parameter p = parms [i] as Parameter;
+				IGeneratable igen = p.Generatable;
+				string pass_as = igen is StructGen ? "ref" : p.PassAs;
+
+				ret += indent + igen.QualifiedName + " my" + p.Name;
+				if (igen is StructGen || p.PassAs == "ref")
+					ret += " = " + igen.FromNative (p.Name);
+				ret += ";\n";
+			}
+
+			return ret;
 		}
 
 		public override string ToString ()
@@ -50,10 +79,27 @@ namespace GtkSharp.Generation {
 				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
 				result [i] = igen is StructGen ? "ref " : (p.PassAs == "" ? "" : p.PassAs + " ");
-				result [i] += igen.FromNative (p.Name);
+				result [i] += ((bool)special[i]) ? "my" + p.Name : igen.FromNative (p.Name);
 			}
 
 			return String.Join (", ", result);
+		}
+
+		public string Finish (string indent)
+		{
+			string ret = "";
+
+			for (int i = 0; i < parms.Count; i ++) {
+				if ((bool)special[i] == false)
+					continue;
+
+				Parameter p = parms [i] as Parameter;
+				IGeneratable igen = p.Generatable;
+
+				ret += indent + p.Name + " = " + igen.CallByName ("my" + p.Name) + ";\n";
+			}
+
+			return ret;
 		}
 	}
 }

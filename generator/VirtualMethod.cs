@@ -81,11 +81,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + isig + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
+			sw.Write (call.Setup ("\t\t\t"));
 			if (retval.CSType == "void")
 				sw.WriteLine ("\t\t\t" + call_string + ";");
 			else {
 				sw.WriteLine ("\t\t\treturn " + SymbolTable.Table.ToNativeReturn (retval.CType, call_string) + ";");
 			}
+			sw.Write (call.Finish ("\t\t\t"));
 			sw.WriteLine ("\t\t}");
 		}
 
