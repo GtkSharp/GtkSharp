@@ -26,9 +26,8 @@ namespace GtkSamples {
 
 		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		static void Size_Allocated (object obj, SizeAllocatedArgs args)

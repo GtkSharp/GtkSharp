@@ -100,7 +100,6 @@ namespace GtkSamples {
 		
 		void Item_Event (object obj, GnomeSharp.CanvasEventArgs args) {
 			EventButton ev = EventButton.New (args.Event.Handle);
-			SignalArgs sa = (SignalArgs) args;
 			CanvasRE item = (CanvasRE) obj;
 
 			switch (ev.type) {
@@ -108,17 +107,17 @@ namespace GtkSamples {
 				if (ev.button == 1) {
 					remember_x = ev.x;
 					remember_y = ev.y;
-					sa.RetVal = true;
+					args.RetVal = true;
 					return;
 				} else if (ev.button == 3) {
 					item.Destroy ();
-					sa.RetVal = true;
+					args.RetVal = true;
 					return;
 				}
 				break;
 			case EventType.TwoButtonPress:
 				ChangeItemColor (item);
-				sa.RetVal = true;
+				args.RetVal = true;
 				return;
 			case EventType.MotionNotify:
 				Gdk.ModifierType state = (Gdk.ModifierType) ev.state;
@@ -127,21 +126,21 @@ namespace GtkSamples {
 					item.Move (new_x - remember_x, new_y - remember_y);
 					remember_x = new_x;
 					remember_y = new_y;
-					sa.RetVal = true;
+					args.RetVal = true;
 					return;
 				}
 				break;
 			case EventType.EnterNotify:
 				item.WidthUnits = 3.0;
-				sa.RetVal = true;
+				args.RetVal = true;
 				return;
 			case EventType.LeaveNotify:
 				item.WidthUnits = 1.0;
-				sa.RetVal = true;
+				args.RetVal = true;
 				return;
 			}
 
-			sa.RetVal = false;
+			args.RetVal = false;
 			return;
 		}
 		
@@ -152,9 +151,8 @@ namespace GtkSamples {
 
 		void Window_Delete (object obj, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		public static int Main (string[] args)

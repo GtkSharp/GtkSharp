@@ -42,9 +42,8 @@ namespace GtkSamples {
 
 		static void Window_Delete (object obj, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		static void ExposeEvent (object obj, ExposeEventArgs args)
@@ -60,8 +59,7 @@ namespace GtkSamples {
 									   area.x, area.y,
 									   area.width, area.height);
 
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = false;
+			args.RetVal = false;
 		}
 		
 		static void ConfigureEvent (object obj, ConfigureEventArgs args)
@@ -79,8 +77,7 @@ namespace GtkSamples {
 			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
 									    allocation.width, allocation.height);
 
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		static void DrawBrush (double x, double y)
@@ -104,8 +101,7 @@ namespace GtkSamples {
 			if (ev.button == 1 && pixmap != null)
 				DrawBrush (ev.x, ev.y);
 
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 		
 		static void MotionNotifyEvent (object obj, MotionNotifyEventArgs args)
@@ -128,8 +124,7 @@ namespace GtkSamples {
 			if ((state & Gdk.ModifierType.Button1Mask) != 0 && pixmap != null)
 				DrawBrush (x, y);
 
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 	}
 }

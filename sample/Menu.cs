@@ -43,9 +43,8 @@ namespace GtkSharp.Samples {
 
 		static void delete_cb (object o, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 		static void exit_cb (object o, EventArgs args)
