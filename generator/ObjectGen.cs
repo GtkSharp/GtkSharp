@@ -260,8 +260,6 @@ namespace GtkSharp.Generation {
 	
 			Console.WriteLine ("Generating mappers");
 			foreach (string key in dir_info.objects.Keys) {
-				Console.WriteLine ("Expected: " + GetExpected(key));
-				Console.WriteLine ("dir_info.objects[key]+assname: " + ((string) dir_info.objects[key]) + "," + dir_info.assembly_name);
 				if (GetExpected(key) != ((string) dir_info.objects[key] + "," + dir_info.assembly_name))
 					sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + dir_info.objects [key] + "," + dir_info.assembly_name + "\");");
 			}
