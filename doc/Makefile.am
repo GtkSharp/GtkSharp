@@ -1,6 +1,3 @@
-docsdir = $(datadir)/doc/gtk-sharp/xml
-docs_DATA = gtk-sharp-docs.source
-
 ASSEMBLER = monodoc --assemble
 UPDATER = monodoc --update
 
@@ -17,11 +14,6 @@ update:
 		$(UPDATER) ../$$i/*.dll -o ./en || exit 1;	\
         done
 
-sources =			\
-	Tool.cs
-
-build_sources = $(addprefix $(srcdir)/, $(sources))
-
 CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree
 
 EXTRA_DIST =			\
@@ -34,15 +26,4 @@ dist-hook:
 		mkdir -p $(distdir)/en/$$i;			\
 		cp $(srcdir)/en/$$i/*.xml $(distdir)/en/$$i;	\
 	done
-
-install-data-local:
-	mkdir -p $(DESTDIR)$(docsdir)/en
-	cp $(srcdir)/en/*.xml $(DESTDIR)$(docsdir)/en;
-	for i in $(NAMESPACES); do					\
-		mkdir -p $(DESTDIR)$(docsdir)/en/$$i;			\
-		cp $(srcdir)/en/$$i/*.xml $(DESTDIR)$(docsdir)/en/$$i;	\
-	done
-
-uninstall-local:
-	rm -rf $(DESTDIR)$(docsdir)/en
 
