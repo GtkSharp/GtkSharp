@@ -65,6 +65,9 @@ namespace GtkSharp.Generation {
 				if (pcnt > 0) {
 					pinv += ", ";
 				}
+
+				if (SymbolTable.IsStruct(type))
+					pinv += "ref ";
 				pinv += (ptype + " arg" + pcnt);
 				parms.Add(type);
 				if (SymbolTable.IsObject(type)) {
