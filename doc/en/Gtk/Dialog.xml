@@ -74,6 +74,79 @@ namespace GtkDialogSample
 }
         </code>
       </example>
+      <para>
+You also can subclass the <see cref="T:Gtk.Dialog" /> when you want to use the same Dialog on several places in your application.
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+namespace GtkDialogSample
+{
+
+	public class MyDialog:Dialog
+	{
+	
+		public MyDialog(Window w,DialogFlags f ):base("Sample", w, f)
+		{
+            this.Modal = true;
+            this.AddButton ("Close", ResponseType.Close);     	
+		}
+									
+		protected override void OnResponse (ResponseType response_id){
+		Console.WriteLine (response_id);
+		}
+		
+	
+	}
+
+
+
+    public class GtkDialogSample
+    {
+        MyDialog dialog;
+        Window win;
+          
+        static void Main()
+        {
+            new GtkDialogSample ();
+        }
+     
+        GtkDialogSample ()
+        {
+            Application.Init ();
+            win = new Window ("Test");
+            win.SetDefaultSize (250, 250);
+            win.DeleteEvent += new DeleteEventHandler (on_win_delete);
+            
+            Button btn = new Button ("Show About");
+            btn.Clicked += new EventHandler (on_btn_clicked);
+            win.Add (btn);
+            
+            win.ShowAll ();
+            Application.Run ();
+        }
+          
+        void on_btn_clicked (object obj, EventArgs args)
+        {
+            dialog = new MyDialog(win, Gtk.DialogFlags.DestroyWithParent);
+            dialog.Run ();
+            dialog.Destroy ();
+        }
+          
+      
+          
+        void on_win_delete (object obj, DeleteEventArgs args)
+        {
+            Application.Quit ();
+        }
+    }    
+
+}
+   
+  </code>
+      </example>
     </remarks>
   </Docs>
   <Base>
@@ -259,9 +332,9 @@ namespace GtkDialogSample
         <ReturnType>Gtk.VBox</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The <see cref="T:Gtk.VBox"/> that contains other widgets in this dialog.</summary>
+        <summary>The <see cref="T:Gtk.VBox" /> that contains other widgets in this dialog.</summary>
         <returns>an object of type <see cref="T:Gtk.VBox" />.</returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasSeparator">
@@ -306,7 +379,7 @@ namespace GtkDialogSample
       <Parameters />
       <Docs>
         <summary>Emitted when the dialog is closed.</summary>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ActionArea">
@@ -319,7 +392,7 @@ namespace GtkDialogSample
       <Docs>
         <summary>The area of the Dialog where the action widgets are placed.</summary>
         <returns>a <see cref="T:Gtk.HButtonBox" /></returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -395,7 +468,7 @@ namespace GtkDialogSample
         <summary>Adds a new response button to the dialog.</summary>
         <param name="button_text">a <see cref="T:System.String" />, text for the button</param>
         <param name="response">a <see cref="T:System.Int32" />, the numeric response code associated with the button.</param>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Respond">
@@ -410,7 +483,7 @@ namespace GtkDialogSample
       <Docs>
         <summary>Activate one of the responses.</summary>
         <param name="response">a <see cref="T:System.Int32" />, the chosen response.</param>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DefaultResponse">
