@@ -5,7 +5,7 @@ ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
-DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = $(ASSEMBLY).config
 
 references = 
 
@@ -49,13 +49,12 @@ sources =		 			\
 	ValueArray.cs				\
 	Value.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) ../AssemblyInfo.cs
 dist_sources = $(sources)
 
 EXTRA_DIST =				\
 	$(dist_sources)			\
 	$(ASSEMBLY).config.in		\
-	AssemblyInfo.cs.in		\
 	makefile.win32
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk

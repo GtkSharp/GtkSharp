@@ -1,20 +1,13 @@
 SUBDIRS = . glue
 
-API = gtk-api.xml
-RAW_API = gtk-api.raw
-ADDITIONAL_API = gtk-symbols.xml
-INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml $(top_srcdir)/gdk/gdk-symbols.xml
-METADATA = Gtk.metadata
-ASSEMBLY_NAME = gtk-sharp
-references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll
+pkg = gtk
+pkgconfigdir=$(libdir)/pkgconfig
+pkgconfig_DATA=gtk-sharp-2.0.pc
 
-TARGET = $(ASSEMBLY)
-ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi-2.0
-noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
-gapi_DATA = $(API) $(ADDITIONAL_API)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.snk
-DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
+SYMBOLS = gtk-symbols.xml
+INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml
+METADATA = Gtk.metadata
+references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll
 
 sources = 				\
 	ActionEntry.cs			\
@@ -32,8 +25,6 @@ sources = 				\
 	TreeNodeAttribute.cs		\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
-
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs = 				\
 	Accel.custom			\
@@ -107,52 +98,14 @@ customs = 				\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\
-	UIManager.custom	\
+	UIManager.custom		\
 	VBox.custom			\
 	VScale.custom			\
 	Viewport.custom			\
 	Widget.custom			\
 	Window.custom
 
-build_customs = $(addprefix $(srcdir)/, $(customs))
+add_dist = makefile.win32 gtk-sharp-2.0.pc.in
 
-EXTRA_DIST =			\
-	makefile.win32		\
-	$(ASSEMBLY).config.in	\
-	AssemblyInfo.cs.in	\
-	$(RAW_API)		\
-	$(ADDITIONAL_API)	\
-	$(METADATA)		\
-	$(customs)		\
-	$(sources)
-
-$(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
-	cp $(srcdir)/$(RAW_API) $(API)
-	chmod u+w $(API)
-	$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA)
-
-generated-stamp: $(API) $(srcdir)/$(ADDITIONAL_API) ../generator/gapi_codegen.exe $(build_customs)
-	rm -f generated/* &&	\
-	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) $(srcdir)/$(ADDITIONAL_API) 			\
-	--include $(INCLUDE_API) --outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME) 	\
-	--gluelib-name=gtksharpglue --glue-filename=glue/generated.c						\
-	&& touch generated-stamp
-
-gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
-	cp $(top_srcdir)/gtk-sharp.snk .
-
-$(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.snk
-	$(CSC) /nowarn:0612 /unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) $(GENERATED_SOURCES)
-
-install-data-local:
-	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";	\
-	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;	\
-	fi
-
-uninstall-local:
-	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
-	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
-	fi
+include ../Makefile.include
 

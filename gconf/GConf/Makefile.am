@@ -7,7 +7,7 @@ TARGET =
 endif
 noinst_DATA = $(TARGET)
 CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
-DISTCLEANFILES = gconf-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = gconf-sharp-2.0.pc $(ASSEMBLY).config
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gconf-sharp
@@ -15,7 +15,6 @@ ASSEMBLY_NAME = gconf-sharp
 EXTRA_DIST =			\
 	$(sources)		\
 	$(ASSEMBLY).config.in	\
-	AssemblyInfo.cs.in	\
 	gconf-sharp-2.0.pc.in
 
 references = 			\
@@ -33,7 +32,7 @@ sources = 			\
 	NotifyWrapper.cs 	\
 	Value.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) ../../AssemblyInfo.cs
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .

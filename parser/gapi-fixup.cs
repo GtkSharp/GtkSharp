@@ -29,14 +29,15 @@ namespace GtkSharp.Parsing {
 
 		public static int Main (string[] args)
 		{
-			if (args.Length != 2) {
-				Console.WriteLine ("Usage: gapi-fixup --metadata=<filename> --api=<filename>");
+			if (args.Length < 2) {
+				Console.WriteLine ("Usage: gapi-fixup --metadata=<filename> --api=<filename> --symbols=<filename>");
 				return 0;
 			}
 
 			string api_filename = "";
 			XmlDocument api_doc = new XmlDocument ();
 			XmlDocument meta_doc = new XmlDocument ();
+			XmlDocument symbol_doc = new XmlDocument ();
 
 			foreach (string arg in args) {
 
@@ -61,6 +62,20 @@ namespace GtkSharp.Parsing {
 					try {
 						Stream stream = File.OpenRead (api_filename);
 						api_doc.Load (stream);
+						stream.Close ();
+					} catch (XmlException e) {
+						Console.WriteLine ("Invalid api file.");
+						Console.WriteLine (e);
+						return 1;
+					}
+
+				} else if (arg.StartsWith ("--symbols=")) {
+
+					string symbol_filename = arg.Substring (10);
+
+					try {
+						Stream stream = File.OpenRead (symbol_filename);
+						symbol_doc.Load (stream);
 						stream.Close ();
 					} catch (XmlException e) {
 						Console.WriteLine ("Invalid api file.");
@@ -112,6 +127,22 @@ namespace GtkSharp.Parsing {
 						XmlNode node = ((IHasXmlNode)path_iter.Current).GetNode ();
 						parent_node.AppendChild (node.Clone ());
 						node.ParentNode.RemoveChild (node);
+					}
+				}
+			}
+
+			if (symbol_doc != null) {
+				Console.WriteLine ("adding symbols to api file");
+				XPathNavigator symbol_nav = symbol_doc.CreateNavigator ();
+				XPathNodeIterator iter = symbol_nav.Select ("/api/*");
+				while (iter.MoveNext ()) {
+					Console.WriteLine ("adding symbol");
+					XmlNode sym_node = ((IHasXmlNode)iter.Current).GetNode ();
+					XPathNodeIterator parent_iter = api_nav.Select ("/api");
+					if (parent_iter.MoveNext ()) {
+						Console.WriteLine ("to parent node");
+						XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
+						parent_node.AppendChild (api_doc.ImportNode (sym_node, true));
 					}
 				}
 			}

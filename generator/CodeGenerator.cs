@@ -45,12 +45,16 @@ namespace GtkSharp.Generation {
 			SymbolTable table = SymbolTable.Table;
 			ArrayList gens = new ArrayList ();
 			foreach (string arg in args) {
+				string filename = arg;
 				if (arg == "--generate") {
 					generate = true;
 					continue;
 				} else if (arg == "--include") {
 					generate = false;
 					continue;
+				} else if (arg.StartsWith ("-I:")) {
+					generate = false;
+					filename = filename.Substring (3);
 				} else if (arg.StartsWith ("--outdir=")) {
 					generate = false;
 					dir = arg.Substring (9);
@@ -74,7 +78,7 @@ namespace GtkSharp.Generation {
 				}
 
 				Parser p = new Parser ();
-				IGeneratable[] curr_gens = p.Parse (arg);
+				IGeneratable[] curr_gens = p.Parse (filename);
 				table.AddTypes (curr_gens);
 				if (generate)
 					gens.AddRange (curr_gens);

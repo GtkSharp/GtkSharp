@@ -1,0 +1,59 @@
+SNK = gtk-sharp.snk
+API = $(pkg)-api.xml
+RAW_API = $(pkg)-api.raw
+
+ASSEMBLY_NAME = $(pkg)-sharp
+ASSEMBLY = $(ASSEMBLY_NAME).dll
+
+TARGET = $(addsuffix -sharp.dll, $(pkg)) $(addsuffix -sharp.dll.config, $(pkg))
+noinst_DATA = $(TARGET)
+TARGET_API = $(addsuffix -api.xml, $(pkg))
+gapidir = $(datadir)/gapi-2.0
+gapi_DATA = $(TARGET_API)
+CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c $(SNK)
+DISTCLEANFILES = $(ASSEMBLY).config
+
+EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(customs) $(sources) $(add_dist)
+
+build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
+
+$(API): $(METADATA) $(RAW_API) $(SYMBOLS)
+	cp $(srcdir)/$(RAW_API) $(API)
+	chmod u+w $(API)
+	@if test -n '$(METADATA)'; then		\
+		echo "$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols)";	\
+		$(RUNTIME) ../parser/gapi-fixup.exe --api=$(API) --metadata=$(srcdir)/$(METADATA) $(build_symbols); \
+	fi
+
+build_customs = $(addprefix $(srcdir)/, $(customs))
+api_includes = $(addprefix -I:, $(INCLUDE_API))
+
+generated-stamp: $(API) ../generator/gapi_codegen.exe $(build_customs)
+	rm -f generated/* &&	\
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(API) \
+	$(api_includes)	\
+	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
+	--gluelib-name=$(pkg)sharpglue --glue-filename=glue/generated.c			\
+	&& touch generated-stamp
+
+$(SNK): $(top_srcdir)/$(SNK)
+	cp $(top_srcdir)/$(SNK) .
+
+build_sources = $(addprefix $(srcdir)/, $(sources)) ../AssemblyInfo.cs
+build_references = $(addprefix /r:, $(references))
+
+$(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
+	$(CSC) -nowarn:0612 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources) $(GENERATED_SOURCES)
+
+install-data-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;	\
+	fi
+
+uninstall-local:
+	@if test -n '$(TARGET)'; then						\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
+	fi
+
