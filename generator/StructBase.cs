@@ -260,16 +260,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\treturn self;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic static bool operator == ({0} a, {0} b)", QualifiedName);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn a.Equals (b);");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic static bool operator != ({0} a, {0} b)", QualifiedName);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn ! a.Equals (b);");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine();
 
 			foreach (Ctor ctor in Ctors) {
 				ctor.ForceStatic = true;
