@@ -30,7 +30,17 @@
 		/// </remarks>
 		public string Filename {
 			get {
-				string ret = Marshal.PtrToStringAnsi (gtksharp_glade_xml_get_filename (Handle));
+				string ret;
+				IntPtr ptr = gtksharp_glade_xml_get_filename (Handle);
+				if (ptr == IntPtr.Zero)
+				{
+					// from resource
+					ret = System.Reflection.Assembly.GetCallingAssembly ().Location;
+				}
+				else
+				{
+					ret = Marshal.PtrToStringAnsi (ptr);
+				}
 				return ret;
 			}
 		}
@@ -47,7 +57,12 @@
 		static extern IntPtr glade_get_widget_name (IntPtr widget);
 
 		static public string GetWidgetName (Gtk.Widget w) {
-			string ret = Marshal.PtrToStringAnsi (glade_get_widget_name (w.Handle));
+			string ret;
+			IntPtr ptr = glade_get_widget_name (w.Handle);
+			if (ptr == IntPtr.Zero)
+				ret = "";
+			else
+				ret = Marshal.PtrToStringAnsi (ptr);
 			return ret;
 		}
 
