@@ -220,6 +220,7 @@ foreach $cname (sort(keys(%edefs))) {
 	}
 	$def =~ /\{(.*)\}/;
 	@vals = split(/,\s*/, $1);
+	$vals[0] =~ s/^\s+//;
 	@v0 = split(/_/, $vals[0]);
 	if (@vals > 1) {
 		$done = 0;
