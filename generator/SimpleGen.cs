@@ -40,35 +40,35 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public String MarshalType {
+		public string MarshalType {
 			get
 			{
 				return type;
 			}
 		}
-		public String MarshalReturnType {
+		public virtual string MarshalReturnType {
 			get
 			{
 				return type;
 			}
 		}
 
-		public String CallByName (String var_name)
+		public string CallByName (string var_name)
 		{
 			return var_name;
 		}
 		
-		public String FromNative(String var)
+		public string FromNative(string var)
 		{
 			return var;
 		}
 		
-		public String FromNativeReturn(String var)
+		public virtual string FromNativeReturn(string var)
 		{
 			return var;
 		}
 
-		public String ToNativeReturn(String var)
+		public virtual string ToNativeReturn(string var)
 		{
 			return var;
 		}
