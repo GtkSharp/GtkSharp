@@ -44,12 +44,13 @@ protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 
 private static Hashtable ParentedWidgets = new Hashtable ();
 
-private void Widget_ParentSet (object o, ParentSetArgs args)
+private static void Widget_ParentSet (object o, ParentSetArgs args)
 {
-	if (Parent != null && args.PreviousParent == null)
-		ParentedWidgets[this] = this;
-	else if (Parent == null && args.PreviousParent != null)
-		ParentedWidgets.Remove (this);
+	Widget w = o as Widget;
+	if (w.Parent != null && args.PreviousParent == null)
+		ParentedWidgets[w] = w;
+	else if (w.Parent == null && args.PreviousParent != null)
+		ParentedWidgets.Remove (w);
 }
 
 [DllImport("gtksharpglue-2")]
