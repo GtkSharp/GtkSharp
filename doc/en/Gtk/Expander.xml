@@ -9,8 +9,105 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A container which can hide its child</summary>
+    <remarks>
+      <para>
+A <see cref="T:Gtk.Expander" /> allows the user to hide or show its child by clicking on an expander triangle similar to the triangles used in a <see cref="T:Gtk.TreeView" />.
+</para>
+      <para>
+Normally you use an expander as you would use any other descendant of <see cref="T:Gtk.Bin" />; you create the child widget and use <see cref="M:Gtk.Container.Add()" /> to add it to the expander. When the expander is toggled, it will take care of showing and hiding the child automatically. 
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class DemoExpander : Gtk.Window
+{
+        static void Main ()
+        {
+                Application.Init ();
+                new DemoExpander ();
+                Application.Run ();
+        }
+
+        DemoExpander () : base ("Demo Expander")
+        {
+                this.BorderWidth = 10;
+                this.DeleteEvent += new DeleteEventHandler (OnWindowDelete);
+
+                VBox vbox = new VBox ();
+                vbox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, true, 3);
+
+                Expander expander = new Expander ("Details");
+                expander.Add (new Label ("Details can be shown or hidden."));
+                vbox.PackStart (expander, false, true, 3);
+
+                this.Add (vbox);
+                this.ShowAll ();
+        }
+
+        void OnWindowDelete (object sender, DeleteEventArgs a)
+        {
+                Application.Quit ();
+        }
+}
+  </code>
+      </example>
+      <para>
+Special Usage
+</para>
+      <para>
+There there are situations in which you may prefer to show and hide the expanded widget yourself, such as when you want to actually create the widget at expansion time. In this case, create a <see cref="T:Gtk.Expander" /> but do not add a child to it. The expander widget has <see cref="E:Gtk.Expander.Activated" /> which can be used to monitor its expansion state.
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class DemoExpander : Gtk.Window
+{
+        static void Main ()
+        {
+                Application.Init ();
+                new DemoExpander ();
+                Application.Run ();
+        }
+
+        DemoExpander () : base ("Demo Expander")
+        {
+                this.BorderWidth = 10;
+                this.DeleteEvent += new DeleteEventHandler (OnWindowDelete);
+
+                VBox vbox = new VBox ();
+                vbox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, true, 3);
+
+                Expander expander = new Expander ("Details");
+                expander.Activated += new EventHandler (OnExpanded);
+                vbox.PackStart (expander, false, true, 3);
+
+                this.Add (vbox);
+                this.ShowAll ();
+        }
+
+        void OnExpanded (object sender, EventArgs a)
+        {
+                Expander expander = sender as Expander;
+                if (expander.Child == null)
+                {
+                        expander.Add (new Label ("Details can be shown or hidden."));
+                        expander.ShowAll ();
+                }
+        }
+
+        void OnWindowDelete (object sender, DeleteEventArgs a)
+        {
+                Application.Quit ();
+        }
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Bin</BaseTypeName>
@@ -52,8 +149,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Disposes the resources associated with the object.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="OnActivated">
@@ -64,8 +161,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Default handler for the <see cref="E:Gtk.Expander.Activated" /> event.</summary>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="E:Gtk.Entry.Activated" /> event.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -76,10 +173,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.Expander" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -90,10 +187,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.Expander" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -104,10 +201,10 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new expander with <paramref name="label" /> as its label.</summary>
         <param name="label">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.Expander" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -118,9 +215,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>GType Property.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Expander" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Label">
@@ -131,9 +228,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The text of the label of the expander.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+If the label text has not been set the return value will be <see langword="null " />.
+</para>
+          <para>
+Setting the label will also clear any previously set labels.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UseMarkup">
@@ -144,9 +248,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the text of the label contains markup in Pango's text markup language.</summary>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the label's text should be parsed for markup
+
+</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Spacing">
@@ -157,9 +263,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Space to put between the label and the child.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+Allowed values: &gt;= 0
+</para>
+          <para>
+Default value: 0
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Expanded">
@@ -170,9 +283,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The state of the expander.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns <see langword="true" /> if the child widget is revealed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="UseUnderline">
@@ -183,9 +296,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Whether an embedded underline in the expander label indicates a mnemonic.</summary>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if underlines in the text indicate mnemonics</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="LabelWidget">
@@ -196,9 +309,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The label widget for the expander.</summary>
+        <returns> the label <see cref="T:Gtk.Widget" />, or <see langword="null" /> if there is none.</returns>
+        <remarks>This is the widget that will appear embedded alongside the expander arrow.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Activated">
@@ -209,8 +322,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the expander is toggled.</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>
