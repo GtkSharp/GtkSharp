@@ -88,6 +88,13 @@ if test "x$enable_gda" = "xyes"; then
 	fi
 fi
 
+LIBGPHOTO2_REQUIRED_VERSION=2.1.1
+PKG_CHECK_MODULES(LIBGPHOTO2_DEPENDENCIES, libgphoto2 >= $LIBGPHOTO2_REQUIRED_VERSION, enable_gphoto2=yes, enable_gphoto2=no)
+if test "x$enable_gphoto2" = "xyes"; then
+	BASE_DEPENDENCIES_CFLAGS="$BASE_DEPENDENCIES_CFLAGS $LIBGPHOTO2_DEPENDENCIES_CFLAGS"
+	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $LIBGPHOTO2_DEPENDENCIES_LIBS"
+fi
+
 AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
 AC_SUBST(BASE_DEPENDENCIES_LIBS)
 
@@ -95,6 +102,7 @@ AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
+AM_CONDITIONAL(ENABLE_GPHOTO2, test "x$enable_gphoto2" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -118,6 +126,7 @@ gconf/GConf/Makefile
 gconf/GConf.PropertyEditors/Makefile
 gconf/tools/Makefile
 gst/Makefile
+gphoto/Makefile
 sample/Makefile
 ])
 

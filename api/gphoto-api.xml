@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<api>
+  <namespace name="Gphoto" library="libgphoto2">
+    <enum name="BayerTile" cname="BayerTile" type="enum">
+      <member cname="BAYER_TILE_RGGB" name="Rggb"/>
+      <member cname="BAYER_TILE_GRBG" name="Grbg" value="1"/>
+      <member cname="BAYER_TILE_BGGR" name="Bggr" value="2"/>
+      <member cname="BAYER_TILE_GBRG" name="Gbrg" value="3"/>
+      <member cname="BAYER_TILE_RGGB_INTERLACED" name="RggbInterlaced" value="4"/>
+      <member cname="BAYER_TILE_GRBG_INTERLACED" name="GrbgInterlaced" value="5"/>
+      <member cname="BAYER_TILE_BGGR_INTERLACED" name="BggrInterlaced" value="6"/>
+      <member cname="BAYER_TILE_GBRG_INTERLACED" name="GbrgInterlaced" value="7"/>
+    </enum>
+    <enum name="CameraCaptureType" cname=""CameraCaptureType" type="enum">
+      <member cname="GP_CAPTURE_IMAGE" name="Image"/>
+      <member cname="GP_CAPTURE_MOVIE" name="Movie"/>
+      <member cname="GP_CAPTURE_SOUND" name="Sound"/>
+    </enum>
+    <enum name="CameraDriverStatus" cname="CameraDriverStatus" type="enum">
+      <member cname="GP_DRIVER_STATUS_PRODUCTION" name="Production"/>
+      <member cname="GP_DRIVER_STATUS_TESTING" name="Testing"/>
+      <member cname="GP_DRIVER_STATUS_EXPERIMENTAL" name="Experimental"/>
+    </enum>
+    <enum name="CameraFileConversionMethod" cname="CameraFileConversionMethod" type="enum">
+      <member cname="GP_FILE_CONVERSION_METHOD_CHUCK" name="Chuck"/>
+    </enum>
+    <enum name="CameraFileInfoFields" cname="CameraFileInfoFields" type="flags">
+      <member cname="GP_FILE_INFO_NONE" name="None"/>
+      <member cname="GP_FILE_INFO_TYPE" name="Type" value="1 &lt;&lt; 0"/>
+      <member cname="GP_FILE_INFO_NAME" name="Name" value="1 &lt;&lt; 1"/>
+      <member cname="GP_FILE_INFO_SIZE" name="Size" value="1 &lt;&lt; 2"/>
+      <member cname="GP_FILE_INFO_WIDTH" name="Width" value="1 &lt;&lt; 3"/>
+      <member cname="GP_FILE_INFO_HEIGHT" name="Height" value="1 &lt;&lt; 4"/>
+      <member cname="GP_FILE_INFO_PERMISSIONS" name="Permissions" value="1 &lt;&lt; 5"/>
+      <member cname="GP_FILE_INFO_STATUS" name="Status" value="1 &lt;&lt; 6"/>
+      <member cname="GP_FILE_INFO_MTIME" name="Mtime" value="1 &lt;&lt; 7"/>
+      <member cname="GP_FILE_INFO_ALL" name="All" value="0xFF"/>
+    </enum>
+    <enum name="CameraFileOperation" cname="CameraFileOperation" type="flags">
+      <member cname="GP_FILE_OPERATION_NONE" name="None"/>
+      <member cname="GP_FILE_OPERATION_DELETE" name="Delete" value="1 &lt;&lt; 1"/>
+      <member cname="GP_FILE_OPERATION_PREVIEW" name="Preview" value="1 &lt;&lt; 3"/>
+      <member cname="GP_FILE_OPERATION_RAW" name="Raw" value="1 &lt;&lt; 4"/>
+      <member cname="GP_FILE_OPERATION_AUDIO" name="Audio" value="1 &lt;&lt; 5"/>
+      <member cname="GP_FILE_OPERATION_EXIF" name="Exif" value="1 &lt;&lt; 6"/>
+    </enum>
+    <enum name="CameraFilePermissions" cname="CameraFilePermissions" type="flags">
+      <member cname="GP_FILE_PERM_NONE" name="None"/>
+      <member cname="GP_FILE_PERM_READ" name="Read" value="1 &lt;&lt; 0"/>
+      <member cname="GP_FILE_PERM_DELETE" name="Delete" value="1 &lt;&lt; 1"/>
+      <member cname="GP_FILE_PERM_ALL" name="All" value="0xFF"/>
+    </enum>
+    <enum name="CameraFileStatus" cname="CameraFileStatus" type="enum">
+      <member cname="GP_FILE_STATUS_NOT_DOWNLOADED" name="NotDownloaded"/>
+      <member cname="GP_FILE_STATUS_DOWNLOADED" name="Downloaded"/>
+    </enum>
+    <enum name="CameraFileType" cname="CameraFileType" type="enum">
+      <member cname="GP_FILE_TYPE_PREVIEW" name="Preview"/>
+      <member cname="GP_FILE_TYPE_NORMAL" name="Normal"/>
+      <member cname="GP_FILE_TYPE_RAW" name="Raw"/>
+      <member cname="GP_FILE_TYPE_AUDIO" name="Audio"/>
+      <member cname="GP_FILE_TYPE_EXIF" name="Exif"/>
+    </enum>
+    <enum name="CameraFolderOperation" cname="CameraFolderOperation" type="flags">
+      <member cname="GP_FOLDER_OPERATION_NONE" name="None"/>
+      <member cname="GP_FOLDER_OPERATION_DELETE_ALL" name="DeleteAll" value="1 &lt;&lt; 0"/>
+      <member cname="GP_FOLDER_OPERATION_PUT_FILE" name="PutFile" value="1 &lt;&lt; 1"/>
+      <member cname="GP_FOLDER_OPERATION_MAKE_DIR" name="MakeDir" value="1 &lt;&lt; 2"/>
+      <member cname="GP_FOLDER_OPERATION_REMOVE_DIR" name="RemoveDir" value="1 &lt;&lt; 3"/>
+    </enum>
+    <enum name="CameraOperation" cname="CameraOperation" type="flags">
+      <member cname="GP_OPERATION_NONE" name="None"/>
+      <member cname="GP_OPERATION_CAPTURE_IMAGE" name="CaptureImage" value="1 &lt;&lt; 0"/>
+      <member cname="GP_OPERATION_CAPTURE_VIDEO" name="CaptureVideo" value="1 &lt;&lt; 1"/>
+      <member cname="GP_OPERATION_CAPTURE_AUDIO" name="CaptureAudio" value="1 &lt;&lt; 2"/>
+      <member cname="GP_OPERATION_CAPTURE_PREVIEW" name="CapturePreview" value="1 &lt;&lt; 3"/>
+      <member cname="GP_OPERATION_CONFIG" name="Config" value="1 &lt;&lt; 4"/>
+    </enum>
+    <enum name="CameraWidgetType" cname="CameraWidgetType" type="enum">
+      <member cname="_WIDGET_WINDOW" name="WidgetWindow"/>
+      <member cname="_WIDGET_SECTION" name="WidgetSection"/>
+      <member cname="_WIDGET_TEXT" name="WidgetText"/>
+      <member cname="_WIDGET_RANGE" name="WidgetRange"/>
+      <member cname="_WIDGET_TOGGLE" name="WidgetToggle"/>
+      <member cname="_WIDGET_RADIO" name="WidgetRadio"/>
+      <member cname="_WIDGET_MENU" name="WidgetMenu"/>
+      <member cname="_WIDGET_BUTTON" name="WidgetButton"/>
+      <member cname="_WIDGET_DATE" name="WidgetDate"/>
+    </enum>
+    <enum name="EXIFDataType" cname="EXIFDataType" type="enum">
+      <member cname="EXIF_NOTYPE" name="Notype"/>
+      <member cname="EXIF_BYTE" name="Byte" value="1"/>
+      <member cname="EXIF_ASCII" name="Ascii" value="2"/>
+      <member cname="EXIF_SHORT" name="Short" value="3"/>
+      <member cname="EXIF_LONG" name="Long" value="4"/>
+      <member cname="EXIF_RATIONAL" name="Rational" value="5"/>
+      <member cname="EXIF_SBYTE" name="Sbyte" value="6"/>
+      <member cname="EXIF_UNDEFINED" name="Undefined" value="7"/>
+      <member cname="EXIF_SSHORT" name="Sshort" value="8"/>
+      <member cname="EXIF_SLONG" name="Slong" value="9"/>
+      <member cname="EXIF_SRATIONAL" name="Srational" value="10"/>
+      <member cname="EXIF_FLOAT" name="Float" value="11"/>
+      <member cname="EXIF_DOUBLE" name="Double" value="12    "/>
+    </enum>
+    <enum name="jpegmaker" cname="jpegmarker" type="enum">
+      <member cname="JPEG_START" name="Start" value="0xD8"/>
+      <member cname="JPEG_COMMENT" name="Comment" value="0xFE"/>
+      <member cname="JPEG_APPO" name="Appo" value="0xE0"/>
+      <member cname="JPEG_QUANTIZATION" name="Quantization" value="0xDB"/>
+      <member cname="JPEG_HUFFMAN" name="Huffman" value="0xC4"/>
+      <member cname="JPEG_SOFC0" name="Sofc0" value="0xC0"/>
+      <member cname="JPEG_SSSEAHAL" name="Ssseahal" value="0xDA"/>
+      <member cname="JPEG_EOI" name="Eoi" value="0xD9"/>
+    </enum>
+    <struct name="_Camera" cname="Camera">
+      <field cname="port" type="GPPort*"/>
+      <field cname="fs" type="CameraFilesystem*"/>
+      <field cname="functions" type="CameraFunctions*"/>
+      <field cname="pl" type="CameraPrivateLibrary*"/>
+      <field cname="pc" type="CameraPrivateCore*"/>
+      <method name="Abilities" cname="camera_abilities" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="CameraAbilitiesList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="Id" cname="camera_id" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="CameraText*" name="id"/>
+        </parameters>
+      </method>
+      <method name="Init" cname="camera_init">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="GPContext*" name="context"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="_CameraAbilities" cname="CameraAbilities">
+      <field cname="model" array_len="128" type="char"/>
+      <field cname="status" type="CameraDriverStatus"/>
+      <field cname="port" type="GPPortType"/>
+      <field cname="speed" array_len="64" type="int"/>
+      <field cname="operations" type="CameraOperation"/>
+      <field cname="file_operations" type="CameraFileOperation"/>
+      <field cname="folder_operations" type="CameraFolderOperation"/>
+      <field cname="usb_vendor" type="int"/>
+      <field cname="usb_product" type="int"/>
+      <field cname="usb_class" type="int"/>
+      <field cname="usb_subclass" type="int"/>
+      <field cname="usb_protocol" type="int"/>
+      <field cname="library" array_len="1024" type="char"/>
+      <field cname="id" array_len="1024" type="char"/>
+      <field cname="reserved1" type="int"/>
+      <field cname="reserved2" type="int"/>
+      <field cname="reserved3" type="int"/>
+      <field cname="reserved4" type="int"/>
+      <field cname="reserved5" type="int"/>
+      <field cname="reserved6" type="int"/>
+      <field cname="reserved7" type="int"/>
+      <field cname="reserved8" type="int"/>
+    </struct>
+    <struct name="_CameraAbilitiesList" cname="CameraAbilitiesList" opaque="true"/>
+    <struct name="_CameraFile" cname="CameraFile" opaque="true"/>
+    <struct name="_CameraFileInfo" cname="CameraFileInfo">
+      <field cname="preview" type="CameraFileInfoPreview"/>
+      <field cname="file" type="CameraFileInfoFile"/>
+      <field cname="audio" type="CameraFileInfoAudio"/>
+    </struct>
+    <struct name="_CameraFileInfoAudio" cname="CameraFileInfoAudio">
+      <field cname="fields" type="CameraFileInfoFields"/>
+      <field cname="status" type="CameraFileStatus"/>
+      <field cname="long size" type="unsigned"/>
+      <field cname="type" array_len="64" type="char"/>
+    </struct>
+    <struct name="_CameraFileInfoFile" cname="CameraFileInfoFile">
+      <field cname="fields" type="CameraFileInfoFields"/>
+      <field cname="status" type="CameraFileStatus"/>
+      <field cname="long size" type="unsigned"/>
+      <field cname="type" array_len="64" type="char"/>
+      <field cname="int width" type="unsigned"/>
+      <field cname="height" type="unsigned"/>
+      <field cname="name" array_len="64" type="char"/>
+      <field cname="permissions" type="CameraFilePermissions"/>
+      <field cname="mtime" type="time_t"/>
+    </struct>
+    <struct name="_CameraFileInfoPreview" cname="CameraFileInfoPreview">
+      <field cname="fields" type="CameraFileInfoFields"/>
+      <field cname="status" type="CameraFileStatus"/>
+      <field cname="long size" type="unsigned"/>
+      <field cname="type" array_len="64" type="char"/>
+      <field cname="int width" type="unsigned"/>
+      <field cname="height" type="unsigned"/>
+    </struct>
+    <struct name="_CameraFilePath" cname="CameraFilePath">
+      <field cname="name" array_len="128" type="char"/>
+      <field cname="folder" array_len="1024" type="char"/>
+    </struct>
+    <struct name="_CameraFilesystem" cname="CameraFilesystem" opaque="true"/>
+    <struct name="_CameraFunctions" cname="CameraFunctions">
+      <field cname="pre_func" type="CameraPrePostFunc"/>
+      <field cname="post_func" type="CameraPrePostFunc"/>
+      <field cname="exit" type="CameraExitFunc"/>
+      <field cname="get_config" type="CameraGetConfigFunc"/>
+      <field cname="set_config" type="CameraSetConfigFunc"/>
+      <field cname="capture" type="CameraCaptureFunc"/>
+      <field cname="capture_preview" type="CameraCapturePreviewFunc"/>
+      <field cname="summary" type="CameraSummaryFunc"/>
+      <field cname="manual" type="CameraManualFunc"/>
+      <field cname="about" type="CameraAboutFunc"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+      <field cname="reserved3" type="void*"/>
+      <field cname="reserved4" type="void*"/>
+      <field cname="reserved5" type="void*"/>
+      <field cname="reserved6" type="void*"/>
+      <field cname="reserved7" type="void*"/>
+      <field cname="reserved8" type="void*"/>
+    </struct>
+    <struct name="_CameraList" cname="CameraList">
+      <field cname="count" type="int"/>
+      <field cname="name" array_len="128" type="struct-{char"/>
+      <field cname="value" array_len="128" type="char"/>
+      <field cname="entry" array_len="MAX_ENTRIES" type="}"/>
+      <field cname="ref_count" type="int"/>
+    </struct>
+    <alias name="" cname="CameraPort" type="GPPort     "/>
+    <alias name="" cname="CameraPortInfo" type="GPPortInfo "/>
+    <struct name="_CameraPrivateCore" cname="CameraPrivateCore" opaque="true"/>
+    <struct name="_CameraPrivateLibrary" cname="CameraPrivateLibrary" opaque="true"/>
+    <struct name="_CameraText" cname="CameraText">
+      <field cname="text" array_len="32*  1024" type="char"/>
+    </struct>
+    <struct name="_CameraWidget" cname="CameraWidget" opaque="true"/>
+    <struct name="_ExifData" cname="ExifData">
+      <field cname="tag" type="int"/>
+      <field cname="type" type="EXIFDataType"/>
+      <field cname="size" type="int"/>
+      <field cname="data" type="char*"/>
+      <field cname="num" type="int"/>
+      <field cname="den" type="int"/>
+      <field cname="intval" type="int"/>
+    </struct>
+    <struct name="_GPContext" cname="GPContext" opaque="true">
+      <constructor cname="gp_context_new"/>
+      <method name="Ref" cname="gp_context_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Unref" cname="gp_context_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+  </namespace>
+</api>
