@@ -149,7 +149,7 @@ namespace GtkDemo
 		private void ResponseCallback (object obj, ResponseArgs args)
         
                {
-		       if (args.ResponseId == 5) {
+		       if (((int) args.ResponseId) == 5) {
 			       window.Hide ();
 			       window.Destroy ();}
 	       }
