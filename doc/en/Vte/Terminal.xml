@@ -12,7 +12,117 @@
   <Docs>
     <summary>A terminal widget implementation.
 </summary>
-    <remarks>A <see cref="T:Vte.Terminal" /> is a terminal emulator implemented as a <see cref="T:Gtk.Widget" /></remarks>
+    <remarks>
+      <para>
+  A <see cref="T:Vte.Terminal" /> is a terminal emulator implemented as a <see cref="T:Gtk.Widget" />.
+</para>
+      <para>
+        <example>
+          <code lang="C#">
+using System;
+using System.Collections;
+using Gtk;
+using Gnome;
+using Vte;
+ 
+class T
+{
+        static void Main (string[] args)
+        {
+                new T (args);
+        }
+ 
+        T (string[] args)
+        {
+                Program program = new Program ("vte-sharp-test", "0.0", Modules.UI, args);
+                App app = new App ("vte-sharp-test", "Test for vte widget");
+                app.SetDefaultSize (600, 450);
+                app.DeleteEvent += new DeleteEventHandler (OnAppDelete);
+ 
+                HBox hbox = new HBox ();
+                Terminal term = new Terminal ();
+                term.EncodingChanged += new EventHandler (OnEncodingChanged);
+                term.CursorBlinks = true;
+                term.MouseAutohide = true;
+                term.ScrollOnKeystroke = true;
+                term.DeleteBinding = TerminalEraseBinding.Auto;
+                term.BackspaceBinding = TerminalEraseBinding.Auto;
+                term.Encoding = "UTF-8";
+                term.FontFromString = "Monospace 12";
+                term.TextDeleted += new EventHandler (OnTextDeleted);
+                term.ChildExited += new EventHandler (OnChildExited);
+ 
+                VScrollbar vscroll = new VScrollbar (term.Adjustment);
+                hbox.PackStart (term);
+                hbox.PackStart (vscroll);
+ 
+                Gdk.Color white = new Gdk.Color ();
+                Gdk.Color.Parse ("white", ref white);
+ 
+                Gdk.Color black = new Gdk.Color ();
+                Gdk.Color.Parse ("black", ref black);
+                term.SetColors (black, white, white, 16);
+ 
+                string[] argv = Environment.GetCommandLineArgs ();
+                // wants an array of "variable=value"
+                string[] envv = new string [Environment.GetEnvironmentVariables ().Count];
+                int i = 0;
+                foreach (DictionaryEntry e in Environment.GetEnvironmentVariables ())
+                {
+                        if (e.Key == "" || e.Value == "")
+                                continue;
+                        string tmp = String.Format ("{0}={1}", e.Key, e.Value);
+                        envv[i] = tmp;
+                        i ++;
+                }
+ 
+			int pid = term.ForkCommand (
+				Environment.GetEnvironmentVariable ("SHELL"),
+				argv,
+				envv,
+				Environment.CurrentDirectory,
+				false,
+				true,
+				true);
+                Console.WriteLine ("Child pid: {0}", pid);
+ 
+                app.Contents = hbox;
+                app.ShowAll ();
+                program.Run ();
+        }
+ 
+        private void OnTextDeleted (object o, EventArgs args)
+        {
+                Console.WriteLine ("text deleted");
+        }
+ 
+        private void OnEncodingChanged (object o, EventArgs args)
+        {
+                Console.WriteLine ("encoding changed");
+        }
+ 
+        private void OnTextInserted (object o, EventArgs args)
+        {
+                Console.WriteLine ("text inserted");
+        }
+ 
+        private void OnChildExited (object o, EventArgs args)
+        {
+                // optionally we could just reset instead of quitting
+                Console.WriteLine ("child exited");
+                Application.Quit ();
+        }
+ 
+        private void OnAppDelete (object o, DeleteEventArgs args)
+        {
+                Application.Quit ();
+        }
+}
+
+  </code>
+        </example>
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>
@@ -416,9 +526,9 @@
         <Parameter Name="menushell" Type="Gtk.MenuShell" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Appends menu items for various input methods to the given menu.</summary>
         <param name="menushell">a <see cref="T:Gtk.MenuShell" /></param>
-        <remarks>To be added</remarks>
+        <remarks>The user can select one of these items to modify the input method used by the terminal.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -432,10 +542,12 @@
         <Parameter Name="clear_history" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="full">a <see cref="T:System.Boolean" /></param>
-        <param name="clear_history">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <summary>Resets as much of the terminal's internal state as possible.</summary>
+        <param name="full">
+          <see langword="true" /> to reset tabstops</param>
+        <param name="clear_history">
+          <see langword="true" /> to empty the terminal's scrollback buffer</param>
+        <remarks>Resets as much of the terminal's internal state as possible, discarding any unprocessed input data, resetting character attributes, cursor state, national character set state, status line, terminal modes (insert/delete), selection state, and encoding.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetText">
@@ -450,12 +562,12 @@
         <Parameter Name="attributes" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="is_selected">a <see cref="T:System.Boolean" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="attributes">a <see cref="T:System.IntPtr" /></param>
+        <summary>Extracts a view of the visible part of the terminal.</summary>
+        <param name="is_selected"> a callback</param>
+        <param name="data"> user data to be passed to the callback</param>
+        <param name="attributes"> location for storing text attributes</param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="is_selected" /> is not <see langword="null" />, characters will only be read if <paramref name="is_selected" /> returns <see langword="true" /> after being passed the column and row, respectively. A <see cref="T:Vte.CharAttributes" /> structure is added to attributes for each byte added to the returned string detailing the character's position, colors, and other characteristics.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MatchSetCursorType">
@@ -483,8 +595,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Places the selected text in the terminal in the GDK_SELECTION_PRIMARY selection.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetColors">
@@ -500,12 +612,19 @@
         <Parameter Name="palette_size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="foreground">a <see cref="T:Gdk.Color" /></param>
-        <param name="background">a <see cref="T:Gdk.Color" /></param>
-        <param name="palette">a <see cref="T:Gdk.Color" /></param>
-        <param name="palette_size">a <see cref="T:System.Int64" /></param>
-        <remarks>To be added</remarks>
+        <summary>Change the colors of the <see cref="T:Vte.Terminal" /></summary>
+        <param name="foreground"> the new foreground color, or <see langword="null" /></param>
+        <param name="background"> the new background color, or <see langword="null" /></param>
+        <param name="palette"> the color palette</param>
+        <param name="palette_size"> the number of entries in <paramref name="palette" /></param>
+        <remarks>
+          <para>
+  The terminal widget uses a 28-color model comprised of the default foreground and background colors, the bold foreground color, the dim foreground color, an eight color palette, and bold versions of the eight color palette, and a dim version of the the eight color palette.
+</para>
+          <para>
+            <paramref name="palette_size" /> must be either 0, 8, 16, or 24. If <paramref name="foreground" /> is <see langword="null" /> and <paramref name="palette_size" /> is greater than 0, the new foreground color is taken from palette[7]. If <paramref name="background" /> is <see langword="null" /> and <paramref name="palette_size" /> is greater than 0, the new background color is taken from palette[0]. If <paramref name="palette_size" /> is 8 or 16, the third (dim) and possibly second (bold) 8-color palette is extrapolated from the new background color and the items in palette.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCursorPosition">
@@ -519,10 +638,10 @@
         <Parameter Name="row" Type="System.Int64&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="column">a <see cref="T:System.Int64" /></param>
-        <param name="row">a <see cref="T:System.Int64" /></param>
-        <remarks>To be added</remarks>
+        <summary>Reads the location of the insertion cursor and returns it.</summary>
+        <param name="column"> long which will hold the column</param>
+        <param name="row"> long which will hold the row</param>
+        <remarks>The row coordinate is absolute.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPadding">
@@ -536,10 +655,10 @@
         <Parameter Name="ypad" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="xpad">a <see cref="T:System.Int32" /></param>
-        <param name="ypad">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Determines the amount of additional space the widget is using to pad the edges of its visible area.</summary>
+        <param name="xpad"> a <see cref="T:System.Int32" /> in which to store left/right-edge padding</param>
+        <param name="ypad">a <see cref="T:System.Int32" /> in which to store top/bottom-edge ypadding</param>
+        <remarks>This is necessary for cases where characters in the selected font do not themselves include a padding area and the text itself would be contiguous with the window border. Applications which use the widget's row_count, column_count, char_height, and char_width fields to set geometry hints using gtk_window_set_geometry_hints() will need to add this value to the base size. The values returned in xpad and ypad are the total padding used in each direction, and do not need to be doubled.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyClipboard">
@@ -550,8 +669,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Places the selected text in the terminal in the GDK_SELECTION_CLIPBOARD selection.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MatchCheck">
@@ -566,12 +685,12 @@
         <Parameter Name="tag" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="column">a <see cref="T:System.Int64" /></param>
-        <param name="row">a <see cref="T:System.Int64" /></param>
-        <param name="tag">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks if the text in and around the specified position matches any of the regular expressions previously set using <see cref="M:Vte.Terminal.MatchAdd()" />.</summary>
+        <param name="column"> the text column</param>
+        <param name="row"> the text row</param>
+        <param name="tag"> pointer to an integer</param>
+        <returns> a string which matches one of the previously set regular expressions</returns>
+        <remarks>If a match exists, the text string is returned and if <paramref name="tag" /> is not <see langword="null" />, the number associated with the matched regular expression will be stored in tag.  If more than one regular expression has been set with <see cref="T:Vte.Terminal.MatchAdd()" />, then expressions are checked in the order in which they were added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetTextRange">
@@ -590,16 +709,16 @@
         <Parameter Name="attributes" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_row">a <see cref="T:System.Int64" /></param>
-        <param name="start_col">a <see cref="T:System.Int64" /></param>
-        <param name="end_row">a <see cref="T:System.Int64" /></param>
-        <param name="end_col">a <see cref="T:System.Int64" /></param>
-        <param name="is_selected">a <see cref="T:System.Boolean" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="attributes">a <see cref="T:System.IntPtr" /></param>
+        <summary>Extracts a view of the visible part of the string.</summary>
+        <param name="start_row"> first row to search for data</param>
+        <param name="start_col"> first column to search for data</param>
+        <param name="end_row"> last row to search for data</param>
+        <param name="end_col"> last column to search for data</param>
+        <param name="is_selected"> a callback</param>
+        <param name="data"> user data to be passed to the callback</param>
+        <param name="attributes"> location for storing text attributes</param>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If <paramref name="is_selected" /> is not <see langword="null" />, characters will only be read if <paramref name="is_selected" /> returns <see langword="true" /> after being passed the column and row, respectively. A <see cref="T:Vte.CharAttributes" /> structure is added to attributes for each byte added to the returned string detailing the character's position, colors, and other characteristics. The entire scrollback buffer is scanned, so it is possible to read the entire contents of the buffer using this function.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MatchClearAll">
@@ -610,8 +729,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clears the list of regular expressions the terminal uses to highlight text when the user moves the mouse cursor.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MatchAdd">
@@ -624,10 +743,10 @@
         <Parameter Name="match" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="match">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Adds a regular expression to the list of matching expressions.</summary>
+        <param name="match"> a regular expression</param>
+        <returns> an integer associated with this expression</returns>
+        <remarks>When the user moves the mouse cursor over a section of displayed text which matches this expression, the text will be highlighted.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FeedChild">
@@ -640,9 +759,9 @@
         <Parameter Name="data" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sends a block of UTF-8 text to the child as if it were entered by the user at the keyboard.</summary>
         <param name="data">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MatchRemove">
@@ -655,9 +774,9 @@
         <Parameter Name="tag" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Removes the regular expression which is associated with the given <paramref name="tag" /> from the list of expressions which the terminal will highlight when the user moves the mouse cursor over matching text.</summary>
+        <param name="tag"> the tag of the regex to remove</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetDefaultColors">
@@ -668,8 +787,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Reset the terminal palette to reasonable compiled-in defaults.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetSize">
@@ -683,10 +802,10 @@
         <Parameter Name="rows" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="columns">a <see cref="T:System.Int64" /></param>
-        <param name="rows">a <see cref="T:System.Int64" /></param>
-        <remarks>To be added</remarks>
+        <summary>Attempts to change the terminal's size in terms of rows and columns.</summary>
+        <param name="columns"> the desired number of columns</param>
+        <param name="rows"> the desired number of rows</param>
+        <remarks>If the attempt succeeds, the widget will resize itself to the proper size.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PasteClipboard">
@@ -697,8 +816,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Sends the contents of the GDK_SELECTION_CLIPBOARD selection to the terminal's child.</summary>
+        <remarks>If necessary, the data is converted from UTF-8 to the terminal's current encoding.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PastePrimary">
@@ -709,8 +828,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Sends the contents of the GDK_SELECTION_PRIMARY selection to the terminal's child.</summary>
+        <remarks>If necessary, the data is converted from UTF-8 to the terminal's current encoding. The terminal will call also paste the GDK_SELECTION_PRIMARY selection when the user clicks with the the second mouse button.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Feed">
@@ -723,9 +842,9 @@
         <Parameter Name="data" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Interprets <paramref name="data" /> as if it were data received from a child process.</summary>
         <param name="data">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks>This can either be used to drive the terminal without a child process, or just to mess with your users.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -788,9 +907,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's char_ascent field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Adjustment">
@@ -801,9 +920,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Adjustment" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's adjustment field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ColumnCount">
@@ -814,9 +933,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's column_count field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ColorBackground">
@@ -826,9 +945,9 @@
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Color" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the background color for text which does not have a specific background color assigned.</summary>
+        <returns> the new background color</returns>
+        <remarks>Only has effect when no background image is set and when the terminal is not transparent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollOnKeystroke">
@@ -838,9 +957,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Controls whether or not the terminal will forcibly scroll to the bottom of the viewable history when the user presses a key.</summary>
+        <returns>
+          <see langword="true" /> if the terminal should scroll on keystrokes</returns>
+        <remarks>Modifier keys do not trigger this behavior.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharWidth">
@@ -851,9 +971,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
         <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <remarks> the contents of terminal's char_width field</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharDescent">
@@ -864,9 +984,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns>the contents of terminal's char_descent field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="VisibleBell">
@@ -877,9 +997,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Controls whether or not the terminal will present a visible bell to the user when the child outputs the "bl" sequence.</summary>
+        <returns>
+          <see langword="true" /> if visible bell is enabled, <see langword="false" /> if not</returns>
+        <remarks>The terminal will clear itself to the default foreground color and then repaint itself.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CursorBlinks">
@@ -889,9 +1010,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets whether or not the cursor will blink.</summary>
+        <returns>
+          <see langword="true" /> if the cursor should blink</returns>
+        <remarks>The length of the blinking cycle is controlled by the "gtk-cursor-blink-time" GTK+ setting.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FontFromString">
@@ -901,9 +1023,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>A convenience function which converts name into a PangoFontDescription and passes it to <see cref="P:Vte.Terminal.Font" />.</summary>
+        <returns> A string describing the font.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Emulation">
@@ -914,9 +1036,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets what type of terminal the widget attempts to emulate by scanning for control sequences defined in the system's termcap file.</summary>
+        <returns> the name of a terminal description</returns>
+        <remarks>Unless you are interested in this feature, always use "xterm".</remarks>
       </Docs>
     </Member>
     <Member MemberName="UsingXft">
@@ -927,9 +1049,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Whether a <see cref="T:Vte.Terminal" /> is using Xft to draw text.</summary>
+        <returns>
+          <see langword="true" /> if the terminal is using Xft to render, <see langword="false" /> if the terminal is using Pango or Xlib.</returns>
+        <remarks>This function allows an application to determine which mode the widget is in. This setting cannot be changed by the caller, but in practice usually matches the behavior of Gtk itself.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackspaceBinding">
@@ -939,9 +1062,9 @@
         <ReturnType>Vte.TerminalEraseBinding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Vte.TerminalEraseBinding" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Modifies the terminal's backspace key binding, which controls what string or control sequence the terminal sends to its child when the user presses the backspace key.</summary>
+        <returns> a <see cref="T:Vte.TerminalEraseBinding" /> for the backspace key</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IconTitle">
@@ -952,9 +1075,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's icon_title field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollOnOutput">
@@ -964,9 +1087,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Controls whether or not the terminal will forcibly scroll to the bottom of the viewable history when the new data is received from the child.</summary>
+        <returns>
+          <see langword="true" /> if the terminal should scroll on output</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackgroundTransparent">
@@ -976,9 +1100,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the terminal's background image to the pixmap stored in the root window, adjusted so that if there are no windows below your application, the widget will appear to be transparent.</summary>
+        <returns>
+          <see langword="true" /> if the terminal should fake transparency</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackgroundTintColor">
@@ -1000,9 +1125,9 @@
         <ReturnType>Vte.TerminalEraseBinding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Vte.TerminalEraseBinding" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Modifies the terminal's delete key binding, which controls what string or control sequence the terminal sends to its child when the user presses the delete key.</summary>
+        <returns>a <see cref="T:Vte.TerminalEraseBinding" /> for the delete key</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Encoding">
@@ -1013,9 +1138,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The encoding the terminal will expect data from the child to be encoded with.</summary>
+        <returns> a valid gconv target</returns>
+        <remarks>For certain terminal types, applications executing in the terminal can change the encoding. The default encoding is defined by the application's locale settings.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AllowBold">
@@ -1026,9 +1151,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Controls whether or not the terminal will attempt to draw bold text by repainting text with a different offset.</summary>
+        <returns>
+          <see langword="true" /> if the terminal should attempt to draw bold text</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackgroundImage">
@@ -1038,9 +1164,10 @@
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets a background image for the widget.</summary>
+        <returns>
+          <see cref="T:Gdk.Pixbuf" /> to use, or <see langword="null" /> to cancel</returns>
+        <remarks>Text which would otherwise be drawn using the default background color will instead be drawn over the specified image. If necessary, the image will be tiled to cover the widget's entire visible area.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WordChars">
@@ -1050,9 +1177,14 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>When the user double-clicks to start selection, the terminal will extend the selection on word boundaries.</summary>
+        <returns> a specification</returns>
+        <remarks>
+          <para>When the user double-clicks to start selection, the terminal will extend the selection on word boundaries.  It will treat characters passed in as parts of words, and all other characters as word separators. Ranges of characters can be specified by separating them with a hyphen.
+</para>
+          <para>As a special case, if set to <see langword="null" /> or the empty string, the terminal will treat all graphic non-punctuation characters as word characters.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RowCount">
@@ -1063,9 +1195,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's row_count field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="StatusLine">
@@ -1076,9 +1208,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Some terminal emulations specify a status line which is separate from the main display area, and define a means for applications to move the cursor to the status line and back.</summary>
+        <returns>The current contents of the terminal's status line. For terminals like "xterm", this will usually be the empty string. The string must not be modified or freed by the caller.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollBackground">
@@ -1100,9 +1232,9 @@
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Color" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the color used to draw dim text in the default foreground color.</summary>
+        <returns> the new dim color</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ScrollbackLines">
@@ -1112,9 +1244,9 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the length of the scrollback buffer used by the terminal.</summary>
+        <returns>the length of the history buffer</returns>
+        <remarks>The size of the scrollback buffer will be set to the larger of this value and the number of visible rows the widget can display, so 0 can safely be used to disable scrollback. Note that this setting only affects the normal screen buffer. For terminal types which have an alternate screen buffer, no scrollback is allowed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharHeight">
@@ -1125,9 +1257,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's char_height field</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackgroundImageFile">
@@ -1137,9 +1269,12 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets a background image for the widget.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If specified by <see cref="P:Vte.Terminal.BackgroundSaturation" />, the terminal will make its in-memory copy of the image darker for its own use.
+
+<para>This is a convenience wrapper for <see cref="P:Vte.Terminal.BackgroundImage" />. If your application intends to create multiple terminal widgets using the same background, performing this step yourself and just using <see cref="P:Vte.Terminal.BackgroundImage" /> will reduce memory consumption.
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ColorBold">
@@ -1149,9 +1284,9 @@
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Color" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the color used to draw bold text in the default foreground color.</summary>
+        <returns> the new bold color</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="BackgroundSaturation">
@@ -1161,9 +1296,14 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adjust the brightness of the background image.</summary>
         <returns>a <see cref="T:System.Double" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>If a background image has been set using <see cref="P:Vte.Terminal.BackgroundImage" />, <see cref="P:Vte.Terminal.BackgroundImageFile" />, or <see cref="P:Vte.Terminal.Background.Transparent" />, the terminal will adjust the brightness of the image before drawing the image. To do so, the terminal will create a copy of the background image (or snapshot of the root window) and modify its pixel values.
+</para>
+          <para>If your application intends to create multiple terminal widgets with the same settings, performing this step yourself and just using <see cref="P:Vte.Terminal.BackgroundImage" /> will save memory.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowTitle">
@@ -1174,9 +1314,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>An accessor function provided for the benefit of language bindings.</summary>
+        <returns> the contents of terminal's window_title field</returns>
+        <remarks> the contents of terminal's window_title field</remarks>
       </Docs>
     </Member>
     <Member MemberName="MouseAutohide">
@@ -1187,9 +1327,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The value of the terminal's mouse autohide setting.</summary>
+        <returns>
+          <see langword="true" /> if the autohide should be enabled</returns>
+        <remarks>When autohiding is enabled, the mouse cursor will be hidden when the user presses a key and shown when the user moves the mouse.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ColorForeground">
@@ -1199,9 +1340,9 @@
         <ReturnType>Gdk.Color</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Color" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the foreground color used to draw normal text</summary>
+        <returns> the new foreground color</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AudibleBell">
@@ -1212,9 +1353,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Controls whether or not the terminal will beep when the child outputs the "bl" sequence.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <see langword="true" /> if the terminal should beep</remarks>
       </Docs>
     </Member>
     <Member MemberName="HasSelection">
@@ -1225,9 +1367,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks if the terminal currently contains selected text.</summary>
+        <returns>
+          <see langword="true" /> if part of the text in the terminal is selected.</returns>
+        <remarks>Note that this is different from determining if the terminal is the owner of any <see cref="T:Gtk.Clipboard" /> items.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RestoreWindow">
@@ -1238,8 +1381,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="LowerWindow">
@@ -1250,8 +1393,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MaximizeWindow">
@@ -1262,8 +1405,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IncreaseFontSize">
@@ -1274,8 +1417,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the user hits the '+' key while holding the Control key.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextModified">
@@ -1286,8 +1429,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
+        <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RaiseWindow">
@@ -1298,8 +1441,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextInserted">
@@ -1310,8 +1453,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
+        <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="StatusLineChanged">
@@ -1322,8 +1465,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever the contents of the status line are modified or cleared.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IconifyWindow">
@@ -1334,8 +1477,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ChildExited">
@@ -1346,8 +1489,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>This signal is emitted when the terminal detects that a child started using <see cref="M:Vte.Terminal.ForkCommand()" /> has exited.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextDeleted">
@@ -1358,8 +1501,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
+        <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveWindow">
@@ -1370,8 +1513,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RefreshWindow">
@@ -1382,8 +1525,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DeiconifyWindow">
@@ -1394,8 +1537,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IconTitleChanged">
@@ -1406,8 +1549,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the terminal's icon_title field is modified.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DecreaseFontSize">
@@ -1418,8 +1561,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the user hits the '-' key while holding the Control key.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TextScrolled">
@@ -1430,8 +1573,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
+        <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharSizeChanged">
@@ -1442,8 +1585,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever selection of a new font causes the values of the char_width or char_height fields to change.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EncodingChanged">
@@ -1454,8 +1597,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the terminals encoding type is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="WindowTitleChanged">
@@ -1466,8 +1609,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the terminal's window_title field is modified.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ContentsChanged">
@@ -1478,8 +1621,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever the visible appearance of the terminal has changed.</summary>
+        <remarks>Used primarily by <see cref="T:Vte.TerminalAccessible" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CursorMoved">
@@ -1490,8 +1633,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever the cursor moves to a new character cell.</summary>
+        <remarks>Used primarily by <see cref="T:Vte.TerminalAccessible" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionChanged">
@@ -1502,8 +1645,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever the contents of terminal's selection changes.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Eof">
@@ -1515,7 +1658,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EmulationChanged">
@@ -1526,8 +1669,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the terminal emulation type is changed.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ResizeWindow">
@@ -1538,8 +1681,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted at the child application's request.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Commit">
@@ -1550,8 +1693,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted whenever the terminal receives input from the user and prepares to send it to the child process.</summary>
+        <remarks>The signal is emitted even when there is no child process.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Font">
@@ -1562,9 +1705,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Pango.FontDescription" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The font used for rendering all text displayed by the terminal, overriding any fonts set using <see cref="M:Gtk.Widget.ModifyFont()" />.</summary>
+        <returns>The <see cref="T:Pango.FontDescription" /> of the desired font.</returns>
+        <remarks>The terminal will immediately attempt to load the desired font, retrieve its metrics, and attempts to resize itself to keep the same number of rows and columns.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForkCommand">
@@ -1583,16 +1726,19 @@
         <Parameter Name="wtmp" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="command">a <see cref="T:System.String" /></param>
-        <param name="argv">a <see cref="T:System.String" /></param>
-        <param name="envv">a <see cref="T:System.String" /></param>
-        <param name="directory">a <see cref="T:System.String" /></param>
-        <param name="lastlog">a <see cref="T:System.Boolean" /></param>
-        <param name="utmp">a <see cref="T:System.Boolean" /></param>
-        <param name="wtmp">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Starts the specified command under a newly-allocated control pseudo-terminal.</summary>
+        <param name="command"> the name of a binary to run</param>
+        <param name="argv"> the argument list to be passed to <paramref name="command" /></param>
+        <param name="envv"> a list of environment variables to be added to the environment before starting <paramref name="command" /></param>
+        <param name="directory"> the name of a directory the command should start in, or <see langword="null" /></param>
+        <param name="lastlog">
+          <see langword="true" /> if the session should be logged to the lastlog</param>
+        <param name="utmp">
+          <see langword="true" /> if the session should be logged to the utmp/utmpx log</param>
+        <param name="wtmp">
+          <see langword="true" /> if the session should be logged to the wtmp/wtmpx log</param>
+        <returns> the ID of the new process</returns>
+        <remarks>TERM is automatically set to reflect the terminal widget's emulation setting. If lastlog, utmp, or wtmp are <see langword="true" />, logs the session to the specified system log files.</remarks>
       </Docs>
     </Member>
   </Members>
