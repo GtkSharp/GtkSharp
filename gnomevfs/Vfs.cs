@@ -59,22 +59,6 @@ namespace Gnome.Vfs {
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_make_directory (string uri, uint perm);
-		
-		public static Result MakeDirectory (string uri, uint perm)
-		{
-			return gnome_vfs_make_directory (uri, perm);
-		}
-		
-		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_remove_directory (string uri);
-		
-		public static Result RemoveDirectory (string uri)
-		{
-			return gnome_vfs_remove_directory (uri);
-		}
-		
-		[DllImport ("gnomevfs-2")]
 		private static extern Result gnome_vfs_unlink (string uri);
 		
 		public static Result Unlink (string uri)

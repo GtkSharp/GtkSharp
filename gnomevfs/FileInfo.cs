@@ -41,22 +41,19 @@ namespace Gnome.Vfs {
 		}
 	
 		private FileInfoNative info;
-		private Uri uri;
-		private FileInfoOptions options;
 
 		[DllImport ("gnomevfs-2")]
 		extern static FileInfoNative gnome_vfs_file_info_new ();
 
 		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_get_file_info_uri (IntPtr uri, ref FileInfoNative info, FileInfoOptions options);
+		extern static void gnome_vfs_file_info_copy (ref FileInfoNative dest, ref FileInfoNative src);
 
 		[DllImport ("gnomevfs-2")]
-		extern static void gnome_vfs_file_info_unref (ref FileInfoNative info);
+		private static extern Result gnome_vfs_get_file_info_uri (IntPtr uri, ref FileInfoNative info, FileInfoOptions options);
 
 		internal FileInfo (FileInfoNative info)
 		{
-			this.info = info;
-			uri = null;
+			gnome_vfs_file_info_copy (ref this.info, ref info);
 		}
 
 		public FileInfo (string uri) : this (uri, FileInfoOptions.Default) {}
@@ -67,14 +64,12 @@ namespace Gnome.Vfs {
 		
 		public FileInfo (Uri uri, FileInfoOptions options)
 		{
-			this.uri = uri;
-			this.options = options;
 			info = gnome_vfs_file_info_new ();
 
 			Result result = gnome_vfs_get_file_info_uri (uri.Handle, ref info, options);
 			Vfs.ThrowException (uri, result);
 		}
-
+		
 		public string Name {
 			get {
 				if (info.name != IntPtr.Zero)
@@ -263,12 +258,6 @@ namespace Gnome.Vfs {
 				FilePermissions perms = Permissions;
 				return (perms & FilePermissions.Sticky) != 0;
 			}
-		}
-
-		public void Update ()
-		{
-			Result result = gnome_vfs_get_file_info_uri (uri.Handle, ref info, options);
-			Vfs.ThrowException (uri, result);
 		}
 
 		public override String ToString ()

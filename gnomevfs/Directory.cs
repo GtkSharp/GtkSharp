@@ -13,9 +13,6 @@ using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
 	public class Directory {
-		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_directory_list_load (out IntPtr list, string uri, FileInfoOptions options);
-
 		public static FileInfo[] GetEntries (Uri uri)
 		{
 			return GetEntries (uri.ToString ());
@@ -31,6 +28,12 @@ namespace Gnome.Vfs {
 			return GetEntries (text_uri, FileInfoOptions.Default);
 		}
 
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_directory_list_load (out IntPtr list, string uri, FileInfoOptions options);
+
+		[DllImport ("gnomevfs-2")]
+		private static extern void gnome_vfs_file_info_list_free (IntPtr list);
+
 		public static FileInfo[] GetEntries (string text_uri, FileInfoOptions options)
 		{
 			IntPtr raw_ret;
@@ -41,8 +44,35 @@ namespace Gnome.Vfs {
 			FileInfo[] entries = new FileInfo [list.Count];
 			for (int i = 0; i < list.Count; i++)
 				entries[i] = new FileInfo ((FileInfo.FileInfoNative) list [i]);
+			gnome_vfs_file_info_list_free (raw_ret);
 			
 			return entries;
+		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_make_directory (string uri, uint perm);
+		
+		public static Result Create (Uri uri, uint perm)
+		{
+			return Create (uri.ToString (), perm);
+		}
+		
+		public static Result Create (string uri, uint perm)
+		{
+			return gnome_vfs_make_directory (uri, perm);
+		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_remove_directory (string uri);
+		
+		public static Result Delete (Uri uri)
+		{
+			return Delete (uri.ToString ());
+		}
+		
+		public static Result Delete (string uri)
+		{
+			return gnome_vfs_remove_directory (uri);
 		}
 	}
 }
