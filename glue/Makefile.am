@@ -13,6 +13,7 @@ BASESOURCES = 			\
 	list.c			\
 	object.c		\
 	paned.c			\
+	selection.c		\
 	slist.c			\
 	style.c			\
 	type.c			\
