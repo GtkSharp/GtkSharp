@@ -26,7 +26,7 @@
 
 $private_regex = "^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)";
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)";
-$ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
+$ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
 foreach $arg (@ARGV) {
 	if (-d $arg && -e $arg) {
@@ -144,6 +144,9 @@ foreach $fname (@hdrs) {
 			print "};\n";
 		} elsif ($line =~ /^enum\s+\{/) {
 			while ($line !~ /^};/) {$line = <INFILE>;}
+		} elsif ($line =~ /^(typedef\s+)?union/) {
+			next if ($line =~ /^typedef\s+union\s+\w+\s+\w+;/);
+			while ($line !~ /^};/) {$line = <INFILE>;}
 		} elsif ($line =~ /(\s+)union\s*{/) {
 			# this is a hack for now, but I need it for the fields to work
 			$indent = $1;
@@ -186,7 +189,7 @@ foreach $fname (@srcs, @privhdrs) {
 	}
 
 	while ($line = <INFILE>) {
-		next if ($line !~ /^(struct|\w+_class_init|\w+_base_init|\w+_get_type)/);
+		next if ($line !~ /^(struct|\w+_class_init|\w+_base_init|\w+_get_type\b)/);
 
 		if ($line =~ /^struct/) {
 			# need some of these to parse out parent types

@@ -149,8 +149,8 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^}/);
 		}
 		$typefuncs{lc($class)} = $pedef;
-	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*\w+\s*\**\s*(\w+)\s*\(/) {
-		$fname = $3;
+	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*(struct\s+)?\w+\s*\**\s*(\w+)\s*\(/) {
+		$fname = $4;
 		$fdef = "";
 		while ($line !~ /;/) {
 			$fdef .= $line;
@@ -295,9 +295,10 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
 	if ($initfunc) {
-		parseInitFunc($iface_el, $initfunc, 0);
+		parseInitFunc($iface_el, $initfunc);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
+		addVirtualMethods ($classdef, $iface_el);
 	}
 }
 
@@ -350,7 +351,7 @@ foreach $type (sort(keys(%objects))) {
 
 	# Get the props from the class_init func.
 	if ($initfunc) {
-		parseInitFunc($obj_el, $initfunc, 1);
+		parseInitFunc($obj_el, $initfunc);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
 	}
@@ -889,13 +890,13 @@ sub addSignalElem
 		return $class;
 	}
 
-	if ($class =~ /;\s*(G_CONST_RETURN)?\s*(\S+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
+	if ($class =~ /;\s*(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
 		$ret = $2; $parms = $3;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
 			addParamsElem($sig_elem, split(/,/, $parms));
 		}
-		$class =~ s/;\s*(G_CONST_RETURN)?\s*\S+\s*\**\s*\(\*\s*$method\)\s*\(.*?\);/;/;
+		$class =~ s/;\s*(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
 		die "$method $class";
 	}
@@ -908,8 +909,8 @@ sub addVirtualMethods
 	my ($class, $node) = @_;
 	$class =~ s/\n\s*//g;
 
-	while ($class =~ /;\s*(\S+\s*\**)\s*\(\*\s*(\w+)\)\s*\((.*?)\);/) {
-		$ret = $1; $cname = $2; $parms = $3;
+	while ($class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\*\s*(\w+)\)\s*\((.*?)\);/) {
+		$ret = $1 . $2; $cname = $3; $parms = $4;
 		if ($cname !~ /reserved/) {
 			$vm_elem = $doc->createElement('virtual_method');
 			$node->appendChild($vm_elem);
@@ -920,7 +921,7 @@ sub addVirtualMethods
 				addParamsElem($vm_elem, split(/,/, $parms));
 			}
 		}
-		$class =~ s/;\s*\S+\s*\**\s*\(\*\s*\w+\)\s*\(.*?\);//;
+		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\*\s*\w+\)\s*\(.*?\);//;
 	}
 }
 
@@ -939,7 +940,7 @@ sub addImplementsElem
 
 sub parseInitFunc
 {
-	my ($obj_el, $initfunc, $is_obj) = @_;
+	my ($obj_el, $initfunc) = @_;
 
 	my @init_lines = split (/\n/, $initfunc);
 
@@ -975,9 +976,7 @@ sub parseInitFunc
 		$linenum++;
 	}
 
-	if ($is_obj) {
-		addVirtualMethods ($classdef, $obj_el);
-	}
+	addVirtualMethods ($classdef, $obj_el);
 }
 
 sub parseTypeFunc

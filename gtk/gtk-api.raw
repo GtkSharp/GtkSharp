@@ -1054,6 +1054,13 @@
           <parameter type="GtkCellEditable*" name="cell_editable"/>
         </parameters>
       </signal>
+      <virtual_method name="StartEditing" cname="start_editing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkCellEditable*" name="cell_editable"/>
+          <parameter type="GdkEvent*" name="event"/>
+        </parameters>
+      </virtual_method>
       <method name="EditingDone" cname="gtk_cell_editable_editing_done">
         <return-type type="void"/>
       </method>
@@ -1071,6 +1078,38 @@
       </method>
     </interface>
     <interface name="CellLayout" cname="GtkCellLayout">
+      <virtual_method name="PackStart" cname="pack_start">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkCellLayout*" name="cell_layout"/>
+          <parameter type="GtkCellRenderer*" name="cell"/>
+          <parameter type="gboolean" name="expand"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Clear" cname="clear">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkCellLayout*" name="cell_layout"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetCellDataFunc" cname="set_cell_data_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkCellLayout*" name="cell_layout"/>
+          <parameter type="GtkCellRenderer*" name="cell"/>
+          <parameter type="GtkCellLayoutDataFunc" name="func"/>
+          <parameter type="gpointer" name="func_data"/>
+          <parameter type="GDestroyNotify" name="destroy"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Reorder" cname="reorder">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkCellLayout*" name="cell_layout"/>
+          <parameter type="GtkCellRenderer*" name="cell"/>
+          <parameter type="gint" name="position"/>
+        </parameters>
+      </virtual_method>
       <method name="AddAttribute" cname="gtk_cell_layout_add_attribute">
         <return-type type="void"/>
         <parameters>
@@ -1153,6 +1192,37 @@
           <parameter type="GtkEditable*" name="editable"/>
         </parameters>
       </signal>
+      <virtual_method name="DoInsertText" cname="do_insert_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkEditable*" name="editable"/>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="length"/>
+          <parameter type="gint*" name="position"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetChars" cname="get_chars">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GtkEditable*" name="editable"/>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetSelectionBounds" cname="get_selection_bounds">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkEditable*" name="editable"/>
+          <parameter type="gint*" name="start_pos"/>
+          <parameter type="gint*" name="end_pos"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetPosition" cname="get_position">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GtkEditable*" name="editable"/>
+        </parameters>
+      </virtual_method>
       <method name="CopyClipboard" cname="gtk_editable_copy_clipboard">
         <return-type type="void"/>
       </method>
@@ -1248,6 +1318,61 @@
           <parameter type="GtkFileChooser*" name="chooser"/>
         </parameters>
       </signal>
+      <virtual_method name="SetCurrentFolder" cname="set_current_folder">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetCurrentName" cname="set_current_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UnselectPath" cname="unselect_path">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="UnselectAll" cname="unselect_all">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetPreviewPath" cname="get_preview_path">
+        <return-type type="GtkFilePath*"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddFilter" cname="add_filter">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+          <parameter type="GtkFileFilter*" name="filter"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ListFilters" cname="list_filters">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveShortcutFolder" cname="remove_shortcut_folder">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileChooser*" name="chooser"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
       <method name="AddFilter" cname="gtk_file_chooser_add_filter">
         <return-type type="void"/>
         <parameters>
@@ -1467,6 +1592,20 @@
           <parameter type="GtkFileChooserEmbed*" name="chooser_embed"/>
         </parameters>
       </signal>
+      <virtual_method name="GetDefaultSize" cname="get_default_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileChooserEmbed*" name="chooser_embed"/>
+          <parameter type="gint*" name="default_width"/>
+          <parameter type="gint*" name="default_height"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ShouldRespond" cname="should_respond">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileChooserEmbed*" name="chooser_embed"/>
+        </parameters>
+      </virtual_method>
     </interface>
     <interface name="FileFolder" cname="GtkFileFolder">
       <signal name="Deleted" cname="deleted" when="LAST">
@@ -1502,6 +1641,20 @@
           <parameter type="GtkFileFolder*" name="folder"/>
         </parameters>
       </signal>
+      <virtual_method name="GetInfo" cname="get_info">
+        <return-type type="GtkFileInfo*"/>
+        <parameters>
+          <parameter type="GtkFileFolder*" name="folder"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsFinishedLoading" cname="is_finished_loading">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileFolder*" name="folder"/>
+        </parameters>
+      </virtual_method>
       <method name="GetInfo" cname="gtk_file_folder_get_info">
         <return-type type="GtkFileInfo*"/>
         <parameters>
@@ -1536,6 +1689,91 @@
           <parameter type="GtkFileSystem*" name="file_system"/>
         </parameters>
       </signal>
+      <virtual_method name="ListVolumes" cname="list_volumes">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetFolder" cname="get_folder">
+        <return-type type="GtkFileFolder*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="GtkFileInfoType" name="types"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="VolumeFree" cname="volume_free">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="GtkFileSystemVolume*" name="volume"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="VolumeGetIsMounted" cname="volume_get_is_mounted">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="GtkFileSystemVolume*" name="volume"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="VolumeGetDisplayName" cname="volume_get_display_name">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="GtkFileSystemVolume*" name="volume"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetParent" cname="get_parent">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="GtkFilePath**" name="parent"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Parse" cname="parse">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-GtkFilePath*" name="base_path"/>
+          <parameter type="const-gchar*" name="str"/>
+          <parameter type="GtkFilePath**" name="folder"/>
+          <parameter type="gchar**" name="file_part"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="PathToFilename" cname="path_to_filename">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FilenameToPath" cname="filename_to_path">
+        <return-type type="GtkFilePath*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-gchar*" name="path"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="InsertBookmark" cname="insert_bookmark">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+          <parameter type="const-GtkFilePath*" name="path"/>
+          <parameter type="gint" name="position"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ListBookmarks" cname="list_bookmarks">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="GtkFileSystem*" name="file_system"/>
+        </parameters>
+      </virtual_method>
       <method name="CreateFolder" cname="gtk_file_system_create_folder">
         <return-type type="gboolean"/>
         <parameters>
@@ -1651,6 +1889,14 @@
       </method>
     </interface>
     <interface name="TreeDragDest" cname="GtkTreeDragDest">
+      <virtual_method name="DragDataReceived" cname="drag_data_received">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeDragDest*" name="drag_dest"/>
+          <parameter type="GtkTreePath*" name="dest"/>
+          <parameter type="GtkSelectionData*" name="selection_data"/>
+        </parameters>
+      </virtual_method>
       <method name="DragDataReceived" cname="gtk_tree_drag_dest_drag_data_received">
         <return-type type="gboolean"/>
         <parameters>
@@ -1670,6 +1916,20 @@
       </method>
     </interface>
     <interface name="TreeDragSource" cname="GtkTreeDragSource">
+      <virtual_method name="RowDraggable" cname="row_draggable">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeDragSource*" name="drag_source"/>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DragDataDelete" cname="drag_data_delete">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeDragSource*" name="drag_source"/>
+          <parameter type="GtkTreePath*" name="path"/>
+        </parameters>
+      </virtual_method>
       <method name="DragDataDelete" cname="gtk_tree_drag_source_drag_data_delete">
         <return-type type="gboolean"/>
         <parameters>
@@ -1734,6 +1994,56 @@
           <parameter type="gint*" name="new_order"/>
         </parameters>
       </signal>
+      <virtual_method name="GetFlags" cname="get_flags">
+        <return-type type="GtkTreeModelFlags"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetColumnType" cname="get_column_type">
+        <return-type type="GType"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="gint" name="index_"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetPath" cname="get_path">
+        <return-type type="GtkTreePath*"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IterNext" cname="iter_next">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IterHasChild" cname="iter_has_child">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IterNthChild" cname="iter_nth_child">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+          <parameter type="GtkTreeIter*" name="parent"/>
+          <parameter type="gint" name="n"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefNode" cname="ref_node">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeModel*" name="tree_model"/>
+          <parameter type="GtkTreeIter*" name="iter"/>
+        </parameters>
+      </virtual_method>
       <method name="Foreach" cname="gtk_tree_model_foreach">
         <return-type type="void"/>
         <parameters>
@@ -1905,6 +2215,30 @@
           <parameter type="GtkTreeSortable*" name="sortable"/>
         </parameters>
       </signal>
+      <virtual_method name="GetSortColumnId" cname="get_sort_column_id">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeSortable*" name="sortable"/>
+          <parameter type="gint*" name="sort_column_id"/>
+          <parameter type="GtkSortType*" name="order"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetSortFunc" cname="set_sort_func">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GtkTreeSortable*" name="sortable"/>
+          <parameter type="gint" name="sort_column_id"/>
+          <parameter type="GtkTreeIterCompareFunc" name="func"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GtkDestroyNotify" name="destroy"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="HasDefaultSortFunc" cname="has_default_sort_func">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GtkTreeSortable*" name="sortable"/>
+        </parameters>
+      </virtual_method>
       <method name="GetSortColumnId" cname="gtk_tree_sortable_get_sort_column_id">
         <return-type type="gboolean"/>
         <parameters>

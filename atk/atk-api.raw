@@ -241,6 +241,34 @@
       </parameters>
     </callback>
     <interface name="Action" cname="AtkAction">
+      <virtual_method name="DoAction" cname="do_action">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkAction*" name="action"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDescription" cname="get_description">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkAction*" name="action"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetKeybinding" cname="get_keybinding">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkAction*" name="action"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetLocalizedName" cname="get_localized_name">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkAction*" name="action"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
       <method name="DoAction" cname="atk_action_do_action">
         <return-type type="gboolean"/>
         <parameters>
@@ -286,6 +314,62 @@
       </method>
     </interface>
     <interface name="Component" cname="AtkComponent">
+      <virtual_method name="AddFocusHandler" cname="add_focus_handler">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+          <parameter type="AtkFocusHandler" name="handler"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefAccessibleAtPoint" cname="ref_accessible_at_point">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetPosition" cname="get_position">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GrabFocus" cname="grab_focus">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetExtents" cname="set_extents">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetSize" cname="set_size">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+          <parameter type="gint" name="width"/>
+          <parameter type="gint" name="height"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetMdiZorder" cname="get_mdi_zorder">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkComponent*" name="component"/>
+        </parameters>
+      </virtual_method>
       <method name="AddFocusHandler" cname="atk_component_add_focus_handler">
         <return-type type="guint"/>
         <parameters>
@@ -389,6 +473,39 @@
       </method>
     </interface>
     <interface name="EditableText" cname="AtkEditableText">
+      <virtual_method name="SetRunAttributes" cname="set_run_attributes">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkEditableText*" name="text"/>
+          <parameter type="AtkAttributeSet*" name="attrib_set"/>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="InsertText" cname="insert_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkEditableText*" name="text"/>
+          <parameter type="const-gchar*" name="string"/>
+          <parameter type="gint" name="length"/>
+          <parameter type="gint*" name="position"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="CutText" cname="cut_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkEditableText*" name="text"/>
+          <parameter type="gint" name="start_pos"/>
+          <parameter type="gint" name="end_pos"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="PasteText" cname="paste_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkEditableText*" name="text"/>
+          <parameter type="gint" name="position"/>
+        </parameters>
+      </virtual_method>
       <method name="CopyText" cname="atk_editable_text_copy_text">
         <return-type type="void"/>
         <parameters>
@@ -450,6 +567,20 @@
           <parameter type="gint" name="link_index"/>
         </parameters>
       </signal>
+      <virtual_method name="GetLink" cname="get_link">
+        <return-type type="AtkHyperlink*"/>
+        <parameters>
+          <parameter type="AtkHypertext*" name="hypertext"/>
+          <parameter type="gint" name="link_index"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetLinkIndex" cname="get_link_index">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkHypertext*" name="hypertext"/>
+          <parameter type="gint" name="char_index"/>
+        </parameters>
+      </virtual_method>
       <method name="GetLink" cname="atk_hypertext_get_link">
         <return-type type="AtkHyperlink*"/>
         <parameters>
@@ -499,6 +630,12 @@
       </method>
     </interface>
     <interface name="Implementor" cname="AtkImplementor">
+      <virtual_method name="RefAccessible" cname="ref_accessible">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkImplementor*" name="implementor"/>
+        </parameters>
+      </virtual_method>
       <method name="GetType" cname="atk_implementor_get_type" shared="true">
         <return-type type="GType"/>
       </method>
@@ -513,6 +650,33 @@
           <parameter type="AtkSelection*" name="selection"/>
         </parameters>
       </signal>
+      <virtual_method name="AddSelection" cname="add_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkSelection*" name="selection"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefSelection" cname="ref_selection">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkSelection*" name="selection"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsChildSelected" cname="is_child_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkSelection*" name="selection"/>
+          <parameter type="gint" name="i"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SelectAllSelection" cname="select_all_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkSelection*" name="selection"/>
+        </parameters>
+      </virtual_method>
       <method name="AddSelection" cname="atk_selection_add_selection">
         <return-type type="gboolean"/>
         <parameters>
@@ -551,6 +715,19 @@
       </method>
     </interface>
     <interface name="StreamableContent" cname="AtkStreamableContent">
+      <virtual_method name="GetNMimeTypes" cname="get_n_mime_types">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkStreamableContent*" name="streamable"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetStream" cname="get_stream">
+        <return-type type="GIOChannel*"/>
+        <parameters>
+          <parameter type="AtkStreamableContent*" name="streamable"/>
+          <parameter type="const-gchar*" name="mime_type"/>
+        </parameters>
+      </virtual_method>
       <method name="GetMimeType" cname="atk_streamable_content_get_mime_type">
         <return-type type="const-gchar*"/>
         <parameters>
@@ -621,6 +798,114 @@
           <parameter type="AtkTable*" name="table"/>
         </parameters>
       </signal>
+      <virtual_method name="RefAt" cname="ref_at">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetColumnAtIndex" cname="get_column_at_index">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="index_"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetNColumns" cname="get_n_columns">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetColumnExtentAt" cname="get_column_extent_at">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetCaption" cname="get_caption">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetColumnHeader" cname="get_column_header">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetRowHeader" cname="get_row_header">
+        <return-type type="AtkObject*"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetCaption" cname="set_caption">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="AtkObject*" name="caption"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetColumnHeader" cname="set_column_header">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="column"/>
+          <parameter type="AtkObject*" name="header"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetRowHeader" cname="set_row_header">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+          <parameter type="AtkObject*" name="header"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetSelectedColumns" cname="get_selected_columns">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint**" name="selected"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsColumnSelected" cname="is_column_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsSelected" cname="is_selected">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveRowSelection" cname="remove_row_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="row"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveColumnSelection" cname="remove_column_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkTable*" name="table"/>
+          <parameter type="gint" name="column"/>
+        </parameters>
+      </virtual_method>
       <method name="AddColumnSelection" cname="atk_table_add_column_selection">
         <return-type type="gboolean"/>
         <parameters>
@@ -824,6 +1109,97 @@
           <parameter type="AtkText*" name="text"/>
         </parameters>
       </signal>
+      <virtual_method name="GetText" cname="get_text">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetTextAtOffset" cname="get_text_at_offset">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="offset"/>
+          <parameter type="AtkTextBoundary" name="boundary_type"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetTextBeforeOffset" cname="get_text_before_offset">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="offset"/>
+          <parameter type="AtkTextBoundary" name="boundary_type"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetRunAttributes" cname="get_run_attributes">
+        <return-type type="AtkAttributeSet*"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="offset"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetCharacterExtents" cname="get_character_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="offset"/>
+          <parameter type="gint*" name="x"/>
+          <parameter type="gint*" name="y"/>
+          <parameter type="gint*" name="width"/>
+          <parameter type="gint*" name="height"/>
+          <parameter type="AtkCoordType" name="coords"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetOffsetAtPoint" cname="get_offset_at_point">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="x"/>
+          <parameter type="gint" name="y"/>
+          <parameter type="AtkCoordType" name="coords"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetSelection" cname="get_selection">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="selection_num"/>
+          <parameter type="gint*" name="start_offset"/>
+          <parameter type="gint*" name="end_offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveSelection" cname="remove_selection">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="selection_num"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetCaretOffset" cname="set_caret_offset">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="gint" name="offset"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetBoundedRanges" cname="get_bounded_ranges">
+        <return-type type="AtkTextRange**"/>
+        <parameters>
+          <parameter type="AtkText*" name="text"/>
+          <parameter type="AtkTextRectangle*" name="rect"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+          <parameter type="AtkTextClipType" name="x_clip_type"/>
+          <parameter type="AtkTextClipType" name="y_clip_type"/>
+        </parameters>
+      </virtual_method>
       <method name="AddSelection" cname="atk_text_add_selection">
         <return-type type="gboolean"/>
         <parameters>
@@ -992,6 +1368,20 @@
       </method>
     </interface>
     <interface name="Value" cname="AtkValue">
+      <virtual_method name="GetCurrentValue" cname="get_current_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkValue*" name="obj"/>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetMinimumValue" cname="get_minimum_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkValue*" name="obj"/>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </virtual_method>
       <method name="GetCurrentValue" cname="atk_value_get_current_value">
         <return-type type="void"/>
         <parameters>
@@ -1199,6 +1589,12 @@
           <parameter type="gpointer*" name="child"/>
         </parameters>
       </signal>
+      <virtual_method name="GetName" cname="get_name">
+        <return-type type="const-gchar*"/>
+        <parameters>
+          <parameter type="AtkObject*" name="accessible"/>
+        </parameters>
+      </virtual_method>
       <virtual_method name="GetParent" cname="get_parent">
         <return-type type="AtkObject*"/>
         <parameters>
@@ -1564,6 +1960,9 @@
       </virtual_method>
       <virtual_method name="GetRoot" cname="get_root">
         <return-type type="AtkObject*"/>
+      </virtual_method>
+      <virtual_method name="GetToolkitVersion" cname="get_toolkit_version">
+        <return-type type="const-gchar*"/>
       </virtual_method>
       <method name="GetType" cname="atk_util_get_type" shared="true">
         <return-type type="GType"/>

@@ -138,15 +138,6 @@
           <parameter type="GdaParameterList*" name="params"/>
         </parameters>
       </signal>
-      <virtual_method name="EventNotification" cname="event_notification">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaClient*" name="client"/>
-          <parameter type="GdaConnection*" name="cnc"/>
-          <parameter type="GdaClientEvent" name="event"/>
-          <parameter type="GdaParameterList*" name="params"/>
-        </parameters>
-      </virtual_method>
       <method name="BeginTransaction" cname="gda_client_begin_transaction">
         <return-type type="gboolean"/>
         <parameters>
@@ -252,13 +243,6 @@
           <parameter type="GList*" name="error_list"/>
         </parameters>
       </signal>
-      <virtual_method name="Error" cname="error">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaConnection*" name="cnc"/>
-          <parameter type="GList*" name="error_list"/>
-        </parameters>
-      </virtual_method>
       <method name="AddError" cname="gda_connection_add_error">
         <return-type type="void"/>
         <parameters>
@@ -457,35 +441,17 @@
           <parameter type="GdaDataModel*" name="model"/>
         </parameters>
       </signal>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaDataModel*" name="model"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="RowUpdated" cname="row_updated">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaDataModel*" name="model"/>
-          <parameter type="gint" name="row"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="BeginEdit" cname="begin_edit">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaDataModel*" name="model"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="EndEdit" cname="end_edit">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaDataModel*" name="model"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GetNColumns" cname="get_n_columns">
+      <virtual_method name="GetNRows" cname="get_n_rows">
         <return-type type="gint"/>
         <parameters>
           <parameter type="GdaDataModel*" name="model"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DescribeColumn" cname="describe_column">
+        <return-type type="GdaFieldAttributes*"/>
+        <parameters>
+          <parameter type="GdaDataModel*" name="model"/>
+          <parameter type="gint" name="col"/>
         </parameters>
       </virtual_method>
       <virtual_method name="IsEditable" cname="is_editable">
@@ -814,11 +780,10 @@
           <parameter type="const-gchar*" name="name"/>
         </parameters>
       </signal>
-      <signal name="Finished" cname="finished" when="LAST">
+      <signal name="Cancelled" cname="cancelled" when="LAST">
         <return-type type="void"/>
         <parameters>
           <parameter type="GdaExport*" name="exp"/>
-          <parameter type="GdaXmlDatabase*" name="xmldb"/>
         </parameters>
       </signal>
       <signal name="Finished" cname="finished" when="LAST">
@@ -828,21 +793,6 @@
           <parameter type="GdaXmlDatabase*" name="xmldb"/>
         </parameters>
       </signal>
-      <virtual_method name="ObjectSelected" cname="object_selected">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaExport*" name="exp"/>
-          <parameter type="GdaConnectionSchema" name="schema"/>
-          <parameter type="const-gchar*" name="name"/>
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Finished" cname="finished">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaExport*" name="exp"/>
-          <parameter type="GdaXmlDatabase*" name="xmldb"/>
-        </parameters>
-      </virtual_method>
       <method name="GetConnection" cname="gda_export_get_connection">
         <return-type type="GdaConnection*"/>
       </method>
@@ -1214,12 +1164,6 @@
           <parameter type="GdaXmlDatabase*" name="xmldb"/>
         </parameters>
       </signal>
-      <virtual_method name="Changed" cname="changed">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXmlDatabase*" name="xmldb"/>
-        </parameters>
-      </virtual_method>
       <method name="Changed" cname="gda_xml_database_changed">
         <return-type type="void"/>
       </method>
@@ -1329,13 +1273,6 @@
           <parameter type="const-char*" name="msg"/>
         </parameters>
       </signal>
-      <virtual_method name="Warning" cname="warning">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdaXmlDocument*" name="q"/>
-          <parameter type="const-char*" name="msg"/>
-        </parameters>
-      </virtual_method>
       <method name="Construct" cname="gda_xml_document_construct">
         <return-type type="void"/>
         <parameters>
