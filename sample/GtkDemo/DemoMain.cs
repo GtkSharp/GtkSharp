@@ -157,7 +157,7 @@ namespace GtkDemo
         	store = new TreeStore (typeof (string), typeof (string), typeof (bool));
 		TreeIter parent; 
        	
-        	store.AppendValues ("Application Window (75% complete)", "DemoApplicationWindow.cs", false);
+        	store.AppendValues ("Application Window", "DemoApplicationWindow.cs", false);
         	store.AppendValues ("Button Boxes", "DemoButtonBox.cs", false);
         	store.AppendValues ("Change Display (0%)", "DemoChangeDisplay.cs", false);
         	store.AppendValues ("Color Selector", "DemoColorSelection.cs", false);

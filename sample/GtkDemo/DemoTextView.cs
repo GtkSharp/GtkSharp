@@ -79,21 +79,17 @@ namespace GtkDemo
 			textView.AddChildAtAnchor (button, buttonAnchor);
 			button.ShowAll ();
 
-			OptionMenu option = new OptionMenu ();
-			Menu menu = new Menu ();
-			MenuItem menuItem = new MenuItem ("Option 1");
- 			menu.Append (menuItem);
- 			menuItem = new MenuItem ("Option 2");
- 			menu.Append (menuItem);
- 			menuItem = new MenuItem ("Option 3");
- 			menu.Append (menuItem);
-			option.Menu = menu;
- 			textView.AddChildAtAnchor (option, menuAnchor);
-			menu.ShowAll ();
+			ComboBox combo = ComboBox.NewText ();
+			combo.AppendText ("Option 1");
+			combo.AppendText ("Option 2");
+			combo.AppendText ("Option 3");
+			combo.Active = 0;
 
-                        HScale scale = new HScale (null);
+ 			textView.AddChildAtAnchor (combo, menuAnchor);
+
+			HScale scale = new HScale (null);
 			scale.SetRange (0,100);
-                        scale.SetSizeRequest (70, -1);
+			scale.SetSizeRequest (70, -1);
 			textView.AddChildAtAnchor (scale, scaleAnchor);
 			scale.ShowAll ();
 
