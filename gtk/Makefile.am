@@ -90,6 +90,7 @@ customs = 				\
 	TextIter.custom			\
 	TextTag.custom			\
 	TextView.custom			\
+	Toolbar.custom			\
 	TreeIter.custom			\
 	TreeModel.custom		\
 	TreeModelFilter.custom		\
