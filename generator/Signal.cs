@@ -220,7 +220,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("obj.{0} ({1});", "On" + Name, call.ToString ());
 			sw.WriteLine ("\t\t}\n");
 			string cname = "\"" + elem.GetAttribute("cname") + "\"";
-			sw.WriteLine ("\t\tprotected static void Override" + Name + " (GLib.GType gtype)");
+			sw.WriteLine ("\t\tprivate static void Override" + Name + " (GLib.GType gtype)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (" + Name + "Callback == null)");
 			sw.WriteLine ("\t\t\t\t" + Name + "Callback = new " + Name + "Delegate (" + Name.ToLower() + "_cb);");
