@@ -20,19 +20,19 @@
         <code lang="C#">
 	  DrawRedLine (Gdk.Drawable drawable)
 	  {
-	  Gdk.GC gc = new Gdk.GC (drawable);
+	  	Gdk.GC gc = new Gdk.GC (drawable);
 	  
-	  Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+	  	Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
 	  
-	  // Use the system colormap, easy.
-	  Gdk.Colormap colormap = Gdk.Colormap.System;
+		  // Use the system colormap, easy.
+		  Gdk.Colormap colormap = Gdk.Colormap.System;
+		  
+		  colormap.AllocColor (red_color, true, true);
+	
+	          gc.Foreground = red_color;
 	  
-	  colormap.AllocColor (red_color, true, true);
-
-          gc.Foreground = red_color;
-  
-	  // Now you can use it
-	  drawable.DrawLine (gc, 0, 0, 100, 100);
+		  // Now you can use it
+		  drawable.DrawLine (gc, 0, 0, 100, 100);
 	  }
 	</code>
       </example>
@@ -222,10 +222,16 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a color from an unmanaged location.</summary>
+        <param name="raw">A pointer to the unmanaged GdkColor structure.</param>
+        <returns>This returns a Gdk.Color structure.</returns>
+        <remarks>
+	  <para>
+	    The <paramref name="raw"/> parameter points to a C-based
+	    GdkColor structure.  This routine creates a Gdk.Color
+	    structure from its unmanaged version.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -295,9 +301,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>A hash function suitable for using for a hash table
+        that stores <see cref="T:Gdk.Color"/> objects.</summary>
+        <returns>The hash code.</returns>
+        <remarks>Use the GetHashCode method instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -320,10 +327,41 @@
         <Parameter Name="color" Type="System.Drawing.Color" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="color">To be added: an object of type 'Drawing.Color'</param>
-        <returns>To be added: an object of type 'Gdk.Color'</returns>
-        <remarks>To be added</remarks>
+        <summary>Color constructor from a System.Drawing.Color.</summary>
+        <param name="color">The <see cref="T:System.Drawing.Color"/> object.</param>
+        <returns>The constructed color structure from the
+        System.Drawing.Color definition.</returns>
+	<remarks>
+          <para>
+	    This constructs the color from the specified
+	    System.Drawing.Color object.  Notice that the Gdk.Color
+	    structure actually uses 16-bit color values, so the byte
+	    values are mapped into the 16-bit value space.  This is
+	    just a convenience routine to initialize this structure.
+	  </para>
+          <para>
+	    To use the Gdk.Color you must allocate it within the
+	    current colormap. 
+	  </para>
+          <example>
+            <code lang="C#">
+	      DrawRedLine (Gdk.Drawable drawable)
+	      {
+	              Gdk.GC gc = new Gdk.GC (drawable);
+	              
+	              Gdk.Color red_color = new Gdk.Color (0xff, 0, 0);
+	              
+	              // Use the system colormap, easy.
+	              Gdk.Colormap colormap = Gdk.Colormap.System;
+	              
+	              colormap.AllocColor (red_color, true, true);
+	              
+	              // Now you can use it
+	              drawable.DrawLine (gc, 0, 0, 100, 100);
+              }
+	    </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
   </Members>
