@@ -47,16 +47,12 @@ namespace GtkSamples {
 
 		static void ExposeEvent (object obj, ExposeEventArgs args)
 		{
-			Gdk.EventExpose ev = args.Event;
-			Gdk.Window window = ev.window;
-			// FIXME: mcs bug
-			Gdk.Rectangle area = ev.Area;
-			// FIXME: array marshalling not done yet so no FG */
-			window.DrawDrawable (darea.Style.BlackGC,
-									   pixmap,
-									   area.X, area.Y,
-									   area.X, area.Y,
-									   area.Width, area.Height);
+			Gdk.Rectangle area = args.Event.Area;
+			args.Event.Window.DrawDrawable (darea.Style.BlackGC,
+							pixmap,
+							area.X, area.Y,
+							area.X, area.Y,
+							area.Width, area.Height);
 
 			args.RetVal = false;
 		}
@@ -67,12 +63,10 @@ namespace GtkSamples {
 			Gdk.Window window = ev.window;
 			Gdk.Rectangle allocation = darea.Allocation;
 
-		Console.WriteLine ("Darea=[{0}]" , darea);
 			pixmap = new Gdk.Pixmap (window,
 									       allocation.Width,
 									       allocation.Height,
 											 -1);
-			Console.WriteLine ("Darea.Style={0}", darea.Style);
 			pixmap.DrawRectangle (darea.Style.WhiteGC, true, 0, 0,
 									    allocation.Width, allocation.Height);
 
