@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 
 		public String FromNative(String var)
 		{
-			return "(" + QualifiedName + ") GtkSharp.Boxed.GetBoxed(" + var + ")";
+			return "(" + QualifiedName + ") GLib.Boxed.FromNative(" + var + ")";
 		}
 
 		public void Generate (SymbolTable table)
@@ -57,7 +57,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\tpublic class " + Name + " : GtkSharp.Boxed {");
+			sw.WriteLine ("\tpublic class " + Name + " : GLib.Boxed {");
 			sw.WriteLine ();
 				
 			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");

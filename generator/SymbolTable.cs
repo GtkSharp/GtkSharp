@@ -185,6 +185,18 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
+		public bool IsEnum(string c_type)
+		{
+			c_type = Trim(c_type);
+			if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				if (gen is EnumGen) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		public bool IsInterface(string c_type)
 		{
 			c_type = Trim(c_type);

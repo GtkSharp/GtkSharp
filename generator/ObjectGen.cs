@@ -160,8 +160,7 @@ namespace GtkSharp.Generation {
 
 			char[] ast = {'*'};
 			c_type = c_type.TrimEnd(ast);
-			String cs_type = table.GetCSType(c_type);
-			String m_type;
+			string cs_type = table.GetCSType(c_type);
 			
 			XmlElement parent = (XmlElement) prop.ParentNode;
 			name = prop.GetAttribute("name");
@@ -169,20 +168,17 @@ namespace GtkSharp.Generation {
 				name += "Prop";
 			}
 
-			if (table.IsObject(c_type)) {
-				m_type = "GLib.Object";
-			} else if (table.IsBoxed(c_type)) {
-				m_type = "GtkSharp.Boxed";
+			string v_type = "";
+			if (table.IsEnum(c_type)) {
+				v_type = "int";
 			} else if (table.IsInterface(c_type)) {
 				// FIXME: Handle interface props properly.
 				Console.Write("Interface property detected ");
 				Statistics.ThrottledCount++;
 				return true;
-			} else {
-				m_type = table.GetMarshalType(c_type);
 			}
 			
-			if ((cs_type == "") || (m_type == "")) {
+			if (cs_type == "") {
 				Console.Write("Property has unknown Type {0} ", c_type);
 				Statistics.ThrottledCount++;
 				return false;
@@ -195,11 +191,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
 			if (prop.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
-				sw.WriteLine("\t\t\t\t" + m_type + " val;");
+				sw.WriteLine("\t\t\t\tGLib.Value val;");
 				sw.WriteLine("\t\t\t\tGetProperty(\"" + prop.GetAttribute("cname") + "\", out val);");
-				sw.Write("\t\t\t\treturn ");
-				if (cs_type != m_type) {
-					sw.Write("(" + cs_type + ") ");
+				sw.Write("\t\t\t\treturn (" + cs_type + ") ");
+				if (v_type != "") {
+					sw.Write("(" + v_type + ") ");
 				}
 				sw.WriteLine("val;");
 				sw.WriteLine("\t\t\t}");
@@ -207,7 +203,11 @@ namespace GtkSharp.Generation {
 			
 			if (prop.HasAttribute("writeable") && !prop.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
-				sw.WriteLine("\t\t\t\tSetProperty(\"" + prop.GetAttribute("cname") + "\", (" + m_type + ") value);");
+				sw.Write("\t\t\t\tSetProperty(\"" + prop.GetAttribute("cname") + "\", new GLib.Value(");
+				if (v_type != "") {
+					sw.Write("(" + v_type + ") ");
+				}
+				sw.WriteLine("value));");
 				sw.WriteLine("\t\t\t}");
 			}
 			

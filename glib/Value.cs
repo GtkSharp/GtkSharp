@@ -23,7 +23,7 @@ namespace GLib {
 		IntPtr	_val;
 
 
-		// Destructor is required since we are allocating unmananged
+		// Destructor is required since we are allocating unmanaged
 		// heap resources.
 
 		[DllImport("glib-2.0")]
@@ -34,36 +34,18 @@ namespace GLib {
 			g_free (_val);
 		}
 
-		/// <summary>
-		///	Value Constructor
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Creates an uninitialized Value on the unmanaged heap.
-		///	Use the Init method prior to attempting to assign a
-		///	value to it.
-		/// </remarks>
 
-		[DllImport("glib-2.0", 
-			   CallingConvention=CallingConvention.Cdecl)]
-		static extern IntPtr g_malloc0 (long n_bytes);
+		// import the glue function to allocate values on heap
 
-		public Value ()
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_value_create(TypeFundamentals type);
+
+		// Constructor to wrap a raw GValue ref.  We need the dummy param
+		// to distinguish this ctor from the TypePointer ctor.
+
+		public Value (IntPtr val, IntPtr dummy)
 		{
-			_val = g_malloc0 (5 * IntPtr.Size);
-		}
-
-		/// <summary>
-		///	Value Constructor
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Creates an initialized Value of the specified type.
-		/// </remarks>
-
-		public Value (TypeFundamentals type) : this ()
-		{
-			Init (type);
+			_val = val;
 		}
 
 		/// <summary>
@@ -74,14 +56,63 @@ namespace GLib {
 		///	Constructs a Value from a specified boolean.
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0")]
 		static extern void g_value_set_boolean (IntPtr val,
 						        bool data);
-		public Value (bool val) : this ()
+		public Value (bool val)
 		{
-			g_value_init (_val, TypeFundamentals.TypeBoolean);
+			_val = gtksharp_value_create(TypeFundamentals.TypeBoolean);
 			g_value_set_boolean (_val, val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified boxed type.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_boxed (IntPtr val, IntPtr data);
+		public Value (GLib.Boxed val)
+		{
+			_val = gtksharp_value_create(TypeFundamentals.TypeBoxed);
+			g_value_set_boxed (_val, val.Handle);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified double.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_double (IntPtr val, double data);
+
+		public Value (double val)
+		{
+			_val = gtksharp_value_create (TypeFundamentals.TypeDouble);
+			g_value_set_double (_val, val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified float.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_float (IntPtr val, float data);
+
+		public Value (float val)
+		{
+			_val = gtksharp_value_create (TypeFundamentals.TypeFloat);
+			g_value_set_float (_val, val);
 		}
 
 		/// <summary>
@@ -92,14 +123,47 @@ namespace GLib {
 		///	Constructs a Value from a specified integer.
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0")]
 		static extern void g_value_set_int (IntPtr val, int data);
 
-		public Value (int val) : this ()
+		public Value (int val)
 		{
-			g_value_init (_val, TypeFundamentals.TypeInt);
+			_val = gtksharp_value_create (TypeFundamentals.TypeInt);
 			g_value_set_int (_val, val);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified object.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_object (IntPtr val, IntPtr data);
+
+		public Value (GLib.Object val)
+		{
+			_val = gtksharp_value_create (TypeFundamentals.TypeObject);
+			g_value_set_object (_val, val.Handle);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a Value from a specified pointer.
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_pointer (IntPtr val, IntPtr data);
+
+		public Value (IntPtr val)
+		{
+			_val = gtksharp_value_create (TypeFundamentals.TypePointer);
+			g_value_set_pointer (_val, val); 
 		}
 
 		/// <summary>
@@ -110,32 +174,30 @@ namespace GLib {
 		///	Constructs a Value from a specified string.
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
-		static extern void g_value_set_string (IntPtr val,
-						       string data);
-		public Value (string val) : this ()
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_string (IntPtr val, string data);
+
+		public Value (string val)
 		{
-			g_value_init (_val, TypeFundamentals.TypeString);
+			_val = gtksharp_value_create (TypeFundamentals.TypeString);
 			g_value_set_string (_val, val); 
 		}
 
 		/// <summary>
-		///	Init Method
+		///	Value Constructor
 		/// </summary>
 		/// 
 		/// <remarks>
-		///	Prepares a raw value to hold a specified type.
+		///	Constructs a Value from a specified uint.
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
-		static extern void g_value_init (IntPtr val, 
-						 TypeFundamentals type);
+		[DllImport("gobject-2.0")]
+		static extern void g_value_set_uint (IntPtr val, uint data);
 
-		public void Init (TypeFundamentals type)
+		public Value (uint val)
 		{
-			g_value_init (_val, type);
+			_val = gtksharp_value_create (TypeFundamentals.TypeUInt);
+			g_value_set_uint (_val, val); 
 		}
 
 		/// <summary>
@@ -148,8 +210,7 @@ namespace GLib {
 		///	boolean value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0")]
 		static extern bool g_value_get_boolean (IntPtr val);
 
 		public static explicit operator bool (Value val)
@@ -157,6 +218,67 @@ namespace GLib {
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_boolean (val._val);
+		}
+
+		/// <summary>
+		///	Value to Boxed Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a boxed type from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	boxed type value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_boxed (IntPtr val);
+
+		public static explicit operator GLib.Boxed (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			// FIXME: Figure out how to wrap this boxed type
+			return null;
+		}
+
+		/// <summary>
+		///	Value to Double Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a double from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	double value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern double g_value_get_double (IntPtr val);
+
+		public static explicit operator double (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_double (val._val);
+		}
+
+		/// <summary>
+		///	Value to Float Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a float from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	float value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern float g_value_get_float (IntPtr val);
+
+		public static explicit operator float (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_float (val._val);
 		}
 
 		/// <summary>
@@ -169,8 +291,7 @@ namespace GLib {
 		///	integer value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0")]
 		static extern int g_value_get_int (IntPtr val);
 
 		public static explicit operator int (Value val)
@@ -178,6 +299,46 @@ namespace GLib {
 			// FIXME: Insert an appropriate exception here if
 			// _val.type indicates an error.
 			return g_value_get_int (val._val);
+		}
+
+		/// <summary>
+		///	Value to Object Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts an object from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	object value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_object (IntPtr val);
+
+		public static explicit operator GLib.Object (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return GLib.Object.GetObject(g_value_get_object (val._val));
+		}
+
+		/// <summary>
+		///	Value to Pointer Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts a pointer from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	pointer value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_value_get_pointer (IntPtr val);
+
+		public static explicit operator IntPtr (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_pointer (val._val);
 		}
 
 		/// <summary>
@@ -190,8 +351,7 @@ namespace GLib {
 		///	string value.  
 		/// </remarks>
 
-		[DllImport("gobject-2.0",
-			   CallingConvention=CallingConvention.Cdecl)]
+		[DllImport("gobject-2.0")]
 		static extern string g_value_get_string (IntPtr val);
 
 		public static explicit operator String (Value val)
@@ -202,14 +362,34 @@ namespace GLib {
 		}
 
 		/// <summary>
-		///	MarshalAs Property
+		///	Value to Unsigned Integer Conversion
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Extracts an uint from a Value.  Note, this method
+		///	will produce an exception if the Value does not hold a
+		///	unsigned integer value.  
+		/// </remarks>
+
+		[DllImport("gobject-2.0")]
+		static extern uint g_value_get_uint (IntPtr val);
+
+		public static explicit operator uint (Value val)
+		{
+			// FIXME: Insert an appropriate exception here if
+			// _val.type indicates an error.
+			return g_value_get_uint (val._val);
+		}
+
+		/// <summary>
+		///	Handle Property
 		/// </summary>
 		/// 
 		/// <remarks>
 		///	Read only. Accesses a pointer to the raw GValue.
 		/// </remarks>
 
-		public IntPtr MarshalAs {
+		public IntPtr Handle {
 			get {
 				return _val;
 			}

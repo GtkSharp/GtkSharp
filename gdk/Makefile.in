@@ -1,14 +1,18 @@
 MCS=mcs
 
-all:
-	@echo "You must use 'make windows' or 'make unix'."
-	@echo "'make unix' is broken for now."
+all: linux
 
 windows:
 	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /out:gdk-sharp.dll /recurse:*.cs
 
-linux:
+linux: gdk-sharp.dll
+
+gdk-sharp.dll: generated/*.cs
 	$(MCS) --unsafe --target library -r ../glib/glib-sharp.dll -r ../pango/pango-sharp.dll -r ../atk/atk-sharp.dll -o gdk-sharp.dll --recurse *.cs
 
 unix:
 	@echo "'make unix' is broken for now."
+
+install: all
+	cp gdk-sharp.dll @prefix@/lib
+

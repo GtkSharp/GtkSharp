@@ -10,13 +10,23 @@ there and adjust accordingly.
 Building Gtk#:
 --------------
 Currently, it is only possible to compile Gtk# on Win32 using the .Net 
-framework compiler and libraries. Miguel and company will be changing that
-shortly. The win32 compilation utilizes the cygwin environment for a GNU
-build environment. To compile the package type:
+framework compiler and libraries. The build system is in a transitional
+state at the moment.  Windows compilation utilizes the cygwin environment 
+for a GNU build environment. To compile the package type:
 
-make windows
+make -f makefile.win32
 
 in the top level directory.
+
+The linux build fails due to unresolved issues in mcs.  If you would like
+to help work these issues, the build procedure on linux is the typical:
+
+configure
+make
+make install
+
+If you are compiling from CVS, you will need libtool and the auto* tools
+and will need to replace the configure above with autogen.sh.
 
 Discussion:
 -----------
