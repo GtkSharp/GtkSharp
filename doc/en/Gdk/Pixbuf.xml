@@ -1130,9 +1130,9 @@
         <Parameter Name="copy_pixels" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Constructor.</summary>
         <param name="data">A <see cref="T:System.Byte []"/></param>
-        <param name="copy_pixels">A <see cref="T:System.Boolean"/></param>
+        <param name="copy_pixels">A <see cref="T:System.Boolean"/>, whether to copy raw pixel data; run-length encoded pixel data is always copied.</param>
         <returns>A <see cref="T:Gdk.Pixbuf"/></returns>
         <remarks/>
       </Docs>
@@ -1194,10 +1194,10 @@
         <Parameter Name="resource" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Loads a pixbuf from a resource string.</summary>
         <param name="resource">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks/>
+        <remarks>TODO: Clarify.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -1327,8 +1327,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <summary>The pixels contained by this Pixbuf object.</summary>
+        <returns>a <see cref="T:System.IntPtr" />, pointer to the underlying C data</returns>
         <remarks/>
       </Docs>
     </Member>
@@ -1345,7 +1345,7 @@
         <Parameter Name="option_values" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Saves pixbuf to a file.</summary>
         <param name="filename">Name of the file where the image will be saved</param>
         <param name="type">The file type to save (one of "ani", "bmp", "gif", "ico", "jpeg", "pcx", "png", "pnm", "ras", "tga", "tiff" "wbmp", "xpm" or "xbm")</param>
         <param name="option_keys">Options that are passed to the save module.</param>
@@ -1365,11 +1365,15 @@
         <Parameter Name="type" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">a <see cref="T:System.String" /></param>
-        <param name="type">a <see cref="T:System.String" /></param>
+        <summary>Saves pixbuf to a file.</summary>
+        <param name="filename">a <see cref="T:System.String" />, name of the file to save</param>
+        <param name="type">a <see cref="T:System.String" />, file format to save in ("jpeg" and "png" are supported).</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks/>
+        <remarks>The Gtk+ version of this call supports a text string of 
+	  arguments, which Gtk# currently does not include. (TODO: explain 
+	  the difference between Save and Savev, in light of this API 
+	  difference.)
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderThresholdAlpha">
