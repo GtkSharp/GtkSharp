@@ -19,9 +19,18 @@ namespace GtkSharp.Generation {
 			elem = e;
 		}
 
+		public string CType {
+			get {
+				return elem.GetAttribute("type");
+			}
+		}
+
 		public string CSType {
 			get {
-				return SymbolTable.GetCSType( elem.GetAttribute("type"));
+				string cstype = SymbolTable.GetCSType( elem.GetAttribute("type"));
+				if (elem.HasAttribute("array")) 
+					cstype += "[]";
+				return cstype;
 			}
 		}
 
@@ -71,6 +80,7 @@ namespace GtkSharp.Generation {
 		private string call_string;
 		private string signature;
 		private string signature_types;
+		private bool hide_data;
 
 		public Parameters (XmlElement elem) {
 			
@@ -112,6 +122,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool HideData {
+			get { return hide_data; }
+			set { hide_data = value; }
+		}
+
 		public bool Validate ()
 		{
 			foreach (XmlNode parm in elem.ChildNodes) {
@@ -146,6 +161,10 @@ namespace GtkSharp.Generation {
 		{
 			signature_types = signature = import_sig = call_string = "";
 			bool need_sep = false;
+			bool has_callback = hide_data;
+			bool last_was_user_data = false;
+			bool has_user_data = false;
+			string callback_type = "";
 			
 			int len = 0;
 			XmlElement last_param = null;
@@ -153,6 +172,9 @@ namespace GtkSharp.Generation {
 				if (parm.Name != "parameter") {
 					continue;
 				}
+				XmlElement p_elem = (XmlElement) parm;
+				if (p_elem.GetAttribute("type") == "gpointer" && (p_elem.GetAttribute("name").EndsWith ("data") || p_elem.GetAttribute("name").EndsWith ("data_or_owner")))
+					has_user_data = true;
 				len++;
 				last_param = (XmlElement) parm;
 			}
@@ -168,14 +190,23 @@ namespace GtkSharp.Generation {
 				string cs_type = SymbolTable.GetCSType(type);
 				string m_type = SymbolTable.GetMarshalType(type);
 				string name = MangleName(p_elem.GetAttribute("name"));
-				string call_parm, call_parm_name;;
+				string call_parm, call_parm_name;
+
+				if (SymbolTable.IsCallback (type)) {
+					has_callback = true;
+				}
 				
 				if (is_set && i == 0) 
 					call_parm_name = "value";
 				else
 					call_parm_name = name;
 
-				call_parm = SymbolTable.CallByName(type, call_parm_name);
+				if (SymbolTable.IsCallback (type)) {
+					call_parm = SymbolTable.CallByName (type, call_parm_name + "_wrapper");
+					callback_type = type.Replace (".", "");
+					callback_type = "GtkSharp." + callback_type + "Wrapper";
+				} else
+					call_parm = SymbolTable.CallByName(type, call_parm_name);
 				
 				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !SymbolTable.IsStruct (type))
 					call_parm = String.Format ("({0} != null) ? {1} : IntPtr.Zero", call_parm_name, call_parm);
@@ -183,6 +214,9 @@ namespace GtkSharp.Generation {
 				if (p_elem.HasAttribute("array")) {
 					cs_type += "[]";
 					m_type += "[]";
+					cs_type = cs_type.Replace ("ref ", "");
+					m_type = m_type.Replace ("ref ", "");
+					call_parm = call_parm.Replace ("ref ", "");
 				}
 
 				if (IsVarArgs && i == (len - 1) && VAType == "length_param") {
@@ -193,7 +227,7 @@ namespace GtkSharp.Generation {
 				if (need_sep) {
 					call_string += ", ";
 					import_sig += ", ";
-					if (type != "GError**" && !(IsVarArgs && i == (len - 1) && VAType == "length_param"))
+					if (!(type == "GError**" || last_was_user_data) && !(IsVarArgs && i == (len - 1) && VAType == "length_param"))
 					{
 						signature += ", ";
 						signature_types += ":";
@@ -224,27 +258,42 @@ namespace GtkSharp.Generation {
 				if (IsVarArgs && i == (len - 2) && VAType == "length_param")
 				{
 					call_string += MangleName(last_param.GetAttribute("name")) + ".Length";
+					last_was_user_data = false; 
 				}
 				else
 				{
-					if (type != "GError**") {
+					if (!(type == "GError**" || (has_callback && type == "gpointer" && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))))) {
 						signature += (cs_type + " " + name);
 						signature_types += cs_type;
-					}
+						last_was_user_data = false; 
+					} else if (type == "GError**") {
+						call_parm = call_parm.Replace (name, "error");
+						last_was_user_data = false; 
+					} else if (type == "gpointer" && (name.EndsWith ("data") || name.EndsWith ("data_or_owner"))) {
+						call_parm = "IntPtr.Zero"; 
+						last_was_user_data = true;
+					} else
+						last_was_user_data = false; 
+					
 					call_string += call_parm;
 				}
 				import_sig += (m_type + " " + name);
-				// FIXME: lame
-				call_string = call_string.Replace ("out ref", "out");
-				import_sig = import_sig.Replace ("out ref", "out");
-
 				i++;
 			}
+
+			// FIXME: lame
+			call_string = call_string.Replace ("out ref", "out");
+			import_sig = import_sig.Replace ("out ref", "out");
+
+			// FIXME: this is also lame, I need to fix the need_sep algo
+			if (signature.EndsWith (", ")) 
+				signature = signature.Remove (signature.Length - 2, 2);
 		}
 
 		public void Initialize (StreamWriter sw, bool is_get, string indent)
 		{
 			string name = "";
+
 			foreach (XmlNode parm in elem.ChildNodes) {
 				if (parm.Name != "parameter") {
 					continue;
@@ -270,6 +319,25 @@ namespace GtkSharp.Generation {
 
 			if (ThrowsException)
 				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
+
+			foreach (XmlNode parm in elem.ChildNodes) {
+				if (parm.Name != "parameter") {
+					continue;
+				}
+
+				XmlElement p_elem = (XmlElement) parm;
+
+				string c_type = p_elem.GetAttribute ("type");
+				string type = SymbolTable.GetCSType(c_type);
+				name = MangleName(p_elem.GetAttribute("name"));
+
+				if (SymbolTable.IsCallback (c_type)) {
+					type = type.Replace (".", "");
+					type = "GtkSharp." + type + "Wrapper";
+
+					sw.WriteLine(indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", type, name);
+				}
+			}
 		}
 
 		public void Finish (StreamWriter sw, string indent)

@@ -1,3 +1,22 @@
+2002-08-28  Rachel Hestilow  <hestilow@ximian.com>
+
+	* generator/CallbackGen.cs: Generate wrappers to map
+	from managed delegates to native ones.
+	* generator/Ctor.cs: Call parms.Initialize for the static case.
+	* generator/Parameters.cs: Add "CType" property. Append []
+	to CSType if necessary. Add "HideData" property if a container
+	wishes to hide the user_data (used in callbacks).
+	(Initialize): Add case for callback.
+	* generator/SymbolTable.cs: Add size_t.
+	
+	* glue/program.c: string[] marshalling is no longer broken,
+	remove hack.
+
+	* sources/Gtk.metadata: Disable
+	GtkColorSelection.SetChangePaletteHook and
+	GtkTreeView.GetSearchEqualFunc for now, they return delegates and
+	we don't support native->managed delegate mapping yet.
+
 2002-08-28  Joe Shaw  <joe@assbarn.com>
 
 	* makefile: Add the art directory back in; fixes the build.

@@ -57,6 +57,7 @@ namespace GtkSharp.Generation {
 			// but this should work for now
 			simple_types.Add ("gsize", "uint");
 			simple_types.Add ("gssize", "int");
+			simple_types.Add ("size_t", "int");
 			
 			// FIXME: These ought to be handled properly.
 			simple_types.Add ("GList", "System.IntPtr");

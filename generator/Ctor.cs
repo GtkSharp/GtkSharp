@@ -134,7 +134,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t{");
 
 				if (parms != null)
-					parms.HandleException (sw, "");
+					parms.Initialize(sw, false, ""); 
 
 				sw.Write("\t\t\treturn ");
 				if (container_type is StructBase)

@@ -81,11 +81,7 @@ gtksharp_gnome_program_init (const char *app_id, const char *app_version,
 		gnome_datadir = get_default (klass, GNOME_PARAM_GNOME_DATADIR);
 	if (!gnome_sysconfdir)
 		gnome_sysconfdir = get_default (klass, GNOME_PARAM_GNOME_SYSCONFDIR);
-	/* FIXME: string[] marshalling broken */
-	argc = 1;
-	argv = g_new0 (char*, 1);
-	argv[0] = app_id;
-
+	
 	ret = gnome_program_init (app_id, app_version, module_info,
 				  argc, argv,
 				  GNOME_PARAM_HUMAN_READABLE_NAME,
@@ -129,9 +125,6 @@ gtksharp_gnome_program_init (const char *app_id, const char *app_version,
 		g_free (gnome_espeaker);
 	
 	g_free (unhandled);
-	
-	/* Remove this too when marshalling fixed */
-	g_free (argv);
 
 	return ret;
 }
