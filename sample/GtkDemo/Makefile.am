@@ -13,6 +13,7 @@ sources = 					\
 	DemoDialog.cs			\
 	DemoDrawingArea.cs		\
 	DemoEditableCells.cs		\
+	DemoHyperText.cs		\
 	DemoImages.cs			\
 	DemoItemFactory.cs		\
 	DemoListStore.cs		\
@@ -26,23 +27,24 @@ sources = 					\
 	DemoTreeStore.cs
 
 images = \
-/resource:$(srcdir)/images/gnome-foot.png,gnome-foot.png \
-/resource:$(srcdir)/images/MonoIcon.png,MonoIcon.png \
-/resource:$(srcdir)/images/gnome-calendar.png,gnome-calendar.png \
-/resource:$(srcdir)/images/gnome-gmush.png,gnome-gmush.png \
-/resource:$(srcdir)/images/gnu-keys.png,gnu-keys.png \
-/resource:$(srcdir)/images/gnome-applets.png,gnome-applets.png \
-/resource:$(srcdir)/images/gnome-gsame.png,gnome-gsame.png \
-/resource:$(srcdir)/images/alphatest.png,alphatest.png \
-/resource:$(srcdir)/images/gnome-gimp.png,gnome-gimp.png \
-/resource:$(srcdir)/images/apple-red.png,apple-red.png \
-/resource:$(srcdir)/images/background.jpg,background.jpg \
-/resource:$(srcdir)/images/gtk-logo-rgb.gif,gtk-logo-rgb.gif \
-/resource:$(srcdir)/images/floppybuddy.gif,floppybuddy.gif
+	images/gnome-foot.png,gnome-foot.png \
+	images/MonoIcon.png,MonoIcon.png \
+	images/gnome-calendar.png,gnome-calendar.png \
+	images/gnome-gmush.png,gnome-gmush.png \
+	images/gnu-keys.png,gnu-keys.png \
+	images/gnome-applets.png,gnome-applets.png \
+	images/gnome-gsame.png,gnome-gsame.png \
+	images/alphatest.png,alphatest.png \
+	images/gnome-gimp.png,gnome-gimp.png \
+	images/apple-red.png,apple-red.png \
+	images/background.jpg,background.jpg \
+	images/gtk-logo-rgb.gif,gtk-logo-rgb.gif \
+	images/floppybuddy.gif,floppybuddy.gif
 
 build_sources = $(addprefix $(srcdir)/, $(sources))
-resources = $(addprefix /resource:, $(sources))
+build_images = $(addprefix $(srcdir)/, $(images))
+resources = $(addprefix /resource:, $(build_sources), $(build_images))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
-	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references) $(images) $(resources)
+	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references) $(resources)
 
