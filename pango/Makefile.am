@@ -1,3 +1,5 @@
+SUBDIRS = . glue
+
 API = pango-api.xml
 RAW_API = pango-api.raw
 METADATA = Pango.metadata
@@ -21,7 +23,8 @@ dist_sources = $(sources)
 customs =			\
 	AttrIterator.custom	\
 	GlyphItem.custom	\
-	Layout.custom
+	Layout.custom		\
+	LayoutLine.custom
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 dist_customs = $(customs)

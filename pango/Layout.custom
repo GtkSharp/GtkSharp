@@ -15,11 +15,10 @@ public LayoutLine[] Lines {
 		IntPtr list_ptr = pango_layout_get_lines(Handle);
 		if (list_ptr == IntPtr.Zero)
 			return new LayoutLine [0];
-		GLib.SList list = new GLib.SList(list_ptr, typeof (Pango.LayoutLine));
+		GLib.SList list = new GLib.SList(list_ptr, typeof (IntPtr));
 		LayoutLine[] result = new LayoutLine [list.Count];
-		int i = 0;
-		foreach (LayoutLine line in list)
-			result [i++] = line;
+		for (int i = 0; i < list.Count; i++)
+			result[i] = new LayoutLine ((IntPtr)list[i]);
 		return result;
 	}
 }

@@ -1,0 +1,40 @@
+// Pango.LayoutLine.custom - Pango LayoutLine class customizations
+//
+// Authors: Jeroen Zwartepoorte <jeroen@xs4all.nl
+//
+// Copyright (c) 2004 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+
+[DllImport("pangosharpglue")]
+static extern IntPtr pangosharp_pango_layout_line_get_layout (IntPtr line);
+
+public Layout Layout {
+	get {
+		IntPtr raw_ret = pangosharp_pango_layout_line_get_layout (Handle);
+		Pango.Layout ret;
+		if (raw_ret == IntPtr.Zero)
+			ret = null;
+		else
+			ret = (Pango.Layout) GLib.Object.GetObject (raw_ret);
+		return ret;
+	}
+}
+
+[DllImport("pangosharpglue")]
+static extern int pangosharp_pango_layout_line_get_start_index (IntPtr line);
+
+public int StartIndex {
+	get {
+		return pangosharp_pango_layout_line_get_start_index (Handle);
+	}
+}
+
+[DllImport("pangosharpglue")]
+static extern int pangosharp_pango_layout_line_get_length (IntPtr line);
+
+public int Length {
+	get {
+		return pangosharp_pango_layout_line_get_length (Handle);
+	}
+}

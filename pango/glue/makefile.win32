@@ -1,0 +1,22 @@
+PANGO_CFLAGS=`pkg-config --cflags gtk+-win32-2.0 libglade-2.0`
+PANGO_LIBS=`pkg-config --libs gtk+-win32-2.0 libglade-2.0`
+CC=gcc -mno-cygwin -mms-bitfields
+DLLWRAP=dllwrap -mno-cygwin -mms-bitfields --target i386-mingw32 --export-all-symbols
+
+GLUE_OBJS = \
+        layoutline.o	\
+	win32dll.o
+
+all: pangosharpglue.dll
+
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(PANGO_CFLAGS) -o $@ $^ 
+
+
+gtksharpglue.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libpangosharpglue.a --dllname=pangosharpglue.dll --driver-name=gcc --output-def=pangosharpglue.def $(GLUE_OBJS) $(PANGO_LIBS)
+
+
+clean:
+	rm -f pangosharpglue.dll *.o libpangosharpglue.a
