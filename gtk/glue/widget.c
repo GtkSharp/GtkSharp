@@ -38,6 +38,7 @@ void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
 int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
 void gtksharp_widget_add_binding_signal (GType gtype, const char *sig_name, GCallback cb);
 void gtksharp_widget_register_binding (GType gtype, const char *sig_name, guint key, int mod, gpointer data);
+void gtksharp_widget_style_get_property (GtkWidget *widget, const gchar* property, GValue *value);
 /* */
 
 GdkRectangle*
@@ -158,5 +159,13 @@ gtksharp_widget_register_binding (GType gtype, const gchar *signame, guint key, 
 		klass = g_type_class_ref (gtype);
 	GtkBindingSet *set = gtk_binding_set_by_class (klass);
 	gtk_binding_entry_add_signal (set, key, mod, signame, 1, G_TYPE_LONG, data);
+}
+
+void
+gtksharp_widget_style_get_property (GtkWidget *widget, const gchar* property, GValue *value)
+{
+	GParamSpec *spec = gtk_widget_class_find_style_property (GTK_WIDGET_GET_CLASS (widget), property);
+	g_value_init (value, spec->value_type);
+	gtk_widget_style_get_property (widget, property, value);
 }
 

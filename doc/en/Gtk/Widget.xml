@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Type Name="Widget" FullName="Gtk.Widget">
   <TypeSignature Language="C#" Value="public class Widget : Gtk.Object, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
@@ -17,7 +17,7 @@
       Style properties are set in resource files. This mechanism is used for configuring such things as the location of the scrollbar arrows through the theme, giving theme authors more control over the look of applications without the need to write a theme engine in C.
      </para>
       <para>
-      Use <see cref="M:Gtk.Widget.StyleGetProperty" />, <see cref="P:Gtk.Widget.Style" /> or <see cref="M:Gtk.Widget.StyleGetValist" /> to obtain the value of a style property.
+      Use <see cref="M:Gtk.Widget.StyleGetProperty" /> to obtain the value of a style property.
      </para>
     </remarks>
   </Docs><Base>
@@ -308,27 +308,6 @@
          </para>
           <para>
           The pixels in the returned <see cref="T:Gdk.Pixbuf" /> are shared with the rest of the application and should not be modified. The <see cref="T:Gdk.Pixbuf" /> should be freed after use with <see cref="M:Glib.Object.Unref" />.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StyleGetValist">
-      <MemberSignature Language="C#" Value="public void StyleGetValist (string first_property_name, IntPtr var_args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="first_property_name" Type="System.String" />
-        <Parameter Name="var_args" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the values of a multiple style properties of <paramref name="widgets" />.</summary>
-        <param name="first_property_name">The name of the first property to get.</param>
-        <param name="var_args">A va_list of pairs of property names and locations to return the property values, starting with the location for <paramref name="first_property_name" />.</param>
-        <remarks>
-          <para>
-          Gets the values of a multiple style properties of <paramref name="widget" />. Used primarily by language bindings.
          </para>
         </remarks>
       </Docs>
@@ -2602,19 +2581,17 @@ handle focus grabs.</returns>
       </Docs>
     </Member>
     <Member MemberName="StyleGetProperty">
-      <MemberSignature Language="C#" Value="public void StyleGetProperty (string property_name, GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public object StyleGetProperty (string property_name);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="property_name" Type="System.String" />
-        <Parameter Name="value" Type="GLib.Value" />
       </Parameters>
       <Docs>
         <summary>Obtains the value of a style property of <paramref name="widget" />.</summary>
         <param name="property_name">The name of a style property.</param>
-        <param name="value">Location to return the property value.</param>
         <remarks />
       </Docs>
     </Member>

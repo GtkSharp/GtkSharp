@@ -294,3 +294,15 @@ static void ClassInit (GLib.GType gtype, Type t)
 	}
 }
 
+[DllImport("gtksharpglue-2")]
+static extern void gtksharp_widget_style_get_property (IntPtr widget, string property, ref GLib.Value value);
+
+public object StyleGetProperty (string property_name) {
+	GLib.Value value = new GLib.Value ();
+	object ret;
+
+	gtksharp_widget_style_get_property (Handle, property_name, ref value);
+	ret = value.Val;
+	value.Dispose ();
+	return ret;
+}
