@@ -201,12 +201,6 @@ namespace GtkSharp.Generation {
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
 				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
-			} else if (CSType == "long") {
-				sw.WriteLine ("\t\t[MarshalAs (UnmanagedType.SysInt)]");
-				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, StudlyName);
-			} else if (CSType == "ulong") {
-				sw.WriteLine ("\t\t[MarshalAs (UnmanagedType.SysUInt)]");
-				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (Access != "public") {
 				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, Name);
 			} else {

@@ -28,6 +28,8 @@ sources = 				\
 	IGeneratable.cs			\
 	ImportSignature.cs		\
 	InterfaceGen.cs			\
+	LPGen.cs			\
+	LPUGen.cs			\
 	ManagedCallString.cs		\
 	ManualGen.cs			\
 	MethodBody.cs			\
@@ -42,8 +44,6 @@ sources = 				\
 	SignalHandler.cs		\
 	Signature.cs			\
 	SimpleGen.cs			\
-	SizeTGen.cs			\
-	SSizeTGen.cs			\
 	Statistics.cs			\
 	StringGen.cs			\
 	StructBase.cs			\

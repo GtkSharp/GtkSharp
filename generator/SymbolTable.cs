@@ -47,7 +47,6 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gint", "int"));
 			AddType (new SimpleGen ("guint", "uint"));
 			AddType (new SimpleGen ("unsigned int", "uint"));
-			AddType (new SimpleGen ("glong", "long"));
 			AddType (new SimpleGen ("gshort", "short"));
 			AddType (new SimpleGen ("gushort", "ushort"));
 			AddType (new SimpleGen ("guint32", "uint"));
@@ -71,9 +70,6 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("guchar", "byte"));
 			AddType (new SimpleGen ("unsigned char", "byte"));
 			AddType (new SimpleGen ("short", "short"));
-			AddType (new SimpleGen ("long", "long"));
-			AddType (new SimpleGen ("ulong", "ulong"));
-			AddType (new SimpleGen ("gulong", "ulong"));
 			AddType (new SimpleGen ("GQuark", "int"));
 			AddType (new SimpleGen ("int", "int"));
 			AddType (new StringGen ("char"));
@@ -84,13 +80,21 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
 			AddType (new ManualGen ("GType", "GLib.GType", "Val"));
 			AddType (new SimpleGen ("GError", "IntPtr"));
+
 			// gsize is a system-specific typedef in glibconfig.h,
 			// but this should work for now
 			AddType (new SimpleGen ("gsize", "uint"));
 			AddType (new SimpleGen ("gssize", "int"));
 			AddType (new AliasGen ("off_t", "size_t"));
-			AddType (new SizeTGen ());
-			AddType (new SSizeTGen ());
+
+			// system specific integer types. these will break on any
+			// platform where sizeof (long) != sizeof (pointer)
+			AddType (new LPGen ("ssize_t"));
+			AddType (new LPGen ("long"));
+			AddType (new LPGen ("glong"));
+			AddType (new LPUGen ("size_t"));
+			AddType (new LPUGen ("ulong"));
+			AddType (new LPUGen ("gulong"));
 			AddType (new GUnicharGen ());
 			
 			// FIXME: These ought to be handled properly.

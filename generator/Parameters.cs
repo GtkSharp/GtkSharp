@@ -178,6 +178,9 @@ namespace GtkSharp.Generation {
 				if (Generatable is SimpleGen && !(Generatable is ConstStringGen) && CType.EndsWith ("*") && !CSType.EndsWith ("IntPtr"))
 					return "out";
 
+				if ((Generatable is LPGen || Generatable is LPUGen) && CType.EndsWith ("*"))
+					return "out";
+
 				if (Generatable is EnumGen && CType.EndsWith ("*"))
 					return "out";
 

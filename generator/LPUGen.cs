@@ -1,4 +1,4 @@
-// GtkSharp.Generation.SizeTGen.cs - The size_t Generatable.
+// GtkSharp.Generation.LPUGen.cs - unsugned long/pointer generatable.
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -23,15 +23,18 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class SizeTGen : IGeneratable  {
+	public class LPUGen : IGeneratable  {
 		
 		string ctype;
-		string type;
-		string ns = "";
+
+		public LPUGen (string ctype)
+		{
+			this.ctype = ctype;
+		}
 
 		public string CName {
 			get {
-				return "size_t";
+				return ctype;
 			}
 		}
 

@@ -56,7 +56,7 @@ namespace GtkSharp.Generation {
 				parms [i] = "";
 				if (p.CType == "GError**")
 					parms [i] += "out ";
-				else if (p.PassAs != "" && (!m_type.EndsWith ("IntPtr") || UsesHandle (p.Generatable)))
+				else if (p.PassAs != "" && (!m_type.EndsWith ("IntPtr") || p.Generatable is LPGen || p.Generatable is LPUGen || UsesHandle (p.Generatable)))
 					parms [i] += p.PassAs + " ";
 				parms [i] += m_type + " " + p.Name;
 			}
