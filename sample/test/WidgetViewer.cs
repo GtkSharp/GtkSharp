@@ -38,6 +38,7 @@ namespace WidgetViewer {
 			AddButton ("Color Selection", new EventHandler (Color_Selection));
 			AddButton ("Dialog", new EventHandler (Dialog));
 			AddButton ("File Selection", new EventHandler (File_Selection));
+			AddButton ("Menus", new EventHandler (Menus));
 			AddButton ("Radio Buttons", new EventHandler (Radio_Buttons));
 			AddButton ("Range Controls", new EventHandler (Range_Controls));
 			AddButton ("Statusbar", new EventHandler (Statusbar));
@@ -131,6 +132,11 @@ namespace WidgetViewer {
 		static void Flipping (object o, EventArgs args)
 		{
 			AddWindow (TestFlipping.Create ());
+		}
+
+		static void Menus (object o, EventArgs args)
+		{
+			AddWindow (TestMenus.Create ());
 		}
 	}
 }
