@@ -23,6 +23,9 @@ gtksharp_gnome_program_init (string app_id, string app_version, ref ModuleInfo m
 
 public Program (string app_id, string app_version, ModuleInfo module, string[] argv, params object[] props) : base (IntPtr.Zero)
 {
+	if (app_id.IndexOf (" ") > 0)
+		throw new ArgumentException ("app_id argument can't contain spaces.");
+
 	int nargs = props.Length / 2;
 	PropertyArg[] args = new PropertyArg[nargs];
 	GLib.Value[] vals = new GLib.Value[nargs];
