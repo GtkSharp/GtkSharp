@@ -78,7 +78,7 @@ namespace GtkSharp.Generation {
 		private string GetHandlerName (out string argsname)
 		{
 			if (marsh.EndsWith (".voidObjectSignal")) {
-				argsname = "EventArgs";
+				argsname = "System.EventArgs";
 				return "EventHandler";
 			}
 
@@ -161,7 +161,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
 			sw.Write("\t\t\t\t\tSignals[" + cname + "] = new " + qual_marsh);
 			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + argsname);
-			if (argsname != "EventArgs")
+			if (argsname != "System.EventArgs")
 				sw.Write("," + container_type.NS.ToLower() + "-sharp");
 			sw.WriteLine("\"));");
 			sw.WriteLine("\t\t\t\tEventList.AddHandler(" + cname + ", value);");
