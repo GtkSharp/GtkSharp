@@ -109,7 +109,7 @@ namespace GtkDemo
 
  		private void AddRow (Table table, uint row, SizeGroup sizeGroup, string labelText, string [] options)
  		{
- 			Label label = Label.NewWithMnemonic (labelText);
+ 			Label label = new Label (labelText);
  			label.SetAlignment (0, 1);
 
 			table.Attach (label,

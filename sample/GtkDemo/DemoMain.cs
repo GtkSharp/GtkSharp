@@ -50,8 +50,8 @@ namespace GtkDemo
 			Notebook notebook = new Notebook ();
 			hbox.PackStart (notebook, true, true, 0);
 
-			notebook.AppendPage (CreateText (infoBuffer, false), Label.NewWithMnemonic ("_Info"));
-			notebook.AppendPage (CreateText (sourceBuffer, true), Label.NewWithMnemonic ("_Source"));
+			notebook.AppendPage (CreateText (infoBuffer, false), new Label ("_Info"));
+			notebook.AppendPage (CreateText (sourceBuffer, true), new Label ("_Source"));
 
 			window.ShowAll ();
 		}

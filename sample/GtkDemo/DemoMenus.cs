@@ -94,16 +94,22 @@ namespace GtkDemo
 
 			menuitem = new CheckMenuItem ("Accelerate Me");
 			menu.Append (menuitem);
-			menuitem.AddAccelerator ("activate", accel_group, 0xFFBE, 0, AccelFlags.Visible);
+			AccelKey ak = new AccelKey ();
+			ak.accel_key = 0xFFBE;
+			menuitem.AddAccelerator ("activate", accel_group, ak, 0, AccelFlags.Visible);
 			
 			menuitem = new CheckMenuItem ("Accelerator locked");
 			menu.Append (menuitem);
-			menuitem.AddAccelerator ("activate", accel_group, 0xFFBF, 0, AccelFlags.Visible | AccelFlags.Locked);
+			AccelKey ak2 = new AccelKey ();
+			ak2.accel_key = 0xFFBF;
+			menuitem.AddAccelerator ("activate", accel_group, ak2, 0, AccelFlags.Visible | AccelFlags.Locked);
 
 			menuitem = new CheckMenuItem ("Accelerator Frozen");
 			menu.Append (menuitem);
-			menuitem.AddAccelerator ("activate", accel_group, 0xFFBF, 0, AccelFlags.Visible);
-			menuitem.AddAccelerator ("activate", accel_group, 0xFFC0, 0, AccelFlags.Visible);
+			AccelKey ak3 = new AccelKey ();
+			ak3.accel_key = 0xFFC0;
+			menuitem.AddAccelerator ("activate", accel_group, ak2, 0, AccelFlags.Visible);
+			menuitem.AddAccelerator ("activate", accel_group, ak3, 0, AccelFlags.Visible);
 			
 			OptionMenu option_menu = new OptionMenu ();
 			option_menu.Menu = menu;

@@ -65,13 +65,13 @@ namespace GtkDemo
 			table.ColumnSpacing = 4;
 			hbox.PackStart (table);
 
-			Label label = Label.NewWithMnemonic ("_Entry1");
+			Label label = new Label ("_Entry1");
 			table.Attach (label, 0, 1, 0, 1);
 			entry1 = new Entry ();
 			table.Attach (entry1, 1, 2, 0, 1);
 			label.MnemonicWidget = entry1;
 			
-			label = Label.NewWithMnemonic ("E_ntry2");
+			label = new Label ("E_ntry2");
 			table.Attach (label,0,1,1,2);
 			entry2 = new Entry ();
 			table.Attach (entry2, 1, 2, 1, 2);
@@ -119,14 +119,14 @@ namespace GtkDemo
 			table.ColumnSpacing = 4;
 			hbox.PackStart (table, false, false, 0);
 
-			Label label = Label.NewWithMnemonic ("_Entry1");
+			Label label = new Label ("_Entry1");
 			table.Attach (label, 0, 1, 0, 1);
 			Entry localEntry1 = new Entry();
 			localEntry1.Text = entry1.Text;
 			table.Attach (localEntry1, 1, 2, 0, 1);
 			label.MnemonicWidget = localEntry1;
 
-			label = Label.NewWithMnemonic ("E_ntry2");
+			label = new Label ("E_ntry2");
 			table.Attach (label, 0, 1, 1, 2);
 			Entry localEntry2 = new Entry();
 			localEntry2.Text = entry2.Text;
