@@ -11,10 +11,10 @@ there and adjust accordingly.
 Building & Installing Gtk#:
 ---------------------------
 
-    To compile Gtk# on Win32 using the .Net framework compiler and libraries,
+    To compile Gtk# on Win32 using the .NET framework compiler and libraries,
     in the top level directory, type:
 
-    make -f makefile.win32
+        make -f makefile.win32
 
     The Linux build is the traditional:
 
@@ -22,12 +22,26 @@ Building & Installing Gtk#:
         make
         make install
 
+    You may want to consider using configure's prefix option to install
+    Gtk# using the same prefix as Mono.  That way all of your .NET assemblies
+    get placed in the same place, and you don't need to do any extra "configuring"
+    to make it so mono (and mint) can find your assemblies.  In other words,
+    doing something like:
+
+        ./configure --prefix=/the/path/that/was/used/for/mono
+        make
+        make install
+
+    (Of course, replace "/the/path/that/was/used/for/mono" with whatever path
+    which was used for Mono.  This might have been "/usr", "/usr/local", or
+    something similar.)
+
     If you are compiling from CVS, you will need libtool and the auto* tools
     and will need to replace the configure above with autogen.sh.
 
 
-Discussion:
------------
+Discussion & Support:
+---------------------
 
     A mailing list for Gtk# discussion is available.
 
@@ -36,7 +50,7 @@ Discussion:
         http://lists.ximian.com/mailman/listinfo/gtk-sharp-list
 
     And following the instructions (on that page) to subscribe.
-    Message are posted on this mailing list by sending messages to:
+    Messages are posted on this mailing list by sending them to:
 
         gtk-sharp-list@ximian.com
 
@@ -50,6 +64,9 @@ Discussion:
     Also, people can get help with and discuss Gtk# on IRC via the
     #mono channel on the irc.gnome.org IRC server.
 
+    People looking for general help with C# should visit the
+    #c# channel on irc.freenode.net IRC server.
+
 
 Developers:
 -----------
@@ -60,3 +77,13 @@ Developers:
         http://www.go-mono.com/tutorial
 
     In the MonkeyGuide, Chapter 18 is on Gtk#.
+
+
+Hackers:
+--------
+
+    For those who wish to help with the development of Gtk#, they should
+    read the file named: HACKING.
+
+    Also, anyone wishing to hack Gtk# is encouraged to join the Gtk#
+    mailing list.  And to visit the #mono IRC channel (on irc.gnome.org).
