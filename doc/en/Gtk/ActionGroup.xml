@@ -9,8 +9,20 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A group of actions</summary>
+    <remarks>
+      <para>
+        <para>
+Actions are organised into groups. An action group is essentially a map from names to <see cref="T:Gtk.Action" /> objects.
+</para>
+        <para>
+All actions that would make sense to use in a particular context should be in a single group. Multiple action groups may be used for a particular user interface. In fact, it is expected that most nontrivial applications will make use of multiple groups. For example, in an application that can edit multiple documents, one group holding global actions (e.g. quit, about, new), and one group per document holding actions that act on that document (eg. save, cut/copy/paste, etc). Each window's menus would be constructed from a combination of two action groups.
+</para>
+        <para>
+Accelerators are handled by the Gtk accelerator map. All actions are assigned an accelerator path (which normally has the form &lt;Actions&gt;/group-name/action-name) and a shortcut is associated with this accelerator path. All menuitems and toolitems take on this accelerator path. The Gtk accelerator map code makes sure that the correct shortcut is displayed next to the menu item. 
+</para>
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -49,11 +61,11 @@
         <Parameter Name="notify" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets a function to be used for translating the label and tooltip of GtkActionGroupEntrys added by <see cref="M:Gtk.ActionGroup.AddActions()" />.</summary>
         <param name="func">a <see cref="T:Gtk.TranslateFunc" /></param>
         <param name="data">a <see cref="T:System.IntPtr" /></param>
         <param name="notify">a <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>To be added</remarks>
+        <remarks>If you are using gettext(), it is enough to set the translation domain with <see cref="P:Gtk.ActionGroup.TranslationDomain" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -66,9 +78,9 @@
         <Parameter Name="action" Type="Gtk.Action" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Removes an action object from the action group.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -82,10 +94,19 @@
         <Parameter Name="accelerator" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds an action object to the action group and sets up the accelerator.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <param name="accelerator">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <param name="accelerator">a <see cref="T:System.String" />.  The accelerator for the action, in the format understood by <see cref="M:Gtk.Accelerator.Parse()" />, or "" for no accelerator, or <see langword="null" /> to use the stock accelerator</param>
+        <remarks>
+          <para>
+            <para>
+If accelerator is <see langword="null" />, attempts to use the accelerator associated with the stock_id of the action.
+</para>
+            <para>
+Accel paths are set to &lt;Actions&gt;/group-name/action-name.
+</para>
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAction">
@@ -98,9 +119,9 @@
         <Parameter Name="action_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="action_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
+        <summary>Looks up an action in the action group by name.</summary>
+        <param name="action_name">a <see cref="T:System.String" />,  the name of the action</param>
+        <returns>a <see cref="T:Gtk.Action" />,  or <see langword="null" /> if no action by that name exists</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -114,9 +135,10 @@
         <Parameter Name="action" Type="Gtk.Action" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds an action object to the action group.</summary>
         <param name="action">a <see cref="T:Gtk.Action" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Note that this function does not set up the accel path of the action, which can lead to problems if a user tries to modify the accelerator of a menuitem associated with the action.
+Therefore you must either set the accel path yourself with <see cref="P:Gtk.Action.AccelPath" />, or use <see cref="M:Gtk.ActionGroup.Add(Gtk.Action,System.String)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ListActions">
@@ -127,7 +149,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Lists the actions in the action group.</summary>
         <returns>a <see cref="T:GLib.List" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -140,10 +162,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.ActionGroup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -154,10 +176,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.ActionGroup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -168,10 +190,10 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
+        <summary>Creates a new <see cref="T:Gtk.ActionGroup" /> object.</summary>
+        <param name="name">a <see cref="T:System.String" />,  the name of the action group.</param>
         <returns>a <see cref="T:Gtk.ActionGroup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The name of the action group is used when associating keybindings with the actions.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -195,9 +217,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The visibility of the ActionGroup</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The constituent actions can only be logically visible (see <see cref="P:Gtk.Action.IsVisible" />) if they are visible (see <see cref="P:Gtk.Action.Visible" />) and their group is visible.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Sensitive">
@@ -208,9 +230,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The sensitivity of the ActionGroup</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The constituent actions can only be logically sensitive (see <see cref="P:Gtk.Action.IsSensitive" />) if they are sensitive (see <see cref="P:Gtk.Action.Sensitive" />) and their group is sensitive.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -221,9 +243,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the name of the action group.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TranslationDomain">
@@ -233,7 +255,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the translation domain and uses dgettext() for translating the label and tooltip of <see cref="T:Gtk.ActionEntry" />s added by <see cref="M:Gtk.ActionGroup.AddActions()" />.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>

@@ -9,8 +9,42 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Constructs menus and toolbars from an XML description</summary>
+    <remarks>
+      <para>
+A <see cref="T:Gtk.UIManager" /> constructs a user interface (menus and toolbars) from one or more UI definitions, which reference actions from one or more action groups.
+<para>
+TODO: all the xml stuff 
+</para><para>
+UI Merging</para><para>
+The most remarkable feature of GtkUIManager is that it can overlay a set of menuitems and toolitems over another one, and demerge them later.
+</para><para>
+Merging is done based on the names of the XML elements. Each element is identified by a path which consists of the names of its anchestors, separated by slashes. For example, the menuitem named "Left" in the example above has the path /ui/menubar/JustifyMenu/Left and the toolitem with the same name has path /ui/toolbar1/JustifyToolItems/Left.
+</para><para>
+Accelerators
+</para><para>
+Every action has an accelerator path. Accelerators are installed together with menuitem proxies, but they can also be explicitly added with &lt;accelerator&gt; elements in the UI definition. This makes it possible to have accelerators for actions even if they have no visible proxies.
+<para>
+Smart Separators
+</para></para><para>
+The separators created by GtkUIManager are "smart", i.e. they do not show up in the UI unless they end up between two visible menu or tool items. Separators which are located at the very beginning or end of the menu or toolbar containing them, or multiple separators next to each other, are hidden. This is a useful feature, since the merging of UI elements from multiple sources can make it hard or impossible to determine in advance whether a separator will end up in such an unfortunate position.
+</para><para>
+Empty Menus
+</para><para>
+Submenus pose similar problems to separators inconnection with merging. It is impossible to know in advance whether they will end up empty after merging. GtkUIManager offers two ways to treat empty submenus:
+
+<list type="bullet">
+            <item>
+              <term>make them disappear by hiding the menu item they're attached to</term>
+            </item>
+            <item>
+              <term>add an insensitive "Empty" item</term>
+            </item>
+          </list>
+
+The behaviour is chosen based on the "is_important" property of the action to which the submenu is associated.
+</para></para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -138,7 +172,7 @@
         <Parameter Name="action_group" Type="Gtk.ActionGroup" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>emoves an action group from the list of action groups</summary>
         <param name="action_group">a <see cref="T:Gtk.ActionGroup" /></param>
         <remarks>To be added</remarks>
       </Docs>
@@ -153,10 +187,16 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Looks up a widget by following a path.</summary>
         <param name="path">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gtk.Widget" /> found by following the path, or <see langword="null" /> if no widget was found.</returns>
+        <remarks>The path consists of the names specified in the XML description of the UI. separated by '/'. Elements which do not have a name or action attribute in the XML (e.g. &lt;popup&gt;) can be addressed by their XML element name (e.g. "popup"). The root element ("/ui") can be omitted in the path.
+
+<block subset="none" type="note">
+            <para>
+    The widget found by following a path that ends in a &lt;menu&gt; element is the menuitem to which the menu is attached, not the menu itself.
+  </para>
+          </block></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddUiFromString">
@@ -169,10 +209,10 @@
         <Parameter Name="buffer" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="buffer">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Parses a string containing a UI definition and merges it with the current contents.</summary>
+        <param name="buffer">a <see cref="T:System.String" />  to parse</param>
+        <returns>a <see cref="T:System.UInt32" />.  The merge id for the merged UI. The merge id can be used to unmerge the UI with <see cref="M:Gtk.UIManager.RemoveUi()" />. If an error occurred, the return value is 0.</returns>
+        <remarks>An enclosing &lt;ui&gt; element is added if it is missing.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetToplevels">
@@ -185,10 +225,10 @@
         <Parameter Name="types" Type="Gtk.UIManagerItemType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains a list of all toplevel widgets of the requested types.</summary>
         <param name="types">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:GLib.SList" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Allowed types are GTK_UI_MANAGER_MENUBAR, GTK_UI_MANAGER_TOOLBAR and GTK_UI_MANAGER_POPUP.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureUpdate">
@@ -199,8 +239,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Makes sure that all pending updates to the UI have been completed.</summary>
+        <remarks>This may occasionally be necessary, since <see cref="T:Gtk.UIManager" /> updates the UI in an idle function.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddUi">
@@ -218,14 +258,14 @@
         <Parameter Name="top" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="merge_id">a <see cref="T:System.UInt32" /></param>
+        <summary>Adds a UI element to the current contents.</summary>
+        <param name="merge_id">a <see cref="T:System.UInt32" />, the merge id for the merged UI</param>
         <param name="path">a <see cref="T:System.String" /></param>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <param name="action">a <see cref="T:System.String" /></param>
-        <param name="type">a <see cref="T:System.Int32" /></param>
-        <param name="top">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <param name="name">a <see cref="T:System.String" />,  the name for the added UI element</param>
+        <param name="action">a <see cref="T:System.String" />,  the name of the action to be proxied, or <see langword="null" /> to add a separator</param>
+        <param name="type">a <see cref="T:System.Int32" />.  the type of UI element to add.</param>
+        <param name="top">a <see cref="T:System.Boolean" />.  If <see langword="true" />, the UI element is added before its siblings, otherwise it is added after its siblings.</param>
+        <remarks>If type is <see cref="F:Gtk.UIManager.Auto" />, Gtk inserts a menuitem, toolitem or separator if such an element can be inserted at the place determined by path. Otherwise type must indicate an element that can be inserted at the place determined by path.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveUi">
@@ -238,9 +278,9 @@
         <Parameter Name="merge_id" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="merge_id">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Unmerges the content identified by <paramref name="merge_id" />.</summary>
+        <param name="merge_id">a <see cref="T:System.UInt32" /> from when the ui was added.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InsertActionGroup">
@@ -254,10 +294,10 @@
         <Parameter Name="pos" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="action_group">a <see cref="T:Gtk.ActionGroup" /></param>
-        <param name="pos">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Inserts an action group into the list of action groups associated with this UIManager</summary>
+        <param name="action_group">a <see cref="T:Gtk.ActionGroup" /> to be inserted</param>
+        <param name="pos">a <see cref="T:System.Int32" />,  the position at which the group will be inserted.</param>
+        <remarks>Actions in earlier groups hide actions with the same name in later groups.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddUiFromFile">
@@ -270,9 +310,9 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
+        <summary>Parses a file containing a UI definition and merges it with the current contents.</summary>
+        <param name="filename">a <see cref="T:System.String" />,  the name of the file to parse</param>
+        <returns>a <see cref="T:System.UInt32" />.   The merge id for the merged UI. The merge id can be used to unmerge the UI with <see cref="M:Gtk.UIManager.RemoveUi()" />. If an error occurred, the return value is 0.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -286,10 +326,10 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Looks up an action by following a path.</summary>
         <param name="path">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gtk.Action" /> whose proxy widget is found by following the path, or <see langword="null" /> if no widget was found.</returns>
+        <remarks>See <see cref="M:Gtk.UIManager.GetWidget()" /> for more information about paths.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddUiFromResource">
@@ -302,7 +342,7 @@
         <Parameter Name="resource" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a UI element to the current contents from an embedded resource.</summary>
         <param name="resource">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.UInt32" /></returns>
         <remarks>To be added</remarks>
@@ -316,10 +356,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.UIManager" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -330,10 +370,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.UIManager" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -342,9 +382,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Gtk.UIManager" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -382,9 +422,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The UI represented in XML.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddTearoffs">
@@ -395,9 +435,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the "add_tearoffs" property, which controls whether menus generated by this <see cref="T:Gtk.UIManager" /> will have tearoff menu items.</summary>
+        <returns>a <see cref="T:System.Boolean" />,  whether tearoff menu items are added</returns>
+        <remarks>Note that this only affects regular menus. Generated popup menus never have tearoff menu items.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AccelGroup">
@@ -408,9 +448,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The <see cref="T:Gtk.AccelGroup" /> associated with this UIManager</summary>
         <returns>a <see cref="T:Gtk.AccelGroup" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ActionGroups">
@@ -421,9 +461,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The list of action groups associated with this UIManager.</summary>
         <returns>a <see cref="T:GLib.List" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ActionsChanged">
@@ -434,8 +474,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The "actions-changed" signal is emitted whenever the set of actions changes.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PreActivate">
@@ -446,8 +486,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The PreActivate signal is emitted just before the action is activated.</summary>
+        <remarks>This is intended for applications to get notification just before any action is activated.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddWidget">
@@ -458,8 +498,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The AddWidget signal is emitted for each generated menubar and toolbar.</summary>
+        <remarks>It is not emitted for generated popup menus, which can be obtained by <see cref="M:Gtk.UIManager.GetWidget()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConnectProxy">
@@ -470,8 +510,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The ConnectProxy signal is emitted after connecting a proxy to an action in the group.</summary>
+        <remarks>This is intended for simple customizations for which a custom action class would be too clumsy, e.g. showing tooltips for menuitems in the statusbar.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisconnectProxy">
@@ -482,8 +522,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The DisconnectProxy signal is emitted after disconnecting a proxy from an action in the group.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PostActivate">
@@ -494,8 +534,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>The PostActivate signal is emitted just after the action is activated.</summary>
+        <remarks>This is intended for applications to get notification just after any action is activated.</remarks>
       </Docs>
     </Member>
   </Members>
