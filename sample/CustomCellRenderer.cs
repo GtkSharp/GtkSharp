@@ -43,10 +43,10 @@ public class CustomCellRenderer : CellRenderer
 		x_offset = 0;
 		y_offset = 0;
 		if (!cell_area.Equals (Rectangle.Zero)) {
-			x_offset = (int) (this.Xalign * (this.Width - calc_width));
+			x_offset = (int) (this.Xalign * (cell_area.Width - calc_width));
 			x_offset = Math.Max (x_offset, 0);
 			
-			y_offset = (int) (this.Yalign * (this.Height - calc_height));
+			y_offset = (int) (this.Yalign * (cell_area.Height - calc_height));
 			y_offset = Math.Max (y_offset, 0);
 		}
 	}
@@ -102,7 +102,7 @@ public class Driver : Gtk.Window
 		this.DeleteEvent += new DeleteEventHandler (window_delete);
 
 		liststore = new ListStore (typeof (float), typeof (string));
-		liststore.AppendValues (0.5f, "0.5");
+		liststore.AppendValues (0.5f, "50%");
 
 		TreeView view = new TreeView (liststore);
 
@@ -136,7 +136,7 @@ public class Driver : Gtk.Window
 			perc -= 0.01f;
 
 		liststore.SetValue (iter, 0, perc);
-		liststore.SetValue (iter, 1, perc.ToString ());
+		liststore.SetValue (iter, 1, Convert.ToInt32 (perc * 100) + "%");
 
 		return true;
 	}
