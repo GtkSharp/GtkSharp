@@ -1,5 +1,5 @@
 <Type Name="AccelGroup" FullName="Gtk.AccelGroup">
-  <TypeSignature Language="C#" Value="public class AccelGroup : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class AccelGroup : GLib.Object, IWrapper, IDisposable" Maintainer="RJS" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,18 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Groups of global keyboard accelerators for an entire Window</summary>
+    <remarks>
+      <para>
+        An AccelGroup represents a group of keyboard accelerators, typically attached to a toplevel <see cref="T:Gtk.Window"/> (with <see cref="M:Gtk.Window.AddAccelGroup"/>. Usually you won't need to create a Gtk.AccelGroup directly; instead, when using <see cref="T:Gtk.ItemFactory"/>, accelerators are  automatically sets up for your menus in the item factory's AccelGroup.
+      </para>
+      <para>
+        Note that accelerators are different from mnemonics. Accelerators are shortcuts for activating a menu item; they appear alongside the menu item they're a shortcut for. For example "Ctrl+Q" might appear alongside the "Quit" menu item. Mnemonics are shortcuts for GUI elements such as text entries or buttons; they appear as underlined characters. See <see cref="M:Gtk.Label.NewWithMnemonic"/>.
+      </para>
+      <para>
+        Menu items can have both accelerators and mnemonics.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -33,10 +43,10 @@
         <Parameter Name="closure" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="closure">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gtk.AccelGroup'</returns>
-        <remarks>To be added</remarks>
+        <summary>Finds the <see cref="T:Gtk.AccelGroup" /> to which <paramref name="closure"/> is connected.</summary>
+        <param name="closure">A GClosure (<see cref="T:System.IntPtr" />)</param>
+        <returns>The <see cref="T:Gtk.AccelGroup" /> to which <paramref name ="closure"/> is connected, or <see cref="langword:null" />.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Unlock">
@@ -47,8 +57,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Undos the last call to <see cref="M:Gtk.AccelGroup.Lock" /> on its object.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Disconnect">
@@ -61,10 +71,10 @@
         <Parameter Name="closure" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="closure">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Removes an accelerator previously installed through <see cref="M:Gtk.AccelGroup.Connect" />.</summary>
+        <param name="closure">The closure to remove from this accelerator group.</param>
+        <returns><see cref="langword:true" /> if the <paramref name="closure"/> was found and got disconnected</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ConnectByPath">
@@ -78,10 +88,14 @@
         <Parameter Name="closure" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_path">To be added: an object of type 'string'</param>
-        <param name="closure">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Installs an accelerator in this group</summary>
+        <param name="accel_path">Path used for determining key and modifiers.</param>
+        <param name="closure">Closure to be executed upon accelerator activation</param>
+        <remarks>
+          <para>
+            Installs an accelerator in this group, using an accelerator path to look up the appropriate key and modifiers. When the group is being activated in response to a call to <see cref="M:Gtk.AccelGroup.Activate" />, <paramref name="closure"/> will be invoked if the <paramref name="accel_key"/> and <paramref name="accel_mods"/> from <see cref="M:Gtk.AccelGroup.Activate" /> match the key and modifiers for the path.
+        </para>
+      </remarks>
       </Docs>
     </Member>
     <Member MemberName="Find">
@@ -111,11 +125,15 @@
         <Parameter Name="accel_mods" Type="Gdk.ModifierType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_key">To be added: an object of type 'uint'</param>
-        <param name="accel_mods">To be added: an object of type 'Gdk.ModifierType'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Removes an accelerator previously installed through <see cref="M:Gtk.AccelGroup.Connect (uint, Gdk.ModifierType, Gtk.AccelFlags, System.IntPt)" />.</summary>
+        <param name="accel_key">Key value of the accelerator.</param>
+        <param name="accel_mods">Modifier combination of the accelerator.</param>
+        <returns><see cref="langword:true" /> if there was an accelerator which could be removed, <see cref="langword:false" /> otherwise.</returns>
+        <remarks>
+          <para>
+            Removes an accelerator previously installed through <see cref="M:Gtk.AccelGroup.Connect (uint, Gdk.ModifierType, Gtk.AccelFlags, System.IntPt)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Query">
@@ -130,12 +148,12 @@
         <Parameter Name="n_entries" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_key">To be added: an object of type 'uint'</param>
-        <param name="accel_mods">To be added: an object of type 'Gdk.ModifierType'</param>
-        <param name="n_entries">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gtk.AccelGroupEntry'</returns>
-        <remarks>To be added</remarks>
+        <summary>Queries an accelerator group for all entries matching by accelerator key value and modifier.</summary>
+        <param name="accel_key">Key value of the accelerator.</param>
+        <param name="accel_mods">Modifier combination of the accelerator.</param>
+        <param name="n_entries">Location to return the number of entries found, or <see cref="langword:null" />.</param>
+        <returns>An array of n_entries <see cref="T:Gtk.AccelGroupEntry" /> elements, or <see cref="langword:null" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Lock">
@@ -146,8 +164,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Locks the given accelerator group.</summary>
+        <remarks>
+          <para>
+            Locking an accelerator group prevents the accelerators contained within it to be changed during runtime. Refer to <see cref="M:Gtk.AccelMap.ChangeEntry" /> about runtime accelerator changes. If called more than once, <paramref name="accel_group"/> remains locked until <see cref="M:Gtk.AccelGroup.Unlock" /> has been called an equivalent number of times.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Connect">
@@ -163,12 +185,19 @@
         <Parameter Name="closure" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="accel_key">To be added: an object of type 'uint'</param>
-        <param name="accel_mods">To be added: an object of type 'Gdk.ModifierType'</param>
-        <param name="accel_flags">To be added: an object of type 'Gtk.AccelFlags'</param>
-        <param name="closure">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <summary>Installs an accelerator in this group.</summary>
+        <param name="accel_key">Key value of the accelerator.</param>
+        <param name="accel_mods">Modifier combination of the accelerator.</param>
+        <param name="accel_flags">A flag mask to configure this accelerator.</param>
+        <param name="closure">Closure to be executed upon accelerator activation.</param>
+        <remarks>
+          <para>
+            Installs an accelerator in this group. When accel_group is being activated in response to a call to <see cref="M:Gtk.AccelGroup.Activate" />, closure will be invoked if the <paramref name="accel_key"/> and <paramref name="accel_mods"/> from <see cref="M:Gtk.AccelGroup.Activate" /> match those of this connection. The signature used for the closure is that of <see cref="M:Gtk.AccelGroup.Activate" />.
+        </para>
+          <para>
+            Note that, due to implementation details, a single closure can only be connected to one accelerator group.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -221,9 +250,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.AccelGroup'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new GtkAccelGroup.</summary>
+        <returns>A new GtkAccelGroup object.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -244,8 +273,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary></summary>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
