@@ -10,7 +10,14 @@ namespace GLib {
 	using System;
 	using System.Collections;
 	using System.ComponentModel;
+	using System.Reflection;
 	using System.Runtime.InteropServices;
+
+	[AttributeUsage(AttributeTargets.All)]
+	public class WrapperClassAttribute : Attribute {
+
+		public WrapperClassAttribute () : base () {}
+	}
 
 	/// <summary>
 	///	Object Class
@@ -131,6 +138,23 @@ namespace GLib {
 			return GtkSharp.ObjectManager.CreateObject(o); 
 		}
 
+		[DllImport("gtksharpglue")]
+		static extern uint gtksharp_register_type (string name, uint parent_type);
+
+		public static uint RegisterGType (Type t)
+		{
+			Type parent = t.BaseType;
+			PropertyInfo pi = parent.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+			if (pi == null) {
+				Console.WriteLine ("null PropertyInfo");
+				return 0;
+			}
+			uint parent_gtype = (uint) pi.GetValue (null, null);
+			string name = t.Namespace + t.Name;
+			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
+			return gtksharp_register_type (name, parent_gtype);
+		}
+
 		/// <summary>
 		///	Object Constructor
 		/// </summary>
@@ -154,6 +178,14 @@ namespace GLib {
 		public Object (IntPtr raw)
 		{
 			Raw = raw;
+		}
+
+		[DllImport("gobject-2.0")]
+		static extern IntPtr g_object_new (uint gtype, IntPtr dummy);
+
+		public Object (uint gtype)
+		{
+			Raw = g_object_new (gtype, IntPtr.Zero);
 		}
 
 		/// <summary>
@@ -190,7 +222,7 @@ namespace GLib {
 		///	The type associated with this object class.
 		/// </remarks>
 
-		[DllImport("libgtksharpglue.so")]
+		[DllImport("gtksharpglue")]
 		private static extern uint gtksharp_get_type_id (IntPtr obj);
 
 		public static uint GType {

@@ -190,6 +190,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t\tDispose();");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine();
+			sw.WriteLine("\t\tprotected " + Name + "(uint gtype) : base(gtype) {}");
 			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
 			sw.WriteLine();
 

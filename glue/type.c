@@ -6,6 +6,7 @@
  */
 
 #include <glib-object.h>
+#include <stdio.h>
 
 gchar *
 gtksharp_get_type_name (GObject *obj)
@@ -35,4 +36,18 @@ gchar *
 gtksharp_get_type_name_for_id (GType typ)
 {
 	return g_type_name (typ);
+}
+
+GType
+gtksharp_register_type (gchar *name, GType parent)
+{
+	GTypeQuery query;
+	GTypeInfo info = {0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL };
+
+	g_type_query (parent, &query);
+
+	info.class_size = query.class_size;
+	info.instance_size = query.instance_size;
+
+	return g_type_register_static (parent, name, &info, 0);
 }

@@ -53,7 +53,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("gunichar", "string");
 			simple_types.Add ("uint1", "bool");
 			simple_types.Add ("GPtrArray", "System.IntPtr[]");
-			simple_types.Add ("GType", "int");
+			simple_types.Add ("GType", "uint");
 			simple_types.Add ("GError", "IntPtr");
 			// gsize is a system-specific typedef in glibconfig.h,
 			// but this should work for now

@@ -18,7 +18,7 @@ windows:
 	$(CSC) /unsafe /out:gtk-hello-world.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll /r:../gdk/gdk-sharp.dll HelloWorld.cs
 	$(CSC) /unsafe /out:button.exe /r:../glib/glib-sharp.dll /r:../gtk/gtk-sharp.dll ButtonApp.cs
 
-linux: gtk-hello-world.exe button.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
+linux: gtk-hello-world.exe button.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe $(GNOME_TARGETS) $(GLADE_TARGETS)
 @ENABLE_GNOME_TRUE@	$(MAKE) -C gconf 
 
 gtk-hello-world.exe: HelloWorld.cs
@@ -35,6 +35,9 @@ fifteen.exe: Fifteen.cs
 
 button.exe: ButtonApp.cs
 	$(MCS) --unsafe -o button.exe $(local_paths) $(all_assemblies) ButtonApp.cs
+
+subclass.exe: Subclass.cs
+	$(MCS) --unsafe -o subclass.exe $(local_paths) $(all_assemblies) Subclass.cs
 
 menu.exe: Menu.cs
 	$(MCS) --unsafe -o menu.exe $(local_paths) $(all_assemblies) Menu.cs
