@@ -35,7 +35,7 @@ class X {
 	{
 		int offx, offy;
 
-		using (Cairo.Object o = args.Event.window.CairoGraphics (out offx, out offy)){
+		using (Cairo.Graphics o = args.Event.window.CairoGraphics (out offx, out offy)){
 			o.SetRGBColor (1, 0, 0);
 			o.Translate (-offx, -offy);
 			o.MoveTo (0, 0);
@@ -59,7 +59,7 @@ class X {
 
 		int x, y;
 		//Cairo.Object o = p.CairoGraphics ();
-		using (Cairo.Object o = window.CairoGraphics (out x, out y))
+		using (Cairo.Graphics o = window.CairoGraphics (out x, out y))
 		{
 			o.Translate (-area.x, -area.y);
 			DrawCircles (o, rect);
@@ -70,14 +70,14 @@ class X {
 		}
 	}
 	
-	static void DrawCircles (Cairo.Object o, Gdk.Rectangle rect)
+	static void DrawCircles (Cairo.Graphics o, Gdk.Rectangle rect)
 	{
 		FillChecks (o, rect);
 	}
 
 	const int CS = 32;
 
-	static void FillChecks (Cairo.Object o, Gdk.Rectangle rect)
+	static void FillChecks (Cairo.Graphics o, Gdk.Rectangle rect)
 	{
 		Surface check;
 		// Draw the check
