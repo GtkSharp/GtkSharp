@@ -148,14 +148,15 @@ namespace GtkSharp.Generation {
 				sw.WriteLine();
 			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
 				sw.WriteLine("\t\t\tset {");
-				sw.Write("\t\t\t\tSetProperty(" + cname + ", new GLib.Value(");
+				sw.Write("\t\t\t\tSetProperty(" + cname + ", ");
 				if (table.IsEnum(c_type)) {
-					sw.WriteLine("Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", table.IsEnumFlags (c_type) ? "true" : "false");
+					sw.WriteLine("new GLib.Value(Handle, " + cname + ", new GLib.EnumWrapper ((int) value, {0})));", table.IsEnumFlags (c_type) ? "true" : "false");
 				} else if (table.IsBoxed (c_type)) {
-					sw.WriteLine("Handle, " + cname + ", new GLib.Boxed (value)));");
+					sw.WriteLine("(GLib.Value) (value));");
 				} else if (table.IsOpaque (c_type)) {
-					sw.WriteLine("Handle, " + cname + ", value));");
+					sw.WriteLine("new GLib.Value(Handle, " + cname + ", value));");
 				} else {
+					sw.Write("new GLib.Value(");
 					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {
 						sw.Write(v_type + " ");
 					}

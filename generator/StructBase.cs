@@ -208,7 +208,13 @@ namespace GtkSharp.Generation {
 
 		public virtual void Generate (GenerationInfo gen_info)
 		{
-			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
+			bool need_close = false;
+			if (gen_info.Writer == null) {
+				gen_info.Writer = gen_info.OpenStream (Name);
+				need_close = true;
+			}
+
+			StreamWriter sw = gen_info.Writer;
 			
 			sw.WriteLine ("namespace " + NS + " {");
 			sw.WriteLine ();
@@ -226,6 +232,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			GenCtors (gen_info);
 			GenMethods (gen_info, null, null);
+
+			if (!need_close)
+				return;
 
 			sw.WriteLine ("#endregion");
 			AppendCustom(sw, gen_info.CustomDir);
