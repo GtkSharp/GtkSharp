@@ -93,6 +93,8 @@ namespace WidgetViewer {
 
 		static void reformat_value (object o, FormatValueArgs args)
 		{
+			int x = (int) args.Value;
+			args.RetVal = x.ToString ();
 		}
 	}
 }
