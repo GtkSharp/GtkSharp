@@ -331,7 +331,7 @@ public class TestDnd {
 
 	private static void HandleTargetDragDataReceived (object sender, DragDataReceivedArgs args)
 	{
-		if (args.SelectionData.length >=0 && args.SelectionData.format == 8) {
+		if (args.SelectionData.Length >=0 && args.SelectionData.Format == 8) {
 			Console.WriteLine ("Received {0} in trashcan", args.SelectionData);
 			Gtk.Drag.Finish (args.Context, true, false, args.Time);
 		}
@@ -341,7 +341,7 @@ public class TestDnd {
 
 	private static void HandleLabelDragDataReceived (object sender, DragDataReceivedArgs args)
 	{
-		if (args.SelectionData.length >=0 && args.SelectionData.format == 8) {
+		if (args.SelectionData.Length >=0 && args.SelectionData.Format == 8) {
 			Console.WriteLine ("Received {0} in label", args.SelectionData);
 			Gtk.Drag.Finish (args.Context, true, false, args.Time);
 		}
