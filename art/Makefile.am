@@ -22,11 +22,11 @@ assembly_DATA = $(TARGET)
 api_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
-DISTCLEANFILES = art-sharp.pc $(ASSEMBLY).config
+DISTCLEANFILES = art-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 dist_sources = $(sources)
 
 customs = 
@@ -38,6 +38,7 @@ EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(ADDITIONAL_API)	\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(METADATA)		\
 	$(dist_customs)		\
 	$(dist_sources)		\

@@ -24,13 +24,13 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
-DISTCLEANFILES = glade-sharp.pc $(ASSEMBLY).config
+DISTCLEANFILES = glade-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =				\
 	HandlerNotFoundExeception.cs	\
 	WidgetAttribute.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs =				\
 	XML.custom
@@ -40,6 +40,7 @@ build_customs = $(addprefix $(srcdir)/, $(customs))
 EXTRA_DIST =			\
 	makefile.win32		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(customs)		\

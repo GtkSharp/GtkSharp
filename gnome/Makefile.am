@@ -26,7 +26,7 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
-DISTCLEANFILES = gnome-sharp.pc $(ASSEMBLY).config
+DISTCLEANFILES = gnome-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =					\
 	CanvasProxy.cs				\
@@ -38,7 +38,7 @@ sources =					\
 	Modules.cs				\
 	voidObjectAffineSVPintSignal.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs =					\
 	CanvasBpath.custom			\
@@ -72,6 +72,7 @@ build_customs = $(addprefix $(srcdir)/, $(customs))
 EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\

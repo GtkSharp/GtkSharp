@@ -21,12 +21,12 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
-DISTCLEANFILES = gda-sharp.pc $(ASSEMBLY).config
+DISTCLEANFILES = gda-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 				\
 	Application.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs = 
 
@@ -35,6 +35,7 @@ build_customs = $(addprefix $(srcdir)/, $(customs))
 EXTRA_DIST =			\
 	$(RAW_API)		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\

@@ -11,11 +11,12 @@ assemblydir = $(libdir)
 assembly_DATA = $(TARGETS)
 CLEANFILES = $(ASSEMBLY)
 
-DISTCLEANFILES = gconf-sharp.pc $(ASSEMBLY).config
+DISTCLEANFILES = gconf-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 EXTRA_DIST =			\
 	$(sources)		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	gconf-sharp.pc.in
 
 references = 			\
@@ -32,7 +33,7 @@ sources = 			\
 	NotifyWrapper.cs 	\
 	Value.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 $(ASSEMBLY): $(build_sources)
 	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)

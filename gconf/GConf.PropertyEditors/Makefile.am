@@ -8,8 +8,10 @@ ASSEMBLY = gconf-sharp-peditors.dll
 assemblydir = $(libdir)
 assembly_DATA = $(TARGET)
 CLEANFILES = $(ASSEMBLY)
+DISTCLEANFILES = AssemblyInfo.cs
 
 EXTRA_DIST =				\
+	AssemblyInfo.cs.in		\
 	PropertyEditorColorPicker.cs	\
 	$(sources)
 
@@ -28,7 +30,7 @@ sources = 				\
 	PropertyEditorToggleButton.cs 	\
 	EditorShell.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 $(ASSEMBLY): $(build_sources)
 	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)

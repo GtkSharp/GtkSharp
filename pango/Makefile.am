@@ -10,12 +10,12 @@ gapidir = $(datadir)/gapi
 assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
-DISTCLEANFILES = $(ASSEMBLY).config
+DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 		\
 	Scale.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 dist_sources = $(sources)
 
 customs =			\
@@ -29,6 +29,7 @@ dist_customs = $(customs)
 EXTRA_DIST =			\
 	makefile.win32		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(RAW_API)		\
 	$(METADATA)		\
 	$(dist_customs)		\

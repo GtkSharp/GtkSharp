@@ -14,7 +14,7 @@ gapidir = $(datadir)/gapi
 assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API) $(ADDITIONAL_API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c
-DISTCLEANFILES = $(ASSEMBLY).config
+DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 				\
 	Application.cs			\
@@ -25,7 +25,7 @@ sources = 				\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs = 				\
 	Accel.custom			\
@@ -83,6 +83,7 @@ build_customs = $(addprefix $(srcdir)/, $(customs))
 EXTRA_DIST =			\
 	makefile.win32		\
 	$(ASSEMBLY).config.in	\
+	AssemblyInfo.cs.in	\
 	$(RAW_API)		\
 	$(ADDITIONAL_API)	\
 	$(METADATA)		\

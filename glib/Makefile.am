@@ -4,7 +4,7 @@ ASSEMBLY = glib-sharp.dll
 assemblydir = $(libdir)
 assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 CLEANFILES = $(ASSEMBLY)
-DISTCLEANFILES = $(ASSEMBLY).config
+DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 references = 
 
@@ -43,12 +43,13 @@ sources =		 			\
 	ValueArray.cs				\
 	Value.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources))
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 dist_sources = $(sources)
 
 EXTRA_DIST =				\
 	$(dist_sources)			\
 	$(ASSEMBLY).config.in		\
+	AssemblyInfo.cs.in	\
 	makefile.win32
 
 $(ASSEMBLY): $(build_sources)
