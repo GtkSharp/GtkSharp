@@ -15,7 +15,7 @@ generated-stamp: gtkhtml-api.xml *.custom ../generator/gapi_codegen.exe
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate gtkhtml-api.xml --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=gtkhtml-sharp && touch generated-stamp
 
 gtkhtml-sharp.dll: generated-stamp
-	 $(MCS) --unsafe -nowarn:0660,0661 --target library -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -L ../gnome -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -r gnome-sharp.dll -o gtkhtml-sharp.dll --recurse '*.cs'
+	 $(MCS) --unsafe -nowarn:0660,0661 --target library -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -L ../art -L ../gnome -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -r art-sharp.dll -r gnome-sharp.dll -o gtkhtml-sharp.dll --recurse '*.cs'
 
 clean:
 	rm -f generated-stamp
