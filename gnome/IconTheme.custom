@@ -1,6 +1,7 @@
 // IconTheme.custom - customizations to Gnome.IconTheme
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
+//	    Jerone Zwartepoorte  <jeroen@xs4all.nl>
 //
 // Copyright (c) 2004 Novell, Inc.
 
@@ -19,5 +20,33 @@
 			foreach (string val in list)
 				result [i++] = val;
 			return result;
+		}
+
+		[DllImport("gnomeui-2")]
+		static extern void gnome_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_strfreev (IntPtr mem);
+
+                public string[] SearchPath {
+                        get {
+				string[] retval;
+                            
+				unsafe {
+					int length;
+					IntPtr raw_ret;
+					gnome_icon_theme_get_search_path (Handle, out raw_ret, out length);
+					int size = Marshal.SizeOf (typeof (IntPtr));
+					retval = new string[length];
+					for (int i = 0, j = 0; i < length; i++, j += size) {
+						IntPtr string_ptr = Marshal.ReadIntPtr (new IntPtr (raw_ret.ToInt32 () + j));
+						retval[i] = Marshal.PtrToStringAnsi (string_ptr);
+					}
+
+					g_strfreev (raw_ret);
+				}
+                            
+				return retval;
+			}
 		}
 
