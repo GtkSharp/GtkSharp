@@ -187,10 +187,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\tprotected override void Dispose (bool disposing)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\t_Instances.Remove(_key);");
-			sw.WriteLine("\t\t\tif(_Instances.Count == 0) {");
-			sw.WriteLine("\t\t\t\tg_signal_handler_disconnect (_raw, _HandlerID);");
+			sw.WriteLine("\t\t\tif(_Instances.Count == 0)");
 			sw.WriteLine("\t\t\t\t_Delegate = null;");
-			sw.WriteLine("\t\t\t}");
+			sw.WriteLine();
+			sw.WriteLine("\t\t\tg_signal_handler_disconnect (_raw, _HandlerID);");
+			sw.WriteLine("\t\t\tbase.Dispose (disposing);");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine("\t}");
 			sw.WriteLine("}");
