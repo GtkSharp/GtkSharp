@@ -132,15 +132,12 @@ namespace GtkSharp.Parsing {
 			}
 
 			if (symbol_doc != null) {
-				Console.WriteLine ("adding symbols to api file");
 				XPathNavigator symbol_nav = symbol_doc.CreateNavigator ();
 				XPathNodeIterator iter = symbol_nav.Select ("/api/*");
 				while (iter.MoveNext ()) {
-					Console.WriteLine ("adding symbol");
 					XmlNode sym_node = ((IHasXmlNode)iter.Current).GetNode ();
 					XPathNodeIterator parent_iter = api_nav.Select ("/api");
 					if (parent_iter.MoveNext ()) {
-						Console.WriteLine ("to parent node");
 						XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
 						parent_node.AppendChild (api_doc.ImportNode (sym_node, true));
 					}
