@@ -53,7 +53,7 @@ namespace GtkSharp.Generation {
 		{
 			if (parms != null) {
 				if (!parms.Validate ()) {
-					Console.Write("ctor ");
+					Console.Write("in ctor ");
 					Statistics.ThrottledCount++;
 					return false;
 				}
