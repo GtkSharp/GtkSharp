@@ -62,7 +62,7 @@ namespace GLib {
 				return;
 
 			GC.SuppressFinalize (this);
-			//g_object_unref (_obj);
+			g_object_unref (_obj);
 			_obj = IntPtr.Zero;
 		}
 
