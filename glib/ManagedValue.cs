@@ -56,23 +56,31 @@ namespace GLib {
 		
 		static IntPtr Copy (IntPtr ptr)
 		{
+			if (ptr == IntPtr.Zero)
+				return ptr;
 			GCHandle gch = (GCHandle) ptr;
 			return (IntPtr) GCHandle.Alloc (gch.Target);
 		}
 
 		static void Free (IntPtr ptr)
 		{
+			if (ptr == IntPtr.Zero)
+				return;
 			GCHandle gch = (GCHandle) ptr;
 			gch.Free ();
 		}
 
 		public static IntPtr WrapObject (object obj)
 		{
+			if (obj == null)
+				return IntPtr.Zero;
 			return (IntPtr) GCHandle.Alloc (obj);
 		}
 
 		public static object ObjectForWrapper (IntPtr ptr)
 		{
+			if (ptr == IntPtr.Zero)
+				return null;
 			return ((GCHandle)ptr).Target;
 		}
 	}

@@ -24,7 +24,7 @@ namespace GtkSamples {
 		private static void PopulateStore ()
 		{
 			store = new ListStore (typeof (Pair));
-			string[] combs = {"foo", "bar", "baz", "quux"};
+			string[] combs = {null, "foo", "bar", "baz"};
 			foreach (string a in combs) {
 				foreach (string b in combs) {
 					store.AppendValues (new Pair (a, b));
