@@ -64,6 +64,18 @@ gint gtksharp_gdk_event_configure_get_x (GdkEventConfigure *event);
 gint gtksharp_gdk_event_configure_get_y (GdkEventConfigure *event);
 gint gtksharp_gdk_event_configure_get_width (GdkEventConfigure *event);
 gint gtksharp_gdk_event_configure_get_height (GdkEventConfigure *event);
+guint32 gtksharp_gdk_event_property_get_time (GdkEventProperty *event);
+GdkAtom gtksharp_gdk_event_property_get_atom (GdkEventProperty *event);
+guint gtksharp_gdk_event_property_get_state (GdkEventProperty *event);
+GdkNativeWindow gtksharp_gdk_event_selection_get_requestor (GdkEventSelection *event);
+GdkAtom gtksharp_gdk_event_selection_get_property (GdkEventSelection *event);
+GdkAtom gtksharp_gdk_event_selection_get_selection (GdkEventSelection *event);
+GdkAtom gtksharp_gdk_event_selection_get_target (GdkEventSelection *event);
+guint32 gtksharp_gdk_event_selection_get_time (GdkEventSelection *event);
+guint32 gtksharp_gdk_event_dnd_get_time (GdkEventDND *event);
+gshort gtksharp_gdk_event_dnd_get_x_root (GdkEventDND *event);
+gshort gtksharp_gdk_event_dnd_get_y_root (GdkEventDND *event);
+GdkDragContext* gtksharp_gdk_event_dnd_get_context (GdkEventDND *event);
 /* */
 
 GdkEventType
@@ -382,5 +394,77 @@ gint
 gtksharp_gdk_event_configure_get_height (GdkEventConfigure *event)
 {
 	return event->height;
+}
+
+guint32 
+gtksharp_gdk_event_property_get_time (GdkEventProperty *event)
+{
+	return event->time;
+}
+
+GdkAtom 
+gtksharp_gdk_event_property_get_atom (GdkEventProperty *event)
+{
+	return event->atom;
+}
+
+guint 
+gtksharp_gdk_event_property_get_state (GdkEventProperty *event)
+{
+	return event->state;
+}
+
+GdkNativeWindow 
+gtksharp_gdk_event_selection_get_requestor (GdkEventSelection *event)
+{
+	return event->requestor;
+}
+
+GdkAtom 
+gtksharp_gdk_event_selection_get_property (GdkEventSelection *event)
+{
+	return event->property;
+}
+
+GdkAtom 
+gtksharp_gdk_event_selection_get_selection (GdkEventSelection *event)
+{
+	return event->selection;
+}
+
+GdkAtom 
+gtksharp_gdk_event_selection_get_target (GdkEventSelection *event)
+{
+	return event->target;
+}
+
+guint32 
+gtksharp_gdk_event_selection_get_time (GdkEventSelection *event)
+{
+	return event->time;
+}
+
+GdkDragContext* 
+gtksharp_gdk_event_dnd_get_context (GdkEventDND *event)
+{
+	return event->context;
+}
+
+gshort 
+gtksharp_gdk_event_dnd_get_x_root (GdkEventDND *event)
+{
+	return event->x_root;
+}
+
+gshort 
+gtksharp_gdk_event_dnd_get_y_root (GdkEventDND *event)
+{
+	return event->y_root;
+}
+
+guint32 
+gtksharp_gdk_event_dnd_get_time (GdkEventDND *event)
+{
+	return event->time;
 }
 
