@@ -24,7 +24,7 @@ using Gtk;
             {
                     this.DeleteEvent += new Gtk.DeleteEventHandler(delete_event);
                     string svg_file_name = "sample.svg";
-                    Gdk.Pixbuf pixbuf = Rsvg.Tool.PixbufFromFile (svg_file_name);
+                    Gdk.Pixbuf pixbuf = Rsvg.Pixbuf.FromFile (svg_file_name);
 
                     Gtk.Image  image = new Gtk.Image();
                     image.Pixbuf = pixbuf;
