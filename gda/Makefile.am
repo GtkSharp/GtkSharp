@@ -7,6 +7,7 @@ pkg =
 endif
 
 METADATA = Gda.metadata
+SYMBOLS =
 references = ../glib/glib-sharp.dll 
 
 sources = 				\

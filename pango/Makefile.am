@@ -2,6 +2,7 @@ SUBDIRS = . glue
 
 pkg = pango
 METADATA = Pango.metadata
+SYMBOLS =
 references = ../glib/glib-sharp.dll
 
 sources = 		\

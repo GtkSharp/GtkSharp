@@ -2,6 +2,7 @@
 
 pkg = atk
 METADATA = Atk.metadata
+SYMBOLS =
 references = ../glib/glib-sharp.dll
 
 sources = 
