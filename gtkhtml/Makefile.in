@@ -39,9 +39,9 @@ apidir=$(DESTDIR)$(prefix)/share/gapi
 libdir=$(DESTDIR)$(prefix)/lib
 
 install: all
-	../mkinstalldirs $(libdir) &&		\
-	../mkinstalldirs $(apidir) &&		\
-	for i in $(APIS); do                    \
-		cp $$i $(apidir) || true;       \
-	done && 				\
-	cp $(ASSEMBLY) $(libdir)
+@ENABLE_GTKHTML_TRUE@	../mkinstalldirs $(libdir) &&		\
+@ENABLE_GTKHTML_TRUE@	../mkinstalldirs $(apidir) &&		\
+@ENABLE_GTKHTML_TRUE@	for i in $(APIS); do                    \
+@ENABLE_GTKHTML_TRUE@		cp $$i $(apidir) || true;       \
+@ENABLE_GTKHTML_TRUE@	done && 				\
+@ENABLE_GTKHTML_TRUE@	cp $(ASSEMBLY) $(libdir)
