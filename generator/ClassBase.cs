@@ -235,8 +235,8 @@ namespace GtkSharp.Generation {
 		protected bool IgnoreMethod (Method method)
 		{	
 			string mname = method.Name;
-			return ((mname.StartsWith("Set") || mname.StartsWith("Get")) &&
-				     (props != null) && props.ContainsKey(mname.Substring(3)));
+			return ((method.IsSetter || (method.IsGetter && mname.StartsWith("Get"))) &&
+				(props != null) && props.ContainsKey(mname.Substring(3)));
 		}
 
 		public void GenMethods (GenerationInfo gen_info, Hashtable collisions, ClassBase implementor)

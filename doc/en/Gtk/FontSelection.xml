@@ -94,7 +94,7 @@
         <param name="value">The name of a system font to select.</param>
         <returns>The name of the currently selected font.</returns>
         <remarks>
-          <para>If this property is used to alter the widget's font name to a font that could not be found, the widget will retain its original font selection.</para>
+          <para>If this property is used to alter the widget's font name to a font that could not be found, the widget will retain its original font selection. See also <see cref="M:Gtk.FontSelection.SetFontName" />, which returns a value indicating whether or not the new font name was found.</para>
         </remarks>
       </Docs>
     </Member>
@@ -152,6 +152,22 @@
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.FontSelection" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetFontName">
+      <MemberSignature Language="C#" Value="public bool SetFontName (string fontname);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fontname" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>Set the current font selection</summary>
+        <param name="fontname">the name of the font to be selected</param>
+        <returns><see langword="true" /> if the font was found and selected</returns>
+        <remarks>This can be used instead of setting <see cref="P:Gtk.FontSelection.FontName" /> property if you need to know whether or not <paramref name="fontname" /> was valid.</remarks>
       </Docs>
     </Member>
   </Members>
