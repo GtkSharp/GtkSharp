@@ -111,6 +111,13 @@ namespace Gtk {
 			OnChildAdded (child);
 		}
 
+		public void AddChild (TreeNode child, int position)
+		{
+			children.Insert (position, child);
+			child.SetParent (this);
+			OnChildAdded (child);
+		}
+
 		public void RemoveChild (TreeNode child)
 		{
 			int idx = children.IndexOf (child);

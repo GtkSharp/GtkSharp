@@ -317,8 +317,6 @@ namespace Gtk {
 		private void changed_cb (object o, EventArgs args)
 		{
 			ITreeNode node = o as ITreeNode;
-			node_hash [node.ID] = node;
-
 			gtksharp_node_store_emit_row_changed (Handle, get_path_cb (node.ID), node.ID);
 		}
 
@@ -327,8 +325,7 @@ namespace Gtk {
 
 		private void child_added_cb (object o, ITreeNode child)
 		{
-			node_hash [child.ID] = child;
-
+			AddNodeInternal (child);
 			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (child.ID), child.ID);
 		}
 
@@ -338,6 +335,13 @@ namespace Gtk {
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_has_child_toggled (IntPtr handle, IntPtr path, int node_idx);
 
+		private void RemoveNodeInternal (ITreeNode node)
+		{
+			node_hash.Remove (node.ID);
+			for (int i = 0; i < node.ChildCount; i++)
+				RemoveNodeInternal (node [i]);
+		}
+
 		private void child_deleted_cb (object o, int idx)
 		{
 			ITreeNode node = o as ITreeNode;
@@ -346,28 +350,39 @@ namespace Gtk {
 			TreePath child_path = path.Copy ();
 			child_path.AppendIndex (idx);
 
+			ITreeNode child = GetNodeAtPath (child_path);
+			RemoveNodeInternal (child);
+
 			gtksharp_node_store_emit_row_deleted (Handle, child_path.Handle);
 
-			if (node.ChildCount <= 0) {
-				node_hash [node.ID] = node;
-				gtksharp_node_store_emit_row_has_child_toggled (Handle, path.Handle, node.ID);
-			}
+			if (node.ChildCount <= 0)
+				gtksharp_node_store_emit_row_has_child_toggled (Handle, get_path_cb (node.ID), node.ID);
 		}
 
-		private void ConnectNode (ITreeNode node)
+		private void AddNodeInternal (ITreeNode node)
 		{
+			node_hash [node.ID] = node;
+
 			node.Changed += new EventHandler (changed_cb);
 			node.ChildAdded += new TreeNodeAddedHandler (child_added_cb);
 			node.ChildRemoved += new TreeNodeRemovedHandler (child_deleted_cb);
+
+			for (int i = 0; i < node.ChildCount; i++)
+				AddNodeInternal (node [i]);
 		}
 
 		public void AddNode (ITreeNode node)
 		{
 			nodes.Add (node);
-			node_hash [node.ID] = node;
-			ConnectNode (node);
-			for (int i = 0; i < node.ChildCount; i++)
-				ConnectNode (node [i]);
+			AddNodeInternal (node);
+
+			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
+		}
+
+		public void AddNode (ITreeNode node, int position)
+		{
+			nodes.Insert (position, node);
+			AddNodeInternal (node);
 
 			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
 		}
@@ -378,6 +393,7 @@ namespace Gtk {
 			if (idx < 0)
 				return;
 			nodes.Remove (node);
+			RemoveNodeInternal (node);
 
 			TreePath path = new TreePath ();
 			path.AppendIndex (idx);
