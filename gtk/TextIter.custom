@@ -4,6 +4,20 @@
 //
 // Copyright (c) 2004 Novell, Inc.
 
+		[DllImport("glibsharpglue")]
+		static extern IntPtr gtksharp_unichar_to_utf8_string (int raw);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern int gtk_text_iter_get_char(ref Gtk.TextIter raw);
+
+		public string Char { 
+			get {
+				IntPtr raw_ret = gtksharp_unichar_to_utf8_string (gtk_text_iter_get_char (ref this));
+				string ret = GLibSharp.Marshaller.PtrToStringGFree(raw_ret);
+				return ret;
+			}
+		}
+
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_text_iter_get_marks (ref TextIter iter);
 

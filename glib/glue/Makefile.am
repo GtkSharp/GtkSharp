@@ -9,6 +9,7 @@ libglibsharpglue_la_SOURCES = 	\
 	slist.c			\
 	time_t.c		\
 	type.c			\
+	unichar.c		\
 	value.c			\
 	valuearray.c
 

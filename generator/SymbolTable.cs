@@ -66,7 +66,6 @@ namespace GtkSharp.Generation {
 			AddType (new StringGen ("char"));
 			AddType (new SimpleGen ("double", "double"));
 			AddType (new SimpleGen ("float", "float"));
-			AddType (new StringGen ("gunichar"));
 			AddType (new SimpleGen ("uint1", "bool"));
 			AddType (new SimpleGen ("GC", "IntPtr"));
 			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
