@@ -90,3 +90,27 @@ public Gdk.Color[] Background {
 	}
 }
 
+[DllImport ("gtksharpglue")]
+static extern int gtksharp_gtk_style_get_thickness (IntPtr style, int x_axis);
+[DllImport ("gtksharpglue")]
+static extern void gtksharp_gtk_style_set_thickness (IntPtr style, int value);
+
+public int XThickness {
+	get {
+		return gtksharp_gtk_style_get_thickness (Handle, 0);
+	}
+
+	set {
+		gtksharp_gtk_style_set_thickness (Handle, value);
+	}
+}
+
+public int YThickness {
+	get {
+		return gtksharp_gtk_style_get_thickness (Handle, 1);
+	}
+
+	set {
+		gtksharp_gtk_style_set_thickness (Handle, -value);
+	}
+}

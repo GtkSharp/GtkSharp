@@ -15,3 +15,18 @@ public Gdk.Rectangle Allocation {
 	get { return Gdk.Rectangle.New (gtksharp_gtk_widget_get_allocation (Handle)); }
 }
 
+
+[DllImport ("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_widget_get_window (IntPtr widget);
+public Gdk.Window GdkWindow {
+	get {
+		IntPtr raw_ret = gtksharp_gtk_widget_get_window (Handle);
+
+		if (raw_ret != (IntPtr) 0){
+	 		Gdk.Window ret = (Gdk.Window) GLib.Object.GetObject(raw_ret);
+			ret.Ref ();
+			return ret;
+		}
+		return null;
+	}
+}
