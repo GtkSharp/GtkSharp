@@ -87,6 +87,8 @@ namespace GtkSharp.Generation {
 				}		
 			}
 			
+			GenBase.AppendCustom(ns, Name, sw);
+			
 			sw.WriteLine ("\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("}");

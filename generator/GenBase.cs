@@ -59,6 +59,7 @@ namespace GtkSharp.Generation {
 				Directory.CreateDirectory(dir);
 			}
 			String filename = dir + sep + Name + ".cs";
+			Console.WriteLine ("creating " + filename);
 			
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
@@ -80,6 +81,17 @@ namespace GtkSharp.Generation {
 			sw.Close();
 		}
 		
+		public static void AppendCustom (string ns, string name, StreamWriter sw)
+		{
+			char sep = Path.DirectorySeparatorChar;
+			string custom = ".." + sep + ns.ToLower() + sep + name + ".custom";
+			if (File.Exists(custom)) {
+				FileStream custstream = new FileStream(custom, FileMode.Open, FileAccess.Read);
+				StreamReader sr = new StreamReader(custstream);
+				sw.WriteLine (sr.ReadToEnd ());
+				sr.Close ();
+			}
+		}
 	}
 }
 

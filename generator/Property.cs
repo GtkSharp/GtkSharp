@@ -63,6 +63,8 @@ namespace GtkSharp.Generation {
 				return;
 			} else if (SymbolTable.IsObject(c_type)) {
 				v_type = "GLib.Object";
+			} else if (SymbolTable.IsBoxed (c_type)) {
+				v_type = "GLib.Boxed";
 			}
 
 			if (elem.HasAttribute("construct-only") && !elem.HasAttribute("readable")) {

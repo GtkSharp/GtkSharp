@@ -103,7 +103,7 @@ namespace GtkSharp.Generation {
 		public void Generate (StreamWriter sw)
 		{
 			string sig, isig, call;
-
+			
 			if (parms != null) {
 				sig = "(" + parms.Signature + ")";
 				isig = "(IntPtr raw, " + parms.ImportSig + ");";
@@ -130,18 +130,37 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 
 			sw.Write("\t\tpublic ");
-			if (elem.HasAttribute("new_flag"))
-				sw.Write("new ");
-			sw.WriteLine(s_ret + " " + Name + sig);
+			bool is_get = (parms != null && parms.IsAccessor && Name.Substring(0, 3) == "Get");
+			if (is_get) {
+				s_ret = parms.AccessorReturnType;
+				sw.Write(s_ret);
+				sw.Write(" ");
+				sw.Write(Name.Substring (3));
+				sw.Write(" { get");
+			} else {
+				if (elem.HasAttribute("new_flag"))
+					sw.Write("new ");
+				sw.WriteLine(s_ret + " " + Name + sig);
+			}
 			sw.WriteLine("\t\t{");
+			if (parms != null)
+				parms.Initialize(sw, is_get);
 			sw.Write("\t\t\t");
-			if (m_ret == "void") {
+			if (is_get || m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
 			} else {
 				sw.WriteLine("return " + SymbolTable.FromNative(rettype, cname + call) + ";");
 			}
+			
+			if (is_get) 
+				sw.WriteLine ("\t\t\treturn " + parms.AccessorName + ";"); 
 
-			sw.WriteLine("\t\t}");
+
+			sw.Write("\t\t}");
+			if (is_get)
+				sw.Write(" }");
+			
+			sw.WriteLine();
 			sw.WriteLine();
 
 			Statistics.MethodCount++;

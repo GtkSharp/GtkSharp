@@ -1,9 +1,10 @@
 lib_LTLIBRARIES = libgtksharpglue.la
 
-INCLUDES = $(GLIB_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue_la_SOURCES = 	\
 	value.c			\
+	textiter.c		\
 	#
 
 libgtksharpglue.dll: $(libgtksharpglue_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def

@@ -7,6 +7,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.IO;
 	using System.Xml;
 
 	public class Parameters  {
@@ -83,6 +84,10 @@ namespace GtkSharp.Generation {
 					need_sep = true;
 				}
 
+				if (p_elem.HasAttribute("pass_as")) {
+					signature += p_elem.GetAttribute("pass_as") + " ";
+				}
+
 				signature += (cs_type + " " + name);
 				signature_types += cs_type;
 				call_string += call_parm;
@@ -91,7 +96,74 @@ namespace GtkSharp.Generation {
 			
 			return true;
 		}
-		
+
+		public void Initialize (StreamWriter sw, bool is_get)
+		{
+			foreach (XmlNode parm in elem.ChildNodes) {
+				if (parm.Name != "parameter") {
+					continue;
+				}
+
+				XmlElement p_elem = (XmlElement) parm;
+
+				string type = SymbolTable.GetCSType(p_elem.GetAttribute ("type"));
+				string name = MangleName(p_elem.GetAttribute("name"));
+				if (is_get) {
+					sw.WriteLine ("\t\t\t" + type + " " + name + ";");
+				}
+
+				if (is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) {
+					sw.WriteLine("\t\t\t" + name + " = new " + type + "();"); 
+				}
+			}
+			
+		}
+
+		public bool IsAccessor {
+			get {
+				int length = 0;
+				string pass_as;
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (parm.Name != "parameter") {
+						continue;
+					}
+	
+					XmlElement p_elem = (XmlElement) parm;
+					length++;
+					if (length > 1)
+						return false;
+					if (p_elem.HasAttribute("pass_as"))
+						pass_as = p_elem.GetAttribute("pass_as");
+				}
+
+				return (length == 1 && pass_as == "out");
+			}
+		}
+
+		public string AccessorReturnType {
+			get {
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (parm.Name != "parameter") 
+						continue;
+					XmlElement p_elem = (XmlElement) parm;
+					return SymbolTable.GetCSType(p_elem.GetAttribute ("type"));
+				}
+				return null;
+			}
+		}
+
+		public string AccessorName {
+			get {
+				foreach (XmlNode parm in elem.ChildNodes) {
+					if (parm.Name != "parameter") 
+						continue;
+					XmlElement p_elem = (XmlElement) parm;
+					return MangleName (p_elem.GetAttribute("name"));
+				}
+				return null;
+			}
+		}
+
 		private string MangleName(string name)
 		{
 			switch (name) {

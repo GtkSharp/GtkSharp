@@ -1,3 +1,21 @@
+2002-06-09  Rachel Hestilow  <hestilow@ximian.com>
+
+	* generator/GenBase.cs: new method AppendCustom, moved from ObjectGen.
+	* generator/BoxedGen.cs, ObjectGen.cs, StructGen.cs:
+	Call AppendCustom in Generate ();
+	* generator/Method.cs, Parameters.cs: Add support for "out"
+	parameters. Additionally, output an accessor instead of a
+	regular method if it is an accessor-style function (ie GetStartIter).
+	* generator/Property.cs: Add additional cast to Boxed, if necessary.
+	* glue/textiter.c: New constructor for GtkTextIter.
+	* glue/Makefile.am: Add textiter.c, build with Gtk+ cflags.
+	* configure.in: Check for Gtk+ cflags.
+	* parser/Metadata.pm, Gtk.metadata: Added.
+	* parser/gapi2xml.pl: Call Metadata::fixup on the document.
+	Also work around gtk's screwy boxed type name registration
+	(GtkFoo -> GtkTypeFoo).
+	* gtk/TextIter.custom: Added.
+	
 2002-06-06  Mike Kestner <mkestner@speakeasy.net>
 
 	* glib/Timeout.cs : new Timeout class with Add() and 

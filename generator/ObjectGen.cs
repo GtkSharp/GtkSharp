@@ -96,15 +96,7 @@ namespace GtkSharp.Generation {
 			GenProperties (sw);
 			GenSignals (sw);
 			GenMethods (sw);
-
-			char sep = Path.DirectorySeparatorChar;
-			string custom = ".." + sep + Namespace.ToLower() + sep + Name + ".custom";
-			if (File.Exists(custom)) {
-				FileStream custstream = new FileStream (custom, FileMode.Open, FileAccess.Read);
-				StreamReader sr = new StreamReader (custstream);
-				sw.WriteLine (sr.ReadToEnd ());
-				sr.Close ();
-			}
+			AppendCustom(Namespace, Name, sw);
 
 			sw.WriteLine ("\t}");
 

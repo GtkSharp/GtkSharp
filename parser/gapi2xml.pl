@@ -10,6 +10,7 @@
 $debug=1;
 
 use XML::LibXML;
+use Metadata;
 
 if (!$ARGV[0]) {
 	die "Usage: gapi_pp.pl <srcdir> | gapi2xml.pl <namespace> <outfile>\n";
@@ -96,7 +97,9 @@ while ($line = <STDIN>) {
 		}
 		$boxdef =~ s/\n\s*//g;
 		$boxdef =~ /\(\"(\w+)\"/;
-		$boxdefs{$1} = $boxdef;
+		my $boxtype = $1;
+		$boxtype =~ s/($ns)Type(\w+)/$ns$2/;
+		$boxdefs{$boxtype} = $boxdef;
 	} elsif ($line =~ /^(const|G_CONST_RETURN)?\s*\w+\s*\**\s*(\w+)\s*\(/) {
 		$fname = $2;
 		$fdef = "";
@@ -298,6 +301,10 @@ foreach $key (sort (keys (%types))) {
 	addFieldElems($struct_el, split(/;/, $1));
 	addFuncElems($struct_el, $key);
 }
+##############################################################
+# Add metadata
+##############################################################
+Metadata::fixup $doc;
 
 ##############################################################
 # Output the tree

@@ -1,0 +1,30 @@
+// Gtk.TextIter.custom - Gtk TextIter class customizations
+//
+// Author: Rachel Hestilow <hestilow@ximian.com> 
+//
+// (c) 2001 Mike Kestner, 2002 Rachel Hestilow
+//
+// This code is inserted after the automatically generated code.
+
+
+		/// <summary>
+		///	TextIter Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Constructs a new TextIter.
+
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_text_iter_create();
+		public TextIter () : this (gtksharp_text_iter_create ()) 
+		{
+		}
+		
+		[DllImport("glib-2.0")]
+		static extern void g_free (IntPtr mem);
+
+		~TextIter ()
+		{
+			g_free (Handle);
+		}
+
