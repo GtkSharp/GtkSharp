@@ -105,20 +105,6 @@ AC_SUBST(GACUTIL_FLAGS)
 AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 
-MONODOC_REQUIRED_VERSION=0.12
-PKG_CHECK_MODULES(MONODOC_DEPENDENCY, monodoc >= $MONODOC_REQUIRED_VERSION, enable_monodoc=yes, enable_monodoc=no)
-
-if test "x$enable_monodoc" = "xyes"; then
-	AC_PATH_PROG(MONODOC, monodoc, no)
-	if test x$MONODOC = xno; then
-	   enable_monodoc=no
-	fi
-else
-	MONODOC=
-fi
-
-AC_SUBST(MONODOC)
-
 PKG_CHECK_MODULES(GLIB, glib-2.0)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
@@ -192,7 +178,6 @@ AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
-AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 
 
 AC_SUBST(CFLAGS)
@@ -284,7 +269,6 @@ echo "Configuration summary"
 echo ""
 echo "   * Installation prefix = $prefix"
 echo "   * $CS compiler: $CSC"
-echo "   * Documentation: $enable_monodoc ($MONODOC)"
 echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
