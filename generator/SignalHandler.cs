@@ -131,12 +131,15 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 			sw.WriteLine("\t\t\t" + sname + " inst = (" + sname + ") _Instances[key];");
 			sw.WriteLine("\t\t\tSignalArgs args = new SignalArgs();");
+			if (parms.Count > 1) {
+				sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
+			}
 			for (int idx=1; idx < parms.Count; idx++) {
 				if (table.IsObject((String)parms[idx])) {
-					sw.Write("\t\t\targs.Args[" + idx + "] ");
+					sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
 					sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
 				} else {
-					sw.WriteLine("\t\t\targs.Args[" + idx + "] = arg" + idx + ";");
+					sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = arg" + idx + ";");
 				}
 			}
 			sw.WriteLine("\t\t\tinst._handler (inst._obj, args);");

@@ -15,14 +15,13 @@ namespace GtkSamples {
 		public static int Main (string[] args)
 		{
 			Application.Init (ref args);
-			Window win = new Window ("Button Tester");
-			win.Deleted += new EventHandler (Window_Delete);
+			Window win = new Window (WindowType.Toplevel);
+			win.Title = "Button Tester";
+			win.DeleteEvent += new EventHandler (Window_Delete);
 			Button btn = new Button ();
 			btn.Clicked += new EventHandler (btn_click);
-			btn.SizeRequest = new Size (32, 24);
-			btn.Show ();
-			win.Add (btn);
-			win.Show ();
+			win.EmitAdd (btn);
+			win.ShowAll ();
 			Application.Run ();
 			return 0;
 		}
