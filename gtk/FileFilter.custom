@@ -1,0 +1,35 @@
+// Gtk.FileFilter.custom - Gtk FileFilter class customizations
+//
+// Author: Mike Kestner <mkestner@novell.com>
+//
+// Copyright (c) 2005 Novell, Inc. 
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_file_filter_add_custom(IntPtr raw, int needed, GtkSharp.FileFilterFuncNative func, IntPtr data, NativeDestroyNotify notify);
+
+		public void AddCustom (Gtk.FileFilterFlags needed, Gtk.FileFilterFunc func) 
+		{
+			if (func == null) {
+				gtk_file_filter_add_custom (Handle, (int) needed, null, IntPtr.Zero, null);
+				return;
+			}
+			GtkSharp.FileFilterFuncWrapper func_wrapper = new GtkSharp.FileFilterFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_file_filter_add_custom(Handle, (int) needed, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}
+

@@ -53,6 +53,7 @@ customs = 				\
 	EntryCompletion.custom		\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
+	FileFilter.custom		\
 	FileSelection.custom		\
 	FileSystemModel.custom		\
 	Frame.custom			\
