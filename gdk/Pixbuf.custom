@@ -1,7 +1,19 @@
+// Pixbuf.custom - Gdk Pixbuf class customizations
 //
-// Extensions to Pixbuf
+// Authors: 
+// 	Vladimir Vukicevic <vladimir@pobox.com>
+// 	Miguel de Icaza <miguel@ximian.com>
+// 	Duncan Mak <duncan@ximian.com>
+//	Gonzalo Paniagua Javier <gonzalo@ximian.com>
+//	Martin Willemoes Hansen <mwh@sysrq.dk> 
 //
+// (C) 2002 Vladimir Vukicevic
+// (C) 2003 Ximian, Inc. (Miguel de Icaza)
+// (C) 2003 Ximian, Inc. (Duncan Mak)
+// (C) 2003 Ximian, Inc. (Gonzalo Paniagua Javier)
+// (C) 2003 Martin Willemoes Hansen
 //
+// This code is inserted after the automatically generated code.
 
 		IntPtr LoadFromStream (System.IO.Stream input)
 		{
@@ -115,8 +127,12 @@
 // operation will create the Pixbuf instead of two
 //
 
-		/// <summary> GetFromDrawable Method </summary>
-		/// <remarks> To be completed </remarks>
+                [DllImport("libgdk_pixbuf-2.0-0.dll")]
+		static extern IntPtr gdk_pixbuf_get_from_drawable (
+                              IntPtr nullpointer, IntPtr src, IntPtr cmap, 
+			      int src_x, int src_y, int dest_x, int dest_y, 
+			      int width, int height);
+
 		public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
 			IntPtr raw_ret = gdk_pixbuf_get_from_drawable((IntPtr) 0, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
 			return new Pixbuf (raw_ret);
