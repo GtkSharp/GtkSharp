@@ -59,7 +59,7 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk
-	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
+	$(CSC) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

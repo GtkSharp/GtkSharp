@@ -61,7 +61,7 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 $(ASSEMBLY): $(build_sources) generated-stamp gtk-sharp.snk
-	$(CSC) /unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) $(GENERATED_SOURCES)
+	$(CSC) /nowarn:0612 /unsafe /out:$(ASSEMBLY) /target:library $(references) $(build_sources) $(GENERATED_SOURCES)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\
