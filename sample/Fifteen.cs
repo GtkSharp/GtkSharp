@@ -121,12 +121,13 @@ public class Fifteen
 
 		string [] documenters = new string [] {};
 		string translaters = null;
+		Pixbuf pixbuf = new Pixbuf ("pixmaps/gnome-color-browser.png");
 
 		Gnome.About about = new Gnome.About ("Fifteen #", "0.1",
 						     "Copyright (C) 2002, Ximian Inc.",
 						     "A C# port of Fifteen, a gnomecanvas demo",
 						     authors, documenters, translaters,
-						     new Gdk.Pixbuf ());
+						     pixbuf);
 		about.Show ();
 	}
 
@@ -179,7 +180,7 @@ public class BoardPiece : Gnome.CanvasGroup
 {
 	public static int PIECE_SIZE = 50;
 	public int Number;
-	public int Position;
+	int position;
 	public CanvasText Text;
 	public BoardPiece [] Board;
 	public static bool Debug = false;
@@ -226,7 +227,17 @@ public class BoardPiece : Gnome.CanvasGroup
 			return String.Format ("#{0:x2}{1:x2}{2:x2}", r, g, b);
 		}
 	}
-			
+
+	public int Position {
+		get {
+			return position;
+		}
+
+		set {
+			Board [value] = this;
+			position = value;
+		}
+	}
 
 	static void Piece_Event (object o, CanvasEventArgs args)
 	{
@@ -272,8 +283,7 @@ public class BoardPiece : Gnome.CanvasGroup
 			if (toMove) {
 				int new_position = y * 4 + x;
 				Print_Position ("to", new_position, false);
-				piece.Board [piece.Position] = null;
-				piece.Board [new_position] = piece;
+ 				piece.Board [piece.Position] = null;
 				piece.Position = new_position;
 				piece.Move (dx * PIECE_SIZE, dy * PIECE_SIZE);
 			} else
