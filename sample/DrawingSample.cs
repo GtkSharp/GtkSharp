@@ -79,8 +79,6 @@ class PrettyGraphic : DrawingArea {
 		Gdk.Rectangle area = args.Area;
 
 		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
-			//Console.WriteLine ("{0} and {1}", -args.Area.X, -args.Area.Y);
-			//g.TranslateTransform (-args.Area.X, -args.Area.Y);
 			Pen p = new Pen (Color.Blue, 1.0f);
 
 			for (int i = 0; i < 600; i += 60)
@@ -112,15 +110,17 @@ class MovingText : DrawingArea {
 		Gdk.Rectangle area = args.Area;
 
 		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
-			Brush back = new SolidBrush (Color.White);
-			Brush fore = new SolidBrush (Color.Red);
-			Font f = new Font ("Times", 20);
+			using (Brush back = new SolidBrush (Color.White), 
+			       fore = new SolidBrush (Color.Red)){
+				using (Font f = new Font ("Times", 20)){
 
-			g.FillRectangle (back, 0, 0, 400, 400);
-			g.TranslateTransform (150, 100); 
-			g.RotateTransform (d);
-			d += 3;
-			g.DrawString ("Mono", f, fore, 0, 0);
+					g.FillRectangle (back, 0, 0, 400, 400);
+					g.TranslateTransform (150, 100); 
+					g.RotateTransform (d);
+					d += 3;
+					g.DrawString ("Mono", f, fore, 0, 0);
+				}
+			}
 		}
 
 		return true;
