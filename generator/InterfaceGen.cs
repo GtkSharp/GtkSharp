@@ -61,10 +61,12 @@ namespace GtkSharp.Generation {
 
 		public void Generate (SymbolTable table)
 		{
-			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {
-				Directory.CreateDirectory("..\\"+ns.ToLower()+"\\generated");
+			char sep = Path.DirectorySeparatorChar;
+			string dir = ".." + sep + ns.ToLower() + sep + "generated";
+			if (!Directory.Exists(dir)) {
+				Directory.CreateDirectory(dir);
 			}
-			String filename = "..\\" + ns.ToLower() + "\\generated\\" + Name + ".cs";
+			String filename = dir + sep + Name + ".cs";
 			
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);

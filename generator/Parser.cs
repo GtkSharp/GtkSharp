@@ -98,7 +98,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				default:
-					Console.WriteLine ("Unexpected node.");
+					Console.WriteLine ("Unexpected node named " + def.Name);
 					break;
 				}
 			}
