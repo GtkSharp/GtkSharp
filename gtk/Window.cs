@@ -11,11 +11,6 @@ namespace Gtk {
 	using System.Drawing;
 	using System.Runtime.InteropServices;
 
-	public enum WindowType {
-		TopLevel,
-		Popup,
-	}
-
 	public class Window : Widget {
 
 		/// <summary>
@@ -44,7 +39,7 @@ namespace Gtk {
 
 		public Window ()
 		{
-			RawObject = gtk_window_new (WindowType.TopLevel);
+			RawObject = gtk_window_new (WindowType.Toplevel);
 		}
 
 		/// <summary>
