@@ -149,7 +149,8 @@ public class Fifteen
 	static void Scramble (object o, EventArgs args)
 	{
 		Random rand = new Random ();
-		int blank,;
+		int blank;
+		int position;
 		
 
 		// find blank spot
