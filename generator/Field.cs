@@ -197,10 +197,7 @@ namespace GtkSharp.Generation {
 				if (Access != "private") {
 					sw.WriteLine ("\t\t" + Access + " " + wrapped + " " + wrapped_name + " {");
 					sw.WriteLine ("\t\t\tget { ");
-					sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + table.FromNativeReturn(CType, Name) + ";");
-					if (table.IsOpaque (CType))
-						sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + Name + ");");
-					sw.WriteLine ("\t\t\t\treturn ret;");
+					sw.WriteLine ("\t\t\t\treturn " + table.FromNativeReturn(CType, Name) + ";");
 					sw.WriteLine ("\t\t\t}");
 
 					sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");

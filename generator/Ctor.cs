@@ -124,7 +124,7 @@ namespace GtkSharp.Generation {
 							for (int i = 0; i < names.Count; i++) {
 								Parameter p = Parameters [i];
 								string indent = "\t\t\t\t";
-								if (p.Generatable is ObjectGen) {
+								if (p.Generatable is ClassBase && !(p.Generatable is StructBase)) {
 									sw.WriteLine (indent + "if (" + p.Name + " != null) {");
 									indent += "\t";
 								}
@@ -136,7 +136,7 @@ namespace GtkSharp.Generation {
 								else
 									sw.WriteLine ("new GLib.Value (" + values[i] + "));");
 
-								if (p.Generatable is ObjectGen)
+								if (p.Generatable is ClassBase && !(p.Generatable is StructBase))
 									sw.WriteLine ("\t\t\t\t}");
 							}
 

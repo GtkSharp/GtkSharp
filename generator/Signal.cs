@@ -209,7 +209,7 @@ namespace GtkSharp.Generation {
 				IGeneratable igen = p.Generatable;
 				if (p.PassAs == "out")
 					finish += "\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
-				else if ((igen is ClassBase && !(igen is StructBase)) || igen is ManualGen) {
+				else if (igen is ManualGen) {
 					sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
 					sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
 					sw.WriteLine("\t\t\telse {");

@@ -327,19 +327,14 @@ namespace GtkSharp.Generation {
 			sw.Write(indent + "\t\t\t");
 			if (retval.MarshalType == "void") {
 				sw.WriteLine(CName + call + ";");
-			} else if (ret_igen is OpaqueGen) {
-				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
-				sw.WriteLine(indent +"\t\t\t" + retval.CSType + " ret;");
-				sw.WriteLine(indent + "\t\t\tif (raw_ret == IntPtr.Zero)");
-				sw.WriteLine(indent + "\t\t\t\tret = null;");
-				sw.WriteLine(indent + "\t\t\telse");
-				sw.WriteLine(indent +"\t\t\t\tret = " + table.FromNativeReturn(retval.CType, "raw_ret" + (retval.Owned ? ", true" : "")) + ";");
 			} else {
 				sw.WriteLine(retval.MarshalType + " raw_ret = " + CName + call + ";");
 				sw.Write(indent + "\t\t\t");
 				string raw_parms = "raw_ret";
 				if (retval.ElementType != String.Empty)
 					raw_parms += ", typeof (" + retval.ElementType + ")";
+				else if (retval.Owned)
+					raw_parms += ", true";
 				sw.WriteLine(retval.CSType + " ret = " + table.FromNativeReturn(retval.CType, raw_parms) + ";");
 			}
 

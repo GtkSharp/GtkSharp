@@ -32,7 +32,7 @@ namespace GtkSharp.Generation {
 	
 		public override string FromNative(string var)
 		{
-			return "new " + QualifiedName + "(" + var + ")";
+			return var + " == IntPtr.Zero ? null : new " + QualifiedName + "(" + var + ")";
 		}
 
 		private bool DisableRawCtor {
