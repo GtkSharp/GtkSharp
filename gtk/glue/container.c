@@ -28,3 +28,10 @@ gtksharp_container_override_forall (GType gtype, gpointer cb)
 	((GtkContainerClass *) klass)->forall = cb;
 }
 
+void gtksharp_container_invoke_gtk_callback (GtkCallback cb, GtkWidget *widget, gpointer data);
+
+void 
+gtksharp_container_invoke_gtk_callback (GtkCallback cb, GtkWidget *widget, gpointer data)
+{
+	cb (widget, data);
+}

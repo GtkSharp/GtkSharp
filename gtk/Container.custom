@@ -50,20 +50,23 @@ public Widget[] FocusChain {
 }
 
 [DllImport("gtksharpglue")]
-static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data);
+static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, IntPtr cb, IntPtr data);
 
 [DllImport("gtksharpglue")]
 static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallDelegate cb);
 
-delegate void ForallDelegate (IntPtr container, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data);
+[DllImport("gtksharpglue")]
+static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
+
+delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
 
 static ForallDelegate ForallCallback;
 
 public struct CallbackInvoker {
-	GtkSharp.CallbackNative cb;
+	IntPtr cb;
 	IntPtr data;
 
-	internal CallbackInvoker (GtkSharp.CallbackNative cb, IntPtr data)
+	internal CallbackInvoker (IntPtr cb, IntPtr data)
 	{
 		this.cb = cb;
 		this.data = data;
@@ -75,7 +78,7 @@ public struct CallbackInvoker {
 		}
 	}
 
-	internal GtkSharp.CallbackNative Delegate {
+	internal IntPtr Callback {
 		get {
 			return cb;
 		}
@@ -83,11 +86,11 @@ public struct CallbackInvoker {
 
 	public void Invoke (Widget w)
 	{
-		cb (w.Handle, data);
+		gtksharp_container_invoke_gtk_callback (cb, w.Handle, data);
 	}
 }
 
-static void Forall_cb (IntPtr container, bool include_internals, GtkSharp.CallbackNative cb, IntPtr data)
+static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 {
 	Container obj = GLib.Object.GetObject (container, false) as Container;
 	CallbackInvoker invoker = new CallbackInvoker (cb, data);
@@ -103,6 +106,6 @@ protected static void OverrideForall (GLib.GType gtype)
 
 protected virtual void OnForall (bool include_internals, CallbackInvoker invoker)
 {
-	gtksharp_container_base_forall (Handle, include_internals, invoker.Delegate, invoker.Data);
+	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }
 
