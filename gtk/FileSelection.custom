@@ -2,12 +2,25 @@
 // Gtk.FileSelection.custom - Gtk FileSelection class customizations
 //
 // Author: Duncan Mak  (duncan@ximian.com)
+//         Joe Shaw  (joe@ximian.com)
 //
 // Copyright (C) 2002 Ximian, Inc. 
 //
 // This code is inserted after the automatically generated code.
 //
 		
+public class Button : Gtk.Button {
+	private FileSelection file_sel;
+
+	public FileSelection FileSelection {
+		get { return file_sel; }
+	}
+
+	public Button (FileSelection fs, IntPtr raw) : base (raw) {
+		file_sel = fs;
+	}
+}
+	
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_dir_list (IntPtr i);
 public Gtk.TreeView DirList {
@@ -35,19 +48,19 @@ public Gtk.Label SelectionText {
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_ok_button (IntPtr i);
 public Gtk.Button OkButton {
-	get { return new Gtk.Button (gtksharp_file_selection_get_ok_button (this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_ok_button (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_cancel_button (IntPtr i);
 public Gtk.Button CancelButton {
-	get { return new Gtk.Button (gtksharp_file_selection_get_cancel_button (this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_cancel_button (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_help_button (IntPtr i);
 public Gtk.Button HelpButton {
-	get { return new Gtk.Button (gtksharp_file_selection_get_help_button (this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_help_button (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
@@ -85,19 +98,19 @@ public string FileopFile {
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_fileop_c_dir (IntPtr i);
 public Gtk.Button FileopCDir {
-	get { return new Gtk.Button (gtksharp_file_selection_get_fileop_c_dir(this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_fileop_c_dir(this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_fileop_del_file (IntPtr i);
 public Gtk.Button FileopDelFile {
-	get { return new Gtk.Button (gtksharp_file_selection_get_fileop_del_file (this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_fileop_del_file (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_file_selection_get_fileop_ren_file (IntPtr i);
 public Gtk.Button FileopRenFile {
-	get { return new Gtk.Button (gtksharp_file_selection_get_fileop_ren_file (this.Handle)); }
+	get { return new Button (this, gtksharp_file_selection_get_fileop_ren_file (this.Handle)); }
 }
 
 [DllImport("gtksharpglue")]
@@ -111,6 +124,3 @@ static extern IntPtr gtksharp_file_selection_get_action_area (IntPtr i);
 public new Gtk.HButtonBox ActionArea {
 	get { return new Gtk.HButtonBox (gtksharp_file_selection_get_action_area (this.Handle)); }
 }
-
-
-

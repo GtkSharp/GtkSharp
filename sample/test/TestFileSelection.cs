@@ -39,6 +39,12 @@ namespace WidgetViewer {
 
 		static void file_selection_ok (object o, EventArgs args)
 		{
+			Gtk.FileSelection.Button fsbutton = (Gtk.FileSelection.Button) o;
+
+			Console.WriteLine ("ok button clicked!");
+
+			fsbutton.FileSelection.Destroy ();
+			
 		}
 
 		static void show_fileops (object o, EventArgs args)
