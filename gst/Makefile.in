@@ -7,12 +7,13 @@ ASSEMBLY=gst-sharp.dll
 all: $(ASSEMBLY)
 
 generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+	$(RUNTIME) ../parser/gapi-fixup.exe --api=gst-api.xml  --metadata=Gst.metadata && \
 	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
 	--outdir=generated --customdir=. --assembly-name=gst-sharp 	\
 	&& touch generated-stamp
 
 $(ASSEMBLY): *.cs generated-stamp
-	$(MCS) --unsafe --target library \
+	$(MCS) --unsafe -nowarn:0660,0661 --target library \
 	-r glib-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:

@@ -10,7 +10,6 @@ DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.0/sources/libglade-2.0.0.tar.gz		\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.3/sources/libart_lgpl-2.3.10.tar.gz	\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/librsvg-2.2.5.tar.gz         	\
-	http://ftp.gnome.org/pub/GNOME/sources/gstreamer/0.4/gstreamer-0.4.2.tar.gz		\
 	http://ftp.gnome.org/pub/GNOME/sources/libgda/1.0/libgda-1.0.0.tar.gz			\
 	http://ftp.gnome.org/pub/GNOME/sources/libgnomedb/1.0/libgnomedb-1.0.0.tar.gz		\
 
@@ -30,8 +29,12 @@ all:
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.8.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCES)
 	patch -p0 < gtkhtml-font-style-enum.patch
+	
+get-gst-code:
+	wget http://ftp.gnome.org/pub/GNOME/sources/gstreamer/0.6/gstreamer-0.6.4.tar.gz --output-document=- | tar -xz
+	patch -p0 < gstreamer-parse.patch
 
-get-source-code: get-gtkhtml-code
+get-source-code: get-gtkhtml-code get-gst-code
 	for i in $(DOWNLOADS); do                          \
 		wget $$i --output-document=- | tar -xz ;   \
 	done;
