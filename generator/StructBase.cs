@@ -108,10 +108,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected bool GetFieldInfo (XmlElement field, out string type, out string name)
+		protected bool GetFieldInfo (XmlElement field, out string c_type, out string type, out string name)
 		{
 			name = "";
-			string c_type = field.GetAttribute ("type");
+			c_type = field.GetAttribute ("type");
 			type = SymbolTable.GetCSType (c_type);
 			if (IsBit (field)) {
 				type = "uint";
@@ -141,10 +141,35 @@ namespace GtkSharp.Generation {
 		
 		protected bool GenField (XmlElement field, StreamWriter sw)
 		{
-			string type, name;
-			if (!GetFieldInfo (field, out type, out name))
+			string c_type, type, name;
+			if (!GetFieldInfo (field, out c_type, out type, out name))
 				return false;
 			sw.WriteLine ("\t\tpublic {0} {1};", type, name);
+
+			if (field.HasAttribute("array_len"))
+				Console.WriteLine ("warning: array field {0}.{1} probably incorrectly generated", QualifiedName, name);
+
+			string wrapped = SymbolTable.GetCSType (c_type);
+			string wrapped_name = MangleName (field.GetAttribute ("cname"));
+			if (SymbolTable.IsObject (c_type) || SymbolTable.IsOpaque (c_type)) {
+				// FIXME: cut n paste code, remove after introspection completed 
+				sw.WriteLine ();
+				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
+				sw.WriteLine ("\t\t\tget { ");
+				sw.WriteLine ("\t\t\t\t" + wrapped + " ret = " + SymbolTable.FromNativeReturn(c_type, name) + ";");
+				sw.WriteLine ("\t\t\t\tif (ret == null) ret = new " + wrapped + "(" + name + ");");
+				sw.WriteLine ("\t\t\t\treturn ret;");
+				sw.WriteLine ("\t\t\t}");
+
+				sw.WriteLine ("\t\t\tset { " + name + " = " + SymbolTable.CallByName (c_type, "value") + "; }");
+				sw.WriteLine ("\t\t}");
+			} else if (IsPointer (field) && (SymbolTable.IsStruct (c_type) || SymbolTable.IsBoxed (c_type))) {
+				sw.WriteLine ();
+				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
+				sw.WriteLine ("\t\t\tget { return " + SymbolTable.FromNativeReturn (c_type, name) + "; }");
+				sw.WriteLine ("\t\t}");
+			}
+			
 			return true;
 		}
 

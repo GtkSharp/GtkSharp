@@ -3565,11 +3565,6 @@
         </parameters>
       </constructor>
     </struct>
-    <struct name="PixmapObject" cname="GdkPixmapObject">
-      <field cname="parent_instance" type="GdkDrawable"/>
-      <field cname="impl" type="GdkDrawable*"/>
-      <field cname="depth" type="gint"/>
-    </struct>
     <struct name="Point" cname="GdkPoint">
       <field cname="x" type="gint"/>
       <field cname="y" type="gint"/>
@@ -3787,34 +3782,6 @@
       <field cname="wmclass_name" type="gchar*"/>
       <field cname="wmclass_class" type="gchar*"/>
       <field cname="override_redirect" type="gboolean"/>
-    </struct>
-    <struct name="WindowObject" cname="GdkWindowObject">
-      <field cname="parent_instance" type="GdkDrawable"/>
-      <field cname="impl" type="GdkDrawable*"/>
-      <field cname="parent" type="GdkWindowObject*"/>
-      <field cname="user_data" type="gpointer"/>
-      <field cname="x" type="gint"/>
-      <field cname="y" type="gint"/>
-      <field cname="extension_events" type="gint"/>
-      <field cname="filters" type="GList*"/>
-      <field cname="children" type="GList*"/>
-      <field cname="bg_color" type="GdkColor"/>
-      <field cname="bg_pixmap" type="GdkPixmap*"/>
-      <field cname="paint_stack" type="GSList*"/>
-      <field cname="update_area" type="GdkRegion*"/>
-      <field cname="update_freeze_count" type="guint"/>
-      <field cname="window_type" type="guint8"/>
-      <field cname="depth" type="guint8"/>
-      <field cname="resize_count" type="guint8"/>
-      <field cname="state" type="GdkWindowState"/>
-      <field cname="guffaw_gravity" bits="1" type="guint"/>
-      <field cname="input_only" bits="1" type="guint"/>
-      <field cname="modal_hint" bits="1" type="guint"/>
-      <field cname="destroyed" bits="2" type="guint"/>
-      <field cname="event_mask" type="GdkEventMask"/>
-      <method name="GetType" cname="gdk_window_object_get_type" shared="true">
-        <return-type type="GType"/>
-      </method>
     </struct>
     <alias name="XEvent" cname="GdkXEvent" type="void "/>
   </namespace>
@@ -14556,7 +14523,7 @@
       <method name="BackwardToTagToggle" cname="gtk_text_iter_backward_to_tag_toggle">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTextTag*" name="tag"/>
+          <parameter type="GtkTextTag*" name="tag" null_ok="1"/>
         </parameters>
       </method>
       <method name="BackwardWordStart" cname="gtk_text_iter_backward_word_start">
@@ -14679,7 +14646,7 @@
       <method name="ForwardToTagToggle" cname="gtk_text_iter_forward_to_tag_toggle">
         <return-type type="gboolean"/>
         <parameters>
-          <parameter type="GtkTextTag*" name="tag"/>
+          <parameter type="GtkTextTag*" name="tag" null_ok="1"/>
         </parameters>
       </method>
       <method name="ForwardWordEnd" cname="gtk_text_iter_forward_word_end">

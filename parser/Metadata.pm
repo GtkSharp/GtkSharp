@@ -46,6 +46,7 @@ sub parseData {
 		my @attrs = $data_node->attributes;
 		my $target = $attrs[0]->value;
 		my ($filter_level, $filter_value, $attr_name, $attr_value);
+		my $directives = "";
 		for ($attr_node = $data_node->firstChild; $attr_node != undef; $attr_node = $attr_node->nextSibling ()) {
 			if ($attr_node->nodeName eq "filter") {
 				my @filter_attrs = $attr_node->attributes;
@@ -55,9 +56,11 @@ sub parseData {
 				$attr_name = $attr_node->firstChild->nodeValue;
 			} elsif ($attr_node->nodeName eq "value") {
 				$attr_value = $attr_node->firstChild->nodeValue;
+			} elsif ($attr_node->nodeName eq "delete") {
+				$directives = "delete";
 			}
 		}
-		my @data_attr = ("attribute", $target, "filter", $filter_level, $filter_value, $attr_name, $attr_value);
+		my @data_attr = ("attribute", $target, "filter", $filter_level, $filter_value, $attr_name, $attr_value, $directives);
 		push @data, \@data_attr;
 	}
 
@@ -144,12 +147,16 @@ sub addClassData {
 
     foreach $data (@$data_list_ref) {
 	if ($$data[1] eq "class") {
+		if ($$data[7] eq "delete") {
+			my $parent = $node->parentNode;
+			$parent->removeChild ($node);
+			return;
+		}
 	    # my copy of XML::LibXML doesn't have this method.
 	    #my @nodes = $node->getChildrenByTagName ($$data[5]);
 	    my @nodes = myGetChildrenByTagName ($node, $$data[5]);
 
 	    if (0 == scalar @nodes) {
-		print STDERR "DEBUG> $class $$data[0] $$data[1] $$data[2] $$data[3] $$data[4] $$data[5] $$data[6]\n";
 		$node->setAttribute ($$data[5], $$data[6]);
 	    }
 	    next;
@@ -163,7 +170,7 @@ sub fixupNamespace {
 	foreach $rule (@{$self->{rules}}) {
 		my ($classes_ref, $data_list_ref) = @$rule;
 		for ($node = $ns_node->firstChild; $node; $node = $node->nextSibling ()) {
-			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface");
+			next if not ($node->nodeName eq "object" or $node->nodeName eq "interface" or $node->nodeName eq "struct" or $node->nodeName eq "boxed");
 			my $class, $methods_ref, $attr;
 			foreach $attr ($node->attributes) {
 				if ($attr->name eq "cname") {
