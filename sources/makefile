@@ -12,7 +12,8 @@ DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/librsvg-2.2.5.tar.gz         	\
 	http://ftp.gnome.org/pub/GNOME/sources/libgda/1.0/libgda-1.0.0.tar.gz			\
 	http://ftp.gnome.org/pub/GNOME/sources/libgnomedb/1.0/libgnomedb-1.0.0.tar.gz		\
-
+	http://ftp.gnome.org/pub/GNOME/desktop/2.4/2.4.0/sources/vte-0.11.10.tar.gz		\
+	
 GTKHTML_SOURCES = \
         gtkhtml-3.0.8/src/gtkhtml.c \
         gtkhtml-3.0.8/src/gtkhtml.h \
