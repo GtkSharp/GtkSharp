@@ -1,3 +1,8 @@
+// SelectionData.custom - customizations for Gtk.SelectionData
+//
+// Authors:  Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004  Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -63,5 +68,55 @@
 
 		public void Set(Gdk.Atom type, int format, byte[] data) {
 			Set(type, format, data, data.Length);
+		}
+
+		[DllImport("gtksharpglue")]
+		private static extern IntPtr gtksharp_gtk_selection_data_get_selection (IntPtr selection_data);
+
+		public Gdk.Atom Selection {
+			get {
+				return new Gdk.Atom (gtksharp_gtk_selection_data_get_selection (Handle));
+			}
+		}
+
+		[DllImport("gtksharpglue")]
+		private static extern IntPtr gtksharp_gtk_selection_data_get_target (IntPtr selection_data);
+
+		public Gdk.Atom Target {
+			get {
+				return new Gdk.Atom (gtksharp_gtk_selection_data_get_target (Handle));
+			}
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_free (IntPtr ptr);
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_selection_data_get_targets(IntPtr raw, out IntPtr targets, out int n_atoms);
+
+		public Gdk.Atom [] Targets {
+			get {
+				IntPtr target_ptr;
+				int count;
+				if (gtk_selection_data_get_targets (Handle, out target_ptr, out count)) {
+					Gdk.Atom[] result = new Gdk.Atom [count];
+					for (int i = 0; i < count; i++) {
+						IntPtr atom = Marshal.ReadIntPtr (target_ptr, count * IntPtr.Size);
+						result [i] = new Gdk.Atom (atom);
+					}
+					g_free (target_ptr);
+					return result;
+				} else
+					return new Gdk.Atom [0];
+			}
+		}
+
+		[DllImport("gtksharpglue")]
+		private static extern IntPtr gtksharp_gtk_selection_data_get_type (IntPtr selection_data);
+
+		public Gdk.Atom Type {
+			get {
+				return new Gdk.Atom (gtksharp_gtk_selection_data_get_type (Handle));
+			}
 		}
 

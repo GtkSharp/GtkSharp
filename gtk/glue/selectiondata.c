@@ -25,6 +25,9 @@
 gint gtksharp_gtk_selection_data_get_length (GtkSelectionData *data);
 gint gtksharp_gtk_selection_data_get_format (GtkSelectionData *data);
 guchar *gtksharp_gtk_selection_data_get_data_pointer (GtkSelectionData *data);
+GdkAtom gtksharp_gtk_selection_data_get_selection (GtkSelectionData *data);
+GdkAtom gtksharp_gtk_selection_data_get_target (GtkSelectionData *data);
+GdkAtom gtksharp_gtk_selection_data_get_type (GtkSelectionData *data);
 
 guchar *
 gtksharp_gtk_selection_data_get_data_pointer (GtkSelectionData *data)
@@ -44,3 +47,20 @@ gtksharp_gtk_selection_data_get_format (GtkSelectionData *data)
 	return data->format;
 }
 
+GdkAtom 
+gtksharp_gtk_selection_data_get_selection (GtkSelectionData *data)
+{
+	return data->selection;
+}
+
+GdkAtom 
+gtksharp_gtk_selection_data_get_target (GtkSelectionData *data)
+{
+	return data->target;
+}
+
+GdkAtom 
+gtksharp_gtk_selection_data_get_type (GtkSelectionData *data)
+{
+	return data->type;
+}
