@@ -450,9 +450,9 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=127.0.0.1;" +
-					  "user=monotest;" +
-					  "password=monotest;" +
+		string connectionString = "" +
+					  "" +
+					  "" +
 					  "dbname=monotest";
 						  
 		cnc.ConnectionString = connectionString;
