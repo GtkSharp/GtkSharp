@@ -65,6 +65,38 @@ namespace Gtk {
 		}
 
 		[DllImport("gtk-x11-2.0")]
+		static extern bool gtk_events_pending ();
+
+		/// <summary>
+		///	EventsPending Method
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Returns true if Gtk+ events are pending in the queue.	
+		/// </remarks>
+
+		public static bool EventsPending ()
+		{
+			return gtk_events_pending ();
+		}
+
+		[DllImport("gtk-x11-2.0")]
+		static extern void gtk_main_iteration ();
+
+		/// <summary>
+		///	RunIteration Method
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Runs a single iteration of the event loop.	
+		/// </remarks>
+
+		public static void RunIteration ()
+		{
+			gtk_main_iteration ();
+		}
+
+		[DllImport("gtk-x11-2.0")]
 		static extern void gtk_main_quit ();
 
 		/// <summary>
