@@ -28,12 +28,6 @@ CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.pub
 DISTCLEANFILES = gnome-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =					\
-	CanvasProxy.cs				\
-	GtkSharp.BoundsHandler.cs		\
-	GtkSharp.DrawHandler.cs			\
-	GtkSharp.PointHandler.cs		\
-	GtkSharp.RenderHandler.cs		\
-	GtkSharp.UpdateHandler.cs		\
 	Modules.cs				\
 	voidObjectAffineSVPintSignal.cs
 

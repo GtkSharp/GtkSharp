@@ -94,7 +94,7 @@ static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntP
 {
 	Container obj = GLib.Object.GetObject (container, false) as Container;
 	CallbackInvoker invoker = new CallbackInvoker (cb, data);
-	obj.OnForall (include_internals, invoker);
+	obj.ForAll (include_internals, invoker);
 }
 
 protected static void OverrideForall (GLib.GType gtype)
@@ -104,7 +104,7 @@ protected static void OverrideForall (GLib.GType gtype)
 	gtksharp_container_override_forall (gtype, ForallCallback);
 }
 
-protected virtual void OnForall (bool include_internals, CallbackInvoker invoker)
+protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
 {
 	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }

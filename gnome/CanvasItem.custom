@@ -70,7 +70,7 @@
                 static void Realize_cb (IntPtr item)
                 {
                         CanvasItem obj = GLib.Object.GetObject (item, false) as CanvasItem;
-                        obj.OnRealize ();
+                        obj.Realize ();
                 }
 
                 protected static void OverrideRealize (GLib.GType gtype)
@@ -80,7 +80,7 @@
                         gnomesharp_canvas_item_override_realize (gtype, RealizeCallback);
                 }
 
-		protected virtual void OnRealize ()
+		protected virtual void Realize ()
 		{
 			gnomesharp_canvas_item_base_realize (Handle);
 		}
@@ -99,7 +99,7 @@
                 {
                         CanvasItem obj = GLib.Object.GetObject (item, false) as CanvasItem;
 			CanvasItem actual_item;
-                        double result = obj.OnPoint (x, y, cx, cy, out actual_item);
+                        double result = obj.Point (x, y, cx, cy, out actual_item);
 			actual_item_handle = actual_item != null ? actual_item.Handle : IntPtr.Zero;
 			return result;
                 }
@@ -111,7 +111,7 @@
                         gnomesharp_canvas_item_override_point (gtype, PointCallback);
                 }
 
-		protected virtual double OnPoint (double x, double y, int cx, int cy, out CanvasItem actual_item)
+		protected virtual double Point (double x, double y, int cx, int cy, out CanvasItem actual_item)
 		{
 			IntPtr actual_item_handle;
 			double result = gnomesharp_canvas_item_base_point (Handle, x, y, cx, cy, out actual_item_handle);
@@ -133,7 +133,7 @@
                 {
                         CanvasItem obj = GLib.Object.GetObject (handle, false) as CanvasItem;
                         Gdk.Drawable drawable = GLib.Object.GetObject (drawable_handle, false) as Gdk.Drawable;
-                        obj.OnDraw (drawable, x, y, width, height);
+                        obj.Draw (drawable, x, y, width, height);
                 }
 
                 protected static void OverrideDraw (GLib.GType gtype)
@@ -143,7 +143,7 @@
                         gnomesharp_canvas_item_override_draw (gtype, DrawCallback);
                 }
 
-		protected virtual void OnDraw (Gdk.Drawable drawable, int x, int y, int width, int height)
+		protected virtual void Draw (Gdk.Drawable drawable, int x, int y, int width, int height)
 		{
 			gnomesharp_canvas_item_base_draw (Handle, drawable.Handle, x, y, width, height);
 		}
@@ -161,7 +161,7 @@
                 static void Render_cb (IntPtr handle, ref CanvasBuf buf)
                 {
                         CanvasItem obj = GLib.Object.GetObject (handle, false) as CanvasItem;
-                        obj.OnRender (ref buf);
+                        obj.Render (ref buf);
                 }
 
                 protected static void OverrideRender (GLib.GType gtype)
@@ -171,7 +171,7 @@
                         gnomesharp_canvas_item_override_render (gtype, RenderCallback);
                 }
 
-		protected virtual void OnRender (ref CanvasBuf buf)
+		protected virtual void Render (ref CanvasBuf buf)
 		{
 			gnomesharp_canvas_item_base_render (Handle, ref buf);
 		}
@@ -196,7 +196,7 @@
 				clip_path = Art.SVP.Zero;
 			else
 				clip_path = (Art.SVP) Marshal.PtrToStructure (clip_path_handle, typeof(Art.SVP));
-                        obj.OnUpdate (affine, ref clip_path, flags);
+                        obj.Update (affine, ref clip_path, flags);
                 }
 
                 protected static void OverrideUpdate (GLib.GType gtype)
@@ -206,7 +206,7 @@
                         gnomesharp_canvas_item_override_update (gtype, UpdateCallback);
                 }
 
-		protected virtual void OnUpdate (double[] affine, ref Art.SVP clip_path, int flags)
+		protected virtual void Update (double[] affine, ref Art.SVP clip_path, int flags)
 		{
 			gnomesharp_canvas_item_base_update (Handle, affine, ref clip_path, flags);
 		}

@@ -25,14 +25,14 @@ public class CustomCellRenderer : CellRenderer
 			percent = value;
 		}
 	}
-	
+
 	static CustomCellRenderer ()
 	{
 		OverrideGetSize (GLib.Object.LookupGType (typeof (CustomCellRenderer)));
 		OverrideRender (GLib.Object.LookupGType (typeof (CustomCellRenderer)));
 	}
 
-	protected override void OnGetSize (Widget widget, Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height)
+	public override void GetSize (Widget widget, ref Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height)
 	{
 		int calc_width = (int) this.Xpad * 2 + 100;
 		int calc_height = (int) this.Ypad * 2 + 10;
@@ -51,11 +51,11 @@ public class CustomCellRenderer : CellRenderer
 		}
 	}
 
-	protected override void OnRender (Drawable window, Widget widget, Rectangle background_area, Rectangle cell_area, Rectangle expose_area, CellRendererState flags)
+	protected override void Render (Drawable window, Widget widget, Rectangle background_area, Rectangle cell_area, Rectangle expose_area, CellRendererState flags)
 	{
 		int width = 0, height = 0, x_offset = 0, y_offset = 0;
 		StateType state;
-		OnGetSize (widget, cell_area, out x_offset, out y_offset, out width, out height);
+		GetSize (widget, ref cell_area, out x_offset, out y_offset, out width, out height);
 
 		if (widget.HasFocus)
 			state = StateType.Active;

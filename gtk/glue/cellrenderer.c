@@ -48,3 +48,26 @@ gtksharp_cellrenderer_override_render (GType gtype, gpointer cb)
 		klass = g_type_class_ref (gtype);
 	((GtkCellRendererClass *) klass)->render = cb;
 }
+
+GtkCellEditable * gtksharp_cellrenderer_base_start_editing (GtkCellRenderer *cell, GdkEvent *event, GtkWidget *widget, const gchar *path, GdkRectangle *background_area, GdkRectangle *cell_area, GtkCellRendererState flags);
+
+GtkCellEditable *
+gtksharp_cellrenderer_base_start_editing (GtkCellRenderer *cell, GdkEvent *event, GtkWidget *widget, const gchar *path, GdkRectangle *background_area, GdkRectangle *cell_area, GtkCellRendererState flags)
+{
+        GtkCellRendererClass *parent = g_type_class_peek_parent (G_OBJECT_GET_CLASS (cell));
+        if (parent->start_editing)
+		return (*parent->start_editing) (cell, event, widget, path, background_area, cell_area, flags);
+	return NULL;	
+}
+
+
+void gtksharp_cellrenderer_override_start_editing (GType gtype, gpointer cb);
+
+void
+gtksharp_cellrenderer_override_start_editing (GType gtype, gpointer cb)
+{
+	GtkCellRendererClass *klass = g_type_class_peek (gtype);
+	if (!klass)
+		klass = g_type_class_ref (gtype);
+	((GtkCellRendererClass *) klass)->start_editing = cb;
+}
