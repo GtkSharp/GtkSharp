@@ -156,7 +156,7 @@
         <remarks>
 		  Typically used for simple containers such as <see cref="T:Gtk.Window"/>, <see cref="T:Gtk.Frame"/>, or <see cref="T:Gtk.Button"/>;
 		  for more complicated layout containers such as <see cref="T:Gtk.Box"/> or <see cref="T:Gtk.Table"/>, this function will pick default packing parameters that may not be correct.
-		  So consider functions such as <see cref="M:Gtk.Box.PackStart()"/> and <see cref="T:Gtk.Table.Attach()"/> as an alternative to <see cref="T:Gtk.Container.Add()"/> in those cases.
+		  So consider functions such as <see cref="M:Gtk.Box.PackStart(Gtk.Widget,System.Boolean,System.Boolean,System.UInt32)"/> and <see cref="M:Gtk.Table.Attach(Gtk.Widget,System.UInt32,System.UInt32,System.UInt32,System.UInt32)"/> as an alternative to <see cref="M:Gtk.Container.Add(Gtk.Widget)"/> in those cases.
 		  A <see cref="T:Gtk.Widget"/> may be added to only one <see cref="T:Gtk.Container"/> at a time; you can not place the same widget inside two different containers.
 		</remarks>
       </Docs>
@@ -185,7 +185,7 @@
       <Parameters />
       <Docs>
         <summary>Removes a focus chain.</summary>
-        <remarks>Removes a focus chain explicitly set with <see cref="T:Gtk.Container.SetFocusChain()"/>.</remarks>
+        <remarks>Removes a focus chain explicitly set with <see cref="M:Gtk.Container.SetFocusChain(GLib.List)"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Forall">
@@ -203,7 +203,7 @@
         <remarks>
 		  This includes children that are considered "internal" (implementation details of the <see cref="T:Gtk.Container"/>).
 		  "Internal" children generally were not added by the user of the <see cref="T:Gtk.Container"/>, but were added by the container implementation itself.
-		  Most applications should use <see cref="M:Gtk.Container.ForEach()"/>, rather than <see cref="M:Gtk.Container.ForAll()"/>.
+		  Most applications should use <see cref="M:Gtk.Container.ForEach(Gtk.Callback)"/>, rather than <see cref="M:Gtk.Container.ForAll(Gtk.Callback)"/>.
 		</remarks>
       </Docs>
     </Member>
@@ -288,10 +288,10 @@
 		  <para>
 		    When a <see cref="T:Gtk.Container"/> receives an expose event, it must send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Window"/>s.
 			This function provides a convenient way of doing this.
-			A <see cref="T:Gtk.Container"/>, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose()"/> once for each child, passing in the event the <see cref="T:Gtk.Container"/> received.
+			A <see cref="T:Gtk.Container"/>, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)"/> once for each child, passing in the event the <see cref="T:Gtk.Container"/> received.
 		  </para>
 		  <para>
-		    <see cref="M:Gtk.Container.PropagateExpose()"/> takes care of deciding whether an expose event needs to be sent to the child, intersecting the event's area with the child area, and sending the event.
+		    <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)"/> takes care of deciding whether an expose event needs to be sent to the child, intersecting the event's area with the child area, and sending the event.
 		  </para>
 		  <para>
 		    In most cases, a <see cref="T:Gtk.Container"/> can either simply inherit the expose implementation from <see cref="T:Gtk.Container"/>, or do some drawing and then chain to the expose implementation from <see cref="T:Gtk.Container"/>.
