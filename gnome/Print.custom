@@ -16,10 +16,12 @@
 	public static int Pixbuf (Gnome.PrintContext pc, Gdk.Pixbuf image) {
 		int ret = 0;
 
-		if (image.NChannels == 4)
-			ret = gnome_print_rgbaimage(pc.Handle, image.Pixels, image.Width, image.Height, image.Rowstride);
-		else 
-			ret = gnome_print_rgbimage(pc.Handle, image.Pixels, image.Width, image.Height, image.Rowstride);
+		unsafe {
+			if (image.NChannels == 4)
+				ret = gnome_print_rgbaimage(pc.Handle, (byte *) image.Pixels, image.Width, image.Height, image.Rowstride);
+			else 
+				ret = gnome_print_rgbimage(pc.Handle, (byte *) image.Pixels, image.Width, image.Height, image.Rowstride);
+		}
 
 		return ret;
 	}
