@@ -1,5 +1,5 @@
 <Type Name="FSButton" FullName="Gtk.FileSelection+FSButton">
-  <TypeSignature Language="C#" Value="public class FSButton : Gtk.Button, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class FSButton : Gtk.Button, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey />
@@ -9,8 +9,17 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      Helper class for <see cref="T:Gtk.Button" />s embedded inside a <see cref="T:Gtk.FileSelection" />
+    </summary>
+    <remarks>
+      <para>
+        This class is used as a wrapper around buttons embedded inside
+        a  <see cref="T:Gtk.FileSelection" />. This class exposes an
+        additional property, <see cref="T:Gtk.FileSelection+FSButton.FileSelection" />, which
+        can be used to get back to the parent <see cref="T:Gtk.FileSelection" /> dialog.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Button</BaseTypeName>
@@ -31,22 +40,6 @@
   </Interfaces>
   <Attributes />
   <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public FSButton (Gtk.FileSelection fs, IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-		<Parameter Name="fs" Type="Gtk.FileSelection" />
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="fs">To be added: an object of type 'Gtk.FileSelection'</param>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gtk.FileSelection+FSButton'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="FileSelection">
       <MemberSignature Language="C#" Value="public Gtk.FileSelection FileSelection { get; };" />
       <MemberType>Property</MemberType>
@@ -54,9 +47,17 @@
         <ReturnType>Gtk.FileSelection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.FileSelection'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the parent <see cref="T:Gtk.FileSelection" /></summary>
+        <returns>The parent <see cref="T:Gtk.FileSelection" /></returns>
+        <remarks>
+          <para>
+            This class is only used to by
+            <see cref="T:Gtk.Button"/>s embedded inside a
+            <see cref="T:Gtk.FileSelection" />. From the
+            <see cref="P:Gtk.FileSelection.OKButton" />, you can use
+            this property to get back to the parent dialog box.
+          </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
