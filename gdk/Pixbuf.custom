@@ -208,6 +208,12 @@
 // operation will create the Pixbuf instead of two
 //
 
+		public static Gdk.Pixbuf FromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
+			IntPtr raw_ret = gdk_pixbuf_get_from_drawable(IntPtr.Zero, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
+			return new Pixbuf (raw_ret);
+		}
+
+		[Obsolete ("Replaced by static FromDrawable method")]
 		public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
 			IntPtr raw_ret = gdk_pixbuf_get_from_drawable((IntPtr) 0, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
 			return new Pixbuf (raw_ret);
