@@ -214,7 +214,7 @@ namespace Gtk {
 		}
 
 		/// <summary>
-		///	Activate Event
+		///	Activated Event
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -223,7 +223,7 @@ namespace Gtk {
 
 		private static readonly string ActName = "activate";
 
-		public event EventHandler Activate
+		public event EventHandler Activated
 		{
 			add {
 				if (Events [ActName] == null)
@@ -268,7 +268,7 @@ namespace Gtk {
 		}
 
 		/// <summary>
-		///	Enter Event
+		///	Entered Event
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -277,7 +277,7 @@ namespace Gtk {
 
 		private static readonly string EnterName = "enter";
 
-		public event EventHandler Enter
+		public event EventHandler Entered
 		{
 			add {
 				if (Events [EnterName] == null)
@@ -295,7 +295,7 @@ namespace Gtk {
 		}
 
 		/// <summary>
-		///	Leave Event
+		///	Left Event
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -304,7 +304,7 @@ namespace Gtk {
 
 		private static readonly string LeaveName = "leave";
 
-		public event EventHandler Leave
+		public event EventHandler Left
 		{
 			add {
 				if (Events [LeaveName] == null)
@@ -376,7 +376,7 @@ namespace Gtk {
 		}
 
 		/// <summary>
-		///	EmitClicked Method
+		///	Click Method
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -387,13 +387,13 @@ namespace Gtk {
 		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_button_clicked (IntPtr obj);
 
-		public void EmitClicked ()
+		public void Click ()
 		{
 			gtk_button_clicked (RawObject);
 		}
 
 		/// <summary>
-		///	EmitEnter Method
+		///	Enter Method
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -404,13 +404,13 @@ namespace Gtk {
 		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_button_enter (IntPtr obj);
 
-		public void EmitEnter ()
+		public void Enter ()
 		{
 			gtk_button_enter (RawObject);
 		}
 
 		/// <summary>
-		///	EmitLeave Method
+		///	Leave Method
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -421,13 +421,13 @@ namespace Gtk {
 		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_button_leave (IntPtr obj);
 
-		public void EmitLeave ()
+		public void Leave ()
 		{
 			gtk_button_leave (RawObject);
 		}
 
 		/// <summary>
-		///	EmitPressed Method
+		///	Pressed Method
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -438,13 +438,13 @@ namespace Gtk {
 		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_button_pressed (IntPtr obj);
 
-		public void EmitPressed ()
+		public void Press ()
 		{
 			gtk_button_pressed (RawObject);
 		}
 
 		/// <summary>
-		///	EmitReleased Method
+		///	Release Method
 		/// </summary>
 		/// 
 		/// <remarks>
@@ -455,7 +455,7 @@ namespace Gtk {
 		[DllImport("gtk-1.3.dll")]
 		static extern void gtk_button_released (IntPtr obj);
 
-		public void EmitReleased ()
+		public void Release ()
 		{
 			gtk_button_released (RawObject);
 		}
