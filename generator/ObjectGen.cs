@@ -33,7 +33,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "virtual_method":
-					vm_nodes.Add (node);
+					Statistics.IgnoreCount++;
 					break;
 
 				case "static-string":

@@ -1,4 +1,4 @@
-SUBDIRS = . glue
+#SUBDIRS = . glue
 
 API = atk-api.xml
 RAW_API = atk-api.raw
