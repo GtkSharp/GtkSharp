@@ -3,6 +3,18 @@
 
 <!-- out parameters -->
 <rule>
+  <class name="GtkEditable">
+    <method>InsertText</method>
+  </class>
+  <data>
+    <attribute target="param">
+      <filter level="name">position</filter>
+      <name>pass_as</name>
+      <value>ref</value>
+    </attribute>
+  </data>
+</rule>
+<rule>
   <class name="GtkTextBuffer">
     <method>GetIterAtLineOffset</method>
     <method>GetIterAtLineIndex</method>
@@ -27,33 +39,6 @@
       <filter level="type">GtkTextIter*</filter>
       <name>pass_as</name>
       <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTextView">
-    <method>GetLineYrange</method>
-    <method>GetLineAtY</method>
-    <method>BufferToWindowCoords</method>
-    <method>WindowToBufferCoords</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkEditable">
-    <method>InsertText</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>ref</value>
     </attribute>
   </data>
 </rule>
@@ -158,19 +143,6 @@
   </data>
 </rule>
 <rule>
-  <class name="GtkSpinButton">
-    <method>GetIncrements</method>
-    <method>GetRange</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gdouble*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
   <class name="GtkScrolledWindow">
     <method>GetPolicy</method>
   </class>
@@ -180,133 +152,6 @@
       <name>pass_as</name>
       <value>out</value>
     </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkLayout">
-    <method>GetSize</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">guint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkRuler">
-    <method>GetRange</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gdouble*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWindow">
-    <method>GetFrameDimensions</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkCellRenderer">
-    <method>GetSize</method>
-    <method>GetFixedSize</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkCalendar">
-    <method>GetDate</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">guint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkEditable">
-    <method>GetSelectionBounds</method>
-    <method>GetLayoutOffsets</method>
-  </class>
-  <class name="GtkLabel">
-    <method>GetSelectionBounds</method>
-    <method>GetLayoutOffsets</method>    
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-    <method>GetPointer</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter level="type">gint*</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-	</attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-	<method>TranslateCoordinates</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter level="name">dest_x</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-	</attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-	<method>TranslateCoordinates</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter level="name">dest_y</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-	</attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-    <method>Path</method>
-    <method>ClassPath</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter name="type">guint*</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-	</attribute>
   </data>
 </rule>
 <rule>
@@ -376,23 +221,6 @@
     </attribute>
     <attribute target="param">
 	  <filter level="name">path</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkTreeView">
-    <method>WidgetToTreeCoords</method>
-  </class>
-  <data>
-    <attribute target="param">
-	  <filter level="name">tx</filter>
-	  <name>pass_as</name>
-	  <value>out</value>
-    </attribute>
-    <attribute target="param">
-	  <filter level="name">ty</filter>
 	  <name>pass_as</name>
 	  <value>out</value>
     </attribute>
@@ -2410,18 +2238,6 @@
       <filter level="type">GtkStyle*</filter>
       <name>null_ok</name>
       <value>1</value>
-    </attribute>
-  </data>
-</rule>
-<rule>
-  <class name="GtkWidget">
-    <method>GetSizeRequest</method>
-  </class>
-  <data>
-    <attribute target="param">
-      <filter level="type">gint*</filter>
-      <name>pass_as</name>
-      <value>out</value>
     </attribute>
   </data>
 </rule>
