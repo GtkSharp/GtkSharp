@@ -40,6 +40,7 @@ sources =					\
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 customs =					\
+	App.custom				\
 	CanvasBpath.custom			\
 	CanvasClipgroup.custom			\
 	Canvas.custom				\
