@@ -13,7 +13,57 @@
       This object allows a widget to suggest possible completions of a string which has been partially entered.
     </summary>
     <remarks>
-      The partially-entered string is also referred to as a "key".
+      <para>
+The partially-entered string is also referred to as a "key".
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+public class DemoEntryCompletion : Window
+{
+        static void Main ()
+        {
+                Application.Init ();
+                new DemoEntryCompletion ();
+                Application.Run ();
+        }
+
+        public DemoEntryCompletion () : base ("Demo Entry Completion")
+        {
+                this.BorderWidth = 10;
+                this.Resizable = false;
+                VBox vbox = new VBox ();
+
+                Label label = new Label ("Completion demo, try writing &lt;b&gt;total&lt;/b&gt; or &lt;/b&gt;gnome&lt;/b&gt; for example.");
+                label.UseMarkup = true;
+                vbox.PackStart (label, false, true, 0);
+
+                Entry entry = new Entry ();
+                entry.Completion = new EntryCompletion ();
+                entry.Completion.Model = CreateCompletionModel ();
+                entry.Completion.TextColumn = 0;
+                vbox.PackStart (entry, false, true, 0);
+
+                this.Add (vbox);
+                this.ShowAll ();
+        }
+
+        TreeModel CreateCompletionModel ()
+        {
+                ListStore store = new ListStore (typeof (string));
+
+                store.AppendValues ("GNOME");
+                store.AppendValues ("total");
+                store.AppendValues ("totally");
+
+                return store;
+        }
+}
+
+  </code>
+      </example>
     </remarks>
   </Docs>
   <Base>
@@ -302,9 +352,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>GType Property.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks />
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.EntryCompletion" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MinimumKeyLength">
@@ -332,7 +382,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Setting this property generates acompletion list with just strings. 
+        <summary>Setting this property generates a completion list with just strings. 
 	</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>
