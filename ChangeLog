@@ -1,3 +1,55 @@
+2005-04-01  Dan Winship  <danw@novell.com>
+
+	* samples/GtkDemo/*.cs: General fixup and cleanup; Remove some
+	gratuitous differences from the C version. Make comment and indent
+	style consistent. Don't use "this." where not needed. Override
+	OnDeleteEvent rather than connecting one's own DeleteEvent signal.
+
+	* sample/GtkDemo/DemoApplicationWindow.cs (static
+	DemoApplicationWindow): register the Gtk logo icon with
+	StockManager so it shows up correctly in the toolbar.
+	(AddActions): Register the radio items as radio items so they work
+	right.
+
+	* sample/GtkDemo/DemoHyperText.cs (EventAfter): handle
+	link-clicking from Widget.WidgetEventAfter (as in the C version),
+	rather than ButtonRelease, now that WidgetEventAfter is wrapped.
+
+	* sample/GtkDemo/DemoImages.cs (DemoImages): use
+	Gtk.Image.LoadFromResource (particularly to make the animation
+	work right).
+	(OnDestroyed): handle clean up (remove the timeout, etc)
+
+	* sample/GtkDemo/DemoMain.cs (LoadStream): Fix handling of blank
+	lines and whitespace to match the C version.
+
+	* sample/GtkDemo/DemoPixbuf.cs (Expose): Use
+	System.Runtime.InteropServices.Marshal.Copy() to copy
+	pixbuf.Pixels to pass to DrawRgbImageDithalign, to make this more
+	like the C version (and probably faster?)
+	(timeout): Remove the FIXME since it seems to work now
+
+	* sample/GtkDemo/DemoStockBrowser.cs: Simplify a bunch. Use
+	reflection to get the C# names of the stock icons rather than
+	trying to correctly re-mangle the ids. Display the Label with the
+	accelerator underlined.
+
+	* sample/GtkDemo/DemoTextView.cs (AttachWidgets): use
+	Gtk.Image.LoadFromResource, so the image is properly loaded as an
+	animation, not a static image. Don't set the combobox's "Active"
+	property (for consistency with the C version).
+	(InsertText): Fix miscellaneous differences with the C version.
+	Remove some leftover cruft from earlier workarounds for gtk# bugs.
+
+	* sample/GtkDemo/DemoTreeStore.cs (AddColumns): Make this more
+	like the C version so the checkboxes are sensitized and hidden
+	correctly on a per-row basis.
+
+	* sample/GtkDemo/DemoUIManager.cs: Make the radio menu items work.
+
+	* sample/GtkDemo/README: 
+	* sample/GtkDemo/TODO: update
+
 2005-04-01  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/TreeModelFilter.custom : manually implement SetVisibleFunc and

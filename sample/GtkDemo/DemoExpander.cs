@@ -7,18 +7,19 @@
 using System;
 using Gtk;
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("Expander", "DemoExpander.cs")]
 	public class DemoExpander : Gtk.Dialog
 	{
 		public DemoExpander () : base ("Demo Expander", null, DialogFlags.DestroyWithParent)
 		{
-			this.Resizable = false;
-			this.BorderWidth = 10;
+			Resizable = false;
+
 			VBox vbox = new VBox (false, 5);
 			this.VBox.PackStart (vbox, true, true, 0);
 			vbox.BorderWidth = 5;
+
 			vbox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, false, 0);
 
 			// Create the expander
@@ -26,12 +27,11 @@ namespace GtkDemo
 			expander.Add (new Label ("Details can be shown or hidden."));
 			vbox.PackStart (expander, false, false, 0);
 
-			this.AddButton (Stock.Close, ResponseType.Close);
+			AddButton (Stock.Close, ResponseType.Close);
 
-			this.ShowAll ();
-			this.Run ();
-			this.Hide ();
-			this.Destroy ();
+			ShowAll ();
+			Run ();
+			Destroy ();
 		}
 	}
 }

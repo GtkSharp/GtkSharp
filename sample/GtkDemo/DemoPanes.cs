@@ -1,12 +1,3 @@
-//
-// DemoPanes.cs
-//
-// Author: Daniel Kornhauser <dkor@alum.mit.edu>
-//
-// Copyright (C) 2002, Daniel Kornhauser, Ximian Inc.
-//
-
-
 /* Paned Widgets
  *
  * The HPaned and VPaned Widgets divide their content
@@ -22,6 +13,7 @@
 
 
 using System;
+using System.Collections;
 using Gtk;
 
 namespace GtkDemo
@@ -29,151 +21,119 @@ namespace GtkDemo
 	[Demo ("Paned Widget", "DemoPanes.cs")]
 	public class DemoPanes : Gtk.Window
 	{
-		private VPaned vpaned;
-		private HPaned top;
-		private Frame left;
-		private Frame right;
-		private Frame bottom;
-
-		private CheckButton resizeLeft;
-		private CheckButton shrinkLeft;
-		private CheckButton resizeRight;
-		private	CheckButton shrinkRight;	
-		private CheckButton resizeTop;
-		private CheckButton shrinkTop;
-		private CheckButton resizeBottom;
-		private CheckButton shrinkBottom;
-		private Button button;
+		Hashtable children = new Hashtable ();
 
 		public DemoPanes () : base ("Panes")
-		{	
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			this.BorderWidth = 0;
-
+		{
 			VBox vbox = new VBox (false, 0);
-			this.Add (vbox);
+			Add (vbox);
 
-			vpaned = new VPaned ();
+			VPaned vpaned = new VPaned ();
 			vbox.PackStart (vpaned, true, true, 0);
 			vpaned.BorderWidth = 5;
 
-			top = new HPaned ();
-			vpaned.Add1 (top);
+			HPaned hpaned = new HPaned ();
+			vpaned.Add1 (hpaned);
 
-		        left = new Frame ();
-		        left.ShadowType = ShadowType.In;
-			left.SetSizeRequest (60, 60);
-			top.Add1 (left);
-			button = new Button ("_Hi there");
-			left.Add (button);
+		        Frame frame = new Frame ();
+		        frame.ShadowType = ShadowType.In;
+			frame.SetSizeRequest (60, 60);
+			hpaned.Add1 (frame);
 
-			right = new Frame ();
-			right.ShadowType = ShadowType.In;
-			right.SetSizeRequest (80, 60);
-			top.Add2 (right);
+			Gtk.Button button = new Button ("_Hi there");
+			frame.Add (button);
 
-			bottom = new Frame ();
-			bottom.ShadowType = ShadowType.In;
-			bottom.SetSizeRequest (80, 60);
-			vpaned.Add2 (bottom);
+			frame = new Frame ();
+			frame.ShadowType = ShadowType.In;
+			frame.SetSizeRequest (80, 60);
+			hpaned.Add2 (frame);
 
-			// Now create toggle buttons to control sizing 
+			frame = new Frame ();
+			frame.ShadowType = ShadowType.In;
+			frame.SetSizeRequest (60, 80);
+			vpaned.Add2 (frame);
 
-			Frame frame = new Frame ("Horizonal");
+			// Now create toggle buttons to control sizing
+			vbox.PackStart (CreatePaneOptions (hpaned,
+							   "Horizontal",
+							   "Left",
+							   "Right"),
+					false, false, 0);
+
+			vbox.PackStart (CreatePaneOptions (vpaned,
+							   "Vertical",
+							   "Top",
+							   "Bottom"),
+					false, false, 0);
+
+			ShowAll ();
+		}
+
+		Frame CreatePaneOptions (Paned paned, string frameLabel,
+					 string label1, string label2)
+		{
+			Frame frame = new Frame (frameLabel);
 			frame.BorderWidth = 4;
-			vbox.PackStart (frame);
 
 			Table table = new Table (3, 2, true);
 			frame.Add (table);
 
-			Label label = new Label ("Left");
+			Label label = new Label (label1);
 			table.Attach (label, 0, 1, 0, 1);
 
-			resizeLeft = new CheckButton ("_Resize");			
-			table.Attach (resizeLeft, 0, 1, 1, 2);
-			resizeLeft.Toggled += new EventHandler (LeftCB);
+			CheckButton check = new CheckButton ("_Resize");
+			table.Attach (check, 0, 1, 1, 2);
+			check.Toggled += new EventHandler (ToggleResize);
+			children[check] = paned.Child1;
 
-			shrinkLeft  = new CheckButton ("_Shrink");
-			table.Attach (shrinkLeft, 0, 1, 2, 3);
-			shrinkLeft.Active = true;
-			shrinkLeft.Toggled += new EventHandler (LeftCB);
+			check = new CheckButton ("_Shrink");
+			table.Attach (check, 0, 1, 2, 3);
+			check.Active = true;
+			check.Toggled += new EventHandler (ToggleShrink);
+			children[check] = paned.Child1;
 
-			label = new Label ("Right");
+			label = new Label (label2);
 			table.Attach (label, 1, 2, 0, 1);
-			
-			resizeRight = new CheckButton ("_Resize");
-			table.Attach (resizeRight, 1, 2, 1, 2);
-			resizeRight.Active = true;
-			resizeRight.Toggled += new EventHandler (RightCB);
 
-			shrinkRight = new CheckButton ("_Shrink"); 
-			table.Attach (shrinkRight, 1, 2, 2, 3);
-			shrinkRight.Active = true;
-			shrinkRight.Toggled += new EventHandler (RightCB);
+			check = new CheckButton ("_Resize");
+			table.Attach (check, 1, 2, 1, 2);
+			check.Active = true;
+			check.Toggled += new EventHandler (ToggleResize);
+			children[check] = paned.Child2;
 
-			frame = new Frame ("Vertical");
-			frame.BorderWidth = 4;
-			vbox.PackStart (frame);
-			
-			table = new Table (3, 2, true);
-			frame.Add (table);
-			
-			label = new Label ("Top");
-			table.Attach (label, 0, 1, 0, 1);
-			
-			resizeTop = new CheckButton ("_Resize");			
-			table.Attach (resizeTop, 0, 1, 1, 2);
-			resizeTop.Toggled += new EventHandler (TopCB);
-			
-			shrinkTop = new CheckButton ("_Shrink");   
-			table.Attach (shrinkTop, 0, 1, 2, 3);
-			shrinkTop.Active = true;
-			shrinkTop.Toggled += new EventHandler (TopCB);
+			check = new CheckButton ("_Shrink");
+			table.Attach (check, 1, 2, 2, 3);
+			check.Active = true;
+			check.Toggled += new EventHandler (ToggleShrink);
+			children[check] = paned.Child2;
 
-			label = new Label ("Bottom");
-			table.Attach (label, 1, 2, 0, 1);
-			
-			resizeBottom = new CheckButton ("_Resize"); 
-			table.Attach (resizeBottom, 1, 2, 1, 2);
-			resizeBottom.Active = true;
-			resizeBottom.Toggled += new EventHandler (BottomCB);
-
-			shrinkBottom = new CheckButton ("_Shrink"); 
-			table.Attach (shrinkBottom, 1, 2, 2, 3);
-			shrinkBottom.Active = true;
-			shrinkBottom.Toggled += new EventHandler (BottomCB);
-
-			this.ShowAll ();
-		}			
-
-		private void LeftCB (object o, EventArgs args)
-                {
-			top.Remove (left);
-			top.Pack1 (left, resizeLeft.Active, shrinkLeft.Active);
-		}
-		
-		private void RightCB (object o, EventArgs args)
-                {
-			top.Remove (right);
-			top.Pack2 (right, resizeRight.Active, shrinkRight.Active);
+			return frame;
 		}
 
-		private void TopCB (object o, EventArgs args)
-                {
-			vpaned.Remove (top);
-			vpaned.Pack1 (top, resizeTop.Active, shrinkTop.Active);
-		}
-
-		private void BottomCB (object o, EventArgs args)
-                {
-			vpaned.Remove (bottom);
-			vpaned.Pack2 (bottom, resizeBottom.Active, shrinkBottom.Active);
-		}
-
- 	    	private void WindowDelete (object o, DeleteEventArgs args)
+		private void ToggleResize (object obj, EventArgs args)
 		{
-			this.Hide ();
-			this.Destroy ();
+			ToggleButton toggle = obj as ToggleButton;
+			Widget child = children[obj] as Widget;
+			Paned paned = child.Parent as Paned;
+
+			Paned.PanedChild pc = paned[child] as Paned.PanedChild;
+			pc.Resize = toggle.Active;
+		}
+
+		private void ToggleShrink (object obj, EventArgs args)
+		{
+			ToggleButton toggle = obj as ToggleButton;
+			Widget child = children[obj] as Widget;
+			Paned paned = child.Parent as Paned;
+
+			Paned.PanedChild pc = paned[child] as Paned.PanedChild;
+			pc.Shrink = toggle.Active;
+		}
+
+		protected override bool OnDeleteEvent (Gdk.Event evt)
+		{
+			Destroy ();
+			return true;
 		}
 	}
 }

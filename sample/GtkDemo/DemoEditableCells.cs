@@ -1,11 +1,3 @@
-//
-// DemoEditableCells.cs, port of appwindow.c from gtk-demo
-//
-// Author: Daniel Kornhauser <dkor@alum.mit.edu>
-//
-// Copyright (C) 2003, Ximian Inc.
-
-
 /* Tree View/Editable Cells
  *
  * This demo demonstrates the use of editable cells in a Gtk.TreeView. If
@@ -18,7 +10,7 @@ using System;
 using System.Collections;
 using Gtk;
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("Editable Cells", "DemoEditableCells.cs", "Tree View")]
 	public class DemoEditableCells : Gtk.Window
@@ -27,25 +19,29 @@ namespace GtkDemo
 		private TreeView treeView;
 		private ArrayList articles;
 
-		public DemoEditableCells () : base ("Color Selection")
+		public DemoEditableCells () : base ("Shopping list")
 		{
-			this.SetDefaultSize (320, 200);
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			SetDefaultSize (320, 200);
+			BorderWidth = 5;
 
 			VBox vbox = new VBox (false, 5);
-			this.Add (vbox);
-			
+			Add (vbox);
+
 			vbox.PackStart (new Label ("Shopping list (you can edit the cells!)"), false, false, 0);
-			
-			ScrolledWindow scrolledWindow = new ScrolledWindow (null, null);
-			scrolledWindow.ShadowType = ShadowType.In;
+
+			ScrolledWindow scrolledWindow = new ScrolledWindow ();
+			scrolledWindow.ShadowType = ShadowType.EtchedIn;
 			scrolledWindow.SetPolicy (PolicyType.Automatic, PolicyType.Automatic);
-			vbox.PackStart (scrolledWindow);
+			vbox.PackStart (scrolledWindow, true, true, 0);
+
+			// create model
+			store = CreateModel ();
 
 			// create tree view
-			treeView = new TreeView ();
-			CreateModel ();
-			treeView.Model = store ; 
+			treeView = new TreeView (store);
+			treeView.RulesHint = true;
+			treeView.Selection.Mode = SelectionMode.Single;
+
 			AddColumns ();
 			scrolledWindow.Add (treeView);
 
@@ -61,107 +57,106 @@ namespace GtkDemo
 			button.Clicked += new EventHandler (RemoveItem);
 			hbox.PackStart (button, true, true, 0);
 
-			this.ShowAll ();
+			ShowAll ();
 		}
-		
+
 		private void AddColumns ()
 		{
 			CellRendererText renderer;
-			
+
+			// number column
 			renderer = new CellRendererText ();
 			renderer.Edited += new EditedHandler (NumberCellEdited);
 			renderer.Editable = true;
-			// renderer.Data ("column", (int) Column.Number);
-			treeView.AppendColumn ("Number", renderer, 
-					"text", (int) Column.Number);
-	
+			treeView.AppendColumn ("Number", renderer,
+					       "text", (int) Column.Number);
+
 			// product column
 			renderer = new CellRendererText ();
 			renderer.Edited += new EditedHandler (TextCellEdited);
 			renderer.Editable = true;
-			// renderer.Data ("column", (int) Column.Product);
 			treeView.AppendColumn ("Product", renderer ,
-					"text", (int) Column.Product);
+					       "text", (int) Column.Product);
 		}
 
-		private void CreateModel ()
+		private ListStore CreateModel ()
 		{
 			// create array
 			articles = new ArrayList ();
 			AddItems ();
+
 			// create list store
-			store = new ListStore (typeof (int), typeof (string), typeof (bool));
-			
+			ListStore store = new ListStore (typeof (int), typeof (string), typeof (bool));
+
 			// add items
 			foreach (Item item in articles)
-				store.AppendValues (item.Number, item.Product, item.Editable);
+				store.AppendValues (item.Number, item.Product);
+
+			return store;
 		}
 
 		private void AddItems ()
 		{
 			Item foo;
 
-			foo = new Item (3, "bottles of coke", true);
+			foo = new Item (3, "bottles of coke");
 			articles.Add (foo);
 
-			foo = new Item (5, "packages of noodles", true);
+			foo = new Item (5, "packages of noodles");
 			articles.Add (foo);
 
-			foo = new Item (2, "packages of chocolate chip cookies", true);
+			foo = new Item (2, "packages of chocolate chip cookies");
 			articles.Add (foo);
 
-			foo = new Item (1, "can of vanilla ice cream", true);
+			foo = new Item (1, "can vanilla ice cream");
 			articles.Add (foo);
 
-			foo = new Item (6, "eggs", true);
+			foo = new Item (6, "eggs");
 			articles.Add (foo);
 		}
-		
-		private void WindowDelete (object o, DeleteEventArgs args)
+
+		protected override bool OnDeleteEvent (Gdk.Event evt)
 		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			Destroy ();
+			return true;
 		}
 
 		private void NumberCellEdited (object o, EditedArgs args)
 		{
-			int i;
-			Item foo;
+			TreePath path = new TreePath (args.Path);
+ 			TreeIter iter;
+ 			store.GetIter (out iter, path);
+			int i = path.Indices[0];
 
-			try 
-			{
-				i = Convert.ToInt32 (args.Path);
+			Item foo;
+			try {
 				foo = (Item) articles[i];
  				foo.Number = int.Parse (args.NewText);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine (e.ToString ());
+			} catch (Exception e) {
+				Console.WriteLine (e);
 				return;
 			}
 
- 			TreeIter iter;
- 			store.GetIterFromString (out iter, args.Path);
  			store.SetValue (iter, (int) Column.Number, foo.Number);
 		}
 
-
 		private void TextCellEdited (object o, EditedArgs args)
 		{
-			int i = int.Parse (args.Path);		
+			TreePath path = new TreePath (args.Path);
+ 			TreeIter iter;
+ 			store.GetIter (out iter, path);
+			int i = path.Indices[0];
+
 			Item foo = (Item) articles[i];
 			foo.Product = args.NewText;
-			TreeIter iter;
-			store.GetIterFromString (out iter, args.Path);
 			store.SetValue (iter, (int) Column.Product, foo.Product);
 		}
 
 		private void AddItem (object o, EventArgs args)
 		{
-			Item foo = new Item (0, "Description here", true);
+			Item foo = new Item (0, "Description here");
 			articles.Add (foo);
-			store.AppendValues (foo.Number, foo.Product, foo.Editable);
+			store.AppendValues (foo.Number, foo.Product);
 		}
 
 		private void RemoveItem (object o, EventArgs args)
@@ -169,47 +164,38 @@ namespace GtkDemo
  			TreeIter iter;
  			TreeModel model;
 
- 			if (treeView.Selection.GetSelected (out model, out iter))
-			{
- 				int position = int.Parse (store.GetPath (iter).ToString ());
+ 			if (treeView.Selection.GetSelected (out model, out iter)) {
+ 				int position = store.GetPath (iter).Indices[0];
  				store.Remove (ref iter);
 				articles.RemoveAt (position);
 			}
 		}
 	}
-	
-	public enum Column
+
+	enum Column
 	{
 		Number,
-		Product,
-		Editable,
+		Product
 	};
-	
- 	public struct Item
+
+ 	struct Item
  	{
 		public int Number {
-			get {return NumberItem;}
-			set {NumberItem = value;}
+			get { return number; }
+			set { number = value; }
 		}
 		public string Product {
-			get {return ProductItem;}
-			set {ProductItem = value;}
-		}
-					
-		public bool Editable {
-			get {return EditableItem;}
-			set {EditableItem = value;}
+			get { return product; }
+			set { product = value; }
 		}
 
-		private int NumberItem;
-		private string ProductItem;
-		private bool EditableItem;
+		private int number;
+		private string product;
 
- 		public Item (int number, string product, bool editable)
+ 		public Item (int number, string product)
  		{
- 			NumberItem = number;
- 			ProductItem = product;
- 			EditableItem = editable;
+ 			this.number = number;
+ 			this.product = product;
  		}
  	}
 }

@@ -1,10 +1,3 @@
-//
-// StockBrowser.cs, port of stock_browser.c from gtk-demo
-//
-// Author: Daniel Kornhauser <dkor@media.mit.edu>
-//
-// (C) 2003 Ximian, Inc.
-
 /* Stock Item and Icon Browser
  *
  * This source code for this demo doesn't demonstrate anything
@@ -15,214 +8,190 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using Gtk;
 
 namespace GtkDemo
-{	
+{
 	[Demo ("Stock Item and Icon Browser", "DemoStockBrowser.cs")]
 	public class DemoStockBrowser : Gtk.Window
 	{
-		class StockInfo
+		enum Column {
+			Id,
+			Name,
+			Label,
+			Accel,
+		};
+
+		Label typeLabel, nameLabel, idLabel, accelLabel;
+		Image iconImage;
+
+		public DemoStockBrowser () : base ("Stock Icons and Items")
 		{
-			internal string Name;
-			internal string Label;
-			internal string Accel;
-			internal string ID;
-			internal Gdk.Pixbuf Icon;
-		}
-
-		// in a real application this would be
-		// split into its own file
-		class StockFrame : Gtk.Frame
-		{
-			StockInfo info;
-			Label category;
-			Label name;
-			Label id;
-			Label label;
-			Image icon;
-
-			internal StockFrame () : base ("Selected Item")
-			{
-				this.SetSizeRequest (200, -1);
-				// Icon and Item / Icon Only / ???
-				category = new Label ("???");
-				// icon / blank
-				icon = new Image ("");
-				// _Add / blank
-				label = new Label ();
-				label.UseUnderline = true;
-				// Gtk.Stock.Cancel
-				name = new Label ();
-				// gtk-stock-cancel
-				id = new Label ();
-
-				VBox vbox = new VBox (false, 3);
-				vbox.PackStart (category, false, true, 0);
-				vbox.PackStart (icon, false, true, 0);
-				vbox.PackStart (label, false, true, 0);
-				vbox.PackStart (name, false, true, 0);
-				vbox.PackStart (id, false, true, 0);
-
-				this.Add (vbox);
-				this.ShowAll ();
-			}
-
-			internal StockInfo Info
-			{
-				get { return info; }
-				set {
-					info = value;
-					name.Text = info.Name;
-					label.Text = info.Label;
-					id.Text = info.ID;
-					icon.Pixbuf = info.Icon;
-				}
-			}
-		}
-
-		StockFrame stockFrame;
-
-		public DemoStockBrowser () : base ("Stock Item Browser Demo")
-		{	
-			this.SetDefaultSize (600, 400);
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			this.BorderWidth = 8;
+			SetDefaultSize (-1, 500);
+			BorderWidth = 8;
 
 			HBox hbox = new HBox (false, 8);
-			this.Add (hbox);
+			Add (hbox);
 
-			ScrolledWindow scrolledWindow = new ScrolledWindow (null, null);
-			scrolledWindow.SetPolicy (PolicyType.Never, PolicyType.Automatic);
-			hbox.PackStart (scrolledWindow, true, true, 0);
-			
-			TreeView list = new TreeView ();
-			list.AppendColumn ("Icon", new CellRendererPixbuf (), "pixbuf", 0);
-			list.AppendColumn ("Name", new CellRendererText (), "text", 1);
-			list.AppendColumn ("Label", new CellRendererText (), "text", 2);
-			list.AppendColumn ("Accel", new CellRendererText (), "text", 3);			
-			list.AppendColumn ("ID", new CellRendererText (), "text", 4);			
-			list.Model = CreateStore ();
+			ScrolledWindow sw = new ScrolledWindow ();
+			sw.SetPolicy (PolicyType.Never, PolicyType.Automatic);
+			hbox.PackStart (sw, false, false, 0);
 
-			list.Selection.Changed += new EventHandler (OnSelectionChanged);
-			scrolledWindow.Add (list);
-			
-			stockFrame = new StockFrame ();
-			hbox.PackStart (stockFrame, false, false, 0);
-			
-			this.ShowAll ();
-		}	
+			ListStore model = CreateModel ();
 
-		private ListStore CreateStore ()
+			TreeView treeview = new TreeView (model);
+			sw.Add (treeview);
+
+			TreeViewColumn column = new TreeViewColumn ();
+			column.Title = "Name";
+			CellRenderer renderer = new CellRendererPixbuf ();
+			column.PackStart (renderer, false);
+			column.SetAttributes (renderer, "stock_id", Column.Id);
+			renderer = new CellRendererText ();
+			column.PackStart (renderer, true);
+			column.SetAttributes (renderer, "text", Column.Name);
+
+			treeview.AppendColumn (column);
+			treeview.AppendColumn ("Label", new CellRendererText (), "text", Column.Label);
+			treeview.AppendColumn ("Accel", new CellRendererText (), "text", Column.Accel);
+			treeview.AppendColumn ("ID", new CellRendererText (), "text", Column.Id);
+
+			Alignment align = new Alignment (0.5f, 0.0f, 0.0f, 0.0f);
+			hbox.PackEnd (align, false, false, 0);
+
+			Frame frame = new Frame ("Selected Item");
+			align.Add (frame);
+
+			VBox vbox = new VBox (false, 8);
+			vbox.BorderWidth = 8;
+			frame.Add (vbox);
+
+			typeLabel = new Label ();
+			vbox.PackStart (typeLabel, false, false, 0);
+			iconImage = new Gtk.Image ();
+			vbox.PackStart (iconImage, false, false, 0);
+			accelLabel = new Label ();
+			vbox.PackStart (accelLabel, false, false, 0);
+			nameLabel = new Label ();
+			vbox.PackStart (nameLabel, false, false, 0);
+			idLabel = new Label ();
+			vbox.PackStart (idLabel, false, false, 0);
+
+			treeview.Selection.Mode = Gtk.SelectionMode.Single;
+			treeview.Selection.Changed += new EventHandler (SelectionChanged);
+
+			ShowAll ();
+		}
+
+		private ListStore CreateModel ()
 		{
-			// FIXME: tremendous duplication of info
-			// image, name, label, accel, id, StockInfo
-			ListStore store = new Gtk.ListStore (typeof (Gdk.Pixbuf), typeof(string), typeof(string), typeof(string), typeof (string), typeof (StockInfo));
+			ListStore store = new Gtk.ListStore (typeof (string), typeof(string), typeof(string), typeof(string), typeof (string));
 
-			string[] stock_ids = Gtk.Stock.ListIds ();		
+			string[] stockIds = Gtk.Stock.ListIds ();
+			Array.Sort (stockIds);
 
-			foreach (string s in stock_ids)
-			{
-				Gtk.StockItem si;
-				si = Gtk.Stock.Lookup (s);
-				if (si.StockId != null) {
-					Gdk.Pixbuf icon = this.RenderIcon (s, IconSize.Menu, "");
-					StockInfo info = new StockInfo ();
-					info.Icon = icon;
-					info.Name = GetCLSName (si.StockId);
-					info.Label = si.Label;
-					info.Accel = GetKeyName (si);
-					info.ID = si.StockId;
-
-					// FIXME: si.Label needs to _AccelAware
-					store.AppendValues (icon, GetCLSName (si.StockId), si.Label, GetKeyName (si), si.StockId, info);
-				}
-				else {
-					//Console.WriteLine ("StockItem '{0}' could not be found.", s);
-				}
+			// Use reflection to get the list of C# names
+			Hashtable idToName = new Hashtable ();
+			foreach (PropertyInfo info in typeof (Gtk.Stock).GetProperties (BindingFlags.Public | BindingFlags.Static)) {
+				if (info.PropertyType == typeof (string))
+					idToName[info.GetValue (null, null)] = "Gtk.Stock." + info.Name;
 			}
-			
+
+			foreach (string id in stockIds) {
+				Gtk.StockItem si;
+				string accel;
+
+				si = Gtk.Stock.Lookup (id);
+				if (si.Keyval != 0)
+					accel = Accelerator.Name (si.Keyval, si.Modifier);
+				else
+					accel = "";
+
+				store.AppendValues (id, idToName[id], si.Label, accel);
+			}
+
 			return store;
 		}
 
-		// changes 'gtk-stock-close' into 'Gtk.Stock.Close'
-		// should use StudlyCaps from gapi2xml.pl instead
-		string GetCLSName (string stockID)
+		void SelectionChanged (object o, EventArgs args)
 		{
-			string cls = "";
-			if (stockID.StartsWith ("gtk-"))
-				cls = stockID.Substring (4, stockID.Length - 4);
-
-			char[] split = cls.ToCharArray ();
-			bool raiseNext = false;
-			ArrayList tmp = new ArrayList ();
-			tmp.Add (char.ToUpper (split[0]));
-
-			for (int i = 1; i < split.Length; i ++)
-			{
-				if (split[i] == '-') {
-					raiseNext = true;
-					continue;
-				}
-
-				if (raiseNext) {
-					tmp.Add (char.ToUpper (split[i]));
-					raiseNext = false;
-				}
-				else {
-					tmp.Add (split[i]);
-				}
-			}
-
-			split = new char[tmp.Count];
-			int j = 0;
-			foreach (char c in tmp)
-				split[j++] = c;
-
-			return "Gtk.Stock." + new string (split);
-		}
-
-		// use si.Keyval and si.Modifier
-		// to produce a reasonable representation
-		// of the key binding
-		string GetKeyName (StockItem si)
-		{
-			string mod = "";
-			string key = "";
-
-			switch (si.Modifier) {
-				// seems to be the only one used
-				case Gdk.ModifierType.ControlMask:
-					mod = "<Control>";
-					break;
-				default:
-					break;
-			}
-
-			if (si.Keyval > 0)
-				key = Gdk.Keyval.Name (si.Keyval);
-
-			return String.Format ("{0} {1}", mod, key);
-		}
-
-		void OnSelectionChanged (object o, EventArgs args)
-		{
+			TreeSelection selection = (TreeSelection)o;
 			TreeIter iter;
 			TreeModel model;
 
-			if (((TreeSelection) o).GetSelected (out model, out iter))
-			{
-				StockInfo info = (StockInfo) model.GetValue (iter, 5);
-				stockFrame.Info = info;
+			if (selection.GetSelected (out model, out iter)) {
+				string id = (string) model.GetValue (iter, (int)Column.Id);
+				string name = (string) model.GetValue (iter, (int)Column.Name);
+				string label = (string) model.GetValue (iter, (int)Column.Label);
+				string accel = (string) model.GetValue (iter, (int)Column.Accel);
+
+				IconSize size = GetLargestSize (id);
+				bool icon = (size != IconSize.Invalid);
+
+				if (icon && label != null)
+					typeLabel.Text = "Icon and Item";
+				else if (icon)
+					typeLabel.Text = "Icon Only";
+				else if (label != null)
+					typeLabel.Text = "Item Only";
+				else
+					typeLabel.Text = "???????";
+
+				if (name != null)
+					nameLabel.Text = name;
+				else
+					nameLabel.Text = "";
+
+				idLabel.Text = id;
+
+				if (label != null)
+					accelLabel.TextWithMnemonic = label + " " + accel;
+				else
+					accelLabel.Text = "";
+
+				if (icon)
+					iconImage.SetFromStock (id, size);
+				else
+					iconImage.Pixbuf = null;
+			} else {
+				typeLabel.Text = "No selected item";
+				nameLabel.Text = "";
+				idLabel.Text = "";
+				accelLabel.Text = "";
+				iconImage.Pixbuf = null;
 			}
 		}
-		
-  		private void WindowDelete (object o, DeleteEventArgs args)
+
+		// Finds the largest size at which the given image stock id is
+		// available. This would not be useful for a normal application
+
+		private IconSize GetLargestSize (string stockId)
 		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			IconSet set = IconFactory.LookupDefault (stockId);
+			if (set == null)
+				return IconSize.Invalid;
+
+			IconSize[] sizes = set.Sizes;
+			IconSize bestSize = IconSize.Invalid;
+			int bestPixels = 0;
+
+			foreach (IconSize size in sizes) {
+				int width, height;
+				Gtk.Icon.SizeLookup (size, out width, out height);
+				if (width * height > bestPixels) {
+					bestSize = size;
+					bestPixels = width * height;
+				}
+			}
+
+			return bestSize;
+		}
+
+		protected override bool OnDeleteEvent (Gdk.Event evt)
+		{
+			Destroy ();
+			return true;
 		}
 	}
 }
-

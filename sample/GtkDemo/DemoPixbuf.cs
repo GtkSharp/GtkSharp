@@ -1,11 +1,3 @@
-// DemoPixbuf.cs: Pixbuf demonstration
-//
-// Gtk# port of pixbuf demo in gtk-demo app.
-//
-// Author: Yves Kurz <yves@magnific.ch>
-//
-// <c> 2003 Yves Kurz
-
 /* Pixbufs
  *
  * A Pixbuf represents an image, normally in RGB or RGBA format.
@@ -24,8 +16,9 @@ using Gdk;
 using Gtk;
 
 using System;
+using System.Runtime.InteropServices; // for Marshal.Copy
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("Pixbuf", "DemoPixbuf.cs")]
 	public class DemoPixbuf : Gtk.Window
@@ -33,8 +26,8 @@ namespace GtkDemo
 		const int FrameDelay = 50;
 		const int CycleLen = 60;
 		const string BackgroundName = "background.jpg";
-		
-		string [] ImageNames = {
+
+		static string[] ImageNames = {
 			"apple-red.png",
 			"gnome-applets.png",
 			"gnome-calendar.png",
@@ -44,33 +37,36 @@ namespace GtkDemo
 			"gnome-gsame.png",
 			"gnu-keys.png"
 		};
-		
+
+		// background image
+		static Pixbuf background;
+		static int backWidth, backHeight;
+
+		// images
+		static Pixbuf[] images;
+
 		// current frame
 		Pixbuf frame;
 		int frameNum;
-	
-		// background image
-		Pixbuf background;
-		int backWidth, backHeight;
-
-		// images
-		Pixbuf[] images;
 
 		// drawing area
 		DrawingArea drawingArea;
 
-		// Loads the images for the demo 
-		void LoadPixbuf ()
+		uint timeoutId;
+
+		static DemoPixbuf ()
 		{
+			// Load the images for the demo
+
 			background = Gdk.Pixbuf.LoadFromResource (BackgroundName);
 
 			backWidth = background.Width;
 			backHeight = background.Height;
 
 			images = new Pixbuf[ImageNames.Length];
-		
+
 			int i = 0;
-			foreach (string im in ImageNames) 
+			foreach (string im in ImageNames)
 				images[i++] = Gdk.Pixbuf.LoadFromResource (im);
 		}
 
@@ -78,17 +74,22 @@ namespace GtkDemo
 		void Expose (object o, ExposeEventArgs args)
 		{
 			Widget widget = (Widget) o;
+			Gdk.Rectangle area = args.Event.Area;
+			byte[] pixels;
+			int rowstride;
 
-			frame.RenderToDrawableAlpha(
-					widget.GdkWindow,
-					0, 0,
-					0, 0,
-					backWidth, backHeight,
-					Gdk.PixbufAlphaMode.Full, 8,
-					RgbDither.Normal,
-					100, 100);
+			rowstride = frame.Rowstride;
+			pixels = new byte[(frame.Height - area.Y) * rowstride];
+			Marshal.Copy (frame.Pixels, pixels, rowstride * area.Y + area.X * 3, pixels.Length);
+
+			widget.GdkWindow.DrawRgbImageDithalign (widget.Style.BlackGC,
+								area.X, area.Y, area.Width, area.Height,
+								Gdk.RgbDither.Normal,
+								pixels, rowstride,
+								area.X, area.Y);
+			args.RetVal = true;
 		}
-	
+
 		// timeout handler to regenerate the frame
 		bool timeout ()
 		{
@@ -102,101 +103,74 @@ namespace GtkDemo
 			double radius = Math.Min (xmid, ymid) / 2;
 
 			for (int i = 0; i < images.Length; i++) {
-				double ang = 2 * Math.PI * i / images.Length - f * 2 *
-					Math.PI;
+				double ang = 2 * Math.PI * (double) i / images.Length - f * 2 * Math.PI;
 
 				int iw = images[i].Width;
 				int ih = images[i].Height;
 
-				double r = radius + (radius / 3) * Math.Sin (f * 2 * 
-					Math.PI);
+				double r = radius + (radius / 3) * Math.Sin (f * 2 * Math.PI);
 
 				int xpos = (int) Math.Floor (xmid + r * Math.Cos (ang) -
-					iw / 2 + 0.5);
+							     iw / 2.0 + 0.5);
 				int ypos = (int) Math.Floor (ymid + r * Math.Sin (ang) -
-					ih / 2 + 0.5);
-			
-				double k = (i % 2 == 1) ? Math.Sin (f * 2 * Math.PI) : 
+							     ih / 2.0 + 0.5);
+
+				double k = (i % 2 == 1) ? Math.Sin (f * 2 * Math.PI) :
 					Math.Cos (f * 2 * Math.PI);
 				k = 2 * k * k;
 				k = Math.Max (0.25, k);
 
-				Rectangle r1;  /*, r2, dest*/
+				Rectangle r1, r2, dest;
 
-				r1 = new Rectangle (xpos, ypos,(int) (iw * k),
-					(int) (ih * k));
-
-	/* FIXME: Why is that code not working (in the original gtk-demo it works
-
+				r1 = new Rectangle (xpos, ypos, (int) (iw * k), (int) (ih * k));
 				r2 = new Rectangle (0, 0, backWidth, backHeight);
 
-				dest = new Rectangle (0, 0, 0, 0);
-				r1.Intersect (r2, dest);
-
-				images[i].Composite (frame, dest.x, dest.y, dest.width,
-					dest.height, xpos, ypos, k, k,
-					InterpType.Nearest, (int) ((i % 2 == 1)
-					? Math.Max (127, Math.Abs (255 * Math.Sin (f *
-						2 * Math.PI)))
-					: Math.Max (127, Math.Abs (255 * Math.Cos (f *
-						2 * Math.PI)))));
-	*/
-				images[i].Composite (frame, r1.X, r1.Y, r1.Width,
-					r1.Height, xpos, ypos, k, k,
-					InterpType.Nearest, (int) ((i % 2 == 1)
-					? Math.Max (127, Math.Abs (255 * Math.Sin (f *
-						2 * Math.PI)))
-					: Math.Max (127, Math.Abs (255 * Math.Cos (f *
-						2 * Math.PI)))));
+				dest = Rectangle.Intersect (r1, r2);
+				if (!dest.IsEmpty) {
+					images[i].Composite (frame, dest.X, dest.Y,
+							     dest.Width, dest.Height,
+							     xpos, ypos, k, k,
+							     InterpType.Nearest,
+							     (int) ((i % 2 == 1) ?
+								    Math.Max (127, Math.Abs (255 * Math.Sin (f * 2 * Math.PI))) :
+								    Math.Max (127, Math.Abs (255 * Math.Cos (f * 2 * Math.PI)))));
+				}
 			}
 
 			drawingArea.QueueDraw ();
 			frameNum++;
-		
+
 			return true;
 		}
 
-		public DemoPixbuf () : base ("Gdk Pixbuf Demo")
+		public DemoPixbuf () : base ("Pixbufs")
 		{
-			this.DeleteEvent += new DeleteEventHandler (OnWindowDelete);
+			Resizable = false;
+			SetSizeRequest (backWidth, backHeight);
 
-			try
-			{
-				LoadPixbuf ();
-			} catch (Exception e)
-			{
-				using (MessageDialog md = new MessageDialog (this,
-						DialogFlags.DestroyWithParent,
-						MessageType.Error,
-						ButtonsType.Close,
-						"Error: \n" + e.Message)) {
-					md.Run ();
-					md.Hide ();
-				}
-
-				throw;
-			}
-
-			frame = new Pixbuf (Colorspace.Rgb, true, 8, backWidth, 
-					backHeight);
+			frame = new Pixbuf (Colorspace.Rgb, false, 8, backWidth, backHeight);
 
 			drawingArea = new DrawingArea ();
 			drawingArea.ExposeEvent += new ExposeEventHandler (Expose);
 
 			Add (drawingArea);
-			GLib.Timeout.Add (FrameDelay, new GLib.TimeoutHandler(timeout)); 
+			timeoutId = GLib.Timeout.Add (FrameDelay, new GLib.TimeoutHandler(timeout));
 
-			this.SetDefaultSize (backWidth, backHeight);
-	//		this.Resizable = false;
 			ShowAll ();
 		}
 
-		void OnWindowDelete (object obj, DeleteEventArgs args)
+		protected override void OnDestroyed ()
 		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			if (timeoutId != 0) {
+				GLib.Source.Remove (timeoutId);
+				timeoutId = 0;
+			}
+		}
+
+		protected override bool OnDeleteEvent (Gdk.Event evt)
+		{
+			Destroy ();
+			return true;
 		}
 	}
 }
-

@@ -1,10 +1,3 @@
-//
-// DemoColorSelection.cs, port of colorsel.c from gtk-demo
-//
-// Author: Daniel Kornhauser <dkor@alum.mit.edu>
-//
-// Copyright (C) 2003, Ximian Inc.
-
 /* Color Selector
  *
  * GtkColorSelection lets the user choose a color. GtkColorSelectionDialog is
@@ -16,7 +9,7 @@ using System;
 using Gdk;
 using Gtk;
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("Color Selection", "DemoColorSelection.cs")]
 	public class DemoColorSelection : Gtk.Window
@@ -26,11 +19,10 @@ namespace GtkDemo
 
 		public DemoColorSelection () : base ("Color Selection")
 		{
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			this.BorderWidth = 8;
+			BorderWidth = 8;
 			VBox vbox = new VBox (false,8);
 			vbox.BorderWidth = 8;
-			this.Add (vbox);
+			Add (vbox);
 
 			// Create the color swatch area
 			Frame frame = new Frame ();
@@ -52,17 +44,16 @@ namespace GtkDemo
 			alignment.Add (button);
 			vbox.PackStart (alignment);
 
-			this.ShowAll ();
-		}			
-		
-		private void WindowDelete (object o, DeleteEventArgs args)
-		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			ShowAll ();
 		}
-		
-		// Expose callback for the drawing area		
+
+		protected override bool OnDeleteEvent (Gdk.Event evt)
+		{
+			Destroy ();
+			return true;
+		}
+
+		// Expose callback for the drawing area
 		private void ExposeEventCallback (object o, ExposeEventArgs args)
 		{
 			EventExpose eventExpose = args.Event;
@@ -70,22 +61,21 @@ namespace GtkDemo
  			Rectangle area = eventExpose.Area;
 
 			window.DrawRectangle (drawingArea.Style.BackgroundGC (StateType.Normal),
-					true,
-					area.X, area.Y,
-					area.Width, area.Height);
+					      true,
+					      area.X, area.Y,
+					      area.Width, area.Height);
 			args.RetVal = true;
 		}
-		
+
 		private void ChangeColorCallback (object o, EventArgs args)
 		{
 			using (ColorSelectionDialog colorSelectionDialog = new ColorSelectionDialog ("Changing color")) {
 				colorSelectionDialog.TransientFor = this;
 				colorSelectionDialog.ColorSelection.PreviousColor = color;
 				colorSelectionDialog.ColorSelection.CurrentColor = color;
-				colorSelectionDialog.ColorSelection.HasPalette = true;			
+				colorSelectionDialog.ColorSelection.HasPalette = true;
 
-				if (colorSelectionDialog.Run () == (int) ResponseType.Ok)
-				{
+				if (colorSelectionDialog.Run () == (int) ResponseType.Ok) {
 					Gdk.Color selected = colorSelectionDialog.ColorSelection.CurrentColor;
 					drawingArea.ModifyBg (StateType.Normal, selected);
 				}

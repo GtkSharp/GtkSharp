@@ -6,7 +6,7 @@ namespace GtkDemo
 	public class DemoAttribute : Attribute
 	{
 		string label, filename, parent;
-	
+
 		public DemoAttribute (string label, string filename) : this (label, filename, null)
 		{
 		}
@@ -27,9 +27,7 @@ namespace GtkDemo
 		}
 
 		public string Parent {
-			get {
-				return parent;
-			}
+			get { return parent; }
 		}
 	}
 }

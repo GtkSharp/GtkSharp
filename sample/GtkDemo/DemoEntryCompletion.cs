@@ -7,32 +7,35 @@
 using System;
 using Gtk;
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("Entry Completion", "DemoEntryCompletion.cs")]
 	public class DemoEntryCompletion : Dialog
 	{
 		public DemoEntryCompletion () : base ("Demo Entry Completion", null, DialogFlags.DestroyWithParent)
 		{
-			this.BorderWidth = 10;
-			this.Resizable = false;
+			Resizable = false;
+
+			VBox vbox = new VBox (false, 5);
+			vbox.BorderWidth = 5;
+			this.VBox.PackStart (vbox, true, true, 0);
 
 			Label label = new Label ("Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
 			label.UseMarkup = true;
-			this.VBox.PackStart (label, false, true, 0);
+			vbox.PackStart (label, false, true, 0);
 
 			Entry entry = new Entry ();
+			vbox.PackStart (entry, false, true, 0);
+
 			entry.Completion = new EntryCompletion ();
 			entry.Completion.Model = CreateCompletionModel ();
 			entry.Completion.TextColumn = 0;
-			this.VBox.PackStart (entry, false, true, 0);
 
-			this.AddButton (Stock.Close, ResponseType.Close);
+			AddButton (Stock.Close, ResponseType.Close);
 
-			this.ShowAll ();
-			this.Run ();
-			this.Hide ();
-			this.Destroy ();
+			ShowAll ();
+			Run ();
+			Destroy ();
 		}
 
 		TreeModel CreateCompletionModel ()
@@ -47,4 +50,3 @@ namespace GtkDemo
 		}
 	}
 }
-

@@ -1,11 +1,4 @@
-//
-// DemoListItem.cs, port of tree_store.c from gtk-demo
-//
-// Author: Daniel Kornhauser <dkor@alum.mit.edu>
-//
-// Copyright (C) 2003, Ximian Inc.
-
-/* List View/List Store
+/* Tree View/List Store
  *
  * The Gtk.ListStore is used to store data in tree form, to be
  * used later on by a Gtk.ListView to display it. This demo builds
@@ -19,7 +12,7 @@ using System.Collections;
 
 using Gtk;
 
-namespace GtkDemo 
+namespace GtkDemo
 {
 	[Demo ("List Store", "DemoListStore.cs", "Tree View")]
 	public class DemoListStore : Gtk.Window
@@ -28,40 +21,40 @@ namespace GtkDemo
 
 		public DemoListStore () : base ("ListStore Demo")
 		{
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
+			BorderWidth = 8;
 
 			VBox vbox = new VBox (false, 8);
-			vbox.BorderWidth = 8;
-			this.Add (vbox);
+			Add (vbox);
 
-			vbox.PackStart (new Label ("This is the bug list (note: not based on real data, it would be nice to have a nice ODBC interface to bugzilla or so, though)."), false, false, 0);
+			Label label = new Label ("This is the bug list (note: not based on real data, it would be nice to have a nice ODBC interface to bugzilla or so, though).");
+			vbox.PackStart (label, false, false, 0);
 
-			ScrolledWindow scrolledWindow = new ScrolledWindow ();
-			scrolledWindow.ShadowType = ShadowType.EtchedIn;
-			scrolledWindow.SetPolicy (PolicyType.Automatic, PolicyType.Automatic);
-			vbox.PackStart (scrolledWindow, true, true, 0);
-                        // create model 
-			CreateModel ();
+			ScrolledWindow sw = new ScrolledWindow ();
+			sw.ShadowType = ShadowType.EtchedIn;
+			sw.SetPolicy (PolicyType.Automatic, PolicyType.Automatic);
+			vbox.PackStart (sw, true, true, 0);
+
+                        // create model
+			store = CreateModel ();
 
 			// create tree view
 			TreeView treeView = new TreeView (store);
 			treeView.RulesHint = true;
-			treeView.SearchColumn = (int) ColumnNumber.Description;
-			AddColumns (treeView);
-			scrolledWindow.Add (treeView);
+			treeView.SearchColumn = (int) Column.Description;
+			sw.Add (treeView);
 
-			// finish & show 
-			this.SetDefaultSize (650, 400);
-			this.ShowAll ();
+			AddColumns (treeView);
+
+			// finish & show
+			SetDefaultSize (280, 250);
+			ShowAll ();
 		}
 
-		private void ItemToggled (object o, ToggledArgs args)
+		private void FixedToggled (object o, ToggledArgs args)
 		{
 			Gtk.TreeIter iter;
-			if (store.GetIterFromString (out iter, args.Path))
-			{
+			if (store.GetIterFromString (out iter, args.Path)) {
 				bool val = (bool) store.GetValue (iter, 0);
-				Console.WriteLine ("toggled {0} with value {1}", args.Path, val);
 				store.SetValue (iter, 0, !val);
 			}
 		}
@@ -70,64 +63,62 @@ namespace GtkDemo
 		{
 			// column for fixed toggles
 			CellRendererToggle rendererToggle = new CellRendererToggle ();
-			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
-			TreeViewColumn column =  new TreeViewColumn ("Fixed", rendererToggle, "active", 0);
-			rendererToggle.Active = true;
-			rendererToggle.Activatable = true;
-			rendererToggle.Visible = true;
-			// set this column to a fixed sizing (of 50 pixels) 
+			rendererToggle.Toggled += new ToggledHandler (FixedToggled);
+			TreeViewColumn column =  new TreeViewColumn ("Fixed?", rendererToggle, "active", Column.Fixed);
+
+			// set this column to a fixed sizing (of 50 pixels)
 			column.Sizing = TreeViewColumnSizing.Fixed;
 			column.FixedWidth = 50;
-			treeView.AppendColumn (column);			
-			// column for bug numbers 
+			treeView.AppendColumn (column);
+
+			// column for bug numbers
 			CellRendererText rendererText = new CellRendererText ();
-			column = new TreeViewColumn ("Bug number", rendererText, "text", ColumnNumber.Number);
-			column.SortColumnId = (int) ColumnNumber.Number;
-			treeView.AppendColumn (column);			
+			column = new TreeViewColumn ("Bug number", rendererText, "text", Column.Number);
+			column.SortColumnId = (int) Column.Number;
+			treeView.AppendColumn (column);
+
 			// column for severities
 			rendererText = new CellRendererText ();
-			column = new TreeViewColumn ("Severity", rendererText, "text", ColumnNumber.Severity);
-			column.SortColumnId = (int) ColumnNumber.Severity;
-			treeView.AppendColumn(column);				
+			column = new TreeViewColumn ("Severity", rendererText, "text", Column.Severity);
+			column.SortColumnId = (int) Column.Severity;
+			treeView.AppendColumn(column);
+
 			// column for description
 			rendererText = new CellRendererText ();
-			column = new TreeViewColumn ("Description", rendererText, "text", ColumnNumber.Description);
-			column.SortColumnId = (int) ColumnNumber.Description;
-			treeView.AppendColumn (column);				
+			column = new TreeViewColumn ("Description", rendererText, "text", Column.Description);
+			column.SortColumnId = (int) Column.Description;
+			treeView.AppendColumn (column);
 		}
 
-		private void WindowDelete (object o, DeleteEventArgs args)
+		protected override bool OnDeleteEvent (Gdk.Event evt)
 		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			Destroy ();
+			return true;
 		}
 
-		private void CreateModel ()
+		private ListStore CreateModel ()
 		{
-			store = new ListStore (
-				typeof(bool),
-				typeof(int),
-				typeof(string),
-				typeof(string));
+			ListStore store = new ListStore (typeof(bool),
+							 typeof(int),
+							 typeof(string),
+							 typeof(string));
 
 			foreach (Bug bug in bugs) {
-				store.AppendValues(bug.Fixed,
+				store.AppendValues (bug.Fixed,
 						    bug.Number,
 						    bug.Severity,
 						    bug.Description);
 			}
 
+			return store;
 		}
 
-		// FIXME: Instead of using number convert enum to array using
-		// GetValues and then get the Length Property
-		public enum ColumnNumber
+		private enum Column
 		{
 			Fixed,
 			Number,
 			Severity,
-			Description,
+			Description
 		}
 
 		private static Bug[] bugs =
@@ -146,7 +137,7 @@ namespace GtkDemo
 			new Bug ( true,  50939, "Normal",     "Add shift clicking to GtkTextView" ),
 			new Bug ( false, 6112,  "Enhancement","netscape-like collapsable toolbars" ),
 			new Bug ( false, 1,     "Normal",     "First bug :=)" )
-		};	
+		};
 	}
 
 	public class Bug
@@ -155,9 +146,9 @@ namespace GtkDemo
 		public int Number;
 		public string Severity;
 		public string Description;
-		
+
 		public Bug (bool status, int number, string severity,
-			string description)
+			    string description)
 		{
 			Fixed = status;
 			Number = number;

@@ -1,12 +1,3 @@
-//
-// DemoImages.cs - port of images.c gtk-demo
-//
-// Author: Daniel Kornhauser <dkor@alum.mit.edu>
-//
-// Copyright (C) 2003, Ximian Inc.
-// 
-
-
 /* Images
  *
  * Gtk.Image is used to display an image; the image can be in a number of formats.
@@ -36,19 +27,18 @@ namespace GtkDemo
 		private VBox vbox;
 		BinaryReader imageStream;
 
-		public DemoImages () : base ("images")
+		public DemoImages () : base ("Images")
 		{
-			this.DeleteEvent += new DeleteEventHandler (WindowDelete);
-			this.BorderWidth = 8;
-		
+			BorderWidth = 8;
+
 			vbox = new VBox (false, 8);
 			vbox.BorderWidth = 8;
-			this.Add (vbox);
-			
+			Add (vbox);
+
 			Gtk.Label label = new Gtk.Label ("<u>Image loaded from a file</u>");
 			label.UseMarkup = true;
 			vbox.PackStart (label, false, false, 0);
-			
+
 			Gtk.Frame frame = new Gtk.Frame ();
 			frame.ShadowType = ShadowType.In;
 
@@ -57,14 +47,14 @@ namespace GtkDemo
 			Alignment alignment = new Alignment (0.5f, 0.5f, 0f, 0f);
 			alignment.Add (frame);
 			vbox.PackStart (alignment, false, false, 0);
-			
-			Gtk.Image image = new Gtk.Image (Gdk.Pixbuf.LoadFromResource ("gtk-logo-rgb.gif"));
-			frame.Add (image);			
+
+			Gtk.Image image = Gtk.Image.LoadFromResource ("gtk-logo-rgb.gif");
+			frame.Add (image);
 
 			// Animation
 			label = new Gtk.Label ("<u>Animation loaded from a file</u>");
 			label.UseMarkup = true;
-			vbox.PackStart (label);
+			vbox.PackStart (label, false, false, 0);
 
 			frame = new Gtk.Frame ();
 			frame.ShadowType = ShadowType.In;
@@ -73,13 +63,13 @@ namespace GtkDemo
 			alignment.Add (frame);
 			vbox.PackStart (alignment, false, false, 0);
 
-			image = new Gtk.Image (Gdk.Pixbuf.LoadFromResource ("floppybuddy.gif"));
+			image = Gtk.Image.LoadFromResource ("floppybuddy.gif");
 			frame.Add (image);
 
 			// Progressive
 			label = new Gtk.Label ("<u>Progressive image loading</u>");
 			label.UseMarkup = true;
-			vbox.PackStart (label);
+			vbox.PackStart (label, false, false, 0);
 
 			frame = new Gtk.Frame ();
 			frame.ShadowType = ShadowType.In;
@@ -90,54 +80,74 @@ namespace GtkDemo
 
 			// Create an empty image for now; the progressive loader
 			// will create the pixbuf and fill it in.
-			//
 
 			progressiveImage = new Gtk.Image ();
 			frame.Add (progressiveImage);
 
 			StartProgressiveLoading ();
-			
+
 			// Sensitivity control
 			Gtk.ToggleButton button = new Gtk.ToggleButton ("_Insensitive");
 			vbox.PackStart (button, false, false, 0);
 			button.Toggled += new EventHandler (ToggleSensitivity);
 
-			this.ShowAll ();
+			ShowAll ();
 		}
-		
-  		private void WindowDelete (object o, DeleteEventArgs args)
+
+		protected override void OnDestroyed ()
 		{
-			this.Hide ();
-			this.Destroy ();
-			args.RetVal = true;
+			if (timeout_id != 0) {
+				GLib.Source.Remove (timeout_id);
+				timeout_id = 0;
+			}
+
+			if (pixbufLoader != null) {
+				pixbufLoader.Close ();
+				pixbufLoader = null;
+			}
+
+			if (imageStream != null) {
+				imageStream.Close ();
+				imageStream = null;
+			}
+		}
+
+  		protected override bool OnDeleteEvent (Gdk.Event evt)
+		{
+			Destroy ();
+			return true;
 		}
 
   		private void ToggleSensitivity (object o, EventArgs args)
 		{
+			ToggleButton toggle = o as ToggleButton;
+
 			Widget[] children = vbox.Children;
-			foreach (Widget widget in children)
+			foreach (Widget widget in children) {
 				// don't disable our toggle
-				if (widget.GetType () !=  o.GetType () )
-					widget.Sensitive =  !widget.Sensitive;
+				if (widget != toggle)
+					widget.Sensitive = !toggle.Active;
+			}
 		}
 
 		private uint timeout_id;
 		private void StartProgressiveLoading ()
 		{
-		/* This is obviously totally contrived (we slow down loading
-		 * on purpose to show how incremental loading works).
-		 * The real purpose of incremental loading is the case where
-		 * you are reading data from a slow source such as the network.
-		 * The timeout simply simulates a slow data source by inserting
-		 * pauses in the reading process.
-		 */
+			// This is obviously totally contrived (we slow down loading
+			// on purpose to show how incremental loading works).
+			// The real purpose of incremental loading is the case where
+			// you are reading data from a slow source such as the network.
+			// The timeout simply simulates a slow data source by inserting
+			// pauses in the reading process.
+
 			timeout_id = GLib.Timeout.Add (150, new GLib.TimeoutHandler (ProgressiveTimeout));
 		}
 
 		Gdk.PixbufLoader pixbufLoader;
 
-		// TODO: Decide if we want to perform crazy error handling
-		private  bool ProgressiveTimeout ()
+		// TODO: Decide if we want to perform the same crazy error handling
+		// gtk-demo does
+		private bool ProgressiveTimeout ()
 		{
 			if (imageStream == null) {
 				Stream stream = Assembly.GetExecutingAssembly ().GetManifestResourceStream ("alphatest.png");
@@ -151,21 +161,20 @@ namespace GtkDemo
 				byte[] bytes = imageStream.ReadBytes (256);
 				pixbufLoader.Write (bytes, (uint) bytes.Length);
 				return true; // leave the timeout active
-			}
-			else {
+			} else {
 				imageStream.Close ();
 				return false; // removes the timeout
 			}
 		}
 
-		void ProgressivePreparedCallback (object obj, EventArgs args) 
+		void ProgressivePreparedCallback (object obj, EventArgs args)
 		{
 			Gdk.Pixbuf pixbuf = pixbufLoader.Pixbuf;
 			pixbuf.Fill (0xaaaaaaff);
 			progressiveImage.FromPixbuf = pixbuf;
 		}
 
-		void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
+		void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args)
 		{
 			progressiveImage.QueueDraw ();
 		}
