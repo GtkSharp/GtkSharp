@@ -8,10 +8,11 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Encapsulates an adjustable bounded value.</summary>
-    <remarks><para>The Adjustment object represents a value with an associated <see cref="P:Gtk.Adjustment.Lower"/> and <see cref="P:Gtk.Adjustment.Upper"/> bound, together with a <see cref="P:Gtk.Adjustment.StepIncrement"/>, <see cref="P:Gtk.Adjustment.PageIncrement"/>, and a <see cref="P:Gtk.Adjustment.PageSize"/>.</para>
-    <para>The Adjustment object does not update the value itself. Instead it is left up to the owner of the Adjustment to control the value. The owner of the Adjustment typically calls the <see cref="M:Gtk.Adjustment.ValueChanged"/> and <see cref="M:Gtk.Adjustment.Changed"/> methods after changing the value or its bounds, respectively. This results in the emission of the <see cref="F:Gtk.Adjustment.ValueChanged"/> or <see cref="F:Gtk.Adjustment.Changed"/> events respectively.</para>
-     <para>An Adjustment is used within several widgets, including <see cref="T:Gtk.SpinButton"/>, <see cref="T:Gtk.Viewport"/>, and <see cref="T:Gtk.Range"/> (which is a base class for <see cref="T:Gtk.HScrollbar"/>, <see cref="T:Gtk.VScrollbar"/>, <see cref="T:Gtk.HScale"/>, and <see cref="T:Gtk.VScale"/>).</para>
-</remarks>
+    <remarks>
+      <para>The Adjustment object represents a value with an associated <see cref="P:Gtk.Adjustment.Lower" /> and <see cref="P:Gtk.Adjustment.Upper" /> bound, together with a <see cref="P:Gtk.Adjustment.StepIncrement" />, <see cref="P:Gtk.Adjustment.PageIncrement" />, and a <see cref="P:Gtk.Adjustment.PageSize" />.</para>
+      <para>The Adjustment object does not update the value itself. Instead it is left up to the owner of the Adjustment to control the value. The owner of the Adjustment typically calls the <see cref="M:Gtk.Adjustment.ValueChanged" /> and <see cref="M:Gtk.Adjustment.Changed" /> methods after changing the value or its bounds, respectively. This results in the emission of the <see cref="F:Gtk.Adjustment.ValueChanged" /> or <see cref="F:Gtk.Adjustment.Changed" /> events respectively.</para>
+      <para>An Adjustment is used within several widgets, including <see cref="T:Gtk.SpinButton" />, <see cref="T:Gtk.Viewport" />, and <see cref="T:Gtk.Range" /> (which is a base class for <see cref="T:Gtk.HScrollbar" />, <see cref="T:Gtk.VScrollbar" />, <see cref="T:Gtk.HScale" />, and <see cref="T:Gtk.VScale" />).</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
@@ -45,8 +46,10 @@
         <param name="upper">The maximum value.</param>
         <param name="step_increment">The increment to use to make minor changes to the value.</param>
         <param name="page_increment">The increment to use to make major changes to the value.</param>
-        <param name="page_size">The page size. In a <see cref="T:Gtk.Scrollbar"/> this is the size of the area that is currently visible.</param>
-        <remarks><para>When updating the values and properties of an Adjustment, remember to call the <see cref="M:Gtk.Adjustment.Changed"/> and/or <see cref="M:Gtk.Adjustment.ValueChanged"/> methods to ensure the correct events are fired.</para></remarks>
+        <param name="page_size">The page size. In a <see cref="T:Gtk.Scrollbar" /> this is the size of the area that is currently visible.</param>
+        <remarks>
+          <para>When updating the values and properties of an Adjustment, remember to call the <see cref="M:Gtk.Adjustment.Changed" /> and/or <see cref="M:Gtk.Adjustment.ValueChanged" /> methods to ensure the correct events are fired.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeValue">
@@ -57,8 +60,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Fires the <see cref="F:Gtk.Adjustment.ValueChanged"/> event.</summary>
-        <remarks><para>This method should be called manually after changing properties to notify all listening objects that the Adjustment's <see cref="P:Gtk.Adjustment.Value"/> has changed.</para></remarks>
+        <summary>Fires the <see cref="F:Gtk.Adjustment.ValueChanged" /> event.</summary>
+        <remarks>
+          <para>This method should be called manually after changing properties to notify all listening objects that the Adjustment's <see cref="P:Gtk.Adjustment.Value" /> has changed.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Change">
@@ -69,8 +74,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Fires the <see cref="F:Gtk.Adjustment.Changed"/> event.</summary>
-        <remarks><para>This method should be called manually after changing properties to notify all listening objects that one or more of the Adjustment's bounds have changed.</para></remarks>
+        <summary>Fires the <see cref="F:Gtk.Adjustment.Changed" /> event.</summary>
+        <remarks>
+          <para>This method should be called manually after changing properties to notify all listening objects that one or more of the Adjustment's bounds have changed.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClampPage">
@@ -84,10 +91,13 @@
         <Parameter Name="upper" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Updates the <see cref="P:Gtk.Adjustment.Value"/> to ensure that the range between lower and upper is in the current page (i.e. between value and value + page_size).</summary>
+        <summary>Updates the <see cref="P:Gtk.Adjustment.Value" /> to ensure that the range between lower and upper is in the current page (i.e. between value and value + page_size).</summary>
         <param name="lower">To be added: an object of type 'double'</param>
         <param name="upper">To be added: an object of type 'double'</param>
-        <remarks><para>To be added: The docs for this function are very confusing, and not 100% in sync with the code of gtk+ 2.0.5.</para><para>If the range is larger than the page size, then only the start of it will be in the current page. The <see cref="F:Gtk.Adjustment.ValueChanged"/> event will be fired if the value changes as a result of this method.</para></remarks>
+        <remarks>
+          <para>To be added: The docs for this function are very confusing, and not 100% in sync with the code of gtk+ 2.0.5.</para>
+          <para>If the range is larger than the page size, then only the start of it will be in the current page. The <see cref="F:Gtk.Adjustment.ValueChanged" /> event will be fired if the value changes as a result of this method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -137,9 +147,9 @@
         <param name="upper">The maximum value.</param>
         <param name="step_increment">The increment to use to make minor changes to the value.</param>
         <param name="page_increment">The increment to use to make major changes to the value.</param>
-        <param name="page_size">The page size. In a <see cref="T:Gtk.Scrollbar"/> this is the size of the area that is currently visible.</param>
+        <param name="page_size">The page size. In a <see cref="T:Gtk.Scrollbar" /> this is the size of the area that is currently visible.</param>
         <returns>A new Adjustment</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -149,8 +159,8 @@
       <Parameters />
       <Docs>
         <summary>Internal constructor</summary>
-        <returns></returns>
-        <remarks></remarks>
+        <returns />
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -178,7 +188,9 @@
         <summary>Manage the size of a 'page'.</summary>
         <param name="value">The new page size.</param>
         <returns>The current size of pages in this Adjustment.</returns>
-        <remarks><para>In a <see cref="T:Gtk.Scrollbar"/> this is the size of the area which is currently visible.</para></remarks>
+        <remarks>
+          <para>In a <see cref="T:Gtk.Scrollbar" /> this is the size of the area which is currently visible.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PageIncrement">
@@ -194,7 +206,9 @@
         <summary>Manage the increment used to make major changes to the value.</summary>
         <param name="value">A new value for the PageIncrement</param>
         <returns>The current PageIncrement.</returns>
-        <remarks><para>The usefulness of this value is entirely dependent upon the context in whic hthe Adjustment is used.</para></remarks>
+        <remarks>
+          <para>The usefulness of this value is entirely dependent upon the context in whic hthe Adjustment is used.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StepIncrement">
@@ -206,7 +220,9 @@
       <Docs>
         <summary>The increment to use to make minor changes to the value.</summary>
         <returns>The current value used for step increments.</returns>
-        <remarks><para>In a <see cref="T:Gtk.Scrollbar"/> this increment is used when the mouse is clicked on the arrows at the top and bottom of the <see cref="T:Gtk.Scrollbar"/>, to scroll by a small amount.</para></remarks>
+        <remarks>
+          <para>In a <see cref="T:Gtk.Scrollbar" /> this increment is used when the mouse is clicked on the arrows at the top and bottom of the <see cref="T:Gtk.Scrollbar" />, to scroll by a small amount.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Upper">
@@ -218,7 +234,7 @@
       <Docs>
         <summary>Retrieve the upper bound of this Adjustment.</summary>
         <returns>The maximum possible value that is currently allowed.</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Lower">
@@ -230,7 +246,7 @@
       <Docs>
         <summary>Retrieve the lower bound of this Adjustment.</summary>
         <returns>The minimum possible value that is currently allowed.</returns>
-        <remarks></remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -243,10 +259,12 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Manage the current <paramref name="value"/>.</summary>
+        <summary>Manage the current <paramref name="value" />.</summary>
         <param name="value">A new value for this Adjustment.</param>
         <returns>The current value of this adjustment.</returns>
-        <remarks><para>If you set this property, you should manually call <see cref="M:Gtk.Adjustment.ChangeValue"/> so that all listening objects are notified of the change.</para></remarks>
+        <remarks>
+          <para>If you set this property, you should manually call <see cref="M:Gtk.Adjustment.ChangeValue" /> so that all listening objects are notified of the change.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ValueChanged">
@@ -255,8 +273,10 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>This event is fired when <see cref="M:Gtk.Adjustment.ChangeValue"/> is called.</summary>
-        <remarks><para>This event can be handled to be notified of changes to the Adjustment's value. However, this relies on all objects that change the <see cref="P:Gtk.Adjustment.Value"/> calling <see cref="M:Gtk.Adjustment.ChangeValue"/>.</para></remarks>
+        <summary>This event is fired when <see cref="M:Gtk.Adjustment.ChangeValue" /> is called.</summary>
+        <remarks>
+          <para>This event can be handled to be notified of changes to the Adjustment's value. However, this relies on all objects that change the <see cref="P:Gtk.Adjustment.Value" /> calling <see cref="M:Gtk.Adjustment.ChangeValue" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -265,8 +285,10 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>This event is fired when <see cref="M:Gtk.Adjustment.Change"/> is called.</summary>
-        <remarks><para>If the Adjustment's properties change, (such as <see cref="P:Gtk.Adjustment.Upper"/>, <see cref="P:Gtk.Adjustment.Lower"/> etc.), it is up to whichever class changes the values to call <see cref="M:Gtk.Adjustment.Change"/> to ensure this event is fired.</para></remarks>
+        <summary>This event is fired when <see cref="M:Gtk.Adjustment.Change" /> is called.</summary>
+        <remarks>
+          <para>If the Adjustment's properties change, (such as <see cref="P:Gtk.Adjustment.Upper" />, <see cref="P:Gtk.Adjustment.Lower" /> etc.), it is up to whichever class changes the values to call <see cref="M:Gtk.Adjustment.Change" /> to ensure this event is fired.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
