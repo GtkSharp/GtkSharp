@@ -82,7 +82,7 @@ namespace GtkSamples {
 			Application.Init ();
 
 			Window win = new Window ("TreeView demo");
-			win.DeleteEvent += new EventHandler (DeleteCB);
+			win.DeleteEvent += new DeleteEventHandler (DeleteCB);
 			win.DefaultSize = new Size (640,480);
 
 			ScrolledWindow sw = new ScrolledWindow ();
@@ -114,11 +114,10 @@ namespace GtkSamples {
 			Application.Run ();
 		}
 
-		private static void DeleteCB (Object o, EventArgs args)
+		private static void DeleteCB (Object o, DeleteEventArgs args)
 		{
-			SignalArgs sa = (SignalArgs) args;
 			Application.Quit ();
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 	}
 }
