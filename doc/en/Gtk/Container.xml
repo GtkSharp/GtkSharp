@@ -13,29 +13,20 @@
     <summary>Base class for widgets which contain other widgets</summary>
     <remarks>
       <para>
-	    A Gtk# user interface is constructed by nesting widgets inside widgets.
-		<see cref="T:Gtk.Container" /> widgets are the inner nodes in the resulting tree of widgets: they contain other widgets.
-		So, for example, you might have a <see cref="T:Gtk.Window" /> containing a <see cref="T:Gtk.Frame" /> containing a <see cref="T:Gtk.Label" />.
-		If you wanted an image instead of a textual label inside the frame, you might replace the <see cref="T:Gtk.Label" /> widget with a <see cref="T:Gtk.Image" /> widget.
-	  </para>
+      A Gtk# user interface is constructed by nesting widgets inside widgets. <see cref="T:Gtk.Container" /> widgets are the inner nodes in the resulting tree of widgets: they contain other widgets. So, for example, you might have a <see cref="T:Gtk.Window" /> containing a <see cref="T:Gtk.Frame" /> containing a <see cref="T:Gtk.Label" />. If you wanted an image instead of a textual label inside the frame, you might replace the <see cref="T:Gtk.Label" /> widget with a <see cref="T:Gtk.Image" /> widget.
+      </para>
       <para>
-	  	There are two major kinds of <see cref="T:Gtk.Container" /> widgets in Gtk#. Both are subclasses of the abstract <see cref="T:Gtk.Container" /> base class.
-	  </para>
+      There are two major kinds of <see cref="T:Gtk.Container" /> widgets in Gtk#. Both are subclasses of the abstract <see cref="T:Gtk.Container" /> base class.
+      </para>
       <para>
-		The first type of <see cref="T:Gtk.Container" /> widget has a single child widget and derives from <see cref="T:Gtk.Bin" />.
-		These containers are decorators, which add some kind of functionality to the child.
-		For example, a <see cref="T:Gtk.Button" /> makes its child into a clickable button;
-		a <see cref="T:Gtk.Frame" /> draws a frame around its child and a <see cref="T:Gtk.Window" /> places its child widget inside a top-level <see cref="T:Gtk.Window" />.
-	  </para>
+      The first type of <see cref="T:Gtk.Container" /> widget has a single child widget and derives from <see cref="T:Gtk.Bin" />. These containers are decorators, which add some kind of functionality to the child. For example, a <see cref="T:Gtk.Button" /> makes its child into a clickable button; a <see cref="T:Gtk.Frame" /> draws a frame around its child and a <see cref="T:Gtk.Window" /> places its child widget inside a top-level <see cref="T:Gtk.Window" />.
+      </para>
       <para>
-		The second type of <see cref="T:Gtk.Container" /> can have more than one child; its purpose is to manage layout.
-		This means that these containers assign sizes and positions to their children.
-		For example, a <see cref="T:Gtk.HBox" /> arranges its children in a horizontal row, and a <see cref="T:Gtk.Table" /> arranges the widgets it contains in a two-dimensional grid.
-	  </para>
+      The second type of <see cref="T:Gtk.Container" /> can have more than one child; its purpose is to manage layout. This means that these containers assign sizes and positions to their children. For example, a <see cref="T:Gtk.HBox" /> arranges its children in a horizontal row, and a <see cref="T:Gtk.Table" /> arranges the widgets it contains in a two-dimensional grid.
+      </para>
       <para>
-		To fulfill its task, a layout <see cref="T:Gtk.Container" /> must negotiate the size requirements with its parent and its children.
-		This negotiation is carried out in two phases, size requisition and size allocation.
-	  </para>
+      To fulfill its task, a layout <see cref="T:Gtk.Container" /> must negotiate the size requirements with its parent and its children. This negotiation is carried out in two phases, size requisition and size allocation.
+      </para>
     </remarks>
   </Docs>
   <Base>
@@ -69,25 +60,6 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetFocusChain" Deprecated="true">
-      <MemberSignature Language="C#" Value="public void SetFocusChain (GLib.List focusable_widgets);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="focusable_widgets" Type="GLib.List" />
-      </Parameters>
-      <Docs>
-        <summary>Sets a focus chain, overriding the one computed automatically by Gtk#.</summary>
-        <param name="focusable_widgets">an object of type <see cref="T:GLib.List" /></param>
-        <remarks>
-          In principle each <see cref="T:Gtk.Widget" /> in the chain should be a descendant of the <see cref="T:Gtk.Container" />,
-		  but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed.
-		  The necessary checks are done when the focus chain is actually traversed.
-		</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ChildGetValist">
       <MemberSignature Language="C#" Value="public void ChildGetValist (Gtk.Widget child, string first_property_name, IntPtr var_args);" />
       <MemberType>Method</MemberType>
@@ -107,25 +79,6 @@
         <remarks>Gets the values of one or more child properties for child and container.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetFocusChain" Deprecated="true">
-      <MemberSignature Language="C#" Value="public bool GetFocusChain (GLib.List focusable_widgets);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="focusable_widgets" Type="GLib.List" />
-      </Parameters>
-      <Docs>
-        <summary>Retrieves the focus chain of the container</summary>
-        <param name="focusable_widgets">an object of type <see cref="T:GLib.List" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
-        <remarks>
-		  If no focus chain has been explicitly set, Gtk# computes the focus chain based on the positions of the children.
-		  In that case, Gtk# stores <see langword="null" /> in focusable_widgets and returns <see langword="false" />.
-		</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Add">
       <MemberSignature Language="C#" Value="public void Add (Gtk.Widget widget);" />
       <MemberType>Method</MemberType>
@@ -139,11 +92,10 @@
         <summary>Adds a <see cref="T:Gtk.Widget" /> to the <see cref="T:Gtk.Container" />.</summary>
         <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>
-		  Typically used for simple containers such as <see cref="T:Gtk.Window" />, <see cref="T:Gtk.Frame" />, or <see cref="T:Gtk.Button" />;
-		  for more complicated layout containers such as <see cref="T:Gtk.Box" /> or <see cref="T:Gtk.Table" />, this function will pick default packing parameters that may not be correct.
-		  So consider functions such as <see cref="M:Gtk.Box.PackStart(Gtk.Widget,System.Boolean,System.Boolean,System.UInt32)" /> and <see cref="M:Gtk.Table.Attach(Gtk.Widget,System.UInt32,System.UInt32,System.UInt32,System.UInt32)" /> as an alternative to <see cref="M:Gtk.Container.Add(Gtk.Widget)" /> in those cases.
-		  A <see cref="T:Gtk.Widget" /> may be added to only one <see cref="T:Gtk.Container" /> at a time; you can not place the same widget inside two different containers.
-		</remarks>
+          <para>
+	  Typically used for simple containers such as <see cref="T:Gtk.Window" />, <see cref="T:Gtk.Frame" />, or <see cref="T:Gtk.Button" />; for more complicated layout containers such as <see cref="T:Gtk.Box" /> or <see cref="T:Gtk.Table" />, this function will pick default packing parameters that may not be correct. So consider functions such as <see cref="M:Gtk.Box.Packstart" /> and <see cref="M:Gtk.Table.Attach" /> as an alternative to <see cref="M:Gtk.Container.Add" /> in those cases. A <see cref="T:Gtk.Widget" /> may be added to only one <see cref="T:Gtk.Container" /> at a time; you can not place the same widget inside two different containers.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -159,7 +111,8 @@
         <summary>Removes a <see cref="T:Gtk.Widget" /> from the <see cref="T:Gtk.Container" />.</summary>
         <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
         <remarks>
-          <see cref="T:Gtk.Widget" /> must be inside <see cref="T:Gtk.Container" />.</remarks>
+          <see cref="T:Gtk.Widget" /> must be inside <see cref="T:Gtk.Container" />.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnsetFocusChain">
@@ -240,16 +193,14 @@
         <param name="evnt">an object of type <see cref="T:Gdk.EventExpose" /></param>
         <remarks>
           <para>
-		    When a <see cref="T:Gtk.Container" /> receives an expose event, it must send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Window" />s.
-			This function provides a convenient way of doing this.
-			A <see cref="T:Gtk.Container" />, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)" /> once for each child, passing in the event the <see cref="T:Gtk.Container" /> received.
-		  </para>
+	  When a <see cref="T:Gtk.Container" /> receives an expose event, it must send synthetic expose events to all children that do not have their own <see cref="T:Gdk.Window" />s. This function provides a convenient way of doing this. A <see cref="T:Gtk.Container" />, when it receives an expose event, calls <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)" /> once for each child, passing in the event the <see cref="T:Gtk.Container" /> received.
+	  </para>
           <para>
             <see cref="M:Gtk.Container.PropagateExpose(Gtk.Widget,Gdk.EventExpose)" /> takes care of deciding whether an expose event needs to be sent to the child, intersecting the event's area with the child area, and sending the event.
-		  </para>
+	  </para>
           <para>
-		    In most cases, a <see cref="T:Gtk.Container" /> can either simply inherit the expose implementation from <see cref="T:Gtk.Container" />, or do some drawing and then chain to the expose implementation from <see cref="T:Gtk.Container" />.
-		  </para>
+	  In most cases, a <see cref="T:Gtk.Container" /> can either simply inherit the expose implementation from <see cref="T:Gtk.Container" />, or do some drawing and then chain to the expose implementation from <see cref="T:Gtk.Container" />.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -323,18 +274,6 @@
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
         <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Children" Deprecated="true">
-      <MemberSignature Language="C#" Value="public GLib.List Children { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <returns>an object of type <see cref="T:GLib.List" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -671,9 +610,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the the container's non-internal children.</summary>
+        <returns>An array of non-internal children.</returns>
+        <remarks>
+          <para>
+	  See <see cref="M:Gtk.Container.Forall" /> for details on what constitutes an "internal" child.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FocusChain">
@@ -684,9 +627,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains a focus chain of the container, overriding the one computed automatically by Gtk#.</summary>
+        <returns>An array of <paramref name="widgets" />.</returns>
+        <remarks>
+          <para>
+	  In principle each <see cref="T:Gtk.Widget" /> in the chain should be a descendant of the <see cref="T:Gtk.Container" />, but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed. The necessary checks are done when the focus chain is actually traversed.	   
+	  </para>
+          <para>
+	  If no focus chain has been explicitly set, gtk# computes the focus chain based on the positions of the children. in that case, gtk# stores <see langword="null" /> in focusable_widgets and returns <see langword="false" />. 
+	  </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

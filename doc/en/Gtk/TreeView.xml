@@ -376,25 +376,6 @@ public class TreeViewDemo {
         <remarks>This is useful when you want to focus the attention of the user on a particular row. If <paramref name="focus_column" /> is not <see langword="null" />, then focus is given to the column specified by it. Additionally, if <paramref name="focus_column" /> is specified, and <paramref name="start_editing" /> is <see langword="true" />, then editing should be started in the specified cell. This function is often followed by <see cref="M:Gtk.Widget.GrabFocus()" /> in order to give keyboard focus to the widget. Please note that editing can only happen when the widget is realized.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetBackgroundArea" Deprecated="true">
-      <MemberSignature Language="C#" Value="public void GetBackgroundArea (Gtk.TreePath path, Gtk.TreeViewColumn column, Gdk.Rectangle rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="column" Type="Gtk.TreeViewColumn" />
-        <Parameter Name="rect" Type="Gdk.Rectangle" />
-      </Parameters>
-      <Docs>
-        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <param name="rect">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>If <paramref name="path" /> is <see langword="null" />, or points to a node not found in the tree, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The returned rectangle is equivalent to the <paramref name="background_area" /> passed to <see cref="M:Gtk.CellRenderer.Render()" />. These background areas tile to cover the entire tree window (except for the area used for header buttons). Contrast with the <paramref name="cell_area" />, returned by <see cref="M:Gtk.TreeView.GetCellArea()" />, which returns only the cell itself, excluding surrounding borders and the tree expander area.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GetVisibleRect">
       <MemberSignature Language="C#" Value="public void GetVisibleRect (Gdk.Rectangle visible_rect);" />
       <MemberType>Method</MemberType>
@@ -670,25 +651,6 @@ public class TreeViewDemo {
         <remarks>Only works after the <see cref="T:Gtk.TreeView" /> has been realized.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetCellArea" Deprecated="true">
-      <MemberSignature Language="C#" Value="public void GetCellArea (Gtk.TreePath path, Gtk.TreeViewColumn column, out Gdk.Rectangle rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="path" Type="Gtk.TreePath" />
-        <Parameter Name="column" Type="Gtk.TreeViewColumn" />
-        <Parameter Name="rect" Type="Gdk.Rectangle&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
-        <param name="path">an object of type <see cref="T:Gtk.TreePath" /></param>
-        <param name="column">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <param name="rect">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <remarks>If <paramref name="path" /> is <see langword="null" />, or points to a path not currently displayed, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The sum of all cell rects does not cover the entire tree; there are extra pixels in between rows, for example. This function is only valid if <see cref="T:Gtk.TreeView" /> is realized.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
       <MemberType>Method</MemberType>
@@ -780,18 +742,6 @@ public class TreeViewDemo {
       <Docs>
         <summary>To be added</summary>
         <returns>an object of type <see cref="T:Gdk.Window" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Columns" Deprecated="true">
-      <MemberSignature Language="C#" Value="public GLib.List Columns { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <returns>an object of type <see cref="T:GLib.List" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -1976,11 +1926,15 @@ public class TreeViewDemo {
         <Parameter Name="column" Type="Gtk.TreeViewColumn" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
         <param name="path">a <see cref="T:Gtk.TreePath" /></param>
         <param name="column">a <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>a <see cref="T:Gdk.Rectangle" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+	  If <paramref name="path" /> is <see langword="null" />, or points to a path not currently displayed, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The sum of all cell rects does not cover the entire tree; there are extra pixels in between rows, for example. This function is only valid if <see cref="T:Gtk.TreeView" /> is realized.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBackgroundArea">
@@ -1994,11 +1948,15 @@ public class TreeViewDemo {
         <Parameter Name="column" Type="Gtk.TreeViewColumn" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fills the bounding rectangle in tree window coordinates for the cell at the row specified by <paramref name="path" /> and the column specified by <paramref name="column" />.</summary>
         <param name="path">a <see cref="T:Gtk.TreePath" /></param>
         <param name="column">a <see cref="T:Gtk.TreeViewColumn" /></param>
         <returns>a <see cref="T:Gdk.Rectangle" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+	  If <paramref name="path" /> is <see langword="null" />, or points to a node not found in the tree, the y and height fields of the rectangle will be filled with 0. If <paramref name="column" /> is <see langword="null" />, the x and width fields will be filled with 0. The returned rectangle is equivalent to the <paramref name="background_area" /> passed to <see cref="M:Gtk.CellRenderer.Render()" />. These background areas tile to cover the entire tree window (except for the area used for header buttons). Contrast with the <paramref name="cell_area" />, returned by <see cref="M:Gtk.TreeView.GetCellArea()" />, which returns only the cell itself, excluding surrounding borders and the tree expander area.
+	  </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

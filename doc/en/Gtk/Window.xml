@@ -32,23 +32,6 @@
   </Interfaces>
   <Attributes />
   <Members>
-    <Member MemberName="ListToplevels" Deprecated="true">
-      <MemberSignature Language="C#" Value="public static GLib.List ListToplevels ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns a list of all existing toplevel windows.</summary>
-        <returns>List of toplevel widgets.</returns>
-        <remarks>
-          <para>
-	  The widgets in the list are not individually referenced. If you want to iterate through the list and perform actions involving callbacks that might destroy the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, <see langword="null" />) first, and then unref all the widgets afterwards.
-         </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="BeginMoveDrag">
       <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
       <MemberType>Method</MemberType>
@@ -785,25 +768,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="DefaultIconList" Deprecated="true">
-      <MemberSignature Language="C#" Value="public static GLib.List DefaultIconList { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the icon list to be used as fallback for windows that haven't had <see cref="M:Gtk.Window.IconList" /> called on them to set up a window-specific icon list.</summary>
-        <param name="value">A list of <see cref="T:Gdk.Pixbuf" />.</param>
-        <returns>A copy of  default icon list.</returns>
-        <remarks>
-          <para>
-	  This method allows you to set up the icon for all windows in your app at once. 
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Default">
       <MemberSignature Language="C#" Value="public Gtk.Widget Default { set; };" />
       <MemberType>Property</MemberType>
@@ -941,39 +905,6 @@
 	 </para>
           <para>
 	  Note: when retrieving the current focused <paramref name="widget" /> is the <paramref name="widget" /> that would have the focus if the toplevel focused; if the toplevel <paramref name="window" /> is not focused then <see cref="P:Gtk.Widget.HasFocus" /> will not be <see langword="true" /> for the <paramref name="widget" />.
-	 </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IconList" Deprecated="true">
-      <MemberSignature Language="C#" Value="public GLib.List IconList { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.List</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>Sets or obtains the list of icons representing a <see cref="T:Gtk.Window" />.</summary>
-        <param name="value">A list of <see cref="T:Gdk.Pixbuf" />.</param>
-        <returns>Copy of window's icon list.</returns>
-        <remarks>
-          <para>
-	  The icon is used when <paramref name="window" /> is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
-
-
-	 </para>
-          <para>
-            <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
-	 </para>
-          <para>
-	  Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them).
-	 </para>
-          <para>
-	  Note that transient windows (those who have been set transient for another <paramref name="window" /> using <see cref="P:Gtk.Window.TransientFor" /> will inherit their icon from their transient parent. So there's no need to explicity set the icon on transient windows.
-	 </para>
-          <para>
-	  When retrieving the list is copied, but the reference count on each won't be incremented.
 	 </para>
         </remarks>
       </Docs>
@@ -1786,9 +1717,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains the icon list to be used as fallback for windows that haven't had <see cref="M:Gtk.Window.IconList" /> called on them to set up a window-specific icon list.</summary>
+        <param name="value">An array of <see cref="T:Gdk.Pixbuf" />.</param>
+        <returns>An array of icons list.</returns>
+        <remarks>
+          <para>
+	  This method allows you to set up the icon for all windows in your app at once. 
+	 </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IconList">
@@ -1799,9 +1735,26 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains the list of icons representing a <see cref="T:Gtk.Window" />.</summary>
+        <param name="value">An array of <see cref="T:Gdk.Pixbuf" />s.</param>
+        <returns>An array of <see cref="T:Gdk.Pixbuf[]" />s.</returns>
+        <remarks>
+          <para>
+	  The icon is used when <paramref name="window" /> is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
+	 </para>
+          <para>
+            <see cref="M:Gtk.Window.IconList" /> allows you to pass the same icon in several hand-drawn sizes. The list should contain the natural sizes your icon is available in; that is, don't scale the image before passing it to GTK#. Scaling is postponed unitl the last minute, when the desired final size is known, to allow best quality. By passing several sizes, you may improve the final image quality of the icon, by reducing or eliminating automatic image scaling.
+	 </para>
+          <para>
+	  Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images (64x64, 128x128) if you have them).
+	 </para>
+          <para>
+	  Note that transient windows (those who have been set transient for another <paramref name="window" /> using <see cref="P:Gtk.Window.TransientFor" /> will inherit their icon from their transient parent. So there's no need to explicity set the icon on transient windows.
+	 </para>
+          <para>
+	  When retrieving the list is copied, but the reference count on each won't be incremented.
+	 </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ListToplevels">
@@ -1812,9 +1765,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Window[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns a list of all existing toplevel windows.</summary>
+        <returns>An array of toplevel widgets.</returns>
+        <remarks>
+          <para>
+	  The widgets in the list are not individually referenced.
+         </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
