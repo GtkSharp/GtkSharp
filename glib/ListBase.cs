@@ -23,12 +23,14 @@ namespace GLib {
 		private IntPtr list_ptr = IntPtr.Zero;
 		private int length = -1;
 		private bool managed = false;
-		private Type element_type = null;
+		protected Type element_type = null;
 
 		abstract internal IntPtr GetData (IntPtr current);
 		abstract internal IntPtr Next (IntPtr current);
 		abstract internal int Length (IntPtr list);
 		abstract internal void Free (IntPtr list);
+		abstract internal IntPtr Append (IntPtr current, IntPtr raw);
+		abstract internal IntPtr Prepend (IntPtr current, IntPtr raw);
 
 		private ListBase ()
 		{
@@ -79,6 +81,16 @@ namespace GLib {
 					Dispose ();
 				list_ptr = value;
 			}
+		}
+
+		public void Append (IntPtr raw)
+		{
+			list_ptr = Append (list_ptr, raw);
+		}
+
+		public void Prepend (IntPtr raw)
+		{
+			list_ptr = Prepend (list_ptr, raw);
 		}
 
 		// ICollection

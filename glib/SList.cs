@@ -60,6 +60,22 @@ namespace GLib {
 				g_slist_free (list);
 		}
 
+		[DllImport("glib-2.0")]
+		static extern IntPtr g_slist_append (IntPtr l, IntPtr raw);
+
+		internal override IntPtr Append (IntPtr list, IntPtr raw)
+		{
+			return g_slist_append (list, raw);
+		}
+
+		[DllImport("glib-2.0")]
+		static extern IntPtr g_slist_prepend (IntPtr l, IntPtr raw);
+
+		internal override IntPtr Prepend (IntPtr list, IntPtr raw)
+		{
+			return g_slist_prepend (list, raw);
+		}
+
 		public SList (IntPtr raw) : base (raw)
 		{
 		}
