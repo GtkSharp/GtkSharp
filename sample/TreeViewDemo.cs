@@ -128,7 +128,7 @@ namespace GtkSamples {
 			return false;
 		}
 
-		private static void DeleteCB (Object o, DeleteEventArgs args)
+		private static void DeleteCB (System.Object o, DeleteEventArgs args)
 		{
 			Application.Quit ();
 			args.RetVal = true;
