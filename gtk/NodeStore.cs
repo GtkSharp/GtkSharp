@@ -278,7 +278,7 @@ namespace Gtk {
 
 		public NodeStore (Type node_type) : base (IntPtr.Zero)
 		{
-			Raw = gtksharp_node_store_new ();
+			CreateNativeObject (new string [0], new GLib.Value [0]);
 			ScanType (node_type);
 			BuildTreeModelIface ();
 		}
