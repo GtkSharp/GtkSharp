@@ -152,6 +152,8 @@ namespace GtkSharp.Generation {
 				// FIXME: better way of handling this?
 				if (c_type == "GSList") {
 					return "new GLib.SList (" + val + ")";
+				} else if (c_type == "GdkEvent") {
+					return "new Gdk.Event (" + val + ")";
 				} else {
 					return "(" + GetCSType (c_type) + ") GLib.Object.GetObject(" + val + ")";
 				}

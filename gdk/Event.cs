@@ -11,7 +11,7 @@ namespace Gdk {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	public class Event : GLib.Object {
+	public class Event : GLib.Boxed {
 
 		[DllImport("gtksharpglue")]
 		static extern EventType gtksharp_gdk_event_get_event_type (IntPtr evt);
