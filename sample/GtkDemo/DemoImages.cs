@@ -37,6 +37,7 @@ namespace GtkDemo
 	{
 		private static Gtk.Image progressiveImage;
 		private VBox vbox;
+		BinaryReader imageStream;
 
 		public DemoImages () : base ("images")
 		{
@@ -133,20 +134,30 @@ namespace GtkDemo
 		 * The timeout simply simulates a slow data source by inserting
 		 * pauses in the reading process.
 		 */
-			timeout_id = GLib.Timeout.Add(150, new GLib.TimeoutHandler(ProgressiveTimeout));
+			timeout_id = GLib.Timeout.Add (150, new GLib.TimeoutHandler (ProgressiveTimeout));
 		}
 
 		static Gdk.PixbufLoader pixbufLoader;
 
-		// TODO: Finish this callback
-		// Decide if we want to perform crazy error handling
-		private  bool ProgressiveTimeout()
+		// TODO: Decide if we want to perform crazy error handling
+		private  bool ProgressiveTimeout ()
 		{
-			Gtk.Image imageStream = new Gtk.Image ("images/alphatest.png");
-			pixbufLoader = new Gdk.PixbufLoader ();
-			pixbufLoader.AreaPrepared += new EventHandler (ProgressivePreparedCallback);
-			pixbufLoader.AreaUpdated += new AreaUpdatedHandler (ProgressiveUpdatedCallback);
-			return true;
+			if (imageStream == null) {
+				imageStream = new BinaryReader (new StreamReader ("images/alphatest.png").BaseStream);
+				pixbufLoader = new Gdk.PixbufLoader ();
+				pixbufLoader.AreaPrepared += new EventHandler (ProgressivePreparedCallback);
+				pixbufLoader.AreaUpdated += new AreaUpdatedHandler (ProgressiveUpdatedCallback);
+			}
+
+			if (imageStream.PeekChar () != -1) {
+				byte[] bytes = imageStream.ReadBytes (256);
+				pixbufLoader.Write (bytes, (uint) bytes.Length);
+				return true; // leave the timeout active
+			}
+			else {
+				imageStream.Close ();
+				return false; // removes the timeout
+			}
 		}
 
 		static void ProgressivePreparedCallback (object obj, EventArgs args) 
@@ -158,7 +169,7 @@ namespace GtkDemo
 
 		static void ProgressiveUpdatedCallback (object obj, AreaUpdatedArgs args) 
 		{
-
+			progressiveImage.QueueDraw ();
 		}
 	}
 }

@@ -30,7 +30,10 @@ namespace GtkDemo
 			list.AppendColumn ("Name", new CellRendererText (), "text", 1);
 			list.AppendColumn ("Label", new CellRendererText (), "text", 2);
 			list.AppendColumn ("Accel", new CellRendererText (), "text", 3);			
+			list.AppendColumn ("ID", new CellRendererText (), "text", 4);			
 			list.Model = CreateStore ();
+
+			list.Selection.Changed += new EventHandler (OnSelectionChanged);
 			scrolledWindow.Add (list);
 			
 			Frame frame = new Frame ();
@@ -41,16 +44,37 @@ namespace GtkDemo
 
 		private ListStore CreateStore ()
 		{
-			// image, name, label, accel
-			ListStore store = new Gtk.ListStore (typeof (Gdk.Pixbuf), typeof(string), typeof(string), typeof(string));
-			
-			for (int i =1; i < 10; i++)
+			// image, name, label, accel, id
+			ListStore store = new Gtk.ListStore (typeof (Gdk.Pixbuf), typeof(string), typeof(string), typeof(string), typeof (string));
+
+			string[] stock_ids = Gtk.Stock.ListIds ();		
+
+			foreach (string s in stock_ids)
 			{
-			Image icon = new Image ("images/MonoIcon.png");
-			store.AppendValues (icon, "Gtk.Stock.Ok", "Ok", "_Ok");
+				Gtk.StockItem si;
+				/* Gtk.Stock.Lookup is not being generated
+				if (Gtk.Stock.Lookup (out si)) {
+					Image icon = new Image (s, IconSize.Menu);
+					store.AppendValues (si.Pixbuf, si.Label, "Ok", "_Ok", si.StockId);
+				}
+				else {
+					Console.WriteLine ("StockItem {0} could not be found.", s);
+				}
+				*/
 			}
 			
 			return store;
+		}
+
+		void OnSelectionChanged (object o, EventArgs args)
+		{
+			TreeIter iter;
+			TreeModel model;
+
+			if (((TreeSelection) o).GetSelected (out model, out iter))
+			{
+				// update the frame
+			}
 		}
 		
   		private void WindowDelete (object o, DeleteEventArgs args)
