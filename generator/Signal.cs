@@ -192,6 +192,7 @@ namespace GtkSharp.Generation {
 		{
 			SymbolTable table = SymbolTable.Table;
 
+			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + DelegateName + " (" + CallbackSig + ");");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + CallbackName + " (" + CallbackSig + ")");
@@ -321,6 +322,7 @@ namespace GtkSharp.Generation {
 		{
 			ImportSignature isig = new ImportSignature (parms, container_type.NS);
 			ManagedCallString call = new ManagedCallString (parms);
+			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + isig.ToString () + ");\n");
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
