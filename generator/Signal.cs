@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001-2002 Mike Kestner
+// (c) 2001-2003 Mike Kestner, (c) 2003 Novell, Inc.
 
 namespace GtkSharp.Generation {
 
@@ -96,6 +96,26 @@ namespace GtkSharp.Generation {
                         }
                 }
 
+		private bool IsVoid {
+			get {
+				return ReturnType == "void";
+			}
+		}
+
+		private string MarshalReturnType {
+			get {
+				string ctype = elem ["return-type"].GetAttribute("type");
+				return SymbolTable.Table.GetMarshalType (ctype);
+			}
+		}
+
+		private string ReturnType {
+			get {
+				string ctype = elem ["return-type"].GetAttribute("type");
+				return SymbolTable.Table.GetCSType (ctype);
+			}
+		}
+
 		public void GenEventHandler (GenerationInfo gen_info)
 		{
 			if (EventHandlerName == "EventHandler")
@@ -128,6 +148,38 @@ namespace GtkSharp.Generation {
 			sw.Close ();
 		}
 
+		private void GenVirtualMethod (StreamWriter sw)
+		{
+			VMSignature vmsig = new VMSignature (parms);
+			sw.WriteLine ("\t\tprotected virtual {0} {1} ({2})", ReturnType, "On" + Name, vmsig.ToString ());
+			sw.WriteLine ("\t\t{");
+			if (!IsVoid)
+				sw.WriteLine ("\t\t\tGLib.Value ret = new GLib.Value ();");
+
+			sw.WriteLine ("\t\t\tIntPtr[] args = new IntPtr [" + parms.Count + "];");
+			sw.WriteLine ("\t\t\targs [0] = Handle;");
+			sw.WriteLine ("\t\t\tGLib.Value[] vals = new GLib.Value [" + (parms.Count - 1) + "];");
+			string cleanup = "";
+			for (int i = 1; i < parms.Count; i++) {
+				if (parms [i].PassAs == "out") {
+					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value ();");
+					cleanup += "\t\t\t" + parms [i].Name + " = (" + parms [i].CSType + ") vals [" + (i - 1) + "];\n";
+				} else if (parms [i].IsLength && parms [i - 1].IsString)
+					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
+				else
+					sw.WriteLine ("\t\t\tvals [" + (i - 1) + "] = new GLib.Value (" + parms [i].Name + ");");
+
+				sw.WriteLine ("\t\t\targs [" + i + "] = vals [" + (i - 1) + "].Handle;");
+			}
+
+			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (args, " + (IsVoid ? "IntPtr.Zero " : "ret.Handle ") + ");");
+			if (cleanup != "")
+				sw.WriteLine (cleanup);
+			if (!IsVoid)
+				sw.WriteLine ("\t\t\treturn (" + ReturnType + ") ret;");
+			sw.WriteLine ("\t\t}\n");
+		}
+
 		public void Generate (GenerationInfo gen_info, ClassBase implementor)
 		{
 			StreamWriter sw = gen_info.Writer;
@@ -140,6 +192,7 @@ namespace GtkSharp.Generation {
 				ns = implementor.NS;
 
 			sig_handler.Generate (ns, gen_info);
+			GenVirtualMethod (sw);
 			string qual_marsh = ns + "Sharp." + sig_handler.Name;
 
 			sw.WriteLine("\t\t[GLib.Signal("+ cname + ")]");
