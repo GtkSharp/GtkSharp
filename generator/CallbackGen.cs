@@ -17,44 +17,44 @@ namespace GtkSharp.Generation {
 		public CallbackGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
 			if (elem ["parameters"] != null)
-				parms = new Parameters (elem ["parameters"]);
+				parms = new Parameters (elem ["parameters"], NS);
 		}
 
-		public String MarshalType {
+		public string MarshalType {
 			get
 			{
 				return NS + "Sharp." + Name + "Native";
 			}
 		}
 
-		public String MarshalReturnType {
+		public string MarshalReturnType {
 			get
 			{
 				return MarshalType;
 			}
 		}
 
-		public String CallByName (String var_name)
+		public string CallByName (string var_name)
 		{
 			return var_name + ".NativeDelegate";
 		}
 
-		public String FromNative(String var)
+		public string FromNative(string var)
 		{
 			return var;
 		}
 
-		public String FromNativeReturn(String var)
+		public string FromNativeReturn(string var)
 		{
 			return FromNative (var);
 		}
 
-		public virtual String ToNativeReturn(String var)
+		public virtual string ToNativeReturn(string var)
 		{
 			return CallByName (var);
 		}
 		
-		public void GenWrapper (string ns)
+		public string GenWrapper (string ns)
 		{
 			char sep = Path.DirectorySeparatorChar;
 			string dir = ".." + sep + ns.ToLower() + sep + "generated";
@@ -99,7 +99,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tinternal delegate " + m_ret + " " + wrapper + "(" + import_sig + ");");
 			sw.WriteLine ();
 			
-			sw.WriteLine ("\tpublic class " + Name + "Wrapper : GLib.DelegateWrapper {");
+			sw.WriteLine ("\tinternal class " + Name + "Wrapper : GLib.DelegateWrapper {");
 			if (m_ret != "void") {
 				if (table.IsEnum (rettype)) {
 					sw.WriteLine ("\t\tstatic int _dummy;");
@@ -174,7 +174,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 
-			sw.WriteLine ("\t\tpublic {0} NativeDelegate;", wrapper);
+			sw.WriteLine ("\t\tinternal {0} NativeDelegate;", wrapper);
 			sw.WriteLine ("\t\tprotected {0} _managed;", NS + "." + Name);
 			sw.WriteLine ();
 
@@ -189,6 +189,7 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("#endregion");
 			CloseWriter (sw);
+			return ns + "Sharp." + Name + "Wrapper";
 		}
 		
 		public void Generate ()

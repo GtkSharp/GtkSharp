@@ -31,7 +31,7 @@ namespace GtkSharp.Generation {
 		{
 			this.elem = elem;
 			if (elem["parameters"] != null)
-				parms = new Parameters (elem["parameters"]);
+				parms = new Parameters (elem["parameters"], container_type.NS);
 			this.container_type = container_type;
 			this.name = elem.GetAttribute("name");
 			if (name == "GetType")

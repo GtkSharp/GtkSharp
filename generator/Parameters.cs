@@ -41,6 +41,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public IGeneratable Generatable {
+			get {
+				return SymbolTable.Table[CType];
+			}
+		}
+
 		public bool IsLength {
 			get {
 				return (CSType == "int" && 
@@ -70,6 +76,18 @@ namespace GtkSharp.Generation {
 		public string Name {
 			get {
 				return MangleName (elem.GetAttribute("name"));
+			}
+		}
+
+		public bool NullOk {
+			get {
+				return elem.HasAttribute ("null_ok");
+			}
+		}
+
+		public string PassAs {
+			get {
+				return elem.GetAttribute ("pass_as");
 			}
 		}
 
@@ -118,6 +136,7 @@ namespace GtkSharp.Generation {
 	public class Parameters  {
 		
 		private XmlElement elem;
+		private string impl_ns;
 		private string import_sig;
 		private string call_string;
 		private string signature;
@@ -125,9 +144,10 @@ namespace GtkSharp.Generation {
 		private bool hide_data;
 		private bool is_static;
 
-		public Parameters (XmlElement elem) {
+		public Parameters (XmlElement elem, string impl_ns) {
 			
 			this.elem = elem;
+			this.impl_ns = impl_ns;
 		}
 
 		public string CallString {
@@ -321,6 +341,8 @@ namespace GtkSharp.Generation {
 					
 					call_string += call_parm;
 				}
+				if (table.IsCallback (type))
+					m_type = impl_ns + "Sharp" + m_type.Substring(m_type.IndexOf("."));
 				import_sig += (m_type + " " + name);
 				prev = curr;
 				i++;
@@ -339,89 +361,50 @@ namespace GtkSharp.Generation {
 
 		public void Initialize (StreamWriter sw, bool is_get, bool is_set, string indent)
 		{
-			string name = "";
-
-			SymbolTable table = SymbolTable.Table;
-
 			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
+				if (parm.Name != "parameter")
 					continue;
-				}
 
-				XmlElement p_elem = (XmlElement) parm;
-				Parameter p = new Parameter (p_elem);
-
-				string c_type = p.CType;
-				string type = p.CSType;
-
-				if (is_set) {
+				Parameter p = new Parameter ((XmlElement) parm);
+				IGeneratable gen = p.Generatable;
+				string name = p.Name;
+				if (is_set)
 					name = "value";
-				} else {
-					name = p.Name;
-				}
 
-				if (is_get) {
-					sw.WriteLine (indent + "\t\t\t" + type + " " + name + ";");
-				}
+				if (is_get)
+					sw.WriteLine (indent + "\t\t\t" + p.CSType + " " + name + ";");
 
-				if ((is_get || (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out")) && (table.IsObject (c_type) || table.IsOpaque (c_type) || type == "GLib.Value")) {
-					sw.WriteLine(indent + "\t\t\t" + name + " = new " + type + "();");
-				}
+				if ((is_get || p.PassAs == "out") && (gen is ObjectGen || gen is OpaqueGen || p.CSType == "GLib.Value"))
+					sw.WriteLine(indent + "\t\t\t" + name + " = new " + p.CSType + "();");
 
-				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && table.IsEnum (c_type)) {
+				if (p.PassAs == "out" && gen is EnumGen)
 					sw.WriteLine(indent + "\t\t\tint " + name + "_as_int;");
+
+				if (gen is CallbackGen) {
+					CallbackGen cbgen = gen as CallbackGen;
+					string wrapper = cbgen.GenWrapper(impl_ns);
+					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", wrapper, name);
+					sw.Write (indent + "\t\t\t");
+					if (p.NullOk)
+						sw.Write ("if ({0} != null) ", name);
+					sw.WriteLine ("{1}_wrapper = new {0} ({1}, {2});", wrapper, name, is_static ? "null" : "this");
 				}
 			}
 
 			if (ThrowsException)
 				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
-
-			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
-					continue;
-				}
-
-				XmlElement p_elem = (XmlElement) parm;
-				Parameter p = new Parameter (p_elem);
-
-				string c_type = p.CType;
-				string type = p.CSType;
-
-				if (is_set) {
-					name = "value";
-				} else {
-					name = p.Name;
-				}
-
-				if (table.IsCallback (c_type)) {
-					type = type.Replace(".", "Sharp.") + "Wrapper";
-
-					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", type, name);
-					sw.Write (indent + "\t\t\t");
-					if (p_elem.HasAttribute ("null_ok"))
-					{
-						sw.Write ("if ({0} != null) ", name);
-					}
-					sw.WriteLine ("{1}_wrapper = new {0} ({1}, {2});", type, name, is_static ? "null" : "this");
-				}
-			}
 		}
 
 		public void Finish (StreamWriter sw, string indent)
 		{
 			foreach (XmlNode parm in elem.ChildNodes) {
-				if (parm.Name != "parameter") {
+				if (parm.Name != "parameter")
 					continue;
-				}
 				
-				XmlElement p_elem = (XmlElement) parm;
-				Parameter p = new Parameter (p_elem);
-				string c_type = p.CType;
-				string name = p.Name;
-				string type = p.CSType;
+				Parameter p = new Parameter ((XmlElement) parm);
 
-				if (p_elem.HasAttribute("pass_as") && p_elem.GetAttribute ("pass_as") == "out" && SymbolTable.Table.IsEnum (c_type)) {
-					sw.WriteLine(indent + "\t\t\t" + name + " = (" + type + ") " + name + "_as_int;");
+				if (p.PassAs == "out" && p.Generatable is EnumGen) {
+					sw.WriteLine(indent + "\t\t\t" + p.Name + " = (" + p.CSType + ") " + p.Name + "_as_int;");
 				}
 			}
 		}

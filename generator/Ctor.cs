@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 			this.container_type = container_type;
 			XmlElement parms_elem = elem ["parameters"];
 			if (parms_elem != null)
-				parms = new Parameters (parms_elem);
+				parms = new Parameters (parms_elem, container_type.NS);
 			if (elem.HasAttribute ("preferred"))
 				preferred = true;
 		}
