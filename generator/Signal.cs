@@ -249,7 +249,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("event " + EventHandlerQualifiedName + " " + Name + " {");
 			sw.WriteLine("\t\t\tadd {");
 			sw.WriteLine("\t\t\t\tif (value.Method.GetCustomAttributes(typeof(GLib.ConnectBeforeAttribute), false).Length > 0) {");
-			sw.WriteLine("\t\t\t\t\tConsole.WriteLine (\"Connecting before: " + Name + "\");");
 			sw.WriteLine("\t\t\t\t\tif (BeforeHandlers[" + cname + "] == null)");
 			sw.Write("\t\t\t\t\t\tBeforeSignals[" + cname + "] = new " + qual_marsh);
 			sw.Write("(this, Handle, " + cname + ", value, System.Type.GetType(\"" + EventArgsQualifiedName);
