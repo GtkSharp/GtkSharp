@@ -112,11 +112,11 @@ namespace GtkSharp.Generation {
 			GenCtors (gen_info);
 			GenProperties (gen_info);
 			
-			bool has_sigs = (sigs != null);
-			if (!has_sigs) {
+			bool has_sigs = (sigs != null && sigs.Count > 0);
+			if (!has_sigs && interfaces != null) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = table.GetClassGen (iface);
-					if (igen.Signals != null) {
+					if (igen != null && igen.Signals != null) {
 						has_sigs = true;
 						break;
 					}
