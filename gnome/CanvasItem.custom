@@ -13,8 +13,8 @@
 static extern System.IntPtr gnome_canvas_item_new (IntPtr group, int type, IntPtr null_terminator);
 
 public CanvasItem (Gnome.CanvasGroup group, int type)
+	: base (gnome_canvas_item_new (group.Handle, type, IntPtr.Zero))
 {
-	Raw = gnome_canvas_item_new (group.Handle, type, IntPtr.Zero);
 }
 
 [DllImport("gtksharpglue")]
