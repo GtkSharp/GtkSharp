@@ -184,56 +184,6 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetEntriesForKeycode">
-      <MemberSignature Language="C#" Value="public bool GetEntriesForKeycode (uint hardware_keycode, Gdk.KeymapKey keys, out uint keyvals, out int n_entries);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="hardware_keycode" Type="System.UInt32" />
-        <Parameter Name="keys" Type="Gdk.KeymapKey" />
-        <Parameter Name="keyvals" Type="System.UInt32&amp;" RefType="out" />
-        <Parameter Name="n_entries" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Stores in <paramref name="keys" /> a reference to a list of the keys bound to <paramref name="hardware_keycode" />. The nth Gdk.KeymapKey in <paramref name="keys" /> is associated
--        with the nth keyval in <paramref name="keyvals" />. When a keycode is pressed by the user, the keyval from <paramref name="keys" /> is selected.</summary>
-        <param name="hardware_keycode">An object of type <see cref="T:System.UInt32" />, a keyboard code.</param>
-        <param name="keys">An object of type <see cref="T:Gdk.KeymapKey" />, return reference for the list of keys.</param>
-        <param name="keyvals">An object of type <see cref="T:System.UInt32" />, return reference for the list of corresponding keyvals for <paramref name="keys" /></param>
-        <param name="n_entries">An object of type <see cref="T:System.Int32" />, number of values stored in <paramref name="keys" /> and <paramref name="keyvals" />.</param>
-        <returns>An object of type <see cref="T:System.Boolean" />, true if entries were found.</returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEntriesForKeyval">
-      <MemberSignature Language="C#" Value="public bool GetEntriesForKeyval (uint keyval, Gdk.KeymapKey keys, out int n_keys);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="keyval" Type="System.UInt32" />
-        <Parameter Name="keys" Type="Gdk.KeymapKey" />
-        <Parameter Name="n_keys" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a list of keycode/group/level combinations that generate a <paramref name="keyval" />. 
--        The returned list is stored in the <paramref name="keys" /> parameter/reference. 
--        <paramref name="keyval" /> is the final value for the combinations being collected.
--        <paramref name="n_keys" /> is the total number of combinations found and returned in <paramref name="keys" />.
--        Level determining the top/bottom symbol and group determining the left/right symbol. 
--        On US keyboards, shift changes level and there are no groups. Group can determine language mode, for example, Hebrew/English.</summary>
-        <param name="keyval">An object of type <see cref="T:System.UInt32" />, such as GDK_a, GDK_up, GDK_RETURN, etc.</param>
-        <param name="keys">An object of type <see cref="T:Gdk.KeymapKey" />, the list of key sequences.</param>
-        <param name="n_keys">An object of type <see cref="T:System.Int32" />, number of elements returned.</param>
-        <returns>An object of type <see cref="T:System.Boolean" />, returns <see langword="true" /> if keys were found and returned.</returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -294,6 +244,43 @@
         <summary>To be added</summary>
         <returns>a <see cref="T:Gdk.Keymap" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEntriesForKeycode">
+      <MemberSignature Language="C#" Value="public void GetEntriesForKeycode (uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint [] keyvals);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hardware_keycode" Type="System.UInt32" />
+        <Parameter Name="keys" Type="Gdk.KeymapKey[]&amp;" RefType="out" />
+        <Parameter Name="keyvals" Type="System.UInt32[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <summary>Stores in <paramref name="keys" /> a reference to a list of the keys bound to <paramref name="hardware_keycode" />. The nth Gdk.KeymapKey in <paramref name="keys" /> is associated with the nth keyval in <paramref name="keyvals" />. When a keycode is pressed by the user, the keyval from <paramref name="keys" /> is selected.</summary>
+        <param name="hardware_keycode">An object of type <see cref="T:System.UInt32" />, a keyboard code.</param>
+        <param name="keys">An object of type <see cref="T:Gdk.KeymapKey" />, return reference for the list of keys.</param>
+        <param name="keyvals">An object of type <see cref="T:System.UInt32" />, return reference for the list of corresponding keyvals for <paramref name="keys" /></param>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEntriesForKeyval">
+      <MemberSignature Language="C#" Value="public Gdk.KeymapKey[] GetEntriesForKeyval (uint keyval);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.KeymapKey[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyval" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Gets a list of keycode/group/level combinations that generate a <paramref name="keyval" />.</summary>
+        <param name="keyval">An object of type <see cref="T:System.UInt32" />, such as GDK_a, GDK_up, GDK_RETURN, etc.</param>
+        <returns>the list of key sequences.</returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>
