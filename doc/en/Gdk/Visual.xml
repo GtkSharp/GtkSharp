@@ -1,14 +1,61 @@
 <Type Name="Visual" FullName="Gdk.Visual">
-  <TypeSignature Language="C#" Value="public class Visual : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Visual : GLib.Object, IWrapper, IDisposable" Maintainer="miguel" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Attributes />
   </AssemblyInfo>
-  <ThreadSafetyStatement>To be added</ThreadSafetyStatement>
+  <ThreadSafetyStatement>Not thread safe</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Describes a particular video hardware display format.</summary>
+    <remarks>
+      <para>
+	A Gdk.Visual describes a particular video hardware display
+	format. It includes information about the number of bits used
+	for each color, the way the bits are translated into an RGB
+	value for display, and the way the bits are stored in
+	memory. For example, a piece of display hardware might support
+	24-bit color, 16-bit color, or 8-bit color; meaning
+	24/16/8-bit pixel sizes. For a given pixel size, pixels can be
+	in different formats; for example the "red" element of an RGB
+	pixel may be in the top 8 bits of the pixel, or may be in the
+	lower 4 bits.
+      </para>
+      <para>
+	Usually you can avoid thinking about visuals in GTK+. Visuals
+	are useful to interpret the contents of a <see
+	cref="T:Gdk.Image"/>, but you should avoid GdkImage precisely
+	because its contents depend on the display hardware; use <see
+	cref="T:Gdk.Pixbuf"/> instead, for all but the most low-level
+	purposes.  Also, anytime you provide a <see
+	cref="T:Gdk.Colormap"/>, the visual is implied as part of the
+	colormap (<see cref="P:Gdk.Colormap.Visual"/>), so you won't
+	have to provide a visual in addition.
+      </para>
+      <para>
+	There are several standard visuals.  The visual returned by
+	<see cref="P:Gdk.Visual.System"/> is the system's default
+	visual.  <see cref="P:Gdk.Rgb.Visual"/> return the visual most
+	suited to displaying full-color image data. If you use the
+	calls in <see cref="T:Gdk.RGB"/>, you should create your
+	windows using this visual (and the colormap returned by <see
+	cref="P:Gdk.Rgb.Colormap"/>).
+      </para>
+      <para>
+	A number of functions are provided for determining the "best"
+	available visual.  For the purposes of making this
+	determination, higher bit depths are considered better, and
+	for visuals of the same bit depth, <see
+	cref="E:Gdk.VisualType.PseudoColor"/> is preferred at 8bpp,
+	otherwise, the visual types are ranked in the order of
+	(highest to lowest) <see cref="E:Gdk.VisualType.DirectColor"/>
+	<see cref="E:Gdk.VisualType.TrueColor"/>, <see
+	cref="E:Gdk.VisualType.PseudoColor"/>, <see
+	cref="Gdk.VisualType.StaticColor"/>, <see
+	cref="Gdk.VisualType.Grayscale"/>, then
+	<see cref="E:Gdk.VisualType.StaticGray"/>.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -33,10 +80,19 @@
         <Parameter Name="depth" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="depth">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the best visual with depth depth for the default GDK screen.</summary>
+        <param name="depth">A bit depth</param>
+        <returns>Best visual for the given depth.</returns>
+        <remarks>
+	  <para>
+	    Get the best visual with depth depth for the default GDK
+	    screen.  Color visuals and visuals with mutable colormaps
+	    are preferred over grayscale or fixed-colormap visuals.
+	    The return value should not be freed. <see
+	    langword="null"/> may be returned if no visual supports
+	    <paramref name="depth"/>.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="TypeGetType">
@@ -62,10 +118,19 @@
         <Parameter Name="visual_type" Type="Gdk.VisualType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="visual_type">To be added: an object of type 'Gdk.VisualType'</param>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the best visual of the given visual_type for the default GDK screen.</summary>
+        <param name="visual_type">Required visual type.</param>
+        <returns>Best visual of the given type</returns>
+        <remarks>
+	  <para>
+	    Get the best visual of the given <paramref
+	    name="visual_type"/> for the default GDK screen.  Visuals
+	    with higher color depths are considered better. The return
+	    value should not be freed. <see langword="null"/> may be
+	    returned if no visual has type <paramref
+	    name="visual_type"/>.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBestWithBoth">
@@ -79,11 +144,22 @@
         <Parameter Name="visual_type" Type="Gdk.VisualType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="depth">To be added: an object of type 'int'</param>
-        <param name="visual_type">To be added: an object of type 'Gdk.VisualType'</param>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Get the best visual given a visual type and a
+        required depth.</summary>
+        <param name="depth">Required depth.</param>
+        <param name="visual_type">Required visual type.</param>
+        <returns>Best visual of the given type and depth.</returns>
+        <remarks>
+	  <para>
+	    Get the best visual of the given <paramref
+	    name="visual_type"/> at the given <paramref
+	    name="depth"/>for the default GDK screen.  Visuals with
+	    higher color depths are considered better. The return
+	    value should not be freed. <see langword="null"/> may be
+	    returned if no visual that match the type <paramref
+	    name="visual_type"/> and <paramref name="depth"/>.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -106,10 +182,10 @@
         <Parameter Name="gtype" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="gtype">To be added: an object of type 'uint'</param>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Internal constructor</summary>
+        <param name="gtype">GLib type.</param>
+        <returns>A constructed Visual from a type</returns>
+        <remarks>For internal use only.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -156,9 +232,9 @@
         <ReturnType>Gdk.VisualType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.VisualType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Best visual type for the default Gdk screen</summary>
+        <returns>The best visual type available.</returns>
+        <remarks>Return the best available visual type for the default GDK screen.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BestDepth">
@@ -168,9 +244,15 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Best depth for the default Gdk screen.</summary>
+        <returns>The best depth</returns>
+        <remarks>
+	  <para>
+	    Get the best available depth for the default GDK
+	    screen. "Best" means "largest," i.e. 32 preferred over 24
+	    preferred over 8 bits per pixel.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Best">
@@ -180,9 +262,9 @@
         <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>Visual with the most available colors for the default GDK screen.</summary>
+        <returns>The best visual.</returns>
+        <remarks>Get the visual with the most available colors for the default GDK screen. </remarks>
       </Docs>
     </Member>
     <Member MemberName="System">
@@ -192,9 +274,11 @@
         <ReturnType>Gdk.Visual</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Visual'</returns>
-        <remarks>To be added</remarks>
+        <summary>The system'sdefault visual for the default GDK
+        screen.</summary> <returns>The system visual</returns>
+        <remarks>Get the system'sdefault visual for the default GDK
+        screen. This is the visual for the root window of the
+        display.</remarks>
       </Docs>
     </Member>
   </Members>
