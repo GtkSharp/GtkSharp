@@ -1,0 +1,177 @@
+<Type Name="Tool" FullName="Rsvg.Tool">
+  <TypeSignature Language="C#" Value="public class Tool" Maintainer="auto" />
+  <AssemblyInfo>
+    <AssemblyName>rsvg-sharp</AssemblyName>
+    <AssemblyPublicKey></AssemblyPublicKey>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <AssemblyCulture>neutral</AssemblyCulture>
+    <Attributes />
+  </AssemblyInfo>
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Docs>
+    <summary>To be added</summary>
+    <remarks>To be added</remarks>
+    <example>
+      <code language="C#">
+class SvgHelloWorld
+{
+	static void Main(string[] args)
+	{
+		Gnome.Program program =
+		new Gnome.Program("Hello World", "1.0", Gnome.Modules.UI, args);
+
+		MyMainWindow app = new MyMainWindow(program);
+		app.Show();
+ 
+		program.Run();
+	}
+}
+
+class MyMainWindow
+	: Gnome.App
+{
+	Gnome.Program program;
+
+	public MyMainWindow(Gnome.Program gnome_program)
+		: base("SVG Hello World", "SVG Hello World")
+	{
+		this.program = gnome_program;
+
+		this.DeleteEvent += new GtkSharp.DeleteEventHandler(delete_event);
+
+		string svg_file_name = "sample.svg";
+		Gdk.Pixbuf pixbuf = Rsvg.Tool.PixbufFromFile(svg_file_name);
+
+		Gtk.Image  image = new Gtk.Image();
+		image.Pixbuf = pixbuf;
+
+		this.Contents = image;
+	}
+
+	private void delete_event(object obj, GtkSharp.DeleteEventArgs args)
+	{
+		this.program.Quit();
+	}
+}
+      </code>
+	</example>
+  </Docs>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes />
+  <Members>
+    <Member MemberName="PixbufFromFileAtZoomWithMaxSize">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf PixbufFromFileAtZoomWithMaxSize (string file_name, double x_zoom, double y_zoom, int max_width, int max_height);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+        <Parameter Name="x_zoom" Type="System.Double" />
+        <Parameter Name="y_zoom" Type="System.Double" />
+        <Parameter Name="max_width" Type="System.Int32" />
+        <Parameter Name="max_height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <param name="x_zoom">a <see cref="T:System.Double" /></param>
+        <param name="y_zoom">a <see cref="T:System.Double" /></param>
+        <param name="max_width">a <see cref="T:System.Int32" /></param>
+        <param name="max_height">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixbufFromFileAtMaxSize">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf PixbufFromFileAtMaxSize (string file_name, int max_width, int max_height);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+        <Parameter Name="max_width" Type="System.Int32" />
+        <Parameter Name="max_height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <param name="max_width">a <see cref="T:System.Int32" /></param>
+        <param name="max_height">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixbufFromFileAtSize">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf PixbufFromFileAtSize (string file_name, int width, int height);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <param name="width">a <see cref="T:System.Int32" /></param>
+        <param name="height">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixbufFromFileAtZoom">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf PixbufFromFileAtZoom (string file_name, double x_zoom, double y_zoom);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+        <Parameter Name="x_zoom" Type="System.Double" />
+        <Parameter Name="y_zoom" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <param name="x_zoom">a <see cref="T:System.Double" /></param>
+        <param name="y_zoom">a <see cref="T:System.Double" /></param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixbufFromFile">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf PixbufFromFile (string file_name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixbuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="file_name">a <see cref="T:System.String" /></param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Tool ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Rsvg.Tool" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
