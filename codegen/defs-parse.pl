@@ -9,12 +9,12 @@
 %maptypes = (
 	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
 	'guint32', "uint", 'const-gchar', "String", 'GObject', "GLib.Object",
-	'gchar', "String");
+	'gchar', "String", 'gfloat', "float", 'gdouble', "double");
 
 %marshaltypes = (
 	'none', "void", 'gboolean', "bool", 'gint', "int", 'guint', "uint",
 	'guint32', "uint", 'const-gchar', "IntPtr", 'GObject', "IntPtr",
-	'gchar', "IntPtr");
+	'gchar', "IntPtr", 'gfloat', "float", 'gdouble', "double");
 
 `mkdir -p ../gdk/generated`;
 `mkdir -p ../gtk/generated`;
@@ -25,11 +25,8 @@ while ($def = get_def()) {
 		gen_enum (split (/\n/, $def));
 	} elsif ($def =~ /^\(define-struct (\w+)/) {
 		$name = $1;
-		$def =~ /c-name "(\w+)"/;
-		$cname=$1;
 		$def =~ s/\n\s*//g;
-		$maptypes{$cname} = $name;
-		$marshaltypes{$cname} = "IntPtr";
+		gen_struct ($name, $def);
 	} elsif ($def =~ /^\(define-object (\w+)/) {
 		$name = $1;
 		$def =~ /c-name "(\w+)"/;
@@ -152,6 +149,41 @@ sub gen_enum
 		} else {
 			print OUTFILE "\t\t$name = $flag,\n";
 			$flag *= 2;
+		}
+	}
+
+	print OUTFILE "\t}\n\n}\n";
+	close (OUTFILE);
+}
+
+sub gen_struct
+{
+	my ($name, $def) = @_;
+
+	$def =~ /c-name "(\w+)"/;
+	$cname = $1;
+	$def =~ /in-module "(\w+)"/;
+	$namespace = $1;
+
+	$maptypes{$cname} = $name;
+	$marshaltypes{$cname} = $name;
+
+	$dir = "../" . lc ($namespace) . "/generated";
+	open (OUTFILE, ">$dir/$name.cs") || die "can't open file";
+	
+	print OUTFILE "// Generated file: Do not modify\n\n";
+	print OUTFILE "namespace $namespace {\n\n";
+	print OUTFILE "\t/// <summary> $name Structure </summary>\n";
+	print OUTFILE "\t/// <remarks>\n\t///\tFIXME: Add docs.\n";
+	print OUTFILE "\t/// </remarks>\n\n";
+
+	print OUTFILE "\tpublic struct $name {\n";
+
+	if ($def =~ /fields'\((.*)\)\)\)/) {
+		foreach $parm (split(/\)'\(/, $1)) {
+			$parm =~ s/\*//g;
+			$parm =~ /"(\S*)" "(\S*)"/;
+			print OUTFILE "\t\tpublic $maptypes{$1} $2;\n";
 		}
 	}
 

@@ -3,7 +3,7 @@ all:
 	@echo "'make unix' is broken for now."
 
 windows:
-	cat gdk-types.defs gtk-types.defs gtk-props.defs gtk.defs | ./defs-parse.pl
+	cat gdk-types.defs hardcoded.defs gtk-types.defs gtk-props.defs gtk.defs | ./defs-parse.pl
 
 unix:
 	@echo "'make unix' is broken for now."
