@@ -170,11 +170,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tNativeDelegate = new {0} (NativeCallback);", wrapper);
 			sw.WriteLine ("\t\t\t_managed = managed;");
 			sw.WriteLine ("\t\t}");
-
 			sw.WriteLine ("\t}");
-
 			sw.WriteLine ("#endregion");
-			CloseWriter (sw);
+			sw.WriteLine ("}");
+			sw.Close ();
 			return ns + "Sharp." + Name + "Wrapper";
 		}
 		
