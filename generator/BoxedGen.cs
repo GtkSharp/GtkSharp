@@ -24,28 +24,25 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			base.Generate (gen_info);
-			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
-			sw.WriteLine ("\t\tstatic extern IntPtr g_value_init (ref GLib.Value val, GLib.GType gtype);");
+			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue\")]");
+			sw.WriteLine ("\t\tstatic extern IntPtr glibsharp_value_get_boxed (ref GLib.Value val);");
 			sw.WriteLine ();
-			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
-			sw.WriteLine ("\t\tstatic extern IntPtr g_value_get_boxed (ref GLib.Value val);");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
-			sw.WriteLine ("\t\tstatic extern void g_value_set_boxed (ref GLib.Value val, ref " + QualifiedName + " boxed);");
+			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue\")]");
+			sw.WriteLine ("\t\tstatic extern void glibsharp_value_set_boxed (ref GLib.Value val, ref " + QualifiedName + " boxed);");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic static explicit operator GLib.Value (" + QualifiedName + " boxed)");
 			sw.WriteLine ("\t\t{");
 
 			sw.WriteLine ("\t\t\tGLib.Value val = GLib.Value.Empty;");
-			sw.WriteLine ("\t\t\tg_value_init (ref val, " + QualifiedName + ".GType);");
-			sw.WriteLine ("\t\t\tg_value_set_boxed (ref val, ref boxed);");
+			sw.WriteLine ("\t\t\tval.Init (" + QualifiedName + ".GType);");
+			sw.WriteLine ("\t\t\tglibsharp_value_set_boxed (ref val, ref boxed);");
 			sw.WriteLine ("\t\t\treturn val;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic static explicit operator " + QualifiedName + " (GLib.Value val)");
 			sw.WriteLine ("\t\t{");
 
-			sw.WriteLine ("\t\t\tIntPtr boxed_ptr = g_value_get_boxed (ref val);");
+			sw.WriteLine ("\t\t\tIntPtr boxed_ptr = glibsharp_value_get_boxed (ref val);");
 			sw.WriteLine ("\t\t\treturn New (boxed_ptr);");
 			sw.WriteLine ("\t\t}");
 

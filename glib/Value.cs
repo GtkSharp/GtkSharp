@@ -35,6 +35,11 @@ namespace GLib {
 			g_value_unset (ref this);
 		}
 
+		public void Init (GLib.GType gtype)
+		{
+			g_value_init (ref this, gtype.Val);
+		}
+
 		public Value (GLib.GType gtype)
 		{
 			type = GType.Invalid;
