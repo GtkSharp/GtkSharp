@@ -1,0 +1,54 @@
+
+		public static Hashtable clipboard_objects = new Hashtable ();
+		private static uint clipboard_object_next_id = 0;
+
+		[DllImport("gtk-x11-2.0")]
+		static extern bool gtk_clipboard_set_with_data(IntPtr raw, IntPtr targets, int n_targets, GtkSharp.GtkClipboardGetFuncNative get_func, GtkSharp.GtkClipboardClearFuncNative clear_func, uint id);
+
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_clipboard_target_list_add (IntPtr list, string name, uint flags, uint info);
+
+		[DllImport("gtksharpglue")]
+		static extern IntPtr gtksharp_clipboard_target_list_to_array (IntPtr list);
+
+		[DllImport("gtksharpglue")]
+		static extern void gtksharp_clipboard_target_array_free (IntPtr targets);
+
+		[DllImport("gtksharpglue")]
+		static extern void gtksharp_clipboard_target_list_free (IntPtr list);
+
+		GtkSharp.GtkClipboardGetFuncWrapper get_func_wrapper;
+		GtkSharp.GtkClipboardClearFuncWrapper clear_func_wrapper;
+
+		public bool Set (Gtk.TargetEntry[] targets,
+				 Gtk.ClipboardGetFunc get_func,
+				 Gtk.ClipboardClearFunc clear_func,
+				 object data)
+		{
+			uint this_id;
+
+			lock (clipboard_objects) {
+				this_id = clipboard_object_next_id++;
+				clipboard_objects[this_id] = data;
+			}
+
+			get_func_wrapper = new GtkSharp.GtkClipboardGetFuncWrapper (get_func);
+			clear_func_wrapper = new GtkSharp.GtkClipboardClearFuncWrapper (clear_func);
+
+			IntPtr list = IntPtr.Zero;
+
+			foreach (Gtk.TargetEntry t in targets) {
+				list = gtksharp_clipboard_target_list_add (list, t.target, t.flags, t.info);
+			}
+
+			IntPtr array = gtksharp_clipboard_target_list_to_array (list);
+
+			bool ret = gtk_clipboard_set_with_data (Handle, array, targets.Length, get_func_wrapper.NativeDelegate, clear_func_wrapper.NativeDelegate, this_id);
+
+			gtksharp_clipboard_target_array_free (array);
+			gtksharp_clipboard_target_list_free (list);
+
+			return ret;
+		}
+
+

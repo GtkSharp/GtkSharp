@@ -27,7 +27,7 @@ namespace Gnome {
 			} else {
 				args.Args[0] = null;
 			}
-			arg2._Initialize ();
+
 			args.Args[1] = arg2;
 			args.Args[2] = arg3;
 			

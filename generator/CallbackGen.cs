@@ -107,9 +107,6 @@ namespace GtkSharp.Generation {
 				string cstype = parms[i].CSType;
 				// FIXME: Too much code copy/pasted here. Refactor?
 				ClassBase parm_wrapper = SymbolTable.GetClassGen (ctype);
-				if (parm_wrapper != null && (parm_wrapper is StructBase)) {
-					sw.WriteLine("\t\t\t{0}._Initialize ();", parm_name);
-				}
 				sw.WriteLine("\t\t\t_args[" + idx + "] = " + SymbolTable.FromNative (ctype, parm_name) + ";");
 				if ((parm_wrapper != null && ((parm_wrapper is OpaqueGen))) || SymbolTable.IsManuallyWrapped (ctype)) {
 					sw.WriteLine("\t\t\tif (_args[" + idx + "] == null)");

@@ -506,22 +506,6 @@
         <parameter type="GtkArg*" name="args"/>
       </parameters>
     </callback>
-    <callback name="ClipboardClearFunc" cname="GtkClipboardClearFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkClipboard*" name="clipboard"/>
-        <parameter type="gpointer" name="user_data_or_owner"/>
-      </parameters>
-    </callback>
-    <callback name="ClipboardGetFunc" cname="GtkClipboardGetFunc">
-      <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkClipboard*" name="clipboard"/>
-        <parameter type="GtkSelectionData*" name="selection_data"/>
-        <parameter type="guint" name="info"/>
-        <parameter type="gpointer" name="user_data_or_owner"/>
-      </parameters>
-    </callback>
     <callback name="ClipboardReceivedFunc" cname="GtkClipboardReceivedFunc">
       <return-type type="void"/>
       <parameters>
@@ -10487,26 +10471,6 @@
           <parameter type="gint" name="len"/>
         </parameters>
       </method>
-      <method name="SetWithData" cname="gtk_clipboard_set_with_data">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-GtkTargetEntry*" name="targets"/>
-          <parameter type="guint" name="n_targets"/>
-          <parameter type="GtkClipboardGetFunc" name="get_func"/>
-          <parameter type="GtkClipboardClearFunc" name="clear_func"/>
-          <parameter type="gpointer" name="user_data"/>
-        </parameters>
-      </method>
-      <method name="SetWithOwner" cname="gtk_clipboard_set_with_owner">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-GtkTargetEntry*" name="targets"/>
-          <parameter type="guint" name="n_targets"/>
-          <parameter type="GtkClipboardGetFunc" name="get_func"/>
-          <parameter type="GtkClipboardClearFunc" name="clear_func"/>
-          <parameter type="GObject*" name="owner"/>
-        </parameters>
-      </method>
       <method name="WaitForContents" cname="gtk_clipboard_wait_for_contents">
         <return-type type="GtkSelectionData*"/>
         <parameters>
@@ -10809,27 +10773,8 @@
           <parameter type="gint*" name="n_atoms"/>
         </parameters>
       </method>
-      <method name="GetText" cname="gtk_selection_data_get_text">
-        <return-type type="guchar*"/>
-      </method>
       <method name="GetType" cname="gtk_selection_data_get_type" shared="true">
         <return-type type="GType"/>
-      </method>
-      <method name="Set" cname="gtk_selection_data_set">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="GdkAtom" name="type"/>
-          <parameter type="gint" name="format"/>
-          <parameter type="const-guchar*" name="data"/>
-          <parameter type="gint" name="length"/>
-        </parameters>
-      </method>
-      <method name="SetText" cname="gtk_selection_data_set_text">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="const-gchar*" name="str"/>
-          <parameter type="gint" name="len"/>
-        </parameters>
       </method>
       <method name="TargetsIncludeText" cname="gtk_selection_data_targets_include_text">
         <return-type type="gboolean"/>

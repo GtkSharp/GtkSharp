@@ -34,7 +34,7 @@ namespace GtkSamples {
 		static void Size_Allocated (object obj, SizeAllocatedArgs args)
 		{
 			Gdk.Rectangle rect = args.Allocation;
-			if (rect.IsNull)
+			if (rect == Gdk.Rectangle.Zero)
 				Console.WriteLine ("ERROR: Allocation is null!");
 			Console.WriteLine ("Size: ({0}, {1})", rect.width, rect.height);
 		}

@@ -143,8 +143,6 @@ namespace GtkSharp.Generation {
 						}
 						sw.WriteLine("\t\t\t}");
 					} else {
-						if (wrapper != null && (wrapper is StructBase))
-							sw.WriteLine("\t\t\targ{0}._Initialize ();", idx);
 						sw.WriteLine("\t\t\targs.Args[" + (idx-1) + "] = " + SymbolTable.FromNative (ctype, "arg" + idx)  + ";");
 					}
 				}

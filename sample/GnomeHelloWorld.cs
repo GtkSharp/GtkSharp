@@ -161,7 +161,7 @@ namespace GtkSamples {
 			if (type != Gdk.WindowType.Child)
 				Console.WriteLine ("Struct field accessors appear to be broken.");
 
-			if (!ev.IsNull && ev.type == EventType.TwoButtonPress && ev.button == 1) {
+			if ((ev != Gdk.EventButton.Zero) && ev.type == EventType.TwoButtonPress && ev.button == 1) {
 				g_spawn_command_line_async ("mono " + entries[idx].program, IntPtr.Zero); 
 			}
 		}

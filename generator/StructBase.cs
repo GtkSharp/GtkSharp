@@ -139,7 +139,7 @@ namespace GtkSharp.Generation {
 
 			return true;
 		}
-		
+
 		protected bool GenField (XmlElement field, StreamWriter sw)
 		{
 			string c_type, type, name;
@@ -235,23 +235,25 @@ namespace GtkSharp.Generation {
 		
 		protected override void GenCtors (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tbool _is_null;");
-			sw.WriteLine ("\t\tpublic bool IsNull {");
-			sw.WriteLine ("\t\t\tget { return _is_null; }");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ("\t\tpublic void _Initialize () {");
-			sw.WriteLine ("\t\t\t_is_null = false;");
-			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("\t\tpublic static {0} Zero = new {0} ();", QualifiedName);
 			sw.WriteLine();
 			sw.WriteLine ("\t\tpublic static " + QualifiedName + " New(IntPtr raw) {");
-			sw.WriteLine ("\t\t\t{0} self = new {0}();", QualifiedName);
 			sw.WriteLine ("\t\t\tif (raw == IntPtr.Zero) {");
-			sw.WriteLine ("\t\t\t\tself._is_null = true;");
-			sw.WriteLine ("\t\t\t} else {");
-   		sw.WriteLine ("\t\t\t\tself = ({0}) Marshal.PtrToStructure (raw, self.GetType ());", QualifiedName);
-			sw.WriteLine ("\t\t\t\tself._is_null = false;");
+			sw.WriteLine ("\t\t\t\treturn {0}.Zero;", QualifiedName);
 			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t\t{0} self = new {0}();", QualifiedName);
+			sw.WriteLine ("\t\t\tself = ({0}) Marshal.PtrToStructure (raw, self.GetType ());", QualifiedName);
 			sw.WriteLine ("\t\t\treturn self;");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static bool operator == ({0} a, {0} b)", QualifiedName);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\treturn a.Equals (b);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static bool operator != ({0} a, {0} b)", QualifiedName);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\treturn ! a.Equals (b);");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine();
 

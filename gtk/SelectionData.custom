@@ -1,0 +1,29 @@
+
+		[DllImport("gtk-x11-2.0")]
+		private static extern string gtk_selection_data_get_text (ref Gtk.SelectionData selection_data);
+
+		[DllImport("gtk-x11-2.0")]
+		private static extern void gtk_selection_data_set_text (ref Gtk.SelectionData selection_data, string str, int len);
+
+		public string Text {
+			get {
+				return gtk_selection_data_get_text (ref this);
+			}
+			set {
+				gtk_selection_data_set_text (ref this, value, value.Length);
+			}
+		}
+
+		[DllImport("gtk-x11-2.0")]
+		static extern void gtk_selection_data_set (ref Gtk.SelectionData raw, IntPtr type, int format, byte[] data, int length);
+
+		public byte[] Data {
+			get {
+				byte[] ret = new byte[length];
+				Marshal.Copy (_data, ret, 0, length);
+				return ret;
+			}
+			set {
+				gtk_selection_data_set (ref this, _type, format, value, value.Length);
+			}
+		}
