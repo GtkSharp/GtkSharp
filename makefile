@@ -1,6 +1,7 @@
 DIRS=generator glib pango atk gdk gtk sample
 ROOT=/cygdrive/$(subst \,/,$(subst :\,/,$(SYSTEMROOT)))
 CSC=$(ROOT)/microsoft.net/framework/v1.0.3705/csc.exe
+MCS=mcs
 
 all:
 	@echo "You must use 'make windows' or 'make linux'."
@@ -16,5 +17,5 @@ unix:
 
 linux:
 	for i in $(DIRS); do				\
-		(cd $$i; make linux) || exit 1;\
+		(cd $$i; MCS="$(MCS)" make linux) || exit 1;\
 	done;

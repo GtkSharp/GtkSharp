@@ -1,3 +1,4 @@
+MCS=mcs
 
 all:
 	@echo "You must use 'make windows' or 'make linux'."
@@ -8,7 +9,7 @@ windows:
 	./codegen gtkapi.xml
 
 linux:
-	mcs --unsafe -o codegen.exe -r System.Xml.dll *.cs
+	$(MCS) --unsafe -o codegen.exe -r System.Xml.dll *.cs
 	mono ./codegen.exe gtkapi.xml
 
 unix:
