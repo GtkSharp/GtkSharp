@@ -295,6 +295,8 @@ namespace GtkSharp.Generation {
 			// FIXME: lame
 			call_string = call_string.Replace ("out ref", "out");
 			import_sig = import_sig.Replace ("out ref", "out");
+			call_string = call_string.Replace ("ref ref", "out");
+			import_sig = import_sig.Replace ("ref ref", "out");
 
 			// FIXME: this is also lame, I need to fix the need_sep algo
 			if (signature.EndsWith (", ")) 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <api>
   <namespace name="Gtk" library="gtk-x11-2.0">
     <enum name="AccelFlags" cname="GtkAccelFlags" type="flags">
@@ -506,6 +506,22 @@
         <parameter type="GtkArg*" name="args"/>
       </parameters>
     </callback>
+    <callback name="ClipboardClearFunc" cname="GtkClipboardClearFunc" hidden="1">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GtkClipboard*" name="clipboard"/>
+        <parameter type="gpointer" name="user_data_or_owner"/>
+      </parameters>
+    </callback>
+    <callback name="ClipboardGetFunc" cname="GtkClipboardGetFunc" hidden="1">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GtkClipboard*" name="clipboard"/>
+        <parameter type="GtkSelectionData*" name="selection_data"/>
+        <parameter type="guint" name="info"/>
+        <parameter type="gpointer" name="user_data_or_owner"/>
+      </parameters>
+    </callback>
     <callback name="ClipboardReceivedFunc" cname="GtkClipboardReceivedFunc">
       <return-type type="void"/>
       <parameters>
@@ -609,10 +625,6 @@
     </callback>
     <callback name="SignalFunc" cname="GtkSignalFunc">
       <return-type type="void"/>
-      <parameters>
-        <parameter type="GtkObject*" name="object"/>
-        <parameter type="gpointer" name="data"/>
-      </parameters>
     </callback>
     <callback name="TextCharPredicate" cname="GtkTextCharPredicate">
       <return-type type="gboolean"/>
@@ -4269,7 +4281,7 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="gint" name="n_columns"/>
-          <parameter type="GType*" name="types"/>
+          <parameter type="GType*" name="types" array="true"/>
         </parameters>
       </method>
       <method name="SetValist" cname="gtk_list_store_set_valist">
@@ -7940,7 +7952,7 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="gint" name="n_columns"/>
-          <parameter type="GType*" name="types"/>
+          <parameter type="GType*" name="types" array="true"/>
         </parameters>
       </method>
       <method name="SetValist" cname="gtk_tree_store_set_valist">
@@ -10471,6 +10483,26 @@
           <parameter type="gint" name="len"/>
         </parameters>
       </method>
+      <method name="SetWithData" cname="gtk_clipboard_set_with_data">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GtkTargetEntry*" name="targets"/>
+          <parameter type="guint" name="n_targets"/>
+          <parameter type="GtkClipboardGetFunc" name="get_func"/>
+          <parameter type="GtkClipboardClearFunc" name="clear_func"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="SetWithOwner" cname="gtk_clipboard_set_with_owner">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GtkTargetEntry*" name="targets"/>
+          <parameter type="guint" name="n_targets"/>
+          <parameter type="GtkClipboardGetFunc" name="get_func"/>
+          <parameter type="GtkClipboardClearFunc" name="clear_func"/>
+          <parameter type="GObject*" name="owner"/>
+        </parameters>
+      </method>
       <method name="WaitForContents" cname="gtk_clipboard_wait_for_contents">
         <return-type type="GtkSelectionData*"/>
         <parameters>
@@ -10773,8 +10805,27 @@
           <parameter type="gint*" name="n_atoms"/>
         </parameters>
       </method>
+      <method name="GetText" cname="gtk_selection_data_get_text" hidden="1">
+        <return-type type="guchar*"/>
+      </method>
       <method name="GetType" cname="gtk_selection_data_get_type" shared="true">
         <return-type type="GType"/>
+      </method>
+      <method name="Set" cname="gtk_selection_data_set" hidden="1">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdkAtom" name="type"/>
+          <parameter type="gint" name="format"/>
+          <parameter type="const-guchar*" name="data"/>
+          <parameter type="gint" name="length"/>
+        </parameters>
+      </method>
+      <method name="SetText" cname="gtk_selection_data_set_text" hidden="1">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="str"/>
+          <parameter type="gint" name="len"/>
+        </parameters>
       </method>
       <method name="TargetsIncludeText" cname="gtk_selection_data_targets_include_text">
         <return-type type="gboolean"/>
@@ -11757,6 +11808,10 @@
       <member cname="GTK_HTML_COMMAND_TEXT_COLOR_APPLY" name="TextColorApply"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_ON" name="SaveDataOn"/>
       <member cname="GTK_HTML_COMMAND_SAVE_DATA_OFF" name="SaveDataOff"/>
+      <member cname="GTK_HTML_COMMAND_SAVED" name="Saved"/>
+      <member cname="GTK_HTML_COMMAND_IS_SAVED" name="IsSaved"/>
+      <member cname="GTK_HTML_COMMAND_SCROLL_BOD" name="ScrollBod"/>
+      <member cname="GTK_HTML_COMMAND_SCROLL_EOD" name="ScrollEod"/>
     </enum>
     <enum name="HTMLCursorSkipType" cname="GtkHTMLCursorSkipType" type="enum">
       <member cname="GTK_HTML_CURSOR_SKIP_ONE" name="One"/>
@@ -11792,6 +11847,17 @@
       <member cname="GTK_HTML_FONT_STYLE_FIXED" name="Fixed" value="1 &lt;&lt; 7"/>
       <member cname="GTK_HTML_FONT_STYLE_SUBSCRIPT" name="Subscript" value="1 &lt;&lt; 8"/>
       <member cname="GTK_HTML_FONT_STYLE_SUPERSCRIPT" name="Superscript" value="1 &lt;&lt; 9"/>
+    </enum>
+    <enum name="HTMLFontStyleShift" cname="GtkHTMLFontStyleShift" type="enum">
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_FIRST" name="First" value="3"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_BOLD" name="Bold"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_ITALIC" name="Italic"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_UNDERLINE" name="Underline"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_STRIKEOUT" name="Strikeout"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_FIXED" name="Fixed"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUBSCRIPT" name="Subscript"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_SUPERSCRIPT" name="Superscript"/>
+      <member cname="GTK_HTML_FONT_STYLE_SHIFT_LAST" name="Last"/>
     </enum>
     <enum name="HTMLParagraphAlignment" cname="GtkHTMLParagraphAlignment" type="enum">
       <member cname="GTK_HTML_PARAGRAPH_ALIGNMENT_LEFT" name="Left"/>
