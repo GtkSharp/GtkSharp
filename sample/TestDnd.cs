@@ -302,7 +302,7 @@ public class TestDnd {
 		}
 
 		Widget source_widget = Gtk.Drag.GetSourceWidget (args.Context);
-		Console.WriteLine ("motion, source {0}", source_widget == null ? "null" : source_widget.TypeName);
+		Console.WriteLine ("motion, source {0}", source_widget == null ? "null" : source_widget.ToString ());
 
 		Atom [] targets = args.Context.Targets;
 		foreach (Atom a in targets)

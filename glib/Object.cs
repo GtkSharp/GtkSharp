@@ -125,7 +125,7 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
-		public static GType RegisterGType (System.Type t)
+		protected static GType RegisterGType (System.Type t)
 		{
 			GType parent_gtype = LookupGType (t.BaseType);
 			string name = t.FullName.Replace(".", "_");
@@ -139,7 +139,7 @@ namespace GLib {
 
 		static Hashtable g_types = new Hashtable ();
 
-		public GType LookupGType ()
+		protected GType LookupGType ()
 		{
 			return LookupGType (GetType ());
 		}
@@ -156,7 +156,7 @@ namespace GLib {
 			return RegisterGType (t);
 		}
 
-		public Object (IntPtr raw)
+		protected Object (IntPtr raw)
 		{
 			Raw = raw;
 		}
@@ -190,22 +190,22 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		private static extern IntPtr gtksharp_get_type_id (IntPtr obj);
 
-		public static GLib.GType GType {
+		protected static GLib.GType GType {
 			get {
-				return GType.Invalid;
+				return GType.Object;
 			}
 		}
 
 		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
-		public string TypeName {
+		protected string TypeName {
 			get {
 				return Marshal.PtrToStringAnsi (gtksharp_get_type_name (Raw));
 			}
 		}
 
-		public GLib.GType NativeType {
+		internal GLib.GType NativeType {
 			get {
 				if (_obj == IntPtr.Zero)
 					return GType.Invalid;
@@ -310,7 +310,7 @@ namespace GLib {
 		[DllImport("glibsharpglue")]
 		static extern int gtksharp_object_get_ref_count (IntPtr obj);
 
-		public int RefCount {
+		protected int RefCount {
 			get {
 				return gtksharp_object_get_ref_count (Handle);
 			}

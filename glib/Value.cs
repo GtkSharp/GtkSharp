@@ -162,7 +162,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_type_and_property (ref this, obj.LookupGType ().Val, prop_name);
+			gtksharp_value_create_from_type_and_property (ref this, obj.NativeType.Val, prop_name);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
