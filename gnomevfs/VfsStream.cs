@@ -153,7 +153,7 @@ namespace Gnome.Vfs {
 
 			if (mode == FileMode.CreateNew) {
 				string dname = uri.ExtractDirname ();
-				if (dname != "" && !Vfs.Exists (dname))
+				if (dname != "" && !new Uri (dname).Exists)
 					throw new DirectoryNotFoundException ("Could not find a part of " +
 									      "the path \"" + dname + "\".");
 			}
@@ -231,7 +231,7 @@ namespace Gnome.Vfs {
 							Wait ();
 						} else {
 							handle = Sync.Open (uri, om);
-							result = Sync.Truncate (handle, 0);
+							result = uri.Truncate (0);
 							Vfs.ThrowException (uri, result);
 						}
 					} else {
@@ -289,7 +289,7 @@ namespace Gnome.Vfs {
 					break;
 				case FileMode.Truncate:
 					if (uri.Exists) {
-						result = Vfs.Truncate (uri, 0);
+						result = uri.Truncate (0);
 						if (async) {
 							handle = Async.Open (uri, om,
 									     (int)Async.Priority.Default,

@@ -45,6 +45,15 @@ namespace Gnome.Vfs {
 		}
 	}
 
+	internal enum MonitorEventType {
+		Changed,
+		Deleted,
+		Startexecuting,
+		Stopexecuting,
+		Created,
+		MetadataChanged,
+	}
+
 	public class Monitor {
 		private IntPtr handle;
 		private MonitorCallbackWrapper wrapper;

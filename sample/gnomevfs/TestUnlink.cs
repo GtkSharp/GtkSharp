@@ -13,7 +13,7 @@ namespace Test.Gnome.Vfs {
 			Gnome.Vfs.Vfs.Initialize ();
 
 			Gnome.Vfs.Uri uri = new Gnome.Vfs.Uri (args[0]);
-			Result result = Gnome.Vfs.Vfs.Unlink (uri.ToString ());
+			Result result = uri.Unlink ();
 			
 			Console.WriteLine ("result unlink ('{0}') = {1}", uri, result);
 			

@@ -9,8 +9,66 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Basic directory operations: creating, reading and removing directories.</summary>
+    <remarks>
+      <example>
+        <code lang="C#">
+using GLib;
+using Gnome.Vfs;
+using System;
+using System.Text;
+
+namespace Test.Gnome.Vfs {
+	public class TestInfo {
+		private static MainLoop loop;
+	
+		static void Main (string[] args)
+		{
+			if (args.Length != 1) {
+				Console.WriteLine ("Usage: TestDirectory &lt;uri&gt;");
+				return;
+			}
+		
+			Gnome.Vfs.Vfs.Initialize ();
+
+			FileInfo[] entries = Gnome.Vfs.Directory.GetEntries (args[0]);
+
+			Console.WriteLine ("Directory {0} contains {1} entries:", args[0], entries.Length);
+			foreach (FileInfo info in entries) {
+				Console.WriteLine (info.Name);
+			}
+			
+			Gnome.Vfs.Directory.GetEntries (args[0], FileInfoOptions.Default,
+							20, (int)Gnome.Vfs.Async.Priority.Default,
+							new AsyncDirectoryLoadCallback (OnDirectoryLoad));
+			
+			loop = new MainLoop ();
+			loop.Run ();
+			
+			Gnome.Vfs.Vfs.Shutdown ();
+		}
+		
+		private static void OnDirectoryLoad (Result result, FileInfo[] entries, uint entries_read)
+		{
+			Console.WriteLine ("DirectoryLoad: {0}", result);
+			if (result != Result.Ok &amp;&amp; result != Result.ErrorEof) {
+				loop.Quit ();
+				return;
+			}
+			
+			Console.WriteLine ("read {0} entries", entries_read);
+			foreach (FileInfo info in entries) {
+				Console.WriteLine (info.Name);
+			}
+			
+			if (result == Result.ErrorEof)
+				loop.Quit ();
+		}
+	}
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -28,9 +86,9 @@
         <Parameter Name="uri" Type="Gnome.Vfs.Uri" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Load a directory from <see cref="T:Gnome.Vfs.Uri" />.</summary>
         <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /></returns>
+        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /> containing the files in the directory.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -45,10 +103,11 @@
         <Parameter Name="options" Type="Gnome.Vfs.FileInfoOptions" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Load a directory from <see cref="T:Gnome.Vfs.Uri" /> with the specified <see cref="T:Gnome.Vfs.FileInfoOptions" />.</summary>
         <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <param name="options">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /></returns>
+        <param name="options">
+          <see cref="T:Gnome.Vfs.FileInfoOptions" /> for loading the directory.</param>
+        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /> containing the files in the directory.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -62,9 +121,10 @@
         <Parameter Name="text_uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text_uri">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /></returns>
+        <summary>Load a directory from uri.</summary>
+        <param name="text_uri">
+          <see cref="T:System.String" /> representing the URI of the directory to be loaded.</param>
+        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /> containing the files in the directory.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -79,10 +139,12 @@
         <Parameter Name="options" Type="Gnome.Vfs.FileInfoOptions" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text_uri">a <see cref="T:System.String" /></param>
-        <param name="options">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /></returns>
+        <summary>Load a directory from uri with the specified <see cref="T:Gnome.Vfs.FileInfoOptions" />.</summary>
+        <param name="text_uri">
+          <see cref="T:System.String" /> representing the URI of the directory to be loaded.</param>
+        <param name="options">
+          <see cref="T:Gnome.Vfs.FileInfoOptions" /> for loading the directory.</param>
+        <returns>a <see cref="T:Gnome.Vfs.FileInfo[]" /> containing the files in the directory.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -100,12 +162,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncDirectoryLoadCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Asynchronously load a directory from <see cref="T:Gnome.Vfs.Uri" /> with the specified <see cref="T:Gnome.Vfs.FileInfoOptions" />.</summary>
         <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <param name="options">a <see cref="T:System.Int32" /></param>
-        <param name="itemsPerNotification">a <see cref="T:System.UInt32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /></param>
+        <param name="options">
+          <see cref="T:Gnome.Vfs.FileInfoOptions" /> for loading the directory.</param>
+        <param name="itemsPerNotification">the number of entries to read in the directory per <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /> notification.</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /> to be called when the specified number of entries have been read or the operation is complete.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -123,48 +186,14 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncDirectoryLoadCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <param name="options">a <see cref="T:System.Int32" /></param>
-        <param name="itemsPerNotification">a <see cref="T:System.UInt32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Create">
-      <MemberSignature Language="C#" Value="public static Gnome.Vfs.Result Create (Gnome.Vfs.Uri uri, uint perm);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gnome.Vfs.Result</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="uri" Type="Gnome.Vfs.Uri" />
-        <Parameter Name="perm" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <param name="perm">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Create">
-      <MemberSignature Language="C#" Value="public static Gnome.Vfs.Result Create (string uri, uint perm);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gnome.Vfs.Result</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="uri" Type="System.String" />
-        <Parameter Name="perm" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <param name="perm">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
+        <summary>Asynchronously load a directory from uri with the specified <see cref="T:Gnome.Vfs.FileInfoOptions" />.</summary>
+        <param name="uri">
+          <see cref="T:System.String" /> representing the URI of the directory to be loaded.</param>
+        <param name="options">
+          <see cref="T:Gnome.Vfs.FileInfoOptions" /> for loading the directory.</param>
+        <param name="itemsPerNotification">the number of entries to read in the directory per <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /> notification.</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncDirectoryLoadCallback" /> to be called when the specified number of entries have been read or the operation is complete.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -178,8 +207,9 @@
         <Parameter Name="uri" Type="Gnome.Vfs.Uri" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
+        <summary>Delete <see cref="T:Gnome.Vfs.Uri" />.  <see cref="T:Gnome.Vfs.Uri" /> must be an empty directory.</summary>
+        <param name="uri">
+          <see cref="T:Gnome.Vfs.Uri" /> of the directory to be removed.</param>
         <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -194,8 +224,45 @@
         <Parameter Name="uri" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
+        <summary>Remove uri. Uri must be an empty directory.</summary>
+        <param name="uri">URI of the directory to be removed.</param>
+        <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static Gnome.Vfs.Result Create (Gnome.Vfs.Uri uri, Gnome.Vfs.FilePermissions perm);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gnome.Vfs.Result</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uri" Type="Gnome.Vfs.Uri" />
+        <Parameter Name="perm" Type="Gnome.Vfs.FilePermissions" />
+      </Parameters>
+      <Docs>
+        <summary>Create a directory at <see cref="T:Gnome.Vfs.Uri" />. Only succeeds if a file or directory does not already exist at <see cref="T:Gnome.Vfs.Uri" />.</summary>
+        <param name="uri">
+          <see cref="T:Gnome.Vfs.Uri" /> of the directory to be created.</param>
+        <param name="perm">Unix-style permissions for the newly created directory.</param>
+        <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static Gnome.Vfs.Result Create (string uri, Gnome.Vfs.FilePermissions perm);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gnome.Vfs.Result</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uri" Type="System.String" />
+        <Parameter Name="perm" Type="Gnome.Vfs.FilePermissions" />
+      </Parameters>
+      <Docs>
+        <summary>Create a directory at uri. Only succeeds if a file or directory does not already exist at the uri.</summary>
+        <param name="uri">URI of the directory to be created.</param>
+        <param name="perm">Unix-style permissions for the newly created directory.</param>
         <returns>a <see cref="T:Gnome.Vfs.Result" /></returns>
         <remarks>To be added</remarks>
       </Docs>

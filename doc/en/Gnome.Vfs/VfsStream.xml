@@ -9,8 +9,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      <see cref="T:System.IO.Stream" /> implementation using the Gnome.Vfs library.</summary>
+    <remarks>
+      <para>The VfsStream class hides the Gnome.Vfs API from the developer. It uses the <see cref="T:System.IO.Stream" /> class and associated enums to access the <see cref="T:System.String" /> representation of the <see cref="T:Gnome.Vfs.Uri" /> passed in the constructor.</para>
+      <para>This class is particularly useful if you want to develop an application that wants to use Gnome.Vfs where available, but can't depend on it being available always. On platforms where Gnome.Vfs is not available, the application can fallback to a regular <see cref="T:System.IO.FileStream" />. This doesn't affect how the rest of the application deals with the stream since both implement the abstract <see cref="T:System.IO.Stream" /> class.</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.IO.Stream</BaseTypeName>
@@ -234,11 +238,13 @@
         <Parameter Name="mode" Type="System.IO.FileMode" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
+        <summary>Construct a new instance of the VfsStream with the specified <see cref="T:System.IO.FileMode" />.</summary>
+        <param name="uri">
+          <see cref="T:System.String" /> representing the <see cref="T:Gnome.Vfs.Uri" /> to open.</param>
+        <param name="mode">
+          <see cref="T:System.IO.FileMode" /> specifying how to open the <see cref="T:Gnome.Vfs.Uri" />.</param>
         <returns>a <see cref="T:Gnome.Vfs.VfsStream" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The underlying file will be accessed synchronously using the <see cref="T:Gnome.Vfs.Sync" /> class.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -251,12 +257,14 @@
         <Parameter Name="async" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text_uri">a <see cref="T:System.String" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
-        <param name="async">a <see cref="T:System.Boolean" /></param>
+        <summary>Construct a new instance of the VfsStream with the specified <see cref="T:System.IO.FileMode" />. Based the async parameter, the file will be accessed (a)synchronously.</summary>
+        <param name="text_uri">
+          <see cref="T:System.String" /> representing the <see cref="T:Gnome.Vfs.Uri" /> to open.</param>
+        <param name="mode">
+          <see cref="T:System.IO.FileMode" /> specifying how to open the <see cref="T:Gnome.Vfs.Uri" />.</param>
+        <param name="async">whether to access the file (a)sychronously.</param>
         <returns>a <see cref="T:Gnome.Vfs.VfsStream" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The underlying file will be accessed either by using the <see cref="T:Gnome.Vfs.Sync" /> or <see cref="T:Gnome.Vfs.Async" /> class.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -267,7 +275,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <see cref="T:System.Boolean" /> value indicating whether the current stream supports reading.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -280,7 +289,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <see cref="T:System.Boolean" /> value indicating whether the current stream supports writing.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -293,7 +303,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <see cref="T:System.Boolean" /> value indicating whether the current stream supports seeking.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -306,7 +317,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+          <see cref="T:System.Boolean" /> value indicating whether the current stream is (a)synchronous.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -319,7 +331,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the <see cref="T:System.String" /> representing the <see cref="T:Gnome.Vfs.Uri" /> which this stream reads and writes from.</summary>
         <returns>a <see cref="T:System.String" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -332,7 +344,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the length in bytes of the stream.</summary>
         <returns>a <see cref="T:System.Int64" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -345,7 +357,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets or sets the position within the current stream.</summary>
         <returns>a <see cref="T:System.Int64" /></returns>
         <remarks>To be added</remarks>
       </Docs>

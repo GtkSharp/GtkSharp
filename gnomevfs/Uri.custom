@@ -33,7 +33,56 @@
 			return new FileInfo (this, options);
 		}
 
+		[DllImport("gnomevfs-2")]
+		static extern bool gnome_vfs_uri_equal(IntPtr raw, IntPtr b);
+
+		public override bool Equals (object o) {
+			if (o is Uri) {
+				Uri uri = o as Uri;
+				return gnome_vfs_uri_equal (Handle, uri.Handle);
+			} else {
+				return false;
+			}
+		}
+
+		[DllImport("gnomevfs-2")]
+		static extern uint gnome_vfs_uri_hash(IntPtr p);
+
+		public override int GetHashCode () {
+			return checked ((int)gnome_vfs_uri_hash (Handle));
+		}
+
+		[DllImport("gnomevfs-2")]
+		static extern IntPtr gnome_vfs_uri_list_parse(string uri_list);
+
+		public static Uri[] ParseList (string uri_list) {
+			IntPtr raw_ret = gnome_vfs_uri_list_parse(uri_list);
+			GLib.List list = new GLib.List(raw_ret);
+			Uri[] uris = new Uri [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				uris[i] = list[i] as Uri;
+			list.Dispose ();
+			return uris;
+		}
+
 		public override string ToString ()
 		{
 			return ToString (UriHideOptions.None);
 		}
+
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_truncate_uri (IntPtr raw, ulong length);
+		
+		public Result Truncate (ulong length)
+		{
+			return gnome_vfs_truncate_uri (Handle, length);
+		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_unlink_from_uri (IntPtr raw);
+		
+		public Result Unlink ()
+		{
+			return gnome_vfs_unlink_from_uri (Handle);
+		}
+	

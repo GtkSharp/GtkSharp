@@ -50,33 +50,19 @@ namespace Gnome.Vfs {
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern bool gnome_vfs_shutdown ();
+		static extern void gnome_vfs_shutdown ();
 		
-		public static bool Shutdown ()
+		public static void Shutdown ()
 		{
-			return gnome_vfs_shutdown ();
-		}
-		
-		public static bool Exists (string textUri)
-		{
-			Uri uri = new Uri (textUri);
-			return uri.Exists;
+			gnome_vfs_shutdown ();
 		}
 		
 		[DllImport ("gnomevfs-2")]
 		private static extern Result gnome_vfs_move (string old_uri, string new_uri, bool force_replace);
 		
-		public static Result Move (string old_uri, string new_uri, bool force_replace)
+		public static Result Move (string source, string dest, bool force_replace)
 		{
-			return gnome_vfs_move (old_uri, new_uri, force_replace);
-		}
-		
-		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_unlink (string uri);
-		
-		public static Result Unlink (string uri)
-		{
-			return gnome_vfs_unlink (uri);
+			return gnome_vfs_move (source, dest, force_replace);
 		}
 		
 		[DllImport ("gnomevfs-2")]
@@ -87,23 +73,10 @@ namespace Gnome.Vfs {
 			return ResultToString ((int)result);
 		}
 		
-		public static string ResultToString (int result)
+		internal static string ResultToString (int result)
 		{
 			IntPtr ptr = gnome_vfs_result_to_string (result);
 			return Marshal.PtrToStringAnsi (ptr);
-		}
-		
-		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_truncate (string uri, ulong length);
-		
-		public static Result Truncate (string uri, ulong length)
-		{
-			return gnome_vfs_truncate (uri, length);
-		}
-		
-		public static Result Truncate (Uri uri, ulong length)
-		{
-			return Truncate (uri.ToString (), length);
 		}
 		
 		public static void ThrowException (Result result)

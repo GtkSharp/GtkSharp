@@ -9,8 +9,86 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Abstract class used by modules for asking an application for necessary information (authentication for example).</summary>
+    <remarks>
+      <example>
+        <code lang="C#">
+using GLib;
+using Gnome.Vfs;
+using System;
+using System.Text;
+
+namespace Test.Gnome.Vfs {
+	public class TestCallback {
+		private static MainLoop loop;
+	
+		static void Main (string[] args)
+		{
+			if (args.Length != 1) {
+				Console.WriteLine ("Usage: TestCallback &lt;uri&gt;");
+				return;
+			}
+		
+			Gnome.Vfs.Vfs.Initialize ();
+
+			Gnome.Vfs.Uri uri = new Gnome.Vfs.Uri (args[0]);
+			Handle handle;
+
+			// Test 1: Attempt to access a URI requiring authentication w/o a callback registered.
+			try {
+				handle = Sync.Open (uri, OpenMode.Read);
+				Sync.Close (handle);
+				Console.WriteLine ("Uri '{0}' doesn't require authentication", uri);
+				return;
+			} catch (VfsException ex) {
+				if (ex.Result != Result.ErrorAccessDenied)
+					throw ex;
+			}
+			
+			// Test 2: Attempt an open that requires authentication.
+			ModuleCallbackFullAuthentication cb = new ModuleCallbackFullAuthentication ();
+			cb.Callback += new ModuleCallbackHandler (OnAuthenticate);
+			cb.SetDefault ();
+			
+			handle = Sync.Open (uri, OpenMode.Read);
+			Sync.Close (handle);
+
+			// Test 3: This call should not require any new authentication.
+			Console.WriteLine ("File info: \n{0}", uri.GetFileInfo ());
+			
+			// Test 4: Attempt a call to the parent uri.
+			FileInfo[] entries = Directory.GetEntries (uri.Parent);
+			Console.WriteLine ("Directory '{0}' has {1} entries", uri.Parent, entries.Length);
+			
+			// Test 5: Pop the authentication callback and try again.
+			cb.Pop ();
+			try {
+				handle = Sync.Open (uri, OpenMode.Read);
+			} catch (VfsException ex) {
+				if (ex.Result != Result.ErrorAccessDenied)
+					throw ex;
+			}
+			
+			Gnome.Vfs.Vfs.Shutdown ();
+		}
+		
+		private static void OnAuthenticate (ModuleCallback cb)
+		{
+			ModuleCallbackFullAuthentication fcb = cb as ModuleCallbackFullAuthentication;
+			Console.Write ("Enter your username ({0}): ", fcb.Username);
+			string username = Console.ReadLine ();
+			Console.Write ("Enter your password : ");
+			string passwd = Console.ReadLine ();
+			
+			if (username.Length &gt; 0)
+				fcb.Username = username;
+			fcb.Password = passwd;
+		}
+	}
+}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -26,8 +104,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Set this ModuleCallback as a temporary handler. <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> will be called on the same thread as the gnome-vfs operation that invokes it. The temporary handler is set per-thread.</summary>
+        <remarks>
+          <para>
+            <see cref="M:Gnome.Vfs.ModuleCallback.Pop" /> removes the most recently set temporary handler. The temporary handlers are treated as a first-in first-out stack.</para>
+          <para>Use this function to set a temporary callback handler for a single call or a few calls. You can use <see cref="M:Gnome.Vfs.ModuleCallback.SetDefault" /> to set a callback function that will establish a permanent global setting for all threads instead.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Pop">
@@ -38,8 +120,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Remove the temporary handler set with <see cref="M:Gnome.Vfs.ModuleCallback.Push" />. If another temporary handler was previously set on the same thread, it becomes the current handler. Otherwise, the default handler, if any, becomes current.</summary>
+        <remarks>The temporary handlers are treated as a first-in first-out stack.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefault">
@@ -50,8 +132,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Set this <see cref="T:Gnome.Vfs.ModuleCallback" /> as the default handler. <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> will be called on the same thread as the gnome-vfs operation that invokes it. The default value is shared for all threads, but setting it is thread-safe.</summary>
+        <remarks>Use this function if you want to set a handler to be used by your whole application. You can use <see cref="M:Gnome.Vfs.ModuleCallback.Push" /> to set a callback function that will temporarily override the default on the current thread instead. Or you can also use <see cref="M:Gnome.Vfs.ModuleCallback.SetDefaultAsync" /> to set an async callback function.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PushAsync">
@@ -62,8 +144,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Set <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> as a temprary async handler. <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> will be called from a callback on the main thread. It will be passed a response function which should be called to signal completion of the callback. The callback function itself may return in the meantime.</summary>
+        <remarks>
+          <para>The temporary async handler is set per-thread.</para>
+          <para>
+            <see cref="M:Gnome.Vfs.ModuleCallback.PopAsync" /> removes the most recently set temporary temporary handler. The temporary async handlers are treated as a first-in first-out stack.</para>
+          <para>Use this function to set a temporary async callback handler for a single call or a few calls. You can use <see cref="M:Gnome.Vfs.ModuleCallback.SetDefaultAsync" /> to set an async callback function that will establish a permanent global setting for all threads instead.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PopAsync">
@@ -74,8 +161,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Remove the temporary async handler most recently set with <see cref="M:Gnome.Vfs.PushAsync" />. If another temporary async handler was previously set on the same thread, it becomes the current handler. Otherwise, the default async handler, if any, becomes current.</summary>
+        <remarks>The temporary async handlers are treated as a first-in first-out stack.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefaultAsync">
@@ -86,8 +173,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Set the default async callback. <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> will be called from a callback on the main thread. It will be passed a response function which should be called to signal completion of the callback. The callback function itself may return in the meantime.</summary>
+        <remarks>
+          <para>The default value is shared for all threads, but setting it is thread-safe.</para>
+          <para>Use this function if you want to globally set a callback handler for use with async operations.</para>
+          <para>You can use <see cref="M:Gnome.Vfs.ModuleCallback.PushAsync" /> to set an async callback function that will temporarily override the default on the current thread instead. Or you can also use <see cref="M:Gnome.Vfs.ModuleCallback.SetDefault" /> to set a regular callback function.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -109,8 +200,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Event which is called when a gnome-vfs module requires additional information from an application such as authentication.</summary>
+        <remarks>Implementations of <see cref="T:Gnome.Vfs.ModuleCallback" /> have properties such as <see cref="M:Gnome.Vfs.ModuleCallbackFullAuthentication.Username" /> which can be retrieved and set from the <see cref="M:Gnome.Vfs.ModuleCallback.Callback" /> handler. These properties are only valid during the callback activation.</remarks>
       </Docs>
     </Member>
   </Members>

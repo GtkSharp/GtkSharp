@@ -85,14 +85,14 @@ namespace Gnome.Vfs {
 		[DllImport ("gnomevfs-2")]
 		private static extern Result gnome_vfs_make_directory (string uri, uint perm);
 		
-		public static Result Create (Uri uri, uint perm)
+		public static Result Create (Uri uri, FilePermissions perm)
 		{
 			return Create (uri.ToString (), perm);
 		}
 		
-		public static Result Create (string uri, uint perm)
+		public static Result Create (string uri, FilePermissions perm)
 		{
-			return gnome_vfs_make_directory (uri, perm);
+			return gnome_vfs_make_directory (uri, (uint)perm);
 		}
 		
 		[DllImport ("gnomevfs-2")]
