@@ -9,8 +9,24 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the &lt;link location="node:gtk-sharp/programming/threads"&gt;Gtk# Thread Programming&lt;/link&gt; for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Basic functions to initialize GConf and get/set values.</summary>
+    <remarks>The following example attempts to retrieve a setting from GConf, and set a default value otherwise.</remarks>
+    <example>
+      <code language="C#">
+string MyVal;
+
+GConf.Client gconfClient = new GConf.Client ();
+
+try
+{
+	MyVal = (string) gconfClient.Get ("/apps/monoapps/SampleApp/setting1"));
+}
+catch (GConf.NoSuchKeyException)
+{
+	gconfClient.Set ("/apps/monoapps/SampleApp/setting1", "sample");        
+}
+	  </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>GConf.ClientBase</BaseTypeName>
@@ -26,8 +42,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Suggests that you have just finished a block of changes, and it would be an optimal time to sync to permanent storage.</summary>
+        <remarks>This function is just a "hint" provided to maximize efficiency and minimize data loss.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveNotify">
@@ -41,10 +57,10 @@
         <Parameter Name="notify" Type="GConf.NotifyEventHandler" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dir">To be added: an object of type 'string'</param>
-        <param name="notify">To be added: an object of type 'GConf.NotifyEventHandler'</param>
-        <remarks>To be added</remarks>
+        <summary>Removes a notification request.</summary>
+        <param name="dir">an object of type <see cref="T:System.String"/></param>
+        <param name="notify">an object of type <see cref="T:GConf.NotifyEventHandler"/></param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddNotify">
@@ -58,9 +74,9 @@
         <Parameter Name="notify" Type="GConf.NotifyEventHandler" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dir">To be added: an object of type 'string'</param>
-        <param name="notify">To be added: an object of type 'GConf.NotifyEventHandler'</param>
+        <summary>Registers a notification request.</summary>
+        <param name="dir">an object of type <see cref="T:System.String"/></param>
+        <param name="notify">an object of type <see cref="T:GConf.NotifyEventHandler"/></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -74,27 +90,43 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="key">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'object'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="protected virtual void SetValue (string key, GConf.Value val);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-        <Parameter Name="val" Type="GConf.Value" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="key">To be added: an object of type 'string'</param>
-        <param name="val">To be added: an object of type 'GConf.Value'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets a value from the GConf source.</summary>
+        <param name="key">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:System.Object"/></returns>
+        <remarks>Normally you will need to convert the value to the correct type before using it.
+		Here is how you could set a <see cref="T:Gtk.Toolbar"/> to use the system-wide setting for style.</remarks>
+        <example>
+          <code language="C#">
+// assuming you have a Gtk.Toolbar named toolbar1
+
+string val;
+
+try
+{
+	GConf.Client gconfclient = new GConf.Client ();
+	val = (string) gconfclient.Get ("/desktop/gnome/interface/toolbar_style");
+}
+catch (GConf.NoSuchKeyException)
+{
+	val = "both";       
+}
+		
+switch (val) {
+	case "both":
+		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Both;
+		break;
+	case "text":
+		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Text;
+		break;
+	case "both_horiz":
+		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.BothHoriz;
+		break;
+	default:
+		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Icons;
+		break;
+}
+			</code>
+		</example>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -103,9 +135,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'GConf.Client'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new <see cref="T:GConf.Client"/>.</summary>
+        <returns>an object of type <see cref="T:GConf.Client"/></returns>
+        <remarks>This is the default constructor for <see cref="T:GConf.Client"/>.</remarks>
       </Docs>
     </Member>
   </Members>
