@@ -137,13 +137,14 @@ namespace GtkSharp.Generation {
 
 
 				if (gen is CallbackGen) {
+					//Console.WriteLine ("***Callback parameter " + gen.Name + " generated in method***" );
 					CallbackGen cbgen = gen as CallbackGen;
 					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
 					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", wrapper, name);
 					sw.Write (indent + "\t\t\t");
 					if (p.NullOk)
 						sw.Write ("if ({0} != null) ", name);
-					sw.WriteLine ("{1}_wrapper = new {0} ({1}, {2});", wrapper, p.Name, parameters.Static ? "null" : "this");
+					sw.WriteLine ("{1}_wrapper = new {0} ({1});", wrapper, p.Name);
 				}
 			}
 

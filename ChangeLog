@@ -1,3 +1,13 @@
+2005-03-12  Mike Kestner  <mkestner@novell.com>
+
+	* generator/CallbackGen.cs : don't derive Wrappers from DelegateWrapper
+	any more.  It leaks delegates like crazy. We effectively now use call
+	scope as the default for delegate parameters.
+	* generator/MethodBody.cs : use new simpler Wrapper ctor.
+	* glib/DelegateWrapper.cs : mark the ctor obsolete so people know to
+	update any manually coded wrappers out there.
+	* */*.custom : use new simpler Callback Wrapper ctors.
+
 2005-03-11  Mike Kestner  <mkestner@novell.com>
 
 	* glib/DelegateWrapper.cs : call g_object_set_data_full since we are

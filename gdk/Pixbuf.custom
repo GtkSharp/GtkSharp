@@ -171,7 +171,7 @@
 		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
 		{
 			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
-			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn, this);
+			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
 			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
@@ -318,7 +318,7 @@
 		public unsafe void SaveToCallback (PixbufSaveFunc save_func, string type, string[] option_keys, string[] option_values) 
 		{
 			GdkSharp.PixbufSaveFuncWrapper save_func_wrapper = null;
-			save_func_wrapper = new GdkSharp.PixbufSaveFuncWrapper (save_func, this);
+			save_func_wrapper = new GdkSharp.PixbufSaveFuncWrapper (save_func);
 			IntPtr error = IntPtr.Zero;
 			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
 			IntPtr[] nkeys = NullTerm (option_keys);

@@ -26,7 +26,7 @@ namespace Gtk {
 	public delegate void NodeCellDataFunc (TreeViewColumn tree_column, CellRenderer cell, ITreeNode node);
 
 
-	internal class NodeCellDataFuncWrapper : GLib.DelegateWrapper {
+	internal class NodeCellDataFuncWrapper {
 
 		public void NativeCallback (IntPtr tree_column, IntPtr cell, IntPtr tree_model, ref Gtk.TreeIter iter, IntPtr data)
 		{
@@ -39,7 +39,7 @@ namespace Gtk {
 		internal GtkSharp.CellLayoutDataFuncNative NativeDelegate;
 		protected NodeCellDataFunc managed;
 
-		public NodeCellDataFuncWrapper (NodeCellDataFunc managed, object o) : base (o)
+		public NodeCellDataFuncWrapper (NodeCellDataFunc managed)
 		{
 			NativeDelegate = new GtkSharp.CellLayoutDataFuncNative (NativeCallback);
 			this.managed = managed;

@@ -44,6 +44,7 @@ namespace GLib {
 		// derived class or null if created from a static method.
 		// Note that the instances will never be disposed if they are created in a static
 		// method.
+		[Obsolete ("Callback wrappers should be manually managed for persistence.")]
 		protected DelegateWrapper (object o)
 		{
 			if (o != null) {
