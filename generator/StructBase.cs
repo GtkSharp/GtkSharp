@@ -84,6 +84,12 @@ namespace GtkSharp.Generation {
 			return var;
 		}
 
+		private bool DisableNew {
+			get {
+				return Elem.HasAttribute ("disable_new");
+			}
+		}
+
 		protected void GenFields (StreamWriter sw)
 		{
 			Field.bitfields = 0;
@@ -146,15 +152,17 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ("\t\tpublic static {0} Zero = new {0} ();", QualifiedName);
 			sw.WriteLine();
-			sw.WriteLine ("\t\tpublic static " + QualifiedName + " New(IntPtr raw) {");
-			sw.WriteLine ("\t\t\tif (raw == IntPtr.Zero) {");
-			sw.WriteLine ("\t\t\t\treturn {0}.Zero;", QualifiedName);
-			sw.WriteLine ("\t\t\t}");
-			sw.WriteLine ("\t\t\t{0} self = new {0}();", QualifiedName);
-			sw.WriteLine ("\t\t\tself = ({0}) Marshal.PtrToStructure (raw, self.GetType ());", QualifiedName);
-			sw.WriteLine ("\t\t\treturn self;");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+			if (!DisableNew) {
+				sw.WriteLine ("\t\tpublic static " + QualifiedName + " New(IntPtr raw) {");
+				sw.WriteLine ("\t\t\tif (raw == IntPtr.Zero) {");
+				sw.WriteLine ("\t\t\t\treturn {0}.Zero;", QualifiedName);
+				sw.WriteLine ("\t\t\t}");
+				sw.WriteLine ("\t\t\t{0} self = new {0}();", QualifiedName);
+				sw.WriteLine ("\t\t\tself = ({0}) Marshal.PtrToStructure (raw, self.GetType ());", QualifiedName);
+				sw.WriteLine ("\t\t\treturn self;");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+			}
 
 			foreach (Ctor ctor in Ctors) {
 				ctor.ForceStatic = true;

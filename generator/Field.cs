@@ -66,6 +66,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool Hidden {
+			get {
+				return elem.HasAttribute("hidden");
+			}
+		}
+
 		public bool IsArray {
 			get {
 				return elem.HasAttribute("array_len");
@@ -122,6 +128,9 @@ namespace GtkSharp.Generation {
 
 		public bool Generate (StreamWriter sw)
 		{
+			if (Hidden)
+				return true;
+
 			if (CSType == "") {
 				Console.WriteLine ("Field has unknown Type {0}", CType);
 				Statistics.ThrottledCount++;
