@@ -87,6 +87,7 @@ customs = 				\
 	Settings.custom			\
 	SpinButton.custom		\
 	Stock.custom			\
+	StockItem.custom		\
 	Style.custom			\
 	Table.custom			\
 	TargetEntry.custom		\
