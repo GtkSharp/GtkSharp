@@ -37,6 +37,7 @@ namespace GnomeDb
 			gnome_db_init (app_id, version, 0, new IntPtr(0));
 		}
 
+		[DllImport("gnomedb-2")]
 		static extern void gnome_db_init (string app_id, string version, ref int nargs, ref String [] args);
 		
 		public static void Init (ref string [] args)
