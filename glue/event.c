@@ -28,6 +28,14 @@ gdouble gtksharp_gdk_event_button_get_x_root (GdkEventButton *event);
 gdouble gtksharp_gdk_event_button_get_y_root (GdkEventButton *event);
 gdouble* gtksharp_gdk_event_button_get_axes (GdkEventButton *event);
 GdkDevice* gtksharp_gdk_event_button_get_device (GdkEventButton *event);
+guint32 gtksharp_gdk_event_scroll_get_time (GdkEventScroll *event);
+guint gtksharp_gdk_event_scroll_get_state (GdkEventScroll *event);
+guint gtksharp_gdk_event_scroll_get_scroll_direction (GdkEventScroll *event);
+gdouble gtksharp_gdk_event_scroll_get_x (GdkEventScroll *event);
+gdouble gtksharp_gdk_event_scroll_get_y (GdkEventScroll *event);
+gdouble gtksharp_gdk_event_scroll_get_x_root (GdkEventScroll *event);
+gdouble gtksharp_gdk_event_scroll_get_y_root (GdkEventScroll *event);
+GdkDevice* gtksharp_gdk_event_scroll_get_device (GdkEventScroll *event);
 /* */
 
 GdkEventType
@@ -130,5 +138,53 @@ gdouble*
 gtksharp_gdk_event_button_get_axes (GdkEventButton *event)
 {
 	return event->axes;
+}
+
+guint32
+gtksharp_gdk_event_scroll_get_time (GdkEventScroll *event)
+{
+	return event->time;
+}
+
+guint
+gtksharp_gdk_event_scroll_get_state (GdkEventScroll *event)
+{
+	return event->state;
+}
+
+GdkScrollDirection
+gtksharp_gdk_event_scroll_get_direction (GdkEventScroll *event)
+{
+	return event->direction;
+}
+
+GdkDevice*
+gtksharp_gdk_event_scroll_get_device (GdkEventScroll *event)
+{
+	return event->device;
+}
+
+gdouble
+gtksharp_gdk_event_scroll_get_x (GdkEventScroll *event)
+{
+	return event->x;
+}
+
+gdouble
+gtksharp_gdk_event_scroll_get_y (GdkEventScroll *event)
+{
+	return event->y;
+}
+
+gdouble
+gtksharp_gdk_event_scroll_get_x_root (GdkEventScroll *event)
+{
+	return event->x_root;
+}
+
+gdouble
+gtksharp_gdk_event_scroll_get_y_root (GdkEventScroll *event)
+{
+	return event->y_root;
 }
 
