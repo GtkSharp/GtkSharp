@@ -4,7 +4,6 @@
 using Gtk;
 using Gdk;
 using System;
-using GtkSharp;
 using Cairo;
 
 class X {

@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 
 using Gtk;
-using GtkSharp;
 
 namespace GtkDemo 
 {

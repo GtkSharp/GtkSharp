@@ -7,7 +7,6 @@
 namespace GtkSamples {
 
 	using Gtk;
-	using GtkSharp;
 	using System;
 	using System.Drawing;
 

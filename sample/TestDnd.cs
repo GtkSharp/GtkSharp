@@ -1,6 +1,5 @@
 using Gtk;
 using Gdk;
-using GtkSharp;
 using GLib;
 using System;
 

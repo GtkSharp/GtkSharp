@@ -10,7 +10,6 @@
 using System;
 
 using Gtk;
-using GtkSharp;
 
 namespace WidgetViewer {
 	public class TestDialog

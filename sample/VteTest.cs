@@ -1,10 +1,7 @@
 using System;
 using Gtk;
-using GtkSharp;
 using Gnome;
-using GnomeSharp;
 using Vte;
-using VteSharp;
 
 class T
 {
@@ -31,7 +28,7 @@ class T
 		term.DeleteBinding = TerminalEraseBinding.Auto;
 		term.Encoding = "UTF-8";
 		term.FontFromString = "Monospace";
-		term.Commit += new VteSharp.CommitHandler (OnCommit);
+		term.Commit += new Vte.CommitHandler (OnCommit);
 		term.TextDeleted += new EventHandler (OnTextDeleted);
 
 		Gdk.Color white = new Gdk.Color ();
@@ -59,7 +56,7 @@ class T
 		program.Run ();
 	}
 
-	private void OnCommit (object o, VteSharp.CommitArgs args)
+	private void OnCommit (object o, Vte.CommitArgs args)
 	{
 		Terminal term = (Terminal) o;
 		if (args.P0 == "\r")

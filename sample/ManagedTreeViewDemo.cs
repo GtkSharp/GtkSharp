@@ -10,7 +10,6 @@ namespace GtkSamples {
 	using System.Runtime.InteropServices;
 
 	using Gtk;
-	using GtkSharp;
 
 	public class TreeViewDemo {
 		private static ListStore store = null;

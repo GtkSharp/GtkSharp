@@ -11,7 +11,6 @@ using System.Collections;
 
 using Gdk;
 using Gtk;
-using GtkSharp;
 using Pango;
 
 namespace GtkDemo 

@@ -8,7 +8,6 @@ namespace GtkSamples {
 
 	using Gtk;
 	using Gdk;
-	using GtkSharp;
 	using System;
 
 	public class SizeTest {

@@ -74,7 +74,7 @@ namespace GtkSharp.Generation {
                                 if (sig_handler.Name == "voidObjectSignal")
                                         return "System.EventArgs";
                                 else
-                                        return container_type.NS + "Sharp." + Name + "Args";
+                                        return container_type.NS + "." + Name + "Args";
                         }
                 }
                                                                                                                         
@@ -82,7 +82,9 @@ namespace GtkSharp.Generation {
                         get {
                                 if (sig_handler.Name == "voidObjectSignal")
                                         return "EventHandler";
-                                else
+                                else if (SymbolTable.Table [container_type.NS + Name + "Handler"] != null)
+                                        return Name + "EventHandler";
+				else
                                         return Name + "Handler";
                         }
                 }
@@ -92,7 +94,7 @@ namespace GtkSharp.Generation {
                                 if (sig_handler.Name == "voidObjectSignal")
                                         return "System.EventHandler";
                                 else
-                                        return container_type.NS + "Sharp." + Name + "Handler";
+                                        return container_type.NS + "." + EventHandlerName;
                         }
                 }
 
@@ -143,9 +145,9 @@ namespace GtkSharp.Generation {
 
 			string ns = container_type.NS;
 
-			StreamWriter sw = gen_info.OpenStream (ns + "Sharp." + EventHandlerName);
+			StreamWriter sw = gen_info.OpenStream (EventHandlerName);
 			
-			sw.WriteLine ("namespace " + ns + "Sharp {");
+			sw.WriteLine ("namespace " + ns + " {");
 			sw.WriteLine ();
 			sw.WriteLine ("\tusing System;");
 

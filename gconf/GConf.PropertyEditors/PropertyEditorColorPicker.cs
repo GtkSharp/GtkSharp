@@ -24,7 +24,7 @@ namespace GConf.PropertyEditors
 			return (byte) (val >> 8);
 		}
 
-		void Changed (object obj, GnomeSharp.ColorSetArgs args)
+		void Changed (object obj, Gnome.ColorSetArgs args)
 		{
 			ColorPicker picker = (ColorPicker) Control;
 			Color color = Color.FromArgb (ToByte (picker.Red), ToByte (picker.Green), ToByte (picker.Blue));
@@ -34,7 +34,7 @@ namespace GConf.PropertyEditors
 		protected override void ConnectHandlers ()
 		{
 			ColorPicker picker = (ColorPicker) Control;
-			picker.ColorSet += new GnomeSharp.ColorSetHandler (Changed);
+			picker.ColorSet += new Gnome.ColorSetHandler (Changed);
 		}
 
 		public PropertyEditorColorPicker (string key, ColorPicker picker) : base (key, picker)

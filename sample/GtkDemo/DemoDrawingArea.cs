@@ -27,7 +27,6 @@ using System;
 
 using Gtk;
 using Gdk;
-using GtkSharp;
 
 namespace GtkDemo {
 	public class DemoDrawingArea 
@@ -148,8 +147,7 @@ namespace GtkDemo {
 			}
 			// return true because we've handled this event, so no
 			// further processing is required.
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 
 		}
 		
@@ -168,8 +166,7 @@ namespace GtkDemo {
 					area.X, area.Y,
 					area.X, area.Y,
 					area.Width, area.Height);
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = false;
+			args.RetVal = false;
 		}
 		
 		// Create a new pixmap of the appropriate size to store our scribbles 
@@ -185,9 +182,8 @@ namespace GtkDemo {
 			// Initialize the pixmap to white
 			pixmap.DrawRectangle (drawingArea1.Style.WhiteGC, true, 0, 0,
 					allocation.Width, allocation.Height);
-			SignalArgs sa = (SignalArgs) args;
 			// We've handled the configure event, no need for further processing.
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 		
 		private void ScribbleMotionNotify (object o, MotionNotifyEventArgs args)
@@ -221,8 +217,7 @@ namespace GtkDemo {
 			if ((state & ModifierType.Button1Mask) != 0 && pixmap != null)
 				DrawBrush (x, y);
 			/* We've handled it, stop processing */
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 
 
@@ -249,8 +244,7 @@ namespace GtkDemo {
 			if (ev.Button == 1 && pixmap != null)
 				DrawBrush (ev.X, ev.Y);
 			//We've handled the event, stop processing
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 	}
 }

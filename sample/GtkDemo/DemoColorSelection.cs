@@ -16,7 +16,6 @@ using System;
 
 using Gdk;
 using Gtk;
-using GtkSharp;
 
 
 namespace GtkDemo 
@@ -77,8 +76,7 @@ namespace GtkDemo
 					true,
 					area.X, area.Y,
 					area.Width, area.Height);
-			SignalArgs sa = (SignalArgs) args;
-			sa.RetVal = true;
+			args.RetVal = true;
 		}
 		
 		private void ChangeColorCallback (object o, EventArgs args)

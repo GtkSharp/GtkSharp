@@ -10,7 +10,6 @@ using System;
 using System.Text;
 
 using Gtk;
-using GtkSharp;
 
 namespace WidgetViewer {
 	public class TestColorSelection

@@ -8,7 +8,6 @@ namespace GtkSamples {
 
 	using Gtk;
 	using Gdk;
-	using GtkSharp;
 	using Gnome;
 	using System;
 	using System.IO;
@@ -57,7 +56,7 @@ namespace GtkSamples {
 							     entry.desc);
 			}
 
-			icons.IconSelected += new GnomeSharp.IconSelectedHandler (icon_selected_cb);
+			icons.IconSelected += new Gnome.IconSelectedHandler (icon_selected_cb);
 
 			return icons;
 		}
@@ -149,7 +148,7 @@ namespace GtkSamples {
 		[DllImport("glib-2.0")]
 		static extern bool g_spawn_command_line_async (string command, IntPtr err);
 		
-		void icon_selected_cb (object obj, GnomeSharp.IconSelectedArgs args)
+		void icon_selected_cb (object obj, Gnome.IconSelectedArgs args)
 		{
 			int idx = args.Num;
 			Event ev_any = args.Event;

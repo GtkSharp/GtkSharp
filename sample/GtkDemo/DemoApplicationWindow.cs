@@ -16,7 +16,6 @@
 using System;
 
 using Gtk;
-using GtkSharp;
 
 namespace GtkDemo 
 {

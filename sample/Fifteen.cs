@@ -4,7 +4,6 @@ using System.Drawing;
 using Gtk;
 using Gdk;
 using Gnome;
-using GtkSharp;
 
 
 public class Fifteen
@@ -212,7 +211,7 @@ public class BoardPiece : Gnome.CanvasGroup
 		text.FillColor = "black";
 
 		this.Text = text;
-		this.CanvasEvent += new GnomeSharp.CanvasEventHandler (Piece_Event);
+		this.CanvasEvent += new Gnome.CanvasEventHandler (Piece_Event);
 	}
 
 	public string Color {
@@ -239,7 +238,7 @@ public class BoardPiece : Gnome.CanvasGroup
 		}
 	}
 
-	static void Piece_Event (object o, GnomeSharp.CanvasEventArgs args)
+	static void Piece_Event (object o, Gnome.CanvasEventArgs args)
 	{
 		BoardPiece piece = (BoardPiece) o;
 		Canvas canvas = piece.Canvas;

@@ -30,7 +30,7 @@
             {
                     this.program = gnome_program;
 
-                    this.DeleteEvent += new GtkSharp.DeleteEventHandler(delete_event);
+                    this.DeleteEvent += new Gtk.DeleteEventHandler(delete_event);
 
 
                     string svg_file_name = "sample.svg";
@@ -42,7 +42,7 @@
                     this.Contents = image;
             }
 
-            private void delete_event(object obj, GtkSharp.DeleteEventArgs args)
+            private void delete_event(object obj, Gtk.DeleteEventArgs args)
             {
                     this.program.Quit();
             }

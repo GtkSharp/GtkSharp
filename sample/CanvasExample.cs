@@ -9,7 +9,6 @@ namespace GtkSamples {
 	using Gnome;
 	using Gtk;
 	using Gdk;
-	using GtkSharp;
 	using System;
 
 	public class CanvasExample {
@@ -89,7 +88,7 @@ namespace GtkSamples {
 			item.OutlineColor = "black";
 			item.WidthUnits = 1.0;
 
-			item.CanvasEvent += new GnomeSharp.CanvasEventHandler (Item_Event);
+			item.CanvasEvent += new Gnome.CanvasEventHandler (Item_Event);
 		}
 		
 		void ChangeItemColor (CanvasRE item)
@@ -98,7 +97,7 @@ namespace GtkSamples {
 			item.FillColor = colors[random.Next (colors.Length)];	
 		}
 		
-		void Item_Event (object obj, GnomeSharp.CanvasEventArgs args) {
+		void Item_Event (object obj, Gnome.CanvasEventArgs args) {
 			EventButton ev = EventButton.New (args.Event.Handle);
 			CanvasRE item = (CanvasRE) obj;
 

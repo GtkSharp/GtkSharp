@@ -1,6 +1,5 @@
 using System;
 using Gtk;
-using GtkSharp;
 using Gnome;
 
 class PrintSample

@@ -18,7 +18,6 @@ using System.IO;
 
 using Gtk;
 using Gdk;
-using GtkSharp;
 
 namespace GtkDemo
 {

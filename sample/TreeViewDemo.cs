@@ -9,7 +9,6 @@ namespace GtkSamples {
 	using System.Reflection;
 
 	using Gtk;
-	using GtkSharp;
 
 	public class TreeViewDemo {
 		private static TreeStore store = null;

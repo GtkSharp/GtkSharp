@@ -5,7 +5,6 @@ using System.Data;
 using System.Data.SqlClient;
 
 using Gtk;
-using GtkSharp;
 
 enum DialogType
 {

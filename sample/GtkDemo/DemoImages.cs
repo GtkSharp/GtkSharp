@@ -30,8 +30,6 @@ using System.IO;
 
 using Gtk;
 using Gdk;
-using GtkSharp;
-using GdkSharp;
 
 namespace GtkDemo {
 	public class DemoImages

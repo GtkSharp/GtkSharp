@@ -9,7 +9,6 @@ namespace GladeSamples {
 	
 	using Gtk;
 	using Glade;
-	using GtkSharp;
 
 	public class GladeTest
 	{

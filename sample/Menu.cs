@@ -9,7 +9,6 @@ namespace GtkSharp.Samples {
 	using System;
 	using System.Drawing;
 	using Gtk;
-	using GtkSharp;
 
 	public class MenuApp {
 
