@@ -74,47 +74,47 @@ namespace WidgetViewer {
 			return window;
 		}
 
-		static void set_small_icon (Gtk.Object obj)
+		static void set_small_icon ()
 		{
 			toolbar.IconSize = IconSize.SmallToolbar;
 		}
 
-		static void set_large_icon (Gtk.Object obj)
+		static void set_large_icon ()
 		{
 			toolbar.IconSize = IconSize.LargeToolbar;
 		}
 
-		static void set_icon_only (Gtk.Object obj)
+		static void set_icon_only ()
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Icons;
 		}
 
-		static void set_text_only (Gtk.Object obj)
+		static void set_text_only ()
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Text;
 		}
 
-		static void set_horizontal (Gtk.Object obj)
+		static void set_horizontal ()
 		{
 			toolbar.Orientation = Orientation.Horizontal;
 		}
 
-		static void set_vertical (Gtk.Object obj)
+		static void set_vertical ()
 		{
 			toolbar.Orientation = Orientation.Vertical;
 		}
 		
-		static void set_both (Gtk.Object obj)
+		static void set_both ()
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.Both;
 		}
 
-		static void set_both_horiz (Gtk.Object obj)
+		static void set_both_horiz ()
 		{
 			toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
 		}
 
-		static void toggle_tooltips (Gtk.Object obj)
+		static void toggle_tooltips ()
 		{
 			if (showTooltips == true)
 				showTooltips = false;
@@ -125,7 +125,7 @@ namespace WidgetViewer {
 			Console.WriteLine ("Show tooltips: " + showTooltips);
 		}
 
-		static void Close_Button (Gtk.Object obj)
+		static void Close_Button ()
 		{
 			window.Destroy ();
 		}
