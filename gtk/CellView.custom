@@ -21,15 +21,6 @@
 // Boston, MA 02111-1307, USA.
 
 
-		Hashtable datafuncs;
-		Hashtable DataFuncs {
-			get {
-				if (datafuncs == null)
-					datafuncs = new Hashtable ();
-				return datafuncs;
-			}
-		}
-
 		public void SetAttributes (CellRenderer cell, params object[] attrs)
 		{
 			if (attrs.Length % 2 != 0)
@@ -42,21 +33,17 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_cell_layout_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, IntPtr func, IntPtr func_data, IntPtr destroy);
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_cell_layout_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, IntPtr destroy);
+		static extern void gtk_cell_layout_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, NativeDestroyNotify destroy);
 
 		public void SetCellDataFunc (CellRenderer renderer, CellLayoutDataFunc func)
 		{
 			if (func == null) {
-				DataFuncs [renderer] = null;
-				gtk_cell_layout_set_cell_data_func (Handle, renderer.Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-			} else {
-
-				GtkSharp.CellLayoutDataFuncWrapper func_wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func);
-				DataFuncs [renderer] = func_wrapper;
-				gtk_cell_layout_set_cell_data_func (Handle, renderer.Handle, func_wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
+				gtk_cell_layout_set_cell_data_func (Handle, renderer.Handle, null, IntPtr.Zero, null);
+				return;
 			}
+
+			GtkSharp.CellLayoutDataFuncWrapper func_wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_cell_layout_set_cell_data_func (Handle, renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
 		}
 

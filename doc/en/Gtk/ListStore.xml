@@ -51,10 +51,10 @@
       <Parameters />
       <Docs>
         <summary>
-	  Returns the number of children that <paramref name="iter"/> has.  
+	  Returns the number of children that <paramref name="iter" /> has.  
 	</summary>
-        <returns>an object of type <see cref="T:System.Int32" />, the number of children of <paramref name="iter"/>.</returns>
-        <remarks>As a special case, if <paramref name="iter"/> is <see langword="null"/>, then the number
+        <returns>an object of type <see cref="T:System.Int32" />, the number of children of <paramref name="iter" />.</returns>
+        <remarks>As a special case, if <paramref name="iter" /> is <see langword="null" />, then the number
 	  of toplevel nodes is returned.</remarks>
       </Docs>
     </Member>
@@ -69,22 +69,21 @@
       </Parameters>
       <Docs>
         <summary>  
-	  Sets <paramref name="iter"/> to point to the first child of <paramref name="parent"/>.  
+	  Sets <paramref name="iter" /> to point to the first child of <paramref name="parent" />.  
 	</summary>
         <param name="iter">an object of type <see cref="T:Gtk.TreeIter" /></param>
         <returns>an object of type <see cref="T:System.Boolean" />,
-        <see langword="true"/>, if <paramref name="child"/> has been set to the first child.</returns>
+        <see langword="true" />, if <paramref name="child" /> has been set to the first child.</returns>
         <remarks>
-	  <para>
-	  If <paramref name="parent"/> has no children,
-	  <see langword="false"/> is returned and <paramref name="iter"/> is set to be invalid.  <paramref name="parent"/> will remain a valid
+          <para>
+	  If <paramref name="parent" /> has no children,
+	  <see langword="false" /> is returned and <paramref name="iter" /> is set to be invalid.  <paramref name="parent" /> will remain a valid
 	  node after this function has been called.
 	  </para>
-	  <para>
-	    If <paramref name="parent"/> is <see langword="null"/> returns the first node, equivalent to
-	    <literal>gtk_tree_model_get_iter_first (tree_model, iter);</literal>
-	  </para>
-	</remarks>
+          <para>
+	    If <paramref name="parent" /> is <see langword="null" /> returns the first node, equivalent to
+	    <literal>gtk_tree_model_get_iter_first (tree_model, iter);</literal></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeSortColumn">
@@ -129,13 +128,12 @@
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>Sets a sort function to be used for the column 
-	  <paramref name="sort_column_id" />.</summary>
+        <summary>Sets a sort function to be used for the column <paramref name="sort_column_id" />.</summary>
         <param name="sort_column_id">A <see cref="T:System.Int32" /> for the column number.</param>
         <param name="sort_func">A <see cref="T:Gtk.TreeIterCompareFunc" /></param>
-        <param name="user_data">A <see cref="T:IntPtr" /></param>
-        <param name="destroy">A <see cref="T:Gtk.DestroyNotify" />, function that will be run on destruction of <paramref name="user_data" /></param>
-        <remarks />
+        <param name="user_data">ignored</param>
+        <param name="destroy">ignored</param>
+        <remarks>This overload is obsolete.  The two parameter overload is preferred for new code. </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefaultSortFunc">
@@ -152,9 +150,9 @@
       <Docs>
         <summary>Set the function that will be used by default to sort columns.</summary>
         <param name="sort_func">A <see cref="T:Gtk.TreeIterCompareFunc" /></param>
-        <param name="user_data">A <see cref="T:IntPtr" /> (FIXME: explain this)</param>
-        <param name="destroy">A <see cref="T:Gtk.DestroyNotify" />, function that will be run on destruction of <paramref name="user_data" /></param>
-        <remarks />
+        <param name="user_data">ignored</param>
+        <param name="destroy">ignored</param>
+        <remarks>This overload is obsolete.  The single parameter overload is preferred for new code. </remarks>
       </Docs>
     </Member>
     <Member MemberName="RowDropPossible">
@@ -1432,7 +1430,40 @@ The above example creates a new three columns list store. The types of the colum
       <Docs>
         <summary>Protected constructor.</summary>
         <returns>a <see cref="T:Gtk.ListStore" /></returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetSortFunc">
+      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sort_column_id" Type="System.Int32" />
+        <Parameter Name="sort_func" Type="Gtk.TreeIterCompareFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Sets a sort function to be used for the column <paramref name="sort_column_id" />.</summary>
+        <param name="sort_column_id">A <see cref="T:System.Int32" /> for the column number.</param>
+        <param name="sort_func">A <see cref="T:Gtk.TreeIterCompareFunc" /></param>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDefaultSortFunc">
+      <MemberSignature Language="C#" Value="public virtual void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sort_func" Type="Gtk.TreeIterCompareFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Set the function that will be used by default to sort columns.</summary>
+        <param name="sort_func">A <see cref="T:Gtk.TreeIterCompareFunc" /></param>
+        <remarks />
       </Docs>
     </Member>
   </Members>

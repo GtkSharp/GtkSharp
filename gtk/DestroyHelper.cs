@@ -1,10 +1,8 @@
-// Gtk.TreeSortable.Custom - Gtk TreeSortable interface customizations
+// Gtk.DestroyHelper.cs - internal DestroyNotify helper
 //
-// Author: Mike Kestner  <mkestner@novell.com>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2005 Novell, Inc.
-//
-// This code is inserted after the automatically generated code.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,13 +18,34 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[Obsolete ("Replaced by SetDefaultSortFunc (TreeIterCompareFunc) overload.")]
-		void SetDefaultSortFunc (TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);
+namespace Gtk {
 
-		void SetDefaultSortFunc (TreeIterCompareFunc sort_func);
+	using System;
+	using System.Runtime.InteropServices;
 
-		[Obsolete ("Replaced by SetSortFunc (int, TreeIterCompareFunc) overload.")]
-		void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy); 
+	internal delegate void NativeDestroyNotify (IntPtr data);
 
-		void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func); 
+	internal class DestroyHelper {
+
+		private DestroyHelper () {}
+		
+		static void ReleaseGCHandle (IntPtr data)
+		{
+			if (data == IntPtr.Zero)
+				return;
+			GCHandle gch = (GCHandle) data;
+			gch.Free ();
+		}
+
+		static NativeDestroyNotify release_gchandle;
+
+		internal static NativeDestroyNotify NotifyHandler {
+			get {
+				if (release_gchandle == null)
+					release_gchandle = new NativeDestroyNotify (ReleaseGCHandle);
+				return release_gchandle;
+			}
+		}
+	}
+}
 

@@ -66,61 +66,51 @@
 			}
 		}
 
-		Hashtable CellDataFuncs {
-			get {
-				if (PersistentData ["gtksharp_cell_data_funcs"] == null)
-					PersistentData ["gtksharp_cell_data_funcs"] = new Hashtable ();
-				return PersistentData ["gtksharp_cell_data_funcs"] as Hashtable;
-			}
-		}
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_tree_view_column_set_cell_data_func (IntPtr raw, IntPtr cell_renderer, GtkSharp.TreeCellDataFuncNative func, IntPtr func_data, NativeDestroyNotify destroy);
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, IntPtr func, IntPtr func_data, IntPtr destroy);
-
-		private void ReleaseDataFunc (CellRenderer cell)
-		{
-			CellDataFuncs [cell.Handle] = null;
-			gtk_tree_view_column_set_cell_data_func(Handle, cell.Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-		}
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.TreeCellDataFuncNative func, IntPtr func_data, IntPtr destroy);
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func(IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, IntPtr destroy);
+		static extern void gtk_tree_view_column_set_cell_data_func (IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, NativeDestroyNotify destroy);
 
 		public void SetCellDataFunc (CellRenderer cell_renderer, TreeCellDataFunc func) 
 		{
 			if (func == null) {
-				ReleaseDataFunc (cell_renderer);
+				gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, (GtkSharp.TreeCellDataFuncNative) null, IntPtr.Zero, null);
 				return;
 			}
-;
+
 			GtkSharp.TreeCellDataFuncWrapper wrapper = new GtkSharp.TreeCellDataFuncWrapper (func);
-			CellDataFuncs [cell_renderer.Handle] = wrapper;
-			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
-		}
-		public void SetCellDataFunc (CellRenderer cell_renderer, CellLayoutDataFunc func) 
-		{
-			if (func == null) {
-				ReleaseDataFunc (cell_renderer);
-				return;
-			}
-;
-			GtkSharp.CellLayoutDataFuncWrapper wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func);
-			CellDataFuncs [cell_renderer.Handle] = wrapper;
-			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
+			GCHandle gch = GCHandle.Alloc (wrapper);
+			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
 		}
 
-		public void SetCellDataFunc (CellRenderer cell_renderer, NodeCellDataFunc func) 
+		public void SetCellDataFunc (CellRenderer cell_renderer, CellLayoutDataFunc func)
 		{
 			if (func == null) {
-				ReleaseDataFunc (cell_renderer);
+				gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, (GtkSharp.TreeCellDataFuncNative) null, IntPtr.Zero, null);
 				return;
 			}
-;
-			NodeCellDataFuncWrapper wrapper = new NodeCellDataFuncWrapper (func);
-			CellDataFuncs [cell_renderer.Handle] = wrapper;
-			gtk_tree_view_column_set_cell_data_func(Handle, cell_renderer.Handle, wrapper.NativeDelegate, IntPtr.Zero, IntPtr.Zero);
+
+			GtkSharp.CellLayoutDataFuncWrapper func_wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}
+
+		public void SetCellDataFunc (CellRenderer cell_renderer, NodeCellDataFunc func)
+		{
+			if (func == null) {
+				gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, (GtkSharp.TreeCellDataFuncNative) null, IntPtr.Zero, null);
+				return;
+			}
+
+			NodeCellDataFuncWrapper func_wrapper = new NodeCellDataFuncWrapper (func);
+			GCHandle gch = GCHandle.Alloc (func_wrapper);
+			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}
+
+		[Obsolete ("Replaced by SetCellDataFunc (CellRenderer, TreeCellDataFunc) overload")]
+		public void SetCellDataFunc (Gtk.CellRenderer cell_renderer, Gtk.TreeCellDataFunc func, IntPtr func_data, Gtk.DestroyNotify destroy) 
+		{
+			SetCellDataFunc (cell_renderer, func);
 		}
 

@@ -14,6 +14,7 @@ sources = 				\
 	Application.cs			\
 	BindingAttribute.cs		\
 	ChildPropertyAttribute.cs	\
+	DestroyHelper.cs		\
 	ITreeNode.cs			\
 	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\

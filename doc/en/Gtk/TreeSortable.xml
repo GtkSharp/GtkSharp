@@ -66,9 +66,9 @@
         <summary>Sets a function that should be used to be sort a particular column.</summary>
         <param name="sort_column_id">A <see cref="System.Int32" />, the index of the column to be sorted</param>
         <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc" />, the function to use for sorting</param>
-        <param name="user_data">An <see cref="T:IntPtr" />, pointer to the user data, or <see langword="null" /></param>
-        <param name="destroy">A <see cref="Gtk.DestroyNotify" /> to be called when user data is destroyed, or <see langword="null" />.</param>
-        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn" />.(FIXME: explain the user data parameter.)</remarks>
+        <param name="user_data">ignored</param>
+        <param name="destroy">ignored</param>
+        <remarks>This overloaded method is obsolete. It is replaced by the SetSortFunc (int, TreeIterCompareFunc) overload." />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefaultSortFunc">
@@ -83,11 +83,11 @@
         <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>Sets a function that should be used to be sort columns by default if not otherwise specified by <see cref="T:Gtk.TreeModelSort.SetSortFunc" />.</summary>
+        <summary>Sets a function to sort columns by default if not otherwise specified by <see cref="T:Gtk.TreeModelSort.SetSortFunc" />.</summary>
         <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc" />, the function to use for sorting</param>
-        <param name="user_data">An <see cref="T:IntPtr" />, pointer to the user data, or <see langword="null" /></param>
-        <param name="destroy">A <see cref="Gtk.DestroyNotify" /> to be called when user data is destroyed, or <see langword="null" />.</param>
-        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn" />.(FIXME: explain the user data parameter.)</remarks>
+        <param name="user_data">ignored</param>
+        <param name="destroy">ignored</param>
+        <remarks>This overload of SetDefaultSortFunc is obsolete.  The replacement is a single parameter overload. The <paramref name="data"/> and <paramref name="destroy"/> paramaters to this method are ignored. </remarks>
       </Docs>
     </Member>
     <Member MemberName="SortColumnChanged">
@@ -131,6 +131,38 @@
         <summary>Return whether this TreeModel has a default sort function or not.</summary>
         <returns>a <see cref="T:System.Boolean" />, true if a default sort function exists.</returns>
         <remarks>See <see cref="M:Gtk.TreeModelSort.SetDefaultSortFunc" /> to set a default sort function.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetDefaultSortFunc">
+      <MemberSignature Language="C#" Value="public virtual void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sort_func" Type="Gtk.TreeIterCompareFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Sets a function to sort columns by default if not otherwise specified by <see cref="T:Gtk.TreeModelSort.SetSortFunc" />.</summary>
+        <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc" />, the function to use for sorting</param>
+        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetSortFunc">
+      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sort_column_id" Type="System.Int32" />
+        <Parameter Name="sort_func" Type="Gtk.TreeIterCompareFunc" />
+      </Parameters>
+      <Docs>
+        <summary>Sets a function that should be used to be sort a particular column.</summary>
+        <param name="sort_column_id">A <see cref="System.Int32" />, the index of the column to be sorted</param>
+        <param name="sort_func">A <see cref="TGtk.TreeIterCompareFunc" />, the function to use for sorting</param>
+        <remarks>This method is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn" /></remarks>
       </Docs>
     </Member>
   </Members>
