@@ -115,6 +115,87 @@
         <parameter type="gpointer" name="user_data"/>
       </parameters>
     </callback>
+    <object name="Batch" cname="GdaBatch" parent="GObject" hidden="1">
+      <field cname="cnc" type="GdaConnection*"/>
+      <field cname="transaction_mode" type="gboolean"/>
+      <field cname="is_running" type="gboolean"/>
+      <field cname="commands" type="GList*"/>
+      <signal name="BeginTransaction" cname="begin_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="CommitTransaction" cname="commit_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="RollbackTransaction" cname="rollback_transaction" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+        </parameters>
+      </signal>
+      <signal name="ExecuteCommand" cname="execute_command" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaBatch*" name="job"/>
+          <parameter type="const-gchar*" name="cmd"/>
+        </parameters>
+      </signal>
+      <method name="AddCommand" cname="gda_batch_add_command">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="cmd"/>
+        </parameters>
+      </method>
+      <method name="Clear" cname="gda_batch_clear">
+        <return-type type="void"/>
+      </method>
+      <method name="Free" cname="gda_batch_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetConnection" cname="gda_batch_get_connection">
+        <return-type type="GdaConnection*"/>
+      </method>
+      <method name="GetTransactionMode" cname="gda_batch_get_transaction_mode">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gda_batch_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsRunning" cname="gda_batch_is_running">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LoadFile" cname="gda_batch_load_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+          <parameter type="gboolean" name="clean"/>
+        </parameters>
+      </method>
+      <constructor cname="gda_batch_new"/>
+      <method name="SetConnection" cname="gda_batch_set_connection">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc"/>
+        </parameters>
+      </method>
+      <method name="SetTransactionMode" cname="gda_batch_set_transaction_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="mode"/>
+        </parameters>
+      </method>
+      <method name="Start" cname="gda_batch_start">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Stop" cname="gda_batch_stop">
+        <return-type type="void"/>
+      </method>
+    </object>
     <object name="Client" cname="GdaClient" parent="GObject">
       <field cname="priv" type="GdaClientPrivate*"/>
       <signal name="EventNotification" cname="event_notification" when="LAST">
