@@ -20,6 +20,7 @@ BASESOURCES = 			\
 	selectiondata.c		\
 	slist.c			\
 	style.c			\
+	thread-notify.c		\
 	time_t.c		\
 	type.c			\
 	value.c			\

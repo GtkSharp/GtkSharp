@@ -2,10 +2,12 @@
 // ThreadNotify.cs: implements a notification for the thread running the Gtk main
 // loop from another thread
 //
-// Author:
+// Authors:
 //    Miguel de Icaza (miguel@ximian.com).
+//    Gonzalo Paniagua Javier (gonzalo@ximian.com)
 //
 // (C) 2002 Ximian, Inc.
+// (C) 2004 Novell, Inc.
 //
 
 namespace Gtk {
@@ -29,24 +31,21 @@ namespace Gtk {
 		// DllImport functions from Gtk
 		//
 		[DllImport ("libgtk-win32-2.0-0.dll")]
-		private static extern uint gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
+		static extern uint gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
 		public delegate void GdkInputFunction (IntPtr data, int source, int cond);
 
-		//
-		// Libc stuff
-		//
-		[DllImport ("libc.so.6")]
-		private static extern int pipe (int [] fd);
+		[DllImport ("gtksharpglue")]
+		static extern int pipe_create (int [] fd);
 		
-		[DllImport ("libc.so.6")]
-		private static extern unsafe int read (int fd, byte *b, int count);
+		[DllImport ("gtksharpglue")]
+		static extern unsafe int pipe_read (int fd, byte *b, int count);
 		
-		[DllImport ("libc.so.6")]
-		private static extern unsafe int write (int fd, byte *b, int count);
+		[DllImport ("gtksharpglue")]
+		static extern unsafe int pipe_write (int fd, byte *b, int count);
 
-		[DllImport ("libc.so.6")]
-		private static extern int close (int fd);
-		
+		[DllImport ("gtksharpglue")]
+		static extern int pipe_close (int [] fd);
+
 		GdkInputFunction notify_pipe;
 		int [] pipes;
 		bool disposed;
@@ -62,7 +61,7 @@ namespace Gtk {
 		{
 			notify_pipe = new GdkInputFunction (NotifyPipe);
 			pipes = new int [2];
-			pipe (pipes);
+			pipe_create (pipes);
 			tag = gdk_input_add (pipes [0], 1, notify_pipe, (IntPtr) 0);
 			this.re = re;
 		}
@@ -73,7 +72,7 @@ namespace Gtk {
 			
 			unsafe {
 				lock (this) {
-					read (pipes [0], &s, 1);
+					pipe_read (pipes [0], &s, 1);
 					notified = false;
 				}
 			}
@@ -95,7 +94,8 @@ namespace Gtk {
 				lock (this){
 					if (notified)
 						return;
-					write (pipes [1], &s, 1);
+					
+					pipe_write (pipes [1], &s, 1);
 					notified = true;
 				}
 			}
@@ -122,8 +122,7 @@ namespace Gtk {
 			if (!disposed) {
 				disposed = true;
 				GLib.Source.Remove (tag);
-				close (pipes [1]);
-				close (pipes [0]);
+				pipe_close (pipes);
 			}
 
 			pipes = null;
@@ -131,3 +130,4 @@ namespace Gtk {
 		}
 	}
 }
+
