@@ -817,7 +817,7 @@ sub parseInitFunc
 			my $prop = $line;
 			do {
 				$prop .= $init_lines[++$linenum];
-			} until ($init_lines[$linenum] =~ /;/);
+			} until ($init_lines[$linenum] =~ /\)\s*;/);
 			addPropElem ($prop, $obj_el);
 			$propcnt++;
 		} elsif ($line =~ /g(tk)?_signal_new/) {
