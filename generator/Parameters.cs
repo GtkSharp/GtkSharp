@@ -209,7 +209,7 @@ namespace GtkSharp.Generation {
 					call_parm = SymbolTable.CallByName(type, call_parm_name);
 				
 				if (p_elem.HasAttribute ("null_ok") && cs_type != "IntPtr" && cs_type != "System.IntPtr" && !SymbolTable.IsStruct (type))
-					call_parm = String.Format ("({0} != null) ? {1} : IntPtr.Zero", call_parm_name, call_parm);
+					call_parm = String.Format ("({0} != null) ? {1} : {2}", call_parm_name, call_parm, SymbolTable.IsCallback (type) ? "null" : "IntPtr.Zero");
 				
 				if (p_elem.HasAttribute("array")) {
 					cs_type += "[]";
@@ -335,7 +335,13 @@ namespace GtkSharp.Generation {
 					type = type.Replace (".", "");
 					type = "GtkSharp." + type + "Wrapper";
 
-					sw.WriteLine(indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", type, name);
+					sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = null;", type, name);
+					sw.Write (indent + "\t\t\t");
+					if (p_elem.HasAttribute ("null_ok"))
+					{
+						sw.Write ("if ({0} != null) ", name);
+					}
+					sw.WriteLine ("{1}_wrapper = new {0} ({1});", type, name);
 				}
 			}
 		}
