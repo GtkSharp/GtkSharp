@@ -8,3 +8,4 @@ windows:
 
 unix:
 	@echo "'make unix' is broken for now."
+	$(CSC) --unsafe --target=library --r=../glib/glib-sharp.dll --r=../pango/pango-sharp.dll --out=atk-sharp.dll --recurse=*.cs
