@@ -1,5 +1,5 @@
 <Type Name="Drag" FullName="Gtk.Drag">
-  <TypeSignature Language="C#" Value="public class Drag" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Drag" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey />
@@ -9,8 +9,12 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Methods for controlling drag and drop handling.</summary>
+    <remarks>
+     <para>
+      GTK+ has a rich set of methods for doing inter-process communication via the drag-and-drop metaphor. GTK+ can do drag-and-drop (DND) via multiple protocols. The currently supported protocols are the Xdnd and Motif protocols. As well as the methods listed here, applications may need to use some facilities provided for <see cref="T:Gtk.Selection" />. Also, the Drag and Drop API makes use of events in the <see cref="T:Gtk.Widget" /> class.
+     </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -28,9 +32,13 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>Clears information about a drop destinantion set with <see cref="M:Gtk.Drag.Fixme" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <remarks>
+	 <para>
+	  The <paramref name="widget" /> will no longer receive notification of drags.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSourceWidget">
@@ -43,10 +51,10 @@
         <Parameter Name="context" Type="Gdk.DragContext" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Determines the source <paramref name="widget" /> for a drag.</summary>
+        <param name="context">A (destination side) drag context.</param>
+        <returns>If the drag is occurring within a single application, a pointer to the source <paramref name="widget" />. Otherwise, <see langword="null" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DestSetProxy">
@@ -62,12 +70,12 @@
         <Parameter Name="use_coordinates" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="proxy_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol" /></param>
-        <param name="use_coordinates">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets this <paramref name="widget" /> as a proxy for drops to another window.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="proxy_window">The window to which to foward drag events.</param>
+        <param name="protocol">The drag protocol which the <paramref name="proxy_window" /> accepts (You can use <see cref="M:Gdk.Drag.GetProtocol" />to determine this).</param>
+        <param name="use_coordinates">If <see langword="true" />, send the same coordinates to the destination, because it is an embedded subwindow.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Finish">
@@ -83,12 +91,12 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="success">a <see cref="T:System.Boolean" /></param>
-        <param name="del">a <see cref="T:System.Boolean" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Informs the drag sourcre that the drop is finished, and that the data of the drag will no longer be repaired.</summary>
+        <param name="context">The drag context.</param>
+        <param name="success">A flag indicating whether the drop was successful.</param>
+        <param name="del">A flag indicating whether the source should delete the original data (this should be <see langword="true" /> for a move).</param>
+        <param name="time_">The timestamp from the <see cref="F:Gtk.Widget.DragDrop" /> event.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DestSetTargetList">
@@ -102,10 +110,14 @@
         <Parameter Name="target_list" Type="Gtk.TargetList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="target_list">a <see cref="T:Gtk.TargetList" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the target types that this <paramref name="widget" /> can accept from drag and drop.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" /> that's a drag destination.</param>
+        <param name="target_list">List of droppable targets, or <see langword="null" /> for none.</param>
+        <remarks>
+	 <para>
+	  The <paramref name="widget" /> must first be made into a drag destination with <see cref="M:Drag.Fixme" />.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceSet">
@@ -122,13 +134,17 @@
         <Parameter Name="actions" Type="Gdk.DragAction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="start_button_mask">a <see cref="T:Gdk.ModifierType" /></param>
-        <param name="targets">a <see cref="T:Gtk.TargetEntry" /></param>
-        <param name="n_targets">a <see cref="T:System.Int32" /></param>
-        <param name="actions">a <see cref="T:Gdk.DragAction" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets up a <paramref name="widget" /> so that GTK+ will start a drag operation when the user clicks and drags on the <paramref name="widget" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="start_button_mask">The bitmask of buttons that can start the drag.</param>
+        <param name="targets">The table of targets that the drag will support.</param>
+        <param name="n_targets">The number of items in <paramref name="targets" />.</param>
+        <param name="actions">the bitmask of possible actions for a drag from this <paramref name="widget" />.</param>
+        <remarks>
+	 <para>
+	  The <paramref name="widget" /> must have a window.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DestFindTarget">
@@ -143,12 +159,16 @@
         <Parameter Name="target_list" Type="Gtk.TargetList" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="target_list">a <see cref="T:Gtk.TargetList" /></param>
-        <returns>a <see cref="T:Gdk.Atom" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Looks for a match between <paramref name="context" />->targets and the <paramref name="dest_target_list" />, returning the first matching target, otherwise returning GDK_NONE.</summary>
+        <param name="widget">Drag destination <paramref name="widget" />.</param>
+        <param name="context">Drag context.</param>
+        <param name="target_list">List of droppable targets, or <see langword="null" /> to use <see cref="M:Gtk.Drag.DestGetTargetList" />.</param>
+        <returns>First target that the source offers and the dest can accept. or GDK_NONE.</returns>
+        <remarks>
+	 <para>
+	   <paramref name="dest_target_list" /> should usually be the return value from <see cref="M:Gtk.Drag.DestGetTargetList" /> but some widgets may have different valid targets for different parts of the <paramref name="widget" />; in that case, they will have to implement a drag_motion handler that passes the correct target list to this method.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CheckThreshold">
@@ -165,14 +185,14 @@
         <Parameter Name="current_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="start_x">a <see cref="T:System.Int32" /></param>
-        <param name="start_y">a <see cref="T:System.Int32" /></param>
-        <param name="current_x">a <see cref="T:System.Int32" /></param>
-        <param name="current_y">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks to see if a mouse drag starting at (<paramref name="start_x" />, <paramref name="start_y" />) and ending at (<paramref name="current_x" />, <paramref name="current_y" />) has passed the GTK+ drag threshold, and this should trigger the beginning of a drag-and-drog operation.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="start_x">X coordinate of a start of drag.</param>
+        <param name="start_y">Y coordinate of a start of drag.</param>
+        <param name="current_x">Current X coordinate.</param>
+        <param name="current_y">Current Y coordinate.</param>
+        <returns><see langword="true" /> if the drag threshold has been passed.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SourceSetIconStock">
@@ -186,10 +206,10 @@
         <Parameter Name="stock_id" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="stock_id">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the icon that will be used for drags from a particular source to a stock icon.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="stock_id">The ID of the stock icon to use.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Unhighlight">
@@ -202,9 +222,9 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>Removes a highlight set by <see cref="M:Gtk.Drag.Highlight" /> from a <paramref name="widget" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Highlight">
@@ -217,9 +237,13 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>Draws a highlight around a <paramref name="widget" />.</summary>
+        <param name="widget">A <paramref name="widget" /> to highlight.</param>
+        <remarks>
+	 <para>
+	  This will attach handlers to <see cref="F:Gtk.Widget.ExposeEvent" /> and <see cref="F:Gtk.Widget.QueueDraw" />, so the highlight will continue to be displayed until <see cref="M:Gtk.Drag.Unhighlight" /> is called.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceSetIconPixbuf">
@@ -233,10 +257,14 @@
         <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the icon that will be used for drags from a particular <paramref name="widget" /> from a <see cref="T:Gdk.Pixbuf" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="pixbuf">The <see cref="T:Gdk.Pixbuf" /> for the drag icon.</param>
+        <remarks>
+	 <para>
+	  GTK+ retains a reference for <paramref name="pixbuf" /> and will release it when it is no longer needed.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Begin">
@@ -253,14 +281,18 @@
         <Parameter Name="evnt" Type="Gdk.Event" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="targets">a <see cref="T:Gtk.TargetList" /></param>
-        <param name="actions">a <see cref="T:Gdk.DragAction" /></param>
-        <param name="button">a <see cref="T:System.Int32" /></param>
-        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:Gdk.DragContext" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Initates a drag on the source side.</summary>
+        <param name="widget">The source <paramref name="widget" />.</param>
+        <param name="targets">The targets (data formats) in which the source can provide the data.</param>
+        <param name="actions">A bitmask of the allowed drag actions for this drag.</param>
+        <param name="button">The button the user clicked to start the drag.</param>
+        <param name="evnt">The event that triggered the start of the drag.</param>
+        <returns>The context fot this drag.</returns>
+        <remarks>
+	 <para>
+	  The method only needs to be used when the application is starting drags itself, and is not needed when <see cref="M:Gtk.Drag.SourceSset" /> is used.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconStock">
@@ -276,12 +308,12 @@
         <Parameter Name="hot_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="stock_id">a <see cref="T:System.String" /></param>
-        <param name="hot_x">a <see cref="T:System.Int32" /></param>
-        <param name="hot_y">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the icon for a given drag from a stock ID.</summary>
+        <param name="context">The context of the drag (this must be called with a context for the source side of a drag).</param>
+        <param name="stock_id">The ID of the stock icon to use for the drag.</param>
+        <param name="hot_x">The X offset within the icon of the hotspot.</param>
+        <param name="hot_y">The Y offset within the icon of the hotspot.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetData">
@@ -297,12 +329,16 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="target">a <see cref="T:Gdk.Atom" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Obtains the data associated with a drag.</summary>
+        <param name="widget">The <paramref name="widget" /> that will receive the <see cref="F:Gtk.Widget.DragDataReceived" /> event.</param>
+        <param name="context">The drag context.</param>
+        <param name="target">The target (form of the data) to retrieve.</param>
+        <param name="time_">A timestamp for retrieving the data. This will generally be the time received in a <see cref="F:Gtk.Widget.DragMotion" /> or <see cref="F:Gtk.Widget.DragDrop" /> event.</param>
+        <remarks>
+	 <para>
+	  When the data is received or the retrieval fails, GTK+ will emit a <see cref="F:Gtk.Widget.DragDataReceived" /> event. Failure of the retrieval is indicated by the length field of the <paramref name="selection_data" /> signal parameter being negative. However, when <see cref="M:Gtk.Drag.GetData" /> is called implicitely because the <see cref="F:Gtk.DestDefaults.Drop" /> was set, then the <paramref name="widget" /> will not receive notification of failed drops. 
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconPixmap">
@@ -320,14 +356,18 @@
         <Parameter Name="hot_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
-        <param name="pixmap">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask">a <see cref="T:Gdk.Bitmap" /></param>
-        <param name="hot_x">a <see cref="T:System.Int32" /></param>
-        <param name="hot_y">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="pixmap" /> as the icon for a given drag.</summary>
+        <param name="context">The context for a drag (this must be called with a context for the source side of a drag).</param>
+        <param name="colormap">The colormap of the icon.</param>
+        <param name="pixmap">The image data for the icon.</param>
+        <param name="mask">The transparency mask for the icon.</param>
+        <param name="hot_x">The X offset with <paramref name="pixmap" /> of the hotspot.</param>
+        <param name="hot_y">The Y offset with <paramref name="pixmap" /> of the hotspot.</param>
+        <remarks>
+	 <para>
+	  GTK+ retains references for the arguments, and will release them when they are no longer needed. In general, <see cref="M:Gtk.Drag.SetIconPixbuf" /> will be more convenient to use.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconPixbuf">
@@ -343,12 +383,12 @@
         <Parameter Name="hot_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /></param>
-        <param name="hot_x">a <see cref="T:System.Int32" /></param>
-        <param name="hot_y">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets <paramref name="pixbuf" /> as the icon for a given drag.</summary>
+        <param name="context">The context for a drag (this must be called with a context for the source side of a drag).</param>
+        <param name="pixbuf">The <see cref="T:Gdk.Pixbuf" /> to use as the drag icon.</param>
+        <param name="hot_x">The X offset within <paramref name="widget" /> of the hotspot.</param>
+        <param name="hot_y">The Y offset within <paramref name="widget" /> of the hotspot.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DestGetTargetList">
@@ -361,10 +401,10 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <returns>a <see cref="T:Gtk.TargetList" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the list of targets this <paramref name="widget" /> can accept from drag-and-drop.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <returns>The <see cref="T:Gtk.TargetList" />, or <see langword="null" /> if none.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SourceUnset">
@@ -377,9 +417,9 @@
         <Parameter Name="widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <remarks>To be added</remarks>
+        <summary>Undoes the effects of <see cref="M:Gtk.Drag.SourceSet" />.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SourceSetIcon">
@@ -395,12 +435,16 @@
         <Parameter Name="mask" Type="Gdk.Bitmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
-        <param name="pixmap">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="mask">a <see cref="T:Gdk.Bitmap" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the icon that will be used for drags from a particular <paramref name="widget" /> from a pixmap/mask.</summary>
+        <param name="widget">A <see cref="T:Gtk.Widget" />.</param>
+        <param name="colormap">The colormap of the icon.</param>
+        <param name="pixmap">The image data for the icon.</param>
+        <param name="mask">The transparency mask for an image.</param>
+        <remarks>
+	 <para>
+	  GTK+ retains references for the arguments, and will release them when they are no longer needed. Use <see cref="M:Gtk.Drag.SourceSetIconPixbuf" /> instead.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetIconWidget">
@@ -416,12 +460,16 @@
         <Parameter Name="hot_y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
-        <param name="hot_x">a <see cref="T:System.Int32" /></param>
-        <param name="hot_y">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <summary>Changes the icon for a <paramref name="widget" /> to a given <paramref name="widget" />.</summary>
+        <param name="context">The context for a drag (this must be called with a context for the source side of a drag.</param>
+        <param name="widget">A toplevel window to use as an icon.</param>
+        <param name="hot_x">The X offset within <paramref name="widget" /> of the hotspot.</param>
+        <param name="hot_y">The Y offset within <paramref name="widget" /> of the hotspot.</param>
+        <remarks>
+	 <para>
+	  GTK+ will not destroy the icon, so if you don't want it to persist, you should connect to the <see cref="F:Gtk.Widgart.DragEnd" /> event and destroy it yourself.
+	 </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -430,9 +478,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Drag" /></returns>
-        <remarks>To be added</remarks>
+        <summary>A constructor.</summary>
+        <returns>Creates a new instance of <see cref="T:Gtk.Drag" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="IconDefault">
@@ -443,10 +491,10 @@
       </ReturnValue>
       <Parameters></Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">a <see cref="T:Gdk.DragContext" /></param>
-        <returns>a <see cref="T:Gdk.DragContext" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the icon for a particular drag to the default icon.</summary>
+        <param name="value">The context for a drag (this must be called with a context for the source side of a drag).</param>
+        <returns><see langword="true" /> if the icon has been made the default.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
