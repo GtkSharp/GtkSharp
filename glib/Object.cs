@@ -142,7 +142,7 @@ namespace GLib {
 		}
 
 		[DllImport("gtksharpglue")]
-		static extern uint gtksharp_register_type (string name, uint parent_type);
+		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
 		/// <summary>
 		///	RegisterGType Shared Method
@@ -154,18 +154,18 @@ namespace GLib {
 		///	of subclasses.
 		/// </remarks>
 
-		public static GLib.Type RegisterGType (System.Type t)
+		public static GType RegisterGType (System.Type t)
 		{
 			System.Type parent = t.BaseType;
 			PropertyInfo pi = parent.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
 			if (pi == null) {
 				Console.WriteLine ("null PropertyInfo");
-				return null;
+				return GType.Invalid;
 			}
-			uint parent_gtype = (uint) pi.GetValue (null, null);
+			GType parent_gtype = (GType) pi.GetValue (null, null);
 			string name = t.Namespace.Replace(".", "_") + t.Name;
 			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
-			return new GLib.Type (gtksharp_register_type (name, parent_gtype));
+			return new GLib.GType (gtksharp_register_type (name, parent_gtype.Val));
 		}
 
 		/// <summary>
@@ -192,7 +192,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern IntPtr g_object_new (uint gtype, IntPtr dummy);
+		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
 		/// <summary>
 		///	Object Constructor
@@ -202,9 +202,9 @@ namespace GLib {
 		///	Creates an object from a specified GType.
 		/// </remarks>
 
-		protected Object (GLib.Type gtype)
+		protected Object (GType gtype)
 		{
-			Raw = g_object_new (gtype.Value, IntPtr.Zero);
+			Raw = g_object_new (gtype.Val, IntPtr.Zero);
 		}
 
 		/// <summary>
@@ -237,11 +237,11 @@ namespace GLib {
 		/// </remarks>
 
 		[DllImport("gtksharpglue")]
-		private static extern uint gtksharp_get_type_id (IntPtr obj);
+		private static extern IntPtr gtksharp_get_type_id (IntPtr obj);
 
-		public static uint GType {
+		public static GLib.GType GType {
 			get {
-				return 0;
+				return GType.Invalid;
 			}
 		}
 
@@ -262,11 +262,11 @@ namespace GLib {
 		///	Returns the GType of this object.
 		/// </remarks>
 
-		public uint GetGType () {
+		public GLib.GType GetGType () {
 			if (_obj == IntPtr.Zero)
-				return (uint) TypeFundamentals.TypeInvalid;
-			else
-				return gtksharp_get_type_id (_obj);
+				return GType.Invalid;
+
+			return new GLib.GType (gtksharp_get_type_id (_obj));
 		}
 
 		/// <summary>
@@ -367,7 +367,12 @@ namespace GLib {
 		}
 
 		[DllImport("gtksharpglue")]
-		protected static extern void gtksharp_override_virtual_method (uint gtype, string name, Delegate cb);
+		static extern void gtksharp_override_virtual_method (IntPtr gtype, string name, Delegate cb);
+
+		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)
+		{
+			gtksharp_override_virtual_method (gtype.Val, name, cb);
+		}
 
 		[DllImport("libgobject-2.0-0.dll")]
 		protected static extern void g_signal_chain_from_overridden (IntPtr[] args, IntPtr retval);

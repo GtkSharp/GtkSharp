@@ -13,7 +13,7 @@ namespace GLib {
 	public sealed class DefaultSignalHandlerAttribute : Attribute 
 	{
 		private string method;
-		private Type type;
+		private System.Type type;
 
 		public DefaultSignalHandlerAttribute () {}
 
@@ -27,7 +27,7 @@ namespace GLib {
 			}
 		}
 
-		public Type Type 
+		public System.Type Type 
 		{
 			get {
 				return type;

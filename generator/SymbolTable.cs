@@ -69,7 +69,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("uint1", "bool"));
 			AddType (new SimpleGen ("GC", "IntPtr"));
 			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
-			AddType (new SimpleGen ("GType", "uint"));
+			AddType (new ManualGen ("GType", "GLib.GType", "Val"));
 			AddType (new SimpleGen ("GError", "IntPtr"));
 			// gsize is a system-specific typedef in glibconfig.h,
 			// but this should work for now
@@ -89,10 +89,10 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
 
-			AddType (new ManualGen ("GSList", "GLib", "SList"));
-			AddType (new ManualGen ("GList", "GLib", "List"));
-			AddType (new ManualGen ("GValue", "GLib", "Value"));
-			AddType (new ManualGen ("GObject", "GLib", "Object"));
+			AddType (new ManualGen ("GSList", "GLib.SList"));
+			AddType (new ManualGen ("GList", "GLib.List"));
+			AddType (new ManualGen ("GValue", "GLib.Value"));
+			AddType (new ManualGen ("GObject", "GLib.Object"));
 		}
 		
 		public void AddType (IGeneratable gen)

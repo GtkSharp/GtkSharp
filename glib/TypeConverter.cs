@@ -20,34 +20,34 @@ namespace GLibSharp {
 
 		private TypeConverter () {}
 		
-		public static TypeFundamentals LookupType (System.Type type)
+		public static GType LookupType (System.Type type)
 		{
 			if (type.Equals (typeof (string)))
-				return TypeFundamentals.TypeString;
+				return GType.String;
 
 			if (!type.IsValueType) {
 				if (type.IsSubclassOf (typeof (GLib.Object)))
-					return TypeFundamentals.TypeObject;
+					return GType.Object;
 				else if (type.IsSubclassOf (typeof (GLib.Boxed)))
-					return TypeFundamentals.TypeBoxed;
+					return GType.Boxed;
 				else
-					return TypeFundamentals.TypeNone;
+					return GType.None;
 			}
 
 			if (type.Equals (typeof (bool)))
-				return TypeFundamentals.TypeBoolean;
+				return GType.Boolean;
 			if (type.Equals (typeof (int)))
-				return TypeFundamentals.TypeInt;
+				return GType.Int;
 			if (type.Equals (typeof (double)))
-				return TypeFundamentals.TypeDouble;
+				return GType.Double;
 			if (type.Equals (typeof (float)))
-				return TypeFundamentals.TypeFloat;
+				return GType.Float;
 			if (type.Equals (typeof (char)))
-				return TypeFundamentals.TypeChar;
+				return GType.Char;
 			if (type.Equals (typeof (uint)))
-				return TypeFundamentals.TypeUInt;
+				return GType.UInt;
 
-			return TypeFundamentals.TypeInvalid;
+			return GType.Invalid;
 		}
 	}
 }

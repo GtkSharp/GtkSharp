@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2001 Mike Kestner, (c) 2003 Novell, Inc.
 
 namespace GLib {
 
@@ -37,8 +37,8 @@ namespace GLib {
 
 		public void Dispose () {
 			if (_val != IntPtr.Zero) {
-				uint type = gtksharp_value_get_value_type (_val);
-				if (type == ManagedValue.GType) {
+				IntPtr rawtype = gtksharp_value_get_value_type (_val);
+				if (rawtype == ManagedValue.GType.Val) {
 					ManagedValue.Free (g_value_get_boxed (_val)); 
 				}
 			
@@ -51,7 +51,7 @@ namespace GLib {
 		// import the glue function to allocate values on heap
 
 		[DllImport("gtksharpglue")]
-		static extern IntPtr gtksharp_value_create(uint type);
+		static extern IntPtr gtksharp_value_create(IntPtr type);
 
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_value_create_from_property(IntPtr obj, string name);
@@ -74,7 +74,7 @@ namespace GLib {
 		/// </remarks>
 
 		public Value () {
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeInvalid);
+			_val = gtksharp_value_create (GType.Invalid.Val);
 		}
 
 		/// <summary>
@@ -92,8 +92,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_set_boolean (IntPtr val,
-						        bool data);
+		static extern void g_value_set_boolean (IntPtr val, bool data);
 
 		/// <summary>
 		///	Value Constructor
@@ -105,13 +104,14 @@ namespace GLib {
 
 		public Value (bool val)
 		{
-			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoolean);
+			_val = gtksharp_value_create(GType.Boolean.Val);
 			g_value_set_boolean (_val, val);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed (IntPtr val, IntPtr data);
 
+/*
 		/// <summary>
 		///	Value Constructor
 		/// </summary>
@@ -122,7 +122,7 @@ namespace GLib {
 
 		public Value (GLib.Boxed val)
 		{
-			_val = gtksharp_value_create((uint) TypeFundamentals.TypeBoxed);
+			_val = gtksharp_value_create(GType.Boxed);
 			//g_value_set_boxed (_val, val.Handle);
 		}
 
@@ -131,6 +131,7 @@ namespace GLib {
 			_val = gtksharp_value_create_from_property (obj, prop_name);
 			//g_value_set_boxed (_val, val.Handle);
 		}
+*/
 
 		public Value (IntPtr obj, string prop_name, Opaque val)
 		{
@@ -151,7 +152,7 @@ namespace GLib {
 
 		public Value (double val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeDouble);
+			_val = gtksharp_value_create (GType.Double.Val);
 			g_value_set_double (_val, val);
 		}
 
@@ -168,7 +169,7 @@ namespace GLib {
 
 		public Value (float val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeFloat);
+			_val = gtksharp_value_create (GType.Float.Val);
 			g_value_set_float (_val, val);
 		}
 
@@ -185,7 +186,7 @@ namespace GLib {
 
 		public Value (int val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeInt);
+			_val = gtksharp_value_create (GType.Int.Val);
 			g_value_set_int (_val, val);
 		}
 
@@ -202,7 +203,7 @@ namespace GLib {
 
 		public Value (GLib.Object val)
 		{
-			_val = gtksharp_value_create (val.GetGType ());
+			_val = gtksharp_value_create (val.GetGType ().Val);
 			g_value_set_object (_val, val.Handle);
 		}
 
@@ -219,7 +220,7 @@ namespace GLib {
 
 		public Value (IntPtr val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypePointer);
+			_val = gtksharp_value_create (GType.Pointer.Val);
 			g_value_set_pointer (_val, val); 
 		}
 
@@ -236,7 +237,7 @@ namespace GLib {
 
 		public Value (string val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeString);
+			_val = gtksharp_value_create (GType.String.Val);
 			g_value_set_string (_val, val); 
 		}
 
@@ -253,7 +254,7 @@ namespace GLib {
 
 		public Value (uint val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeUInt);
+			_val = gtksharp_value_create (GType.UInt.Val);
 			g_value_set_uint (_val, val); 
 		}
 
@@ -267,7 +268,7 @@ namespace GLib {
 
 		public Value (ushort val)
 		{
-			_val = gtksharp_value_create ((uint) TypeFundamentals.TypeUInt);
+			_val = gtksharp_value_create (GType.UInt.Val);
 			g_value_set_uint (_val, val); 
 		}
 
@@ -309,48 +310,37 @@ namespace GLib {
 
 		public Value (object obj)
 		{
-			TypeFundamentals type = TypeConverter.LookupType (obj.GetType ());
-			if (type == TypeFundamentals.TypeNone) {
-				_val = gtksharp_value_create (ManagedValue.GType);
-			} else if (type == TypeFundamentals.TypeObject) {
-				_val = gtksharp_value_create (((GLib.Object) obj).GetGType ());
-			} else if (type == TypeFundamentals.TypeInvalid) {
+			GType type = TypeConverter.LookupType (obj.GetType ());
+			if (type == GType.None) {
+				_val = gtksharp_value_create (ManagedValue.GType.Val);
+			} else if (type == GType.Object) {
+				_val = gtksharp_value_create (((GLib.Object) obj).GetGType ().Val);
+			} else if (type == GType.Invalid) {
 				throw new Exception ("Unknown type");
 			} else {
-				_val = gtksharp_value_create ((uint) type);
+				_val = gtksharp_value_create (type.Val);
 			}
 			
-			switch (type) {
-			case TypeFundamentals.TypeNone:
+			if (type == GType.None)
 				g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (obj));
-				break;
-			case TypeFundamentals.TypeString:
+			else if (type == GType.String)
 				g_value_set_string (_val, (string) obj);
-				break;
-			case TypeFundamentals.TypeBoolean:
+			else if (type == GType.Boolean)
 				g_value_set_boolean (_val, (bool) obj);
-				break;
-			case TypeFundamentals.TypeInt:
+			else if (type == GType.Int)
 				g_value_set_int (_val, (int) obj);
-				break;
-			case TypeFundamentals.TypeDouble:
+			else if (type == GType.Double)
 				g_value_set_double (_val, (double) obj);
-				break;
-			case TypeFundamentals.TypeFloat:
+			else if (type == GType.Float)
 				g_value_set_float (_val, (float) obj);
-				break;
-			case TypeFundamentals.TypeChar:
+			else if (type == GType.Char)
 				g_value_set_char (_val, (char) obj);
-				break;
-			case TypeFundamentals.TypeUInt:
+			else if (type == GType.UInt)
 				g_value_set_uint (_val, (uint) obj);
-				break;
-			case TypeFundamentals.TypeObject:
+			else if (type == GType.Object)
 				g_value_set_object (_val, ((GLib.Object) obj).Handle);
-				break;
-			default:
+			else
 				throw new Exception ("Unknown type");
-			}
 		}
 
 
@@ -597,70 +587,57 @@ namespace GLib {
 		}
 
 		[DllImport("gtksharpglue")]
-		static extern uint gtksharp_value_get_value_type (IntPtr val);
+		static extern IntPtr gtksharp_value_get_value_type (IntPtr val);
 		
 		public object Val
 		{
 			get {
-				uint type = gtksharp_value_get_value_type (_val);
+				GLib.GType type = new GLib.GType (gtksharp_value_get_value_type (_val));
 				if (type == ManagedValue.GType) {
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (_val));
 				}
 
-				switch ((TypeFundamentals) type) {
-				case TypeFundamentals.TypeString:
+				if (type == GType.String)
 					return (string) this;
-				case TypeFundamentals.TypeBoolean:
+				else if (type == GType.Boolean)
 					return (bool) this;
-				case TypeFundamentals.TypeInt:
+				else if (type == GType.Int)
 					return (int) this;
-				case TypeFundamentals.TypeDouble:
+				else if (type == GType.Double)
 					return (double) this;
-				case TypeFundamentals.TypeFloat:
+				else if (type == GType.Float)
 					return (float) this;
-				case TypeFundamentals.TypeChar:
+				else if (type == GType.Char)
 					return (char) this;
-				case TypeFundamentals.TypeUInt:
+				else if (type == GType.UInt)
 					return (uint) this;
-				case TypeFundamentals.TypeObject:
+				else if (type == GType.Object)
 					return (GLib.Object) this;
-				default:
+				else
 					throw new Exception ("Unknown type");
-				}
 			}
 			set {
-				GLib.TypeFundamentals type = GLibSharp.TypeConverter.LookupType (value.GetType());
-				switch (type) {
-				case TypeFundamentals.TypeNone:
+				GType type = GLibSharp.TypeConverter.LookupType (value.GetType());
+				if (type == GType.None)
 					g_value_set_boxed_take_ownership (_val, ManagedValue.WrapObject (value));
-					break;
-				case TypeFundamentals.TypeString:
+				else if (type == GType.String)
 					g_value_set_string (_val, (string) value);
-					break;
-				case TypeFundamentals.TypeBoolean:
+				else if (type == GType.Boolean)
 					g_value_set_boolean (_val, (bool) value);
-					break;
-				case TypeFundamentals.TypeInt:
+				else if (type == GType.Int)
 					g_value_set_int (_val, (int) value);
-					break;
-				case TypeFundamentals.TypeDouble:
+				else if (type == GType.Double)
 					g_value_set_double (_val, (double) value);
-					break;
-				case TypeFundamentals.TypeFloat:
+				else if (type == GType.Float)
 					g_value_set_float (_val, (float) value);
-					break;
-				case TypeFundamentals.TypeChar:
+				else if (type == GType.Char)
 					g_value_set_char (_val, (char) value);
-					break;
-				case TypeFundamentals.TypeUInt:
+				else if (type == GType.UInt)
 					g_value_set_uint (_val, (uint) value);
-					break;
-				case TypeFundamentals.TypeObject:
+				else if (type == GType.Object)
 					g_value_set_object (_val, ((GLib.Object) value).Handle);
-					break;
-				default:
+				else
 					throw new Exception ("Unknown type");
-				}
 			}
 		}
 

@@ -36,7 +36,7 @@ namespace Gtk {
 
 		delegate int GetFlagsDelegate ();
 		delegate int GetNColumnsDelegate ();
-		delegate uint GetColumnTypeDelegate (int col);
+		delegate IntPtr GetColumnTypeDelegate (int col);
 		delegate bool GetNodeDelegate (out int node_idx, IntPtr path);
 		delegate IntPtr GetPathDelegate (int node_idx);
 		delegate void GetValueDelegate (int node_idx, int col, IntPtr val);
@@ -65,7 +65,7 @@ namespace Gtk {
 
 		int stamp;
 		Hashtable node_hash = new IDHashtable ();
- 		uint[] ctypes;
+ 		GLib.GType[] ctypes;
 		PropertyInfo[] getters;
 		int n_cols = 1;
 		ArrayList nodes = new ArrayList ();
@@ -81,9 +81,9 @@ namespace Gtk {
 			return n_cols;
 		}
 
-		uint get_column_type_cb (int col)
+		IntPtr get_column_type_cb (int col)
 		{
-			return ctypes [col];
+			return ctypes [col].Val;
 		}
 
 		bool get_node_cb (out int node_idx, IntPtr path)
@@ -124,7 +124,7 @@ namespace Gtk {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_init (IntPtr handle, uint type);
+		static extern void g_value_init (IntPtr handle, IntPtr type);
 
 		void get_value_cb (int node_idx, int col, IntPtr val)
 		{
@@ -132,7 +132,7 @@ namespace Gtk {
 			ITreeNode node = node_hash [node_idx] as ITreeNode;
 			if (node == null)
 				return;
-			g_value_init (gval.Handle, ctypes [col]);
+			g_value_init (gval.Handle, ctypes [col].Val);
 			object col_val = getters[col].GetValue (node, null);
 			gval.Val = col_val;
 		}
@@ -292,7 +292,7 @@ namespace Gtk {
 				}
 			}
 
- 			ctypes = new uint [n_cols];
+ 			ctypes = new GLib.GType [n_cols];
  			getters = new PropertyInfo [n_cols];
 
 			MemberInfo[] info = type.GetMembers ();
@@ -306,13 +306,13 @@ namespace Gtk {
 						int col = tnva.Column;
 						pi = mi as PropertyInfo;
 						getters [col] = pi;
-						GLib.TypeFundamentals ctype = GLibSharp.TypeConverter.LookupType (pi.PropertyType);
-                                		if (ctype == GLib.TypeFundamentals.TypeNone) {
+						GLib.GType ctype = GLibSharp.TypeConverter.LookupType (pi.PropertyType);
+                                		if (ctype == GLib.GType.None) {
                                         		ctypes[col] = GLibSharp.ManagedValue.GType;
-                                		} else if (ctype == GLib.TypeFundamentals.TypeInvalid) {
+                                		} else if (ctype == GLib.GType.Invalid) {
                                         		throw new Exception ("Unknown type");
                                 		} else {
-                                        		ctypes[col] = (uint) ctype;
+                                        		ctypes[col] = ctype;
                                 		}
 						break;
 					default:

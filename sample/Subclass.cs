@@ -43,14 +43,14 @@ namespace GtkSamples {
 
 	public class MyButton : Gtk.Button {
 
-		static uint gtype = 0;
+		static GLib.GType gtype = GLib.GType.Invalid;
 
-		public MyButton () : base (new GLib.Type (GType)) {}
+		public MyButton () : base (GType) {}
 
-		public static new uint GType {
+		public static new GLib.GType GType {
 			get {
-				if (gtype == 0)
-					gtype = RegisterGType (typeof (MyButton)).Value;
+				if (gtype == GLib.GType.Invalid)
+					gtype = RegisterGType (typeof (MyButton));
 				return gtype;
 			}
 		}

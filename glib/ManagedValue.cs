@@ -8,6 +8,7 @@ namespace GLibSharp {
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
+	using GLib;
 	
 	/// <summary>
 	///  Managed types boxer	
@@ -37,18 +38,18 @@ namespace GLibSharp {
 		private static IntPtr cur_ptr = IntPtr.Zero;
 		private static CopyFunc copy;
 		private static FreeFunc free;
-		private static uint boxed_type = 0;
+		private static GType boxed_type = GType.Invalid;
 
 		[DllImport("libgobject-2.0-0.dll")]
-		private static extern uint g_boxed_type_register_static (string typename, CopyFunc copy_func, FreeFunc free_func);
+		private static extern IntPtr g_boxed_type_register_static (string typename, CopyFunc copy_func, FreeFunc free_func);
 		
-		public static uint GType {
+		public static GType GType {
 			get {
-				if (boxed_type == 0) {
+				if (boxed_type == GType.Invalid) {
 					copy = new CopyFunc (Copy);
 					free = new FreeFunc (Free);
 				
-					boxed_type = g_boxed_type_register_static ("GtkSharpValue", copy, free);
+					boxed_type = new GLib.GType (g_boxed_type_register_static ("GtkSharpValue", copy, free));
 				}
 
 				return boxed_type;

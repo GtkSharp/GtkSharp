@@ -171,16 +171,16 @@
 
 		public TreeStore (params Type[] types)
 		{
-			uint[] ctypes = new uint[types.Length];
+			IntPtr[] ctypes = new IntPtr[types.Length];
 			int i = 0;
 			foreach (Type type in types) {
-				GLib.TypeFundamentals ctype = GLibSharp.TypeConverter.LookupType (type);
-				if (ctype == GLib.TypeFundamentals.TypeNone) {
-					ctypes[i] = GLibSharp.ManagedValue.GType;
-				} else if (ctype == GLib.TypeFundamentals.TypeInvalid) {
+				GLib.GType ctype = GLibSharp.TypeConverter.LookupType (type);
+				if (ctype == GLib.GType.None) {
+					ctypes[i] = GLibSharp.ManagedValue.GType.Val;
+				} else if (ctype == GLib.GType.Invalid) {
 					throw new Exception ("Unknown type");
 				} else {
-					ctypes[i] = (uint) ctype;
+					ctypes[i] = ctype.Val;
 				}
 				i++;
 			}
