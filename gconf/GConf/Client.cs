@@ -41,12 +41,16 @@ namespace GConf
 
 		public override object Get (string key)
 		{
+			if (key == null)
+				throw new ArgumentNullException ("key");
+
 			IntPtr err;
 			IntPtr raw = gconf_client_get (Raw, key, out err);
 			if (err != IntPtr.Zero)
 				throw new GLib.GException (err);
+			
 			if (raw == IntPtr.Zero)
-				throw new NoSuchKeyException ();
+				throw new NoSuchKeyException (key);
 
 			Value val = new Value (raw);
 			return val.Get ();
