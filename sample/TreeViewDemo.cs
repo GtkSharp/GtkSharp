@@ -19,7 +19,7 @@ namespace GtkSamples {
 		private static Dialog dialog = null;
 		private static Label dialog_label = null;
 
-		private static void ProcessType (TreeIter parent, Type t)
+		private static void ProcessType (TreeIter parent, System.Type t)
 		{
 			TreeIter iter = new TreeIter ();
 
@@ -40,7 +40,7 @@ namespace GtkSamples {
 			TreeIter iter = new TreeIter ();
 			string asm_name = asm.GetName ().Name;
 
-			foreach (Type t in asm.GetTypes ()) {
+			foreach (System.Type t in asm.GetTypes ()) {
 				UpdateDialog ("Loading from {0}:\n{1}", asm_name, t.ToString ());
 
 				GLib.Value Name = new GLib.Value (t.Name);
