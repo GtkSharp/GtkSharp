@@ -15,8 +15,15 @@ test -z "$srcdir" && srcdir=.
   DIE=1
 }
 
+if [ -z "$LIBTOOL" ]; then
+  LIBTOOL=`which glibtool 2>/dev/null` 
+  if [ ! -x "$LIBTOOL" ]; then
+    LIBTOOL=`which libtool`
+  fi
+fi
+
 (grep "^AM_PROG_LIBTOOL" $srcdir/configure.in >/dev/null) && {
-  (libtool --version) < /dev/null > /dev/null 2>&1 || {
+  ($LIBTOOL --version) < /dev/null > /dev/null 2>&1 || {
     echo
     echo "**Error**: You must have \`libtool' installed to compile Gtk#."
     echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"

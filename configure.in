@@ -59,7 +59,11 @@ AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
 
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono)
 
-MONO=`which mono`
+if test `uname -s` = "Darwin"; then
+	MONO=`which mint`
+else
+	MONO=`which mono`
+fi
 AC_SUBST(MONO)
 
 ## Versions of dependencies
