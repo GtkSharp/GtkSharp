@@ -10,15 +10,13 @@ namespace GtkSamples {
 	using Gdk;
 	using GtkSharp;
 	using System;
-	using System.Drawing;
 
 	public class HelloWorld  {
 
 		public static int Main (string[] args)
 		{
 			Application.Init ();
-			Gtk.Window win = new Gtk.Window (Gtk.WindowType.Toplevel);
-			win.Title = "Gtk# Hello World";
+			Gtk.Window win = new Gtk.Window ("Gtk# Hello World");
 			win.DeleteEvent += new EventHandler (Window_Delete);
 			win.ShowAll ();
 			Application.Run ();

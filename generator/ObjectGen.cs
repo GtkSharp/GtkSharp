@@ -145,6 +145,14 @@ namespace GtkSharp.Generation {
 				}
 			}
 
+			string custom = ".." + sep + ns.ToLower() + sep + Name + ".custom";
+			if (File.Exists(custom)) {
+				FileStream custstream = new FileStream (custom, FileMode.Open, FileAccess.Read);
+				StreamReader sr = new StreamReader (custstream);
+				sw.WriteLine (sr.ReadToEnd ());
+				sr.Close ();
+			}
+			
 			sw.WriteLine ("\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("}");
