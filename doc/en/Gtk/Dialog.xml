@@ -14,6 +14,63 @@
       <para>The two primary areas of a dialog can be accessed as the <see cref="P:Gtk.Dialog.Vbox" /> property and the <see cref="P:Gtk.Dialog.ActionArea" /> property. To set the dialog to be modal, use the <see cref="P:Gtk.Window.Modal" /> property.</para>
       <para>If you want to block waiting for a dialog to return before returning control flow to your code, you can call <see cref="M:Gtk.Dialog.Run" />. This function enters a recursive main loop and waits for the user to respond to the dialog, returning the <see cref="T:Gtk.ResponseType"/> corresponding to the <see cref="T:Gtk.Button"/> the user clicked.</para>
       <para>For a simple dialog, you would probably use <see cref="T:Gtk.MessageDialog" /> to save yourself some effort. However, you would need to create the <see cref="T:Gtk.Dialog"/> contents manually if you had more than a simple message in the <see cref="T:Gtk.Dialog"/>.</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+namespace GtkDialogSample
+{
+    public class GtkDialogSample
+    {
+        Dialog dialog;
+        Window win;
+		
+        static void Main()
+        {
+            new GtkDialogSample ();
+        }
+	
+        GtkDialogSample ()
+        {
+            Application.Init ();
+            win = new Window ("Test");
+            win.SetDefaultSize (250, 250);
+            win.DeleteEvent += new DeleteEventHandler (on_win_delete);
+            
+            Button btn = new Button ("Show About");
+            btn.Clicked += new EventHandler (on_btn_clicked);
+            win.Add (btn);
+            
+            win.ShowAll ();
+            Application.Run ();
+        }
+		
+        void on_btn_clicked (object obj, EventArgs args)
+        {
+            dialog = new Dialog
+                ("Sample", win, Gtk.DialogFlags.DestroyWithParent);
+            dialog.Modal = true;
+            dialog.AddButton ("Close", 5);
+            dialog.Response += new ResponseHandler (on_dialog_response);
+            dialog.Run ();
+            dialog.Destroy ();
+        }
+		
+        void on_dialog_response (object obj, ResponseArgs args)
+        {
+            Console.WriteLine (args.ResponseId);
+        }
+		
+        void on_win_delete (object obj, DeleteEventArgs args)
+        {
+            Application.Quit ();
+        }
+    }
+}
+        </code>
+      </example>
     </remarks>
   </Docs>
   <Base>
