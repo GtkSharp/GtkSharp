@@ -205,7 +205,7 @@ namespace GtkSharp.Generation {
 		
 		private void GenerateDeclCommon (StreamWriter sw, ClassBase implementor)
 		{
-			if (elem.GetAttribute ("shared") == "true"))
+			if (elem.GetAttribute ("shared") == "true")
 				sw.Write("static ");
 			sw.Write (Safety);
 			Method dup = null;
