@@ -136,3 +136,18 @@
 			return col;
 		}
 
+		public int InsertColumn (int pos, string title, CellRenderer cell, TreeCellDataFunc cell_data) 
+		{
+			TreeViewColumn col = new TreeViewColumn ();
+			col.Title = title;
+			col.PackStart (cell, true);
+			col.SetCellDataFunc (cell, cell_data);
+			return InsertColumn (col, pos);
+		}
+		
+		public int InsertColumn (int pos, string title, CellRenderer cell, params object[] attrs) 
+		{
+			TreeViewColumn col = new TreeViewColumn (title, cell, attrs);
+			return InsertColumn (col, pos);
+		}
+
