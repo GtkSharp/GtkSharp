@@ -122,6 +122,25 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
+		public String GetName(String c_type)
+		{
+			c_type = Trim(c_type);
+			if (simple_types.ContainsKey(c_type)) {
+				String stype = (String) simple_types[c_type];
+				int dotidx = stype.IndexOf(".");
+				if (dotidx == -1) {
+					return stype;
+				} else {
+					return stype.Substring(dotidx+1);
+				}
+			} else if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				return gen.Name;
+			} else {
+				return "";
+			}
+		}
+		
 		public String GetDllName(String ns)
 		{
 			return (String) dlls[ns];
@@ -155,6 +174,7 @@ namespace GtkSharp.Generation {
 		
 		public bool IsBoxed(String c_type)
 		{
+			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is BoxedGen) {
@@ -166,6 +186,7 @@ namespace GtkSharp.Generation {
 		
 		public bool IsInterface(String c_type)
 		{
+			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is InterfaceGen) {
@@ -177,6 +198,7 @@ namespace GtkSharp.Generation {
 		
 		public bool IsObject(String c_type)
 		{
+			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				if (gen is ObjectGen) {

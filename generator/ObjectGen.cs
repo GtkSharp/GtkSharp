@@ -43,7 +43,7 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = new StreamWriter (stream);
 			
 			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001 Mike Kestner");
+			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
 			
 			sw.WriteLine ("namespace " + ns + " {");
@@ -69,6 +69,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 				
 			Hashtable clash_map = new Hashtable();
+			Hashtable props = new Hashtable();
+			Hashtable sigs = new Hashtable();
+			ArrayList methods = new ArrayList();
+			bool first_sig = true;
 				
 			foreach (XmlNode node in elem.ChildNodes) {
 				
@@ -91,18 +95,27 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "method":
-					if (!GenMethod(member, table, sw)) {
-						Console.WriteLine("in object " + CName);
-					}
+					methods.Add(member);
 					break;
 					
 				case "property":
-					if (!GenProperty(member, table, sw)) {
+					String pname;
+					if (!GenProperty(member, table, sw, out pname)) {
 						Console.WriteLine("in object " + CName);
 					}
+					props.Add(pname, pname);
 					break;
 					
 				case "signal":
+					if (first_sig) {
+						first_sig = false;
+						sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
+					}
+					String sname;
+					if (!GenSignal(member, table, sw, out sname)) {
+						Console.WriteLine("in object " + CName);
+					}
+					sigs.Add(sname, sname);
 					break;
 					
 				default:
@@ -116,7 +129,21 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\tpublic " + Name + "() : base(){}");
 				sw.WriteLine();
 			}
+			
+			foreach (XmlElement member in methods) {
+				String mname = member.GetAttribute("name");
+				if ((mname.StartsWith("Set") || mname.StartsWith("Get")) &&
+				    props.ContainsKey(mname.Substring(3))) {
+				    	continue;
+				} else if (sigs.ContainsKey(mname)) {
+					member.SetAttribute("name", "Emit" + mname);
+				}
 				
+				if (!GenMethod(member, table, sw)) {
+					Console.WriteLine("in object " + CName);
+				}
+			}
+
 			sw.WriteLine ("\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("}");
@@ -125,7 +152,7 @@ namespace GtkSharp.Generation {
 			sw.Close();
 		}
 		
-		public bool GenProperty (XmlElement prop, SymbolTable table, StreamWriter sw)
+		public bool GenProperty (XmlElement prop, SymbolTable table, StreamWriter sw, out String name)
 		{
 			String c_type = prop.GetAttribute("type");
 
@@ -134,6 +161,12 @@ namespace GtkSharp.Generation {
 			String cs_type = table.GetCSType(c_type);
 			String m_type;
 			
+			XmlElement parent = (XmlElement) prop.ParentNode;
+			name = prop.GetAttribute("name");
+			if (name == parent.GetAttribute("name")) {
+				name += "Prop";
+			}
+
 			if (table.IsObject(c_type)) {
 				m_type = "GLib.Object";
 			} else if (table.IsBoxed(c_type)) {
@@ -155,12 +188,6 @@ namespace GtkSharp.Generation {
 				return true;
 			}
 			
-			XmlElement parent = (XmlElement) prop.ParentNode;
-			String name = prop.GetAttribute("name");
-			if (name == parent.GetAttribute("name")) {
-				name += "Prop";
-			}
-
 			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
 			if (prop.HasAttribute("readable")) {
 				sw.WriteLine("\t\t\tget {");
@@ -186,30 +213,33 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		public bool GenSignal (XmlElement sig, SymbolTable table, StreamWriter sw)
+		public bool GenSignal (XmlElement sig, SymbolTable table, StreamWriter sw, out String name)
 		{
 			String cname = "\"" + sig.GetAttribute("cname") + "\"";
+			name = sig.GetAttribute("name");
 
-			String marsh = "blah"; // SignalHandler.GetName(sig);
+			String marsh = SignalHandler.GetName(sig, table);
 			if (marsh == "") {
 				return false;
 			}
+			
+			marsh = "GtkSharp." + marsh;
 
-			sw.WriteLine("\t\t/// <summary> " + cname + " Event </summary>");
+			sw.WriteLine("\t\t/// <summary> " + name + " Event </summary>");
 			sw.WriteLine("\t\t/// <remarks>");
 			// FIXME: Generate some signal docs
 			sw.WriteLine("\t\t/// </remarks>");
 			sw.WriteLine();
-			sw.WriteLine("\t\tpublic event EventHandler " + cname + " {");
+			sw.WriteLine("\t\tpublic event EventHandler " + name + " {");
 			sw.WriteLine("\t\t\tadd {");
-			sw.WriteLine("\t\t\t\tif (Events [" + cname + "] == null)");
+			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
 			sw.Write("\t\t\t\t\tSignals[" + cname + "] = new " + marsh);
 			sw.WriteLine("(this, Handle, " + cname + ", value);");
-			sw.WriteLine("\t\t\t\tEvents.AddHandler(" + cname + ", value);");
+			sw.WriteLine("\t\t\t\tEventList.AddHandler(" + cname + ", value);");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t\tremove {");
-			sw.WriteLine("\t\t\t\tEvents.RemoveHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t\tif (Events[" + cname + "] == null)");
+			sw.WriteLine("\t\t\t\tEventList.RemoveHandler(" + cname + ", value);");
+			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
 			sw.WriteLine("\t\t\t\t\tSignals.Remove(" + cname + ");");
 			sw.WriteLine("\t\t\t}");
 			sw.WriteLine("\t\t}");

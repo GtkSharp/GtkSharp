@@ -496,7 +496,10 @@ sub addSignalElem
 	$sig_elem = $doc->createElement('signal');
 	$node->appendChild($sig_elem);
 
-	$sig_elem->setAttribute('name', $1) if ($spec =~ /\(\"(\w+)\"/);
+	if ($spec =~ /\(\"([\w\-]+)\"/) {
+		$sig_elem->setAttribute('name', StudlyCaps($1));
+		$sig_elem->setAttribute('cname', $1);
+	}
 	$sig_elem->setAttribute('when', $1) if ($spec =~ /_RUN_(\w+)/);
 
 	my $method = "";
@@ -523,7 +526,7 @@ sub addSignalElem
 		return;
 	}
 
-	if ($class =~ /;\s*(\S+\s*\**)\s*\(\*\s*$method\)\s*\((.*)\);/) {
+	if ($class =~ /;\s*(\S+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
 		$ret = $1; $parms = $2;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
