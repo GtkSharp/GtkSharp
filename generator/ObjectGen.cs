@@ -257,7 +257,12 @@ namespace GtkSharp.Generation {
 
 			StreamWriter sw = gen_info.Writer;
 
-			sw.WriteLine ("\t\tpublic class " + Name + "Child : Gtk.Container.ContainerChild {");
+			ObjectGen child_ancestor = Parent as ObjectGen;
+			while (child_ancestor.CName != "GtkContainer" &&
+			       child_ancestor.childprops.Count == 0)
+				child_ancestor = child_ancestor.Parent as ObjectGen;
+
+			sw.WriteLine ("\t\tpublic class " + Name + "Child : " + child_ancestor.NS + "." + child_ancestor.Name + "." + child_ancestor.Name + "Child {");
 			sw.WriteLine ("\t\t\tprotected internal " + Name + "Child (Gtk.Container parent, Gtk.Widget child) : base (parent, child) {}");
 			sw.WriteLine ("");
 
