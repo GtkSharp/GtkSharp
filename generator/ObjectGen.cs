@@ -32,11 +32,13 @@ namespace GtkSharp.Generation {
 
 		private ArrayList strings = new ArrayList();
 		private ArrayList vm_nodes = new ArrayList();
+		private Hashtable childprops = new Hashtable();
 		private static Hashtable dirs = new Hashtable ();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
+				string name;
 
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
@@ -53,6 +55,13 @@ namespace GtkSharp.Generation {
 
 				case "static-string":
 					strings.Add (node);
+					break;
+
+				case "childprop":
+					name = member.GetAttribute ("name");
+					while (childprops.ContainsKey (name))
+						name += "mangled";
+					childprops.Add (name, new ChildProperty (member, this));
 					break;
 
 				default:
@@ -245,6 +254,36 @@ namespace GtkSharp.Generation {
 			gen_info.Writer.WriteLine();
 
 			base.GenCtors (gen_info);
+		}
+
+		protected void GenChildProperties (GenerationInfo gen_info)
+		{
+			if (childprops.Count == 0)
+				return;
+
+			StreamWriter sw = gen_info.Writer;
+
+			sw.WriteLine ("\t\tpublic class " + Name + "Child : Gtk.Container.ContainerChild {");
+			sw.WriteLine ("\t\t\tinternal " + Name + "Child (Gtk.Container parent, Gtk.Widget child) : base (parent, child) {}");
+			sw.WriteLine ("");
+
+			foreach (ChildProperty prop in childprops.Values) {
+				if (prop.Validate ())
+					prop.Generate (gen_info, "\t\t\t");
+				else
+					Console.WriteLine("in Object " + QualifiedName);
+			}
+
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("");
+
+			sw.WriteLine ("\t\tpublic override Gtk.Container.ContainerChild this [Gtk.Widget child] {");
+			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\treturn new " + Name + "Child (this, child);");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("");
+			
 		}
 
 		private void GenVMGlue (GenerationInfo gen_info, XmlElement elem)

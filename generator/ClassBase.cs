@@ -31,7 +31,6 @@ namespace GtkSharp.Generation {
 
 	public class ClassBase : GenBase {
 		protected Hashtable props = new Hashtable();
-		protected Hashtable childprops = new Hashtable();
 		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = null;
@@ -94,13 +93,6 @@ namespace GtkSharp.Generation {
 					props.Add (name, new Property (member, this));
 					break;
 
-				case "childprop":
-					name = member.GetAttribute("name");
-					while (props.ContainsKey(name))
-						name += "mangled";
-					childprops.Add (name, new ChildProperty (member, this));
-					break;
-
 				case "signal":
 					name = member.GetAttribute("name");
 					while (sigs.ContainsKey(name))
@@ -139,7 +131,6 @@ namespace GtkSharp.Generation {
 			switch (name) {
 			case "method":
 			case "property":
-			case "childprop":
 			case "signal":
 			case "implements":
 			case "constructor":
@@ -212,36 +203,6 @@ namespace GtkSharp.Generation {
 				else
 					Console.WriteLine("in Object " + QualifiedName);
 			}
-		}
-
-		protected void GenChildProperties (GenerationInfo gen_info)
-		{
-			if (childprops.Count == 0)
-				return;
-
-			StreamWriter sw = gen_info.Writer;
-
-			sw.WriteLine ("\t\tpublic class " + Name + "Child : Gtk.Container.ContainerChild {");
-			sw.WriteLine ("\t\t\tinternal " + Name + "Child (Gtk.Container parent, Gtk.Widget child) : base (parent, child) {}");
-			sw.WriteLine ("");
-
-			foreach (ChildProperty prop in childprops.Values) {
-				if (prop.Validate ())
-					prop.Generate (gen_info, "\t\t\t");
-				else
-					Console.WriteLine("in Object " + QualifiedName);
-			}
-
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ("");
-
-			sw.WriteLine ("\t\tpublic override Gtk.Container.ContainerChild this [Gtk.Widget child] {");
-			sw.WriteLine ("\t\t\tget {");
-			sw.WriteLine ("\t\t\t\treturn new " + Name + "Child (this, child);");
-			sw.WriteLine ("\t\t\t}");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ("");
-			
 		}
 
 		public void GenSignals (GenerationInfo gen_info, ClassBase implementor)
