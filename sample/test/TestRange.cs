@@ -45,7 +45,7 @@ namespace WidgetViewer {
 
 			hscale = new HScale (adjustment);
 			hscale.DrawValue = true;
-			hscale.FormatValue += new EventHandler (reformat_value);
+			hscale.FormatValue += new FormatValueHandler (reformat_value);
 
 			box2.PackStart (hscale, true, true, 0);
 
@@ -65,7 +65,7 @@ namespace WidgetViewer {
 
 			vscale = new VScale (adjustment);
 			vscale.DrawValue = true;
-			vscale.FormatValue += new EventHandler (reformat_value);
+			vscale.FormatValue += new FormatValueHandler (reformat_value);
 			hbox.PackStart (vscale, true, true, 0);
 
 			box2.PackStart (hbox, true, true, 0);
@@ -91,7 +91,7 @@ namespace WidgetViewer {
 			window.Destroy ();
 		}
 
-		static void reformat_value (object o, EventArgs args)
+		static void reformat_value (object o, FormatValueArgs args)
 		{
 		}
 	}
