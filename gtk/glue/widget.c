@@ -24,7 +24,6 @@
 
 /* Forward declarations */
 GdkRectangle *gtksharp_gtk_widget_get_allocation (GtkWidget *widget);
-void gtksharp_gtk_widget_set_allocation (GtkWidget *widget, GdkRectangle rect);
 GdkWindow *gtksharp_gtk_widget_get_window (GtkWidget *widget);
 void gtksharp_gtk_widget_set_window (GtkWidget *widget, GdkWindow *window);
 int gtksharp_gtk_widget_get_state (GtkWidget *widget);
@@ -45,12 +44,6 @@ GdkRectangle*
 gtksharp_gtk_widget_get_allocation (GtkWidget *widget)
 {
 	return &widget->allocation;
-}
-
-void
-gtksharp_gtk_widget_set_allocation (GtkWidget *widget, GdkRectangle rect)
-{
-	widget->allocation = rect;
 }
 
 GdkWindow *
