@@ -20,6 +20,7 @@ namespace GLib {
 	///	to get and set properties on Objects.
 	/// </remarks>
 
+	[StructLayout (LayoutKind.Sequential)]
 	public class Value : IDisposable {
 
 		IntPtr	_val;
