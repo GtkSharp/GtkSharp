@@ -70,7 +70,7 @@ foreach $key (keys (%structs)) {
 }
 
 foreach $key (keys (%objects)) {
-	next if ($key !~ /GtkWindow\b|GtkAccelGroup|GtkBin\b/);
+	next if ($key !~ /GdkPixbuf\b|GtkWindow\b|GtkAccelGroup|GtkBin\b/);
 	gen_object (split (/\n/, $objects{$key}));
 }
 
@@ -294,7 +294,7 @@ sub gen_prop ()
 	$cname = $1;
 
 	$def =~ /prop-type "(\w+)/;
-	if (exists ($objects{$1})) {
+	if (exists ($objects{$1}) || ($1 =~ /GObject/)) {
 		$sret = $maptypes{$1};
 		$mret = "GLib.Object";
 	} elsif (exists ($maptypes{$1})) {
@@ -413,7 +413,7 @@ sub gen_method
 		$code .= "Marshal.PtrToStringAnsi($call)";
 	} elsif ($mret eq "int") {
 		$code .= "($sret) $call";
-	} elsif (exists ($objects{$ret})) {
+	} elsif (exists ($objects{$ret}) || ($ret =~ /GObject/)) {
 		$code .= "($sret) GLib.Object.GetObject($call)";
 	} else {
 		die "Unexpected return type match $sret:$mret\n";
@@ -445,7 +445,8 @@ sub gen_param_strings
 			$sig .= "$maptypes{$ptype} $pname";
 			if ($maptypes{$ptype} eq $marshaltypes{$ptype}) {
 				$call .= "$pname";
-			} elsif (exists ($objects{$ptype})) {
+			} elsif (exists ($objects{$ptype}) || 
+				 ($ptype =~ /GObject/)) {
 				$call .= "$pname.Handle";
 			} elsif ($ptype =~ /gchar/) {
 				$call .= "Marshal.StringToHGlobalAnsi($pname)";
