@@ -14,9 +14,12 @@ namespace GtkSharp.Generation {
 	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList strings = new ArrayList();
+		private static Hashtable objs = new Hashtable();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
+			objs.Add (CName, QualifiedName + "," + NS.ToLower() + "-sharp");
+ 
 			foreach (XmlNode node in elem.ChildNodes) {
 
 				if (!(node is XmlElement)) continue;
@@ -175,6 +178,65 @@ namespace GtkSharp.Generation {
 			sw.WriteLine();
 
 			base.GenCtors (sw);
+		}
+
+		public static void GenerateMapper ()
+		{
+			char sep = Path.DirectorySeparatorChar;
+			string dir = ".." + sep + "glib" + sep + "generated";
+			if (!Directory.Exists(dir)) {
+        			Console.WriteLine ("creating " + dir);
+        			Directory.CreateDirectory(dir);
+			}
+			String filename = dir + sep + "ObjectManager.cs";
+
+			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
+			StreamWriter sw = new StreamWriter (stream);
+
+			sw.WriteLine ("// Generated File.  Do not modify.");
+			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
+			sw.WriteLine ();
+
+			sw.WriteLine ("namespace GtkSharp {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tusing System;");
+			sw.WriteLine ("\tusing System.Collections;");
+			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
+			sw.WriteLine ();
+			sw.WriteLine ("\tpublic class ObjectManager {");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tprivate static Hashtable types = new Hashtable ();");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tstatic ObjectManager ()");
+			sw.WriteLine ("\t\t{");
+
+			foreach (string key in objs.Keys) {
+				sw.WriteLine ("\t\t\t\ttypes.Add(\"" + key + "\", \"" + objs[key] + "\");");
+			}
+				
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t[DllImport(\"gtksharpglue\")]");
+			sw.WriteLine ("\t\tstatic extern string gtksharp_get_type_name (IntPtr raw);");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static GLib.Object CreateObject (IntPtr raw)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tstring typename = gtksharp_get_type_name (raw);");
+			sw.WriteLine ("\t\t\tif (!types.ContainsKey(typename))");
+			sw.WriteLine ("\t\t\t\treturn null;");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t\tType t = Type.GetType ((string)types[typename]);");
+			sw.WriteLine ("\t\t\treturn (GLib.Object) Activator.CreateInstance (t, new object[] {raw});");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static void RegisterType (string native_name, string managed_name, string assembly)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\ttypes.Add(native_name, managed_name + \",\" + assembly);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("\t}");
+			sw.WriteLine ("}");
+			sw.Flush ();
+			sw.Close ();
 		}
 	}
 }

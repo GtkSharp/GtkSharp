@@ -48,7 +48,7 @@ namespace GLib {
 		{
 			Object obj = (Object)Objects[(int)o];
 			if (obj != null) return obj;
-			return null; //FIXME: Call TypeParser here eventually.
+			return GtkSharp.ObjectManager.CreateObject(o); 
 		}
 
 		/// <summary>

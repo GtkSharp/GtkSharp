@@ -10,6 +10,7 @@ BASESOURCES = \
 	slist.c			\
 	paned.c			\
 	style.c			\
+	type.c			\
 	widget.c		\
 	canvasitem.c
 

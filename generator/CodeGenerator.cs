@@ -27,6 +27,8 @@ namespace GtkSharp.Generation {
 				gen.Generate ();
 			}
 
+			ObjectGen.GenerateMapper ();
+
 			Statistics.Report();
 			return 0;
 		}
