@@ -53,6 +53,19 @@ namespace GtkSharp.Docs {
 					}
 				}
 
+				iter = api_nav.Select ("/Type/Base/BaseTypeName");
+				if (iter.MoveNext ()) {
+					XmlElement elem = ((IHasXmlNode)iter.Current).GetNode () as XmlElement;
+					if (elem.InnerText == "System.Enum") {
+						iter = api_nav.Select ("/Type/Members/Member[@MemberName='value__']");
+						if (iter.MoveNext ()) {
+							elem = ((IHasXmlNode)iter.Current).GetNode () as XmlElement;
+							kills += " " + elem.GetAttribute ("MemberName") + "(Field)";
+							kill_elems.Add (elem);
+						}
+					}
+				}
+
 				foreach (XmlNode node in kill_elems)
 					node.ParentNode.RemoveChild (node);
 					
@@ -67,6 +80,7 @@ namespace GtkSharp.Docs {
 					if (nonstubs != "")
 						Console.WriteLine ("  Non-stubbed deprecates:" + nonstubs);
 				}
+
 			}
 			return 0;
 		}
