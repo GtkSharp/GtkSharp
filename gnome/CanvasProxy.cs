@@ -7,6 +7,7 @@
 //
 
 using System;
+using System.Collections;
 
 namespace Gnome {
 
@@ -20,6 +21,8 @@ namespace Gnome {
 		protected CanvasProxy () : base ()
 		{
 		}
+
+		private Hashtable Signals = new Hashtable ();
 
 		public event GtkSharp.UpdateHandler Update {
 			add {
