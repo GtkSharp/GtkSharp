@@ -75,7 +75,7 @@ namespace GtkSharp.Generation {
 		public bool IsPadding {
 			get {
 				string c_name = elem.GetAttribute ("cname");
-				return (c_name.StartsWith ("dummy"));
+				return (c_name.StartsWith ("dummy") || c_name.StartsWith ("padding"));
 			}
 		}
 
@@ -100,17 +100,17 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string Protection {
+		public string StudlyName {
 			get {
-				if (IsArray)
-					// FIXME
-					return "public";
-				else if (IsBit || IsPadding || SymbolTable.Table.IsCallback (CType))
-					return "private";
-				else if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && CSType != "string")
-					return "private";
-				else
-					return "public";
+				string name = Name;
+				string[] segs = name.Split('_');
+				string studly = "";
+				foreach (string s in segs) {
+					if (s.Trim () == "")
+						continue;
+					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
+				}
+				return studly;
 			}
 		}
 
@@ -126,12 +126,21 @@ namespace GtkSharp.Generation {
 
 			if (IsArray) 
 				sw.WriteLine ("\t\t[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
-			sw.WriteLine ("\t\t{0} {1} {2};", Protection, CSType, table.MangleName (Name));
-
 
 			string wrapped = table.GetCSType (CType);
 			string wrapped_name = SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
-			if (table.IsObject (CType)) {
+			if (IsArray) {
+				sw.WriteLine ("\t\tpublic {0} {1};", CSType, StudlyName);
+			} else if (IsPadding) {
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else if (IsBit) {
+				// FIXME
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else if (table.IsCallback (CType)) {
+				// FIXME
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else if (table.IsObject (CType)) {
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
@@ -141,6 +150,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
 				sw.WriteLine ("\t\t}");
 			} else if (table.IsOpaque (CType)) {
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { ");
@@ -152,10 +162,16 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
 				sw.WriteLine ("\t\t}");
 			} else if (IsPointer && (table.IsStruct (CType) || table.IsBoxed (CType))) {
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
 				sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
 				sw.WriteLine ("\t\t}");
+			} else if (IsPointer && CSType != "string") {
+				// FIXME: probably some fields here which should be visible.
+				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+			} else {
+				sw.WriteLine ("\t\tpublic {0} {1};", CSType, Name);
 			}
 		
 			return true;
