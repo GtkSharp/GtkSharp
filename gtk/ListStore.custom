@@ -80,8 +80,10 @@
 			return AppendValues ((Array) values);
 		}
 
-		public ListStore (params Type[] types)
+		public ListStore (params Type[] types) : base (IntPtr.Zero)
 		{
+			if (GetType() != typeof (ListStore))
+				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
 			IntPtr[] ctypes = new IntPtr[types.Length];
 			int i = 0;
 			foreach (Type type in types) {

@@ -18,6 +18,9 @@
 			}
 			set {
 				base.Raw = value;
+				if (value == IntPtr.Zero)
+					return;
+
 				if (gtksharp_object_is_floating (value)) {
 					g_object_ref (value);
 					Sink ();

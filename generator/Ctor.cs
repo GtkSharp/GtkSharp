@@ -133,7 +133,7 @@ namespace GtkSharp.Generation {
 					sw.Write ("new {0} (", name);
 				sw.WriteLine (cname + "(" + body.GetCallString (false) + "));");
 			} else {
-				sw.WriteLine("\t\tpublic " + safety + name + "(" + sig.ToString() + ")");
+				sw.WriteLine("\t\tpublic " + safety + name + "(" + sig.ToString() + ") : base (IntPtr.Zero)");
 				sw.WriteLine("\t\t{");
 
 				body.Initialize(gen_info, false, false, ""); 

@@ -83,8 +83,11 @@
 		/// <summary>Creates a Glade.XML object from a Stream</summary>
 		/// <remarks>Reads the contents of the stream and parses it. It must be in 
 		/// correct Glade format</remarks>
-		public XML (System.IO.Stream s, string root, string domain)
+		public XML (System.IO.Stream s, string root, string domain) : base (IntPtr.Zero)
 		{
+			if (GetType() != typeof (XML))
+				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+
 			if (s == null)
 				throw new ArgumentNullException ("s");
 
@@ -99,8 +102,11 @@
 		/// given assembly and parses it. If the assembly is null,
 		/// the current assembly will be used. It must be in
 		/// correct Glade format</remarks>
-		public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain)
+		public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain) : base (IntPtr.Zero)
 		{
+			if (GetType() != typeof (XML))
+				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+
 			if (assembly == null)
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
 

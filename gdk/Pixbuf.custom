@@ -36,12 +36,12 @@
 			g_object_ref (Raw);
 		}
 		
-		public Pixbuf (System.IO.Stream stream)
+		public Pixbuf (System.IO.Stream stream) : base (IntPtr.Zero)
 		{
 			LoadFromStream (stream);
 		}
 
-		public Pixbuf (System.Reflection.Assembly assembly, string resource)
+		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
 			if (assembly == null)
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
@@ -93,14 +93,14 @@
 		}
 
 		// overload to default the colorspace
-		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn)
+		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
 		{
 			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = null;
 			destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn, this);
 			Raw = gdk_pixbuf_new_from_data(data, (int) Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
-		public unsafe Pixbuf(byte[] data, bool copy_pixels)
+		public unsafe Pixbuf(byte[] data, bool copy_pixels) : base (IntPtr.Zero)
 		{
 			IntPtr error = IntPtr.Zero;
 			Raw = gdk_pixbuf_new_from_inline(data.Length, data, copy_pixels, out error);
@@ -110,7 +110,7 @@
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern unsafe IntPtr gdk_pixbuf_new_from_inline(int len, IntPtr data, bool copy_pixels, out IntPtr error);
 
-		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels)
+		public unsafe Pixbuf(int data_length, void *data, bool copy_pixels) : base (IntPtr.Zero)
 		{
 			IntPtr error = IntPtr.Zero;
 			Raw = gdk_pixbuf_new_from_inline(data_length, (IntPtr) data, copy_pixels, out error);

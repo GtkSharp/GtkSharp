@@ -12,8 +12,10 @@
 // Manually wrap until we figure out how to gen ellipses.
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern IntPtr gtk_dialog_new_with_buttons (string title, IntPtr i, int flags, IntPtr dummy);
-public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base()
+public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags) : base(IntPtr.Zero)
 {
+	if (GetType() != typeof (Dialog))
+		throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
 	Raw = gtk_dialog_new_with_buttons (title, parent.Handle, (int) flags, IntPtr.Zero);
 }
 

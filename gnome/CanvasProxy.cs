@@ -13,14 +13,9 @@ namespace Gnome {
 
 	public class CanvasProxy : Gnome.CanvasItem
 	{
-		public CanvasProxy (IntPtr raw)
-			: base (raw)
-		{
-		}
+		public CanvasProxy (IntPtr raw) : base (raw) {}
 
-		protected CanvasProxy () : base ()
-		{
-		}
+		protected CanvasProxy () : base (IntPtr.Zero) {}
 
 		public event UpdateHandler Update {
 			add {

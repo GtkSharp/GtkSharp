@@ -138,10 +138,23 @@ namespace GLib {
 			GtkSharp.ObjectManager.RegisterType (name, t.Namespace + t.Name, t.Assembly.GetName().Name);
 			GType gtype = new GType (gtksharp_register_type (name, parent_gtype.Val));
 			ConnectDefaultHandlers (gtype, t);
+			g_types[t] = gtype;
 			return gtype;
 		}
 
-		protected Object () {}
+
+		static Hashtable g_types = new Hashtable ();
+		public static GType GetGType (System.Type t)
+		{
+			if (g_types.ContainsKey (t))
+				return (GType) g_types [t];
+			
+			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+			if (pi != null)
+				return (GType) pi.GetValue (null, null);
+			
+			return RegisterGType (t);
+		}
 
 		public Object (IntPtr raw)
 		{

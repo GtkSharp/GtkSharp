@@ -7,29 +7,12 @@
 // This code is inserted after the automatically generated code.
 
 
-		/// <summary>
-		///	Appends a row.
-		/// </summary>
-		///
-		/// <remarks>
-		///	Appends a row to the root level of the TreeStore.
-		/// </remarks>
-
 		[DllImport ("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_store_append (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 
 		public void Append (out Gtk.TreeIter iter) {
 			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
 		}
-
-		/// <summary>
-		///	Inserts a row.
-		/// </summary>
-		///
-		/// <remarks>
-		///	Inserts a row in the root level of the TreeStore at
-		///	the given position.
-		/// </remarks>
 
 		[DllImport ("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_store_insert (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, int position);
@@ -38,14 +21,6 @@
 			gtk_tree_store_insert (Handle, out iter, IntPtr.Zero, position);
 		}
 
-		/// <summary>
-		///	Prepends a row.
-		/// </summary>
-		///
-		/// <remarks>
-		///	Prepends a row to the root level of the TreeStore.
-		/// </remarks>
-
 		[DllImport ("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_store_prepend (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent);
 
@@ -53,30 +28,12 @@
 			gtk_tree_store_append (Handle, out iter, IntPtr.Zero);
 		}
 
-		/// <summary>
-		///	Inserts a row.
-		/// </summary>
-		///
-		/// <remarks>
-		///	Inserts a row in the root level of TreeStore before the
-		///	given sibling.
-		/// </remarks>
-
 		[DllImport ("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_store_insert_before (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
 
 		public void InsertBefore (out Gtk.TreeIter iter, Gtk.TreeIter sibling) {
 			gtk_tree_store_insert_before (Handle, out iter, IntPtr.Zero, ref sibling);
 		}
-
-		/// <summary>
-		///	Inserts a row.
-		/// </summary>
-		///
-		/// <remarks>
-		///	Inserts a row in the root level of TreeStore before the
-		///	given sibling.
-		/// </remarks>
 
 		[DllImport ("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_tree_store_insert_after (IntPtr raw, out Gtk.TreeIter iter, IntPtr parent, ref Gtk.TreeIter sibling);
@@ -168,8 +125,11 @@
 			return AppendValues ((Array) values);
 		}
 
-		public TreeStore (params Type[] types)
+		public TreeStore (params Type[] types) : base (IntPtr.Zero)
 		{
+			if (GetType() != typeof (TreeStore))
+				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+
 			IntPtr[] ctypes = new IntPtr[types.Length];
 			int i = 0;
 			foreach (Type type in types) {

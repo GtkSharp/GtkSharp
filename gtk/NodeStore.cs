@@ -270,7 +270,7 @@ namespace Gtk {
 		[DllImport("gtksharpglue")]
 		static extern IntPtr gtksharp_node_store_new ();
 
-		public NodeStore (Type node_type)
+		public NodeStore (Type node_type) : base (IntPtr.Zero)
 		{
 			Raw = gtksharp_node_store_new ();
 			ScanType (node_type);

@@ -10,8 +10,10 @@
 // This code is inserted after the automatically generated code.
 
 
-		public TreeView (NodeStore store)
+		public TreeView (NodeStore store) : base (IntPtr.Zero)
 		{
+			if (GetType() != typeof (TreeView))
+				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
 			Raw = gtk_tree_view_new_with_model (store.Handle);
 		}
 
