@@ -1763,9 +1763,9 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether or not to assume all rows are the same height.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This is an optimization; set to <see langword="true"/> for fastest performance.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertColumnWithDataFunc">
@@ -1783,15 +1783,21 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="dnotify" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="position">a <see cref="T:System.Int32" /></param>
-        <param name="title">a <see cref="T:System.String" /></param>
-        <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="func">a <see cref="T:Gtk.TreeCellDataFunc" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="dnotify">a <see cref="T:System.IntPtr" /></param>
+        <summary>Convenience function that inserts a new column into the tree view
+	  with the given cell renderer and a <see cref="T:Gtk.TreeCellDataFunc" /> to set cell renderer
+	  attributes (normally using data from the model). </summary>
+        <param name="position">a <see cref="T:System.Int32" />, the position of the new column (-1 to append, positive numbers to insert)</param>
+        <param name="title">a <see cref="T:System.String" />, the column title</param>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" />, the renderer object</param>
+        <param name="func">a <see cref="T:Gtk.TreeCellDataFunc" />, a function for presenting the data</param>
+        <param name="data">a <see cref="T:System.IntPtr" />, pointer to the data for <paramref name="func"/></param>
+        <param name="dnotify">a <see cref="T:System.IntPtr" />, a destroy notifier for <paramref name="data"/></param>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  See also <see cref="M:Gtk.TreeViewColumn.SetCellDataFunc"/>, <see cref="M:Gtk.TreeViewColumn.PackStart"/>.
+	  If the tree view has <see cref="P:Gtk.TreeViewColumn.FixedHeightMode"/> enabled, then <paramref name="column"/> must have its
+	  <see cref="P:Gtk.TreeViewColumn.Sizing"/> property set to be <see cref="P:Gtk.TreeViewColumnSizing.Fixed"/>.
+	</remarks>
       </Docs>
     </Member>
   </Members>
