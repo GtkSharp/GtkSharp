@@ -4,6 +4,8 @@ BASESOURCES = \
 	value.c			\
 	textiter.c		\
 	fileselection.c		\
+	dialog.c		\
+	colorseldialog.c        \
 	error.c			\
 	event.c			\
 	slist.c	
