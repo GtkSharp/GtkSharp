@@ -76,6 +76,16 @@ public int Flags {
 	}
 }
 
+public void SetFlag (WidgetFlags flag)
+{
+	Flags |= (int)flag;
+}
+
+public void ClearFlag (WidgetFlags flag)
+{
+	Flags &= ~((int)flag);
+}
+
 public bool IsMapped {
 	get {
 		return ((Flags & (int)Gtk.WidgetFlags.Mapped) != 0);
@@ -88,13 +98,44 @@ public bool IsRealized {
 	}
 }
 
-public bool NoWindow {
+public bool IsNoWindow {
 	get {
 		return ((Flags & (int)Gtk.WidgetFlags.NoWindow) != 0);
 	}
 }
 
-public bool Drawable {
+public bool IsTopLevel {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.Toplevel) != 0);
+	}
+}
+
+public bool HasGrab {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.HasGrab) != 0);
+	}
+}
+
+public bool IsCompositeChild {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.CompositeChild) != 0);
+	}
+}
+
+public bool IsAppPaintable {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.AppPaintable) != 0);
+	}
+}
+
+public bool IsDoubleBuffered {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.DoubleBuffered) != 0);
+	}
+}
+
+
+public bool IsDrawable {
 	get {
 		return (Visible && IsMapped);
 	}

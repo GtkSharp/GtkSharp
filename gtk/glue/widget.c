@@ -57,7 +57,7 @@ gtksharp_gtk_widget_get_flags (GtkWidget *widget)
 void
 gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags)
 {
-	GTK_WIDGET_SET_FLAGS (widget, flags);
+	GTK_OBJECT(widget)->flags = flags;
 }
 
 int

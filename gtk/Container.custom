@@ -110,3 +110,33 @@ protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
 	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }
 
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_container_base_child_type(IntPtr raw);
+
+[DllImport("gtksharpglue")]
+static extern void gtksharp_container_override_child_type (GLib.GType type, ChildTypeDelegate cb);
+
+delegate IntPtr ChildTypeDelegate (IntPtr raw);
+
+static ChildTypeDelegate ChildTypeCallback;
+
+static IntPtr ChildType_cb (IntPtr raw)
+{
+	Container obj = GLib.Object.GetObject (raw, false) as Container;
+	GLib.GType gtype = obj.ChildType ();
+	return gtype.Val;
+}
+
+protected static void OverrideChildType (GLib.GType gtype)
+{
+	if (ChildTypeCallback == null)
+		ChildTypeCallback = new ChildTypeDelegate (ChildType_cb);
+	gtksharp_container_override_child_type (gtype, ChildTypeCallback);
+}
+
+[GLib.DefaultSignalHandler (Type=typeof(Gtk.Container), ConnectionMethod="OverrideChildType")]
+public virtual GLib.GType ChildType() {
+	IntPtr raw_ret = gtksharp_container_base_child_type(Handle);
+	GLib.GType ret = new GLib.GType(raw_ret);
+	return ret;
+}
