@@ -10,8 +10,27 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The ATK interface provided by UI components which occupy a physical area on the screen.</summary>
+    <remarks>
+      <para>
+        The ATK interface provided by UI components which occupy a
+        physical area on the screen.
+      </para>
+      <para>
+        This should be implemented by most if not all UI elements with
+        an actual on-screen presence, i.e. components which can be
+        said to have a screen-coordinate bounding box. Virtually all
+        widgets will need to have <see cref="T:Atk.Component" /> implementations
+        provided for their corresponding <see cref="T:Atk.Object" /> class. In short,
+        only UI elements which are* not* GUI elements will omit this
+        ATK interface.
+      </para>
+      <para>
+        A possible exception might be textual information with a
+        transparent background, in which case text glyph bounding box
+        information is provided by <see cref="T:Atk.Text" />.
+      </para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
@@ -31,9 +50,12 @@
         <Parameter Name="handler_id" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler_id">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Remove the handler from the list of functions to be executed
+          when this object receives focus events (in or out).
+        </summary>
+        <param name="handler_id">The handler id of the focus handler to be removed from component.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetPosition">
@@ -48,12 +70,15 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="coord_type">To be added: an object of type 'Atk.CoordType'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the postition of this component.</summary>
+        <param name="x">X coordinate.</param>
+        <param name="y">Y coordinate.</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <returns><see langword="true" /> or <see langword="false" /> whether or not the position was set or not.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GrabFocus">
@@ -64,9 +89,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Grabs focus for this component</summary>
+        <returns>
+          <see langword="true" /> if successful, <see langword="false"/> otherwise.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetExtents">
@@ -83,14 +110,20 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <param name="coord_type">To be added: an object of type 'Atk.CoordType'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the extents of this component.</summary>
+        <param name="x">X coordinate.</param>
+        <param name="y">Y coordinate.</param>
+        <param name="width">Width to set for this component.</param>
+        <param name="height">Height to set for this component.</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> whether the extents were
+          set or not.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetSize">
@@ -104,11 +137,13 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">To be added: an object of type 'int'</param>
-        <param name="height">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Set the size of this component in terms of width and height.</summary>
+        <param name="width">Width to set for this component.</param>
+        <param name="height">Height to set for this component.</param>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> whether the size was set or not.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddFocusHandler">
@@ -121,10 +156,25 @@
         <Parameter Name="handler" Type="Atk.FocusHandler" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handler">To be added: an object of type 'Atk.FocusHandler'</param>
-        <returns>To be added: an object of type 'uint'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Add the specified handler to the set of functions to be
+          called when this object receives focus events (in or out).
+        </summary>
+        <param name="handler">The <see cref="T:Atk.FocusHandler" /> to be attached to this component.</param>
+        <returns>
+          A handler id which can be used in
+          <see cref="M:Atk.Component.RemoveFocusHandler" /> or zero if the handler
+          was already added.
+        </returns>
+        <remarks>
+          <para>
+            Add the specified handler to the set of functions to be
+            called when this object receives focus events (in or out).
+          </para>
+          <para>
+            If the handler is already added it is not added again.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Contains">
@@ -139,12 +189,18 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">To be added: an object of type 'int'</param>
-        <param name="y">To be added: an object of type 'int'</param>
-        <param name="coord_type">To be added: an object of type 'Atk.CoordType'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Checks whether the specified point is within the extent of this component.</summary>
+        <param name="x">X coordinate</param>
+        <param name="y">Y coordinate</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <returns>
+          <see langword="true" /> or <see langword="false" /> indicating whether the specified point is
+          within the extent of the component or not.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RefAccessibleAtPoint">
@@ -174,9 +230,9 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the Z order of the component.</summary>
+        <returns>The value G_MININT will be returned if the layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Layer">
@@ -186,9 +242,9 @@
         <ReturnType>Atk.Layer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Atk.Layer'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the layer of this component.</summary>
+        <returns>An <see cref="T:Atk.Layer"/> which is the layer of the component.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetPosition">
@@ -203,11 +259,17 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="coord_type">a <see cref="T:Atk.CoordType" /></param>
-        <remarks>To be added</remarks>
+        <summary>
+          Gets the position of component in the form of a point
+          specifying this component's top-left corner.
+        </summary>
+        <param name="x">X coordinate position</param>
+        <param name="y">Y coordinate position</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetExtents">
@@ -224,13 +286,16 @@
         <Parameter Name="coord_type" Type="Atk.CoordType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="x">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="y">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="coord_type">a <see cref="T:Atk.CoordType" /></param>
-        <remarks>To be added</remarks>
+        <summary>Gets the rectangle which gives the extent of this component.</summary>
+        <param name="x">X coordinate position</param>
+        <param name="y">Y coordinate position</param>
+        <param name="width">Width</param>
+        <param name="height">Height</param>
+        <param name="coord_type">
+          Specifies whether the coordinates are relative to the screen
+          or to the components top level window.
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetSize">
@@ -244,10 +309,10 @@
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="width">a <see cref="T:System.Int32&amp;" /></param>
-        <param name="height">a <see cref="T:System.Int32&amp;" /></param>
-        <remarks>To be added</remarks>
+        <summary>Gets the size of this component in terms of width and height.</summary>
+        <param name="width">Width</param>
+        <param name="height">Height</param>
+        <remarks />
       </Docs>
     </Member>
   </Members>

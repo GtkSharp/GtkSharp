@@ -10,8 +10,48 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      The ATK interface provided by UI components which the user can
+      activate/interact with, this should be implemented by instances
+      of <see cref="T:Atk.Object" /> classes with which the user can interact
+      directly, i.e. buttons, checkboxes, scrollbars, e.g. components
+      which are not "passive" providers of UI information.
+    </summary>
+    <remarks>
+      <para>
+        The ATK interface provided by UI components which the user can
+        activate/interact with, This should be implemented by
+        instances of <see cref="T:Atk.Object" /> classes with which the
+        user can interact directly, i.e. buttons, checkboxes,
+        scrollbars, e.g. components which are not "passive" providers
+        of UI information.
+      </para>
+      <para>
+        Exceptions: when the user interaction is already covered by
+        another appropriate interface such as <see
+        cref="T:Atk.EditableText" /> (insert/delete test, etc.) or <see
+        cref="T:Atk.Value" /> (set value) then these actions should not
+        be exposed by <see cref="T:Atk.Action" /> as well.
+      </para>
+      <para>
+        Also note that the <see cref="T:Atk.Action" /> API is limited in that
+        parameters may not be passed to the object being activated;
+        thus the action must be self-contained and specifiable via
+        only a single "verb". Concrete examples include "press",
+        "release", "click" for buttons, "drag" (meaning initiate drag)
+        and "drop" for drag sources and drop targets, etc.
+      </para>
+      <para>
+        Though most UI interactions on components should be invocable
+        via keyboard as well as mouse, there will generally be a close
+        mapping between "mouse actions" that are possible on a
+        component and the <see cref="T:Atk.Actions" />. Where mouse and keyboard
+        actions are redundant in effect, <see cref="T:Atk.Action" /> should expose
+        only one action rather than exposing redundant actions if
+        possible. By convention we have been using "mouse centric"
+        terminology for <see cref="T:Atk.Action" /> names.
+      </para>
+    </remarks>
   </Docs>
   <Base />
   <Interfaces>
@@ -31,10 +71,10 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns a description of the specified action of the object.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <returns>A description string, or 0 if action does not implement this interface.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetDescription">
@@ -48,11 +88,11 @@
         <Parameter Name="desc" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <param name="desc">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets a description of the specified action of the object.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <param name="desc">The description to be assigned to this action.</param>
+        <returns>A <see cref="T:System.Boolean"/> representing if the description was successfully set.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetKeybinding">
@@ -65,10 +105,10 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns a keybinding associated with this action, if one exists.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <returns>A string representing the keybinding, or an empty string if there is no keybinding for this action.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetName">
@@ -81,10 +121,10 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the name of the specified action of the object.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <returns>A name string, or an empty string if action does not implement this interface.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DoAction">
@@ -97,10 +137,10 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Perform the specified action on the object.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <returns><see langword="true" /> if success, <see langword="false" /> otherwise.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="NActions">
@@ -110,9 +150,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the number of accessible actions available on the object.</summary>
+        <returns>A the number of actions, or 0 if action does not implement this interface.</returns>
+        <remarks>
+          Gets the number of accessible actions available on the
+          object. If there are more than one, the first one is
+          considered the "default" action of the object.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetLocalizedName">
@@ -125,10 +169,10 @@
         <Parameter Name="i" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="i">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the localized name of the specified action of the object.</summary>
+        <param name="i">The action index corresponding to the action to be performed.</param>
+        <returns>A name string, or an empty string if action does not implement this interface.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
