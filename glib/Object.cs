@@ -12,8 +12,38 @@ namespace GLib {
 	using System.ComponentModel;
 	using System.Runtime.InteropServices;
 
+	/// <summary>
+	///	Object Class
+	/// </summary>
+	///
+	/// <remarks>
+	///	Wrapper class for GObject.
+	/// </remarks>
+
 	public class Object  {
-		protected static Hashtable Objects = new Hashtable();
+
+		// Private class and instance members
+		IntPtr _obj;
+		EventHandlerList _events;
+		Hashtable Data;
+		static Hashtable Objects = new Hashtable();
+
+		/// <summary>
+		///	GetObject Shared Method 
+		/// </summary>
+		///
+		/// <remarks>
+		///	Used to obtain a CLI typed object associated with a 
+		///	given raw object pointer. This method is primarily
+		///	used to wrap object references that are returned 
+		///	by either the signal system or raw class methods that
+		///	return GObject references.
+		/// </remarks>
+		///
+		/// <returns>
+		///	The wrapper instance.
+		/// </returns>
+
 		public static Object GetObject(IntPtr o)
 		{
 			Object obj = (Object)Objects[(int)o];
@@ -21,23 +51,37 @@ namespace GLib {
 			return null; //FIXME: Call TypeParser here eventually.
 		}
 
-		private IntPtr _obj;
 
-		protected IntPtr RawObject
-		{
+		/// <summary>
+		///	RawObject Property
+		/// </summary>
+		///
+		/// <remarks>
+		///	The raw GObject reference associated with this wrapper.
+		///	Only subclasses of Object should need to access this
+		///	unmanaged pointer.
+		/// </remarks>
+
+		protected IntPtr RawObject {
 			get {
 				return _obj;
 			}
 			set {
-				if ((Object)Objects[(int)value] != null) Objects.Remove((int)value);
-				Objects[(int)value] = this;
+				Objects [value] = this;
 				_obj = value;
 			}
 		}       
 
-		private EventHandlerList _events;
-		public EventHandlerList Events
-		{
+		/// <summary>
+		///	Events Property
+		/// </summary>
+		///
+		/// <remarks>
+		///	A list object containing all the events for this 
+		///	object indexed by the Gtk+ signal name.
+		/// </remarks>
+
+		public EventHandlerList Events {
 			get {
 				if (_events == null)
 					_events = new EventHandlerList ();
@@ -45,25 +89,36 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("gobject-1.3.dll")]
-		static extern IntPtr g_object_get_data (
-					IntPtr obj,
-					String key );
+		/// <summary>
+		///	GetData Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Accesses arbitrary data storage on the Object.
+		/// </remarks>
 
-		public IntPtr GetRawData (String key)
+		public object GetData (String key)
 		{
-			return g_object_get_data (_obj, key);
+			if (Data == null)
+				return null;
+
+			return Data [key];
 		}
 
-		[DllImport("gobject-1.3")]
-		static extern void g_object_set_data (
-					IntPtr obj,
-					String key,
-					IntPtr data );
+		/// <summary>
+		///	SetData Method
+		/// </summary>
+		///
+		/// <remarks>
+		///	Stores arbitrary data on the Object.
+		/// </remarks>
 
-		public void SetRawData (String key, IntPtr value)
+		public void SetData (String key, object val)
 		{
-			g_object_set_data (_obj, key, value);
+			if (Data == null)
+				Data = new Hashtable ();
+
+			Data [key] = val;
 		}
 
 /*
@@ -75,39 +130,10 @@ namespace GLib {
 					DestroyNotify destroy );
 
 
-void        (*GObjectGetPropertyFunc)       (GObject *object,
-                                             guint property_id,
-                                             GValue *value,
-                                             GParamSpec *pspec);
-void        (*GObjectSetPropertyFunc)       (GObject *object,
-                                             guint property_id,
-                                             const GValue *value,
-                                             GParamSpec *pspec);
-void        (*GObjectFinalizeFunc)          (GObject *object);
-#define     G_TYPE_IS_OBJECT (type)
-#define     G_OBJECT (object)
-#define     G_IS_OBJECT (object)
-#define     G_OBJECT_CLASS (class)
-#define     G_IS_OBJECT_CLASS (class)
-#define     G_OBJECT_GET_CLASS (object)
-#define     G_OBJECT_TYPE (object)
-#define     G_OBJECT_TYPE_NAME (object)
-#define     G_OBJECT_CLASS_TYPE (class)
-#define     G_OBJECT_CLASS_NAME (class)
-#define     G_VALUE_HOLDS_OBJECT (value)
-void        g_object_class_install_property (GObjectClass *oclass,
-                                             guint property_id,
-                                             GParamSpec *pspec);
 GParamSpec* g_object_class_find_property (GObjectClass *oclass,
                                              const gchar *property_name);
 GParamSpec** g_object_class_list_properties (GObjectClass *oclass,
                                              guint *n_properties);
-gpointer g_object_new (GType object_type,
-                                             const gchar *first_property_name,
-                                             ...);
-gpointer g_object_newv (GType object_type,
-                                             guint n_parameters,
-                                             GParameter *parameters);
 gpointer g_object_ref (gpointer object);
 void        g_object_unref (gpointer object);
 void        g_object_weak_ref (GObject *object,
@@ -159,23 +185,10 @@ void        g_object_set_property (GObject *object,
 void        g_object_get_property (GObject *object,
                                              const gchar *property_name,
                                              GValue *value);
-GObject*    g_object_new_valist (GType object_type,
-                                             const gchar *first_property_name,
-                                             va_list var_args);
-void        g_object_set_valist (GObject *object,
-                                             const gchar *first_property_name,
-                                             va_list var_args);
-void        g_object_get_valist (GObject *object,
-                                             const gchar *first_property_name,
-                                             va_list var_args);
 void        g_object_watch_closure (GObject *object,
                                              GClosure *closure);
 void        g_object_run_dispose (GObject *object);
-void        g_value_set_object (GValue *value,
-                                             gpointer v_object);
 gpointer g_value_get_object (const GValue *value);
-GObject*    g_value_dup_object (const GValue *value);
-#define     G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec)
 */
 
 	}
