@@ -9,20 +9,15 @@ namespace Gtk {
 	using System;
 	using System.Runtime.InteropServices;
 
-	/// <summary>
-	///	Application Class
-	/// </summary>
-	///
-	/// <remarks>
-	///	Provides the initialization and event loop iteration related
-	///	methods for the GTK widget library.  Since GTK is an event 
-	///	driven toolkit, Applications register callbacks against various
-	///	events to handle user input. These callbacks are invoked from
-	///	the main event loop when events are detected.
-	/// </remarks>
-
 	public class Application {
 
+		//
+		// Disables creation of instances.
+		//
+		private Application ()
+		{
+		}
+		
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_init (int argc, IntPtr argv);
 
@@ -33,14 +28,8 @@ namespace Gtk {
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_init (ref int argc, ref String[] argv);
-
-		/// <summary>
-		///	Init Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Initializes GTK resources.
-		/// </remarks>
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_init_check (ref int argc, ref String[] argv);
 
 		public static void Init (ref string[] args)
 		{
@@ -48,16 +37,14 @@ namespace Gtk {
 			gtk_init (ref argc, ref args);
 		}
 
+		public static bool InitCheck (ref string[] args)
+		{
+			int argc = args.Length;
+			return gtk_init_check (ref argc, ref args);
+		}
+
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main ();
-
-		/// <summary>
-		///	Run Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Begins the event loop iteration.
-		/// </remarks>
 
 		public static void Run ()
 		{
@@ -67,13 +54,6 @@ namespace Gtk {
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_events_pending ();
 
-		/// <summary>
-		///	EventsPending Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Returns true if Gtk+ events are pending in the queue.	
-		/// </remarks>
 
 		public static bool EventsPending ()
 		{
@@ -83,34 +63,29 @@ namespace Gtk {
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main_iteration ();
 
-		/// <summary>
-		///	RunIteration Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Runs a single iteration of the event loop.	
-		/// </remarks>
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_main_iteration_do (bool blocking);
 
 		public static void RunIteration ()
 		{
 			gtk_main_iteration ();
 		}
 
+		public static bool RunIteration (bool blocking)
+		{
+			return gtk_main_iteration_do (blocking);
+		}
+		
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main_quit ();
-
-		/// <summary>
-		///	Quit Method
-		/// </summary>
-		/// 
-		/// <remarks>
-		///	Terminates the event loop iteration.
-		/// </remarks>
 
 		public static void Quit ()
 		{
 			gtk_main_quit ();
 		}
-			
+
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_get_current_event ();
 	}
 }
