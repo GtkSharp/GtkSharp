@@ -38,6 +38,7 @@ class Client {
 		box = new VBox (false, 0);
 		window.Add (box);
 
+		box.PackStart (CreateMenu (), false, false, 0);
 		toolbar = new Toolbar ();
 		PackToolbar ();
 		box.PackStart (toolbar, false, false, 0);
@@ -313,6 +314,88 @@ class Client {
 		dialog.Destroy ();
 		dialog = null;
 	}
+
+		static Gtk.MenuBar CreateMenu ()
+	{
+		MenuBar mb = new MenuBar ();
+		Menu file_menu = new Menu ();		
+		
+		ImageMenuItem quit_item = new ImageMenuItem ("Quit");
+		quit_item.Image = new Gtk.Image (Stock.Quit, IconSize.Menu);
+		quit_item.Activated += new EventHandler (Quit_Activated);
+
+		file_menu.Append (new SeparatorMenuItem ());
+		file_menu.Append (quit_item);
+	
+		MenuItem file_item = new MenuItem ("_File");
+		file_item.Submenu = file_menu;
+		mb.Append (file_item);
+
+		Menu action_menu = new Menu ();
+
+		ImageMenuItem insert_item = new ImageMenuItem ("Insert");
+		insert_item.Image = new Gtk.Image (Stock.Add, IconSize.Menu);
+		insert_item.Activated += new EventHandler (Insert_Activated);
+
+		ImageMenuItem remove_item = new ImageMenuItem ("Remove");
+		remove_item.Image = new Gtk.Image (Stock.Remove, IconSize.Menu);
+		remove_item.Activated += new EventHandler (Remove_Activated);
+
+		ImageMenuItem update_item = new ImageMenuItem ("Update");
+		update_item.Image = new Gtk.Image (Stock.Italic, IconSize.Menu);
+		update_item.Activated += new EventHandler (Update_Activated);
+
+		action_menu.Append (insert_item);
+		action_menu.Append (remove_item);
+		action_menu.Append (update_item);
+
+		Menu help_menu = new Menu ();
+		MenuItem help_item = new MenuItem ("_Help");
+		help_item.Submenu = help_menu;
+		MenuItem about = new MenuItem ("About");
+		about.Activated += new EventHandler (About_Box);
+		help_menu.Append (about);
+		mb.Append (help_item);
+
+		return mb;
+	}
+
+	static void Insert_Activated (object o, EventArgs args)
+	{
+		Db_Insert ();
+	}
+
+	static void Remove_Activated (object o, EventArgs args)
+	{
+		Db_Remove ();
+	}
+
+	static void Update_Activated (object o, EventArgs args)
+	{
+		Db_Update ();
+	}
+
+	static void Quit_Activated (object o, EventArgs args)
+	{
+		Application.Quit ();
+	}
+
+	static void About_Box (object o, EventArgs args)
+	{
+		string [] authors = new string [] {
+			"Gonzalo Paniagua (gonzalo@ximian.com)",
+			"Duncan Mak (duncan@ximian.com)",
+		};
+
+		string [] documenters = new string [] {};
+
+		Gnome.About about = new Gnome.About ("Database Client", "0.1",
+						     "Copyright (C) 2002, Ximian Inc.",
+						     "A Sample Database client",
+						     authors, documenters, "", new Gdk.Pixbuf ());
+		about.Show ();
+	}
+
 	
 	static IdConnection Conn
 	{
@@ -345,7 +428,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=192.168.1.2;" +
+		string connectionString = "hostaddr=80.24.221.71;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
