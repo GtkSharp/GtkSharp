@@ -14,9 +14,12 @@ namespace GtkSamples {
 		private static TreeStore store = null;
 		private static Dialog dialog = null;
 		private static Label dialog_label = null;
+		private static int count = 0;
 		
 		public TreeViewDemo ()
 		{
+			DateTime start = DateTime.Now;
+
 			Application.Init ();
 			
 			PopulateStore ();
@@ -42,6 +45,8 @@ namespace GtkSamples {
 
 			win.ShowAll ();
 			
+			Console.WriteLine (count + " nodes added.");
+			Console.WriteLine ("Startup time: " + DateTime.Now.Subtract (start));
 			Application.Run ();
 		}
 
@@ -49,6 +54,7 @@ namespace GtkSamples {
 		{
 			foreach (MemberInfo mi in t.GetMembers ()) {
  				store.AppendValues (parent, mi.Name, mi.ToString ());
+				count++;
 			}
 		}
 
@@ -59,6 +65,7 @@ namespace GtkSamples {
 			foreach (System.Type t in asm.GetTypes ()) {
 				UpdateDialog ("Loading from {0}:\n{1}", asm_name, t.ToString ());
  				TreeIter iter = store.AppendValues (parent, t.Name, t.ToString ());
+				count++;
 				ProcessType (iter, t);
 			}
 		}
@@ -75,6 +82,7 @@ namespace GtkSamples {
 				UpdateDialog ("Loading {0}", asm.GetName ().Name);
 
 				TreeIter iter = store.AppendValues (asm.GetName ().Name, "Assembly");
+				count++;
 				ProcessAssembly (iter, asm);
 			}
 		}

@@ -80,7 +80,7 @@ namespace Gtk {
 
 		int stamp;
 		Hashtable node_hash = new IDHashtable ();
- 		GLib.GType[] ctypes;
+ 		GLib.GType[] ctypes; 
 		PropertyInfo[] getters;
 		int n_cols = 1;
 		ArrayList nodes = new ArrayList ();
@@ -120,22 +120,10 @@ namespace Gtk {
 
 		IntPtr get_path_cb (int node_idx)
 		{
-			TreePath path = new TreePath ();
-			int idx;
-
 			ITreeNode node = node_hash [node_idx] as ITreeNode;
 			if (node == null) throw new Exception ("Invalid Node ID");
 
-			while (node.Parent != null) {
-				idx = node.Parent.IndexOf (node);
-				if (idx < 0) throw new Exception ("Badly formed tree");
-				path.PrependIndex (idx);
-				node = node.Parent;
-			}
-			idx = Nodes.IndexOf (node);
-			if (idx < 0) throw new Exception ("Node not found in Nodes list");
-			path.PrependIndex (idx);
-			return path.Handle;
+			return GetPath (node).Handle;
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -294,45 +282,24 @@ namespace Gtk {
 		void ScanType (Type type)
 		{
 			object[] attrs = type.GetCustomAttributes (false);
-			foreach (object attr in attrs) {
-				switch (attr.ToString ()) {
-				case "Gtk.TreeNodeAttribute":
-					TreeNodeAttribute tna = attr as TreeNodeAttribute;
-					n_cols = tna.ColumnCount;
-					break;
-				default:
-					Console.WriteLine ("Unknown attr: " + attr);
-					break;
-				}
-			}
+			foreach (TreeNodeAttribute attr in type.GetCustomAttributes (typeof (TreeNodeAttribute), false))
+				n_cols = attr.ColumnCount;
 
  			ctypes = new GLib.GType [n_cols];
  			getters = new PropertyInfo [n_cols];
 
-			MemberInfo[] info = type.GetMembers ();
-			foreach (MemberInfo mi in info) {
-				PropertyInfo pi;
-				object[] attr_info = mi.GetCustomAttributes (false);
-				foreach (object attr in attr_info) {
-					switch (attr.ToString ()) {
-					case "Gtk.TreeNodeValueAttribute":
-						TreeNodeValueAttribute tnva = attr as TreeNodeValueAttribute;
-						int col = tnva.Column;
-						pi = mi as PropertyInfo;
-						getters [col] = pi;
-						GLib.GType ctype = GLib.TypeConverter.LookupType (pi.PropertyType);
-                                		if (ctype == GLib.GType.Invalid)
-                                        		throw new Exception ("Unknown type");
-                                        	ctypes[col] = ctype;
-						break;
-					default:
-						Console.WriteLine ("Unknown custom attr: " + attr);
-						break;
-					}
+			foreach (PropertyInfo pi in type.GetProperties ()) {
+				foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
+					int col = attr.Column;
+					getters [col] = pi;
+					GLib.GType ctype = GLib.TypeConverter.LookupType (pi.PropertyType);
+                                	if (ctype == GLib.GType.Invalid)
+                                        	throw new Exception ("Unknown type");
+                                        ctypes[col] = ctype;
 				}
 			}
 		}
-							
+
 		private IList Nodes {
 			get {
 				return nodes as IList;
@@ -437,6 +404,30 @@ namespace Gtk {
 				throw new ArgumentNullException ();
 
 			return GetNodeAtPath (path);
+		}
+
+		internal TreePath GetPath (ITreeNode node)
+		{
+			TreePath path = new TreePath ();
+			int idx;
+
+			while (node.Parent != null) {
+				idx = node.Parent.IndexOf (node);
+				if (idx < 0) throw new Exception ("Badly formed tree");
+				path.PrependIndex (idx);
+				node = node.Parent;
+			}
+			idx = Nodes.IndexOf (node);
+			if (idx < 0) throw new Exception ("Node not found in Nodes list");
+			path.PrependIndex (idx);
+			return path;
+		}
+
+		internal TreeIter GetIter (ITreeNode node)
+		{
+			TreeIter iter = new TreeIter ();
+			iter.UserData = new IntPtr (node.ID);
+			return iter;
 		}
 
 		[DllImport("gtksharpglue-2")]

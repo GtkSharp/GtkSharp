@@ -21,7 +21,9 @@ sources = 				\
 	Application.cs			\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
+	NodeSelection.cs		\
 	NodeStore.cs			\
+	NodeView.cs			\
 	RadioActionEntry.cs		\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\

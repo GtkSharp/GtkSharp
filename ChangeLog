@@ -1,3 +1,23 @@
+2004-12-16  Mike Kestner  <mkestner@novell.com>
+
+	* sample/NodeViewDemo.cs : rework of TreeViewDemo to use NodeStore.
+	* sample/TreeViewDemo.cs : added some timing and node counting fu.
+
+2004-12-16  Duncan Mak  <duncan@ximian.com>
+
+	* gtk/Makefile.am (sources): Added NodeSelection and NodeView.
+	* gtk/NodeSelection.cs: New file, an implementation of
+ 	TreeSelection that exposes ITreeNodes instead of TreeIters.
+	* gtk/NodeStore.cs : added internal GetIter and GetPath methods for 
+	NodeSelection. Reworked [TreeNodeValue] lookup logic.
+ 	out what the Type of data the store holds.
+	* gtk/NodeView.cs: New subclass of TreeView utilizing NodeStore and
+	NodeSelection.
+	* gtk/TreeIter.custom : new internal UserData prop.
+	* gtk/TreeNodeValueAttribute.cs: Set AllowMultiple to true.
+	* gtk/TreeView.custom: Obsoleted constructor that uses a NodeStore as
+ 	parameter. NodeView should be used instead.
+ 
 2004-12-16  Tambet Ingo  <tambet@ximian.com>
 
 	* glib/Opaque.cs : hold a weakref in the hash, not a strong ref.

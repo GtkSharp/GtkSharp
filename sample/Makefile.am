@@ -32,7 +32,7 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
 assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOMEVFS_ASSEMBLY) $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix /r:, $(assemblies))
@@ -82,6 +82,9 @@ treeviewdemo.exe: $(srcdir)/TreeViewDemo.cs $(assemblies)
 managedtreeviewdemo.exe: $(srcdir)/ManagedTreeViewDemo.cs $(assemblies)
 	$(CSC)  /out:managedtreeviewdemo.exe $(references) $(srcdir)/ManagedTreeViewDemo.cs
 
+nodeviewdemo.exe: $(srcdir)/NodeViewDemo.cs $(assemblies)
+	$(CSC)  /out:nodeviewdemo.exe $(references) $(srcdir)/NodeViewDemo.cs
+
 glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
 	$(CSC)  /out:glade-viewer.exe $(references) $(srcdir)/GladeViewer.cs
 
@@ -130,6 +133,7 @@ EXTRA_DIST = 				\
 	ScribbleXInput.cs		\
 	TreeViewDemo.cs			\
 	ManagedTreeViewDemo.cs		\
+	NodeViewDemo.cs			\
 	GladeViewer.cs			\
 	GladeTest.cs 			\
 	test.glade			\
