@@ -124,3 +124,29 @@ static extern IntPtr gtksharp_file_selection_get_action_area (IntPtr i);
 public new Gtk.HButtonBox ActionArea {
 	get { return GLib.Object.GetObject (gtksharp_file_selection_get_action_area (this.Handle), false) as Gtk.HButtonBox; }
 }
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_file_selection_get_selections (IntPtr handle);
+
+[DllImport("libglib-2.0-0.dll")]
+static extern void g_strfreev (IntPtr handle);
+
+public string[] Selections {
+	get {
+		IntPtr strv = gtk_file_selection_get_selections (Handle);
+
+		System.Collections.ArrayList result = new System.Collections.ArrayList ();
+
+		int i = 0;
+		IntPtr strptr = Marshal.ReadIntPtr (strv, IntPtr.Size * i++); 
+		while (strptr != IntPtr.Zero) {
+			result.Add (Marshal.PtrToStringAnsi (strptr));
+			strptr = Marshal.ReadIntPtr (strv, IntPtr.Size * i++);
+		}
+		
+		g_strfreev (strv);
+
+		return result.ToArray (typeof (string)) as string[];
+	}
+}
+
