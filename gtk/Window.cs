@@ -4,7 +4,7 @@
 //
 // (c) 2001 Mike Kestner
 
-namespace GTK {
+namespace Gtk {
 
 	using System;
 	using System.Drawing;

@@ -4,7 +4,7 @@
 //
 // (c) 2001 Bob Smith
 
-namespace GTK {
+namespace Gtk {
 
 	using System;
 	using System.Runtime.InteropServices;
@@ -30,7 +30,7 @@ namespace GTK {
 
 		private void EmitClickedEvent (IntPtr obj)
 		{
-			EventHandler eh = (EventHandler)(_events[ClickedEvent]);
+			EventHandler eh = (EventHandler)(Events[ClickedEvent]);
 			if (eh != null)
 			{
 				EventArgs args = new EventArgs ();

@@ -4,7 +4,7 @@
 //
 // (c) 2001 Mike Kestner
 
-namespace GTK {
+namespace Gtk {
 
 	using System;
 	using System.Runtime.InteropServices;
@@ -40,7 +40,7 @@ namespace GTK {
 
 		private void EmitDeleteEvent (IntPtr obj)
 		{
-			EventHandler eh = (EventHandler)(_events[DeleteEvent]);
+			EventHandler eh = (EventHandler)(Events[DeleteEvent]);
 			if (eh != null)
 			{
 				EventArgs args = new EventArgs ();

@@ -4,37 +4,14 @@
 //
 // (c) 2001 Mike Kestner
 
-namespace GTK {
+namespace Gtk {
 
 	using System;
 	using System.Drawing;
 	using System.Runtime.InteropServices;
 
-	public abstract class Object  {
-		private EventHandlerList _events;
-		protected EventHandlerList Events
-		{
-			get
-			{
-				if (_events != null) return _events;
-				_events = new EventHandlerList ();
-			}
-		}
 
-		private IntPtr _obj;
-
-		IntPtr Object
-		{
-			get
-			{
-				return _obj;
-			}
-			set
-			{
-				_events = null;
-				_obj = value;
-			}
-		}       
+	public abstract class Object :  Glib.Object {
 
 		protected delegate void SimpleCallback (IntPtr obj);
 

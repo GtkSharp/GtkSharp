@@ -4,7 +4,7 @@
 //
 // (c) 2001 Bob Smith
 
-namespace GTK {
+namespace Gtk {
 
 	using System;
 	using System.Runtime.InteropServices;
