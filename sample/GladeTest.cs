@@ -16,6 +16,9 @@ namespace GladeSamples {
 
 	public class GladeTest : Program
 	{
+		[GladeWidget("main_window")]
+		Gtk.Window main_window;
+
 		public static void Main (string[] args)
 		{
 			new GladeTest (args).Run ();
@@ -28,7 +31,11 @@ namespace GladeSamples {
 			   you don't want */
 			Glade.XML gxml = new Glade.XML (null, "test.glade", "main_window", null);
 			gxml.Autoconnect (this);
-       		}
+			if (main_window != null)
+				Console.WriteLine ("Main Window Title: \"{0}\"", main_window.Title);
+			else
+				Console.WriteLine ("GladeWidgetAttribute is broken.");
+		}
 
 		public void OnWindowDeleteEvent (object o, DeleteEventArgs args) 
 		{

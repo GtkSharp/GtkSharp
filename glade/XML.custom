@@ -5,6 +5,9 @@
 //
 // (c) 2002 Ricardo Fernández Pascual
 //
+// Field binding code by Rachel Hestilow <hestilow@ximian.com>
+// (c) 2003 Rachel Hestilow
+//
 // This code is inserted after the automatically generated code.
 
 		// keep this around so it doesn't get GC'd
@@ -62,7 +65,7 @@
 		[DllImport("glade-2.0")]
 		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, string root, string domain);
 
-		/// <summary>Creates a Glade.XML object from a Stream</sumary>
+		/// <summary>Creates a Glade.XML object from a Stream</summary>
 		/// <remarks>Reads the contents of the stream and parses it. It must be in 
 		/// correct Glade format</remarks>
 		public XML (System.IO.Stream s, string root, string domain)
@@ -73,7 +76,7 @@
 			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
 		}
 
-		/// <summary>Creates a Glade.XML object from a resource</sumary>
+		/// <summary>Creates a Glade.XML object from a resource</summary>
 		/// <remarks>Reads the contents of the resource in the
 		/// given assembly and parses it. If the assembly is null,
 		/// the current assembly will be used. It must be in
@@ -99,6 +102,7 @@
 		///     provided by the given object.</remarks>
 		public void Autoconnect (object handler)
 		{
+			BindFields (handler);
 			SignalConnector sc = new SignalConnector (this, handler);
 			sc.Autoconnect ();
 		}
@@ -108,6 +112,7 @@
 		///     methods provided by the given type.</remarks>
 		public void Autoconnect (Type handler_class)
 		{
+			BindFields (handler_class);
 			SignalConnector sc = new SignalConnector (this, handler_class);
 			sc.Autoconnect ();
 		}
@@ -242,3 +247,38 @@
 				}
 			}
 		}
+
+		private void BindFields (object target, Type type)
+		{
+			System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+			if (target != null)
+				flags |= System.Reflection.BindingFlags.Instance;
+			else
+				flags |= System.Reflection.BindingFlags.Static;
+			
+			System.Reflection.FieldInfo[] fields = type.GetFields (flags);
+			if (fields == null)
+				return;
+			
+			foreach (System.Reflection.FieldInfo field in fields)
+			{
+				object[] attrs = field.GetCustomAttributes (typeof (GladeWidgetAttribute), true);
+				if (attrs == null || attrs.Length == 0)
+					continue;
+				// The widget to field binding must be 1:1, so only check
+				// the first attribute.
+				GladeWidgetAttribute widget = (GladeWidgetAttribute) attrs[0];
+				field.SetValue (target, GetWidget (widget.Name), flags, null, null);
+			}
+		}
+		
+		public void BindFields (object target)
+		{
+			BindFields (target, target.GetType ());
+		}
+
+		public void BindFields (Type type)
+		{
+			BindFields (null, type);
+		}
+		
