@@ -84,10 +84,8 @@ namespace GtkDemo {
 			// Ask to receive events the drawing area doesn't normally
 			// subscribe to
 
-			drawingArea1.Events = (int)EventMask.LeaveNotifyMask |
-			                     (int)EventMask.ButtonPressMask |
-			                     (int)EventMask.PointerMotionMask |
-			                     (int)EventMask.PointerMotionHintMask;
+			drawingArea1.Events = EventMask.LeaveNotifyMask | EventMask.ButtonPressMask |
+			                      EventMask.PointerMotionMask | EventMask.PointerMotionHintMask;
 			
 			window.ShowAll ();
 		}
