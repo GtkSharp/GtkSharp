@@ -37,6 +37,10 @@ GdkColor *gtksharp_gtk_style_get_fg (GtkStyle *style, int i);
 
 GdkColor *gtksharp_gtk_style_get_bg (GtkStyle *style, int i);
 
+GdkColor *gtksharp_gtk_style_get_text (GtkStyle *style, int i);
+
+GdkColor *gtksharp_gtk_style_get_base (GtkStyle *style, int i);
+
 PangoFontDescription *gtksharp_gtk_style_get_font_description (GtkStyle *style);
 
 int gtksharp_gtk_style_get_thickness (GtkStyle *style, int x);
@@ -138,6 +142,18 @@ GdkColor*
 gtksharp_gtk_style_get_bg (GtkStyle *style, int i)
 {
 	return &style->bg[i];
+}
+
+GdkColor*
+gtksharp_gtk_style_get_text (GtkStyle *style, int i)
+{
+	return &style->text[i];
+}
+
+GdkColor*
+gtksharp_gtk_style_get_base (GtkStyle *style, int i)
+{
+	return &style->base[i];
 }
 
 PangoFontDescription *

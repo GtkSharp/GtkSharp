@@ -176,6 +176,46 @@ public Gdk.Color[] Foregrounds {
 	}
 }
 
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_text (IntPtr style, int i);
+
+public Gdk.Color Text (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_text (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] TextColors {
+	get {
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_text (Handle, i));
+		}
+		return ret;
+	}
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_base (IntPtr style, int i);
+
+public Gdk.Color Base (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_base (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] BaseColors {
+	get {
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_base (Handle, i));
+		}
+		return ret;
+	}
+}
+
 [DllImport ("gtksharpglue")]
 static extern int gtksharp_gtk_style_get_thickness (IntPtr style, int x_axis);
 [DllImport ("gtksharpglue")]
