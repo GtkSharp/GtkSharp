@@ -17,11 +17,17 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Window win = new Window ("Button Tester");
+			win.DeleteEvent += new DeleteEventHandler (Quit);
 			Button btn = new MyButton ();
 			win.Add (btn);
 			win.ShowAll ();
 			Application.Run ();
 			return 0;
+		}
+
+		static void Quit (object sender, DeleteEventArgs args)
+		{
+			Application.Quit();
 		}
 	}
 
