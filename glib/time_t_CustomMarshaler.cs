@@ -53,15 +53,15 @@ namespace GLib {
 
 		public object MarshalNativeToManaged (IntPtr data)
 		{
-			int secs;
+			long secs;
 			if (GetNativeDataSize () == 4)
-				secs = Marshal.ReadInt32 (data);
+				secs = (int)data;
 			else if (GetNativeDataSize () == 8)
-				secs = (int) Marshal.ReadInt64 (data);
+				secs = (long)data;
 			else
 				throw new Exception ("Unexpected native size for time_t.");
 
-			TimeSpan span = new TimeSpan (secs - utc_offset);
+			TimeSpan span = new TimeSpan ((int)secs - utc_offset);
 			return local_epoch.Add (span);
 		}
 
