@@ -145,3 +145,16 @@
 		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, System.Drawing.Color color1, System.Drawing.Color color2) {
 			return CompositeColorSimple (dest_width, dest_height, interp_type, overall_alpha, check_size, (uint) color1.ToArgb (), (uint) color2.ToArgb ());
 		}
+
+//
+// the 'Pixels' property
+//
+		[DllImport("libgdk_pixbuf-2.0-0.dll")]
+		static extern unsafe byte* gdk_pixbuf_get_pixels(IntPtr raw);
+
+                public unsafe byte* Pixels {
+                	get {
+                		byte *ret = gdk_pixbuf_get_pixels (Handle);
+                		return ret;
+                	}
+                }
