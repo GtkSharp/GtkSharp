@@ -368,14 +368,14 @@ sub addFuncElems
 	foreach $mname (keys(%fdefs)) {
 		next if ($mname !~ /$prefix/);
 
-		if ($fdefs{$mname} =~ /\(\s*$inst\b/) {
+		if ($mname =~ /$prefix(new)/) {
+			$el = addNameElem($obj_el, 'constructor', $mname); 
+			$drop_1st = 0;
+		} elsif ($fdefs{$mname} =~ /\(\s*$inst\b/) {
 			$el = addNameElem($obj_el, 'method', $mname, $prefix);
 			$fdefs{$mname} =~ /(.*?)\w+\s*\(/;
 			addReturnElem($el, $1);
 			$drop_1st = 1;
-		} elsif ($mname =~ /$prefix(new)/) {
-			$el = addNameElem($obj_el, 'constructor', $mname); 
-			$drop_1st = 0;
 		} else {
 			next;
 		}
@@ -401,7 +401,7 @@ sub addNameElem
 	$node->appendChild($elem);
 	if ($prefix) {
 		$cname =~ /$prefix(\w+)/;
-		$elem->setAttribute('name', $1);
+		$elem->setAttribute('name', StudlyCaps($1));
 	}
 	if ($cname) {
 		$elem->setAttribute('cname', $cname);

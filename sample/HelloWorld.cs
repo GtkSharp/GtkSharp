@@ -22,7 +22,7 @@ namespace GtkSamples {
 			Console.WriteLine("Setting Title");
 			win.Title = "Gtk# Hello World";
 			// win.Deleted += new EventHandler (Window_Delete);
-			// win.Show ();
+			win.Show ();
 			Console.WriteLine("Entering event loop");
 			Application.Run ();
 			return 0;

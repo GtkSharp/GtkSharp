@@ -18,6 +18,7 @@ namespace GtkSharp.Generation {
 		public SymbolTable ()
 		{
 			simple_types = new Hashtable ();
+			simple_types.Add ("void", "void");
 			simple_types.Add ("gboolean", "bool");
 			simple_types.Add ("gint", "int");
 			simple_types.Add ("guint", "uint");
@@ -95,6 +96,19 @@ namespace GtkSharp.Generation {
 			return trim_type;
 		}
 
+		public String FromNative(String c_type, String val)
+		{
+			c_type = Trim(c_type);
+			if (simple_types.ContainsKey(c_type)) {
+				return val;
+			} else if (complex_types.ContainsKey(c_type)) {
+				IGeneratable gen = (IGeneratable) complex_types[c_type];
+				return gen.FromNative(val);
+			} else {
+				return "";
+			}
+		}
+		
 		public String GetCSType(String c_type)
 		{
 			c_type = Trim(c_type);

@@ -27,6 +27,11 @@ namespace GtkSharp.Generation {
 			return var_name + ".Handle";
 		}
 		
+		public String FromNative(String var)
+		{
+			return "GLib.Object.GetObject(" + var + ")";
+		}
+		
 		public void Generate (SymbolTable table)
 		{
 			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {
@@ -86,6 +91,9 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "method":
+					if (!GenMethod(member, table, sw)) {
+						Console.WriteLine("in object " + CName);
+					}
 					break;
 					
 				case "property":

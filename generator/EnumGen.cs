@@ -54,6 +54,11 @@ namespace GtkSharp.Generation {
 			return "(int) " + var_name;
 		}
 		
+		public String FromNative(String var)
+		{
+			return "(" + QualifiedName + ")" + var;
+		}
+		
 		public void Generate (SymbolTable table)
 		{
 			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {

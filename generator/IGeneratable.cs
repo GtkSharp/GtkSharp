@@ -19,6 +19,8 @@ namespace GtkSharp.Generation {
 		String QualifiedName {get;}
 
 		String CallByName (String var_name);
+		
+		String FromNative (String var);
 
 		void Generate (SymbolTable table);
 	}

@@ -53,7 +53,12 @@ namespace GtkSharp.Generation {
 		{
 			return "";
 		}
-		
+
+		public String FromNative(String var)
+		{
+			return "";
+		}
+
 		public void Generate (SymbolTable table)
 		{
 			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {

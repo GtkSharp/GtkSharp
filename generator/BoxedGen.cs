@@ -25,7 +25,12 @@ namespace GtkSharp.Generation {
 		{
 			return var_name + ".Raw";
 		}
-		
+
+		public String FromNative(String var)
+		{
+			return "GLib.Boxed.GetBoxed(" + var + ")";
+		}
+
 		public void Generate (SymbolTable table)
 		{
 			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {

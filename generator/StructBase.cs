@@ -51,12 +51,16 @@ namespace GtkSharp.Generation {
 			XmlElement parms = ctor["parameters"];
 			
 			if (parms == null) {
-				sig = "()";
-				isig = call = "();";
+				call = sig = "()";
+				isig = "();";
 				sigtypes = "";
-			} else if (!GetSignature(parms, table, out sig, out sigtypes) ||
-			    	   !GetImportSig(parms, table, out isig) ||
-			           !GetCallString(parms, table, out call)) {
+			} else if (GetSignature(parms, table, out sig, out sigtypes) &&
+			    	   GetImportSig(parms, table, out isig) &&
+			           GetCallString(parms, table, out call)) {
+				sig = "(" + sig + ")";
+				isig = "(" + isig + ");";
+				call = "(" + call + ")";
+			} else {
 				Console.Write("ctor ");
 				return false;       	
 			}
@@ -119,9 +123,64 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
+		protected bool GenMethod(XmlElement method, SymbolTable table, StreamWriter sw)
+		{
+			String sig, isig, call, sigtypes;
+			XmlElement parms = method["parameters"];
+			
+			if (parms == null) {
+				call = sig = "()";
+				isig = "();";
+				sigtypes = "";
+			} else if (GetSignature(parms, table, out sig, out sigtypes) &&
+			    	   GetImportSig(parms, table, out isig) &&
+			           GetCallString(parms, table, out call)) {
+				sig = "(" + sig + ")";
+				isig = "(IntPtr raw, " + isig + ");";
+				call = "(Handle, " + call + ")";
+			} else {
+				Console.Write("method ");
+				return false;       	
+			}
+			
+			String rettype = "void";
+			if (method.HasAttribute("return-type")) {
+				rettype = method.GetAttribute("return-type");
+			}
+			
+			String m_ret = table.GetMarshalType(rettype);
+			String s_ret = table.GetCSType(rettype);
+			if (m_ret == "" || s_ret == "") {
+				Console.Write("rettype: " + rettype + " method ");
+				return false;
+			}
+			
+			String cname = method.GetAttribute("cname");
+			String name = method.GetAttribute("name");
+			
+			sw.WriteLine("\t\t[DllImport(\"" + table.GetDllName(ns) + 
+			             "\", CallingConvention=CallingConvention.Cdecl)]");
+			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
+			sw.WriteLine();
+			
+			sw.WriteLine("\t\tpublic " + s_ret + " " + name + sig);
+			sw.WriteLine("\t\t{");
+			sw.Write("\t\t\t");
+			if (m_ret == "void") {
+				sw.WriteLine(cname + call + ";");
+			} else {
+				sw.WriteLine("return " + table.FromNative(rettype, cname + call) + ";");
+			}
+			
+			sw.WriteLine("\t\t}");
+			sw.WriteLine();
+			
+			return true;
+		}
+
 		private bool GetCallString(XmlElement parms, SymbolTable table, out String call)
 		{
-			call = "(";
+			call = "";
 			
 			bool need_comma = false;
 			
@@ -149,13 +208,12 @@ namespace GtkSharp.Generation {
 				call += call_parm;
 			}
 			
-			call += ")";
 			return true;
 		}
 
 		private bool GetImportSig(XmlElement parms, SymbolTable table, out String isig)
 		{
-			isig = "(";
+			isig = "";
 			
 			bool need_comma = false;
 			
@@ -187,16 +245,13 @@ namespace GtkSharp.Generation {
 				isig += (m_type + " " + name);
 			}
 			
-			isig += ");";
 			return true;
 		}
 		
 		private bool GetSignature(XmlElement parms, SymbolTable table, out String sig, out String sigtypes)
 		{
-			sig = "(";
-			
+			sigtypes = sig = "";
 			bool need_comma = false;
-			sigtypes = "";
 			
 			foreach (XmlNode parm in parms.ChildNodes) {
 				if (parm.Name != "parameter") {
@@ -228,7 +283,6 @@ namespace GtkSharp.Generation {
 				sigtypes += cs_type;
 			}
 			
-			sig += ")";
 			return true;
 		}
 		
