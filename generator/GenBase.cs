@@ -101,8 +101,8 @@ namespace GtkSharp.Generation {
 			char sep = Path.DirectorySeparatorChar;
 			string custom = ".." + sep + NS.ToLower() + sep + Name + ".custom";
 			if (File.Exists(custom)) {
-				sw.WriteLine ("#line 1 \"" + Name + ".custom\"");
 				sw.WriteLine ("#region Customized extensions");
+				sw.WriteLine ("#line 1 \"" + Name + ".custom\"");
 				FileStream custstream = new FileStream(custom, FileMode.Open, FileAccess.Read);
 				StreamReader sr = new StreamReader(custstream);
 				sw.WriteLine (sr.ReadToEnd ());
