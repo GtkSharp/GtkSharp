@@ -26,5 +26,5 @@ sources =			\
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
 WidgetViewer.exe: $(build_sources) $(assemblies)
-	$(CSC) -o WidgetViewer.exe $(references) $(build_sources)
+	$(CSC) /out:WidgetViewer.exe $(references) $(build_sources)
 

@@ -4,7 +4,7 @@ TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
-CLEANFILES = $(ASSEMBLY) gtk-sharp.pub
+CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config AssemblyInfo.cs
 
 references = 
@@ -53,21 +53,21 @@ EXTRA_DIST =				\
 	AssemblyInfo.cs.in		\
 	makefile.win32
 
-gtk-sharp.pub: $(top_srcdir)/gtk-sharp.pub
-	cp $(top_srcdir)/gtk-sharp.pub .
+gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
+	cp $(top_srcdir)/gtk-sharp.snk .
 
-$(ASSEMBLY): $(build_sources) gtk-sharp.pub
+$(ASSEMBLY): $(build_sources) gtk-sharp.snk
 	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
-	  $(GACUTIL) /i $(ASSEMBLY) /f /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";	\
+	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;	\
 	fi
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir)";	\
-	  $(GACUTIL) /u $(ASSEMBLY_NAME) /package $(PACKAGE) /root $(DESTDIR)$(libdir) || exit 1;	\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
 	fi
 

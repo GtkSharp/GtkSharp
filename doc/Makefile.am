@@ -1,6 +1,6 @@
 if ENABLE_MONODOC
-TARGETS = gtk-sharp-docs.zip gtk-sharp-docs.tree gtk-sharp-docs.source
-docsdir = `$(MONODOC) --get-sourcesdir`
+TARGETS = gtk-sharp-docs.source
+docsdir = $(datadir)/doc/gtk-sharp/xml
 docs_DATA = $(TARGETS)
 else
 TARGETS = 
@@ -11,7 +11,8 @@ endif
 ASSEMBLER = $(MONODOC) --assemble
 UPDATER = $(MONODOC) --update
 
-DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg gtkhtml
+DIRS=glib pango atk gdk gtk glade art gnome gda gnomedb gconf/GConf gconf/GConf.PropertyEditors rsvg gtkhtml vte
+NAMESPACES=GLib Pango Atk Gdk Gtk Glade Art Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
 	$(ASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
@@ -62,3 +63,15 @@ dist-hook:
 	cp $(srcdir)/en/GConf/*.xml $(distdir)/en/GConf/
 	mkdir -p $(distdir)/en/GConf.PropertyEditors
 	cp $(srcdir)/en/GConf.PropertyEditors/*.xml $(distdir)/en/GConf.PropertyEditors/
+
+install-data-local:
+	mkdir -p $(DESTDIR)$(docsdir)/en
+	cp $(srcdir)/en/*.xml $(DESTDIR)$(docsdir)/en;
+	for i in $(NAMESPACES); do					\
+		mkdir -p $(DESTDIR)$(docsdir)/en/$$i;			\
+		cp $(srcdir)/en/$$i/* $(DESTDIR)$(docsdir)/en/$$i;	\
+	done
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(docsdir)/en
+

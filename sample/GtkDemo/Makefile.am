@@ -28,5 +28,5 @@ sources = 					\
 build_sources = $(addprefix $(srcdir)/, $(sources))
 
 GtkDemo.exe: $(build_sources) $(assemblies)
-	$(CSC) -g /out:GtkDemo.exe $(build_sources) $(references)
+	$(CSC) /debug /out:GtkDemo.exe $(build_sources) $(references)
 
