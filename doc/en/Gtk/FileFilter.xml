@@ -9,8 +9,9 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>This class sets up a filter to include or exclude particular
+    kinds of files; useful in file selection dialogs.</summary>
+    <remarks/>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
@@ -33,8 +34,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Override this method to accomplish certain tasks before object destruction.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="AddMimeType">
@@ -47,9 +48,9 @@
         <Parameter Name="mime_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a rule allowing a given MIME type to a filter.</summary>
         <param name="mime_type">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="AddPattern">
@@ -62,9 +63,9 @@
         <Parameter Name="pattern" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Adds a rule allowing a shell style glob to a filter.</summary>
         <param name="pattern">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Filter">
@@ -77,10 +78,17 @@
         <Parameter Name="filter_info" Type="Gtk.FileFilterInfo" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Tests whether a file should be displayed according to this filter.</summary>
         <param name="filter_info">a <see cref="T:Gtk.FileFilterInfo" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, TRUE if the file should be displayed.</returns>
+        <remarks>
+	  The <see cref="T:Gtk.FileFilterInfo" /> structure 
+	  <paramref name="filter_info"/> should include
+	  the fields returned from <see cref="M:Gtk.FileFilter.GetNeeded"/>.
+	  This function will not typically be used by applications; it
+	  is intended principally for use in the implementation of
+	  <see cref="T:Gtk.FileChooser"/>.
+	  </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -91,10 +99,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Protected constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.FileFilter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -105,10 +113,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Constructor for internal use only.</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.FileFilter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -117,9 +125,15 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new file filter with no rules attached to it.</summary>
         <returns>a <see cref="T:Gtk.FileFilter" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  A newly-created filter doesn't accept any files, so is not
+	  particularly useful until you add rules with
+	  <see cref="M:Gtk.FileFilter.AddMimeType"/>,
+	  <see cref="M:Gtk.FileFilter.AddPattern"/>, or
+	  <see cref="M:Gtk.FileFilter.AddCustom"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -132,7 +146,7 @@
       <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -143,9 +157,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The human-readable name of the filter.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+	  This is the string that will be displayed in the file selector 
+	  user interface if there is a selectable list of filters.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Needed">
@@ -156,9 +173,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.FileFilterFlags" /></returns>
-        <remarks>To be added</remarks>
+        <summary>
+	  Gets the fields that need to be filled in for the structure 
+	  passed to <see cref="M:Gtk.FileFilter.Filter"/>.
+	</summary>
+        <returns>a <see cref="T:Gtk.FileFilterFlags" />, flags that list the needed fields when calling <see cref="M:Gtk.FileFilter.Filter"/>.</returns>
+        <remarks>
+	  This function will not typically be used by applications; it
+	  is intended principally for use in the implementation of
+	  <see cref="T:Gtk.FileChooser"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddCustom">
@@ -174,12 +198,19 @@
         <Parameter Name="notify" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds a rule to a filter that allows files based on a custom callback function. 
+	</summary>
         <param name="needed">a <see cref="T:System.Int32" /></param>
         <param name="func">a <see cref="T:Gtk.FileFilterFunc" /></param>
         <param name="data">a <see cref="T:System.IntPtr" /></param>
         <param name="notify">a <see cref="T:System.IntPtr" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  The bitfield <paramref name="needed"/> which is passed in provides information
+	  about what sorts of information that the filter function needs;
+	  this allows GTK+ to avoid retrieving expensive information when
+	  it isn't needed by the filter.
+	  </remarks>
       </Docs>
     </Member>
   </Members>

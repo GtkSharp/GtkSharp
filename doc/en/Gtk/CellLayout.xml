@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Manages layout for table cells.</summary>
+    <remarks/>
   </Docs>
   <Base />
   <Interfaces>
@@ -31,10 +31,13 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Re-inserts <paramref name="cell"/> at <paramref name="position"/>.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="position">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  Note that <paramref name="cell"/> has already to be packed
+	  into the cell layout for this to function properly.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PackEnd">
@@ -48,10 +51,17 @@
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Adds the <paramref name="cell"/> to the end of the cell layout. 
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell"/> is to be given extra space allocated to this cell layout.</param>
+        <remarks>
+	  If <paramref name="expand"/> is FALSE, then the
+	  cell is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand"/> is 
+	  TRUE.	
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PackStart">
@@ -65,10 +75,17 @@
         <Parameter Name="expand" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Packs <paramref name="cell"/> into the beginning of the cell layout. 
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <param name="expand">a <see cref="T:System.Boolean" /></param>
-        <remarks>To be added</remarks>
+        <param name="expand">a <see cref="T:System.Boolean" />, TRUE if <paramref name="cell"/> is to be given extra space allocated to this cell layout.</param>
+        <remarks>
+	  If <paramref name="expand"/> is FALSE, then the
+	  cell is allocated no more space than it needs. Any unused space is
+	  divided evenly between cells for which <paramref name="expand"/> is 
+	  TRUE.	
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddAttribute">
@@ -83,11 +100,19 @@
         <Parameter Name="column" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary> 
+	  Adds an attribute mapping to the list for this cell layout.
+	</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="attribute">a <see cref="T:System.String" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  The <paramref name="column"/> is the
+	  column of the model to get a value from, and the <paramref name="attribute"/> is the
+	  parameter on <paramref name="cell"/> to be set from the value. So for example if column 2
+	  of the model contains strings, you could have the "text" attribute of a
+	  <see cref="T:Gtk.CellRendererText"/> get its values from column 2.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearAttributes">
@@ -100,9 +125,10 @@
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Clears all existing attributes previously set with
+	  <see cref="M:Gtk.CellLayout.SetAttributes"/>.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
-        <remarks>To be added</remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -113,8 +139,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Unsets all the mappings on all renderers for this cell layout.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
@@ -130,12 +156,16 @@
         <Parameter Name="destroy" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets up a data function for this layout.</summary>
         <param name="cell">a <see cref="T:Gtk.CellRenderer" /></param>
         <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" /></param>
-        <param name="func_data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:System.IntPtr" /></param>
-        <remarks>To be added</remarks>
+        <param name="func_data">a <see cref="T:System.IntPtr" />, the user data (FIXME: is this necessary in the Gtk# API?)</param>
+        <param name="destroy">a <see cref="T:System.IntPtr" />, the destroy notification (FIXME: is this necessary in the Gtk# API?)</param>
+        <remarks>
+	  The data function is used instead of the standard attributes mapping for setting the
+	  column value, and should set the value of the layout's cell renderer(s)
+	  as appropriate. <paramref name="func"/> may be <see langword="null"/> to remove an older one.
+	</remarks>
       </Docs>
     </Member>
   </Members>

@@ -320,11 +320,20 @@
         <Parameter Name="n_targets" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>
+	  Returns a list of targets that are present on the clipboard, or 
+	  <see langword="null"/> if there aren't any targets available.
+	</summary>
         <param name="targets">a <see cref="T:Gdk.Atom" /></param>
         <param name="n_targets">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />,TRUE if any 
+	  targets are present on the clipboard, otherwise FALSE.</returns>
+        <remarks>
+	  <para>
+	  This function waits for the data to be received using the main 
+	  loop, so events, timeouts, etc, may be dispatched during the wait.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RequestTargets">
@@ -337,9 +346,15 @@
         <Parameter Name="cb" Type="Gtk.ClipboardTargetsReceivedFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary> 
+	  Requests the contents of the clipboard as list of supported targets. 
+	  When the list is later received, <paramref name="cb"/> will be called.
+	</summary>
         <param name="cb">a <see cref="T:Gtk.ClipboardTargetsReceivedFunc" /></param>
-        <remarks>To be added</remarks>
+        <remarks>
+	  The "targets" parameter to <paramref name="cb"/> will contain the resulting targets if
+	  the request succeeded, or <see langword="null"/> if it failed. Added in GTK 2.4.
+	</remarks>
       </Docs>
     </Member>
   </Members>
