@@ -1,7 +1,7 @@
 if ENABLE_GNOME
-	TARGET=sample.exe
+TARGET = sample.exe
 else
-	TARGET=
+TARGET =
 endif
 
 FILES = 		\
