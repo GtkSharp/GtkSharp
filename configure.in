@@ -142,9 +142,12 @@ AC_SUBST(GLADE_LIBS)
 
 LIBGDA_REQUIRED_VERSION=1.0.0
 PKG_CHECK_MODULES(LIBGDA_DEPENDENCIES, libgda >= $LIBGDA_REQUIRED_VERSION, enable_gda=yes, enable_gda=no)
+
 enable_gnomedb=no
+if test "x$enable_gnome" = "xyes"; then
 if test "x$enable_gda" = "xyes"; then
 	PKG_CHECK_MODULES(LIBGNOMEDB_DEPENDENCIES, libgnomedb >= $LIBGDA_REQUIRED_VERSION, enable_gnomedb=yes, enable_gnomedb=no)
+fi
 fi
 
 RSVG_REQUIRED_VERSION=2.0.1
