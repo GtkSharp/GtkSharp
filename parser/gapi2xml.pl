@@ -7,7 +7,7 @@
 # <c> 2001-2003 Mike Kestner
 ##############################################################
 
-$debug=1;
+$debug=0;
 
 use XML::LibXML;
 use GAPI::Metadata;
@@ -412,7 +412,7 @@ if ($ARGV[1]) {
 $scnt = keys(%sdefs); $fcnt = keys(%fdefs); $tcnt = keys(%types);
 print "structs: $scnt  enums: $ecnt  callbacks: $cbcnt\n";
 print "funcs: $fcnt types: $tcnt  classes: $classcnt\n";
-print "props: $propcnt signals: $sigcnt\n";
+print "props: $propcnt signals: $sigcnt\n\n";
 
 sub addFieldElems
 {

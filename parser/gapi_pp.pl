@@ -32,6 +32,9 @@ foreach $fname (@hdrs) {
 		$braces-- if ($line =~ /}/ and $line !~ /{/);
 		
 		next if ($line =~ /$ignoreit_regex/);
+
+		$line =~ s/\/\*.*?\*\///g;
+
 		next if ($line !~ /\S/);
 
 		$line = $prepend . $line;

@@ -590,7 +590,7 @@
         <return-type type="gint"/>
         <parameters>
           <parameter type="const-gchar*" name="gamename"/>
-          <parameter type="/*" name="Will"/>
+          <parameter type="const-gchar*" name="level"/>
           <parameter type="gchar***" name="names"/>
           <parameter type="gfloat**" name="scores"/>
           <parameter type="time_t**" name="scoretimes"/>
@@ -3990,6 +3990,17 @@
           <parameter type="gboolean" name="clear"/>
         </parameters>
       </method>
+      <method name="Display" cname="gnome_scores_display" shared="true">
+        <return-type type="GtkWidget*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="title"/>
+          <parameter type="const-gchar*" name="app_name"/>
+          <parameter type="/*" name="Name"/>
+          <parameter type="as" name="in"/>
+          <parameter type="int" name="pos"/>
+          <parameter type="as" name="returned"/>
+        </parameters>
+      </method>
       <method name="DisplayWithPixmap" cname="gnome_scores_display_with_pixmap" shared="true">
         <return-type type="GtkWidget*"/>
         <parameters>
@@ -4005,17 +4016,17 @@
       <constructor cname="gnome_scores_new">
         <parameters>
           <parameter type="guint" name="n_scores"/>
-          <parameter type="/*" name="Number"/>
-          <parameter type="/*" name="Names"/>
-          <parameter type="/*" name="Scores*"/>
-          <parameter type="/*" name="Time"/>
+          <parameter type="gchar**" name="names"/>
+          <parameter type="gfloat*" name="scores"/>
+          <parameter type="time_t*" name="times"/>
+          <parameter type="gboolean" name="clear"/>
         </parameters>
       </constructor>
       <method name="SetColor" cname="gnome_scores_set_color">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
-          <parameter type="/*" name="Entry"/>
+          <parameter type="guint" name="n"/>
+          <parameter type="GdkColor*" name="col"/>
         </parameters>
       </method>
       <method name="SetColors" cname="gnome_scores_set_colors">
@@ -4027,39 +4038,39 @@
       <method name="SetCurrentPlayer" cname="gnome_scores_set_current_player">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
+          <parameter type="gint" name="i"/>
         </parameters>
       </method>
       <method name="SetDefColor" cname="gnome_scores_set_def_color">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
+          <parameter type="GdkColor*" name="col"/>
         </parameters>
       </method>
       <method name="SetLogoLabel" cname="gnome_scores_set_logo_label">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
-          <parameter type="/*" name="Text"/>
-          <parameter type="/*" name="Font"/>
+          <parameter type="const-gchar*" name="txt"/>
+          <parameter type="const-gchar*" name="font"/>
+          <parameter type="GdkColor*" name="col"/>
         </parameters>
       </method>
       <method name="SetLogoLabelTitle" cname="gnome_scores_set_logo_label_title">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
+          <parameter type="const-gchar*" name="txt"/>
         </parameters>
       </method>
       <method name="SetLogoPixmap" cname="gnome_scores_set_logo_pixmap">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
+          <parameter type="const-gchar*" name="pix_name"/>
         </parameters>
       </method>
       <method name="SetLogoWidget" cname="gnome_scores_set_logo_widget">
         <return-type type="void"/>
         <parameters>
-          <parameter type="/*" name="GNOME"/>
+          <parameter type="GtkWidget*" name="w"/>
         </parameters>
       </method>
     </object>
