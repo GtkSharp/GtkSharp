@@ -86,7 +86,9 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "field":
-					// GenField(member, table, sw);
+					//if (!GenField(member, table, sw)) {
+					//	Console.WriteLine("in object " + CName);
+					//}
 					break;
 					
 				case "callback":

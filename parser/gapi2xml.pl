@@ -61,7 +61,7 @@ while ($line = <STDIN>) {
 		$edef =~ /}\s*(\w+);/;
 		$ename = $1;
 		$edefs{$ename} = $edef;
-	} elsif ($line =~ /typedef\s+\w+\s*\**\s*\(\*(\w+)\)\s*\(/) {
+	} elsif ($line =~ /typedef\s+\w+\s*\**\s*\(\*\s*(\w+)\)\s*\(/) {
 		$fname = $1;
 		$fdef = "";
 		while ($line !~ /;/) {
@@ -70,7 +70,7 @@ while ($line = <STDIN>) {
 		}
 		$fdef .= $line;
 		$fdef =~ s/\n\s+//g;
-		$fpdefs{$1} = $fdef;
+		$fpdefs{$fname} = $fdef;
 	} elsif ($line =~ /struct\s+(\w+)/) {
 		$sname = $1;
 		$sdef = $line;
@@ -78,8 +78,8 @@ while ($line = <STDIN>) {
 			$sdef .= $line;
 			last if ($line =~ /^}/);
 		}
+		$sdef =~ s!/\*.*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
-		$sdef =~ s|/\*.*?\*/||g;
 		$sdefs{$sname} = $sdef;
 	} elsif ($line =~ /^(\w+)_class_init\b/) {
 		$class = StudlyCaps($1);
@@ -173,6 +173,7 @@ foreach $cname (sort(keys(%edefs))) {
 ##############################################################
 
 foreach $cbname (sort(keys(%fpdefs))) {
+	next if ($cbname !~ /$ns/);
 	$cbcnt++;
 	$fdef = $cb = $fpdefs{$cbname};
 	$cb_elem = addNameElem($ns_elem, 'callback', $cbname, $ns);

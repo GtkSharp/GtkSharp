@@ -59,6 +59,7 @@ namespace GtkSharp.Generation {
 			if (!Directory.Exists("..\\" + ns.ToLower() + "\\generated")) {
 				Directory.CreateDirectory("..\\"+ns.ToLower()+"\\generated");
 			}
+			
 			String filename = "..\\" + ns.ToLower() + "\\generated\\" + Name + ".cs";
 			
 			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);

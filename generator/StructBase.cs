@@ -21,7 +21,7 @@ namespace GtkSharp.Generation {
 			this.elem = elem;
 		}
 		
-		protected void GenField (XmlElement field, SymbolTable table, StreamWriter sw)
+		protected bool GenField (XmlElement field, SymbolTable table, StreamWriter sw)
 		{
 			String c_type;
 			
@@ -35,8 +35,8 @@ namespace GtkSharp.Generation {
 			String cs_type = table.GetCSType(c_type);
 			
 			if (cs_type == "") {
-				Console.WriteLine ("Unknown Type {0}", c_type);
-				return;
+				Console.WriteLine ("Field has unknown Type {0}", c_type);
+				return false;
 			}
 			
 			sw.Write ("\t\t public " + cs_type);
@@ -44,6 +44,7 @@ namespace GtkSharp.Generation {
 				sw.Write ("[]");
 			}
 			sw.WriteLine (" " + field.GetAttribute("cname") + ";");
+			return true;
 		}
 		
 	}

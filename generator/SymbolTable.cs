@@ -56,7 +56,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("GClosure", "IntPtr");
 			simple_types.Add ("GArray", "IntPtr");
 			simple_types.Add ("GData", "IntPtr");
-			simple_types.Add ("GTypeModule", "IntPtr");
+			simple_types.Add ("GTypeModule", "GLib.Object");
 			simple_types.Add ("GSList", "IntPtr");
 			simple_types.Add ("GHashTable", "IntPtr");
 			simple_types.Add ("va_list", "IntPtr");
