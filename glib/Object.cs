@@ -122,7 +122,7 @@ namespace GLib {
 				if (baseinfo == minfo)
 					continue;
 
-				foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), true)) {
+				foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), false)) {
 					DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
 					MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic);
 					object[] parms = new object [1];
