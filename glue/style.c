@@ -23,18 +23,18 @@ gtksharp_gtk_style_get_black_gc (GtkStyle *style)
 	return style->black_gc;
 }
 
-GdkGC**
-gtksharp_gtk_style_get_fg_gc (GtkStyle *style)
+GdkGC*
+gtksharp_gtk_style_get_fg_gc (GtkStyle *style, int i)
 {
-	g_object_ref (G_OBJECT (style->fg_gc));
-	return style->fg_gc;
+	g_object_ref (G_OBJECT (style->fg_gc[i]));
+        return style->fg_gc[i];
 }
 
-GdkGC**
-gtksharp_gtk_style_get_bg_gc (GtkStyle *style)
+GdkGC*
+gtksharp_gtk_style_get_bg_gc (GtkStyle *style, int i)
 {
-	g_object_ref (G_OBJECT (style->bg_gc));
-	return style->bg_gc;
+	g_object_ref (G_OBJECT (style->bg_gc[i]));
+	return style->bg_gc[i];
 }
 
 GdkColor*
@@ -50,15 +50,15 @@ gtksharp_gtk_style_get_black (GtkStyle *style)
 }
 
 GdkColor*
-gtksharp_gtk_style_get_fg (GtkStyle *style)
+gtksharp_gtk_style_get_fg (GtkStyle *style, int i)
 {
-	return style->fg;
+	return &style->fg[i];
 }
 
-GdkColor**
-gtksharp_gtk_style_get_bg (GtkStyle *style)
+GdkColor*
+gtksharp_gtk_style_get_bg (GtkStyle *style, int i)
 {
-	return style->bg;
+	return &style->bg[i];
 }
 
 int

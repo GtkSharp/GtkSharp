@@ -32,30 +32,40 @@ public Gdk.GC BlackGC {
 }
 
 [DllImport("gtksharpglue")]
-static extern IntPtr[] gtksharp_gtk_style_get_fg_gc (IntPtr style);
+static extern IntPtr gtksharp_gtk_style_get_fg_gc (IntPtr style, int i);
 
-public Gdk.GC[] ForegroundGC {
+public Gdk.GC ForegroundGC (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_fg_gc (Handle, (int) state);
+	return EnsureGC (raw);
+}
+
+public Gdk.GC[] ForegroundGCs {
 	get {
-		IntPtr[] raws = gtksharp_gtk_style_get_fg_gc (Handle);
+		IntPtr[] raws = new IntPtr[6];
 		Gdk.GC[] ret = new Gdk.GC[raws.Length];
-		int i = 0;
-		foreach (IntPtr raw in raws) {
-			ret[i++] = EnsureGC (raw);
+		for (int i = 0; i < 6; i++) {
+			ret[i] = EnsureGC (gtksharp_gtk_style_get_fg_gc (Handle, i));
 		}
 		return ret;
 	}
 }
 
 [DllImport("gtksharpglue")]
-static extern IntPtr[] gtksharp_gtk_style_get_bg_gc (IntPtr style);
+static extern IntPtr gtksharp_gtk_style_get_bg_gc (IntPtr style, int i);
 
-public Gdk.GC[] BackgroundGC {
+public Gdk.GC BackgroundGC (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_bg_gc (Handle, (int) state);
+	return EnsureGC (raw);
+}
+
+public Gdk.GC[] BackgroundGCs {
 	get {
-		IntPtr[] raws = gtksharp_gtk_style_get_bg_gc (Handle);
+		IntPtr[] raws = new IntPtr[6];
 		Gdk.GC[] ret = new Gdk.GC[raws.Length];
-		int i = 0;
-		foreach (IntPtr raw in raws) {
-			ret[i++] = EnsureGC (raw);
+		for (int i = 0; i < 6; i++) {
+			ret[i] = EnsureGC (gtksharp_gtk_style_get_bg_gc (Handle, i));
 		}
 		return ret;
 	}
@@ -76,17 +86,42 @@ public Gdk.Color Black {
 }
 
 [DllImport("gtksharpglue")]
-static extern Gdk.Color[] gtksharp_gtk_style_get_fg (IntPtr style);
-public Gdk.Color[] Foreground {
+static extern IntPtr gtksharp_gtk_style_get_bg (IntPtr style, int i);
+
+public Gdk.Color Background (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_bg (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] Backgrounds {
 	get {
-		return gtksharp_gtk_style_get_fg (Handle);
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_bg (Handle, i));
+		}
+		return ret;
 	}
 }
 
-static extern Gdk.Color[] gtksharp_gtk_style_get_bg (IntPtr style);
-public Gdk.Color[] Background {
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_fg (IntPtr style, int i);
+
+public Gdk.Color Foreground (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_fg (Handle, (int) state);
+	return Gdk.Color.New (raw);
+}
+
+public Gdk.Color[] Foregrounds {
 	get {
-		return gtksharp_gtk_style_get_bg (Handle);
+		IntPtr[] raws = new IntPtr[6];
+		Gdk.Color[] ret = new Gdk.Color[raws.Length];
+		for (int i = 0; i < 6; i++) {
+			ret[i] = Gdk.Color.New (gtksharp_gtk_style_get_fg (Handle, i));
+		}
+		return ret;
 	}
 }
 
