@@ -54,6 +54,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gpointer", "IntPtr"));
 			AddType (new SimpleGen ("guchar", "byte"));
 			AddType (new SimpleGen ("long", "long"));
+			AddType (new SimpleGen ("ulong", "ulong"));
 			AddType (new SimpleGen ("gulong", "ulong"));
 			AddType (new SimpleGen ("GQuark", "int"));
 			AddType (new SimpleGen ("int", "int"));
