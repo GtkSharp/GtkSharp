@@ -20,6 +20,7 @@ sources =					\
 	PanelAppletFactory.cs
 
 customs =					\
+	About.custom				\
 	App.custom				\
 	DateEdit.custom				\
 	CanvasBpath.custom			\
