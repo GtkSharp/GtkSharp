@@ -3,7 +3,7 @@
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // Copyright (c) 2001-2003 Mike Kestner 
-// Copyright (c) 2003-2004 Novell, Inc.
+// Copyright (c) 2003-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -313,6 +313,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tg_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);");
 			if (cleanup != "")
 				sw.WriteLine (cleanup);
+			sw.WriteLine ("\t\t\tforeach (GLib.Value v in vals)");
+			sw.WriteLine ("\t\t\t\tv.Dispose ();");
 			if (!IsVoid)
 				sw.WriteLine ("\t\t\treturn (" + retval.CSType + ") ret;");
 			sw.WriteLine ("\t\t}\n");
