@@ -1,5 +1,5 @@
 <Type Name="WidgetAttribute" FullName="Glade.WidgetAttribute">
-  <TypeSignature Language="C#" Value="public class WidgetAttribute : System.Attribute" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class WidgetAttribute : System.Attribute" Maintainer="miguel" />
   <AssemblyInfo>
     <AssemblyName>glade-sharp</AssemblyName>
     <AssemblyPublicKey />
@@ -9,13 +9,37 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the &lt;link location="node:gtk-sharp/programming/threads"&gt;Gtk# Thread Programming&lt;/link&gt; for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Marks a widget for auto-binding</summary>
+    <remarks>
+      <para>
+	This attribute when attached to a field value is used by the
+	Autoconnect functionality in <see cref="T:Glade.XML"/> to bind a
+	widget created by Glade to the field.  
+      </para>
+      <para>
+	The attribute can be applied to any widgets (widgets derive
+	from the <see cref="T:Gtk.Widget"/> class) and it can be
+	applied to static and instance fields.
+      </para>
+      <para>
+	By default the runtime will match the tagged field name with
+	the name that was given to the widget on the Glade user
+	interface designer. An optional string argument can be
+	provided on the constructor to bind the widget to a different
+	name. 
+      </para>
+      <para>
+	For the binding to take place, the <see
+	cref="M:Glade.XML.Autoconnect()"/> method has to be invoked
+	on either the class or the instance.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Attribute</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>System.AttributeUsageAttribute</AttributeName>
@@ -24,52 +48,81 @@
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public WidgetAttribute (string name);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Glade.WidgetAttribute'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
+	<MemberType>Constructor</MemberType>
+	<Parameters>
+	  <Parameter Name="name" Type="System.String" />
+	</Parameters>
+	<Docs>
+	  <summary>Flags a <see cref="T:Gtk.Widget"/> to be auto-connected</summary>
+	  <param name="name">The name of the widget in the Glade file
+	    that this widget should be mapped to</param>
+	  <remarks>
+	    <para>
+	      This will bind the widget whose name in the Glade
+	      designer is <paramref name="name"/> to the field that
+	      the attribute is attached to.  If the field name is the
+	      same as the widget name in the Glade designer, you can
+	      avoid the name parameter.
+	    </para>
+	    <para>
+	      For the binding to take place, the <see
+		cref="M:Glade.XML.Autoconnect()"/> method has to be invoked
+		on either the class or the instance.
+	    </para>
+	  </remarks>
+	</Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public WidgetAttribute ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Glade.WidgetAttribute'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
+	<MemberType>Constructor</MemberType>
+	<ReturnValue />
+	  <Parameters />
+	    <Docs>
+	      <summary>Flags a <see cref="T:Gtk.Widget"/> to be auto-connected</summary>
+	      <remarks>
+	    <para>
+	      This will bind the widget whose name in the Glade
+	      designer is the same as the field name.  If you want to
+	      target a different widget in the glade file, use the
+	      <see
+	      cref="M:Glade.WidgetAttribute.WidgetAttribute(string)"/>
+	      attribute instead.
+	    </para>
+	    <para>
+	      For the binding to take place, the <see
+		cref="M:Glade.XML.Autoconnect()"/> method has to be invoked
+		on either the class or the instance.
+	    </para>
+	      </remarks>
+	    </Docs>
     </Member>
     <Member MemberName="Specified">
       <MemberSignature Language="C#" Value="public bool Specified { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
+	<MemberType>Property</MemberType>
+	<ReturnValue>
+	  <ReturnType>System.Boolean</ReturnType>
+	</ReturnValue>
+	<Docs>
+	  <summary>Whether a specific binding was requsted</summary>
+	  <returns>This returns <see langword="true"/> if a specific
+	  widget name was requested to be bound, or <see
+	  langword="false"/> if the runtime has to use the field name
+	  as the Glade name.</returns>
+	  <remarks></remarks>
+	</Docs>
     </Member>
     <Member MemberName="Name">
       <MemberSignature Language="C#" Value="public string Name { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
-      </Docs>
+	<MemberType>Property</MemberType>
+	<ReturnValue>
+	  <ReturnType>System.String</ReturnType>
+	</ReturnValue>
+	<Docs>
+	  <summary>The name of the widget targetted</summary>
+	  <returns>The name of the widget targeted in the Glade
+	  definition file.</returns>
+	  <remarks></remarks>
+	</Docs>
     </Member>
   </Members>
 </Type>
