@@ -37,7 +37,7 @@ namespace GLib {
 		static extern IntPtr gtksharp_error_get_message (IntPtr errptr);
 		public override string Message {
 			get {
-				return Marshal.PtrToStringAnsi (gtksharp_error_get_message (errptr));
+				return Marshaller.Utf8PtrToString (gtksharp_error_get_message (errptr));
 			}
 		}
 

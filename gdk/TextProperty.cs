@@ -43,7 +43,7 @@ namespace Gdk {
 			string[] result = new string [count];
 			for (int i = 0; i < count; i++) {
 				IntPtr ptr = Marshal.ReadIntPtr (list_ptr, i * IntPtr.Size);
-				result [i] = Marshal.PtrToStringAnsi (ptr);
+				result [i] = GLib.Marshaller.Utf8PtrToString (ptr);
 			}
 			gdk_free_text_list (list_ptr);
 			return result;
@@ -63,7 +63,7 @@ namespace Gdk {
 			string[] result = new string [count];
 			for (int i = 0; i < count; i++) {
 				IntPtr ptr = Marshal.ReadIntPtr (list_ptr, i * IntPtr.Size);
-				result [i] = Marshal.PtrToStringAnsi (ptr);
+				result [i] = GLib.Marshaller.Utf8PtrToString (ptr);
 			}
 			gdk_free_text_list (list_ptr);
 			return result;

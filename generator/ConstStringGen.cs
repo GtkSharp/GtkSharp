@@ -1,8 +1,10 @@
 // GtkSharp.Generation.ConstStringGen.cs - The Const String type Generatable.
 //
 // Author: Rachel Hestilow <rachel@nullenvoid.com>
+//         Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2003 Rachel Hestilow
+// Copyright (c) 2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -23,22 +25,29 @@ namespace GtkSharp.Generation {
 
 	using System;
 
-	public class ConstStringGen : SimpleBase {
+	public class ConstStringGen : SimpleBase, IManualMarshaler {
 		
-		public ConstStringGen (string ctype) : base (ctype, "string")
-		{
-		}
+		public ConstStringGen (string ctype) : base (ctype, "string") {}
 
-		public override string MarshalReturnType {
-			get
-			{
+		public override string MarshalType {
+			get {
 				return "IntPtr";
 			}
 		}
 		
-		public override string FromNativeReturn(string var)
+		public override string FromNative (string var)
 		{
-			return "Marshal.PtrToStringAnsi(" + var + ")";
+			return "GLib.Marshaller.Utf8PtrToString (" + var + ")";
+		}
+
+		public string AllocNative (string managed_var)
+		{
+			return "GLib.Marshaller.StringToPtrGStrdup (" + managed_var + ")";
+		}
+
+		public string ReleaseNative (string native_var)
+		{
+			return "GLib.Marshaller.Free (" + native_var + ")";
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace GLib {
 			if (raw == IntPtr.Zero)
 				return null;
 
-			string typename = Marshal.PtrToStringAnsi (gtksharp_get_type_name (raw));
+			string typename = Marshaller.Utf8PtrToString (gtksharp_get_type_name (raw));
 			string mangled;
 			if (types.ContainsKey(typename)) 
 				mangled = (string)types[typename];
@@ -141,7 +141,7 @@ namespace GLib {
 				type_id = gtksharp_get_parent_type (type_id);
 				if (type_id == 0)
 					return null;
-				typename = Marshal.PtrToStringAnsi (gtksharp_get_type_name_for_id (type_id));
+				typename = Marshaller.Utf8PtrToString (gtksharp_get_type_name_for_id (type_id));
 				if (types.ContainsKey (typename))
 					mangled = (string)types[typename];
 				else

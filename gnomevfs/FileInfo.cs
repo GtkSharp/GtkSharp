@@ -93,7 +93,7 @@ namespace Gnome.Vfs {
 		public string Name {
 			get {
 				if (info.name != IntPtr.Zero)
-					return Marshal.PtrToStringAnsi (info.name);
+					return GLib.Marshaller.Utf8PtrToString (info.name);
 				else
 					return null;
 			}
@@ -229,7 +229,7 @@ namespace Gnome.Vfs {
 			get {
 				if ((ValidFields & FileInfoFields.SymlinkName) != 0 &&
 				    info.symlink_name != IntPtr.Zero)
-					return Marshal.PtrToStringAnsi (info.symlink_name);
+					return GLib.Marshaller.Utf8PtrToString (info.symlink_name);
 				else
 					throw new ArgumentException ("SymlinkName is not set");
 			}
@@ -239,7 +239,7 @@ namespace Gnome.Vfs {
 			get {
 				if ((ValidFields & FileInfoFields.MimeType) != 0 &&
 				    info.mime_type != IntPtr.Zero)
-					return Marshal.PtrToStringAnsi (info.mime_type);
+					return GLib.Marshaller.Utf8PtrToString (info.mime_type);
 				else
 					throw new ArgumentException ("MimeType is not set");
 			}

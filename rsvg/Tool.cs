@@ -1,10 +1,11 @@
-//
 // rsvg/Tool.cs - Rsvg Tool class
 //
 // Author: Charles Iliya Krempeaux <charles@reptile.ca>
+//         Mike Kestner  <mkestner@novell.com>
 //
 // Copyright (C) 2003 Reptile Consulting & Services Ltd.
 // Copyright (C) 2003 Charles Iliya Krempeaux.
+// Copyright (C) 2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -22,137 +23,94 @@
 
 
 
-// O B J E C T S ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+namespace Rsvg {
 
-    namespace Rsvg {
+	using System;
+	using System.Runtime.InteropServices;
 
-        public class Tool
-        {
+	public class Tool {
 
+		[DllImport("rsvg-2")]
+		static extern IntPtr rsvg_pixbuf_from_file (IntPtr file_name, out IntPtr error);
 
-            // D L L   I M P O R T S ////////////////////////////////////////////////////////////////////////////////////////
+		[DllImport("rsvg-2")]
+		static extern IntPtr rsvg_pixbuf_from_file_at_zoom (IntPtr file_name, double x_zoom, double y_zoom, out IntPtr error);
 
-                [System.Runtime.InteropServices.DllImport("rsvg-2")]
-                static extern System.IntPtr rsvg_pixbuf_from_file( string file_name
-                                                                 , out System.IntPtr error
-                                                                 );
+		[DllImport("rsvg-2")]
+		static extern IntPtr rsvg_pixbuf_from_file_at_size (IntPtr file_name, int  width, int  height, out IntPtr error);
 
-                [System.Runtime.InteropServices.DllImport("rsvg-2")]
-                static extern
-                System.IntPtr
-                rsvg_pixbuf_from_file_at_zoom( string file_name
-                                             , double x_zoom
-                                             , double y_zoom
-                                             , out System.IntPtr error
-                                             );
+		[DllImport("rsvg-2")]
+		static extern IntPtr rsvg_pixbuf_from_file_at_max_size (IntPtr file_name, int max_width, int max_height, out IntPtr error);
 
-                [System.Runtime.InteropServices.DllImport("rsvg-2")]
-                static extern
-                System.IntPtr
-                rsvg_pixbuf_from_file_at_size( string file_name
-                                             , int  width
-                                             , int  height
-                                             , out System.IntPtr error
-                                             );
-
-                [System.Runtime.InteropServices.DllImport("rsvg-2")]
-                static extern
-                System.IntPtr
-                rsvg_pixbuf_from_file_at_max_size( string file_name
-                                                 , int max_width
-                                                 , int max_height
-                                                 , out System.IntPtr error
-                                                 );
-
-                [System.Runtime.InteropServices.DllImport("rsvg-2")]
-                static extern
-                System.IntPtr
-                rsvg_pixbuf_from_file_at_zoom_with_max( string file_name
-                                                      , double x_zoom
-                                                      , double y_zoom
-                                                      , int max_width
-                                                      , int max_height
-                                                      , out System.IntPtr error
-                                                      );
-
-            //////////////////////////////////////////////////////////////////////////////////////// D L L   I M P O R T S //
+		[DllImport("rsvg-2")]
+		static extern IntPtr rsvg_pixbuf_from_file_at_zoom_with_max (IntPtr file_name, double x_zoom, double y_zoom, int max_width, int max_height, out IntPtr error);
 
 
+		public static Gdk.Pixbuf PixbufFromFile (string file_name)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (file_name);
+			IntPtr raw_pixbuf = rsvg_pixbuf_from_file(native_filename, out error);
+			GLib.Marshaller.Free (native_filename);
 
-            // P R O C E D U R E S //////////////////////////////////////////////////////////////////////////////////////////
+			if (IntPtr.Zero != error)
+				throw new GLib.GException (error);
 
-                public static Gdk.Pixbuf PixbufFromFile(string file_name)
-                {
-                    System.IntPtr error = System.IntPtr.Zero;
+			return GLib.Object.GetObject (raw_pixbuf, true) as Gdk.Pixbuf;
+		}
 
-                    System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file(file_name, out error);
+		public static Gdk.Pixbuf PixbufFromFileAtZoom (string file_name, double x_zoom, double y_zoom)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (file_name);
+			IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom (native_filename, x_zoom, y_zoom, out error);
+			GLib.Marshaller.Free (native_filename);
 
-                    if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException ( error );
-                    } else {
-                        return new Gdk.Pixbuf( raw_pixbuf );
-                    }
-                }
+			if (IntPtr.Zero != error)
+				throw new GLib.GException (error);
 
-                public static Gdk.Pixbuf PixbufFromFileAtZoom(string file_name, double x_zoom, double y_zoom)
-                {
-                    System.IntPtr error = System.IntPtr.Zero;
+			return GLib.Object.GetObject (raw_pixbuf, true) as Gdk.Pixbuf;
+		}
 
-                    System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom(file_name, x_zoom, y_zoom, out error);
+		public static Gdk.Pixbuf PixbufFromFileAtSize(string file_name, int width, int height)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (file_name);
+			IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_size (native_filename, width, height, out error);
+			GLib.Marshaller.Free (native_filename);
 
-                    if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );
-                    } else {
-                        return new Gdk.Pixbuf( raw_pixbuf );
-                    }
-                }
+			if (IntPtr.Zero != error)
+				throw new GLib.GException (error);
 
-                public static Gdk.Pixbuf PixbufFromFileAtSize(string file_name, int width, int height)
-                {
-                    System.IntPtr error = System.IntPtr.Zero;
+			return GLib.Object.GetObject (raw_pixbuf, true) as Gdk.Pixbuf;
+		}
 
-                    System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_size(file_name, width, height, out error);
+		public static Gdk.Pixbuf PixbufFromFileAtMaxSize(string file_name, int max_width, int max_height)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (file_name);
+			IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_max_size (native_filename, max_width, max_height, out error);
+			GLib.Marshaller.Free (native_filename);
 
-                    if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );
-                    } else {
-                        return new Gdk.Pixbuf( raw_pixbuf );
-                    }
-                }
+			if (IntPtr.Zero != error)
+				throw new GLib.GException (error);
 
-                public static Gdk.Pixbuf PixbufFromFileAtMaxSize(string file_name, int max_width, int max_height)
-                {
-                    System.IntPtr error = System.IntPtr.Zero;
+			return GLib.Object.GetObject (raw_pixbuf, true) as Gdk.Pixbuf;
+		}
 
-                    System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_max_size(file_name, max_width, max_height, out error);
+		public static Gdk.Pixbuf PixbufFromFileAtZoomWithMaxSize(string file_name, double x_zoom, double y_zoom, int max_width, int max_height)
+		{
+			IntPtr error = IntPtr.Zero;
+			IntPtr native_filename = GLib.Marshaller.StringToPtrGStrdup (file_name);
+			IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom_with_max (native_filename, x_zoom, y_zoom, max_width, max_height, out error);
+			GLib.Marshaller.Free (native_filename);
 
-                    if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );
-                    } else {
-                        return new Gdk.Pixbuf( raw_pixbuf );
-                    }
-                }
+			if (IntPtr.Zero != error)
+				throw new GLib.GException (error);
 
-                public static Gdk.Pixbuf PixbufFromFileAtZoomWithMaxSize(string file_name, double x_zoom, double y_zoom, int max_width, int max_height)
-                {
-                    System.IntPtr error = System.IntPtr.Zero;
-
-                    System.IntPtr raw_pixbuf = rsvg_pixbuf_from_file_at_zoom_with_max(file_name, x_zoom, y_zoom, max_width, max_height, out error);
-
-                    if (System.IntPtr.Zero != error) {
-                        throw new GLib.GException( error );
-                    } else {
-                        return new Gdk.Pixbuf( raw_pixbuf );
-                    }
-                }
-
-            ////////////////////////////////////////////////////////////////////////////////////////// P R O C E D U R E S //
-
-
-        } // class Tool
-
-    } // namespace Rsvg
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////// O B J E C T S //
+			return GLib.Object.GetObject (raw_pixbuf, true) as Gdk.Pixbuf;
+		}
+	}
+}
 
 

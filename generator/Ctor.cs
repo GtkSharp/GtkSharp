@@ -151,6 +151,7 @@ namespace GtkSharp.Generation {
 	
 				Body.Initialize(gen_info, false, false, ""); 
 				sw.WriteLine("\t\t\t{0} = {1}({2});", container_type.AssignToName, CName, Body.GetCallString (false));
+				Body.Finish (sw, "");
 				Body.HandleException (sw, "");
 			}
 			

@@ -28,7 +28,7 @@ namespace GLib {
 		public string Property {
 			get {
 				IntPtr raw_ret = g_param_spec_get_name ((IntPtr) Args[0]);
-				return Marshal.PtrToStringAnsi (raw_ret);
+				return Marshaller.Utf8PtrToString (raw_ret);
 			}
 		}
 	}

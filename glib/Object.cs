@@ -147,14 +147,16 @@ namespace GLib {
 		}
 
 		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
+		static extern IntPtr gtksharp_register_type (IntPtr name, IntPtr parent_type);
 
 		protected static GType RegisterGType (System.Type t)
 		{
 			GType parent_gtype = LookupGType (t.BaseType);
 			string name = t.FullName.Replace(".", "_");
 			GLib.ObjectManager.RegisterType (name, t.FullName, t.Assembly.GetName().Name);
-			GType gtype = new GType (gtksharp_register_type (name, parent_gtype.Val));
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
+			GLib.Marshaller.Free (native_name);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			g_types[t] = gtype;
@@ -196,11 +198,16 @@ namespace GLib {
 		}
 
 		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, string[] names, GLib.Value[] vals);
+		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, IntPtr[] names, GLib.Value[] vals);
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
-			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, names, vals);
+			IntPtr[] native_names = new IntPtr [names.Length];
+			for (int i = 0; i < names.Length; i++)
+				native_names [i] = GLib.Marshaller.StringToPtrGStrdup (names [i]);
+			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, native_names, vals);
+			foreach (IntPtr p in native_names)
+				GLib.Marshaller.Free (p);
 		}
 
 		protected virtual IntPtr Raw {
@@ -231,7 +238,7 @@ namespace GLib {
 
 		protected string TypeName {
 			get {
-				return Marshal.PtrToStringAnsi (gtksharp_get_type_name (Raw));
+				return Marshaller.Utf8PtrToString (gtksharp_get_type_name (Raw));
 			}
 		}
 
@@ -351,29 +358,35 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_get_property (IntPtr obj, string name, ref GLib.Value val);
+		static extern void g_object_get_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
 		protected GLib.Value GetProperty (string name)
 		{
 			Value val = new Value (this, name);
-			g_object_get_property (Raw, name, ref val);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			g_object_get_property (Raw, native_name, ref val);
+			GLib.Marshaller.Free (native_name);
 			return val;
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_property (IntPtr obj, string name, ref GLib.Value val);
+		static extern void g_object_set_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
 		protected void SetProperty (string name, GLib.Value val)
 		{
-			g_object_set_property (Raw, name, ref val);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			g_object_set_property (Raw, native_name, ref val);
+			GLib.Marshaller.Free (native_name);
 		}
 
 		[DllImport("glibsharpglue-2")]
-		static extern void gtksharp_override_virtual_method (IntPtr gtype, string name, Delegate cb);
+		static extern void gtksharp_override_virtual_method (IntPtr gtype, IntPtr name, Delegate cb);
 
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)
 		{
-			gtksharp_override_virtual_method (gtype.Val, name, cb);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			gtksharp_override_virtual_method (gtype.Val, native_name, cb);
+			GLib.Marshaller.Free (native_name);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]

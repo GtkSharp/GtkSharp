@@ -22,6 +22,7 @@ sources = 				\
 	GenBase.cs			\
 	GenerationInfo.cs		\
 	IGeneratable.cs			\
+	IManualMarshaler.cs		\
 	ImportSignature.cs		\
 	InterfaceGen.cs			\
 	LPGen.cs			\

@@ -19,7 +19,9 @@ namespace Gnome
 			cb_wrapper = new GnomeSharp.PanelAppletFactoryCallbackWrapper (new PanelAppletFactoryCallback (Creation), null);
 			_IID = applet.IID;
 			_factoryIID = applet.FactoryIID;
-			panel_applet_factory_main(_factoryIID, GLib.Object.LookupGType (applet_type).Val, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			IntPtr native_iid = GLib.Marshaller.StringToPtrGStrdup (_factoryIID);
+			panel_applet_factory_main (native_iid, GLib.Object.LookupGType (applet_type).Val, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			GLib.Marshaller.Free (native_iid);
 		}
 
 		private static bool Creation (PanelApplet applet, string iid)
@@ -31,6 +33,6 @@ namespace Gnome
 		}
 
 		[DllImport("panel-applet-2")]
-		static extern int panel_applet_factory_main(string iid, IntPtr applet_type, GnomeSharp.PanelAppletFactoryCallbackNative cb, IntPtr data);
+		static extern int panel_applet_factory_main(IntPtr iid, IntPtr applet_type, GnomeSharp.PanelAppletFactoryCallbackNative cb, IntPtr data);
 	}
 }

@@ -72,15 +72,21 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 		}
 
 		[DllImport ("libpango-1.0-0.dll")]
-		static extern void pango_layout_set_text (IntPtr raw, string text, int length);
+		static extern void pango_layout_set_text (IntPtr raw, IntPtr text, int length);
 
-		public void SetText (string text) {
-			pango_layout_set_text (Handle, text, -1);
+		public void SetText (string text) 
+		{
+			IntPtr native_text = GLib.Marshaller.StringToPtrGStrdup (text);
+			pango_layout_set_text (Handle, native_text, -1);
+			GLib.Marshaller.Free (native_text);
 		}
 
 		[DllImport ("libpango-1.0-0.dll")]
-		static extern void pango_layout_set_markup (IntPtr raw, string markup, int length);
+		static extern void pango_layout_set_markup (IntPtr raw, IntPtr markup, int length);
 
-		public void SetMarkup (string markup) {
-			pango_layout_set_markup (Handle, markup, -1);
+		public void SetMarkup (string markup) 
+		{
+			IntPtr native_markup = GLib.Marshaller.StringToPtrGStrdup (markup);
+			pango_layout_set_markup (Handle, native_markup, -1);
+			GLib.Marshaller.Free (native_markup);
 		}

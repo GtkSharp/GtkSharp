@@ -48,7 +48,7 @@ namespace GLib {
 		private static GType boxed_type = GType.Invalid;
 
 		[DllImport("libgobject-2.0-0.dll")]
-		private static extern IntPtr g_boxed_type_register_static (string typename, CopyFunc copy_func, FreeFunc free_func);
+		private static extern IntPtr g_boxed_type_register_static (IntPtr typename, CopyFunc copy_func, FreeFunc free_func);
 		
 		public static GType GType {
 			get {
@@ -56,7 +56,9 @@ namespace GLib {
 					copy = new CopyFunc (Copy);
 					free = new FreeFunc (Free);
 				
-					boxed_type = new GLib.GType (g_boxed_type_register_static ("GtkSharpValue", copy, free));
+					IntPtr name = Marshaller.StringToPtrGStrdup ("GtkSharpValue");
+					boxed_type = new GLib.GType (g_boxed_type_register_static (name, copy, free));
+					Marshaller.Free (name);
 				}
 
 				return boxed_type;

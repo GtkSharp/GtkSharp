@@ -42,13 +42,13 @@ namespace GLib {
 		static extern void g_value_unset (ref GLib.Value val);
 
 		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_property(ref GLib.Value val, IntPtr obj, string name);
+		static extern IntPtr gtksharp_value_create_from_property(ref GLib.Value val, IntPtr obj, IntPtr name);
 
 		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, string name);
+		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, IntPtr name);
 
 		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_type_name(ref GLib.Value val, string type_name);
+		static extern IntPtr gtksharp_value_create_from_type_name(ref GLib.Value val, IntPtr type_name);
 
 		public void Dispose () 
 		{
@@ -71,7 +71,9 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_property (ref this, obj.Handle, prop_name);
+			IntPtr prop = GLib.Marshaller.StringToPtrGStrdup (prop_name);
+			gtksharp_value_create_from_property (ref this, obj.Handle, prop);
+			GLib.Marshaller.Free (prop);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -89,7 +91,9 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_type_name (ref this, type_name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (type_name);
+			gtksharp_value_create_from_type_name (ref this, native);
+			GLib.Marshaller.Free (native);
 			g_value_set_boxed (ref this, val.Handle);
 		}
 
@@ -98,7 +102,9 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_property (ref this, obj, prop_name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (prop_name);
+			gtksharp_value_create_from_property (ref this, obj, native);
+			GLib.Marshaller.Free (native);
 			g_value_set_boxed (ref this, val.Handle);
 		}
 
@@ -163,11 +169,13 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_set_string (ref Value val, string data);
+		static extern void g_value_set_string (ref Value val, IntPtr data);
 
 		public Value (string val) : this (GType.String)
 		{
-			g_value_set_string (ref this, val); 
+			IntPtr native_val = GLib.Marshaller.StringToPtrGStrdup (val);
+			g_value_set_string (ref this, native_val); 
+			GLib.Marshaller.Free (native_val);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -194,7 +202,9 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_type_name (ref this, type_name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (type_name);
+			gtksharp_value_create_from_type_name (ref this, native);
+			GLib.Marshaller.Free (native);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
@@ -206,7 +216,9 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			gtksharp_value_create_from_type_and_property (ref this, obj.NativeType.Val, prop_name);
+			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (prop_name);
+			gtksharp_value_create_from_type_and_property (ref this, obj.NativeType.Val, native);
+			GLib.Marshaller.Free (native);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
@@ -317,7 +329,7 @@ namespace GLib {
 		public static explicit operator String (Value val)
 		{
 			IntPtr str = g_value_get_string (ref val);
-			return str == IntPtr.Zero ? null : Marshal.PtrToStringAnsi (str);
+			return str == IntPtr.Zero ? null : GLib.Marshaller.Utf8PtrToString (str);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -393,9 +405,11 @@ namespace GLib {
 				GType type = TypeConverter.LookupType (value.GetType());
 				if (type == ManagedValue.GType)
 					g_value_set_boxed (ref this, ManagedValue.WrapObject (value));
-				else if (type == GType.String)
-					g_value_set_string (ref this, (string) value);
-				else if (type == GType.Boolean)
+				else if (type == GType.String) {
+					IntPtr native = GLib.Marshaller.StringToPtrGStrdup ((string)value);
+					g_value_set_string (ref this, native);
+					GLib.Marshaller.Free (native);
+				} else if (type == GType.Boolean)
 					g_value_set_boolean (ref this, (bool) value);
 				else if (type == GType.Int)
 					g_value_set_int (ref this, (int) value);

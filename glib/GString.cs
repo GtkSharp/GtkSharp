@@ -36,11 +36,13 @@ namespace GLib {
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_string_new (string text);
+		static extern IntPtr g_string_new (IntPtr text);
 
 		public GString (string text) 
 		{
-			handle = g_string_new (text);
+			IntPtr native_text = Marshaller.StringToPtrGStrdup (text);
+			handle = g_string_new (native_text);
+			Marshaller.Free (native_text);
 		}
 
 		public IntPtr Handle {
@@ -51,7 +53,7 @@ namespace GLib {
 		
 		public static string PtrToString (IntPtr ptr) 
 		{
-			return Marshal.PtrToStringAnsi (ptr);
+			return Marshaller.Utf8PtrToString (ptr);
 		}
 	}
 }

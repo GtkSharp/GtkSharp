@@ -28,9 +28,7 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	public delegate void LogFunc (string log_domain,
-				      LogLevelFlags log_level,
-				      string message);
+	public delegate void LogFunc (string log_domain, LogLevelFlags log_level, string message);
 
 	public delegate void PrintFunc (string message);
 
@@ -69,25 +67,25 @@ namespace GLib {
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern void g_logv (string log_domain, LogLevelFlags flags, string message);
+		static extern void g_logv (IntPtr log_domain, LogLevelFlags flags, IntPtr message);
 		
 		public void WriteLog (string logDomain, LogLevelFlags flags, string format, params object [] args)
 		{
-			g_logv (logDomain, flags, String.Format (format, args));
+			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
+			IntPtr nmessage = Marshaller.StringToPtrGStrdup (String.Format (format, args));
+			g_logv (ndom, flags, nmessage);
+			Marshaller.Free (ndom);
+			Marshaller.Free (nmessage);
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern uint g_log_set_handler (string log_domain,
-						      LogLevelFlags flags,
-						      LogFunc log_func,
-						      IntPtr user_data);
+		static extern uint g_log_set_handler (IntPtr log_domain, LogLevelFlags flags, LogFunc log_func, IntPtr user_data);
 		
-		public static uint SetLogHandler (string logDomain,
-						  LogLevelFlags flags,
-						  LogFunc logFunc)
-						  
+		public static uint SetLogHandler (string logDomain, LogLevelFlags flags, LogFunc logFunc)
 		{
-			uint result = g_log_set_handler (logDomain, flags, logFunc, IntPtr.Zero);
+			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
+			uint result = g_log_set_handler (ndom, flags, logFunc, IntPtr.Zero);
+			Marshaller.Free (ndom);
 			EnsureHash ();
 			handlers [result] = logFunc;
 
@@ -95,14 +93,16 @@ namespace GLib {
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern uint g_log_remove_handler (string log_domain, uint handler_id);
+		static extern uint g_log_remove_handler (IntPtr log_domain, uint handler_id);
 
 		public static void RemoveLogHandler (string logDomain, uint handlerID)
 		{
 			if (handlers != null && handlers.ContainsKey (handlerID))
 				handlers.Remove (handlerID);
 			
-			g_log_remove_handler (logDomain, handlerID);
+			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
+			g_log_remove_handler (ndom, handlerID);
+			Marshaller.Free (ndom);
 		}
 
 
@@ -129,17 +129,16 @@ namespace GLib {
 		}
 		
 		[DllImport("libglib-2.0-0.dll")]
-		static extern void g_log_default_handler (string log_domain,
-							  LogLevelFlags log_level,
-							  string message,
-							  IntPtr unused_data);
+		static extern void g_log_default_handler (IntPtr log_domain, LogLevelFlags log_level, IntPtr message, IntPtr unused_data);
 
-		public static void DefaultHandler (string logDomain,
-						   LogLevelFlags logLevel,
-						   string message)
+		public static void DefaultHandler (string logDomain, LogLevelFlags logLevel, string message)
 						   
 		{
-			g_log_default_handler (logDomain, logLevel, message, IntPtr.Zero);
+			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
+			IntPtr nmess = Marshaller.StringToPtrGStrdup (message);
+			g_log_default_handler (ndom, logLevel, nmess, IntPtr.Zero);
+			Marshaller.Free (ndom);
+			Marshaller.Free (nmess);
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
@@ -151,11 +150,14 @@ namespace GLib {
 		}
 
 		[DllImport("libglib-2.0-0.dll")]
-		extern static LogLevelFlags g_log_set_fatal_mask (string log_domain, LogLevelFlags fatal_mask);
+		extern static LogLevelFlags g_log_set_fatal_mask (IntPtr log_domain, LogLevelFlags fatal_mask);
 		
 		public static LogLevelFlags SetAlwaysFatal (string logDomain, LogLevelFlags fatalMask)
 		{
-			return g_log_set_fatal_mask (logDomain, fatalMask);
+			IntPtr ndom = Marshaller.StringToPtrGStrdup (logDomain);
+			LogLevelFlags result = g_log_set_fatal_mask (ndom, fatalMask);
+			Marshaller.Free (ndom);
+			return result;
 		}
 
 		/*

@@ -68,7 +68,9 @@ namespace GLib {
 			name = signal_name;
 			this.marshaler = marshaler;
 			gc_handle = GCHandle.Alloc (this);
-			g_object_set_data_full (handle, name + "_signal_marshaler", (IntPtr) gc_handle, notify);
+			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
+			g_object_set_data_full (handle, native_key, (IntPtr) gc_handle, notify);
+			GLib.Marshaller.Free (native_key);
 		}
 
 		public static Signal Lookup (GLib.Object obj, string name)
@@ -78,7 +80,9 @@ namespace GLib {
 
 		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
 		{
-			IntPtr data = g_object_get_data (obj.Handle, name + "_signal_marshaler");
+			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
+			IntPtr data = g_object_get_data (obj.Handle, native_key);
+			GLib.Marshaller.Free (native_key);
 			if (data == IntPtr.Zero)
 				return new Signal (obj, name, marshaler);
 
@@ -99,18 +103,26 @@ namespace GLib {
 			}
 		}
 
+		uint Connect (int flags)
+		{
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			uint id = g_signal_connect_data (handle, native_name, marshaler, (IntPtr) gc_handle, IntPtr.Zero, flags);
+			GLib.Marshaller.Free (native_name);
+			return id;
+		}
+
 		public void AddDelegate (Delegate d)
 		{
 			if (d.Method.IsDefined (typeof (ConnectBeforeAttribute), false)) {
 				if (before_handler == null) {
 					before_handler = d;
-					before_id = g_signal_connect_data (handle, name, marshaler, (IntPtr) gc_handle, IntPtr.Zero, 0);
+					before_id = Connect (0);
 				} else
 					before_handler = Delegate.Combine (before_handler, d);
 			} else {
 				if (after_handler == null) {
 					after_handler = d;
-					after_id = g_signal_connect_data (handle, name, marshaler, (IntPtr) gc_handle, IntPtr.Zero, 1);
+					after_id = Connect (1);
 				} else
 					after_handler = Delegate.Combine (after_handler, d);
 			}
@@ -138,7 +150,9 @@ namespace GLib {
 
 		void DisconnectObject ()
 		{
-			g_object_set_data (handle, name + "_signal_marshaler", IntPtr.Zero);
+			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
+			g_object_set_data (handle, native_key, IntPtr.Zero);
+			GLib.Marshaller.Free (native_key);
 		}
 
 		void DisconnectHandler (uint handler_id)
@@ -169,16 +183,16 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern IntPtr g_object_get_data (IntPtr instance, string key);
+		static extern IntPtr g_object_get_data (IntPtr instance, IntPtr key);
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_data (IntPtr instance, string key, IntPtr data);
+		static extern void g_object_set_data (IntPtr instance, IntPtr key, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_data_full (IntPtr instance, string key, IntPtr data, DestroyNotify notify);
+		static extern void g_object_set_data_full (IntPtr instance, IntPtr key, IntPtr data, DestroyNotify notify);
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern uint g_signal_connect_data(IntPtr obj, string name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
+		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);

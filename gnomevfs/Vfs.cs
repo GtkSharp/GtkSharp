@@ -76,7 +76,7 @@ namespace Gnome.Vfs {
 		internal static string ResultToString (int result)
 		{
 			IntPtr ptr = gnome_vfs_result_to_string (result);
-			return Marshal.PtrToStringAnsi (ptr);
+			return GLib.Marshaller.Utf8PtrToString (ptr);
 		}
 		
 		public static void ThrowException (Result result)

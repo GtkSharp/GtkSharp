@@ -31,9 +31,6 @@ namespace GLib {
 		bool add_progname = false;
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_strdup (string str);
-
-		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_malloc(IntPtr size);
 
 		[DllImport("libglib-2.0-0.dll")]
@@ -62,7 +59,7 @@ namespace GLib {
 			arg_ptrs = new IntPtr [args.Length];
 
 			for (int i = 0; i < args.Length; i++)
-				arg_ptrs [i] = g_strdup (args[i]);
+				arg_ptrs [i] = Marshaller.StringToPtrGStrdup (args[i]);
 				
 			handle = g_malloc (new IntPtr (IntPtr.Size * args.Length));
 
@@ -83,7 +80,7 @@ namespace GLib {
 			string[] result = new string [count];
 
 			for (int i = 0; i < count; i++, idx++) 
-				result [i] = Marshal.PtrToStringAnsi (Marshal.ReadIntPtr (handle, idx * IntPtr.Size));
+				result [i] = Marshaller.Utf8PtrToString (Marshal.ReadIntPtr (handle, idx * IntPtr.Size));
 
 			return result;
 		}

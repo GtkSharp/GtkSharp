@@ -55,7 +55,7 @@
 					retval = new string[length];
 					for (int i = 0, j = 0; i < length; i++, j += size) {
 						IntPtr string_ptr = Marshal.ReadIntPtr (new IntPtr (raw_ret.ToInt32 () + j));
-						retval[i] = Marshal.PtrToStringAnsi (string_ptr);
+						retval[i] = GLib.Marshaller.Utf8PtrToString (string_ptr);
 					}
 
 					g_strfreev (raw_ret);

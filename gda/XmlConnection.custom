@@ -21,6 +21,9 @@
 
 		public static XmlConnection NewFromFile (string filename)
 		{
-                        return new XmlConnection (gda_xml_connection_new_from_file (filename));
+			IntPtr filename_as_native = GLib.Marshaller.StringToPtrGStrdup (filename);
+                        XmlConnection ret = new XmlConnection (gda_xml_connection_new_from_file (filename_as_native));
+			GLib.Marshaller.Free (filename_as_native);
+			return ret;
 		}
 

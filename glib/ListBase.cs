@@ -89,7 +89,7 @@ namespace GLib {
 
 		public void Append (string item)
 		{
-			this.Append (Marshal.StringToHGlobalAnsi (item));
+			this.Append (Marshaller.StringToPtrGStrdup (item));
 		}
 
 		public void Prepend (IntPtr raw)
@@ -139,7 +139,7 @@ namespace GLib {
 			object ret = null;
 			if (element_type != null) {
 				if (element_type == typeof (string))
-					ret = Marshal.PtrToStringAnsi (data);
+					ret = Marshaller.Utf8PtrToString (data);
 				else if (element_type == typeof (int))
 					ret = (int) data;
 				else if (element_type.IsValueType)

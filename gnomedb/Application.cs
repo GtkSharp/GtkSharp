@@ -24,47 +24,54 @@ using System.Runtime.InteropServices;
 
 namespace GnomeDb
 {
-	/// <summary>
-	///   GnomeDb Application class
-	/// </summary>
-	///
-	/// <remarks>
-	///   Provides the initialization and event loop iteration related
-	///   methods for the libgnomedb library.
-	/// </remarks>
 
 	public class Application
 	{
 		private const string VERSION = "0.10";
 
 		[DllImport("gnomedb-2")]
-		static extern void gnome_db_init (string app_id, string version, int nargs, IntPtr args);
+		static extern void gnome_db_init (IntPtr app_id, IntPtr version, int nargs, IntPtr args);
 
 		public static void Init ()
 		{
-			gnome_db_init ("GnomeDb#", VERSION, 0, new IntPtr(0));
+			Init ("GnomeDb#", VERSION);
 		}
 
 		public static void Init (string app_id, string version)
 		{
-			gnome_db_init (app_id, version, 0, new IntPtr(0));
+			IntPtr native_appid = GLib.Marshaller.StringToPtrGStrdup (app_id);
+			IntPtr native_version = GLib.Marshaller.StringToPtrGStrdup (version);
+			gnome_db_init (native_appid, native_version, 0, IntPtr.Zero);
+			GLib.Marshaller.Free (native_appid);
+			GLib.Marshaller.Free (native_version);
 		}
 
 		[DllImport("gnomedb-2")]
-		static extern void gnome_db_init (string app_id, string version, ref int nargs, ref String [] args);
+		static extern void gnome_db_init (IntPtr app_id, IntPtr version, ref int argc, ref IntPtr argv);
 		
 		public static void Init (ref string [] args)
 		{
-			int argc = args.Length;
-			gnome_db_init ("GnomeDb#", VERSION, ref argc, ref args);
+			Init ("GnomeDb#", VERSION, ref args);
 		}
 
-		public static void Init (string app_id, string version, ref string [] args)
+		public static void Init (string app_id, string version, ref string[] args)
 		{
+			IntPtr native_appid = GLib.Marshaller.StringToPtrGStrdup (app_id);
+			IntPtr native_version = GLib.Marshaller.StringToPtrGStrdup (version);
+			GLib.Argv argv = new GLib.Argv (args);
+			IntPtr arg_ptr = argv.Handle;
 			int argc = args.Length;
-			gnome_db_init (app_id, version, ref argc, ref args);
+			gnome_db_init (native_appid, native_version, ref argc, ref arg_ptr);
+			GLib.Marshaller.Free (native_appid);
+			GLib.Marshaller.Free (native_version);
+			if (arg_ptr != argv.Handle)
+				throw new Exception ("Init returned new argv handle.");
+			if (argc <= 1)
+				args = new string [0];
+			else
+				args = argv.GetArgs (argc);
 		}
-		
+
 		[DllImport("gnomedb-2")]
 		static extern void gnome_db_main_run (IntPtr init_func, IntPtr user_data);
 

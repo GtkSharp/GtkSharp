@@ -46,10 +46,12 @@ namespace Gnome {
 		}
 
 		[DllImport("gnomeui-2")]
-		static extern IntPtr gnome_icon_theme_lookup_icon(IntPtr raw, string icon_name, int size, ref Gnome.IconData icon_data, out int base_size);
+		static extern IntPtr gnome_icon_theme_lookup_icon(IntPtr raw, IntPtr icon_name, int size, ref Gnome.IconData icon_data, out int base_size);
 
 		public string LookupIcon(string icon_name, int size, Gnome.IconData icon_data, out int base_size) {
-			IntPtr raw_ret = gnome_icon_theme_lookup_icon(Handle, icon_name, size, ref icon_data, out base_size);
+			IntPtr native_icon_name = GLib.Marshaller.StringToPtrGStrdup (icon_name);
+			IntPtr raw_ret = gnome_icon_theme_lookup_icon(Handle, native_icon_name, size, ref icon_data, out base_size);
+			GLib.Marshaller.Free (native_icon_name);
 			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
 			return ret;
 		}

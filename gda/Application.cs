@@ -23,42 +23,53 @@ using System.Runtime.InteropServices;
 
 namespace Gda
 {
-	/// <summary>
-	///   GDA Application class
-	/// </summary>
-	///
-	/// <remarks>
-	///   Provides the initialization and event loop iteration related
-	///   methods for the GDA data access library.
-	/// </remarks>
-
 	public class Application
 	{
 		private const string VERSION = "0.10";
 
 		[DllImport("gda-2")]
-		static extern void gda_init (string app_id, string version, int nargs, string[] args);
+		static extern void gda_init (IntPtr app_id, IntPtr version, int nargs, IntPtr args);
 
+		[DllImport("gda-2")]
+		static extern void gda_init (IntPtr app_id, IntPtr version, ref int argc, ref IntPtr argv);
+		
 		public static void Init ()
 		{
-			gda_init ("Gda#", VERSION, 0, new string[0]);
+			Init ("Gda#", VERSION);
 		}
 
 		public static void Init (string app_id, string version)
 		{
-			gda_init (app_id, version, 0, new string[0]);
+			IntPtr native_appid = GLib.Marshaller.StringToPtrGStrdup (app_id);
+			IntPtr native_version = GLib.Marshaller.StringToPtrGStrdup (version);
+			gda_init (native_appid, native_version, 0, IntPtr.Zero);
+			GLib.Marshaller.Free (native_appid);
+			GLib.Marshaller.Free (native_version);
 		}
 
-		public static void Init (string[] args)
+		public static void Init (ref string[] args)
 		{
-			gda_init ("Gda#", VERSION, args.Length, args);
+			Init ("Gda#", VERSION, ref args);
 		}
 
-		public static void Init (string app_id, string version, string[] args)
+		public static void Init (string app_id, string version, ref string[] args)
 		{
-			gda_init (app_id, version, args.Length, args);
+			IntPtr native_appid = GLib.Marshaller.StringToPtrGStrdup (app_id);
+			IntPtr native_version = GLib.Marshaller.StringToPtrGStrdup (version);
+			GLib.Argv argv = new GLib.Argv (args);
+			IntPtr arg_ptr = argv.Handle;
+			int argc = args.Length;
+			gda_init (native_appid, native_version, ref argc, ref arg_ptr);
+			GLib.Marshaller.Free (native_appid);
+			GLib.Marshaller.Free (native_version);
+			if (arg_ptr != argv.Handle)
+				throw new Exception ("Init returned new argv handle.");
+			if (argc <= 1)
+				args = new string [0];
+			else
+				args = argv.GetArgs (argc);
 		}
-		
+
 		[DllImport("gda-2")]
 		static extern void gda_main_run (IntPtr init_func, IntPtr user_data);
 

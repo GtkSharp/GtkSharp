@@ -165,7 +165,7 @@ namespace GConf
 			switch (val_type)
 			{
 				case ValueType.String:
-					return Marshal.PtrToStringAnsi (gconf_value_get_string (Raw));
+					return GLib.Marshaller.Utf8PtrToString (gconf_value_get_string (Raw));
 				case ValueType.Int:
 					return gconf_value_get_int (Raw);
 				case ValueType.Float:

@@ -61,11 +61,13 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern uint g_signal_connect_data(IntPtr obj, string name, Delegate cb, int key, IntPtr p, int flags);
+		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, int key, IntPtr p, int flags);
 
 		protected void Connect (string name, Delegate cb, int flags)
 		{
-			_HandlerID = g_signal_connect_data(_obj.Handle, name, cb, _key, new IntPtr(0), flags);
+			IntPtr native_name = Marshaller.StringToPtrGStrdup (name);
+			_HandlerID = g_signal_connect_data(_obj.Handle, native_name, cb, _key, new IntPtr(0), flags);
+			Marshaller.Free (native_name);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]

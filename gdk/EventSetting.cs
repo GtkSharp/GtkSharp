@@ -42,7 +42,7 @@ namespace Gdk {
 
 		public string Name {
 			get {
-				return Marshal.PtrToStringAnsi (gtksharp_gdk_event_setting_get_name (Handle));
+				return GLib.Marshaller.Utf8PtrToString (gtksharp_gdk_event_setting_get_name (Handle));
 			}
 		}
 	}

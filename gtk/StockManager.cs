@@ -46,22 +46,25 @@ namespace Gtk {
 			public static explicit operator StockItem (ConstStockItem csi)
 			{
 				Gtk.StockItem item = new Gtk.StockItem ();
-				item.StockId = Marshal.PtrToStringAnsi (csi.StockId);
-				item.Label = Marshal.PtrToStringAnsi (csi.Label);
+				item.StockId = GLib.Marshaller.Utf8PtrToString (csi.StockId);
+				item.Label = GLib.Marshaller.Utf8PtrToString (csi.Label);
 				item.Modifier = csi.Modifier;
 				item.Keyval = csi.Keyval;
-				item.TranslationDomain = Marshal.PtrToStringAnsi (csi.TranslationDomain);
+				item.TranslationDomain = GLib.Marshaller.Utf8PtrToString (csi.TranslationDomain);
 				return item;
 			}
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern bool gtk_stock_lookup (string stock_id, out ConstStockItem item);
+		static extern bool gtk_stock_lookup (IntPtr stock_id, out ConstStockItem item);
 
 		public static bool Lookup (string stock_id, ref Gtk.StockItem item) 
 		{
 			ConstStockItem const_item;
-			if (!gtk_stock_lookup (stock_id, out const_item))
+			IntPtr native_id = GLib.Marshaller.StringToPtrGStrdup (stock_id);
+			bool found = gtk_stock_lookup (native_id, out const_item);
+			GLib.Marshaller.Free (native_id);
+			if (!found)
 				return false;
 			item = (StockItem) const_item;
 			return true;

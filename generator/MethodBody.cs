@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 					result[i] = igen.CallByName (CastFromInt (p.CSType) + parameters [i - 1].Name + ".Length");
 					continue;
 				} else if (p.IsArray && p.MarshalType != p.CSType) {
-					result[i] = (is_set && i == 0 ? "native_value" : "native_" + p.Name);
+					result[i] = "native_" + p.Name;
 					continue;
 				}
 
@@ -90,7 +90,8 @@ namespace GtkSharp.Generation {
 
  					if (p.CSType != p.MarshalType && !(igen is StructBase || igen is ByRefGen))
 						call_parm = p.Name + "_as_native";
-				}
+				} else if (igen is IManualMarshaler)
+					call_parm = p.Name + "_as_native";
 
 				if (p.CType == "GError**") {
 					call_parm = call_parm.Replace (p.Name, "error");
@@ -124,12 +125,16 @@ namespace GtkSharp.Generation {
 
 				if ((is_get || p.PassAs == "out") && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
 					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_native;");
-
-				if (p.IsArray && p.MarshalType != p.CSType) {
-					sw.WriteLine(indent + "\t\t\t{0}[] native_{1} = new {0} [{1}.Length];", p.MarshalType.TrimEnd('[', ']'), name);
+				else if (p.IsArray && p.MarshalType != p.CSType) {
+					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [{1}.Length];", p.MarshalType.TrimEnd('[', ']'), name);
 					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < {0}.Length; i++)", name);
-					sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", name, p.CallByName (name + "[i]"));
-				}
+					if (gen is IManualMarshaler)
+						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, (gen as IManualMarshaler).AllocNative (name + "[i]"));
+					else
+						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, p.CallByName (name + "[i]"));
+				} else if (gen is IManualMarshaler)
+					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + p.Name + "_as_native = " + (gen as IManualMarshaler).AllocNative (name) + ";");
+
 
 				if (gen is CallbackGen) {
 					CallbackGen cbgen = gen as CallbackGen;
@@ -160,6 +165,11 @@ namespace GtkSharp.Generation {
 
 				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNative (p.Name + "_as_native") + ";");
+				else if (p.IsArray && gen is IManualMarshaler) {
+					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < native_" + p.Name + ".Length; i++)");
+					sw.WriteLine(indent + "\t\t\t\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + p.Name + "[i]") + ";");
+				} else if (gen is IManualMarshaler)
+					sw.WriteLine(indent + "\t\t\t" + (gen as IManualMarshaler).ReleaseNative (p.Name + "_as_native") + ";");
 			}
 		}
 

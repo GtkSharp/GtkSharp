@@ -30,14 +30,17 @@ namespace GLib {
 		private Markup () {}
 		
 		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_markup_escape_text (string text, int len);
+		static extern IntPtr g_markup_escape_text (IntPtr text, int len);
 		
 		static public string EscapeText (string s)
 		{
 			if (s == null)
-				return "";
+				return String.Empty;
 
-			return Marshaller.PtrToStringGFree (g_markup_escape_text (s, -1));
+			IntPtr native = Marshaller.StringToPtrGStrdup (s);
+			string result = Marshaller.PtrToStringGFree (g_markup_escape_text (native, -1));
+			Marshaller.Free (native);
+			return result;
 		}
 	}
 }

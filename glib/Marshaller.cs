@@ -32,6 +32,11 @@ namespace GLib {
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr mem);
 
+		public static void Free (IntPtr ptr)
+		{
+			g_free (ptr);
+		}
+
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_utf8_strlen (IntPtr mem, int size);
 
@@ -63,12 +68,14 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_strdup (byte[] bytes);
-
 		public static IntPtr StringToPtrGStrdup (string str) {
+			if (str == null)
+				return IntPtr.Zero;
 			byte[] bytes = System.Text.Encoding.UTF8.GetBytes (str);
-			return g_strdup (bytes);
+			IntPtr result = g_malloc (new UIntPtr ((ulong)bytes.Length + 1));
+			Marshal.Copy (bytes, 0, result, bytes.Length);
+			Marshal.WriteByte (result, bytes.Length, 0);
+			return result;
 		}
 
 		public static string StringFormat (string format, params object[] args) {
@@ -89,7 +96,7 @@ namespace GLib {
 		// [native pointer size] * [count] bytes.
 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern IntPtr g_malloc(ulong size);
+		static extern IntPtr g_malloc(UIntPtr size);
 
 		static bool check_sixtyfour () {
 			int szint = Marshal.SizeOf (typeof (int));
@@ -111,8 +118,8 @@ namespace GLib {
 			for (int i = 0; i < args.Length; i++)
 				ptrs[i] = (int) Marshal.StringToHGlobalAuto (args[i]);
 
-			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(int)) * 
-					       (ulong) args.Length);
+			IntPtr buf = g_malloc (new UIntPtr ((ulong) Marshal.SizeOf(typeof(int)) * 
+					       (ulong) args.Length));
 			Marshal.Copy (ptrs, 0, buf, ptrs.Length);
 			return buf;
 		}
@@ -124,8 +131,8 @@ namespace GLib {
 			for (int i = 0; i < args.Length; i++)
 				ptrs[i] = (long) Marshal.StringToHGlobalAuto (args[i]);
 				
-			IntPtr buf = g_malloc ((ulong) Marshal.SizeOf(typeof(long)) * 
-					       (ulong) args.Length);
+			IntPtr buf = g_malloc (new UIntPtr ((ulong) Marshal.SizeOf(typeof(long)) * 
+					       (ulong) args.Length));
 			Marshal.Copy (ptrs, 0, buf, ptrs.Length);
 			return buf;
 		}

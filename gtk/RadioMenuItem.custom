@@ -32,5 +32,7 @@
 				return;
 			}
 
-			Raw = gtk_radio_menu_item_new_with_mnemonic (IntPtr.Zero, label);
+			IntPtr label_as_native = GLib.Marshaller.StringToPtrGStrdup (label);
+			Raw = gtk_radio_menu_item_new_with_mnemonic (IntPtr.Zero, label_as_native);
+			GLib.Marshaller.Free (label_as_native);
 		}
