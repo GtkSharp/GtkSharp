@@ -9,8 +9,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Contains information found when looking up an icon in an icon theme.</summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>GLib.Opaque</BaseTypeName>
@@ -33,11 +33,11 @@
         <Parameter Name="n_points" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Fetches the set of attach points for an icon.</summary>
         <param name="points">a <see cref="T:Gdk.Point" /></param>
         <param name="n_points">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if there are any attach points for the icon. </returns>
+        <remarks>An attach point is a location in the icon that can be used as anchor points for attaching emblems or overlays to the icon.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -48,8 +48,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Free a <see cref="T:Gtk.IconInfo" /> and associated information</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetEmbeddedRect">
@@ -62,10 +62,10 @@
         <Parameter Name="rectangle" Type="Gdk.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="rectangle">a <see cref="T:Gdk.Rectangle" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the coordinates of a rectangle within the icon that can be used for display of information such as a preview of the contents of a text file.</summary>
+        <param name="rectangle">a <see cref="T:Gdk.Rectangle" /> in which to store embedded rectangle coordinates; coordinates are only stored when this function returns <see langword="true" />.</param>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the icon has an embedded rectangle</returns>
+        <remarks>See <see cref="P:Gtk.IconInfo.RawCoordinates" /> for further information about the coordinate system.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadIcon">
@@ -76,9 +76,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Renders an icon previously looked up in an icon theme using <see cref="M:Gtk.IconTheme.LookupIcon()" /></summary>
+        <returns>a <see cref="T:Gdk.Pixbuf" />,  the rendered icon</returns>
+        <remarks>The size will be based on the size passed to <see cref="M:Gtk.IconTheme.LookupIcon()" />. Note that the resulting pixbuf may not be exactly this size; an icon theme may have icons that differ slightly from their nominal sizes, and in addition Gtk will avoid scaling icons that it considers sufficiently close to the requested size or for which the source image would have to be scaled up too far. (This maintains sharpness.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -89,9 +89,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Make a copy of a <see cref="T:Gtk.IconInfo" />.</summary>
         <returns>a <see cref="T:Gtk.IconInfo" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -102,10 +102,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.IconInfo" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -116,9 +116,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>GType Property.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IconInfo" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Filename">
@@ -129,9 +129,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the filename for the icon.</summary>
+        <returns>a <see cref="T:System.String" />,  the filename for the icon, or <see langword="null" /></returns>
+        <remarks>If the <see cref="F:Gtk.IconLookupFlags.UseBuiltin" /> flag was passed to <see cref="M:Gtk.IconTheme.LookupIcon()" />, there may be no filename if a builtin icon is returned; in this case, you should use <see cref="P:Gtk.IconInfo.BuiltinPixbuf" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisplayName">
@@ -142,9 +142,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the display name for an icon.</summary>
+        <returns>a <see cref="T:System.String" />,  the display name for the icon or <see langword="null" />, if the icon does not have a specified display name.</returns>
+        <remarks>A display name is a string to be used in place of the icon name in a user visible context like a list of icons.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BuiltinPixbuf">
@@ -155,9 +155,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the built-in image for this icon, if any.</summary>
+        <returns>a <see cref="T:Gdk.Pixbuf" />,  the built-in image pixbuf, or <see langword="null" />.</returns>
+        <remarks>To allow Gtk to use built in icon images, you must pass the <see cref="F:Gtk.IconLookupFlags.UseBuiltin" /> to <see cref="M:Gtk.IconTheme.LookupIcon()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BaseSize">
@@ -168,9 +168,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the base size for the icon.</summary>
+        <returns>a <see cref="T:System.Int32" />,  the base size, or 0, if no base size is known for the icon.</returns>
+        <remarks>The base size is a size for the icon that was specified by the icon theme creator. This may be different than the actual size of image; an example of this is small emblem icons that can be attached to a larger icon. These icons will be given the same base size as the larger icons to which they are attached.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RawCoordinates">
@@ -180,9 +180,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets whether the coordinates returned by <see cref="M:Gtk.IconInfo.GetEmbeddedRect()" /> and <see cref="M:Gtk.IconInfo.GetAttachPoints()" /> should be returned in their original form as specified in the icon theme, instead of scaled appropriately for the pixbuf returned by <see cref="M:Gtk.IconInfo.LoadIcon()" />.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <para>
+Raw coordinates are somewhat strange; they are specified to be with respect to the unscaled pixmap for PNG and XPM icons, but for SVG icons, they are in a 1000x1000 coordinate space that is scaled to the final size of the icon. You can determine if the icon is an SVG icon by using <see cref="P:Gtk.IconInfo.Filename" />, and seeing if it is non-<see langword="null" /> and ends in '.svg'.
+</para>
+          <para>
+This function is provided primarily to allow compatibility wrappers for older API's, and is not expected to be useful for applications.
+</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

@@ -9,8 +9,29 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Looks up icons by name</summary>
+    <remarks>
+      <para>
+        <see cref="T:Gtk.IconTheme" /> provides a facility for looking up icons by name and size. The main reason for using a name rather than simply providing a filename is to allow different icons to be used depending on what icon theme is selected by the user. The operation of icon themes on Linux and Unix follows the Icon Theme Specification. There is a default icon theme, named hicolor where applications should install their icons, but more additional application themes can be installed as operating system vendors and users choose.
+</para>
+      <para>
+Named icons are similar to the Themeable Stock Images(3) facility, and the distinction between the two may be a bit confusing. A few things to keep in mind:
+<list type="bullet">
+          <item>
+            <term>Stock images usually are used in conjunction with Stock Items(3)., such as <see cref="F:Gtk.Stock.Ok" /> or <see cref="F:Gtk.Stock.Open" />.  Named icons are easier to set up and therefore are more useful for new icons that an application wants to add, such as application icons or window icons.
+</term>
+          </item>
+          <item>
+            <term>Stock images can only be loaded at the symbolic sizes defined by the <see cref="T:Gtk.IconSize" /> enumeration, or by custom sizes defined by <see cref="M:Gtk.Icon.SizeRegister()" />, while named icons are more flexible and any pixel size can be specified.</term>
+          </item>
+          <item>
+            <term>Because stock images are closely tied to stock items, and thus to actions in the user interface, stock images may come in multiple variants for different widget states or writing directions.</term>
+          </item>
+        </list></para>
+      <para>
+A good rule of thumb is that if there is a stock image for what you want to use, use it, otherwise use a named icon. It turns out that internally stock images are generally defined in terms of one or more named icons. (An example of the more than one case is icons that depend on writing direction; <see cref="F:Gtk.Stock.GoForward" /> uses the two themed icons "gtk-stock-go-forward-ltr" and "gtk-stock-go-forward-rtl".)
+</para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -35,10 +56,10 @@
         <Parameter Name="screen" Type="Gdk.Screen" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the icon theme object associated with <paramref name="screen" /></summary>
         <param name="screen">a <see cref="T:Gdk.Screen" /></param>
-        <returns>a <see cref="T:Gtk.IconTheme" /></returns>
-        <remarks>To be added</remarks>
+        <returns>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</returns>
+        <remarks>If this function has not previously been called for the given screen, a new icon theme object will be created and associated with the screen. Icon theme objects are fairly expensive to create, so using this function is usually a better choice than calling than <see cref="C:Gtk.IconTheme()" /> and setting the screen yourself; by using this function a single icon theme object will be shared between users.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorQuark">
@@ -66,11 +87,18 @@
         <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_name">a <see cref="T:System.String" /></param>
-        <param name="size">a <see cref="T:System.Int32" /></param>
-        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /></param>
-        <remarks>To be added</remarks>
+        <summary>Registers a built-in icon for icon theme lookups.</summary>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to register</param>
+        <param name="size">a <see cref="T:System.Int32" />, the size at which to register the icon (different images can be registered for the same icon name at different sizes.)</param>
+        <param name="pixbuf">a <see cref="T:Gdk.Pixbuf" /> that contains the image to use for <paramref name="icon_name" />.</param>
+        <remarks>
+          <para>
+The idea of built-in icons is to allow an application or library that uses themed icons to function requiring files to be present in the file system. For instance, the default images for all of Gtk's stock icons are registered as built-icons.
+</para>
+          <para>
+In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you should also install the icon in the icon theme, so that the icon is generally available.
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -105,9 +133,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks to see if the icon theme has changed; if it has, any currently cached information is discarded and will be reloaded next time the IconTheme is accessed.</summary>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the icon theme has changed and needed to be reloaded.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="HasIcon">
@@ -120,10 +148,10 @@
         <Parameter Name="icon_name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Checks whether an icon theme includes an icon for a particular name.</summary>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of an icon</param>
+        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the IconTheme includes an icon for <paramref name="icon_name" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PrependSearchPath">
@@ -136,9 +164,9 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Prepends a directory to the search path.</summary>
+        <param name="path">a <see cref="T:System.String" />, directory name to prepend to the icon path</param>
+        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendSearchPath">
@@ -151,9 +179,9 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Appends a directory to the search path.</summary>
+        <param name="path">a <see cref="T:System.String" />,  directory name to append to the icon path</param>
+        <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSearchPath">
@@ -166,9 +194,16 @@
         <Parameter Name="path" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="path">a <see cref="T:System.String" /></param>
-        <remarks>To be added</remarks>
+        <summary>Sets the current search path.</summary>
+        <param name="path">a <see cref="T:System.String[]" />, array of directories that are searched for icon themes</param>
+        <remarks>
+          <para>
+Sets the search path for the icon theme object. When looking for an icon theme, Gtk will search for a subdirectory of one or more of the directories in path with the same name as the icon theme. (Themes from multiple of the path elements are combined to allow themes to be extended by adding icons in the user's home directory.)
+</para>
+          <para>
+In addition if an icon found is not found either in the current icon theme or the default icon theme, and an image file with the right name is found directly in one of the elements of path, then that image will be used for the icon name. (This is a legacy feature, and new icons should be put into the default icon theme, which is called DEFAULT_THEME_NAME, rather than directly on the icon path.)
+</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LookupIcon">
@@ -183,12 +218,12 @@
         <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_name">a <see cref="T:System.String" /></param>
-        <param name="size">a <see cref="T:System.Int32" /></param>
-        <param name="flags">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gtk.IconInfo" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Looks up a named icon and returns a structure containing information such as the filename of the icon.</summary>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
+        <param name="size">a <see cref="T:System.Int32" />,  desired icon size</param>
+        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
+        <returns>a <see cref="T:Gtk.IconInfo" /> containing information about the icon, or <see langword="null" /> if the icon was not found.</returns>
+        <remarks>The icon can then be rendered into a pixbuf using <see cref="M:Gtk.IconInfo.LoadIcon()" />. (<see cref="M:Gtk.IconTheme.LoadIcon()" /> combines these two steps if all you need is the pixbuf.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadIcon">
@@ -203,12 +238,12 @@
         <Parameter Name="flags" Type="Gtk.IconLookupFlags" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="icon_name">a <see cref="T:System.String" /></param>
-        <param name="size">a <see cref="T:System.Int32" /></param>
-        <param name="flags">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Looks up an icon in an icon theme, scales it to the given size and renders it into a pixbuf.</summary>
+        <param name="icon_name">a <see cref="T:System.String" />,  the name of the icon to lookup</param>
+        <param name="size">a <see cref="T:System.Int32" />, the desired icon size. The resulting icon may not be exactly this size; see <see cref="M:Gtk.IconInfo.LoadIcon()" />.</param>
+        <param name="flags">a <see cref="T:System.Int32" />,  flags modifying the behavior of the icon lookup</param>
+        <returns>a <see cref="T:Gdk.Pixbuf" />  the rendered icon or <see langword="null" /> if the icon is not found.</returns>
+        <remarks>This is a convenience function; if more details about the icon are needed, use <see cref="M:Gtk.IconTheme.LookupIcon()" /> followed by <see cref="M:Gtk.IconInfo.LoadIcon()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ListIcons">
@@ -221,10 +256,10 @@
         <Parameter Name="context" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="context">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Lists the icons in the current icon theme.</summary>
+        <param name="context">a <see cref="T:System.String" />,  a string identifying a particular type of icon, or <see langword="null" /> to list all icons.</param>
+        <returns>a <see cref="T:System.String[]" /> holding the names of all the icons in the theme.</returns>
+        <remarks>Only a subset of the icons can be listed by providing a context string. The set of values for the context string is system dependent, but will typically include such values as 'apps' and 'mimetypes'.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -235,10 +270,10 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <returns>a <see cref="T:Gtk.IconTheme" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -249,10 +284,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Internal constructor.</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:Gtk.IconTheme" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -261,9 +296,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Gtk.IconTheme" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Icon theme objects are used to lookup up an icon by name in a particular icon theme. Usually, you will want to use <see cref="P:Gtk.IconTheme.Default" /> or <see cref="M:Gtk.IconTheme.GetForScreen()" /> rather than creating a new icon theme object for scratch.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -274,9 +309,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.IconTheme" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Gets the icon theme for the default screen.</summary>
+        <returns>a <see cref="T:Gtk.IconTheme" />.  A unique <see cref="T:Gtk.IconTheme" /> associated with the given screen. This icon theme is associated with the screen and can be used as long as the screen is open.</returns>
+        <remarks>See <see cref="M:Gtk.IconTheme.GetForScreen()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -287,9 +322,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>GType Property.</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IconTheme" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Screen">
@@ -299,9 +334,9 @@
         <ReturnType>Gdk.Screen</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Sets the screen for an icon theme</summary>
         <returns>a <see cref="T:Gdk.Screen" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>The screen is used to track the user's currently configured icon theme, which might be different for different screens.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CustomTheme">
@@ -311,9 +346,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the name of the icon theme that the <see cref="T:Gtk.IconTheme" /> object uses overriding system configuration.</summary>
+        <returns>a <see cref="T:System.String" />,  name of icon theme to use instead of configured theme</returns>
+        <remarks>This cannot be used on the icon theme objects returned from <see cref="P:Gtk.IconTheme.Default" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExampleIconName">
@@ -324,9 +359,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The name of an icon that is representative of the current theme (for instance, to use when presenting a list of themes to the user.)</summary>
+        <returns>a <see cref="T:System.String" />, the name of an example icon or <see langword="null" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SearchPath">
@@ -337,9 +372,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks>To be added</remarks>
+        <summary>The current search path</summary>
+        <returns>a <see cref="T:System.String" />,  array of directories that are searched for icon themes</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -350,8 +385,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the current icon theme is switched or Gtk detects that a change has occurred in the contents of the current icon theme.</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>
