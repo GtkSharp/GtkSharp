@@ -332,21 +332,23 @@ class Client {
 		mb.Append (file_item);
 
 		Menu action_menu = new Menu ();
+		MenuItem action_item = new MenuItem ("_Action");
+		action_item.Submenu = action_menu;
+		mb.Append (action_item);
 
 		ImageMenuItem insert_item = new ImageMenuItem ("Insert");
 		insert_item.Image = new Gtk.Image (Stock.Add, IconSize.Menu);
 		insert_item.Activated += new EventHandler (Insert_Activated);
-
+		action_menu.Append (insert_item);
+		
 		ImageMenuItem remove_item = new ImageMenuItem ("Remove");
 		remove_item.Image = new Gtk.Image (Stock.Remove, IconSize.Menu);
 		remove_item.Activated += new EventHandler (Remove_Activated);
+		action_menu.Append (remove_item); 
 
 		ImageMenuItem update_item = new ImageMenuItem ("Update");
 		update_item.Image = new Gtk.Image (Stock.Italic, IconSize.Menu);
 		update_item.Activated += new EventHandler (Update_Activated);
-
-		action_menu.Append (insert_item);
-		action_menu.Append (remove_item);
 		action_menu.Append (update_item);
 
 		Menu help_menu = new Menu ();
@@ -428,7 +430,7 @@ class IdConnection : IDisposable
 	public IdConnection ()
 	{
 		cnc = new SqlConnection ();
-		string connectionString = "hostaddr=127.0.0.1;" +
+		string connectionString = "hostaddr=80.24.221.71;" +
 					  "user=monotest;" +
 					  "password=monotest;" +
 					  "dbname=monotest";
