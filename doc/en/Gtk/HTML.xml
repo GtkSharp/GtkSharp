@@ -1,5 +1,5 @@
 <Type Name="HTML" FullName="Gtk.HTML">
-  <TypeSignature Language="C#" Value="public class HTML : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class HTML : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Miguel de Icaza" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,22 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Lightweight HTML rendering widget.</summary>
+    <remarks>
+      <para>
+	Gtk.HTML is a lightweight HTML rendering widget, as well as as
+	simple graphical HTML editor.
+      </para>
+      <para>
+	Developers can also be used as a widget container (<see
+	cref="T:Gtk.Container"/>).  It is an easy way for viewing HTML
+	documents in your application and for layout UI of your
+	application throught HTML.
+      </para>
+      <para>
+	Gtk.HTML does not have support for CSS or JavaScript.
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Layout</BaseTypeName>
@@ -39,9 +53,10 @@
         <Parameter Name="html" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="html">To be added: an object of type 'Gtk.Widget'</param>
-        <remarks>To be added</remarks>
+        <summary>Constructs an instance of a Gtk.HTML widget</summary>
+        <param name="html">A Gtk.HTML derivative object.</param>
+        <remarks>This is a low-level routine, and should only be used
+        to initialize an instance of a Gtk.HTML derivative class.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetObjectById">
@@ -54,10 +69,11 @@
         <Parameter Name="id" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="id">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'IntPtr'</returns>
-        <remarks>To be added</remarks>
+        <summary>Locates an object whose id is provided</summary>
+        <param name="id">The id assigned to an object in the HTML stream</param>
+        <returns>An IntPtr to the internal HTMLObject</returns>
+        <remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Export">
@@ -86,8 +102,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Copies the selection to the clipboard.</summary>
+        <remarks>Copies the selection into the clipboard.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectWord">
@@ -98,8 +114,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Selects the word under the cursor.</summary>
+        <remarks>This routine selects the word under the cursor.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToggleFontStyle">
@@ -168,8 +184,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Undoes the last operation.</summary>
+        <remarks>If the widget is Editable, this undoes the last operation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Cut">
@@ -180,8 +196,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Cuts the selection into the clipboard.</summary>
+        <remarks>If the widget is editable, this cuts the selection
+        into the clipboard;  Otherwise it just copies the selection
+        into the clipboard.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetUrlBaseRelative">
@@ -194,10 +212,10 @@
         <Parameter Name="url" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="url">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Computes url from widget base url.</summary>
+        <param name="url">The new component of the url.</param>
+        <returns>The new base-relative url.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateStyles">
@@ -220,9 +238,52 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.HTMLStream'</returns>
-        <remarks>To be added</remarks>
+        <summary>Starts incremental content updating.</summary>
+        <returns>A <see cref="T:Gtk.HTMLStream"/> handle to push content.</returns>
+        <remarks>
+	  <para>
+	    Use the Begin method to push new HTML content into the
+	    widget.  The content type is expected to be in the format
+	    defined by <see cref="P:Gtk.HTML.DefaultContentType"/>,
+	    which by default is "html/text; charset=utf-8".
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using Gtk;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ();
+                w.Add (html);
+                w.ShowAll ();
+
+                HTMLStream s = html.Begin ();
+                string line;
+
+                while ((line = Console.ReadLine ()) != null)
+                        s.Write (line);
+	        html.End (s, HTMLStreamStatus.Ok);
+                Application.Run ();
+        }
+}
+
+	    </code>
+	  </example>
+	  <para>
+	    Compile and run:
+	  </para>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    echo "<html><body>Hello <b>World</b></body></html>" | mono sample.exe
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImagesRef">
@@ -247,9 +308,15 @@
         <Parameter Name="as_cite" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="as_cite">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>Paste clipboard contents into editor</summary>
+        <param name="as_cite">Whether to paste as a citation.</param>
+        <remarks>
+	  If the widget is in editing mode (see <see
+	  cref="P:Gtk.HTML.Editable"/>), the contents of the clipboard
+	  are pasted into the HTML editor.  If the value of <see
+	  paramref="as_cite"/> is true, then the contents are pasted
+	  as a citation.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadEmpty">
@@ -288,10 +355,52 @@
         <Parameter Name="status" Type="Gtk.HTMLStreamStatus" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">To be added: an object of type 'Gtk.HTMLStream'</param>
-        <param name="status">To be added: an object of type 'Gtk.HTMLStreamStatus'</param>
-        <remarks>To be added</remarks>
+        <summary>Ends incremental updating</summary>
+        <param name="handle">The <see cref="T:Gtk.HTMLStream"/> to close.</param>
+        <param name="status">The <see cref="T:Gtk.HTMLStreamStatus"/> representing the state of the stream when closed.</param>
+        <remarks>
+	  <para>
+	    Closes the <see cref="Gtk.HTMLStream"/> represented
+	    by <see paramref="stream"/> and notifies the HTML widget that
+	    it should not expect any more content from that stream.
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using Gtk;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ();
+                w.Add (html);
+                w.ShowAll ();
+
+                HTMLStream s = html.Begin ();
+                string line;
+
+                while ((line = Console.ReadLine ()) != null)
+                        s.Write (line);
+	        html.End (s, HTMLStreamStatus.Ok);
+                Application.Run ();
+        }
+}
+
+	    </code>
+	  </example>
+	  <para>
+	    Compile and run:
+	  </para>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    echo "<html><body>Hello <b>World</b></body></html>" | mono sample.exe
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Redo">
@@ -302,8 +411,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Redoes the last Undone operation</summary>
+        <remarks>If the widget is editable, this redoes the last
+        undone operation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendHtml">
@@ -353,8 +463,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Selects all the contents.</summary>
+        <remarks>Selects all of the contents of the HTML widget.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginFull">
@@ -416,10 +526,10 @@
         <Parameter Name="data" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Unsupported in Gtk#.  Installs hooks for the editor.</summary>
         <param name="api">To be added: an object of type 'Gtk.HTMLEditorAPI'</param>
         <param name="data">To be added: an object of type 'IntPtr'</param>
-        <remarks>To be added</remarks>
+        <remarks>This API is currently not supported.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertGtkHtml">
@@ -445,8 +555,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Zooms in.</summary>
+        <remarks>Zooms in the view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertHtml">
@@ -521,10 +631,10 @@
         <Parameter Name="anchor" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="anchor">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Jumps to an anchor by name, making it visible.</summary>
+        <param name="anchor">The anchor to locate.</param>
+        <returns><see langword="true"/> if the anchor is found.</returns>
+        <remarks>Scroll the document display to show the HTML anchor requested.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImagePreload">
@@ -602,10 +712,55 @@
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="content_type">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.HTMLStream'</returns>
-        <remarks>To be added</remarks>
+        <summary>Starts incremental content updating. With a specific
+        content type.</summary>
+        <param name="content_type">The content type for the data to be
+        streamed.</param>
+        <returns>A <see cref="T:Gtk.HTMLStream"/> handle to push content.</returns>
+        <remarks>
+	  <para>
+	    Use the Begin method to push new HTML content into the
+	    widget.  The content type has to be specified (like this
+	    for example: "html/text; charset=utf-8").
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using Gtk;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ();
+                w.Add (html);
+                w.ShowAll ();
+
+                HTMLStream s = html.BeginContent ("text/html; charset=utf-8");
+                string line;
+
+                while ((line = Console.ReadLine ()) != null)
+                        s.Write (line);
+	        html.End (s, HTMLStreamStatus.Ok);
+                Application.Run ();
+        }
+}
+
+	    </code>
+	  </example>
+	  <para>
+	    Compile and run:
+	  </para>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    echo "<html><body>Hello <b>World</b></body></html>" | mono sample.exe
+	  </para>
+	  
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AllowSelection">
@@ -631,8 +786,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Drops all the undo information.</summary>
+        <remarks>Drops all the Undo and Redo information from the widget.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectParagraphExtended">
@@ -655,8 +810,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Zooms out.</summary>
+        <remarks>Zooms out the view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Command">
@@ -709,9 +864,14 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.HTML'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates an empty GtkHTML widget.</summary>
+        <returns>The new constructed <see cref="T:Gtk.HTML"/> widget.</returns>
+        <remarks>
+	  <para>
+	    It creates an empty <see cref="T:Gtk.HTML"/> widget.  The
+	    returned widget is empty, and defaults to not be editable.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -736,10 +896,14 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the contents can be edited.</summary>
+        <param name="value">Editing state.</param>
+        <returns><see langword="true"/> if the contents are editable,
+        <see langword="false"/>otherwise. </returns>
+        <remarks>
+	  Whether this Gtk.HTML instance can be used as an HTML
+	  editor.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ParagraphIndentation">
@@ -898,8 +1062,12 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Occurs when the title changes in HTML</summary>
+        <remarks>
+	  This event is raised when the HTML parser encounters the
+	  &lt;title&gt; tag on the HTML stream.  To get the title, use
+	  the <see cref="P:Gtk.HTML.Title"/> property.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetBase">
@@ -948,8 +1116,11 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Occurs when the cursor moves.</summary>
+        <remarks>
+	  This event is raised when the widget is in editing mode and
+	  the cursor has moved.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="OnCommand">
@@ -968,8 +1139,75 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Occurs when a url is Requested</summary>
+        <remarks>
+	  <para>
+	    This event is raised when an URL is requested (typically
+	    an image).  
+	  </para>
+	  <para>
+	    The following example shows how a simple HTML source that
+	    requests an image (hello.png).  If the file is found, then
+	    it will be streamed into the HTML widget.  The model
+	    allows for data to be delivered as it comes, and when the
+	    data has all arrived, the End method can be invoked on the
+	    html stream provided by the <see
+	    cref="P:GtkSharp.UrlRequestedArgs.Handle"/>.
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using System.IO;
+using Gtk;
+using GtkSharp;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ();
+                html.UrlRequested += new UrlRequestedHandler (LoadFromDisk);
+                w.Add (html);
+                w.ShowAll ();
+
+                HTMLStream s = html.Begin ();
+                s.Write ("&lt;html&gt;&lt;body&gt;My image: &lt;img src=\"hello.png\"&gt;&lt;/body&gt;&lt;/html&gt;");
+                html.End (s, HTMLStreamStatus.Ok);
+                Application.Run ();
+        }
+
+        static void LoadFromDisk (object sender, UrlRequestedArgs args)
+        {
+	        try {
+                	FileStream s = File.OpenRead (args.Url);
+                	byte [] buffer = new byte [8192];
+                	int n;
+			
+                	while ((n = s.Read (buffer, 0, 8192)) != 0) {
+                	        args.Handle.Write (buffer, n);
+                	}
+	      		args.Handle.Close (HTMLStreamStatus.Ok);
+	        } catch {
+	        	// Ignore errors.
+	        }
+        }
+}
+	    </code>
+	  </example>
+	  <para>
+	    Make sure there is a "hello.png" file in your directory to
+	    see it, otherwise the sample will show the "broken image
+	    link" image.
+	  </para>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    mono sample.exe
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="IframeCreated">
@@ -1028,8 +1266,49 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Occurs when the user clicks on a hyperlink</summary>
+        <remarks>
+	  <para>
+	    This event is raised when the user clicks on a hyperlink
+	    in the HTML widget.
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using System.IO;
+using Gtk;
+using GtkSharp;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ("&lt;html&gt;&lt;body&gt;Click &lt;a href=\"http://www.go-mono.com\"&gt;me&lt;/a&gt;");
+                html.LinkClicked += new LinkClickedHandler (OnLinkClicked);
+                w.Add (html);
+                w.ShowAll ();
+                Application.Run ();
+        }
+
+        static void OnLinkClicked (object o, LinkClickedArgs args)
+        {
+                Console.WriteLine ("The link clicked url is: " + args.Url);
+        }
+}
+	    </code>
+	  </example>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    mono sample.exe
+	  </para>
+	  <para>
+	    Click on the "me" link to see the message on the console.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Submit">
@@ -1058,8 +1337,51 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Occurs when the user hovers over a hyper-link.</summary>
+        <remarks>
+	  <para>
+	    This event is raised when the mouse pointer hovers over a
+	    hyper link or leaves a link.  In the former case the value
+	    of <see cref="P:GtkSharp.OnUrlHandler.Url"/> is the link
+	    target, and in the later the empty string.
+	  </para>
+	  <example>
+	    <code lang="C#">
+using System;
+using System.IO;
+using Gtk;
+using GtkSharp;
+
+class X {
+
+        static void Main ()
+        {
+                Application.Init ();
+                Window w = new Window ("Sample");
+                HTML html = new HTML ("&lt;html&gt;&lt;body&gt;Click &lt;a href=\"http://www.go-mono.com\"&gt;me&lt;/a&gt;");
+                html.OnUrl += new OnUrlHandler (OnUrl);
+                w.Add (html);
+                w.ShowAll ();
+                Application.Run ();
+        }
+
+        static void OnUrl (object o, OnUrlArgs args)
+        {
+                Console.WriteLine ("The mouse is over: " + args.Url);
+        }
+}
+	    </code>
+	  </example>
+	  <para>
+	    mcs sample.cs -r:gtk-sharp
+	  </para>
+	  <para>
+	    mono sample.exe
+	  </para>
+	  <para>
+	    Hover in and out of the link to see the effects on the console.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetBaseTarget">
