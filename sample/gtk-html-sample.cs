@@ -14,9 +14,9 @@ class HTMLSample {
 		win.Add (html);
 		HTMLStream s = html.Begin ("text/html");
 
-		if (args.Length > 0){
-			StreamReader r = new StreamReader (File.OpenRead (args [0]));
-			s.Write (r.ReadToEnd ());
+		if (args.Length > 0) {
+			using (StreamReader r = File.OpenText (args [0]))
+				s.Write (r.ReadToEnd ());
 		} else {
 			s.Write ("<html><body>");
 			s.Write ("Hello world!");
