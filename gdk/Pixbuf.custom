@@ -1,0 +1,29 @@
+IntPtr LoadFromStream (System.IO.Stream input)
+{
+	PixbufLoader loader = new PixbufLoader ();
+	byte [] buffer = new byte [8192];
+
+	int n;
+
+	while ((n = input.Read (buffer, 0, 8192)) != 0)
+		loader.Write (buffer, (uint) n);
+	loader.Close ();
+
+	return loader.Pixbuf.Handle;
+}
+
+public Pixbuf (System.IO.Stream input)
+{
+	Raw = LoadFromStream (input);
+}
+
+public Pixbuf (System.Reflection.Assembly assembly, string resource)
+{
+	if (assembly == null)
+		assembly = System.Reflection.Assembly.GetCallingAssembly ();
+
+	System.IO.Stream s;
+	Pixbuf p = null;
+	using (s = assembly.GetManifestResourceStream (resource))
+		Raw = LoadFromStream (s);
+}
