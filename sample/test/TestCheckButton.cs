@@ -1,3 +1,11 @@
+//
+// TestCheckButton.cs
+//
+// Author: Duncan Mak  (duncan@ximian.com)
+//
+// Copyright (C) 2002, Duncan Mak, Ximian Inc.
+//
+
 using System;
 
 using Gtk;

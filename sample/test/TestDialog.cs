@@ -1,4 +1,3 @@
-
 //
 // TestDialog.cs
 //
@@ -23,9 +22,10 @@ namespace WidgetViewer {
 		{
 			window = new Dialog ();
 			window.Response += new EventHandler (Print_Response);
+			window.SetDefaultSize (200, 100);
 
 			window.Title = "GtkDialog";
-			Button button = new ToggleButton ("OK");
+			Button button = new Button ("OK");
 			button.Clicked += new EventHandler (Close_Button);
 			button.CanDefault = true;
 			window.ActionArea.PackStart (button, true, true, 0);
@@ -36,7 +36,7 @@ namespace WidgetViewer {
 			window.ActionArea.PackStart (toggle_button, true, true, 0);
 
 			toggle_button = new ToggleButton ("Toggle Separator");
-			button.Clicked += new EventHandler (Separator_Toggle);
+			toggle_button.Clicked += new EventHandler (Separator_Toggle);
 			window.ActionArea.PackStart (toggle_button, true, true, 0);
 
 			window.ShowAll ();
@@ -61,8 +61,7 @@ namespace WidgetViewer {
 		static void Label_Toggle (object o, EventArgs args)
 		{
 			if (label == null) {
-				Console.WriteLine ("Null label");
-				label = new Label ("Text label");
+				label = new Label ("This is Text label inside a Dialog");
 				label.SetPadding (10, 10);
 				window.VBox.PackStart (label, true, true, 0);
 				label.Show ();
@@ -74,7 +73,8 @@ namespace WidgetViewer {
 
 		static void Separator_Toggle (object o, EventArgs args)
 		{
-			window.HasSeparator = ((ToggleButton) o).Active;
+			window.HasSeparator = (!((ToggleButton) o).Active);
 		}
 	}
 }
+

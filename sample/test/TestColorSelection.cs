@@ -1,4 +1,3 @@
-
 //
 // TestColorSelection.cs
 //
@@ -16,6 +15,7 @@ namespace WidgetViewer {
 	public class TestColorSelection
 	{
 		static ColorSelectionDialog window = null;
+		static Dialog dialog = null;
 
 		public static Gtk.Window Create ()
 		{
@@ -31,10 +31,12 @@ namespace WidgetViewer {
 			window.VBox.BorderWidth = 10;
 
 			check_button = new CheckButton("Show Opacity");
+			check_button.Active = true;
 			options.PackStart (check_button, false, false, 0);
 			check_button.Toggled += new EventHandler (Opacity_Callback);
 
 			check_button = new CheckButton("Show Palette");
+			check_button.Active = true;
 			options.PackEnd (check_button, false, false, 0);
 			check_button.Toggled += new EventHandler (Palette_Callback);
 
@@ -64,13 +66,54 @@ namespace WidgetViewer {
 
 		static void Color_Selection_OK (object o, EventArgs args)
 		{
-			Gdk.Color color = window.ColorSelection.CurrentColor;
-			window.ColorSelection.CurrentColor = color;
+			Gdk.Color selected = window.ColorSelection.CurrentColor;
+
+			if (selected == null) {
+				Console.WriteLine ("Color selection failed.");
+				return;
+			}
+			
+			Display_Result (selected);
 		}
 
 		static void Color_Selection_Cancel (object o, EventArgs args)
 		{
+			SignalArgs sa = (SignalArgs) args;
+			if (dialog != null)
+				dialog.Destroy ();
 			window.Destroy ();
+			sa.RetVal = true;
+		}
+
+		static void Display_Result (Gdk.Color color)
+		{
+
+			if (color == null)
+				Console.WriteLine ("Null color");
+			
+			dialog = new Dialog ();
+			dialog.Title = "Selected Color";
+
+			DrawingArea da = new DrawingArea ();
+
+			da.ModifyBg (StateType.Normal, color);
+
+			Console.WriteLine (da);
+
+			dialog.VBox.PackStart (da, true, true, 0);
+
+			Button button = new Button ("OK");
+			button.Clicked += new EventHandler (Close_Button);
+			button.CanDefault = true;
+			dialog.ActionArea.PackStart (button, true, true, 0);
+			button.GrabDefault ();
+
+			dialog.ShowAll ();
+		}
+
+		static void Close_Button (object o, EventArgs args)
+		{
+			Color_Selection_Cancel (o, args);
 		}
 	}
 }

@@ -29,17 +29,18 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 
-			radio_button = new RadioButton (new GLib.SList (IntPtr.Zero), "Button 1");
+			radio_button = RadioButton.NewWithLabel (new GLib.SList (IntPtr.Zero), "Button 1");
+			Console.WriteLine (radio_button);
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = new RadioButton (radio_button.Group, "Button 2");
+			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 2");
 			radio_button.Active = true;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = new RadioButton (radio_button.Group, "Button 3");
+			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 3");
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = new RadioButton (radio_button.Group, "Inconsistent");
+			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Inconsistent");
 			radio_button.Inconsistent = true;
 			box2.PackStart (radio_button, true, true, 0);
 
@@ -49,16 +50,16 @@ namespace WidgetViewer {
 			box2.BorderWidth = 10;
 			box1.PackStart (box2, true, true, 0);
 			
-			radio_button = new RadioButton (new GLib.SList (IntPtr.Zero), "Button 4");
+			radio_button = RadioButton.NewWithLabel (new GLib.SList (IntPtr.Zero), "Button 4");
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = new RadioButton (radio_button.Group, "Button 5");
+			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 5");
 			radio_button.Active = true;
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
-			radio_button = new RadioButton (radio_button.Group, "Button 6");
+			radio_button = RadioButton.NewWithLabelFromWidget (radio_button, "Button 6");
 			radio_button.Mode = false;
 			box2.PackStart (radio_button, true, true, 0);
 
