@@ -184,12 +184,15 @@ foreach $fname (@srcs, @privhdrs) {
 	}
 
 	while ($line = <INFILE>) {
-		#next if ($line !~ /^(struct|\w+_class_init)|g_boxed_type_register_static/);
 		next if ($line !~ /^(struct|\w+_class_init|\w+_base_init|\w+_get_type)/);
 
 		if ($line =~ /^struct/) {
 			# need some of these to parse out parent types
 			print "private";
+			if ($line =~ /;/) {
+				print $line;
+				next;
+			}
 		}
 
 		$comment = 0;
