@@ -27,6 +27,13 @@ namespace GtkSharp.Generation {
 			assembly_name = ns_name.ToLower () + "-sharp";
 		}
 
+		public GenerationInfo (string dir, string assembly_name)
+		{
+			this.dir = dir;
+			custom_dir = dir;
+			this.assembly_name = assembly_name;
+		}
+
 		public string AssemblyName {
 			get {
 				return assembly_name;

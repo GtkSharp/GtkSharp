@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001-2002 Mike Kestner
+// (c) 2001-2003 Mike Kestner and Ximian Inc.
 
 namespace GtkSharp.Generation {
 
@@ -15,19 +15,10 @@ namespace GtkSharp.Generation {
 	public class ObjectGen : ClassBase, IGeneratable  {
 
 		private ArrayList strings = new ArrayList();
-		private static Hashtable namespaces = new Hashtable ();
+		private static Hashtable dirs = new Hashtable ();
 
 		public ObjectGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
-			Hashtable objs;
-			if (namespaces.ContainsKey (NS)) 
-				objs = (Hashtable) namespaces[NS];
-			else {
-				objs = new Hashtable();
-				namespaces.Add (NS, objs);
-			}
-			objs.Add (CName, QualifiedName + "," + NS.ToLower() + "-sharp");
- 
 			foreach (XmlNode node in elem.ChildNodes) {
 
 				if (!(node is XmlElement)) continue;
@@ -51,6 +42,36 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		private class DirectoryInfo {
+			public string assembly_name;
+			public Hashtable objects;
+
+			public DirectoryInfo (string assembly_name) {
+				this.assembly_name = assembly_name;
+				objects = new Hashtable ();
+			}
+		}
+
+		private static DirectoryInfo GetDirectoryInfo (string dir, string assembly_name)
+		{
+			DirectoryInfo result;
+
+			if (dirs.ContainsKey (dir)) {
+				result = dirs [dir] as DirectoryInfo;
+				if  (result.assembly_name != assembly_name) {
+					Console.WriteLine ("Can't put multiple assemblies in one directory.");
+					return null;
+				}
+
+				return result;
+			}
+
+			result = new DirectoryInfo (assembly_name);
+			dirs.Add (dir, result);
+			
+			return result;
+		}
+ 
 		public void Generate ()
 		{
 			GenerationInfo gen_info = new GenerationInfo (NSElem);
@@ -59,6 +80,9 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info)
 		{
+			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, gen_info.AssemblyName);
+			di.objects.Add (CName, QualifiedName);
+
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 
 			sw.WriteLine ("namespace " + NS + " {");
@@ -163,7 +187,7 @@ namespace GtkSharp.Generation {
 		}
 
 		/* Keep this in sync with the one in glib/ObjectManager.cs */
-		static string GetExpected (string cname)
+		private static string GetExpected (string cname)
 		{
 			StringBuilder expected = new StringBuilder ();
 			string ns = "";
@@ -177,64 +201,64 @@ namespace GtkSharp.Generation {
 				}
 				expected.Append (cname[i]);
 			}
-			expected.AppendFormat (",{0}-sharp", ns);
 			return expected.ToString ();
 		}
 
-		public static void GenerateMapper ()
+		private static bool NeedsMap (Hashtable objs)
 		{
-			foreach (string ns in namespaces.Keys) {
-				Hashtable objs = (Hashtable) namespaces[ns];
-				bool needs_map = false;
-				foreach (string key in objs.Keys) {
-					string expected = GetExpected (key);
-					if (expected != ((string) objs[key])) {
-						needs_map = true;
-					}
-				}
+			foreach (string key in objs.Keys)
+				if (GetExpected (key) != ((string) objs[key]))
+					return true;
+			
+			return false;
+		}
 
-				if (!needs_map)
+		private static string Studlify (string name)
+		{
+			string result = "";
+
+			string[] subs = name.Split ('-');
+			foreach (string sub in subs)
+				result += Char.ToUpper (sub[0]) + sub.Substring (1);
+				
+			return result;
+		}
+				
+		public static void GenerateMappers ()
+		{
+			foreach (string dir in dirs.Keys) {
+
+				DirectoryInfo di = dirs[dir] as DirectoryInfo;
+
+				if (!NeedsMap (di.objects))
 					continue;
 	
-				char sep = Path.DirectorySeparatorChar;
-				string dir = ".." + sep + ns.ToLower () + sep + "generated";
-				if (!Directory.Exists(dir)) {
-        			Console.WriteLine ("creating " + dir);
-      		  	Directory.CreateDirectory(dir);
-				}
-				String filename = dir + sep + "ObjectManager.cs";
+				GenerationInfo gen_info = new GenerationInfo (dir, di.assembly_name);
 
-				FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-				StreamWriter sw = new StreamWriter (stream);
-
-				sw.WriteLine ("// Generated File.  Do not modify.");
-				sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
-				sw.WriteLine ();
-
-				sw.WriteLine ("namespace GtkSharp {");
-				sw.WriteLine ();
-				sw.WriteLine ("\tnamespace " + ns + " {");
-				sw.WriteLine ();
-				sw.WriteLine ("\tpublic class ObjectManager {");
-				sw.WriteLine ();
-				sw.WriteLine ("\t\t// Call this method from the appropriate module init function.");
-				sw.WriteLine ("\t\tpublic static void Initialize ()");
-				sw.WriteLine ("\t\t{");
-	
-				foreach (string key in objs.Keys) {
-					string expected = GetExpected (key);
-					if (expected != ((string) objs[key])) {
-						sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + objs[key] + "\");");
-					}
-				}
-					
-				sw.WriteLine ("\t\t}");
-				sw.WriteLine ("\t}");
-				sw.WriteLine ("}");
-				sw.WriteLine ("}");
-				sw.Flush ();
-				sw.Close ();
+				GenerateMapper (di, gen_info);
 			}
+		}
+
+		private static void GenerateMapper (DirectoryInfo dir_info, GenerationInfo gen_info)
+		{
+			StreamWriter sw = gen_info.OpenStream ("ObjectManager");
+
+			sw.WriteLine ("namespace GtkSharp." + Studlify (dir_info.assembly_name) + " {");
+			sw.WriteLine ();
+			sw.WriteLine ("\tpublic class ObjectManager {");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t// Call this method from the appropriate module init function.");
+			sw.WriteLine ("\t\tpublic static void Initialize ()");
+			sw.WriteLine ("\t\t{");
+	
+			foreach (string key in dir_info.objects.Keys)
+				if (GetExpected(key) != ((string) dir_info.objects[key]))
+					sw.WriteLine ("\t\t\tGtkSharp.ObjectManager.RegisterType(\"" + key + "\", \"" + dir_info.objects [key] + "," + dir_info.assembly_name + "\");");
+					
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("\t}");
+			sw.WriteLine ("}");
+			sw.Close ();
 		}
 	}
 }
