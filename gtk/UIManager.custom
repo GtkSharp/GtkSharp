@@ -39,3 +39,29 @@
 		{
 			return gtk_ui_manager_new_merge_id (Handle);
 		}
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_ui_manager_get_toplevels (IntPtr raw, int types);
+
+		public Widget[] GetToplevels (Gtk.UIManagerItemType types) {
+			IntPtr raw_ret = gtk_ui_manager_get_toplevels (Handle, (int) types);
+			GLib.SList list = new GLib.SList (raw_ret);
+ 			Widget[] result = new Widget [list.Count];
+            for (int i = 0; i < list.Count; i++)
+               	result [i] = list [i] as Widget;
+			return result;
+		}
+
+		[DllImport ("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_ui_manager_get_action_groups (IntPtr raw);
+
+		public ActionGroup[] ActionGroups { 
+			get {
+				IntPtr raw_ret = gtk_ui_manager_get_action_groups (Handle);
+				GLib.List list = new GLib.List(raw_ret);
+ 				ActionGroup[] result = new ActionGroup [list.Count];
+            	for (int i = 0; i < list.Count; i++)
+                	result [i] = list [i] as ActionGroup;
+				return result;
+			}
+		}

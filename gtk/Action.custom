@@ -23,3 +23,17 @@
 	public Action (string name, string label) : this (name, label, null, null)
 	{
 	}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+        static extern IntPtr gtk_action_get_proxies (IntPtr raw);
+
+        public Gtk.Widget[] Proxies {
+            get {
+                IntPtr raw_ret = gtk_action_get_proxies (Handle);
+                GLib.SList list = new GLib.SList (raw_ret);
+ 				Widget[] result = new Widget [list.Count];
+            	for (int i = 0; i < list.Count; i++)
+                	result [i] = list [i] as Widget;
+            	return result;
+            }
+        }
