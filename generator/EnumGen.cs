@@ -58,7 +58,7 @@ namespace GtkSharp.Generation {
 		{
 			String filename = "..\\" + ns.ToLower() + "\\generated\\" + Name + ".cs";
 			
-			FileStream stream = new FileStream (filename, FileMode.OpenOrCreate, FileAccess.Write);
+			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter (stream);
 			
 			sw.WriteLine ("// Generated File.  Do not modify.");

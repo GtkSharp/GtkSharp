@@ -1,4 +1,4 @@
-// GtkSharp.Generation.StructGen.cs - The Structure Generatable.
+// GtkSharp.Generation.ObjectGen.cs - The Object Generatable.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -10,9 +10,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class StructGen : StructBase, IGeneratable  {
+	public class ObjectGen : StructBase, IGeneratable  {
 		
-		public StructGen (String ns, XmlElement elem) : base (ns, elem) {}
+		public ObjectGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String Name {
 			get
@@ -44,7 +44,7 @@ namespace GtkSharp.Generation {
 		
 		public String CallByName (String var_name)
 		{
-			return var_name;
+			return var_name + ".RawObject";
 		}
 		
 		public void Generate (SymbolTable table)
@@ -65,9 +65,16 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
-			
-			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\tpublic class " + Name + " {");
+
+			String parent = elem.GetAttribute("parent");
+			String cs_parent = table.GetCSType(parent);
+			sw.Write ("\tpublic class " + Name);
+			if (cs_parent == "") {
+				sw.WriteLine (" {");
+				Console.WriteLine ("Unknown type " + parent);
+			} else {
+				sw.WriteLine (" : " + cs_parent + " {");
+			}
 			sw.WriteLine ();
 				
 			foreach (XmlNode node in elem.ChildNodes) {
@@ -86,6 +93,12 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "method":
+					break;
+					
+				case "property":
+					break;
+					
+				case "signal":
 					break;
 					
 				default:

@@ -23,13 +23,27 @@ namespace GtkSharp.Generation {
 		
 		protected void GenField (XmlElement field, SymbolTable table, StreamWriter sw)
 		{
-				String c_type = field.GetAttribute("type");
-				sw.Write ("\t\t" + table.GetCSType(c_type));
-				if (field.HasAttribute("array_len")) {
-					sw.Write ("[]");
-				}
-				
-				sw.WriteLine (" " + field.GetAttribute("cname") + ";");
+			String c_type;
+			
+			if (field.HasAttribute("bits") && (field.GetAttribute("bits") == "1")) {
+				c_type = "gboolean";
+			} else {
+				c_type = field.GetAttribute("type");
+			}
+			char[] ast = {'*'};
+			c_type = c_type.TrimEnd(ast);
+			String cs_type = table.GetCSType(c_type);
+			
+			if (cs_type == "") {
+				Console.WriteLine ("Unknown Type {0}", c_type);
+				return;
+			}
+			
+			sw.Write ("\t\t" + cs_type);
+			if (field.HasAttribute("array_len")) {
+				sw.Write ("[]");
+			}
+			sw.WriteLine (" " + field.GetAttribute("cname") + ";");
 		}
 		
 	}

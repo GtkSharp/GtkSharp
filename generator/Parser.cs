@@ -81,6 +81,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "object":
+					table.AddType (new ObjectGen (ns_name, elem));
 					break;
 
 				case "struct":

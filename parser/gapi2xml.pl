@@ -302,11 +302,13 @@ sub addFieldElems
 				if ($tok =~ /(\w+)\s*\[(.*)\]/) {
 					$elem = addNameElem($parent, 'field', $1);
 					$elem->setAttribute('array_len', "$2");
-					$elem->setAttribute('type', "$type");
+				} elsif ($tok =~ /(\w+)\s*\:\s*(\d+)/) {
+					$elem = addNameElem($parent, 'field', $1);
+					$elem->setAttribute('bits', "$2");
 				} else {
 					$elem = addNameElem($parent, 'field', $symb);
-					$elem->setAttribute('type', "$type");
 				}
+				$elem->setAttribute('type', "$type");
 			}
 		} else {
 			die "$field\n";
