@@ -185,11 +185,10 @@
         <summary>Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />.</summary>
         <param name="area"> A rectangle.</param>
         <param name="intersection"> A rectangle to store intersection of <paramref name="widget" /> and <paramref name="area" />.</param>
-        <returns>
-          <see cref="langword:true" /> if there was an intersection.</returns>
+        <returns><see langword="true" /> if there was an intersection.</returns>
         <remarks>
           <para>
-          Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />, storing the intersection in <paramref name="intersection" />, and returns <see cref="langword:true" /> if there was an intersection. <paramref name="intersection" /> may be <see cref="langword:null" /> if you're only interested in whether there was an intersection.
+          Computes the intersection of a <paramref name="widget" />'s area and <paramref name="area" />, storing the intersection in <paramref name="intersection" />, and returns <see langword="true" /> if there was an intersection. <paramref name="intersection" /> may be <see langword="null" /> if you're only interested in whether there was an intersection.
          </para>
         </remarks>
       </Docs>
@@ -206,8 +205,7 @@
       <Docs>
         <summary>Move focus to particular <paramref name="widget" />.</summary>
         <param name="direction">Direction of focus movement.</param>
-        <returns>
-          <see cref="langword:true" /> if focus ended up inside widget.</returns>
+        <returns><see langword="true" /> if focus ended up inside widget.</returns>
         <remarks>
           <para>
           This function is used by custom widget implementations; if you're writing an app, you'd use <see cref="M:Gtk.Widget.GrabFocus" /> to move the focus to a particular widget, and <see cref="M:Gtk.Container.SetFocusChain" /> to change the focus tab order. So you may want to investigate those functions instead.
@@ -216,7 +214,7 @@
             <see cref="M:Gtk.Widget.ChildFocus" /> is called by containers as the user moves around the window using keyboard shortcuts. <paramref name="direction" /> indicates what kind of motion is taking place (up, down, left, right, tab forward, tab backward). <see cref="M:Gtk.Widget.ChildFocus" /> invokes the "focus" signal on <see cref="T:Gtk.Widget" />; widgets override the default handler for this signal in order to implement appropriate focus behavior.
          </para>
           <para>
-          The "focus" default handler for a widget should return <see cref="langword:true" /> if moving in direction left the focus on a focusable location inside that widget, and <see cref="langword:false" /> if moving in direction moved the focus outside the widget. If returning <see cref="langword:true" />, widgets normally call <see cref="M:Gtk.Widget.GrabFocus" /> to place the focus accordingly; if returning <see cref="langword:false" />, they don't modify the current focus location.
+          The "focus" default handler for a widget should return <see langword="true" /> if moving in direction left the focus on a focusable location inside that widget, and <see langword="false" /> if moving in direction moved the focus outside the widget. If returning <see langword="true" />, widgets normally call <see cref="M:Gtk.Widget.GrabFocus" /> to place the focus accordingly; if returning <see langword="false" />, they don't modify the current focus location.
          </para>
         </remarks>
       </Docs>
@@ -300,7 +298,7 @@
       <Docs>
         <summary>Sets the foreground <paramref name="color" /> for a <paramref name="widget" /> in a particular <paramref name="state" />.</summary>
         <param name="state">The state for which to set the background color.</param>
-        <param name="color">The color to assign (does not need to be allocated), or <see cref="langword:null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyFg" />.</param>
+        <param name="color">The color to assign (does not need to be allocated), or <see langword="null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyFg" />.</param>
         <remarks>
           <para>
           All other style values are left untouched. See also <see cref="M:Gdk.Widget.ModifyStyle" />.
@@ -324,7 +322,7 @@
         <param name="stock_id">A stock ID.</param>
         <param name="size">A stock size.</param>
         <param name="detail">Render detail to pass to theme engine.</param>
-        <returns>A new <see cref="T:Gdk.Pixbuf" />, or <see cref="langword:null" /> if the <paramref name="stock_id" /> wasn't known.</returns>
+        <returns>A new <see cref="T:Gdk.Pixbuf" />, or <see langword="null" /> if the <paramref name="stock_id" /> wasn't known.</returns>
         <remarks>
           <para>
           The <paramref name="stock_id" /> should be a stock icon ID such as <see cref="P:Gtk.Stock.Open" /> or <see cref="P:Gtk.Stock.Ok" />. <paramref name="size" /> should be a size such as <see cref="F:Gtk.IconSize.Menu" />. <paramref name="detail" /> should be a string that identifies the widget or code doing the rendering, so that theme engines can special-case rendering for that widget or code.
@@ -406,7 +404,7 @@
       <Docs>
         <summary>Sets the text <paramref name="color" /> for a <paramref name="widget" /> in a particular state.</summary>
         <param name="state">The state for which to set the text color.</param>
-        <param name="color">The color to assign (does not need to be allocated), or <see cref="langword:null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyText" />.</param>
+        <param name="color">The color to assign (does not need to be allocated), or <see langword="null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyText" />.</param>
         <remarks>
           <para>
           All other style values are left untouched. The text color is the foreground color used along with the base color (see <see cref="M:Gtk.Widget.ModifyBase" />) for widgets such as <see cref="T:Gtk.Entry" /> and <see cref="T:Gtk.TextView" />. See also <see cref="M:Gtk.Widget.ModifyStyle" />.
@@ -440,10 +438,10 @@
       <Parameters />
       <Docs>
         <summary>Utility function; intended to be connected to the <see cref="F:Gtk.Widget.DeleteEvent" /> signal on a <see cref="T:Gtk.Window" />.</summary>
-        <returns>Returns <see cref="langword:true" />.</returns>
+        <returns>Returns <see langword="true" />.</returns>
         <remarks>
           <para>
-          The function calls <see cref="M:Gtk.Widget.Hide" /> on its argument, then returns <see cref="langword:true" />. If connected to <see cref="F:Gtk.Widget.DeleteEvent" />, the result is that clicking the close button for a window (on the window frame, top right corner usually) will hide but not destroy the window. By default, GTK+ destroys windows when <see cref="F:Gtk.Widget.DeleteEvent" /> is received.
+          The function calls <see cref="M:Gtk.Widget.Hide" /> on its argument, then returns <see langword="true" />. If connected to <see cref="F:Gtk.Widget.DeleteEvent" />, the result is that clicking the close button for a window (on the window frame, top right corner usually) will hide but not destroy the window. By default, GTK+ destroys windows when <see cref="F:Gtk.Widget.DeleteEvent" /> is received.
          </para>
         </remarks>
       </Docs>
@@ -479,8 +477,8 @@
       </Parameters>
       <Docs>
         <summary>Obtains the location of the mouse pointer in <paramref name="widget" /> coordinates.</summary>
-        <param name="x">Return location for the X coordinate, or <see cref="langword:null" />.</param>
-        <param name="y">Return location for the Y coordinate, or <see cref="langword:null" />.</param>
+        <param name="x">Return location for the X coordinate, or <see langword="null" />.</param>
+        <param name="y">Return location for the Y coordinate, or <see langword="null" />.</param>
         <remarks>
           <para>
           Widget coordinates are a bit odd; for historical reasons, they are defined as <paramref name="widget" />-&gt;window coordinates for widgets that are not <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets, and are relative to <paramref name="widget" />-&gt;allocation.x, <paramref name="widget" />-&gt;allocation.y for widgets that are <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets.
@@ -529,8 +527,7 @@
       <Parameters />
       <Docs>
         <summary>Determines if the <paramref name="widget" /> is the focus widget within its toplevel.</summary>
-        <returns>
-          <see cref="langword:true" /> if the widget is the focus widget.</returns>
+        <returns><see langword="true" /> if the widget is the focus widget.</returns>
         <remarks>
           <para>
           This does not mean that the <see cref="P:Gtk.Widget.HasFocus" /> flag is necessarily set; <see cref="P:Gtk.Widget.HasFocus" /> will only be set if the toplevel widget additionally has the global input focus.
@@ -623,12 +620,12 @@
       </Parameters>
       <Docs>
         <summary>For <paramref name="widgets" /> that support scrolling, sets the scroll adjustments.</summary>
-        <param name="hadjustment">An adjustment for horizontal scrolling, or <see cref="langword:null" />.</param>
-        <param name="vadjustment">An adjustment for vertical scrolling, or <see cref="langword:null" />.</param>
-        <returns>Returns <see cref="langword:true" /> if the widget supports scrolling.</returns>
+        <param name="hadjustment">An adjustment for horizontal scrolling, or <see langword="null" />.</param>
+        <param name="vadjustment">An adjustment for vertical scrolling, or <see langword="null" />.</param>
+        <returns>Returns <see langword="true" /> if the widget supports scrolling.</returns>
         <remarks>
           <para>
-          For <paramref name="widgets" /> that don't support scrolling, does nothing and returns <see cref="langword:false" />. <paramref name="Widgets" /> that don't support scrolling can be scrolled by placing them in a <see cref="T:Gtk.ViewPort" />, which does support scrolling.
+          For <paramref name="widgets" /> that don't support scrolling, does nothing and returns <see langword="false" />. <paramref name="Widgets" /> that don't support scrolling can be scrolled by placing them in a <see cref="T:Gtk.ViewPort" />, which does support scrolling.
          </para>
         </remarks>
       </Docs>
@@ -644,7 +641,7 @@
       </Parameters>
       <Docs>
         <summary>Creates a new <see cref="T:Pango.Layout" /> with the appropriate colormap, font description, and base direction for drawing text for <paramref name="widget" />.</summary>
-        <param name="text"> text to set on the layout (can be <see cref="langword:null" />).</param>
+        <param name="text"> text to set on the layout (can be <see langword="null" />).</param>
         <returns>The new <see cref="T:Pango.Layout" />.</returns>
         <remarks>
           <para>
@@ -711,7 +708,7 @@
         <param name="src_y">Y position relative to source widget.</param>
         <param name="dest_x">Location to store X position relative to <paramref name="dest_widget" />.</param>
         <param name="dest_y">Location to store Y position relative to <paramref name="dest_widget" />.</param>
-        <returns>Returns <see cref="langword:false" /> if either widget was not realized, or there was no common ancestor. In this case, nothing is stored in <paramref name="*dest_x" /> and <paramref name="*dest_y" />. Otherwise <see cref="langword:true" />.</returns>
+        <returns>Returns <see langword="false" /> if either widget was not realized, or there was no common ancestor. In this case, nothing is stored in <paramref name="*dest_x" /> and <paramref name="*dest_y" />. Otherwise <see langword="true" />.</returns>
         <remarks>
           <para>
           In order to perform this operation, both widgets must be realized, and must share a common toplevel. 
@@ -728,10 +725,10 @@
       <Parameters />
       <Docs>
         <summary>For <paramref name="widgets" /> that can be "activated" (buttons, menu items, etc.) this function activates them.</summary>
-        <returns>Returns <see cref="langword:true" /> if the widget was activatable.</returns>
+        <returns>Returns <see langword="true" /> if the widget was activatable.</returns>
         <remarks>
           <para>
-          Activation is what happens when you press Enter on a widget during key navigation; clicking a button, selecting a menu item, etc. If the <paramref name="widget" /> isn't activatable, the function returns <see cref="langword:false" />.
+          Activation is what happens when you press Enter on a widget during key navigation; clicking a button, selecting a menu item, etc. If the <paramref name="widget" /> isn't activatable, the function returns <see langword="false" />.
          </para>
         </remarks>
       </Docs>
@@ -749,7 +746,7 @@
       <Docs>
         <summary>Sets the background color for a <paramref name="widget" /> in a particular state.</summary>
         <param name="state">The state for which to set the background color.</param>
-        <param name="color">The color to assign (does not need to be allocated), or <see cref="langword:null" /> to undo the effect of previous calls of <see cref="M:Gtk.Widget.ModifyBg" />.</param>
+        <param name="color">The color to assign (does not need to be allocated), or <see langword="null" /> to undo the effect of previous calls of <see cref="M:Gtk.Widget.ModifyBg" />.</param>
         <remarks>
           <para>
           All other style values are left untouched. See also <see cref="M:Gtk.Widget.ModifyStyle" />. 
@@ -769,7 +766,7 @@
       <Docs>
         <summary>Rarely-used function. This function is used to emit the event signals on a <paramref name="widget" />.</summary>
         <param name="evnt">A <see cref="T:Gdk.Event" />.</param>
-        <returns>Return from the event signal emission (<see cref="langword:true" /> if the event was handled)</returns>
+        <returns>Return from the event signal emission (<see langword="true" /> if the event was handled)</returns>
         <remarks>
           <para>
           If you want to synthesize an event though, don't use this function; instead, use <see cref="M:Gdk.Windowt.InvalidateRect" /> to invalidate a region of the window.
@@ -806,7 +803,7 @@
       <Docs>
         <summary>Sets the base color for a <paramref name="widget" /> in a particular state.</summary>
         <param name="state">The state for which to set the base color.</param>
-        <param name="color">The color to assign (does not need to be allocated), or <see cref="langword:null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyBase" />.</param>
+        <param name="color">The color to assign (does not need to be allocated), or <see langword="null" /> to undo the effect of previous calls to of <see cref="M:Gtk.Widget.ModifyBase" />.</param>
         <remarks>
           <para>
           All other style values are left untouched. The base color is the background color used along with the text color (see <see cref="M:Gtk.Widget.ModifyText" />) for widgets such as <see cref="T:Gtk.Entry" /> and <see cref="T:Gtk.TextView" />. See also <see cref="M:Gtk.Widget.ModifyStyle" />.
@@ -826,7 +823,7 @@
       <Docs>
         <summary>Gets the first ancestor of <paramref name="widget" /> with type <paramref name="widget_type" />.</summary>
         <param name="widget_type">Ancestor type.</param>
-        <returns>The ancestor widget, or <see cref="langword:null" /> if not found</returns>
+        <returns>The ancestor widget, or <see langword="null" /> if not found</returns>
         <remarks>
           <para>
           For example, <see cref="M:Gtk.Widget.GetAncestor" />(widget, GTK_TYPE_BOX) gets the first <see cref="T:Gtk.Box" /> that's an ancestor of <paramref name="widget" />. No reference will be added to the returned widget; it should not be unreferenced. See note about checking for a toplevel <see cref="T:Gtk.Window" /> in the docs for <see cref="M:Gtk.Widget.Toplevel" />. Note that unlike <see cref="M:Gtk.Widget.IsAncestor" />, <see cref="M:Gtk.Widget.GetAncestor" /> considers <paramref name="widget" /> to be an ancestor of itself.
@@ -924,8 +921,8 @@
       </Parameters>
       <Docs>
         <summary>Gets the size request that was explicitly set for the <paramref name="widget" /> using <see cref="M:Gtk.Widget.SetSizeRequest" />.</summary>
-        <param name="width">Return location for width, or <see cref="langword:null" />.</param>
-        <param name="height">Return location for height, or <see cref="langword:null" />.</param>
+        <param name="width">Return location for width, or <see langword="null" />.</param>
+        <param name="height">Return location for height, or <see langword="null" />.</param>
         <remarks>
           <para>
           A value of -1 stored in <paramref name="width" /> or <paramref name="height" /> indicates that that dimension has not been set explicitly and the natural requisition of the <paramref name="widget" /> will be used intead. See <see cref="M:Gtk.Widget.SetSizeRequest" />. To get the size a <paramref name="widget" /> will actually use, call <see cref="M:Gtk.Widget.SizeRequest" /> instead of this function.
@@ -970,9 +967,9 @@
       </Parameters>
       <Docs>
         <summary>Obtains the full path to <paramref name="widget" />.</summary>
-        <param name="path_length">Location to store length of the path, or <see cref="langword:null" />.</param>
-        <param name="path">Location to store allocated path string, or <see cref="langword:null" />.</param>
-        <param name="path_reversed">Location to store allocated reverse path string, or <see cref="langword:null" />.</param>
+        <param name="path_length">Location to store length of the path, or <see langword="null" />.</param>
+        <param name="path">Location to store allocated path string, or <see langword="null" />.</param>
+        <param name="path_reversed">Location to store allocated reverse path string, or <see langword="null" />.</param>
         <remarks>
           <para>
           The path is simply the name of a <paramref name="widget" /> and all its parents in the container hierarchy, separated by periods. The name of a <paramref name="widget" /> comes from <see cref="P:Gtk.Widget.Name" />. Paths are used to apply styles to a <paramref name="widget" /> in gtkrc configuration files. Widget names are the type of the <paramref name="widget" /> by default (e.g. "<see cref="T:Gtk.Button" />") or can be set to an application-specific value with <see cref="P:Gtk.Widget.Name" />.
@@ -1062,7 +1059,7 @@
       </Parameters>
       <Docs>
         <summary>Sets the font to use for a <paramref name="widget" />.</summary>
-        <param name="font_desc">The font description to use, or <see cref="langword:null" /> to undo the effect of previous calls to <see cref="M:Gtk.Widget.ModifyFont" />.</param>
+        <param name="font_desc">The font description to use, or <see langword="null" /> to undo the effect of previous calls to <see cref="M:Gtk.Widget.ModifyFont" />.</param>
         <remarks>
           <para>
           All other style values are left untouched. See also <see cref="M:Gtk.Widget.ModifyStyle" />.
@@ -1082,7 +1079,7 @@
       <Docs>
         <summary>Very rarely-used function. This function is used to emit an <see cref="F:Gtk.Widget.ExposeEvent" /> signals on a <paramref name="widget" />.</summary>
         <param name="evnt">A <see cref="F:Gtk.Widget.ExposeEvent" />.</param>
-        <returns>Return from the event signal emission (<see cref="langword:true" /> if the event was handled).</returns>
+        <returns>Return from the event signal emission (<see langword="true" /> if the event was handled).</returns>
         <remarks>
           <para>
           This function is not normally used directly. The only time it is used is when propagating an <see cref="F:Gtk.Widget.ExposeEvent" /> to a child <see cref="F:Gtk.WidgetFlags.NoWindow" /> widget, and that is normally done using <see cref="M:Gtk.Container.PropagateExpose" />. If you want to force an area of a window to be redrawn, use <see cref="M:Gdk.Window.InvalidateRect" /> or <see cref="M:Gdk.Window.InvalidateRegion" />. To cause the redraw to be done immediately, follow that call with a call to <see cref="M:Gdk.Window.ProcessUpdates" />.
@@ -1134,7 +1131,7 @@
       <Docs>
         <summary>Determines whether <paramref name="widget" /> is somewhere inside <paramref name="ancestor" />, possibly with intermediate containers.</summary>
         <param name="ancestor">Another <see cref="T:Gtk.Widget" />.</param>
-        <returns>Returns <see cref="langword:true" /> if ancestor contains widget as a child, grandchild, great grandchild, etc.</returns>
+        <returns>Returns <see langword="true" /> if ancestor contains widget as a child, grandchild, great grandchild, etc.</returns>
         <remarks>
           <para>
           Determines whether <paramref name="widget" /> is somewhere inside <paramref name="ancestor" />, possibly with intermediate containers.
@@ -1206,7 +1203,7 @@
       </Parameters>
       <Docs>
         <summary>Sets a shape for this <paramref name="widget" />'s GDK window. This allows for transparent windows etc., see <see cref="M:Gdk.Window.ShapeCombineMask" /> for more information.</summary>
-        <param name="shape_mask">Shape to be added, or <see cref="langword:null" /> to remove an existing shape.</param>
+        <param name="shape_mask">Shape to be added, or <see langword="null" /> to remove an existing shape.</param>
         <param name="offset_x">X position of shape mask with respect to the window.</param>
         <param name="offset_y">Y position of shape mask with respect to the window.</param>
         <remarks>
@@ -1248,9 +1245,9 @@
       </Parameters>
       <Docs>
         <summary>Same as <see cref="M:Gtk.Widget.Path" />, but always uses the name of a <paramref name="widget" />'s type, never uses a custom name set with <see cref="P:Gtk.Widget.Name" />.</summary>
-        <param name="path_length">Location to store the length of the class path, or <see cref="langword:null" />.</param>
-        <param name="path">Location to store the class path as an allocated string, or <see cref="langword:null" />.</param>
-        <param name="path_reversed">Location to store the reverse class path as an allocated string, or <see cref="langword:null" />.</param>
+        <param name="path_length">Location to store the length of the class path, or <see langword="null" />.</param>
+        <param name="path">Location to store the class path as an allocated string, or <see langword="null" />.</param>
+        <param name="path_reversed">Location to store the reverse class path as an allocated string, or <see langword="null" />.</param>
         <remarks>
           <para>
           Same as <see cref="M:Gtk.Widget.Path" />, but always uses the name of a <paramref name="widget" />'s type, never uses a custom name set with <see cref="P:Gtk.Widget.Name" />.
@@ -1522,11 +1519,11 @@
       </Parameters>
       <Docs>
         <summary>Sets or obtains whether <paramref name="widget" /> should be mapped along with its when its parent is mapped and <paramref name="widget" /> has been shown with <see cref="M:Gtk.Widget.Show" />.</summary>
-        <param name="value">If <see cref="langword:true" />, <paramref name="widget" /> should be mapped along with its parent.</param>
-        <returns>Returns <see cref="langword:true" /> if the widget is mapped with the parent.</returns>
+        <param name="value">If <see langword="true" />, <paramref name="widget" /> should be mapped along with its parent.</param>
+        <returns>Returns <see langword="true" /> if the widget is mapped with the parent.</returns>
         <remarks>
          <para>
-          The child visibility can be set for widget before it is added to a container with <see cref="P:Gtk.Widget.Parent" />, to avoid mapping children unnecessary before immediately unmapping them. However it will be reset to its default state of <see cref="langword:true" /> when the widget is removed from a container. 
+          The child visibility can be set for widget before it is added to a container with <see cref="P:Gtk.Widget.Parent" />, to avoid mapping children unnecessary before immediately unmapping them. However it will be reset to its default state of <see langword="true" /> when the widget is removed from a container. 
          </para>
          <para>
           Note that changing the child visibility of a widget does not queue a resize on the widget. Most of the time, the size of a widget is computed from all visible children, whether or not they are mapped. If this is not the case, the container can queue a resize itself. This function is only useful for container implementations and never should be called by an application.
@@ -1546,7 +1543,7 @@
       <Docs>
         <summary>Sets or obtains a <paramref name="widget" /> composite name.</summary>
         <param name="value">The name to set.</param>
-        <returns>The composite name of <paramref name="widget" />, or <see cref="langword:null" /> if <paramref name="widget" /> is not a composite child. The string should not be freed when it is no longer needed.</returns>
+        <returns>The composite name of <paramref name="widget" />, or <see langword="null" /> if <paramref name="widget" /> is not a composite child. The string should not be freed when it is no longer needed.</returns>
         <remarks>
          <para>
           The widget must be a composite child of its parent; see <see cref="M:Gtk.Widget.PushCompositeChild" />.
@@ -1565,7 +1562,7 @@
         <returns>The topmost ancestor of <paramref name="widget" />, or <paramref name="widget" /> itself if there's no ancestor.</returns>
         <remarks>
          <para>
-          Note the difference in behavior against <see cref="P:Gtk.Widget.GetAncestor" />, would return <see cref="langword:null" /> if <paramref name="widget" /> wasn't inside a toplevel window, and if the window was inside a GtkWindow-derived widget which was in turn inside the toplevel <see cref="T:Gtk.Window" />. While the second case may seem unlikely, it actually happens when a <see cref="T:Gtk.Plug" /> is embedded inside a <see cref="T:Gtk.Socket" /> within the same application. To reliably find the toplevel <see cref="T:Gtk.Window" />, use <see cref="P:Gtk.Widget.TopLevel" /> and check if the <see cref="F:Gtk.WidgetFlags.TopLevel" /> flag is set on the result.
+          Note the difference in behavior against <see cref="P:Gtk.Widget.GetAncestor" />, would return <see langwod="null" /> if <paramref name="widget" /> wasn't inside a toplevel window, and if the window was inside a GtkWindow-derived widget which was in turn inside the toplevel <see cref="T:Gtk.Window" />. While the second case may seem unlikely, it actually happens when a <see cref="T:Gtk.Plug" /> is embedded inside a <see cref="T:Gtk.Socket" /> within the same application. To reliably find the toplevel <see cref="T:Gtk.Window" />, use <see cref="P:Gtk.Widget.TopLevel" /> and check if the <see cref="F:Gtk.WidgetFlags.TopLevel" /> flag is set on the result.
          </para>
         </remarks>
       </Docs>
@@ -1581,14 +1578,14 @@
       </Parameters>
       <Docs>
         <summary>Sets whether a <paramref name="widget" /> size allocation changes, the entire <paramref name="widget" /> is queued for drawing.</summary>
-        <param name="value"><see cref="langword:true" /> the entire widget will be redrawn when it is allocated to a new size. <see cref="langword:false" /> only the new portion of the widget will be redrawn.</param>
-        <returns>Returns <see cref="langword:true" /> because it is on by Default, but returns <see cref="langword:false" /> if you turn it off.</returns>
+        <param name="value"><see langword="true" /> the entire widget will be redrawn when it is allocated to a new size. <see langword="false" /> only the new portion of the widget will be redrawn.</param>
+        <returns>Returns <see langword="true" /> because it is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
         <remarks>
           <para>
-           By default, this setting is <see cref="langword:true" /> and the entire <paramref name="widget" /> is redrawn on every size change. If your widget leaves the upper left are unchanged when made bigger, turning this setting on will improve performance.
+           By default, this setting is <see langword="true" /> and the entire <paramref name="widget" /> is redrawn on every size change. If your widget leaves the upper left are unchanged when made bigger, turning this setting on will improve performance.
          </para>
           <para>
-           Note that for <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets setting this flag to <see cref="langword:false" /> turns off all allocation on resizing: the widget will not even redraw if its position changes; this is to allow containers that don't draw anything to avoid excess invalidations. If you set this flag on a <see cref="F:Gtk.WidgetFlags.NoWindow" /> widget that does draw on <paramref name="widget" />-&gt;window, you are responsible for invalidating both the old and new allocation of the <paramref name="widget" /> when the widget is moved and responsible for invalidating regions newly when the <paramref name="widget" /> increases size.
+           Note that for <see cref="F:Gtk.WidgetFlags.NoWindow" /> widgets setting this flag to <see langword="false" /> turns off all allocation on resizing: the widget will not even redraw if its position changes; this is to allow containers that don't draw anything to avoid excess invalidations. If you set this flag on a <see cref="F:Gtk.WidgetFlags.NoWindow" /> widget that does draw on <paramref name="widget" />-&gt;window, you are responsible for invalidating both the old and new allocation of the <paramref name="widget" /> when the widget is moved and responsible for invalidating regions newly when the <paramref name="widget" /> increases size.
          </para>
         </remarks>
       </Docs>
@@ -1604,8 +1601,8 @@
       </Parameters>
       <Docs>
         <summary>Use this function to turn off the double buffering.</summary>
-        <param name="value"><see cref="langword:true" /> is on by Default, <see cref="langword:false" /> if you want to turn off double buffering no use call for true because it is default.</param>
-        <returns>Returns <see cref="langword:true" /> because double buffering is on by Default, but returns <see cref="langword:false" /> if you turn it off.</returns>
+        <param name="value"><see langword="true" /> is on by Default, <see langword="false" /> if you want to turn off double buffering no use call for true because it is default.</param>
+        <returns>Returns <see langword="true" /> because double buffering is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
         <remarks>
           <para>
            Widgets are double buffered by default, you can use this function to turn off the buffering. "Double buffered" simply means that <see cref="M:Gdk.Window.BeginPaintRegion" /> and <see cref="M:Gdk.Window.EndPaint" /> are called automatically around <see cref="F:Gtk.Widget.ExposeEvent" /> events sent to the widget. <see cref="M:Gdk.Window.BeginPaint" /> diverts all drawing to a <paramref name="widget" />'s window to an offscreen buffer, and <see cref="M:Gdk.Window.EndPaint" /> draws the buffer to the screen. The result is that users see the window update in one smooth step, and don't see individual graphics primitives being rendered. 
