@@ -5,6 +5,7 @@ pkgconfig_DATA = gtk-sharp.pc
 
 EXTRA_DIST = 			\
 	gtk-sharp.pc.in		\
+	gtk-sharp.pub		\
 	makefile.win32		\
 	ChangeLog		\
 	README			\
