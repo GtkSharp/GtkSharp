@@ -1,5 +1,5 @@
 <Type Name="Menu" FullName="Gtk.Menu">
-  <TypeSignature Language="C#" Value="public class Menu : Gtk.MenuShell, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Menu : Gtk.MenuShell, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A GtkMenu is a GtkMenuShell that implements a drop down menu.</summary>
+    <remarks>
+     <para>
+      A <see cref="T:Gtk.Menu" /> is a <see cref="T:Gtk.MenuShell" /> that implements a drop down menu consisting of a list of <see cref="T:Gtk.MenuItem" /> objects which can be navigated and activated by the user to perform application functions.
+     </para>
+     <para>
+      It is commonly dropped down by activating a <see cref="T:Gtk.MenuItem" /> in a <see cref="T:Gtk.MenuBar" /> or in another <see cref="T:Gtk.Menu" />, it can also be popped up by activating a <see cref="T:Gtk.OptionMenu" />. Other composite widgets such as the <see cref="T:Gtk.Notebook" /> can pop up a <see cref="T:Gtk.Menu" /> as well.
+     </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.MenuShell</BaseTypeName>
@@ -37,8 +44,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Detaches the menu from the widget to which it had been attached.</summary>
+        <remarks>
+         <para>
+          This function will call the detacher, provided when the <see cref="M:Gtk.Menu.AttachToWidget" /> function was called.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Popdown">
@@ -49,8 +60,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Removes the menu from the screen.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AttachToWidget">
@@ -64,10 +75,14 @@
         <Parameter Name="detacher" Type="Gtk.MenuDetachFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="attach_widget">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="detacher">To be added: an object of type 'Gtk.MenuDetachFunc'</param>
-        <remarks>To be added</remarks>
+        <summary>Attaches the menu to the widget and provides a detacher.</summary>
+        <param name="attach_widget">The <see cref="T:Gtk.Widget" /> that the menu will be attached to.</param>
+        <param name="detacher">The user supplied callback function that will be called when the menu calls <see cref="M:Gtk.Menu.Detach" />.</param>
+        <remarks>
+         <para>
+          Attaches the menu to the widget and provides a callback function that will be invoked when the menu calls <see cref="M:Gtk.Menu.Detach" /> during its destruction.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Popup">
@@ -85,14 +100,24 @@
         <Parameter Name="activate_time" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="parent_menu_shell">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="parent_menu_item">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="func">To be added: an object of type 'Gtk.MenuPositionFunc'</param>
-        <param name="data">To be added: an object of type 'IntPtr'</param>
-        <param name="button">To be added: an object of type 'uint'</param>
-        <param name="activate_time">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Displays a menu and makes it available for selection.</summary>
+        <param name="parent_menu_shell">The menu shell containing the triggering menu item, or <see langword="null" />.</param>
+        <param name="parent_menu_item">The menu item whose activation triggered the popup, or <see langword="null" />.</param>
+        <param name="func">A user supplied function used to position the menu, or <see langword="null" />.</param>
+        <param name="data">A user supplied data to be passed to func.</param>
+        <param name="button">The mouse button which was pressed to initiate the event.</param>
+        <param name="activate_time">The time at which the activation event occurred.</param>
+        <remarks>
+         <para>
+          Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, <paramref name="func" /> and <paramref name="data" /> parameters. The default menu positioning function will position the menu at the current mouse cursor position.
+         </para>
+         <para>
+          The <paramref name="button" /> parameter should be the mouse button pressed to initiate the menu popup. If the menu popup was initiated by something other than a mouse button press, such as a mouse button release or a keypress, button should be zero(0).
+         </para>
+         <para>
+          The <paramref name="activate_time" /> parameter should be the time stamp of the event that initiated the popup. If such an event is not available, use <see cref="P:Gtk.Application.CurrentEvent" /> instead.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Reposition">
@@ -103,8 +128,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Repositions the menu according to its position function.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ReorderChild">
@@ -118,10 +143,10 @@
         <Parameter Name="position" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="child">To be added: an object of type 'Gtk.Widget'</param>
-        <param name="position">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Moves a <see cref="T:Gtk.MenuItem" /> to a new position within the <see cref="T:Gtk.Menu" />.</summary>
+        <param name="child">The <see cref="T:Gtk.MenuItem" /> to move.</param>
+        <param name="position">The new position to place <paramref name="child" />. Positions are numbered from 0 to n-1.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetActive">
@@ -134,9 +159,13 @@
         <Parameter Name="index" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="index">To be added: an object of type 'uint'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects the specified menu item within the menu.</summary>
+        <param name="index"></param>
+        <remarks>
+         <para>
+          This is used by the <see cref="T:Gtk.OptionMenu" /> and should not be used by anyone else.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -173,9 +202,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Menu'</returns>
-        <remarks>To be added</remarks>
+        <summary>A constructor.</summary>
+        <returns>An instance of <see cref="T:Gtk.Menu" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -197,9 +226,13 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the selected menu item from the menu.</summary>
+        <returns>The <see cref="T:Gtk.MenuItem" /> that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.</returns>
+        <remarks>
+         <para>
+          This is used by the <see cref="T:Gtk.OptionMenu" />.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AccelPath">
@@ -212,10 +245,14 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
+        <summary>Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed.</summary>
+        <param name="value">A valid accelerator path.</param>
         <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <remarks>
+         <para>
+          The main purpose of this function is to spare the programmer the inconvenience of having to call <see cref="P:Gtk.MenuItem.AccelPath" /> on each menu item that should support runtime user changable accelerators. Instead, by just calling <see cref="P:Gtk.MenuItem.AccelPath" /> on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned. 
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AttachWidget">
@@ -225,9 +262,9 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Widget'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the <see cref="T:Gtk.Widget" /> that the menu is attached to.</summary>
+        <returns>The <see cref="T:Gtk.Widget" /> that the menu is attached to.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TearoffState">
@@ -240,10 +277,14 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains the tearoff state of the menu.</summary>
+        <param name="value">If <see langword="true" />, menu is displayed as a tearoff menu.</param>
+        <returns>Returns <see langword="true" /> if the menu is currently torn off.</returns>
+        <remarks>
+         <para>
+          A menu is normally displayed as drop down menu which persists as long as the menu is active. It can also be displayed as a tearoff menu which persists until it is closed or reattached.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AccelGroup">
@@ -256,10 +297,14 @@
         <Parameter Name="value" Type="Gtk.AccelGroup" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.AccelGroup'</param>
-        <returns>To be added: an object of type 'Gtk.AccelGroup'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains the <see cref="T:Gtk.AccelGroup" /> which holds global accelerators for the menu.</summary>
+        <param name="value">The <see cref="T:Gtk.AccelGroup" /> to be associated with the menu.</param>
+        <returns>The <see cref="T:Gtk.AccelGroup" /> associated with the menu.</returns>
+        <remarks>
+         <para>
+          This accelerator group needs to also be added to all windows that this menu is being used in with <see cref="M:Gtk.Window.AddAccelGroup" />, in order for those windows to support all the accelerators contained in this group.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Title">
@@ -272,10 +317,14 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets or obtains the title for the menu.</summary>
+        <param name="value">A string containing the title for the menu.</param>
+        <returns>The title of the menu, or <see langword="null" /> if the menu has no title set on it. This string is owned by the widget and should not be modified or freed.</returns>
+        <remarks>
+         <para>
+          The title is displayed when the menu is shown as a tearoff menu.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TearoffTitle">
