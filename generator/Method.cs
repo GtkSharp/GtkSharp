@@ -270,7 +270,10 @@ namespace GtkSharp.Generation {
 			import_sig += !IsShared && parms != null ? ", " : "";
 			import_sig += isig.ToString();
 			sw.WriteLine("\t\t[DllImport(\"" + libname + "\")]");
-			sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + "(" + import_sig + ");");
+			if (m_ret.StartsWith ("[return:"))
+				sw.WriteLine("\t\t" + m_ret + " static extern " + safety + s_ret + " " + cname + "(" + import_sig + ");");
+			else
+				sw.WriteLine("\t\tstatic extern " + safety + m_ret + " " + cname + "(" + import_sig + ");");
 			sw.WriteLine();
 		}
 
@@ -349,26 +352,25 @@ namespace GtkSharp.Generation {
 			body.Initialize(gen_info, is_get, is_set, indent);
 
 			SymbolTable table = SymbolTable.Table;
+			IGeneratable ret_igen = table [rettype];
 
 			sw.Write(indent + "\t\t\t");
 			if (m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
+			} else if (ret_igen is ObjectGen || ret_igen is OpaqueGen) {
+				sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
+				sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
+				if (table.IsOpaque (rettype))
+					sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
+			} else if (ret_igen is CustomMarshalerGen) {
+				sw.WriteLine(s_ret + " ret = " + cname + call + ";");
 			} else {
-				if (table.IsObject (rettype) || table.IsOpaque (rettype))
-				{
-					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-					sw.WriteLine(indent +"\t\t\t" + s_ret + " ret = " + table.FromNativeReturn(rettype, "raw_ret") + ";");
-					if (table.IsOpaque (rettype))
-						sw.WriteLine(indent + "\t\t\tif (ret == null) ret = new " + s_ret + "(raw_ret);");
-				}
-				else {
-					sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
-					sw.Write(indent + "\t\t\t");
-					string raw_parms = "raw_ret";
-					if (element_type != null)
-						raw_parms += ", typeof (" + element_type + ")";
-					sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
-				}
+				sw.WriteLine(m_ret + " raw_ret = " + cname + call + ";");
+				sw.Write(indent + "\t\t\t");
+				string raw_parms = "raw_ret";
+				if (element_type != null)
+					raw_parms += ", typeof (" + element_type + ")";
+				sw.WriteLine(s_ret + " ret = " + table.FromNativeReturn(rettype, raw_parms) + ";");
 			}
 
 			body.Finish (sw, indent);

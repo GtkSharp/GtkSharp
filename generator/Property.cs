@@ -91,22 +91,37 @@ namespace GtkSharp.Generation {
 
 			bool has_getter = false;
 			bool has_setter = false;
+			string getter_type = String.Empty;
+			string setter_type = String.Empty;
+
 			Method getter = container_type.GetMethod("Get" + Name);
+			if (getter != null && getter.Validate () && getter.IsGetter)
+				getter_type = getter.ReturnType;
+
 			Method setter = container_type.GetMethod("Set" + Name);
+			if (setter != null && setter.Validate () && setter.IsSetter)
+				setter_type = setter.Signature.Types;
 
-			if (getter != null && getter.Validate() && getter.IsGetter && getter.ReturnType == cs_type) {
-				has_getter = true;
-				getter.GenerateImport(sw);
-			}
-			if (setter != null && setter.Validate() && setter.IsSetter) {
-				has_setter = true;
-				setter.GenerateImport(sw);
-			}
+			if (getter_type != String.Empty && getter_type == setter_type) {
+				has_getter = has_setter = true;
+				getter.GenerateImport (sw);
+				setter.GenerateImport (sw);
+				cs_type = getter_type;
+			} else {
+				if (getter_type == cs_type) {
+					has_getter = true;
+					getter.GenerateImport(sw);
+				}
+				if (setter_type != String.Empty) {
+					has_setter = true;
+					setter.GenerateImport(sw);
+				}
 
-			if (has_setter && setter.Signature.Types != cs_type)
-				cs_type = setter.Signature.Types;
-			else if (has_getter && getter.ReturnType != cs_type)
-				cs_type = getter.ReturnType;
+				if (has_setter && setter_type != cs_type)
+					cs_type = setter_type;
+				else if (has_getter && getter_type != cs_type)
+					cs_type = getter_type;
+			}
 
 			sw.WriteLine();
 

@@ -46,7 +46,7 @@ namespace GtkSharp.Generation {
 		}
 		public virtual string MarshalReturnType {
 			get {
-				return String.Empty;
+				return "[return:MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(" + marshaler + "))]";
 			}
 		}
 

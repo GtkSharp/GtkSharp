@@ -11,7 +11,6 @@
 
 /* Forward declarations */
 gint gtksharp_time_t_sizeof (void);
-void gtksharp_time_t_print (time_t t);
 
 gint
 gtksharp_time_t_sizeof ()
@@ -19,8 +18,3 @@ gtksharp_time_t_sizeof ()
 	return sizeof (time_t);
 }
 
-void
-gtksharp_time_t_print (time_t t)
-{
-	printf ("%s\n", ctime (&t));
-}

@@ -29,23 +29,19 @@ namespace GLib {
 			return marshaler;
 		}
 
-		[DllImport ("gtksharpglue")]
-		static extern int gtksharp_time_t_sizeof ();
-
-		[DllImport ("gtksharpglue")]
-		static extern void gtksharp_time_t_print (int time_t);
-
 		public IntPtr MarshalManagedToNative (object obj)
 		{
 			DateTime dt = (DateTime) obj;
-			int size = Marshal.SizeOf (typeof (int)) + gtksharp_time_t_sizeof ();
+			int size = Marshal.SizeOf (typeof (int)) + GetNativeDataSize ();
 			IntPtr ptr = Marshal.AllocCoTaskMem (size);
 			IntPtr time_t_ptr = new IntPtr (ptr.ToInt32 () + Marshal.SizeOf (typeof(int)));
-
 			int secs = dt.Subtract (local_epoch).Seconds + utc_offset;
-			Console.WriteLine ("Marshaling DateTime: " + dt);
-			Marshal.WriteInt32 (time_t_ptr, secs);
-			gtksharp_time_t_print (secs);
+			if (GetNativeDataSize () == 4)
+				Marshal.WriteInt32 (time_t_ptr, secs);
+			else if (GetNativeDataSize () == 8)
+				Marshal.WriteInt64 (time_t_ptr, secs);
+			else
+				throw new Exception ("Unexpected native size for time_t.");
 			return time_t_ptr;
 		}
 
@@ -57,14 +53,26 @@ namespace GLib {
 
 		public object MarshalNativeToManaged (IntPtr data)
 		{
-			throw new NotImplementedException ();
+			int secs;
+			if (GetNativeDataSize () == 4)
+				secs = Marshal.ReadInt32 (data);
+			else if (GetNativeDataSize () == 8)
+				secs = (int) Marshal.ReadInt64 (data);
+			else
+				throw new Exception ("Unexpected native size for time_t.");
+
+			TimeSpan span = new TimeSpan (secs - utc_offset);
+			return local_epoch.Add (span);
 		}
 
 		public void CleanUpManagedData (object obj) {}
 
+		[DllImport ("gtksharpglue")]
+		static extern int gtksharp_time_t_sizeof ();
+
 		public int GetNativeDataSize ()
 		{
-			throw new NotImplementedException ();
+			return gtksharp_time_t_sizeof ();
 		}
 	}
 }
