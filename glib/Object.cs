@@ -280,6 +280,50 @@ namespace GLib {
 			}
 		}
 
+		void ConnectNotification (string signal, NotifyHandler handler)
+		{
+			if (AfterHandlers[signal] == null)
+				AfterSignals[signal] = new GLibSharp.voidObjectIntPtrSignal (this, signal, handler, typeof (NotifyArgs), 1);
+			else
+				((GLib.SignalCallback) AfterSignals[signal]).AddDelegate (handler);
+			AfterHandlers.AddHandler (signal, handler);
+		}
+
+		public void AddNotification (string property, NotifyHandler handler)
+		{
+			ConnectNotification ("notify::" + property, handler);
+		}
+
+		public void AddNotification (NotifyHandler handler)
+		{
+			ConnectNotification ("notify", handler);
+		}
+
+		void DisconnectNotification (string signal, NotifyHandler handler)
+		{
+			GLib.SignalCallback cb = AfterSignals[signal] as GLib.SignalCallback;
+			AfterHandlers.RemoveHandler (signal, handler);
+
+			if (cb == null)
+				return;
+			cb.RemoveDelegate (handler);
+
+			if (AfterHandlers[signal] == null) {
+				AfterSignals.Remove (signal);
+				cb.Dispose ();
+			}
+		}
+
+		public void RemoveNotification (string property, NotifyHandler handler)
+		{
+			DisconnectNotification ("notify::" + property, handler);
+		}
+
+		public void RemoveNotification (NotifyHandler handler)
+		{
+			DisconnectNotification ("notify", handler);
+		}
+
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();

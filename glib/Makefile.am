@@ -19,6 +19,7 @@ sources =		 			\
 	EnumWrapper.cs				\
 	FileUtils.cs				\
 	GException.cs				\
+	GLibSharp.voidObjectIntPtrSignal.cs	\
 	GString.cs				\
 	Idle.cs					\
 	IWrapper.cs				\
@@ -31,6 +32,7 @@ sources =		 			\
 	Markup.cs				\
 	Marshaller.cs				\
 	MissingIntPtrCtorException.cs		\
+	NotifyHandler.cs			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
