@@ -143,6 +143,9 @@ namespace GLib {
 		}
 
 
+		[DllImport("glibsharpglue")]
+		static extern int gtksharp_object_get_ref_count (IntPtr obj);
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_object (ref Value val, IntPtr data);
 
@@ -292,7 +295,7 @@ namespace GLib {
 
 		public static explicit operator GLib.Object (Value val)
 		{
-			return GLib.Object.GetObject(g_value_get_object (ref val), true);
+			return GLib.Object.GetObject(g_value_get_object (ref val), false);
 		}
 
 		public static explicit operator GLib.UnwrappedObject (Value val)
@@ -380,7 +383,7 @@ namespace GLib {
 					return (char) this;
 				else if (type == GType.UInt)
 					return (uint) this;
-				else if (type == GType.Object)
+				else if (g_type_is_a (type.Val, GType.Object.Val))
 					return (GLib.Object) this;
 				else
 					throw new Exception ("Unknown type");
