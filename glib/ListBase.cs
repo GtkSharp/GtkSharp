@@ -86,6 +86,11 @@ namespace GLib {
 			list_ptr = Append (list_ptr, raw);
 		}
 
+		public void Append (string item)
+		{
+			this.Append (Marshal.StringToHGlobalAnsi (item));
+		}
+
 		public void Prepend (IntPtr raw)
 		{
 			list_ptr = Prepend (list_ptr, raw);
