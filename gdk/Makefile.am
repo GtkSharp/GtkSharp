@@ -50,6 +50,7 @@ customs = 			\
 	PixbufLoader.custom	\
 	Point.custom		\
 	Rectangle.custom	\
+	Region.custom		\
 	Screen.custom		\
 	Selection.custom	\
 	Window.custom

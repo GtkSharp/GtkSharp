@@ -1,0 +1,33 @@
+// Gdk.Region.custom - Gdk Region class customizations
+//
+// Author: Joshua Tauberer <tauberer@for.net>
+//
+// (c) 2004 Joshua Tauberer
+//
+// This code is inserted after the automatically generated code.
+
+[DllImport("libglib-2.0-0.dll")]
+static extern void g_free (IntPtr mem);
+
+[DllImport("libgdk-win32-2.0-0.dll")]
+static extern void gdk_region_get_rectangles(IntPtr raw, out IntPtr rectangles, out int n_rectangles);
+
+public Rectangle[] GetRectangles ()
+{
+	int n;
+	IntPtr rectangles;
+	gdk_region_get_rectangles(Handle, out rectangles, out n);
+
+	Rectangle[] ret = new Rectangle[n];
+	int step = Marshal.SizeOf(typeof(Rectangle));
+	int ptr = (int)rectangles;
+	for (int i = 0; i < n; i++) {
+		ret[i] = (Rectangle)Marshal.PtrToStructure((IntPtr)ptr, typeof(Rectangle));
+		ptr += step;
+	}
+		
+	g_free(rectangles);
+		
+	return ret;
+}
+
