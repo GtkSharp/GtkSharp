@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class ClassBase : GenBase {
+	public abstract class ClassBase : GenBase {
 		protected Hashtable props = new Hashtable();
 		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
@@ -142,28 +142,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public virtual string MarshalType {
-			get
-			{
+		public override string MarshalType {
+			get {
 				return "IntPtr";
 			}
 		}
 
-		public virtual string MarshalReturnType {
-			get
-			{
-				return "IntPtr";
-			}
-		}
-
-		public virtual string ToNativeReturnType {
-			get
-			{
-				return "IntPtr";
-			}
-		}
-
-		public virtual string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return var_name + ".Handle";
 		}
@@ -177,19 +162,9 @@ namespace GtkSharp.Generation {
 			get { return "Raw"; }
 		}
 
-		public virtual string FromNative(string var)
+		public override string FromNative(string var)
 		{
 			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
-		}
-		
-		public virtual string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-		
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
 		}
 		
 		protected void GenProperties (GenerationInfo gen_info)

@@ -25,58 +25,27 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class EnumGen : GenBase, IGeneratable  {
+	public class EnumGen : GenBase {
 		
 		public EnumGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public string MarshalType {
-			get
-			{
+		public override string MarshalType {
+			get {
 				return "int";
 			}
 		}
 
-		public string MarshalReturnType {
-			get
-			{
-				return MarshalType;
-			}
-		}
-
-		public string ToNativeReturnType {
-			get
-			{
-				return MarshalType;
-			}
-		}
-
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return "(int) " + var_name;
 		}
 		
-		public string FromNative(string var)
+		public override string FromNative(string var)
 		{
-			return "(" + QualifiedName + ")" + var;
+			return "(" + QualifiedName + ") " + var;
 		}
 		
-		public string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
-		}
-		
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.OpenStream (Name);
 

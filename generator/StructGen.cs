@@ -25,16 +25,10 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class StructGen : StructBase, IGeneratable  {
+	public class StructGen : StructBase {
 		
 		public StructGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 		
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
 		public override void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);

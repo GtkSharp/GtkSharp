@@ -27,11 +27,11 @@ namespace GtkSharp.Generation {
 	using System.Text.RegularExpressions;
 	using System.Xml;
 
-	public class StructBase : ClassBase {
+	public abstract class StructBase : ClassBase {
 	
 		ArrayList fields = new ArrayList ();
 
-		public StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)
+		protected StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
 			foreach (XmlNode node in elem.ChildNodes) {
 
@@ -129,7 +129,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public virtual void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			bool need_close = false;
 			if (gen_info.Writer == null) {

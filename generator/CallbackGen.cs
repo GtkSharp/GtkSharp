@@ -25,7 +25,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class CallbackGen : GenBase, IGeneratable  {
+	public class CallbackGen : GenBase {
 
 		private Parameters parms;
 		private Signature sig = null;
@@ -39,47 +39,22 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string MarshalType {
-			get
-			{
+		public override string MarshalType {
+			get {
 				return NS + "Sharp." + Name + "Native";
 			}
 		}
 
-		public string MarshalReturnType {
-			get
-			{
-				return MarshalType;
-			}
-		}
-
-		public string ToNativeReturnType {
-			get
-			{
-				return MarshalType;
-			}
-		}
-
-		public string CallByName (string var_name)
+		public override string CallByName (string var_name)
 		{
 			return var_name + ".NativeDelegate";
 		}
 
-		public string FromNative(string var)
+		public override string FromNative(string var)
 		{
 			return var;
 		}
 
-		public string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-
-		public virtual string ToNativeReturn(string var)
-		{
-			return CallByName (var);
-		}
-		
 		public string GenWrapper (string ns, GenerationInfo gen_info)
 		{
 			string wrapper = Name + "Native";
@@ -204,13 +179,7 @@ namespace GtkSharp.Generation {
 			return ns + "Sharp." + Name + "Wrapper";
 		}
 		
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			XmlElement ret_elem = Elem["return-type"];
 			if (ret_elem == null) {

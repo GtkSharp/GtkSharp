@@ -1,6 +1,6 @@
 // GtkSharp.Generation.GenBase.cs - The Generatable base class.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2001-2002 Mike Kestner
 // Copyright (c) 2004 Novell, Inc.
@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public abstract class GenBase {
+	public abstract class GenBase : IGeneratable {
 		
 		private XmlElement ns;
 		private XmlElement elem;
@@ -55,6 +55,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual string MarshalReturnType { 
+			get {
+				return MarshalType;
+			}
+		}
+
+		public abstract string MarshalType { get; }
+
 		public string Name {
 			get {
 				return elem.GetAttribute ("name");
@@ -67,7 +75,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public XmlElement NSElem {
+		private XmlElement NSElem {
 			get {
 				return ns;
 			}
@@ -79,7 +87,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void AppendCustom (StreamWriter sw, string custom_dir)
+		public virtual string ToNativeReturnType { 
+			get {
+				return MarshalType;
+			}
+		}
+
+		protected void AppendCustom (StreamWriter sw, string custom_dir)
 		{
 			char sep = Path.DirectorySeparatorChar;
 			string custom = custom_dir + sep + Name + ".custom";
@@ -93,6 +107,28 @@ namespace GtkSharp.Generation {
 				sr.Close ();
 			}
 		}
+
+		public abstract string CallByName (string var);
+
+		public abstract string FromNative (string var);
+
+		public virtual string FromNativeReturn (string var)
+		{
+			return FromNative (var);
+		}
+
+		public virtual string ToNativeReturn (string var)
+		{
+			return CallByName (var);
+		}
+
+		public void Generate ()
+		{
+			GenerationInfo geninfo = new GenerationInfo (ns);
+			Generate (geninfo);
+		}
+
+		public abstract void Generate (GenerationInfo geninfo);
 	}
 }
 

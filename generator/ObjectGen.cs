@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 	using System.Text;
 	using System.Xml;
 
-	public class ObjectGen : ClassBase, IGeneratable  {
+	public class ObjectGen : ClassBase  {
 
 		private ArrayList strings = new ArrayList();
 		private ArrayList vm_nodes = new ArrayList();
@@ -114,13 +114,7 @@ namespace GtkSharp.Generation {
 			return result;
 		}
  
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, gen_info.AssemblyName);
 			di.objects.Add (CName, QualifiedName);

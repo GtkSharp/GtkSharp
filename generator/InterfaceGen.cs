@@ -27,7 +27,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class InterfaceGen : ClassBase, IGeneratable  {
+	public class InterfaceGen : ClassBase {
 
 		ArrayList vms = new ArrayList ();
 		ArrayList members = new ArrayList ();
@@ -258,13 +258,7 @@ namespace GtkSharp.Generation {
 			GenerateInterface (gen_info);
 		}
 
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 

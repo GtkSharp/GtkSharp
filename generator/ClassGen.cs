@@ -27,20 +27,14 @@ namespace GtkSharp.Generation {
 	using System.Text;
 	using System.Xml;
 
-	public class ClassGen : ClassBase, IGeneratable  {
+	public class ClassGen : ClassBase  {
 
 		private ArrayList strings = new ArrayList();
 		private static Hashtable namespaces = new Hashtable ();
 
 		public ClassGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream(Name);
 

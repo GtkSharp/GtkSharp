@@ -26,35 +26,22 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class OpaqueGen : ClassBase, IGeneratable  {
+	public class OpaqueGen : ClassBase {
 
-		public OpaqueGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
-		{
-		}
+		public OpaqueGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 	
 		public override string FromNative(string var)
 		{
 			return "new " + QualifiedName + "(" + var + ")";
 		}
 
-		public override string FromNativeReturn(string var)
-		{
-			return FromNative (var);
-		}
-		
 		private bool DisableRawCtor {
 			get {
 				return Elem.HasAttribute ("disable_raw_ctor");
 			}
 		}
 
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}
-
-		public void Generate (GenerationInfo gen_info)
+		public override void Generate (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 

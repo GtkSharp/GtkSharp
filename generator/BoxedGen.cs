@@ -25,15 +25,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class BoxedGen : StructBase, IGeneratable  {
+	public class BoxedGen : StructBase {
 		
 		public BoxedGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
-		
-		public void Generate ()
-		{
-			GenerationInfo gen_info = new GenerationInfo (NSElem);
-			Generate (gen_info);
-		}		
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
