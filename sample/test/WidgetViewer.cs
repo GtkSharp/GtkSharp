@@ -41,6 +41,7 @@ namespace WidgetViewer {
 			AddButton ("Menus", new EventHandler (Menus));
 			AddButton ("Radio Buttons", new EventHandler (Radio_Buttons));
 			AddButton ("Range Controls", new EventHandler (Range_Controls));
+			AddButton ("Size Groups", new EventHandler (Size_Groups));
 			AddButton ("Statusbar", new EventHandler (Statusbar));
 			AddButton ("Toolbar", new EventHandler (Toolbar));
 			
@@ -137,6 +138,11 @@ namespace WidgetViewer {
 		static void Menus (object o, EventArgs args)
 		{
 			AddWindow (TestMenus.Create ());
+		}
+
+		static void Size_Groups (object o, EventArgs args)
+		{
+			AddWindow (TestSizeGroup.Create ());
 		}
 	}
 }
