@@ -10,7 +10,7 @@ using GtkSharp;
 public class Fifteen
 {
 	const int SCRAMBLE_MOVES = 256;
-	static Window window = null;
+	static Gtk.Window window = null;
 	static Canvas canvas = null;
 	static BoardPiece [] board;
 		
@@ -20,7 +20,7 @@ public class Fifteen
 			BoardPiece.Debug = true;
 		Program fifteen = new Program ("Fifteen", "0.1", Modules.UI, args);
 		
-		window = new Window ("Fifteen #");
+		window = new Gtk.Window ("Fifteen #");
 		VBox box = new VBox (false, 0);
 		window.Add (box);
 		window.DefaultSize = new Size (300, 300);
@@ -86,11 +86,11 @@ public class Fifteen
 		Menu file_menu = new Menu ();
 
 		ImageMenuItem scramble_item = new ImageMenuItem ("_Scramble");
-		scramble_item.Image = new Gtk.Image (Stock.Refresh, IconSize.Menu);
+		scramble_item.Image = new Gtk.Image (Gtk.Stock.Refresh, IconSize.Menu);
 		scramble_item.Activated += new EventHandler (Scramble);
 		
 		ImageMenuItem quit_item = new ImageMenuItem ("_Quit");
-		quit_item.Image = new Gtk.Image (Stock.Quit, IconSize.Menu);
+		quit_item.Image = new Gtk.Image (Gtk.Stock.Quit, IconSize.Menu);
 		quit_item.Activated += new EventHandler (Quit);
 
 		file_menu.Append (scramble_item);

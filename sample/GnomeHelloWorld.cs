@@ -112,7 +112,7 @@ namespace GtkSamples {
 												args);
 			
 			GnomeHelloWorld hello = new GnomeHelloWorld ();
-			Window win = hello.CreateWindow ();
+			Gtk.Window win = hello.CreateWindow ();
 			win.ShowAll ();
 			kit.Run ();
 			return 0;
