@@ -197,13 +197,17 @@ namespace GtkSharp.Generation {
 			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
 			sw.WriteLine("\t\tstatic extern void g_signal_handler_disconnect (IntPtr instance, uint handler);");
 			sw.WriteLine();
+			sw.WriteLine("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
+			sw.WriteLine("\t\tstatic extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);");
+			sw.WriteLine();
 			sw.WriteLine("\t\tprotected override void Dispose (bool disposing)");
 			sw.WriteLine("\t\t{");
 			sw.WriteLine("\t\t\t_Instances.Remove(_key);");
 			sw.WriteLine("\t\t\tif(_Instances.Count == 0)");
 			sw.WriteLine("\t\t\t\t_Delegate = null;");
 			sw.WriteLine();
-			sw.WriteLine("\t\t\tg_signal_handler_disconnect (_raw, _HandlerID);");
+			sw.WriteLine("\t\t\tif (g_signal_handler_is_connected (_raw, _HandlerID))");
+			sw.WriteLine("\t\t\t\tg_signal_handler_disconnect (_raw, _HandlerID);");
 			sw.WriteLine("\t\t\tbase.Dispose (disposing);");
 			sw.WriteLine("\t\t}");
 			sw.WriteLine("\t}");
