@@ -17,7 +17,7 @@ namespace GLib {
 
 		private time_t_CustomMarshaler () 
 		{
-			utc_offset = DateTime.Now.Subtract (DateTime.UtcNow).Seconds;
+			utc_offset = (int) DateTime.Now.Subtract (DateTime.UtcNow).TotalSeconds;
 			local_epoch = new DateTime (1970, 1, 1, 0, 0, 0);
 		}
 
@@ -35,7 +35,7 @@ namespace GLib {
 			int size = Marshal.SizeOf (typeof (int)) + GetNativeDataSize ();
 			IntPtr ptr = Marshal.AllocCoTaskMem (size);
 			IntPtr time_t_ptr = new IntPtr (ptr.ToInt32 () + Marshal.SizeOf (typeof(int)));
-			int secs = dt.Subtract (local_epoch).Seconds + utc_offset;
+			int secs = ((int)dt.Subtract (local_epoch).TotalSeconds) + utc_offset;
 			if (GetNativeDataSize () == 4)
 				Marshal.WriteInt32 (time_t_ptr, secs);
 			else if (GetNativeDataSize () == 8)
