@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 			} else {
 				sw.WriteLine("\t\tpublic " + Name + sig);
 				sw.WriteLine("\t\t{");
-				sw.WriteLine("\t\t\tRawObject = " + cname + call + ";");
+				sw.WriteLine("\t\t\tRaw = " + cname + call + ";");
 			}
 			
 			sw.WriteLine("\t\t}");

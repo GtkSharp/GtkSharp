@@ -81,9 +81,6 @@ namespace GtkSharp.Generation {
 				switch (node.Name) {
 				case "field":
 					Statistics.IgnoreCount++;
-					//if (!GenField(member, table, sw)) {
-					//	Console.WriteLine("in object " + CName);
-					//}
 					break;
 					
 				case "callback":

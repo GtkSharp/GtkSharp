@@ -71,11 +71,11 @@ namespace GLib {
 
 		public Object (IntPtr raw)
 		{
-			RawObject = raw;
+			Raw = raw;
 		}
 
 		/// <summary>
-		///	RawObject Property
+		///	Raw Property
 		/// </summary>
 		///
 		/// <remarks>
@@ -85,7 +85,7 @@ namespace GLib {
 		///	Handle property.
 		/// </remarks>
 
-		protected IntPtr RawObject {
+		protected IntPtr Raw {
 			get {
 				return _obj;
 			}
@@ -101,7 +101,7 @@ namespace GLib {
 		///
 		/// <remarks>
 		///	The raw GObject reference associated with this object.
-		///	Subclasses can use RawObject property for read/write
+		///	Subclasses can use Raw property for read/write
 		///	access.
 		/// </remarks>
 
@@ -205,7 +205,7 @@ namespace GLib {
 		public void GetProperty (String name, out String val)
 		{
 			IntPtr propval;
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out propval, new IntPtr (0));
 			val = Marshal.PtrToStringAnsi (propval);
@@ -226,7 +226,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out bool val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -246,7 +246,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out double val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -266,7 +266,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out float val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -286,7 +286,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out int val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -306,7 +306,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out uint val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -322,7 +322,7 @@ namespace GLib {
 		public void GetProperty (String name, out GLib.Object val)
 		{
 			IntPtr obj;
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out obj, new IntPtr (0));
 			val = GLib.Object.GetObject (obj);
@@ -339,7 +339,7 @@ namespace GLib {
 		public void GetProperty (String name, out GtkSharp.Boxed val)
 		{
 			IntPtr raw;
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out raw, new IntPtr (0));
 			val = GtkSharp.Boxed.GetBoxed (raw);
@@ -358,7 +358,7 @@ namespace GLib {
 
 		public void GetProperty (String name, out IntPtr val)
 		{
-			g_object_get (RawObject, 
+			g_object_get (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      out val, new IntPtr (0));
 		}
@@ -381,7 +381,7 @@ namespace GLib {
 
 		public void SetProperty (String name, String val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      Marshal.StringToHGlobalAnsi (val), 
 				      new IntPtr (0));
@@ -402,7 +402,7 @@ namespace GLib {
 
 		public void SetProperty (String name, int val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -422,7 +422,7 @@ namespace GLib {
 
 		public void SetProperty (String name, uint val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -442,7 +442,7 @@ namespace GLib {
 
 		public void SetProperty (String name, bool val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -462,7 +462,7 @@ namespace GLib {
 
 		public void SetProperty (String name, double val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -482,7 +482,7 @@ namespace GLib {
 
 		public void SetProperty (String name, float val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -497,7 +497,7 @@ namespace GLib {
 
 		public void SetProperty (String name, IntPtr val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val, new IntPtr (0));
 		}
@@ -512,7 +512,7 @@ namespace GLib {
 
 		public void SetProperty (String name, GLib.Object val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
 				      val.Handle, new IntPtr (0));
 		}
@@ -527,9 +527,9 @@ namespace GLib {
 
 		public void SetProperty (String name, GtkSharp.Boxed val)
 		{
-			g_object_set (RawObject, 
+			g_object_set (Raw, 
 				      Marshal.StringToHGlobalAnsi (name), 
-				      val.Raw, new IntPtr (0));
+				      val.Handle, new IntPtr (0));
 		}
 
 

@@ -30,6 +30,31 @@ namespace GtkSharp {
 		}
 
 		/// <summary>
+		///	Boxed Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Dummy constructor needed for subclasses.
+		/// </remarks>
+
+		public Boxed()
+		{
+		}
+
+		/// <summary>
+		///	Boxed Constructor
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Wraps a raw boxed type reference.
+		/// </remarks>
+
+		public Boxed(IntPtr raw)
+		{
+			Raw = raw;
+		}
+
+		/// <summary>
 		///	Raw Property
 		/// </summary>
 		/// 
@@ -37,13 +62,30 @@ namespace GtkSharp {
 		///	Gets a marshallable IntPtr.
 		/// </remarks>
 
-		public IntPtr Raw {
+		protected IntPtr Raw {
 			get {
 				if (_raw == IntPtr.Zero) {
 					// FIXME: Ugly hack.
 					_raw = Marshal.AllocHGlobal (128);
 					Marshal.StructureToPtr (this, _raw, true);
 				}
+				return _raw;
+			}
+			set {
+				_raw = value;
+			}
+		}
+
+		/// <summary>
+		///	Handle Property
+		/// </summary>
+		/// 
+		/// <remarks>
+		///	Gets a marshallable IntPtr.
+		/// </remarks>
+
+		public IntPtr Handle {
+			get {
 				return _raw;
 			}
 		}

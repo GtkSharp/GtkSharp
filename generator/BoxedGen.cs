@@ -7,6 +7,7 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.Collections;
 	using System.IO;
 	using System.Xml;
 
@@ -23,7 +24,7 @@ namespace GtkSharp.Generation {
 		
 		public String CallByName (String var_name)
 		{
-			return var_name + ".Raw";
+			return var_name + ".Handle";
 		}
 
 		public String FromNative(String var)
@@ -57,6 +58,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic class " + Name + " : GtkSharp.Boxed {");
 			sw.WriteLine ();
 				
+			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			sw.WriteLine();
+				
+			Hashtable clash_map = new Hashtable();
+				
 			foreach (XmlNode node in elem.ChildNodes) {
 				
 				XmlElement member = (XmlElement) node;
@@ -72,11 +78,15 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "constructor":
-					Statistics.IgnoreCount++;
+					if (!GenCtor(member, table, sw, clash_map)) {
+						Console.WriteLine(" in boxed " + CName);
+					}
 					break;
 					
 				case "method":
-					Statistics.IgnoreCount++;
+					if (!GenMethod(member, table, sw)) {
+						Console.WriteLine(" in boxed " + CName);
+					}
 					break;
 					
 				default:
