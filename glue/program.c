@@ -129,7 +129,7 @@ gtksharp_gnome_program_init (const char *app_id, const char *app_version,
 		g_free (gnome_espeaker);
 	
 	g_free (unhandled);
-
+	
 	/* Remove this too when marshalling fixed */
 	g_free (argv);
 

@@ -183,7 +183,7 @@ namespace GtkSharp.Generation {
 			}
 
 			if (ThrowsException)
-				sw.WriteLine (indent + "\t\t\tIntPtr error;");
+				sw.WriteLine (indent + "\t\t\tIntPtr error = IntPtr.Zero;");
 		}
 /*
 		public void Finish (StreamWriter sw)
