@@ -54,7 +54,7 @@ class X {
 		Gdk.EventExpose ev = args.Event;
 		Gdk.Window window = ev.Window;
 		
-		using (Graphics g = Gdk.Graphics.FromDrawable (window)){
+		using (Graphics g = Gtk.DotNet.Graphics.FromDrawable (window)){
 			g.TranslateTransform (ev.Area.X, ev.Area.Y);
 			using (Pen p = new Pen (Color.Red)){
 				g.DrawPie (p, 0, 0, rect.Width, rect.Height, 50, 90);
@@ -75,7 +75,7 @@ class PrettyGraphic : DrawingArea {
 			       
 	protected override bool OnExposeEvent (Gdk.EventExpose args)
 	{
-		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
+		using (Graphics g = Gtk.DotNet.Graphics.FromDrawable (args.Window)){
 			Pen p = new Pen (Color.Blue, 1.0f);
 
 			for (int i = 0; i < 600; i += 60)
@@ -105,7 +105,7 @@ class MovingText : DrawingArea {
 	
 	protected override bool OnExposeEvent (Gdk.EventExpose args)
 	{
-		using (Graphics g = Gdk.Graphics.FromDrawable (args.Window)){
+		using (Graphics g = Gtk.DotNet.Graphics.FromDrawable (args.Window)){
 			using (Brush back = new SolidBrush (Color.White), 
 			       fore = new SolidBrush (Color.Red)){
 

@@ -51,8 +51,14 @@ else
 VTE_DIR =
 endif
 
-UPDATE_DIRS=glib pango atk gdk gtk glade $(GNOME_VFS_DIR) $(GNOME_DIR) $(GDA_DIR) $(GNOMEDB_DIR) $(RSVG_DIR) $(GTKHTML_DIR) $(VTE_DIR)
-NAMESPACES=GLib Pango Atk Gdk Gtk Glade Art Gnome.Vfs Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
+if ENABLE_DOTNET
+DOTNET_DIR = gtkdotnet
+else
+DOTNET_DIR =
+endif
+
+UPDATE_DIRS=glib pango atk gdk gtk glade $(GNOME_VFS_DIR) $(GNOME_DIR) $(GDA_DIR) $(GNOMEDB_DIR) $(RSVG_DIR) $(GTKHTML_DIR) $(VTE_DIR) $(DOTNET_DIR)
+NAMESPACES=GLib Pango Atk Gdk Gtk Gtk.DotNet Glade Art Gnome.Vfs Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
 
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 

@@ -1,4 +1,4 @@
-SUBDIRS = sources generator parser glib pango atk gdk gtk glade art gnomevfs gnome gda gnomedb gtkhtml gconf rsvg vte sample doc
+SUBDIRS = sources generator parser glib pango atk gdk gtk glade art gnomevfs gnome gda gnomedb gtkhtml gconf rsvg vte gtkdotnet sample doc
 
 EXTRA_DIST = 			\
 	gtk-sharp.snk		\

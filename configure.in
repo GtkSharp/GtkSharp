@@ -102,6 +102,13 @@ if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found])
 fi
 
+SDCHECK="`$GACUTIL /l |grep ^System.Drawing, |cut -f1 -d','`"
+if test "x$SDCHECK" = "xSystem.Drawing"; then
+	enable_dotnet=yes
+else
+	enable_dotnet=no
+fi
+
 AC_SUBST(RUNTIME)
 AC_SUBST(CSC)
 AC_SUBST(GACUTIL)
@@ -199,7 +206,7 @@ AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
-
+AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -265,6 +272,9 @@ rsvg/rsvg-sharp-2.0.pc
 vte/Makefile
 vte/vte-sharp.dll.config
 vte/vte-sharp-2.0.pc
+gtkdotnet/Makefile
+gtkdotnet/gtk-dotnet.dll.config
+gtkdotnet/gtk-dotnet-2.0.pc
 doc/Makefile
 doc/updater/Makefile
 sample/GtkDemo/Makefile
@@ -274,7 +284,6 @@ sample/gnomevfs/Makefile
 sample/pixmaps/Makefile
 sample/rsvg/Makefile
 sample/test/Makefile
-sample/drawing-sample.exe.config
 sample/cairo-sample.exe.config
 ])
 
@@ -295,6 +304,7 @@ echo "      * gnomedb-sharp.dll: $enable_gnomedb"
 echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
 echo "      * vte-sharp.dll: $enable_vte "
+echo "      * gtk-dotnet.dll: $enable_dotnet "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"

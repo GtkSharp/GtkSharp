@@ -32,7 +32,15 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+if ENABLE_DOTNET
+DOTNET_TARGETS=drawing-sample.exe
+DOTNET_ASSEMBLY=../gtkdotnet/gtk-dotnet.dll
+else
+DOTNET_TARGETS=
+DOTNET_ASSEMBLY=
+endif
+
+TARGETS = custom-notebook.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -105,8 +113,10 @@ vte-example.exe: $(srcdir)/VteTest.cs $(assemblies)
 custom-cellrenderer.exe: $(srcdir)/CustomCellRenderer.cs $(assemblies)
 	$(CSC) /debug /out:custom-cellrenderer.exe $(references) $(srcdir)/CustomCellRenderer.cs
 
-drawing-sample.exe: $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs $(assemblies)
-	$(CSC) /debug /out:drawing-sample.exe $(references) $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs /r:System.Drawing
+dotnet_references = $(references) $(addprefix -r:, $(DOTNET_ASSEMBLY)) -r:System.Drawing
+
+drawing-sample.exe: $(srcdir)/DrawingSample.cs $(assemblies) $(DOTNET_ASSEMBLIES)
+	$(CSC) /debug /out:drawing-sample.exe $(dotnet_references) $(srcdir)/DrawingSample.cs
 
 custom-widget.exe: $(srcdir)/CustomWidget.cs $(assemblies)
 	$(CSC) /debug /out:custom-widget.exe $(references) $(srcdir)/CustomWidget.cs
@@ -144,8 +154,6 @@ EXTRA_DIST = 				\
 	VteTest.cs			\
 	CustomCellRenderer.cs		\
 	DrawingSample.cs		\
-	sysdraw.cs			\
-	drawing-sample.exe.config	\
 	cairo-sample.exe.config		\
 	CustomWidget.cs			\
 	Actions.cs			\
