@@ -1,5 +1,5 @@
 <Type Name="TextMark" FullName="Gtk.TextMark">
-  <TypeSignature Language="C#" Value="public class TextMark : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TextMark : GLib.Object, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,34 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      A GtkTextMark is like a bookmark in a text buffer; it preserves a position in the text.
+    </summary>
+    <remarks>
+      <para>
+        A GtkTextMark is like a bookmark in a text buffer; it
+        preserves a position in the text. You can convert the mark to
+        an <see cref="T:Gtk.TextIter" /> iterator using <see
+        cref="M:Gtk.TextBuffer.GetIterAtMark(Gtk.TextMark)" />. Unlike
+        iterators, marks remain valid across buffer mutations, because
+        their behavior is defined when text is inserted or
+        deleted. When text containing a mark is deleted, the mark
+        remains in the position originally occupied by the deleted
+        text. When text is inserted at a mark, a mark with left
+        gravity will be moved to the beginning of the newly-inserted
+        text, and a mark with right gravity will be moved to the
+        end.
+      </para>
+      <para>
+        Marks optionally have names; these can be convenient to avoid
+        passing the <see cref="T:Gtk.TextMark" /> object around.
+      </para>
+      <para>
+        Marks are typically created using the
+        <see cref="M:Gtk.TextMark.CreateMark(Gtk.TextMark)" /> function.
+      </para>
+      
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -81,9 +107,12 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The name of the mark</summary>
+        <returns>
+          Returns the name of the mark and <see langword="null" /> if
+          it's an anonymous mark
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Deleted">
@@ -93,9 +122,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether of not the mark has been removed</summary>
+        <returns>Returns <see langword="true" /> if the mark has been removed from its buffer.</returns>
+        <remarks>
+          <para>
+            Returns <see langword="true" /> if the mark has been
+            removed from its buffer with <see
+            cref="M:Gtk.TextBuffer.DeleteMark(Gtk.TextMark)" />. Marks
+            can't be used once they are deleted.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LeftGravity">
@@ -105,9 +141,17 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether or not the mark has left gravity</summary>
+        <returns>
+          <see langword="true" /> if the mark has left gravity,
+          <see langword="false" /> otherwise.
+        </returns>
+        <remarks>
+          "left" and "right" here refer to logical direction (left is
+          the toward the start of the buffer); in some languages such
+          as Hebrew the logically-leftmost text is not actually on the
+          left when displayed.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Visible">
@@ -120,10 +164,18 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>The visibility of the mark</summary>
+        <param name="value">The visibility of the mark</param>
+        <returns><see langword="true" /> if the mark is visible (i.e. a cursor is displayed for it)</returns>
+        <remarks>
+          <para>
+            The insertion point is normally visible, i.e. you can see
+            it as a vertical bar. Also, the text widget uses a visible
+            mark to indicate where a drop will occur when
+            dragging-and-dropping text. Most other marks are not
+            visible. Marks are not visible by default.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Buffer">
@@ -133,9 +185,13 @@
         <ReturnType>Gtk.TextBuffer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextBuffer'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Gets the buffer where this mark is located
+        </summary>
+        <returns>The buffer where this mark is applied</returns>
+        <remarks>
+          <see langword="null" /> is returned if the mark has been deleted.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
