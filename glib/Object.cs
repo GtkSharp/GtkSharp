@@ -7,25 +7,31 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.ComponentModel;
 	using System.Runtime.InteropServices;
 
 	public class Object  {
-
-/*
+		protected static Hashtable Objects = new Hashtable();
+		protected const String GOBJECTKEY = "gobject#-object";
 		public static Object GetObject(IntPtr o)
 		{
-			if (o == null) throw new ArgumentNullException ();
-			IntPtr obj = g_object_get_data (o, "gobject#-object-manager");
-			if (obj == null) return new Object(o);
-			else return ((GCHandle)obj).Target();
+			IntPtr key = g_object_get_data (o, GOBJECTKEY);
+			Object obj;
+			if((int)key != 0)
+			{
+				obj = (Object)Objects[(int)key];
+				if (obj != null) return obj;
+			}
+			obj = new Object(o); //FIXME: Cast up when we know how.
+			return obj; 
 		}
-                GCHandle gh;
+
 		public Object(IntPtr o)
 		{
-			Object = o;
+			RawObject = o;
 		}
-*/
+
 		private IntPtr _obj;
 
 		protected IntPtr RawObject
@@ -34,6 +40,15 @@ namespace GLib {
 				return _obj;
 			}
 			set {
+				IntPtr key = g_object_get_data (value, GOBJECTKEY);
+				if ((int)key != 0)
+				{
+					Object obj = (Object)Objects[(int)key];
+					if (obj != null) Objects.Remove((int)key);
+				}
+				key = new IntPtr(this.GetHashCode());
+				Objects[(int)key] = this;
+				g_object_set_data (value, GOBJECTKEY, key);
 				_obj = value;
 			}
 		}       
@@ -48,31 +63,31 @@ namespace GLib {
 			}
 		}
 
-/*
+
 		[DllImport("gobject-1.3")]
 		static extern IntPtr g_object_get_data (
-					IntPtr object,
+					IntPtr obj,
 					String key );
+
+		public IntPtr GetRawData (String key)
+		{
+			return g_object_get_data (_obj, key);
+		}
+
 		[DllImport("gobject-1.3")]
 		static extern void g_object_set_data (
-					IntPtr object,
+					IntPtr obj,
 					String key,
 					IntPtr data );
 
-		public IntPtr Data [String key]
+		public void SetRawData (String key, IntPtr value)
 		{
-			get
-			{
-				return g_object_get_data (Object, key);
-			}
-			set
-			{
-				g_object_set_data (Object, key, value);
-			}
+			g_object_set_data (_obj, key, value);
 		}
-		[DllImport("gtk-1.3")]
+
+/*		[DllImport("gtk-1.3")]
 		static extern void g_object_set_data_full (
-					IntPtr object,
+					IntPtr obj,
 					String key,
 					IntPtr data,
 					DestroyNotify destroy );

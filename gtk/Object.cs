@@ -12,6 +12,43 @@ namespace Gtk {
 
 	public abstract class Object :  GLib.Object {
 
+		/// <summary>
+		///	Destroy Event
+		/// </summary>
+		///
+		/// <remarks>
+		///	Occurs when the Object is destroyed.
+		/// </remarks>
+
+		private static readonly object DestroyEvent = new object ();
+
+		public event EventHandler Destroy
+		{
+			add
+			{
+                                if (Events[DestroyEvent] == null)
+				{
+					ConnectSignal ("destroy", new SimpleSignal (EmitDestroyEvent));
+				}
+				Events.AddHandler (DeleteEvent, value);
+			}
+                        remove 
+			{
+				Events.RemoveHandler (DeleteEvent, value);
+			}
+		}
+
+		private static void EmitDestroyEvent (IntPtr obj, IntPtr data)
+		{
+			Glib.Object o = Glib.Object.GetObject(obj);
+			EventHandler eh = (EventHandler)(o.Events[DeleteEvent]);
+			if (eh != null)
+			{
+				EventArgs args = new EventArgs ();
+				eh(this, args);
+			}
+		}
+
 		protected delegate void SimpleCallback (IntPtr obj);
 
 		[DllImport("gtk-1.3")]
