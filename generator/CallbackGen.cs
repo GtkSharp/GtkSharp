@@ -148,16 +148,22 @@ namespace GtkSharp.Generation {
 			sw.Write ("\t\t\t");
 			string invoke = "_managed (" + call_str + ")";
 			if (m_ret != "void") {
-					if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
-						sw.WriteLine ("return (({0}) {1}).Handle;", s_ret, invoke);
-					else if (table.IsStruct (rettype) || table.IsBoxed (rettype)) {
-						// Shoot. I have no idea what to do here.
-						sw.WriteLine ("return IntPtr.Zero;"); 
-					}
-					else if (table.IsEnum (rettype))
-						sw.WriteLine ("return (int) {0};", invoke);
-					else
-						sw.WriteLine ("return ({0}) {1};", m_ret, table.ToNativeReturn (rettype, invoke));
+				if (cleanup_str == "")
+					sw.Write ("return ");
+				else {
+					sw.Write (m_ret + " ret = ");
+					cleanup_str += "\t\t\treturn ret;\n";
+				}
+
+				if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
+					sw.WriteLine ("(({0}) {1}).Handle;", s_ret, invoke);
+				else if (table.IsStruct (rettype) || table.IsBoxed (rettype)) {
+					// Shoot. I have no idea what to do here.
+					sw.WriteLine ("IntPtr.Zero;"); 
+				} else if (table.IsEnum (rettype))
+					sw.WriteLine ("(int) {0};", invoke);
+				else
+					sw.WriteLine ("({0}) {1};", m_ret, table.ToNativeReturn (rettype, invoke));
 			} else
 				sw.WriteLine (invoke + ";");
 
