@@ -856,6 +856,72 @@
         <return-type type="void" />
       </method>
     </object>
+    <object name="HTMLEmbedded" cname="GtkHTMLEmbedded" parent="GtkBin">
+      <field cname="classid" type="char*" />
+      <field cname="name" type="char*" />
+      <field cname="type" type="char*" />
+      <field cname="data" type="char*" />
+      <field cname="width" type="int" />
+      <field cname="height" type="int" />
+      <field cname="params" type="GHashTable*" />
+      <field cname="priv" type="GtkHTMLEmbeddedPrivate*" />
+      <field cname="descent" type="int" />
+      <signal name="Changed" cname="changed" when="FIRST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkHTMLEmbedded*" name="arg1" />
+        </parameters>
+      </signal>
+      <signal name="DrawGdk" cname="draw_gdk" when="FIRST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkHTMLEmbedded*" name="arg1" />
+          <parameter type="GdkPixmap*" name="arg2" />
+          <parameter type="GdkGC*" name="arg3" />
+          <parameter type="gint" name="arg4" />
+          <parameter type="gint" name="arg5" />
+        </parameters>
+      </signal>
+      <signal name="DrawPrint" cname="draw_print" when="FIRST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkHTMLEmbedded*" name="arg1" />
+          <parameter type="GnomePrintContext*" name="arg2" />
+        </parameters>
+      </signal>
+      <method name="GetParameter" cname="gtk_html_embedded_get_parameter">
+        <return-type type="char*" />
+        <parameters>
+          <parameter type="char*" name="param" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gtk_html_embedded_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gtk_html_embedded_new">
+        <parameters>
+          <parameter type="char*" name="classid" />
+          <parameter type="char*" name="name" />
+          <parameter type="char*" name="type" />
+          <parameter type="char*" name="data" />
+          <parameter type="int" name="width" />
+          <parameter type="int" name="height" />
+        </parameters>
+      </constructor>
+      <method name="SetDescent" cname="gtk_html_embedded_set_descent">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="descent" />
+        </parameters>
+      </method>
+      <method name="SetParameter" cname="gtk_html_embedded_set_parameter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="char*" name="param" />
+          <parameter type="char*" name="value" />
+        </parameters>
+      </method>
+    </object>
     <struct name="HTMLClassProperties" cname="GtkHTMLClassProperties" opaque="true" />
     <struct name="HTMLEditorAPI" cname="GtkHTMLEditorAPI">
       <callback cname="check_word">
@@ -907,8 +973,6 @@
         </parameters>
       </callback>
     </struct>
-    <struct name="HTMLEmbedded" cname="GtkHTMLEmbedded" opaque="true" />
-    <struct name="HTMLEmbeddedClass" cname="GtkHTMLEmbeddedClass" opaque="true" />
     <struct name="HTMLStream" cname="GtkHTMLStream">
       <field cname="write_func" type="GtkHTMLStreamWriteFunc" />
       <field cname="close_func" type="GtkHTMLStreamCloseFunc" />

@@ -19,6 +19,8 @@ GTKHTML_SOURCES = \
         gtkhtml-3.0.8/src/gtkhtml.h \
         gtkhtml-3.0.8/src/gtkhtml-types.h \
         gtkhtml-3.0.8/src/gtkhtml-enums.h \
+        gtkhtml-3.0.8/src/gtkhtml-embedded.c \
+        gtkhtml-3.0.8/src/gtkhtml-embedded.h \
         gtkhtml-3.0.8/src/gtkhtml-stream.c \
         gtkhtml-3.0.8/src/gtkhtml-stream.h
 
