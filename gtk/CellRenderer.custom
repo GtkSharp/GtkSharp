@@ -23,10 +23,10 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern void gtksharp_cellrenderer_base_get_size (IntPtr handle, IntPtr widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern void gtksharp_cellrenderer_override_get_size (GLib.GType gtype, GetSizeDelegate cb);
 		
 		delegate void GetSizeDelegate (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height);
@@ -64,10 +64,10 @@
 		}
 
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern void gtksharp_cellrenderer_base_render (IntPtr handle, IntPtr window, IntPtr widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern void gtksharp_cellrenderer_override_render (GLib.GType gtype, RenderDelegate cb);
 
 		delegate void RenderDelegate (IntPtr item, IntPtr window, IntPtr widget, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, Gtk.CellRendererState flags);
@@ -95,7 +95,7 @@
 			gtksharp_cellrenderer_base_render (Handle, window.Handle, widget.Handle, background_area, cell_area, expose_area, flags);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern void gtksharp_cellrenderer_override_start_editing (GLib.GType gtype, StartEditingDelegate cb);
 
 		delegate IntPtr StartEditingDelegate (IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags);
@@ -120,7 +120,7 @@
 			gtksharp_cellrenderer_override_start_editing (gtype, StartEditingCallback);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gtksharpglue-2.0")]
 		static extern IntPtr gtksharp_cellrenderer_base_start_editing(IntPtr raw, IntPtr evnt, IntPtr widget, string path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, int flags);
 
 		[GLib.DefaultSignalHandler (Type=typeof(Gtk.CellRenderer), ConnectionMethod="OverrideStartEditing")]

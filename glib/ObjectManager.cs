@@ -32,7 +32,7 @@ namespace GLib {
 
 		private static Hashtable types = new Hashtable ();
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
 		public static GLib.Object CreateObject (IntPtr raw)
@@ -107,13 +107,13 @@ namespace GLib {
 			return expected_string;
 		}
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern int gtksharp_get_type_id (IntPtr raw);
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern int gtksharp_get_parent_type (int typ);
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_get_type_name_for_id (int typ);
 
 		static Type LookupType (string mangled)

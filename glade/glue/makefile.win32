@@ -7,16 +7,16 @@ GLUE_OBJS = \
 	gladexml.o              \
 	win32dll.o
 
-all: gladesharpglue.dll
+all: gladesharpglue-2.0.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-gladesharpglue.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libgladesharpglue.a --dllname=gladesharpglue.dll --driver-name=gcc --output-def=gladesharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+gladesharpglue-2.0.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libgladesharpglue-2.0.a --dllname=gladesharpglue-2.0.dll --driver-name=gcc --output-def=gladesharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f gladesharpglue.dll *.o libgladesharpglue.a
+	rm -f gladesharpglue-2.0.dll *.o libgladesharpglue-2.0.a

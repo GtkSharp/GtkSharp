@@ -25,8 +25,8 @@
 # Boston, MA 02111-1307, USA.
 
 $private_regex = "^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)";
-$eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_(DEPRECATED|COMPAT)|ENABLE_BROKEN|COMPILATION)";
-$ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
+$eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)";
+$ignoreit_regex = '^\s+\*|#ident|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
 foreach $arg (@ARGV) {
 	if (-d $arg && -e $arg) {
@@ -50,6 +50,8 @@ foreach $fname (@hdrs) {
 	open(INFILE, $fname) || die "Could open $fname\n";
 
 	$braces = 0;
+	$deprecated = -1;
+	$ifdeflevel = 0;
 	$prepend = "";
 	while ($line = <INFILE>) {
 		$braces++ if ($line =~ /{/ and $line !~ /}/);
@@ -58,7 +60,7 @@ foreach $fname (@hdrs) {
 		next if ($line =~ /$ignoreit_regex/);
 
 		$line =~ s/\/\*.*?\*\///g;
-
+		
 		next if ($line !~ /\S/);
 
 		$line = $prepend . $line;
@@ -77,8 +79,6 @@ foreach $fname (@hdrs) {
 			}
 		} elsif ($line =~ /^\s*\/\*/) {
 			while ($line !~ /\*\//) {$line = <INFILE>;}
-		} elsif ($line =~ /^#ifndef\s+\w+_H_*\b/) {
-			while ($line !~ /#define/) {$line = <INFILE>;}
 		} elsif ($line =~ /$private_regex/) {
 			$nested = 0;
 			while ($line = <INFILE>) {
@@ -107,7 +107,19 @@ foreach $fname (@hdrs) {
 				}
 			}
 		} elsif ($line =~ /^#\s*ifn?\s*\!?def/) {
-			#warn "Ignored #if:\n$line";
+			$ifdeflevel++;
+			#print "#ifn?def ($ifdeflevel): $line\n";
+			if ($line =~ /#ifndef.*DISABLE_DEPRECATED/) {
+				$deprecated = $ifdeflevel;
+			} elsif ($line =~ /#if !defined.*DISABLE_DEPRECATED/) {
+				$deprecated = $ifdeflevel;
+			}
+		} elsif ($line =~ /^#\s*endif/) {
+			#print "#endif   ($ifdeflevel): $line\n";
+			if ($deprecated == $ifdeflevel) {
+				$deprecated = -1;
+			}
+			$ifdeflevel--;
 		} elsif ($line =~ /typedef struct\s*\{/) {
 			my $first_line = $line;
 			my @lines = ();
@@ -142,7 +154,11 @@ foreach $fname (@hdrs) {
 			}
 		} else {
 			if ($braces or $line =~ /;/) {
-				print $line;
+				if ($deprecated == -1) {
+					print $line;
+				} else {
+					print "deprecated$line";
+				}
 			} else {
 				$prepend = $line;
 				$prepend =~ s/\n/ /g;

@@ -24,7 +24,7 @@ sources = 				\
 	PropertyEditorEnum.cs 		\
 	PropertyEditorEntry.cs 		\
 	PropertyEditorFileEntry.cs 	\
-	PropertyEditorOptionMenu.cs 	\
+	PropertyEditorOptionMenu.cs	\
 	PropertyEditorRadioButton.cs 	\
 	PropertyEditorSpinButton.cs 	\
 	PropertyEditorToggleButton.cs 	\

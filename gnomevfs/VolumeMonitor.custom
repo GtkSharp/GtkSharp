@@ -1,0 +1,21 @@
+//
+// Gnome.Vfs.VolumeMonitor.custom - Gnome Vfs VolumeMonitor class customizations
+//
+// Author: Jeroen Zwartepoorte (jeroen@xs4all.nl)
+//
+// Copyright (C) 2004 Jeroen Zwartepoorte
+//
+// This code is inserted after the automatically generated code.
+//
+
+		[DllImport("gnomevfs-2")]
+		static extern IntPtr gnome_vfs_get_volume_monitor ();
+
+		public static VolumeMonitor Get ()
+		{
+			IntPtr raw_ret = gnome_vfs_get_volume_monitor ();
+			if (raw_ret == IntPtr.Zero)
+				return null;
+			else
+				return (VolumeMonitor) GLib.Object.GetObject (raw_ret);
+		}

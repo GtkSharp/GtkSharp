@@ -5,20 +5,22 @@ EXTRA_DIST =				\
 
 
 DOWNLOADS = \
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/pango-1.2.3.tar.gz          	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/atk-1.2.4.tar.gz 		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/gtk+-2.2.2.tar.gz     		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/libgnome-2.2.3.tar.gz       	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/libgnomecanvas-2.2.1.tar.gz 	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/libgnomeui-2.2.2.tar.gz     	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/libgnomeprint-2.2.1.3.tar.gz	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/libgnomeprintui-2.2.1.3.tar.gz	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.0/sources/libglade-2.0.0.tar.gz		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.0/2.0.3/sources/libart_lgpl-2.3.10.tar.gz	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.2/2.2.2/sources/librsvg-2.2.5.tar.gz         	\
+	ftp://ftp.gtk.org/pub/gtk/v2.4/pango-1.4.0.tar.gz                                       \
+	ftp://ftp.gtk.org/pub/gtk/v2.4/atk-1.6.0.tar.gz                                         \
+	ftp://ftp.gtk.org/pub/gtk/v2.4/gtk+-2.4.1.tar.gz                                        \
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/gnome-vfs-2.6.0.tar.gz		\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libgnome-2.6.0.tar.gz       	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libgnomecanvas-2.6.0.tar.gz 	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libgnomeui-2.6.0.tar.gz     	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libgnomeprint-2.6.0.tar.gz	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libgnomeprintui-2.6.0.tar.gz	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libglade-2.3.6.tar.gz		\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libart_lgpl-2.3.16.tar.gz	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/librsvg-2.6.4.tar.gz         	\
 	http://ftp.gnome.org/pub/GNOME/sources/libgda/1.0/libgda-1.0.0.tar.gz			\
 	http://ftp.gnome.org/pub/GNOME/sources/libgnomedb/1.0/libgnomedb-1.0.0.tar.gz		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.4/2.4.0/sources/vte-0.11.10.tar.gz
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/vte-0.11.10.tar.gz \
+	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/gnome-panel-2.6.0.tar.gz
 	
 GTKHTML_SOURCEFILES = \
         gtkhtml-3.0.10/src/gtkhtml.c \
@@ -31,7 +33,7 @@ GTKHTML_SOURCEFILES = \
         gtkhtml-3.0.10/src/gtkhtml-stream.h
 
 api:
-	PERLLIB=../parser PATH=../parser:$$PATH ../parser/gapi-parser gtk-sharp-sources.xml
+	PATH=../parser:$$PATH ../parser/gapi_parser.pl gtk-sharp-sources.xml
 
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.10.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
@@ -42,7 +44,6 @@ get-source-code: get-gtkhtml-code
 		wget $$i --output-document=- | tar -xz ;   \
 	done;
 
-	ln -f -s ../gdk/gdkpixbuf-drawable.c gtk+-2.2.2/gdk-pixbuf/gdkpixbuf-drawable.c
-	ln -f -s ../gdk/gdkpixbuf.h          gtk+-2.2.2/gdk-pixbuf/gdkpixbuf.h
-	ln -f -s ../gdk/gdkpixbuf-render.c   gtk+-2.2.2/gdk-pixbuf/gdkpixbuf-render.c
-
+	ln -f -s gtkfilechooserprivate.h gtk+-2.4.1/gtk/gtkfilechooserpriv.h
+	patch -p0 atk-1.6.0/atk/atkhyperlink.h < atkhyperlink.patch
+	patch -p0 gtk+-2.4.1/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch

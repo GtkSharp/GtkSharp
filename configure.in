@@ -2,11 +2,14 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gtk-sharp, 1.0.2)
+AM_INIT_AUTOMAKE(gtk-sharp, 1.9.0)
 AM_MAINTAINER_MODE
 
-API_VERSION=1.0.0.0
+API_VERSION=2.0.0.0
 AC_SUBST(API_VERSION)
+
+PACKAGE_VERSION=gtk-sharp-2.0
+AC_SUBST(PACKAGE_VERSION)
 
 AC_CHECK_TOOL(CC, gcc, gcc)
 AC_PROG_CC
@@ -60,11 +63,11 @@ AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
 	fi
 )
 
-MONO_REQUIRED_VERSION=0.96
+MONO_REQUIRED_VERSION=1.0
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
 
 if test "x$has_mono" = "xtrue"; then
-GACUTIL_FLAGS='/package $(PACKAGE) /gacdir $(libdir)'
+GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(libdir)'
 GENERATED_SOURCES=generated/*.cs
 AC_PATH_PROG(RUNTIME, mono, no)
 AC_PATH_PROG(CSC, mcs, no)
@@ -107,15 +110,15 @@ AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
 
-PKG_CHECK_MODULES(GLIB, gobject-2.0)
+PKG_CHECK_MODULES(GLIB, gobject-2.0 >= 2.4)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
-PKG_CHECK_MODULES(PANGO, pango)
+PKG_CHECK_MODULES(PANGO, pango >= 1.4)
 AC_SUBST(PANGO_CFLAGS)
 AC_SUBST(PANGO_LIBS)
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
@@ -124,10 +127,11 @@ AC_SUBST(XML_CFLAGS)
 AC_SUBST(XML_LIBS)
 
 ## Versions of dependencies
-GNOME_REQUIRED_VERSION=2.2.0
-GTK_REQUIRED_VERSION=2.2.0
+GNOME_REQUIRED_VERSION=2.6.0
+GTK_REQUIRED_VERSION=2.4.0
+ART_REQUIRED_VERSION=2.3.16
 
-PKG_CHECK_MODULES(LIBART, libart-2.0 >= $GNOME_REQUIRED_VERSION, enable_libart=yes, enable_libart=no)
+PKG_CHECK_MODULES(LIBART, libart-2.0 >= $ART_REQUIRED_VERSION, enable_libart=yes, enable_libart=no)
 AC_SUBST(LIBART_CFLAGS)
 AC_SUBST(LIBART_LIBS)
 
@@ -135,7 +139,7 @@ PKG_CHECK_MODULES(GNOME, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeu
 AC_SUBST(GNOME_CFLAGS)
 AC_SUBST(GNOME_LIBS)
 
-GLADE_REQUIRED_VERSION=2.0.0
+GLADE_REQUIRED_VERSION=2.3.6
 PKG_CHECK_MODULES(GLADE, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=yes, enable_glade=no)
 AC_SUBST(GLADE_CFLAGS)
 AC_SUBST(GLADE_LIBS)
@@ -175,6 +179,11 @@ AC_SUBST(GTKHTML_SOVERSION)
 VTE_REQUIRED_VERSION=0.11.10
 PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
 
+LIBPANEL_REQUIRED_VERSION=2.6
+PKG_CHECK_MODULES(LIBPANEL, libpanelapplet-2.0 >= $LIBPANEL_REQUIRED_VERSION, enable_panel=yes, enable_panel=no)
+AC_SUBST(LIBPANEL_CFLAGS)
+AC_SUBST(LIBPANEL_LIBS)
+
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
@@ -183,6 +192,8 @@ AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
+AM_CONDITIONAL(ENABLE_PANEL, test "x$enable_panel" = "xyes")
+AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 
 
 AC_SUBST(CFLAGS)
@@ -190,8 +201,11 @@ AC_SUBST(CFLAGS)
 AC_OUTPUT([
 sources/Makefile
 parser/Makefile
+parser/gapi-2.0.pc
+parser/gapi2-fixup
+parser/gapi2-parser
 generator/Makefile
-generator/gapi-codegen
+generator/gapi2-codegen
 glib/Makefile
 glib/AssemblyInfo.cs
 glib/glib-sharp.dll.config
@@ -206,7 +220,7 @@ atk/atk-sharp.dll.config
 art/Makefile
 art/AssemblyInfo.cs
 art/art-sharp.dll.config
-art/art-sharp.pc
+art/art-sharp-2.0.pc
 gdk/Makefile
 gdk/AssemblyInfo.cs
 gdk/gdk-sharp.dll.config
@@ -218,56 +232,64 @@ gtk/glue/Makefile
 glade/Makefile
 glade/AssemblyInfo.cs
 glade/glade-sharp.dll.config
-glade/glade-sharp.pc
+glade/glade-sharp-2.0.pc
 glade/glue/Makefile
 gnome/Makefile
 gnome/AssemblyInfo.cs
 gnome/gnome-sharp.dll.config
-gnome/gnome-sharp.pc
+gnome/gnome-sharp-2.0.pc
 gnome/glue/Makefile
+gnomevfs/Makefile
+gnomevfs/AssemblyInfo.cs
+gnomevfs/gnome-vfs-sharp.dll.config
+gnomevfs/gnome-vfs-sharp-2.0.pc
 gda/Makefile
 gda/AssemblyInfo.cs
 gda/gda-sharp.dll.config
-gda/gda-sharp.pc
+gda/gda-sharp-2.0.pc
 gnomedb/Makefile
 gnomedb/AssemblyInfo.cs
 gnomedb/gnomedb-sharp.dll.config
-gnomedb/gnomedb-sharp.pc
+gnomedb/gnomedb-sharp-2.0.pc
 gconf/Makefile
 gconf/doc/Makefile
 gconf/GConf/Makefile
 gconf/GConf/AssemblyInfo.cs
 gconf/GConf/gconf-sharp.dll.config
-gconf/GConf/gconf-sharp.pc
+gconf/GConf/gconf-sharp-2.0.pc
 gconf/GConf.PropertyEditors/Makefile
 gconf/GConf.PropertyEditors/AssemblyInfo.cs
 gconf/tools/Makefile
-gconf/tools/gconfsharp-schemagen
+gconf/tools/gconfsharp2-schemagen
 gtkhtml/Makefile
 gtkhtml/AssemblyInfo.cs
 gtkhtml/gtkhtml-sharp.dll.config
-gtkhtml/gtkhtml-sharp.pc
+gtkhtml/gtkhtml-sharp-2.0.pc
 rsvg/Makefile
 rsvg/AssemblyInfo.cs
 rsvg/rsvg-sharp.dll.config
-rsvg/rsvg-sharp.pc
+rsvg/rsvg-sharp-2.0.pc
 vte/Makefile
 vte/AssemblyInfo.cs
 vte/vte-sharp.dll.config
-vte/vte-sharp.pc
+vte/vte-sharp-2.0.pc
+panelapplet/Makefile
+panelapplet/AssemblyInfo.cs
+panelapplet/panelapplet-sharp.dll.config
+panelapplet/panelapplet-sharp-2.0.pc
+panelapplet/glue/Makefile
 doc/Makefile
 doc/updater/Makefile
 sample/GtkDemo/Makefile
 sample/Makefile
 sample/gconf/Makefile
+sample/gnomevfs/Makefile
 sample/pixmaps/Makefile
 sample/rsvg/Makefile
 sample/test/Makefile
 sample/drawing-sample.exe.config
 sample/cairo-sample.exe.config
-gtk-sharp.pc
-parser/gapi.pc
-parser/gapi-fixup
+gtk-sharp-2.0.pc
 Makefile
 ])
 
@@ -287,6 +309,7 @@ echo "      * gnomedb-sharp.dll: $enable_gnomedb"
 echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
 echo "      * vte-sharp.dll: $enable_vte "
+echo "      * panelapplet-sharp.dll: $enable_panel "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"

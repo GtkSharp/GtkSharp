@@ -31,6 +31,67 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixbuf_get_from_drawable(IntPtr raw, IntPtr src, IntPtr cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
+
+		public Gdk.Pixbuf GetFromDrawable(Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
+			IntPtr raw_ret = gdk_pixbuf_get_from_drawable(Handle, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
+			Gdk.Pixbuf ret;
+			if (raw_ret == IntPtr.Zero)
+				ret = null;
+			else
+				ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
+			return ret;
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_pixbuf_get_from_image(IntPtr raw, IntPtr src, IntPtr cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);
+
+		public Gdk.Pixbuf GetFromImage(Gdk.Image src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height) {
+			IntPtr raw_ret = gdk_pixbuf_get_from_image(Handle, src.Handle, cmap.Handle, src_x, src_y, dest_x, dest_y, width, height);
+			Gdk.Pixbuf ret;
+			if (raw_ret == IntPtr.Zero)
+				ret = null;
+			else
+				ret = (Gdk.Pixbuf) GLib.Object.GetObject(raw_ret);
+			return ret;
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_pixbuf_render_pixmap_and_mask(IntPtr raw, IntPtr pixmap_return, IntPtr mask_return, int alpha_threshold);
+
+		public void RenderPixmapAndMask(Gdk.Pixmap pixmap_return, Gdk.Bitmap mask_return, int alpha_threshold) {
+			gdk_pixbuf_render_pixmap_and_mask(Handle, pixmap_return.Handle, mask_return.Handle, alpha_threshold);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_pixbuf_render_pixmap_and_mask_for_colormap(IntPtr raw, IntPtr colormap, IntPtr pixmap_return, IntPtr mask_return, int alpha_threshold);
+
+		public void RenderPixmapAndMaskForColormap(Gdk.Colormap colormap, Gdk.Pixmap pixmap_return, Gdk.Bitmap mask_return, int alpha_threshold) {
+			gdk_pixbuf_render_pixmap_and_mask_for_colormap(Handle, colormap.Handle, pixmap_return.Handle, mask_return.Handle, alpha_threshold);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_pixbuf_render_threshold_alpha(IntPtr raw, IntPtr bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold);
+
+		public void RenderThresholdAlpha(Gdk.Bitmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_threshold) {
+			gdk_pixbuf_render_threshold_alpha(Handle, bitmap.Handle, src_x, src_y, dest_x, dest_y, width, height, alpha_threshold);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_pixbuf_render_to_drawable(IntPtr raw, IntPtr drawable, IntPtr gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int dither, int x_dither, int y_dither);
+
+		public void RenderToDrawable(Gdk.Drawable drawable, Gdk.GC gc, int src_x, int src_y, int dest_x, int dest_y, int width, int height, Gdk.RgbDither dither, int x_dither, int y_dither) {
+			gdk_pixbuf_render_to_drawable(Handle, drawable.Handle, gc.Handle, src_x, src_y, dest_x, dest_y, width, height, (int) dither, x_dither, y_dither);
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_pixbuf_render_to_drawable_alpha(IntPtr raw, IntPtr drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, int alpha_mode, int alpha_threshold, int dither, int x_dither, int y_dither);
+
+		public void RenderToDrawableAlpha(Gdk.Drawable drawable, int src_x, int src_y, int dest_x, int dest_y, int width, int height, Gdk.PixbufAlphaMode alpha_mode, int alpha_threshold, Gdk.RgbDither dither, int x_dither, int y_dither) {
+			gdk_pixbuf_render_to_drawable_alpha(Handle, drawable.Handle, src_x, src_y, dest_x, dest_y, width, height, (int) alpha_mode, alpha_threshold, (int) dither, x_dither, y_dither);
+		}
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_ref (IntPtr handle);
 
@@ -191,7 +252,3 @@
 			return ret;
 		}
 
-		public void RenderThresholdAlpha (Bitmap bitmap, int src_x, int src_y, int dest_x, int dest_y, int alpha_threshold) 
-		{
-			RenderThresholdAlpha (bitmap, src_x, src_y, dest_x, dest_y, -1, -1, alpha_threshold);
-		}

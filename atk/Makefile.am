@@ -8,7 +8,7 @@ references = /r:../glib/glib-sharp.dll
 
 TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi
+gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.snk

@@ -34,7 +34,7 @@
                 	g_object_ref (Handle);
                 }
                 
-                [DllImport("gnomesharpglue")]
+                [DllImport("gnomesharpglue-2.0")]
                 static extern IntPtr gtksharp_gnome_canvas_item_get_canvas (IntPtr i);
                 public Canvas Canvas {
                 	get { return GLib.Object.GetObject (gtksharp_gnome_canvas_item_get_canvas (this.Handle), false) as Canvas; }
@@ -56,10 +56,10 @@
 			gnome_canvas_item_i2w_affine(Handle, affine);
 		}
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_base_realize (IntPtr handle);
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_override_realize (GLib.GType gtype, RealizeDelegate cb);
 
 		delegate void RealizeDelegate (IntPtr item);
@@ -85,10 +85,10 @@
 			gnomesharp_canvas_item_base_realize (Handle);
 		}
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern double gnomesharp_canvas_item_base_point (IntPtr handle, double x, double y, int cx, int cy, out IntPtr actual_item_handle);
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_override_point (GLib.GType gtype, PointDelegate cb);
 
 		delegate double PointDelegate (IntPtr item, double x, double y, int cx, int cy, out IntPtr actual_item_handle);
@@ -120,10 +120,10 @@
 			return result;
 		}
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_base_draw (IntPtr handle, IntPtr drawable, int x, int y, int width, int height);
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_override_draw (GLib.GType gtype, DrawDelegate cb);
 
 		delegate void DrawDelegate (IntPtr handle, IntPtr drawable, int x, int y, int width, int height);
@@ -150,10 +150,10 @@
 			gnomesharp_canvas_item_base_draw (Handle, drawable.Handle, x, y, width, height);
 		}
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_base_render (IntPtr handle, ref CanvasBuf buf);
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_override_render (GLib.GType gtype, RenderDelegate cb);
 
 		delegate void RenderDelegate (IntPtr handle, ref CanvasBuf buf);
@@ -179,10 +179,10 @@
 			gnomesharp_canvas_item_base_render (Handle, ref buf);
 		}
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_base_update (IntPtr handle, double[] affine, ref Art.SVP clip_path, int flags);
 
-		[DllImport("gnomesharpglue")]
+		[DllImport("gnomesharpglue-2.0")]
 		static extern void gnomesharp_canvas_item_override_update (GLib.GType gtype, UpdateDelegate cb);
 
 		delegate void UpdateDelegate (IntPtr item, IntPtr affine_ptr, IntPtr clip_path, int flags);

@@ -35,10 +35,10 @@ class PrintSample
 	
 	void MyPrint (PrintContext gpc)
 	{
-		Print.Beginpage (gpc, "demo");
-		Print.Moveto (gpc, 1, 700);
-		Print.Show (gpc, tv.Buffer.Text);
-		Print.Showpage (gpc);
+		gpc.BeginPage ("demo");
+		gpc.MoveTo (1, 700);
+		gpc.Show (tv.Buffer.Text);
+		gpc.ShowPage ();
 	}
 	
 	void OnPrintClicked (object o, EventArgs args)

@@ -19,6 +19,94 @@
 // Boston, MA 02111-1307, USA.
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_save(string file_name);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.Save instead")]
+		public static void MapSave(string file_name) {
+			gtk_accel_map_save(file_name);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_add_filter(string filter_pattern);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.AddFilter instead")]
+		public static void MapAddFilter(string filter_pattern) {
+			gtk_accel_map_add_filter(filter_pattern);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_foreach_unfiltered(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.ForeachUnfiltered instead")]
+		public static void MapForeachUnfiltered(IntPtr data, Gtk.AccelMapForeach foreach_func) {
+			GtkSharp.AccelMapForeachWrapper foreach_func_wrapper = null;
+			foreach_func_wrapper = new GtkSharp.AccelMapForeachWrapper (foreach_func, null);
+			gtk_accel_map_foreach_unfiltered(data, foreach_func_wrapper.NativeDelegate);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_save_fd(int fd);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.SaveFd instead")]
+		public static void MapSaveFd(int fd) {
+			gtk_accel_map_save_fd(fd);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_add_entry(string accel_path, uint accel_key, int accel_mods);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.AddEntry instead")]
+		public static void MapAddEntry(string accel_path, uint accel_key, Gdk.ModifierType accel_mods) {
+			gtk_accel_map_add_entry(accel_path, accel_key, (int) accel_mods);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_load_fd(int fd);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.LoadFd instead")]
+		public static void MapLoadFd(int fd) {
+			gtk_accel_map_load_fd(fd);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_accel_map_lookup_entry(string accel_path, ref Gtk.AccelKey key);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.LookupEntry instead")]
+		public static bool MapLookupEntry(string accel_path, Gtk.AccelKey key) {
+			bool raw_ret = gtk_accel_map_lookup_entry(accel_path, ref key);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_accel_map_change_entry(string accel_path, uint accel_key, int accel_mods, bool replace);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.ChangeEntry instead")]
+		public static bool MapChangeEntry(string accel_path, uint accel_key, Gdk.ModifierType accel_mods, bool replace) {
+			bool raw_ret = gtk_accel_map_change_entry(accel_path, accel_key, (int) accel_mods, replace);
+			bool ret = raw_ret;
+			return ret;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_load(string file_name);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.Load instead")]
+		public static void MapLoad(string file_name) {
+			gtk_accel_map_load(file_name);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_accel_map_foreach(IntPtr data, GtkSharp.AccelMapForeachNative foreach_func);
+
+		[Obsolete("Moved to AccelMap class. Use AccelMap.Foreach instead")]
+		public static void MapForeach(IntPtr data, Gtk.AccelMapForeach foreach_func) {
+			GtkSharp.AccelMapForeachWrapper foreach_func_wrapper = null;
+			foreach_func_wrapper = new GtkSharp.AccelMapForeachWrapper (foreach_func, null);
+			gtk_accel_map_foreach(data, foreach_func_wrapper.NativeDelegate);
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_accel_groups_from_object (IntPtr obj);
 
 		public static AccelGroup[] GroupsFromObject (GLib.Object obj)

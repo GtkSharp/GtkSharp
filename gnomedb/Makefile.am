@@ -2,7 +2,7 @@ if ENABLE_GNOMEDB
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 APIS = $(API)
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gnomedb-sharp.pc
+pkgconfig_DATA = gnomedb-sharp-2.0.pc
 else
 TARGET = 
 APIS = 
@@ -15,12 +15,12 @@ ASSEMBLY_NAME = gnomedb-sharp
 references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /r:../art/art-sharp.dll /r:../gnome/gnome-sharp.dll /r:../gda/gda-sharp.dll
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi
+gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.snk
 
-DISTCLEANFILES = gnomedb-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = gnomedb-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =				\
 	Application.cs
@@ -38,7 +38,7 @@ EXTRA_DIST =			\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\
-	gnomedb-sharp.pc.in
+	gnomedb-sharp-2.0.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

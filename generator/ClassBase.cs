@@ -38,6 +38,8 @@ namespace GtkSharp.Generation {
 
 		private bool ctors_initted = false;
 		private Hashtable clash_map;
+		private bool deprecated = false;
+		private bool isabstract = false;
 
 		public Hashtable Methods {
 			get {
@@ -64,12 +66,17 @@ namespace GtkSharp.Generation {
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 					
+			if (elem.HasAttribute ("deprecated"))
+				deprecated = elem.GetAttribute ("deprecated") == "1";
+			if (elem.HasAttribute ("abstract"))
+				isabstract = elem.GetAttribute ("abstract") == "1";
+
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;
 				XmlElement member = (XmlElement) node;
 				if (member.HasAttribute ("hidden"))
 					continue;
-
+				
 				string name;
 				switch (node.Name) {
 				case "method":
@@ -104,6 +111,18 @@ namespace GtkSharp.Generation {
 				default:
 					break;
 				}
+			}
+		}
+
+		public bool IsDeprecated {
+			get {
+				return deprecated;
+			}
+		}
+
+		public bool IsAbstract {
+			get {
+				return isabstract;
 			}
 		}
 

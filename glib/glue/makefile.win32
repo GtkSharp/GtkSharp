@@ -14,16 +14,16 @@ GLUE_OBJS = \
         valuearray.o            \
 	win32dll.o
 
-all: glibsharpglue.dll
+all: glibsharpglue-2.0.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-glibsharpglue.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libglibsharpglue.a --dllname=glibsharpglue.dll --driver-name=gcc --output-def=glibsharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+glibsharpglue-2.0.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libglibsharpglue-2.0.a --dllname=glibsharpglue-2.0.dll --driver-name=gcc --output-def=glibsharpglue-2.0.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f glibsharpglue.dll *.o libglibsharpglue.a
+	rm -f glibsharpglue-2.0.dll *.o libglibsharpglue-2.0.a

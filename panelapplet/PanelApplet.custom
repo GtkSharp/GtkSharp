@@ -1,0 +1,20 @@
+[DllImport ("panel-applet-2")]
+static extern void panel_applet_setup_menu (IntPtr handle, string xml, BonoboUIVerb[] items, IntPtr user_data);
+
+public void SetupMenu (string xml, BonoboUIVerb[] items)
+{
+	BonoboUIVerb[] nulled_items = new BonoboUIVerb[items.Length + 1];
+	Array.Copy (items, nulled_items, items.Length);
+	nulled_items[items.Length] = new BonoboUIVerb (null, null);
+	panel_applet_setup_menu (Handle, xml, nulled_items, IntPtr.Zero);
+}
+
+public abstract void Creation ();
+
+public abstract string IID {
+	get;
+}
+
+public abstract string FactoryIID {
+	get;
+}

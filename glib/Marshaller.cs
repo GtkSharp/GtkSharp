@@ -173,7 +173,7 @@ namespace GLib {
 			return local_epoch.AddSeconds ((int)time_t + utc_offset);
 		}
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_unichar_to_utf8_string (uint c);
 
 		public static char GUnicharToChar (uint ucs4_char)
@@ -186,7 +186,7 @@ namespace GLib {
 			return ret [0];
 		}
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern uint glibsharp_utf16_to_gunichar (ushort c);
 
 		public static uint CharToGUnichar (char c)

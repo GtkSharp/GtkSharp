@@ -1,0 +1,272 @@
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_beginpage (IntPtr raw, string name);
+
+                public PrintReturnCode BeginPage (string name) {
+                	return (PrintReturnCode)gnome_print_beginpage (Handle, name);
+                }
+                
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_showpage (IntPtr raw);
+
+                public PrintReturnCode ShowPage () {
+                	return (PrintReturnCode)gnome_print_showpage (Handle);
+                }
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_end_doc (IntPtr raw);
+
+		public PrintReturnCode EndDoc () {
+			return (PrintReturnCode)gnome_print_end_doc (Handle);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_gsave (IntPtr raw);
+
+		public PrintReturnCode SaveGraphicState () {
+			return (PrintReturnCode)gnome_print_gsave (Handle);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_grestore (IntPtr raw);
+
+		public PrintReturnCode RestoreGraphicState () {
+			return (PrintReturnCode)gnome_print_grestore (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_newpath (IntPtr raw);
+
+		public PrintReturnCode NewPath () {
+			return (PrintReturnCode)gnome_print_newpath (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_moveto (IntPtr raw, double x, double y);
+
+		public PrintReturnCode MoveTo (double x, double y) {
+			return (PrintReturnCode)gnome_print_moveto (Handle, x, y);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_lineto (IntPtr raw, double x, double y);
+
+		public PrintReturnCode LineTo (double x, double y) {
+			return (PrintReturnCode)gnome_print_lineto (Handle, x, y);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_curveto (IntPtr raw, double x1, double y1, double x2, double y2, double x3, double y3);
+
+		public PrintReturnCode CurveTo (double x1, double y1, double x2, double y2, double x3, double y3) {
+			return (PrintReturnCode)gnome_print_curveto (Handle, x1, y1, x2, y2, x3, y3);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_closepath (IntPtr raw);
+		
+		public PrintReturnCode ClosePath () {
+			return (PrintReturnCode)gnome_print_closepath (Handle);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_strokepath (IntPtr raw);
+		
+		public PrintReturnCode StrokePath () {
+			return (PrintReturnCode)gnome_print_strokepath (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_bpath (IntPtr raw, ref Art.Bpath bpath, bool append);
+		
+		public PrintReturnCode Bpath (Art.Bpath bpath, bool append) {
+			return (PrintReturnCode)gnome_print_bpath (Handle, ref bpath, append);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_vpath (IntPtr raw, ref Art.Vpath vpath, bool append);
+		
+		public PrintReturnCode Vpath (Art.Vpath vpath, bool append) {
+			return (PrintReturnCode)gnome_print_vpath (Handle, ref vpath, append);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_arcto (IntPtr raw, double x, double y, double radius, double angle1, double angle2, int direction);
+		
+		public PrintReturnCode ArcTo (double x, double y, double radius, double angle1, double angle2, int direction) {
+			return (PrintReturnCode)gnome_print_arcto (Handle, x, y, radius, angle1, angle2, direction);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setrgbcolor (IntPtr raw, double r, double g, double b);
+		
+		public PrintReturnCode SetRgbColor (double r, double g, double b) {
+			return (PrintReturnCode)gnome_print_setrgbcolor (Handle, r, g, b);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setopacity (IntPtr raw, double opacity);
+		
+		public PrintReturnCode SetOpacity (double opacity) {
+			return (PrintReturnCode)gnome_print_setopacity (Handle, opacity);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setlinewidth (IntPtr raw, double width);
+		
+		public PrintReturnCode SetLineWidth (double width) {
+			return (PrintReturnCode)gnome_print_setlinewidth (Handle, width);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setmiterlimit (IntPtr raw, double limit);
+
+		public PrintReturnCode SetMiterLimit (double limit) {
+			return (PrintReturnCode)gnome_print_setmiterlimit (Handle, limit);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setlinejoin (IntPtr raw, int jointype);
+		
+		public PrintReturnCode SetLineJoin (int jointype) {
+			return (PrintReturnCode)gnome_print_setlinejoin (Handle, jointype);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setlinecap (IntPtr raw, int captype);
+		
+		public PrintReturnCode SetLineCap (int captype) {
+			return (PrintReturnCode)gnome_print_setlinecap (Handle, captype);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setdash (IntPtr raw, int n_values, IntPtr value, double offset);
+		
+		// FIXME!
+		/*public PrintReturnCode SetDash (double values[], double offset) {
+			return (PrintReturnCode)gnome_print_setdash (Handle, values.Length, values, offset);
+		}*/
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_setfont (IntPtr raw, ref Font font);
+		
+		public PrintReturnCode SetFont (Font font) {
+			return (PrintReturnCode)gnome_print_setfont (Handle, ref font);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_clip (IntPtr raw);
+
+		public PrintReturnCode Clip () {
+			return (PrintReturnCode)gnome_print_clip (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_eoclip (IntPtr raw);
+
+		public PrintReturnCode EvenOddClip () {
+			return (PrintReturnCode)gnome_print_eoclip (Handle);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_concat (IntPtr raw, IntPtr matrix);
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_scale (IntPtr raw, double sx, double sy);
+
+		public PrintReturnCode Scale (double sx, double sy) {
+			return (PrintReturnCode)gnome_print_scale (Handle, sx, sy);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_rotate (IntPtr raw, double theta);
+
+		public PrintReturnCode Rotate (double theta) {
+			return (PrintReturnCode)gnome_print_rotate (Handle, theta);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_translate (IntPtr raw, double x, double y);
+
+		public PrintReturnCode Translate (double x, double y) {
+			return (PrintReturnCode)gnome_print_translate (Handle, x, y);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_fill (IntPtr raw);
+
+		public PrintReturnCode Fill () {
+			return (PrintReturnCode)gnome_print_fill (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_eofill (IntPtr raw);
+
+		public PrintReturnCode EvenOddFill () {
+			return (PrintReturnCode)gnome_print_eofill (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_stroke (IntPtr raw);
+
+		public PrintReturnCode Stroke () {
+			return (PrintReturnCode)gnome_print_stroke (Handle);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_show (IntPtr raw, string text);
+
+		public PrintReturnCode Show (string text) {
+			return (PrintReturnCode)gnome_print_show (Handle, text);
+		}
+		
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_show_sized (IntPtr raw, string text, int bytes);
+
+		public PrintReturnCode ShowSized (string text, int bytes) {
+			return (PrintReturnCode)gnome_print_show_sized (Handle, text, bytes);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_glyphlist (IntPtr raw, IntPtr glyphlist);
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_grayimage (IntPtr raw, string data, int width, int height, int rowstride);
+
+		public PrintReturnCode GrayImage (string data, int width, int height, int rowstride) {
+			return (PrintReturnCode)gnome_print_grayimage (Handle, data, width, height, rowstride);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_rgbimage (IntPtr raw, string data, int width, int height, int rowstride);
+
+		public PrintReturnCode RgbImage (string data, int width, int height, int rowstride) {
+			return (PrintReturnCode)gnome_print_rgbimage (Handle, data, width, height, rowstride);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_rgbaimage (IntPtr raw, string data, int width, int height, int rowstride);
+
+		public PrintReturnCode RgbaImage (string data, int width, int height, int rowstride) {
+			return (PrintReturnCode)gnome_print_rgbaimage (Handle, data, width, height, rowstride);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_line_stroked (IntPtr raw, double x0, double y0, double x1, double y1);
+
+		public PrintReturnCode LineStroked (double x0, double y0, double x1, double y1) {
+			return (PrintReturnCode)gnome_print_line_stroked (Handle, x0, y0, x1, y1);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_rect_stroked (IntPtr raw, double x, double y, double width, double height);
+
+		public PrintReturnCode RectStroked (double x, double y, double width, double height) {
+			return (PrintReturnCode)gnome_print_rect_stroked (Handle, x, y, width, height);
+		}
+
+		[DllImport("gnomeprint-2-2")]
+		static extern int gnome_print_rect_filled (IntPtr raw, double x, double y, double width, double height);
+
+		public PrintReturnCode RectFilled (double x, double y, double width, double height) {
+			return (PrintReturnCode)gnome_print_rect_filled (Handle, x, y, width, height);
+		}

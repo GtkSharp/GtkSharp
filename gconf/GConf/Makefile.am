@@ -1,13 +1,13 @@
 if ENABLE_GNOME
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gconf-sharp.pc
+pkgconfig_DATA = gconf-sharp-2.0.pc
 else
 TARGET = 
 endif
 noinst_DATA = $(TARGET)
 CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
-DISTCLEANFILES = gconf-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = gconf-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gconf-sharp
@@ -16,7 +16,7 @@ EXTRA_DIST =			\
 	$(sources)		\
 	$(ASSEMBLY).config.in	\
 	AssemblyInfo.cs.in	\
-	gconf-sharp.pc.in
+	gconf-sharp-2.0.pc.in
 
 references = 			\
 	/r:../../glib/glib-sharp.dll

@@ -1,10 +1,11 @@
-assemblydir = $(bindir)
+assemblydir = $(libdir)/gtk-sharp-2.0
 pkgconfigdir = $(libdir)/pkgconfig
 assembly_DATA = gapi-fixup.exe
-pkgconfig_DATA = gapi.pc
-bin_SCRIPTS = gapi.pl gapi_pp.pl gapi2xml.pl gapi-fixup gapi-parser
+pkgconfig_DATA = gapi-2.0.pc
+bin_SCRIPTS = gapi2-fixup gapi2-parser
+assembly_SCRIPTS = gapi_parser.pl gapi_pp.pl gapi2xml.pl
 CLEANFILES = gapi-fixup.exe
-DISTCLEANFILES = gapi-fixup gapi.pc
+DISTCLEANFILES = gapi2-fixup gapi2-parser gapi-2.0.pc
 
 sources = 				\
 	gapi-fixup.cs
@@ -14,18 +15,18 @@ build_sources = $(addprefix $(srcdir)/, $(sources))
 EXTRA_DIST =					\
 	makefile.win32				\
 	$(sources)				\
-	gapi-parser				\
-	gapi.pl					\
+	gapi2-parser.in				\
+	gapi_parser.pl				\
 	gapi_pp.pl				\
 	gapi2xml.pl				\
-	gapi.pc.in
+	gapi-2.0.pc.in
 
 gapi-fixup.exe: $(build_sources)
 	$(CSC) /out:gapi-fixup.exe $(build_sources)
 
 INCLUDES = $(GLIB_CFLAGS) $(XML_CFLAGS)
 
-bin_PROGRAMS = gapi_format_xml
+assembly_PROGRAMS = gapi_format_xml
 
 gapi_format_xml_SOURCES = formatXml.c
 

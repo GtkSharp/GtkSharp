@@ -41,10 +41,10 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_unset (ref GLib.Value val);
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_value_create_from_property(ref GLib.Value val, IntPtr obj, string name);
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, string name);
 
 		public void Dispose () 
@@ -297,12 +297,15 @@ namespace GLib {
 			return new EnumWrapper (g_value_get_enum (ref val), false);
 		}
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_value_get_value_type (ref Value val);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
 		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_take_boxed (ref Value val, IntPtr data);
+
 		public object Val
 		{
 			get {

@@ -26,31 +26,31 @@ namespace Gdk {
 
 	public class EventMotion : Event {
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern uint gtksharp_gdk_event_motion_get_time (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern double gtksharp_gdk_event_motion_get_x (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern double gtksharp_gdk_event_motion_get_y (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern double gtksharp_gdk_event_motion_get_x_root (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern double gtksharp_gdk_event_motion_get_y_root (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern uint gtksharp_gdk_event_motion_get_state (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern ushort gtksharp_gdk_event_motion_get_is_hint (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern IntPtr gtksharp_gdk_event_motion_get_device (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern IntPtr gtksharp_gdk_event_motion_get_axes (IntPtr evt);
 
 		public EventMotion (IntPtr raw) : base (raw) {} 

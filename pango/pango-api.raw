@@ -29,6 +29,7 @@
       <member cname="PANGO_ATTR_RISE" name="Rise"/>
       <member cname="PANGO_ATTR_SHAPE" name="Shape"/>
       <member cname="PANGO_ATTR_SCALE" name="Scale"/>
+      <member cname="PANGO_ATTR_FALLBACK" name="Fallback"/>
     </enum>
     <enum name="CoverageLevel" cname="PangoCoverageLevel" type="enum">
       <member cname="PANGO_COVERAGE_NONE" name="None"/>
@@ -41,6 +42,9 @@
       <member cname="PANGO_DIRECTION_RTL" name="Rtl"/>
       <member cname="PANGO_DIRECTION_TTB_LTR" name="TtbLtr"/>
       <member cname="PANGO_DIRECTION_TTB_RTL" name="TtbRtl"/>
+      <member cname="PANGO_DIRECTION_WEAK_LTR" name="WeakLtr"/>
+      <member cname="PANGO_DIRECTION_WEAK_RTL" name="WeakRtl"/>
+      <member cname="PANGO_DIRECTION_NEUTRAL" name="Neutral"/>
     </enum>
     <enum name="FontMask" cname="PangoFontMask" type="flags">
       <member cname="PANGO_FONT_MASK_FAMILY" name="Family" value="1 &lt;&lt; 0"/>
@@ -49,6 +53,63 @@
       <member cname="PANGO_FONT_MASK_WEIGHT" name="Weight" value="1 &lt;&lt; 3"/>
       <member cname="PANGO_FONT_MASK_STRETCH" name="Stretch" value="1 &lt;&lt; 4"/>
       <member cname="PANGO_FONT_MASK_SIZE" name="Size" value="1 &lt;&lt; 5"/>
+    </enum>
+    <enum name="Script" cname="PangoScript" type="enum">
+      <member cname="_PANGO_SCRIPT_INVALID_CODE" name="PangoScriptInvalidCode" value="-1"/>
+      <member cname="_PANGO_SCRIPT_COMMON" name="PangoScriptCommon"/>
+      <member cname="_PANGO_SCRIPT_INHERITED" name="PangoScriptInherited"/>
+      <member cname="_PANGO_SCRIPT_ARABIC" name="PangoScriptArabic"/>
+      <member cname="_PANGO_SCRIPT_ARMENIAN" name="PangoScriptArmenian"/>
+      <member cname="_PANGO_SCRIPT_BENGALI" name="PangoScriptBengali"/>
+      <member cname="_PANGO_SCRIPT_BOPOMOFO" name="PangoScriptBopomofo"/>
+      <member cname="_PANGO_SCRIPT_CHEROKEE" name="PangoScriptCherokee"/>
+      <member cname="_PANGO_SCRIPT_COPTIC" name="PangoScriptCoptic"/>
+      <member cname="_PANGO_SCRIPT_CYRILLIC" name="PangoScriptCyrillic"/>
+      <member cname="_PANGO_SCRIPT_DESERET" name="PangoScriptDeseret"/>
+      <member cname="_PANGO_SCRIPT_DEVANAGARI" name="PangoScriptDevanagari"/>
+      <member cname="_PANGO_SCRIPT_ETHIOPIC" name="PangoScriptEthiopic"/>
+      <member cname="_PANGO_SCRIPT_GEORGIAN" name="PangoScriptGeorgian"/>
+      <member cname="_PANGO_SCRIPT_GOTHIC" name="PangoScriptGothic"/>
+      <member cname="_PANGO_SCRIPT_GREEK" name="PangoScriptGreek"/>
+      <member cname="_PANGO_SCRIPT_GUJARATI" name="PangoScriptGujarati"/>
+      <member cname="_PANGO_SCRIPT_GURMUKHI" name="PangoScriptGurmukhi"/>
+      <member cname="_PANGO_SCRIPT_HAN" name="PangoScriptHan"/>
+      <member cname="_PANGO_SCRIPT_HANGUL" name="PangoScriptHangul"/>
+      <member cname="_PANGO_SCRIPT_HEBREW" name="PangoScriptHebrew"/>
+      <member cname="_PANGO_SCRIPT_HIRAGANA" name="PangoScriptHiragana"/>
+      <member cname="_PANGO_SCRIPT_KANNADA" name="PangoScriptKannada"/>
+      <member cname="_PANGO_SCRIPT_KATAKANA" name="PangoScriptKatakana"/>
+      <member cname="_PANGO_SCRIPT_KHMER" name="PangoScriptKhmer"/>
+      <member cname="_PANGO_SCRIPT_LAO" name="PangoScriptLao"/>
+      <member cname="_PANGO_SCRIPT_LATIN" name="PangoScriptLatin"/>
+      <member cname="_PANGO_SCRIPT_MALAYALAM" name="PangoScriptMalayalam"/>
+      <member cname="_PANGO_SCRIPT_MONGOLIAN" name="PangoScriptMongolian"/>
+      <member cname="_PANGO_SCRIPT_MYANMAR" name="PangoScriptMyanmar"/>
+      <member cname="_PANGO_SCRIPT_OGHAM" name="PangoScriptOgham"/>
+      <member cname="_PANGO_SCRIPT_OLD_ITALIC" name="PangoScriptOldItalic"/>
+      <member cname="_PANGO_SCRIPT_ORIYA" name="PangoScriptOriya"/>
+      <member cname="_PANGO_SCRIPT_RUNIC" name="PangoScriptRunic"/>
+      <member cname="_PANGO_SCRIPT_SINHALA" name="PangoScriptSinhala"/>
+      <member cname="_PANGO_SCRIPT_SYRIAC" name="PangoScriptSyriac"/>
+      <member cname="_PANGO_SCRIPT_TAMIL" name="PangoScriptTamil"/>
+      <member cname="_PANGO_SCRIPT_TELUGU" name="PangoScriptTelugu"/>
+      <member cname="_PANGO_SCRIPT_THAANA" name="PangoScriptThaana"/>
+      <member cname="_PANGO_SCRIPT_THAI" name="PangoScriptThai"/>
+      <member cname="_PANGO_SCRIPT_TIBETAN" name="PangoScriptTibetan"/>
+      <member cname="_PANGO_SCRIPT_CANADIAN_ABORIGINAL" name="PangoScriptCanadianAboriginal"/>
+      <member cname="_PANGO_SCRIPT_YI" name="PangoScriptYi"/>
+      <member cname="_PANGO_SCRIPT_TAGALOG" name="PangoScriptTagalog"/>
+      <member cname="_PANGO_SCRIPT_HANUNOO" name="PangoScriptHanunoo"/>
+      <member cname="_PANGO_SCRIPT_BUHID" name="PangoScriptBuhid"/>
+      <member cname="_PANGO_SCRIPT_TAGBANWA" name="PangoScriptTagbanwa"/>
+      <member cname="_PANGO_SCRIPT_BRAILLE" name="PangoScriptBraille"/>
+      <member cname="_PANGO_SCRIPT_CYPRIOT" name="PangoScriptCypriot"/>
+      <member cname="_PANGO_SCRIPT_LIMBU" name="PangoScriptLimbu"/>
+      <member cname="_PANGO_SCRIPT_OSMANYA" name="PangoScriptOsmanya"/>
+      <member cname="_PANGO_SCRIPT_SHAVIAN" name="PangoScriptShavian"/>
+      <member cname="_PANGO_SCRIPT_LINEAR_B" name="PangoScriptLinearB"/>
+      <member cname="_PANGO_SCRIPT_TAI_LE" name="PangoScriptTaiLe"/>
+      <member cname="_PANGO_SCRIPT_UGARITIC" name="PangoScriptUgaritic"/>
     </enum>
     <enum name="Stretch" cname="PangoStretch" type="enum">
       <member cname="PANGO_STRETCH_ULTRA_CONDENSED" name="UltraCondensed"/>
@@ -74,6 +135,7 @@
       <member cname="PANGO_UNDERLINE_SINGLE" name="Single"/>
       <member cname="PANGO_UNDERLINE_DOUBLE" name="Double"/>
       <member cname="PANGO_UNDERLINE_LOW" name="Low"/>
+      <member cname="PANGO_UNDERLINE_ERROR" name="Error"/>
     </enum>
     <enum name="Variant" cname="PangoVariant" type="enum">
       <member cname="PANGO_VARIANT_NORMAL" name="Normal"/>
@@ -103,6 +165,14 @@
       <return-type type="void"/>
       <parameters>
         <parameter type="FcPattern*" name="pattern"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="FontsetForeachFunc" cname="PangoFontsetForeachFunc">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="PangoFontset*" name="fontset"/>
+        <parameter type="PangoFont*" name="font"/>
         <parameter type="gpointer" name="data"/>
       </parameters>
     </callback>
@@ -165,6 +235,51 @@
         </parameters>
       </method>
     </object>
+    <object name="FcFont" cname="PangoFcFont" parent="PangoFont">
+      <property name="Pattern" cname="pattern" type="gpointer" writeable="true" construct-only="true"/>
+      <virtual_method name="LockFace" cname="lock_face">
+        <return-type type="FT_Face"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="HasChar" cname="has_char">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
+          <parameter type="gunichar" name="wc"/>
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetUnknownGlyph" cname="get_unknown_glyph">
+        <return-type type="PangoGlyph"/>
+        <parameters>
+          <parameter type="PangoFcFont*" name="font"/>
+          <parameter type="gunichar" name="wc"/>
+        </parameters>
+      </virtual_method>
+      <method name="DescriptionFromPattern" cname="pango_fc_font_description_from_pattern" shared="true">
+        <return-type type="PangoFontDescription*"/>
+        <parameters>
+          <parameter type="FcPattern*" name="pattern"/>
+          <parameter type="gboolean" name="include_size"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="pango_fc_font_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="FcFontMap" cname="PangoFcFontMap" parent="PangoFontMap">
+      <virtual_method name="DefaultSubstitute" cname="default_substitute">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFcFontMap*" name="fontmap"/>
+          <parameter type="FcPattern*" name="pattern"/>
+        </parameters>
+      </virtual_method>
+      <method name="GetType" cname="pango_fc_font_map_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
     <object name="Font" cname="PangoFont" parent="GObject">
       <method name="Describe" cname="pango_font_describe">
         <return-type type="PangoFontDescription*"/>
@@ -208,6 +323,13 @@
       </method>
     </object>
     <object name="Fontset" cname="PangoFontset" parent="GObject">
+      <method name="Foreach" cname="pango_fontset_foreach">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontsetForeachFunc" name="func"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
       <method name="GetFont" cname="pango_fontset_get_font">
         <return-type type="PangoFont*"/>
         <parameters>
@@ -231,6 +353,13 @@
       <method name="GetType" cname="pango_font_face_get_type" shared="true">
         <return-type type="GType"/>
       </method>
+      <method name="ListSizes" cname="pango_font_face_list_sizes">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int**" name="sizes"/>
+          <parameter type="int*" name="n_sizes"/>
+        </parameters>
+      </method>
     </object>
     <object name="FontFamily" cname="PangoFontFamily" parent="GObject">
       <method name="GetName" cname="pango_font_family_get_name">
@@ -238,6 +367,9 @@
       </method>
       <method name="GetType" cname="pango_font_family_get_type" shared="true">
         <return-type type="GType"/>
+      </method>
+      <method name="IsMonospace" cname="pango_font_family_is_monospace">
+        <return-type type="gboolean"/>
       </method>
       <method name="ListFaces" cname="pango_font_family_list_faces">
         <return-type type="void"/>
@@ -274,11 +406,11 @@
         </parameters>
       </method>
     </object>
-    <object name="FT2FontMap" cname="PangoFT2FontMap" parent="PangoFontMap">
+    <object name="FT2FontMap" cname="PangoFT2FontMap" parent="PangoFcFontMap">
       <method name="CreateContext" cname="pango_ft2_font_map_create_context">
         <return-type type="PangoContext*"/>
       </method>
-      <method name="ForDisplay" cname="pango_ft2_font_map_for_display" shared="true">
+      <method name="ForDisplay" cname="pango_ft2_font_map_for_display" deprecated="1" shared="true">
         <return-type type="PangoFontMap*"/>
       </method>
       <method name="GetType" cname="pango_ft2_font_map_get_type" shared="true">
@@ -316,6 +448,9 @@
       </method>
       <method name="GetAttributes" cname="pango_layout_get_attributes">
         <return-type type="PangoAttrList*"/>
+      </method>
+      <method name="GetAutoDir" cname="pango_layout_get_auto_dir">
+        <return-type type="gboolean"/>
       </method>
       <method name="GetContext" cname="pango_layout_get_context">
         <return-type type="PangoContext*"/>
@@ -438,6 +573,12 @@
         <return-type type="void"/>
         <parameters>
           <parameter type="PangoAttrList*" name="attrs"/>
+        </parameters>
+      </method>
+      <method name="SetAutoDir" cname="pango_layout_set_auto_dir">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="auto_dir"/>
         </parameters>
       </method>
       <method name="SetFontDescription" cname="pango_layout_set_font_description">
@@ -1018,34 +1159,6 @@
     <struct name="GlyphVisAttr" cname="PangoGlyphVisAttr">
       <field cname="is_cluster_start" bits="1" type="guint"/>
     </struct>
-    <struct name="IntSet" cname="PangoIntSet">
-      <field cname="start" type="int"/>
-      <field cname="size" type="int"/>
-      <field cname="bits" type="guint*"/>
-      <method name="Add" cname="pango_int_set_add">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="int" name="glyph"/>
-        </parameters>
-      </method>
-      <method name="AddRange" cname="pango_int_set_add_range">
-        <return-type type="void"/>
-        <parameters>
-          <parameter type="int" name="start"/>
-          <parameter type="int" name="end"/>
-        </parameters>
-      </method>
-      <method name="Contains" cname="pango_int_set_contains">
-        <return-type type="gboolean"/>
-        <parameters>
-          <parameter type="int" name="member"/>
-        </parameters>
-      </method>
-      <method name="Destroy" cname="pango_int_set_destroy">
-        <return-type type="void"/>
-      </method>
-      <constructor cname="pango_int_set_new"/>
-    </struct>
     <struct name="Item" cname="PangoItem">
       <field cname="offset" type="gint"/>
       <field cname="length" type="gint"/>
@@ -1078,6 +1191,12 @@
       </method>
       <method name="GetType" cname="pango_language_get_type" shared="true">
         <return-type type="GType"/>
+      </method>
+      <method name="IncludesScript" cname="pango_language_includes_script">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="PangoScript" name="script"/>
+        </parameters>
       </method>
       <method name="Matches" cname="pango_language_matches">
         <return-type type="gboolean"/>
@@ -1164,6 +1283,8 @@
       <field cname="start_index" type="gint"/>
       <field cname="length" type="gint"/>
       <field cname="runs" type="GSList*"/>
+      <field cname="is_paragraph_start" bits="1" type="guint"/>
+      <field cname="resolved_dir" bits="3" type="guint"/>
       <method name="GetExtents" cname="pango_layout_line_get_extents">
         <return-type type="void"/>
         <parameters>
@@ -1225,12 +1346,39 @@
       <field cname="is_sentence_boundary" bits="1" type="guint"/>
       <field cname="is_sentence_start" bits="1" type="guint"/>
       <field cname="is_sentence_end" bits="1" type="guint"/>
+      <field cname="backspace_deletes_character" bits="1" type="guint"/>
     </struct>
     <struct name="Rectangle" cname="PangoRectangle">
       <field cname="x" type="int"/>
       <field cname="y" type="int"/>
       <field cname="width" type="int"/>
       <field cname="height" type="int"/>
+    </struct>
+    <struct name="ScriptForLang" cname="PangoScriptForLang">
+      <field cname="lang" array_len="6" type="const-char"/>
+      <field cname="scripts" array_len="3" type="PangoScript"/>
+    </struct>
+    <struct name="ScriptIter" cname="PangoScriptIter" opaque="true">
+      <method name="Free" cname="pango_script_iter_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetRange" cname="pango_script_iter_get_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="G_CONST_RETURN" name="char**"/>
+          <parameter type="G_CONST_RETURN" name="char**"/>
+          <parameter type="PangoScript*" name="script"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_script_iter_new">
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="length"/>
+        </parameters>
+      </constructor>
+      <method name="Next" cname="pango_script_iter_next">
+        <return-type type="gboolean"/>
+      </method>
     </struct>
     <boxed name="TabArray" cname="PangoTabArray" opaque="true">
       <method name="Copy" cname="pango_tab_array_copy">
@@ -1320,6 +1468,12 @@
           <parameter type="guint16" name="blue"/>
         </parameters>
       </method>
+      <method name="FallbackNew" cname="pango_attr_fallback_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="gboolean" name="enable_fallback"/>
+        </parameters>
+      </method>
       <method name="FamilyNew" cname="pango_attr_family_new" shared="true">
         <return-type type="PangoAttribute*"/>
         <parameters>
@@ -1396,6 +1550,13 @@
       </method>
     </class>
     <class name="Global" cname="PangoGlobal">
+      <method name="FindBaseDir" cname="pango_find_base_dir" shared="true">
+        <return-type type="PangoDirection"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="length"/>
+        </parameters>
+      </method>
       <method name="FindParagraphBoundary" cname="pango_find_paragraph_boundary" shared="true">
         <return-type type="void"/>
         <parameters>
@@ -1421,6 +1582,18 @@
         <parameters>
           <parameter type="gunichar" name="ch"/>
           <parameter type="gunichar*" name="mirrored_ch"/>
+        </parameters>
+      </method>
+      <method name="ItemizeWithBaseDir" cname="pango_itemize_with_base_dir" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="PangoContext*" name="context"/>
+          <parameter type="PangoDirection" name="base_dir"/>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="start_index"/>
+          <parameter type="int" name="length"/>
+          <parameter type="PangoAttrList*" name="attrs"/>
+          <parameter type="PangoAttrIterator*" name="cached_iter"/>
         </parameters>
       </method>
       <method name="ParseMarkup" cname="pango_parse_markup" shared="true">
@@ -1501,6 +1674,18 @@
           <parameter type="GString*" name="out"/>
         </parameters>
       </method>
+      <method name="ScriptForUnichar" cname="pango_script_for_unichar" shared="true">
+        <return-type type="PangoScript"/>
+        <parameters>
+          <parameter type="gunichar" name="ch"/>
+        </parameters>
+      </method>
+      <method name="ScriptGetSampleLanguage" cname="pango_script_get_sample_language" shared="true">
+        <return-type type="PangoLanguage*"/>
+        <parameters>
+          <parameter type="PangoScript" name="script"/>
+        </parameters>
+      </method>
       <method name="SkipSpace" cname="pango_skip_space" shared="true">
         <return-type type="gboolean"/>
         <parameters>
@@ -1517,6 +1702,12 @@
         <return-type type="char*"/>
         <parameters>
           <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="UnicharDirection" cname="pango_unichar_direction" shared="true">
+        <return-type type="PangoDirection"/>
+        <parameters>
+          <parameter type="gunichar" name="ch"/>
         </parameters>
       </method>
     </class>

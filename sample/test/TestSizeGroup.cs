@@ -69,9 +69,9 @@ namespace WidgetViewer {
 			return window;
 		}
 
-		static OptionMenu Create_OptionMenu (string [] strings)
+		static ComboBox Create_ComboBox (string [] strings)
 		{
-			Menu menu = new Menu ();
+			/*Menu menu = new Menu ();
 
 			MenuItem menu_item = null;
 
@@ -84,7 +84,13 @@ namespace WidgetViewer {
 			OptionMenu option_menu = new OptionMenu ();
 			option_menu.Menu = menu;
 
-			return option_menu;
+			return option_menu;*/
+			ComboBox combo_box = new ComboBox ();
+			foreach (string str in strings) {
+				combo_box.AppendText (str);
+			}
+			
+			return combo_box;
 		}
 
 		static void Add_Row (Table table, uint row, SizeGroup size_group,
@@ -98,10 +104,10 @@ namespace WidgetViewer {
 				      AttachOptions.Expand, AttachOptions.Fill,
 				      0, 0);
 
-			OptionMenu option_menu = Create_OptionMenu (options);
+			ComboBox combo_box = Create_ComboBox (options);
 
-			size_group.AddWidget (option_menu);
-			table.Attach (option_menu,
+			size_group.AddWidget (combo_box);
+			table.Attach (combo_box,
 				      1, 2, row, row + 1,
 				      AttachOptions.Expand, AttachOptions.Expand,
 				      0, 0);

@@ -1,0 +1,29 @@
+//
+// Gnome.Vfs.Uri.custom - Gnome Vfs Uri class customizations
+//
+// Author: Jeroen Zwartepoorte (jeroen@xs4all.nl)
+//
+// Copyright (C) 2004 Jeroen Zwartepoorte
+//
+// This code is inserted after the automatically generated code.
+//
+
+		public MimeType MimeType {
+			get {
+				return new MimeType (this);
+			}
+		}
+
+		public FileInfo GetFileInfo ()
+		{
+			return GetFileInfo (FileInfoOptions.Default);
+		}
+
+		public FileInfo GetFileInfo (FileInfoOptions options) {
+			return new FileInfo (this, options);
+		}
+
+		public override string ToString ()
+		{
+			return ToString (UriHideOptions.None);
+		}

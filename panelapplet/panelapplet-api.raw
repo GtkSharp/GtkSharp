@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="PanelApplet" library="panel-applet-2">
+    <enum name="BackgroundType" cname="PanelAppletBackgroundType" type="enum">
+      <member cname="PANEL_NO_BACKGROUND" name="NoBackground"/>
+      <member cname="PANEL_COLOR_BACKGROUND" name="ColorBackground"/>
+      <member cname="PANEL_PIXMAP_BACKGROUND" name="PixmapBackground"/>
+    </enum>
+    <enum name="Flags" cname="PanelAppletFlags" type="flags">
+      <member cname="PANEL_APPLET_FLAGS_NONE" name="FlagsNone"/>
+      <member cname="PANEL_APPLET_EXPAND_MAJOR" name="ExpandMajor" value="1 &lt;&lt; 0"/>
+      <member cname="PANEL_APPLET_EXPAND_MINOR" name="ExpandMinor" value="1 &lt;&lt; 1"/>
+      <member cname="PANEL_APPLET_HAS_HANDLE" name="HasHandle" value="1 &lt;&lt; 2"/>
+    </enum>
+    <callback name="FactoryCallback" cname="PanelAppletFactoryCallback">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="PanelApplet*" name="applet"/>
+        <parameter type="const-gchar*" name="iid"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <object name="Shell" cname="PanelAppletShell" parent="BonoboObject">
+      <field cname="priv" type="PanelAppletShellPrivate*"/>
+      <method name="Construct" cname="panel_applet_shell_construct">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelApplet*" name="applet"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="panel_applet_shell_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="panel_applet_shell_new">
+        <parameters>
+          <parameter type="PanelApplet*" name="applet"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="PanelApplet" cname="PanelApplet" parent="GtkEventBox">
+      <field cname="priv" type="PanelAppletPrivate*"/>
+      <signal name="ChangeOrient" cname="change_orient" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelApplet*" name="applet"/>
+          <parameter type="PanelAppletOrient" name="orient"/>
+        </parameters>
+      </signal>
+      <signal name="ChangeSize" cname="change_size" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelApplet*" name="applet"/>
+          <parameter type="guint" name="size"/>
+        </parameters>
+      </signal>
+      <signal name="ChangeBackground" cname="change_background" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelApplet*" name="applet"/>
+          <parameter type="PanelAppletBackgroundType" name="type"/>
+          <parameter type="GdkColor*" name="color"/>
+          <parameter type="GdkPixmap*" name="pixmap"/>
+        </parameters>
+      </signal>
+      <signal name="MoveFocusOutOfApplet" cname="move_focus_out_of_applet" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelApplet*" name="frame"/>
+          <parameter type="GtkDirectionType" name="direction"/>
+        </parameters>
+      </signal>
+      <method name="AddPreferences" cname="panel_applet_add_preferences">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="schema_dir"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="FactoryMain" cname="panel_applet_factory_main" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-gchar*" name="iid"/>
+          <parameter type="GType" name="applet_type"/>
+          <parameter type="PanelAppletFactoryCallback" name="callback"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="FactoryMainClosure" cname="panel_applet_factory_main_closure" shared="true">
+        <return-type type="int"/>
+        <parameters>
+          <parameter type="const-gchar*" name="iid"/>
+          <parameter type="GType" name="applet_type"/>
+          <parameter type="GClosure*" name="closure"/>
+        </parameters>
+      </method>
+      <method name="GconfGetBool" cname="panel_applet_gconf_get_bool">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfGetFloat" cname="panel_applet_gconf_get_float">
+        <return-type type="gdouble"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfGetFullKey" cname="panel_applet_gconf_get_full_key">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+        </parameters>
+      </method>
+      <method name="GconfGetInt" cname="panel_applet_gconf_get_int">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfGetList" cname="panel_applet_gconf_get_list">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GConfValueType" name="list_type"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfGetString" cname="panel_applet_gconf_get_string">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfGetValue" cname="panel_applet_gconf_get_value">
+        <return-type type="GConfValue*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetBool" cname="panel_applet_gconf_set_bool">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="gboolean" name="the_bool"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetFloat" cname="panel_applet_gconf_set_float">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="gdouble" name="the_float"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetInt" cname="panel_applet_gconf_set_int">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="gint" name="the_int"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetList" cname="panel_applet_gconf_set_list">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GConfValueType" name="list_type"/>
+          <parameter type="GSList*" name="list"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetString" cname="panel_applet_gconf_set_string">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="const-gchar*" name="the_string"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GconfSetValue" cname="panel_applet_gconf_set_value">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="key"/>
+          <parameter type="GConfValue*" name="value"/>
+          <parameter type="GError**" name="opt_error"/>
+        </parameters>
+      </method>
+      <method name="GetBackground" cname="panel_applet_get_background">
+        <return-type type="PanelAppletBackgroundType"/>
+        <parameters>
+          <parameter type="GdkColor*" name="color"/>
+          <parameter type="GdkPixmap**" name="pixmap"/>
+        </parameters>
+      </method>
+      <method name="GetControl" cname="panel_applet_get_control">
+        <return-type type="BonoboControl*"/>
+      </method>
+      <method name="GetFlags" cname="panel_applet_get_flags">
+        <return-type type="PanelAppletFlags"/>
+      </method>
+      <method name="GetLockedDown" cname="panel_applet_get_locked_down">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetOrient" cname="panel_applet_get_orient">
+        <return-type type="PanelAppletOrient"/>
+      </method>
+      <method name="GetPopupComponent" cname="panel_applet_get_popup_component">
+        <return-type type="BonoboUIComponent*"/>
+      </method>
+      <method name="GetPreferencesKey" cname="panel_applet_get_preferences_key">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetSize" cname="panel_applet_get_size">
+        <return-type type="guint"/>
+      </method>
+      <method name="GetType" cname="panel_applet_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="panel_applet_new"/>
+      <method name="SetFlags" cname="panel_applet_set_flags">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PanelAppletFlags" name="flags"/>
+        </parameters>
+      </method>
+      <method name="SetSizeHints" cname="panel_applet_set_size_hints">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-int*" name="size_hints"/>
+          <parameter type="int" name="n_elements"/>
+          <parameter type="int" name="base_size"/>
+        </parameters>
+      </method>
+      <method name="SetupMenu" cname="panel_applet_setup_menu">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="xml"/>
+          <parameter type="const-BonoboUIVerb*" name="verb_list"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="SetupMenuFromFile" cname="panel_applet_setup_menu_from_file">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="opt_datadir"/>
+          <parameter type="const-gchar*" name="file"/>
+          <parameter type="const-gchar*" name="opt_app_name"/>
+          <parameter type="const-BonoboUIVerb*" name="verb_list"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="ShlibFactory" cname="panel_applet_shlib_factory" shared="true">
+        <return-type type="Bonobo_Unknown"/>
+        <parameters>
+          <parameter type="const-char*" name="iid"/>
+          <parameter type="GType" name="applet_type"/>
+          <parameter type="PortableServer_POA" name="poa"/>
+          <parameter type="gpointer" name="impl_ptr"/>
+          <parameter type="PanelAppletFactoryCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+          <parameter type="CORBA_Environment*" name="ev"/>
+        </parameters>
+      </method>
+      <method name="ShlibFactoryClosure" cname="panel_applet_shlib_factory_closure" shared="true">
+        <return-type type="Bonobo_Unknown"/>
+        <parameters>
+          <parameter type="const-char*" name="iid"/>
+          <parameter type="GType" name="applet_type"/>
+          <parameter type="PortableServer_POA" name="poa"/>
+          <parameter type="gpointer" name="impl_ptr"/>
+          <parameter type="GClosure*" name="closure"/>
+          <parameter type="CORBA_Environment*" name="ev"/>
+        </parameters>
+      </method>
+    </object>
+    <alias name="Orient" cname="PanelAppletOrient" type="GNOME_Vertigo_PanelOrient"/>
+  </namespace>
+</api>

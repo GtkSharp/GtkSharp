@@ -1,19 +1,19 @@
-lib_LTLIBRARIES = libpangosharpglue.la
+lib_LTLIBRARIES = libpangosharpglue-2.0.la
 
-libpangosharpglue_la_SOURCES =	\
+libpangosharpglue_2_0_la_SOURCES =	\
 	layoutline.c
 
 # Adding a new glue file?
 # Please remember to update makefile.win32
 
-libpangosharpglue_la_LDFLAGS = -module -avoid-version -no-undefined
+libpangosharpglue_2_0_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libpangosharpglue_la_LIBADD = $(PANGO_LIBS)
+libpangosharpglue_2_0_la_LIBADD = $(PANGO_LIBS)
 
 INCLUDES = $(PANGO_CFLAGS) -I$(top_srcdir)
 
-libpangosharpglue.dll: $(libpangosharpglue_la_OBJECTS) libpangosharpglue.rc libpangosharpglue.def
-	./build-dll libpangosharpglue $(VERSION)
+libpangosharpglue.dll: $(libpangosharpglue_2_0_la_OBJECTS) libpangosharpglue.rc libpangosharpglue.def
+	./build-dll libpangosharpglue-2.0 $(VERSION)
 
 CLEANFILES = lib*.a lib*.dll
 

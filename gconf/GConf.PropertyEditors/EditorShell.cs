@@ -84,8 +84,8 @@ namespace GConf.PropertyEditors
 				editor = new PropertyEditorToggleButton (key, (Gtk.ToggleButton) control);
 			else if (control is Gtk.Entry)
 				editor = new PropertyEditorEntry (key, (Gtk.Entry) control);
-			else if (control is Gtk.OptionMenu)
-				editor = new PropertyEditorOptionMenu (key, (Gtk.OptionMenu) control, enum_type, enum_values);
+			/*else if (control is Gtk.OptionMenu)
+				editor = new PropertyEditorOptionMenu (key, (Gtk.OptionMenu) control, enum_type, enum_values);*/
 			else
 				throw new EditorNotSupportedException ();
 

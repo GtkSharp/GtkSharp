@@ -26,16 +26,16 @@ namespace Gdk {
 
 	public class EventConfigure : Event {
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern int gtksharp_gdk_event_configure_get_x (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern int gtksharp_gdk_event_configure_get_y (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern int gtksharp_gdk_event_configure_get_width (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern int gtksharp_gdk_event_configure_get_height (IntPtr evt);
 
 		public EventConfigure (IntPtr raw) : base (raw) {} 

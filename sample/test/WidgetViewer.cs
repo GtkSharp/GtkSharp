@@ -108,7 +108,7 @@ namespace WidgetViewer {
 
 		static void File_Selection (object o, EventArgs args)
 		{
-			AddWindow (TestFileSelection.Create ());
+			//AddWindow (TestFileSelection.Create ());
 		}
 
 		static void Radio_Buttons (object o, EventArgs args)
@@ -128,7 +128,7 @@ namespace WidgetViewer {
 
 		static void Toolbar (object o, EventArgs args)
 		{
-			AddWindow (TestToolbar.Create ());
+			//AddWindow (TestToolbar.Create ());
 		}
 
 		static void Dialog (object o, EventArgs args)
@@ -143,7 +143,7 @@ namespace WidgetViewer {
 
 		static void Menus (object o, EventArgs args)
 		{
-			AddWindow (TestMenus.Create ());
+			//AddWindow (TestMenus.Create ());
 		}
 
 		static void Size_Groups (object o, EventArgs args)

@@ -1,0 +1,52 @@
+// IconTheme.custom - customizations to Gtk.IconTheme
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//	    Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_icon_theme_list_icons (IntPtr raw, string context);
+
+		public string[] ListIcons (string context)
+		{
+			IntPtr list_ptr = gtk_icon_theme_list_icons (Handle, context);
+			if (list_ptr == IntPtr.Zero)
+				return new string [0];
+
+			GLib.List list = new GLib.List (list_ptr, typeof (string));
+			string[] result = new string [list.Count];
+			int i = 0;
+			foreach (string val in list)
+				result [i++] = val;
+			return result;
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_strfreev (IntPtr mem);
+
+                public string[] SearchPath {
+                        get {
+				string[] retval;
+                            
+				unsafe {
+					int length;
+					IntPtr raw_ret;
+					gtk_icon_theme_get_search_path (Handle, out raw_ret, out length);
+					int size = Marshal.SizeOf (typeof (IntPtr));
+					retval = new string[length];
+					for (int i = 0, j = 0; i < length; i++, j += size) {
+						IntPtr string_ptr = Marshal.ReadIntPtr (new IntPtr (raw_ret.ToInt32 () + j));
+						retval[i] = Marshal.PtrToStringAnsi (string_ptr);
+					}
+
+					g_strfreev (raw_ret);
+				}
+                            
+				return retval;
+			}
+		}
+

@@ -455,7 +455,7 @@ public class TestDnd {
 	private static void HandlePopsiteLeave (object sender, DragLeaveArgs args)
 	{
 		if (popup_timer != 0) {
-			Gtk.Timeout.Remove (popup_timer);
+			GLib.Source.Remove (popup_timer);
 			popup_timer = 0;
 		}
 	}

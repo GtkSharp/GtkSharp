@@ -48,12 +48,42 @@
 	* gdk/Pixmap.custom : add overloads for *CreateFromXPM* methods which
 	default transparency mask and color.
 
+2004-10-07  Todd Berman  <tberman@off.net>
+
+	* gtk/Gtk.metadata: Mark ComboBox.GetActiveIter as an out param.
+
+2004-10-06  John Luke  <john.luke@gmail.com>
+
+	* gtk/Action.custom: add overload for string, string, null, null
+	* gtk/UIManager.custom: add overload to get the UI from a resource
+	* gtk/Makefile.am: add the 2 new custom files
+	* sample/Action.cs: remove using GtkSharp, make ui_info const, quit on Quit
+
+2004-10-05  Todd Berman  <tberman@off.net>
+
+	* gtk/ComboBox.custom: Add SetCellDataFunc to allow you to set a
+	CellLayoutDataFunc on a ComboBox.
+
+2004-10-05  Todd Berman  <tberman@off.net>
+
+	* gtk/ComboBox.custom: new file, to allow get/set access to 'model'.
+	* gtk/Makefile.am: add ComboBox.custom.
+
 2004-10-05  Mike Kestner  <mkestner@ximian.com>
 
 	* gtk/Gtk.metadata : hide Selection.GetTargets.
 	* gtk/SelectionData.custom : impl Targets prop and add Selection,
 	Target, and Type field accessors.
 	* gtk/glue/selectiondata.c : field accessor glue.
+
+2004-10-04  Todd Berman  <tberman@off.net>
+
+	* Merge forward patch from Miguel to fix delegate marshalling in
+	1.1.1. Original Changelog follows
+
+2004-10-04  Todd Berman  <tberman@off.net>
+
+	* */*.pc.in: Fix the Requires to use -2.0
 
 2004-09-29  Mike Kestner  <mkestner@ximian.com>
 
@@ -101,18 +131,13 @@
 	* glib/Source.cs: Add new base class to hold the method to be
 	called, and the proxy handler we use to keep references to them
 	and avoid a collection.
-
 	Exposes a new variables that references all the active Timeouts
 	and Idle handlers to avoid collection/
-
 	* glib/Timeout.cs: Implement TimeoutProxy that acts as a filter to
 	remove the proxy when the timeout is removed.
-
 	Register a TimeoutProxy when we create a timeout.
-
 	* glib/Idle.cs: Implement IdleProxy that acts as a filter to
 	remove the proxy when the idle handler is removed.
-
 	Register an IdleProxy when we create a timeout.
 
 2004-09-17  Mike Kestner  <mkestner@ximian.com>
@@ -171,6 +196,22 @@
 	gchar* to const-gchar*, so we do not try to modify it (call gfree).
 	[Fixes #64421]
 
+2004-08-27  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnomevfs/Async.cs: Add Priority enum. Add methods which take an Uri
+	object (similar to Sync methods).
+	* gnomevfs/Vfs.cs: Add Truncate bindings.
+	* gnomevfs/VfsStream.cs: Major fixes. Don't use the AsyncWaitHandle for
+	blocking until an operation has finished. Fix (a)sync reading & writing.
+	You either use sync/async throughout the code. Can't mix sync and async
+	gnome-vfs method calls (different Handle objects).
+	* gnomevfs/VfsStreamAsyncResult.cs: Throw NotSupportedException when
+	AsyncWaitHandle property is accessed.
+	* sample/gnomevfs/Makefile.am: New test programs.
+	* sample/gnomevfs/TestAsync.cs:
+	* sample/gnomevfs/TestAsyncStream.cs:
+	* sample/gnomevfs/TestSyncStream.cs:
+
 2004-08-26  Manuel V. Santos  <mvsl@telefonica.net>
 
 	* gdk/Device.custom : glue to expose object fields.
@@ -225,7 +266,6 @@
 	* gdk/PixbufLoader.custom: add Write () overload
 	[Fixes #62681]
 
-
 2004-08-24  Larry Ewing  <lewing@ximian.com>
 
 	* gdk/Pixbuf.custom : add RenderThresholdAlpha overload which defaults
@@ -238,6 +278,22 @@
 	and mark the old int filled overload Obsolete.
 	[Fixes #60702]
 
+2004-08-23  Todd Berman  <tberman@off.net>
+
+	* panelapplet/BonoboUIVerb.cs:
+	* panelapplet/ContextMenuItem.cs:
+	* panelapplet/Makefile.am:
+	* panelapplet/PanelApplet.custom: Remove the ContextMenuItem and the
+	need for the glue. Add BonoboUIVerb to directly call the setup_menu
+	function. Leave the glue library for now, as I think getting the
+	proper orientation stuff setup will require some glue work.
+	* sample/panelapplet/testapplet.cs: Update sample to reflect new
+	api. Need to make this installable.
+
+2004-08-22  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnomevfs/Makefile.am: Remove ADDITIONAL_API variable.
+
 2004-08-20  Mike Kestner  <mkestner@ximian.com>
 
 	* atk/Atk.metadata : mark an array param on Relation ctor.
@@ -247,6 +303,15 @@
 	* gtk/Gtk.metadata : hide some methods on TextBuffer.
 	* gtk/TextBuffer.custom : pass -1 for the text length to some
 	more methods.
+
+2004-08-19  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnomevfs/Makefile.am: Add Monitor.cs.
+	* gnomevfs/Monitor.cs: New custom class wrapping the gnome_vfs_monitor_*
+	methods.
+	* sample/gnomevfs/Makefile.am: Added TestMonitor.cs.
+	* sample/gnomevfs/TestMonitor.cs: Test case for using the new Monitor
+	class.
 
 2004-08-18  John Luke  <john.luke@gmail.com>
 
@@ -276,6 +341,11 @@
 	* glib/Marshaller.cs : some gunichar marshal-fu.
 	* glib/glue/unichar.c : a new glue method.
 
+2004-08-14  Todd Berman  <tberman@off.net>
+
+	* gnomevfs/VfsStream.cs: if ErrorEof is returned in Read, return 0
+	instead of throwing an exception.
+
 2004-08-13  John Luke  <john.luke@gmail.com>
 
 	* gtk/Gtk.metadata: mark Gtk.StockManager.Lookup param as ref
@@ -289,6 +359,44 @@
 	Adapted from a patch by borsanza@yahoo.es (Borja Sanchez Zamorano).
 	[Fixes #62985]
 
+2004-08-10  Todd Berman  <tberman@off.net>
+
+	* gnomevfs/AssemblyInfo.cs.in: use the .snk, not the .pub.
+
+2004-08-10  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* glib/MainLoop.cs:
+	* gnomevfs/.cvsignore:
+	* gnomevfs/Async.cs:
+	* gnomevfs/FileInfo.cs:
+	* gnomevfs/Gnomevfs.metadata:
+	* gnomevfs/Makefile.am:
+	* gnomevfs/MimeType.cs:
+	* gnomevfs/Sync.cs:
+	* gnomevfs/Uri.custom:
+	* gnomevfs/VfsStream.cs:
+	* gnomevfs/VfsStreamAsyncResult.cs:
+	* gnomevfs/VolumeMonitor.custom:
+	* gnomevfs/Xfer.cs:
+	* gnomevfs/XferProgressCallback.cs:
+	* gnomevfs/XferProgressCallbackNative.cs:
+	* gnomevfs/filesize.diff:
+	* gnomevfs/gnomevfs-api.raw:
+	* sample/gnomevfs/.cvsignore:
+	* sample/gnomevfs/Makefile.am:
+	* sample/gnomevfs/TestInfo.cs:
+	* sample/gnomevfs/TestMime.cs:
+	* sample/gnomevfs/TestSync.cs:
+	* sample/gnomevfs/TestSyncCreate.cs:
+	* sample/gnomevfs/TestSyncWrite.cs:
+	* sample/gnomevfs/TestUnlink.cs:
+	* sample/gnomevfs/TestVolumes.cs:
+	* sample/gnomevfs/TestXfer.cs:
+	
+	Commit new gnomevfs files and samples. Also the GLib.MainLoop addition
+	for programs which don't want to use Gtk.Application.Run (), but still
+	use the GLib main loop.
+
 2004-08-04  Raja R Harinath  <rharinath@novell.com>
 
 	* configure.in (GTKHTML): Use SOVERSION=11 for GtkHTML 3.1.18.
@@ -297,6 +405,10 @@
 2004-07-30  Mike Kestner  <mkestner@ximian.com>
 
 	* parser/gapi2xml.pl : char const * fixes for clahey's gsf binding.
+
+2004-07-28  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* */*: merge from HEAD again.
 
 2004-07-24  Mike Kestner  <mkestner@ximian.com>
 
@@ -307,6 +419,11 @@
 2004-07-22  Mike Kestner  <mkestner@ximian.com>
 
 	* glib/Value.cs : allow null for ctor(GLib.Object).
+
+2004-07-18  Todd Berman  <tberman@off.net>
+
+	* panelapplet/Makefile.am: We dont actually use gnome-sharp.dll, remove
+	it.
 
 2004-07-16  John Luke  <jluke@cfl.rr.com>
 
@@ -323,9 +440,132 @@
 	  Remove unnessesary disabledefaultconstructor
 	* gnome/PrintJob.custom: Change ctor to an overload ctor
 
+2004-07-11  Todd Berman  <tberman@off.net>
+
+	* panelapplet/ContextMenuItem.cs: New struct to hold context menu
+	item information.
+	* panelapplet/Makefile.am: added new file.
+	* panelapplet/PanelApplet.custom: add glue accessor to set the context
+	menu.
+	* panelapplet/glue/panelapplet.c: new glue functionality to setup a
+	context menu.
+	* sample/panelapplet/testapplet.cs: expand sample to show context menu
+	code.
+
+2004-07-10  Todd Berman  <tberman@off.net>
+
+	* panelapplet/panelapplet-sharp-2.0.pc.in: fix path.
+
 2004-07-09  Mike Kestner  <mkestner@ximian.com>
 
 	* gdk/Gdk.metadata : mark gc param of Drawable.DrawPixbuf null_ok.
+
+2004-07-09  Todd Berman  <tberman@off.net>
+
+	* Makefile.am:
+	* configure.in:
+	Add panelapplet stuff to configure.in and the subdirs.
+	* generator/ClassBase.cs:
+	* generator/ObjectGen.cs:
+	Add a new attribute 'abstract' to allow a class to be defined to be
+	abstract. PanelApplet.PanelApplet uses this.
+	* panelapplet/.cvsignore:
+	* panelapplet/AppletFactory.cs:
+	* panelapplet/AssemblyInfo.cs.in:
+	* panelapplet/Makefile.am:
+	* panelapplet/PanelApplet.cs:
+	* panelapplet/PanelApplet.custom:
+	* panelapplet/PanelApplet.metadata:
+	* panelapplet/panelapplet-api.raw:
+	* panelapplet/panelapplet-sharp-2.0.pc.in:
+	* panelapplet/panelapplet-sharp.dll.config.in:
+	* panelapplet/glue/.cvsignore:
+	* panelapplet/glue/Makefile.am:
+	* panelapplet/glue/panelapplet.c:
+	Initial import of the panelapplet code. This code is largely
+	untested, and will need a good amount of glue. For sure glue code is
+	needed for the context menu items.
+	* sample/panelapplet/CSharpTestApplet_Factory.server:
+	* sample/panelapplet/monodoc.png:
+	* sample/panelapplet/testapplet.cs:
+	A small testcase for the panelapplet. There is no makefile yet, and
+	the server needs some help as it uses an absolute path that will only
+	work on my box. When I get back to Toronto (so some point this weekend)
+	I will fix this code to build/install properly and add a README file
+	to help with any potential issues.
+	* sources/Makefile.am:
+	* sources/gtk-sharp-sources.xml:
+	Add the panelapplet-sharp stuff to the build here.
+
+2004-07-06  Todd Berman  <tberman@off.net>
+
+	* sources/gtk_tree_model_signal_fix.patch: duh, this is the real patch.
+
+2004-07-06  Todd Berman  <tberman@off.net>
+
+	* sources/Makefile.am:
+	* sources/gtk_tree_model_signal_fix.patch: a new hacky patch to fix
+	the signal generation on the tree model structs.
+	* */*-api.raw: regen.
+	* glib/Object.cs: merge forward a small patch.
+
+2004-07-06  Todd Berman  <tberman@off.net>
+
+	* Makefile.am:
+	* configure.in:
+	* gtk-sharp-2.0.pc.in:
+	* gtk-sharp.pc.in:
+	* art/.cvsignore:
+	* art/Makefile.am:
+	* art/art-sharp-2.0.pc.in:
+	* art/art-sharp.pc.in:
+	* gconf/GConf/.cvsignore:
+	* gconf/GConf/Makefile.am:
+	* gconf/GConf/gconf-sharp-2.0.pc.in:
+	* gconf/GConf/gconf-sharp.pc.in:
+	* gda/.cvsignore:
+	* gda/Makefile.am:
+	* gda/gda-sharp-2.0.pc.in:
+	* gda/gda-sharp.pc.in:
+	* glade/.cvsignore:
+	* glade/Makefile.am:
+	* glade/glade-sharp-2.0.pc.in:
+	* glade/glade-sharp.pc.in:
+	* gnome/.cvsignore:
+	* gnome/Makefile.am:
+	* gnome/gnome-sharp-2.0.pc.in:
+	* gnome/gnome-sharp.pc.in:
+	* gnomedb/.cvsignore:
+	* gnomedb/Makefile.am:
+	* gnomedb/gnomedb-sharp-2.0.pc.in:
+	* gnomedb/gnomedb-sharp.pc.in:
+	* gnomevfs/.cvsignore:
+	* gnomevfs/gnome-vfs-sharp-2.0.pc.in:
+	* gnomevfs/gnome-vfs-sharp.pc.in:
+	* gtkhtml/.cvsignore:
+	* gtkhtml/Makefile.am:
+	* gtkhtml/gtkhtml-sharp-2.0.pc.in:
+	* gtkhtml/gtkhtml-sharp.pc.in:
+	* rsvg/.cvsignore:
+	* rsvg/Makefile.am:
+	* rsvg/rsvg-sharp-2.0.pc.in:
+	* rsvg/rsvg-sharp.pc.in:
+	* sample/rsvg/Makefile.am:
+	* vte/.cvsignore:
+	* vte/Makefile.am:
+	* vte/vte-sharp-2.0.pc.in:
+	* vte/vte-sharp.pc.in:
+	Make gtk-sharp-2.0 parallel installable with gtk-sharp. Now you can
+	install both and do -pkg:gtk-sharp-2.0 or similar to compile against
+	the gtk-sharp-2.0 assemblies.
+
+	Basically this change comprised some small configure.in changes to
+	change the $(PACKAGE) to gtk-sharp-2.0, and check for the appropriate
+	versions of the gnome 2.6 based libraries.
+
+	Also, every .pc file was renamed -2.0.pc to allow for the parallel
+	install, and the .cvsignore and Makefile.am rules were updated to
+	reflect this change.
 
 2004-07-05  John Luke  <jluke@cfl.rr.com>
 
@@ -366,26 +606,32 @@
 
 	* configure.in : tag and bump version to 0.99.
 
-2004-06-22  Mike Kestner  <mkestner@ximian.com>
-
-	* configure.in : GLIB check for gobject, not glib.
-
 2004-06-23  Todd Berman  <tberman@off.net>
 
 	* doc/*/*.xml: s/GtkSharp.SignalArgs/GLib.SignalArgs/;
 
+2004-06-22  Mike Kestner  <mkestner@ximian.com>
+
+	* configure.in : GLIB check for gobject, not glib.
+
+2004-06-20  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gdk/Gdk.metadata: Fix merging errors.
+	* gnome/CanvasItem.custom: Idem.
+	* gtk/Widget.custom: Idem.
+
+2004-06-20  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* *: Merge with HEAD.
+
 2004-06-17  Larry Ewing  <lewing@ximian.com>
 
 	* gdk/Makefile.am (sources): add Pixdata.custom
-
 	* gdk/Pixdata.custom: add new file to fix Serialize.
-
 	* gnome/CanvasItem.custom: remove the incorrect custom bindings.
-
 	* gnome/Gnome.metadata: stop hiding the AffineRelative and
 	AffineAbsolute the generator gets them right they are not out
 	params.
-
 	* gdk/Gdk.metadata: mark the Pixdata byte stream as and array hide
 	the broken serialize method.
 
@@ -531,6 +777,16 @@
 	* configure.in (MONODOC_REQUIRED_VERSION): Fix missing 'test' in
 	shell if statement.
 
+2004-06-07  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/Widget.custom: Add the AddAccelerator method back which got
+	removed by accident during the last merge.
+	* sample/CustomNotebook.cs: New sample showing of a custom Notebook.
+
+2004-06-07  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* *: Merge with HEAD.
+
 2004-06-04  Todd Berman  <tberman@sevenl.net>
 
 	* glib/Object.cs: ConnectDefaultHandlers needs to look at public api
@@ -568,10 +824,9 @@
 	* generator/Field.cs : add field hiding, for manual impl.
 	* generator/StructBase.cs : support disable_new, for manual impl.
 
-2004-06-01  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+2004-06-01  Jeroen Zwartepoorte  <jerone@xs4all.nl>
 
-	* sample/CustomWidget.cs: Add custom widget sample.
-	* sample/Makefile.am: Idem.
+	* sample/CustomWidget.cs: remove custom GType stuff.
 
 2004-06-01  Mike Kestner  <mkestner@ximian.com>
 
@@ -580,10 +835,25 @@
 	* gtk/CellRenderer.custom : remove ctor ().
 	* gtkhtml/Gtk.metadata : add a disable_void_ctor rule for HTML.
 
+2004-06-01  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* configure.in: Merge with HEAD again.
+	* gdk/Gdk.metadata:
+	* gnome/CanvasItem.custom:
+	* gtk/Gtk.metadata:
+	* sample/.cvsignore:
+	* sample/CustomWidget.cs: Inherit from Gtk.Bin and make it a better
+	suited sample.
+
 2004-06-01  Mike Kestner  <mkestner@ximian.com>
 
 	* gtk/Gtk.metadata : mark SizeRequest requisition as out, not ref.
 	[Fixes #59388]
+
+2004-06-01  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* sample/CustomWidget.cs: Fixed Widget.SizeRequest usage. Works properly
+	now.
 
 2004-05-31  Mike Kestner  <mkestner@ximian.com>
 
@@ -598,13 +868,44 @@
 
 2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
 
-	* gdk/Gdk.metadata: fix membler names in WindowClass.
+	* gdk/Gdk.metadata: fix member names in WindowClass.
 	[Fixes #59336]
 
 2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
 
-	* gdk/Gdk.metadata: mark dest rects as out for Isect and Union.
+	* gdk/Gdk.metadata: mark dest rects as out for Intersect and Union.
 	[Fixes #59341]
+
+2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/Gtk.metadata: Unhide the GtkWidgetFlags enum.
+	* gtk/Makefile.am: Remove WidgetFlags.cs.
+	* gtk/WidgetFlags.cs: Obsolete.
+
+2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* sample/CustomWidget.cs: The Gtk.Requisition is passed by reference in
+	the OnSizeRequested handler.
+
+2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* *: Merge changes from HEAD again.
+
+2004-05-31  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/Container.custom: Merged fix for Container.Forall handler.
+	* gtk/Makefile.am: Added WidgetFlags.cs.
+	* gtk/Widget.custom: Added Flags property and setter to GdkWindow.
+	* gtk/WidgetFlags.cs: Enumeration of widget flags (from widget.h).
+	* gtk/glue/container.c: (gtksharp_container_invoke_gtk_callback): Fixes
+	for Container.Forall handler.
+	* gtk/glue/widget.c: (gtksharp_gtk_widget_set_window),
+	(gtksharp_gtk_widget_get_state), (gtksharp_gtk_widget_get_flags),
+	(gtksharp_gtk_widget_set_flags): Added new API which is needed to write
+	custom gtk widgets.
+	* parser/gapi_pp.pl: Match #if !defined (*_DISABLE_DEPRECATED) properly.
+	* sample/CustomWidget.cs: new sample for creating a custom Gtk widget.
+	* sample/Makefile.am: Added CustomWidget.cs sample.
 
 2004-05-29  Mike Kestner  <mkestner@ximian.com>
 
@@ -657,10 +958,13 @@
 	* gtkhtml/Gtk.metadata : hide Gtk.HTML the ctors.
 	* gtkhtml/HTML.custom : new manual impl for ctors.
 	* gtkhtml/Makefile.am : add new custom [Fixes #59148]
-	
-2004-05-26  Mike Kestner  <mkestner@ximian.com>
 
-	* */Makefile.am : rm -f generated/* in case it doesn't exist yet.
+2004-05-25  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnome/Gnome.metadata: Don't hide the GtkEntry and GnomeEntry
+	properties.
+	* gtk/Accel.custom: Add custom methods for backwards compatibility of
+	the gtk_accel_map_* methods. [Fixes #58954]
 
 2004-05-25  Dan Winship  <danw@ximian.com>
 
@@ -688,6 +992,22 @@
 	* generator/SignalHandler.cs : put back the ObjectGen hack
 	for param wrapping.  [Fixes #58876]
 
+2004-05-23  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* atk/atk-api.xml: Removed.
+	* gdk/gdk-api.xml: Idem.
+	* glade/glade-api.xml: Idem.
+	* gnome/IconTheme.cs: s/GLibSharp/GLib/
+	* gnome/gnome-api.xml: Removed.
+	* gtk/Adjustment.custom: Obsolete custom property code.
+	* gtk/glue/adjustment.c: (gtksharp_gtk_adjustment_set_bounds): Idem.
+	* gtk/gtk-api.xml: Removed.
+	* pango/pango-api.xml: Idem.
+
+2004-05-23  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	Merge changes from HEAD since yesterday.
+
 2004-05-22  Mike Kestner  <mkestner@ximian.com>
 
 	* configure.in : require mono-0.91.99.  Sorry, but we need to
@@ -699,6 +1019,10 @@
 	* gnome/Program.custom: Change the Mono.Runtime stuff to reflect
 	its new internal nature. This fixes MD, gnunit, and all gnome#
 	programs that were blowing up for no reason.
+
+2004-05-23  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* *: Merge changes from HEAD again.
 
 2004-05-22  Radek Doulik  <rodo@ximian.com>
 
@@ -828,6 +1152,60 @@
 	* gtk/Makefile.am : add new customs.
 	* gtk/ItemFactory.custom : implement ctor for subclassing.
 	* gtk/Plug.custom : implement ctors for subclassing.
+
+2004-05-09  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gdk/Gdk.metadata: Misc fixes for getting Muine to build & run.
+	* gtk/FileSelection.custom: Add this back.
+	* gtk/Gtk.metadata: Misc fixes for getting Muine to build & run.
+
+2004-05-08  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gconf/GConf.PropertyEditors/Makefile.am: Reinclude the OptionMenu
+	property editor.
+	* gdk/Gdk.metadata:
+	* gdk/Pixbuf.custom: Add backwards compatible implementations of
+	GetFromDrawable, RenderPixmapAndMask and a couple of others which are 
+	now static in gtk+ 2.4. These methods have the same API as the ones 
+	generate for gtk+ 2.2.
+	* gdk/gdk-api.raw:
+	* generator/ClassBase.cs: Generate an [Obsolete] tag for deprecated
+	code.
+	* generator/ClassGen.cs: Idem.
+	* generator/Method.cs: Idem.
+	* generator/ObjectGen.cs: Idem.
+	* gnome/Gnome.metadata:
+	* gnome/IconData.cs:
+	* gnome/IconTheme.cs: GnomeIconTheme inherits directly from GtkIconTheme
+	in libgnomeui-2.6. This breaks the parser, so it won't generate the
+	proper code. This is a manual class implementation for backward
+	compatibility with gtk+ 2.2 version of gtk#.
+	* gnome/IconTheme.custom: Removed
+	* gnome/Makefile.am:
+	* gnome/gnome-api.raw:
+	* gtk/Gtk.metadata:
+	* gtk/IconTheme.custom: Added custom methods previously found in
+	../gnome/IconTheme.custom.
+	* gtk/gtk-api.raw:
+	* pango/pango-api.raw:
+	* parser/gapi2xml.pl: Check for "deprecated" prefixes and add a
+	deprecated attribute to the appropriate elements when found.
+	* parser/gapi_pp.pl: Prefix everything that's in a #ifndef
+	*_DISABLE_DEPRECATED block with "deprecated".
+	* sample/GtkDemo/DemoMain.cs: s/File/System.IO.File/ since there's now
+	also a Gtk.File class.
+	* sample/GtkDemo/DemoSizeGroup.cs: Use the original OptioMenu code.
+	* sample/GtkDemo/DemoTextView.cs: s/File/System.IO.File/.
+	* sample/Makefile.am:
+	* sources/gtk-sharp-sources.xml: Add a bunch of <exclude>s to the Gtk
+	namespace so it won't generate API for _really_ old deprecated widgets
+	like GtkCList, GtkCTree etc.
+	
+	This commit adds support for deprecated widgets to gtk#. This is
+	necessary since some widgets have been deprecated from gtk+ 2.2->2.4,
+	but are still in use (any program that uses Gtk.OptionMenu, Gtk.Combo
+	and methods in Gtk.Toolbar to name a few). This is done in C# by using
+	the [Obsolete] metadata tag.
 
 2004-05-07  Todd Berman  <tberman@sevenl.net>
 
@@ -989,6 +1367,32 @@
 
 	* configure.in : bump version for cvs.
 
+2004-05-06  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* Makefile.in:
+	* configure.in:
+	* gconf/GConf.PropertyEditors/Makefile.in:
+	* glade/Makefile.in:
+	* gnomevfs/.cvsignore:
+	* gnomevfs/AssemblyInfo.cs.in:
+	* gnomevfs/Makefile.am:
+	* gnomevfs/Makefile.in:
+	* gnomevfs/gnome-vfs-sharp.dll.config.in:
+	* gnomevfs/gnome-vfs-sharp.pc.in:
+	* sample/Actions.cs: Remove System.Drawing.Size usage.
+	* sample/Makefile.am: Added actions.exe.
+	* sample/Makefile.in:
+	
+	Remove obsolete Makefile.in files from the repository. Auto*ify the
+	gnomevfs assembly.
+
+2004-05-06  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	Merge changes from HEAD to the jeroen-gtk-2-4 branch. The correct
+	gnome 2.6.0 & gtk+-2.4.1 sources are now also downloaded when you run
+	"make get-source-code". Some samples are disabled for now since they
+	use deprecated API and fail to build.
+
 2004-05-05  Mike Kestner  <mkestner@ximian.com>
 
 	* generator/BoxedGen.cs : remove g_value_init DllImport and change
@@ -1018,11 +1422,11 @@
 	gnome/CanvasProxy.cs : ditto
 	gnome/void*Signal.cs : ditto
 
-2004-05-04  Mike Kestner  <mkestner@ximian.com>
+2004-05-05  Mike Kestner  <mkestner@ximian.com>
 
 	* sample/gconf/Makefile.am : fix some whitespace.  I love you, auto*.
 
-2004-05-04  Mike Kestner  <mkestner@ximian.com>
+2004-05-05  Mike Kestner  <mkestner@ximian.com>
 
 	* configure.in : fix gtkhtml versioning *again*.
 	* sample/gconf/Makefile.am : conditional build on ENABLE_GNOME.
@@ -1386,6 +1790,14 @@
 
 	* sample/Makefile.am: small resource build fix for glade-test.exe
 
+2004-03-27  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnomevfs/Mime.cs:
+	* gnomevfs/MimeActionType.cs:
+	* gnomevfs/Vfs.cs:
+
+	Implemented more gnome-vfs methods.
+
 2004-03-25  Mike Kestner  <mkestner@ximian.com>
 
 	* gtk/Gtk.metadata : Widget.Events is a Gdk.EventMask, not int
@@ -1479,6 +1891,28 @@
 	* parser/gapi-fixup.in:
 	* generator/gapi-codegen.in: s/@MONO@/@RUNTIME@
 
+2004-03-14  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* Makefile.in:
+	* configure.in:
+	* gnomevfs/AsyncCallback.cs:
+	* gnomevfs/AsyncCallbackNative.cs:
+	* gnomevfs/AsyncReadCallback.cs:
+	* gnomevfs/AsyncReadCallbackNative.cs:
+	* gnomevfs/AsyncWriteCallback.cs:
+	* gnomevfs/AsyncWriteCallbackNative.cs:
+	* gnomevfs/Handle.cs:
+	* gnomevfs/Makefile.in:
+	* gnomevfs/OpenMode.cs:
+	* gnomevfs/Result.cs:
+	* gnomevfs/SeekPosition.cs:
+	* gnomevfs/Vfs.cs:
+	* sample/Makefile.in:
+	* sample/TestVfs.cs:
+	
+	Added partial gnome-vfs bindings. Necessary now that can Gtk.FileChooser
+	return gnome-vfs uris.
+
 2004-03-12  Mike Kestner  <mkestner@ximian.com>
 
 	* */Makefile.am : automakify the build
@@ -1503,7 +1937,6 @@
 	* glue/Makefile.am:
 	* glue/makefile.win32:
 	* glue/thread-notify.c: dropped.
-
 	* gtk/ThreadNotify.cs: use just Idle.Add, which is what the deprecated
 	gda_input_add does. No more P/Invoke here.
 
@@ -1511,12 +1944,42 @@
 
 	* glue/Makefile.am:
 	* glue/makefile.win32: added thread-notify.o
-
 	* glue/thread-notify.c: handles pipe creation/read/write/close for
 	ThreadNotify.
-
 	* gtk/ThreadNotify.cs: P/Invoke the thread-notify code instead of libc
 	functions.
+
+2004-02-29  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/FileChooserDialog.custom: Implement the
+	gtk_file_chooser_dialog_new constructor by hand.
+
+2004-02-28  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/Gtk.metadata: Rename some AddAction* methods to just Add*.
+
+2004-02-28  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* glib/Value.cs: Work around a GLib.Value having a null string (#54979).
+	* sample/Actions.cs: Updated.
+	* sample/Makefile.in: Added the action sample.
+
+2004-02-28  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gdk/gdk-api.xml: Updated to latest CVS.
+	* gnome/gnome-api.xml: Idem.
+	* gtk/gtk-api.xml: Idem.
+	* pango/pango-api.xml: Idem.
+	* sample/Makefile.in: Don't build the gconf sample for now.
+
+2004-02-28  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gnome/PrintContext.custom: Added gnome_print_context_* methods.
+	* gtk/gtk-api.xml: Hide GtkActionEntry C-specific struct and methods.
+	* sample/Actions.cs: Updated.
+	* sample/Makefile.in: Reinclude print sample.
+	* sample/PrintSample.cs: Updated.
+	* sample/TestDnd.cs: Updated.
 
 2004-02-26  Mike Kestner  <mkestner@ximian.com>
 
@@ -1749,12 +2212,6 @@
 
 2004-02-12  Mike Kestner  <mkestner@ximian.com>
 
-	* gdk/Gdk.metadata : hide the GSList API
-	* gdk/*.custom : manually wrap GSList api using typed arrays
-	* gdk/gdk-api.xml : regen.
-
-2004-02-12  Mike Kestner  <mkestner@ximian.com>
-
 	* gtk/Accel.custom : s/List/SList
 	* gtk/Stock.custom : ditto
 	* gtk/TextIter.custom : ditto
@@ -1763,6 +2220,35 @@
 
 	* glib/time_t_CustomMarshaler.cs: Update after custom marshaling
 	changes.
+
+2004-02-12  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* gtk/Gtk.metadata: Hide the various *ActionEntry classes since
+	they're only meant to be used in C code.
+
+2004-02-11  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* atk/atk-api.xml: 
+	* gconf/GConf.PropertyEditors/Makefile.in:
+	* gdk/Gdk.metadata:
+	* gdk/gdk-api.xml:
+	* generator/CallbackGen.cs: Set a GError pointer to IntPtr.Zero.
+	* gnome/Gnome.metadata:
+	* gnome/gnome-api.xml:
+	* gtk/Adjustment.custom:
+	* gtk/FileSelection.custom: Deprecated, removed.
+	* gtk/FileSystemModel.custom:
+	* gtk/Gtk.metadata:
+	* gtk/IconTheme.custom: Custom SearchPath property (fixes #51599).
+	* gtk/Paned.custom: Deprecated, removed.
+	* gtk/TreeModelFilter.custom: New class in 2.4.
+	* gtk/gtk-api.xml:
+	* pango/pango-api.xml:
+	* sample/Actions.cs: Added new Action API sample.
+	* sample/Makefile.in: Don't build some samples for now.
+	
+	Updated everything to use gtk 2.3/2.4. Some samples commented out
+	because they use deprecated/changed API. More work to follow.
 
 2004-02-11  Mike Kestner  <mkestner@ximian.com>
 
@@ -1777,12 +2263,6 @@
 2004-02-11  Mike Kestner  <mkestner@ximian.com>
 
 	* gtk/*.custom : return 0 length arrays, not null.
-
-2004-02-11  Mike Kestner  <mkestner@ximian.com>
-
-	* gtk/Gtk.metadata : hide the GList API
-	* gtk/*.custom : manually wrap GList api using typed arrays
-	* gtk/gtk-api.xml : regen.
 
 2004-02-10  Mike Kestner  <mkestner@ximian.com>
 

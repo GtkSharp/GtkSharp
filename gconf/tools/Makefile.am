@@ -1,12 +1,12 @@
-assemblydir = $(bindir)
+assemblydir = $(libdir)/gtk-sharp-2.0
 assembly_DATA = gconfsharp-schemagen.exe
-bin_SCRIPTS = gconfsharp-schemagen
+bin_SCRIPTS = gconfsharp2-schemagen
 CLEANFILES = gconfsharp-schemagen.exe
-DISTCLEANFILES = gconfsharp-schemagen
+DISTCLEANFILES = gconfsharp2-schemagen
 
 EXTRA_DIST =				\
 	schemagen.cs			\
-	gconfsharp-schemagen.in
+	gconfsharp2-schemagen.in
 
 gconfsharp-schemagen.exe: $(srcdir)/schemagen.cs
 	$(CSC) /out:gconfsharp-schemagen.exe $(srcdir)/schemagen.cs

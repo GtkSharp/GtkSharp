@@ -31,6 +31,7 @@ namespace GtkSharp.Generation {
 		
 		private XmlDocument Load (string filename)
 		{
+			Console.WriteLine (filename);
 			XmlDocument doc = new XmlDocument ();
 
 			try {

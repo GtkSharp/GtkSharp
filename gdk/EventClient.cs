@@ -26,16 +26,16 @@ namespace Gdk {
 
 	public class EventClient : Event {
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern uint gtksharp_gdk_event_client_get_time (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern IntPtr gtksharp_gdk_event_client_get_message_type (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern ushort gtksharp_gdk_event_client_get_data_format (IntPtr evt);
 
-		[DllImport("gdksharpglue")]
+		[DllImport("gdksharpglue-2.0")]
 		static extern IntPtr gtksharp_gdk_event_client_get_data (IntPtr evt);
 
 		public EventClient (IntPtr raw) : base (raw) {} 

@@ -4,7 +4,7 @@ if ENABLE_GLADE
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 APIS = $(API) $(ADDITIONAL_API)
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glade-sharp.pc
+pkgconfig_DATA = glade-sharp-2.0.pc
 else
 TARGET = 
 APIS = 
@@ -18,12 +18,12 @@ ASSEMBLY_NAME = glade-sharp
 references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi
+gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.snk
 
-DISTCLEANFILES = glade-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = glade-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources =				\
 	HandlerNotFoundExeception.cs	\
@@ -44,7 +44,7 @@ EXTRA_DIST =			\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\
-	glade-sharp.pc.in
+	glade-sharp-2.0.pc.in
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

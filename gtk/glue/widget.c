@@ -32,6 +32,9 @@ void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
 int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
 void gtksharp_widget_connect_set_scroll_adjustments_signal (GType gtype, gpointer callback);
 void _gtksharp_marshal_VOID__OBJECT_OBJECT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
+int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
+void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
+int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
 /* */
 
 GdkRectangle*

@@ -1,0 +1,1320 @@
+<?xml version="1.0"?>
+<api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="Gnome.Vfs" library="gnomevfs-2">
+    <enum name="GnomeVFSDeviceType" cname="GnomeVFSDeviceType" type="enum">
+      <member cname="GNOME_VFS_DEVICE_TYPE_UNKNOWN" name="Unknown"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_AUDIO_CD" name="AudioCd"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_VIDEO_DVD" name="VideoDvd"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_HARDDRIVE" name="Harddrive"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_CDROM" name="Cdrom"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_FLOPPY" name="Floppy"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_ZIP" name="Zip"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_JAZ" name="Jaz"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_NFS" name="Nfs"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_AUTOFS" name="Autofs"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_CAMERA" name="Camera"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_MEMORY_STICK" name="MemoryStick"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_SMB" name="Smb"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_APPLE" name="Apple"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_MUSIC_PLAYER" name="MusicPlayer"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_WINDOWS" name="Windows"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_LOOPBACK" name="Loopback"/>
+      <member cname="GNOME_VFS_DEVICE_TYPE_NETWORK" name="Network"/>
+    </enum>
+    <enum name="GnomeVFSDirectoryVisitOptions" cname="GnomeVFSDirectoryVisitOptions" type="flags">
+      <member cname="GNOME_VFS_DIRECTORY_VISIT_DEFAULT" name="Default"/>
+      <member cname="GNOME_VFS_DIRECTORY_VISIT_SAMEFS" name="Samefs" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_DIRECTORY_VISIT_LOOPCHECK" name="Loopcheck" value="1 &lt;&lt; 1"/>
+    </enum>
+    <enum name="GnomeVFSFileFlags" cname="GnomeVFSFileFlags" type="flags">
+      <member cname="GNOME_VFS_FILE_FLAGS_NONE" name="None"/>
+      <member cname="GNOME_VFS_FILE_FLAGS_SYMLINK" name="Symlink" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_FILE_FLAGS_LOCAL" name="Local" value="1 &lt;&lt; 1"/>
+    </enum>
+    <enum name="GnomeVFSFileInfoFields" cname="GnomeVFSFileInfoFields" type="flags">
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_NONE" name="None"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_TYPE" name="Type" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_PERMISSIONS" name="Permissions" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_FLAGS" name="Flags" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_DEVICE" name="Device" value="1 &lt;&lt; 3"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_INODE" name="Inode" value="1 &lt;&lt; 4"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_LINK_COUNT" name="LinkCount" value="1 &lt;&lt; 5"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_SIZE" name="Size" value="1 &lt;&lt; 6"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_BLOCK_COUNT" name="BlockCount" value="1 &lt;&lt; 7"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_IO_BLOCK_SIZE" name="IoBlockSize" value="1 &lt;&lt; 8"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_ATIME" name="Atime" value="1 &lt;&lt; 9"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_MTIME" name="Mtime" value="1 &lt;&lt; 10"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_CTIME" name="Ctime" value="1 &lt;&lt; 11"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_SYMLINK_NAME" name="SymlinkName" value="1 &lt;&lt; 12"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_MIME_TYPE" name="MimeType" value="1 &lt;&lt; 13"/>
+      <member cname="GNOME_VFS_FILE_INFO_FIELDS_ACCESS" name="Access" value="1 &lt;&lt; 14"/>
+    </enum>
+    <enum name="GnomeVFSFileInfoOptions" cname="GnomeVFSFileInfoOptions" type="flags">
+      <member cname="GNOME_VFS_FILE_INFO_DEFAULT" name="Default"/>
+      <member cname="GNOME_VFS_FILE_INFO_GET_MIME_TYPE" name="GetMimeType" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_FILE_INFO_FORCE_FAST_MIME_TYPE" name="ForceFastMimeType" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_FILE_INFO_FORCE_SLOW_MIME_TYPE" name="ForceSlowMimeType" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_FILE_INFO_FOLLOW_LINKS" name="FollowLinks" value="1 &lt;&lt; 3"/>
+      <member cname="GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS" name="GetAccessRights" value="1 &lt;&lt; 4"/>
+    </enum>
+    <enum name="GnomeVFSFilePermissions" cname="GnomeVFSFilePermissions" type="flags">
+      <member cname="GNOME_VFS_PERM_SUID" name="Suid"/>
+      <member cname="GNOME_VFS_PERM_SGID" name="Sgid"/>
+      <member cname="GNOME_VFS_PERM_STICKY" name="Sticky" value="01000"/>
+      <member cname="GNOME_VFS_PERM_USER_READ" name="UserRead"/>
+      <member cname="GNOME_VFS_PERM_USER_WRITE" name="UserWrite"/>
+      <member cname="GNOME_VFS_PERM_USER_EXEC" name="UserExec"/>
+      <member cname="GNOME_VFS_PERM_USER_ALL" name="UserAll"/>
+      <member cname="GNOME_VFS_PERM_GROUP_READ" name="GroupRead"/>
+      <member cname="GNOME_VFS_PERM_GROUP_WRITE" name="GroupWrite"/>
+      <member cname="GNOME_VFS_PERM_GROUP_EXEC" name="GroupExec"/>
+      <member cname="GNOME_VFS_PERM_GROUP_ALL" name="GroupAll"/>
+      <member cname="GNOME_VFS_PERM_OTHER_READ" name="OtherRead"/>
+      <member cname="GNOME_VFS_PERM_OTHER_WRITE" name="OtherWrite"/>
+      <member cname="GNOME_VFS_PERM_OTHER_EXEC" name="OtherExec"/>
+      <member cname="GNOME_VFS_PERM_OTHER_ALL" name="OtherAll"/>
+      <member cname="GNOME_VFS_PERM_ACCESS_READABLE" name="AccessReadable" value="1 &lt;&lt; 16"/>
+      <member cname="GNOME_VFS_PERM_ACCESS_WRITABLE" name="AccessWritable" value="1 &lt;&lt; 17"/>
+      <member cname="GNOME_VFS_PERM_ACCESS_EXECUTABLE" name="AccessExecutable" value="1 &lt;&lt; 18"/>
+    </enum>
+    <enum name="GnomeVFSFileType" cname="GnomeVFSFileType" type="enum">
+      <member cname="GNOME_VFS_FILE_TYPE_UNKNOWN" name="Unknown"/>
+      <member cname="GNOME_VFS_FILE_TYPE_REGULAR" name="Regular"/>
+      <member cname="GNOME_VFS_FILE_TYPE_DIRECTORY" name="Directory"/>
+      <member cname="GNOME_VFS_FILE_TYPE_FIFO" name="Fifo"/>
+      <member cname="GNOME_VFS_FILE_TYPE_SOCKET" name="Socket"/>
+      <member cname="GNOME_VFS_FILE_TYPE_CHARACTER_DEVICE" name="CharacterDevice"/>
+      <member cname="GNOME_VFS_FILE_TYPE_BLOCK_DEVICE" name="BlockDevice"/>
+      <member cname="GNOME_VFS_FILE_TYPE_SYMBOLIC_LINK" name="SymbolicLink"/>
+    </enum>
+    <enum name="GnomeVFSFindDirectoryKind" cname="GnomeVFSFindDirectoryKind" type="enum">
+      <member cname="GNOME_VFS_DIRECTORY_KIND_DESKTOP" name="Desktop" value="1000"/>
+      <member cname="GNOME_VFS_DIRECTORY_KIND_TRASH" name="Trash" value="1001"/>
+    </enum>
+    <enum name="GnomeVFSMakeURIDirs" cname="GnomeVFSMakeURIDirs" type="flags">
+      <member cname="GNOME_VFS_MAKE_URI_DIR_NONE" name="None"/>
+      <member cname="GNOME_VFS_MAKE_URI_DIR_HOMEDIR" name="Homedir" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_MAKE_URI_DIR_CURRENT" name="Current" value="1 &lt;&lt; 1"/>
+    </enum>
+    <enum name="GnomeVFSMimeActionType" cname="GnomeVFSMimeActionType" type="enum">
+      <member cname="GNOME_VFS_MIME_ACTION_TYPE_NONE" name="None"/>
+      <member cname="GNOME_VFS_MIME_ACTION_TYPE_APPLICATION" name="Application"/>
+      <member cname="GNOME_VFS_MIME_ACTION_TYPE_COMPONENT" name="Component"/>
+    </enum>
+    <enum name="GnomeVFSMimeApplicationArgumentType" cname="GnomeVFSMimeApplicationArgumentType" type="enum">
+      <member cname="GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_URIS" name="Uris"/>
+      <member cname="GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_PATHS" name="Paths"/>
+      <member cname="GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_URIS_FOR_NON_FILES" name="UrisForNonFiles"/>
+    </enum>
+    <enum name="GnomeVFSModuleCallbackFullAuthenticationFlags" cname="GnomeVFSModuleCallbackFullAuthenticationFlags" type="flags">
+      <member cname="GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_PREVIOUS_ATTEMPT_FAILED" name="PreviousAttemptFailed" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_PASSWORD" name="NeedPassword" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_USERNAME" name="NeedUsername" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_DOMAIN" name="NeedDomain" value="1 &lt;&lt; 3"/>
+      <member cname="GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_SAVING_SUPPORTED" name="SavingSupported" value="1 &lt;&lt; 4"/>
+    </enum>
+    <enum name="GnomeVFSMonitorEventType" cname="GnomeVFSMonitorEventType" type="enum">
+      <member cname="GNOME_VFS_MONITOR_EVENT_CHANGED" name="Changed"/>
+      <member cname="GNOME_VFS_MONITOR_EVENT_DELETED" name="Deleted"/>
+      <member cname="GNOME_VFS_MONITOR_EVENT_STARTEXECUTING" name="Startexecuting"/>
+      <member cname="GNOME_VFS_MONITOR_EVENT_STOPEXECUTING" name="Stopexecuting"/>
+      <member cname="GNOME_VFS_MONITOR_EVENT_CREATED" name="Created"/>
+      <member cname="GNOME_VFS_MONITOR_EVENT_METADATA_CHANGED" name="MetadataChanged"/>
+    </enum>
+    <enum name="GnomeVFSMonitorType" cname="GnomeVFSMonitorType" type="enum">
+      <member cname="GNOME_VFS_MONITOR_FILE" name="File"/>
+      <member cname="GNOME_VFS_MONITOR_DIRECTORY" name="Directory"/>
+    </enum>
+    <enum name="GnomeVFSOpenMode" cname="GnomeVFSOpenMode" type="flags">
+      <member cname="GNOME_VFS_OPEN_NONE" name="None"/>
+      <member cname="GNOME_VFS_OPEN_READ" name="Read" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_OPEN_WRITE" name="Write" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_OPEN_RANDOM" name="Random" value="1 &lt;&lt; 2"/>
+    </enum>
+    <enum name="GnomeVFSProcessOptions" cname="GnomeVFSProcessOptions" type="flags">
+      <member cname="GNOME_VFS_PROCESS_DEFAULT" name="Default"/>
+      <member cname="GNOME_VFS_PROCESS_USEPATH" name="Usepath" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_PROCESS_CLOSEFDS" name="Closefds" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_PROCESS_SETSID" name="Setsid" value="1 &lt;&lt; 2"/>
+    </enum>
+    <enum name="GnomeVFSProcessResult" cname="GnomeVFSProcessResult" type="enum">
+      <member cname="GNOME_VFS_PROCESS_OK" name="Ok"/>
+      <member cname="GNOME_VFS_PROCESS_ERROR_UNKNOWN" name="ErrorUnknown"/>
+      <member cname="GNOME_VFS_PROCESS_ERROR_INVALIDSIGNAL" name="ErrorInvalidsignal"/>
+      <member cname="GNOME_VFS_PROCESS_ERROR_NOPERM" name="ErrorNoperm"/>
+      <member cname="GNOME_VFS_PROCESS_ERROR_NOPROCESS" name="ErrorNoprocess"/>
+    </enum>
+    <enum name="GnomeVFSProcessRunResult" cname="GnomeVFSProcessRunResult" type="enum">
+      <member cname="GNOME_VFS_PROCESS_RUN_OK" name="Ok"/>
+      <member cname="GNOME_VFS_PROCESS_RUN_ERROR" name="Error"/>
+      <member cname="GNOME_VFS_PROCESS_RUN_CANCELLED" name="Cancelled"/>
+      <member cname="GNOME_VFS_PROCESS_RUN_SIGNALED" name="Signaled"/>
+      <member cname="GNOME_VFS_PROCESS_RUN_STOPPED" name="Stopped"/>
+    </enum>
+    <enum name="GnomeVFSResult" cname="GnomeVFSResult" type="enum">
+      <member cname="GNOME_VFS_OK" name="Ok"/>
+      <member cname="GNOME_VFS_ERROR_NOT_FOUND" name="ErrorNotFound"/>
+      <member cname="GNOME_VFS_ERROR_GENERIC" name="ErrorGeneric"/>
+      <member cname="GNOME_VFS_ERROR_INTERNAL" name="ErrorInternal"/>
+      <member cname="GNOME_VFS_ERROR_BAD_PARAMETERS" name="ErrorBadParameters"/>
+      <member cname="GNOME_VFS_ERROR_NOT_SUPPORTED" name="ErrorNotSupported"/>
+      <member cname="GNOME_VFS_ERROR_IO" name="ErrorIo"/>
+      <member cname="GNOME_VFS_ERROR_CORRUPTED_DATA" name="ErrorCorruptedData"/>
+      <member cname="GNOME_VFS_ERROR_WRONG_FORMAT" name="ErrorWrongFormat"/>
+      <member cname="GNOME_VFS_ERROR_BAD_FILE" name="ErrorBadFile"/>
+      <member cname="GNOME_VFS_ERROR_TOO_BIG" name="ErrorTooBig"/>
+      <member cname="GNOME_VFS_ERROR_NO_SPACE" name="ErrorNoSpace"/>
+      <member cname="GNOME_VFS_ERROR_READ_ONLY" name="ErrorReadOnly"/>
+      <member cname="GNOME_VFS_ERROR_INVALID_URI" name="ErrorInvalidUri"/>
+      <member cname="GNOME_VFS_ERROR_NOT_OPEN" name="ErrorNotOpen"/>
+      <member cname="GNOME_VFS_ERROR_INVALID_OPEN_MODE" name="ErrorInvalidOpenMode"/>
+      <member cname="GNOME_VFS_ERROR_ACCESS_DENIED" name="ErrorAccessDenied"/>
+      <member cname="GNOME_VFS_ERROR_TOO_MANY_OPEN_FILES" name="ErrorTooManyOpenFiles"/>
+      <member cname="GNOME_VFS_ERROR_EOF" name="ErrorEof"/>
+      <member cname="GNOME_VFS_ERROR_NOT_A_DIRECTORY" name="ErrorNotADirectory"/>
+      <member cname="GNOME_VFS_ERROR_IN_PROGRESS" name="ErrorInProgress"/>
+      <member cname="GNOME_VFS_ERROR_INTERRUPTED" name="ErrorInterrupted"/>
+      <member cname="GNOME_VFS_ERROR_FILE_EXISTS" name="ErrorFileExists"/>
+      <member cname="GNOME_VFS_ERROR_LOOP" name="ErrorLoop"/>
+      <member cname="GNOME_VFS_ERROR_NOT_PERMITTED" name="ErrorNotPermitted"/>
+      <member cname="GNOME_VFS_ERROR_IS_DIRECTORY" name="ErrorIsDirectory"/>
+      <member cname="GNOME_VFS_ERROR_NO_MEMORY" name="ErrorNoMemory"/>
+      <member cname="GNOME_VFS_ERROR_HOST_NOT_FOUND" name="ErrorHostNotFound"/>
+      <member cname="GNOME_VFS_ERROR_INVALID_HOST_NAME" name="ErrorInvalidHostName"/>
+      <member cname="GNOME_VFS_ERROR_HOST_HAS_NO_ADDRESS" name="ErrorHostHasNoAddress"/>
+      <member cname="GNOME_VFS_ERROR_LOGIN_FAILED" name="ErrorLoginFailed"/>
+      <member cname="GNOME_VFS_ERROR_CANCELLED" name="ErrorCancelled"/>
+      <member cname="GNOME_VFS_ERROR_DIRECTORY_BUSY" name="ErrorDirectoryBusy"/>
+      <member cname="GNOME_VFS_ERROR_DIRECTORY_NOT_EMPTY" name="ErrorDirectoryNotEmpty"/>
+      <member cname="GNOME_VFS_ERROR_TOO_MANY_LINKS" name="ErrorTooManyLinks"/>
+      <member cname="GNOME_VFS_ERROR_READ_ONLY_FILE_SYSTEM" name="ErrorReadOnlyFileSystem"/>
+      <member cname="GNOME_VFS_ERROR_NOT_SAME_FILE_SYSTEM" name="ErrorNotSameFileSystem"/>
+      <member cname="GNOME_VFS_ERROR_NAME_TOO_LONG" name="ErrorNameTooLong"/>
+      <member cname="GNOME_VFS_ERROR_SERVICE_NOT_AVAILABLE" name="ErrorServiceNotAvailable"/>
+      <member cname="GNOME_VFS_ERROR_SERVICE_OBSOLETE" name="ErrorServiceObsolete"/>
+      <member cname="GNOME_VFS_ERROR_PROTOCOL_ERROR" name="ErrorProtocolError"/>
+      <member cname="GNOME_VFS_ERROR_NO_MASTER_BROWSER" name="ErrorNoMasterBrowser"/>
+      <member cname="GNOME_VFS_ERROR_NO_DEFAULT" name="ErrorNoDefault"/>
+      <member cname="GNOME_VFS_ERROR_NO_HANDLER" name="ErrorNoHandler"/>
+      <member cname="GNOME_VFS_ERROR_PARSE" name="ErrorParse"/>
+      <member cname="GNOME_VFS_ERROR_LAUNCH" name="ErrorLaunch"/>
+      <member cname="GNOME_VFS_NUM_ERRORS" name="NumErrors"/>
+    </enum>
+    <enum name="GnomeVFSSeekPosition" cname="GnomeVFSSeekPosition" type="enum">
+      <member cname="GNOME_VFS_SEEK_START" name="Start"/>
+      <member cname="GNOME_VFS_SEEK_CURRENT" name="Current"/>
+      <member cname="GNOME_VFS_SEEK_END" name="End"/>
+    </enum>
+    <enum name="GnomeVFSSetFileInfoMask" cname="GnomeVFSSetFileInfoMask" type="flags">
+      <member cname="GNOME_VFS_SET_FILE_INFO_NONE" name="None"/>
+      <member cname="GNOME_VFS_SET_FILE_INFO_NAME" name="Name" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_SET_FILE_INFO_PERMISSIONS" name="Permissions" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_SET_FILE_INFO_OWNER" name="Owner" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_SET_FILE_INFO_TIME" name="Time" value="1 &lt;&lt; 3"/>
+    </enum>
+    <enum name="GnomeVFSURIHideOptions" cname="GnomeVFSURIHideOptions" type="flags">
+      <member cname="GNOME_VFS_URI_HIDE_NONE" name="None"/>
+      <member cname="GNOME_VFS_URI_HIDE_USER_NAME" name="UserName" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_URI_HIDE_PASSWORD" name="Password" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_URI_HIDE_HOST_NAME" name="HostName" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_URI_HIDE_HOST_PORT" name="HostPort" value="1 &lt;&lt; 3"/>
+      <member cname="GNOME_VFS_URI_HIDE_TOPLEVEL_METHOD" name="ToplevelMethod" value="1 &lt;&lt; 4"/>
+      <member cname="GNOME_VFS_URI_HIDE_FRAGMENT_IDENTIFIER" name="FragmentIdentifier" value="1 &lt;&lt; 8"/>
+    </enum>
+    <enum name="GnomeVFSVolumeType" cname="GnomeVFSVolumeType" type="enum">
+      <member cname="GNOME_VFS_VOLUME_TYPE_MOUNTPOINT" name="Mountpoint"/>
+      <member cname="GNOME_VFS_VOLUME_TYPE_VFS_MOUNT" name="VfsMount"/>
+      <member cname="GNOME_VFS_VOLUME_TYPE_CONNECTED_SERVER" name="ConnectedServer"/>
+    </enum>
+    <enum name="GnomeVFSXferErrorAction" cname="GnomeVFSXferErrorAction" type="enum">
+      <member cname="GNOME_VFS_XFER_ERROR_ACTION_ABORT" name="Abort"/>
+      <member cname="GNOME_VFS_XFER_ERROR_ACTION_RETRY" name="Retry" value="1"/>
+      <member cname="GNOME_VFS_XFER_ERROR_ACTION_SKIP" name="Skip" value="2"/>
+    </enum>
+    <enum name="GnomeVFSXferErrorMode" cname="GnomeVFSXferErrorMode" type="enum">
+      <member cname="GNOME_VFS_XFER_ERROR_MODE_ABORT" name="Abort"/>
+      <member cname="GNOME_VFS_XFER_ERROR_MODE_QUERY" name="Query" value="1"/>
+    </enum>
+    <enum name="GnomeVFSXferOptions" cname="GnomeVFSXferOptions" type="flags">
+      <member cname="GNOME_VFS_XFER_DEFAULT" name="Default"/>
+      <member cname="GNOME_VFS_XFER_UNUSED_1" name="Unused1" value="1 &lt;&lt; 0"/>
+      <member cname="GNOME_VFS_XFER_FOLLOW_LINKS" name="FollowLinks" value="1 &lt;&lt; 1"/>
+      <member cname="GNOME_VFS_XFER_UNUSED_2" name="Unused2" value="1 &lt;&lt; 2"/>
+      <member cname="GNOME_VFS_XFER_RECURSIVE" name="Recursive" value="1 &lt;&lt; 3"/>
+      <member cname="GNOME_VFS_XFER_SAMEFS" name="Samefs" value="1 &lt;&lt; 4"/>
+      <member cname="GNOME_VFS_XFER_DELETE_ITEMS" name="DeleteItems" value="1 &lt;&lt; 5"/>
+      <member cname="GNOME_VFS_XFER_EMPTY_DIRECTORIES" name="EmptyDirectories" value="1 &lt;&lt; 6"/>
+      <member cname="GNOME_VFS_XFER_NEW_UNIQUE_DIRECTORY" name="NewUniqueDirectory" value="1 &lt;&lt; 7"/>
+      <member cname="GNOME_VFS_XFER_REMOVESOURCE" name="Removesource" value="1 &lt;&lt; 8"/>
+      <member cname="GNOME_VFS_XFER_USE_UNIQUE_NAMES" name="UseUniqueNames" value="1 &lt;&lt; 9"/>
+      <member cname="GNOME_VFS_XFER_LINK_ITEMS" name="LinkItems" value="1 &lt;&lt; 10"/>
+      <member cname="GNOME_VFS_XFER_FOLLOW_LINKS_RECURSIVE" name="FollowLinksRecursive" value="1 &lt;&lt; 11"/>
+    </enum>
+    <enum name="GnomeVFSXferOverwriteAction" cname="GnomeVFSXferOverwriteAction" type="enum">
+      <member cname="GNOME_VFS_XFER_OVERWRITE_ACTION_ABORT" name="Abort"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_ACTION_REPLACE" name="Replace" value="1"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_ACTION_REPLACE_ALL" name="ReplaceAll" value="2"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_ACTION_SKIP" name="Skip" value="3"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_ACTION_SKIP_ALL" name="SkipAll" value="4"/>
+    </enum>
+    <enum name="GnomeVFSXferOverwriteMode" cname="GnomeVFSXferOverwriteMode" type="enum">
+      <member cname="GNOME_VFS_XFER_OVERWRITE_MODE_ABORT" name="Abort"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_MODE_QUERY" name="Query" value="1"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_MODE_REPLACE" name="Replace" value="2"/>
+      <member cname="GNOME_VFS_XFER_OVERWRITE_MODE_SKIP" name="Skip" value="3"/>
+    </enum>
+    <enum name="GnomeVFSXferPhase" cname="GnomeVFSXferPhase" type="enum">
+      <member cname="GNOME_VFS_XFER_PHASE_INITIAL" name="PhaseInitial"/>
+      <member cname="GNOME_VFS_XFER_CHECKING_DESTINATION" name="CheckingDestination"/>
+      <member cname="GNOME_VFS_XFER_PHASE_COLLECTING" name="PhaseCollecting"/>
+      <member cname="GNOME_VFS_XFER_PHASE_READYTOGO" name="PhaseReadytogo"/>
+      <member cname="GNOME_VFS_XFER_PHASE_OPENSOURCE" name="PhaseOpensource"/>
+      <member cname="GNOME_VFS_XFER_PHASE_OPENTARGET" name="PhaseOpentarget"/>
+      <member cname="GNOME_VFS_XFER_PHASE_COPYING" name="PhaseCopying"/>
+      <member cname="GNOME_VFS_XFER_PHASE_MOVING" name="PhaseMoving"/>
+      <member cname="GNOME_VFS_XFER_PHASE_READSOURCE" name="PhaseReadsource"/>
+      <member cname="GNOME_VFS_XFER_PHASE_WRITETARGET" name="PhaseWritetarget"/>
+      <member cname="GNOME_VFS_XFER_PHASE_CLOSESOURCE" name="PhaseClosesource"/>
+      <member cname="GNOME_VFS_XFER_PHASE_CLOSETARGET" name="PhaseClosetarget"/>
+      <member cname="GNOME_VFS_XFER_PHASE_DELETESOURCE" name="PhaseDeletesource"/>
+      <member cname="GNOME_VFS_XFER_PHASE_SETATTRIBUTES" name="PhaseSetattributes"/>
+      <member cname="GNOME_VFS_XFER_PHASE_FILECOMPLETED" name="PhaseFilecompleted"/>
+      <member cname="GNOME_VFS_XFER_PHASE_CLEANUP" name="PhaseCleanup"/>
+      <member cname="GNOME_VFS_XFER_PHASE_COMPLETED" name="PhaseCompleted"/>
+      <member cname="GNOME_VFS_XFER_NUM_PHASES" name="NumPhases"/>
+    </enum>
+    <enum name="GnomeVFSXferProgressStatus" cname="GnomeVFSXferProgressStatus" type="enum">
+      <member cname="GNOME_VFS_XFER_PROGRESS_STATUS_OK" name="Ok"/>
+      <member cname="GNOME_VFS_XFER_PROGRESS_STATUS_VFSERROR" name="Vfserror" value="1"/>
+      <member cname="GNOME_VFS_XFER_PROGRESS_STATUS_OVERWRITE" name="Overwrite" value="2"/>
+      <member cname="GNOME_VFS_XFER_PROGRESS_STATUS_DUPLICATE" name="Duplicate" value="3"/>
+    </enum>
+    <enum name="XdgGlobType" cname="XdgGlobType" type="enum">
+      <member cname="XDG_GLOB_LITERAL" name="Literal"/>
+      <member cname="XDG_GLOB_SIMPLE" name="Simple"/>
+      <member cname="XDG_GLOB_FULL" name="Full"/>
+    </enum>
+    <object name="GnomeVFSClient" cname="GnomeVFSClient" parent="BonoboObject">
+      <field cname="priv" type="GnomeVFSClientPrivate*"/>
+      <method name="GetType" cname="gnome_vfs_client_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="GnomeVFSClientCall" cname="GnomeVFSClientCall" parent="BonoboObject">
+      <field cname="delay_finish_mutex" type="GMutex*"/>
+      <field cname="delay_finish_cond" type="GCond*"/>
+      <field cname="delay_finish" type="gboolean"/>
+      <method name="GetType" cname="gnome_vfs_client_call_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="GnomeVFSMIMEMonitor" cname="GnomeVFSMIMEMonitor" parent="GObject">
+      <field cname="priv" type="GnomeVFSMIMEMonitorPrivate*"/>
+      <signal name="DataChanged" cname="data_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSMIMEMonitor*" name="monitor"/>
+        </parameters>
+      </signal>
+      <method name="Get" cname="gnome_vfs_mime_monitor_get" shared="true">
+        <return-type type="GnomeVFSMIMEMonitor*"/>
+      </method>
+      <method name="GetType" cname="gnome_vfs_mime_monitor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="GnomeVFSDrive" cname="GnomeVFSDrive" parent="GObject">
+      <field cname="priv" type="GnomeVFSDrivePrivate*"/>
+      <signal name="VolumeMounted" cname="volume_mounted" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSDrive*" name="drive"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <signal name="VolumePreUnmount" cname="volume_pre_unmount" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSDrive*" name="drive"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <signal name="VolumeUnmounted" cname="volume_unmounted" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSDrive*" name="drive"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <method name="Compare" cname="gnome_vfs_drive_compare">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GnomeVFSDrive*" name="b"/>
+        </parameters>
+      </method>
+      <method name="Eject" cname="gnome_vfs_drive_eject">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeOpCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="GetActivationUri" cname="gnome_vfs_drive_get_activation_uri">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetDevicePath" cname="gnome_vfs_drive_get_device_path">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetDeviceType" cname="gnome_vfs_drive_get_device_type">
+        <return-type type="GnomeVFSDeviceType"/>
+      </method>
+      <method name="GetDisplayName" cname="gnome_vfs_drive_get_display_name">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetIcon" cname="gnome_vfs_drive_get_icon">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetId" cname="gnome_vfs_drive_get_id">
+        <return-type type="gulong"/>
+      </method>
+      <method name="GetMountedVolume" cname="gnome_vfs_drive_get_mounted_volume">
+        <return-type type="GnomeVFSVolume*"/>
+      </method>
+      <method name="GetType" cname="gnome_vfs_drive_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsConnected" cname="gnome_vfs_drive_is_connected">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsMounted" cname="gnome_vfs_drive_is_mounted">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsUserVisible" cname="gnome_vfs_drive_is_user_visible">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Mount" cname="gnome_vfs_drive_mount">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeOpCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="gnome_vfs_drive_ref">
+        <return-type type="GnomeVFSDrive*"/>
+      </method>
+      <method name="Unmount" cname="gnome_vfs_drive_unmount">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeOpCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gnome_vfs_drive_unref">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="GnomeVFSVolume" cname="GnomeVFSVolume" parent="GObject">
+      <field cname="priv" type="GnomeVFSVolumePrivate*"/>
+      <method name="Compare" cname="gnome_vfs_volume_compare">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GnomeVFSVolume*" name="b"/>
+        </parameters>
+      </method>
+      <method name="Eject" cname="gnome_vfs_volume_eject">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeOpCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="GetActivationUri" cname="gnome_vfs_volume_get_activation_uri">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetDevicePath" cname="gnome_vfs_volume_get_device_path">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetDeviceType" cname="gnome_vfs_volume_get_device_type">
+        <return-type type="GnomeVFSDeviceType"/>
+      </method>
+      <method name="GetDisplayName" cname="gnome_vfs_volume_get_display_name">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetDrive" cname="gnome_vfs_volume_get_drive">
+        <return-type type="GnomeVFSDrive*"/>
+      </method>
+      <method name="GetFilesystemType" cname="gnome_vfs_volume_get_filesystem_type">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetIcon" cname="gnome_vfs_volume_get_icon">
+        <return-type type="char*"/>
+      </method>
+      <method name="GetId" cname="gnome_vfs_volume_get_id">
+        <return-type type="gulong"/>
+      </method>
+      <method name="GetType" cname="gnome_vfs_volume_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetVolumeType" cname="gnome_vfs_volume_get_volume_type">
+        <return-type type="GnomeVFSVolumeType"/>
+      </method>
+      <method name="HandlesTrash" cname="gnome_vfs_volume_handles_trash">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsMounted" cname="gnome_vfs_volume_is_mounted">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsReadOnly" cname="gnome_vfs_volume_is_read_only">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsUserVisible" cname="gnome_vfs_volume_is_user_visible">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Ref" cname="gnome_vfs_volume_ref">
+        <return-type type="GnomeVFSVolume*"/>
+      </method>
+      <method name="Unmount" cname="gnome_vfs_volume_unmount">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeOpCallback" name="callback"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gnome_vfs_volume_unref">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="GnomeVFSVolumeMonitor" cname="GnomeVFSVolumeMonitor" parent="GObject">
+      <field cname="priv" type="GnomeVFSVolumeMonitorPrivate*"/>
+      <signal name="VolumeMounted" cname="volume_mounted" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeMonitor*" name="volume_monitor"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <signal name="VolumePreUnmount" cname="volume_pre_unmount" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeMonitor*" name="volume_monitor"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <signal name="VolumeUnmounted" cname="volume_unmounted" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeMonitor*" name="volume_monitor"/>
+          <parameter type="GnomeVFSVolume*" name="volume"/>
+        </parameters>
+      </signal>
+      <signal name="DriveConnected" cname="drive_connected" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeMonitor*" name="volume_monitor"/>
+          <parameter type="GnomeVFSDrive*" name="drive"/>
+        </parameters>
+      </signal>
+      <signal name="DriveDisconnected" cname="drive_disconnected" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSVolumeMonitor*" name="volume_monitor"/>
+          <parameter type="GnomeVFSDrive*" name="drive"/>
+        </parameters>
+      </signal>
+      <method name="GetConnectedDrives" cname="gnome_vfs_volume_monitor_get_connected_drives">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetDriveById" cname="gnome_vfs_volume_monitor_get_drive_by_id">
+        <return-type type="GnomeVFSDrive*"/>
+        <parameters>
+          <parameter type="gulong" name="id"/>
+        </parameters>
+      </method>
+      <method name="GetMountedVolumes" cname="gnome_vfs_volume_monitor_get_mounted_volumes">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetType" cname="gnome_vfs_volume_monitor_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetVolumeById" cname="gnome_vfs_volume_monitor_get_volume_by_id">
+        <return-type type="GnomeVFSVolume*"/>
+        <parameters>
+          <parameter type="gulong" name="id"/>
+        </parameters>
+      </method>
+      <method name="GetVolumeForPath" cname="gnome_vfs_volume_monitor_get_volume_for_path">
+        <return-type type="GnomeVFSVolume*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="gnome_vfs_volume_monitor_ref">
+        <return-type type="GnomeVFSVolumeMonitor*"/>
+      </method>
+      <method name="Unref" cname="gnome_vfs_volume_monitor_unref">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="GnomeVFSVolumeMonitorClient" cname="GnomeVFSVolumeMonitorClient" parent="GnomeVFSVolumeMonitor">
+      <method name="GetType" cname="gnome_vfs_volume_monitor_client_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="GnomeVFSVolumeMonitorDaemon" cname="GnomeVFSVolumeMonitorDaemon" parent="GnomeVFSVolumeMonitor">
+      <field cname="last_fstab" type="GList*"/>
+      <field cname="last_mtab" type="GList*"/>
+      <field cname="last_connected_servers" type="GList*"/>
+      <field cname="gconf_client" type="GConfClient*"/>
+      <field cname="connected_id" type="guint"/>
+      <method name="ForceProbe" cname="gnome_vfs_volume_monitor_daemon_force_probe">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="gnome_vfs_volume_monitor_daemon_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <alias name="GnomeVFSAsyncCloseCallback" cname="GnomeVFSAsyncCloseCallback" type="GnomeVFSAsyncCallback"/>
+    <alias name="GnomeVFSAsyncCreateAsChannelCallback" cname="GnomeVFSAsyncCreateAsChannelCallback" type="GnomeVFSAsyncOpenAsChannelCallback"/>
+    <alias name="GnomeVFSAsyncCreateCallback" cname="GnomeVFSAsyncCreateCallback" type="GnomeVFSAsyncCallback"/>
+    <struct name="GnomeVFSAsyncHandle" cname="GnomeVFSAsyncHandle" opaque="true"/>
+    <alias name="GnomeVFSAsyncOpenCallback" cname="GnomeVFSAsyncOpenCallback" type="GnomeVFSAsyncCallback"/>
+    <alias name="GnomeVFSAsyncSeekCallback" cname="GnomeVFSAsyncSeekCallback" type="GnomeVFSAsyncCallback"/>
+    <struct name="GnomeVFSCancellation" cname="GnomeVFSCancellation" opaque="true">
+      <method name="Ack" cname="gnome_vfs_cancellation_ack">
+        <return-type type="void"/>
+      </method>
+      <method name="Cancel" cname="gnome_vfs_cancellation_cancel">
+        <return-type type="void"/>
+      </method>
+      <method name="Check" cname="gnome_vfs_cancellation_check">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Destroy" cname="gnome_vfs_cancellation_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="GetFd" cname="gnome_vfs_cancellation_get_fd">
+        <return-type type="gint"/>
+      </method>
+      <constructor cname="gnome_vfs_cancellation_new"/>
+    </struct>
+    <struct name="GnomeVFSContext" cname="GnomeVFSContext" opaque="true">
+      <method name="CheckCancellationCurrent" cname="gnome_vfs_context_check_cancellation_current" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Free" cname="gnome_vfs_context_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetCancellation" cname="gnome_vfs_context_get_cancellation">
+        <return-type type="GnomeVFSCancellation*"/>
+      </method>
+      <constructor cname="gnome_vfs_context_new"/>
+      <method name="PeekCurrent" cname="gnome_vfs_context_peek_current" shared="true">
+        <return-type type="const-GnomeVFSContext*"/>
+      </method>
+    </struct>
+    <struct name="GnomeVFSDirectoryHandle" cname="GnomeVFSDirectoryHandle" opaque="true"/>
+    <struct name="GnomeVFSFileInfo" cname="GnomeVFSFileInfo">
+      <field cname="name" type="char*"/>
+      <field cname="valid_fields" type="GnomeVFSFileInfoFields"/>
+      <field cname="type" type="GnomeVFSFileType"/>
+      <field cname="permissions" type="GnomeVFSFilePermissions"/>
+      <field cname="flags" type="GnomeVFSFileFlags"/>
+      <field cname="device" type="dev_t"/>
+      <field cname="inode" type="GnomeVFSInodeNumber"/>
+      <field cname="link_count" type="guint"/>
+      <field cname="uid" type="guint"/>
+      <field cname="gid" type="guint"/>
+      <field cname="size" type="GnomeVFSFileSize"/>
+      <field cname="block_count" type="GnomeVFSFileSize"/>
+      <field cname="io_block_size" type="guint"/>
+      <field cname="atime" type="time_t"/>
+      <field cname="mtime" type="time_t"/>
+      <field cname="ctime" type="time_t"/>
+      <field cname="symlink_name" type="char*"/>
+      <field cname="mime_type" type="char*"/>
+      <field cname="refcount" type="guint"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+      <field cname="reserved3" type="void*"/>
+      <field cname="reserved4" type="void*"/>
+      <field cname="reserved5" type="void*"/>
+      <method name="Clear" cname="gnome_vfs_file_info_clear">
+        <return-type type="void"/>
+      </method>
+      <method name="Copy" cname="gnome_vfs_file_info_copy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-GnomeVFSFileInfo*" name="src"/>
+        </parameters>
+      </method>
+      <method name="Dup" cname="gnome_vfs_file_info_dup">
+        <return-type type="GnomeVFSFileInfo*"/>
+      </method>
+      <method name="GetMimeType" cname="gnome_vfs_file_info_get_mime_type">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="ListCopy" cname="gnome_vfs_file_info_list_copy" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListFree" cname="gnome_vfs_file_info_list_free" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListRef" cname="gnome_vfs_file_info_list_ref" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListUnref" cname="gnome_vfs_file_info_list_unref" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="Matches" cname="gnome_vfs_file_info_matches">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GnomeVFSFileInfo*" name="b"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_vfs_file_info_new"/>
+      <method name="Ref" cname="gnome_vfs_file_info_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Unref" cname="gnome_vfs_file_info_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="GnomeVFSFindDirectoryResult" cname="GnomeVFSFindDirectoryResult">
+      <field cname="uri" type="GnomeVFSURI*"/>
+      <field cname="result" type="GnomeVFSResult"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSGetFileInfoResult" cname="GnomeVFSGetFileInfoResult">
+      <field cname="uri" type="GnomeVFSURI*"/>
+      <field cname="result" type="GnomeVFSResult"/>
+      <field cname="file_info" type="GnomeVFSFileInfo*"/>
+    </struct>
+    <struct name="GnomeVFSHandle" cname="GnomeVFSHandle" opaque="true"/>
+    <struct name="GnomeVFSInetConnection" cname="GnomeVFSInetConnection" opaque="true">
+      <method name="Create" cname="gnome_vfs_inet_connection_create">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="const-gchar*" name="host_name"/>
+          <parameter type="guint" name="host_port"/>
+          <parameter type="GnomeVFSCancellation*" name="cancellation"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="gnome_vfs_inet_connection_destroy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSCancellation*" name="cancellation"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="gnome_vfs_inet_connection_free">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GnomeVFSCancellation*" name="cancellation"/>
+        </parameters>
+      </method>
+      <method name="GetFd" cname="gnome_vfs_inet_connection_get_fd">
+        <return-type type="int"/>
+      </method>
+      <method name="ToSocket" cname="gnome_vfs_inet_connection_to_socket">
+        <return-type type="GnomeVFSSocket*"/>
+      </method>
+      <method name="ToSocketBuffer" cname="gnome_vfs_inet_connection_to_socket_buffer">
+        <return-type type="GnomeVFSSocketBuffer*"/>
+      </method>
+    </struct>
+    <alias name="GnomeVFSInodeNumber" cname="GnomeVFSInodeNumber" type="GnomeVFSFileSize"/>
+    <struct name="GnomeVFSMethod" cname="GnomeVFSMethod">
+      <field cname="method_table_size" type="gsize"/>
+      <field cname="open" type="GnomeVFSMethodOpenFunc"/>
+      <field cname="create" type="GnomeVFSMethodCreateFunc"/>
+      <field cname="close" type="GnomeVFSMethodCloseFunc"/>
+      <field cname="read" type="GnomeVFSMethodReadFunc"/>
+      <field cname="write" type="GnomeVFSMethodWriteFunc"/>
+      <field cname="seek" type="GnomeVFSMethodSeekFunc"/>
+      <field cname="tell" type="GnomeVFSMethodTellFunc"/>
+      <field cname="truncate_handle" type="GnomeVFSMethodTruncateHandleFunc"/>
+      <field cname="open_directory" type="GnomeVFSMethodOpenDirectoryFunc"/>
+      <field cname="close_directory" type="GnomeVFSMethodCloseDirectoryFunc"/>
+      <field cname="read_directory" type="GnomeVFSMethodReadDirectoryFunc"/>
+      <field cname="get_file_info" type="GnomeVFSMethodGetFileInfoFunc"/>
+      <field cname="get_file_info_from_handle" type="GnomeVFSMethodGetFileInfoFromHandleFunc"/>
+      <field cname="is_local" type="GnomeVFSMethodIsLocalFunc"/>
+      <field cname="make_directory" type="GnomeVFSMethodMakeDirectoryFunc"/>
+      <field cname="remove_directory" type="GnomeVFSMethodRemoveDirectoryFunc"/>
+      <field cname="move" type="GnomeVFSMethodMoveFunc"/>
+      <field cname="unlink" type="GnomeVFSMethodUnlinkFunc"/>
+      <field cname="check_same_fs" type="GnomeVFSMethodCheckSameFSFunc"/>
+      <field cname="set_file_info" type="GnomeVFSMethodSetFileInfo"/>
+      <field cname="truncate" type="GnomeVFSMethodTruncateFunc"/>
+      <field cname="find_directory" type="GnomeVFSMethodFindDirectoryFunc"/>
+      <field cname="create_symbolic_link" type="GnomeVFSMethodCreateSymbolicLinkFunc"/>
+      <field cname="monitor_add" type="GnomeVFSMethodMonitorAddFunc"/>
+      <field cname="monitor_cancel" type="GnomeVFSMethodMonitorCancelFunc"/>
+      <field cname="file_control" type="GnomeVFSMethodFileControlFunc"/>
+      <method name="Get" cname="gnome_vfs_method_get" shared="true">
+        <return-type type="GnomeVFSMethod*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="Init" cname="gnome_vfs_method_init" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+    </struct>
+    <alias name="GnomeVFSMethodHandle" cname="GnomeVFSMethodHandle" type="gpointer"/>
+    <struct name="GnomeVFSMimeAction" cname="GnomeVFSMimeAction">
+      <field cname="action_type" type="GnomeVFSMimeActionType"/>
+      <field cname="component" type="Bonobo_ServerInfo*"/>
+      <field cname="dummy_component" type="void*"/>
+      <field cname="application" type="GnomeVFSMimeApplication*"/>
+      <field cname="action" type="}"/>
+      <field cname="reserved1" type="void*"/>
+      <method name="Free" cname="gnome_vfs_mime_action_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Launch" cname="gnome_vfs_mime_action_launch">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="GList*" name="uris"/>
+        </parameters>
+      </method>
+      <method name="LaunchWithEnv" cname="gnome_vfs_mime_action_launch_with_env">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="GList*" name="uris"/>
+          <parameter type="char**" name="envp"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GnomeVFSMimeApplication" cname="GnomeVFSMimeApplication">
+      <field cname="id" type="char*"/>
+      <field cname="name" type="char*"/>
+      <field cname="command" type="char*"/>
+      <field cname="can_open_multiple_files" type="gboolean"/>
+      <field cname="expects_uris" type="GnomeVFSMimeApplicationArgumentType"/>
+      <field cname="supported_uri_schemes" type="GList*"/>
+      <field cname="requires_terminal" type="gboolean"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+      <method name="Copy" cname="gnome_vfs_mime_application_copy">
+        <return-type type="GnomeVFSMimeApplication*"/>
+      </method>
+      <method name="Free" cname="gnome_vfs_mime_application_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Launch" cname="gnome_vfs_mime_application_launch">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="GList*" name="uris"/>
+        </parameters>
+      </method>
+      <method name="LaunchWithEnv" cname="gnome_vfs_mime_application_launch_with_env">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="GList*" name="uris"/>
+          <parameter type="char**" name="envp"/>
+        </parameters>
+      </method>
+      <method name="ListFree" cname="gnome_vfs_mime_application_list_free" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_vfs_mime_application_new_from_id">
+        <parameters>
+          <parameter type="const-char*" name="id"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="GnomeVFSMimeSniffBuffer" cname="GnomeVFSMimeSniffBuffer" opaque="true">
+      <method name="Free" cname="gnome_vfs_mime_sniff_buffer_free">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="gnome_vfs_mime_sniff_buffer_new_from_existing_data">
+        <parameters>
+          <parameter type="const-guchar*" name="buffer"/>
+          <parameter type="gssize" name="buffer_size"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackAdditionalHeadersIn" cname="GnomeVFSModuleCallbackAdditionalHeadersIn">
+      <field cname="uri" type="GnomeVFSURI*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackAdditionalHeadersOut" cname="GnomeVFSModuleCallbackAdditionalHeadersOut">
+      <field cname="headers" type="GList*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackAuthenticationIn" cname="GnomeVFSModuleCallbackAuthenticationIn">
+      <field cname="uri" type="char*"/>
+      <field cname="realm" type="char*"/>
+      <field cname="previous_attempt_failed" type="gboolean"/>
+      <field cname="auth_type" type="}"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackAuthenticationOut" cname="GnomeVFSModuleCallbackAuthenticationOut">
+      <field cname="username" type="char*"/>
+      <field cname="NULL indicates no auth should be provided" type="*"/>
+      <field cname="password" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackFillAuthenticationIn" cname="GnomeVFSModuleCallbackFillAuthenticationIn">
+      <field cname="uri" type="char*"/>
+      <field cname="protocol" type="char*"/>
+      <field cname="server" type="char*"/>
+      <field cname="object" type="char*"/>
+      <field cname="port" type="int"/>
+      <field cname="authtype" type="char*"/>
+      <field cname="username" type="char*"/>
+      <field cname="domain" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackFillAuthenticationOut" cname="GnomeVFSModuleCallbackFillAuthenticationOut">
+      <field cname="valid" type="gboolean"/>
+      <field cname="username" type="char*"/>
+      <field cname="domain" type="char*"/>
+      <field cname="password" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackFullAuthenticationIn" cname="GnomeVFSModuleCallbackFullAuthenticationIn">
+      <field cname="flags" type="GnomeVFSModuleCallbackFullAuthenticationFlags"/>
+      <field cname="uri" type="char*"/>
+      <field cname="protocol" type="char*"/>
+      <field cname="server" type="char*"/>
+      <field cname="object" type="char*"/>
+      <field cname="port" type="int"/>
+      <field cname="authtype" type="char*"/>
+      <field cname="username" type="char*"/>
+      <field cname="domain" type="char*"/>
+      <field cname="default_user" type="char*"/>
+      <field cname="default_domain" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackFullAuthenticationOut" cname="GnomeVFSModuleCallbackFullAuthenticationOut">
+      <field cname="abort_auth" type="gboolean"/>
+      <field cname="username" type="char*"/>
+      <field cname="domain" type="char*"/>
+      <field cname="password" type="char*"/>
+      <field cname="save_password" type="gboolean"/>
+      <field cname="keyring" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackReceivedHeadersIn" cname="GnomeVFSModuleCallbackReceivedHeadersIn">
+      <field cname="uri" type="GnomeVFSURI*"/>
+      <field cname="headers" type="GList*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackReceivedHeadersOut" cname="GnomeVFSModuleCallbackReceivedHeadersOut">
+      <field cname="dummy" type="int"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackSaveAuthenticationIn" cname="GnomeVFSModuleCallbackSaveAuthenticationIn">
+      <field cname="keyring" type="char*"/>
+      <field cname="uri" type="char*"/>
+      <field cname="protocol" type="char*"/>
+      <field cname="server" type="char*"/>
+      <field cname="object" type="char*"/>
+      <field cname="port" type="int"/>
+      <field cname="authtype" type="char*"/>
+      <field cname="username" type="char*"/>
+      <field cname="domain" type="char*"/>
+      <field cname="password" type="char*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackSaveAuthenticationOut" cname="GnomeVFSModuleCallbackSaveAuthenticationOut">
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackStatusMessageIn" cname="GnomeVFSModuleCallbackStatusMessageIn">
+      <field cname="uri" type="char*"/>
+      <field cname="message" type="char*"/>
+      <field cname="percentage" type="int"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSModuleCallbackStatusMessageOut" cname="GnomeVFSModuleCallbackStatusMessageOut">
+      <field cname="dummy" type="int"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSMonitorHandle" cname="GnomeVFSMonitorHandle" opaque="true"/>
+    <struct name="GnomeVFSProcess" cname="GnomeVFSProcess" opaque="true"/>
+    <struct name="GnomeVFSProgressCallbackState" cname="GnomeVFSProgressCallbackState" opaque="true"/>
+    <struct name="GnomeVFSSSL" cname="GnomeVFSSSL" opaque="true">
+      <method name="Create" cname="gnome_vfs_ssl_create">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="const-char*" name="host"/>
+          <parameter type="unsigned int" name="port"/>
+        </parameters>
+      </method>
+      <method name="CreateFromFd" cname="gnome_vfs_ssl_create_from_fd">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gint" name="fd"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="gnome_vfs_ssl_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Enabled" cname="gnome_vfs_ssl_enabled" shared="true">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Read" cname="gnome_vfs_ssl_read">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gpointer" name="buffer"/>
+          <parameter type="GnomeVFSFileSize" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_read"/>
+        </parameters>
+      </method>
+      <method name="ToSocket" cname="gnome_vfs_ssl_to_socket">
+        <return-type type="GnomeVFSSocket*"/>
+      </method>
+      <method name="Write" cname="gnome_vfs_ssl_write">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gconstpointer" name="buffer"/>
+          <parameter type="GnomeVFSFileSize" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_written"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GnomeVFSSocket" cname="GnomeVFSSocket" opaque="true">
+      <method name="Close" cname="gnome_vfs_socket_close">
+        <return-type type="GnomeVFSResult"/>
+      </method>
+      <constructor cname="gnome_vfs_socket_new">
+        <parameters>
+          <parameter type="GnomeVFSSocketImpl*" name="impl"/>
+          <parameter type="void*" name="connection"/>
+        </parameters>
+      </constructor>
+      <method name="Read" cname="gnome_vfs_socket_read">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gpointer" name="buffer"/>
+          <parameter type="GnomeVFSFileSize" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_read"/>
+        </parameters>
+      </method>
+      <method name="Write" cname="gnome_vfs_socket_write">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gconstpointer" name="buffer"/>
+          <parameter type="int" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_written"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GnomeVFSSocketBuffer" cname="GnomeVFSSocketBuffer" opaque="true">
+      <method name="Destroy" cname="gnome_vfs_socket_buffer_destroy">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gboolean" name="close_socket"/>
+        </parameters>
+      </method>
+      <method name="Flush" cname="gnome_vfs_socket_buffer_flush">
+        <return-type type="GnomeVFSResult"/>
+      </method>
+      <constructor cname="gnome_vfs_socket_buffer_new">
+        <parameters>
+          <parameter type="GnomeVFSSocket*" name="socket"/>
+        </parameters>
+      </constructor>
+      <method name="Peekc" cname="gnome_vfs_socket_buffer_peekc">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="char*" name="character"/>
+        </parameters>
+      </method>
+      <method name="Read" cname="gnome_vfs_socket_buffer_read">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gpointer" name="buffer"/>
+          <parameter type="GnomeVFSFileSize" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_read"/>
+        </parameters>
+      </method>
+      <method name="Write" cname="gnome_vfs_socket_buffer_write">
+        <return-type type="GnomeVFSResult"/>
+        <parameters>
+          <parameter type="gconstpointer" name="buffer"/>
+          <parameter type="GnomeVFSFileSize" name="bytes"/>
+          <parameter type="GnomeVFSFileSize*" name="bytes_written"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GnomeVFSSocketImpl" cname="GnomeVFSSocketImpl">
+      <field cname="read" type="GnomeVFSSocketReadFunc"/>
+      <field cname="write" type="GnomeVFSSocketWriteFunc"/>
+      <field cname="close" type="GnomeVFSSocketCloseFunc"/>
+    </struct>
+    <struct name="GnomeVFSToplevelURI" cname="GnomeVFSToplevelURI">
+      <field cname="uri" type="GnomeVFSURI"/>
+      <field cname="host_name" type="gchar*"/>
+      <field cname="host_port" type="guint"/>
+      <field cname="user_name" type="gchar*"/>
+      <field cname="password" type="gchar*"/>
+      <field cname="urn" type="gchar*"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="GnomeVFSTransform" cname="GnomeVFSTransform">
+      <field cname="transform" type="GnomeVFSTransformFunc"/>
+      <method name="Get" cname="gnome_vfs_transform_get" shared="true">
+        <return-type type="GnomeVFSTransform*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="GnomeVFSURI" cname="GnomeVFSURI" opaque="true">
+      <method name="AppendFileName" cname="gnome_vfs_uri_append_file_name">
+        <return-type type="GnomeVFSURI*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </method>
+      <method name="AppendPath" cname="gnome_vfs_uri_append_path">
+        <return-type type="GnomeVFSURI*"/>
+        <parameters>
+          <parameter type="const-char*" name="path"/>
+        </parameters>
+      </method>
+      <method name="AppendString" cname="gnome_vfs_uri_append_string">
+        <return-type type="GnomeVFSURI*"/>
+        <parameters>
+          <parameter type="const-char*" name="uri_fragment"/>
+        </parameters>
+      </method>
+      <method name="Dup" cname="gnome_vfs_uri_dup">
+        <return-type type="GnomeVFSURI*"/>
+      </method>
+      <method name="Equal" cname="gnome_vfs_uri_equal">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GnomeVFSURI*" name="b"/>
+        </parameters>
+      </method>
+      <method name="Exists" cname="gnome_vfs_uri_exists">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="ExtractDirname" cname="gnome_vfs_uri_extract_dirname">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="ExtractShortName" cname="gnome_vfs_uri_extract_short_name">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="ExtractShortPathName" cname="gnome_vfs_uri_extract_short_path_name">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetFragmentIdentifier" cname="gnome_vfs_uri_get_fragment_identifier">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetHostName" cname="gnome_vfs_uri_get_host_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetHostPort" cname="gnome_vfs_uri_get_host_port">
+        <return-type type="guint"/>
+      </method>
+      <method name="GetParent" cname="gnome_vfs_uri_get_parent">
+        <return-type type="GnomeVFSURI*"/>
+      </method>
+      <method name="GetPassword" cname="gnome_vfs_uri_get_password">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPath" cname="gnome_vfs_uri_get_path">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetScheme" cname="gnome_vfs_uri_get_scheme">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetToplevel" cname="gnome_vfs_uri_get_toplevel">
+        <return-type type="GnomeVFSToplevelURI*"/>
+      </method>
+      <method name="GetUserName" cname="gnome_vfs_uri_get_user_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="HasParent" cname="gnome_vfs_uri_has_parent">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Hash" cname="gnome_vfs_uri_hash" shared="true">
+        <return-type type="guint"/>
+        <parameters>
+          <parameter type="gconstpointer" name="p"/>
+        </parameters>
+      </method>
+      <method name="Hequal" cname="gnome_vfs_uri_hequal" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="gconstpointer" name="a"/>
+          <parameter type="gconstpointer" name="b"/>
+        </parameters>
+      </method>
+      <method name="IsLocal" cname="gnome_vfs_uri_is_local">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="IsParent" cname="gnome_vfs_uri_is_parent">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GnomeVFSURI*" name="possible_child"/>
+          <parameter type="gboolean" name="recursive"/>
+        </parameters>
+      </method>
+      <method name="ListCopy" cname="gnome_vfs_uri_list_copy" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListFree" cname="gnome_vfs_uri_list_free" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListParse" cname="gnome_vfs_uri_list_parse" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="uri_list"/>
+        </parameters>
+      </method>
+      <method name="ListRef" cname="gnome_vfs_uri_list_ref" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="ListUnref" cname="gnome_vfs_uri_list_unref" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="MakeFullFromRelative" cname="gnome_vfs_uri_make_full_from_relative" shared="true">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="const-char*" name="base_uri"/>
+          <parameter type="const-char*" name="relative_uri"/>
+        </parameters>
+      </method>
+      <constructor cname="gnome_vfs_uri_new">
+        <parameters>
+          <parameter type="const-gchar*" name="text_uri"/>
+        </parameters>
+      </constructor>
+      <method name="Ref" cname="gnome_vfs_uri_ref">
+        <return-type type="GnomeVFSURI*"/>
+      </method>
+      <method name="ResolveRelative" cname="gnome_vfs_uri_resolve_relative">
+        <return-type type="GnomeVFSURI*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="relative_reference"/>
+        </parameters>
+      </method>
+      <method name="SetHostName" cname="gnome_vfs_uri_set_host_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="host_name"/>
+        </parameters>
+      </method>
+      <method name="SetHostPort" cname="gnome_vfs_uri_set_host_port">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="host_port"/>
+        </parameters>
+      </method>
+      <method name="SetPassword" cname="gnome_vfs_uri_set_password">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="password"/>
+        </parameters>
+      </method>
+      <method name="SetUserName" cname="gnome_vfs_uri_set_user_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="user_name"/>
+        </parameters>
+      </method>
+      <method name="ToString" cname="gnome_vfs_uri_to_string">
+        <return-type type="gchar*"/>
+        <parameters>
+          <parameter type="GnomeVFSURIHideOptions" name="hide_options"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gnome_vfs_uri_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="GnomeVFSUnixMount" cname="GnomeVFSUnixMount">
+      <field cname="mount_path" type="char*"/>
+      <field cname="device_path" type="char*"/>
+      <field cname="filesystem_type" type="char*"/>
+      <field cname="is_read_only" type="gboolean"/>
+    </struct>
+    <struct name="GnomeVFSUnixMountPoint" cname="GnomeVFSUnixMountPoint">
+      <field cname="mount_path" type="char*"/>
+      <field cname="device_path" type="char*"/>
+      <field cname="filesystem_type" type="char*"/>
+      <field cname="dev_opt" type="char*"/>
+      <field cname="is_read_only" type="gboolean"/>
+      <field cname="is_user_mountable" type="gboolean"/>
+      <field cname="is_loopback" type="gboolean"/>
+    </struct>
+    <struct name="GnomeVFSXferProgressInfo" cname="GnomeVFSXferProgressInfo">
+      <field cname="status" type="GnomeVFSXferProgressStatus"/>
+      <field cname="vfs_status" type="GnomeVFSResult"/>
+      <field cname="phase" type="GnomeVFSXferPhase"/>
+      <field cname="source_name" type="gchar*"/>
+      <field cname="target_name" type="gchar*"/>
+      <field cname="file_index" type="gulong"/>
+      <field cname="files_total" type="gulong"/>
+      <field cname="bytes_total" type="GnomeVFSFileSize"/>
+      <field cname="file_size" type="GnomeVFSFileSize"/>
+      <field cname="bytes_copied" type="GnomeVFSFileSize"/>
+      <field cname="total_bytes_copied" type="GnomeVFSFileSize"/>
+      <field cname="duplicate_name" type="gchar*"/>
+      <field cname="duplicate_count" type="int"/>
+      <field cname="top_level_item" type="gboolean"/>
+      <field cname="reserved1" type="void*"/>
+      <field cname="reserved2" type="void*"/>
+    </struct>
+    <struct name="XdgGlobHash" cname="XdgGlobHash" opaque="true"/>
+    <struct name="XdgMimeMagic" cname="XdgMimeMagic" opaque="true"/>
+    <alias name="XdgUchar8T" cname="xdg_uchar8_t" type="unsigned char"/>
+    <alias name="XdgUint16T" cname="xdg_uint16_t" type="unsigned short"/>
+    <alias name="XdgUint32T" cname="xdg_uint32_t" type="unsigned int"/>
+    <alias name="XdgUnicharT" cname="xdg_unichar_t" type="unsigned int"/>
+  </namespace>
+</api>

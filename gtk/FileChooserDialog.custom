@@ -1,0 +1,15 @@
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_file_chooser_dialog_new(string title, IntPtr parent, int action, IntPtr nil);
+
+		public FileChooserDialog (string title, Window parent, FileChooserAction action)
+		{
+			Raw = gtk_file_chooser_dialog_new (title, parent.Handle, (int)action, IntPtr.Zero);
+		}
+		
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_file_chooser_dialog_new_with_backend(string title, IntPtr parent, int action, string backend, IntPtr nil);
+		
+		public FileChooserDialog (string title, Window parent, FileChooserAction action, string backend)
+		{
+			Raw = gtk_file_chooser_dialog_new_with_backend (title, parent.Handle, (int)action, backend, IntPtr.Zero);
+		}

@@ -2,7 +2,7 @@ if ENABLE_GDA
 TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 APIS = $(API)
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gda-sharp.pc
+pkgconfig_DATA = gda-sharp-2.0.pc
 else
 TARGET = 
 APIS = 
@@ -15,12 +15,12 @@ ASSEMBLY_NAME = gda-sharp
 references = /r:../glib/glib-sharp.dll 
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi
+gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) gtk-sharp.snk
 
-DISTCLEANFILES = gda-sharp.pc $(ASSEMBLY).config AssemblyInfo.cs
+DISTCLEANFILES = gda-sharp-2.0.pc $(ASSEMBLY).config AssemblyInfo.cs
 
 sources = 				\
 	Application.cs
@@ -38,7 +38,7 @@ EXTRA_DIST =			\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\
-	gda-sharp.pc.in
+	gda-sharp-2.0.pc.in
 
 $(API): $(srcdir)/$(METADATA)
 	cp $(srcdir)/$(RAW_API) $(API)

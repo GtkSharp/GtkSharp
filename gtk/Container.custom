@@ -64,13 +64,13 @@ public Widget[] FocusChain {
 		
 }
 
-[DllImport("gtksharpglue")]
+[DllImport("gtksharpglue-2.0")]
 static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, IntPtr cb, IntPtr data);
 
-[DllImport("gtksharpglue")]
+[DllImport("gtksharpglue-2.0")]
 static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallDelegate cb);
 
-[DllImport("gtksharpglue")]
+[DllImport("gtksharpglue-2.0")]
 static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
 
 delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
@@ -125,10 +125,10 @@ protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
 	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }
 
-[DllImport("gtksharpglue")]
+[DllImport("gtksharpglue-2.0")]
 static extern IntPtr gtksharp_container_base_child_type(IntPtr raw);
 
-[DllImport("gtksharpglue")]
+[DllImport("gtksharpglue-2.0")]
 static extern void gtksharp_container_override_child_type (GLib.GType type, ChildTypeDelegate cb);
 
 delegate IntPtr ChildTypeDelegate (IntPtr raw);

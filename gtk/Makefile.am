@@ -10,7 +10,7 @@ references = /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk
 
 TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
-gapidir = $(datadir)/gapi
+gapidir = $(datadir)/gapi-2.0
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API) $(ADDITIONAL_API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c gtk-sharp.snk
@@ -30,6 +30,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 customs = 				\
 	Accel.custom			\
 	AccelKey.custom			\
+	Action.custom			\
 	Adjustment.custom		\
 	Bin.custom			\
 	Button.custom			\
@@ -40,15 +41,19 @@ customs = 				\
 	ColorSelection.custom		\
 	ColorSelectionDialog.custom	\
 	Combo.custom			\
+	ComboBox.custom			\
 	Container.custom		\
 	Dialog.custom			\
 	Entry.custom			\
+	FileChooserDialog.custom	\
 	FileSelection.custom		\
+	FileSystemModel.custom		\
 	Frame.custom			\
 	HBox.custom			\
 	HScale.custom			\
 	IconFactory.custom		\
 	IconSet.custom			\
+	IconTheme.custom		\
 	ImageMenuItem.custom		\
 	Init.custom			\
 	InputDialog.custom		\
@@ -61,7 +66,6 @@ customs = 				\
 	MenuItem.custom			\
 	Notebook.custom			\
 	Object.custom			\
-	Paned.custom			\
 	Plug.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
@@ -81,12 +85,14 @@ customs = 				\
 	TextView.custom			\
 	TreeIter.custom			\
 	TreeModel.custom		\
+	TreeModelFilter.custom		\
 	TreeModelSort.custom		\
 	TreePath.custom			\
 	TreeSelection.custom		\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\
+	UIManager.custom	\
 	VBox.custom			\
 	VScale.custom			\
 	Viewport.custom			\

@@ -42,6 +42,7 @@
       <member cname="ATK_RELATION_SUBWINDOW_OF" name="SubwindowOf"/>
       <member cname="ATK_RELATION_EMBEDS" name="Embeds"/>
       <member cname="ATK_RELATION_EMBEDDED_BY" name="EmbeddedBy"/>
+      <member cname="ATK_RELATION_POPUP_FOR" name="PopupFor"/>
       <member cname="ATK_RELATION_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="Role" cname="AtkRole" type="enum">
@@ -119,6 +120,8 @@
       <member cname="ATK_ROLE_PARAGRAPH" name="Paragraph"/>
       <member cname="ATK_ROLE_RULER" name="Ruler"/>
       <member cname="ATK_ROLE_APPLICATION" name="Application"/>
+      <member cname="ATK_ROLE_AUTOCOMPLETE" name="Autocomplete"/>
+      <member cname="ATK_ROLE_EDITBAR" name="Editbar"/>
       <member cname="ATK_ROLE_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="StateType" cname="AtkStateType" type="enum">
@@ -152,6 +155,7 @@
       <member cname="ATK_STATE_VERTICAL" name="Vertical"/>
       <member cname="ATK_STATE_VISIBLE" name="Visible"/>
       <member cname="ATK_STATE_MANAGES_DESCENDANTS" name="ManagesDescendants"/>
+      <member cname="ATK_STATE_INDETERMINATE" name="Indeterminate"/>
       <member cname="ATK_STATE_LAST_DEFINED" name="LastDefined"/>
     </enum>
     <enum name="TextAttribute" cname="AtkTextAttribute" type="enum">
@@ -193,6 +197,12 @@
       <member cname="ATK_TEXT_BOUNDARY_SENTENCE_END" name="SentenceEnd"/>
       <member cname="ATK_TEXT_BOUNDARY_LINE_START" name="LineStart"/>
       <member cname="ATK_TEXT_BOUNDARY_LINE_END" name="LineEnd"/>
+    </enum>
+    <enum name="TextClipType" cname="AtkTextClipType" type="enum">
+      <member cname="ATK_TEXT_CLIP_NONE" name="None"/>
+      <member cname="ATK_TEXT_CLIP_MIN" name="Min"/>
+      <member cname="ATK_TEXT_CLIP_MAX" name="Max"/>
+      <member cname="ATK_TEXT_CLIP_BOTH" name="Both"/>
     </enum>
     <callback name="EventListener" cname="AtkEventListener">
       <return-type type="void"/>
@@ -433,6 +443,13 @@
       </method>
     </interface>
     <interface name="Hypertext" cname="AtkHypertext">
+      <signal name="LinkSelected" cname="link_selected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkHypertext*" name="hypertext"/>
+          <parameter type="gint" name="link_index"/>
+        </parameters>
+      </signal>
       <method name="GetLink" cname="atk_hypertext_get_link">
         <return-type type="AtkHyperlink*"/>
         <parameters>
@@ -839,6 +856,21 @@
           <parameter type="const-gchar*" name="name"/>
         </parameters>
       </method>
+      <method name="FreeRanges" cname="atk_text_free_ranges" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkTextRange**" name="ranges"/>
+        </parameters>
+      </method>
+      <method name="GetBoundedRanges" cname="atk_text_get_bounded_ranges">
+        <return-type type="AtkTextRange**"/>
+        <parameters>
+          <parameter type="AtkTextRectangle*" name="rect"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+          <parameter type="AtkTextClipType" name="x_clip_type"/>
+          <parameter type="AtkTextClipType" name="y_clip_type"/>
+        </parameters>
+      </method>
       <method name="GetCaretOffset" cname="atk_text_get_caret_offset">
         <return-type type="gint"/>
       </method>
@@ -874,6 +906,15 @@
           <parameter type="gint" name="x"/>
           <parameter type="gint" name="y"/>
           <parameter type="AtkCoordType" name="coords"/>
+        </parameters>
+      </method>
+      <method name="GetRangeExtents" cname="atk_text_get_range_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="start_offset"/>
+          <parameter type="gint" name="end_offset"/>
+          <parameter type="AtkCoordType" name="coord_type"/>
+          <parameter type="AtkTextRectangle*" name="rect"/>
         </parameters>
       </method>
       <method name="GetRunAttributes" cname="atk_text_get_run_attributes">
@@ -994,6 +1035,16 @@
       </method>
     </object>
     <object name="Hyperlink" cname="AtkHyperlink" parent="GObject">
+      <property name="SelectedLink" cname="selected-link" type="gboolean" readable="true"/>
+      <property name="NumberOfAnchors" cname="number-of-anchors" type="gint" readable="true"/>
+      <property name="EndIndex" cname="end-index" type="gint" readable="true"/>
+      <property name="StartIndex" cname="start-index" type="gint" readable="true"/>
+      <signal name="LinkActivated" cname="link_activated" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="AtkHyperlink*" name="link_"/>
+        </parameters>
+      </signal>
       <virtual_method name="GetUri" cname="get_uri">
         <return-type type="gchar*"/>
         <parameters>
@@ -1049,6 +1100,9 @@
       <method name="IsInline" cname="atk_hyperlink_is_inline">
         <return-type type="gboolean"/>
       </method>
+      <method name="IsSelectedLink" cname="atk_hyperlink_is_selected_link">
+        <return-type type="gboolean"/>
+      </method>
       <method name="IsValid" cname="atk_hyperlink_is_valid">
         <return-type type="gboolean"/>
       </method>
@@ -1062,6 +1116,7 @@
         <interface cname="AtkSelection"/>
         <interface cname="AtkTable"/>
         <interface cname="AtkText"/>
+        <interface cname="AtkHypertext"/>
         <interface cname="AtkValue"/>
       </implements>
       <method name="GetType" cname="atk_no_op_object_get_type" shared="true">
@@ -1099,6 +1154,8 @@
       <property name="AtkObjectNamePropertyTableRowHeader" cname="atk_object_name_property_table_row_header" type="AtkObject" readable="true" writeable="true"/>
       <property name="AtkObjectNamePropertyTableRowDescription" cname="atk_object_name_property_table_row_description" type="gchar*" readable="true" writeable="true"/>
       <property name="AtkObjectNamePropertyTableSummary" cname="atk_object_name_property_table_summary" type="AtkObject" readable="true" writeable="true"/>
+      <property name="AtkObjectNamePropertyTableCaptionObject" cname="atk_object_name_property_table_caption_object" type="AtkObject" readable="true" writeable="true"/>
+      <property name="AtkObjectNamePropertyHypertextNumLinks" cname="atk_object_name_property_hypertext_num_links" type="gint" readable="true"/>
       <signal name="ChildrenChanged" cname="children_changed" when="LAST">
         <return-type type="void"/>
         <parameters>
@@ -1351,6 +1408,8 @@
     <object name="Relation" cname="AtkRelation" parent="GObject">
       <field cname="target" type="GPtrArray*"/>
       <field cname="relationship" type="AtkRelationType"/>
+      <property name="RelationType" cname="relation_type" type="AtkRelationType" readable="true" writeable="true"/>
+      <property name="Target" cname="target" type="value_array" readable="true" writeable="true"/>
       <method name="GetRelationType" cname="atk_relation_get_relation_type">
         <return-type type="AtkRelationType"/>
       </method>
@@ -1536,6 +1595,18 @@
       <field cname="new_value" type="GValue"/>
     </struct>
     <alias name="State" cname="AtkState" type="guint64"/>
+    <struct name="TextRange" cname="AtkTextRange">
+      <field cname="bounds" type="AtkTextRectangle"/>
+      <field cname="start_offset" type="gint"/>
+      <field cname="end_offset" type="gint"/>
+      <field cname="content" type="gchar*"/>
+    </struct>
+    <struct name="TextRectangle" cname="AtkTextRectangle">
+      <field cname="x" type="gint"/>
+      <field cname="y" type="gint"/>
+      <field cname="width" type="gint"/>
+      <field cname="height" type="gint"/>
+    </struct>
     <class name="Global" cname="AtkGlobal">
       <method name="AddFocusTracker" cname="atk_add_focus_tracker" shared="true">
         <return-type type="guint"/>
@@ -1559,6 +1630,9 @@
       </method>
       <method name="GetDefaultRegistry" cname="atk_get_default_registry" shared="true">
         <return-type type="AtkRegistry*"/>
+      </method>
+      <method name="GetFocusObject" cname="atk_get_focus_object" shared="true">
+        <return-type type="AtkObject*"/>
       </method>
       <method name="GetRoot" cname="atk_get_root" shared="true">
         <return-type type="AtkObject*"/>

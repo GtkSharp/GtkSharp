@@ -1,4 +1,4 @@
-SUBDIRS = gconf rsvg test GtkDemo pixmaps
+SUBDIRS = gconf rsvg test GtkDemo pixmaps gnomevfs
 
 if ENABLE_GNOME
 GNOME_TARGETS=gnome-hello-world.exe canvas-example.exe fifteen.exe print.exe
@@ -24,9 +24,9 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe custom-widget.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-notebook.exe drawing-sample.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe actions.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
-assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
+assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll ../gnomevfs/gnome-vfs-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix /r:, $(assemblies))
 
 noinst_SCRIPTS = $(TARGETS)
@@ -98,6 +98,15 @@ drawing-sample.exe: $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs $(assemblies
 custom-widget.exe: $(srcdir)/CustomWidget.cs $(assemblies)
 	$(CSC) /debug /out:custom-widget.exe $(references) $(srcdir)/CustomWidget.cs
 
+actions.exe: $(srcdir)/Actions.cs
+	$(CSC) /debug /unsafe /out:actions.exe $(references) $(srcdir)/Actions.cs
+
+custom-notebook.exe: $(srcdir)/CustomNotebook.cs $(assemblies)
+	$(CSC) /debug /out:custom-notebook.exe $(references) $(srcdir)/CustomNotebook.cs
+
+testvfs.exe: $(srcdir)/TestVfs.cs
+	$(CSC) /debug /out:testvfs.exe $(references) $(srcdir)/TestVfs.cs
+
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	GnomeHelloWorld.cs		\
@@ -124,4 +133,7 @@ EXTRA_DIST = 				\
 	sysdraw.cs			\
 	drawing-sample.exe.config	\
 	cairo-sample.exe.config		\
-	CustomWidget.cs
+	CustomWidget.cs			\
+	Actions.cs			\
+	CustomNotebook.cs		\
+	TestVfs.cs

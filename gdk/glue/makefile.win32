@@ -10,16 +10,16 @@ GLUE_OBJS = \
         selection.o             \
 	win32dll.o
 
-all: gdksharpglue.dll
+all: gdksharpglue-2.0.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-gdksharpglue.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libgdksharpglue.a --dllname=gdksharpglue.dll --driver-name=gcc --output-def=gdksharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+gdksharpglue-2.0.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libgdksharpglue-2.0.a --dllname=gdksharpglue-2.0.dll --driver-name=gcc --output-def=gdksharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f gdksharpglue.dll *.o libgdksharpglue.a
+	rm -f gdksharpglue-2.0.dll *.o libgdksharpglue-2.0.a

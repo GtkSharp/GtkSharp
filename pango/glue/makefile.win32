@@ -7,16 +7,16 @@ GLUE_OBJS = \
         layoutline.o	\
 	win32dll.o
 
-all: pangosharpglue.dll
+all: pangosharpglue-2.0.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(PANGO_CFLAGS) -o $@ $^ 
 
 
-gtksharpglue.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libpangosharpglue.a --dllname=pangosharpglue.dll --driver-name=gcc --output-def=pangosharpglue.def $(GLUE_OBJS) $(PANGO_LIBS)
+gtksharpglue-2.0.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libpangosharpglue-2.0.a --dllname=pangosharpglue-2.0.dll --driver-name=gcc --output-def=pangosharpglue-2.0.def $(GLUE_OBJS) $(PANGO_LIBS)
 
 
 clean:
-	rm -f pangosharpglue.dll *.o libpangosharpglue.a
+	rm -f pangosharpglue-2.0.dll *.o libpangosharpglue-2.0.a

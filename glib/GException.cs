@@ -33,7 +33,7 @@ namespace GLib {
 			this.errptr = errptr;
 		}
 
-		[DllImport("glibsharpglue")]
+		[DllImport("glibsharpglue-2.0")]
 		static extern IntPtr gtksharp_error_get_message (IntPtr errptr);
 		public override string Message {
 			get {

@@ -7,16 +7,16 @@ GLUE_OBJS = \
 	generated.o		\
 	win32dll.o
 
-all: atksharpglue.dll
+all: atksharpglue-2.0.dll
 
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
 
 
-atksharpglue.dll: $(GLUE_OBJS)
-	$(DLLWRAP) --output-lib=libatksharpglue.a --dllname=atksharpglue.dll --driver-name=gcc --output-def=atksharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+atksharpglue-2.0.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libatksharpglue-2.0.a --dllname=atksharpglue-2.0.dll --driver-name=gcc --output-def=atksharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
 
 
 clean:
-	rm -f atksharpglue.dll *.o libatksharpglue.a
+	rm -f atksharpglue-2.0.dll *.o libatksharpglue-2.0.a
