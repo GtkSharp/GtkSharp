@@ -4,7 +4,7 @@
 #
 # Author: Mike Kestner <mkestner@speakeasy.net>
 #
-# <c> 2001 Mike Kestner
+# <c> 2001-2003 Mike Kestner
 ##############################################################
 
 $debug=1;
@@ -155,9 +155,11 @@ while ($line = <STDIN>) {
 ##############################################################
 # Produce the enum definitions.
 ##############################################################
+%enums = ();
 
 foreach $cname (sort(keys(%edefs))) {
 	$ecnt++;
+	$enums{lc($cname)} = $cname;
 	$enum_elem = addNameElem($ns_elem, 'enum', $cname, $ns);
 	$def = $edefs{$cname};
 	if ($def =~ /=\s*1\s*<<\s*\d+/) {
@@ -463,6 +465,8 @@ sub addFuncElems
 				$prefix .= "_";
 				$obj_el = $elem_table{$key};
 				$inst = $key;
+				last;
+			} elsif (exists ($enums{$key})) {
 				last;
 			}
 		}
