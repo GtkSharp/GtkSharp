@@ -76,6 +76,15 @@ namespace GLib {
 			return g_list_prepend (list, raw);
 		}
 
+		[DllImport("libglib-2.0-0.dll")]
+	        static extern IntPtr g_list_nth_data (IntPtr l, uint n);
+
+		internal override IntPtr NthData (uint n)
+		{
+			return g_list_nth_data (Handle, n);
+		}
+
+
 		public List (IntPtr raw) : base (raw)
 		{
 		}

@@ -25,6 +25,7 @@ namespace GLib {
 		private bool managed = false;
 		protected System.Type element_type = null;
 
+                abstract internal IntPtr NthData (uint index);
 		abstract internal IntPtr GetData (IntPtr current);
 		abstract internal IntPtr Next (IntPtr current);
 		abstract internal int Length (IntPtr list);
@@ -106,6 +107,15 @@ namespace GLib {
 			}
 		}
 
+		public object this [int index] { 
+			get { 
+				IntPtr data = NthData ((uint) index);
+				object ret = null;
+				ret = DataMarshal (data);
+				return ret;
+			}
+		}
+
 		// Synchronization could be tricky here. Hmm.
 		public bool IsSynchronized {
 			get { return false; }
@@ -125,6 +135,26 @@ namespace GLib {
 			orig.CopyTo (array, index); 
 		}
 
+		internal object DataMarshal (IntPtr data) 
+		{
+			object ret = null;
+			if (element_type != null) {
+				if (element_type == typeof (string))
+					ret = Marshal.PtrToStringAnsi (data);
+				else if (element_type == typeof (int))
+					ret = (int) data;
+				else if (element_type.IsValueType)
+					ret = Marshal.PtrToStructure (data, element_type);
+				else
+					ret = Activator.CreateInstance (element_type, new object[] {data});
+
+			} else if (Object.IsObject (data))
+				ret = GLib.Object.GetObject (data, false);
+
+			return ret;
+		}
+
+
 		private class ListEnumerator : IEnumerator
 		{
 			private IntPtr current = IntPtr.Zero;
@@ -139,20 +169,7 @@ namespace GLib {
 				get {
 					IntPtr data = list.GetData (current);
 					object ret = null;
-					if (list.element_type != null)
-					{
-						if (list.element_type == typeof (string))
-							ret = Marshal.PtrToStringAnsi (data);
-						else if (list.element_type == typeof (int))
-							ret = (int) data;
-						else if (list.element_type.IsValueType)
-							ret = Marshal.PtrToStructure (data, list.element_type);
-						else
-							ret = Activator.CreateInstance (list.element_type, new object[] {data});
-					}
-					else if (Object.IsObject (data))
-						ret = GLib.Object.GetObject (data, false);
-
+					ret = list.DataMarshal (data);
 					return ret;
 				}
 			}
