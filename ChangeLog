@@ -1,5 +1,22 @@
 2004-12-20  Dan Winship  <danw@novell.com>
 
+	* generator/GUnicharGen.cs: generatable for gunichar, using
+	GLib.Marshaller.CharToGUnichar and .GUnicharToChar [#70704]
+
+	* generator/SymbolTable.cs (SymbolTable): add a GUnicharGen.
+
+	* generator/Makefile.am (sources): add GUnicharGen.cs
+
+	* parser/gapi2xml.pl (addPropElem): g_param_spec_unichar() has
+	type "gunichar" not "unichar".
+
+	* gtk/gtk-api.raw: Regen
+
+	* glib/Marshaller.cs: Import CharToGUnichar's glue method by the
+	right name
+
+2004-12-20  Dan Winship  <danw@novell.com>
+
 	* gtk/Gtk.metadata: Don't rename GtkStock to StockManager, hide
 	Lookup (so we can customize it) and AddStatic (since it can't work
 	right from managed code), and tweak the params of Add.

@@ -91,6 +91,7 @@ namespace GtkSharp.Generation {
 			AddType (new AliasGen ("off_t", "size_t"));
 			AddType (new SizeTGen ());
 			AddType (new SSizeTGen ());
+			AddType (new GUnicharGen ());
 			
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GMemChunk", "IntPtr"));

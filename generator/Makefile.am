@@ -24,6 +24,7 @@ sources = 				\
 	GenerationInfo.cs		\
 	GObjectGen.cs			\
 	GStringGen.cs			\
+	GUnicharGen.cs			\
 	IGeneratable.cs			\
 	ImportSignature.cs		\
 	InterfaceGen.cs			\

@@ -187,11 +187,11 @@ namespace GLib {
 		}
 
 		[DllImport("glibsharpglue-2")]
-		static extern uint glibsharp_utf16_to_gunichar (ushort c);
+		static extern uint glibsharp_utf16_to_unichar (ushort c);
 
 		public static uint CharToGUnichar (char c)
 		{
-			return glibsharp_utf16_to_gunichar ((ushort) c);
+			return glibsharp_utf16_to_unichar ((ushort) c);
 		}
 
 	}

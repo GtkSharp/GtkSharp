@@ -801,7 +801,7 @@ sub addPropElem
 
 	$mode = $params[$#params];
 
-	if ($type =~ /boolean|float|double|^u?int|pointer/) {
+	if ($type =~ /boolean|float|double|^u?int|pointer|unichar/) {
 		$type = "g$type";
 	} elsif ($type =~ /string/) {
 		$type = "gchar*";
