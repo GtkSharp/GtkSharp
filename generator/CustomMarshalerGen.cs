@@ -59,7 +59,14 @@ namespace GtkSharp.Generation {
 				return "[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(" + marshaler + "))] " + type;
 			}
 		}
+
 		public virtual string MarshalReturnType {
+			get {
+				return "[return:MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(" + marshaler + "))]";
+			}
+		}
+
+		public virtual string ToNativeReturnType {
 			get {
 				return "[return:MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(" + marshaler + "))]";
 			}

@@ -71,7 +71,15 @@ namespace GtkSharp.Generation {
 				return "IntPtr";
 			}
 		}
+
 		public string MarshalReturnType {
+			get
+			{
+				return "IntPtr";
+			}
+		}
+
+		public string ToNativeReturnType {
 			get
 			{
 				return "IntPtr";

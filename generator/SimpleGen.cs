@@ -68,6 +68,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual string ToNativeReturnType {
+			get
+			{
+				return type;
+			}
+		}
+
 		public string CallByName (string var_name)
 		{
 			return var_name;

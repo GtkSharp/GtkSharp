@@ -1,8 +1,10 @@
 // GtkSharp.Generation.StringGen.cs - The String type Generatable.
 //
 // Author: Rachel Hestilow <rachel@nullenvoid.com>
+//         Mike Kestner  <mkestner@novell.com>
 //
 // Copyright (c) 2003 Rachel Hestilow
+// Copyright (c) 2004 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -29,6 +31,12 @@ namespace GtkSharp.Generation {
 		{
 		}
 	
+		public override string ToNativeReturnType {
+			get {
+				return "IntPtr";
+			}
+		}
+
 		public override string FromNativeReturn(String var)
 		{
 			return "GLib.Marshaller.PtrToStringGFree(" + var + ")";

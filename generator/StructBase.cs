@@ -69,6 +69,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override string ToNativeReturnType {
+			get
+			{
+				return QualifiedName;
+			}
+		}
+
 		public override string CallByName (string var_name)
 		{
 			return "ref " + var_name;

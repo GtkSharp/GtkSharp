@@ -67,7 +67,15 @@ namespace GtkSharp.Generation {
 				return "ref " + QualifiedName;
 			}
 		}
+
 		public virtual string MarshalReturnType {
+			get
+			{
+				return QualifiedName;
+			}
+		}
+
+		public virtual string ToNativeReturnType {
 			get
 			{
 				return QualifiedName;

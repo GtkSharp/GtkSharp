@@ -101,6 +101,8 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GArray", "IntPtr"));
 			AddType (new SimpleGen ("GByteArray", "IntPtr"));
 			AddType (new SimpleGen ("GData", "IntPtr"));
+			AddType (new SimpleGen ("GDestroyNotify", "IntPtr"));
+			AddType (new SimpleGen ("GIOChannel", "IntPtr"));
 			AddType (new SimpleGen ("GTypeModule", "GLib.Object"));
 			AddType (new SimpleGen ("GHashTable", "System.IntPtr"));
 			AddType (new SimpleGen ("va_list", "IntPtr"));
@@ -218,6 +220,14 @@ namespace GtkSharp.Generation {
 			if (gen == null)
 				return "";
 			return gen.MarshalReturnType;
+		}
+		
+		public string GetToNativeReturnType(string c_type)
+		{
+			IGeneratable gen = this[c_type];
+			if (gen == null)
+				return "";
+			return gen.ToNativeReturnType;
 		}
 		
 		public string GetMarshalType(string c_type)

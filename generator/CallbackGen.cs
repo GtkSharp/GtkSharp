@@ -53,6 +53,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string ToNativeReturnType {
+			get
+			{
+				return MarshalType;
+			}
+		}
+
 		public string CallByName (string var_name)
 		{
 			return var_name + ".NativeDelegate";

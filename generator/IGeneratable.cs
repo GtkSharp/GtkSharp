@@ -29,6 +29,8 @@ namespace GtkSharp.Generation {
 
 		string MarshalReturnType {get;}
 
+		string ToNativeReturnType {get;}
+
 		string Name {get;}
 
 		string QualifiedName {get;}
