@@ -10,7 +10,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>The GtkDrawingArea widget is used for creating custom user interface elements.</summary>
+    <summary>The <see cref="T:Gtk.DrawingArea" /> widget is used for creating custom user interface elements.</summary>
     <remarks>
       <para>
       The <see cref="T:Gtk.DrawingArea" /> widget is used for creating custom user interface elements. It's essentially a blank widget; you can draw on <paramref name="widget" />-&gt;window. After creating a drawing area, the application may want to connect to: <para>
@@ -25,6 +25,55 @@
       Expose events are normally delivered when a drawing area first comes onscreen, or when it's covered by another window and then uncovered (exposed). You can also force an expose event by adding to the "damage region" of the drawing area's window; <see cref="M:Gtk.Widget.QueueDrawArea" /> and <see cref="M:Gdk.Window.InvalidateRect" /> are equally good ways to do this. You'll then get an expose event for the invalid region. See also <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> for drawing a <see cref="T:Gdk.Pixbuf" />.
      </para>
     </remarks>
+	<example>
+	  <code lang="C#">
+using System;
+using Gtk;
+using Pango;
+ 
+class LayoutSample : DrawingArea
+{
+        Pango.Layout layout;
+ 
+        static void Main ()
+        {
+                Application.Init ();
+                new LayoutSample ();
+                Application.Run ();
+        }
+ 
+        LayoutSample ()
+        {
+                Window win = new Window ("Layout sample");
+                win.SetDefaultSize (400, 300);
+                win.DeleteEvent += OnWinDelete;
+                this.Realized += OnRealized;
+                this.ExposeEvent += OnExposed;
+ 
+                win.Add (this);
+                win.ShowAll ();
+        }
+ 
+        void OnExposed (object o, ExposeEventArgs args)
+        {
+                this.GdkWindow.DrawLayout (this.Style.TextGC (StateType.Normal), 100, 150, layout);
+        }
+ 
+        void OnRealized (object o, EventArgs args)
+        {
+                layout = new Pango.Layout (this.PangoContext);
+                layout.Wrap = Pango.WrapMode.Word;
+                layout.FontDescription = FontDescription.FromString ("Tahoma 16");
+                layout.SetMarkup ("Hello Pango.Layout");
+        }
+ 
+        void OnWinDelete (object o, DeleteEventArgs args)
+        {
+                Application.Quit ();
+        }
+}
+	  </code>
+	</example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Widget</BaseTypeName>
