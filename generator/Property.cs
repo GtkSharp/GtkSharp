@@ -125,8 +125,7 @@ namespace GtkSharp.Generation {
 					if (!table.IsBoxed (c_type) && !table.IsObject (c_type))
 						sw.WriteLine("\t\t\t\tif (ret == null) ret = new " + cs_type + "(raw_ret);");
 				} else if (table.IsOpaque (c_type) || table.IsBoxed (c_type)) {
-					sw.WriteLine("\t\t\t\tSystem.IntPtr raw_ret = val.Handle;");
-					sw.WriteLine("\t\t\t\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
+					sw.WriteLine("\t\t\t\t" + cs_type + " ret = (" + cs_type + ") val;");
 				} else {
 					sw.Write("\t\t\t\t" + cs_type + " ret = ");
 					sw.Write ("(" + cs_type + ") ");

@@ -28,6 +28,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic extern IntPtr gtksharp_value_create (GLib.GType gtype);");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
+			sw.WriteLine ("\t\tstatic extern IntPtr g_value_get_boxed (IntPtr handle);");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t[DllImport(\"libgobject-2.0-0.dll\")]");
 			sw.WriteLine ("\t\tstatic extern void g_value_set_boxed (IntPtr handle, ref " + QualifiedName + " boxed);");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic static explicit operator GLib.Value (" + QualifiedName + " boxed)");
@@ -36,6 +39,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tIntPtr handle = gtksharp_value_create (" + QualifiedName + ".GType);");
 			sw.WriteLine ("\t\t\tg_value_set_boxed (handle, ref boxed);");
 			sw.WriteLine ("\t\t\treturn new GLib.Value (handle, IntPtr.Zero);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static explicit operator " + QualifiedName + " (GLib.Value val)");
+			sw.WriteLine ("\t\t{");
+
+			sw.WriteLine ("\t\t\tIntPtr boxed_ptr = g_value_get_boxed (val.Handle);");
+			sw.WriteLine ("\t\t\treturn New (boxed_ptr);");
 			sw.WriteLine ("\t\t}");
 
 			sw.WriteLine ("#endregion");
