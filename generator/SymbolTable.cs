@@ -106,7 +106,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("va_list", "IntPtr"));
 			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
-
+			AddType (new SimpleGen ("GDestroyNotify", "IntPtr"));
 			AddType (new TimeTGen ());
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GList", "GLib.List"));
