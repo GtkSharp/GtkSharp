@@ -62,6 +62,13 @@ class T
 	private void OnCommit (object o, VteSharp.CommitArgs args)
 	{
 		Terminal term = (Terminal) o;
+		if (args.P0 == "\r")
+		{
+			//FIXME: maybe a setting somewhere
+			term.Feed ("\r\n");
+			return;
+		}
+
 		term.Feed (args.P0);
 	}
 
