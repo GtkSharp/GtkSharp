@@ -11,7 +11,12 @@ SUBDIRS = helloworld \
 		buttons \
 		radiobuttons \
 		scrolledwin \
-
+		checkbox \
+		eventbox \
+		packing \
+		rangewidget \
+		scribble \
+		togglebutton \
 
 all:
 	list='$(SUBDIRS)'; \
