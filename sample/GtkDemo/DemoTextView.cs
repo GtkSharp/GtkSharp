@@ -132,7 +132,7 @@ namespace GtkDemo
 		 */
 
 			TextTag tag  = new TextTag("heading");
-			tag.FontDesc.Weight = Pango.Weight.Bold;
+			tag.Weight = Pango.Weight.Bold;
 			tag.Size = (int) Pango.Scale.PangoScale * 15;
 			buffer.TagTable.Add(tag);
 
@@ -141,7 +141,7 @@ namespace GtkDemo
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("bold");
-			tag.FontDesc.Weight = Pango.Weight.Bold;
+			tag.Weight = Pango.Weight.Bold;
 			buffer.TagTable.Add(tag);
 
 			tag  = new TextTag("big");

@@ -24,9 +24,9 @@ get_default (GObjectClass *klass, const gchar *property)
 	gchar *ret;
 
 	g_return_val_if_fail (spec != NULL, NULL);
+	strspec = G_PARAM_SPEC_STRING (spec);
 	g_return_val_if_fail (strspec != NULL, NULL);
 	
-	strspec = G_PARAM_SPEC_STRING (spec);
 	ret = g_strdup (strspec->default_value);
 	//g_param_spec_unref (spec);
 	
