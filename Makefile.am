@@ -8,6 +8,7 @@ EXTRA_DIST = 			\
 	gtk-sharp.snk		\
 	makefile.win32		\
 	ChangeLog		\
+	HACKING			\
 	README			\
 	README.generator
 
