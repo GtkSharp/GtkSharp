@@ -67,7 +67,7 @@ namespace GtkDemo
 			TextTag tag = new TextTag ("link");
 			tag.Foreground = "blue";
 			tag.Underline = Pango.Underline.Single;
-			tag.Data.Add ("page", page);
+			tag.PersistentData.Add ("page", page);
 			buffer.TagTable.Add (tag);
 
 			buffer.InsertWithTags (ref iter, text, tag);
@@ -118,7 +118,7 @@ namespace GtkDemo
 		{
 			foreach (TextTag tag in iter.Tags)
 			{
-				int page = (int) tag.Data ["page"];
+				int page = (int) tag.PersistentData ["page"];
 				if (page != 0)
 					ShowPage (view.Buffer, page);
 			}
@@ -135,7 +135,7 @@ namespace GtkDemo
 
 			foreach (TextTag tag in iter.Tags)
 			{
-				int page = (int) tag.Data ["page"];
+				int page = (int) tag.PersistentData ["page"];
 				if (page != 0) {
 					hovering = true;
 					break;

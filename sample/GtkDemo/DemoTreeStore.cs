@@ -66,7 +66,7 @@ namespace GtkDemo
 		private void ItemToggled (object sender, ToggledArgs args)
 		{
 			CellRendererToggle cellRendererToggle = sender as CellRendererToggle;
-			int column = (int) cellRendererToggle.Data["column"];
+			int column = (int) cellRendererToggle.PersistentData["column"];
 			
  			Gtk.TreeIter iter;
  			if (store.GetIterFromString (out iter, args.Path))
@@ -82,7 +82,7 @@ namespace GtkDemo
 			// column for holiday names
 			CellRendererText rendererText = new CellRendererText ();
 			rendererText.Xalign = 0.0f;
-			rendererText.Data ["column"] = Column.HolidayName;
+			rendererText.PersistentData ["column"] = Column.HolidayName;
 			TreeViewColumn column = new TreeViewColumn ("Holiday", rendererText, 
 					"text", Column.HolidayName);
 			treeView.InsertColumn (column, (int) Column.HolidayName);
@@ -90,7 +90,7 @@ namespace GtkDemo
 			// alex column
 			CellRendererToggle rendererToggle = new CellRendererToggle ();
 			rendererToggle.Xalign = 0.0f;
-			rendererToggle.Data ["column"] = Column.Alex;
+			rendererToggle.PersistentData ["column"] = Column.Alex;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
 			rendererToggle.Visible = true;
 			rendererToggle.Activatable = true;
@@ -104,7 +104,7 @@ namespace GtkDemo
 			// havoc column
 			rendererToggle = new CellRendererToggle ();
 			rendererToggle.Xalign = 0.0f;
-			rendererToggle.Data ["column"] = Column.Havoc;
+			rendererToggle.PersistentData ["column"] = Column.Havoc;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
 			column = new TreeViewColumn ("Havoc", rendererToggle, "active", (int) Column.Havoc);
 			column.Visible = true;
@@ -118,7 +118,7 @@ namespace GtkDemo
 			// tim column
 			rendererToggle = new CellRendererToggle ();
 			rendererToggle.Xalign = 0.0f;
-			rendererToggle.Data ["column"] = Column.Tim;
+			rendererToggle.PersistentData ["column"] = Column.Tim;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
 			column = new TreeViewColumn ("Tim", rendererToggle, "active", (int) Column.Tim);
 			column.Visible = true;
@@ -132,7 +132,7 @@ namespace GtkDemo
 			// owen column
 			rendererToggle = new CellRendererToggle ();
 			rendererToggle.Xalign = 0.0f;
-			rendererToggle.Data ["column"] = Column.Owen;
+			rendererToggle.PersistentData ["column"] = Column.Owen;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
 			column = new TreeViewColumn ("Owen", rendererToggle, "active", (int) Column.Owen);
 			column.Visible = true;
@@ -146,7 +146,7 @@ namespace GtkDemo
 			// dave column
 			rendererToggle = new CellRendererToggle ();
 			rendererToggle.Xalign = 0.0f;
-			rendererToggle.Data ["column"] = Column.Dave;
+			rendererToggle.PersistentData ["column"] = Column.Dave;
 			rendererToggle.Toggled += new ToggledHandler (ItemToggled);
 			column = new TreeViewColumn ("Dave", rendererToggle,  "active", (int) Column.Dave);
 			column.Visible = true;
