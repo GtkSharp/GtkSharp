@@ -221,7 +221,7 @@ namespace GtkSharp.Generation {
 
 			StreamWriter sw = gen_info.Writer;
 
-			sw.WriteLine ("\t\tpublic new class " + Name + "Child : Gtk.Container.ContainerChild {");
+			sw.WriteLine ("\t\tpublic class " + Name + "Child : Gtk.Container.ContainerChild {");
 			sw.WriteLine ("\t\t\tinternal " + Name + "Child (Gtk.Container parent, Gtk.Widget child) : base (parent, child) {}");
 			sw.WriteLine ("");
 
