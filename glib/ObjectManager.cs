@@ -10,6 +10,7 @@ namespace GLib {
 	using System;
 	using System.Collections;
 	using System.Runtime.InteropServices;
+	using System.Reflection;
 	using System.Text;
 
 	public class ObjectManager {
@@ -46,7 +47,7 @@ namespace GLib {
 
 			GLib.Object obj;
 			try {
-				obj = (GLib.Object) Activator.CreateInstance (t, new object[] {raw});
+				obj = (GLib.Object) Activator.CreateInstance (t,BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] {raw}, null);
 			} catch (MissingMethodException) {
 				throw new GLib.MissingIntPtrCtorException ("GLib.Object subclass " + t + " must provide a protected or public IntPtr ctor to support wrapping of native object handles.");
 			}
