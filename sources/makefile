@@ -20,6 +20,7 @@ get-source-code:
 	for i in $(DOWNLOADS); do                          \
 		wget $$i --output-document=- | tar -xz ;   \
 	done;
+
 	export CVS_PASSWORD=""
 	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.c
 	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml.h
@@ -27,10 +28,12 @@ get-source-code:
 	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-enums.h
 	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.c
 	cvs -z3 -d:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co gtkhtml/src/gtkhtml-stream.h
+        patch -p0 < gtkhtml-font-style-enum.patch
+
 	ln -f -s ../gdk/gdkpixbuf-drawable.c gtk+-2.2.2/gdk-pixbuf/gdkpixbuf-drawable.c
 	ln -f -s ../gdk/gdkpixbuf.h          gtk+-2.2.2/gdk-pixbuf/gdkpixbuf.h
 	ln -f -s ../gdk/gdkpixbuf-render.c   gtk+-2.2.2/gdk-pixbuf/gdkpixbuf-render.c
- 
+
 distclean:
 	for i in `ls`; do                     \
 	    if test -d $$i; then              \
