@@ -24,6 +24,8 @@ using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
 	public class Directory {
+		private Directory () {}
+	
 		public static FileInfo[] GetEntries (Uri uri)
 		{
 			return GetEntries (uri.ToString ());

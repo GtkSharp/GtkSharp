@@ -24,6 +24,8 @@ using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
 	public class Vfs {
+		private Vfs () {}
+	
 		[DllImport ("gnomevfs-2")]
 		static extern bool gnome_vfs_init ();
 		

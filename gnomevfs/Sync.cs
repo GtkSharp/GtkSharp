@@ -24,6 +24,8 @@ using System.Runtime.InteropServices;
 
 namespace Gnome.Vfs {
 	public class Sync {
+		private Sync () {}
+	
 		[DllImport ("gnomevfs-2")]
 		private static extern Result gnome_vfs_close (IntPtr handle);
 

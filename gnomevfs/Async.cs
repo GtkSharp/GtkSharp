@@ -29,6 +29,8 @@ namespace Gnome.Vfs {
 			Default = 0,
 			Max = 10
 		}
+		
+		private Async () {}
 	
 		[DllImport ("gnomevfs-2")]
 		private static extern void gnome_vfs_async_cancel (IntPtr handle);

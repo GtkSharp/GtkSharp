@@ -9,8 +9,76 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Asynchronous File Operations; POSIX-style file operations that run outside your main loop.
+<example>
+        <code lang="C#">
+	public class TestAsync {
+		private static MainLoop loop;
+		private static Handle handle;
+	
+		static void Main (string[] args)
+		{
+			if (args.Length != 1) {
+				Console.WriteLine ("Usage: TestAsync &lt;uri&gt;");
+				return;
+			}
+		
+			Gnome.Vfs.Vfs.Initialize ();
+
+			Gnome.Vfs.Uri uri = new Gnome.Vfs.Uri (args[0]);
+			handle = Async.Open (uri, OpenMode.Read,
+					     (int)Async.Priority.Default,
+					     new Gnome.Vfs.AsyncCallback (OnOpen));
+			
+			loop = new MainLoop ();
+			loop.Run ();
+			
+			Gnome.Vfs.Vfs.Shutdown ();
+		}
+
+
+		private static void OnOpen (Handle handle, Result result)
+		{
+			Console.WriteLine ("Uri opened: {0}", result);
+			if (result != Result.Ok) {
+				loop.Quit ();
+				return;
+			}
+			
+			byte[] buffer = new byte[1024];
+			Async.Read (handle, out buffer[0], (uint)buffer.Length,
+				    new AsyncReadCallback (OnRead));
+		}
+		
+		private static void OnRead (Handle handle, Result result, byte[] buffer,
+					    ulong bytes_requested, ulong bytes_read)
+		{
+			Console.WriteLine ("Read: {0}", result);
+			if (result != Result.Ok &amp;&amp; result != Result.ErrorEof) {
+				loop.Quit ();
+				return;
+			}
+
+			UTF8Encoding utf8 = new UTF8Encoding ();
+			Console.WriteLine ("read ({0} bytes) : '{1}'", bytes_read,
+					   utf8.GetString (buffer, 0, (int)bytes_read));
+
+			if (bytes_read != 0)
+				Async.Read (handle, out buffer[0], (uint)buffer.Length,
+					    new AsyncReadCallback (OnRead));
+			else
+				Async.Close (handle, new Gnome.Vfs.AsyncCallback (OnClose));
+		}
+		
+		private static void OnClose (Handle handle, Result result)
+		{
+			Console.WriteLine ("Close: {0}", result);
+			loop.Quit ();
+		}
+	}
+  </code>
+      </example></summary>
+    <remarks>The members of this class are all static methods and use the <see cref="T:Gnome.Vfs.Handle" /> class to reference asynchronous operations in progress.</remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -28,8 +96,9 @@
         <Parameter Name="handle" Type="Gnome.Vfs.Handle" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /></param>
+        <summary>Cancel an asynchronous operation and close all its callbacks. Its possible to still receive another call or two on the callback.</summary>
+        <param name="handle">
+          <see cref="T:Gnome.Vfs.Handle" /> of the async operation to be cancelled</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -44,9 +113,9 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Close a handle opened with <see cref="M:Gnome.Vfs.Async.Open" />. When the close has completed, <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" /> of the operation.</summary>
+        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /> to close</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -65,13 +134,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
-        <param name="exclusive">a <see cref="T:System.Boolean" /></param>
-        <param name="perm">a <see cref="T:System.Int32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Create a file at uri according to mode <see cref="T:Gnome.Vfs.OpenMode" />, with permissions <see cref="T:Gnome.Vfs.FilePermissions" />. When the create has been completed <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" />.</summary>
+        <param name="uri">the URI to create a file at.</param>
+        <param name="mode">mode to leave the file opened in after creation (or <see cref="M:Gnome.Vfs.OpenMode.None" /> to leave the file closed after creation).</param>
+        <param name="exclusive">Whether the file should be created in "exclusive" mode: i.e. if this flag is nonzero, operation will fail if a file with the same name already exists.</param>
+        <param name="perm">Bitmap representing the permissions for the newly created file (Unix style).</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete.</param>
         <returns>a <see cref="T:Gnome.Vfs.Handle" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -91,13 +160,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
-        <param name="exclusive">a <see cref="T:System.Boolean" /></param>
-        <param name="perm">a <see cref="T:System.Int32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Create a file at <see cref="T:Gnome.Vfs.Uri" /> according to mode <see cref="T:Gnome.Vfs.OpenMode" />, with permissions <see cref="T:Gnome.Vfs.FilePermissions" />. When the create has been completed <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" />.</summary>
+        <param name="uri">the <see cref="T:Gnome.Vfs.Uri" /> to create a file at.</param>
+        <param name="mode">mode to leave the file opened in after creation (or <see cref="M:Gnome.Vfs.OpenMode.None" /> to leave the file closed after creation).</param>
+        <param name="exclusive">Whether the file should be created in "exclusive" mode: i.e. if this flag is nonzero, operation will fail if a file with the same name already exists.</param>
+        <param name="perm">Bitmap representing the permissions for the newly created file (Unix style).</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete.</param>
         <returns>a <see cref="T:Gnome.Vfs.Handle" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -115,11 +184,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:System.String" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Open uri according to mode <see cref="T:Gnome.Vfs.OpenMode" />. Once the file has been successfully opened, <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" />.</summary>
+        <param name="uri">
+          <see cref="T:System.String" /> of the URI to open.</param>
+        <param name="mode">
+          <see cref="T:Gnome.Vfs.OpenMode" />.</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete.</param>
         <returns>a <see cref="T:Gnome.Vfs.Handle" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -137,11 +208,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="uri">a <see cref="T:Gnome.Vfs.Uri" /></param>
-        <param name="mode">a <see cref="T:System.Int32" /></param>
-        <param name="priority">a <see cref="T:System.Int32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Open <see cref="T:Gnome.Vfs.Uri" /> according to mode <see cref="T:Gnome.Vfs.OpenMode" />. Once the file has been successfully opened, <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" />.</summary>
+        <param name="uri">
+          <see cref="T:Gnome.Vfs.Uri" /> to open.</param>
+        <param name="mode">
+          <see cref="T:Gnome.Vfs.OpenMode" />.</param>
+        <param name="priority">a value from <see cref="M:Gnome.Vfs.Async+Priority.Min" /> to <see cref="T:Gnome.Vfs.Async+Priority.Max" /> (normally should be <see cref="T:Gnome.Vfs.Async+Priority.Default" />) indicating the priority to assign this job in allocating threads from the thread pool.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete.</param>
         <returns>a <see cref="T:Gnome.Vfs.Handle" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -159,11 +232,12 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncReadCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /></param>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="bytes">a <see cref="T:System.UInt32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncReadCallback" /></param>
+        <summary>Read number of bytes from the file pointed to by <see cref="T:Gnome.Vfs.Handle" /> into byte array buffer. When the operation is complete, <see cref="T:Gnome.Vfs.AsyncReadCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" /> of the operation.</summary>
+        <param name="handle">
+          <see cref="T:Gnome.Vfs.Handle" /> for the file to be read.</param>
+        <param name="buffer">allocated array of <see cref="T:System.Byte" /> to read into. Needs to be passed as "out buffer[0]".</param>
+        <param name="bytes">number of bytes to read.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncReadCallback" /> to be called when the operation is complete.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -180,11 +254,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /></param>
-        <param name="whence">a <see cref="T:System.Int32" /></param>
-        <param name="offset">a <see cref="T:System.Int64" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /></param>
+        <summary>Set the current position for reading/writing through <see cref="T:Gnome.Vfs.Handle" />. When the operation is complete, <see cref="T:Gnome.Vfs.AsyncCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" /> of the operation.</summary>
+        <param name="handle">
+          <see cref="T:Gnome.Vfs.Handle" /> for which the current position must be changed.</param>
+        <param name="whence">
+          <see cref="T:Gnome.Vfs.SeekPosition" /> value representing the starting position.</param>
+        <param name="offset">number of bytes to skip from the position specified by <see cref="T:Gnome.Vfs.SeekPosition" /> (a positive value means to move forward; a negative one to move backwards).</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncCallback" /> to be called when the operation is complete.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -201,22 +277,13 @@
         <Parameter Name="callback" Type="Gnome.Vfs.AsyncWriteCallback" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="handle">a <see cref="T:Gnome.Vfs.Handle" /></param>
-        <param name="buffer">a <see cref="T:System.Byte" /></param>
-        <param name="bytes">a <see cref="T:System.UInt32" /></param>
-        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncWriteCallback" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Async ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gnome.Vfs.Async" /></returns>
+        <summary>Write number of bytes from buffer byte array into the file pointed to be <see cref="T:Gnome.Vfs.Handle" />. When the operation is complete, <see cref="T:Gnome.Vfs.AsyncWriteCallback" /> will be called with the <see cref="T:Gnome.Vfs.Result" /> of the operation.</summary>
+        <param name="handle">
+          <see cref="T:Gnome.Vfs.Handle" /> for the file to be written.</param>
+        <param name="buffer">
+          <see cref="T:System.Byte" /> array containing data to be written. Needs to be passed as "out buffer[0]".</param>
+        <param name="bytes">number of bytes to write.</param>
+        <param name="callback">a <see cref="T:Gnome.Vfs.AsyncWriteCallback" /> to be called when the operation is complete.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
