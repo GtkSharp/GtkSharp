@@ -1,7 +1,7 @@
+// mcs -pkg:gtkhtml-sharp -pkg:gtk-sharp gtk-html-sample.cs
 using Gtk;
-using GtkSharp;
 using System;
-// mcs -r gtkhtml-sharp -r gtk-sharp gtk-html-sample.cs
+using System.IO;
 
 class HTMLSample {
 	static int Main (string [] args)
@@ -13,8 +13,15 @@ class HTMLSample {
 		win = new Window ("Test");
 		win.Add (html);
 		HTMLStream s = html.Begin ("text/html");
-		s.Write ("<html><body>");
-		s.Write ("Hello world!");
+
+		if (args.Length > 0){
+			StreamReader r = new StreamReader (File.OpenRead (args [0]));
+			s.Write (r.ReadToEnd ());
+		} else {
+			s.Write ("<html><body>");
+			s.Write ("Hello world!");
+		}
+		
 		html.End (s, HTMLStreamStatus.Ok);
 		win.ShowAll ();
 		Application.Run ();
