@@ -82,6 +82,11 @@ PangoFontDescription *gtksharp_gtk_style_get_font_description (GtkStyle *style);
 int gtksharp_gtk_style_get_thickness (GtkStyle *style, int x);
 
 void gtksharp_gtk_style_set_thickness (GtkStyle *style, int thickness);
+
+GdkPixmap *gtksharp_gtk_style_get_bg_pixmap (GtkStyle *style, int i);
+
+void gtksharp_gtk_style_set_bg_pixmap (GtkStyle *style, int i, GdkPixmap *pixmap);
+
 /* */
 
 /* FIXME: include all fields */
@@ -282,3 +287,16 @@ gtksharp_gtk_style_set_thickness (GtkStyle *style, int thickness)
 	else
 		style->ythickness = -thickness;
 }
+
+GdkPixmap *
+gtksharp_gtk_style_get_bg_pixmap (GtkStyle *style, int i)
+{
+	return style->bg_pixmap[i];
+}
+
+void gtksharp_gtk_style_set_bg_pixmap (GtkStyle *style, int i, GdkPixmap *pixmap)
+{
+	g_object_ref (G_OBJECT (pixmap));
+	style->bg_pixmap[i] = pixmap;
+}
+
