@@ -90,7 +90,7 @@ namespace GtkSharp.Generation {
 			Method getter = container_type.GetMethod("Get" + Name);
 			Method setter = container_type.GetMethod("Set" + Name);
 
-			if (getter != null && getter.Validate() && getter.IsGetter) {
+			if (getter != null && getter.Validate() && getter.IsGetter && getter.ReturnType == cs_type) {
 				has_getter = true;
 				getter.GenerateImport(sw);
 			}
