@@ -9,9 +9,10 @@ references = /r:../glib/glib-sharp.dll
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 assemblydir = $(libdir)
 gapidir = $(datadir)/gapi
-assembly_DATA = $(ASSEMBLY)
+assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c
+DISTCLEANFILES = $(ASSEMBLY).config
 
 sources = 
 
@@ -21,11 +22,12 @@ customs =
 
 build_customs = $(addprefix $(srcdir)/, $(customs))
 
-EXTRA_DIST =		\
-	makefile.win32	\
-	$(RAW_API)	\
-	$(METADATA)	\
-	$(customs)	\
+EXTRA_DIST =			\
+	makefile.win32		\
+	$(RAW_API)		\
+	$(ASSEMBLY).config.in	\
+	$(METADATA)		\
+	$(customs)		\
 	$(sources)
 
 $(API): $(srcdir)/$(RAW_API) $(srcdir)/$(METADATA)

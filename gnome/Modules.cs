@@ -5,9 +5,9 @@ namespace Gnome
 
 	public class Modules
 	{
-		[DllImport("libgnome-2.so.0")]
+		[DllImport("gnome-2")]
 		static extern System.IntPtr libgnome_module_info_get ();
-		[DllImport("libgnomeui-2.so.0")]
+		[DllImport("gnomeui-2")]
 		static extern System.IntPtr libgnomeui_module_info_get ();
 
 		public static ModuleInfo LibGnome {

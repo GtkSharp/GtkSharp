@@ -1,7 +1,7 @@
 SUBDIRS = glue
 
 if ENABLE_GNOME
-TARGET = $(ASSEMBLY)
+TARGET = $(ASSEMBLY) $(ASSEMBLY).config
 APIS = $(API)
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -26,7 +26,7 @@ assembly_DATA = $(TARGET)
 gapi_DATA = $(APIS)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
 
-DISTCLEANFILES = gnome-sharp.pc
+DISTCLEANFILES = gnome-sharp.pc $(ASSEMBLY).config
 
 sources =					\
 	CanvasProxy.cs				\
@@ -71,6 +71,7 @@ build_customs = $(addprefix $(srcdir)/, $(customs))
 
 EXTRA_DIST =			\
 	$(RAW_API)		\
+	$(ASSEMBLY).config.in	\
 	$(METADATA)		\
 	$(customs)		\
 	$(sources)		\

@@ -2,8 +2,9 @@ SUBDIRS = glue
 
 ASSEMBLY = glib-sharp.dll
 assemblydir = $(libdir)
-assembly_DATA = $(ASSEMBLY)
+assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 CLEANFILES = $(ASSEMBLY)
+DISTCLEANFILES = $(ASSEMBLY).config
 
 references = 
 
@@ -45,8 +46,9 @@ sources =		 			\
 build_sources = $(addprefix $(srcdir)/, $(sources))
 dist_sources = $(sources)
 
-EXTRA_DIST =					\
-	$(dist_sources)				\
+EXTRA_DIST =				\
+	$(dist_sources)			\
+	$(ASSEMBLY).config.in		\
 	makefile.win32
 
 $(ASSEMBLY): $(build_sources)

@@ -7,9 +7,10 @@ references = /r:../glib/glib-sharp.dll
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 assemblydir = $(libdir)
 gapidir = $(datadir)/gapi
-assembly_DATA = $(ASSEMBLY)
+assembly_DATA = $(ASSEMBLY) $(ASSEMBLY).config
 gapi_DATA = $(API)
 CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API)
+DISTCLEANFILES = $(ASSEMBLY).config
 
 sources = 		\
 	Scale.cs
@@ -25,11 +26,12 @@ customs =			\
 build_customs = $(addprefix $(srcdir)/, $(customs))
 dist_customs = $(customs)
 
-EXTRA_DIST =		\
-	makefile.win32	\
-	$(RAW_API)	\
-	$(METADATA)	\
-	$(dist_customs)	\
+EXTRA_DIST =			\
+	makefile.win32		\
+	$(ASSEMBLY).config.in	\
+	$(RAW_API)		\
+	$(METADATA)		\
+	$(dist_customs)		\
 	$(dist_sources)
 
 $(API): $(srcdir)/$(METADATA) $(srcdir)/$(RAW_API)

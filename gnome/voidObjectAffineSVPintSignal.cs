@@ -36,7 +36,7 @@ namespace GtkSharp {
 			inst._handler.DynamicInvoke(argv);
 		}
 
-		[DllImport("gobject-2.0")]		static extern void g_signal_connect_data(IntPtr obj, String name, voidObjectAffineSVPintDelegate cb, int key, IntPtr p, int flags);
+		[DllImport("libgobject-2.0-0.dll")]		static extern void g_signal_connect_data(IntPtr obj, String name, voidObjectAffineSVPintDelegate cb, int key, IntPtr p, int flags);
 
 		public voidObjectAffineSVPintSignal(GLib.Object obj, IntPtr raw, String name, MulticastDelegate eh, Type argstype) : base(obj, eh, argstype)
 		{
