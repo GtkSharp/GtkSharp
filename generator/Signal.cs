@@ -78,21 +78,6 @@ namespace GtkSharp.Generation {
  			sw.WriteLine ("\t\tevent " + EventHandlerQualifiedName + " " + Name + ";");
 		}
 
-		private string BaseName {
-			get {
-				string result = SymbolTable.Table.GetName (retval.CType);
-				foreach (Parameter p in parms) {
-					result += p.PassAs;
-					if (p.Generatable is ObjectGen || p.Generatable is InterfaceGen)
-						result += "Object";
-					else
-						result += SymbolTable.Table.GetName(p.CType);
-				}		 
-				result = result.Replace ("[]", "Array");
-				return result;
-			}
-		}
-
 		public string CName {
 			get {
 				return "\"" + elem.GetAttribute("cname") + "\"";
