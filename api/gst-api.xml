@@ -6,5 +6,3040 @@
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
 -->
-  <namespace name="Gst" library="gstreamer"/>
+  <namespace name="Gst" library="gstreamer">
+    <enum name="AutoplugFlags" cname="GstAutoplugFlags" type="enum">
+      <member cname="GST_AUTOPLUG_TO_CAPS" name="ToCaps"/>
+      <member cname="GST_AUTOPLUG_TO_RENDERER" name="ToRenderer"/>
+      <member cname="GST_AUTOPLUG_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="BinFlags" cname="GstBinFlags" type="enum">
+      <member cname="GST_BIN_FLAG_MANAGER" name="FlagManager"/>
+      <member cname="GST_BIN_SELF_SCHEDULABLE" name="SelfSchedulable"/>
+      <member cname="GST_BIN_FLAG_PREFER_COTHREADS" name="FlagPreferCothreads"/>
+      <member cname="GST_BIN_FLAG_FIXED_CLOCK" name="FlagFixedClock"/>
+      <member cname="GST_BIN_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="BufferFlag" cname="GstBufferFlag" type="enum">
+      <member cname="GST_BUFFER_READONLY" name="Readonly"/>
+      <member cname="GST_BUFFER_SUBBUFFER" name="Subbuffer"/>
+      <member cname="GST_BUFFER_ORIGINAL" name="Original"/>
+      <member cname="GST_BUFFER_DONTFREE" name="Dontfree"/>
+      <member cname="GST_BUFFER_DISCONTINUOUS" name="Discontinuous"/>
+      <member cname="GST_BUFFER_KEY_UNIT" name="KeyUnit"/>
+      <member cname="GST_BUFFER_PREROLL" name="Preroll"/>
+      <member cname="GST_BUFFER_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="CPUFlags" cname="GstCPUFlags" type="enum">
+      <member cname="GST_CPU_FLAG_MMX" name="Mmx"/>
+      <member cname="GST_CPU_FLAG_SSE" name="Sse"/>
+      <member cname="GST_CPU_FLAG_MMXEXT" name="Mmxext"/>
+      <member cname="GST_CPU_FLAG_3DNOW" name="ThreeDnow"/>
+    </enum>
+    <enum name="ClockReturn" cname="GstClockReturn" type="enum">
+      <member cname="GST_CLOCK_STOPPED" name="Stopped"/>
+      <member cname="GST_CLOCK_TIMEOUT" name="Timeout" value="1"/>
+      <member cname="GST_CLOCK_EARLY" name="Early" value="2"/>
+      <member cname="GST_CLOCK_ERROR" name="Error" value="3"/>
+    </enum>
+    <enum name="DataFlags" cname="GstDataFlags" type="enum">
+      <member cname="GST_DATA_READONLY" name="Readonly" value="1"/>
+      <member cname="GST_DATA_FLAG_LAST" name="FlagLast" value="8"/>
+    </enum>
+    <enum name="ElementFlags" cname="GstElementFlags" type="enum">
+      <member cname="GST_ELEMENT_COMPLEX" name="Complex"/>
+      <member cname="GST_ELEMENT_DECOUPLED" name="Decoupled"/>
+      <member cname="GST_ELEMENT_THREAD_SUGGESTED" name="ThreadSuggested"/>
+      <member cname="GST_ELEMENT_INFINITE_LOOP" name="InfiniteLoop"/>
+      <member cname="GST_ELEMENT_NEW_LOOPFUNC" name="NewLoopfunc"/>
+      <member cname="GST_ELEMENT_EVENT_AWARE" name="EventAware"/>
+      <member cname="GST_ELEMENT_USE_THREADSAFE_PROPERTIES" name="UseThreadsafeProperties"/>
+      <member cname="GST_ELEMENT_SCHEDULER_PRIVATE1" name="SchedulerPrivate1"/>
+      <member cname="GST_ELEMENT_SCHEDULER_PRIVATE2" name="SchedulerPrivate2"/>
+      <member cname="GST_ELEMENT_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="ElementState" cname="GstElementState" type="enum">
+      <member cname="GST_STATE_VOID_PENDING" name="VoidPending"/>
+      <member cname="GST_STATE_NULL" name="Null"/>
+      <member cname="GST_STATE_READY" name="Ready"/>
+      <member cname="GST_STATE_PAUSED" name="Paused"/>
+      <member cname="GST_STATE_PLAYING" name="Playing"/>
+    </enum>
+    <enum name="ElementStateReturn" cname="GstElementStateReturn" type="enum">
+      <member cname="GST_STATE_FAILURE" name="Failure"/>
+      <member cname="GST_STATE_SUCCESS" name="Success" value="1"/>
+      <member cname="GST_STATE_ASYNC" name="Async" value="2"/>
+    </enum>
+    <enum name="EventFlag" cname="GstEventFlag" type="enum">
+      <member cname="GST_EVENT_FLAG_NONE" name="EventFlagNone"/>
+      <member cname="GST_RATE_FLAG_NEGATIVE" name="RateFlagNegative"/>
+    </enum>
+    <enum name="EventType" cname="GstEventType" type="enum">
+      <member cname="GST_EVENT_UNKNOWN" name="Unknown"/>
+      <member cname="GST_EVENT_EOS" name="Eos"/>
+      <member cname="GST_EVENT_FLUSH" name="Flush"/>
+      <member cname="GST_EVENT_EMPTY" name="Empty"/>
+      <member cname="GST_EVENT_DISCONTINUOUS" name="Discontinuous"/>
+      <member cname="GST_EVENT_NEW_MEDIA" name="NewMedia"/>
+      <member cname="GST_EVENT_QOS" name="Qos"/>
+      <member cname="GST_EVENT_SEEK" name="Seek"/>
+      <member cname="GST_EVENT_SEEK_SEGMENT" name="SeekSegment"/>
+      <member cname="GST_EVENT_SEGMENT_DONE" name="SegmentDone"/>
+      <member cname="GST_EVENT_SIZE" name="Size"/>
+      <member cname="GST_EVENT_RATE" name="Rate"/>
+      <member cname="GST_EVENT_FILLER" name="Filler"/>
+    </enum>
+    <enum name="Format" cname="GstFormat" type="enum">
+      <member cname="GST_FORMAT_UNDEFINED" name="Undefined"/>
+      <member cname="GST_FORMAT_DEFAULT" name="Default" value="1"/>
+      <member cname="GST_FORMAT_BYTES" name="Bytes" value="2"/>
+      <member cname="GST_FORMAT_TIME" name="Time" value="3"/>
+      <member cname="GST_FORMAT_BUFFERS" name="Buffers" value="4"/>
+      <member cname="GST_FORMAT_PERCENT" name="Percent" value="5"/>
+      <member cname="GST_FORMAT_UNITS" name="Units" value="6"/>
+    </enum>
+    <enum name="ObjectFlags" cname="GstObjectFlags" type="enum">
+      <member cname="GST_DESTROYED" name="Destroyed"/>
+      <member cname="GST_FLOATING" name="Floating"/>
+      <member cname="GST_OBJECT_FLAG_LAST" name="ObjectFlagLast" value="4"/>
+    </enum>
+    <enum name="PadConnectReturn" cname="GstPadConnectReturn" type="enum">
+      <member cname="GST_PAD_CONNECT_REFUSED" name="Refused" value="-1"/>
+      <member cname="GST_PAD_CONNECT_DELAYED" name="Delayed"/>
+      <member cname="GST_PAD_CONNECT_OK" name="Ok" value="1"/>
+      <member cname="GST_PAD_CONNECT_DONE" name="Done" value="2"/>
+    </enum>
+    <enum name="PadDirection" cname="GstPadDirection" type="enum">
+      <member cname="GST_PAD_UNKNOWN" name="Unknown"/>
+      <member cname="GST_PAD_SRC" name="Src"/>
+      <member cname="GST_PAD_SINK" name="Sink"/>
+    </enum>
+    <enum name="PadFlags" cname="GstPadFlags" type="enum">
+      <member cname="GST_PAD_DISABLED" name="Disabled"/>
+      <member cname="GST_PAD_EOS" name="Eos"/>
+      <member cname="GST_PAD_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="PadPresence" cname="GstPadPresence" type="enum">
+      <member cname="GST_PAD_ALWAYS" name="Always"/>
+      <member cname="GST_PAD_SOMETIMES" name="Sometimes"/>
+      <member cname="GST_PAD_REQUEST" name="Request"/>
+    </enum>
+    <enum name="PadQueryType" cname="GstPadQueryType" type="enum">
+      <member cname="GST_PAD_QUERY_NONE" name="None"/>
+      <member cname="GST_PAD_QUERY_TOTAL" name="Total"/>
+      <member cname="GST_PAD_QUERY_POSITION" name="Position"/>
+      <member cname="GST_PAD_QUERY_LATENCY" name="Latency"/>
+      <member cname="GST_PAD_QUERY_JITTER" name="Jitter"/>
+      <member cname="GST_PAD_QUERY_START" name="Start"/>
+      <member cname="GST_PAD_QUERY_SEGMENT_END" name="SegmentEnd"/>
+      <member cname="GST_PAD_QUERY_RATE" name="Rate"/>
+    </enum>
+    <enum name="ParseError" cname="GstParseError" type="enum">
+      <member cname="GST_PARSE_ERROR_SYNTAX" name="Syntax"/>
+      <member cname="GST_PARSE_ERROR_NO_SUCH_ELEMENT" name="NoSuchElement"/>
+      <member cname="GST_PARSE_ERROR_NO_SUCH_PROPERTY" name="NoSuchProperty"/>
+      <member cname="GST_PARSE_ERROR_CONNECT" name="Connect"/>
+    </enum>
+    <enum name="PluginError" cname="GstPluginError" type="enum">
+      <member cname="GST_PLUGIN_ERROR_MODULE" name="Module"/>
+      <member cname="GST_PLUGIN_ERROR_DEPENDENCIES" name="Dependencies"/>
+    </enum>
+    <enum name="PropsType" cname="GstPropsType" type="enum">
+      <member cname="GST_PROPS_END_TYPE" name="EndType"/>
+      <member cname="GST_PROPS_INVALID_TYPE" name="InvalidType"/>
+      <member cname="GST_PROPS_INT_TYPE" name="IntType"/>
+      <member cname="GST_PROPS_FLOAT_TYPE" name="FloatType"/>
+      <member cname="GST_PROPS_FOURCC_TYPE" name="FourccType"/>
+      <member cname="GST_PROPS_BOOL_TYPE" name="BoolType"/>
+      <member cname="GST_PROPS_STRING_TYPE" name="StringType"/>
+      <member cname="GST_PROPS_VAR_TYPE" name="VarType"/>
+      <member cname="GST_PROPS_LIST_TYPE" name="ListType"/>
+      <member cname="GST_PROPS_GLIST_TYPE" name="GlistType"/>
+      <member cname="GST_PROPS_FLOAT_RANGE_TYPE" name="FloatRangeType"/>
+      <member cname="GST_PROPS_INT_RANGE_TYPE" name="IntRangeType"/>
+      <member cname="GST_PROPS_LAST_TYPE" name="LastType"/>
+    </enum>
+    <enum name="RegistryFlags" cname="GstRegistryFlags" type="enum">
+      <member cname="GST_REGISTRY_READABLE" name="Readable"/>
+      <member cname="GST_REGISTRY_WRITABLE" name="Writable"/>
+      <member cname="GST_REGISTRY_EXISTS" name="Exists"/>
+      <member cname="GST_REGISTRY_REMOTE" name="Remote"/>
+      <member cname="GST_REGISTRY_DELAYED_LOADING" name="DelayedLoading"/>
+    </enum>
+    <enum name="RegistryReturn" cname="GstRegistryReturn" type="enum">
+      <member cname="GST_REGISTRY_OK" name="Ok"/>
+      <member cname="GST_REGISTRY_LOAD_ERROR" name="LoadError"/>
+      <member cname="GST_REGISTRY_SAVE_ERROR" name="SaveError"/>
+      <member cname="GST_REGISTRY_PLUGIN_LOAD_ERROR" name="PluginLoadError"/>
+      <member cname="GST_REGISTRY_PLUGIN_SIGNATURE_ERROR" name="PluginSignatureError"/>
+    </enum>
+    <enum name="Result" cname="GstResult" type="enum">
+      <member cname="GST_RESULT_OK" name="Ok"/>
+      <member cname="GST_RESULT_NOK" name="Nok"/>
+      <member cname="GST_RESULT_NOT_IMPL" name="NotImpl"/>
+    </enum>
+    <enum name="SchedulerFlags" cname="GstSchedulerFlags" type="enum">
+      <member cname="GST_SCHEDULER_FLAG_FIXED_CLOCK" name="FixedClock"/>
+      <member cname="GST_SCHEDULER_FLAG_LAST" name="Last"/>
+    </enum>
+    <enum name="SchedulerState" cname="GstSchedulerState" type="enum">
+      <member cname="GST_SCHEDULER_STATE_NONE" name="None"/>
+      <member cname="GST_SCHEDULER_STATE_RUNNING" name="Running"/>
+      <member cname="GST_SCHEDULER_STATE_STOPPED" name="Stopped"/>
+      <member cname="GST_SCHEDULER_STATE_ERROR" name="Error"/>
+    </enum>
+    <enum name="SeekAccuracy" cname="GstSeekAccuracy" type="enum">
+      <member cname="GST_SEEK_CERTAIN" name="Certain"/>
+      <member cname="GST_SEEK_FUZZY" name="Fuzzy"/>
+    </enum>
+    <enum name="SeekType" cname="GstSeekType" type="enum">
+      <member cname="GST_SEEK_METHOD_CUR" name="MethodCur"/>
+      <member cname="GST_SEEK_METHOD_SET" name="MethodSet"/>
+      <member cname="GST_SEEK_METHOD_END" name="MethodEnd"/>
+      <member cname="GST_SEEK_FLAG_FLUSH" name="FlagFlush"/>
+      <member cname="GST_SEEK_FLAG_ACCURATE" name="FlagAccurate"/>
+      <member cname="GST_SEEK_FLAG_KEY_UNIT" name="FlagKeyUnit"/>
+      <member cname="GST_SEEK_FLAG_SEGMENT_LOOP" name="FlagSegmentLoop"/>
+    </enum>
+    <enum name="ThreadState" cname="GstThreadState" type="enum">
+      <member cname="GST_THREAD_STATE_STARTED" name="StateStarted"/>
+      <member cname="GST_THREAD_STATE_SPINNING" name="StateSpinning"/>
+      <member cname="GST_THREAD_STATE_REAPING" name="StateReaping"/>
+      <member cname="GST_THREAD_FLAG_LAST" name="FlagLast"/>
+    </enum>
+    <enum name="TimeCacheCertainty" cname="GstTimeCacheCertainty" type="enum">
+      <member cname="GST_TIME_CACHE_UNKNOWN" name="Unknown"/>
+      <member cname="GST_TIME_CACHE_CERTAIN" name="Certain"/>
+      <member cname="GST_TIME_CACHE_FUZZY_LOCATION" name="FuzzyLocation"/>
+      <member cname="GST_TIME_CACHE_FUZZY_TIMESTAMP" name="FuzzyTimestamp"/>
+      <member cname="GST_TIME_CACHE_FUZZY" name="Fuzzy"/>
+    </enum>
+    <callback name="BinPrePostIterateFunction" cname="GstBinPrePostIterateFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstBin*" name="bin"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="BufferPoolBufferCopyFunction" cname="GstBufferPoolBufferCopyFunction">
+      <return-type type="GstBuffer*"/>
+      <parameters>
+        <parameter type="GstBufferPool*" name="pool"/>
+        <parameter type="const-GstBuffer*" name="buffer"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <callback name="BufferPoolBufferFreeFunction" cname="GstBufferPoolBufferFreeFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstBufferPool*" name="pool"/>
+        <parameter type="GstBuffer*" name="buffer"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <callback name="BufferPoolBufferNewFunction" cname="GstBufferPoolBufferNewFunction">
+      <return-type type="GstBuffer*"/>
+      <parameters>
+        <parameter type="GstBufferPool*" name="pool"/>
+        <parameter type="guint64" name="offset"/>
+        <parameter type="guint" name="size"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <callback name="ClockCallback" cname="GstClockCallback">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstClock*" name="clock"/>
+        <parameter type="GstClockTime" name="time"/>
+        <parameter type="GstClockID" name="id"/>
+        <parameter type="gpointer" name="user_data"/>
+      </parameters>
+    </callback>
+    <callback name="DataCopyFunction" cname="GstDataCopyFunction">
+      <return-type type="GstData*"/>
+      <parameters>
+        <parameter type="const-GstData*" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="DataFreeFunction" cname="GstDataFreeFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstData*" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="ElementGetClockFunction" cname="GstElementGetClockFunction">
+      <return-type type="GstClock*"/>
+      <parameters>
+        <parameter type="GstElement*" name="element"/>
+      </parameters>
+    </callback>
+    <callback name="ElementLoopFunction" cname="GstElementLoopFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstElement*" name="element"/>
+      </parameters>
+    </callback>
+    <callback name="ElementPostRunFunction" cname="GstElementPostRunFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstElement*" name="element"/>
+      </parameters>
+    </callback>
+    <callback name="ElementPreRunFunction" cname="GstElementPreRunFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstElement*" name="element"/>
+      </parameters>
+    </callback>
+    <callback name="ElementSetClockFunction" cname="GstElementSetClockFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstElement*" name="element"/>
+        <parameter type="GstClock*" name="clock"/>
+      </parameters>
+    </callback>
+    <callback name="PadBufferPoolFunction" cname="GstPadBufferPoolFunction">
+      <return-type type="GstBufferPool*"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+      </parameters>
+    </callback>
+    <callback name="PadChainFunction" cname="GstPadChainFunction">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstBuffer*" name="buf"/>
+      </parameters>
+    </callback>
+    <callback name="PadConnectFunction" cname="GstPadConnectFunction">
+      <return-type type="GstPadConnectReturn"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstCaps*" name="caps"/>
+      </parameters>
+    </callback>
+    <callback name="PadConvertFunction" cname="GstPadConvertFunction">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstFormat" name="src_format"/>
+        <parameter type="gint64" name="src_value"/>
+        <parameter type="GstFormat*" name="dest_format"/>
+        <parameter type="gint64*" name="dest_value"/>
+      </parameters>
+    </callback>
+    <callback name="PadDispatcherFunction" cname="GstPadDispatcherFunction">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="PadEventFunction" cname="GstPadEventFunction">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstEvent*" name="event"/>
+      </parameters>
+    </callback>
+    <callback name="PadGetCapsFunction" cname="GstPadGetCapsFunction">
+      <return-type type="GstCaps*"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstCaps*" name="caps"/>
+      </parameters>
+    </callback>
+    <callback name="PadGetFunction" cname="GstPadGetFunction">
+      <return-type type="GstBuffer*"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+      </parameters>
+    </callback>
+    <callback name="PadIntConnFunction" cname="GstPadIntConnFunction">
+      <return-type type="GList*"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+      </parameters>
+    </callback>
+    <callback name="PadQueryFunction" cname="GstPadQueryFunction">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GstPad*" name="pad"/>
+        <parameter type="GstPadQueryType" name="type"/>
+        <parameter type="GstFormat*" name="format"/>
+        <parameter type="gint64*" name="value"/>
+      </parameters>
+    </callback>
+    <callback name="PluginInitFunc" cname="GstPluginInitFunc">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="GModule*" name="module"/>
+        <parameter type="GstPlugin*" name="plugin"/>
+      </parameters>
+    </callback>
+    <callback name="TypeFindFunc" cname="GstTypeFindFunc">
+      <return-type type="GstCaps*"/>
+      <parameters>
+        <parameter type="GstBuffer*" name="buf"/>
+        <parameter type="gpointer" name="priv"/>
+      </parameters>
+    </callback>
+    <object name="Autoplug" cname="GstAutoplug" parent="GstObject">
+      <signal name="NewObject" cname="new_object" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstAutoplug*" name="autoplug"/>
+          <parameter type="GstObject*" name="object"/>
+        </parameters>
+      </signal>
+      <method name="GetType" cname="gst_autoplug_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="SignalNewObject" cname="gst_autoplug_signal_new_object">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+        </parameters>
+      </method>
+      <method name="ToCaps" cname="gst_autoplug_to_caps">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="GstCaps*" name="srccaps"/>
+          <parameter type="GstCaps*" name="sinkcaps"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="ToRenderers" cname="gst_autoplug_to_renderers">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="GstCaps*" name="srccaps"/>
+          <parameter type="GstElement*" name="target"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="AutoplugFactory" cname="GstAutoplugFactory" parent="GstPluginFeature">
+      <field cname="longdesc" type="gchar*"/>
+      <field cname="type" type="GType"/>
+      <method name="Create" cname="gst_autoplug_factory_create">
+        <return-type type="GstAutoplug*"/>
+      </method>
+      <method name="Destroy" cname="gst_autoplug_factory_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Find" cname="gst_autoplug_factory_find" shared="true">
+        <return-type type="GstAutoplugFactory*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_autoplug_factory_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Make" cname="gst_autoplug_factory_make" shared="true">
+        <return-type type="GstAutoplug*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_autoplug_factory_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="longdesc"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Bin" cname="GstBin" parent="GstElement">
+      <field cname="numchildren" type="gint"/>
+      <field cname="children" type="GList*"/>
+      <field cname="iterate_mutex" type="GMutex*"/>
+      <field cname="iterate_cond" type="GCond*"/>
+      <field cname="child_states" array_len="GST_NUM_STATES" type="GstElementState"/>
+      <field cname="sched_private" type="gpointer"/>
+      <field cname="pre_iterate_func" type="GstBinPrePostIterateFunction"/>
+      <field cname="post_iterate_func" type="GstBinPrePostIterateFunction"/>
+      <field cname="pre_iterate_private" type="gpointer"/>
+      <field cname="post_iterate_private" type="gpointer"/>
+      <signal name="ObjectAdded" cname="object_added" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="GstObject*" name="child"/>
+        </parameters>
+      </signal>
+      <method name="Add" cname="gst_bin_add">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="AddMany" cname="gst_bin_add_many">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element_1"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="AutoClock" cname="gst_bin_auto_clock">
+        <return-type type="void"/>
+      </method>
+      <method name="ChildStateChange" cname="gst_bin_child_state_change">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElementState" name="oldstate"/>
+          <parameter type="GstElementState" name="newstate"/>
+          <parameter type="GstElement*" name="child"/>
+        </parameters>
+      </method>
+      <method name="GetByName" cname="gst_bin_get_by_name">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetByNameRecurseUp" cname="gst_bin_get_by_name_recurse_up">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetClock" cname="gst_bin_get_clock">
+        <return-type type="GstClock*"/>
+      </method>
+      <method name="GetList" cname="gst_bin_get_list">
+        <return-type type="const-GList*"/>
+      </method>
+      <method name="GetType" cname="gst_bin_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Iterate" cname="gst_bin_iterate">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gst_bin_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </constructor>
+      <method name="Remove" cname="gst_bin_remove">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="SetPostIterateFunction" cname="gst_bin_set_post_iterate_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstBinPrePostIterateFunction" name="func"/>
+          <parameter type="gpointer" name="func_data"/>
+        </parameters>
+      </method>
+      <method name="SetPreIterateFunction" cname="gst_bin_set_pre_iterate_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstBinPrePostIterateFunction" name="func"/>
+          <parameter type="gpointer" name="func_data"/>
+        </parameters>
+      </method>
+      <method name="UseClock" cname="gst_bin_use_clock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClock*" name="clock"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Clock" cname="GstClock" parent="GstObject">
+      <field cname="start_time" type="GstClockTime"/>
+      <field cname="last_time" type="GstClockTime"/>
+      <field cname="accept_discont" type="gboolean"/>
+      <field cname="speed" type="gdouble"/>
+      <field cname="active" type="gboolean"/>
+      <field cname="entries" type="GList*"/>
+      <field cname="async_supported" type="gboolean"/>
+      <field cname="active_mutex" type="GMutex*"/>
+      <field cname="active_cond" type="GCond*"/>
+      <method name="AsyncSupported" cname="gst_clock_async_supported">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="CancelWaitAsync" cname="gst_clock_cancel_wait_async">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClockID" name="id"/>
+        </parameters>
+      </method>
+      <method name="GetNextId" cname="gst_clock_get_next_id">
+        <return-type type="GstClockID"/>
+      </method>
+      <method name="GetResolution" cname="gst_clock_get_resolution">
+        <return-type type="guint64"/>
+      </method>
+      <method name="GetSpeed" cname="gst_clock_get_speed">
+        <return-type type="gdouble"/>
+      </method>
+      <method name="GetTime" cname="gst_clock_get_time">
+        <return-type type="GstClockTime"/>
+      </method>
+      <method name="GetType" cname="gst_clock_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="HandleDiscont" cname="gst_clock_handle_discont">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guint64" name="time"/>
+        </parameters>
+      </method>
+      <method name="IdGetTime" cname="gst_clock_id_get_time" shared="true">
+        <return-type type="GstClockTime"/>
+        <parameters>
+          <parameter type="GstClockID" name="id"/>
+        </parameters>
+      </method>
+      <method name="IsActive" cname="gst_clock_is_active">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="NotifyAsync" cname="gst_clock_notify_async">
+        <return-type type="GstClockID"/>
+        <parameters>
+          <parameter type="GstClockTime" name="interval"/>
+          <parameter type="GstClockCallback" name="func"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="RemoveNotifyAsync" cname="gst_clock_remove_notify_async">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClockID" name="id"/>
+        </parameters>
+      </method>
+      <method name="Reset" cname="gst_clock_reset">
+        <return-type type="void"/>
+      </method>
+      <method name="SetActive" cname="gst_clock_set_active">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="active"/>
+        </parameters>
+      </method>
+      <method name="SetResolution" cname="gst_clock_set_resolution">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint64" name="resolution"/>
+        </parameters>
+      </method>
+      <method name="SetSpeed" cname="gst_clock_set_speed">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gdouble" name="speed"/>
+        </parameters>
+      </method>
+      <method name="UnlockId" cname="gst_clock_unlock_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClockID" name="id"/>
+        </parameters>
+      </method>
+      <method name="Wait" cname="gst_clock_wait">
+        <return-type type="GstClockReturn"/>
+        <parameters>
+          <parameter type="GstClockTime" name="time"/>
+          <parameter type="GstClockTimeDiff*" name="jitter"/>
+        </parameters>
+      </method>
+      <method name="WaitAsync" cname="gst_clock_wait_async">
+        <return-type type="GstClockID"/>
+        <parameters>
+          <parameter type="GstClockTime" name="time"/>
+          <parameter type="GstClockCallback" name="func"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+      <method name="WaitId" cname="gst_clock_wait_id">
+        <return-type type="GstClockReturn"/>
+        <parameters>
+          <parameter type="GstClockID" name="id"/>
+          <parameter type="GstClockTimeDiff*" name="jitter"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Element" cname="GstElement" parent="GstObject">
+      <field cname="current_state" type="guint8"/>
+      <field cname="pending_state" type="guint8"/>
+      <field cname="manager" type="GstElement*"/>
+      <field cname="loopfunc" type="GstElementLoopFunction"/>
+      <field cname="sched" type="GstScheduler*"/>
+      <field cname="sched_private" type="gpointer"/>
+      <field cname="setclockfunc" type="GstElementSetClockFunction"/>
+      <field cname="getclockfunc" type="GstElementGetClockFunction"/>
+      <field cname="clock" type="GstClock*"/>
+      <field cname="numpads" type="guint16"/>
+      <field cname="numsrcpads" type="guint16"/>
+      <field cname="numsinkpads" type="guint16"/>
+      <field cname="pads" type="GList*"/>
+      <field cname="select_pad" type="GstPad*"/>
+      <field cname="state_mutex" type="GMutex*"/>
+      <field cname="state_cond" type="GCond*"/>
+      <field cname="pre_run_func" type="GstElementPreRunFunction"/>
+      <field cname="post_run_func" type="GstElementPostRunFunction"/>
+      <field cname="prop_value_queue" type="GAsyncQueue*"/>
+      <field cname="property_mutex" type="GMutex*"/>
+      <signal name="StateChange" cname="state_change" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="GstElementState" name="old"/>
+          <parameter type="GstElementState" name="state"/>
+        </parameters>
+      </signal>
+      <signal name="NewPad" cname="new_pad" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </signal>
+      <signal name="PadRemoved" cname="pad_removed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </signal>
+      <signal name="Error" cname="error" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="GstElement*" name="source"/>
+          <parameter type="gchar*" name="error"/>
+        </parameters>
+      </signal>
+      <signal name="Eos" cname="eos" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </signal>
+      <signal name="DeepNotify" cname="deep_notify" when="FIRST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="GstObject*" name="orig"/>
+          <parameter type="GParamSpec*" name="pspec"/>
+        </parameters>
+      </signal>
+      <method name="AddGhostPad" cname="gst_element_add_ghost_pad">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="AddPad" cname="gst_element_add_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </method>
+      <method name="ClassAddPadTemplate" cname="gst_element_class_add_pad_template" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElementClass*" name="klass"/>
+          <parameter type="GstPadTemplate*" name="templ"/>
+        </parameters>
+      </method>
+      <method name="ClassInstallStdProps" cname="gst_element_class_install_std_props" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElementClass*" name="klass"/>
+          <parameter type="const-gchar*" name="first_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="ClockWait" cname="gst_element_clock_wait">
+        <return-type type="GstClockReturn"/>
+        <parameters>
+          <parameter type="GstClock*" name="clock"/>
+          <parameter type="GstClockTime" name="time"/>
+          <parameter type="GstClockTimeDiff*" name="jitter"/>
+        </parameters>
+      </method>
+      <method name="Connect" cname="gst_element_connect">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstElement*" name="dest"/>
+        </parameters>
+      </method>
+      <method name="ConnectFiltered" cname="gst_element_connect_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstElement*" name="dest"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="ConnectMany" cname="gst_element_connect_many">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstElement*" name="element_2"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="ConnectPads" cname="gst_element_connect_pads">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="srcpadname"/>
+          <parameter type="GstElement*" name="dest"/>
+          <parameter type="const-gchar*" name="destpadname"/>
+        </parameters>
+      </method>
+      <method name="ConnectPadsFiltered" cname="gst_element_connect_pads_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="srcpadname"/>
+          <parameter type="GstElement*" name="dest"/>
+          <parameter type="const-gchar*" name="destpadname"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="DefaultDeepNotify" cname="gst_element_default_deep_notify" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GObject*" name="object"/>
+          <parameter type="GstObject*" name="orig"/>
+          <parameter type="GParamSpec*" name="pspec"/>
+          <parameter type="gchar**" name="excluded_props"/>
+        </parameters>
+      </method>
+      <method name="DefaultError" cname="gst_element_default_error" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GObject*" name="object"/>
+          <parameter type="GstObject*" name="orig"/>
+          <parameter type="gchar*" name="error"/>
+        </parameters>
+      </method>
+      <method name="DisableThreadsafeProperties" cname="gst_element_disable_threadsafe_properties">
+        <return-type type="void"/>
+      </method>
+      <method name="Disconnect" cname="gst_element_disconnect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="dest"/>
+        </parameters>
+      </method>
+      <method name="DisconnectMany" cname="gst_element_disconnect_many">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element_2"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="DisconnectPads" cname="gst_element_disconnect_pads">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="srcpadname"/>
+          <parameter type="GstElement*" name="dest"/>
+          <parameter type="const-gchar*" name="destpadname"/>
+        </parameters>
+      </method>
+      <method name="EnableThreadsafeProperties" cname="gst_element_enable_threadsafe_properties">
+        <return-type type="void"/>
+      </method>
+      <method name="Error" cname="gst_element_error">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="error"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Get" cname="gst_element_get">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_property_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="GetClock" cname="gst_element_get_clock">
+        <return-type type="GstClock*"/>
+      </method>
+      <method name="GetCompatiblePad" cname="gst_element_get_compatible_pad">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </method>
+      <method name="GetCompatiblePadFiltered" cname="gst_element_get_compatible_pad_filtered">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="GetCompatiblePadTemplate" cname="gst_element_get_compatible_pad_template">
+        <return-type type="GstPadTemplate*"/>
+        <parameters>
+          <parameter type="GstPadTemplate*" name="compattempl"/>
+        </parameters>
+      </method>
+      <method name="GetFactory" cname="gst_element_get_factory">
+        <return-type type="GstElementFactory*"/>
+      </method>
+      <method name="GetManagingBin" cname="gst_element_get_managing_bin">
+        <return-type type="GstBin*"/>
+      </method>
+      <method name="GetName" cname="gst_element_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPad" cname="gst_element_get_pad">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetPadList" cname="gst_element_get_pad_list">
+        <return-type type="const-GList*"/>
+      </method>
+      <method name="GetPadTemplate" cname="gst_element_get_pad_template">
+        <return-type type="GstPadTemplate*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetPadTemplateList" cname="gst_element_get_pad_template_list">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetParent" cname="gst_element_get_parent">
+        <return-type type="GstObject*"/>
+      </method>
+      <method name="GetProperty" cname="gst_element_get_property">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="property_name"/>
+          <parameter type="GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="GetRequestPad" cname="gst_element_get_request_pad">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetScheduler" cname="gst_element_get_scheduler">
+        <return-type type="GstScheduler*"/>
+      </method>
+      <method name="GetState" cname="gst_element_get_state">
+        <return-type type="GstElementState"/>
+      </method>
+      <method name="GetStaticPad" cname="gst_element_get_static_pad">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_element_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetValist" cname="gst_element_get_valist">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_property_name"/>
+          <parameter type="va_list" name="var_args"/>
+        </parameters>
+      </method>
+      <method name="Interrupt" cname="gst_element_interrupt">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Query" cname="gst_element_query">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPadQueryType" name="type"/>
+          <parameter type="GstFormat*" name="format"/>
+          <parameter type="gint64*" name="value"/>
+        </parameters>
+      </method>
+      <method name="ReleaseLocks" cname="gst_element_release_locks">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="ReleaseRequestPad" cname="gst_element_release_request_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </method>
+      <method name="RemoveGhostPad" cname="gst_element_remove_ghost_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </method>
+      <method name="RemovePad" cname="gst_element_remove_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </method>
+      <method name="SendEvent" cname="gst_element_send_event">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="Set" cname="gst_element_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_property_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="SetClock" cname="gst_element_set_clock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClock*" name="clock"/>
+        </parameters>
+      </method>
+      <method name="SetEos" cname="gst_element_set_eos">
+        <return-type type="void"/>
+      </method>
+      <method name="SetLoopFunction" cname="gst_element_set_loop_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElementLoopFunction" name="loop"/>
+        </parameters>
+      </method>
+      <method name="SetName" cname="gst_element_set_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="SetParent" cname="gst_element_set_parent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="SetPendingProperties" cname="gst_element_set_pending_properties">
+        <return-type type="void"/>
+      </method>
+      <method name="SetProperty" cname="gst_element_set_property">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="property_name"/>
+          <parameter type="const-GValue*" name="value"/>
+        </parameters>
+      </method>
+      <method name="SetScheduler" cname="gst_element_set_scheduler">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstScheduler*" name="sched"/>
+        </parameters>
+      </method>
+      <method name="SetState" cname="gst_element_set_state">
+        <return-type type="GstElementStateReturn"/>
+        <parameters>
+          <parameter type="GstElementState" name="state"/>
+        </parameters>
+      </method>
+      <method name="SetValist" cname="gst_element_set_valist">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="first_property_name"/>
+          <parameter type="va_list" name="var_args"/>
+        </parameters>
+      </method>
+      <method name="WaitStateChange" cname="gst_element_wait_state_change">
+        <return-type type="void"/>
+      </method>
+      <method name="Yield" cname="gst_element_yield">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="ElementFactory" cname="GstElementFactory" parent="GstPluginFeature">
+      <field cname="type" type="GType"/>
+      <field cname="details_dynamic" bits="1" type="guint"/>
+      <field cname="details" type="GstElementDetails*"/>
+      <field cname="padtemplates" type="GList*"/>
+      <field cname="numpadtemplates" type="guint16"/>
+      <field cname="rank" type="guint16"/>
+      <method name="AddPadTemplate" cname="gst_element_factory_add_pad_template">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadTemplate*" name="templ"/>
+        </parameters>
+      </method>
+      <method name="CanSinkCaps" cname="gst_element_factory_can_sink_caps">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstCaps*" name="caps"/>
+        </parameters>
+      </method>
+      <method name="CanSrcCaps" cname="gst_element_factory_can_src_caps">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstCaps*" name="caps"/>
+        </parameters>
+      </method>
+      <method name="Create" cname="gst_element_factory_create">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="Find" cname="gst_element_factory_find" shared="true">
+        <return-type type="GstElementFactory*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_element_factory_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Make" cname="gst_element_factory_make" shared="true">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="factoryname"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="MakeOrWarn" cname="gst_element_factory_make_or_warn" shared="true">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="factoryname"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_element_factory_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GType" name="type"/>
+          <parameter type="GstElementDetails*" name="details"/>
+        </parameters>
+      </constructor>
+      <method name="SetRank" cname="gst_element_factory_set_rank">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint16" name="rank"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="GhostPad" cname="GstGhostPad" parent="GstPad">
+      <field cname="realpad" type="GstRealPad*"/>
+      <method name="GetType" cname="gst_ghost_pad_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_ghost_pad_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </constructor>
+      <method name="SaveThyself" cname="gst_ghost_pad_save_thyself" shared="true">
+        <return-type type="xmlNodePtr"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Object" cname="GstObject" parent="GObject">
+      <field cname="name" type="gchar*"/>
+      <field cname="lock" type="GMutex*"/>
+      <field cname="parent" type="GstObject*"/>
+      <field cname="flags" type="guint32"/>
+      <property name="Name" cname="name" type="gchar*" doc-string="The name of the object" readable="true" writeable="true"/>
+      <signal name="ParentSet" cname="parent_set" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </signal>
+      <signal name="ParentUnset" cname="parent_unset" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </signal>
+      <signal name="ObjectSaved" cname="object_saved" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </signal>
+      <method name="CheckUniqueness" cname="gst_object_check_uniqueness" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GList*" name="list"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="gst_object_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="GetName" cname="gst_object_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetParent" cname="gst_object_get_parent">
+        <return-type type="GstObject*"/>
+      </method>
+      <method name="GetPathString" cname="gst_object_get_path_string">
+        <return-type type="gchar*"/>
+      </method>
+      <method name="GetType" cname="gst_object_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="RestoreThyself" cname="gst_object_restore_thyself">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="self"/>
+        </parameters>
+      </method>
+      <method name="SaveThyself" cname="gst_object_save_thyself">
+        <return-type type="xmlNodePtr"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+      <method name="SetName" cname="gst_object_set_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="SetParent" cname="gst_object_set_parent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="Sink" cname="gst_object_sink">
+        <return-type type="void"/>
+      </method>
+      <method name="Unparent" cname="gst_object_unparent">
+        <return-type type="void"/>
+      </method>
+      <method name="Unref" cname="gst_object_unref">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="Pad" cname="GstPad" parent="GstObject">
+      <field cname="element_private" type="gpointer"/>
+      <field cname="padtemplate" type="GstPadTemplate*"/>
+      <method name="AddGhostPad" cname="gst_pad_add_ghost_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="ghostpad"/>
+        </parameters>
+      </method>
+      <method name="CanConnect" cname="gst_pad_can_connect">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="CanConnectFiltered" cname="gst_pad_can_connect_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="CheckCompatibility" cname="gst_pad_check_compatibility">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="Connect" cname="gst_pad_connect">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="ConnectFiltered" cname="gst_pad_connect_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="Convert" cname="gst_pad_convert">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstFormat" name="src_format"/>
+          <parameter type="gint64" name="src_value"/>
+          <parameter type="GstFormat*" name="dest_format"/>
+          <parameter type="gint64*" name="dest_value"/>
+        </parameters>
+      </method>
+      <method name="ConvertDefault" cname="gst_pad_convert_default">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstFormat" name="src_format"/>
+          <parameter type="gint64" name="src_value"/>
+          <parameter type="GstFormat*" name="dest_format"/>
+          <parameter type="gint64*" name="dest_value"/>
+        </parameters>
+      </method>
+      <method name="CustomNew" cname="gst_pad_custom_new" shared="true">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GstPadDirection" name="direction"/>
+        </parameters>
+      </method>
+      <method name="CustomNewFromTemplate" cname="gst_pad_custom_new_from_template" shared="true">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="GstPadTemplate*" name="templ"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="Disconnect" cname="gst_pad_disconnect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="Dispatcher" cname="gst_pad_dispatcher">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPadDispatcherFunction" name="dispatch"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="EventDefault" cname="gst_pad_event_default">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="GetAllowedCaps" cname="gst_pad_get_allowed_caps">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="GetBufferpool" cname="gst_pad_get_bufferpool">
+        <return-type type="GstBufferPool*"/>
+      </method>
+      <method name="GetCaps" cname="gst_pad_get_caps">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="GetDirection" cname="gst_pad_get_direction">
+        <return-type type="GstPadDirection"/>
+      </method>
+      <method name="GetElementPrivate" cname="gst_pad_get_element_private">
+        <return-type type="gpointer"/>
+      </method>
+      <method name="GetEventMasks" cname="gst_pad_get_event_masks">
+        <return-type type="const-GstEventMask*"/>
+      </method>
+      <method name="GetEventMasksDefault" cname="gst_pad_get_event_masks_default">
+        <return-type type="const-GstEventMask*"/>
+      </method>
+      <method name="GetFormats" cname="gst_pad_get_formats">
+        <return-type type="const-GstFormat*"/>
+      </method>
+      <method name="GetFormatsDefault" cname="gst_pad_get_formats_default">
+        <return-type type="const-GstFormat*"/>
+      </method>
+      <method name="GetGhostPadList" cname="gst_pad_get_ghost_pad_list">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetInternalConnections" cname="gst_pad_get_internal_connections">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetInternalConnectionsDefault" cname="gst_pad_get_internal_connections_default">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetName" cname="gst_pad_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetPadTemplate" cname="gst_pad_get_pad_template">
+        <return-type type="GstPadTemplate*"/>
+      </method>
+      <method name="GetPadTemplateCaps" cname="gst_pad_get_pad_template_caps">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="GetParent" cname="gst_pad_get_parent">
+        <return-type type="GstElement*"/>
+      </method>
+      <method name="GetPeer" cname="gst_pad_get_peer">
+        <return-type type="GstPad*"/>
+      </method>
+      <method name="GetQueryTypes" cname="gst_pad_get_query_types">
+        <return-type type="const-GstPadQueryType*"/>
+      </method>
+      <method name="GetQueryTypesDefault" cname="gst_pad_get_query_types_default">
+        <return-type type="const-GstPadQueryType*"/>
+      </method>
+      <method name="GetRealParent" cname="gst_pad_get_real_parent">
+        <return-type type="GstElement*"/>
+      </method>
+      <method name="GetScheduler" cname="gst_pad_get_scheduler">
+        <return-type type="GstScheduler*"/>
+      </method>
+      <method name="GetType" cname="gst_pad_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="HandlesEvent" cname="gst_pad_handles_event">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstEventMask*" name="mask"/>
+        </parameters>
+      </method>
+      <method name="HandlesFormat" cname="gst_pad_handles_format">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstFormat" name="format"/>
+        </parameters>
+      </method>
+      <method name="IsActive" cname="gst_pad_is_active">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LoadAndConnect" cname="gst_pad_load_and_connect" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="self"/>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_pad_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GstPadDirection" name="direction"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_pad_new_from_template">
+        <parameters>
+          <parameter type="GstPadTemplate*" name="templ"/>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </constructor>
+      <method name="PerformNegotiate" cname="gst_pad_perform_negotiate">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="ProxyConnect" cname="gst_pad_proxy_connect">
+        <return-type type="GstPadConnectReturn"/>
+        <parameters>
+          <parameter type="GstCaps*" name="caps"/>
+        </parameters>
+      </method>
+      <method name="Pull" cname="gst_pad_pull">
+        <return-type type="GstBuffer*"/>
+      </method>
+      <method name="Push" cname="gst_pad_push">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstBuffer*" name="buf"/>
+        </parameters>
+      </method>
+      <method name="Query" cname="gst_pad_query">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPadQueryType" name="type"/>
+          <parameter type="GstFormat*" name="format"/>
+          <parameter type="gint64*" name="value"/>
+        </parameters>
+      </method>
+      <method name="QueryDefault" cname="gst_pad_query_default">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPadQueryType" name="type"/>
+          <parameter type="GstFormat*" name="format"/>
+          <parameter type="gint64*" name="value"/>
+        </parameters>
+      </method>
+      <method name="RecalcAllowedCaps" cname="gst_pad_recalc_allowed_caps">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="ReconnectFiltered" cname="gst_pad_reconnect_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="RemoveGhostPad" cname="gst_pad_remove_ghost_pad">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="ghostpad"/>
+        </parameters>
+      </method>
+      <method name="Select" cname="gst_pad_select" shared="true">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GList*" name="padlist"/>
+        </parameters>
+      </method>
+      <method name="Selectv" cname="gst_pad_selectv">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="SendEvent" cname="gst_pad_send_event">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstEvent*" name="event"/>
+        </parameters>
+      </method>
+      <method name="SetActive" cname="gst_pad_set_active">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="active"/>
+        </parameters>
+      </method>
+      <method name="SetBufferpoolFunction" cname="gst_pad_set_bufferpool_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadBufferPoolFunction" name="bufpool"/>
+        </parameters>
+      </method>
+      <method name="SetChainFunction" cname="gst_pad_set_chain_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadChainFunction" name="chain"/>
+        </parameters>
+      </method>
+      <method name="SetConnectFunction" cname="gst_pad_set_connect_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadConnectFunction" name="connect"/>
+        </parameters>
+      </method>
+      <method name="SetConvertFunction" cname="gst_pad_set_convert_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadConvertFunction" name="convert"/>
+        </parameters>
+      </method>
+      <method name="SetElementPrivate" cname="gst_pad_set_element_private">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="priv"/>
+        </parameters>
+      </method>
+      <method name="SetEventFunction" cname="gst_pad_set_event_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadEventFunction" name="event"/>
+        </parameters>
+      </method>
+      <method name="SetEventMaskFunction" cname="gst_pad_set_event_mask_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadEventMaskFunction" name="mask_func"/>
+        </parameters>
+      </method>
+      <method name="SetFormatsFunction" cname="gst_pad_set_formats_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadFormatsFunction" name="format"/>
+        </parameters>
+      </method>
+      <method name="SetGetFunction" cname="gst_pad_set_get_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadGetFunction" name="get"/>
+        </parameters>
+      </method>
+      <method name="SetGetcapsFunction" cname="gst_pad_set_getcaps_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadGetCapsFunction" name="getcaps"/>
+        </parameters>
+      </method>
+      <method name="SetInternalConnectionFunction" cname="gst_pad_set_internal_connection_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadIntConnFunction" name="intconn"/>
+        </parameters>
+      </method>
+      <method name="SetName" cname="gst_pad_set_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="SetParent" cname="gst_pad_set_parent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="SetQueryFunction" cname="gst_pad_set_query_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadQueryFunction" name="query"/>
+        </parameters>
+      </method>
+      <method name="SetQueryTypeFunction" cname="gst_pad_set_query_type_function">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadQueryTypeFunction" name="type_function"/>
+        </parameters>
+      </method>
+      <method name="TryReconnectFiltered" cname="gst_pad_try_reconnect_filtered">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPad*" name="sinkpad"/>
+          <parameter type="GstCaps*" name="filtercaps"/>
+        </parameters>
+      </method>
+      <method name="TrySetCaps" cname="gst_pad_try_set_caps">
+        <return-type type="GstPadConnectReturn"/>
+        <parameters>
+          <parameter type="GstCaps*" name="caps"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="PadTemplate" cname="GstPadTemplate" parent="GstObject">
+      <field cname="name_template" type="gchar*"/>
+      <field cname="direction" type="GstPadDirection"/>
+      <field cname="presence" type="GstPadPresence"/>
+      <field cname="caps" type="GstCaps*"/>
+      <field cname="fixed" type="gboolean"/>
+      <signal name="PadCreated" cname="pad_created" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPadTemplate*" name="templ"/>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </signal>
+      <method name="GetCaps" cname="gst_pad_template_get_caps">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="GetCapsByName" cname="gst_pad_template_get_caps_by_name">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_pad_template_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_pad_template_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name_template"/>
+          <parameter type="GstPadDirection" name="direction"/>
+          <parameter type="GstPadPresence" name="presence"/>
+          <parameter type="GstCaps*" name="caps"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="Pipeline" cname="GstPipeline" parent="GstBin">
+      <method name="GetType" cname="gst_pipeline_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_pipeline_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="PluginFeature" cname="GstPluginFeature" parent="GObject">
+      <field cname="name" type="gchar*"/>
+      <field cname="manager" type="gpointer"/>
+      <method name="EnsureLoaded" cname="gst_plugin_feature_ensure_loaded">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetType" cname="gst_plugin_feature_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="UnloadThyself" cname="gst_plugin_feature_unload_thyself">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="Queue" cname="GstQueue" parent="GstElement">
+      <field cname="sinkpad" type="GstPad*"/>
+      <field cname="srcpad" type="GstPad*"/>
+      <field cname="queue" type="GQueue*"/>
+      <field cname="level_buffers" type="guint"/>
+      <field cname="level_bytes" type="guint"/>
+      <field cname="level_time" type="guint64"/>
+      <field cname="size_buffers" type="guint"/>
+      <field cname="size_bytes" type="guint"/>
+      <field cname="size_time" type="guint64"/>
+      <field cname="leaky" type="gint"/>
+      <field cname="block_timeout" type="gint"/>
+      <field cname="may_deadlock" type="gboolean"/>
+      <field cname="interrupt" type="gboolean"/>
+      <field cname="flush" type="gboolean"/>
+      <field cname="qlock" type="GMutex*"/>
+      <field cname="reader" type="gboolean"/>
+      <field cname="writer" type="gboolean"/>
+      <field cname="not_empty" type="GCond*"/>
+      <field cname="not_full" type="GCond*"/>
+      <field cname="timeval" type="GTimeVal*"/>
+      <field cname="events" type="GAsyncQueue*"/>
+      <property name="Leaky" cname="leaky" type="GstQueueLeaky" doc-string="Where the queue leaks, if at all." readable="true" writeable="true"/>
+      <property name="Level" cname="level" type="gint" doc-string="How many buffers are in the queue." readable="true"/>
+      <property name="MaxLevel" cname="max_level" type="gint" doc-string="How many buffers the queue holds." readable="true" writeable="true"/>
+      <property name="MayDeadlock" cname="may_deadlock" type="gboolean" doc-string="The queue may deadlock if it's full and not PLAYING" readable="true" writeable="true"/>
+      <property name="BlockTimeout" cname="block_timeout" type="gint" doc-string="Microseconds until blocked queue times out and returns filler event.Value of -1 disables timeout" readable="true" writeable="true"/>
+      <method name="GetType" cname="gst_queue_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="RealPad" cname="GstRealPad" parent="GstPad">
+      <field cname="caps" type="GstCaps*"/>
+      <field cname="filter" type="GstCaps*"/>
+      <field cname="appfilter" type="GstCaps*"/>
+      <field cname="getcapsfunc" type="GstPadGetCapsFunction"/>
+      <field cname="direction" type="GstPadDirection"/>
+      <field cname="connectfunc" type="GstPadConnectFunction"/>
+      <field cname="peer" type="GstRealPad*"/>
+      <field cname="sched_private" type="gpointer"/>
+      <field cname="chainfunc" type="GstPadChainFunction"/>
+      <field cname="chainhandler" type="GstPadChainFunction"/>
+      <field cname="getfunc" type="GstPadGetFunction"/>
+      <field cname="gethandler" type="GstPadGetFunction"/>
+      <field cname="eventfunc" type="GstPadEventFunction"/>
+      <field cname="eventhandler" type="GstPadEventFunction"/>
+      <field cname="eventmaskfunc" type="GstPadEventMaskFunction"/>
+      <field cname="ghostpads" type="GList*"/>
+      <field cname="convertfunc" type="GstPadConvertFunction"/>
+      <field cname="queryfunc" type="GstPadQueryFunction"/>
+      <field cname="formatsfunc" type="GstPadFormatsFunction"/>
+      <field cname="querytypefunc" type="GstPadQueryTypeFunction"/>
+      <field cname="intconnfunc" type="GstPadIntConnFunction"/>
+      <field cname="bufferpoolfunc" type="GstPadBufferPoolFunction"/>
+      <signal name="SetActive" cname="set_active" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="gboolean" name="active"/>
+        </parameters>
+      </signal>
+      <signal name="CapsChanged" cname="caps_changed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="GstCaps*" name="newcaps"/>
+        </parameters>
+      </signal>
+      <signal name="CapsNegoFailed" cname="caps_nego_failed" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+        </parameters>
+      </signal>
+      <signal name="Connected" cname="connected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="GstPad*" name="peer"/>
+        </parameters>
+      </signal>
+      <signal name="Disconnected" cname="disconnected" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="GstPad*" name="peer"/>
+        </parameters>
+      </signal>
+      <signal name="EventReceived" cname="event_received" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="pad"/>
+          <parameter type="GstEvent*" name="event"/>
+        </parameters>
+      </signal>
+      <property name="Active" cname="active" type="gboolean" doc-string="Whether the pad is active." readable="true" writeable="true"/>
+      <method name="GetType" cname="gst_real_pad_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="Registry" cname="GstRegistry" parent="GObject">
+      <field cname="priority" type="gint"/>
+      <field cname="flags" type="GstRegistryFlags"/>
+      <field cname="name" type="gchar*"/>
+      <field cname="details" type="gchar*"/>
+      <field cname="loaded" type="gboolean"/>
+      <field cname="plugins" type="GList*"/>
+      <field cname="paths" type="GList*"/>
+      <signal name="PluginAdded" cname="plugin_added" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstRegistry*" name="registry"/>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </signal>
+      <method name="AddPath" cname="gst_registry_add_path">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="path"/>
+        </parameters>
+      </method>
+      <method name="AddPlugin" cname="gst_registry_add_plugin">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+      <method name="ClearPaths" cname="gst_registry_clear_paths">
+        <return-type type="void"/>
+      </method>
+      <method name="FindFeature" cname="gst_registry_find_feature">
+        <return-type type="GstPluginFeature*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </method>
+      <method name="FindPlugin" cname="gst_registry_find_plugin">
+        <return-type type="GstPlugin*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetPathList" cname="gst_registry_get_path_list">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetType" cname="gst_registry_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IsLoaded" cname="gst_registry_is_loaded">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Load" cname="gst_registry_load">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LoadPlugin" cname="gst_registry_load_plugin">
+        <return-type type="GstRegistryReturn"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+      <method name="PoolAdd" cname="gst_registry_pool_add">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint" name="priority"/>
+        </parameters>
+      </method>
+      <method name="PoolAddPlugin" cname="gst_registry_pool_add_plugin" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+      <method name="PoolFeatureList" cname="gst_registry_pool_feature_list" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </method>
+      <method name="PoolFindFeature" cname="gst_registry_pool_find_feature" shared="true">
+        <return-type type="GstPluginFeature*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </method>
+      <method name="PoolFindPlugin" cname="gst_registry_pool_find_plugin" shared="true">
+        <return-type type="GstPlugin*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="PoolGetPrefered" cname="gst_registry_pool_get_prefered" shared="true">
+        <return-type type="GstRegistry*"/>
+        <parameters>
+          <parameter type="GstRegistryFlags" name="flags"/>
+        </parameters>
+      </method>
+      <method name="PoolList" cname="gst_registry_pool_list" shared="true">
+        <return-type type="GList*"/>
+      </method>
+      <method name="PoolLoadAll" cname="gst_registry_pool_load_all" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="PoolPluginList" cname="gst_registry_pool_plugin_list" shared="true">
+        <return-type type="GList*"/>
+      </method>
+      <method name="PoolRemove" cname="gst_registry_pool_remove">
+        <return-type type="void"/>
+      </method>
+      <method name="Rebuild" cname="gst_registry_rebuild">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="RemovePlugin" cname="gst_registry_remove_plugin">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+      <method name="Save" cname="gst_registry_save">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Unload" cname="gst_registry_unload">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="UnloadPlugin" cname="gst_registry_unload_plugin">
+        <return-type type="GstRegistryReturn"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+      <method name="UpdatePlugin" cname="gst_registry_update_plugin">
+        <return-type type="GstRegistryReturn"/>
+        <parameters>
+          <parameter type="GstPlugin*" name="plugin"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Scheduler" cname="GstScheduler" parent="GstObject">
+      <field cname="parent" type="GstElement*"/>
+      <field cname="parent_sched" type="GstScheduler*"/>
+      <field cname="state" type="GstSchedulerState"/>
+      <field cname="clock" type="GstClock*"/>
+      <field cname="current_clock" type="GstClock*"/>
+      <field cname="clock_providers" type="GList*"/>
+      <field cname="clock_receivers" type="GList*"/>
+      <field cname="schedulers" type="GList*"/>
+      <method name="AddElement" cname="gst_scheduler_add_element">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="AddScheduler" cname="gst_scheduler_add_scheduler">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstScheduler*" name="sched2"/>
+        </parameters>
+      </method>
+      <method name="AutoClock" cname="gst_scheduler_auto_clock">
+        <return-type type="void"/>
+      </method>
+      <method name="ClockWait" cname="gst_scheduler_clock_wait">
+        <return-type type="GstClockReturn"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="GstClock*" name="clock"/>
+          <parameter type="GstClockTime" name="time"/>
+          <parameter type="GstClockTimeDiff*" name="jitter"/>
+        </parameters>
+      </method>
+      <method name="Error" cname="gst_scheduler_error">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="GetClock" cname="gst_scheduler_get_clock">
+        <return-type type="GstClock*"/>
+      </method>
+      <method name="GetPreferredStack" cname="gst_scheduler_get_preferred_stack">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gpointer*" name="stack"/>
+          <parameter type="gulong*" name="size"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_scheduler_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Interrupt" cname="gst_scheduler_interrupt">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="Iterate" cname="gst_scheduler_iterate">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="LockElement" cname="gst_scheduler_lock_element">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="PadConnect" cname="gst_scheduler_pad_connect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="srcpad"/>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="PadDisconnect" cname="gst_scheduler_pad_disconnect">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPad*" name="srcpad"/>
+          <parameter type="GstPad*" name="sinkpad"/>
+        </parameters>
+      </method>
+      <method name="PadSelect" cname="gst_scheduler_pad_select">
+        <return-type type="GstPad*"/>
+        <parameters>
+          <parameter type="GList*" name="padlist"/>
+        </parameters>
+      </method>
+      <method name="RemoveElement" cname="gst_scheduler_remove_element">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="RemoveScheduler" cname="gst_scheduler_remove_scheduler">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstScheduler*" name="sched2"/>
+        </parameters>
+      </method>
+      <method name="Reset" cname="gst_scheduler_reset">
+        <return-type type="void"/>
+      </method>
+      <method name="SchedulingChange" cname="gst_scheduler_scheduling_change">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="SetClock" cname="gst_scheduler_set_clock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClock*" name="clock"/>
+        </parameters>
+      </method>
+      <method name="Setup" cname="gst_scheduler_setup">
+        <return-type type="void"/>
+      </method>
+      <method name="Show" cname="gst_scheduler_show">
+        <return-type type="void"/>
+      </method>
+      <method name="UnlockElement" cname="gst_scheduler_unlock_element">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="UseClock" cname="gst_scheduler_use_clock">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstClock*" name="clock"/>
+        </parameters>
+      </method>
+      <method name="Yield" cname="gst_scheduler_yield">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="SchedulerFactory" cname="GstSchedulerFactory" parent="GstPluginFeature">
+      <field cname="longdesc" type="gchar*"/>
+      <field cname="type" type="GType"/>
+      <method name="Create" cname="gst_scheduler_factory_create">
+        <return-type type="GstScheduler*"/>
+        <parameters>
+          <parameter type="GstElement*" name="parent"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="gst_scheduler_factory_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Find" cname="gst_scheduler_factory_find" shared="true">
+        <return-type type="GstSchedulerFactory*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetDefaultName" cname="gst_scheduler_factory_get_default_name" shared="true">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetType" cname="gst_scheduler_factory_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Make" cname="gst_scheduler_factory_make" shared="true">
+        <return-type type="GstScheduler*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GstElement*" name="parent"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_scheduler_factory_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="longdesc"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </constructor>
+      <method name="SetDefaultName" cname="gst_scheduler_factory_set_default_name" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="SystemClock" cname="GstSystemClock" parent="GstClock">
+      <method name="GetType" cname="gst_system_clock_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Obtain" cname="gst_system_clock_obtain" shared="true">
+        <return-type type="GstClock*"/>
+      </method>
+    </object>
+    <object name="Thread" cname="GstThread" parent="GstBin">
+      <field cname="thread_id" type="pthread_t"/>
+      <field cname="attr" type="pthread_attr_t"/>
+      <field cname="sched_policy" type="int"/>
+      <field cname="priority" type="int"/>
+      <field cname="stack" type="void*"/>
+      <field cname="pid" type="gint"/>
+      <field cname="ppid" type="gint"/>
+      <field cname="lock" type="GMutex*"/>
+      <field cname="cond" type="GCond*"/>
+      <field cname="transition" type="gint"/>
+      <property name="Schedpolicy" cname="schedpolicy" type="GstThreadSchedpolicy" doc-string="The scheduling policy of the thread" readable="true" writeable="true"/>
+      <property name="Priority" cname="priority" type="gint" doc-string="The scheduling priority of the thread" readable="true" writeable="true"/>
+      <signal name="Shutdown" cname="shutdown" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstThread*" name="thread"/>
+        </parameters>
+      </signal>
+      <method name="GetType" cname="gst_thread_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_thread_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="TimeCache" cname="GstTimeCache" parent="GstObject">
+      <field cname="groups" type="GList*"/>
+      <field cname="curgroup" type="GstTimeCacheGroup*"/>
+      <field cname="maxgroup" type="gint"/>
+      <method name="AddEntry" cname="gst_time_cache_add_entry">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint64" name="location"/>
+          <parameter type="gint64" name="timestamp"/>
+        </parameters>
+      </method>
+      <method name="FindLocation" cname="gst_time_cache_find_location">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guint64" name="location"/>
+          <parameter type="gint64*" name="timestamp"/>
+        </parameters>
+      </method>
+      <method name="FindTimestamp" cname="gst_time_cache_find_timestamp">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint64" name="timestamp"/>
+          <parameter type="guint64*" name="location"/>
+        </parameters>
+      </method>
+      <method name="GetCertainty" cname="gst_time_cache_get_certainty">
+        <return-type type="GstTimeCacheCertainty"/>
+      </method>
+      <method name="GetGroup" cname="gst_time_cache_get_group">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetType" cname="gst_time_cache_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_time_cache_new"/>
+      <constructor cname="gst_time_cache_new_group">
+        <parameters>
+          <parameter type="GstTimeCache*" name="tc"/>
+        </parameters>
+      </constructor>
+      <method name="SetCertainty" cname="gst_time_cache_set_certainty">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstTimeCacheCertainty" name="certainty"/>
+        </parameters>
+      </method>
+      <method name="SetGroup" cname="gst_time_cache_set_group">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint" name="groupnum"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="TypeFactory" cname="GstTypeFactory" parent="GstPluginFeature">
+      <field cname="mime" type="gchar*"/>
+      <field cname="exts" type="gchar*"/>
+      <field cname="typefindfunc" type="GstTypeFindFunc"/>
+      <method name="Find" cname="gst_type_factory_find" shared="true">
+        <return-type type="GstTypeFactory*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_type_factory_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="gst_type_factory_new">
+        <parameters>
+          <parameter type="GstTypeDefinition*" name="definition"/>
+        </parameters>
+      </constructor>
+    </object>
+    <object name="TypeFind" cname="GstTypeFind" parent="GstElement">
+      <field cname="sinkpad" type="GstPad*"/>
+      <field cname="caps" type="GstCaps*"/>
+      <property name="Caps" cname="caps" type="gpointer" doc-string="Found capabilities" readable="true"/>
+      <signal name="HaveType" cname="have_type" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </signal>
+      <method name="ByExt" cname="gst_type_find_by_ext" shared="true">
+        <return-type type="guint16"/>
+        <parameters>
+          <parameter type="const-gchar*" name="ext"/>
+        </parameters>
+      </method>
+      <method name="ById" cname="gst_type_find_by_id" shared="true">
+        <return-type type="GstType*"/>
+        <parameters>
+          <parameter type="guint16" name="id"/>
+        </parameters>
+      </method>
+      <method name="ByMime" cname="gst_type_find_by_mime" shared="true">
+        <return-type type="guint16"/>
+        <parameters>
+          <parameter type="const-gchar*" name="mime"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_type_find_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="XML" cname="GstXML" parent="GstObject">
+      <field cname="topelements" type="GList*"/>
+      <field cname="ns" type="xmlNsPtr"/>
+      <signal name="ObjectLoaded" cname="object_loaded" when="LAST">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstXML*" name="xml"/>
+          <parameter type="GstObject*" name="object"/>
+          <parameter type="xmlNodePtr" name="self"/>
+        </parameters>
+      </signal>
+      <method name="GetElement" cname="gst_xml_get_element">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="const-guchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetTopelements" cname="gst_xml_get_topelements">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetType" cname="gst_xml_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="MakeElement" cname="gst_xml_make_element" shared="true">
+        <return-type type="GstElement*"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="cur"/>
+          <parameter type="GstObject*" name="parent"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_xml_new"/>
+      <method name="ParseDoc" cname="gst_xml_parse_doc">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="xmlDocPtr" name="doc"/>
+          <parameter type="const-guchar*" name="root"/>
+        </parameters>
+      </method>
+      <method name="ParseFile" cname="gst_xml_parse_file">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-guchar*" name="fname"/>
+          <parameter type="const-guchar*" name="root"/>
+        </parameters>
+      </method>
+      <method name="ParseMemory" cname="gst_xml_parse_memory">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guchar*" name="buffer"/>
+          <parameter type="guint" name="size"/>
+          <parameter type="const-gchar*" name="root"/>
+        </parameters>
+      </method>
+      <method name="Write" cname="gst_xml_write" shared="true">
+        <return-type type="xmlDocPtr"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+        </parameters>
+      </method>
+      <method name="WriteFile" cname="gst_xml_write_file" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="GstElement*" name="element"/>
+          <parameter type="FILE*" name="out"/>
+        </parameters>
+      </method>
+    </object>
+    <struct name="AtomicInt" cname="GstAtomicInt">
+      <field cname="value" type="atomic_t"/>
+      <field cname="value" type="int"/>
+      <field cname="lock" type="GMutex*"/>
+    </struct>
+    <struct name="AtomicSwap" cname="GstAtomicSwap">
+      <field cname="gpointer value" type="volatile"/>
+      <field cname="gulong cnt" type="volatile"/>
+      <field cname="lock" type="GMutex*"/>
+    </struct>
+    <struct name="Buffer" cname="GstBuffer">
+      <field cname="data_type" type="GstData"/>
+      <field cname="data" type="guint8*"/>
+      <field cname="size" type="guint"/>
+      <field cname="maxsize" type="guint64"/>
+      <field cname="timestamp" type="guint64"/>
+      <field cname="offset" type="guint64"/>
+      <field cname="pool" type="GstBufferPool*"/>
+      <field cname="pool_private" type="gpointer"/>
+      <method name="CreateSub" cname="gst_buffer_create_sub">
+        <return-type type="GstBuffer*"/>
+        <parameters>
+          <parameter type="guint" name="offset"/>
+          <parameter type="guint" name="size"/>
+        </parameters>
+      </method>
+      <method name="DefaultCopy" cname="gst_buffer_default_copy">
+        <return-type type="GstBuffer*"/>
+      </method>
+      <method name="DefaultFree" cname="gst_buffer_default_free">
+        <return-type type="void"/>
+      </method>
+      <method name="IsSpanFast" cname="gst_buffer_is_span_fast">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstBuffer*" name="buf2"/>
+        </parameters>
+      </method>
+      <method name="Merge" cname="gst_buffer_merge">
+        <return-type type="GstBuffer*"/>
+        <parameters>
+          <parameter type="GstBuffer*" name="buf2"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_buffer_new"/>
+      <constructor cname="gst_buffer_new_and_alloc">
+        <parameters>
+          <parameter type="guint" name="size"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_buffer_new_from_pool">
+        <parameters>
+          <parameter type="GstBufferPool*" name="pool"/>
+          <parameter type="guint64" name="offset"/>
+          <parameter type="guint" name="size"/>
+        </parameters>
+      </constructor>
+      <method name="PrintStats" cname="gst_buffer_print_stats" shared="true">
+        <return-type type="void"/>
+      </method>
+      <method name="Span" cname="gst_buffer_span">
+        <return-type type="GstBuffer*"/>
+        <parameters>
+          <parameter type="guint32" name="offset"/>
+          <parameter type="GstBuffer*" name="buf2"/>
+          <parameter type="guint32" name="len"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="BufferPool" cname="GstBufferPool">
+      <field cname="data" type="GstData"/>
+      <field cname="active" type="gboolean"/>
+      <field cname="buffer_new" type="GstBufferPoolBufferNewFunction"/>
+      <field cname="buffer_copy" type="GstBufferPoolBufferCopyFunction"/>
+      <field cname="buffer_free" type="GstBufferPoolBufferFreeFunction"/>
+      <field cname="user_data" type="gpointer"/>
+      <method name="DefaultFree" cname="gst_buffer_pool_default_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetDefault" cname="gst_buffer_pool_get_default" shared="true">
+        <return-type type="GstBufferPool*"/>
+        <parameters>
+          <parameter type="guint" name="size"/>
+          <parameter type="guint" name="numbuffers"/>
+        </parameters>
+      </method>
+      <method name="GetUserData" cname="gst_buffer_pool_get_user_data">
+        <return-type type="gpointer"/>
+      </method>
+      <method name="IsActive" cname="gst_buffer_pool_is_active">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gst_buffer_pool_new">
+        <parameters>
+          <parameter type="GstDataFreeFunction" name="free"/>
+          <parameter type="GstDataCopyFunction" name="copy"/>
+          <parameter type="GstBufferPoolBufferNewFunction" name="buffer_new"/>
+          <parameter type="GstBufferPoolBufferCopyFunction" name="buffer_copy"/>
+          <parameter type="GstBufferPoolBufferFreeFunction" name="buffer_free"/>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </constructor>
+      <method name="SetActive" cname="gst_buffer_pool_set_active">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="active"/>
+        </parameters>
+      </method>
+      <method name="SetUserData" cname="gst_buffer_pool_set_user_data">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="user_data"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="Caps" cname="GstCaps">
+      <field cname="name" type="gchar*"/>
+      <field cname="id" type="guint16"/>
+      <field cname="mime type* /guint refcount" type="the"/>
+      <field cname="fixed" type="gboolean"/>
+      <field cname="properties" type="GstProps*"/>
+      <field cname="next" type="GstCaps*"/>
+      <method name="Append" cname="gst_caps_append">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="GstCaps*" name="capstoadd"/>
+        </parameters>
+      </method>
+      <method name="Chain" cname="gst_caps_chain">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="gst_caps_copy">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="Copy1" cname="gst_caps_copy_1">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="CopyOnWrite" cname="gst_caps_copy_on_write">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="Debug" cname="gst_caps_debug">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="label"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="gst_caps_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="GetByName" cname="gst_caps_get_by_name">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetMime" cname="gst_caps_get_mime">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetName" cname="gst_caps_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetProps" cname="gst_caps_get_props">
+        <return-type type="GstProps*"/>
+      </method>
+      <method name="GetTypeId" cname="gst_caps_get_type_id">
+        <return-type type="guint16"/>
+      </method>
+      <method name="Intersect" cname="gst_caps_intersect">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="GstCaps*" name="caps2"/>
+        </parameters>
+      </method>
+      <method name="IsAlwaysCompatible" cname="gst_caps_is_always_compatible">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstCaps*" name="tocaps"/>
+        </parameters>
+      </method>
+      <method name="LoadThyself" cname="gst_caps_load_thyself" shared="true">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_caps_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-gchar*" name="mime"/>
+          <parameter type="GstProps*" name="props"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_caps_new_id">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="const-guint16" name="id"/>
+          <parameter type="GstProps*" name="props"/>
+        </parameters>
+      </constructor>
+      <method name="Normalize" cname="gst_caps_normalize">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="Prepend" cname="gst_caps_prepend">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="GstCaps*" name="capstoadd"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="gst_caps_ref">
+        <return-type type="GstCaps*"/>
+      </method>
+      <method name="SaveThyself" cname="gst_caps_save_thyself">
+        <return-type type="xmlNodePtr"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+      <method name="SetMime" cname="gst_caps_set_mime">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="mime"/>
+        </parameters>
+      </method>
+      <method name="SetName" cname="gst_caps_set_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="SetProps" cname="gst_caps_set_props">
+        <return-type type="GstCaps*"/>
+        <parameters>
+          <parameter type="GstProps*" name="props"/>
+        </parameters>
+      </method>
+      <method name="SetTypeId" cname="gst_caps_set_type_id">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint16" name="type_id"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gst_caps_unref">
+        <return-type type="GstCaps*"/>
+      </method>
+    </struct>
+    <alias name="ClockID" cname="GstClockID" type="gpointer  "/>
+    <alias name="ClockTime" cname="GstClockTime" type="guint64  "/>
+    <alias name="ClockTimeDiff" cname="GstClockTimeDiff" type="gint64   "/>
+    <struct name="Data" cname="GstData">
+      <field cname="type" type="GType"/>
+      <field cname="refcount" type="GstAtomicInt"/>
+      <field cname="flags" type="guint16"/>
+      <field cname="free" type="GstDataFreeFunction"/>
+      <field cname="copy" type="GstDataCopyFunction"/>
+      <method name="Copy" cname="gst_data_copy">
+        <return-type type="GstData*"/>
+      </method>
+      <method name="CopyInto" cname="gst_data_copy_into">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstData*" name="target"/>
+        </parameters>
+      </method>
+      <method name="CopyOnWrite" cname="gst_data_copy_on_write">
+        <return-type type="GstData*"/>
+      </method>
+      <method name="Dispose" cname="gst_data_dispose">
+        <return-type type="void"/>
+      </method>
+      <method name="Free" cname="gst_data_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Init" cname="gst_data_init">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GType" name="type"/>
+          <parameter type="guint16" name="flags"/>
+          <parameter type="GstDataFreeFunction" name="free"/>
+          <parameter type="GstDataCopyFunction" name="copy"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="gst_data_ref">
+        <return-type type="GstData*"/>
+      </method>
+      <method name="RefByCount" cname="gst_data_ref_by_count">
+        <return-type type="GstData*"/>
+        <parameters>
+          <parameter type="gint" name="count"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gst_data_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="ElementDetails" cname="GstElementDetails">
+      <field cname="longname" type="gchar*"/>
+      <field cname="klass" type="gchar*"/>
+      <field cname="license" type="gchar*"/>
+      <field cname="description" type="gchar*"/>
+      <field cname="version" type="gchar*"/>
+      <field cname="author" type="gchar*"/>
+      <field cname="copyright" type="gchar*"/>
+    </struct>
+    <struct name="Event" cname="GstEvent">
+      <field cname="data" type="GstData"/>
+      <field cname="type" type="GstEventType"/>
+      <field cname="timestamp" type="guint64"/>
+      <field cname="src" type="GstObject*"/>
+      <field cname="type" type="GstSeekType"/>
+      <method name="DiscontGetValue" cname="gst_event_discont_get_value">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstFormat" name="format"/>
+          <parameter type="gint64*" name="value"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_event_new">
+        <parameters>
+          <parameter type="GstEventType" name="type"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_event_new_discontinuous">
+        <parameters>
+          <parameter type="gboolean" name="new_media"/>
+          <parameter type="GstFormat" name="format1"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_event_new_seek">
+        <parameters>
+          <parameter type="GstSeekType" name="type"/>
+          <parameter type="gint64" name="offset"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_event_new_segment_seek">
+        <parameters>
+          <parameter type="GstSeekType" name="type"/>
+          <parameter type="gint64" name="start"/>
+          <parameter type="gint64" name="stop"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_event_new_size">
+        <parameters>
+          <parameter type="GstFormat" name="format"/>
+          <parameter type="gint64" name="value"/>
+        </parameters>
+      </constructor>
+      <method name="PrintStats" cname="gst_event_print_stats" shared="true">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="EventMask" cname="GstEventMask">
+      <field cname="type" type="GstEventType"/>
+      <field cname="flags" type="GstEventFlag"/>
+    </struct>
+    <struct name="FormatDefinition" cname="GstFormatDefinition">
+      <field cname="value" type="GstFormat"/>
+      <field cname="nick" type="gchar*"/>
+      <field cname="description" type="gchar*"/>
+    </struct>
+    <struct name="MemChunk" cname="GstMemChunk">
+      <field cname="swap" type="GstAtomicSwap"/>
+      <field cname="name" type="gchar*"/>
+      <field cname="area_size" type="gulong"/>
+      <field cname="chunk_size" type="gulong"/>
+      <field cname="atom_size" type="gulong"/>
+      <field cname="cleanup" type="gboolean"/>
+      <field cname="lock" type="GMutex*"/>
+      <method name="Alloc" cname="gst_mem_chunk_alloc">
+        <return-type type="gpointer"/>
+      </method>
+      <method name="Alloc0" cname="gst_mem_chunk_alloc0">
+        <return-type type="gpointer"/>
+      </method>
+      <method name="Destroy" cname="gst_mem_chunk_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Free" cname="gst_mem_chunk_free">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gpointer" name="mem"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_mem_chunk_new">
+        <parameters>
+          <parameter type="gchar*" name="name"/>
+          <parameter type="gint" name="atom_size"/>
+          <parameter type="gulong" name="area_size"/>
+          <parameter type="gint" name="type"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="MemChunkElement" cname="GstMemChunkElement">
+      <field cname="link" type="GstMemChunkElement*"/>
+      <field cname="area" type="GstMemChunkElement*"/>
+    </struct>
+    <struct name="Plugin" cname="GstPlugin">
+      <field cname="name" type="gchar*"/>
+      <field cname="longname" type="gchar*"/>
+      <field cname="filename" type="gchar*"/>
+      <field cname="features" type="GList*"/>
+      <field cname="numfeatures" type="gint"/>
+      <field cname="manager" type="gpointer"/>
+      <field cname="module" type="GModule*"/>
+      <field cname="init_called" type="gboolean"/>
+      <method name="AddFeature" cname="gst_plugin_add_feature">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPluginFeature*" name="feature"/>
+        </parameters>
+      </method>
+      <method name="FindFeature" cname="gst_plugin_find_feature">
+        <return-type type="GstPluginFeature*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GType" name="type"/>
+        </parameters>
+      </method>
+      <method name="GetFeatureList" cname="gst_plugin_get_feature_list">
+        <return-type type="GList*"/>
+      </method>
+      <method name="GetFilename" cname="gst_plugin_get_filename">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetLongname" cname="gst_plugin_get_longname">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetName" cname="gst_plugin_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="IsLoaded" cname="gst_plugin_is_loaded">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Load" cname="gst_plugin_load" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="LoadPlugin" cname="gst_plugin_load_plugin">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_plugin_new">
+        <parameters>
+          <parameter type="const-gchar*" name="filename"/>
+        </parameters>
+      </constructor>
+      <method name="SetLongname" cname="gst_plugin_set_longname">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="longname"/>
+        </parameters>
+      </method>
+      <method name="SetName" cname="gst_plugin_set_name">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="UnloadPlugin" cname="gst_plugin_unload_plugin">
+        <return-type type="gboolean"/>
+      </method>
+    </struct>
+    <struct name="PluginDesc" cname="GstPluginDesc">
+      <field cname="major_version" type="gint"/>
+      <field cname="minor_version" type="gint"/>
+      <field cname="name" type="gchar*"/>
+      <field cname="plugin_init" type="GstPluginInitFunc"/>
+    </struct>
+    <struct name="Props" cname="GstProps">
+      <field cname="refcount" type="gint"/>
+      <field cname="fixed" type="gboolean"/>
+      <field cname="properties" type="GList*"/>
+      <method name="AddEntry" cname="gst_props_add_entry">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="GstPropsEntry*" name="entry"/>
+        </parameters>
+      </method>
+      <method name="CheckCompatibility" cname="gst_props_check_compatibility">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="GstProps*" name="toprops"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="gst_props_copy">
+        <return-type type="GstProps*"/>
+      </method>
+      <method name="CopyOnWrite" cname="gst_props_copy_on_write">
+        <return-type type="GstProps*"/>
+      </method>
+      <method name="Debug" cname="gst_props_debug">
+        <return-type type="void"/>
+      </method>
+      <method name="Destroy" cname="gst_props_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="EmptyNew" cname="gst_props_empty_new" shared="true">
+        <return-type type="GstProps*"/>
+      </method>
+      <method name="Get" cname="gst_props_get">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gchar*" name="first_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="GetEntry" cname="gst_props_get_entry">
+        <return-type type="const-GstPropsEntry*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="GetSafe" cname="gst_props_get_safe">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gchar*" name="first_name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="HasFixedProperty" cname="gst_props_has_fixed_property">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="HasProperty" cname="gst_props_has_property">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="HasPropertyTyped" cname="gst_props_has_property_typed">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter type="GstPropsType" name="type"/>
+        </parameters>
+      </method>
+      <method name="Intersect" cname="gst_props_intersect">
+        <return-type type="GstProps*"/>
+        <parameters>
+          <parameter type="GstProps*" name="props2"/>
+        </parameters>
+      </method>
+      <method name="LoadThyself" cname="gst_props_load_thyself" shared="true">
+        <return-type type="GstProps*"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+      <method name="Merge" cname="gst_props_merge">
+        <return-type type="GstProps*"/>
+        <parameters>
+          <parameter type="GstProps*" name="tomerge"/>
+        </parameters>
+      </method>
+      <constructor cname="gst_props_new">
+        <parameters>
+          <parameter type="const-gchar*" name="firstname"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+      <constructor cname="gst_props_newv">
+        <parameters>
+          <parameter type="const-gchar*" name="firstname"/>
+          <parameter type="va_list" name="var_args"/>
+        </parameters>
+      </constructor>
+      <method name="Normalize" cname="gst_props_normalize">
+        <return-type type="GList*"/>
+      </method>
+      <method name="Ref" cname="gst_props_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="SaveThyself" cname="gst_props_save_thyself">
+        <return-type type="xmlNodePtr"/>
+        <parameters>
+          <parameter type="xmlNodePtr" name="parent"/>
+        </parameters>
+      </method>
+      <method name="Set" cname="gst_props_set">
+        <return-type type="GstProps*"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="gst_props_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="PropsEntry" cname="GstPropsEntry" opaque="true">
+      <method name="Get" cname="gst_props_entry_get">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </method>
+      <method name="GetBoolean" cname="gst_props_entry_get_boolean">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gboolean*" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetFloat" cname="gst_props_entry_get_float">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gfloat*" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetFloatRange" cname="gst_props_entry_get_float_range">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gfloat*" name="min"/>
+          <parameter type="gfloat*" name="max"/>
+        </parameters>
+      </method>
+      <method name="GetFourccInt" cname="gst_props_entry_get_fourcc_int">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="guint32*" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetInt" cname="gst_props_entry_get_int">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint*" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetIntRange" cname="gst_props_entry_get_int_range">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gint*" name="min"/>
+          <parameter type="gint*" name="max"/>
+        </parameters>
+      </method>
+      <method name="GetList" cname="gst_props_entry_get_list">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-GList**" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetName" cname="gst_props_entry_get_name">
+        <return-type type="const-gchar*"/>
+      </method>
+      <method name="GetString" cname="gst_props_entry_get_string">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-gchar**" name="val"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="gst_props_entry_get_type">
+        <return-type type="GstPropsType"/>
+      </method>
+      <method name="IsFixed" cname="gst_props_entry_is_fixed">
+        <return-type type="gboolean"/>
+      </method>
+      <constructor cname="gst_props_entry_new">
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="TimeCacheEntry" cname="GstTimeCacheEntry">
+      <field cname="location" type="guint64"/>
+      <field cname="timestamp" type="gint64"/>
+    </struct>
+    <struct name="TimeCacheGroup" cname="GstTimeCacheGroup">
+      <field cname="groupnum" type="gint"/>
+      <field cname="entries" type="GList*"/>
+      <field cname="certainty" type="GstTimeCacheCertainty"/>
+      <field cname="peergroup" type="gint"/>
+      <field cname="mintimestamp" type="gint64"/>
+      <field cname="maxtimestamp" type="gint64"/>
+      <field cname="minlocation" type="guint64"/>
+      <field cname="maxlocation" type="guint64"/>
+    </struct>
+    <struct name="Trace" cname="GstTrace">
+      <field cname="filename" type="gchar*"/>
+      <field cname="fd" type="int"/>
+      <field cname="buf" type="GstTraceEntry*"/>
+      <field cname="bufsize" type="gint"/>
+      <field cname="bufoffset" type="gint"/>
+      <method name="Destroy" cname="gst_trace_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Flush" cname="gst_trace_flush">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="gst_trace_new">
+        <parameters>
+          <parameter type="gchar*" name="filename"/>
+          <parameter type="gint" name="size"/>
+        </parameters>
+      </constructor>
+      <method name="ReadTsc" cname="gst_trace_read_tsc" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guint64*" name="dst"/>
+        </parameters>
+      </method>
+      <method name="SetDefault" cname="gst_trace_set_default">
+        <return-type type="void"/>
+      </method>
+      <method name="TextFlush" cname="gst_trace_text_flush">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="TraceEntry" cname="GstTraceEntry">
+      <field cname="timestamp" type="gint64"/>
+      <field cname="sequence" type="guint32"/>
+      <field cname="data" type="guint32"/>
+      <field cname="message" array_len="112" type="gchar"/>
+    </struct>
+    <struct name="Type" cname="GstType">
+      <field cname="id" type="guint16"/>
+      <field cname="mime" type="gchar*"/>
+      <field cname="exts" type="gchar*"/>
+      <field cname="factories" type="GSList*"/>
+      <method name="GetList" cname="gst_type_get_list" shared="true">
+        <return-type type="const-GList*"/>
+      </method>
+      <method name="Register" cname="gst_type_register" shared="true">
+        <return-type type="guint16"/>
+        <parameters>
+          <parameter type="GstTypeFactory*" name="factory"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="TypeDefinition" cname="GstTypeDefinition">
+      <field cname="name" type="gchar*"/>
+      <field cname="mime" type="gchar*"/>
+      <field cname="exts" type="gchar*"/>
+      <field cname="typefindfunc" type="GstTypeFindFunc"/>
+    </struct>
+    <struct name="CothreadContext" cname="cothread_context" opaque="true"/>
+    <struct name="CothreadState" cname="cothread_state">
+      <field cname="ctx" type="cothread_context*"/>
+      <field cname="cothreadnum" type="int"/>
+      <field cname="priv" type="gpointer"/>
+      <field cname="func" type="cothread_func"/>
+      <field cname="argc" type="int"/>
+      <field cname="argv" type="char**"/>
+      <field cname="flags" type="int"/>
+      <field cname="sp" type="void*"/>
+      <field cname="jmp" type="jmp_buf"/>
+      <field cname="top_sp" type="void*"/>
+      <field cname="pc" type="void*"/>
+      <field cname="magic_number" type="int"/>
+    </struct>
+  </namespace>
 </api>
