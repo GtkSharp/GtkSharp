@@ -23,6 +23,13 @@ while ($def = get_def()) {
 
 	if ($def =~ /^\(define-(enum|flags)/) {
 		gen_enum (split (/\n/, $def));
+	} elsif ($def =~ /^\(define-struct (\w+)/) {
+		$name = $1;
+		$def =~ /c-name "(\w+)"/;
+		$cname=$1;
+		$def =~ s/\n\s*//g;
+		$maptypes{$cname} = $name;
+		$marshaltypes{$cname} = "IntPtr";
 	} elsif ($def =~ /^\(define-object (\w+)/) {
 		$name = $1;
 		$def =~ /c-name "(\w+)"/;
@@ -36,9 +43,15 @@ while ($def = get_def()) {
 		$cname=$1;
 		$def =~ s/\n\s*//g;
 		$objects{$cname} .= "\n$def";
+	} elsif ($def =~ /^\(define-function/) {
+		if ($def =~ /is-constructor-of (\w+)\)/) {
+			$cname=$1;
+			$def =~ s/\n\s*//g;
+			$objects{$cname} .= "\n$def";
+		}
 	} elsif ($def =~ /^\(define-(interface)/) {
 		# Nothing much to do here, I think.
-	} elsif ($def =~ /^\(define-(boxed|function)/) {
+	} elsif ($def =~ /^\(define-boxed/) {
 		# Probably need to handle these though...
 	} else {
 		die "Unexpected definition $def\n";
@@ -164,13 +177,16 @@ sub gen_object
 	%props = ();
 	%events = ();
 	%methods = ();
+	@ctors = ();
 	foreach $def (@defs) {
 		if ($def =~ /define-property (\w+)/) {
 			$props{StudCaps($1)} = $def;
-		}elsif ($def =~ /define-event (\w+)/) {
+		} elsif ($def =~ /define-event (\w+)/) {
 			$events{StudCaps($1)} = $def;
-		}elsif ($def =~ /define-method (\w+)/) {
+		} elsif ($def =~ /define-method (\w+)/) {
 			$methods{StudCaps($1)} = $def;
+		} elsif ($def =~ /is-constructor-of/) {
+			@ctors = (@ctors, $def);
 		}
 	}
 
@@ -188,15 +204,16 @@ sub gen_object
 	}
 	print OUTFILE "class $typename : $parent {\n\n";
 
+	foreach $ctor (@ctors) {
+		print OUTFILE gen_ctor ($ctor, "gtk-1.3.dll");
+	}
+
 	foreach $key (sort (keys (%props))) {
 		print OUTFILE gen_prop ($key, $props{$key}, "gtk-1.3.dll");
 	}
 
 	foreach $key (sort (keys (%methods))) {
-		if (($key =~ /^(Get|Set)(\w+)/) && exists($props{$2})) {
-			print "killed $key\n";
-			next;
-		}
+		next if (($key =~ /^(Get|Set)(\w+)/) && exists($props{$2}));
 		print OUTFILE gen_method ($key, $methods{$key}, "gtk-1.3.dll");
 	}
 
@@ -258,6 +275,37 @@ sub gen_prop ()
 	return $code;
 }
 
+# Generate the code for a constructor definition.
+sub gen_ctor
+{
+	my ($def, $dll) = @_;
+	my ($cname, $sret, $ret, $mret, $sig, $call, $pinv, $code);
+
+	$def =~ /\(c-name "(\w+)"/;
+	$cname = $1;
+
+	$def =~ /is-constructor-of (\w+)\)/;
+	if (exists ($maptypes{$1})) {
+		$sret = $maptypes{$1};
+		$mret = $marshaltypes{$1};
+		$ret = $1;
+	} else {
+		die "Unexpected return type in constructor: $1\n";
+	}
+
+	($call, $pinv, $sig) = gen_param_strings($def);
+
+	$code = "\t\t/// <summary> $sret Constructor </summary>\n";
+	$code .= "\t\t/// <remarks>\n\t\t///\t FIXME: Generate docs\n";
+	$code .= "\t\t/// </remarks>\n\n";
+	$code .= "\t\t[DllImport(\"$dll\", CharSet=CharSet.Ansi,\n";
+	$code .= "\t\t\t   CallingConvention=CallingConvention.Cdecl)]\n";
+	$code .= "\t\tstatic extern $mret $cname ($pinv);\n\n";
+	$code .= "\t\tpublic $sret ($sig)\n";
+	$code .= "\t\t{\n\t\t\t";
+	$code .= "RawObject = $cname ($call);\n\t\t}\n\n";
+}
+
 # Generate the code for a method definition.
 sub gen_method
 {
@@ -283,11 +331,19 @@ sub gen_method
 	$code .= "\t\t/// </remarks>\n\n";
 	$code .= "\t\t[DllImport(\"$dll\", CharSet=CharSet.Ansi,\n";
 	$code .= "\t\t\t   CallingConvention=CallingConvention.Cdecl)]\n";
-	$code .= "\t\tstatic extern $mret $cname (IntPtr obj$pinv);\n\n";
+	$code .= "\t\tstatic extern $mret $cname (IntPtr obj";
+	if ($pinv) {
+		$code .= ", $pinv";
+	}
+	$code .= ");\n\n";
 	$code .= "\t\tpublic $sret $name ($sig)\n";
 	$code .= "\t\t{\n\t\t\t";
 	if ($sret ne "void") { $code .= "return "; }
-	$call = "$cname (RawObject$call)";
+	if ($call) {
+		$call = "$cname (RawObject, $call)";
+	} else {
+		$call = "$cname (RawObject)";
+	}
 	if ($sret eq $mret) { 
 		$code .= "$call";
 	} elsif ($sret eq "String") {
@@ -313,18 +369,22 @@ sub gen_param_strings
 	if ($def =~ /parameters'\((.*)\)\)\)/) {
 		foreach $parm (split(/\)'\(/, $1)) {
 			$parm =~ s/\*//g;
-			$parm =~ /"(.*)" "(.*)"/;
-			$pinv .= ", $marshaltypes{$1} $2";
-			if ($sig) { $sig .= ', '; }
+			$parm =~ /"(\S*)" "(\S*)"/;
+			if ($sig) { 
+				$sig .= ', '; 
+				$call .= ', '; 
+				$pinv .= ', '; 
+			}
+			$pinv .= "$marshaltypes{$1} $2";
 			$sig .= "$maptypes{$1} $2";
 			if ($maptypes{$1} eq $marshaltypes{$1}) {
-				$call .= ", $2";
+				$call .= "$2";
 			} elsif (exists ($objects{$1})) {
-				$call .= ", $2.Handle";
+				$call .= "$2.Handle";
 			} elsif ($1 =~ /gchar/) {
-				$call .= ", Marshal.StringToHGlobalAnsi($2)";
+				$call .= "Marshal.StringToHGlobalAnsi($2)";
 			} elsif ($marshaltypes{$1} = "int") {
-				$call .= ", (int) $2";
+				$call .= "(int) $2";
 			} else {
 				die "Unexpected type encountered $1\n";
 			}
