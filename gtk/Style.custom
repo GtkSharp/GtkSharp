@@ -41,6 +41,14 @@ public Gdk.GC ForegroundGC (StateType state)
 	return EnsureGC (raw);
 }
 
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_set_fg_gc (IntPtr style, int i, IntPtr gc);
+
+public void SetForegroundGC (StateType state, Gdk.GC gc)
+{
+		gtksharp_gtk_style_set_fg_gc (Handle, (int) state, gc.Handle);
+}
+
 public Gdk.GC[] ForegroundGCs {
 	get {
 		IntPtr[] raws = new IntPtr[6];
@@ -57,8 +65,16 @@ static extern IntPtr gtksharp_gtk_style_get_bg_gc (IntPtr style, int i);
 
 public Gdk.GC BackgroundGC (StateType state)
 {
-	IntPtr raw = gtksharp_gtk_style_get_bg_gc (Handle, (int) state);
-	return EnsureGC (raw);
+		IntPtr raw = gtksharp_gtk_style_get_bg_gc (Handle, (int) state);
+		return EnsureGC (raw);
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_set_bg_gc (IntPtr style, int i, IntPtr gc);
+
+public void SetBackgroundGC (StateType state, Gdk.GC gc)
+{
+		gtksharp_gtk_style_set_bg_gc (Handle, (int) state, gc.Handle);
 }
 
 public Gdk.GC[] BackgroundGCs {
@@ -70,6 +86,23 @@ public Gdk.GC[] BackgroundGCs {
 		}
 		return ret;
 	}
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_get_base_gc (IntPtr style, int i);
+
+public Gdk.GC BaseGC (StateType state)
+{
+	IntPtr raw = gtksharp_gtk_style_get_base_gc (Handle, (int) state);
+	return EnsureGC (raw);
+}
+
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gtk_style_set_base_gc (IntPtr style, int i, IntPtr gc);
+
+public void SetBaseGC (StateType state, Gdk.GC gc)
+{
+		gtksharp_gtk_style_set_base_gc (Handle, (int) state, gc.Handle);
 }
 
 [DllImport("gtksharpglue")]
