@@ -292,6 +292,38 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 
+		public string MangleName(string name)
+		{
+			switch (name) {
+			case "string":
+				return "str1ng";
+			case "event":
+				return "evnt";
+			case "null":
+				return "is_null";
+			case "object":
+				return "objekt";
+			case "params":
+				return "parms";
+			case "ref":
+				return "reference";
+			case "in":
+				return "in_param";
+			case "out":
+				return "out_param";
+			case "fixed":
+				return "mfixed";
+			case "byte":
+				return "_byte";
+			case "new":
+				return "_new";
+			case "base":
+				return "_base";
+			default:
+				break;
+			}
+
+			return name;
+		}
 	}
 }
-

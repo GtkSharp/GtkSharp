@@ -75,7 +75,7 @@ namespace GtkSharp.Generation {
 
 		public string Name {
 			get {
-				return MangleName (elem.GetAttribute("name"));
+				return SymbolTable.Table.MangleName (elem.GetAttribute("name"));
 			}
 		}
 
@@ -91,37 +91,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private string MangleName(string name)
-		{
-			switch (name) {
-			case "string":
-				return "str1ng";
-			case "event":
-				return "evnt";
-			case "null":
-				return "is_null";
-			case "object":
-				return "objekt";
-			case "params":
-				return "parms";
-			case "ref":
-				return "reference";
-			case "in":
-				return "in_param";
-			case "out":
-				return "out_param";
-			case "fixed":
-				return "mfixed";
-			case "byte":
-				return "_byte";
-			case "new":
-				return "_new";
-			default:
-				break;
-			}
-
-			return name;
-		}
 		public string StudlyName {
 			get {
 				string name = elem.GetAttribute("name");

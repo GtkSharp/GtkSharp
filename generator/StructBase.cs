@@ -141,7 +141,7 @@ namespace GtkSharp.Generation {
 			if (IsBit (field))
 				name = String.Format ("_bitfield{0}", bitfields++);
 			else
-				name += MangleName (field.GetAttribute ("cname"));
+				name += SymbolTable.Table.MangleName (field.GetAttribute ("cname"));
 
 			return true;
 		}
@@ -151,14 +151,14 @@ namespace GtkSharp.Generation {
 			string c_type, type, name;
 			if (!GetFieldInfo (field, out c_type, out type, out name))
 				return false;
-			sw.WriteLine ("\t\tpublic {0} {1};", type, name);
+			sw.WriteLine ("\t\tpublic {0} {1};", type, SymbolTable.Table.MangleName (name));
 
 			if (field.HasAttribute("array_len"))
 				Console.WriteLine ("warning: array field {0}.{1} probably incorrectly generated", QualifiedName, name);
 			SymbolTable table = SymbolTable.Table;
 
 			string wrapped = table.GetCSType (c_type);
-			string wrapped_name = MangleName (field.GetAttribute ("cname"));
+			string wrapped_name = SymbolTable.Table.MangleName (field.GetAttribute ("cname"));
 			if (table.IsObject (c_type)) {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tpublic " + wrapped + " " + wrapped_name + " {");
@@ -188,29 +188,6 @@ namespace GtkSharp.Generation {
 			}
 			
 			return true;
-		}
-
-		private String MangleName(String name)
-		{
-			if (name == "string") {
-				return "str1ng";
-			} else if (name == "event") {
-				return "evnt";
-			} else if (name == "null") {
-				return "is_null";
-			} else if (name == "object") {
-				return "objekt";
-			} else if (name == "ref") {
-				return "reference";
-			} else if (name == "params") {
-				return "parms";
-			} else if (name == "fixed") {
-				return "mfixed";
-			} else if (name == "in") {
-				return "inn";
-			} else {
-				return name;
-			}
 		}
 
 		public virtual void Generate ()
