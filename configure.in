@@ -76,6 +76,7 @@ fi
 
 LIBGDA_REQUIRED_VERSION=0.8.193
 PKG_CHECK_MODULES(LIBGDA_DEPENDENCIES, libgda >= $LIBGDA_REQUIRED_VERSION, enable_gda=yes, enable_gda=no)
+enable_gnomedb=no
 if test "x$enable_gda" = "xyes"; then
 	BASE_DEPENDENCIES_CFLAGS="$BASE_DEPENDENCIES_CFLAGS $LIBGDA_DEPENDENCIES_CFLAGS"
 	BASE_DEPENDENCIES_LIBS="$BASE_DEPENDENCIES_LIBS $LIBGDA_DEPENDENCIES_LIBS"
@@ -120,8 +121,21 @@ gst/Makefile
 sample/Makefile
 ])
 
-echo "
+echo "---"
+echo "Configuration summary"
+echo ""
+echo "   * Installation prefix = $prefix"
+echo ""
+echo "   Optional assemblies included in the build:"
+echo ""
+echo "      * gnome-sharp.dll: $enable_gnome"
+echo "      * glade-sharp.dll: $enable_glade"
+echo "      * gda-sharp.dll: $enable_gda"
+echo "      * gnomedb-sharp.dll: $enable_gnomedb"
+echo ""
+echo "      NOTE: if any of the above say 'no' you may install the"
+echo "            corresponding development packages for them, rerun"
+echo "            autogen.sh to include them in the build."
+echo ""
+echo "---"
 
-	Now do a "make linux" or "make windows" to build Gtk#.
-
-"
