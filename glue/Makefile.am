@@ -12,7 +12,8 @@ BASESOURCES = \
 	paned.c			\
 	style.c			\
 	type.c			\
-	widget.c		
+	widget.c		\
+	#
 
 GNOMESOURCES = \
 	canvasitem.c \
@@ -21,7 +22,8 @@ GNOMESOURCES = \
 	canvas-proxy.h \
 	canvas-proxy-marshal.c \
 	canvas-proxy-marshal.h \
-	program.c
+	program.c	\
+	#
 
 # fixme: Makefile.am = THE SUCK
 if ENABLE_GNOME
@@ -30,7 +32,7 @@ if ENABLE_GLADE
 libgtksharpglue_la_SOURCES = 	\
 	$(BASESOURCES) \
 	$(GNOMESOURCES) \
-	gladexml.c
+	gladexml.c	\
 	#
 else
 libgtksharpglue_la_SOURCES = 	\
@@ -44,7 +46,8 @@ else
 if ENABLE_GLADE
 libgtksharpglue_la_SOURCES = 	\
 	$(BASESOURCES) \
-	gladexml.c
+	gladexml.c	\
+	#
 else
 libgtksharpglue_la_SOURCES = 	\
 	$(BASESOURCES) 
