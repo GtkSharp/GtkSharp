@@ -26,7 +26,7 @@ namespace GLib {
 		// Destructor is required since we are allocating unmanaged
 		// heap resources.
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr mem);
 
 		~Value ()
@@ -78,7 +78,7 @@ namespace GLib {
 			_val = gtksharp_value_create_from_property (obj, prop_name);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boolean (IntPtr val,
 						        bool data);
 
@@ -96,7 +96,7 @@ namespace GLib {
 			g_value_set_boolean (_val, val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed (IntPtr val, IntPtr data);
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace GLib {
 			g_value_set_boxed (_val, val.Handle);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_double (IntPtr val, double data);
 
 		/// <summary>
@@ -142,7 +142,7 @@ namespace GLib {
 			g_value_set_double (_val, val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_float (IntPtr val, float data);
 
 		/// <summary>
@@ -159,7 +159,7 @@ namespace GLib {
 			g_value_set_float (_val, val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_int (IntPtr val, int data);
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace GLib {
 			g_value_set_int (_val, val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_object (IntPtr val, IntPtr data);
 
 		/// <summary>
@@ -193,7 +193,7 @@ namespace GLib {
 			g_value_set_object (_val, val.Handle);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_pointer (IntPtr val, IntPtr data);
 
 		/// <summary>
@@ -210,7 +210,7 @@ namespace GLib {
 			g_value_set_pointer (_val, val); 
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_string (IntPtr val, string data);
 
 		/// <summary>
@@ -227,7 +227,7 @@ namespace GLib {
 			g_value_set_string (_val, val); 
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_uint (IntPtr val, uint data);
 
 		/// <summary>
@@ -258,9 +258,9 @@ namespace GLib {
 			g_value_set_uint (_val, val); 
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_enum (IntPtr val, int data);
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_flags (IntPtr val, uint data);
 		
 		/// <summary>
@@ -280,7 +280,7 @@ namespace GLib {
 				g_value_set_enum (_val, (int) wrap); 
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_value_get_boolean (IntPtr val);
 
 		/// <summary>
@@ -300,7 +300,7 @@ namespace GLib {
 			return g_value_get_boolean (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_boxed (IntPtr val);
 
 		public static explicit operator GLib.Opaque (Value val)
@@ -323,7 +323,7 @@ namespace GLib {
 			return new GLib.Boxed (g_value_get_boxed (val._val));
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern double g_value_get_double (IntPtr val);
 
 		/// <summary>
@@ -343,7 +343,7 @@ namespace GLib {
 			return g_value_get_double (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern float g_value_get_float (IntPtr val);
 
 		/// <summary>
@@ -363,7 +363,7 @@ namespace GLib {
 			return g_value_get_float (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern int g_value_get_int (IntPtr val);
 
 		/// <summary>
@@ -383,7 +383,7 @@ namespace GLib {
 			return g_value_get_int (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_object (IntPtr val);
 
 		/// <summary>
@@ -421,7 +421,7 @@ namespace GLib {
 			return new UnwrappedObject(g_value_get_object (val._val));
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_pointer (IntPtr val);
 
 		/// <summary>
@@ -441,7 +441,7 @@ namespace GLib {
 			return g_value_get_pointer (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern string g_value_get_string (IntPtr val);
 
 		/// <summary>
@@ -461,7 +461,7 @@ namespace GLib {
 			return g_value_get_string (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_value_get_uint (IntPtr val);
 
 		/// <summary>
@@ -498,9 +498,9 @@ namespace GLib {
 			return (ushort) g_value_get_uint (val._val);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern int g_value_get_enum (IntPtr val);
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_value_get_flags (IntPtr val);
 
 		/// <summary>

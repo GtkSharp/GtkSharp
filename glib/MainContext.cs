@@ -11,7 +11,7 @@ namespace GLib {
 
         public class MainContext {
 		
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern bool g_main_context_iteration (IntPtr Raw, bool MayBlock);
 
 		public static bool Iteration ()
@@ -24,7 +24,7 @@ namespace GLib {
 			return g_main_context_iteration (IntPtr.Zero, MayBlock);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern bool g_main_context_pending (IntPtr Raw);
 		
 		public static bool Pending ()

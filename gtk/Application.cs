@@ -23,7 +23,7 @@ namespace Gtk {
 
 	public class Application {
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_init (int argc, IntPtr argv);
 
 		public static void Init ()
@@ -31,7 +31,7 @@ namespace Gtk {
 			gtk_init (0, new IntPtr(0));
 		}
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_init (ref int argc, ref String[] argv);
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Gtk {
 			gtk_init (ref argc, ref args);
 		}
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main ();
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace Gtk {
 			gtk_main ();
 		}
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_events_pending ();
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Gtk {
 			return gtk_events_pending ();
 		}
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main_iteration ();
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace Gtk {
 			gtk_main_iteration ();
 		}
 
-		[DllImport("gtk-x11-2.0")]
+		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main_quit ();
 
 		/// <summary>

@@ -32,7 +32,7 @@ namespace GLib {
 
 	public class Timeout {
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_timeout_add (uint interval, TimeoutHandler d, IntPtr data);
 
 		public static uint Add (uint interval, TimeoutHandler hndlr)

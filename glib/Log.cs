@@ -53,7 +53,7 @@ namespace GLib {
 				handlers = new Hashtable ();
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_logv (string log_domain, LogLevelFlags flags, string message);
 		
 		public void WriteLog (string logDomain, LogLevelFlags flags, string format, params object [] args)
@@ -61,7 +61,7 @@ namespace GLib {
 			g_logv (logDomain, flags, String.Format (format, args));
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_log_set_handler (string log_domain,
 						      LogLevelFlags flags,
 						      LogFunc log_func,
@@ -79,7 +79,7 @@ namespace GLib {
 			return result;
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_log_remove_handler (string log_domain, uint handler_id);
 
 		public static void RemoveLogHandler (string logDomain, uint handlerID)
@@ -91,7 +91,7 @@ namespace GLib {
 		}
 
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern PrintFunc g_set_print_handler (PrintFunc handler);
 
 		public static PrintFunc SetPrintHandler (PrintFunc handler)
@@ -102,7 +102,7 @@ namespace GLib {
 			return g_set_print_handler (handler);
 		}
 		
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern PrintFunc g_set_printerr_handler (PrintFunc handler);
 
 		public static PrintFunc SetPrintErrorHandler (PrintFunc handler)
@@ -113,7 +113,7 @@ namespace GLib {
 			return g_set_printerr_handler (handler);
 		}
 		
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_log_default_handler (string log_domain,
 							  LogLevelFlags log_level,
 							  string message,
@@ -127,7 +127,7 @@ namespace GLib {
 			g_log_default_handler (logDomain, logLevel, message, IntPtr.Zero);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		extern static LogLevelFlags g_log_set_always_fatal (LogLevelFlags fatal_mask);
 		
 		public static LogLevelFlags SetAlwaysFatal (LogLevelFlags fatalMask)
@@ -135,7 +135,7 @@ namespace GLib {
 			return g_log_set_always_fatal (fatalMask);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		extern static LogLevelFlags g_log_set_fatal_mask (string log_domain, LogLevelFlags fatal_mask);
 		
 		public static LogLevelFlags SetAlwaysFatal (string logDomain, LogLevelFlags fatalMask)

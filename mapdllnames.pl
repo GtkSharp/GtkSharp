@@ -24,7 +24,7 @@ foreach $filename (@ARGV) {
 	open(OUTFILE, ">$filename.tmp") || die "Couldn't open $filename.tmp\n";
 
 	while ($line = <INFILE>) {
-		if ($line =~ /DllImport\(\"(.*)\"/ && exists($map{$1})) {
+		if ($line =~ /DllImport\s*\(\"(.*)\"/ && exists($map{$1})) {
 			$line =~ s/\"(.*)\"/\"$map{$1}\"/;
 		}
 

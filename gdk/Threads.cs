@@ -11,7 +11,7 @@ namespace Gdk
 
 	public class Threads
 	{
-		[DllImport("gdk-x11-2.0")]
+		[DllImport("libgdk-win32-2.0-0.dll")]
 		static extern void gdk_threads_init ();
 
 		public static void Init ()
@@ -19,7 +19,7 @@ namespace Gdk
 			gdk_threads_init ();
 		}
 
-		[DllImport("gdk-x11-2.0")]
+		[DllImport("libgdk-win32-2.0-0.dll")]
 		static extern void gdk_threads_enter ();
 
 		public static void Enter ()
@@ -27,7 +27,7 @@ namespace Gdk
 			gdk_threads_enter ();
 		}
 
-		[DllImport("gdk-x11-2.0")]
+		[DllImport("libgdk-win32-2.0-0.dll")]
 		static extern void gdk_threads_leave ();
 
 		public static void Leave ()

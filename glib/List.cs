@@ -19,7 +19,7 @@ namespace GLib {
 
 	public class List : ListBase {
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_list_copy (IntPtr l);
 		
 		public override object Clone ()
@@ -43,7 +43,7 @@ namespace GLib {
 			return gtksharp_list_get_next (current);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern int g_list_length (IntPtr l);
 		
 		internal override int Length (IntPtr list)
@@ -51,7 +51,7 @@ namespace GLib {
 			return g_list_length (list);
 		}
 		
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_list_free(IntPtr l);
 
 		internal override void Free (IntPtr list)
@@ -60,7 +60,7 @@ namespace GLib {
 				g_list_free (list);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_list_append (IntPtr l, IntPtr raw);
 
 		internal override IntPtr Append (IntPtr list, IntPtr raw)
@@ -68,7 +68,7 @@ namespace GLib {
 			return g_list_append (list, raw);
 		}
 
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_list_prepend (IntPtr l, IntPtr raw);
 
 		internal override IntPtr Prepend (IntPtr list, IntPtr raw)

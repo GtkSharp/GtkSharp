@@ -11,7 +11,7 @@ namespace GLib {
 
         public class Source {
 		
-		[DllImport("glib-2.0")]
+		[DllImport("libglib-2.0-0.dll")]
 		static extern bool g_source_remove (uint tag);
 
 		public static bool Remove (uint tag)

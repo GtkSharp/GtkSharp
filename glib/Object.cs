@@ -61,7 +61,7 @@ namespace GLib {
 			disposed = true;
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_unref (IntPtr raw);
 		
 		protected virtual void DisposeNative ()
@@ -76,7 +76,7 @@ namespace GLib {
 			_obj = IntPtr.Zero;
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_ref (IntPtr raw);
 
 		/// <summary>
@@ -180,7 +180,7 @@ namespace GLib {
 			Raw = raw;
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (uint gtype, IntPtr dummy);
 
 		public Object (uint gtype)
@@ -324,7 +324,7 @@ namespace GLib {
 			Data [key] = val;
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_get_property (
 				IntPtr obj, string name, IntPtr val);
 
@@ -341,7 +341,7 @@ namespace GLib {
 			g_object_get_property (Raw, name, val.Handle);
 		}
 
-		[DllImport("gobject-2.0")]
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_set_property (
 				IntPtr obj, string name, IntPtr val);
 

@@ -28,7 +28,7 @@ namespace Gtk {
 		//
 		// DllImport functions from Gtk
 		//
-		[DllImport ("gtk-x11-2.0")]
+		[DllImport ("libgtk-win32-2.0-0.dll")]
 		public static extern int gdk_input_add (int s, int cond, GdkInputFunction f, IntPtr data);
 		public delegate void GdkInputFunction (IntPtr data, int source, int cond);
 
