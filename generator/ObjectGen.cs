@@ -140,29 +140,37 @@ namespace GtkSharp.Generation {
 			string parent = Elem.GetAttribute("parent");
 			string cs_parent = SymbolTable.GetCSType(parent);
 			if (cs_parent == "") {
-				Console.WriteLine ("Object " + Name + " Unknown parent " + parent);
+				Console.WriteLine ("Object " + QualifiedName + " Unknown parent " + parent);
 				return false;
 			}
 
 			if (ctors != null)
 				foreach (Ctor ctor in ctors)
-					if (!ctor.Validate())
+					if (!ctor.Validate()) {
+						Console.WriteLine ("in Object " + QualifiedName);
 						return false;
+					}
 
 			if (props != null)
 				foreach (Property prop in props.Values)
-					if (!prop.Validate())
+					if (!prop.Validate()) {
+						Console.WriteLine ("in Object " + QualifiedName);
 						return false;
+					}
 
 			if (sigs != null)
 				foreach (Signal sig in sigs.Values)
-					if (!sig.Validate())
+					if (!sig.Validate()) {
+						Console.WriteLine ("in Object " + QualifiedName);
 						return false;
+					}
 
 			if (methods != null)
 				foreach (Method method in methods.Values)
-					if (!method.Validate())
+					if (!method.Validate()) {
+						Console.WriteLine ("in Object " + QualifiedName);
 						return false;
+					}
 
 			if (SymbolTable.GetCSType(parent) == null)
 				return false;

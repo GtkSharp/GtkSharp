@@ -106,8 +106,10 @@ namespace GtkSharp.Generation {
 			if (initialized)
 				return true;
 
-			if (parms != null && !parms.Validate ())
-					return false;
+			if (parms != null && !parms.Validate ()) {
+				Console.Write ("in method " + Name + " ");
+				return false;
+			}
 
 			XmlElement ret_elem = elem["return-type"];
 			if (ret_elem == null) {
@@ -182,7 +184,6 @@ namespace GtkSharp.Generation {
 			else if (elem.HasAttribute("new_flag") || (container_type != null && (dup = container_type.GetMethodRecursively (Name)) != null) || (implementor != null && (dup = implementor.GetMethodRecursively (Name)) != null)) {
 				if (dup != null && dup.parms != null)
 					dup.parms.CreateSignature (false);
-				if (Name == "Toggle") Console.WriteLine ("FOOK {0} {1}", (dup.parms != null) ? dup.parms.Signature : null, (parms != null) ? parms.Signature : null);
 				if (dup != null && ((dup.parms != null && dup.parms.Signature == parms.Signature) || (dup.parms == null && parms == null)))
 					sw.Write("new ");
 			}

@@ -114,6 +114,12 @@ namespace GtkSharp.Generation {
 				}
 
 				XmlElement p_elem = (XmlElement) parm;
+
+				if (p_elem.HasAttribute("ellipsis")) {
+					Console.Write("Ellipsis parameter ");
+					return false;
+				}
+
 				string type = p_elem.GetAttribute("type");
 				string cs_type = SymbolTable.GetCSType(type);
 				string m_type = SymbolTable.GetMarshalType(type);

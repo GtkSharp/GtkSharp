@@ -320,8 +320,7 @@ foreach $key (sort (keys (%types))) {
 	if (exists($sdefs{$type})) {
 		$def = $sdefs{$type};
 	} else {
-		warn "Couldn't find $type\n" if $debug;
-		next;
+		$def = "privatestruct";
 	}
 
 	if (exists($boxdefs{$key})) {
