@@ -15,6 +15,7 @@ SUBDIRS = helloworld \
 		eventbox \
 		packing \
 		rangewidget \
+		spinbutton \
 		scribble \
 		togglebutton \
 
