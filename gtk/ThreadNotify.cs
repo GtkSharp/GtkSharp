@@ -68,12 +68,17 @@ namespace Gtk {
 			byte s;
 			
 			unsafe {
-				read (pipes [0], &s, 1);
+				lock (this) {
+					read (pipes [0], &s, 1);
+					notified = false;
+				}
 			}
 			
 			re ();
 		}
 
+		bool notified = false;
+		
 		/// <summary>
 		///   Invoke this function from a thread to call the `ReadyEvent'
 		///   delegate provided in the constructor on the Main Gtk thread
@@ -82,7 +87,13 @@ namespace Gtk {
 		{
 			unsafe {
 				byte s;
-				write (pipes [1], &s, 1);
+
+				lock (this){
+					if (notified)
+						return;
+					write (pipes [1], &s, 1);
+					notified = true;
+				}
 			}
 		}
 	}
