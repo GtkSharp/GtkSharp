@@ -10,11 +10,46 @@
     <summary>A widget that creates a signal when clicked on.</summary>
     <remarks>
       <para>
-        The GtkButton widget is generally used to attach a function to that is called when the button is pressed. The various signals and how to use them are outlined below.
+        The <see cref="T:Gtk.Button"/> widget is generally used to attach to a function that is called when the button is pressed.
+        The <see cref="T:Gtk.Button"/> widget can hold any valid child widget.
+				That is, it can hold most any other standard <see cref="T:Gtk.Widget" />. The most commonly used child is the <see cref="T:Gtk.Label" />.
       </para>
-      <para>
-        The GtkButton widget can hold any valid child widget. That is it can hold most any other standard <see cref="T:Gtk.Widget" />. The most commonly used child is the <see cref="T:Gtk.Label" />.
-      </para>
+			<example>
+				<code lang="C#">
+using Gtk;
+using GtkSharp;
+using System;
+	
+public class ButtonApp  {
+
+	public static int Main (string[] args)
+	{
+		Application.Init ();
+		Window win = new Window ("Button Tester");
+		win.DefaultSize = new Size (200, 150);
+		win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+		Button btn = new Button ("Click Me");
+		btn.Clicked += new EventHandler (btn_click);
+		win.Add (btn);
+		win.ShowAll ();
+		Application.Run ();
+		return 0;
+	}
+
+	static void btn_click (object obj, EventArgs args)
+	{
+		Console.WriteLine ("Button Clicked");
+	}
+
+	static void Window_Delete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+		args.RetVal = true;
+	}
+
+}
+				</code>
+			</example>
     </remarks>
   </Docs>
   <Base>
@@ -43,8 +78,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib type for Gtk.Button.</summary>
-        <returns>The GLib type for the Gtk.Button <see langword="class" />.</returns>
+        <summary>The <see cref="T:GLib.Type"/> for <see cref="T:Gtk.Button"/>.</summary>
+        <returns>The <see cref="T:GLib.Type"/> for the <see cref="T:Gtk.Button"/> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -58,11 +93,11 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Gets or sets if wether the Button should use a <see cref="T:Gtk.Stock" /> or not.</summary>
+        <summary>Whether the <see cref="T:Gtk.Button"/> should use a <see cref="T:Gtk.Stock" />.</summary>
         <param name="value">Boolean value to select if the
-  Button uses a <see cref="T:Gtk.Stock" /> or not.</param>
-        <returns>Gets a value indicating if the Button uses a <see cref="T:Gtk.Stock" />.</returns>
-        <remarks>It's possible to create a Button from <see cref="T:Gtk.Stock" />, which is recommended for consistency in Gnome
+  <see cref="T:Gtk.Button"/> uses a <see cref="T:Gtk.Stock" /> or not.</param>
+        <returns>Gets a value indicating if the <see cref="T:Gtk.Button"/> uses a <see cref="T:Gtk.Stock" />.</returns>
+        <remarks>It's possible to create a <see cref="T:Gtk.Button"/> from <see cref="T:Gtk.Stock" />, which is recommended for consistency in <see cref="N:Gnome"/>
   apps. They also provide a <see cref="T:Gtk.Label" /> and a key shortcut. 
         </remarks>
       </Docs>
@@ -77,12 +112,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Gets or sets if the Button uses or not an embedded
-  underline in the Button <see cref="T:Gtk.Label" /> indicating if a
-  mnemonic is associated to the Button.</summary>
-        <param name="value">Boolean value to select if the Button uses
+        <summary>Indicates if a mnemonic is associated with the <see cref="T:Gtk.Button"/>.</summary>
+        <param name="value">Boolean value to select if the <see cref="T:Gtk.Button"/> uses
 	underline or not.</param>
-        <returns>Gets a value indicating if the Button uses underline
+        <returns>Gets a value indicating if the <see cref="T:Gtk.Button"/> uses underline
   or not.</returns>
         <remarks />
       </Docs>
@@ -97,11 +130,11 @@
         <Parameter Name="value" Type="Gtk.ReliefStyle" />
       </Parameters>
       <Docs>
-        <summary>Gets or sets the <see cref="T:Gtk.ReliefStyle" /> for the Button.</summary>
+        <summary>The <see cref="T:Gtk.ReliefStyle" /> for the <see cref="T:Gtk.Button"/>.</summary>
         <param name="value">The <see cref="T:Gtk.ReliefStyle" /> for
-  the Button.</param>
+  the <see cref="T:Gtk.Button"/>.</param>
         <returns>An instance of <see cref="T:Gtk.ReliefStyle" /> that
-  represents the relief style of the Button.</returns>
+  represents the relief style of the <see cref="T:Gtk.Button"/>.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -115,12 +148,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Gets or sets the <see langword="string" /> used to be
-	represented with a <see cref="T:Gtk.Label" /> contained by the
-	Button.</summary>
-        <param name="value">A <see langword="string" /> to be used for
-  the Button's <see cref="T:Gtk.Label" /></param>
-        <returns>The <see langword="string" /> contained by the Button.</returns>
+        <summary>The text of the <see cref="T:Gtk.Label" /> in the <see cref="T:Gtk.Button"/>.</summary>
+        <param name="value">A <see cref="T:System.String" /> to be used for
+  the <see cref="T:Gtk.Button"/>'s <see cref="T:Gtk.Label" /></param>
+        <returns>The <see cref="T:System.String" /> contained by the <see cref="T:Gtk.Button"/>.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -131,7 +162,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the button is activated.</summary>
+          Event launched when the <see cref="T:Gtk.Button"/> is activated.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -142,7 +173,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the button is clicked.</summary>
+          Event launched when the <see cref="T:Gtk.Button"/> is clicked.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -153,8 +184,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the cursor
-  leaves the button area.</summary>
+          Event launched when the cursor leaves the <see cref="T:Gtk.Button"/> area.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -165,7 +195,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the button is pressed.</summary>
+          Event launched when the <see cref="T:Gtk.Button"/> is pressed.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -176,7 +206,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the button is released.</summary>
+          Event launched when the <see cref="T:Gtk.Button"/> is released.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -187,8 +217,7 @@
       <Parameters />
       <Docs>
         <summary>
-          <see langword="event" /> launched when the cursor
-  enters the button area.</summary>
+          Event launched when the cursor enters the <see cref="T:Gtk.Button"/> area.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -201,7 +230,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'uint'</returns>
+        <returns>an object of type <see cref="T:System.UInt32"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -216,8 +245,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="label">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
+        <param name="label">an object of type <see cref="T:System.String"/></param>
+        <returns>an object of type <see cref="T:Gtk.Button"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -232,8 +261,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="stock_id">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
+        <param name="stock_id">an object of type <see cref="System.String"/></param>
+        <returns>an object of type <see cref="T:Gtk.Button"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -245,8 +274,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.Button.Left"/> signal to the given <see cref="T:Gtk.Button"/>.</summary>
+        <remarks>Emits a <see cref="E:Gtk.Button.Left"/> signal to the given <see cref="T:Gtk.Button"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Press">
@@ -257,8 +286,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.Button.Pressed"/> signal to the given <see cref="T:Gtk.Button"/>.</summary>
+        <remarks>Emits a <see cref="E:Gtk.Button.Pressed"/> signal to the given <see cref="T:Gtk.Button"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Release">
@@ -269,8 +298,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.Button.Released"/> signal to the given <see cref="T:Gtk.Button"/>.</summary>
+        <remarks>Emits a <see cref="E:Gtk.Button.Released"/> signal to the given <see cref="T:Gtk.Button"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Click">
@@ -281,8 +310,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.Button.Clicked"/> signal to the given <see cref="T:Gtk.Button"/>.</summary>
+        <remarks>Emits a <see cref="E:Gtk.Button.Clicked"/> signal to the given <see cref="T:Gtk.Button"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Enter">
@@ -293,8 +322,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emits a <see cref="E:Gtk.Button.Entered"/> signal to the given <see cref="T:Gtk.Button"/>.</summary>
+        <remarks>Emits a <see cref="E:Gtk.Button.Entered"/> signal to the given <see cref="T:Gtk.Button"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -319,8 +348,7 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type.</param>
-        <returns>Creates a new instance of Button, using the GLib
-  provided type.</returns>
+        <returns>Creates a new instance of <see cref="T:Gtk.Button"/>, using the GLib provided type.</returns>
         <remarks>This is a constructor used by derivative types of
   <see cref="T:Gtk.Button" /> that would have their own GLib type
   assigned to it. This is not typically used by C# code.</remarks>
@@ -333,9 +361,8 @@
       <Parameters />
       <Docs>
         <summary>Default parameterless constructor.</summary>
-        <returns>An instance of type Gtk.Button.</returns>
-        <remarks>This is the default constructor for the Gtk.Button
-  <see langword="class" />.</remarks>
+        <returns>An instance of <see cref="T:Gtk.Button"/>.</returns>
+        <remarks>This is the default constructor for the <see cref="T:Gtk.Button"/> class.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -346,13 +373,12 @@
         <Parameter Name="label" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Constructor that creates a labeled Button. The label
-  shows the string passed as parameter.</summary>
-        <param name="label">A <see langword="string" /> that will be
-  used to create a <see cref="T:Gtk.Label" /> for the Gtk.Button</param>
-        <returns>A Gtk.Button containing a <see cref="T:Gtk.Label" />
-  with the <see langword="string">string</see> passed.</returns>
-        <remarks>Constructor that creates a labeled button. The label
+        <summary>Constructor that creates a labeled <see cref="T:Gtk.Button"/>.</summary>
+        <param name="label">A <see cref="T:System.String" /> that will be
+  used to create a <see cref="T:Gtk.Label" /> for the <see cref="T:Gtk.Button"/></param>
+        <returns>A <see cref="T:Gtk.Button"/> containing a <see cref="T:Gtk.Label" />
+  with the specified <see cref="T:System.String"/>.</returns>
+        <remarks>Constructor that creates a labeled <see cref="T:Gtk.Button"/>. The label
   shows the string passed as parameter.</remarks>
       </Docs>
     </Member>
@@ -365,8 +391,8 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="raw">To be added: an object of type 'IntPtr'</param>
-        <returns>To be added: an object of type 'Gtk.Button'</returns>
+        <param name="raw">an object of type <see cref="T:System.IntPtr"/></param>
+        <returns>an object of type <see cref="T:Gtk.Button"/></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
