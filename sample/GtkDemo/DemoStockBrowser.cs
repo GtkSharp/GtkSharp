@@ -52,7 +52,6 @@ namespace GtkDemo
 
 			foreach (string s in stock_ids)
 			{
-				/* until 61893
 				Gtk.StockItem si = new StockItem ();
 				if (Gtk.StockManager.Lookup (s, ref si)) {
 					Image icon = new Image (s, IconSize.Menu);
@@ -61,7 +60,6 @@ namespace GtkDemo
 				else {
 					Console.WriteLine ("StockItem '{0}' could not be found.", s);
 				}
-				*/
 			}
 			
 			return store;
