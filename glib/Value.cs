@@ -54,6 +54,19 @@ namespace GLib {
 		/// <summary>
 		///	Value Constructor
 		/// </summary>
+		///
+		/// <remarks>
+		///	Constructs a new empty value that can be used
+		///	to receive "out" GValue parameters.
+		/// </remarks>
+
+		public Value () {
+			_val = gtksharp_value_create (TypeFundamentals.TypeInvalid);
+		}
+
+		/// <summary>
+		///	Value Constructor
+		/// </summary>
 		/// 
 		/// <remarks>
 		///	Constructs a Value corresponding to the type of the

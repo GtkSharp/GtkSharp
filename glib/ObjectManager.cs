@@ -26,10 +26,20 @@ namespace GtkSharp {
 				mangled = (string)types[typename];
 			else
 				mangled = GetExpected (typename);
-
 			Type t = Type.GetType (mangled);
+
+			// if null, try to get a parent type
 			if (t == null)
+				t = GetValidParentType (raw);
+
+			if (t == null) {
+				// should never get reached since everything should end up at
+				// GObject. Perhaps throw an exception here instead?
+				Console.WriteLine ("*** Warning: No C# equivalent for class '" + typename +
+						   "' found, returning null");
 				return null;
+			}
+
 			return (GLib.Object) Activator.CreateInstance (t, new object[] {raw});
 		}
 
@@ -51,14 +61,54 @@ namespace GtkSharp {
 			for (int i = 0; i < cname.Length; i++)
 			{
 				if (needs_dot && i > 0 && Char.IsUpper (cname[i])) {
-					ns = expected.ToString ().ToLower (); 
-					expected.Append ('.');
+					// check for initial "G" and mangle to "GLib" if so
+					// really only necessary for GObject
+					if (expected.Length == 1 && expected[0] == 'G') {
+						ns = "glib";
+						expected = new StringBuilder ("GLib.");
+					} else {
+						ns = expected.ToString ().ToLower (); 
+						expected.Append ('.');
+					}
 					needs_dot = false;
 				}
 				expected.Append (cname[i]);
 			}
 			expected.AppendFormat (",{0}-sharp", ns);
-			return expected.ToString ();
+
+			string expected_string = expected.ToString ();
+			RegisterType (cname, expected_string);
+			return expected_string;
+		}
+
+		[DllImport("gtksharpglue")]
+		static extern int gtksharp_get_type_id (IntPtr raw);
+
+		[DllImport("gtksharpglue")]
+		static extern int gtksharp_get_parent_type (int typ);
+
+		[DllImport("gtksharpglue")]
+		static extern string gtksharp_get_type_name_for_id (int typ);
+
+		static Type GetValidParentType (IntPtr raw)
+		{
+			int type_id = gtksharp_get_type_id (raw);
+			string typename;
+			string mangled;
+			Type t;
+			// We will always end up at GObject and will break this loop
+			while (true) {
+				type_id = gtksharp_get_parent_type (type_id);
+				typename = gtksharp_get_type_name_for_id (type_id);
+				if (types.ContainsKey (typename))
+					mangled = (string)types[typename];
+				else
+					mangled = GetExpected (typename);
+				t = Type.GetType (mangled);
+				if (t != null) {
+					return t;
+				}
+			}
 		}
 	}
 }

@@ -11,7 +11,8 @@ GValue *
 gtksharp_value_create (GType g_type)
 {
 	GValue *val = g_new0 (GValue, 1);
-	val = g_value_init (val, g_type);
+	if (g_type != G_TYPE_INVALID)
+		val = g_value_init (val, g_type);
 	return val;
 }
 

@@ -19,3 +19,20 @@ gtksharp_is_object (gpointer obj)
 	return G_IS_OBJECT (obj);
 }
 
+GType
+gtksharp_get_type_id (GObject *obj)
+{
+	return G_TYPE_FROM_INSTANCE (obj);
+}
+
+GType
+gtksharp_get_parent_type (GType typ)
+{
+	return g_type_parent (typ);
+}
+
+gchar *
+gtksharp_get_type_name_for_id (GType typ)
+{
+	return g_type_name (typ);
+}

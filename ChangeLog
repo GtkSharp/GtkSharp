@@ -1,3 +1,16 @@
+2002-10-04  Vladimir Vukicevic  <vladimir@pobox.com>
+
+	* glib/ObjectManager.cs, glue/type.c: If there isn't
+	an exact match for a C GObject class (i.e. BluecurveStyle),
+	walk up the gobject type hierarchy until we find a type
+	that we do have a wrapper for, and return that.  This means
+	that you'll always, worst-case, end up with a GObject.
+
+	* glib/Value.cs, glue/value.c: Added default constructor
+	to GLib.Value() that creates a new value with a type of
+	INVALID, and changed the glue function to not call
+	gtk_type_init if INVALID is passed.
+
 2002-10-02  Vladimir Vukicevic  <vladimir@pobox.com>
 
 	* gtk/TreeView.custom: added TreeView Handle as argument
