@@ -9,6 +9,7 @@ endif
 libgnomesharpglue_la_LDFLAGS = -module -avoid-version
 
 libgnomesharpglue_la_SOURCES = 	\
+	canvas.c 		\
 	canvasitem.c 		\
 	canvaspoints.c 		\
 	canvas-proxy.c		\

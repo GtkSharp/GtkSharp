@@ -6,6 +6,7 @@ libgtksharpglue_la_SOURCES =	\
 	clipboard.c		\
 	colorseldialog.c        \
 	combo.c			\
+	container.c		\
 	dialog.c		\
 	fileselection.c		\
 	layout.c		\
