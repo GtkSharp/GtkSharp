@@ -29,6 +29,8 @@ GNOMESOURCES = \
 	program.c	\
 	#
 
+libgtksharpglue_la_LDFLAGS = -module -avoid-version
+
 # fixme: Makefile.am = THE SUCK
 if ENABLE_GNOME
 

@@ -21,6 +21,7 @@ gconf-sharp-peditors.dll: $(SOURCES)
 	$(MCS) $(SOURCES) -L ../../glib -L ../../pango -L ../../atk -L ../../gdk -L ../../gtk -L ../../art -L ../../gnome -L ../GConf -L ../../glade /r:glib-sharp.dll /r:pango-sharp.dll /r:atk-sharp.dll /r:gdk-sharp.dll /r:gtk-sharp.dll /r:art-sharp.dll /r:gnome-sharp.dll /r:glade-sharp.dll /r:gconf-sharp.dll /r:System.Drawing /target:library /out:gconf-sharp-peditors.dll
 
 install: all
+	../../mkinstalldirs $(DESTDIR)@prefix@/lib && \
 	cp gconf-sharp-peditors.dll $(DESTDIR)@prefix@/lib
 
 clean:

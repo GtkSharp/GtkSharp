@@ -37,6 +37,7 @@ distclean: clean
 		$(MAKE) -C $$i distclean || exit 1;	\
 	done
 	for i in $(DIRS); do				\
+		$(MAKE) -C $$i distclean || true;	\
 		rm -f $$i/Makefile;			\
 	done
 	rm -f config.cache config.h config.log config.status libtool
