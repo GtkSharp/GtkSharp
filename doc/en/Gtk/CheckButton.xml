@@ -7,12 +7,64 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A GtkCheckButton places a discrete GtkToggleButton next to a widget.</summary>
+    <summary>A <see cref="T:Gtk.CheckButton" /> places a discrete <see cref="T:Gtk.ToggleButton" /> next to a widget.</summary>
     <remarks>
       <para>
-        A GtkCheckButton places a discrete <see cref="T:Gtk.ToggleButton" /> next to a widget, usually a <see cref="T:Gtk.Label" />. See <see cref="T:Gtk.ToggleButton" /> for more information about toggle/check buttons.
+        A <see cref="T:Gtk.CheckButton" /> places a discrete <see cref="T:Gtk.ToggleButton" /> next to a widget, usually a <see cref="T:Gtk.Label" />. See <see cref="T:Gtk.ToggleButton" /> for more information about toggle/check buttons.
     </para>
     </remarks>
+    <example>
+      <code language="C#">
+using System;
+using Gtk;
+using GtkSharp;
+
+class CheckButtonSample
+{
+	CheckButton cb;
+	
+	static void Main ()
+	{
+		new CheckButtonSample ();	
+	}
+	
+	CheckButtonSample ()
+	{
+		Application.Init ();
+	
+		Window win = new Window ("CheckButtonSample");
+		win.DeleteEvent += new DeleteEventHandler (OnWinDelete);
+
+		VBox vbox = new VBox (true, 1);
+		win.Add (vbox);
+
+		cb = new CheckButton ("Checked");
+		cb.Toggled += new EventHandler (OnCheckToggled);
+		vbox.Add (cb);	
+		
+		win.ShowAll ();
+		Application.Run ();
+	}
+	
+	void OnCheckToggled (object obj, EventArgs args)
+	{
+		if (cb.Label == "Checked")
+		{
+			cb.Label = "Unchecked";
+		}
+		else
+		{
+			cb.Label = "Checked";
+		}
+	}
+	
+	void OnWinDelete (object obj, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+      </code>
+    </example>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.ToggleButton</BaseTypeName>
@@ -40,13 +92,13 @@
         <ReturnType>Gtk.CheckButton</ReturnType>
       </ReturnValue>
       <Parameters>
-		<Parameter Name="label" Type="System.String" />
-	</Parameters>
+        <Parameter Name="label" Type="System.String" />
+      </Parameters>
       <Docs>
-        <summary>Creates a new CheckButton object with a label to the right of it.</summary>
-        <param name="label">The label displayed to the right of the CheckButton.</param>
-        <returns>The newely created CheckButton.</returns>
-        <remarks>Creates a new CheckButton object with a label to the
+        <summary>Creates a new <see cref="T:Gtk.CheckButton" /> object with a label to the right of it.</summary>
+        <param name="label">The label displayed to the right of the <see cref="T:Gtk.CheckButton" />.</param>
+        <returns>The newly created <see cref="T:Gtk.CheckButton" />.</returns>
+        <remarks>Creates a new <see cref="T:Gtk.CheckButton" /> object with a <see cref="T:Gtk.Label" /> to the
         right of it</remarks>
       </Docs>
     </Member>
@@ -67,12 +119,12 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="raw" Type="System.IntPtr" />
-	</Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of CheckButton, wrapping the C object.</returns>
+        <returns>An instance of <see cref="T:Gtk.CheckButton" />, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -85,7 +137,7 @@
       <Parameters />
       <Docs>
         <summary>Constructor</summary>
-        <returns>A new CheckButton</returns>
+        <returns>A new <see cref="T:Gtk.CheckButton" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -94,12 +146,12 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="label" Type="System.String" />
-	</Parameters>
+        <Parameter Name="label" Type="System.String" />
+      </Parameters>
       <Docs>
         <summary>Constructor</summary>
-        <param name="label">A string for the label.</param>
-        <returns>A new CheckButton with a label</returns>
+        <param name="label">A string for the <see cref="T:Gtk.Label" />.</param>
+        <returns>A new <see cref="T:Gtk.CheckButton" /> with a <see cref="T:Gtk.Label" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -110,8 +162,8 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The GLib Type for Gtk.CheckButton</summary>
-        <returns>The GLib Type for the Gtk.CheckButton class.</returns>
+        <summary>The <see cref="T:GLib.Type" /> for <see cref="T:Gtk.CheckButton" /></summary>
+        <returns>The <see cref="T:GLib.Type" /> for the <see cref="T:Gtk.CheckButton" /> class.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -120,12 +172,12 @@
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-		<Parameter Name="gtype" Type="GLib.Type" />
-	</Parameters>
+        <Parameter Name="gtype" Type="GLib.Type" />
+      </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">GLib type for the type</param>
-        <returns>Creates a new instance of CheckButton, using the GLib-provided type</returns>
+        <returns>Creates a new instance of <see cref="T:Gtk.CheckButton" />, using the GLib-provided type</returns>
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:Gtk.CheckButton" /> that would have their own GLib type assigned to it.  This is not typically used by C# code.</para>
         </remarks>
