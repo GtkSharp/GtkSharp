@@ -40,6 +40,12 @@ namespace Gdk {
 			}
 		}
 
+		public Key Key {
+			get {
+				return (Key) gtksharp_gdk_event_key_get_keyval (Handle);
+			}
+		}
+
 		public uint KeyValue {
 			get {
 				return gtksharp_gdk_event_key_get_keyval (Handle);
