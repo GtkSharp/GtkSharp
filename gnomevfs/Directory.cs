@@ -49,6 +49,13 @@ namespace Gnome.Vfs {
 			return entries;
 		}
 		
+		public static void GetEntries (Uri uri, FileInfoOptions options,
+					       uint itemsPerNotification, int priority,
+					       AsyncDirectoryLoadCallback callback)
+		{
+			GetEntries (uri.ToString (), options, itemsPerNotification, priority, callback);
+		}
+		
 		[DllImport ("gnomevfs-2")]
 		private static extern void gnome_vfs_async_load_directory (out IntPtr handle, string uri, FileInfoOptions options, uint items_per_notification, int priority, AsyncDirectoryLoadCallbackNative native, IntPtr data);
 		
