@@ -88,10 +88,10 @@ namespace GLib {
 
 		// import the glue function to allocate values on heap
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_value_create(IntPtr type);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_value_create_from_property(IntPtr obj, string name);
 
 		// Constructor to wrap a raw GValue ref.  We need the dummy param
@@ -652,7 +652,7 @@ namespace GLib {
 			return new EnumWrapper (g_value_get_enum (val._val), false);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_value_get_value_type (IntPtr val);
 		
 		public object Val

@@ -1,0 +1,23 @@
+lib_LTLIBRARIES = $(TARGET)
+
+if ENABLE_GLADE
+TARGET = libgladesharpglue.la
+else
+TARGET = 
+endif
+
+libgladesharpglue_la_LDFLAGS = -module -avoid-version
+
+libgladesharpglue_la_SOURCES = 	\
+	gladexml.c
+
+libgladesharpglue_la_LIBADD = $(BASE_DEPENDENCIES_LIBS)
+
+INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) -I$(top_srcdir)
+
+libgladesharpglue.dll: $(libgladesharpglue_la_OBJECTS) libgladesharpglue.rc libgladesharpglue.def
+	./build-dll libgladesharpglue $(VERSION)
+
+CLEANFILES = lib*.a lib*.dll
+
+EXTRA_DIST = makefile.win32 win32dll.c

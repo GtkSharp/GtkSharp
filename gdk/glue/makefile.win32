@@ -1,0 +1,24 @@
+GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0 libglade-2.0`
+GTK_LIBS=`pkg-config --libs gtk+-win32-2.0 libglade-2.0`
+CC=gcc -mno-cygwin -mms-bitfields
+DLLWRAP=dllwrap -mno-cygwin -mms-bitfields --target i386-mingw32 --export-all-symbols
+
+GLUE_OBJS = \
+	dragcontext.o		\
+        event.o                 \
+        selection.o             \
+	win32dll.o
+
+all: gdksharpglue.dll
+
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
+
+
+gdksharpglue.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libgdksharpglue.a --dllname=gdksharpglue.dll --driver-name=gcc --output-def=gdksharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+
+
+clean:
+	rm -f gdksharpglue.dll *.o libgdksharpglue.a

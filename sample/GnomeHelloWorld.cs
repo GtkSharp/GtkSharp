@@ -11,7 +11,6 @@ namespace GtkSamples {
 	using Gnome;
 	using System;
 	using System.IO;
-	using System.Drawing;
 	using System.Runtime.InteropServices;
 
 	public struct DemoEntry {
@@ -100,7 +99,8 @@ namespace GtkSamples {
 			vbox.PackStart (CreateList (), true, true, 4);
 			win.Contents = vbox;
 
-			win.DefaultSize = new Size (250, 200);
+			win.DefaultWidth = 250;
+			win.DefaultHeight = 200;
 
 			return win;
 		}

@@ -24,14 +24,6 @@
 		}
 	}
 
-	public System.Drawing.Rectangle FrameExtents {
-		get {
-			Gdk.Rectangle rect = Gdk.Rectangle.Zero;
-			gdk_window_get_frame_extents (Handle, ref rect);
-			return new System.Drawing.Rectangle (rect.X, rect.Y, rect.Width, rect.Height);
-		}
-	}
-
 	[DllImport("libgdk-win32-2.0-0.dll")]
 	static extern void gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
 
@@ -41,43 +33,6 @@
 			foreach (Pixbuf val in value)
 				list.Append (val.Handle);
 			gdk_window_set_icon_list(Handle, list.Handle);
-		}
-	}
-
-	public void Move (System.Drawing.Point p) {
-		gdk_window_move (Handle, p.X, p.Y);
-	}
-
-	public System.Drawing.Point Origin {
-		get {
-			int x, y;
-			gdk_window_get_origin (Handle, out x, out y);
-			return new System.Drawing.Point (x, y);
-		}
-	}
-
-	public System.Drawing.Point RootOrigin {
-		get {
-			int x, y;
-			gdk_window_get_root_origin (Handle, out x, out y);
-			return new System.Drawing.Point (x, y);
-		}
-	}
-
-	public void ClearArea(System.Drawing.Rectangle rect) {
-		gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-	}
-
-	public void InvalidateRect(System.Drawing.Rectangle rect, bool invalidate_children) {
-		Gdk.Rectangle grect = new Gdk.Rectangle (rect.X, rect.Y, rect.Width, rect.Height);
-		gdk_window_invalidate_rect (Handle, ref grect, invalidate_children);
-	}
-
-	public System.Drawing.Point Position {
-		get {
-			int x, y;
-			gdk_window_get_position (Handle, out x, out y);
-			return new System.Drawing.Point (x, y);
 		}
 	}
 
@@ -97,13 +52,3 @@
 		}
 	}
 
-	public void MoveResize (System.Drawing.Rectangle rect) {
-		gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-	}
-
-	public void ClearArea (System.Drawing.Rectangle rect, bool expose) {
-		if (expose)
-			gdk_window_clear_area_e (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-		else
-			gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
-	}

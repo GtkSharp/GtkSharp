@@ -2,6 +2,8 @@ all: windows
 
 windows:
 	$(CSC) /unsafe /nowarn:0660,0661 /target:library /out:glib-sharp.dll /recurse:*.cs
+	cd glue && make -f makefile.win32
 
 clean:
 	rm -f glib-sharp.dll
+	cd glue && make -f makefile.win32 clean

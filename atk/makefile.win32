@@ -10,8 +10,14 @@ windows: generated-stamp
 generated-stamp: ../generator/codegen.exe atk-api.xml
 	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=atk-sharp && touch generated-stamp
 
+atk-api.xml: atk-api.raw Atk.metadata
+	cp atk-api.raw atk-api.xml
+	chmod u+w atk-api.xml
+	../parser/gapi-fixup.exe --api=atk-api.xml --metadata=Atk.metadata
+
 clean:
 	rm -f generated-stamp
 	rm -f $(ASSEMBLY)
 	rm -rf generated
+	rm -f atk-api.xml
 

@@ -27,7 +27,7 @@ namespace GLib {
 			return new List (g_list_copy (Handle));
 		}
 		
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_list_get_data (IntPtr l);
 		
 		internal override IntPtr GetData (IntPtr current)
@@ -35,7 +35,7 @@ namespace GLib {
 			return gtksharp_list_get_data (current);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_list_get_next (IntPtr l);
 		
 		internal override IntPtr Next (IntPtr current)

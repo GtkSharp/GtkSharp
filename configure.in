@@ -38,7 +38,6 @@ if test "x$PKG_CONFIG" = "xno"; then
 fi
 
 dnl for use on the build system
-dnl pkg-config is stupid
 BUILD_GTK_CFLAGS=`$PKG_CONFIG --cflags gtk+-2.0`
 BUILD_GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
 AC_SUBST(BUILD_GTK_CFLAGS)
@@ -57,19 +56,44 @@ AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
 	fi
 )
 
-PKG_CHECK_MODULES(MONO_DEPENDENCY, mono)
+PKG_CHECK_MODULES(MONO_DEPENDENCY, mono, has_mono=true, has_mono=false)
 
+if test "x$has_mono" = "xtrue"; then
 if test `uname -s` = "Darwin"; then
-	MONO=`which mint`
+	RUNTIME=`which mint`
+	CSC=`which mcs`
 else
-	MONO=`which mono`
+	RUNTIME=`which mono`
+	CSC=`which mcs`
 fi
-AC_SUBST(MONO)
+else
+AC_PATH_PROG(CSC, csc.exe, $PATH)
+if test x$CSC = ""; then
+	AC_MSG_ERROR([You need to install either mono or .Net])
+else
+RUNTIME=
+fi
+fi
+AC_SUBST(RUNTIME)
+AC_SUBST(CSC)
+
+PKG_CHECK_MODULES(GLIB, glib-2.0)
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
+
+PKG_CHECK_MODULES(XML, libxml-2.0)
+AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_LIBS)
 
 ## Versions of dependencies
-GNOME_REQUIRED_VERSION=2.0.0
+GNOME_REQUIRED_VERSION=2.2.0
 GTK_REQUIRED_VERSION=2.2.0
-PKG_CHECK_MODULES(BASE_DEPENDENCIES, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
+
+PKG_CHECK_MODULES(LIBART, libart-2.0 >= $GNOME_REQUIRED_VERSION, enable_libart=yes, enable_libart=no)
+AC_SUBST(LIBART_CFLAGS)
+AC_SUBST(LIBART_LIBS)
+
+PKG_CHECK_MODULES(BASE_DEPENDENCIES, libgnomecanvas-2.0 >= $GNOME_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
 
 if test "x$enable_gnome" = "xno"; then
 	PKG_CHECK_MODULES(BASE_DEPENDENCIES, gtk+-2.0 >= $GTK_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION)
@@ -120,6 +144,7 @@ fi
 AC_SUBST(BASE_DEPENDENCIES_CFLAGS)
 AC_SUBST(BASE_DEPENDENCIES_LIBS)
 
+AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
@@ -132,30 +157,41 @@ AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
 AC_SUBST(CFLAGS)
 
 AC_OUTPUT([
-glue/Makefile
+sources/Makefile
 parser/Makefile
+parser/GAPI/Makefile
 generator/Makefile
 generator/gapi-codegen
 glib/Makefile
+glib/glue/Makefile
 pango/Makefile
 atk/Makefile
 art/Makefile
 gdk/Makefile
+gdk/glue/Makefile
 gtk/Makefile
+gtk/glue/Makefile
 glade/Makefile
+glade/glue/Makefile
 gnome/Makefile
+gnome/glue/Makefile
 gda/Makefile
 gnomedb/Makefile
 gconf/Makefile
+gconf/doc/Makefile
 gconf/GConf/Makefile
 gconf/GConf.PropertyEditors/Makefile
 gconf/tools/Makefile
-gst/Makefile
+gconf/tools/gconfsharp-schemagen
 gtkhtml/Makefile
 rsvg/Makefile
 vte/Makefile
+sample/GtkDemo/Makefile
 sample/Makefile
+sample/gconf/Makefile
+sample/pixmaps/Makefile
 sample/rsvg/Makefile
+sample/test/Makefile
 gtk-sharp.pc
 parser/gapi.pc
 parser/gapi-fixup
@@ -169,6 +205,7 @@ echo "   * Installation prefix = $prefix"
 echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
+echo "      * art-sharp.dll: $enable_libart"
 echo "      * gnome-sharp.dll: $enable_gnome"
 echo "      * glade-sharp.dll: $enable_glade"
 echo "      * gda-sharp.dll: $enable_gda"

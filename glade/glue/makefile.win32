@@ -1,0 +1,22 @@
+GTK_CFLAGS=`pkg-config --cflags gtk+-win32-2.0 libglade-2.0`
+GTK_LIBS=`pkg-config --libs gtk+-win32-2.0 libglade-2.0`
+CC=gcc -mno-cygwin -mms-bitfields
+DLLWRAP=dllwrap -mno-cygwin -mms-bitfields --target i386-mingw32 --export-all-symbols
+
+GLUE_OBJS = \
+	gladexml.o              \
+	win32dll.o
+
+all: gladesharpglue.dll
+
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o $@ $^ 
+
+
+gladesharpglue.dll: $(GLUE_OBJS)
+	$(DLLWRAP) --output-lib=libgladesharpglue.a --dllname=gladesharpglue.dll --driver-name=gcc --output-def=gladesharpglue.def $(GLUE_OBJS) $(GTK_LIBS)
+
+
+clean:
+	rm -f gladesharpglue.dll *.o libgladesharpglue.a

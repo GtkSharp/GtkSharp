@@ -11,19 +11,19 @@ namespace Gdk {
 
 	public class EventKey : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_key_get_time (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_key_get_state (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_key_get_keyval (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern ushort gtksharp_gdk_event_key_get_hardware_keycode (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern byte gtksharp_gdk_event_key_get_group (IntPtr evt);
 
 		public EventKey (IntPtr raw) : base (raw) {} 

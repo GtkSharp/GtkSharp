@@ -8,7 +8,6 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
-	using System.Drawing;
 
 	public class CalendarApp  {
 
@@ -25,7 +24,8 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Window win = new Window ("Calendar Tester");
-			win.DefaultSize = new Size (200, 150);
+			win.DefaultWidth = 200;
+			win.DefaultHeight = 150;
 			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			Calendar cal = CreateCalendar();
 			cal.DaySelected += new EventHandler (DaySelected);

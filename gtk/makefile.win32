@@ -6,12 +6,20 @@ all: windows
 
 windows: generated-stamp
 	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
+	cd glue && make -f makefile.win32
 
 generated-stamp: ../generator/codegen.exe $(APIS) $(I_APIS) *.custom
 	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=gtk-sharp && touch generated-stamp
+
+gtk-api.xml: gtk-api.raw Gtk.metadata
+	cp gtk-api.raw gtk-api.xml
+	chmod u+w gtk-api.xml
+	../parser/gapi-fixup.exe --api=gtk-api.xml --metadata=Gtk.metadata
 
 clean:
 	rm -f generated-stamp
 	rm -f $(ASSEMBLY)
 	rm -rf generated
+	rm -f gtk-api.xml
+	cd glue && make -f makefile.win32 clean
 

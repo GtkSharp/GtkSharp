@@ -6,7 +6,6 @@
 
 namespace GtkSamples {
 	using System;
-	using System.Drawing;
 	using System.Runtime.InteropServices;
 
 	using Gtk;
@@ -53,7 +52,8 @@ namespace GtkSamples {
 
 			Window win = new Window ("TreeView demo");
 			win.DeleteEvent += new DeleteEventHandler (DeleteCB);
-			win.DefaultSize = new Size (320,480);
+			win.DefaultWidth = 320;
+			win.DefaultHeight = 480;
 
 			ScrolledWindow sw = new ScrolledWindow ();
 			win.Add (sw);

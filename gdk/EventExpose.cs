@@ -11,13 +11,13 @@ namespace Gdk {
 
 	public class EventExpose : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern Rectangle gtksharp_gdk_event_expose_get_area (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_expose_get_region (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern int gtksharp_gdk_event_expose_get_count (IntPtr evt);
 
 		public EventExpose (IntPtr raw) : base (raw) {} 

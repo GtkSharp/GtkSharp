@@ -11,7 +11,7 @@ namespace Gdk {
 
 	public class EventFocus : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern short gtksharp_gdk_event_focus_get_in (IntPtr evt);
 
 		public EventFocus (IntPtr raw) : base (raw) {} 

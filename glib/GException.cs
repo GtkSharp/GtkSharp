@@ -18,7 +18,7 @@ namespace GLib {
 			this.errptr = errptr;
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_error_get_message (IntPtr errptr);
 		public override string Message {
 			get {

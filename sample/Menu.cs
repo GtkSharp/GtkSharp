@@ -7,7 +7,6 @@
 namespace GtkSharp.Samples {
 
 	using System;
-	using System.Drawing;
 	using Gtk;
 
 	public class MenuApp {
@@ -17,7 +16,8 @@ namespace GtkSharp.Samples {
 			Application.Init();
 			Window win = new Window ("Menu Sample App");
 			win.DeleteEvent += new DeleteEventHandler (delete_cb);
-			win.DefaultSize = new Size(200, 150);
+			win.DefaultWidth = 200;
+			win.DefaultHeight = 150;
 
 			VBox box = new VBox (false, 2);
 

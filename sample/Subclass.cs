@@ -8,7 +8,6 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
-	using System.Drawing;
 
 	public class ButtonApp  {
 

@@ -11,10 +11,10 @@ namespace Gdk {
 
 	public class EventWindowState : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern WindowState gtksharp_gdk_event_window_state_get_changed_mask (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern WindowState gtksharp_gdk_event_window_state_get_new_window_state (IntPtr evt);
 
 		public EventWindowState (IntPtr raw) : base (raw) {} 

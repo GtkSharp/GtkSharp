@@ -163,7 +163,7 @@ namespace GLib {
 					
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_register_type (string name, IntPtr parent_type);
 
 		/// <summary>
@@ -260,7 +260,7 @@ namespace GLib {
 		///	The type associated with this object class.
 		/// </remarks>
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		private static extern IntPtr gtksharp_get_type_id (IntPtr obj);
 
 		public static GLib.GType GType {
@@ -269,7 +269,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
 		public string TypeName {
@@ -390,7 +390,7 @@ namespace GLib {
 			g_object_set_property (Raw, name, val.Handle);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern void gtksharp_override_virtual_method (IntPtr gtype, string name, Delegate cb);
 
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)
@@ -401,7 +401,7 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		protected static extern void g_signal_chain_from_overridden (IntPtr args, IntPtr retval);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern bool gtksharp_is_object (IntPtr obj);
 
 		internal static bool IsObject (IntPtr obj)
@@ -409,7 +409,7 @@ namespace GLib {
 			return gtksharp_is_object (obj);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern int gtksharp_object_get_ref_count (IntPtr obj);
 
 		public int RefCount {

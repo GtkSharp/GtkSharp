@@ -110,7 +110,7 @@ namespace GtkDemo {
 			Gdk.GC gc, gc1, gc2;
 			Gdk.Color color = new Gdk.Color (); 
 			EventExpose eventExpose = args.Event;
-			Gdk.Window window = eventExpose.window;
+			Gdk.Window window = eventExpose.Window;
 			gc1 = new Gdk.GC (window);
 
 			color.Red = 30000;
@@ -158,7 +158,7 @@ namespace GtkDemo {
 			// is whether the GC has an inappropriate clip region set.
 
 			EventExpose eventExpose = args.Event;
-			Gdk.Window window = eventExpose.window;
+			Gdk.Window window = eventExpose.Window;
  			Rectangle area = eventExpose.Area;
 			
 			window.DrawDrawable (drawingArea1.Style.ForegroundGC(StateType.Normal),
@@ -173,7 +173,7 @@ namespace GtkDemo {
 		private void ScribbleConfigure (object o, ConfigureEventArgs args)
 		{
 			EventConfigure eventConfigure = args.Event;
-			Gdk.Window window = eventConfigure.window;
+			Gdk.Window window = eventConfigure.Window;
 			Rectangle allocation = drawingArea1.Allocation;
 			pixmap = new Pixmap (window,
 					allocation.Width,
@@ -202,9 +202,9 @@ namespace GtkDemo {
 			int x, y;
 			ModifierType state;
 			EventMotion ev = args.Event;
-			Gdk.Window window = ev.window;
+			Gdk.Window window = ev.Window;
 
-			if (ev.IsHint != 0) {
+			if (ev.IsHint) {
 				ModifierType s;
 				window.GetPointer (out x, out y, out s);
 				state = s;

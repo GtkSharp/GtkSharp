@@ -13,13 +13,13 @@ namespace Gdk {
 
 	public class Event : GLib.IWrapper {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern EventType gtksharp_gdk_event_get_event_type (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_get_window (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern sbyte gtksharp_gdk_event_get_send_event (IntPtr evt);
 
 		[DllImport("libgdk-win32-2.0-0.dll")]

@@ -11,28 +11,28 @@ namespace Gdk {
 
 	public class EventScroll : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_scroll_get_time (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_scroll_get_x (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_scroll_get_y (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_scroll_get_x_root (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_scroll_get_y_root (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_scroll_get_state (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern ScrollDirection gtksharp_gdk_event_scroll_get_direction (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_scroll_get_device (IntPtr evt);
 
 		public EventScroll (IntPtr raw) : base (raw) {} 

@@ -11,31 +11,31 @@ namespace Gdk {
 
 	public class EventButton : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_button_get_time (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_button_get_x (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_button_get_y (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_button_get_x_root (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern double gtksharp_gdk_event_button_get_y_root (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_button_get_state (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_button_get_button (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_button_get_device (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_button_get_axes (IntPtr evt);
 
 		public EventButton (IntPtr raw) : base (raw) {} 

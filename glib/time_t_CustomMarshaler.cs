@@ -67,7 +67,7 @@ namespace GLib {
 
 		public void CleanUpManagedData (object obj) {}
 
-		[DllImport ("gtksharpglue")]
+		[DllImport ("glibsharpglue")]
 		static extern int gtksharp_time_t_sizeof ();
 
 		public int GetNativeDataSize ()

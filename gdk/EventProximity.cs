@@ -11,10 +11,10 @@ namespace Gdk {
 
 	public class EventProximity : Event {
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern uint gtksharp_gdk_event_proximity_get_time (IntPtr evt);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("gdksharpglue")]
 		static extern IntPtr gtksharp_gdk_event_proximity_get_device (IntPtr evt);
 
 		public EventProximity (IntPtr raw) : base (raw) {} 

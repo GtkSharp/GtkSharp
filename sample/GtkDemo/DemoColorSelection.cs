@@ -69,7 +69,7 @@ namespace GtkDemo
 		private void ExposeEventCallback (object o, ExposeEventArgs args)
 		{
 			EventExpose eventExpose = args.Event;
-			Gdk.Window window = eventExpose.window;
+			Gdk.Window window = eventExpose.Window;
  			Rectangle area = eventExpose.Area;
 
 			window.DrawRectangle (drawingArea.Style.BackgroundGC(StateType.Normal),

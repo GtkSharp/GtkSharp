@@ -1,0 +1,1524 @@
+<?xml version="1.0"?>
+<api>
+<!--
+
+        This file was automatically generated.
+        Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+
+-->
+  <namespace name="Pango" library="libpango-1.0-0.dll">
+    <enum name="Alignment" cname="PangoAlignment" type="enum">
+      <member cname="PANGO_ALIGN_LEFT" name="Left"/>
+      <member cname="PANGO_ALIGN_CENTER" name="Center"/>
+      <member cname="PANGO_ALIGN_RIGHT" name="Right"/>
+    </enum>
+    <enum name="AttrType" cname="PangoAttrType" type="enum">
+      <member cname="PANGO_ATTR_INVALID" name="Invalid"/>
+      <member cname="PANGO_ATTR_LANGUAGE" name="Language"/>
+      <member cname="PANGO_ATTR_FAMILY" name="Family"/>
+      <member cname="PANGO_ATTR_STYLE" name="Style"/>
+      <member cname="PANGO_ATTR_WEIGHT" name="Weight"/>
+      <member cname="PANGO_ATTR_VARIANT" name="Variant"/>
+      <member cname="PANGO_ATTR_STRETCH" name="Stretch"/>
+      <member cname="PANGO_ATTR_SIZE" name="Size"/>
+      <member cname="PANGO_ATTR_FONT_DESC" name="FontDesc"/>
+      <member cname="PANGO_ATTR_FOREGROUND" name="Foreground"/>
+      <member cname="PANGO_ATTR_BACKGROUND" name="Background"/>
+      <member cname="PANGO_ATTR_UNDERLINE" name="Underline"/>
+      <member cname="PANGO_ATTR_STRIKETHROUGH" name="Strikethrough"/>
+      <member cname="PANGO_ATTR_RISE" name="Rise"/>
+      <member cname="PANGO_ATTR_SHAPE" name="Shape"/>
+      <member cname="PANGO_ATTR_SCALE" name="Scale"/>
+    </enum>
+    <enum name="CoverageLevel" cname="PangoCoverageLevel" type="enum">
+      <member cname="PANGO_COVERAGE_NONE" name="None"/>
+      <member cname="PANGO_COVERAGE_FALLBACK" name="Fallback"/>
+      <member cname="PANGO_COVERAGE_APPROXIMATE" name="Approximate"/>
+      <member cname="PANGO_COVERAGE_EXACT" name="Exact"/>
+    </enum>
+    <enum name="Direction" cname="PangoDirection" type="enum">
+      <member cname="PANGO_DIRECTION_LTR" name="Ltr"/>
+      <member cname="PANGO_DIRECTION_RTL" name="Rtl"/>
+      <member cname="PANGO_DIRECTION_TTB_LTR" name="TtbLtr"/>
+      <member cname="PANGO_DIRECTION_TTB_RTL" name="TtbRtl"/>
+    </enum>
+    <enum name="FontMask" cname="PangoFontMask" type="flags">
+      <member cname="PANGO_FONT_MASK_FAMILY" name="Family" value="1 &lt;&lt; 0"/>
+      <member cname="PANGO_FONT_MASK_STYLE" name="Style" value="1 &lt;&lt; 1"/>
+      <member cname="PANGO_FONT_MASK_VARIANT" name="Variant" value="1 &lt;&lt; 2"/>
+      <member cname="PANGO_FONT_MASK_WEIGHT" name="Weight" value="1 &lt;&lt; 3"/>
+      <member cname="PANGO_FONT_MASK_STRETCH" name="Stretch" value="1 &lt;&lt; 4"/>
+      <member cname="PANGO_FONT_MASK_SIZE" name="Size" value="1 &lt;&lt; 5"/>
+    </enum>
+    <enum name="Stretch" cname="PangoStretch" type="enum">
+      <member cname="PANGO_STRETCH_ULTRA_CONDENSED" name="UltraCondensed"/>
+      <member cname="PANGO_STRETCH_EXTRA_CONDENSED" name="ExtraCondensed"/>
+      <member cname="PANGO_STRETCH_CONDENSED" name="Condensed"/>
+      <member cname="PANGO_STRETCH_SEMI_CONDENSED" name="SemiCondensed"/>
+      <member cname="PANGO_STRETCH_NORMAL" name="Normal"/>
+      <member cname="PANGO_STRETCH_SEMI_EXPANDED" name="SemiExpanded"/>
+      <member cname="PANGO_STRETCH_EXPANDED" name="Expanded"/>
+      <member cname="PANGO_STRETCH_EXTRA_EXPANDED" name="ExtraExpanded"/>
+      <member cname="PANGO_STRETCH_ULTRA_EXPANDED" name="UltraExpanded"/>
+    </enum>
+    <enum name="Style" cname="PangoStyle" type="enum">
+      <member cname="PANGO_STYLE_NORMAL" name="Normal"/>
+      <member cname="PANGO_STYLE_OBLIQUE" name="Oblique"/>
+      <member cname="PANGO_STYLE_ITALIC" name="Italic"/>
+    </enum>
+    <enum name="TabAlign" cname="PangoTabAlign" type="enum">
+      <member cname="PANGO_TAB_LEFT" name="Left"/>
+    </enum>
+    <enum name="Underline" cname="PangoUnderline" type="enum">
+      <member cname="PANGO_UNDERLINE_NONE" name="None"/>
+      <member cname="PANGO_UNDERLINE_SINGLE" name="Single"/>
+      <member cname="PANGO_UNDERLINE_DOUBLE" name="Double"/>
+      <member cname="PANGO_UNDERLINE_LOW" name="Low"/>
+    </enum>
+    <enum name="Variant" cname="PangoVariant" type="enum">
+      <member cname="PANGO_VARIANT_NORMAL" name="Normal"/>
+      <member cname="PANGO_VARIANT_SMALL_CAPS" name="SmallCaps"/>
+    </enum>
+    <enum name="Weight" cname="PangoWeight" type="enum">
+      <member cname="PANGO_WEIGHT_ULTRALIGHT" name="Ultralight" value="200"/>
+      <member cname="PANGO_WEIGHT_LIGHT" name="Light" value="300"/>
+      <member cname="PANGO_WEIGHT_NORMAL" name="Normal" value="400"/>
+      <member cname="PANGO_WEIGHT_BOLD" name="Bold" value="700"/>
+      <member cname="PANGO_WEIGHT_ULTRABOLD" name="Ultrabold" value="800"/>
+      <member cname="PANGO_WEIGHT_HEAVY" name="Heavy" value="900"/>
+    </enum>
+    <enum name="WrapMode" cname="PangoWrapMode" type="enum">
+      <member cname="PANGO_WRAP_WORD" name="Word"/>
+      <member cname="PANGO_WRAP_CHAR" name="Char"/>
+      <member cname="PANGO_WRAP_WORD_CHAR" name="WordChar"/>
+    </enum>
+    <callback name="AttrFilterFunc" cname="PangoAttrFilterFunc">
+      <return-type type="gboolean"/>
+      <parameters>
+        <parameter type="PangoAttribute*" name="attribute"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <callback name="FT2SubstituteFunc" cname="PangoFT2SubstituteFunc">
+      <return-type type="void"/>
+      <parameters>
+        <parameter type="FcPattern*" name="pattern"/>
+        <parameter type="gpointer" name="data"/>
+      </parameters>
+    </callback>
+    <object name="Context" cname="PangoContext" parent="GObject">
+      <method name="GetBaseDir" cname="pango_context_get_base_dir">
+        <return-type type="PangoDirection"/>
+      </method>
+      <method name="GetFontDescription" cname="pango_context_get_font_description">
+        <return-type type="PangoFontDescription*"/>
+      </method>
+      <method name="GetLanguage" cname="pango_context_get_language">
+        <return-type type="PangoLanguage*"/>
+      </method>
+      <method name="GetMetrics" cname="pango_context_get_metrics">
+        <return-type type="PangoFontMetrics*"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="pango_context_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ListFamilies" cname="pango_context_list_families">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontFamily***" name="families"/>
+          <parameter type="int*" name="n_families"/>
+        </parameters>
+      </method>
+      <method name="LoadFont" cname="pango_context_load_font">
+        <return-type type="PangoFont*"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+        </parameters>
+      </method>
+      <method name="LoadFontset" cname="pango_context_load_fontset">
+        <return-type type="PangoFontset*"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+      <method name="SetBaseDir" cname="pango_context_set_base_dir">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoDirection" name="direction"/>
+        </parameters>
+      </method>
+      <method name="SetFontDescription" cname="pango_context_set_font_description">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+        </parameters>
+      </method>
+      <method name="SetLanguage" cname="pango_context_set_language">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="Font" cname="PangoFont" parent="GObject">
+      <method name="Describe" cname="pango_font_describe">
+        <return-type type="PangoFontDescription*"/>
+      </method>
+      <method name="DescriptionsFree" cname="pango_font_descriptions_free" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontDescription**" name="descs"/>
+          <parameter type="int" name="n_descs"/>
+        </parameters>
+      </method>
+      <method name="FindShaper" cname="pango_font_find_shaper">
+        <return-type type="PangoEngineShape*"/>
+        <parameters>
+          <parameter type="PangoLanguage*" name="language"/>
+          <parameter type="guint32" name="ch"/>
+        </parameters>
+      </method>
+      <method name="GetCoverage" cname="pango_font_get_coverage">
+        <return-type type="PangoCoverage*"/>
+        <parameters>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+      <method name="GetGlyphExtents" cname="pango_font_get_glyph_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoGlyph" name="glyph"/>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetMetrics" cname="pango_font_get_metrics">
+        <return-type type="PangoFontMetrics*"/>
+        <parameters>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="pango_font_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="Fontset" cname="PangoFontset" parent="GObject">
+      <method name="GetFont" cname="pango_fontset_get_font">
+        <return-type type="PangoFont*"/>
+        <parameters>
+          <parameter type="guint" name="wc"/>
+        </parameters>
+      </method>
+      <method name="GetMetrics" cname="pango_fontset_get_metrics">
+        <return-type type="PangoFontMetrics*"/>
+      </method>
+      <method name="GetType" cname="pango_fontset_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="FontFace" cname="PangoFontFace" parent="GObject">
+      <method name="Describe" cname="pango_font_face_describe">
+        <return-type type="PangoFontDescription*"/>
+      </method>
+      <method name="GetFaceName" cname="pango_font_face_get_face_name">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="pango_font_face_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+    </object>
+    <object name="FontFamily" cname="PangoFontFamily" parent="GObject">
+      <method name="GetName" cname="pango_font_family_get_name">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="pango_font_family_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ListFaces" cname="pango_font_family_list_faces">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontFace***" name="faces"/>
+          <parameter type="int*" name="n_faces"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="FontMap" cname="PangoFontMap" parent="GObject">
+      <method name="GetType" cname="pango_font_map_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="ListFamilies" cname="pango_font_map_list_families">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontFamily***" name="families"/>
+          <parameter type="int*" name="n_families"/>
+        </parameters>
+      </method>
+      <method name="LoadFont" cname="pango_font_map_load_font">
+        <return-type type="PangoFont*"/>
+        <parameters>
+          <parameter type="PangoContext*" name="context"/>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+        </parameters>
+      </method>
+      <method name="LoadFontset" cname="pango_font_map_load_fontset">
+        <return-type type="PangoFontset*"/>
+        <parameters>
+          <parameter type="PangoContext*" name="context"/>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </method>
+    </object>
+    <object name="FT2FontMap" cname="PangoFT2FontMap" parent="PangoFontMap">
+      <method name="CreateContext" cname="pango_ft2_font_map_create_context">
+        <return-type type="PangoContext*"/>
+      </method>
+      <method name="ForDisplay" cname="pango_ft2_font_map_for_display" shared="true">
+        <return-type type="PangoFontMap*"/>
+      </method>
+      <method name="GetType" cname="pango_ft2_font_map_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="pango_ft2_font_map_new"/>
+      <method name="SetDefaultSubstitute" cname="pango_ft2_font_map_set_default_substitute">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFT2SubstituteFunc" name="func"/>
+          <parameter type="gpointer" name="data"/>
+          <parameter type="GDestroyNotify" name="notify"/>
+        </parameters>
+      </method>
+      <method name="SetResolution" cname="pango_ft2_font_map_set_resolution">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="double" name="dpi_x"/>
+          <parameter type="double" name="dpi_y"/>
+        </parameters>
+      </method>
+      <method name="SubstituteChanged" cname="pango_ft2_font_map_substitute_changed">
+        <return-type type="void"/>
+      </method>
+    </object>
+    <object name="Layout" cname="PangoLayout" parent="GObject">
+      <method name="ContextChanged" cname="pango_layout_context_changed">
+        <return-type type="void"/>
+      </method>
+      <method name="Copy" cname="pango_layout_copy">
+        <return-type type="PangoLayout*"/>
+      </method>
+      <method name="GetAlignment" cname="pango_layout_get_alignment">
+        <return-type type="PangoAlignment"/>
+      </method>
+      <method name="GetAttributes" cname="pango_layout_get_attributes">
+        <return-type type="PangoAttrList*"/>
+      </method>
+      <method name="GetContext" cname="pango_layout_get_context">
+        <return-type type="PangoContext*"/>
+      </method>
+      <method name="GetCursorPos" cname="pango_layout_get_cursor_pos">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="index_"/>
+          <parameter type="PangoRectangle*" name="strong_pos"/>
+          <parameter type="PangoRectangle*" name="weak_pos"/>
+        </parameters>
+      </method>
+      <method name="GetExtents" cname="pango_layout_get_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetIndent" cname="pango_layout_get_indent">
+        <return-type type="int"/>
+      </method>
+      <method name="GetIter" cname="pango_layout_get_iter">
+        <return-type type="PangoLayoutIter*"/>
+      </method>
+      <method name="GetJustify" cname="pango_layout_get_justify">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetLine" cname="pango_layout_get_line">
+        <return-type type="PangoLayoutLine*"/>
+        <parameters>
+          <parameter type="int" name="line"/>
+        </parameters>
+      </method>
+      <method name="GetLineCount" cname="pango_layout_get_line_count">
+        <return-type type="int"/>
+      </method>
+      <method name="GetLines" cname="pango_layout_get_lines">
+        <return-type type="GSList*"/>
+      </method>
+      <method name="GetLogAttrs" cname="pango_layout_get_log_attrs">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoLogAttr**" name="attrs"/>
+          <parameter type="gint*" name="n_attrs"/>
+        </parameters>
+      </method>
+      <method name="GetPixelExtents" cname="pango_layout_get_pixel_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetPixelSize" cname="pango_layout_get_pixel_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="width"/>
+          <parameter type="int*" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetSingleParagraphMode" cname="pango_layout_get_single_paragraph_mode">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetSize" cname="pango_layout_get_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="width"/>
+          <parameter type="int*" name="height"/>
+        </parameters>
+      </method>
+      <method name="GetSpacing" cname="pango_layout_get_spacing">
+        <return-type type="int"/>
+      </method>
+      <method name="GetTabs" cname="pango_layout_get_tabs">
+        <return-type type="PangoTabArray*"/>
+      </method>
+      <method name="GetText" cname="pango_layout_get_text">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="pango_layout_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetWidth" cname="pango_layout_get_width">
+        <return-type type="int"/>
+      </method>
+      <method name="GetWrap" cname="pango_layout_get_wrap">
+        <return-type type="PangoWrapMode"/>
+      </method>
+      <method name="IndexToPos" cname="pango_layout_index_to_pos">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="index_"/>
+          <parameter type="PangoRectangle*" name="pos"/>
+        </parameters>
+      </method>
+      <method name="MoveCursorVisually" cname="pango_layout_move_cursor_visually">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="strong"/>
+          <parameter type="int" name="old_index"/>
+          <parameter type="int" name="old_trailing"/>
+          <parameter type="int" name="direction"/>
+          <parameter type="int*" name="new_index"/>
+          <parameter type="int*" name="new_trailing"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_layout_new">
+        <parameters>
+          <parameter type="PangoContext*" name="context"/>
+        </parameters>
+      </constructor>
+      <method name="SetAlignment" cname="pango_layout_set_alignment">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAlignment" name="alignment"/>
+        </parameters>
+      </method>
+      <method name="SetAttributes" cname="pango_layout_set_attributes">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttrList*" name="attrs"/>
+        </parameters>
+      </method>
+      <method name="SetFontDescription" cname="pango_layout_set_font_description">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+        </parameters>
+      </method>
+      <method name="SetIndent" cname="pango_layout_set_indent">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="indent"/>
+        </parameters>
+      </method>
+      <method name="SetJustify" cname="pango_layout_set_justify">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="justify"/>
+        </parameters>
+      </method>
+      <method name="SetMarkup" cname="pango_layout_set_markup">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="markup"/>
+          <parameter type="int" name="length"/>
+        </parameters>
+      </method>
+      <method name="SetMarkupWithAccel" cname="pango_layout_set_markup_with_accel">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="markup"/>
+          <parameter type="int" name="length"/>
+          <parameter type="gunichar" name="accel_marker"/>
+          <parameter type="gunichar*" name="accel_char"/>
+        </parameters>
+      </method>
+      <method name="SetSingleParagraphMode" cname="pango_layout_set_single_paragraph_mode">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gboolean" name="setting"/>
+        </parameters>
+      </method>
+      <method name="SetSpacing" cname="pango_layout_set_spacing">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="spacing"/>
+        </parameters>
+      </method>
+      <method name="SetTabs" cname="pango_layout_set_tabs">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoTabArray*" name="tabs"/>
+        </parameters>
+      </method>
+      <method name="SetText" cname="pango_layout_set_text">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="length"/>
+        </parameters>
+      </method>
+      <method name="SetWidth" cname="pango_layout_set_width">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="width"/>
+        </parameters>
+      </method>
+      <method name="SetWrap" cname="pango_layout_set_wrap">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoWrapMode" name="wrap"/>
+        </parameters>
+      </method>
+      <method name="XyToIndex" cname="pango_layout_xy_to_index">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="int" name="x"/>
+          <parameter type="int" name="y"/>
+          <parameter type="int*" name="index_"/>
+          <parameter type="int*" name="trailing"/>
+        </parameters>
+      </method>
+    </object>
+    <struct name="Analysis" cname="PangoAnalysis">
+      <field cname="shape_engine" type="PangoEngineShape*"/>
+      <field cname="lang_engine" type="PangoEngineLang*"/>
+      <field cname="font" type="PangoFont*"/>
+      <field cname="level" type="guint8"/>
+      <field cname="language" type="PangoLanguage*"/>
+      <field cname="extra_attrs" type="GSList*"/>
+    </struct>
+    <struct name="AttrClass" cname="PangoAttrClass">
+      <field cname="type" type="PangoAttrType"/>
+      <callback cname="copy">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="const-PangoAttribute*" name="attr"/>
+        </parameters>
+      </callback>
+      <callback cname="destroy">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttribute*" name="attr"/>
+        </parameters>
+      </callback>
+      <callback cname="equal">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-PangoAttribute*" name="attr1,"/>
+        </parameters>
+      </callback>
+    </struct>
+    <struct name="AttrColor" cname="PangoAttrColor">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="color" type="PangoColor"/>
+    </struct>
+    <struct name="AttrFloat" cname="PangoAttrFloat">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="value" type="double"/>
+    </struct>
+    <struct name="AttrFontDesc" cname="PangoAttrFontDesc">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="desc" type="PangoFontDescription*"/>
+      <constructor cname="pango_attr_font_desc_new">
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="AttrInt" cname="PangoAttrInt">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="value" type="int"/>
+    </struct>
+    <struct name="AttrIterator" cname="PangoAttrIterator" opaque="true">
+      <method name="Copy" cname="pango_attr_iterator_copy">
+        <return-type type="PangoAttrIterator*"/>
+      </method>
+      <method name="Destroy" cname="pango_attr_iterator_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Get" cname="pango_attr_iterator_get">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoAttrType" name="type"/>
+        </parameters>
+      </method>
+      <method name="GetAttrs" cname="pango_attr_iterator_get_attrs">
+        <return-type type="GSList*"/>
+      </method>
+      <method name="GetFont" cname="pango_attr_iterator_get_font">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontDescription*" name="desc"/>
+          <parameter type="PangoLanguage**" name="language"/>
+          <parameter type="GSList**" name="extra_attrs"/>
+        </parameters>
+      </method>
+      <method name="Next" cname="pango_attr_iterator_next">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Range" cname="pango_attr_iterator_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint*" name="start"/>
+          <parameter type="gint*" name="end"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="AttrLanguage" cname="PangoAttrLanguage">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="value" type="PangoLanguage*"/>
+      <constructor cname="pango_attr_language_new">
+        <parameters>
+          <parameter type="PangoLanguage*" name="language"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <boxed name="AttrList" cname="PangoAttrList" opaque="true">
+      <method name="Change" cname="pango_attr_list_change">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttribute*" name="attr"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="pango_attr_list_copy">
+        <return-type type="PangoAttrList*"/>
+      </method>
+      <method name="Filter" cname="pango_attr_list_filter">
+        <return-type type="PangoAttrList*"/>
+        <parameters>
+          <parameter type="PangoAttrFilterFunc" name="func"/>
+          <parameter type="gpointer" name="data"/>
+        </parameters>
+      </method>
+      <method name="GetIterator" cname="pango_attr_list_get_iterator">
+        <return-type type="PangoAttrIterator*"/>
+      </method>
+      <method name="GetType" cname="pango_attr_list_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Insert" cname="pango_attr_list_insert">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttribute*" name="attr"/>
+        </parameters>
+      </method>
+      <method name="InsertBefore" cname="pango_attr_list_insert_before">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttribute*" name="attr"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_attr_list_new"/>
+      <method name="Ref" cname="pango_attr_list_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Splice" cname="pango_attr_list_splice">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoAttrList*" name="other"/>
+          <parameter type="gint" name="pos"/>
+          <parameter type="gint" name="len"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="pango_attr_list_unref">
+        <return-type type="void"/>
+      </method>
+    </boxed>
+    <struct name="AttrShape" cname="PangoAttrShape">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="ink_rect" type="PangoRectangle"/>
+      <field cname="logical_rect" type="PangoRectangle"/>
+      <constructor cname="pango_attr_shape_new">
+        <parameters>
+          <parameter type="const-PangoRectangle*" name="ink_rect"/>
+          <parameter type="const-PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </constructor>
+    </struct>
+    <struct name="AttrString" cname="PangoAttrString">
+      <field cname="attr" type="PangoAttribute"/>
+      <field cname="value" type="char*"/>
+    </struct>
+    <struct name="Attribute" cname="PangoAttribute">
+      <field cname="klass" type="const-PangoAttrClass*"/>
+      <field cname="start_index" type="guint"/>
+      <field cname="end_index" type="guint"/>
+      <method name="Copy" cname="pango_attribute_copy">
+        <return-type type="PangoAttribute*"/>
+      </method>
+      <method name="Destroy" cname="pango_attribute_destroy">
+        <return-type type="void"/>
+      </method>
+      <method name="Equal" cname="pango_attribute_equal">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-PangoAttribute*" name="attr2"/>
+        </parameters>
+      </method>
+    </struct>
+    <boxed name="Color" cname="PangoColor">
+      <field cname="red" type="guint16"/>
+      <field cname="green" type="guint16"/>
+      <field cname="blue" type="guint16"/>
+      <method name="Copy" cname="pango_color_copy">
+        <return-type type="PangoColor*"/>
+      </method>
+      <method name="Free" cname="pango_color_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetType" cname="pango_color_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Parse" cname="pango_color_parse">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="spec"/>
+        </parameters>
+      </method>
+    </boxed>
+    <struct name="Coverage" cname="PangoCoverage" opaque="true">
+      <method name="Copy" cname="pango_coverage_copy">
+        <return-type type="PangoCoverage*"/>
+      </method>
+      <method name="FromBytes" cname="pango_coverage_from_bytes" shared="true">
+        <return-type type="PangoCoverage*"/>
+        <parameters>
+          <parameter type="guchar*" name="bytes"/>
+          <parameter type="int" name="n_bytes"/>
+        </parameters>
+      </method>
+      <method name="Get" cname="pango_coverage_get">
+        <return-type type="PangoCoverageLevel"/>
+        <parameters>
+          <parameter type="int" name="index_"/>
+        </parameters>
+      </method>
+      <method name="Max" cname="pango_coverage_max">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoCoverage*" name="other"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_coverage_new"/>
+      <method name="Ref" cname="pango_coverage_ref">
+        <return-type type="PangoCoverage*"/>
+      </method>
+      <method name="Set" cname="pango_coverage_set">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="index_"/>
+          <parameter type="PangoCoverageLevel" name="level"/>
+        </parameters>
+      </method>
+      <method name="ToBytes" cname="pango_coverage_to_bytes">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="guchar**" name="bytes"/>
+          <parameter type="int*" name="n_bytes"/>
+        </parameters>
+      </method>
+      <method name="Unref" cname="pango_coverage_unref">
+        <return-type type="void"/>
+      </method>
+    </struct>
+    <struct name="EngineLang" cname="PangoEngineLang" opaque="true"/>
+    <struct name="EngineShape" cname="PangoEngineShape" opaque="true"/>
+    <boxed name="FontDescription" cname="PangoFontDescription" opaque="true">
+      <method name="BetterMatch" cname="pango_font_description_better_match">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="old_match"/>
+          <parameter type="const-PangoFontDescription*" name="new_match"/>
+        </parameters>
+      </method>
+      <method name="Copy" cname="pango_font_description_copy">
+        <return-type type="PangoFontDescription*"/>
+      </method>
+      <method name="CopyStatic" cname="pango_font_description_copy_static">
+        <return-type type="PangoFontDescription*"/>
+      </method>
+      <method name="Equal" cname="pango_font_description_equal">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc2"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="pango_font_description_free">
+        <return-type type="void"/>
+      </method>
+      <method name="FromString" cname="pango_font_description_from_string" shared="true">
+        <return-type type="PangoFontDescription*"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="GetFamily" cname="pango_font_description_get_family">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetSetFields" cname="pango_font_description_get_set_fields">
+        <return-type type="PangoFontMask"/>
+      </method>
+      <method name="GetSize" cname="pango_font_description_get_size">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetStretch" cname="pango_font_description_get_stretch">
+        <return-type type="PangoStretch"/>
+      </method>
+      <method name="GetStyle" cname="pango_font_description_get_style">
+        <return-type type="PangoStyle"/>
+      </method>
+      <method name="GetType" cname="pango_font_description_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="GetVariant" cname="pango_font_description_get_variant">
+        <return-type type="PangoVariant"/>
+      </method>
+      <method name="GetWeight" cname="pango_font_description_get_weight">
+        <return-type type="PangoWeight"/>
+      </method>
+      <method name="Hash" cname="pango_font_description_hash">
+        <return-type type="guint"/>
+      </method>
+      <method name="Merge" cname="pango_font_description_merge">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc_to_merge"/>
+          <parameter type="gboolean" name="replace_existing"/>
+        </parameters>
+      </method>
+      <method name="MergeStatic" cname="pango_font_description_merge_static">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-PangoFontDescription*" name="desc_to_merge"/>
+          <parameter type="gboolean" name="replace_existing"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_font_description_new"/>
+      <method name="SetFamily" cname="pango_font_description_set_family">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="family"/>
+        </parameters>
+      </method>
+      <method name="SetFamilyStatic" cname="pango_font_description_set_family_static">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="family"/>
+        </parameters>
+      </method>
+      <method name="SetSize" cname="pango_font_description_set_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="size"/>
+        </parameters>
+      </method>
+      <method name="SetStretch" cname="pango_font_description_set_stretch">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoStretch" name="stretch"/>
+        </parameters>
+      </method>
+      <method name="SetStyle" cname="pango_font_description_set_style">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoStyle" name="style"/>
+        </parameters>
+      </method>
+      <method name="SetVariant" cname="pango_font_description_set_variant">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoVariant" name="variant"/>
+        </parameters>
+      </method>
+      <method name="SetWeight" cname="pango_font_description_set_weight">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoWeight" name="weight"/>
+        </parameters>
+      </method>
+      <method name="ToFilename" cname="pango_font_description_to_filename">
+        <return-type type="char*"/>
+      </method>
+      <method name="ToString" cname="pango_font_description_to_string">
+        <return-type type="char*"/>
+      </method>
+      <method name="UnsetFields" cname="pango_font_description_unset_fields">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFontMask" name="to_unset"/>
+        </parameters>
+      </method>
+    </boxed>
+    <boxed name="FontMetrics" cname="PangoFontMetrics" opaque="true">
+      <method name="GetApproximateCharWidth" cname="pango_font_metrics_get_approximate_char_width">
+        <return-type type="int"/>
+      </method>
+      <method name="GetApproximateDigitWidth" cname="pango_font_metrics_get_approximate_digit_width">
+        <return-type type="int"/>
+      </method>
+      <method name="GetAscent" cname="pango_font_metrics_get_ascent">
+        <return-type type="int"/>
+      </method>
+      <method name="GetDescent" cname="pango_font_metrics_get_descent">
+        <return-type type="int"/>
+      </method>
+      <method name="GetType" cname="pango_font_metrics_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Ref" cname="pango_font_metrics_ref">
+        <return-type type="PangoFontMetrics*"/>
+      </method>
+      <method name="Unref" cname="pango_font_metrics_unref">
+        <return-type type="void"/>
+      </method>
+    </boxed>
+    <alias name="Glyph" cname="PangoGlyph" type="guint32"/>
+    <struct name="GlyphGeometry" cname="PangoGlyphGeometry">
+      <field cname="width" type="PangoGlyphUnit"/>
+      <field cname="x_offset" type="PangoGlyphUnit"/>
+      <field cname="y_offset" type="PangoGlyphUnit"/>
+    </struct>
+    <struct name="GlyphInfo" cname="PangoGlyphInfo">
+      <field cname="glyph" type="PangoGlyph"/>
+      <field cname="geometry" type="PangoGlyphGeometry"/>
+      <field cname="attr" type="PangoGlyphVisAttr"/>
+    </struct>
+    <struct name="GlyphItem" cname="PangoGlyphItem">
+      <field cname="item" type="PangoItem*"/>
+      <field cname="glyphs" type="PangoGlyphString*"/>
+      <method name="ApplyAttrs" cname="pango_glyph_item_apply_attrs">
+        <return-type type="GSList*"/>
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="PangoAttrList*" name="list"/>
+        </parameters>
+      </method>
+      <method name="Split" cname="pango_glyph_item_split">
+        <return-type type="PangoGlyphItem*"/>
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="split_index"/>
+        </parameters>
+      </method>
+    </struct>
+    <boxed name="GlyphString" cname="PangoGlyphString">
+      <field cname="num_glyphs" type="gint"/>
+      <field cname="glyphs" type="PangoGlyphInfo*"/>
+      <field cname="log_clusters" type="gint*"/>
+      <field cname="space" type="gint"/>
+      <method name="Copy" cname="pango_glyph_string_copy">
+        <return-type type="PangoGlyphString*"/>
+      </method>
+      <method name="Extents" cname="pango_glyph_string_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoFont*" name="font"/>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="ExtentsRange" cname="pango_glyph_string_extents_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="start"/>
+          <parameter type="int" name="end"/>
+          <parameter type="PangoFont*" name="font"/>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="Free" cname="pango_glyph_string_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetLogicalWidths" cname="pango_glyph_string_get_logical_widths">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="length"/>
+          <parameter type="int" name="embedding_level"/>
+          <parameter type="int*" name="logical_widths"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="pango_glyph_string_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="IndexToX" cname="pango_glyph_string_index_to_x">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="char*" name="text"/>
+          <parameter type="int" name="length"/>
+          <parameter type="PangoAnalysis*" name="analysis"/>
+          <parameter type="int" name="index_"/>
+          <parameter type="gboolean" name="trailing"/>
+          <parameter type="int*" name="x_pos"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_glyph_string_new"/>
+      <method name="SetSize" cname="pango_glyph_string_set_size">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="new_len"/>
+        </parameters>
+      </method>
+      <method name="XToIndex" cname="pango_glyph_string_x_to_index">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="char*" name="text"/>
+          <parameter type="int" name="length"/>
+          <parameter type="PangoAnalysis*" name="analysis"/>
+          <parameter type="int" name="x_pos"/>
+          <parameter type="int*" name="index_"/>
+          <parameter type="int*" name="trailing"/>
+        </parameters>
+      </method>
+    </boxed>
+    <alias name="GlyphUnit" cname="PangoGlyphUnit" type="gint32"/>
+    <struct name="GlyphVisAttr" cname="PangoGlyphVisAttr">
+      <field cname="is_cluster_start" bits="1" type="guint"/>
+    </struct>
+    <struct name="IntSet" cname="PangoIntSet">
+      <field cname="start" type="int"/>
+      <field cname="size" type="int"/>
+      <field cname="bits" type="guint*"/>
+      <method name="Add" cname="pango_int_set_add">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="glyph"/>
+        </parameters>
+      </method>
+      <method name="AddRange" cname="pango_int_set_add_range">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="start"/>
+          <parameter type="int" name="end"/>
+        </parameters>
+      </method>
+      <method name="Contains" cname="pango_int_set_contains">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="int" name="member"/>
+        </parameters>
+      </method>
+      <method name="Destroy" cname="pango_int_set_destroy">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="pango_int_set_new"/>
+    </struct>
+    <struct name="Item" cname="PangoItem">
+      <field cname="offset" type="gint"/>
+      <field cname="length" type="gint"/>
+      <field cname="num_chars" type="gint"/>
+      <field cname="analysis" type="PangoAnalysis"/>
+      <method name="Copy" cname="pango_item_copy">
+        <return-type type="PangoItem*"/>
+      </method>
+      <method name="Free" cname="pango_item_free">
+        <return-type type="void"/>
+      </method>
+      <constructor cname="pango_item_new"/>
+      <method name="Split" cname="pango_item_split">
+        <return-type type="PangoItem*"/>
+        <parameters>
+          <parameter type="int" name="split_index"/>
+          <parameter type="int" name="split_offset"/>
+        </parameters>
+      </method>
+    </struct>
+    <boxed name="Language" cname="PangoLanguage" opaque="true">
+      <method name="FromString" cname="pango_language_from_string" shared="true">
+        <return-type type="PangoLanguage*"/>
+        <parameters>
+          <parameter type="const-char*" name="language"/>
+        </parameters>
+      </method>
+      <method name="GetSampleString" cname="pango_language_get_sample_string">
+        <return-type type="const-char*"/>
+      </method>
+      <method name="GetType" cname="pango_language_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <method name="Matches" cname="pango_language_matches">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="range_list"/>
+        </parameters>
+      </method>
+    </boxed>
+    <struct name="LayoutIter" cname="PangoLayoutIter" opaque="true">
+      <method name="AtLastLine" cname="pango_layout_iter_at_last_line">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="Free" cname="pango_layout_iter_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetBaseline" cname="pango_layout_iter_get_baseline">
+        <return-type type="int"/>
+      </method>
+      <method name="GetCharExtents" cname="pango_layout_iter_get_char_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetClusterExtents" cname="pango_layout_iter_get_cluster_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetIndex" cname="pango_layout_iter_get_index">
+        <return-type type="int"/>
+      </method>
+      <method name="GetLayoutExtents" cname="pango_layout_iter_get_layout_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetLine" cname="pango_layout_iter_get_line">
+        <return-type type="PangoLayoutLine*"/>
+      </method>
+      <method name="GetLineExtents" cname="pango_layout_iter_get_line_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetLineYrange" cname="pango_layout_iter_get_line_yrange">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int*" name="y0_"/>
+          <parameter type="int*" name="y1_"/>
+        </parameters>
+      </method>
+      <method name="GetRun" cname="pango_layout_iter_get_run">
+        <return-type type="PangoLayoutRun*"/>
+      </method>
+      <method name="GetRunExtents" cname="pango_layout_iter_get_run_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="NextChar" cname="pango_layout_iter_next_char">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="NextCluster" cname="pango_layout_iter_next_cluster">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="NextLine" cname="pango_layout_iter_next_line">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="NextRun" cname="pango_layout_iter_next_run">
+        <return-type type="gboolean"/>
+      </method>
+    </struct>
+    <struct name="LayoutLine" cname="PangoLayoutLine">
+      <field cname="layout" type="PangoLayout*"/>
+      <field cname="start_index" type="gint"/>
+      <field cname="length" type="gint"/>
+      <field cname="runs" type="GSList*"/>
+      <method name="GetExtents" cname="pango_layout_line_get_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetPixelExtents" cname="pango_layout_line_get_pixel_extents">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoRectangle*" name="ink_rect"/>
+          <parameter type="PangoRectangle*" name="logical_rect"/>
+        </parameters>
+      </method>
+      <method name="GetXRanges" cname="pango_layout_line_get_x_ranges">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="start_index"/>
+          <parameter type="int" name="end_index"/>
+          <parameter type="int**" name="ranges"/>
+          <parameter type="int*" name="n_ranges"/>
+        </parameters>
+      </method>
+      <method name="IndexToX" cname="pango_layout_line_index_to_x">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="int" name="index_"/>
+          <parameter type="gboolean" name="trailing"/>
+          <parameter type="int*" name="x_pos"/>
+        </parameters>
+      </method>
+      <method name="Ref" cname="pango_layout_line_ref">
+        <return-type type="void"/>
+      </method>
+      <method name="Unref" cname="pango_layout_line_unref">
+        <return-type type="void"/>
+      </method>
+      <method name="XToIndex" cname="pango_layout_line_x_to_index">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="int" name="x_pos"/>
+          <parameter type="int*" name="index_"/>
+          <parameter type="int*" name="trailing"/>
+        </parameters>
+      </method>
+    </struct>
+    <struct name="LayoutRun" cname="PangoLayoutRun">
+      <field cname="item" type="PangoItem*"/>
+      <field cname="glyphs" type="PangoGlyphString*"/>
+    </struct>
+    <struct name="LogAttr" cname="PangoLogAttr">
+      <field cname="is_line_break" bits="1" type="guint"/>
+      <field cname="is_mandatory_break" bits="1" type="guint"/>
+      <field cname="is_char_break" bits="1" type="guint"/>
+      <field cname="is_white" bits="1" type="guint"/>
+      <field cname="is_cursor_position" bits="1" type="guint"/>
+      <field cname="is_word_start" bits="1" type="guint"/>
+      <field cname="is_word_end" bits="1" type="guint"/>
+      <field cname="is_sentence_boundary" bits="1" type="guint"/>
+      <field cname="is_sentence_start" bits="1" type="guint"/>
+      <field cname="is_sentence_end" bits="1" type="guint"/>
+    </struct>
+    <struct name="Rectangle" cname="PangoRectangle">
+      <field cname="x" type="int"/>
+      <field cname="y" type="int"/>
+      <field cname="width" type="int"/>
+      <field cname="height" type="int"/>
+    </struct>
+    <boxed name="TabArray" cname="PangoTabArray" opaque="true">
+      <method name="Copy" cname="pango_tab_array_copy">
+        <return-type type="PangoTabArray*"/>
+      </method>
+      <method name="Free" cname="pango_tab_array_free">
+        <return-type type="void"/>
+      </method>
+      <method name="GetPositionsInPixels" cname="pango_tab_array_get_positions_in_pixels">
+        <return-type type="gboolean"/>
+      </method>
+      <method name="GetSize" cname="pango_tab_array_get_size">
+        <return-type type="gint"/>
+      </method>
+      <method name="GetTab" cname="pango_tab_array_get_tab">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="tab_index"/>
+          <parameter type="PangoTabAlign*" name="alignment"/>
+          <parameter type="gint*" name="location"/>
+        </parameters>
+      </method>
+      <method name="GetTabs" cname="pango_tab_array_get_tabs">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="PangoTabAlign**" name="alignments"/>
+          <parameter type="gint**" name="locations"/>
+        </parameters>
+      </method>
+      <method name="GetType" cname="pango_tab_array_get_type" shared="true">
+        <return-type type="GType"/>
+      </method>
+      <constructor cname="pango_tab_array_new">
+        <parameters>
+          <parameter type="gint" name="initial_size"/>
+          <parameter type="gboolean" name="positions_in_pixels"/>
+        </parameters>
+      </constructor>
+      <constructor cname="pango_tab_array_new_with_positions">
+        <parameters>
+          <parameter type="gint" name="size"/>
+          <parameter type="gboolean" name="positions_in_pixels"/>
+          <parameter type="PangoTabAlign" name="first_alignment"/>
+          <parameter type="gint" name="first_position"/>
+          <parameter ellipsis="true"/>
+        </parameters>
+      </constructor>
+      <method name="Resize" cname="pango_tab_array_resize">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="new_size"/>
+        </parameters>
+      </method>
+      <method name="SetTab" cname="pango_tab_array_set_tab">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="gint" name="tab_index"/>
+          <parameter type="PangoTabAlign" name="alignment"/>
+          <parameter type="gint" name="location"/>
+        </parameters>
+      </method>
+    </boxed>
+    <struct name="Win32FontCache" cname="PangoWin32FontCache" opaque="true">
+      <method name="Free" cname="pango_win32_font_cache_free">
+        <return-type type="void"/>
+      </method>
+      <method name="Load" cname="pango_win32_font_cache_load">
+        <return-type type="HFONT"/>
+        <parameters>
+          <parameter type="const-LOGFONT*" name="logfont"/>
+        </parameters>
+      </method>
+      <constructor cname="pango_win32_font_cache_new"/>
+      <method name="Unload" cname="pango_win32_font_cache_unload">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="HFONT" name="hfont"/>
+        </parameters>
+      </method>
+    </struct>
+    <class name="Attr" cname="PangoAttr_">
+      <method name="BackgroundNew" cname="pango_attr_background_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="guint16" name="red"/>
+          <parameter type="guint16" name="green"/>
+          <parameter type="guint16" name="blue"/>
+        </parameters>
+      </method>
+      <method name="FamilyNew" cname="pango_attr_family_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="const-char*" name="family"/>
+        </parameters>
+      </method>
+      <method name="ForegroundNew" cname="pango_attr_foreground_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="guint16" name="red"/>
+          <parameter type="guint16" name="green"/>
+          <parameter type="guint16" name="blue"/>
+        </parameters>
+      </method>
+      <method name="RiseNew" cname="pango_attr_rise_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="int" name="rise"/>
+        </parameters>
+      </method>
+      <method name="ScaleNew" cname="pango_attr_scale_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="double" name="scale_factor"/>
+        </parameters>
+      </method>
+      <method name="SizeNew" cname="pango_attr_size_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="int" name="size"/>
+        </parameters>
+      </method>
+      <method name="StretchNew" cname="pango_attr_stretch_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoStretch" name="stretch"/>
+        </parameters>
+      </method>
+      <method name="StrikethroughNew" cname="pango_attr_strikethrough_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="gboolean" name="strikethrough"/>
+        </parameters>
+      </method>
+      <method name="StyleNew" cname="pango_attr_style_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoStyle" name="style"/>
+        </parameters>
+      </method>
+      <method name="TypeRegister" cname="pango_attr_type_register" shared="true">
+        <return-type type="PangoAttrType"/>
+        <parameters>
+          <parameter type="const-gchar*" name="name"/>
+        </parameters>
+      </method>
+      <method name="UnderlineNew" cname="pango_attr_underline_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoUnderline" name="underline"/>
+        </parameters>
+      </method>
+      <method name="VariantNew" cname="pango_attr_variant_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoVariant" name="variant"/>
+        </parameters>
+      </method>
+      <method name="WeightNew" cname="pango_attr_weight_new" shared="true">
+        <return-type type="PangoAttribute*"/>
+        <parameters>
+          <parameter type="PangoWeight" name="weight"/>
+        </parameters>
+      </method>
+    </class>
+    <class name="Global" cname="PangoGlobal">
+      <method name="FindParagraphBoundary" cname="pango_find_paragraph_boundary" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-gchar*" name="text"/>
+          <parameter type="gint" name="length"/>
+          <parameter type="gint*" name="paragraph_delimiter_index"/>
+          <parameter type="gint*" name="next_paragraph_start"/>
+        </parameters>
+      </method>
+      <method name="GetLogAttrs" cname="pango_get_log_attrs" shared="true">
+        <return-type type="void"/>
+        <parameters>
+          <parameter type="const-char*" name="text"/>
+          <parameter type="int" name="length"/>
+          <parameter type="int" name="level"/>
+          <parameter type="PangoLanguage*" name="language"/>
+          <parameter type="PangoLogAttr*" name="log_attrs"/>
+          <parameter type="int" name="attrs_len"/>
+        </parameters>
+      </method>
+      <method name="GetMirrorChar" cname="pango_get_mirror_char" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="gunichar" name="ch"/>
+          <parameter type="gunichar*" name="mirrored_ch"/>
+        </parameters>
+      </method>
+      <method name="ParseMarkup" cname="pango_parse_markup" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="markup_text"/>
+          <parameter type="int" name="length"/>
+          <parameter type="gunichar" name="accel_marker"/>
+          <parameter type="PangoAttrList**" name="attr_list"/>
+          <parameter type="char**" name="text"/>
+          <parameter type="gunichar*" name="accel_char"/>
+          <parameter type="GError**" name="error"/>
+        </parameters>
+      </method>
+      <method name="ParseStretch" cname="pango_parse_stretch" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoStretch*" name="stretch"/>
+          <parameter type="gboolean" name="warn"/>
+        </parameters>
+      </method>
+      <method name="ParseStyle" cname="pango_parse_style" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoStyle*" name="style"/>
+          <parameter type="gboolean" name="warn"/>
+        </parameters>
+      </method>
+      <method name="ParseVariant" cname="pango_parse_variant" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoVariant*" name="variant"/>
+          <parameter type="gboolean" name="warn"/>
+        </parameters>
+      </method>
+      <method name="ParseWeight" cname="pango_parse_weight" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+          <parameter type="PangoWeight*" name="weight"/>
+          <parameter type="gboolean" name="warn"/>
+        </parameters>
+      </method>
+      <method name="ReadLine" cname="pango_read_line" shared="true">
+        <return-type type="gint"/>
+        <parameters>
+          <parameter type="FILE*" name="stream"/>
+          <parameter type="GString*" name="str"/>
+        </parameters>
+      </method>
+      <method name="ReorderItems" cname="pango_reorder_items" shared="true">
+        <return-type type="GList*"/>
+        <parameters>
+          <parameter type="GList*" name="logical_items"/>
+        </parameters>
+      </method>
+      <method name="ScanInt" cname="pango_scan_int" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char**" name="pos"/>
+          <parameter type="int*" name="out"/>
+        </parameters>
+      </method>
+      <method name="ScanString" cname="pango_scan_string" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char**" name="pos"/>
+          <parameter type="GString*" name="out"/>
+        </parameters>
+      </method>
+      <method name="ScanWord" cname="pango_scan_word" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char**" name="pos"/>
+          <parameter type="GString*" name="out"/>
+        </parameters>
+      </method>
+      <method name="SkipSpace" cname="pango_skip_space" shared="true">
+        <return-type type="gboolean"/>
+        <parameters>
+          <parameter type="const-char**" name="pos"/>
+        </parameters>
+      </method>
+      <method name="SplitFileList" cname="pango_split_file_list" shared="true">
+        <return-type type="char**"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+      <method name="TrimString" cname="pango_trim_string" shared="true">
+        <return-type type="char*"/>
+        <parameters>
+          <parameter type="const-char*" name="str"/>
+        </parameters>
+      </method>
+    </class>
+  </namespace>
+</api>

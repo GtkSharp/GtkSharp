@@ -8,7 +8,6 @@ namespace GtkSamples {
 
 	using Gtk;
 	using System;
-	using System.Drawing;
 
 	public class ButtonApp  {
 
@@ -16,7 +15,8 @@ namespace GtkSamples {
 		{
 			Application.Init ();
 			Window win = new Window ("Button Tester");
-			win.DefaultSize = new Size (200, 150);
+			win.DefaultWidth = 200;
+			win.DefaultHeight = 150;
 			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
 			Button btn = new Button ("Click Me");
 			btn.Clicked += new EventHandler (btn_click);

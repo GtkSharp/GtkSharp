@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 
 using Gtk;
 using Gdk;
@@ -22,7 +21,8 @@ public class Fifteen
 		window = new Gtk.Window ("Fifteen #");
 		VBox box = new VBox (false, 0);
 		window.Add (box);
-		window.DefaultSize = new Size (300, 300);
+		window.DefaultWidth = 300;
+		window.DefaultHeight = 300;
 		
 		VBox vbox = new VBox (false, 4);
 		vbox.BorderWidth = 4;

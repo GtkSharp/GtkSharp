@@ -51,17 +51,6 @@
 			}
 		}
 
-		public System.Drawing.Size DefaultSize {
-			get {
-				return new System.Drawing.Size (
-						DefaultWidth, DefaultHeight);
-			}
-			set {
-				DefaultWidth = value.Width;
-				DefaultHeight = value.Height;
-			}
-		}
-
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_window_get_icon_list(IntPtr raw);
 
@@ -84,26 +73,6 @@
 				foreach (Gdk.Pixbuf val in value)
 					list.Append (val.Handle);
 				gtk_window_set_icon_list(Handle, list.Handle);
-			}
-		}
-
-		public System.Drawing.Size Position {
-			get {
-				int x, y;
-				GetPosition (out x, out y);
-				
-				return new System.Drawing.Size (
-						x, y);
-			}
-		}
-
-		public System.Drawing.Size Size {
-			get {
-				int x, y;
-				GetSize (out x, out y);
-				
-				return new System.Drawing.Size (
-						x, y);
 			}
 		}
 

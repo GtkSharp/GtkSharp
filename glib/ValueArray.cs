@@ -57,7 +57,7 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_value_array_get_array (IntPtr raw);
 
 		public IntPtr ArrayPtr {
@@ -98,7 +98,7 @@ namespace GLib {
 			g_value_array_remove (Handle, idx);
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern int gtksharp_value_array_get_count (IntPtr raw);
 
 		// ICollection

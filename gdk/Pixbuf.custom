@@ -139,23 +139,6 @@
 		}
 
 //
-// Add an overload that takes System.Drawing.Color arguments instead of uint32 values for colors
-//
-		public void CompositeColor(Gdk.Pixbuf dest, int dest_x, int dest_y, int dest_width, int dest_height, 
-					   double offset_x, double offset_y, double scale_x, double scale_y, 
-					   Gdk.InterpType interp_type, int overall_alpha, int check_x, int check_y, 
-					   int check_size, System.Drawing.Color color1, System.Drawing.Color color2) 
-	 	{
-			gdk_pixbuf_composite_color(Handle, dest.Handle, dest_x, dest_y, dest_width, dest_height, offset_x, 
-				offset_y, scale_x, scale_y, (int) interp_type, overall_alpha, check_x, check_y, check_size, 
-				(uint) color1.ToArgb (), (uint) color2.ToArgb ());
-		}
-		
-		public Gdk.Pixbuf CompositeColorSimple(int dest_width, int dest_height, Gdk.InterpType interp_type, int overall_alpha, int check_size, System.Drawing.Color color1, System.Drawing.Color color2) {
-			return CompositeColorSimple (dest_width, dest_height, interp_type, overall_alpha, check_size, (uint) color1.ToArgb (), (uint) color2.ToArgb ());
-		}
-
-//
 // the 'Pixels' property
 //
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]

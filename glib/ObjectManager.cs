@@ -12,7 +12,7 @@ namespace GtkSharp {
 
 		private static Hashtable types = new Hashtable ();
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 
 		public static GLib.Object CreateObject (IntPtr raw)
@@ -81,13 +81,13 @@ namespace GtkSharp {
 			return expected_string;
 		}
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern int gtksharp_get_type_id (IntPtr raw);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern int gtksharp_get_parent_type (int typ);
 
-		[DllImport("gtksharpglue")]
+		[DllImport("glibsharpglue")]
 		static extern IntPtr gtksharp_get_type_name_for_id (int typ);
 
 		static Type GetValidParentType (IntPtr raw)

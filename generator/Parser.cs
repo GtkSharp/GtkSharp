@@ -132,6 +132,8 @@ namespace GtkSharp.Generation {
 				result = new SimpleGen (cname, name);
 			else if (type == "manual")
 				result = new ManualGen (cname, name);
+			else if (type == "alias")
+				result = new AliasGen (cname, name);
 			else
 				Console.WriteLine ("Parser::ParseSymbol - Unexpected symbol type " + type);
 
