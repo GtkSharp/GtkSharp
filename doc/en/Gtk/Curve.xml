@@ -1,5 +1,5 @@
 <Type Name="Curve" FullName="Gtk.Curve">
-  <TypeSignature Language="C#" Value="public class Curve : Gtk.DrawingArea, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class Curve : Gtk.DrawingArea, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>The <see cref="T:Gtk.Curve"/> widget allows the user to edit a curve covering a range of values.</summary>
+    <remarks>
+     <para>
+      The <see cref="T:Gtk.Curve"/> widget allows the user to edit a curve covering a range of values. It is typically used to fine-tune color balances in graphics applications like the Gimp. The <see cref="T:Gtk.Curve"/> widget has 3 modes of operation - spline, linear and free. In spline mode the user places points on the curve which are automatically connected together into a smooth curve. In linear mode the user places points on the curve which are connected by straight lines. In free mode the user can draw the points of the curve freely, and they are not connected at all.
+     </para>
+     <para>
+      NOTE: this widget is considered too specialized/little-used for GTK+, and will in the future be moved to some other package. If your application needs this widget, feel free to use it, as the widget does work and is useful in some applications; it's just not of general interest. However, we are not accepting new features for the widget, and it will eventually move out of the GTK+ distribution.
+     </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.DrawingArea</BaseTypeName>
@@ -50,8 +57,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Resets the curve to a straight line from the minimum x and y values to the maximum x and y values (i.e. from the bottom-left to the top-right corners).</summary>
+        <remarks>
+         <para>
+          Resets the curve to a straight line from the minimum x and y values to the maximum x and y values (i.e. from the bottom-left to the top-right corners). The curve type is not changed.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetRange">
@@ -67,12 +78,16 @@
         <Parameter Name="max_y" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="min_x">To be added: an object of type 'float'</param>
-        <param name="max_x">To be added: an object of type 'float'</param>
-        <param name="min_y">To be added: an object of type 'float'</param>
-        <param name="max_y">To be added: an object of type 'float'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the minimum and maximum x and y values of the curve.</summary>
+        <param name="min_x">The minimum x value.</param>
+        <param name="max_x">The maximum x value.</param>
+        <param name="min_y">The minimum y value.</param>
+        <param name="max_y">The maximum y value.</param>
+        <remarks>
+         <para>
+          Sets the minimum and maximum x and y values of the curve. The curve is also reset with a call to <see cref="M:Gtk.Curve.Reset"/>.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetVector">
@@ -86,10 +101,14 @@
         <Parameter Name="vector" Type="System.Single[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="veclen">To be added: an object of type 'int'</param>
-        <param name="vector">To be added: an object of type 'float[]'</param>
-        <remarks>To be added</remarks>
+        <summary>Sets the vector of points on the curve.</summary>
+        <param name="veclen">The number of points.</param>
+        <param name="vector">The points on the curve.</param>
+        <remarks>
+         <para>
+          Sets the vector of points on the curve. The curve type is set to <see cref="F:Gtk.CurveType.Free"/>.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetVector">
@@ -103,10 +122,14 @@
         <Parameter Name="vector" Type="System.Single[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="veclen">To be added: an object of type 'int'</param>
-        <param name="vector">To be added: an object of type 'float[]'</param>
-        <remarks>To be added</remarks>
+        <summary>Returns a vector of points representing the curve.</summary>
+        <param name="veclen">The number of points to calculate.</param>
+        <param name="vector">Returns the points.</param>
+        <remarks>
+         <para>
+          Returns a vector of points representing the curve.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -159,9 +182,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.Curve'</returns>
-        <remarks>To be added</remarks>
+        <summary>Constructor.</summary>
+        <returns>An instance of <see cref="T:Gtk.Curve" />.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -186,10 +209,14 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>Recomputes the entire curve using the given gamma value.</summary>
+        <param name="value">A gamma value.</param>
+        <returns>A gamma value.</returns>
+        <remarks>
+         <para>
+          A gamma value of 1 results in a straight line. Values greater than 1 result in a curve above the straight line. Values less than 1 result in a curve below the straight.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MaxY">
@@ -202,10 +229,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>The maximum y value of the gamma curve.</summary>
+        <param name="value">A max y value.</param>
+        <returns>A max y value.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MaxX">
@@ -218,10 +245,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>The maximum x value of the gamma curve.</summary>
+        <param name="value">A max x value.</param>
+        <returns>A max x value.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MinY">
@@ -234,10 +261,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>The minimum y value of the gamma curve.</summary>
+        <param name="value">A min y value.</param>
+        <returns>A min y value.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MinX">
@@ -250,10 +277,10 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'float'</param>
-        <returns>To be added: an object of type 'float'</returns>
-        <remarks>To be added</remarks>
+        <summary>The minimum x value of the gamma curve.</summary>
+        <param name="value">A min x value.</param>
+        <returns>A min x value.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="CurveType">
@@ -266,10 +293,14 @@
         <Parameter Name="value" Type="Gtk.CurveType" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.CurveType'</param>
-        <returns>To be added: an object of type 'Gtk.CurveType'</returns>
-        <remarks>To be added</remarks>
+        <summary>Sets the type of the curve.</summary>
+        <param name="value">The type of the curve.</param>
+        <returns>A <see cref="T:Gtk.CurveType"/>.</returns>
+        <remarks>
+         <para>
+          The curve will remain unchanged except when changing from a free curve to a linear or spline curve, in which case the curve will be changed as little as possible.
+         </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CurveTypeChanged">
@@ -278,8 +309,12 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Emitted when the curve type has been changed.</summary>
+        <remarks>
+         <para>
+          The curve type can be changed explicitly with a call to <see cref="P:Gtk.Curve.CurveType"/>. It is also changed as a side-effect of calling <see cref="M:Gtk.Curve.Reset"/> or <see cref="P:Gtk.Curve.Gamma"/>.
+         </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
