@@ -44,7 +44,7 @@ class Client {
 		PackToolbar ();
 		box.PackStart (toolbar, false, false, 0);
 
-		UpdateView ();
+		UpdateView (null);
 
 		status = new Statusbar ();
 		box.PackEnd (status, false, false, 0);
@@ -72,24 +72,24 @@ class Client {
 	{
 		toolbar.AppendItem ("Insert", "Insert a row", String.Empty,
 				    new Gtk.Image (Stock.Add, IconSize.LargeToolbar),
-				    new SignalFunc (Db_Insert), IntPtr.Zero);
+				    new SignalFunc (Db_Insert));
 		
 		toolbar.AppendItem ("Remove", "Remove a row", String.Empty,
 				    new Gtk.Image (Stock.Remove, IconSize.LargeToolbar),
-				    new SignalFunc (Db_Remove), IntPtr.Zero);
+				    new SignalFunc (Db_Remove));
 
 		toolbar.AppendItem ("Update", "Update a row", String.Empty,
 				    new Gtk.Image (Stock.Italic, IconSize.LargeToolbar),
-				    new SignalFunc (Db_Update), IntPtr.Zero);
+				    new SignalFunc (Db_Update));
 
 		toolbar.AppendItem ("Refresh", "Refresh the view", String.Empty,
 				    new Gtk.Image (Stock.Refresh, IconSize.LargeToolbar),
-				    new SignalFunc (UpdateView), IntPtr.Zero);
+				    new SignalFunc (UpdateView));
 
 		toolbar.AppendSpace ();		
 
 		toolbar.InsertStock (Stock.Quit, "Quit", String.Empty,
-				     new SignalFunc (Quit), IntPtr.Zero, -1);
+				     new SignalFunc (Quit), -1);
 
 		toolbar.ToolbarStyle = ToolbarStyle.BothHoriz;
 	}
@@ -100,7 +100,7 @@ class Client {
 		args.RetVal = true;
 	}
 
-	static void UpdateView ()
+	static void UpdateView (Gtk.Object o)
 	{
 		if (tableau != null)
 			tableau.Destroy ();
@@ -165,7 +165,7 @@ class Client {
 		t.Attach (label, 2, 3, 0, 1);
 	}
 
-	static void Db_Insert ()
+	static void Db_Insert (Gtk.Object o)
 	{
 		if (dialog != null) {
 			return;
@@ -195,7 +195,7 @@ class Client {
 		dialog.ShowAll ();
 	}
 
-	static void Db_Remove ()
+	static void Db_Remove (Gtk.Object o)
 	{
 		if (dialog != null) {
 			return;
@@ -259,7 +259,7 @@ class Client {
 		return hbox ;
 	}
 
-	static void Db_Update ()
+	static void Db_Update (Gtk.Object o)
 	{
 		if (dialog != null) {
 			return;
@@ -288,7 +288,7 @@ class Client {
 		dialog.ShowAll ();
 	}
 
-	static void Quit ()
+	static void Quit (Gtk.Object o)
 	{
 		Application.Quit ();
 	}
@@ -297,7 +297,7 @@ class Client {
 	{
 		try {
 			Conn.Insert (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-			UpdateView ();
+			UpdateView (o as Gtk.Object);
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -309,7 +309,7 @@ class Client {
 	{
 		try {
 			Conn.Delete (UInt32.Parse (id_entry.Text));
-			UpdateView ();
+			UpdateView (o as Gtk.Object);
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -321,7 +321,7 @@ class Client {
 	{
 		try {
 			Conn.Update (UInt32.Parse (id_entry.Text), name_entry.Text, address_entry.Text);
-			UpdateView ();
+			UpdateView (o as Gtk.Object);
 		} catch (Exception e) {
 			PushMessage (e.Message);
 		}
@@ -384,17 +384,17 @@ class Client {
 
 	static void Insert_Activated (object o, EventArgs args)
 	{
-		Db_Insert ();
+		Db_Insert (o as Gtk.Object);
 	}
 
 	static void Remove_Activated (object o, EventArgs args)
 	{
-		Db_Remove ();
+		Db_Remove (o as Gtk.Object);
 	}
 
 	static void Update_Activated (object o, EventArgs args)
 	{
-		Db_Update ();
+		Db_Update (o as Gtk.Object);
 	}
 
 	static void Quit_Activated (object o, EventArgs args)
@@ -410,11 +410,13 @@ class Client {
 		};
 
 		string [] documenters = new string [] {};
+		Gdk.Pixbuf pixbuf = new Gdk.Pixbuf ("../pixmaps/gtk-sharp-logo.png");
 
 		Gnome.About about = new Gnome.About ("Database Client", "0.1",
 						     "Copyright (C) 2002, Ximian Inc.",
 						     "A Sample Database client",
-						     authors, documenters, "", new Gdk.Pixbuf ());
+						     authors, documenters, "", pixbuf);
+
 		about.Show ();
 	}
 
@@ -452,7 +454,7 @@ class IdConnection : IDisposable
 		cnc = new SqlConnection ();
 		string connectionString = "" +
 					  "" +
-					  "" +
+					  "user=monotest;" +
 					  "dbname=monotest";
 						  
 		cnc.ConnectionString = connectionString;
