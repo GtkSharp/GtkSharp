@@ -7,7 +7,9 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>
+      A tag that can be applied to text in a <see cref="T:Gtk.TextBuffer" />
+    </summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -79,10 +81,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.TextTag'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a  new <see cref="T:Gtk.TextTag" /></summary>
+        <param name="name">
+          the name of the tag, or <see langword="null" /> if it's an
+          anonymous tag
+        </param>
+        <returns>the newly created TextTag</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -118,10 +123,28 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The tag's priority</summary>
+        <param name="value">the new priority</param>
+        <returns>The priority of the current tag</returns>
+        <remarks>
+          <para>
+            Sets the priority of a GtkTextTag. Valid priorities are
+            start at 0 and go to one less than
+            <see cref="P:Gtk.TextTagTable.Size" />.
+          </para>
+          <par>
+            Each tag in a table has a unique priority; setting the
+            priority of one tag shifts the priorities of all the other
+            tags in the table to maintain a unique priority for each
+            tag. Higher priority tags win if two tags both set the
+            same text attribute. When adding a tag to a tag table, it
+            will be assigned the highest priority in the table by
+            default; so normally the precedence of a set of tags is
+            the order in which they were added to the table, or
+            created with <see cref="M:Gtk.TextBuffer.CreateTag()" />),
+            which adds the tag to the buffer's table automatically.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Strikethrough">
@@ -134,10 +157,12 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether to strike through the text</summary>
+        <param name="value">
+          <see langword="true" /> to strike through the text
+        </param>
+        <returns>Whether to strike through the text</returns>>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Invisible">
@@ -150,10 +175,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether this text is hidden.</summary>
+        <param name="value">Whether this text is hidden.</param>
+        <returns>Whether or not this text is hidden</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ForegroundStipple">
@@ -166,10 +191,10 @@
         <Parameter Name="value" Type="Gdk.Pixmap" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gdk.Pixmap'</param>
-        <returns>To be added: an object of type 'Gdk.Pixmap'</returns>
-        <remarks>To be added</remarks>
+        <summary>Bitmap to use as a mask when drawing the text foreground.</summary>
+        <param name="value">a bitmap</param>
+        <returns>a bitmap</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Rise">
@@ -182,10 +207,10 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Offset of text above the baseline</summary>
+        <param name="value">Offset of text above the baseline in pixels</param>
+        <returns>Offset of the text above the baseline</returns>
+        <remarks>Offset of text above the baseline (below the baseline if rise is negative) in pixels.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RightMargin">
@@ -198,10 +223,10 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Width of the right margin</summary>
+        <param name="value">Width of the right margin in pixels.</param>
+        <returns>Width of the right margin</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Family">
@@ -214,10 +239,14 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Name of the font family</summary>
+        <param name="value">Name of the font family</param>
+        <returns>The name of the font family</returns>
+        <remarks>
+          <para>
+            Name of the font family, e.g. Sans, Helvetica, Times, Monospace.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Font">
@@ -230,10 +259,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Font description</summary>
+        <param name="value">the font description as a string</param>
+        <returns>the font description as a string</returns>
+        <remarks>Font description as a string, e.g. "Sans Italic 12".</remarks>
       </Docs>
     </Member>
     <Member MemberName="Stretch">
@@ -246,10 +275,10 @@
         <Parameter Name="value" Type="Pango.Stretch" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Pango.Stretch'</param>
-        <returns>To be added: an object of type 'Pango.Stretch'</returns>
-        <remarks>To be added</remarks>
+        <summary>Font stretch</summary>
+        <param name="value">a <see cref="T:Pango.FontStretch" /></param>
+        <returns>font stretch</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Editable">
@@ -262,10 +291,10 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether the text can be modified by the user</summary>
+        <param name="value"><see langword="true" /> if the thext is editable</param>
+        <returns>whether the text can be modified by the user</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Justification">
@@ -278,10 +307,14 @@
         <Parameter Name="value" Type="Gtk.Justification" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'Gtk.Justification'</param>
-        <returns>To be added: an object of type 'Gtk.Justification'</returns>
-        <remarks>To be added</remarks>
+        <summary>Text justification</summary>
+        <param name="value">a <see cref="T:Gtk.Justification" /></param>
+        <returns>the justification of the current text</returns>
+        <remarks>
+          <para>
+            Left, right, or center justification.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PixelsInsideWrap">
@@ -294,9 +327,9 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <summary>Pixels of blank space between wrapped lines in a paragraph</summary>
+        <param name="value">pixels of blank space</param>
+        <returns>Pixels of blank space between wrapped lines in a paragraph</returns>>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -310,9 +343,9 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'int'</returns>
+        <summary>Pixels of blank space below paragraphs.</summary>
+        <param name="value">pixels of blank space</param>
+        <returns>Pixels of blank space below paragraphs.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -585,7 +618,7 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>The language this text is in, as an ISO code.</summary>
+        <summary>The language of the text</summary>
         <param name="value">The ISO code of the language</param>
         <returns>The ISO code of the language of this text</returns>
         <remarks />
