@@ -21,6 +21,7 @@ namespace Glib.Signals {
 				eh(o, EventArgs.Empty);
 			}
 		}
+		private static int _simpleRefCount = 0;
 		private static SimpleDelegate _simpleDelegate;
 		private static GCHandle _simpleGCHandle;
 		public static SimpleDelegate Delegate
@@ -32,7 +33,18 @@ namespace Glib.Signals {
 					Simple._simpleDelegate = new SimpleDelegate(SimpleCallback);
 					Simple._simpleGCHandle = GCHandle.Alloc (Simple._simpleDelegate, GCHandleType.Pinned);
 				}
+				Simple._simpleRefCount++;
 				return Simple._simpleDelegate;
+			}
+		}
+		public static void Unref()
+		{
+			Simple._simpleRefCount--;
+			if (Simple._simpleRefCount < 1)
+			{
+				Simple._simpleRefCount = 0;
+				Simple._simpleGCHandle.free();
+				Simple._simpleDelegate = null;
 			}
 		}
 	}

@@ -60,5 +60,24 @@ namespace Gdk {
 				Marshal.WriteIntPtr(_event, new IntPtr((int)value));
 			}
 		}
+		public EventAny Any
+		{
+			get
+			{
+				return (EventAll)this;
+			}
+		}
+		public static explicit EventAll (Event e)
+		{
+			return Marshal.PtrToStructure(e._event, EventAll);
+		}
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct EventAny
+	{
+		public IntPtr type;
+		public IntPtr window;
+		public SByte send_event;
 	}
 }

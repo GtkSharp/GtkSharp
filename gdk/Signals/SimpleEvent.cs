@@ -43,6 +43,7 @@ namespace Gdk.Signals {
 			}
 			return true; //FIXME: How do we manage the return value?
 		}
+		private static int _simpleRefCount;
 		private static SimpleEventDelegate _simpleDelegate;
 		private static GCHandle _simpleEventGCHandle;
 		public static SimpleEventDelegate Delegate
@@ -54,7 +55,18 @@ namespace Gdk.Signals {
 					SimpleEvent._simpleDelegate = new SimpleEventDelegate(SimpleCallback);
 					SimpleEvent._simpleGCHandle = GCHandle.Alloc (SimpleEvent._simpleEventDelegate, GCHandleType.Pinned);
 				}
+				SimpleEvent._simpleRefCount++;
 				return SimpleEvent._simpleEventDelegate;
+			}
+		}
+		public static void Unref()
+		{
+			SimpleEvent._simpleRefCount--;
+			if (SimpleEvent._simpleRefCount < 1)
+			{
+				SimpleEvent._simpleRefCount = 0;
+				SimpleEvent._simpleEventGCHandle.free();
+				SimpleEvent._simpleDelegate = null;
 			}
 		}
 	}

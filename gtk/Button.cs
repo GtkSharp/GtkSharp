@@ -37,6 +37,14 @@ namespace Gtk {
 			RawObject = o;
 		}
 
+		public ~Button ()
+		{
+			foreach (EventHandler e in Events[ClickedEvent])
+			{
+				Clicked -= e;
+			}
+		}
+
 		/// <summary>
 		///	Button Constructor
 		/// </summary>

@@ -11,8 +11,15 @@ namespace Gtk {
 	using Glib;
 	using Gdk;
 
-        public abstract class Widget : Object {
-
+        public class Widget : Object {
+		public Widget() {}
+		public ~Widget()
+		{
+			foreach (EventHandler e in Events[DeleteEvent])
+			{
+				DeleteEvent -= e;
+			}
+		}
 		private static readonly string DeleteEvent = "delete-event";
 		public event EventHandler DeleteEvent
 		{
@@ -41,6 +48,10 @@ namespace Gtk {
 		public void RemoveSimpleEvent(Object type, string name, EventHander value)
 		{
 			Events.RemoveHandler(type, value);
+			if (Events[type] == null)
+			{
+				DisconnectSimpleSignal(name, type);
+			}
 		}
 
 		public void RemoveSimpleEvent(String type, EventHandle value)
@@ -61,6 +72,10 @@ namespace Gtk {
 		public void RemoveGdkSimpleEvent(Object type, string name, EventHander value)
 		{
 			Events.RemoveHandler(type, value);
+			if (Events[type] == null)
+			{
+				DisconnectGdkSimpleEventSignal(name, type);
+			}
 		}
 
 		public void RemoveGdkSimpleEvent(String type, EventHandle value)
@@ -81,11 +96,21 @@ namespace Gtk {
 					new IntPtr (0), 0, 0);
 		}
 
+		public void DisconnectSimpleSignal(string name, Object signal)
+		{
+			Glib.Signals.Simple.Unref();
+		}
+
 		public void ConnectGdkSimpleSignal(string name, Object signal)
 		{
 			gtk_signal_connect_full(RawObject, name, Gdk.Signals.SimpleEvent.Delegate,
 					new IntPtr (0), new IntPtr (signal.GetHashCode()),
 					new IntPtr (0), 0, 0);
+		}
+
+		public void DisconnectGdkSimpleSignal(string name, Object signal)
+		{
+			Gdk.Signals.SimpleEvent.Unref();
 		}
 
                 /// <summary>
