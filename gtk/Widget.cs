@@ -16,8 +16,6 @@ namespace Gtk {
 
         public class Widget : Object {
 
-		private static readonly string DelEvName = "delete-event";
-
 		private Hashtable Signals = new Hashtable ();
 
 		// Properties
@@ -271,7 +269,7 @@ namespace Gtk {
 		}
 
                 /// <summary>
-                ///     DeleteEvent Event
+                ///     Deleted Event
                 /// </summary>
                 ///
                 /// <remarks>
@@ -279,7 +277,9 @@ namespace Gtk {
 		///	windowing environment.
                 /// </remarks>
 
-		public event EventHandler DeleteEvent {
+		private static readonly string DelEvName = "delete-event";
+
+		public event EventHandler Deleted {
 			add {
 				if (Events [DelEvName] == null)
 					Signals [DelEvName] = new SimpleEvent (

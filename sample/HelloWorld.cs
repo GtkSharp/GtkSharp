@@ -20,7 +20,7 @@ namespace GtkSamples {
 			System.Console.WriteLine (win.Title);
 			System.Console.WriteLine (win.DefaultSize);
 			System.Console.WriteLine (win.AllowShrink);
-			win.DeleteEvent += new EventHandler (Window_Delete);
+			win.Deleted += new EventHandler (Window_Delete);
 			win.Show ();
 			Application.Run ();
 			return 0;

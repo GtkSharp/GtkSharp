@@ -3,7 +3,7 @@ all:
 	@echo "'make unix' is broken for now."
 
 windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../gdk/gdk-sharp.dll /out:gtk-sharp.dll /recurse:*.cs
+	./defs-parse.pl < gtk-types.defs
 
 unix:
 	@echo "'make unix' is broken for now."
