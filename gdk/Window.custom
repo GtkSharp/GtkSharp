@@ -66,6 +66,14 @@
 		}
 	}
 
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_destroy(IntPtr raw);
+
+	public void Destroy() {
+		gdk_window_destroy(Handle);
+		Raw = IntPtr.Zero;
+	}
+
 	public void MoveResize (Gdk.Rectangle rect) {
 		gdk_window_move_resize (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 	}

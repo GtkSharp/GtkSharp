@@ -197,6 +197,8 @@ namespace GLib {
 				return _obj;
 			}
 			set {
+				if (_obj != IntPtr.Zero)
+					Objects.Remove (_obj);
 				_obj = value;
 				if (value == IntPtr.Zero)
 					return;
