@@ -8,12 +8,21 @@
 #
 # <c> 2001 Mike Kestner
 # <c> 2003 Martin Willemoes Hansen
+# <c> 2003 Novell, Inc.
 
 $eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_(DEPRECATED|COMPAT)|ENABLE_BROKEN|COMPILATION)";
 $ignoreit_regex = '^\s+\*|#\s*include|#\s*else|#\s*endif|#\s*undef|G_(BEGIN|END)_DECLS|extern|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
-foreach $dir (@ARGV) {
-	@hdrs = (@hdrs, `ls $dir/*.h`);
+foreach $arg (@ARGV) {
+	if (-d $arg && -e $arg) {
+		@hdrs = (@hdrs, `ls $arg/*.h`);
+		@srcs = (@srcs, `ls $arg/*.c`);
+	} elsif (-f $arg && -e $arg) {
+		@hdrs = (@hdrs, $arg) if ($arg =~ /\.h$/);
+		@srcs = (@srcs, $arg) if ($arg =~ /\.c$/);
+	} else {
+		die "unable to process arg: $arg";
+	}
 }
 
 foreach $fname (@hdrs) {
@@ -110,7 +119,7 @@ foreach $fname (@hdrs) {
 	}
 }
 
-foreach $fname (`ls $ARGV[0]/*.c`, @privhdrs) {
+foreach $fname (@srcs, @privhdrs) {
 
 	open(INFILE, $fname) || die "Could open $fname\n";
 

@@ -48,13 +48,26 @@ for ($apinode = $root->firstChild; $apinode; $apinode = $apinode->nextSibling ()
 				}
 			}
 
+			my @files = ();
 			for ($srcnode = $nsnode->firstChild; $srcnode; $srcnode = $srcnode->nextSibling ()) {
-				next if ($srcnode->nodeName ne "dir");
-				my ($dir);
-				$dir = $srcnode->firstChild->nodeValue;
-				print "$dir\n";
-				`ls $dir`;
-				system ("gapi_pp.pl $dir | gapi2xml.pl $ns $outfile.pre $lib");
+				next if ($srcnode->nodeName ne "dir" && $srcnode->nodeName ne "file");
+
+				if ($srcnode->nodeName eq "dir") {
+					my ($dir);
+					$dir = $srcnode->firstChild->nodeValue;
+					print "$dir\n";
+					system ("gapi_pp.pl $dir | gapi2xml.pl $ns $outfile.pre $lib");
+				} elsif ($srcnode->nodeName eq "file") {
+					@files = (@files, $srcnode->firstChild->nodeValue);
+				} else {
+					die "Unexpected source $srcnode->nodeName \n";
+				}
+
+			}
+			if ($#files >= 0) {
+				$pp_args = join (" ", @files);
+				print "$pp_args\n";
+				system ("gapi_pp.pl $pp_args | gapi2xml.pl $ns $outfile.pre $lib");
 			}
 		}
 	}

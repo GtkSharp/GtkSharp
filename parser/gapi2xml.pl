@@ -674,7 +674,10 @@ sub addParamsElem
 		$parm_elem = $doc->createElement('parameter');
 		$parms_elem->appendChild($parm_elem);
 		my $name = "";
-		if ($parm =~ /(\S+)\s+(\S+)/) {
+		if ($parm =~ /struct\s+(\S+)\s+(\S+)/) {
+			$parm_elem->setAttribute('type', $1);
+			$name = $2;
+		}elsif ($parm =~ /(\S+)\s+(\S+)/) {
 			$parm_elem->setAttribute('type', $1);
 			$name = $2;
 		} elsif ($parm =~ /(\S+)/) {
