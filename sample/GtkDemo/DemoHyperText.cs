@@ -20,6 +20,8 @@ namespace GtkDemo
 	[Demo ("Hyper Text", "DemoHyperText.cs", "Text Widget")]
 	public class DemoHyperText : Gtk.Window
 	{
+		// FIXME: useless counter
+		int uid = 0;
 		bool hoveringOverLink = false;
 		Gdk.Cursor handCursor, regularCursor;
 
@@ -64,12 +66,11 @@ namespace GtkDemo
 		// as a link.
 		void InsertLink (TextBuffer buffer, ref TextIter iter, string text, int page)
 		{
-			TextTag tag = new TextTag ("link");
+			TextTag tag = new TextTag ("link" + uid++);
 			tag.Foreground = "blue";
 			tag.Underline = Pango.Underline.Single;
 			tag.PersistentData.Add ("page", page);
 			buffer.TagTable.Add (tag);
-
 			buffer.InsertWithTags (ref iter, text, tag);
 		}
 
@@ -101,8 +102,12 @@ namespace GtkDemo
 			}
 			else if (page == 3)
 			{
-				TextTag tag = new TextTag ("bold");
-				tag.Weight = Pango.Weight.Bold;
+				TextTag tag = buffer.TagTable.Lookup ("bold");
+				if (tag == null) {
+					tag = new TextTag ("bold");
+					tag.Weight = Pango.Weight.Bold;
+					buffer.TagTable.Add (tag);
+				}
 				buffer.InsertWithTags (ref iter, "hypertext:\n", tag);
 				buffer.Insert (ref iter,
 				"machine-readable text that is not sequential but is organized" + 
@@ -127,7 +132,6 @@ namespace GtkDemo
 		// Looks at all tags covering the position (x, y) in the text view, 
 		// and if one of them is a link, change the cursor to the "hands" cursor
 		// typically used by web browsers.
-		
 		void SetCursorIfAppropriate (TextView view, int x, int y)
 		{
 			bool hovering = false;
@@ -135,8 +139,7 @@ namespace GtkDemo
 
 			foreach (TextTag tag in iter.Tags)
 			{
-				int page = (int) tag.PersistentData ["page"];
-				if (page != 0) {
+				if (tag.PersistentData ["page"] != null && ((int) tag.PersistentData ["page"]) != 0) {
 					hovering = true;
 					break;
 				}
@@ -152,6 +155,7 @@ namespace GtkDemo
 			}
 		}
 
+		[GLib.ConnectBefore]
 		void OnButtonRelease (object sender, ButtonReleaseEventArgs a)
 		{
 			if (a.Event.Button != 1)

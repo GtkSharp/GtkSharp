@@ -14,12 +14,17 @@ namespace GtkDemo
 	{
 		public DemoExpander () : base ("Demo Expander", null, DialogFlags.DestroyWithParent)
 		{
+			this.Resizable = false;
 			this.BorderWidth = 10;
-			this.VBox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, true, 3);
+			VBox vbox = new VBox (false, 5);
+			this.VBox.PackStart (vbox, true, true, 0);
+			vbox.BorderWidth = 5;
+			vbox.PackStart (new Label ("Expander demo. Click on the triangle for details."), false, false, 0);
 
+			// Create the expander
 			Expander expander = new Expander ("Details");
 			expander.Add (new Label ("Details can be shown or hidden."));
-			this.VBox.PackStart (expander, false, true, 3);
+			vbox.PackStart (expander, false, false, 0);
 
 			this.AddButton (Stock.Close, ResponseType.Close);
 
