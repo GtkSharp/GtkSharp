@@ -1,5 +1,5 @@
 <Type Name="TextBuffer" FullName="Gtk.TextBuffer">
-  <TypeSignature Language="C#" Value="public class TextBuffer : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Value="public class TextBuffer : GLib.Object, IWrapper, IDisposable" Maintainer="duncan" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -7,8 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>
+      This is a store for formatted text for display in a <see
+      cref="T:Gtk.TextView" />.
+    </summary>
+    <remarks />
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -31,8 +34,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Clears the contents in the current buffer</summary>
+        <remarks>
+          <para>
+            This is a convenience call to <see
+            cref="M:Gtk.TextBuffer.Clear(Gtk.TextIter,Gtk.TextIter)"
+            />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteMarkByName">
@@ -45,9 +54,14 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Deletes the mark named <see paramref="name" />; the mark must exist.</summary>
+        <param name="name">the name of a mark in buffer</param>
+        <remarks>
+          <para>
+            See <see cref="M:Gtk.TextBuffer.DeleteMark(Gtk.TextMark)"
+            />  for more details.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBounds">
@@ -61,10 +75,18 @@
         <Parameter Name="end" Type="Gtk.TextIter&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Retrieves the first and last iterators in the buffer, i.e. the entire buffer.
+        </summary>
+        <param name="start">
+          A <see cref="T:Gtk.TextIter" /> object to store the location
+          of the beginning of the buffer.
+        </param>
+        <param name="end">
+          A <see cref="T:Gtk.TextIter" /> object to store the location
+          of the end of the buffer.
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RemoveTag">
@@ -79,11 +101,20 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Emits the "remove_tag" signal. 
+        </summary>
+        <param name="tag">the <see cref="T:Gtk.TextTag" /> to remove</param>
+        <param name="start">the beginning of the range</param>
+        <param name="end">the end of the range</param> 
+        <remarks>
+          <para>
+            Fires the <see cref="E:Gtk.TextBuffer.RemoveTag" />
+            event. The default handler for the signal removes all
+            occurrences of tag from the given range. <see
+            paramref="start" /> and <see paramref="end" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveAllTags">
@@ -97,10 +128,21 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Removes all tags in the range between <see paramref="start"
+        /> and <see paramref="end" />.
+        </summary>
+        <param name="start">The beginning of the range</param>
+        <param name="end">The end of the range</param>
+        <remarks>
+          <para>
+            Removes all tags in the range between start and end. Be
+            careful with this function; it could remove tags added in
+            code unrelated to the code you're currently writing. That
+            is, calling this method is probably a bad idea if you have
+            two or more unrelated code sections that add tags.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMark">
@@ -113,10 +155,16 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'Gtk.TextMark'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Returns the mark named name in buffer buffer, or <see
+          langword="null" /> if no such mark exists in the buffer.
+        </summary>
+        <param name="name">the name of a mark</param>
+        <returns>
+          Returns the mark named name in buffer buffer, or <see
+          langword="null" /> if no such mark exists in the buffer.
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="EndUserAction">
@@ -142,10 +190,29 @@
         <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="anchor">To be added: an object of type 'Gtk.TextChildAnchor'</param>
-        <remarks>To be added</remarks>
+        <summary>Inserts a child widget anchor into the text buffer.</summary>
+        <param name="iter">location to insert the anchor</param>
+        <param name="anchor">a <see cref="T:Gtk.TextChildAnchor" />.</param>
+        <remarks>
+          <para>
+            Inserts a child widget anchor into the text buffer at <see
+            paramref="iter" />. The anchor will be counted as one
+            character in character counts, and when obtaining the
+            buffer contents as a string, will be represented by the
+            Unicode "object replacement character" 0xFFFC. Note that
+            the "slice" variants for obtaining portions of the buffer
+            as a string include this character for pixbufs, but the
+            "text" variants do not. e.g. see <see
+            cref="M:Gtk.TextBuffer.GetSlice(Gtk.TextIter,Gtk.TextIter,System.Boolean)"
+            /> and <see
+            cref="M:Gtk.TextBuffer.GetText(Gtk.TextIter,Gtk.TextIter,System.Boolean)"
+            />). Consider <see
+            cref="M:Gtk.TextBuffer.CreateChildAnchor(Gtk.TextIter)" /> as a
+            more convenient alternative to this function. The buffer
+            will add a reference to the anchor, so you can unref it
+            after insertion.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSelectionBounds">
@@ -159,11 +226,24 @@
         <Parameter Name="end" Type="Gtk.TextIter&amp;" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns <see langword="true" /> if some text is selected</summary>
+        <param name="start">the location of the beginning of the selection</param>
+        <param name="end">the location of the end of the selection</param>
+        <returns>Returns <see langword="true" /> if the selection has nonzero length</returns>
+        <remarks>
+          <para>
+            Returns <see langword="true" /> if some text is selected;
+            and sets the bounds of the selection in <see
+            paramref="start" /> and <see paramref="end" /> (if
+            the selection has length 0, then start and end are filled
+            in with the same value). <see paramref="start" /> and <see
+            parmaref="end" /> will be in
+            ascending order. If <see paramref="start" /> and <see
+            paramref="end" /> are <see langword="null" />, then they are
+            not filled in, but the return value still indicates
+            whether text is selected.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginUserAction">
@@ -190,11 +270,24 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="clipboard">To be added: an object of type 'Gtk.Clipboard'</param>
-        <param name="override_location">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Pastes the contents of a clipboard at the insertion point,
+        or at <see paramref="override_location" />.
+        </summary>
+        <param name="clipboard">the <see cref="T:Gtk.Clipboard" /> to paste from</param>
+        <param name="override_location">
+          the location to insert pasted text, or <see langword="null"/> for at the cursor
+        </param>
+        <param name="default_editable">
+          whether the buffer is editable by default
+        </param>
+        <remarks>
+          Pastes the contents of a clipboard at the insertion point,
+          or at <see paramref="override_location" />. (Note: pasting
+          is asynchronous, that is, we'll ask for the paste data and
+          return, and at some point later after the main loop runs,
+          the paste data will be inserted.)
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MoveMark">
@@ -208,10 +301,15 @@
         <Parameter Name="where" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <param name="where">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Moves mark to the new location <see paremref="where" />.</summary>
+        <param name="mark">a <see cref="T:Gtk.TextMark" />.</param>
+        <param name="where">the new location for mark in buffer</param>
+        <remarks>
+          <para>
+            Moves mark to the new location where. Fires the <see
+            cref="E:Gtk.TextBuffer.MarkSet" /> event as notification of the move.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSlice">
@@ -226,12 +324,34 @@
         <Parameter Name="include_hidden_chars" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="include_hidden_chars">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Returns the text from <see paramref="start" /> to <see
+        paramref=",end" />.
+        </summary>
+        <param name="start">the start of a range</param>
+        <param name="end">the end of the range</param>
+        <param name="include_hidden_chars">whether to include invisible text</param>
+        <returns>
+          a string containing the text from <see paramref="start" />
+          to <see paramref="end"/>
+        </returns>
+        <remarks>
+          <para>
+            Returns the text in the range from <see paramref="start"
+            /> to <see paramref="end" />. Excludes undisplayed text
+            (text marked with tags that set the invisibility
+            attribute) if <see paramref="include_hidden_chars" /> is
+            <see langword="false" />. The returned string includes a
+            0xFFFC character whenever the buffer contains embedded
+            images, so byte and character indexes into the returned
+            string do correspond to byte and character indexes into
+            the buffer. Contrast with <see
+            cref="M:Gtk.TextBuffer.GetText(Gtk.TextIter,Gtk.TextIter,System.Boolean)"
+            />. Note that 0xFFFC can occur in normal text as well, so
+            it is not a reliable indicator that a pixbuf or widget is
+            in the buffer.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateChildAnchor">
@@ -244,10 +364,26 @@
         <Parameter Name="iter" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <returns>To be added: an object of type 'Gtk.TextChildAnchor'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          This is a convenience function which simply creates a child
+          anchor with <see cref="C:Gtk.TextChildAnchor" /> and inserts it into
+          the buffer with <see
+          cref="M:Gtk.TextBuffer.InsertChildAnchor(Gtk.TextIter,Gtk.TextChildAnchor)"
+          />.
+        </summary>
+        <param name="iter">the location in the buffer</param>
+        <returns>the created child anchor</returns>
+        <remarks>
+          <para>
+          This is a convenience function which simply creates a child
+          anchor with <see cref="C:Gtk.TextChildAnchor" /> and inserts it into
+          the buffer with <see
+          cref="M:Gtk.TextBuffer.InsertChildAnchor(Gtk.TextIter,Gtk.TextChildAnchor)"
+          />. The new anchor is owned by the buffer; no reference
+          count is returned to the caller of <see
+          cref="Gtk.TextBuffer.CreateChildAnchor(Gtk.TextIter)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ApplyTag">
@@ -262,11 +398,16 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="tag">To be added: an object of type 'Gtk.TextTag'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Fires the <see cref="E:Gtk.TextBuffer.ApplyTag" /> events on buffer.</summary>
+        <param name="tag">a <see cref="Gtk.TextTag" /></param>
+        <param name="start">the beginning of the range to be tagged</param>
+        <param name="end">the end of the range to be tagged</param>
+        <remarks>
+          <para>
+            The default handler for the signal applies tag to the
+            given range. start and end do not have to be in order.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertRange">
@@ -281,11 +422,34 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Copies text, tags, and pixbufs between <see paramref="start" />
+          and <see paramref="end" /> and inserts the copy at <see paramref="iter" />.
+        </summary>
+        <param name="iter">a position in buffer</param>
+        <param name="start">
+          a position in the source <see cref="Gtk.TextBuffer" /> 
+        </param>
+        <param name="end">
+          a position in the source <see cref="Gtk.TextBuffer" />           
+        </param>
+        <remarks>
+          <para>
+            Copies text, tags, and pixbufs between <see
+            paramref="start" /> and <see paramref="end" /> (the
+            order does not matter) and inserts the
+            copy at <see paramref="iter" />. Used instead of simply getting/inserting
+            text because it preserves images and tags. If <see
+            paremref="start" /> and
+            <see paramref="end" /> are in a different buffer from buffer, the two buffers
+            must share the same tag table.
+          </para>
+          <para>
+            This method is implemented with the <see
+            cref="E:Gtk.TextBuffer.InsertText" /> and <see
+            cref="E:Gtk.TextBuffer.ApplyTag" /> events.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveTagByName">
@@ -300,11 +464,16 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Calls <see cref="M:Gtk.TextTagTable.Lookup(System.String)"
+          /> on the buffer's tag table to get a <see
+          cref="T:Gtk.TextTag" />, then calls
+          <see cref="Gtk.TextBuffer.RemoveTag((Gtk.TextTag,Gtk.TextIter,Gtk.TextIter)" />
+        </summary>
+        <param name="name">the name of the tag</param>
+        <param name="start">the beginning of the buffer to be untagged</param>
+        <param name="end">the end of the buffer to be untagged</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="DeleteSelection">
@@ -318,11 +487,21 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="interactive">To be added: an object of type 'bool'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Deletes the currently-selected text</summary>
+        <param name="interactive">whether the deletion is caused by user interaction</param>
+        <param name="default_editable">whether the buffer is editable by default</param>
+        <returns>
+           whether there was a non-empty selection to delete
+        </returns>
+        <remarks>
+          <para>
+            Deletes the range between the "insert" and
+            "selection_bound" marks, that is, the currently-selected
+            text. If <see paramref="interactive" /> is <see
+            langword="true" />, the editability of the selection will
+            be considered (users can't delete uneditable text).
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteInteractive">
@@ -337,12 +516,22 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start_iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end_iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Deletes all editable text in the given range.</summary>
+        <param name="start_iter">the beginning of range to delete</param>
+        <param name="end_iter">the end of the range to delete</param>
+        <param name="default_editable">whether the buffer is editable by default</param>
+        <returns>whether some text was actually deleted</returns>
+        <remarks>
+          <para>
+            Deletes all editable text in the given range. Calls <see
+            cref="M:Gtk.TextBuffer.Delete(Gtk.TextIter,Gtk.TextIter)"
+            /> for each editable sub-range of <see paramref="start" />
+            and <see paramref="end" />. <see paramref="start" /> and
+            <see paramref="end" /> are revalidated to point to the
+            location of the last deleted range, or left untouched if
+            no text was deleted.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveSelectionClipboard">
@@ -371,10 +560,26 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Deletes text between <see paramref="start" /> and <see
+        paramref="end" />.
+        </summary>
+        <param name="start">a position in the buffer</param>
+        <param name="end">a position in the buffer</param>
+        <remarks>
+          <para>
+            Deletes text between <see paramref="start" /> and <see
+            paramref="end" />. The order of the two is not actually
+            relevant, as they will be r reordered. This function
+            actually fires off  the <see
+            cref="E:Gtk.TextBuffer.DeleteRange" /> event, and the default
+            handler of that signal deletes the text. Because the
+            buffer is modified, all outstanding iterators become
+            invalid after calling this function; however, the start
+            and end will be re-initialized to point to the location
+            where text was deleted.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PlaceCursor">
@@ -387,9 +592,21 @@
         <Parameter Name="where" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="where">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>Moves the "insert" and "selection_bound" marks simultaneously.</summary>
+        <param name="where">where to put the cursor</param>
+        <remarks>
+          <para>
+            This function moves the "insert" and "selection_bound"
+            marks simultaneously. If you move them to the same place
+            in two steps with <see
+            cref="M:Gtk.TextBuffer.MoveMarkGtk.TextMark,Gtk.TextIter)"/>,
+            you will temporarily select a region in between their old
+            and new locations, which can be pretty inefficient since
+            the temporarily-selected region will force stuff to be
+            recalculated. This function moves them as a unit, which
+            can be optimized.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddSelectionClipboard">
@@ -417,9 +634,23 @@
         <Parameter Name="mark" Type="Gtk.TextMark" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <remarks>To be added</remarks>
+        <summary>Deletes mark, so that it's no longer located anywhere in the buffer.</summary>
+        <param name="mark">
+          a <see cref="T:Gtk.TextMark" /> in the buffer to be deleted.
+        </param>
+        <remarks>
+          <para>
+            Deletes mark, so that it's no longer located anywhere in
+            the buffer.  There is no way to undelete a
+            mark. <see cref="P:Gtk.TextMark.Deleted" /> will return
+            <see langword="true" /> after
+            this function has been called on a mark;
+            <see cref="P:Gtk.TextMark.Deleted" /> indicates that a mark no
+            longer belongs to a buffer. The <see
+            cref="E:Gtk.TextBuffer.MarkDeleted" /> event will
+            be fired as notification after the mark is deleted.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateMark">
@@ -434,12 +665,32 @@
         <Parameter Name="left_gravity" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="mark_name">To be added: an object of type 'string'</param>
-        <param name="where">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="left_gravity">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'Gtk.TextMark'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a mark at position <see paramref="where" />.</summary>
+        <param name="mark_name">name for mark, or <see langword="null" />.</param>
+        <param name="where">location to place mark</param>
+        <param name="left_gravity">whether the mark has left gravity</param>
+        <returns>a new <see cref="T:Gtk.TextMark" /> object</returns>
+        <remarks>
+          <para>
+            Creates a mark at position where. If <see
+            paramref="mark_name" /> is <see langword="null" />,
+            the mark is anonymous; otherwise, the mark can be
+            retrieved by name using <see
+            cref="Gtk.TextBuffer.GetMark(System.String)" />. If a
+            mark has left gravity, and text is inserted at the mark's
+            current location, the mark will be moved to the left of
+            the newly-inserted text. If the mark has right gravity
+            (ie. <see paramref="left_gravity" /> = <see
+            langword="false" />), the mark will end up on the right
+            of newly-inserted text. The standard left-to-right cursor
+            is a mark with right gravity (when you type, the cursor
+            stays on the right side of the text you're typing).
+          </para>
+          <para>
+            Fires the <see cref="E:Gtk.TextBuffer.MarkSet" /> event as
+            notification of the mark's initial placement.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyClipboard">
@@ -468,10 +719,18 @@
         <Parameter Name="where" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="where">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Moves the mark named <see paramref="name" /> (which must
+          exist) to location <see paramref="where" />.
+        </summary>
+        <param name="name">the name of the mark</param>
+        <param name="where">the new location for mark</param>
+        <remarks>
+          <para>
+            see <see cref="M:Gtk.TextBuffer.MoveMark(Gtk.TextMark,Gtk.TextIter)"/>
+            for more details.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertRangeInteractive">
@@ -487,13 +746,41 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Same as <see
+          cref="M:Gtk.TextBuffer.InsertRange(Gtk.TextIter,Gtk.TextIter,Gtk.TextIter)"
+          />, but does nothing if the insertion point isn't editable.
+        </summary>
+        <param name="iter">a position in buffer</param>
+        <param name="start">
+          a position in the source <see cref="Gtk.TextBuffer" /> 
+        </param>
+        <param name="end">
+          a position in the source <see cref="Gtk.TextBuffer" />           
+        </param>
+        <param name="default_editable">
+          whether the text is editable at <see paramref="iter" /> if no tags enclosing
+          iter affect editability
+        </param>
+        <returns>
+          <see langword="true" /> if an insertion was possible at <see
+          paramref="iter" />
+        </returns>
+        <remarks>
+          <para>
+            Same as <see
+            cref="M:Gtk.TextBuffer.InsertRange(Gtk.TextIter,Gtk.TextIter,Gtk.TextIter)"
+            />, but does nothing if the insertion point isn't
+            editable.
+          </para>
+          <para>
+            The <see paramref="default_editable" /> parameter
+            indicates whether the text is editable at <see
+            paramref="iter" /> if no tags
+            enclosing iter affect editability. Typically the result of
+            <see cref="P:Gtk.TextView.Editable" /> is appropriate here.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetText">
@@ -508,12 +795,29 @@
         <Parameter Name="include_hidden_chars" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="include_hidden_chars">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the text from a specified range</summary>
+        <param name="start">the beginning of the specified range</param>
+        <param name="end">the end of the specified range</param>
+        <param name="include_hidden_chars">whether to include invisible text</param>
+        <returns>a string containing the text from the specified range</returns>
+        <remarks>
+          <para>
+            Returns the text in the range specified by <see
+            paremref="start" /> and <see paremref="end" />. Excludes
+            undisplayed text (text marked with tags that set the
+            invisibility attribute) if <see
+            paramref="include_hidden_chars" /> is <see
+            langword="false" />. Does not include characters
+            representing embedded images, so byte and character
+            indexes into the returned string do not correspond to byte
+            and character indexes into the buffer.
+          </para>
+          <para>
+            Contrast this with <see
+            cref="Gtk.TextBuffer.GetSlice(Gtk.TextIter,Gtk.TextIter,
+            System.Boolean)" />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ApplyTagByName">
@@ -528,11 +832,19 @@
         <Parameter Name="end" Type="Gtk.TextIter" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="name">To be added: an object of type 'string'</param>
-        <param name="start">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="end">To be added: an object of type 'Gtk.TextIter'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Fires the <see cref="E:Gtk.TextBuffer.TagApplied" /> event on buffer. The default handler
+          for the signal applies tag to the given range.
+        </summary>
+        <param name="name">the name of the tag</param>
+        <param name="start">the location of the beginning of the range</param>
+        <param name="end">the location of the end of the range</param>
+        <remarks>
+          <para>
+            The order for <see paramref="start" /> and <see
+            paramref="end" /> is not important.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertPixbuf">
@@ -546,10 +858,27 @@
         <Parameter Name="pixbuf" Type="Gdk.Pixbuf" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="pixbuf">To be added: an object of type 'Gdk.Pixbuf'</param>
-        <remarks>To be added</remarks>
+        <summary>
+          Inserts an image into the text buffer at <see paramref="iter" />.
+        </summary>
+        <param name="iter">The location to insert the image</param>
+        <param name="pixbuf">The image to be inserted</param>
+        <remarks>
+          <para>
+            Inserts an image into the text buffer at <see
+            paramref="iter" />. The image will be counted as one character in character counts, and
+            when obtaining the buffer contents as a string, will be
+            represented by the Unicode "object replacement character"
+            0xFFFC. Note that the "slice" variants for obtaining
+            portions of the buffer as a string include this character
+            for pixbufs, but the "text" variants do not. e.g. see
+            <see
+            cref="M:Gtk.TextBuffer.GetSlice(Gtk.TextIter,Gtk.TextIter,System.Boolean)"
+            /> and <see
+            cref="M:Gtk.TextBuffer.GetText(Gtk.TextIter,Gtk.TextIter,System.Boolean)"
+            />.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CutClipboard">
@@ -605,10 +934,10 @@
         <Parameter Name="table" Type="Gtk.TextTagTable" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="table">To be added: an object of type 'Gtk.TextTagTable'</param>
-        <returns>To be added: an object of type 'Gtk.TextBuffer'</returns>
-        <remarks>To be added</remarks>
+        <summary>Creates a new text buffer.</summary>
+        <param name="table">a tag table, or <see langword="null" /> to create a new one</param>
+        <returns>a newly created TextBuffer</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -644,10 +973,10 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'string'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <summary>The complete contents of the buffer</summary>
+        <param name="value">a string to be the contents of the buffer</param>
+        <returns>The contents of the current buffer'</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="LineCount">
@@ -657,9 +986,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>Obtains the number of lines in the buffer.</summary>
+        <returns>The number of lines in the buffer</returns>
+        <remarks>
+          <para>
+            The results of this method is cache, so this is very fast.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EndIter">
@@ -669,9 +1002,9 @@
         <ReturnType>Gtk.TextIter</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextIter'</returns>
-        <remarks>To be added</remarks>
+        <summary>The end of the buffer</summary>
+        <returns>The location of the end of the buffer</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Modified">
@@ -684,10 +1017,26 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="value">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Whether or not the buffer has been modified</summary>
+        <param name="value">
+          <see langword="true" /> if the buffer has
+          been modified, <see langword="false" /> otherwise.
+        </param>
+        <returns>
+          <see langword="true" /> if the buffer has
+          been modified, <see langword="false" /> otherwise.
+        </returns>
+        <remarks>
+          <para>
+            Whenever the buffer is saved to disk, set this property to
+            <see langword="false" />. When the buffer is modified, it
+            will automatically toggled to <see langword="true" />.
+          </para>
+          <para>
+            Whenever this property is changed, the <see
+            cref="E.Gtk.TextBuffer.ModifiedChanged" /> event is fired.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TagTable">
@@ -697,9 +1046,9 @@
         <ReturnType>Gtk.TextTagTable</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextTagTable'</returns>
-        <remarks>To be added</remarks>
+        <summary>The tag table of the current buffer</summary>
+        <returns>The current <see cref="T:Gtk.TextTagTable" /> of the buffer</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SelectionBound">
@@ -709,9 +1058,27 @@
         <ReturnType>Gtk.TextMark</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextMark'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the mark that represents the selection bound.</summary>
+        <returns>a <see cref="T:Gtk.TextMark" /></returns>
+        <remarks>
+          <para>
+            Returns the mark that represents the selection
+            bound. Equivalent to calling <see
+            cref="Gtk.TextBuffer.GetMark(System.String)" /> to
+            get the mark named "selection_bound", but very slightly
+            more efficient, and involves less typing.
+          </para>
+          <para>
+            The currently-selected text in buffer is the region
+            between the "selection_bound" and "insert" marks. If
+            "selection_bound" and "insert" are in the same place, then
+            there is no current selection. <see
+            cref="M:Gtk.TextBuffer.GetSelectionBounds(Gtk.TextIter,Gtk.TextIter)"
+            /> is another convenient function for handling the
+            selection, if you just want to know whether there's a
+            selection and what its bounds are.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertMark">
@@ -721,9 +1088,15 @@
         <ReturnType>Gtk.TextMark</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextMark'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the mark that represents the cursor (insertion point).</summary>
+        <returns>The mark of the insert point.</returns>
+        <remarks>
+          <para>
+            This is equivelant to calling <see
+            cref="M:Gtk.TextBuffer.GetMark(System.String)" /> for the
+            mark named "insert". 
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CharCount">
@@ -733,9 +1106,11 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'int'</returns>
-        <remarks>To be added</remarks>
+        <summary>The number of characters in the buffer</summary>
+        <returns>The number of characters in the buffer</returns>
+        <remarks>
+          <para>The result of this method is cached, so it is very fast.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StartIter">
@@ -745,9 +1120,14 @@
         <ReturnType>Gtk.TextIter</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gtk.TextIter'</returns>
-        <remarks>To be added</remarks>
+        <summary>The location of the beginning of the buffer</summary>
+        <returns>The location of the beginning of the buffer</returns>
+        <remarks>
+          <para>
+            This is the equivelant to calling <see
+            cref="M:Gtk.TextBuffer.GetIterAtOffset(System.Int32)" /> to get the iter at character offset 0.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UserActionEnded">
@@ -880,10 +1260,10 @@
         <Parameter Name="char_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="char_offset">To be added: an object of type 'int'</param>
-        <returns>To be added: an object of type 'Gtk.TextIter'</returns>
-        <remarks>To be added</remarks>
+        <summary>Returns the location at a particular character offset</summary>
+        <param name="char_offset">The requested character offset</param>
+        <returns>The location at <see paramref="char_offset" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InsertAtCursor">
@@ -896,9 +1276,14 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Insert text into the current cursor position</summary>
+        <param name="text">The text to be inserted</param>
+        <remarks>
+          <para>
+            The <see cref="E:Gtk.TextBuffer.InsertText" /> event is
+            fired when a call to this method is made.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Insert">
@@ -912,10 +1297,13 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="text">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Insert text at a specific point</summary>
+        <param name="iter">
+          The location for <see paramref="text" /> to be
+          inserted
+        </param>
+        <param name="text">The text to be inserted</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="InsertInteractiveAtCursor">
@@ -929,11 +1317,15 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>Insert text at cursor position if the location is editable</summary>
+        <param name="text">The text to be inserted</param>
+        <param name="default_editable">The default editability of the buffer</param>
+        <returns>Whether or not <see paramref="text" /> was inserted</returns> 
+        <remarks>
+          See <see
+          cref="M:Gtk.TextBuffer.InsertInteractive(Gtk.TextIter,System.String,System.Boolean)"
+          /> for more details.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertInteractive">
@@ -948,12 +1340,32 @@
         <Parameter Name="default_editable" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter'</param>
-        <param name="text">To be added: an object of type 'string'</param>
-        <param name="default_editable">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'bool'</returns>
-        <remarks>To be added</remarks>
+        <summary>
+          Insert text if the cursor is at an editable point in
+          the buffer
+        </summary>
+        <param name="iter">a location in the buffer</param>
+        <param name="text">the text to be inserted</param>
+        <param name="default_editable">the default editability of buffer</param>
+        <returns>whether text was actually inserted</returns>
+        <remarks>
+          <para>
+            Similar to <see
+            cref="M:Gtk.TextBuffer.Insert(Gtk.TextIter,System.String)"
+            />, but the insertion will not occur if <see
+            paramref="iter" /> is at a non-editable location in the
+            buffer. Usually you want to prevent insertions at
+            ineditable locations if the insertion results from a user
+            action (is interactive).
+          </para>
+          <para>
+            <see paramref="default_editable" /> indicates the editability of text that
+            doesn't have a tag affecting editability applied to
+            it. Typically the result of <see
+            cref="P:Gtk.TextView.Editable" />
+            is appropriate here.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetText">
@@ -966,9 +1378,14 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="text">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Set the contents of the buffer</summary>
+        <param name="text">The new contents of the buffer</param>
+        <remarks>
+          <para>
+            This is equivelant to using the setter of the
+            <see cref="P:Gtk.TextBuffer.Text" /> property.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -998,10 +1415,18 @@
         <Parameter Name="char_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="char_offset">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the location at a specific character offset</summary>
+        <param name="iter">The location of <see paramref="char_offset" /></param>
+        <param name="char_offset">
+          The number of characters from the beginning of the buffer
+        </param>
+        <remarks>
+          <para>
+            if <see paramref="char_offset" /> is -1, or greater than
+            the number of characters in the buffer, <see
+            paramref="iter"/> will be initialized to the end iterator.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterAtLineIndex">
@@ -1017,10 +1442,24 @@
       </Parameters>
       <Docs>
         <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="line_number">To be added: an object of type 'int'</param>
-        <param name="byte_index">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <param name="iter">
+          The location as specified by <see paramref="line_number" />
+        and <see paramref="byte_index" />
+        </param>
+        <param name="line_number">
+          A line number for the current buffer, counting from 0.
+        </param>
+        <param name="byte_index">
+          the byte index from start of line
+        </param>
+        <remarks>
+          <para>
+            <see paramref="byte_index" /> must be the start of a
+            UTF-8 character, and must not be beyond the end of the
+            line. Note bytes, not characters; UTF-8 may encode one
+            character as multiple bytes.
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterAtChildAnchor">
@@ -1034,10 +1473,12 @@
         <Parameter Name="anchor" Type="Gtk.TextChildAnchor" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="anchor">To be added: an object of type 'Gtk.TextChildAnchor'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the location of the specific anchor</summary>
+        <param name="iter">the location at <see paramref="anchor" /></param>
+        <param name="anchor">
+          a <see cref="T:Gtk.TextChildAnchor" /> at the current buffer.
+        </param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetIterAtMark">
@@ -1051,10 +1492,10 @@
         <Parameter Name="mark" Type="Gtk.TextMark" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="mark">To be added: an object of type 'Gtk.TextMark'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the location of the specified mark</summary>
+        <param name="iter">The location of <see paramref="mark" />.</param>
+        <param name="mark">The specified mark</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetIterAtLine">
@@ -1068,10 +1509,13 @@
         <Parameter Name="line_number" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
-        <param name="line_number">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <summary>Gets the location of a particular line</summary>
+        <param name="iter">
+          The location at the beginning fo the line as specified by
+          <see paramref="line_number" />
+        </param>
+        <param name="line_number">The specified line number</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetIterAtLineOffset">
@@ -1086,11 +1530,14 @@
         <Parameter Name="char_offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="iter">To be added: an object of type 'Gtk.TextIter&amp;'</param>
+        <summary>Gets the location of a specific point</summary>
+        <param name="iter">
+          The location at the location specified by <see
+          paramref="line_number" /> and <see paramref="char_offset" />.
+        </param>
         <param name="line_number">To be added: an object of type 'int'</param>
         <param name="char_offset">To be added: an object of type 'int'</param>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
   </Members>
