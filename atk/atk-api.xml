@@ -993,6 +993,31 @@
       </method>
     </object>
     <object name="Hyperlink" cname="AtkHyperlink" parent="GObject">
+      <virtual_method name="GetUri" cname="get_uri">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="AtkHyperlink*" name="link_" />
+          <parameter type="gint" name="i" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetEndIndex" cname="get_end_index">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="AtkHyperlink*" name="link_" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsValid" cname="is_valid">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="AtkHyperlink*" name="link_" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="LinkState" cname="link_state">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="AtkHyperlink*" name="link_" />
+        </parameters>
+      </virtual_method>
       <implements>
         <interface cname="AtkAction" />
       </implements>
@@ -1116,6 +1141,78 @@
           <parameter type="gpointer*" name="child" />
         </parameters>
       </signal>
+      <virtual_method name="GetParent" cname="get_parent">
+        <return-type type="AtkObject*" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefChild" cname="ref_child">
+        <return-type type="AtkObject*" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+          <parameter type="gint" name="i" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefRelationSet" cname="ref_relation_set">
+        <return-type type="AtkRelationSet*" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetLayer" cname="get_layer">
+        <return-type type="AtkLayer" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RefStateSet" cname="ref_state_set">
+        <return-type type="AtkStateSet*" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetDescription" cname="set_description">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+          <parameter type="const-gchar*" name="description" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetRole" cname="set_role">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+          <parameter type="AtkRole" name="role" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemovePropertyChangeHandler" cname="remove_property_change_handler">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObjectguinthandler_id" name="arg1" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ChildrenChanged" cname="children_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+          <parameter type="guint" name="change_index" />
+          <parameter type="gpointer" name="changed_child" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="PropertyChange" cname="property_change">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+          <parameter type="AtkPropertyValues*" name="values" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="VisibleDataChanged" cname="visible_data_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
       <method name="AddRelationship" cname="atk_object_add_relationship">
         <return-type type="gboolean" />
         <parameters>
@@ -1220,6 +1317,15 @@
       </method>
     </object>
     <object name="ObjectFactory" cname="AtkObjectFactory" parent="GObject">
+      <virtual_method name="CreateAccessible" cname="create_accessible">
+        <return-type type="AtkObject*" />
+        <parameters>
+          <parameter type="GObject*" name="obj" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetAccessibleType" cname="get_accessible_type">
+        <return-type type="GType" />
+      </virtual_method>
       <method name="CreateAccessible" cname="atk_object_factory_create_accessible">
         <return-type type="AtkObject*" />
         <parameters>
@@ -1403,6 +1509,23 @@
       </method>
     </object>
     <object name="Util" cname="AtkUtil" parent="GObject">
+      <virtual_method name="AddGlobalEventListener" cname="add_global_event_listener">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="GSignalEmissionHook" name="listener" />
+          <parameter type="const-gchar*" name="event_type" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="AddKeyEventListener" cname="add_key_event_listener">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="AtkKeySnoopFunc" name="listener" />
+          <parameter type="gpointer" name="data" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetRoot" cname="get_root">
+        <return-type type="AtkObject*" />
+      </virtual_method>
       <method name="GetType" cname="atk_util_get_type" shared="true">
         <return-type type="GType" />
       </method>

@@ -34,6 +34,13 @@
           <parameter type="const-gchar*" name="msg" />
         </parameters>
       </signal>
+      <virtual_method name="ProgressMessage" cname="progress_message">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbBrowser*" name="browser" />
+          <parameter type="const-gchar*" name="msg" />
+        </parameters>
+      </virtual_method>
       <method name="GetConnection" cname="gnome_db_browser_get_connection">
         <return-type type="GdaConnection*" />
       </method>
@@ -117,6 +124,20 @@
           <parameter type="guint" name="id" />
         </parameters>
       </signal>
+      <virtual_method name="Activated" cname="activated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbControl*" name="control" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetProperty" cname="set_property">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbControl*" name="control" />
+          <parameter type="const-GdaValue*" name="value" />
+          <parameter type="guint" name="id" />
+        </parameters>
+      </virtual_method>
       <method name="Activate" cname="gnome_db_control_activate">
         <return-type type="void" />
       </method>
@@ -215,6 +236,12 @@
           <parameter type="GnomeDbDsnConfig*" name="config" />
         </parameters>
       </signal>
+      <virtual_method name="Changed" cname="changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbDsnConfig*" name="config" />
+        </parameters>
+      </virtual_method>
       <method name="GetInfo" cname="gnome_db_dsn_config_get_info">
         <return-type type="GdaDataSourceInfo*" />
       </method>
@@ -238,6 +265,13 @@
           <parameter type="gboolean" name="error" />
         </parameters>
       </signal>
+      <virtual_method name="Finished" cname="finished">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbDsnConfigDruid*" name="druid" />
+          <parameter type="gboolean" name="error" />
+        </parameters>
+      </virtual_method>
       <method name="GetDsn" cname="gnome_db_dsn_config_druid_get_dsn">
         <return-type type="const-GdaDataSourceInfo*" />
       </method>
@@ -362,6 +396,12 @@
           <parameter type="GnomeDbForm*" name="form" />
         </parameters>
       </signal>
+      <virtual_method name="ModelChanged" cname="model_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbForm*" name="form" />
+        </parameters>
+      </virtual_method>
       <method name="GetCurrentRow" cname="gnome_db_form_get_current_row">
         <return-type type="gint" />
       </method>
@@ -468,6 +508,20 @@
           <parameter type="GtkWidget*" name="menu" />
         </parameters>
       </signal>
+      <virtual_method name="RowSelected" cname="row_selected">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid" />
+          <parameter type="gint" name="row" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DoubleClicked" cname="double_clicked">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbGrid*" name="grid" />
+          <parameter type="gint" name="row" />
+        </parameters>
+      </virtual_method>
       <method name="FindRowFromData" cname="gnome_db_grid_find_row_from_data">
         <return-type type="gint" />
         <parameters>
@@ -612,6 +666,13 @@
           <parameter type="gint" name="row" />
         </parameters>
       </signal>
+      <virtual_method name="RowSelected" cname="row_selected">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbList*" name="list" />
+          <parameter type="gint" name="row" />
+        </parameters>
+      </virtual_method>
       <method name="GetModel" cname="gnome_db_list_get_model">
         <return-type type="GdaDataModel*" />
       </method>
@@ -760,6 +821,12 @@
           <parameter type="GnomeDbWindow*" name="window" />
         </parameters>
       </signal>
+      <virtual_method name="Close" cname="close">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDbWindow*" name="window" />
+        </parameters>
+      </virtual_method>
       <method name="Close" cname="gnome_db_window_close">
         <return-type type="void" />
       </method>

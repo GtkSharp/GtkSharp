@@ -27,6 +27,7 @@ namespace GtkSharp.Generation {
 				switch (node.Name) {
 				case "field":
 				case "callback":
+				case "virtual_method":
 					Statistics.IgnoreCount++;
 					break;
 

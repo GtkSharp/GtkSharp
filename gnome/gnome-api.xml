@@ -756,6 +756,23 @@
           <parameter type="GnomeCanvasBuf*" name="buf" />
         </parameters>
       </signal>
+      <virtual_method name="DrawBackground" cname="draw_background">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvas*" name="canvas" />
+          <parameter type="GdkDrawable*" name="drawable" />
+          <parameter type="int" name="x" />
+          <parameter type="int" name="y" />
+          <parameter type="int" name="width" />
+          <parameter type="int" name="height" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RequestUpdate" cname="request_update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvas*" name="canvas" />
+        </parameters>
+      </virtual_method>
       <method name="C2w" cname="gnome_canvas_c2w">
         <return-type type="void" />
         <parameters>
@@ -1038,6 +1055,56 @@
           <parameter type="GdkEvent*" name="event" />
         </parameters>
       </signal>
+      <virtual_method name="Update" cname="update">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+          <parameter type="double*" name="affine" />
+          <parameter type="ArtSVP*" name="clip_path" />
+          <parameter type="int" name="flags" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Unrealize" cname="unrealize">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Unmap" cname="unmap">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Draw" cname="draw">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+          <parameter type="GdkDrawable*" name="drawable" />
+          <parameter type="int" name="x" />
+          <parameter type="int" name="y" />
+          <parameter type="int" name="width" />
+          <parameter type="int" name="height" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Point" cname="point">
+        <return-type type="double" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+          <parameter type="double" name="x" />
+          <parameter type="double" name="y" />
+          <parameter type="int" name="cx" />
+          <parameter type="int" name="cy" />
+          <parameter type="GnomeCanvasItem**" name="actual_item" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Event" cname="event">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeCanvasItem*" name="item" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </virtual_method>
       <method name="AffineAbsolute" cname="gnome_canvas_item_affine_absolute" hidden="1">
         <return-type type="void" />
         <parameters>
@@ -1328,6 +1395,13 @@
           <parameter type="GtkTextTag*" name="tag" />
         </parameters>
       </signal>
+      <virtual_method name="TagChanged" cname="tag_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeCanvasRichText*" name="text" />
+          <parameter type="GtkTextTag*" name="tag" />
+        </parameters>
+      </virtual_method>
       <method name="CopyClipboard" cname="gnome_canvas_rich_text_copy_clipboard">
         <return-type type="void" />
       </method>
@@ -2241,6 +2315,12 @@
       <property name="HasProgress" cname="has_progress" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <property name="HasStatus" cname="has_status" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <property name="Interactivity" cname="interactivity" type="GnomePreferencesType" readable="true" writeable="true" construct-only="true" />
+      <virtual_method name="UserResponse" cname="user_response">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeAppBar*" name="ab" />
+        </parameters>
+      </virtual_method>
       <method name="ClearPrompt" cname="gnome_appbar_clear_prompt">
         <return-type type="void" />
       </method>
@@ -2375,6 +2455,30 @@
           <parameter type="GnomeClient*" name="client" />
         </parameters>
       </signal>
+      <virtual_method name="SaveYourself" cname="save_yourself">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeClient*" name="client" />
+          <parameter type="gint" name="phase" />
+          <parameter type="GnomeSaveStyle" name="save_style" />
+          <parameter type="gboolean" name="shutdown" />
+          <parameter type="GnomeInteractStyle" name="interact_style" />
+          <parameter type="gboolean" name="fast" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SaveComplete" cname="save_complete">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeClient*" name="client" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Connect" cname="connect">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeClient*" name="client" />
+          <parameter type="gboolean" name="restarted" />
+        </parameters>
+      </virtual_method>
       <method name="AddStaticArg" cname="gnome_client_add_static_arg">
         <return-type type="void" />
         <parameters>
@@ -2568,6 +2672,16 @@
       <property name="Green" cname="green" type="guint" readable="true" writeable="true" />
       <property name="Blue" cname="blue" type="guint" readable="true" writeable="true" />
       <property name="Alpha" cname="alpha" type="guint" readable="true" writeable="true" />
+      <virtual_method name="ColorSet" cname="color_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeColorPicker*" name="cp" />
+          <parameter type="guint" name="r" />
+          <parameter type="guint" name="g" />
+          <parameter type="guint" name="b" />
+          <parameter type="guint" name="a" />
+        </parameters>
+      </virtual_method>
       <method name="GetD" cname="gnome_color_picker_get_d">
         <return-type type="void" />
         <parameters>
@@ -2673,6 +2787,12 @@
           <parameter type="GnomeDateEdit*" name="gde" />
         </parameters>
       </signal>
+      <virtual_method name="DateChanged" cname="date_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDateEdit*" name="gde" />
+        </parameters>
+      </virtual_method>
       <method name="Construct" cname="gnome_date_edit_construct">
         <return-type type="void" />
         <parameters>
@@ -2746,6 +2866,12 @@
       </signal>
       <property name="ShowFinish" cname="show_finish" type="gboolean" readable="true" writeable="true" />
       <property name="ShowHelp" cname="show_help" type="gboolean" readable="true" writeable="true" />
+      <virtual_method name="Cancel" cname="cancel">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDruid*" name="druid" />
+        </parameters>
+      </virtual_method>
       <method name="AppendPage" cname="gnome_druid_append_page">
         <return-type type="void" />
         <parameters>
@@ -2851,6 +2977,34 @@
           <parameter type="GtkWidget*" name="druid" />
         </parameters>
       </signal>
+      <virtual_method name="Next" cname="next">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page" />
+          <parameter type="GtkWidget*" name="druid" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Back" cname="back">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page" />
+          <parameter type="GtkWidget*" name="druid" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Cancel" cname="cancel">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page" />
+          <parameter type="GtkWidget*" name="druid" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetSidebarShown" cname="set_sidebar_shown">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeDruidPage*" name="druid_page" />
+          <parameter type="gboolean" name="sidebar_shown" />
+        </parameters>
+      </virtual_method>
       <method name="Back" cname="gnome_druid_page_back">
         <return-type type="gboolean" />
       </method>
@@ -3075,6 +3229,12 @@
       </signal>
       <property name="HistoryId" cname="history_id" type="gchar*" readable="true" writeable="true" />
       <property name="GtkEntry" cname="gtk_entry" type="GtkEntry" readable="true" />
+      <virtual_method name="Activate" cname="activate">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeEntry*" name="entry" />
+        </parameters>
+      </virtual_method>
       <implements>
         <interface cname="GtkEditable" />
       </implements>
@@ -3155,6 +3315,12 @@
       <property name="DefaultPath" cname="default_path" type="gchar*" readable="true" writeable="true" />
       <property name="GnomeEntry" cname="gnome_entry" type="GnomeEntry" readable="true" />
       <property name="GtkEntry" cname="gtk_entry" type="GtkEntry" readable="true" />
+      <virtual_method name="BrowseClicked" cname="browse_clicked">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeFileEntry*" name="fentry" />
+        </parameters>
+      </virtual_method>
       <implements>
         <interface cname="GtkEditable" />
       </implements>
@@ -3240,6 +3406,13 @@
           <parameter type="const-gchar*" name="font_name" />
         </parameters>
       </signal>
+      <virtual_method name="FontSet" cname="font_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeFontPicker*" name="gfp" />
+          <parameter type="const-gchar*" name="font_name" />
+        </parameters>
+      </virtual_method>
       <method name="FiSetShowSize" cname="gnome_font_picker_fi_set_show_size">
         <return-type type="void" />
         <parameters>
@@ -3361,6 +3534,12 @@
       <property name="PixmapSubdir" cname="pixmap_subdir" type="gchar*" readable="true" writeable="true" />
       <property name="Filename" cname="filename" type="gchar*" readable="true" writeable="true" />
       <property name="PickDialog" cname="pick_dialog" type="GtkDialog" readable="true" />
+      <virtual_method name="Changed" cname="changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconEntry*" name="ientry" />
+        </parameters>
+      </virtual_method>
       <method name="Construct" cname="gnome_icon_entry_construct">
         <return-type type="void" />
         <parameters>
@@ -3472,6 +3651,35 @@
           <parameter type="GnomeIconList*" name="gil" />
         </parameters>
       </signal>
+      <virtual_method name="SelectIcon" cname="select_icon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil" />
+          <parameter type="gint" name="num" />
+          <parameter type="GdkEvent*" name="event" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="FocusIcon" cname="focus_icon">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil" />
+          <parameter type="gint" name="num" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="MoveCursor" cname="move_cursor">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconList*" name="gil" />
+          <parameter type="GtkDirectionType" name="dir" />
+          <parameter type="gboolean" name="clear_selection" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Unused" cname="unused">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconList*" name="unused" />
+        </parameters>
+      </virtual_method>
       <method name="Append" cname="gnome_icon_list_append">
         <return-type type="int" />
         <parameters>
@@ -3557,7 +3765,7 @@
         <return-type type="guint" />
       </method>
       <method name="GetSelection" cname="gnome_icon_list_get_selection" hidden="i">
-        <return-type type="GList*" element_type="int" />
+        <return-type type="GList*" />
       </method>
       <method name="GetSelectionMode" cname="gnome_icon_list_get_selection_mode">
         <return-type type="GtkSelectionMode" />
@@ -3796,6 +4004,30 @@
           <parameter type="GnomeIconTextItem*" name="iti" />
         </parameters>
       </signal>
+      <virtual_method name="TextChanged" cname="text_changed">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="WidthChanged" cname="width_changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="EditingStopped" cname="editing_stopped">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SelectionStopped" cname="selection_stopped">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconTextItem*" name="iti" />
+        </parameters>
+      </virtual_method>
       <method name="Configure" cname="gnome_icon_text_item_configure">
         <return-type type="void" />
         <parameters>
@@ -3854,6 +4086,12 @@
           <parameter type="GnomeIconTheme*" name="icon_theme" />
         </parameters>
       </signal>
+      <virtual_method name="Changed" cname="changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeIconTheme*" name="icon_theme" />
+        </parameters>
+      </virtual_method>
       <method name="AppendSearchPath" cname="gnome_icon_theme_append_search_path">
         <return-type type="void" />
         <parameters>
@@ -4612,7 +4850,7 @@
         <return-type type="GnomeFontFace*" />
       </method>
       <method name="GetFamilyName" cname="gnome_font_get_family_name">
-        <return-type type="const-gchar*" />
+        <return-type type="const-guchar*" />
       </method>
       <method name="GetFullName" cname="gnome_font_get_full_name">
         <return-type type="guchar*" />
@@ -4659,7 +4897,7 @@
         </parameters>
       </method>
       <method name="GetName" cname="gnome_font_get_name">
-        <return-type type="const-gchar*" />
+        <return-type type="const-guchar*" />
       </method>
       <method name="GetPangoDescription" cname="gnome_font_get_pango_description">
         <return-type type="PangoFontDescription*" />
@@ -4668,7 +4906,7 @@
         </parameters>
       </method>
       <method name="GetPsName" cname="gnome_font_get_ps_name">
-        <return-type type="const-gchar*" />
+        <return-type type="const-guchar*" />
       </method>
       <method name="GetRfont" cname="gnome_font_get_rfont">
         <return-type type="GnomeRFont*" />
@@ -4680,7 +4918,7 @@
         <return-type type="gdouble" />
       </method>
       <method name="GetSpeciesName" cname="gnome_font_get_species_name">
-        <return-type type="const-gchar*" />
+        <return-type type="const-guchar*" />
       </method>
       <method name="GetType" cname="gnome_font_get_type" shared="true">
         <return-type type="GType" />
@@ -5256,6 +5494,18 @@
       </constructor>
     </object>
     <object name="PrintTransport" cname="GnomePrintTransport" parent="GObject">
+      <virtual_method name="Construct" cname="construct">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GnomePrintTransport*" name="transport" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Close" cname="close">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GnomePrintTransport*" name="transport" />
+        </parameters>
+      </virtual_method>
       <method name="Close" cname="gnome_print_transport_close">
         <return-type type="gint" />
       </method>
@@ -6367,6 +6617,13 @@
           <parameter type="GnomeFont*" name="font" />
         </parameters>
       </signal>
+      <virtual_method name="FontSet" cname="font_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomeFontSelection*" name="fontsel" />
+          <parameter type="GnomeFont*" name="font" />
+        </parameters>
+      </virtual_method>
       <method name="GetFace" cname="gnome_font_selection_get_face">
         <return-type type="GnomeFontFace*" />
       </method>
@@ -6447,6 +6704,14 @@
           <parameter type="gboolean" name="collate" />
         </parameters>
       </signal>
+      <virtual_method name="CopiesSet" cname="copies_set">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomePrintCopiesSelector*" name="gpc" />
+          <parameter type="gint" name="copies" />
+          <parameter type="gboolean" name="collate" />
+        </parameters>
+      </virtual_method>
       <method name="GetCollate" cname="gnome_print_copies_selector_get_collate">
         <return-type type="gboolean" />
       </method>
@@ -6574,6 +6839,12 @@
           <parameter type="GnomePrintUnitSelector*" name="selector" />
         </parameters>
       </signal>
+      <virtual_method name="Modified" cname="modified">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GnomePrintUnitSelector*" name="selector" />
+        </parameters>
+      </virtual_method>
       <method name="AddAdjustment" cname="gnome_print_unit_selector_add_adjustment">
         <return-type type="void" />
         <parameters>
@@ -6688,6 +6959,12 @@
     </object>
     <object name="GPAWidget" cname="GPAWidget" parent="GtkBin">
       <field cname="config" type="GnomePrintConfig*" />
+      <virtual_method name="Construct" cname="construct">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GPAWidget*" name="widget" />
+        </parameters>
+      </virtual_method>
       <method name="Construct" cname="gpa_widget_construct">
         <return-type type="gboolean" />
         <parameters>

@@ -137,6 +137,15 @@
           <parameter type="GdaParameterList*" name="params" />
         </parameters>
       </signal>
+      <virtual_method name="EventNotification" cname="event_notification">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaClient*" name="client" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GdaClientEvent" name="event" />
+          <parameter type="GdaParameterList*" name="params" />
+        </parameters>
+      </virtual_method>
       <method name="BeginTransaction" cname="gda_client_begin_transaction">
         <return-type type="gboolean" />
         <parameters>
@@ -242,6 +251,13 @@
           <parameter type="GList*" name="error_list" />
         </parameters>
       </signal>
+      <virtual_method name="Error" cname="error">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GList*" name="error_list" />
+        </parameters>
+      </virtual_method>
       <method name="AddError" cname="gda_connection_add_error">
         <return-type type="void" />
         <parameters>
@@ -440,6 +456,50 @@
           <parameter type="GdaDataModel*" name="model" />
         </parameters>
       </signal>
+      <virtual_method name="Changed" cname="changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RowUpdated" cname="row_updated">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+          <parameter type="gint" name="row" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="BeginEdit" cname="begin_edit">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="EndEdit" cname="end_edit">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetNColumns" cname="get_n_columns">
+        <return-type type="gint" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsEditable" cname="is_editable">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RemoveRow" cname="remove_row">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaDataModel*" name="model" />
+          <parameter type="const-GdaRow*" name="row" />
+        </parameters>
+      </virtual_method>
       <method name="AddDataFromXmlNode" cname="gda_data_model_add_data_from_xml_node">
         <return-type type="gboolean" />
         <parameters>
@@ -767,6 +827,21 @@
           <parameter type="GdaXmlDatabase*" name="xmldb" />
         </parameters>
       </signal>
+      <virtual_method name="ObjectSelected" cname="object_selected">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaExport*" name="exp" />
+          <parameter type="GdaConnectionSchema" name="schema" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="Finished" cname="finished">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaExport*" name="exp" />
+          <parameter type="GdaXmlDatabase*" name="xmldb" />
+        </parameters>
+      </virtual_method>
       <method name="GetConnection" cname="gda_export_get_connection">
         <return-type type="GdaConnection*" />
       </method>
@@ -843,6 +918,63 @@
     </object>
     <object name="ServerProvider" cname="GdaServerProvider" parent="GObject">
       <field cname="priv" type="GdaServerProviderPrivate*" />
+      <virtual_method name="LastConnectionGone" cname="last_connection_gone">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="OpenConnection" cname="open_connection">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GdaQuarkList*" name="params" />
+          <parameter type="const-gchar*" name="username" />
+          <parameter type="const-gchar*" name="password" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ChangeDatabase" cname="change_database">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DropDatabase" cname="drop_database">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="const-gchar*" name="name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="BeginTransaction" cname="begin_transaction">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GdaTransaction*" name="xaction" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="RollbackTransaction" cname="rollback_transaction">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GdaTransaction*" name="xaction" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetSchema" cname="get_schema">
+        <return-type type="GdaDataModel*" />
+        <parameters>
+          <parameter type="GdaServerProvider*" name="provider" />
+          <parameter type="GdaConnection*" name="cnc" />
+          <parameter type="GdaConnectionSchema" name="schema" />
+          <parameter type="GdaParameterList*" name="params" />
+        </parameters>
+      </virtual_method>
       <method name="BeginTransaction" cname="gda_server_provider_begin_transaction">
         <return-type type="gboolean" />
         <parameters>
@@ -1081,6 +1213,12 @@
           <parameter type="GdaXmlDatabase*" name="xmldb" />
         </parameters>
       </signal>
+      <virtual_method name="Changed" cname="changed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaXmlDatabase*" name="xmldb" />
+        </parameters>
+      </virtual_method>
       <method name="Changed" cname="gda_xml_database_changed">
         <return-type type="void" />
       </method>
@@ -1190,6 +1328,13 @@
           <parameter type="const-char*" name="msg" />
         </parameters>
       </signal>
+      <virtual_method name="Warning" cname="warning">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdaXmlDocument*" name="q" />
+          <parameter type="const-char*" name="msg" />
+        </parameters>
+      </virtual_method>
       <method name="Construct" cname="gda_xml_document_construct">
         <return-type type="void" />
         <parameters>
