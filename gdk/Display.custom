@@ -1,0 +1,21 @@
+// Display.custom - customizations to Gdk.Display
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_display_list_devices (IntPtr raw);
+
+		public Device[] ListDevices ()
+		{
+			IntPtr raw_ret = gdk_display_list_devices (Handle);
+			if (raw_ret == IntPtr.Zero)
+				return new Device [0];
+			GLib.List list = new GLib.List(raw_ret);
+			Device[] result = new Device [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Device;
+			return result;
+		}
+

@@ -1,0 +1,38 @@
+// Screen.custom - customizations to Gdk.Screen
+//
+// Authors: Mike Kestner  <mkestner@ximian.com>
+//
+// Copyright (c) 2004 Novell, Inc.
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_screen_get_toplevel_windows (IntPtr raw);
+
+		public Window[] ToplevelWindows
+		{
+			get {
+				IntPtr raw_ret = gdk_screen_get_toplevel_windows (Handle);
+				if (raw_ret == IntPtr.Zero)
+					return new Window [0];
+				GLib.List list = new GLib.List(raw_ret);
+				Window[] result = new Window [list.Count];
+				for (int i = 0; i < list.Count; i++)
+					result [i] = list [i] as Window;
+				return result;
+			}
+		}
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_screen_list_visuals (IntPtr raw);
+
+		public Visual[] ListVisuals ()
+		{
+			IntPtr raw_ret = gdk_screen_list_visuals (Handle);
+			if (raw_ret == IntPtr.Zero)
+				return new Visual [0];
+			GLib.List list = new GLib.List(raw_ret);
+			Visual[] result = new Visual [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Visual;
+			return result;
+		}
+

@@ -1,16 +1,46 @@
 // Gdk.Window.custom - Gdk Window class customizations
 //
 // Author: Moritz Balz <ich@mbalz.de>
+//         Mike Kestner <mkestner@ximian.com>
 //
 // (c) 2003 Moritz Balz
+// (c) 2004 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
+
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern IntPtr gdk_window_get_children(IntPtr raw);
+
+	public Window[] Children {
+		get {
+			IntPtr raw_ret = gdk_window_get_children(Handle);
+			if (raw_ret == IntPtr.Zero)
+				return new Window [0];
+			GLib.List list = new GLib.List(raw_ret);
+			Window[] result = new Window [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Window;
+			return result;
+		}
+	}
 
 	public System.Drawing.Rectangle FrameExtents {
 		get {
 			Gdk.Rectangle rect = Gdk.Rectangle.Zero;
 			gdk_window_get_frame_extents (Handle, ref rect);
 			return new System.Drawing.Rectangle (rect.X, rect.Y, rect.Width, rect.Height);
+		}
+	}
+
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_set_icon_list(IntPtr raw, IntPtr pixbufs);
+
+	public Pixbuf[] IconList {
+		set {
+			GLib.List list = new GLib.List(IntPtr.Zero);
+			foreach (Pixbuf val in value)
+				list.Append (val.Handle);
+			gdk_window_set_icon_list(Handle, list.Handle);
 		}
 	}
 
@@ -48,6 +78,22 @@
 			int x, y;
 			gdk_window_get_position (Handle, out x, out y);
 			return new System.Drawing.Point (x, y);
+		}
+	}
+
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern IntPtr gdk_window_get_toplevels();
+
+	public static Window[] Toplevels {
+		get {
+			IntPtr raw_ret = gdk_window_get_toplevels();
+			if (raw_ret == IntPtr.Zero)
+				return new Window [0];
+			GLib.List list = new GLib.List(raw_ret);
+			Window[] result = new Window [list.Count];
+			for (int i = 0; i < list.Count; i++)
+				result [i] = list [i] as Window;
+			return result;
 		}
 	}
 
