@@ -10,7 +10,8 @@ BASESOURCES = \
 	slist.c			\
 	paned.c			\
 	style.c			\
-	widget.c			
+	widget.c		\
+	canvasitem.c
 
 if ENABLE_GNOME
 libgtksharpglue_la_SOURCES = 	\

@@ -17,3 +17,8 @@ public CanvasItem (Gnome.CanvasGroup group, int type)
 	Raw = gnome_canvas_item_new (group.Handle, type, IntPtr.Zero);
 }
 
+[DllImport("gtksharpglue")]
+static extern IntPtr gtksharp_gnome_canvas_item_get_canvas (IntPtr i);
+public Canvas Canvas {
+	get { return new Gnome.Canvas (gtksharp_gnome_canvas_item_get_canvas (this.Handle)); }
+}
