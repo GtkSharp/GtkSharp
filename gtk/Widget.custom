@@ -11,8 +11,12 @@
 [DllImport("gtksharpglue")]
 static extern IntPtr gtksharp_gtk_widget_get_allocation (IntPtr style);
 
+[DllImport("gtksharpglue")]
+static extern void gtksharp_gtk_widget_set_allocation (IntPtr raw, Gdk.Rectangle rect);
+
 public Gdk.Rectangle Allocation {
 	get { return Gdk.Rectangle.New (gtksharp_gtk_widget_get_allocation (Handle)); }
+	set { gtksharp_gtk_widget_set_allocation (Handle, value); }
 }
 
 
@@ -69,6 +73,30 @@ public int Flags {
 	}
 	set {
 		gtksharp_gtk_widget_set_flags (Handle, (int) value);
+	}
+}
+
+public bool IsMapped {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.Mapped) != 0);
+	}
+}
+
+public bool IsRealized {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.Realized) != 0);
+	}
+}
+
+public bool NoWindow {
+	get {
+		return ((Flags & (int)Gtk.WidgetFlags.NoWindow) != 0);
+	}
+}
+
+public bool Drawable {
+	get {
+		return (Visible && IsMapped);
 	}
 }
 

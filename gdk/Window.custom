@@ -63,6 +63,22 @@
 			gdk_window_clear_area (Handle, rect.X, rect.Y, rect.Width, rect.Height);
 	}
 
+	[DllImport ("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_get_user_data (IntPtr raw, out IntPtr data);
+
+	[DllImport("libgdk-win32-2.0-0.dll")]
+	static extern void gdk_window_set_user_data(IntPtr raw, IntPtr user_data);
+	public IntPtr UserData {
+		get {
+			IntPtr data;
+			gdk_window_get_user_data (Handle, out data);
+			return data;
+		}
+		set {
+			gdk_window_set_user_data(Handle, value);
+		}
+	} 
+
 #if MANLY_ENOUGH_TO_INCLUDE
 	public Cairo.Graphics CairoGraphics (out int offset_x, out int offset_y)
 	{

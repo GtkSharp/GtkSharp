@@ -75,35 +75,6 @@
 		</remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public void GetSize (Gtk.Widget widget, Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="x_offset" Type="System.Int32" />
-        <Parameter Name="y_offset" Type="System.Int32" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Obtains the <paramref name="width" /> and <paramref name="height" /> needed to render the cell.</summary>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="x_offset">an object of type <see cref="T:System.Int32" /></param>
-        <param name="y_offset">an object of type <see cref="T:System.Int32" /></param>
-        <param name="width">an object of type <see cref="T:System.Int32" /></param>
-        <param name="height">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>
-		  Used by view widgets to determine the appropriate size for the <paramref name="cell_area" /> passed to gtk_cell_renderer_render().
-		  If <paramref name="cell_area" /> is not <see langword="null" />, fills in the x and y offsets (if set) of the cell relative to this location.
-		  Please note that the values set in <paramref name="width" /> and <paramref name="height" />, as well as those in <paramref name="x_offset" /> and <paramref name="y_offset" /> are inclusive of the xpad and ypad properties.
-		</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="SetFixedSize">
       <MemberSignature Language="C#" Value="public void SetFixedSize (int width, int height);" />
       <MemberType>Method</MemberType>
@@ -135,32 +106,6 @@
         <summary>To be added</summary>
         <param name="width">an object of type <see cref="T:System.Int32" /></param>
         <param name="height">an object of type <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StartEditing">
-      <MemberSignature Language="C#" Value="public Gtk.CellEditable StartEditing (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.CellEditable</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="evnt" Type="Gdk.Event" />
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="path" Type="System.String" />
-        <Parameter Name="background_area" Type="Gdk.Rectangle" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
-        <Parameter Name="flags" Type="Gtk.CellRendererState" />
-      </Parameters>
-      <Docs>
-        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
-        <param name="evnt">an object of type <see cref="T:Gdk.Event" /></param>
-        <param name="widget">an object of type <see cref="T:Gtk.Widget" /></param>
-        <param name="path">an object of type <see cref="T:System.String" /></param>
-        <param name="background_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="cell_area">an object of type <see cref="T:Gdk.Rectangle" /></param>
-        <param name="flags">an object of type <see cref="T:Gtk.CellRendererState" /></param>
-        <returns>an object of type <see cref="T:Gtk.CellEditable" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -455,33 +400,59 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnGetSize">
-      <MemberSignature Language="C#" Value="protected virtual void OnGetSize (Gtk.Widget widget, Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected CellRenderer ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Gtk.CellRenderer" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OverrideStartEditing">
+      <MemberSignature Language="C#" Value="protected static void OverrideStartEditing (GLib.GType gtype);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="gtype" Type="GLib.GType" />
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSize">
+      <MemberSignature Language="C#" Value="public virtual void GetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle&amp;" RefType="ref" />
         <Parameter Name="x_offset" Type="System.Int32&amp;" RefType="out" />
         <Parameter Name="y_offset" Type="System.Int32&amp;" RefType="out" />
         <Parameter Name="width" Type="System.Int32&amp;" RefType="out" />
         <Parameter Name="height" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obtains the <paramref name="width" /> and <paramref name="height" /> needed to render the cell.</summary>
         <param name="widget">a <see cref="T:Gtk.Widget" /></param>
         <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
         <param name="x_offset">a <see cref="T:System.Int32" /></param>
         <param name="y_offset">a <see cref="T:System.Int32" /></param>
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
-        <remarks>To be added</remarks>
+        <remarks>Used by view widgets to determine the appropriate size for the <paramref name="cell_area" /> passed to gtk_cell_renderer_render(). If <paramref name="cell_area" /> is not <see langword="null" />, fills in the x and y offsets (if set) of the cell relative to this location. Please note that the values set in <paramref name="width" /> and <paramref name="height" />, as well as those in <paramref name="x_offset" /> and <paramref name="y_offset" /> are inclusive of the xpad and ypad properties.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="OnRender">
-      <MemberSignature Language="C#" Value="protected virtual void OnRender (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);" />
+    <Member MemberName="Render">
+      <MemberSignature Language="C#" Value="protected virtual void Render (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -505,25 +476,29 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor" Deprecated="true">
-      <MemberSignature Language="C#" Value="public CellRenderer ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
+    <Member MemberName="StartEditing">
+      <MemberSignature Language="C#" Value="public virtual Gtk.CellEditable StartEditing (Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.CellEditable</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evnt" Type="Gdk.Event" />
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="background_area" Type="Gdk.Rectangle" />
+        <Parameter Name="cell_area" Type="Gdk.Rectangle" />
+        <Parameter Name="flags" Type="Gtk.CellRendererState" />
+      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.CellRenderer" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected CellRenderer ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.CellRenderer" /></returns>
+        <summary>Passes an activate event to the <see cref="T:Gtk.CellRenderer" /> for possible processing.</summary>
+        <param name="evnt">a <see cref="T:Gdk.Event" /></param>
+        <param name="widget">a <see cref="T:Gtk.Widget" /></param>
+        <param name="path">a <see cref="T:System.String" /></param>
+        <param name="background_area">a <see cref="T:Gdk.Rectangle" /></param>
+        <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
+        <param name="flags">a <see cref="T:System.Int32" /></param>
+        <returns>a <see cref="T:Gtk.CellEditable" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
