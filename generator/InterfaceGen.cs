@@ -51,7 +51,8 @@ namespace GtkSharp.Generation {
 				if (sig.Validate ()) {
 					sig.GenerateDecl (sw);
 					sig.GenEventHandler (gen_info);
-				}
+				} else
+					Console.WriteLine ("of interface " + QualifiedName);
 			}
 
 			foreach (Method method in methods.Values) {
@@ -60,6 +61,8 @@ namespace GtkSharp.Generation {
 
 				if (method.Validate ())
 					method.GenerateDecl (sw);
+				else
+					Console.WriteLine ("of interface " + QualifiedName);
 			}
 
 			AppendCustom (sw, gen_info.CustomDir);

@@ -110,6 +110,7 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
+			AddType (new GStringGen ());
 			AddType (new GObjectGen ());
 		}
 		

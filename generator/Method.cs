@@ -145,7 +145,7 @@ namespace GtkSharp.Generation {
 
 			XmlElement ret_elem = elem["return-type"];
 			if (ret_elem == null) {
-				Console.Write("Missing return type in method ");
+				Console.Write("Missing return type in method " + Name + " ");
 				Statistics.ThrottledCount++;
 				return false;
 			}
@@ -190,7 +190,7 @@ namespace GtkSharp.Generation {
 				return false;
 
 			if (m_ret == "" || s_ret == "") {
-				Console.Write("rettype: " + rettype + " method ");
+				Console.Write("rettype: " + rettype + " in method " + Name + " ");
 				Statistics.ThrottledCount++;
 				return false;
 			}
