@@ -55,6 +55,7 @@ gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
 
 update:
 	for i in $(UPDATE_DIRS); do                    		\
+		cp ../$$i/*.dll updater;				\
 		$(UPDATER) ../$$i/*.dll -o ./en || exit 1;	\
         done
 
