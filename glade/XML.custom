@@ -39,9 +39,6 @@
 		[DllImport("gladesharpglue")]
 		static extern IntPtr gtksharp_glade_xml_get_filename (IntPtr raw);
 
-		/// <summary>Filename Property</summary>
-		/// <remarks>Gets the filename used to create this GladeXML object
-		/// </remarks>
 		public string Filename {
 			get {
 				string ret;
@@ -59,8 +56,6 @@
 			}
 		}
 
-		/// <summary>Indexer of widgets</summary>
-		/// <remarks>Acts like GetWidget</remarks>
 		public Gtk.Widget this [string name] {
 			get {
 				return GetWidget (name);
@@ -94,9 +89,6 @@
 		[DllImport("libglade-2.0-0.dll")]
 		static extern IntPtr glade_xml_new_from_buffer(byte[] buffer, int size, string root, string domain);
 
-		/// <summary>Creates a Glade.XML object from a Stream</summary>
-		/// <remarks>Reads the contents of the stream and parses it. It must be in 
-		/// correct Glade format</remarks>
 		public XML (System.IO.Stream s, string root, string domain) : base (IntPtr.Zero)
 		{
 			if (GetType() != typeof (XML))
@@ -111,15 +103,14 @@
 			Raw = glade_xml_new_from_buffer(buffer, size, root, domain);
 		}
 
-		/// <summary>Creates a Glade.XML object from a resource</summary>
-		/// <remarks>Reads the contents of the resource in the
-		/// given assembly and parses it. If the assembly is null,
-		/// the current assembly will be used. It must be in
-		/// correct Glade format</remarks>
+		public XML (string resource_name, string root) : this (System.Reflection.Assembly.GetEntryAssembly (), resource_name, root, null)
+		{
+		}
+
 		public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain) : base (IntPtr.Zero)
 		{
 			if (GetType() != typeof (XML))
-				throw new InvalidOperationException ("Can't chain to this constructor from subclasses.");
+				throw new InvalidOperationException ("Cannot chain to this constructor from subclasses.");
 
 			if (assembly == null)
 				assembly = System.Reflection.Assembly.GetCallingAssembly ();
@@ -137,10 +128,6 @@
 		}
 
 		/* signal autoconnection using reflection */
-
-		/// <summary>Automatically connect signals</summary>
-		/// <remarks>Connects the signals defined in the glade file with handler methods
-		///     provided by the given object.</remarks>
 		public void Autoconnect (object handler)
 		{
 			BindFields (handler);
@@ -148,9 +135,6 @@
 			sc.Autoconnect ();
 		}
 		
-		/// <summary>Automatically connect signals</summary>
-		/// <remarks>Connects the signals defined in the glade file with static handler 
-		///     methods provided by the given type.</remarks>
 		public void Autoconnect (Type handler_class)
 		{
 			BindFields (handler_class);
