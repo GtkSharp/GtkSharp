@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2002 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -45,22 +45,67 @@ namespace GtkSharp.Generation {
 		public String MarshalType {
 			get
 			{
-				return "";
+				return QualifiedName;
 			}
 		}
 		
 		public String CallByName (String var_name)
 		{
-			return "";
+			return var_name;
 		}
 		
 		public String FromNative(String var)
 		{
-			return "";
+			return var;
 		}
-
+		
 		public void Generate (SymbolTable table)
 		{
+			XmlElement ret_elem = elem["return-type"];
+			if (ret_elem == null) {
+				Console.WriteLine("Missing return type in callback " + CName);
+				Statistics.ThrottledCount++;
+				return;
+			}
+			
+			string rettype = ret_elem.GetAttribute("type");
+			string s_ret = table.GetCSType(rettype);
+			if (s_ret == "") {
+				Console.WriteLine("rettype: " + rettype + " in callback " + CName);
+				Statistics.ThrottledCount++;
+				return;
+			}
+			
+			string parmstr = "";
+			XmlNode params_elem = elem["parameters"];
+			if (params_elem != null) {
+				
+				bool need_comma = false;
+				foreach (XmlNode node in params_elem.ChildNodes) {
+					if (node.Name != "parameter") {
+						continue;
+					}
+					
+					XmlElement param = (XmlElement) node;
+					string type = param.GetAttribute("type");
+					string cs_type = table.GetCSType(type);
+					string name = param.GetAttribute("name");
+					name = MangleName(name);
+
+					if ((cs_type == "") || (name == "")) {
+						Console.WriteLine("parmtype: " + type + " in callback " + CName);
+						Statistics.ThrottledCount++;
+						break;
+					}
+
+					if (need_comma)
+						parmstr += ", ";
+
+					parmstr += (cs_type + " " + name);
+					need_comma = true;
+				}
+			}
+				
 			char sep = Path.DirectorySeparatorChar;
 			string dir = ".." + sep + ns.ToLower() + sep + "generated";
 			if (!Directory.Exists(dir)) {
@@ -72,31 +117,40 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = new StreamWriter (stream);
 			
 			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001 Mike Kestner");
+			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
 			sw.WriteLine ();
 			
 			sw.WriteLine ("namespace " + ns + " {");
 			sw.WriteLine ();
-			sw.WriteLine ("\tusing System;");
+				
+			sw.WriteLine ("\tpublic delegate " + s_ret + " " + Name + "(" + parmstr + ");");
+
 			sw.WriteLine ();
-			
-			sw.WriteLine ("\tpublic delegate void " + Name + "();");
-			sw.WriteLine ();
-			
-			foreach (XmlNode node in elem.ChildNodes) {
-				if (node.Name != "member") {
-					continue;
-				}
-				//FIXME: Generate the method.
-				XmlElement member = (XmlElement) node;
-			}
-			
 			sw.WriteLine ("}");
+			
 			sw.Flush();
 			sw.Close();
 			Statistics.CBCount++;
 		}
 		
+
+		public string MangleName(string name)
+		{
+			switch (name) {
+			case "string":
+				name = "str1ng";
+				break;
+			case "event":
+				name = "evnt";
+				break;
+			case "object":
+				name = "objekt";
+				break;
+			default:
+				break;
+			}
+			return name;
+		}
 	}
 }
 

@@ -25,8 +25,8 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("glong", "long");
 			simple_types.Add ("gshort", "short");
 			simple_types.Add ("guint32", "uint");
-			simple_types.Add ("const-gchar", "String");
-			simple_types.Add ("gchar", "String");
+			simple_types.Add ("const-gchar", "string");
+			simple_types.Add ("gchar", "string");
 			simple_types.Add ("GObject", "GLib.Object");
 			simple_types.Add ("gfloat", "float");
 			simple_types.Add ("gdouble", "double");
@@ -36,7 +36,7 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("gint32", "int");
 			simple_types.Add ("guint16", "ushort");
 			simple_types.Add ("guint1", "bool");
-			simple_types.Add ("gpointer", "IntPtr");
+			simple_types.Add ("gpointer", "System.IntPtr");
 			simple_types.Add ("guchar", "byte");
 			simple_types.Add ("GValue", "GLib.Value");
 			simple_types.Add ("GtkType", "int");
@@ -47,23 +47,23 @@ namespace GtkSharp.Generation {
 			simple_types.Add ("char", "char");
 			simple_types.Add ("double", "double");
 			simple_types.Add ("float", "float");
-			simple_types.Add ("gunichar", "String");
+			simple_types.Add ("gunichar", "string");
 			simple_types.Add ("uint1", "bool");
-			simple_types.Add ("GPtrArray", "IntPtr[]");
+			simple_types.Add ("GPtrArray", "System.IntPtr[]");
 			simple_types.Add ("GType", "int");
 			
 			// FIXME: These ought to be handled properly.
-			simple_types.Add ("GList", "IntPtr");
-			simple_types.Add ("GMemChunk", "IntPtr");
-			simple_types.Add ("GTimeVal", "IntPtr");
-			simple_types.Add ("GClosure", "IntPtr");
-			simple_types.Add ("GArray", "IntPtr");
-			simple_types.Add ("GData", "IntPtr");
+			simple_types.Add ("GList", "System.IntPtr");
+			simple_types.Add ("GMemChunk", "System.IntPtr");
+			simple_types.Add ("GTimeVal", "System.IntPtr");
+			simple_types.Add ("GClosure", "System.IntPtr");
+			simple_types.Add ("GArray", "System.IntPtr");
+			simple_types.Add ("GData", "System.IntPtr");
 			simple_types.Add ("GTypeModule", "GLib.Object");
 			simple_types.Add ("GSList", "GLib.SList");
-			simple_types.Add ("GHashTable", "IntPtr");
-			simple_types.Add ("va_list", "IntPtr");
-			simple_types.Add ("GParamSpec", "IntPtr");
+			simple_types.Add ("GHashTable", "System.IntPtr");
+			simple_types.Add ("va_list", "System.IntPtr");
+			simple_types.Add ("GParamSpec", "System.IntPtr");
 			
 			dlls = new Hashtable();
 			dlls.Add("Pango", "pango-1.0");
@@ -90,14 +90,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		private String Trim(String type)
+		private string Trim(string type)
 		{
-			String trim_type = type.TrimEnd('*');
+			string trim_type = type.TrimEnd('*');
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
 		}
 
-		public String FromNative(String c_type, String val)
+		public string FromNative(string c_type, string val)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -110,11 +110,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String GetCSType(String c_type)
+		public string GetCSType(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
-				return (String) simple_types[c_type];
+				return (string) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.QualifiedName;
@@ -123,11 +123,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String GetName(String c_type)
+		public string GetName(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
-				String stype = (String) simple_types[c_type];
+				string stype = (string) simple_types[c_type];
 				int dotidx = stype.IndexOf(".");
 				if (dotidx == -1) {
 					return stype;
@@ -142,16 +142,16 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String GetDllName(String ns)
+		public string GetDllName(string ns)
 		{
-			return (String) dlls[ns];
+			return (string) dlls[ns];
 		}
 		
-		public String GetMarshalType(String c_type)
+		public string GetMarshalType(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
-				return (String) simple_types[c_type];
+				return (string) simple_types[c_type];
 			} else if (complex_types.ContainsKey(c_type)) {
 				IGeneratable gen = (IGeneratable) complex_types[c_type];
 				return gen.MarshalType;
@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public String CallByName(String c_type, String var_name)
+		public string CallByName(string c_type, string var_name)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -173,7 +173,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public bool IsBoxed(String c_type)
+		public bool IsBoxed(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
@@ -185,7 +185,7 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public bool IsInterface(String c_type)
+		public bool IsInterface(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
@@ -197,7 +197,7 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public bool IsObject(String c_type)
+		public bool IsObject(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
