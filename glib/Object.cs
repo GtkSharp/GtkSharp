@@ -104,7 +104,7 @@ namespace GLib {
 
 		public static Object GetObject(IntPtr o)
 		{
-			Object obj = (Object)Objects[(int)o];
+			Object obj = (Object)Objects[o];
 			if (obj != null) return obj;
 			return GtkSharp.ObjectManager.CreateObject(o); 
 		}
