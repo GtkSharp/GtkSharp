@@ -1,0 +1,20 @@
+MCS=mcs
+DESTDIR=
+
+@ENABLE_GDA_TRUE@ all: linux
+@ENABLE_GDA_FALSE@ all: 
+
+windows:
+	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:gda-sharp.dll /recurse:*.cs
+
+linux: gda-sharp.dll
+
+gda-sharp.dll: generated/*.cs
+	$(MCS) --unsafe --target library -L ../glib -r glib-sharp.dll -o gda-sharp.dll --recurse '*.cs'
+
+clean:
+	rm -f *.dll
+	rm -rf generated
+
+install: all
+@ENABLE_GDA_TRUE@	cp gda-sharp.dll $(DESTDIR)@prefix@/lib
