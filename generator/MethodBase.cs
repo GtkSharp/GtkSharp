@@ -118,7 +118,7 @@ namespace GtkSharp.Generation {
 		public virtual bool Validate ()
 		{
 			if (!parms.Validate ()) {
-				Console.Write("in ctor ");
+				Console.Write("in " + CName + " ");
 				Statistics.ThrottledCount++;
 				return false;
 			}
