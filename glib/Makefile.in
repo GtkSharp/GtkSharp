@@ -10,8 +10,8 @@ linux: glib-sharp.dll
 glib-sharp.dll: *.cs generated/*.cs
 	$(MCS) --unsafe --target library -o glib-sharp.dll --recurse *.cs
 
-unix:
-	@echo "'make unix' is broken for now."
+clean:
+	rm -f *.dll
 
 install: all
 	cp glib-sharp.dll @prefix@/lib || exit 1

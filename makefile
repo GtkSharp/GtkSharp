@@ -18,6 +18,11 @@ linux:
 		(cd $$i; MCS="$(MCS)" make) || exit 1;\
 	done;
 
+clean:
+	for i in $(DIRS); do				\
+		(cd $$i; make clean) || exit 1;	\
+	done;
+
 install:
 	for i in $(DIRS); do				\
 		(cd $$i; make install) || exit 1;	\

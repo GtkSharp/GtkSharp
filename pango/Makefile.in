@@ -8,10 +8,10 @@ windows:
 linux: pango-sharp.dll
 
 pango-sharp.dll: generated/*.cs
-	$(MCS) --unsafe --target library -r ../glib/glib-sharp.dll -o pango-sharp.dll --recurse *.cs
+	$(MCS) --unsafe --target library -L ../glib -r glib-sharp -o pango-sharp.dll --recurse *.cs
 
-unix:
-	@echo "'make unix' is broken for now."
+clean:
+	rm -f *.dll
 
 install: all
 	cp pango-sharp.dll @prefix@/lib

@@ -8,11 +8,10 @@ windows:
 linux: atk-sharp.dll
 
 atk-sharp.dll: generated/*.cs
-	$(MCS) --unsafe --target library -r ../glib/glib-sharp.dll -r ../pango/pango-sharp.dll -o atk-sharp.dll --recurse *.cs
+	$(MCS) --unsafe --target library -L ../glib -L ../pango -r glib-sharp -r pango-sharp -o atk-sharp.dll --recurse *.cs
 
-unix:
-	@echo "'make unix' is broken for now."
-	$(CSC) --unsafe --target=library --r=../glib/glib-sharp.dll --r=../pango/pango-sharp.dll --out=atk-sharp.dll --recurse=*.cs
+clean:
+	rm -f *.dll
 
 install: all
 	cp atk-sharp.dll @prefix@/lib
