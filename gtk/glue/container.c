@@ -58,20 +58,6 @@ gtksharp_container_invoke_gtk_callback (GtkCallback cb, GtkWidget *widget, gpoin
 	cb (widget, data);
 }
 
-GType gtksharp_container_base_child_type (GtkContainer *container);
-
-GType
-gtksharp_container_base_child_type (GtkContainer *container)
-{
-	GtkContainerClass *parent = g_type_class_peek_parent (G_OBJECT_GET_CLASS (container));
-	GType slot;
-	if (parent->child_type)
-		slot = (*parent->child_type) (container);
-	else
-		slot = G_TYPE_NONE;
-	return slot;
-}
-
 void gtksharp_container_override_child_type (GType gtype, gpointer cb);
 
 void
