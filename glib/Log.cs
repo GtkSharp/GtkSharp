@@ -40,7 +40,7 @@ namespace GLib {
 		All                    = 255,
 
 		FlagMask               = 3,
-		LevelMask              = (uint) ~3
+		LevelMask              = (uint) 0xFFFFFFFC
 	}
 
 	public class Log {
