@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -194,3 +195,139 @@ public class GtkDbClient {
 		Application.Quit ();
 	}
 }
+
+class DbData
+{
+	private uint id;
+	private string name;
+	private string address;
+	
+	private DbData () {}
+
+	public DbData (uint id, string name, string address)
+	{
+		this.id = id;
+		this.name = name;
+		this.address = address;
+	}
+
+	public uint Id
+	{
+		get { return id; }
+	}
+
+	public string Name
+	{
+		get { return name; }
+	}
+
+	public string Address
+	{
+		get { return address; }
+	}
+}
+
+class IdConnection : IDisposable
+{
+	private SqlConnection cnc;
+	private bool disposed;
+
+	public IdConnection ()
+	{
+		cnc = new SqlConnection ();
+		string connectionString = "hostaddr=127.0.0.1;" +
+					  "user=monotest;" +
+					  "password=monotest;" +
+					  "dbname=monotest";
+						  
+		cnc.ConnectionString = connectionString;
+		try {
+			cnc.Open ();
+		} catch (Exception){
+			cnc = null;
+			throw;
+		}
+	}
+
+	public void Insert (uint id, string name, string address)
+	{
+		string insertCmd = String.Format ("INSERT INTO customers VALUES ({0}, '{1}', '{2}')",
+						   id, name.Trim (), address.Trim ());
+		IDbCommand insertCommand = cnc.CreateCommand();
+		insertCommand.CommandText = insertCmd;
+		insertCommand.ExecuteNonQuery ();
+	}
+
+	public void Delete (int id)
+	{
+		string deleteCmd = String.Format ("DELETE FROM customers WHERE id = {0}", id);
+		IDbCommand deleteCommand = cnc.CreateCommand();
+		deleteCommand.CommandText = deleteCmd;
+		deleteCommand.ExecuteNonQuery ();
+	}
+
+	public bool Update (int id, string name, string address)
+	{
+		string updateCmd = String.Format ("UPDATE customers SET name = '{1}', address = '{2}' WHERE id = {0}",
+						   id, name.Trim (), address.Trim ());
+		IDbCommand updateCommand = cnc.CreateCommand();
+		updateCommand.CommandText = updateCmd;
+		bool updated = false;
+		return (updateCommand.ExecuteNonQuery () != 0);
+	}
+
+	public ArrayList SelectAll ()
+	{
+		IDbCommand selectCommand = cnc.CreateCommand();
+		string selectCmd = "SELECT id, name, address FROM customers ORDER by id";
+		selectCommand.CommandText = selectCmd;
+		IDataReader reader = selectCommand.ExecuteReader ();
+		return FillDataList (reader);
+	}
+
+	public DbData Select (int id)
+	{
+		IDbCommand selectCommand = cnc.CreateCommand();
+		string selectCmd = "SELECT id, name, address FROM customers WHERE id = " + id;
+		selectCommand.CommandText = selectCmd;
+		IDataReader reader = selectCommand.ExecuteReader ();
+		ArrayList list = FillDataList (reader);
+		return (DbData) list [0];
+	}
+
+	private ArrayList FillDataList (IDataReader reader)
+	{
+		ArrayList list = new ArrayList ();
+		while (reader.Read ()) {
+			DbData data = new DbData ((uint) reader.GetValue (0),
+						  (string) reader.GetValue (1),
+						  (string) reader.GetValue (2));
+			list.Add (data);
+		}
+		return list;
+	}
+
+	protected virtual void Dispose (bool exp)
+	{
+		if (!disposed && cnc != null) {
+			disposed = true;
+			try {
+				cnc.Close ();
+			} catch (Exception) {
+			}
+			cnc = null;
+		}
+	}
+
+	public void Dispose ()
+	{
+		Dispose (true);
+		GC.SuppressFinalize (this);
+	}
+
+	~IdConnection ()
+	{
+		Dispose (false);
+	}
+}
+
