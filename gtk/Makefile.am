@@ -20,6 +20,7 @@ sources = 				\
 	NodeStore.cs			\
 	NodeView.cs			\
 	RadioActionEntry.cs		\
+	StockManager.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
 	TreeNodeAttribute.cs		\
