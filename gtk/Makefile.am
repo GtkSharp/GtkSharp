@@ -44,6 +44,7 @@ customs = 				\
 	FileSelection.custom		\
 	Frame.custom			\
 	HBox.custom			\
+	HScale.custom			\
 	IconFactory.custom		\
 	IconSet.custom			\
 	ImageMenuItem.custom		\
@@ -77,6 +78,7 @@ customs = 				\
 	TreeViewColumn.custom		\
 	TreeView.custom			\
 	VBox.custom			\
+	VScale.custom			\
 	Viewport.custom			\
 	Widget.custom			\
 	Window.custom
