@@ -24,7 +24,7 @@ VTE_TARGETS=
 VTE_ASSEMBLY=
 endif
 
-TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
+TARGETS = custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe treeviewdemo.exe managedtreeviewdemo.exe testdnd.exe drawing-sample.exe $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS)
 
 assemblies=../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll $(GNOME_ASSEMBLY) $(GLADE_ASSEMBLY) $(VTE_ASSEMBLY)
 references=$(addprefix -r , $(assemblies))
@@ -81,13 +81,16 @@ cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
 	$(CSC) -out:cairo-sample.exe $(references) -r:Mono.Cairo $(srcdir)/CairoSample.cs
 
 testdnd.exe: $(srcdir)/TestDnd.cs $(assemblies)
-	$(CSC) -g --unsafe -o testdnd.exe $(references) $(srcdir)/TestDnd.cs
+	$(CSC) -debug+ --unsafe -out:testdnd.exe $(references) $(srcdir)/TestDnd.cs
 
 vte-example.exe: $(srcdir)/VteTest.cs $(assemblies)
-	$(CSC) -g --unsafe -o vte-example.exe $(references) $(srcdir)/VteTest.cs
+	$(CSC) -debug+ --unsafe -out:vte-example.exe $(references) $(srcdir)/VteTest.cs
 
 custom-cellrenderer.exe: $(srcdir)/CustomCellRenderer.cs $(assemblies)
-	$(CSC) -g -o custom-cellrenderer.exe $(references) $(srcdir)/CustomCellRenderer.cs
+	$(CSC) -debug+ -out:custom-cellrenderer.exe $(references) $(srcdir)/CustomCellRenderer.cs
+
+drawing-sample.exe: $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs $(assemblies)
+	$(CSC) -debug+ -out:drawing-sample.exe $(references) $(srcdir)/DrawingSample.cs $(srcdir)/sysdraw.cs -r:System.Drawing
 
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
@@ -109,4 +112,7 @@ EXTRA_DIST = 				\
 	CairoSample.cs			\
 	TestDnd.cs			\
 	VteTest.cs			\
-	CustomCellRenderer.cs
+	CustomCellRenderer.cs		\
+	DrawingSample.cs		\
+	sysdraw.cs			\
+	drawing-sample.exe.config
