@@ -1,22 +1,36 @@
-MCS=mcs
-DESTDIR=
-prefix=@prefix@
+APIS=           gda-api.xml
 
-@ENABLE_GDA_TRUE@ all: linux
+RUNTIME=mono
+MCS=mcs
+ASSEMBLY=gda-sharp.dll
+
+@ENABLE_GDA_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GDA_FALSE@ all: 
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /out:gda-sharp.dll /recurse:*.cs
+all: $(ASSEMBLY)
 
-linux: gda-sharp.dll
+generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe 		\
+	--generate $(APIS) --outdir=generated --customdir=.	\
+	--assembly-name=gda-sharp && touch generated-stamp
 
-gda-sharp.dll: Application.cs generated/*.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library -L ../glib -r glib-sharp.dll -o gda-sharp.dll --recurse '*.cs'
+$(ASSEMBLY): generated-stamp *.cs
+	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r ../glib/glib-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:
-	rm -f *.dll
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
+
 install: all
-@ENABLE_GDA_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
-@ENABLE_GDA_TRUE@	cp gda-sharp.dll $(DESTDIR)$(prefix)/lib
+@ENABLE_GDA_TRUE@	../mkinstalldirs $(libdir) &&		\
+@ENABLE_GDA_TRUE@	for i in $(APIS); do                    \
+@ENABLE_GDA_TRUE@		cp $$i $(apidir) || true;       \
+@ENABLE_GDA_TRUE@	done && 				\
+@ENABLE_GDA_TRUE@	cp $(ASSEMBLY) $(libdir)

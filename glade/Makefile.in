@@ -1,22 +1,44 @@
-MCS=mcs
-DESTDIR=
-prefix=@prefix@
+APIS=           glade-api.xml
 
-@ENABLE_GLADE_TRUE@ all: linux
+INCLUDE_APIS = 	../atk/atk-api.xml 	\
+		../pango/pango-api.xml 	\
+		../gdk/gdk-api.xml 	\
+		../gdk/gdk-symbols.xml	\
+		../gtk/gtk-api.xml	\
+		../gtk/gtk-symbols.xml
+
+RUNTIME=mono
+MCS=mcs
+ASSEMBLY=glade-sharp.dll
+
+@ENABLE_GLADE_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GLADE_FALSE@ all: 
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /out:glade-sharp.dll /recurse:*.cs
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
+	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
+	--assembly-name=art-sharp && touch generated-stamp
 
-linux: glade-sharp.dll
-
-glade-sharp.dll: *.cs generated/*.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o glade-sharp.dll --recurse '*.cs'
+$(ASSEMBLY): *.cs generated-stamp
+	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r System.Drawing -r ../glib/glib-sharp.dll 		\
+	-r ../pango/pango-sharp.dll -r ../atk/atk-sharp.dll	\
+	-r ../gdk/gdk-sharp.dll -r ../gtk/gtk-sharp.dll 	\
+	-o $(ASSEMBLY) --recurse '*.cs'
 
 clean:
-	rm -f *.dll
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
+
 install: all
-@ENABLE_GLADE_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
-@ENABLE_GLADE_TRUE@	cp glade-sharp.dll $(DESTDIR)$(prefix)/lib
+@ENABLE_GLADE_TRUE@	../mkinstalldirs $(libdir) &&		\
+@ENABLE_GLADE_TRUE@	for i in $(APIS); do                    \
+@ENABLE_GLADE_TRUE@		cp $$i $(apidir) || true;       \
+@ENABLE_GLADE_TRUE@	done && 				\
+@ENABLE_GLADE_TRUE@	cp $(ASSEMBLY) $(libdir)

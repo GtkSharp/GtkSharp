@@ -1,25 +1,34 @@
-INCLUDE_APIS = \
-	../api/atk-api.xml \
-	../api/pango-api.xml \
-	../api/gdk-api.xml \
-	../api/gdk-symbols.xml \
-	../api/gtk-symbols.xml \
-	../api/gtk-api.xml \
-	../api/gnome-api.xml
+APIS=           gtkhtml-api.xml
+
+INCLUDE_APIS = 	../atk/atk-api.xml	\
+		../pango/pango-api.xml 	\
+		../gdk/gdk-api.xml 	\
+		../gdk/gdk-symbols.xml 	\
+		../gtk/gtk-symbols.xml 	\
+		../gtk/gtk-api.xml 	\
+		../gnome/gnome-api.xml
 
 RUNTIME=mono 
+MCS=mcs
+ASSEMBLY=gtkhtml-sharp.dll
 
-all: gtkhtml-sharp.dll
+all: $(ASSEMBLY)
 
 generated-stamp: gtkhtml-api.xml *.custom ../generator/gapi_codegen.exe
-	$(RUNTIME) ../generator/gapi_codegen.exe --generate gtkhtml-api.xml --include $(INCLUDE_APIS) --outdir=generated --customdir=. --assembly-name=gtkhtml-sharp && touch generated-stamp
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS)	\
+	--include $(INCLUDE_APIS) --outdir=generated --customdir=. 	\
+	--assembly-name=gtkhtml-sharp && touch generated-stamp
 
-gtkhtml-sharp.dll: generated-stamp
-	 $(MCS) --unsafe -nowarn:0660,0661 --target library -L ../glib -L ../pango -L ../atk -L ../gdk -L ../gtk -L ../art -L ../gnome -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -r art-sharp.dll -r gnome-sharp.dll -o gtkhtml-sharp.dll --recurse '*.cs'
+$(ASSEMBLY): generated-stamp
+	 $(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r ../glib/glib-sharp.dll -r ../pango/pango-sharp.dll 	\
+	-r ../atk/atk-sharp.dll -r ../gdk/gdk-sharp.dll 	\
+	-r ../gtk/gtk-sharp.dll -r ../art/art-sharp.dll 	\
+	-r ../gnome/gnome-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:
 	rm -f generated-stamp
-	rm -f gtkhtml-sharp.dll
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
 prefix=@prefix@
@@ -28,6 +37,8 @@ apidir=$(DESTDIR)$(prefix)/share/gapi
 libdir=$(DESTDIR)$(prefix)/lib
 
 install: all
-	../mkinstalldirs $(apidir) && \
-	cp gtkhtml-api.xml $(apidir) && \
-	cp gtkhtml-sharp.dll $(libdir)
+	../mkinstalldirs $(libdir) &&		\
+	for i in $(APIS); do                    \
+		cp $$i $(apidir) || true;       \
+	done && 				\
+	cp $(ASSEMBLY) $(libdir)

@@ -1,22 +1,40 @@
+APIS=           gtk-api.xml gtk-symbols.xml
+
+INCLUDE_APIS = 	../atk/atk-api.xml 	\
+		../pango/pango-api.xml 	\
+		../gdk/gdk-api.xml 	\
+		../gdk/gdk-symbols.xml
+
+RUNTIME=mono
 MCS=mcs
-DESTDIR=
-prefix=@prefix@
+ASSEMBLY=gtk-sharp.dll
 
-all: linux
+all: $(ASSEMBLY)
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gdk/gdk-imaging-sharp.dll /out:gtk-sharp.dll /recurse:*.cs
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
+	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
+	--assembly-name=gtk-sharp && touch generated-stamp
 
-linux: gtk-sharp.dll
-
-gtk-sharp.dll: *.cs generated/*.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../gdk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r gdk-sharp.dll -o gtk-sharp.dll --recurse '*.cs'
+$(ASSEMBLY): *.cs generated-stamp
+	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r System.Drawing -r ../glib/glib-sharp.dll 		\
+	-r ../pango/pango-sharp.dll -r ../atk/atk-sharp.dll	\
+	-r ../gdk/gdk-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:
-	rm -f *.dll
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
-install: all
-	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
-	cp gtk-sharp.dll $(DESTDIR)$(prefix)/lib
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
 
+install: all
+	../mkinstalldirs $(libdir) &&		\
+	for i in $(APIS); do                    \
+		cp $$i $(apidir) || true;       \
+	done && 				\
+	cp $(ASSEMBLY) $(libdir)

@@ -1,23 +1,45 @@
-MCS=mcs
-DESTDIR=
-prefix=@prefix@
+APIS=           gnome-api.xml
 
-@ENABLE_GNOME_TRUE@ all: linux
+INCLUDE_APIS = 	../atk/atk-api.xml 	\
+		../pango/pango-api.xml 	\
+		../art/art-api.xml	\
+		../gdk/gdk-api.xml 	\
+		../gdk/gdk-symbols.xml	\
+		../gtk/gtk-api.xml	\
+		../gtk/gtk-symbols.xml
+
+RUNTIME=mono
+MCS=mcs
+ASSEMBLY=gnome-sharp.dll
+
+@ENABLE_GNOME_TRUE@ all: $(ASSEMBLY)
 @ENABLE_GNOME_FALSE@ all: 
 
-windows:
-	$(CSC) /unsafe /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /r:../atk/atk-sharp.dll /r:../gdk/gdk-sharp.dll /r:../gtk/gtk-sharp.dll /out:gnome-sharp.dll /recurse:*.cs
+generated-stamp: $(APIS) *.custom ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
+	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
+	--assembly-name=gnome-sharp && touch generated-stamp
 
-linux: gnome-sharp.dll
-
-gnome-sharp.dll: generated/*.cs
-	$(MCS) --unsafe -nowarn:0660,0661 --target library -r System.Drawing -L ../glib -L ../pango -L ../atk -L ../art -L ../gdk -L ../gtk -r glib-sharp.dll -r pango-sharp.dll -r atk-sharp.dll -r art-sharp.dll -r gdk-sharp.dll -r gtk-sharp.dll -o gnome-sharp.dll --recurse '*.cs'
+$(ASSEMBLY): *.cs generated-stamp
+	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r System.Drawing -r ../glib/glib-sharp.dll 		\
+	-r ../pango/pango-sharp.dll -r ../atk/atk-sharp.dll 	\
+	-r ../art/art-sharp.dll -r ../gdk/gdk-sharp.dll 	\
+	-r ../gtk/gtk-sharp.dll -o $(ASSEMBLY) --recurse '*.cs'
 
 clean:
-	rm -f *.dll
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
-install: all
-@ENABLE_GNOME_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
-@ENABLE_GNOME_TRUE@	cp gnome-sharp.dll $(DESTDIR)$(prefix)/lib
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
 
+install: all
+@ENABLE_GNOME_TRUE@	../mkinstalldirs $(libdir) &&		\
+@ENABLE_GNOME_TRUE@	for i in $(APIS); do                    \
+@ENABLE_GNOME_TRUE@		cp $$i $(apidir) || true;       \
+@ENABLE_GNOME_TRUE@	done && 				\
+@ENABLE_GNOME_TRUE@	cp $(ASSEMBLY) $(libdir)

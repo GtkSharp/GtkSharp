@@ -1,39 +1,45 @@
-COMPILER=mcs
-OUTPUT=rsvg-sharp.dll
-prefix=@prefix@
+APIS=           rsvg-api.xml
 
-@ENABLE_RSVG_TRUE@ all: linux
+INCLUDE_APIS = 	../atk/atk-api.xml 	\
+		../pango/pango-api.xml 	\
+		../gdk/gdk-api.xml 	\
+		../gdk/gdk-symbols.xml	\
+		../gtk/gtk-api.xml	\
+		../gtk/gtk-symbols.xml	\
+		../art/art-api.xml
+
+RUNTIME=mono
+MCS=mcs
+ASSEMBLY=rsvg-sharp.dll
+
+@ENABLE_RSVG_TRUE@ all: $(ASSEMBLY)
 @ENABLE_RSVG_FALSE@ all:
 
-linux: $(OUTPUT)
+generated-stamp: $(APIS) ../generator/gapi_codegen.exe
+	$(RUNTIME) ../generator/gapi_codegen.exe --generate $(APIS) 	\
+	--include $(INCLUDE_APIS) --outdir=generated --customdir=.	\
+	--assembly-name=rsvg-sharp && touch generated-stamp
 
-$(OUTPUT): *.cs generated/*.cs
-	$(COMPILER) \
-	    --unsafe\
-            -nowarn:0660,0661 \
-	    --target library \
-	    -r ../glib/glib-sharp.dll \
-	    -r ../pango/pango-sharp.dll \
-	    -r ../atk/atk-sharp.dll \
-	    -r ../gdk/gdk-sharp.dll \
-	    -r ../gtk/gtk-sharp.dll \
-	    -r ../art/art-sharp.dll \
-	    -o $(OUTPUT) \
-	    --recurse '*.cs'
+$(ASSEMBLY): *.cs generated-stamp
+	$(MCS) --unsafe -nowarn:0660,0661 --target library 	\
+	-r ../glib/glib-sharp.dll -r ../pango/pango-sharp.dll 	\
+	-r ../atk/atk-sharp.dll -r ../gdk/gdk-sharp.dll 	\
+	-r ../gtk/gtk-sharp.dll -r ../art/art-sharp.dll 	\
+	-o $(ASSEMBLY) --recurse '*.cs'
 
-
-
-clean: clean-dll clean-generated
-
-clean-dll:
-	rm -f *.dll
-
-clean-generated:	
+clean:
+	rm -f generated-stamp
+	rm -f $(ASSEMBLY)
 	rm -rf generated
 
-
+prefix=@prefix@
+DESTDIR=
+apidir=$(DESTDIR)$(prefix)/share/gapi
+libdir=$(DESTDIR)$(prefix)/lib
 
 install: all
-@ENABLE_RSVG_TRUE@	../mkinstalldirs $(DESTDIR)$(prefix)/lib && \
-@ENABLE_RSVG_TRUE@	cp $(OUTPUT) $(DESTDIR)$(prefix)/lib
-
+@ENABLE_RSVG_TRUE@	../mkinstalldirs $(libdir) &&		\
+@ENABLE_RSVG_TRUE@	for i in $(APIS); do                    \
+@ENABLE_RSVG_TRUE@		cp $$i $(apidir) || true;       \
+@ENABLE_RSVG_TRUE@	done && 				\
+@ENABLE_RSVG_TRUE@	cp $(ASSEMBLY) $(libdir)
