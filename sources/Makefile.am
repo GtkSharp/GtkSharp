@@ -21,20 +21,20 @@ DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.4/2.4.0/sources/vte-0.11.10.tar.gz
 	
 GTKHTML_SOURCEFILES = \
-        gtkhtml-3.0.8/src/gtkhtml.c \
-        gtkhtml-3.0.8/src/gtkhtml.h \
-        gtkhtml-3.0.8/src/gtkhtml-types.h \
-        gtkhtml-3.0.8/src/gtkhtml-enums.h \
-        gtkhtml-3.0.8/src/gtkhtml-embedded.c \
-        gtkhtml-3.0.8/src/gtkhtml-embedded.h \
-        gtkhtml-3.0.8/src/gtkhtml-stream.c \
-        gtkhtml-3.0.8/src/gtkhtml-stream.h
+        gtkhtml-3.0.10/src/gtkhtml.c \
+        gtkhtml-3.0.10/src/gtkhtml.h \
+        gtkhtml-3.0.10/src/gtkhtml-types.h \
+        gtkhtml-3.0.10/src/gtkhtml-enums.h \
+        gtkhtml-3.0.10/src/gtkhtml-embedded.c \
+        gtkhtml-3.0.10/src/gtkhtml-embedded.h \
+        gtkhtml-3.0.10/src/gtkhtml-stream.c \
+        gtkhtml-3.0.10/src/gtkhtml-stream.h
 
 api:
 	PERLLIB=../parser PATH=../parser:$$PATH ../parser/gapi-parser gtk-sharp-sources.xml
 
 get-gtkhtml-code:
-	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.8.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
+	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.10.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
 	patch -p0 < gtkhtml-font-style-enum.patch
 	
 get-source-code: get-gtkhtml-code
