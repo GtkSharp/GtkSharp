@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2001-2002 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -11,258 +11,208 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class ObjectGen : StructBase, IGeneratable  {
-		
-		public ObjectGen (String ns, XmlElement elem) : base (ns, elem) {}
-		
-		public String MarshalType {
-			get
-			{
+	public class ObjectGen : GenBase, IGeneratable  {
+
+		private ArrayList ctors = new ArrayList();
+		private Hashtable props = new Hashtable();
+		private Hashtable sigs = new Hashtable();
+		private Hashtable methods = new Hashtable();
+
+		public ObjectGen (string ns, XmlElement elem) : base (ns, elem) 
+		{
+			foreach (XmlNode node in elem.ChildNodes) {
+
+				XmlElement member = (XmlElement) node;
+
+				switch (node.Name) {
+				case "field":
+				case "callback":
+					Statistics.IgnoreCount++;
+					break;
+
+				case "constructor":
+					ctors.Add (new Ctor (ns, member));
+					break;
+
+				case "method":
+					methods.Add (member.GetAttribute ("name"), new Method (ns, member));
+					break;
+
+				case "property":
+					props.Add (member.GetAttribute ("name"), new Property (member));
+					break;
+
+				case "signal":
+					sigs.Add (member.GetAttribute ("name"), new Signal (ns, member));
+					break;
+
+				default:
+					Console.WriteLine ("Unexpected node " + node.Name + " in " + CName);
+					break;
+				}
+			}
+		}
+
+		public string MarshalType {
+			get {
 				return "IntPtr";
 			}
 		}
-		
-		public String CallByName (String var_name)
+
+		public string CallByName (string var_name)
 		{
 			return var_name + ".Handle";
 		}
-		
-		public String FromNative(String var)
+
+		public string FromNative(string var)
 		{
 			return "(" + QualifiedName + ") GLib.Object.GetObject(" + var + ")";
 		}
-		
-		public void Generate (SymbolTable table)
-		{
-			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + ns.ToLower() + sep + "generated";
-			if (!Directory.Exists(dir)) {
-				Directory.CreateDirectory(dir);
+
+		private ObjectGen Parent {
+			get {
+				string parent = Elem.GetAttribute("parent");
+				return SymbolTable.GetObjectGen(parent);
 			}
-			String filename = dir + sep + Name + ".cs";
-			
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
-			
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001-2002 Mike Kestner");
-			sw.WriteLine ();
-			
-			sw.WriteLine ("namespace " + ns + " {");
-			sw.WriteLine ();
-				
+		}
+
+		public void Generate ()
+		{
+			StreamWriter sw = CreateWriter ();
+
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ("\tusing System.Collections;");
 			sw.WriteLine ("\tusing System.Runtime.InteropServices;");
 			sw.WriteLine ();
 
-			String parent = elem.GetAttribute("parent");
-			String cs_parent = table.GetCSType(parent);
 			sw.Write ("\tpublic class " + Name);
-			if (cs_parent == "") {
-				sw.WriteLine (" {");
-				Console.WriteLine ("Object " + Name + " Unknown parent " + parent);
-			} else {
-				sw.WriteLine (" : " + cs_parent + " {");
-			}
+			string cs_parent = SymbolTable.GetCSType(Elem.GetAttribute("parent"));
+			if (cs_parent != "")
+				sw.Write (" : " + cs_parent);
+			sw.WriteLine (" {");
 			sw.WriteLine ();
-				
-			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
-			sw.WriteLine();
-				
-			Hashtable clash_map = new Hashtable();
-			Hashtable props = new Hashtable();
-			Hashtable sigs = new Hashtable();
-			ArrayList methods = new ArrayList();
-			bool first_sig = true;
-				
-			foreach (XmlNode node in elem.ChildNodes) {
-				
-				XmlElement member = (XmlElement) node;
 
-				switch (node.Name) {
-				case "field":
-					Statistics.IgnoreCount++;
-					break;
-					
-				case "callback":
-					Statistics.IgnoreCount++;
-					break;
-					
-				case "constructor":
-					if (!GenCtor(member, table, sw, clash_map)) {
-						Console.WriteLine("in object " + CName);
-					}
-					break;
-					
-				case "method":
-					methods.Add(member);
-					break;
-					
-				case "property":
-					String pname;
-					if (!GenProperty(member, table, sw, out pname)) {
-						Console.WriteLine("in object " + CName);
-					}
-					props.Add(pname, pname);
-					break;
-					
-				case "signal":
-					if (first_sig) {
-						first_sig = false;
-						sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
-					}
-					String sname;
-					if (!GenSignal(member, table, sw, out sname)) {
-						Console.WriteLine("in object " + CName);
-					}
-					sigs.Add(sname, sname);
-					break;
-					
-				default:
-					Console.WriteLine ("Unexpected node");
-					break;
-				}
-				
-			}
-			
-			if (!clash_map.ContainsKey("")) {
-				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
-				sw.WriteLine();
-			}
-			
-			foreach (XmlElement member in methods) {
-				String mname = member.GetAttribute("name");
-				if ((mname.StartsWith("Set") || mname.StartsWith("Get")) &&
-				    props.ContainsKey(mname.Substring(3))) {
-				    	continue;
-				} else if (sigs.ContainsKey(mname)) {
-					member.SetAttribute("name", "Emit" + mname);
-				}
-				
-				if (!GenMethod(member, table, sw)) {
-					Console.WriteLine("in object " + CName);
-				}
-			}
+			GenCtors (sw);
+			GenProperties (sw);
+			GenSignals (sw);
+			GenMethods (sw);
 
-			string custom = ".." + sep + ns.ToLower() + sep + Name + ".custom";
+			char sep = Path.DirectorySeparatorChar;
+			string custom = ".." + sep + Namespace.ToLower() + sep + Name + ".custom";
 			if (File.Exists(custom)) {
 				FileStream custstream = new FileStream (custom, FileMode.Open, FileAccess.Read);
 				StreamReader sr = new StreamReader (custstream);
 				sw.WriteLine (sr.ReadToEnd ());
 				sr.Close ();
 			}
-			
+
 			sw.WriteLine ("\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("}");
-			
-			sw.Flush();
-			sw.Close();
+
+			CloseWriter (sw);
 			Statistics.ObjectCount++;
 		}
 		
-		public bool GenProperty (XmlElement prop, SymbolTable table, StreamWriter sw, out String name)
+		private bool Validate ()
 		{
-			String c_type = prop.GetAttribute("type");
-
-			char[] ast = {'*'};
-			c_type = c_type.TrimEnd(ast);
-			string cs_type = table.GetCSType(c_type);
-			
-			XmlElement parent = (XmlElement) prop.ParentNode;
-			name = prop.GetAttribute("name");
-			if (name == parent.GetAttribute("name")) {
-				name += "Prop";
-			}
-
-			string v_type = "";
-			if (table.IsEnum(c_type)) {
-				v_type = "int";
-			} else if (table.IsInterface(c_type)) {
-				// FIXME: Handle interface props properly.
-				Console.Write("Interface property detected ");
-				Statistics.ThrottledCount++;
-				return true;
-			} else if (table.IsObject(c_type)) {
-			 	v_type = "GLib.Object";
-			}
-			
-			if (cs_type == "") {
-				Console.Write("Property has unknown Type {0} ", c_type);
-				Statistics.ThrottledCount++;
+			string parent = Elem.GetAttribute("parent");
+			string cs_parent = SymbolTable.GetCSType(parent);
+			if (cs_parent == "") {
+				Console.WriteLine ("Object " + Name + " Unknown parent " + parent);
 				return false;
 			}
-			
-			if (prop.HasAttribute("construct-only") && !prop.HasAttribute("readable")) {
-				return true;
-			}
-			
-			sw.WriteLine("\t\tpublic " + cs_type + " " + name + " {");
-			if (prop.HasAttribute("readable")) {
-				sw.WriteLine("\t\t\tget {");
-				sw.WriteLine("\t\t\t\tGLib.Value val;");
-				sw.WriteLine("\t\t\t\tGetProperty(\"" + prop.GetAttribute("cname") + "\", out val);");
-				sw.Write("\t\t\t\treturn (" + cs_type + ") ");
-				if (v_type != "") {
-					sw.Write("(" + v_type + ") ");
-				}
-				sw.WriteLine("val;");
-				sw.WriteLine("\t\t\t}");
-			}
-			
-			if (prop.HasAttribute("writeable") && !prop.HasAttribute("construct-only")) {
-				sw.WriteLine("\t\t\tset {");
-				sw.Write("\t\t\t\tSetProperty(\"" + prop.GetAttribute("cname") + "\", new GLib.Value(");
-				if (v_type != "") {
-					sw.Write("(" + v_type + ") ");
-				}
-				sw.WriteLine("value));");
-				sw.WriteLine("\t\t\t}");
-			}
-			
-			sw.WriteLine("\t\t}");
-			sw.WriteLine();
-			
-			Statistics.PropCount++;
+
+			if (ctors != null)
+				foreach (Ctor ctor in ctors)
+					if (!ctor.Validate())
+						return false;
+
+			if (props != null)
+				foreach (Property prop in props.Values)
+					if (!prop.Validate())
+						return false;
+
+			if (sigs != null)
+				foreach (Signal sig in sigs.Values)
+					if (!sig.Validate())
+						return false;
+
+			if (methods != null)
+				foreach (Method method in methods.Values)
+					if (!method.Validate())
+						return false;
+
 			return true;
 		}
 
-		public bool GenSignal (XmlElement sig, SymbolTable table, StreamWriter sw, out String name)
+		private void GenCtors (StreamWriter sw)
 		{
-			String cname = "\"" + sig.GetAttribute("cname") + "\"";
-			name = sig.GetAttribute("name");
+			sw.WriteLine("\t\tpublic " + Name + "(IntPtr raw) : base(raw) {}");
+			sw.WriteLine();
 
-			String marsh = SignalHandler.GetName(sig, table);
-			if (marsh == "") {
-				Statistics.ThrottledCount++;
-				return false;
+			Hashtable clash_map = new Hashtable();
+
+			if (ctors != null)
+				foreach (Ctor ctor in ctors) {
+					if (ctor.Validate ())
+						ctor.Generate (sw, clash_map);
+					else
+						Console.WriteLine(" in Object " + Name);
+				}
+
+			if (!clash_map.ContainsKey("")) {
+				sw.WriteLine("\t\tprotected " + Name + "() : base(){}");
+				sw.WriteLine();
 			}
-			
-			marsh = "GtkSharp." + marsh;
 
-			sw.WriteLine("\t\t/// <summary> " + name + " Event </summary>");
-			sw.WriteLine("\t\t/// <remarks>");
-			// FIXME: Generate some signal docs
-			sw.WriteLine("\t\t/// </remarks>");
-			sw.WriteLine();
-			sw.WriteLine("\t\tpublic event EventHandler " + name + " {");
-			sw.WriteLine("\t\t\tadd {");
-			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
-			sw.Write("\t\t\t\t\tSignals[" + cname + "] = new " + marsh);
-			sw.WriteLine("(this, Handle, " + cname + ", value);");
-			sw.WriteLine("\t\t\t\tEventList.AddHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t}");
-			sw.WriteLine("\t\t\tremove {");
-			sw.WriteLine("\t\t\t\tEventList.RemoveHandler(" + cname + ", value);");
-			sw.WriteLine("\t\t\t\tif (EventList[" + cname + "] == null)");
-			sw.WriteLine("\t\t\t\t\tSignals.Remove(" + cname + ");");
-			sw.WriteLine("\t\t\t}");
-			sw.WriteLine("\t\t}");
-			sw.WriteLine();
+		}
+
+		private void GenProperties (StreamWriter sw)
+		{		
+			if (props == null)
+				return;
+
+			foreach (Property prop in props.Values) {
+				if (prop.Validate ())
+					prop.Generate (sw);
+				else
+					Console.WriteLine(" in Object " + Name);
+			}
+		}
+
+		private void GenSignals (StreamWriter sw)
+		{		
+			if (sigs == null)
+				return;
+
+			sw.WriteLine("\t\tprivate Hashtable Signals = new Hashtable();");
 			
-			Statistics.SignalCount++;
-			return true;
+			foreach (Signal sig in sigs.Values) {
+				if (sig.Validate ())
+					sig.Generate (sw);
+				else
+					Console.WriteLine(" in Object " + Name);
+			}
+		}
+
+		private void GenMethods (StreamWriter sw)
+		{		
+			if (methods == null)
+				return;
+
+			foreach (Method method in methods.Values) {
+				string mname = method.Name;
+				if ((mname.StartsWith("Set") || mname.StartsWith("Get")) &&
+				    (props != null) && props.ContainsKey(mname.Substring(3))) {
+				    	continue;
+				} else if ((sigs != null) && sigs.ContainsKey(mname)) {
+					method.Name = "Emit" + mname;
+				}
+
+				if (method.Validate ())
+					method.Generate (sw);
+				else
+					Console.WriteLine(" in Object " + Name);
+			}
 		}
 	}
 }

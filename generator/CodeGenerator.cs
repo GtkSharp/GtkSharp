@@ -20,11 +20,11 @@ namespace GtkSharp.Generation {
 			}
 
 			Parser p = new Parser (args[0]);
-			SymbolTable table = p.Parse ();
-			Console.WriteLine (table.Count + " types parsed.");
+			p.Parse ();
+			Console.WriteLine (SymbolTable.Count + " types parsed.");
 			
-			foreach (IGeneratable gen in table.Generatables) {
-				gen.Generate (table);
+			foreach (IGeneratable gen in SymbolTable.Generatables) {
+				gen.Generate ();
 			}
 
 			Statistics.Report();

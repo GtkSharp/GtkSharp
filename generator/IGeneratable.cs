@@ -22,6 +22,6 @@ namespace GtkSharp.Generation {
 		
 		String FromNative (String var);
 
-		void Generate (SymbolTable table);
+		void Generate ();
 	}
 }

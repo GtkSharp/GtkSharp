@@ -13,7 +13,6 @@ namespace GtkSharp.Generation {
 	public class Parser  {
 		
 		private XmlDocument doc;
-		private SymbolTable table;
 		
 		public Parser (String filename)
 		{
@@ -31,19 +30,15 @@ namespace GtkSharp.Generation {
 
 		}
 
-		public SymbolTable Parse ()
+		public void Parse ()
 		{
-			if (table != null) return table;
-				
 			XmlElement root = doc.DocumentElement;
 
 			if ((root == null) || !root.HasChildNodes) {
 					Console.WriteLine ("No Namespaces found.");
-					return null;
+					return;
 			}
 
-			table = new SymbolTable ();
-			
 			foreach (XmlNode ns in root.ChildNodes) {
 				if (ns.Name != "namespace") {
 					continue;
@@ -52,8 +47,6 @@ namespace GtkSharp.Generation {
 				XmlElement elem = (XmlElement) ns;
 				ParseNamespace (elem);
 			}
-
-			return table;
 		}
 
 		private void ParseNamespace (XmlElement ns)
@@ -74,27 +67,27 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "boxed":
-					table.AddType (new BoxedGen (ns_name, elem));
+					SymbolTable.AddType (new BoxedGen (ns_name, elem));
 					break;
 
 				case "callback":
-					table.AddType (new CallbackGen (ns_name, elem));
+					SymbolTable.AddType (new CallbackGen (ns_name, elem));
 					break;
 
 				case "enum":
-					table.AddType (new EnumGen (ns_name, elem));
+					SymbolTable.AddType (new EnumGen (ns_name, elem));
 					break;
 
 				case "interface":
-					table.AddType (new InterfaceGen (ns_name, elem));
+					SymbolTable.AddType (new InterfaceGen (ns_name, elem));
 					break;
 
 				case "object":
-					table.AddType (new ObjectGen (ns_name, elem));
+					SymbolTable.AddType (new ObjectGen (ns_name, elem));
 					break;
 
 				case "struct":
-					table.AddType (new StructGen (ns_name, elem));
+					SymbolTable.AddType (new StructGen (ns_name, elem));
 					break;
 
 				default:

@@ -15,7 +15,7 @@ namespace GtkSharp.Generation {
 		
 		private static Hashtable handlers = new Hashtable ();
 		
-		public static String GetName(XmlElement sig, SymbolTable table)
+		public static String GetName(XmlElement sig)
 		{
 			XmlElement ret_elem = sig["return-type"];
 			if (ret_elem == null) {
@@ -29,8 +29,8 @@ namespace GtkSharp.Generation {
 				return "";
 			}
 			
-			String s_ret = table.GetCSType(retval);
-			String p_ret = table.GetMarshalType(retval);
+			String s_ret = SymbolTable.GetCSType(retval);
+			String p_ret = SymbolTable.GetMarshalType(retval);
 			if ((s_ret == "") || (p_ret == "")) {
 				Console.Write("Funky type: " + retval);
 				return "";
@@ -38,7 +38,7 @@ namespace GtkSharp.Generation {
 			
 			String key = retval;
 			String pinv = "";
-			String name = table.GetName(retval);
+			String name = SymbolTable.GetName(retval);
 			int pcnt = 0;
 			
 			ArrayList parms = new ArrayList();
@@ -54,7 +54,7 @@ namespace GtkSharp.Generation {
 
 				XmlElement elem = (XmlElement) parm;
 				String type = elem.GetAttribute("type");
-				String ptype = table.GetMarshalType(type);
+				String ptype = SymbolTable.GetMarshalType(type);
 				if (ptype == "") {
 					Console.Write("Funky type: " + type);
 					return "";
@@ -65,11 +65,11 @@ namespace GtkSharp.Generation {
 				}
 				pinv += (ptype + " arg" + pcnt);
 				parms.Add(type);
-				if (table.IsObject(type)) {
+				if (SymbolTable.IsObject(type)) {
 					name += "Object";
 					key += "Object";
 				} else {
-					name += table.GetName(type);
+					name += SymbolTable.GetName(type);
 					key += type;
 				}
 				pcnt++;
@@ -136,7 +136,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine("\t\t\targs.Args = new object[" + (parms.Count-1) + "];");
 			}
 			for (int idx=1; idx < parms.Count; idx++) {
-				if (table.IsObject((String)parms[idx])) {
+				if (SymbolTable.IsObject((String)parms[idx])) {
 					sw.Write("\t\t\targs.Args[" + (idx-1) + "] ");
 					sw.WriteLine("= GLib.Object.GetObject(arg" + idx + ");");
 				} else {

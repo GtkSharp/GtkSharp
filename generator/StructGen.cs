@@ -31,7 +31,7 @@ namespace GtkSharp.Generation {
 			return var;
 		}
 
-		public void Generate (SymbolTable table)
+		public void Generate ()
 		{
 			char sep = Path.DirectorySeparatorChar;
 			string dir = ".." + sep + ns.ToLower() + sep + "generated";
@@ -66,7 +66,7 @@ namespace GtkSharp.Generation {
 				switch (node.Name) {
 				case "field":
 					Statistics.IgnoreCount++;
-					// GenField(member, table, sw);
+					// GenField(member, sw);
 					break;
 					
 				case "callback":

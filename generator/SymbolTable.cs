@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
-// (c) 2001 Mike Kestner
+// (c) 2001-2002 Mike Kestner
 
 namespace GtkSharp.Generation {
 
@@ -11,11 +11,11 @@ namespace GtkSharp.Generation {
 
 	public class SymbolTable {
 		
-		private Hashtable complex_types = new Hashtable ();
-		private Hashtable simple_types;
-		private Hashtable dlls;
+		private static Hashtable complex_types = new Hashtable ();
+		private static Hashtable simple_types;
+		private static Hashtable dlls;
 		
-		public SymbolTable ()
+		static SymbolTable ()
 		{
 			simple_types = new Hashtable ();
 			simple_types.Add ("void", "void");
@@ -72,32 +72,32 @@ namespace GtkSharp.Generation {
 			dlls.Add("Gtk", "gtk-x11-2.0");
 		}
 		
-		public void AddType (IGeneratable gen)
+		public static void AddType (IGeneratable gen)
 		{
 			complex_types [gen.CName] = gen;
 		}
 		
-		public int Count {
+		public static int Count {
 			get
 			{
 				return complex_types.Count;
 			}
 		}
 		
-		public IEnumerable Generatables {
+		public static IEnumerable Generatables {
 			get {
 				return complex_types.Values;
 			}
 		}
 		
-		private string Trim(string type)
+		private static string Trim(string type)
 		{
 			string trim_type = type.TrimEnd('*');
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
 		}
 
-		public string FromNative(string c_type, string val)
+		public static string FromNative(string c_type, string val)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -110,7 +110,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public string GetCSType(string c_type)
+		public static string GetCSType(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -123,7 +123,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public string GetName(string c_type)
+		public static string GetName(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -142,12 +142,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public string GetDllName(string ns)
+		public static string GetDllName(string ns)
 		{
 			return (string) dlls[ns];
 		}
 		
-		public string GetMarshalType(string c_type)
+		public static string GetMarshalType(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public string CallByName(string c_type, string var_name)
+		public static string CallByName(string c_type, string var_name)
 		{
 			c_type = Trim(c_type);
 			if (simple_types.ContainsKey(c_type)) {
@@ -173,7 +173,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		public bool IsBoxed(string c_type)
+		public static bool IsBoxed(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
@@ -185,7 +185,7 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public bool IsEnum(string c_type)
+		public static bool IsEnum(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
@@ -197,7 +197,7 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public bool IsInterface(string c_type)
+		public static bool IsInterface(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {
@@ -209,7 +209,16 @@ namespace GtkSharp.Generation {
 			return false;
 		}
 		
-		public bool IsObject(string c_type)
+		public static ObjectGen GetObjectGen(string c_type)
+		{
+			c_type = Trim(c_type);
+			if (IsObject(c_type)) {
+				return (ObjectGen) complex_types[c_type];
+			}
+			return null;
+		}
+				
+		public static bool IsObject(string c_type)
 		{
 			c_type = Trim(c_type);
 			if (complex_types.ContainsKey(c_type)) {

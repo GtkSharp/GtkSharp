@@ -10,37 +10,9 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class EnumGen : IGeneratable  {
+	public class EnumGen : GenBase, IGeneratable  {
 		
-		private String ns;
-		private XmlElement elem;
-		
-		public EnumGen (String ns, XmlElement elem) {
-			
-			this.ns = ns;
-			this.elem = elem;
-		}
-		
-		public String Name {
-			get
-			{
-				return elem.GetAttribute("name");
-			}
-		}
-		
-		public String CName {
-			get
-			{
-				return elem.GetAttribute("cname");
-			}
-		}
-		
-		public String QualifiedName {
-			get
-			{
-				return ns + "." + elem.GetAttribute("name");
-			}
-		}
+		public EnumGen (String ns, XmlElement elem) : base (ns, elem) {}
 		
 		public String MarshalType {
 			get
@@ -59,26 +31,11 @@ namespace GtkSharp.Generation {
 			return "(" + QualifiedName + ")" + var;
 		}
 		
-		public void Generate (SymbolTable table)
+		public void Generate ()
 		{
-			char sep = Path.DirectorySeparatorChar;
-			string dir = ".." + sep + ns.ToLower() + sep + "generated";
-			if (!Directory.Exists(dir)) {
-				Directory.CreateDirectory(dir);
-			}
-			String filename = dir + sep + Name + ".cs";
-			
-			FileStream stream = new FileStream (filename, FileMode.Create, FileAccess.Write);
-			StreamWriter sw = new StreamWriter (stream);
-			
-			sw.WriteLine ("// Generated File.  Do not modify.");
-			sw.WriteLine ("// <c> 2001 Mike Kestner");
-			sw.WriteLine ();
-			
-			sw.WriteLine ("namespace " + ns + " {");
-			sw.WriteLine ();
-				
-			if (elem.GetAttribute("type") == "flags") {
+			StreamWriter sw = CreateWriter ();
+
+			if (Elem.GetAttribute("type") == "flags") {
 				sw.WriteLine ("\tusing System;");
 				sw.WriteLine ();
 				sw.WriteLine ("\t[Flags]");
@@ -87,7 +44,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic enum " + Name + " {");
 			sw.WriteLine ();
 				
-			foreach (XmlNode node in elem.ChildNodes) {
+			foreach (XmlNode node in Elem.ChildNodes) {
 				if (node.Name != "member") {
 					continue;
 				}
@@ -102,11 +59,7 @@ namespace GtkSharp.Generation {
 			}
 				
 			sw.WriteLine ("\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("}");
-			
-			sw.Flush();
-			sw.Close();
+			CloseWriter (sw);
 			Statistics.EnumCount++;
 		}
 		

@@ -32,7 +32,7 @@ namespace GtkSharp.Generation {
 			return "(" + QualifiedName + ") GLib.Boxed.FromNative(" + var + ")";
 		}
 
-		public void Generate (SymbolTable table)
+		public void Generate ()
 		{
 			char sep = Path.DirectorySeparatorChar;
 			string dir = ".." + sep + ns.ToLower() + sep + "generated";
@@ -72,7 +72,7 @@ namespace GtkSharp.Generation {
 				switch (node.Name) {
 				case "field":
 					Statistics.IgnoreCount++;
-					// GenField(member, table, sw);
+					// GenField(member, sw);
 					break;
 					
 				case "callback":
@@ -80,13 +80,13 @@ namespace GtkSharp.Generation {
 					break;
 					
 				case "constructor":
-					if (!GenCtor(member, table, sw, clash_map)) {
+					if (!GenCtor(member, sw, clash_map)) {
 						Console.WriteLine(" in boxed " + CName);
 					}
 					break;
 					
 				case "method":
-					if (!GenMethod(member, table, sw)) {
+					if (!GenMethod(member, sw)) {
 						Console.WriteLine(" in boxed " + CName);
 					}
 					break;

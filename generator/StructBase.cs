@@ -45,7 +45,7 @@ namespace GtkSharp.Generation {
 		}
 		
 
-		protected bool GenCtor(XmlElement ctor, SymbolTable table, StreamWriter sw, Hashtable clash_map)
+		protected bool GenCtor(XmlElement ctor, StreamWriter sw, Hashtable clash_map)
 		{
 			String sig, isig, call, sigtypes;
 			XmlElement parms = ctor["parameters"];
@@ -54,9 +54,9 @@ namespace GtkSharp.Generation {
 				call = sig = "()";
 				isig = "();";
 				sigtypes = "";
-			} else if (GetSignature(parms, table, out sig, out sigtypes) &&
-			    	   GetImportSig(parms, table, out isig) &&
-			           GetCallString(parms, table, out call)) {
+			} else if (GetSignature(parms, out sig, out sigtypes) &&
+			    	   GetImportSig(parms, out isig) &&
+			           GetCallString(parms, out call)) {
 				sig = "(" + sig + ")";
 				isig = "(" + isig + ");";
 				call = "(" + call + ")";
@@ -75,7 +75,7 @@ namespace GtkSharp.Generation {
 			
 			String cname = ctor.GetAttribute("cname");
 			
-			sw.WriteLine("\t\t[DllImport(\"" + table.GetDllName(ns) + 
+			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.WriteLine("\t\tstatic extern IntPtr " + cname + isig);
 			sw.WriteLine();
@@ -104,7 +104,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected bool GenField (XmlElement field, SymbolTable table, StreamWriter sw)
+		protected bool GenField (XmlElement field, StreamWriter sw)
 		{
 			String c_type;
 			
@@ -115,7 +115,7 @@ namespace GtkSharp.Generation {
 			}
 			char[] ast = {'*'};
 			c_type = c_type.TrimEnd(ast);
-			String cs_type = table.GetCSType(c_type);
+			String cs_type = SymbolTable.GetCSType(c_type);
 			
 			if (cs_type == "") {
 				Console.WriteLine ("Field has unknown Type {0}", c_type);
@@ -131,7 +131,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		protected bool GenMethod(XmlElement method, SymbolTable table, StreamWriter sw)
+		protected bool GenMethod(XmlElement method, StreamWriter sw)
 		{
 			String sig, isig, call, sigtypes;
 			XmlElement parms = method["parameters"];
@@ -141,9 +141,9 @@ namespace GtkSharp.Generation {
 				sig = "()";
 				isig = "(IntPtr raw);";
 				sigtypes = "";
-			} else if (GetSignature(parms, table, out sig, out sigtypes) &&
-			    	   GetImportSig(parms, table, out isig) &&
-			           GetCallString(parms, table, out call)) {
+			} else if (GetSignature(parms, out sig, out sigtypes) &&
+			    	   GetImportSig(parms, out isig) &&
+			           GetCallString(parms, out call)) {
 				sig = "(" + sig + ")";
 				isig = "(IntPtr raw, " + isig + ");";
 				call = "(Handle, " + call + ")";
@@ -162,8 +162,8 @@ namespace GtkSharp.Generation {
 			
 			String rettype = ret_elem.GetAttribute("type");
 			
-			String m_ret = table.GetMarshalType(rettype);
-			String s_ret = table.GetCSType(rettype);
+			String m_ret = SymbolTable.GetMarshalType(rettype);
+			String s_ret = SymbolTable.GetCSType(rettype);
 			if (m_ret == "" || s_ret == "") {
 				Console.Write("rettype: " + rettype + " method ");
 				Statistics.ThrottledCount++;
@@ -178,7 +178,7 @@ namespace GtkSharp.Generation {
 				return true;
 			}
 
-			sw.WriteLine("\t\t[DllImport(\"" + table.GetDllName(ns) + 
+			sw.WriteLine("\t\t[DllImport(\"" + SymbolTable.GetDllName(ns) + 
 			             "\", CallingConvention=CallingConvention.Cdecl)]");
 			sw.Write("\t\tstatic extern " + m_ret + " " + cname + isig);
 			sw.WriteLine();
@@ -189,7 +189,7 @@ namespace GtkSharp.Generation {
 			if (m_ret == "void") {
 				sw.WriteLine(cname + call + ";");
 			} else {
-				sw.WriteLine("return " + table.FromNative(rettype, cname + call) + ";");
+				sw.WriteLine("return " + SymbolTable.FromNative(rettype, cname + call) + ";");
 			}
 			
 			sw.WriteLine("\t\t}");
@@ -199,7 +199,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		private bool GetCallString(XmlElement parms, SymbolTable table, out String call)
+		private bool GetCallString(XmlElement parms, out String call)
 		{
 			call = "";
 			
@@ -215,7 +215,7 @@ namespace GtkSharp.Generation {
 				String type = elem.GetAttribute("type");
 				String name = elem.GetAttribute("name");
 				name = MangleName(name);
-				String call_parm = table.CallByName(type, name);
+				String call_parm = SymbolTable.CallByName(type, name);
 				
 				if (call_parm == "") {
 					Console.Write("Name: " + name + " Type: " + type + " ");
@@ -233,7 +233,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
-		private bool GetImportSig(XmlElement parms, SymbolTable table, out String isig)
+		private bool GetImportSig(XmlElement parms, out String isig)
 		{
 			isig = "";
 			
@@ -246,7 +246,7 @@ namespace GtkSharp.Generation {
 
 				XmlElement elem = (XmlElement) parm;
 				String type = elem.GetAttribute("type");
-				String m_type = table.GetMarshalType(type);
+				String m_type = SymbolTable.GetMarshalType(type);
 				String name = elem.GetAttribute("name");
 				name = MangleName(name);
 				
@@ -270,7 +270,7 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 		
-		private bool GetSignature(XmlElement parms, SymbolTable table, out String sig, out String sigtypes)
+		private bool GetSignature(XmlElement parms, out String sig, out String sigtypes)
 		{
 			sigtypes = sig = "";
 			bool need_comma = false;
@@ -282,7 +282,7 @@ namespace GtkSharp.Generation {
 
 				XmlElement elem = (XmlElement) parm;
 				String type = elem.GetAttribute("type");
-				String cs_type = table.GetCSType(type);
+				String cs_type = SymbolTable.GetCSType(type);
 				String name = elem.GetAttribute("name");
 				name = MangleName(name);
 				
