@@ -184,11 +184,8 @@ namespace GtkSharp.Generation {
 				Console.Write("Interface property detected ");
 				Statistics.ThrottledCount++;
 				return true;
-			// FIXME: This will cause InvalidCastExceptions but
-			// it's commented out to help expose a compiler bug
-			//
-			// } else if (table.IsObject(c_type)) {
-			// 	v_type = "GLib.Object";
+			} else if (table.IsObject(c_type)) {
+			 	v_type = "GLib.Object";
 			}
 			
 			if (cs_type == "") {
