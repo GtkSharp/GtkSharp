@@ -71,3 +71,12 @@ public int Flags {
 		gtksharp_gtk_widget_set_flags (Handle, (int) value);
 	}
 }
+
+[DllImport("gtksharpglue")]
+static extern int gtksharp_gtk_widget_style_get_int (IntPtr raw, string name);
+
+public int FocusLineWidth {
+	get {
+		return gtksharp_gtk_widget_style_get_int (Handle, "focus-line-width");
+	}
+}
