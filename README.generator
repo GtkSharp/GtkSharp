@@ -1,33 +1,62 @@
 How to use the Gtk# code generator:
 
 Install dependencies:
+
    * You need to install the XML::LibXML perl bindings and Gtk#.
 
+Parse the library:
+
+   * Create an xml file defining the libraries to be parsed. The
+     format of the XML is:
+
+	<gapi-parser-input>
+	  <api filename="../api/atk-api.xml">
+	    <library name="libatk-1.0-0.dll">
+	      <namespace name="Atk">
+	        <dir>atk-1.2.4/atk</dir>
+	      </namespace>
+	    </library>
+	  </api>
+	<gapi-parser-input>
+
+     The api element filename attribute specifies the parser output file location.
+     The name attribute on the library output points to the native library name. If
+     you are creating a cross-platform project, you will want to specify the win32 dll
+     name here and use mono's config mechanism to map the name on other platforms.
+     The dir element points to a src directory to be parsed.  Currently all .c and .h
+     files in the directory are parsed.
+
+     All the elements inside the root can have multiples. The source/gtk-sharp-sources.xml
+     file has examples of producing multiple api files with a single parser input file, as
+     well as including muliple libraries in a single output file.
+
+   * Create metadata rules files named <namespace>.metadata in the directory where you invoke
+     the parser.  Metadata rules allow you to massage the parsed api if necessary.  Examples
+     of rule formats can be found in the sources directory.
+
+   * Execute the parser on your xml input file:
+	gapi-parser <xml-input-filename>
+
+   * Distribute the xml file(s) produced by the parser with your project so that your
+     users don't need to have any native library source, or perl libraries installed in
+     order to build your project.
+     
 Within your project directory, do the following:
+
    * Setup a toplevel subdirectory for each namespace/assembly you
      are wrapping. Instruct the makefile for this directory to compile,
      at minimum, generated/*.
-   * Write a .sources file listing the source directories for the
-     libraries you will be wrapping, one line per directory. The
-     format is: "directory namespace library".
-   * Run gapi.pl SOURCEFILE APIDIR where SOURCEFILE is the sources file
-     you just wrote, and APIDIR is the directory to place the API XML
-	  descriptions in.
-	* Run gapi_codegen.exe on the API files you created. If you depend
-	  on any other wrapped libraries (such as gtk-sharp.dll), you need to 
-	  include their API listings via the --include directive. 
-	  The code generator, if successful, will have populated the assembly
-	  directories with generated/ directories.
 
-It is generally helpful to automate this process with makefiles. Gtk# uses
-the following organization:
-  sources/: Source directories, .sources listing, .metadata files.
-            Is not listed in SUBDIRS, developers run make manually here when
-				they want to update the API files.
-	   api/: API files written here. They are committed to CVS and included
-		      in releases for the convenience of the lib user.
-				This _is_ listed in SUBDIRS, the generator directives are in
-				this makefile. (And hence api needs to be listed before
-				the assembly directories)
+   * Run gapi_codegen.exe on the API file(s) you created with the parser. If you depend
+     on any other wrapped libraries (such as gtk-sharp.dll), you need to include their API 
+     listings via the --include directive.  The code generator, if successful, will have 
+     populated the assembly directories with generated/ directories. It is generally helpful 
+     to automate this process with makefiles. Gtk# uses the following organization:
+        - sources/: Source directories, .sources listing, .metadata files.
+             developers run make manually here when they want to update the API files.
+        - api/: API files 
+             The files are committed to CVS and included in releases for the convenience 
+             of the lib user.  This dir is included in the build before the namespace dirs
+             and the generator is invoked from this dir.
 
 	

@@ -1,0 +1,65 @@
+#!/usr/bin/perl -w
+
+use XML::LibXML;
+
+die "Usage: gapi-parser <xml_sources_file>\n" if (!$ARGV[0]);
+
+my $parser = new XML::LibXML;
+my $doc = $parser->parse_file($ARGV[0]);
+die "Unable to parse input file $ARGV[0].\n" if (!$doc);
+my $root = $doc->documentElement;
+die "Improperly formatted input file $ARGV[0].\n" if (!$root || $root->nodeName ne "gapi-parser-input");
+
+for ($apinode = $root->firstChild; $apinode; $apinode = $apinode->nextSibling ()) {
+	next if ($apinode->nodeName ne "api");
+	@attrs = $apinode->attributes;
+	my ($outfile);
+	foreach $attr (@attrs) {
+		if ($attr->name eq "filename") {
+			$outfile = $attr->value;
+		} else {
+			die "Unexpected attribute $attr->name\n";
+		}
+	}
+
+	unlink "$outfile.pre";
+
+	for ($libnode = $apinode->firstChild; $libnode; $libnode = $libnode->nextSibling ()) {
+		next if ($libnode->nodeName ne "library");
+		@attrs = $libnode->attributes;
+		my ($lib);
+		foreach $attr (@attrs) {
+			if ($attr->name eq "name") {
+				$lib = $attr->value;
+			} else {
+				die "Unexpected attribute $attr->name\n";
+			}
+		}
+
+		for ($nsnode = $libnode->firstChild; $nsnode; $nsnode = $nsnode->nextSibling ()) {
+			next if ($nsnode->nodeName ne "namespace");
+			@attrs = $nsnode->attributes;
+			my ($ns);
+			foreach $attr (@attrs) {
+				if ($attr->name eq "name") {
+					$ns = $attr->value;
+				} else {
+					die "Unexpected attribute $attr->name\n";
+				}
+			}
+
+			for ($srcnode = $nsnode->firstChild; $srcnode; $srcnode = $srcnode->nextSibling ()) {
+				next if ($srcnode->nodeName ne "dir");
+				my ($dir);
+				$dir = $srcnode->firstChild->nodeValue;
+				print "$dir\n";
+				`ls $dir`;
+				system ("gapi_pp.pl $dir | gapi2xml.pl $ns $outfile.pre $lib");
+			}
+		}
+	}
+
+	system ("gapi_format_xml $outfile.pre $outfile");
+	unlink "$outfile.pre";
+}
+

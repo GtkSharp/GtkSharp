@@ -23,7 +23,7 @@ GTKHTML_SOURCES = \
         gtkhtml-3.0.8/src/gtkhtml-stream.h
 
 all:
-	PERLLIB=../parser PATH=../parser:$$PATH ../parser/gapi.pl gtk-sharp.sources ../api
+	PERLLIB=../parser PATH=../parser:$$PATH ../parser/gapi-parser gtk-sharp-sources.xml
 
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.8.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCES)
