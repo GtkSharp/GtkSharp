@@ -1,4 +1,4 @@
-// GtkSharp.Generation.StructBase.cs - The Structure/Object Base Class.
+// GtkSharp.Generation.StructBase.cs - The Structure/Boxed Base Class.
 //
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "field":
-					fields.Add (member);
+					fields.Add (new Field (member));
 					break;
 
 				case "callback":
@@ -116,8 +116,7 @@ namespace GtkSharp.Generation {
 		{
 			Field.bitfields = 0;
 			bool need_field = true;
-			foreach (XmlElement field_elem in fields) {
-				Field field = new Field (field_elem);
+			foreach (Field field in fields) {
 				if (field.IsBit) {
 					if (need_field)
 						need_field = false;
@@ -127,6 +126,18 @@ namespace GtkSharp.Generation {
 					need_field = true;
 				field.Generate (sw);	
 			}
+		}
+
+		public bool Validate ()
+		{
+			foreach (Field field in fields) {
+				if (!field.Validate ()) {
+					Console.WriteLine ("in Struct " + QualifiedName);
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		public override void Generate (GenerationInfo gen_info)

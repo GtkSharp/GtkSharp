@@ -147,16 +147,20 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool Generate (StreamWriter sw)
+		public bool Validate ()
 		{
-			if (Hidden)
-				return true;
-
-			if (CSType == "") {
-				Console.WriteLine ("Field has unknown Type {0}", CType);
+			if (CSType == "" && !Hidden) {
+				Console.Write ("Field has unknown Type {0} ", CType);
 				Statistics.ThrottledCount++;
 				return false;
 			}
+			return true;
+		}
+
+		public void Generate (StreamWriter sw)
+		{
+			if (Hidden)
+				return;
 
 			SymbolTable table = SymbolTable.Table;
 
@@ -218,8 +222,6 @@ namespace GtkSharp.Generation {
 			} else {
 				sw.WriteLine ("\t\tpublic {0} {1};", CSType, StudlyName);
 			}
-		
-			return true;
 		}
 	}
 }

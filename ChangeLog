@@ -1,3 +1,41 @@
+2005-02-17  Dan Winship  <danw@novell.com>
+
+	* generator/Field.cs (Validate): new, to check that a field has a
+	valid type (or is hidden).
+
+	* generator/StructBase.cs (Validate): new, to check that all of
+	the struct fields have valid types
+
+	* generator/BoxedGen.cs (Generate):
+	* generator/StructGen.cs: (Generate): Call Validate() and bail out
+	if it fails; it's no good to generate a struct with the wrong
+	layout.
+
+	* gdk/gdk-symbols.xml: add a line for GdkKey -> Gdk.Key. (There's
+	no actual C type GdkKey, but we can use metadata to change uints
+	to GdkKeys, which will then become Gdk.Keys.)
+
+	* gtk/AccelKey.custom: remove the "Key" field (which was being
+	added in the wrong place in the struct), since it's properly
+	generated now.
+
+	* gtk/Gtk.metadata: Fix the line that renames AccelKey.AccelKey
+	to AccelKey.Key
+
+	* gnomevfs/Gnomevfs.metadata: hide the (mis-parsed) "action" field
+	in MimeAction, leaving the struct in the same broken state it was
+	in with the old generator code
+
+	* parser/gapi2xml.pl: add a hack to allow "foo_bar_get_type()"
+	rather than "FOO_TYPE_BAR" in G_TYPE_CHECK_INSTANCE_CAST macros,
+	allowing large parts of libgda that were previously misparsed to
+	be parsed correctly
+
+	* gda/gda-api.raw: Regen
+
+	* gda/Gda.metadata: Make Gda.Value opaque, since it's mostly a
+	union and we're horribly butchering its layout.
+
 2005-02-22  Raja R Harinath  <rharinath@novell.com>
 
 	* Makefile.include: Use $(top_builddir)/ instead of ../ so that it
