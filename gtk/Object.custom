@@ -39,11 +39,8 @@
 				if (value == IntPtr.Zero)
 					return;
 
-				if (gtksharp_object_is_floating (value)) {
-					g_object_ref (value);
-					Sink ();
-				}
-//				System.Diagnostics.Debug.WriteLine ("Gtk.Object:set_Raw: object type is: " + (this as GLib.Object).GType.Name + " refcount now: " + RefCount + " needs_ref: " + needs_ref);
+				g_object_ref (value);
+				Sink ();
 			}
 		}
 
