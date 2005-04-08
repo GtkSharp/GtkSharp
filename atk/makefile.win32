@@ -6,10 +6,10 @@ all: windows
 
 windows: generated-stamp
 	$(CSC) /unsafe /nowarn:0660,0661 /target:library /r:../glib/glib-sharp.dll /r:../pango/pango-sharp.dll /out:$(ASSEMBLY) /recurse:*.cs
+	../gapi-cdecl-insert --keyfile=gtk-sharp.snk atk-sharp.dll
 
 generated-stamp: ../generator/codegen.exe atk-api.xml
 	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=atk-sharp --gluelib-name=atksharpglue --glue-filename=glue/generated.c && touch generated-stamp
-	../gapi-cdecl-insert --keyfile=gtk-sharp.snk atk-sharp.dll
 
 atk-api.xml: atk-api.raw Atk.metadata
 	cp atk-api.raw atk-api.xml
