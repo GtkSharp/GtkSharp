@@ -4,7 +4,7 @@ TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
-CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config
 
 references = 
@@ -65,7 +65,8 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk
-	$(CSC) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
+	@rm -f $(ASSEMBLY).mdb
+	$(CSC) $(CSFLAGS) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

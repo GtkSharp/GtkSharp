@@ -39,6 +39,11 @@ AC_CHECK_SIZEOF(void *, 4)
 
 CFLAGS='-g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes  -Wmissing-prototypes -Wnested-externs  -Wshadow -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings'
 
+AC_ARG_ENABLE(debug, [  --enable-debug          Build debugger (.mdb) files for dlls],
+	CSFLAGS='-g'
+)
+AC_SUBST(CSFLAGS)
+
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
@@ -300,7 +305,7 @@ echo "---"
 echo "Configuration summary"
 echo ""
 echo "   * Installation prefix = $prefix"
-echo "   * $CS compiler: $CSC"
+echo "   * $CS compiler: $CSC $CSFLAGS"
 echo ""
 echo "   Optional assemblies included in the build:"
 echo ""

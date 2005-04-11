@@ -9,7 +9,7 @@ endif
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gtk-dotnet
 noinst_DATA = $(TARGET)
-CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config
 
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../gdk/gdk-sharp.dll
@@ -30,7 +30,8 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 $(ASSEMBLY): $(build_sources) $(references) gtk-sharp.snk
-	$(CSC) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(build_references) $(build_sources)
+	@rm -f $(ASSEMBLY).mdb
+	$(CSC) $(CSFLAGS) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(build_references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

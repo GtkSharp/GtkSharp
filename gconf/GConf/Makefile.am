@@ -6,7 +6,7 @@ else
 TARGET = 
 endif
 noinst_DATA = $(TARGET)
-CLEANFILES = $(ASSEMBLY) gtk-sharp.snk
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
 DISTCLEANFILES = gconf-sharp-2.0.pc $(ASSEMBLY).config
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
@@ -38,7 +38,8 @@ gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk
-	$(CSC) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
+	@rm -f $(ASSEMBLY).mdb
+	$(CSC) $(CSFLAGS) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

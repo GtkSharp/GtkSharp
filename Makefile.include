@@ -10,7 +10,7 @@ noinst_DATA = $(TARGET)
 TARGET_API = $(pkg:=-api.xml)
 gapidir = $(datadir)/gapi-2.0
 gapi_DATA = $(TARGET_API)
-CLEANFILES = $(ASSEMBLY) generated-stamp generated/*.cs $(API) glue/generated.c $(SNK)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb generated-stamp generated/*.cs $(API) glue/generated.c $(SNK)
 DISTCLEANFILES = $(ASSEMBLY).config
 
 EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(customs) $(sources) $(add_dist)
@@ -43,7 +43,8 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) $(top_builddir)/AssemblyInfo
 build_references = $(addprefix /r:, $(references))
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
-	$(CSC) -nowarn:0612 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources) $(GENERATED_SOURCES)
+	@rm -f $(ASSEMBLY).mdb
+	$(CSC) $(CSFLAGS) -nowarn:0612 -nowarn:0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources) $(GENERATED_SOURCES)
 
 install-data-local:
 	@if test -n '$(pkg)'; then						\
