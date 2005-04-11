@@ -40,7 +40,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = custom-notebook.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GNOMEVFS_TARGETS) $(GNOME_TARGETS) $(GLADE_TARGETS) $(VTE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -124,8 +124,8 @@ custom-widget.exe: $(srcdir)/CustomWidget.cs $(assemblies)
 actions.exe: $(srcdir)/Actions.cs
 	$(CSC) /debug /unsafe /out:actions.exe $(references) $(srcdir)/Actions.cs
 
-custom-notebook.exe: $(srcdir)/CustomNotebook.cs $(assemblies)
-	$(CSC) /debug /out:custom-notebook.exe $(references) $(srcdir)/CustomNotebook.cs
+polarfixed.exe: $(srcdir)/PolarFixed.cs $(assemblies)
+	$(CSC) /debug /out:polarfixed.exe $(references) $(srcdir)/PolarFixed.cs
 
 testvfs.exe: $(srcdir)/TestVfs.cs $(assemblies)
 	$(CSC) /debug /out:testvfs.exe $(references) $(srcdir)/TestVfs.cs

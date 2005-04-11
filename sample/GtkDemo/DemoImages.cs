@@ -122,8 +122,7 @@ namespace GtkDemo
 		{
 			ToggleButton toggle = o as ToggleButton;
 
-			Widget[] children = vbox.Children;
-			foreach (Widget widget in children) {
+			foreach (Widget widget in vbox) {
 				// don't disable our toggle
 				if (widget != toggle)
 					widget.Sensitive = !toggle.Active;

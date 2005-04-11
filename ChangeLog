@@ -1,3 +1,29 @@
+2005-04-11  Dan Winship  <danw@novell.com>
+
+	* generator/ClassBase.cs (ParseImplements): record both managed
+	and unmanaged interface declarations.
+	(Implements): check recursively
+
+	* generator/ObjectGen.cs (Generate): output managed interfaces
+
+	* gtk/Gtk.metadata: make Container implement IEnumerable
+
+	* gtk/Container.custom (GetEnumerator): implement (a simplified
+	form of Children).
+	(AllChildren): add this (which accumulates the results of
+	Forall()).
+	(ForAll): mark ForAll(bool,CallbackInvoker) obsolete and add a
+	ForAll(bool,Gtk.Callback) overload to replace it.
+
+	* sample/PolarFixed.cs: new silly but fully-functional demo of
+	how to subclass container.
+
+	* sample/CustomNotebook.cs: kill this, since it was really
+	complicated, and never fully functional.
+
+	* sample/GtkDemo/DemoImages.cs (ToggleSensitivity): Use foreach
+	directly on the container, rather than on its .Children.
+
 2005-04-11  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Quit.custom : obsolete AddFull and implement Add properly.

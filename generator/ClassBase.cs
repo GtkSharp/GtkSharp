@@ -33,7 +33,8 @@ namespace GtkSharp.Generation {
 		protected Hashtable props = new Hashtable();
 		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
-		protected ArrayList interfaces = null;
+		protected ArrayList interfaces = new ArrayList();
+		protected ArrayList managed_interfaces = new ArrayList();
 		protected ArrayList ctors = new ArrayList();
 
 		private bool ctors_initted = false;
@@ -101,7 +102,7 @@ namespace GtkSharp.Generation {
 					break;
 
 				case "implements":
-					interfaces = ParseImplements (member);
+					ParseImplements (member);
 					break;
 
 				case "constructor":
@@ -193,18 +194,17 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private ArrayList ParseImplements (XmlElement member)
+		private void ParseImplements (XmlElement member)
 		{
-			ArrayList ifaces = new ArrayList ();
-			
 			foreach (XmlNode node in member.ChildNodes) {
 				if (node.Name != "interface")
 					continue;
 				XmlElement element = (XmlElement) node;
-				ifaces.Add (element.GetAttribute ("cname"));
+				if (element.HasAttribute ("cname"))
+					interfaces.Add (element.GetAttribute ("cname"));
+				else if (element.HasAttribute ("name"))
+					managed_interfaces.Add (element.GetAttribute ("name"));
 			}
-
-			return ifaces;
 		}
 		
 		protected bool IgnoreMethod (Method method)
@@ -273,7 +273,7 @@ namespace GtkSharp.Generation {
 			if (p == null && Parent != null) 
 				p = Parent.GetMethodRecursively (name, true);
 			
-			if (check_self && p == null && interfaces != null) {
+			if (check_self && p == null) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
 					p = igen.GetMethodRecursively (name, true);
@@ -310,7 +310,7 @@ namespace GtkSharp.Generation {
 			if (p == null && Parent != null) 
 				p = Parent.GetSignalRecursively (name, true);
 			
-			if (check_self && p == null && interfaces != null) {
+			if (check_self && p == null) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
 					p = igen.GetSignalRecursively (name, true);
@@ -324,8 +324,10 @@ namespace GtkSharp.Generation {
 
 		public bool Implements (string iface)
 		{
-			if (interfaces != null)
-				return interfaces.Contains (iface);
+			if (interfaces.Contains (iface))
+				return true;
+			else if (Parent != null)
+				return Parent.Implements (iface);
 			else
 				return false;
 		}

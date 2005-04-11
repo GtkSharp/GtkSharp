@@ -48,6 +48,30 @@ public Widget[] Children {
 	}
 }
 
+public IEnumerator GetEnumerator ()
+{
+	IntPtr list_ptr = gtk_container_get_children (Handle);
+	GLib.List list = new GLib.List (list_ptr);
+	return list.GetEnumerator ();
+}
+
+class ChildAccumulator {
+	public ArrayList Children = new ArrayList ();
+
+	public void Add (Gtk.Widget widget)
+	{
+		Children.Add (widget);
+	}
+}
+
+public IEnumerable AllChildren {
+	get {
+		ChildAccumulator acc = new ChildAccumulator ();
+		Forall (new Gtk.Callback (acc.Add));
+		return acc.Children;
+	}
+}
+
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern bool gtk_container_get_focus_chain (IntPtr raw, out IntPtr list_ptr);
 
@@ -109,6 +133,7 @@ static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr han
 [GLib.CDeclCallback]
 delegate void ForallDelegate (IntPtr container, bool include_internals, IntPtr cb, IntPtr data);
 
+static ForallDelegate ForallOldCallback;
 static ForallDelegate ForallCallback;
 
 public struct CallbackInvoker {
@@ -139,11 +164,32 @@ public struct CallbackInvoker {
 	}
 }
 
-static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
+static void ForallOld_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 {
 	Container obj = GLib.Object.GetObject (container, false) as Container;
 	CallbackInvoker invoker = new CallbackInvoker (cb, data);
 	obj.ForAll (include_internals, invoker);
+}
+
+static void OverrideForallOld (GLib.GType gtype)
+{
+	if (ForallOldCallback == null)
+		ForallOldCallback = new ForallDelegate (ForallOld_cb);
+	gtksharp_container_override_forall (gtype, ForallOldCallback);
+}
+
+[Obsolete ("Override the ForAll(bool,Gtk.Callback) method instead")]
+[GLib.DefaultSignalHandler (Type=typeof(Gtk.Container), ConnectionMethod="OverrideForallOld")]
+protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
+{
+	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
+}
+
+static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
+{
+	Container obj = GLib.Object.GetObject (container, false) as Container;
+	CallbackInvoker invoker = new CallbackInvoker (cb, data);
+	obj.ForAll (include_internals, new Gtk.Callback (invoker.Invoke));
 }
 
 static void OverrideForall (GLib.GType gtype)
@@ -154,8 +200,14 @@ static void OverrideForall (GLib.GType gtype)
 }
 
 [GLib.DefaultSignalHandler (Type=typeof(Gtk.Container), ConnectionMethod="OverrideForall")]
-protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
+protected virtual void ForAll (bool include_internals, Gtk.Callback callback)
 {
+	CallbackInvoker invoker;
+	try {
+		invoker = (CallbackInvoker)callback.Target;
+	} catch {
+		throw new ApplicationException ("ForAll can only be called as \"base.ForAll()\". Use Forall() or Foreach().");
+	}
 	gtksharp_container_base_forall (Handle, include_internals, invoker.Callback, invoker.Data);
 }
 

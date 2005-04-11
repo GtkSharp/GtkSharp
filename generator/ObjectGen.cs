@@ -140,12 +140,15 @@ namespace GtkSharp.Generation {
 				di.objects.Add (CName, QualifiedName);
 				sw.Write (" : " + cs_parent);
 			}
-			if (interfaces != null) {
-				foreach (string iface in interfaces) {
-					if (Parent != null && Parent.Implements (iface))
-						continue;
-					sw.Write (", " + table.GetCSType (iface));
-				}
+			foreach (string iface in interfaces) {
+				if (Parent != null && Parent.Implements (iface))
+					continue;
+				sw.Write (", " + table.GetCSType (iface));
+			}
+			foreach (string iface in managed_interfaces) {
+				if (Parent != null && Parent.Implements (iface))
+					continue;
+				sw.Write (", " + iface);
 			}
 			sw.WriteLine (" {");
 			sw.WriteLine ();
@@ -155,7 +158,7 @@ namespace GtkSharp.Generation {
 			GenChildProperties (gen_info);
 			
 			bool has_sigs = (sigs != null && sigs.Count > 0);
-			if (!has_sigs && interfaces != null) {
+			if (!has_sigs) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = table.GetClassGen (iface);
 					if (igen != null && igen.Signals != null) {
@@ -180,7 +183,7 @@ namespace GtkSharp.Generation {
 
 			GenMethods (gen_info, null, null);
 			
-			if (interfaces != null) {
+			if (interfaces.Count != 0) {
 				Hashtable all_methods = new Hashtable ();
 				Hashtable collisions = new Hashtable ();
 				foreach (string iface in interfaces) {

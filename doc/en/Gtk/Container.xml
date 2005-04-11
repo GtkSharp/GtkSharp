@@ -532,13 +532,70 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Obtains the the container's non-internal children.</summary>
+        <summary>Obtains an array of the container's (non-internal) children.</summary>
         <returns>An array of non-internal children.</returns>
         <remarks>
-          <para>
-	  See <see cref="M:Gtk.Container.Forall" /> for details on what constitutes an "internal" child.
-	  </para>
+	    <para>
+		Returns the container's non-internal children; that is, generally, the
+		children that were explicitly added to the container by the application, as
+		opposed to those widgets that are internal implementation details of the
+		container.
+	    </para>
+	    <para>
+		If you simply want to do a <see langword="foreach" /> loop on the
+		container's children, you do not need to use the Children property.
+		Just do:
+	    </para>
+	    <example>
+		<code lang="C#">
+foreach (Widget w in myContainer) {
+	// Do something with w
+}
+		</code>
+	    </example>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEnumerator">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an <see cref="T:System.Collections.IEnumerator" /> for the container's children</summary>
+        <returns>a <see cref="T:System.Collections.IEnumerator" /></returns>
+        <remarks>
+	    <para>
+		<see cref="T:Gtk.Container" /> implements
+		<see cref="T:System.Collections.IEnumerable" />, so you can iterate
+		through its children like this:
+	    </para>
+	    <example>
+		<code lang="C#">
+foreach (Widget w in myContainer) {
+	// Do something with w
+}
+		</code>
+	    </example>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AllChildren">
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerable AllChildren { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Allows you to enumerate all of the container's children.</summary>
+        <returns>an <see cref="T:System.Collections.IEnumerable" /></returns>
+        <remarks>
+	    Enumerates all of the container's children, including those widgets that are
+	    internal implementation details of the container.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FocusChain">
@@ -573,7 +630,7 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="ForAll">
+    <Member MemberName="ForAll" Deprecated="true">
       <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Container+CallbackInvoker invoker);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -585,9 +642,32 @@
       </Parameters>
       <Docs>
         <summary>Run a given callback for every object inside this container.</summary>
-        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include this container's children's children when running the callback.</param>
+        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
         <param name="invoker">a <see cref="T:Gtk.Container+CallbackInvoker" /></param>
-        <remarks />
+        <remarks>
+	    Deprecated: overload <see cref="M:Gtk.Container.Forall(System.Boolean,Gtk.Callback)" /> instead.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForAll">
+      <MemberSignature Language="C#" Value="protected virtual void ForAll (bool include_internals, Gtk.Callback callback);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="include_internals" Type="System.Boolean" />
+        <Parameter Name="callback" Type="Gtk.Callback" />
+      </Parameters>
+      <Docs>
+        <summary>Run a given callback for every object inside this container.</summary>
+        <param name="include_internals">a <see cref="T:System.Boolean" />, whether to include "internal" children when running the callback.</param>
+        <param name="callback">a <see cref="T:Gtk.Callback" /></param>
+        <remarks>
+	    Overload this in subclasses of Gtk.Container to implement the
+	    <see cref="M:Gtk.Container.Foreach" /> and <see cref="M:Gtk.Container.Forall" />
+	    methods.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildType">
@@ -619,7 +699,7 @@
         <Parameter Name="notify" Type="Gtk.DestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>Runs <paramref name="cb"/> over every item in this container.</summary>
+        <summary>Runs <paramref name="cb" /> over every item in this container.</summary>
         <param name="cb">a <see cref="T:Gtk.Callback" /></param>
         <param name="marshal">a <see cref="T:Gtk.CallbackMarshal" /></param>
         <param name="callback_data">a <see cref="T:System.IntPtr" />, the data to pass to the callback method.</param>
