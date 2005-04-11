@@ -1,0 +1,74 @@
+// Gtk.Quit.custom - Gtk Quit class customizations
+//
+// Author: Mike Kestner <mkestner@novell.com>
+//
+// Copyright (c) 2005 Novell, Inc. 
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
+		class QuitProxy {
+
+			GtkSharp.FunctionWrapper function;
+			GtkSharp.CallbackMarshalWrapper marshal;
+			IntPtr data;
+			DestroyNotify destroy;
+			NativeDestroyNotify handler;
+
+			public QuitProxy (GtkSharp.FunctionWrapper function, GtkSharp.CallbackMarshalWrapper marshal, IntPtr data, DestroyNotify destroy)
+			{
+				this.marshal = marshal;
+				this.function = function;
+				this.destroy = destroy;
+				this.data = data;
+				handler = new NativeDestroyNotify (OnDestroy);
+			}
+
+			void OnDestroy (IntPtr data)
+			{
+				if (destroy != null)
+					destroy ();
+
+				GCHandle gch = (GCHandle) data;
+				gch.Free ();
+			}
+
+			public NativeDestroyNotify Handler {
+				get {
+					return handler;
+				}
+			}
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern uint gtk_quit_add_full(uint main_level, GtkSharp.FunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, NativeDestroyNotify destroy);
+
+		[Obsolete ("Replaced by Add method")]
+		public static uint AddFull (uint main_level, Function function, CallbackMarshal marshal, IntPtr data, DestroyNotify destroy) 
+		{
+			GtkSharp.FunctionWrapper function_wrapper = new GtkSharp.FunctionWrapper (function);
+			GtkSharp.CallbackMarshalWrapper marshal_wrapper = new GtkSharp.CallbackMarshalWrapper (marshal);
+			QuitProxy proxy = new QuitProxy (function_wrapper, marshal_wrapper, data, destroy);
+			GCHandle gch = GCHandle.Alloc (proxy);
+			return gtk_quit_add_full (main_level, function_wrapper.NativeDelegate, marshal_wrapper.NativeDelegate, (IntPtr) gch, proxy.Handler);
+		}
+
+		public static uint Add (uint main_level, Function function) 
+		{
+			GtkSharp.FunctionWrapper function_wrapper = new GtkSharp.FunctionWrapper (function);
+			GCHandle gch = GCHandle.Alloc (function_wrapper);
+			return gtk_quit_add_full (main_level, function_wrapper.NativeDelegate, null, (IntPtr) gch, DestroyHelper.NotifyHandler);
+		}
+
