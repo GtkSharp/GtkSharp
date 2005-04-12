@@ -58,17 +58,25 @@
 		}
 
 		[DllImport("libgdk-win32-2.0-0.dll")]
-		static extern void gdk_pixbuf_render_pixmap_and_mask(IntPtr raw, IntPtr pixmap_return, IntPtr mask_return, int alpha_threshold);
+		static extern void gdk_pixbuf_render_pixmap_and_mask (IntPtr raw, out IntPtr pixmap_return, out IntPtr mask_return, int alpha_threshold);
 
-		public void RenderPixmapAndMask(Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold) {
-			gdk_pixbuf_render_pixmap_and_mask(Handle, pixmap_return.Handle, mask_return.Handle, alpha_threshold);
+		public void RenderPixmapAndMask (out Pixmap pixmap_return, out Pixmap mask_return, int alpha_threshold)
+		{
+			IntPtr mask_handle, pixmap_handle;
+			gdk_pixbuf_render_pixmap_and_mask (Handle, out pixmap_handle, out mask_handle, alpha_threshold);
+			pixmap_return = GLib.Object.GetObject (pixmap_handle) as Pixmap;
+			mask_return = GLib.Object.GetObject (mask_handle) as Pixmap;
 		}
 
 		[DllImport("libgdk-win32-2.0-0.dll")]
-		static extern void gdk_pixbuf_render_pixmap_and_mask_for_colormap(IntPtr raw, IntPtr colormap, IntPtr pixmap_return, IntPtr mask_return, int alpha_threshold);
+		static extern void gdk_pixbuf_render_pixmap_and_mask_for_colormap (IntPtr raw, IntPtr colormap, out IntPtr pixmap_return, out IntPtr mask_return, int alpha_threshold);
 
-		public void RenderPixmapAndMaskForColormap(Gdk.Colormap colormap, Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold) {
-			gdk_pixbuf_render_pixmap_and_mask_for_colormap(Handle, colormap.Handle, pixmap_return.Handle, mask_return.Handle, alpha_threshold);
+		public void RenderPixmapAndMaskForColormap (Colormap colormap, out Pixmap pixmap_return, out Pixmap mask_return, int alpha_threshold) 
+		{
+			IntPtr mask_handle, pixmap_handle;
+			gdk_pixbuf_render_pixmap_and_mask_for_colormap (Handle, colormap == null ? IntPtr.Zero : colormap.Handle, out pixmap_handle, out mask_handle, alpha_threshold);
+			pixmap_return = GLib.Object.GetObject (pixmap_handle) as Pixmap;
+			mask_return = GLib.Object.GetObject (mask_handle) as Pixmap;
 		}
 
 		[DllImport("libgdk-win32-2.0-0.dll")]

@@ -1460,75 +1460,68 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMask">
-      <MemberSignature Language="C#" Value="public void RenderPixmapAndMask (Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold);" />
+      <MemberSignature Language="C#" Value="public void RenderPixmapAndMask (out Gdk.Pixmap pixmap_return, out Gdk.Pixmap mask_return, int alpha_threshold);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="pixmap_return" Type="Gdk.Pixmap" />
-        <Parameter Name="mask_return" Type="Gdk.Pixmap" />
+        <Parameter Name="pixmap_return" Type="Gdk.Pixmap&amp;" RefType="out" />
+        <Parameter Name="mask_return" Type="Gdk.Pixmap&amp;" RefType="out" />
         <Parameter Name="alpha_threshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>
-	  Creates a pixmap and a mask bitmap which are returned in the 
-	  <paramref name="pixmap_return" /> and <paramref name="mask_return" /> 
-	  arguments, respectively, and renders a pixbuf and its
-	  corresponding thresholded alpha mask to them.  This is merely a convenience
-	  function; applications that need to render pixbufs with dither offsets or to
-	  given drawables should use <see cref="M:Gdk.Pixbuf.RenderToDrawableAlpha" />
-	  or <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> and
-	  <see cref="M:Gdk.Pixbuf.RenderThresholdAlpha" />.
-	</summary>
+        <summary>Creates pixmap and mask bitmaps for a given alpha threshold.</summary>
         <param name="pixmap_return">a <see cref="T:Gdk.Pixmap" /></param>
         <param name="mask_return">a <see cref="T:Gdk.Pixmap" /></param>
         <param name="alpha_threshold">a <see cref="T:System.Int32" />, threshold value for opacity.</param>
         <remarks>
+          <para>
+	  This is merely a convenience function; applications that need to render pixbufs with dither offsets or to
+	  given drawables should use <see cref="M:Gdk.Pixbuf.RenderToDrawableAlpha" />
+	  or <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> and <see cref="M:Gdk.Pixbuf.RenderThresholdAlpha" />.
+          </para>
+          <para>
 	  The pixmap that is created is created for the colormap returned
 	  by <see cref="M:Gdk.Rgb.GetColormap" />. You normally will want to instead use
 	  the actual colormap for a widget, and use
 	  <see cref="M:Gdk.Pixbuf.RenderPixmapAndMaskForColormap" />,
 	  If the pixbuf does not have an alpha channel, then <paramref name="mask_return" /> will be set
 	  to <see langword="null" />.
+          </para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderPixmapAndMaskForColormap">
-      <MemberSignature Language="C#" Value="public void RenderPixmapAndMaskForColormap (Gdk.Colormap colormap, Gdk.Pixmap pixmap_return, Gdk.Pixmap mask_return, int alpha_threshold);" />
+      <MemberSignature Language="C#" Value="public void RenderPixmapAndMaskForColormap (Gdk.Colormap colormap, out Gdk.Pixmap pixmap_return, out Gdk.Pixmap mask_return, int alpha_threshold);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="colormap" Type="Gdk.Colormap" />
-        <Parameter Name="pixmap_return" Type="Gdk.Pixmap" />
-        <Parameter Name="mask_return" Type="Gdk.Pixmap" />
+        <Parameter Name="pixmap_return" Type="Gdk.Pixmap&amp;" RefType="out" />
+        <Parameter Name="mask_return" Type="Gdk.Pixmap&amp;" RefType="out" />
         <Parameter Name="alpha_threshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>
-	    Creates a pixmap and a mask bitmap which are returned in the 
-	    <paramref name="pixmap_return" /> and <paramref name="mask_return" /> 
-	    arguments, respectively, and renders a pixbuf and its
-	    corresponding thresholded alpha mask to them.  
-	    This is merely a convenience
-	    function; applications that need to render pixbufs with dither offsets or to
-	    given drawables should use <see cref="M:Gdk.Pixbuf.RenderToDrawableAlpha" />
-	    or <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> and
-	    <see cref="M:Gdk.Pixbuf.RenderThresholdAlpha" />.
-	</summary>
+        <summary>Creates pixmap and mask bitmaps for a given alpha threshold using a specified colormap.</summary>
         <param name="colormap">a <see cref="T:Gdk.Colormap" /></param>
         <param name="pixmap_return">a <see cref="T:Gdk.Pixmap" /></param>
         <param name="mask_return">a <see cref="T:Gdk.Pixmap" /></param>
-        <param name="alpha_threshold">a <see cref="T:System.Int32" /></param>
+        <param name="alpha_threshold">a <see cref="T:System.Int32" />, threshold value for opacity.</param>
         <remarks>
+          <para>
+	    This is merely a convenience function; applications that need to render pixbufs with dither offsets or to
+	    given drawables should use <see cref="M:Gdk.Pixbuf.RenderToDrawableAlpha" /> or <see cref="M:Gdk.Pixbuf.RenderToDrawable" /> and <see cref="M:Gdk.Pixbuf.RenderThresholdAlpha" />.
+          </para>
+          <para>
 	    The pixmap that is created uses the <see cref="T:Gdk.Colormap" /> specified by <paramref name="colormap" />.
-	    This colormap must match the colormap of the window where the pixmap
-	    will eventually be used or an error will result.
+	    This colormap must match the colormap of the window where the pixmap will eventually be used or an error will result.
 	    If the pixbuf does not have an alpha channel, then <paramref name="mask_return" /> will be set
 	    to <see langword="null" />.
-	  </remarks>
+          </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
