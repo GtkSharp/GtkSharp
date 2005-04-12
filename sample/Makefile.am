@@ -157,5 +157,5 @@ EXTRA_DIST = 				\
 	cairo-sample.exe.config		\
 	CustomWidget.cs			\
 	Actions.cs			\
-	CustomNotebook.cs		\
+	PolarFixed.cs			\
 	TestVfs.cs
