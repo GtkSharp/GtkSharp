@@ -133,7 +133,9 @@ namespace GtkSharp.Parsing {
 					}
 				}
 			
-				system ("gapi_format_xml " + prefile + " " + outfile);
+				XmlDocument final = new XmlDocument ();
+				final.Load (prefile);
+				final.Save (outfile);
 				File.Delete (prefile);
 			}
 
