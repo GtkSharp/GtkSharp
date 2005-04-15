@@ -37,7 +37,7 @@ GTKHTML_SOURCEFILES = \
         gtkhtml-3.0.10/src/gtkhtml-stream.h
 
 api:
-	PATH=../parser:$$PATH ../parser/gapi_parser.pl gtk-sharp-sources.xml
+	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-sources.xml
 
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.10.tar.gz --output-document=- | tar -xz $(GTKHTML_SOURCEFILES)
