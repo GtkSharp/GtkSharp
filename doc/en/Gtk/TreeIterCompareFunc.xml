@@ -8,7 +8,105 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>Delegate function to specify the shape of comparison functions for tree iterators.</summary>
-    <remarks>Functions with this call syntax are usually used for comparison between two tree iterators as part of a sort. (FIXME: provide better examples.)</remarks>
+    <remarks>Functions with this call syntax are usually used for comparison between two tree iterators as part of a sort.
+
+
+<example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+public class SortableTreeView : TreeView	{
+
+	TreeStore ts;
+	TreeIter iter;
+	TreeViewColumn col0;
+	TreeViewColumn col1;
+
+	public SortableTreeView	()	{
+		Type[] col_types = {typeof(string), typeof(string)};
+
+		ts = new TreeStore (col_types);
+		ts.SetSortFunc (0, col0_compare, IntPtr.Zero, null); // use col0_compare to sort
+
+		iter = new TreeIter ();
+
+		AddRow ("1,1", "1,2");
+		AddRow ("2,1", "2,2");
+		
+		
+		this.Model = ts;
+		this.HeadersClickable = true;
+		this.HeadersVisible = true;
+
+		col0 = new TreeViewColumn ();
+		col0.Clickable = true;
+		col0.Title = "Column 1";
+		CellRendererText col0_renderer = new CellRendererText ();
+		col0.PackStart (col0_renderer, true);
+		col0.AddAttribute (col0_renderer, "text", 0);
+		col0.Clicked += new EventHandler (col0_clicked);
+		this.AppendColumn (col0);
+
+		col1 = new TreeViewColumn ();
+		col1.Title = "Column 2";
+		CellRendererText col1_renderer = new CellRendererText ();
+		col1.PackStart (col1_renderer, true);
+		col1.AddAttribute (col1_renderer, "text", 1);
+		this.AppendColumn (col1);
+	}
+
+	public void AddRow (string val1, string val2)	{
+		ts.Append (out iter);
+		ts.SetValue (iter, 0, val1);
+		ts.SetValue (iter, 1, val2);
+	}
+
+	public int col0_compare (TreeModel model, TreeIter tia, TreeIter tib)	{
+		return String.Compare ((string) model.GetValue (tia, 0),
+				(string) model.GetValue (tib, 0));
+	}
+
+	private void col0_clicked (object o, EventArgs args)	{
+		col0.SortOrder = SetSortOrder (col0); // set order asc or desc
+		col0.SortIndicator = true; // turn on sort indicator
+		ts.SetSortColumnId (0, col0.SortOrder);
+	}
+
+	public SortType SetSortOrder (TreeViewColumn col)	{
+		if (col.SortIndicator)  {
+			if (col.SortOrder == SortType.Ascending)
+				return SortType.Descending;
+			else return SortType.Ascending;
+		}
+		else return SortType.Ascending;
+	}
+
+	public static void Main ()	{
+		Application.Init ();
+
+		Window win = new Window ("TreeIterCompareFunc Example");
+		win.DeleteEvent += new DeleteEventHandler (delete_event);
+		win.SetDefaultSize (400, 250);
+
+		ScrolledWindow sw = new ScrolledWindow ();
+		win.Add (sw);
+
+		SortableTreeView stv = new SortableTreeView ();
+		sw.Add (stv);
+
+		win.ShowAll ();
+		Application.Run ();
+	}
+
+	private static void delete_event (object o, DeleteEventArgs args)	{
+		Application.Quit ();
+	}
+		
+}
+
+  </code>
+      </example></remarks>
   </Docs>
   <Base>
     <BaseTypeName>System.Delegate</BaseTypeName>
