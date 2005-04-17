@@ -15,7 +15,7 @@ class PolarFixed : Container {
 	}
 
 	// The child properties object
-	public class PolarFixedChild : ContainerChild {
+	public class PolarFixedChild : Container.ContainerChild {
 		double theta;
 		uint r;
 
