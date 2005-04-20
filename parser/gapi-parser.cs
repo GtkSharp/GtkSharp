@@ -106,11 +106,34 @@ namespace GtkSharp.Parsing {
 								Console.Write ("<exclude {0}> ", excfile);
 								excludes [excfile] = 1;
 								break;
+							case "directory":
+								string dir_path = elem.GetAttribute ("path");
+								Console.Write ("<directory {0}: excluding ", dir_path);
+								Hashtable excs = new Hashtable ();
+								foreach (XmlNode exc_node in srcnode.ChildNodes) {
+									if (exc_node.Name != "exclude")
+										continue;
+									string excfilename = (exc_node as XmlElement).InnerXml;
+									Console.Write (excfilename + " ");
+									excs [excfilename] = 1;
+								}
+								DirectoryInfo dinfo = new DirectoryInfo (dir_path);
+								foreach (FileInfo file in dinfo.GetFiles ("*.c")) {
+									if (excs.Contains (file.Name))
+										continue;
+									files.Add (dir_path + Path.DirectorySeparatorChar + file.Name);
+								}
+								foreach (FileInfo file in dinfo.GetFiles ("*.h")) {
+									if (excs.Contains (file.Name))
+										continue;
+									files.Add (dir_path + Path.DirectorySeparatorChar + file.Name);
+								}
+								Console.Write ("> ");
+								break;
 							default:
 								Console.WriteLine ("Invalid source: " + srcnode.Name);
 								break;
 							}
-			
 						}
 
 						Console.WriteLine ();
