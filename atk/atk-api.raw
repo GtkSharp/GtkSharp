@@ -43,6 +43,7 @@
       <member cname="ATK_RELATION_EMBEDS" name="Embeds" />
       <member cname="ATK_RELATION_EMBEDDED_BY" name="EmbeddedBy" />
       <member cname="ATK_RELATION_POPUP_FOR" name="PopupFor" />
+      <member cname="ATK_RELATION_PARENT_WINDOW_OF" name="ParentWindowOf" />
       <member cname="ATK_RELATION_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="Role" cname="AtkRole" type="enum">
@@ -122,6 +123,7 @@
       <member cname="ATK_ROLE_APPLICATION" name="Application" />
       <member cname="ATK_ROLE_AUTOCOMPLETE" name="Autocomplete" />
       <member cname="ATK_ROLE_EDITBAR" name="Editbar" />
+      <member cname="ATK_ROLE_EMBEDDED" name="Embedded" />
       <member cname="ATK_ROLE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="StateType" cname="AtkStateType" type="enum">
@@ -156,6 +158,7 @@
       <member cname="ATK_STATE_VISIBLE" name="Visible" />
       <member cname="ATK_STATE_MANAGES_DESCENDANTS" name="ManagesDescendants" />
       <member cname="ATK_STATE_INDETERMINATE" name="Indeterminate" />
+      <member cname="ATK_STATE_TRUNCATED" name="Truncated" />
       <member cname="ATK_STATE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="TextAttribute" cname="AtkTextAttribute" type="enum">
@@ -335,6 +338,13 @@
       </method>
     </interface>
     <interface name="Component" cname="AtkComponent">
+      <signal name="BoundsChanged" cname="bounds_changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkComponent*" name="component" />
+          <parameter type="AtkRectangle*" name="bounds" />
+        </parameters>
+      </signal>
       <virtual_method name="AddFocusHandler" cname="add_focus_handler">
         <return-type type="guint" />
         <parameters>
@@ -533,6 +543,18 @@
       </method>
     </interface>
     <interface name="Document" cname="AtkDocument">
+      <virtual_method name="GetDocumentType" cname="get_document_type">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDocument" cname="get_document">
+        <return-type type="gpointer" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+        </parameters>
+      </virtual_method>
       <method name="GetDocument" cname="atk_document_get_document">
         <return-type type="gpointer" />
       </method>
@@ -701,6 +723,36 @@
       </method>
     </interface>
     <interface name="Image" cname="AtkImage">
+      <virtual_method name="GetImagePosition" cname="get_image_position">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkImage*" name="image" />
+          <parameter type="gint*" name="x" />
+          <parameter type="gint*" name="y" />
+          <parameter type="AtkCoordType" name="coord_type" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetImageDescription" cname="get_image_description">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkImage*" name="image" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetImageSize" cname="get_image_size">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkImage*" name="image" />
+          <parameter type="gint*" name="width" />
+          <parameter type="gint*" name="height" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetImageDescription" cname="set_image_description">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="AtkImage*" name="image" />
+          <parameter type="const-gchar*" name="description" />
+        </parameters>
+      </virtual_method>
       <method name="GetImageDescription" cname="atk_image_get_image_description">
         <return-type type="const-gchar*" />
       </method>
@@ -2202,6 +2254,12 @@
       <field name="Relationship" cname="relationship" type="AtkRelationType" />
       <property name="RelationType" cname="relation_type" type="AtkRelationType" readable="true" writeable="true" />
       <property name="Target" cname="target" type="value_array" readable="true" writeable="true" />
+      <method name="AddTarget" cname="atk_relation_add_target">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkObject*" name="target" />
+        </parameters>
+      </method>
       <method name="GetRelationType" cname="atk_relation_get_relation_type">
         <return-type type="AtkRelationType" />
       </method>
@@ -2243,6 +2301,13 @@
         <return-type type="void" />
         <parameters>
           <parameter type="AtkRelation*" name="relation" />
+        </parameters>
+      </method>
+      <method name="AddRelationByType" cname="atk_relation_set_add_relation_by_type">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkRelationType" name="relationship" />
+          <parameter type="AtkObject*" name="target" />
         </parameters>
       </method>
       <method name="Contains" cname="atk_relation_set_contains">
@@ -2404,6 +2469,15 @@
       <field name="OldValue" cname="old_value" type="GValue" />
       <field name="NewValue" cname="new_value" type="GValue" />
     </struct>
+    <boxed name="Rectangle" cname="AtkRectangle">
+      <field name="X" cname="x" type="gint" />
+      <field name="Y" cname="y" type="gint" />
+      <field name="Width" cname="width" type="gint" />
+      <field name="Height" cname="height" type="gint" />
+      <method name="GetType" cname="atk_rectangle_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </boxed>
     <alias name="State" cname="AtkState" type="guint64" />
     <struct name="TextRange" cname="AtkTextRange">
       <field name="Bounds" cname="bounds" type="AtkTextRectangle" />

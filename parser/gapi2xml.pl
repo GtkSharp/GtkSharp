@@ -149,8 +149,8 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^}/);
 		}
 		$typefuncs{lc($class)} = $pedef;
-	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*(struct\s+)?\w+\s*\**\s*(\w+)\s*\(/) {
-		$fname = $4;
+	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*(struct\s+)?\w+\s*\**(\s*(const|G_CONST_RETURN)\s*\**)?\s*(\w+)\s*\(/) {
+		$fname = $6;
 		$fdef = "";
 		while ($line !~ /;/) {
 			$fdef .= $line;
@@ -923,13 +923,13 @@ sub addSignalElem
 		return $class;
 	}
 
-	if ($class =~ /;\s*(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\*\s*$method\)\s*\((.*?)\);/) {
+	if ($class =~ /;\s*(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
 		$ret = $2; $parms = $3;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
 			addParamsElem($sig_elem, split(/,/, $parms));
 		}
-		$class =~ s/;\s*(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\*\s*$method\)\s*\(.*?\);/;/;
+		$class =~ s/;\s*(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
 		die "$method $class";
 	}
@@ -943,7 +943,7 @@ sub addVirtualMethods
 	$class =~ s/\n\s*//g;
 	$class =~ s/\/\*.*?\*\///g;
 
-	while ($class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\*\s*(\w+)\)\s*\((.*?)\);/) {
+	while ($class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\)\s*\((.*?)\);/) {
 		$ret = $1 . $2; $cname = $3; $parms = $4;
 		if ($cname !~ /reserved/) {
 			$vm_elem = $doc->createElement('virtual_method');
@@ -955,7 +955,7 @@ sub addVirtualMethods
 				addParamsElem($vm_elem, split(/,/, $parms));
 			}
 		}
-		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\*\s*\w+\)\s*\(.*?\);/;/;
+		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\s*\*\s*\w+\)\s*\(.*?\);/;/;
 	}
 }
 

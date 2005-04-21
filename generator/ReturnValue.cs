@@ -109,6 +109,11 @@ namespace GtkSharp.Generation {
 			
 		public bool Validate ()
 		{
+			// FIXME: implement callback return values.
+			if (IGen is CallbackGen) {
+				Console.Write ("Callback rettype " + CSType);
+				return false;
+			}
 			if (MarshalType == "" || CSType == "") {
 				Console.Write("rettype: " + CType);
 				return false;

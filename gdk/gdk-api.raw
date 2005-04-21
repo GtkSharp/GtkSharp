@@ -190,6 +190,7 @@
       <member cname="GDK_SCROLL" name="Scroll" value="31" />
       <member cname="GDK_WINDOW_STATE" name="WindowState" value="32" />
       <member cname="GDK_SETTING" name="Setting" value="33" />
+      <member cname="GDK_OWNER_CHANGE" name="OwnerChange" value="34" />
     </enum>
     <enum name="ExtensionMode" cname="GdkExtensionMode" type="enum">
       <member cname="GDK_EXTENSION_EVENTS_NONE" name="None" />
@@ -332,6 +333,11 @@
       <member cname="GDK_OVERLAP_RECTANGLE_IN" name="In" />
       <member cname="GDK_OVERLAP_RECTANGLE_OUT" name="Out" />
       <member cname="GDK_OVERLAP_RECTANGLE_PART" name="Part" />
+    </enum>
+    <enum name="OwnerChange" cname="GdkOwnerChange" type="enum">
+      <member cname="GDK_OWNER_CHANGE_NEW_OWNER" name="NewOwner" />
+      <member cname="GDK_OWNER_CHANGE_DESTROY" name="Destroy" />
+      <member cname="GDK_OWNER_CHANGE_CLOSE" name="Close" />
     </enum>
     <enum name="PropMode" cname="GdkPropMode" type="enum">
       <member cname="GDK_PROP_MODE_REPLACE" name="Replace" />
@@ -798,6 +804,12 @@
           <parameter type="GdkEvent*" name="event" />
         </parameters>
       </method>
+      <method name="RequestSelectionNotification" cname="gdk_display_request_selection_notification">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkAtom" name="selection" />
+        </parameters>
+      </method>
       <method name="SetDoubleClickDistance" cname="gdk_display_set_double_click_distance">
         <return-type type="void" />
         <parameters>
@@ -816,10 +828,25 @@
           <parameter type="const-GdkDisplayPointerHooks*" name="new_hooks" />
         </parameters>
       </method>
+      <method name="StoreClipboard" cname="gdk_display_store_clipboard">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkWindow*" name="clipboard_window" />
+          <parameter type="guint32" name="time_" />
+          <parameter type="GdkAtom*" name="targets" />
+          <parameter type="gint" name="n_targets" />
+        </parameters>
+      </method>
+      <method name="SupportsClipboardPersistence" cname="gdk_display_supports_clipboard_persistence">
+        <return-type type="gboolean" />
+      </method>
       <method name="SupportsCursorAlpha" cname="gdk_display_supports_cursor_alpha">
         <return-type type="gboolean" />
       </method>
       <method name="SupportsCursorColor" cname="gdk_display_supports_cursor_color">
+        <return-type type="gboolean" />
+      </method>
+      <method name="SupportsSelectionNotification" cname="gdk_display_supports_selection_notification">
         <return-type type="gboolean" />
       </method>
       <method name="Sync" cname="gdk_display_sync">
@@ -1114,6 +1141,27 @@
           <parameter type="gint" name="height" />
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawGlyphsTransformed" cname="draw_glyphs_transformed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable" />
+          <parameter type="GdkGC*" name="gc" />
+          <parameter type="PangoMatrix*" name="matrix" />
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="DrawTrapezoids" cname="draw_trapezoids">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable" />
+          <parameter type="GdkGC*" name="gc" />
+          <parameter type="GdkTrapezoid*" name="trapezoids" />
+          <parameter type="gint" name="n_trapezoids" />
+        </parameters>
+      </virtual_method>
       <method name="DrawArc" cname="gdk_draw_arc">
         <return-type type="void" />
         <parameters>
@@ -1144,6 +1192,17 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GdkGC*" name="gc" />
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
+        </parameters>
+      </method>
+      <method name="DrawGlyphsTransformed" cname="gdk_draw_glyphs_transformed">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkGC*" name="gc" />
+          <parameter type="PangoMatrix*" name="matrix" />
           <parameter type="PangoFont*" name="font" />
           <parameter type="gint" name="x" />
           <parameter type="gint" name="y" />
@@ -1300,6 +1359,17 @@
           <parameter type="gint" name="height" />
         </parameters>
       </method>
+      <method name="DrawRectangleAlphaLibgtkOnly" cname="gdk_draw_rectangle_alpha_libgtk_only">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+          <parameter type="gint" name="width" />
+          <parameter type="gint" name="height" />
+          <parameter type="GdkColor*" name="color" />
+          <parameter type="guint16" name="alpha" />
+        </parameters>
+      </method>
       <method name="DrawRgb32Image" cname="gdk_draw_rgb_32_image">
         <return-type type="void" />
         <parameters>
@@ -1394,6 +1464,14 @@
           <parameter type="gint" name="y" />
           <parameter type="const-GdkWChar*" name="text" />
           <parameter type="gint" name="text_length" />
+        </parameters>
+      </method>
+      <method name="DrawTrapezoids" cname="gdk_draw_trapezoids">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkGC*" name="gc" />
+          <parameter type="GdkTrapezoid*" name="trapezoids" />
+          <parameter type="gint" name="n_trapezoids" />
         </parameters>
       </method>
       <method name="CopyToImage" cname="gdk_drawable_copy_to_image">
@@ -1810,6 +1888,50 @@
         </parameters>
       </method>
     </object>
+    <object name="PangoRenderer" cname="GdkPangoRenderer" parent="PangoRenderer">
+      <field name="Priv" cname="priv" type="GdkPangoRendererPrivate*" />
+      <property name="Screen" cname="screen" type="GdkScreen" readable="true" writeable="true" construct-only="true" />
+      <method name="GetDefault" cname="gdk_pango_renderer_get_default" shared="true">
+        <return-type type="PangoRenderer*" />
+        <parameters>
+          <parameter type="GdkScreen*" name="screen" />
+        </parameters>
+      </method>
+      <method name="GetType" cname="gdk_pango_renderer_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <constructor cname="gdk_pango_renderer_new">
+        <parameters>
+          <parameter type="GdkScreen*" name="screen" />
+        </parameters>
+      </constructor>
+      <method name="SetDrawable" cname="gdk_pango_renderer_set_drawable">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkDrawable*" name="drawable" />
+        </parameters>
+      </method>
+      <method name="SetGc" cname="gdk_pango_renderer_set_gc">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkGC*" name="gc" />
+        </parameters>
+      </method>
+      <method name="SetOverrideColor" cname="gdk_pango_renderer_set_override_color">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoRenderPart" name="part" />
+          <parameter type="const-GdkColor*" name="color" />
+        </parameters>
+      </method>
+      <method name="SetStipple" cname="gdk_pango_renderer_set_stipple">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoRenderPart" name="part" />
+          <parameter type="GdkBitmap*" name="stipple" />
+        </parameters>
+      </method>
+    </object>
     <object name="Pixmap" cname="GdkPixmap" parent="GObject">
       <method name="ColormapCreateFromXpm" cname="gdk_pixmap_colormap_create_from_xpm" shared="true">
         <return-type type="GdkPixmap*" />
@@ -2135,6 +2257,9 @@
           <parameter type="gint" name="height" />
         </parameters>
       </method>
+      <method name="ConfigureFinished" cname="gdk_window_configure_finished">
+        <return-type type="void" />
+      </method>
       <method name="ConstrainSize" cname="gdk_window_constrain_size" shared="true">
         <return-type type="void" />
         <parameters>
@@ -2150,6 +2275,9 @@
         <return-type type="void" />
       </method>
       <method name="Destroy" cname="gdk_window_destroy">
+        <return-type type="void" />
+      </method>
+      <method name="EnableSynchronizedConfigure" cname="gdk_window_enable_synchronized_configure">
         <return-type type="void" />
       </method>
       <method name="EndPaint" cname="gdk_window_end_paint">
@@ -2455,6 +2583,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GdkEventMask" name="event_mask" />
+        </parameters>
+      </method>
+      <method name="SetFocusOnMap" cname="gdk_window_set_focus_on_map">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="focus_on_map" />
         </parameters>
       </method>
       <method name="SetFunctions" cname="gdk_window_set_functions">
@@ -2885,6 +3019,16 @@
       <field name="Window" cname="window" type="GdkWindow*" />
       <field name="SendEvent" cname="send_event" type="gint8" />
     </struct>
+    <struct name="EventOwnerChange" cname="GdkEventOwnerChange">
+      <field name="Type" cname="type" type="GdkEventType" />
+      <field name="Window" cname="window" type="GdkWindow*" />
+      <field name="SendEvent" cname="send_event" type="gint8" />
+      <field name="Owner" cname="owner" type="GdkNativeWindow" />
+      <field name="Reason" cname="reason" type="GdkOwnerChange" />
+      <field name="Selection" cname="selection" type="GdkAtom" />
+      <field name="Time" cname="time" type="guint32" />
+      <field name="SelectionTime" cname="selection_time" type="guint32" />
+    </struct>
     <struct name="EventProperty" cname="GdkEventProperty">
       <field name="Type" cname="type" type="GdkEventType" />
       <field name="Window" cname="window" type="GdkWindow*" />
@@ -3252,6 +3396,14 @@
       <field name="Time" cname="time" type="guint32" />
       <field name="Axes" cname="axes" array_len="GDK_MAX_TIMECOORD_AXES" type="gdouble" />
     </struct>
+    <struct name="Trapezoid" cname="GdkTrapezoid">
+      <field name="Y1" cname="y1" type="double" />
+      <field name="X11" cname="x11" type="double" />
+      <field name="X21" cname="x21" type="double" />
+      <field name="Y2" cname="y2" type="double" />
+      <field name="X12" cname="x12" type="double" />
+      <field name="X22" cname="x22" type="double" />
+    </struct>
     <alias name="WChar" cname="GdkWChar" type="guint32" />
     <struct name="WindowAttr" cname="GdkWindowAttr">
       <field name="Title" cname="title" type="gchar*" />
@@ -3293,6 +3445,7 @@
       <field name="ModalHint" cname="modal_hint" bits="1" type="guint" />
       <field name="Destroyed" cname="destroyed" bits="2" type="guint" />
       <field name="AcceptFocus" cname="accept_focus" bits="1" type="guint" />
+      <field name="FocusOnMap" cname="focus_on_map" bits="1" type="guint" />
       <field name="EventMask" cname="event_mask" type="GdkEventMask" />
       <method name="GetType" cname="gdk_window_object_get_type" shared="true">
         <return-type type="GType" />
@@ -3321,6 +3474,12 @@
           <parameter type="GdkAtom" name="message_type" />
           <parameter type="GdkFilterFunc" name="func" />
           <parameter type="gpointer" name="data" />
+        </parameters>
+      </method>
+      <method name="AddOptionEntriesLibgtkOnly" cname="gdk_add_option_entries_libgtk_only" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GOptionGroup*" name="group" />
         </parameters>
       </method>
       <method name="DevicesList" cname="gdk_devices_list" shared="true">
@@ -3378,6 +3537,9 @@
           <parameter type="gint*" name="argc" />
           <parameter type="gchar***" name="argv" />
         </parameters>
+      </method>
+      <method name="PreParseLibgtkOnly" cname="gdk_pre_parse_libgtk_only" shared="true">
+        <return-type type="void" />
       </method>
       <method name="SetDoubleClickTime" cname="gdk_set_double_click_time" shared="true">
         <return-type type="void" />
@@ -3566,6 +3728,12 @@
         <parameters>
           <parameter type="GdkDragContext*" name="context" />
           <parameter type="guint32" name="time_" />
+        </parameters>
+      </method>
+      <method name="DropSucceeded" cname="gdk_drag_drop_succeeded" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkDragContext*" name="context" />
         </parameters>
       </method>
       <method name="FindWindow" cname="gdk_drag_find_window" shared="true">
@@ -3839,6 +4007,14 @@
           <parameter type="guint32" name="time_" />
         </parameters>
       </method>
+      <method name="GrabInfoLibgtkOnly" cname="gdk_keyboard_grab_info_libgtk_only" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkDisplay*" name="display" />
+          <parameter type="GdkWindow**" name="grab_window" />
+          <parameter type="gboolean*" name="owner_events" />
+        </parameters>
+      </method>
       <method name="Ungrab" cname="gdk_keyboard_ungrab" shared="true">
         <return-type type="void" />
         <parameters>
@@ -3908,7 +4084,7 @@
           <parameter type="GdkScreen*" name="screen" />
         </parameters>
       </method>
-      <method name="ContextSetColormap" cname="gdk_pango_context_set_colormap" shared="true">
+      <method name="ContextSetColormap" cname="gdk_pango_context_set_colormap" deprecated="1" shared="true">
         <return-type type="void" />
         <parameters>
           <parameter type="PangoContext*" name="context" />
@@ -4046,6 +4222,14 @@
           <parameter type="guint32" name="time_" />
         </parameters>
       </method>
+      <method name="GrabInfoLibgtkOnly" cname="gdk_pointer_grab_info_libgtk_only" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkDisplay*" name="display" />
+          <parameter type="GdkWindow**" name="grab_window" />
+          <parameter type="gboolean*" name="owner_events" />
+        </parameters>
+      </method>
       <method name="IsGrabbed" cname="gdk_pointer_is_grabbed" shared="true">
         <return-type type="gboolean" />
       </method>
@@ -4109,6 +4293,12 @@
       </method>
     </class>
     <class name="Rgb" cname="GdkRgb_">
+      <method name="ColormapDitherable" cname="gdk_rgb_colormap_ditherable" shared="true">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkColormap*" name="cmap" />
+        </parameters>
+      </method>
       <method name="Ditherable" cname="gdk_rgb_ditherable" shared="true">
         <return-type type="gboolean" />
       </method>
@@ -4429,6 +4619,12 @@
       <member cname="GDK_PIXBUF_FRAME_DISPOSE" name="Dispose" />
       <member cname="GDK_PIXBUF_FRAME_REVERT" name="Revert" />
     </enum>
+    <enum name="PixbufRotation" cname="GdkPixbufRotation" type="enum">
+      <member cname="GDK_PIXBUF_ROTATE_NONE" name="None" />
+      <member cname="GDK_PIXBUF_ROTATE_COUNTERCLOCKWISE" name="Counterclockwise" value="90" />
+      <member cname="GDK_PIXBUF_ROTATE_UPSIDEDOWN" name="Upsidedown" value="180" />
+      <member cname="GDK_PIXBUF_ROTATE_CLOCKWISE" name="Clockwise" value="270" />
+    </enum>
     <enum name="PixdataDumpType" cname="GdkPixdataDumpType" type="flags">
       <member cname="GDK_PIXDATA_DUMP_PIXDATA_STREAM" name="PixdataStream" />
       <member cname="GDK_PIXDATA_DUMP_PIXDATA_STRUCT" name="PixdataStruct" value="1" />
@@ -4556,6 +4752,12 @@
           <parameter type="guint32" name="pixel" />
         </parameters>
       </method>
+      <method name="Flip" cname="gdk_pixbuf_flip">
+        <return-type type="GdkPixbuf*" />
+        <parameters>
+          <parameter type="gboolean" name="horizontal" />
+        </parameters>
+      </method>
       <method name="FromPixdata" cname="gdk_pixbuf_from_pixdata" shared="true">
         <return-type type="GdkPixbuf*" />
         <parameters>
@@ -4636,6 +4838,15 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
+      <constructor cname="gdk_pixbuf_new_from_file_at_scale">
+        <parameters>
+          <parameter type="const-char*" name="filename" />
+          <parameter type="int" name="width" />
+          <parameter type="int" name="height" />
+          <parameter type="gboolean" name="preserve_aspect_ratio" />
+          <parameter type="GError**" name="error" />
+        </parameters>
+      </constructor>
       <constructor cname="gdk_pixbuf_new_from_file_at_size">
         <parameters>
           <parameter type="const-char*" name="filename" />
@@ -4668,6 +4879,12 @@
       </constructor>
       <method name="Ref" cname="gdk_pixbuf_ref" deprecated="1">
         <return-type type="GdkPixbuf*" />
+      </method>
+      <method name="RotateSimple" cname="gdk_pixbuf_rotate_simple">
+        <return-type type="GdkPixbuf*" />
+        <parameters>
+          <parameter type="GdkPixbufRotation" name="angle" />
+        </parameters>
       </method>
       <method name="SaturateAndPixelate" cname="gdk_pixbuf_saturate_and_pixelate">
         <return-type type="void" />
@@ -4962,14 +5179,29 @@
       <method name="GetExtensions" cname="gdk_pixbuf_format_get_extensions">
         <return-type type="gchar**" />
       </method>
+      <method name="GetLicense" cname="gdk_pixbuf_format_get_license">
+        <return-type type="gchar*" />
+      </method>
       <method name="GetMimeTypes" cname="gdk_pixbuf_format_get_mime_types">
         <return-type type="gchar**" />
       </method>
       <method name="GetName" cname="gdk_pixbuf_format_get_name">
         <return-type type="gchar*" />
       </method>
+      <method name="IsDisabled" cname="gdk_pixbuf_format_is_disabled">
+        <return-type type="gboolean" />
+      </method>
+      <method name="IsScalable" cname="gdk_pixbuf_format_is_scalable">
+        <return-type type="gboolean" />
+      </method>
       <method name="IsWritable" cname="gdk_pixbuf_format_is_writable">
         <return-type type="gboolean" />
+      </method>
+      <method name="SetDisabled" cname="gdk_pixbuf_format_set_disabled">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="disabled" />
+        </parameters>
       </method>
     </struct>
     <struct name="PixbufFrame" cname="GdkPixbufFrame">
