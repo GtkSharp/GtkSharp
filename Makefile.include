@@ -44,7 +44,7 @@ build_references = $(addprefix /r:, $(references))
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -nowarn:0612 -nowarn:0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources) $(GENERATED_SOURCES)
+	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources) $(GENERATED_SOURCES)
 
 install-data-local:
 	@if test -n '$(pkg)'; then						\
