@@ -141,11 +141,11 @@
 			return (PrintReturnCode)gnome_print_setlinecap (Handle, captype);
 		}
 		
-		[DllImport("gnomeprint-2-2")]
+		// FIXME!
+		/*[DllImport("gnomeprint-2-2")]
 		static extern int gnome_print_setdash (IntPtr raw, int n_values, IntPtr value, double offset);
 		
-		// FIXME!
-		/*public PrintReturnCode SetDash (double values[], double offset) {
+		public PrintReturnCode SetDash (double values[], double offset) {
 			return (PrintReturnCode)gnome_print_setdash (Handle, values.Length, values, offset);
 		}*/
 		
@@ -169,9 +169,6 @@
 		public PrintReturnCode EvenOddClip () {
 			return (PrintReturnCode)gnome_print_eoclip (Handle);
 		}
-		
-		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_concat (IntPtr raw, IntPtr matrix);
 		
 		[DllImport("gnomeprint-2-2")]
 		static extern int gnome_print_scale (IntPtr raw, double sx, double sy);
@@ -234,9 +231,6 @@
 			GLib.Marshaller.Free (native);
                 	return (PrintReturnCode) result;
 		}
-
-		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_glyphlist (IntPtr raw, IntPtr glyphlist);
 
 		[DllImport("gnomeprint-2-2")]
 		static extern int gnome_print_grayimage (IntPtr raw, IntPtr data, int width, int height, int rowstride);

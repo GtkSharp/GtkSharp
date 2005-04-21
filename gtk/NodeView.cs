@@ -30,9 +30,6 @@ namespace Gtk {
 
 	public class NodeView : TreeView {
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_tree_view_new_with_model(IntPtr model);
-
 		NodeStore store;
 
 		public NodeView (NodeStore store) : base (IntPtr.Zero)

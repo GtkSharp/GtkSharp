@@ -55,17 +55,16 @@ public int Length {
 }
 
 
-[DllImport("libglib-2.0-0.dll")]
-static extern void g_free (IntPtr raw);
-
+#if NOT_BROKEN
 [DllImport("libpango-1.0-0.dll")]
 static extern void pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);
+#endif
 
 public void GetXRanges(int start_index, int end_index, out int[][] ranges) 
 {
-	// FIXME: this is broke
+	// FIXME: this is broken
 	throw new NotImplementedException ();
-	/*
+#if NOT_BROKEN
 	int count;
 	IntPtr array_ptr;
 	pango_layout_line_get_x_ranges(Handle, start_index, end_index, out array_ptr, out count);
@@ -78,6 +77,6 @@ public void GetXRanges(int start_index, int end_index, out int[][] ranges)
 	}
 	Marshal.Copy (array_ptr, ranges, 0, count);
 	g_free (array_ptr);
-	*/
+#endif
 }
 

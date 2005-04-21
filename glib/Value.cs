@@ -149,9 +149,6 @@ namespace GLib {
 		}
 
 
-		[DllImport("glibsharpglue")]
-		static extern int gtksharp_object_get_ref_count (IntPtr obj);
-
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_object (ref Value val, IntPtr data);
 
@@ -366,9 +363,6 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
 		
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_take_boxed (ref Value val, IntPtr data);
-
 		public object Val
 		{
 			get {

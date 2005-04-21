@@ -90,7 +90,6 @@ namespace Gtk {
 			public ParentDelegate parent;
 		}
 
-		int stamp;
 		Hashtable node_hash = new IDHashtable ();
  		GLib.GType[] ctypes; 
 		PropertyInfo[] getters;
@@ -284,9 +283,6 @@ namespace Gtk {
 
 			gtksharp_node_store_set_tree_model_callbacks (Handle, ref tree_model_iface);
 		}
-
-		[DllImport("gtksharpglue-2")]
-		static extern IntPtr gtksharp_node_store_new ();
 
 		public NodeStore (Type node_type) : base (IntPtr.Zero)
 		{
