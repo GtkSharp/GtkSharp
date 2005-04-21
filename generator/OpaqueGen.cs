@@ -81,17 +81,6 @@ namespace GtkSharp.Generation {
 			Statistics.OpaqueCount++;
 		}
 
-		private bool Validate ()
-		{
-			if (methods != null)
-				foreach (Method method in methods.Values)
-					if (!method.Validate()) {
-						Console.WriteLine ("in Opaque" + QualifiedName);
-						return false;
-					}
-			return true;
-		}
-
 		protected override void GenCtors (GenerationInfo gen_info)
 		{
 			if (!DisableRawCtor) {

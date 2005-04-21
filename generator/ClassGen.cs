@@ -29,9 +29,6 @@ namespace GtkSharp.Generation {
 
 	public class ClassGen : ClassBase  {
 
-		private ArrayList strings = new ArrayList();
-		private static Hashtable namespaces = new Hashtable ();
-
 		public ClassGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 
 		public override void Generate (GenerationInfo gen_info)

@@ -37,11 +37,6 @@ namespace GtkSharp.Generation {
 			this.impl_ns = impl_ns;
 		}
 
-		private bool UsesHandle (IGeneratable igen)
-		{
-			return igen is ManualGen || igen is ObjectGen || igen is InterfaceGen || igen is OpaqueGen;
-		}
-
 		private string CastFromInt (string type)
 		{
 			return type != "int" ? "(" + type + ") " : "";
