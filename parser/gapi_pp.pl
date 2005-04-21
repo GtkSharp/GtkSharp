@@ -24,8 +24,8 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-$private_regex = "^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)";
-$eatit_regex = "^#if.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)";
+$private_regex = '^#if.*(ENABLE_BACKEND|ENABLE_ENGINE)';
+$eatit_regex = '^#if(.*(__cplusplus|DEBUG|DISABLE_COMPAT|ENABLE_BROKEN)|\s+0\s*$)';
 $ignoreit_regex = '^\s+\*|#ident|#error|#\s*include|#\s*else|#\s*undef|G_(BEGIN|END)_DECLS|GDKVAR|GTKVAR|GTKMAIN_C_VAR|GTKTYPEUTILS_VAR|VARIABLE|GTKTYPEBUILTIN';
 
 foreach $arg (@ARGV) {
