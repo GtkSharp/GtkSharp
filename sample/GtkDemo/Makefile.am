@@ -25,6 +25,7 @@ sources = \
 	DemoMenus.cs			\
 	DemoPanes.cs			\
 	DemoPixbuf.cs			\
+	DemoRotatedText.cs		\
 	DemoSizeGroup.cs		\
 	DemoStockBrowser.cs		\
 	DemoTextView.cs			\
