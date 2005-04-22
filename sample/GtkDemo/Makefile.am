@@ -19,6 +19,7 @@ sources = \
 	DemoEntryCompletion.cs	\
 	DemoExpander.cs			\
 	DemoHyperText.cs		\
+	DemoIconView.cs			\
 	DemoImages.cs			\
 	DemoListStore.cs		\
 	DemoMain.cs				\
