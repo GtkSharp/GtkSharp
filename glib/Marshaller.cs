@@ -51,15 +51,20 @@ namespace GLib {
 			return System.Text.Encoding.UTF8.GetString (bytes);
 		}
 
+		public static string[] Utf8PtrToString (IntPtr[] ptrs) {
+			// The last pointer is a null terminator.
+			string[] ret = new string[ptrs.Length - 1];
+			for (int i = 0; i < ret.Length; i++)
+				ret[i] = Utf8PtrToString (ptrs[i]);
+			return ret;
+		}
+
 		public static string PtrToStringGFree (IntPtr ptr) 
 		{
 			string ret = Utf8PtrToString (ptr);
 			g_free (ptr);
 			return ret;
 		}
-
-		[DllImport("libglib-2.0-0.dll")]
-		static extern void g_strfreev (IntPtr mem);
 
 		public static string[] PtrToStringGFree (IntPtr[] ptrs) {
 			// The last pointer is a null terminator.

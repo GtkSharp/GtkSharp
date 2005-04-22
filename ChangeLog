@@ -1,5 +1,19 @@
 2005-04-22  Dan Winship  <danw@novell.com>
 
+	* gnome/Gnome.metadata: mark GnomeTriggerActionFunction's char**
+	param const
+
+	* glib/Marshaller.cs (Utf8PtrToString): Add an IntPtr[]->string[]
+	overload, since that's what we actually need in the case where
+	it's used (above). Leave the IntPtr[]->string[] overload of
+	PtrToStringGFree in case anyone is using it manually.
+
+	* gtk/Gtk.metadata: hide GtkModuleInitFunc and
+	GtkModuleDisplayInitFunc; they are the signatures of user-defined
+	methods that gtk only ever resolves via g_module_symbol(), so
+	they're not useful from C#. (And the marshalling was all wrong
+	anyway...)
+
 	* glib/Type.cs: 
 	* glib/TypeConverter.cs: 
 	* glib/Value.cs: sort lists of GTypes into TypeFundamental order
