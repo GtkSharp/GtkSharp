@@ -37,9 +37,8 @@ namespace GtkDemo
 			homeButton.IsImportant = true;
 			toolbar.Insert (homeButton, -1);
 
-			// FIXME: use the real icons later 
-			fileIcon = Gdk.Pixbuf.LoadFromResource ("MonoIcon.png");
-			dirIcon = Gdk.Pixbuf.LoadFromResource ("MonoIcon.png");
+			fileIcon = GetIcon ("gnome-fs-regular");
+			dirIcon = GetIcon ("gnome-fs-directory");
 
 			ScrolledWindow sw = new ScrolledWindow ();
 			sw.ShadowType = ShadowType.EtchedIn;
@@ -66,10 +65,15 @@ namespace GtkDemo
 			ShowAll ();
 		}
 
+		Gdk.Pixbuf GetIcon (string name)
+		{
+			return Gtk.IconTheme.Default.LoadIcon (name, 32, (IconLookupFlags) 0);
+		}
+
 		ListStore CreateStore ()
 		{
 			// path, name, pixbuf, is_dir
-			ListStore store = new ListStore (typeof (string), typeof (string), typeof (Gdk.Pixbuf), typeof (bool));
+			ListStore store = new ListStore (GLib.GType.String, GLib.GType.String, Gdk.Pixbuf.GType, GLib.GType.Boolean);
 
 			// Set sort column and function
 			store.SetDefaultSortFunc (SortFunc);
@@ -90,7 +94,7 @@ namespace GtkDemo
 			foreach (DirectoryInfo di in parent.GetDirectories ())
 			{
 				if (!di.Name.StartsWith ("."))
-					store.AppendValues (di.FullName, di.Name, dirIcon, false);
+					store.AppendValues (di.FullName, di.Name, dirIcon, true);
 			}
 			
 			foreach (FileInfo file in parent.GetFiles ())
