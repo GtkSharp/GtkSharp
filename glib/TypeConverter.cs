@@ -30,24 +30,24 @@ namespace GLib {
 		
 		public static GType LookupType (System.Type type)
 		{
-			if (type.Equals (typeof (string)))
-				return GType.String;
+			if (type.Equals (typeof (char)))
+				return GType.Char;
 			if (type.Equals (typeof (bool)))
 				return GType.Boolean;
 			if (type.Equals (typeof (int)))
 				return GType.Int;
+			if (type.Equals (typeof (uint)))
+				return GType.UInt;
 			if (type.Equals (typeof (long)))
 				return GType.Int64;
 			if (type.Equals (typeof (ulong)))
 				return GType.UInt64;
-			if (type.Equals (typeof (double)))
-				return GType.Double;
 			if (type.Equals (typeof (float)))
 				return GType.Float;
-			if (type.Equals (typeof (char)))
-				return GType.Char;
-			if (type.Equals (typeof (uint)))
-				return GType.UInt;
+			if (type.Equals (typeof (double)))
+				return GType.Double;
+			if (type.Equals (typeof (string)))
+				return GType.String;
 			if (type.IsSubclassOf (typeof (GLib.Object)))
 				return GType.Object;
 			PropertyInfo pi = type.GetProperty ("GType", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy);

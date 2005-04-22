@@ -36,19 +36,18 @@ namespace GLib {
 
 		public static readonly GType Invalid = new GType ((IntPtr) TypeFundamentals.TypeInvalid);
 		public static readonly GType None = new GType ((IntPtr) TypeFundamentals.TypeNone);
-		public static readonly GType String = new GType ((IntPtr) TypeFundamentals.TypeString);
+		public static readonly GType Char = new GType ((IntPtr) TypeFundamentals.TypeChar);
 		public static readonly GType Boolean = new GType ((IntPtr) TypeFundamentals.TypeBoolean);
 		public static readonly GType Int = new GType ((IntPtr) TypeFundamentals.TypeInt);
+		public static readonly GType UInt = new GType ((IntPtr) TypeFundamentals.TypeUInt);
 		public static readonly GType Int64 = new GType ((IntPtr) TypeFundamentals.TypeInt64);
 		public static readonly GType UInt64 = new GType ((IntPtr) TypeFundamentals.TypeUInt64);
-
-		public static readonly GType Double = new GType ((IntPtr) TypeFundamentals.TypeDouble);
 		public static readonly GType Float = new GType ((IntPtr) TypeFundamentals.TypeFloat);
-		public static readonly GType Char = new GType ((IntPtr) TypeFundamentals.TypeChar);
-		public static readonly GType UInt = new GType ((IntPtr) TypeFundamentals.TypeUInt);
-		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
+		public static readonly GType Double = new GType ((IntPtr) TypeFundamentals.TypeDouble);
+		public static readonly GType String = new GType ((IntPtr) TypeFundamentals.TypeString);
 		public static readonly GType Pointer = new GType ((IntPtr) TypeFundamentals.TypePointer);
 		public static readonly GType Boxed = new GType ((IntPtr) TypeFundamentals.TypeBoxed);
+		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
 
 		public IntPtr Val {
 			get {
