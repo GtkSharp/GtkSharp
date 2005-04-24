@@ -10,135 +10,60 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Used to represent attributes which impose shape restrictions.</summary>
+    <summary>An attribute that imposes a shape restriction.</summary>
     <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>Pango.Attribute</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes />
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Pango.AttrShape Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrShape</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an empty <see cref="T:Pango.AttrShape" /></summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.AttrShape New (Pango.Rectangle ink_rect, Pango.Rectangle logical_rect);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrShape</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AttrShape (Pango.Rectangle ink_rect, Pango.Rectangle logical_rect);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
         <Parameter Name="ink_rect" Type="Pango.Rectangle" />
         <Parameter Name="logical_rect" Type="Pango.Rectangle" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:Pango.AttrShape" /> from the provided <see cref="T:Pango.Rectangle" />s.</summary>
-        <param name="ink_rect">the ink rectangle to restrict to</param>
-        <param name="logical_rect">the logical rectangle to restrict to</param>
-        <returns>a new <see cref="T:Pango.AttrShape" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.AttrShape New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrShape</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal method</summary>
-        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:Pango.AttrShape" /></returns>
-        <remarks>This is an internal method, and should not be used by user code.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Attr">
-      <MemberSignature Language="C#" Value="public Pango.Attribute Attr;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Attribute</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>the common portion of the attribute</summary>
-        <remarks />
+        <summary>Creates a new shape attribute</summary>
+        <param name="ink_rect">a <see cref="T:Pango.Rectangle" /></param>
+        <param name="logical_rect">a <see cref="T:Pango.Rectangle" /></param>
+        <returns>a <see cref="T:Pango.AttrShape" /></returns>
+        <remarks>
+	    A shape is used to impose a particular ink and logical
+	    rectangle on the result of shaping a particular glyph. This
+	    might be used, for instance, for embedding a picture or a
+	    widget inside a <see cref="T:Pango.Layout" />.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="InkRect">
-      <MemberSignature Language="C#" Value="public Pango.Rectangle InkRect;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Pango.Rectangle InkRect { get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Rectangle</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>the ink rectangle to restrict to</summary>
+        <summary>The ink rectangle to restrict to</summary>
+        <returns>a <see cref="T:Pango.Rectangle" /></returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="LogicalRect">
-      <MemberSignature Language="C#" Value="public Pango.Rectangle LogicalRect;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Pango.Rectangle LogicalRect { get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Rectangle</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>the logical rectangle to restrict to</summary>
+        <summary>The logical rectangle to restrict to</summary>
+        <returns>a <see cref="T:Pango.Rectangle" /></returns>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="DestroyFunc">
-      <MemberSignature Language="C#" Value="public IntPtr DestroyFunc;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NewWithData">
-      <MemberSignature Language="C#" Value="public static Pango.AttrShape NewWithData (Pango.Rectangle ink_rect, Pango.Rectangle logical_rect, IntPtr data, Pango.AttrDataCopyFunc copy_func, IntPtr destroy_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.AttrShape</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ink_rect" Type="Pango.Rectangle" />
-        <Parameter Name="logical_rect" Type="Pango.Rectangle" />
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="copy_func" Type="Pango.AttrDataCopyFunc" />
-        <Parameter Name="destroy_func" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="ink_rect">a <see cref="T:Pango.Rectangle" /></param>
-        <param name="logical_rect">a <see cref="T:Pango.Rectangle" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="copy_func">a <see cref="T:Pango.AttrDataCopyFunc" /></param>
-        <param name="destroy_func">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Pango.AttrShape" /></returns>
-        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>

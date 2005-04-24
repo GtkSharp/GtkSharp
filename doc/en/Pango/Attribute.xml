@@ -10,43 +10,15 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>This structure represents the common portions of all attributes</summary>
-    <remarks>Particular types of attributes include this structure as their initial portion. The common portion of the attribute holds the range to which the value in the type-specific part of the attribute applies.</remarks>
+    <summary>This is the base class for all Pango text attributes</summary>
+    <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes />
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Pango.Attribute Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Attribute</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Returns an empty <see cref="T:Pango.Attribute" /></summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Pango.Attribute New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Attribute</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal method</summary>
-        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:Pango.Attribute" /></returns>
-        <remarks>This is an internal method, and should not be used by user code.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Equal">
       <MemberSignature Language="C#" Value="public bool Equal (Pango.Attribute attr2);" />
       <MemberType>Method</MemberType>
@@ -64,18 +36,6 @@
         <remarks>This compares only the actual value of the two attributes and not the ranges that the attributes apply to.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Destroy">
-      <MemberSignature Language="C#" Value="public void Destroy ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Destroy a <see cref="T:Pango.Attribute" /> and free all associated memory.</summary>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="Copy">
       <MemberSignature Language="C#" Value="public Pango.Attribute Copy ();" />
       <MemberType>Method</MemberType>
@@ -89,42 +49,109 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="klass">
-      <MemberSignature Language="C#" Value="public Pango.AttrClass klass { get; };" />
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Pango.AttrClass</ReturnType>
+        <ReturnType>GLib.GType</ReturnType>
       </ReturnValue>
+      <Parameters />
       <Docs>
-        <summary>the class structure holding information about the type of the attribute</summary>
-        <returns>an object of type <see cref="T:Pango.AttrClass" /></returns>
+        <summary>GType property</summary>
+        <returns>a <see cref="T:GLib.GType" /></returns>
+        <remarks>Returns the <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Attribute" /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public virtual IntPtr Handle { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Pointer to the raw PangoAttribute structure associated with this object.</summary>
+        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public Pango.AttrType Type { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.AttrType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The attribute type</summary>
+        <returns>a <see cref="T:Pango.AttrType" /></returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="StartIndex">
-      <MemberSignature Language="C#" Value="public uint StartIndex;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public uint StartIndex { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
         <summary>the start index of the range (in bytes).</summary>
+        <returns>a <see cref="T:System.UInt32" /></returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="EndIndex">
-      <MemberSignature Language="C#" Value="public uint EndIndex;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public uint EndIndex { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
+      <Parameters />
       <Docs>
         <summary>end index of the range.</summary>
-        <remarks>The character containing this byte index is not included in the range. </remarks>
+        <returns>a <see cref="T:System.UInt32" /></returns>
+        <remarks>The character containing this byte index is not included in the range.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAttribute">
+      <MemberSignature Language="C#" Value="public static Pango.Attribute GetAttribute (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.Attribute</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Gets an Attribute or Attribute subclass for a native PangoAttribute pointer</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <returns>a <see cref="T:Pango.Attribute" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="protected override void Finalize ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Finalizer</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Dispose method</summary>
+        <remarks />
       </Docs>
     </Member>
   </Members>

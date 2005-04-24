@@ -37,8 +37,8 @@
 			GLib.SList list = new GLib.SList (list_handle);
 			extra_attrs = new Pango.Attribute [list.Count];
 			int i = 0;
-			foreach (Pango.Attribute attr in list)
-				extra_attrs [i++] = attr;
+			foreach (IntPtr raw_attr in list)
+				extra_attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 		}
 
 		[DllImport("libpango-1.0-0.dll")]
@@ -52,8 +52,8 @@
 				GLib.SList list = new GLib.SList (list_handle);
 				Pango.Attribute[] attrs = new Pango.Attribute [list.Count];
 				int i = 0;
-				foreach (Pango.Attribute attr in list)
-					attrs [i++] = attr;
+				foreach (IntPtr raw_attr in list)
+					attrs [i++] = Pango.Attribute.GetAttribute (raw_attr);
 				return attrs;
 			}
 		}

@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libpangosharpglue-2.la
 
 libpangosharpglue_2_la_SOURCES =	\
+	attribute.c			\
 	layoutline.c
 
 # Adding a new glue file?

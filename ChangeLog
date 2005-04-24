@@ -1,3 +1,44 @@
+2005-04-24  Dan Winship  <danw@novell.com>
+
+	* pango/Attribute.cs: Base class for Pango attributes, a la
+	Gdk.Event
+
+	* pango/pango-symbols.xml: explain how to marshal PangoAttribute.
+
+	* pango/AttrBackground.cs:
+	* pango/AttrFallback.cs:
+	* pango/AttrFamily.cs: 
+	* pango/AttrFontDesc.cs:
+	* pango/AttrForeground.cs:
+	* pango/AttrLanguage.cs:
+	* pango/AttrLetterSpacing.cs:
+	* pango/AttrRise.cs:
+	* pango/AttrScale.cs:
+	* pango/AttrShape.cs:
+	* pango/AttrSize.cs:
+	* pango/AttrStretch.cs:
+	* pango/AttrStrikethrough.cs:
+	* pango/AttrStrikethroughColor.cs:
+	* pango/AttrStyle.cs:
+	* pango/AttrUnderline.cs:
+	* pango/AttrUnderlineColor.cs:
+	* pango/AttrVariant.cs:
+	* pango/AttrWeight.cs: subclasses of Attribute, with proper
+	constructors. These don't actually correspond one-to-one with
+	the underlying types, but they're nicer this way.
+
+	* pango/Pango.metadata: Hide Attribute and its subclasses from the
+	generator. Also hide "Attr" (which previously contained
+	non-working badly-named static methods to create Attributes)
+	and AttrClass (which is not really useful outside of pango
+	itself).
+
+	* pango/AttrIterator.custom: use Pango.Attribute.GetAttribute.
+
+	* pango/glue/attribute.c: glue for Attribute and its subclasses
+
+	[Fixes #52575 and its semi-dup #46552]
+	
 2005-04-22  Dan Winship  <danw@novell.com>
 
 	* gnome/Gnome.metadata: mark GnomeTriggerActionFunction's char**
