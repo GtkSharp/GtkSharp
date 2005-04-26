@@ -26,7 +26,7 @@ namespace Gtk {
 	using System.Reflection;
 	using System.Runtime.InteropServices;
 
-	public class NodeStore : GLib.Object {
+	public class NodeStore : GLib.Object, IEnumerable {
 
         	class IDHashtable : Hashtable {
                 	class IDComparer : IComparer {
@@ -471,6 +471,11 @@ namespace Gtk {
 			get {
 				return new GLib.GType (gtksharp_node_store_get_type ());
 			}
+		}
+
+		public IEnumerator GetEnumerator ()
+		{
+			return nodes.GetEnumerator ();
 		}
 	}
 }
