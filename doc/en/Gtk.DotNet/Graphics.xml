@@ -28,10 +28,41 @@
         <Parameter Name="drawable" Type="Gdk.Drawable" />
       </Parameters>
       <Docs>
-        <summary>Gets a Graphics context for a drawable.</summary>
+        <summary>Gets a <see cref="T:System.Drawing.Graphics" /> context for a <see cref="T:Gdk.Drawable" /></summary>
         <param name="drawable">a <see cref="T:Gdk.Drawable" /></param>
         <returns>a <see cref="T:System.Drawing.Graphics" /></returns>
-        <remarks />
+        <remarks>Use this method to obtain a System.Drawing.Graphics context from a Gtk drawable.
+
+<para>
+   Both pixmaps (<see cref="T:Gdk.Pixmap" />) and windows (<see cref="T:Gdk.Window" />) are drawables (<see cref="T:Gdk.Drawable" />).
+</para><para>
+The following example shows how to create a custom widget that renders a mesh.  This example overrides the OnExposeEvent method and uses <see cref="N:System.Drawing" /> calls to do the actual drawing:
+</para><example>
+            <code lang="C#">
+using System.Drawing;
+using Gtk;
+
+class PrettyGraphic : DrawingArea {
+
+	public PrettyGraphic ()
+	{
+		SetSizeRequest (200, 200);
+	}
+			       
+	protected override bool OnExposeEvent (Gdk.EventExpose args)
+	{
+		using (Graphics g = Gtk.DotNet.Graphics.FromDrawable (args.Window)){
+			Pen p = new Pen (Color.Blue, 1.0f);
+
+			for (int i = 0; i &lt; 600; i += 60)
+				for (int j = 0; j &lt; 600; j += 60)
+					g.DrawLine (p, i, 0, 0, j);
+		}
+		return true;
+	}
+}
+  </code>
+          </example></remarks>
       </Docs>
     </Member>
   </Members>
