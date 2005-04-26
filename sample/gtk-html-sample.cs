@@ -11,7 +11,9 @@ class HTMLSample {
 		Application.Init ();
 		html = new HTML ();
 		win = new Window ("Test");
-		win.Add (html);
+		ScrolledWindow sw = new ScrolledWindow ();
+		win.Add (sw);
+		sw.Add (html);
 		HTMLStream s = html.Begin ("text/html");
 
 		if (args.Length > 0) {
