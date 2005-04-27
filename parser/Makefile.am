@@ -1,4 +1,4 @@
-assemblydir = $(libdir)/gtk-sharp-2.0
+assemblydir = $(prefix)/lib/gtk-sharp-2.0
 pkgconfigdir = $(libdir)/pkgconfig
 assembly_DATA = gapi-fixup.exe gapi-parser.exe
 pkgconfig_DATA = gapi-2.0.pc
