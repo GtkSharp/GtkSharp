@@ -43,6 +43,9 @@
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_icon_theme_get_search_path(IntPtr raw, out IntPtr path, out int n_elements);
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_icon_theme_set_search_path(IntPtr raw, IntPtr[] path, int n_elements);
+
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_strfreev (IntPtr mem);
 
@@ -66,5 +69,19 @@
                             
 				return retval;
 			}
+			set {
+				int cnt_path = value == null ? 0 : value.Length;
+				IntPtr[] native_path = new IntPtr [cnt_path];
+				for (int i = 0; i < cnt_path; i++)
+					native_path [i] = GLib.Marshaller.StringToPtrGStrdup (value[i]);
+				gtk_icon_theme_set_search_path (Handle, native_path, native_path.Length);
+				for (int i = 0; i < native_path.Length; i++)
+					GLib.Marshaller.Free (native_path[i]);
+			}
 		}
 
+		[Obsolete ("Replaced by SearchPath property.")]
+		public void SetSearchPath (string[] path)
+		{
+			SearchPath = path;
+		}

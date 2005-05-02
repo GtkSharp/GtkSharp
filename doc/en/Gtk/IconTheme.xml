@@ -186,6 +186,38 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
         <remarks>See <see cref="P:Gtk.IconTheme.SearchPath" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="SearchPath">
+      <MemberSignature Language="C#" Value="public string [] SearchPath { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The current search path</summary>
+        <returns>a <see cref="T:System.String" />,  array of directories that are searched for icon themes</returns>
+        <remarks>
+          <para>
+	      When looking for an icon theme, Gtk will search for a
+	      subdirectory of one or more of the directories in this
+	      path with the same name as the icon theme. (Themes from
+	      multiple of the path elements are combined to allow
+	      themes to be extended by adding icons in the user's home
+	      directory.)
+	  </para>
+          <para>
+	      In addition if an icon found is not found either in the
+	      current icon theme or the default icon theme, and an
+	      image file with the right name is found directly in one
+	      of the elements of path, then that image will be used
+	      for the icon name. (This is a legacy feature, and new
+	      icons should be put into the default icon theme, which
+	      is called DEFAULT_THEME_NAME, rather than directly on
+	      the icon path.)
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="SetSearchPath">
       <MemberSignature Language="C#" Value="public void SetSearchPath (string [] path);" />
       <MemberType>Method</MemberType>
@@ -196,16 +228,9 @@ In general, if you use <see cref="M:Gtk.IconTheme.AddBuiltinIcon()" /> you shoul
         <Parameter Name="path" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>Sets the current search path.</summary>
+        <summary>Deprecated method to set the current search path.</summary>
         <param name="path">a <see cref="T:System.String[]" />, array of directories that are searched for icon themes</param>
-        <remarks>
-          <para>
-Sets the search path for the icon theme object. When looking for an icon theme, Gtk will search for a subdirectory of one or more of the directories in path with the same name as the icon theme. (Themes from multiple of the path elements are combined to allow themes to be extended by adding icons in the user's home directory.)
-</para>
-          <para>
-In addition if an icon found is not found either in the current icon theme or the default icon theme, and an image file with the right name is found directly in one of the elements of path, then that image will be used for the icon name. (This is a legacy feature, and new icons should be put into the default icon theme, which is called DEFAULT_THEME_NAME, rather than directly on the icon path.)
-</para>
-        </remarks>
+        <remarks>Replaced by the <see cref="M:Gtk.IconTheme:SearchPath" /> property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LookupIcon">
@@ -363,19 +388,6 @@ In addition if an icon found is not found either in the current icon theme or th
       <Docs>
         <summary>The name of an icon that is representative of the current theme (for instance, to use when presenting a list of themes to the user.)</summary>
         <returns>a <see cref="T:System.String" />, the name of an example icon or <see langword="null" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SearchPath">
-      <MemberSignature Language="C#" Value="public string [] SearchPath { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>The current search path</summary>
-        <returns>a <see cref="T:System.String" />,  array of directories that are searched for icon themes</returns>
         <remarks />
       </Docs>
     </Member>

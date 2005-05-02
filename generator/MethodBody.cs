@@ -42,10 +42,10 @@ namespace GtkSharp.Generation {
 			return type != "int" ? "(" + type + ") " : "";
 		}
 
-		private string CallArrayLength (Parameter array, Parameter length)
+		private string CallArrayLength (string array_name, Parameter length)
 		{
-			string result = array.Name + " != null ? ";
-			result += CastFromInt (length.CSType) + array.Name + ".Length";
+			string result = array_name + " != null ? ";
+			result += CastFromInt (length.CSType) + array_name + ".Length";
 			result += ": 0";
 			return length.Generatable.CallByName (result);
 		}
@@ -59,24 +59,28 @@ namespace GtkSharp.Generation {
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 				IGeneratable igen = p.Generatable;
+				string name = (i == 0 && is_set) ? "value" : p.Name;
 
 				if (p.IsCount) {
 					if (i > 0 && parameters [i - 1].IsArray) {
-						result[i] = CallArrayLength (parameters[i - 1], p);
+						string array_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
+						result[i] = CallArrayLength (array_name, p);
 						continue;
 					} else if (i < parameters.Count - 1 && parameters [i + 1].IsArray) {
-						result[i] = CallArrayLength (parameters[i + 1], p);
+						string array_name = (i == 0 && is_set) ? "value" : parameters [i + 1].Name;
+						result[i] = CallArrayLength (array_name, p);
 						continue;
 					}
 				} else if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
-					result[i] = igen.CallByName (CastFromInt (p.CSType) + parameters [i - 1].Name + ".Length");
+					string string_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
+					result[i] = igen.CallByName (CastFromInt (p.CSType) + string_name + ".Length");
 					continue;
 				} else if (p.IsArray && p.MarshalType != p.CSType) {
 					result[i] = "native_" + p.Name;
 					continue;
 				}
 
-				string call_parm = p.CallByName (is_set && i == 0 ? "value" : p.Name);
+				string call_parm = p.CallByName (name);
 
 				if (p.CType == "GError**") {
 					result [i] += "out ";				
@@ -122,8 +126,8 @@ namespace GtkSharp.Generation {
 					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_native;");
 				else if (p.IsArray && p.MarshalType != p.CSType) {
 					sw.WriteLine(indent + "\t\t\tint cnt_" + p.Name + " = {0} == null ? 0 : {0}.Length;", name);
-					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [cnt_{1}];", p.MarshalType.TrimEnd('[', ']'), name);
-					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < cnt_{0}; i++)", name);
+					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [cnt_{1}];", p.MarshalType.TrimEnd('[', ']'), p.Name);
+					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < cnt_{0}; i++)", p.Name);
 					if (gen is IManualMarshaler)
 						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, (gen as IManualMarshaler).AllocNative (name + "[i]"));
 					else
@@ -140,7 +144,7 @@ namespace GtkSharp.Generation {
 					default:
 						if (p.Scope == String.Empty)
 							Console.WriteLine ("Defaulting " + gen.Name + " param to 'call' scope in method " + gen_info.CurrentMember);
-						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({2});", wrapper, name, p.Name);
+						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", wrapper, name);
 						break;
 					}
 						

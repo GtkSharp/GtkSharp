@@ -235,10 +235,49 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public int VisibleCount {
+			get {
+				int visible = 0;
+				foreach (Parameter p in this) {
+					if (!IsHidden (p))
+						visible++;
+				}
+				return visible;
+			}
+		}
+
 		public Parameter this [int idx] {
 			get {
 				return param_list [idx] as Parameter;
 			}
+		}
+
+		public bool IsHidden (Parameter p)
+		{
+			int idx = param_list.IndexOf (p);
+
+			if (idx > 0 && p.IsLength && this [idx - 1].IsString)
+				return true;
+
+			if (p.IsCount && ((idx > 0 && this [idx - 1].IsArray) ||
+					  (idx < Count - 1 && this [idx + 1].IsArray)))
+				return true;
+
+			if (p.CType == "GError**")
+				return true;
+
+			if (HasCB || HideData) {
+				if (p.IsUserData && (idx == Count - 1))
+					return true;
+			}
+
+			return false;
+		}
+
+		bool has_cb;
+		public bool HasCB {
+			get { return has_cb; }
+			set { has_cb = value; }
 		}
 
 		bool hide_data;
@@ -285,6 +324,9 @@ namespace GtkSharp.Generation {
 					Clear ();
 					return false;
 				}
+
+				if (p.Generatable is CallbackGen)
+					has_cb = true;
 			}
 			
 			return true;
@@ -292,14 +334,25 @@ namespace GtkSharp.Generation {
 
 		public bool IsAccessor {
 			get {
-				return Count == 1 && this [0].PassAs == "out";
+				return VisibleCount == 1 && AccessorParam.PassAs == "out";
+			}
+		}
+
+		public Parameter AccessorParam {
+			get {
+				foreach (Parameter p in this) {
+					if (!IsHidden (p))
+						return p;
+				}
+				return null;
 			}
 		}
 
 		public string AccessorReturnType {
 			get {
-				if (Count > 0)
-					return this [0].CSType;
+				Parameter p = AccessorParam;
+				if (p != null)
+					return p.CSType;
 				else
 					return null;
 			}
@@ -307,8 +360,9 @@ namespace GtkSharp.Generation {
 
 		public string AccessorName {
 			get {
-				if (Count > 0)
-					return this [0].Name;
+				Parameter p = AccessorParam;
+				if (p != null)
+					return p.Name;
 				else
 					return null;
 			}

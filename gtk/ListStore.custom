@@ -122,7 +122,7 @@
 		public ListStore (params GLib.GType[] types) : base (IntPtr.Zero)
 		{
 			CreateNativeObject (new string [0], new GLib.Value [0]);
-			SetColumnTypes (types);
+			ColumnTypes = types;
 		}
 
 		public ListStore (params Type[] types) : base (IntPtr.Zero)
@@ -138,7 +138,13 @@
 			}
 			
 			CreateNativeObject (new string [0], new GLib.Value [0]);
-			SetColumnTypes (gtypes);
+			ColumnTypes = gtypes;
+		}
+
+		[Obsolete ("Replaced by ColumnTypes property.")]
+		public void SetColumnTypes (GLib.GType[] types)
+		{
+			ColumnTypes = types;
 		}
 
 		public object GetValue(Gtk.TreeIter iter, int column) 

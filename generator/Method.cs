@@ -121,7 +121,7 @@ namespace GtkSharp.Generation {
 
 			Parameters parms = Parameters;
 			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
-			is_set = ((parms.IsAccessor || (parms.Count == 1 && retval.IsVoid)) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
+			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
 			
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
@@ -131,7 +131,7 @@ namespace GtkSharp.Generation {
 		
 		public override bool Validate ()
 		{
-			if (!Initialize () || !base.Validate ())
+			if (!base.Validate () || !Initialize ())
 				return false;
 
 			if (!retval.Validate ()) {

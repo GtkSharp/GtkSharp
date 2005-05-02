@@ -13,7 +13,7 @@
     <summary>An object that stores clipboard data.</summary>
     <remarks>
       <para> The <see cref="T:Gtk.Clipboard" /> object represents a clipboard of data shared between different processes or between different widgets in the same process. Each clipboard is identified by a name encoded as a <see cref="T:Gdk.Atom" />. (Conversion to and from strings can be done with <see cref="M:Gdk.Atom.Intern(System.String,System.Boolean)" /> and <see cref="M:Gdk.Atom.Name()" />.) The default clipboard corresponds to the "CLIPBOARD" atom; another commonly used clipboard is the "PRIMARY" clipboard, which, in X, traditionally contains the currently selected text.</para>
-      <para>To support having a number of different formats on the clipboard at the same time, the clipboard mechanism allows providing callbacks instead of the actual data. When you set the contents of the clipboard, you can either supply the data directly (via methods like <see cref="M:Gtk.Clipboard.SetText()" />), or you can supply a callback to be called at a later time when the data is needed (via <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.SetWithOwner()" />.) Providing a callback also avoids having to make copies of the data when it is not needed.</para>
+      <para>To support having a number of different formats on the clipboard at the same time, the clipboard mechanism allows providing callbacks instead of the actual data. When you set the contents of the clipboard, you can either supply the data directly (eg, via the <see cref="M:Gtk.Clipboard.Text" /> property), or you can supply a callback to be called at a later time when the data is needed (via <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.SetWithOwner()" />.) Providing a callback also avoids having to make copies of the data when it is not needed.</para>
       <para>
         <see cref="M:Gtk.Clipboard.SetWithData()" /> and <see cref="M:Gtk.Clipboard.SetWithOwner()" />  are quite similar; the choice between the two depends mostly on which is more convenient in a particular situation. The former is most useful when you want to have a blob of data with callbacks to convert it into the various data types that you advertise. When the clear_func you provided is called, you simply free the data blob. The latter is more useful when the contents of clipboard reflect the internal state of a <see cref="T:GLib.Object" />  (As an example, for the PRIMARY clipboard, when an entry widget provides the contents for the clipboar the contents are simply the text within the selected region.) If the contents change, the entry widget can call <see cref="M:Gtk.Clipboard.SetWithOwner()" /> to update the timestamp for clipboard ownership, without having to worry about clear_func being called.</para>
       <para>Requesting the data from the clipboard is essentially asynchronous. If the contents of the clipboard are provided within the same process, then a direct function call will be made to retrieve the data, but if they are provided by another process, then the data needs to be retrieved from the other process, which may take some time. To avoid blocking the user interface, the call to request the selection, <see cref="M:Gtk.Clipboard.RequestContents()" /> takes a callback that will be called when the contents are received (or when the request fails.) If you do not want to deal with providing a separate callback, you can also use <see cref="M:Gtk.Clipboard.WaitForContents()" />. What this does is run the GLib main loop recursively waiting for the contents. This can simplify the code flow, but you still have to be aware that other callbacks in your program can be called while this recursive mainloop is running.</para>
@@ -131,7 +131,19 @@
         <remarks>If the clipboard contents callbacks were set with <see cref="M:Gtk.Clipboard.SetWithOwner()" />, and the <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.Clear()" /> has not been subsequently called, it will return the owner set by <see cref="M:Gtk.Clipboard.SetWithOwner()" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetText">
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetText" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetText (string text);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -141,9 +153,9 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
+        <summary>Deprecated method to set the contents of the clipboard.</summary>
         <param name="text">an object of type <see cref="T:System.String" /></param>
-        <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
+        <remarks>Replaced by the <see cref="M:Gtk.Clipboard.Text" /> property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Display">

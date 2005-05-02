@@ -59,7 +59,7 @@ namespace GtkDemo
 		void CopyClicked (object obj, EventArgs args)
 		{
 			Clipboard clipboard = copyEntry.GetClipboard (Gdk.Selection.Clipboard);
-			clipboard.SetText (copyEntry.Text);
+			clipboard.Text = copyEntry.Text;
 		}
 
 		void PasteClicked (object obj, EventArgs args)

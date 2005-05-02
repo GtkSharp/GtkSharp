@@ -30,10 +30,17 @@
 		[DllImport("libglade-2.0-0.dll")]
 		static extern void glade_set_custom_handler (GladeSharp.XMLCustomWidgetHandlerNative handler, IntPtr user_data);
 
+		public static Glade.XMLCustomWidgetHandler CustomHandler { 
+			set {
+				GladeSharp.XMLCustomWidgetHandlerWrapper value_wrapper = new GladeSharp.XMLCustomWidgetHandlerWrapper (value);
+				glade_set_custom_handler(value_wrapper.NativeDelegate, IntPtr.Zero);
+			}
+		}
+
+		[Obsolete ("Replaced by CustomHandler property.")]
 		static public void SetCustomHandler (Glade.XMLCustomWidgetHandler handler)
 		{
-			callback_wrapper = new GladeSharp.XMLCustomWidgetHandlerWrapper (handler);
-			glade_set_custom_handler (callback_wrapper.NativeDelegate, IntPtr.Zero);
+			CustomHandler = handler;
 		}
 
 		[DllImport("gladesharpglue-2")]

@@ -1221,7 +1221,38 @@ store = new TreeStore (typeof (int), typeof (string));
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TreeStore" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetColumnTypes">
+    <Member MemberName="ColumnTypes">
+      <MemberSignature Language="C#" Value="public GLib.GType [] ColumnTypes { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:GLib.GType[]" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColumnTypes">
+      <MemberSignature Language="C#" Value="public GLib.GType [] ColumnTypes { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The types in each column of a TreeStore.</summary>
+        <returns>a <see cref="T:GLib.GType[]" /></returns>
+        <remarks>
+	    This property is meant primarily for classes that
+	    inherit from <see cref="T:Gtk.TreeStore" />, and should
+	    only be used when constructing a new <see
+	    cref="T:Gtk.TreeStore" />. It will not function after a
+	    row has been added or after a method on the <see
+	    cref="T:Gtk.TreeModel" /> interface has been called.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetColumnTypes" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetColumnTypes (GLib.GType[] types);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -1231,30 +1262,9 @@ store = new TreeStore (typeof (int), typeof (string));
         <Parameter Name="types" Type="GLib.GType[]" />
       </Parameters>
       <Docs>
-        <summary>Sets what types go in each column of a ListStore.</summary>
+        <summary>Deprecated method to set what types go in each column of a TreeStore.</summary>
         <param name="types">a <see cref="T:GLib.GType[]" /></param>
-        <remarks> This function is meant primarily for #GObjects that inherit 
-	  from <see cref="T:Gtk.ListStore" /> and should only be used when 
-	  constructing a new <see cref="T:Gtk.ListStore" />.  It will not
-	  function after a row has been added or after a method on the 
-	  <see cref="T:Gtk.TreeModel" /> interface has been called.
-	</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetColumnType">
-      <MemberSignature Language="C#" Value="public virtual GLib.GType GetColumnType (int index_);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the type of data stored in column number <paramref name="index_" />.</summary>
-        <param name="index_">a <see cref="T:System.Int32" />, the column to check</param>
-        <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks />
+        <remarks>See <see cref="M:Gtk.TreeStore.ColumnTypes" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="OnRowsReordered">
@@ -1378,7 +1388,7 @@ store = new TreeStore (typeof (int), typeof (string));
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ListStore" /></returns>
+        <returns>a <see cref="T:Gtk.TreeStore" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
     </Member>
@@ -1408,7 +1418,7 @@ store = new TreeStore (typeof (int), typeof (string));
         <Parameter Name="parent" Type="Gtk.TreeIter" />
       </Parameters>
       <Docs>
-        <summary>Reorders the ListStore.</summary>
+        <summary>Reorders the TreeStore.</summary>
         <returns>a <see cref="T:System.Int32" />.</returns>
         <remarks>(FIXME: Does this binding work?)</remarks>
       </Docs>

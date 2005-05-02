@@ -84,16 +84,11 @@ namespace GtkSharp.Generation {
 			{
 				Parameter p = parms [i];
 
-				if (i > 0 && p.IsLength && parms[i-1].IsString)
-					continue;
-
-				if ((i == parms.Count - 1) && p.IsUserData) 
-					continue;
-
 				if (p.CType == "GError**") {
 					sw.WriteLine ("\t\t\t" + p.Name + " = IntPtr.Zero;");
 					continue;
-				}
+				} else if (parms.IsHidden (p))
+					continue;
 
 				IGeneratable gen = p.Generatable;
 

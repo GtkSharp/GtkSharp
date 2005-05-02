@@ -31,24 +31,9 @@ namespace GtkSharp.Generation {
 
 		public Signature (Parameters parms) 
 		{
-			bool has_cb = parms.HideData;
-			for (int i = 0; i < parms.Count; i++) {
-				Parameter p = parms [i];
-
-				if (i > 0 && p.IsLength && parms [i - 1].IsString)
-					continue;
-
-				if (p.IsCount && ((i > 0 && parms [i - 1].IsArray) || (i < parms.Count - 1 && parms [i + 1].IsArray)))
-					continue;
-
-				has_cb = has_cb || p.Generatable is CallbackGen;
-				if (p.IsUserData && has_cb && (i == parms.Count - 1)) 
-					continue;
-
-				if (p.CType == "GError**")
-					continue;
-
-				this.parms.Add (p);
+			foreach (Parameter p in parms) {
+				if (!parms.IsHidden (p))
+					this.parms.Add (p);
 			}
 		}
 

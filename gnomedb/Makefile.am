@@ -14,7 +14,8 @@ references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dl
 sources =				\
 	Application.cs
 
-customs =
+customs =				\
+	Editor.custom
 
 add_dist = gnomedb-sharp-2.0.pc.in
 

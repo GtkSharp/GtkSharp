@@ -1,5 +1,46 @@
 2005-05-02  Dan Winship  <danw@novell.com>
 
+	* generator/Parameters.cs (IsHidden): method to check if a
+	parameter should be hidden in the managed sig (eg, because it's
+	user_data, or it's the length of the preceding array/string, etc).
+	(VisibleCount): the number of parameters that will actually be
+	exposed in the managed signature.
+	(IsAccessor): test VisibleCount, not Count
+	(AccessorReturnType, AccessorName): deal with the fact that the
+	accessor parameter might not be the first one.
+
+	* generator/CallbackGen.cs:
+	* generator/Signature.cs: use Parameters.IsHidden.
+
+	* generator/Method.cs (Initialize): set is_set based on
+	VisibleCount, not Count.
+	(Validate): call base.Validate() before Initialize() so that
+	VisibleCount will be correct in Initialize.
+
+	* generator/MethodBody.cs (GetCallString, CallArrayLength,
+	Initialize): update to deal with accessors with multiple args.
+
+	* gtk/Clipboard.custom (SetText): implement as an Obsolete variant
+	of the Text property
+
+	* gtk/IconTheme.custom (SearchPath, SetSearchPath): obsolete
+	SetSearchPath, implement a setter on SearchPath instead.
+
+	* gtk/ListStore.custom (SetColumnTypes):
+	* gtk/TreeStore.custom (SetColumnTypes): implement as an Obsolete
+	variant of the ColumnTypes property.
+
+	* glade/XML.custom (CustomHandler): implement as a property
+	(SetCustomHandler): Mark this obsolete
+
+	* glade/Global.custom (SetCustomHandler): deprecate in favor of
+	XML.CustomHandler.
+
+	* gnomedb/Editor.custom (SetText): implement as an Obsolete
+	variant of the Text property
+
+2005-05-02  Dan Winship  <danw@novell.com>
+
 	Apply the parts of the generator reorganization from #69514 that
 	don't actually affect the generated output
 	
