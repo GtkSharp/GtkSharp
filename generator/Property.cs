@@ -183,7 +183,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine("new GLib.Value(value, \"{0}\");", c_type);
 				} else {
 					sw.Write("new GLib.Value(");
-					if (v_type != "" && !(table.IsObject (c_type) || table.IsOpaque (c_type))) {
+					if (v_type != "" && !(table.IsObject (c_type) || table.IsInterface (c_type) || table.IsOpaque (c_type))) {
 						sw.Write(v_type + " ");
 					}
 					sw.WriteLine("value);");
