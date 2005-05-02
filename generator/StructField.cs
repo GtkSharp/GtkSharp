@@ -1,4 +1,5 @@
-// GtkSharp.Generation.Field.cs - The Field generation Class.
+// GtkSharp.Generation.StructField.cs - The Structure Field generation
+// Class.
 //
 // Author: Mike Kestner <mkestner@ximian.com>
 //
@@ -25,20 +26,15 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class Field {
+	public class StructField : FieldBase {
 
 		public static int bitfields;
 
-		XmlElement elem;
+		public StructField (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
-		public Field (XmlElement elem)
-		{
-			this.elem = elem;
-		}
-
-		public string Access {
+		protected override string DefaultAccess {
 			get {
-				return elem.HasAttribute ("access") ? elem.GetAttribute ("access") : "public";
+				return "public";
 			}
 		}
 
@@ -59,9 +55,9 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CSType {
+		public new string CSType {
 			get {
-				string type = SymbolTable.Table.GetCSType (CType);
+				string type = base.CSType;
 				if (IsArray)
 					type += "[]";
 				else if (IsBit)
@@ -75,34 +71,15 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CType {
-			get {
-				return elem.GetAttribute ("type");
-			}
-		}
-
-		public bool Hidden {
-			get {
-				return elem.HasAttribute("hidden");
-			}
-		}
-
-		public bool IsArray {
-			get {
-				return elem.HasAttribute("array_len");
-			}
-		}
-
 		public bool IsBit {
 			get {
-				return (elem.HasAttribute("bits") && (elem.GetAttribute("bits") == "1"));
+				return elem.GetAttribute("bits") == "1";
 			}
 		}
 
 		public bool IsPadding {
 			get {
-				string c_name = elem.GetAttribute ("cname");
-				return (c_name.StartsWith ("dummy") || c_name.StartsWith ("padding"));
+				return (CName.StartsWith ("dummy") || CName.StartsWith ("padding"));
 			}
 		}
 
@@ -112,7 +89,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string Name {
+		public new string Name {
 			get {
 				string result = "";
 				if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && CSType != "string")
@@ -121,7 +98,7 @@ namespace GtkSharp.Generation {
 				if (IsBit)
 					result = String.Format ("_bitfield{0}", bitfields++);
 				else
-					result += SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
+					result += SymbolTable.Table.MangleName (CName);
 
 				return result;
 			}
@@ -129,14 +106,14 @@ namespace GtkSharp.Generation {
 
 		public string StudlyName {
 			get {
-				string studly = elem.GetAttribute ("name");
+				string studly = base.Name;
 				if (studly != "")
 					return studly;
 
 				// FIXME: this is backward compatibility for API files
 				// output by older versions of the parser. It can go
 				// away at some point.
-				string name = elem.GetAttribute ("cname");
+				string name = CName;
 				string[] segs = name.Split('_');
 				foreach (string s in segs) {
 					if (s.Trim () == "")
@@ -150,74 +127,75 @@ namespace GtkSharp.Generation {
 		public bool Validate ()
 		{
 			if (CSType == "" && !Hidden) {
-				Console.Write ("Field has unknown Type {0} ", CType);
+				Console.Write ("Field {0} has unknown Type {1} ", Name, CType);
 				Statistics.ThrottledCount++;
 				return false;
 			}
 			return true;
 		}
 
-		public void Generate (StreamWriter sw)
+		public override void Generate (GenerationInfo gen_info, string indent)
 		{
 			if (Hidden)
 				return;
 
+			StreamWriter sw = gen_info.Writer;
 			SymbolTable table = SymbolTable.Table;
 
 			if (IsArray) 
-				sw.WriteLine ("\t\t[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
+				sw.WriteLine (indent + "[MarshalAs (UnmanagedType.ByValArray, SizeConst=" + ArrayLength + ")]");
 
 			string wrapped = table.GetCSType (CType);
-			string wrapped_name = SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
+			string wrapped_name = SymbolTable.Table.MangleName (CName);
 			IGeneratable gen = table [CType];
 
 			if (IsArray) {
-				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, StudlyName);
+				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (IsPadding) {
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else if (IsBit) {
 				// FIXME
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else if (table.IsCallback (CType)) {
 				// FIXME
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else if (gen is LPGen || gen is LPUGen) {
-				sw.WriteLine ("\t\tprivate " + gen.MarshalType + " " + Name + ";");
-				sw.WriteLine ("\t\tpublic " + CSType + " " + StudlyName + " {");
-				sw.WriteLine ("\t\t\tget {");
-				sw.WriteLine ("\t\t\t\treturn " + gen.FromNative (Name) + ";");
-				sw.WriteLine ("\t\t\t}");
-				sw.WriteLine ("\t\t\tset {");
-				sw.WriteLine ("\t\t\t\t" + Name + " = " + gen.CallByName ("value") + ";");
-				sw.WriteLine ("\t\t\t}");
-				sw.WriteLine ("\t\t}");
+				sw.WriteLine (indent + "private " + gen.MarshalType + " " + Name + ";");
+				sw.WriteLine (indent + "public " + CSType + " " + StudlyName + " {");
+				sw.WriteLine (indent + "\tget {");
+				sw.WriteLine (indent + "\t\treturn " + gen.FromNative (Name) + ";");
+				sw.WriteLine (indent + "\t}");
+				sw.WriteLine (indent + "\tset {");
+				sw.WriteLine (indent + "\t\t" + Name + " = " + gen.CallByName ("value") + ";");
+				sw.WriteLine (indent + "\t}");
+				sw.WriteLine (indent + "}");
 			} else if (table.IsObject (CType) || table.IsOpaque (CType)) {
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 
 				if (Access != "private") {
-					sw.WriteLine ("\t\t" + Access + " " + wrapped + " " + wrapped_name + " {");
-					sw.WriteLine ("\t\t\tget { ");
-					sw.WriteLine ("\t\t\t\treturn " + table.FromNativeReturn(CType, Name) + ";");
-					sw.WriteLine ("\t\t\t}");
+					sw.WriteLine (indent + "" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine (indent + "\tget { ");
+					sw.WriteLine (indent + "\t\treturn " + table.FromNativeReturn(CType, Name) + ";");
+					sw.WriteLine (indent + "\t}");
 
-					sw.WriteLine ("\t\t\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
-					sw.WriteLine ("\t\t}");
+					sw.WriteLine (indent + "\tset { " + Name + " = " + table.CallByName (CType, "value") + "; }");
+					sw.WriteLine (indent + "}");
 				}
 			} else if (IsPointer && (table.IsStruct (CType) || table.IsBoxed (CType))) {
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				if (Access != "private") {
-					sw.WriteLine ("\t\t" + Access + " " + wrapped + " " + wrapped_name + " {");
-					sw.WriteLine ("\t\t\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
-					sw.WriteLine ("\t\t}");
+					sw.WriteLine (indent + "" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine (indent + "\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
+					sw.WriteLine (indent + "}");
 				}
 			} else if (IsPointer && CSType != "string") {
 				// FIXME: probably some fields here which should be visible.
-				sw.WriteLine ("\t\tprivate {0} {1};", CSType, Name);
+				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 			} else if (Access != "public") {
-				sw.WriteLine ("\t\t{0} {1} {2};", Access, CSType, Name);
+				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, Name);
 			} else {
-				sw.WriteLine ("\t\tpublic {0} {1};", CSType, StudlyName);
+				sw.WriteLine (indent + "public {0} {1};", CSType, StudlyName);
 			}
 		}
 	}

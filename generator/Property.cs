@@ -27,36 +27,32 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class Property {
+	public class Property : PropertyBase {
 
-		protected XmlElement elem;
-		protected ClassBase container_type;
-
-		public string Name {
-			get {
-				return elem.GetAttribute ("name");
-			}
-		}
-
-		public Property (XmlElement elem, ClassBase container_type)
-		{
-			this.elem = elem;
-			this.container_type = container_type;
-		}
+		public Property (XmlElement elem, ClassBase container_type) : base (elem, container_type) {}
 
 		public bool Validate ()
 		{
-			string c_type = elem.GetAttribute("type");
-			SymbolTable table = SymbolTable.Table;
-			string cs_type = table.GetCSType(c_type);
-
-			if (cs_type == "") {
-				Console.Write("Property has unknown Type {0} ", c_type);
+			if (CSType == "" && !Hidden) {
+				Console.Write("Property has unknown Type {0} ", CType);
 				Statistics.ThrottledCount++;
 				return false;
 			}
 
 			return true;
+		}
+
+		bool Readable {
+			get {
+				return elem.GetAttribute ("readable") == "true";
+			}
+		}
+
+		bool Writable {
+			get {
+				return elem.GetAttribute ("writeable") == "true" &&
+					!elem.HasAttribute ("construct-only");
+			}
 		}
 
 		protected virtual string PropertyAttribute (string qpname) {
@@ -71,92 +67,57 @@ namespace GtkSharp.Generation {
 			return "SetProperty(" + qpname + ", val)";
 		}
 
-		public void Generate (GenerationInfo gen_info, string indent)
+		public override void Generate (GenerationInfo gen_info, string indent)
 		{
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
 
-			string c_type = elem.GetAttribute("type");
-			string cs_type = table.GetCSType(c_type);
+			if (Hidden || (!Readable && !Writable))
+				return;
+
 			string modifiers = "";
 
-			if (elem.HasAttribute("new_flag") || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
+			if (IsNew || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
 				modifiers = "new ";
 
 			string name = Name;
 			if (name == container_type.Name) {
 				name += "Prop";
 			}
-			string qpname = "\"" + elem.GetAttribute("cname") + "\"";
+			string qpname = "\"" + CName + "\"";
 
 			string v_type = "";
-			if (table.IsEnum(c_type)) {
+			if (table.IsEnum(CType)) {
 				v_type = "(int) (GLib.EnumWrapper)";
-			} else if (table.IsObject(c_type) || table.IsInterface (c_type)) {
+			} else if (table.IsObject(CType) || table.IsInterface (CType)) {
 				v_type = "(GLib.UnwrappedObject)";
-			} else if (table.IsBoxed (c_type)) {
+			} else if (table.IsBoxed (CType)) {
 				v_type = "(GLib.Boxed)";
-			} else if (table.IsOpaque (c_type)) {
+			} else if (table.IsOpaque (CType)) {
 				v_type = "(GLib.Opaque)";
 			}
 
-			if (elem.HasAttribute("construct-only") && !elem.HasAttribute("readable")) {
-				return;
-			}
-
-			bool has_getter = false;
-			bool has_setter = false;
-			string getter_type = String.Empty;
-			string setter_type = String.Empty;
-
-			Method getter = container_type.GetMethod("Get" + Name);
-			if (getter != null && getter.Validate () && getter.IsGetter)
-				getter_type = getter.ReturnType;
-
-			Method setter = container_type.GetMethod("Set" + Name);
-			if (setter != null && setter.Validate () && setter.IsSetter)
-				setter_type = setter.Signature.Types;
-
-			if (getter_type != String.Empty && getter_type == setter_type) {
-				has_getter = has_setter = true;
-				getter.GenerateImport (sw);
-				setter.GenerateImport (sw);
-				cs_type = getter_type;
-			} else {
-				if (getter_type == cs_type) {
-					has_getter = true;
-					getter.GenerateImport(sw);
-				}
-				if (setter_type != String.Empty) {
-					has_setter = true;
-					setter.GenerateImport(sw);
-				}
-
-				if (has_setter && setter_type != cs_type)
-					cs_type = setter_type;
-				else if (has_getter && getter_type != cs_type)
-					cs_type = getter_type;
-			}
+			GenerateImports (gen_info, indent);
 
 			sw.WriteLine (indent + PropertyAttribute (qpname));
-			sw.WriteLine (indent + "public " + modifiers + cs_type + " " + name + " {");
+			sw.WriteLine (indent + "public " + modifiers + CSType + " " + name + " {");
 			indent += "\t";
 
-			if (has_getter) {
+			if (Getter != null) {
 				sw.Write(indent + "get ");
-				getter.GenerateBody(gen_info, "\t");
+				Getter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
-			} else if (elem.HasAttribute("readable")) {
+			} else if (Readable) {
 				sw.WriteLine(indent + "get {");
 				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
-				if (table.IsObject (c_type) || table.IsInterface (c_type)) {
+				if (table.IsObject (CType) || table.IsInterface (CType)) {
 					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
-					sw.WriteLine(indent + "\t" + cs_type + " ret = " + table.FromNativeReturn(c_type, "raw_ret") + ";");
-				} else if (table.IsOpaque (c_type) || table.IsBoxed (c_type)) {
-					sw.WriteLine(indent + "\t" + cs_type + " ret = (" + cs_type + ") val;");
+					sw.WriteLine(indent + "\t" + CSType + " ret = " + table.FromNativeReturn(CType, "raw_ret") + ";");
+				} else if (table.IsOpaque (CType) || table.IsBoxed (CType)) {
+					sw.WriteLine(indent + "\t" + CSType + " ret = (" + CSType + ") val;");
 				} else {
-					sw.Write(indent + "\t" + cs_type + " ret = ");
-					sw.Write ("(" + cs_type + ") ");
+					sw.Write(indent + "\t" + CSType + " ret = ");
+					sw.Write ("(" + CSType + ") ");
 					if (v_type != "") {
 						sw.Write(v_type + " ");
 					}
@@ -168,22 +129,22 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + "}");
 			}
 
-			if (has_setter) {
+			if (Setter != null) {
 				sw.Write(indent + "set ");
-				setter.GenerateBody(gen_info, "\t");
+				Setter.GenerateBody(gen_info, "\t");
 				sw.WriteLine();
-			} else if (elem.HasAttribute("writeable") && !elem.HasAttribute("construct-only")) {
+			} else if (Writable) {
 				sw.WriteLine(indent + "set {");
 				sw.Write(indent + "\tGLib.Value val = ");
-				if (table.IsEnum(c_type)) {
-					sw.WriteLine("new GLib.Value(new GLib.EnumWrapper ((int) value, {0}), \"{1}\");", table.IsEnumFlags (c_type) ? "true" : "false", c_type);
-				} else if (table.IsBoxed (c_type)) {
+				if (table.IsEnum(CType)) {
+					sw.WriteLine("new GLib.Value(new GLib.EnumWrapper ((int) value, {0}), \"{1}\");", table.IsEnumFlags (CType) ? "true" : "false", CType);
+				} else if (table.IsBoxed (CType)) {
 					sw.WriteLine("(GLib.Value) value;");
-				} else if (table.IsOpaque (c_type)) {
-					sw.WriteLine("new GLib.Value(value, \"{0}\");", c_type);
+				} else if (table.IsOpaque (CType)) {
+					sw.WriteLine("new GLib.Value(value, \"{0}\");", CType);
 				} else {
 					sw.Write("new GLib.Value(");
-					if (v_type != "" && !(table.IsObject (c_type) || table.IsInterface (c_type) || table.IsOpaque (c_type))) {
+					if (v_type != "" && !(table.IsObject (CType) || table.IsInterface (CType) || table.IsOpaque (CType))) {
 						sw.Write(v_type + " ");
 					}
 					sw.WriteLine("value);");

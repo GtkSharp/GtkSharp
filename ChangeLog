@@ -1,3 +1,24 @@
+2005-05-02  Dan Winship  <danw@novell.com>
+
+	Apply the parts of the generator reorganization from #69514 that
+	don't actually affect the generated output
+	
+	* generator/PropertyBase.cs: new base class for fields and
+	properties (mostly containing code formerly in Property.cs).
+
+	* generator/Property.cs: derive from PropertyBase
+
+	* generator/FieldBase.cs: base class for fields (containing some
+	code formerly in Field.cs)
+
+	* generator/StructField.cs: class for struct fields (the rest of
+	what used to be Field.cs)
+
+	* generator/StructBase.cs: s/Field/StructField/
+
+	* gnome/Gnome.metadata: hide a few _get_ methods that the
+	generator is just now noticing, to preserve the old output.
+
 2005-05-02  Mike Kestner  <mkestner@novell.com>
 
 	* generator/Property.cs : fix interface setter generation.

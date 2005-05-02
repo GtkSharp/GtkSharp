@@ -18,7 +18,7 @@ sources = 				\
 	ConstStringGen.cs		\
 	Ctor.cs				\
 	EnumGen.cs			\
-	Field.cs			\
+	FieldBase.cs			\
 	GenBase.cs			\
 	GenerationInfo.cs		\
 	IGeneratable.cs			\
@@ -38,6 +38,7 @@ sources = 				\
 	Parameters.cs			\
 	Parser.cs			\
 	Property.cs			\
+	PropertyBase.cs			\
 	ReturnValue.cs			\
 	Signal.cs			\
 	Signature.cs			\
@@ -45,6 +46,7 @@ sources = 				\
 	SimpleGen.cs			\
 	Statistics.cs			\
 	StructBase.cs			\
+	StructField.cs			\
 	StructGen.cs			\
 	SymbolTable.cs			\
 	VirtualMethod.cs		\

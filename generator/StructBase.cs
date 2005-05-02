@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 
 				switch (node.Name) {
 				case "field":
-					fields.Add (new Field (member));
+					fields.Add (new StructField (member, this));
 					break;
 
 				case "callback":
@@ -112,11 +112,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void GenFields (StreamWriter sw)
+		protected void GenFields (GenerationInfo gen_info)
 		{
-			Field.bitfields = 0;
+			StructField.bitfields = 0;
 			bool need_field = true;
-			foreach (Field field in fields) {
+			foreach (StructField field in fields) {
 				if (field.IsBit) {
 					if (need_field)
 						need_field = false;
@@ -124,13 +124,13 @@ namespace GtkSharp.Generation {
 						continue;
 				} else
 					need_field = true;
-				field.Generate (sw);	
+				field.Generate (gen_info, "\t\t");
 			}
 		}
 
 		public bool Validate ()
 		{
-			foreach (Field field in fields) {
+			foreach (StructField field in fields) {
 				if (!field.Validate ()) {
 					Console.WriteLine ("in Struct " + QualifiedName);
 					return false;
@@ -162,7 +162,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic struct " + Name + " {");
 			sw.WriteLine ();
 
-			GenFields (sw);
+			GenFields (gen_info);
 			sw.WriteLine ();
 			GenCtors (gen_info);
 			GenMethods (gen_info, null, null);
