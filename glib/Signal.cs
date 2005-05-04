@@ -51,9 +51,9 @@ namespace GLib {
 		uint after_id = UInt32.MaxValue;
 		Delegate marshaler;
 
-		static DestroyNotify notify = new DestroyNotify (OnNativeDestroy);
+		static SignalDestroyNotify notify = new SignalDestroyNotify (OnNativeDestroy);
 		[CDeclCallback]
-		delegate void DestroyNotify (IntPtr data, IntPtr obj);
+		delegate void SignalDestroyNotify (IntPtr data, IntPtr obj);
 		static void OnNativeDestroy (IntPtr data, IntPtr obj)
 		{
 			GCHandle gch = (GCHandle) data;
@@ -191,7 +191,7 @@ namespace GLib {
 		static extern void g_object_set_data (IntPtr instance, IntPtr key, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_data_full (IntPtr instance, IntPtr key, IntPtr data, DestroyNotify notify);
+		static extern void g_object_set_data_full (IntPtr instance, IntPtr key, IntPtr data, SignalDestroyNotify notify);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);

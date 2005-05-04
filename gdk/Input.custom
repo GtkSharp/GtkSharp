@@ -21,7 +21,7 @@
 // Boston, MA 02111-1307, USA.
 
 		[GLib.CDeclCallback]
-		delegate void DestroyNotify (IntPtr data);
+		delegate void InputDestroyNotify (IntPtr data);
 
 		static void ReleaseGCHandle (IntPtr data)
 		{
@@ -32,16 +32,16 @@
 			gch.Free ();
 		}
 
-		static DestroyNotify release_gchandle;
+		static InputDestroyNotify release_gchandle;
 
 		[DllImport("libgdk-win32-2.0-0.dll")]
-		static extern int gdk_input_add_full (int source, int condition, GdkSharp.InputFunctionNative function, IntPtr data, DestroyNotify destroy);
+		static extern int gdk_input_add_full (int source, int condition, GdkSharp.InputFunctionNative function, IntPtr data, InputDestroyNotify destroy);
 
 		[Obsolete]
 		public static int AddFull (int source, Gdk.InputCondition condition, Gdk.InputFunction function, IntPtr data, Gdk.DestroyNotify destroy) 
 		{
 			if (release_gchandle == null)
-				release_gchandle = new DestroyNotify (ReleaseGCHandle);
+				release_gchandle = new InputDestroyNotify (ReleaseGCHandle);
 			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
 			GCHandle gch = GCHandle.Alloc (function_wrapper);
 			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
@@ -51,7 +51,7 @@
 		public static int Add (int source, Gdk.InputCondition condition, Gdk.InputFunction function) 
 		{
 			if (release_gchandle == null)
-				release_gchandle = new DestroyNotify (ReleaseGCHandle);
+				release_gchandle = new InputDestroyNotify (ReleaseGCHandle);
 			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
 			GCHandle gch = GCHandle.Alloc (function_wrapper);
 			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
