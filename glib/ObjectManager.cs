@@ -23,14 +23,10 @@
 namespace GLib {
 
 	using System;
-	using System.Collections;
 	using System.Runtime.InteropServices;
 	using System.Reflection;
-	using System.Text;
 
 	public class ObjectManager {
-
-		private static Hashtable types = new Hashtable ();
 
 		static BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance;
 
@@ -53,76 +49,45 @@ namespace GLib {
 			return obj;
 		}
 
-		[Obsolete ("Use the (GType, Type) overload instead")]
+		[Obsolete ("Replaced by GType.Register (GType, Type)")]
 		public static void RegisterType (string native_name, string managed_name, string assembly)
 		{
 			RegisterType (native_name, managed_name + "," + assembly);
 		}
 
-		[Obsolete ("Use the (GType, Type) overload instead")]
+		[Obsolete ("Replaced by GType.Register (GType, Type)")]
 		public static void RegisterType (string native_name, string mangled)
 		{
-			types [native_name] = mangled;
+			RegisterType (new GType (g_type_from_name (native_name)), Type.GetType (mangled));
 		}
 
+		[Obsolete ("Replaced by GType.Register (GType, Type)")]
 		public static void RegisterType (GType native_type, System.Type type)
 		{
-			types [native_type.Val] = type;
-		}
-
-		static string GetQualifiedName (string cname)
-		{
-			for (int i = 1; i < cname.Length; i++) {
-				if (Char.IsUpper (cname[i])) {
-					if (i == 1 && cname [0] == 'G')
-						return "GLib." + cname.Substring (1);
-					else
-						return cname.Substring (0, i) + "." + cname.Substring (i);
-				}
-			}
-
-			throw new ArgumentException ("cname is not in NamespaceType format. RegisterType should be called directly for " + cname);
+			GType.Register (native_type, type);
 		}
 
 		static Type GetTypeOrParent (IntPtr obj)
 		{
 			IntPtr typeid = gtksharp_get_type_id (obj);
 
-			Type result = LookupType (typeid);
+			Type result = GType.LookupType (typeid);
 			while (result == null) {
-				typeid = gtksharp_get_parent_type (typeid);
+				typeid = g_type_parent (typeid);
 				if (typeid == IntPtr.Zero)
 					return null;
-				result = LookupType (typeid);
+				result = GType.LookupType (typeid);
 			}
-			return result;
-		}
-
-		static Type LookupType (IntPtr typeid)
-		{
-			if (types.Contains (typeid))
-				return types [typeid] as Type;
-
-			string native_name = Marshaller.Utf8PtrToString (gtksharp_get_type_name_for_id (typeid));
-			string type_name = GetQualifiedName (native_name);
-			Type result = null;
-			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ()) {
-				result = asm.GetType (type_name);
-				if (result != null)
-					break;
-			}
-
-			types [typeid] = result;
 			return result;
 		}
 
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_parent_type (IntPtr typ);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_parent (IntPtr typ);
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_name_for_id (IntPtr typ);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_from_name (string name);
 	}
 }

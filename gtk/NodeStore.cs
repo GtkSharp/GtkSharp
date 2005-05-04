@@ -305,10 +305,7 @@ namespace Gtk {
 				foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
 					int col = attr.Column;
 					getters [col] = pi;
-					GLib.GType ctype = GLib.TypeConverter.LookupType (pi.PropertyType);
-                                	if (ctype == GLib.GType.Invalid)
-                                        	throw new Exception ("Unknown type");
-                                        ctypes[col] = ctype;
+                                        ctypes[col] = (GLib.GType) pi.PropertyType;
 				}
 			}
 		}

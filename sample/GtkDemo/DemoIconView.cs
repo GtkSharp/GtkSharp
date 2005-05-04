@@ -73,7 +73,7 @@ namespace GtkDemo
 		ListStore CreateStore ()
 		{
 			// path, name, pixbuf, is_dir
-			ListStore store = new ListStore (GLib.GType.String, GLib.GType.String, Gdk.Pixbuf.GType, GLib.GType.Boolean);
+			ListStore store = new ListStore (typeof (string), typeof (string), typeof (Gdk.Pixbuf), typeof (bool));
 
 			// Set sort column and function
 			store.DefaultSortFunc = SortFunc;

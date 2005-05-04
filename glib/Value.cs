@@ -47,13 +47,8 @@ namespace GLib {
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
 
-			GType gtype = TypeConverter.LookupType (obj.GetType ());
-			if (gtype == GType.Object) {
-				g_value_init (ref this, ((GLib.Object) obj).NativeType.Val);
-			} else {
-				g_value_init (ref this, gtype.Val);
-			}
-
+			GType gtype = (GType) obj.GetType ();
+			g_value_init (ref this, gtype.Val);
 			Val = obj;
 		}
 
@@ -295,7 +290,7 @@ namespace GLib {
 			}
 			set {
 				IntPtr buf;
-				GType type = TypeConverter.LookupType (value.GetType());
+				GType type = (GType) value.GetType();
 				if (type == GType.Char)
 					g_value_set_char (ref this, (char) value);
 				else if (type == GType.Boolean)
@@ -335,7 +330,7 @@ namespace GLib {
 					Marshal.StructureToPtr (value, buf, false);
 					g_value_set_boxed (ref this, buf);
 					Marshal.FreeHGlobal (buf);
-				} else if (type == GType.Object)
+				} else if (g_type_is_a (type.Val, GType.Object.Val))
 					g_value_set_object (ref this, ((GLib.Object) value).Handle);
 				else
 					throw new Exception ("Unknown type");

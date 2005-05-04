@@ -156,7 +156,7 @@ namespace GLib {
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
 			GLib.Marshaller.Free (native_name);
-			GLib.ObjectManager.RegisterType (gtype, t);
+			GLib.GType.Register (gtype, t);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			g_types[t] = gtype;
@@ -171,7 +171,7 @@ namespace GLib {
 			return LookupGType (GetType ());
 		}
 
-		protected static GType LookupGType (System.Type t)
+		protected internal static GType LookupGType (System.Type t)
 		{
 			if (g_types.Contains (t))
 				return (GType) g_types [t];

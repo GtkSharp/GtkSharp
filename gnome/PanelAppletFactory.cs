@@ -42,7 +42,7 @@ namespace Gnome
 			_IID = applet.IID;
 			_factoryIID = applet.FactoryIID;
 			IntPtr native_iid = GLib.Marshaller.StringToPtrGStrdup (_factoryIID);
-			panel_applet_factory_main (native_iid, GLib.Object.LookupGType (applet_type).Val, cb_wrapper.NativeDelegate, IntPtr.Zero);
+			panel_applet_factory_main (native_iid, ((GLib.GType) applet_type).Val, cb_wrapper.NativeDelegate, IntPtr.Zero);
 			GLib.Marshaller.Free (native_iid);
 		}
 

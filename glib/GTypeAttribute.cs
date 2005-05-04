@@ -1,8 +1,6 @@
-// GLib.TypeConverter.cs : Convert between fundamental and .NET types 
+// GTypeAttribute.cs
 //
-// Author: Rachel Hestilow <hestilow@ximian.com>
-//
-// Copyright (c) 2002 Rachel Hestilow
+// Copyright (c) 2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -20,17 +18,25 @@
 
 
 namespace GLib {
+
 	using System;
 
-	public class TypeConverter {
+	[AttributeUsage (AttributeTargets.Enum)]
+	public sealed class GTypeAttribute : Attribute {
+		Type wrapper_type;
 
-		private TypeConverter () {}
-		
-		[Obsolete ("Replaced by explicit (GType) cast")]
-		public static GType LookupType (System.Type type)
+		public GTypeAttribute (Type wrapper_type)
 		{
-			return (GType) type;
+			this.wrapper_type = wrapper_type;
+		}
+
+		public Type WrapperType {
+			get {
+				return wrapper_type;
+			}
+			set {
+				wrapper_type = value;
+			}
 		}
 	}
 }
-

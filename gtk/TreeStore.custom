@@ -306,10 +306,7 @@
 			GLib.GType[] gtypes = new GLib.GType[types.Length];
 			int i = 0;
 			foreach (Type type in types) {
-				GLib.GType ctype = GLib.TypeConverter.LookupType (type);
-				if (ctype == GLib.GType.Invalid)
-					throw new Exception ("Unknown type");
-				gtypes[i] = ctype;
+				gtypes[i] = (GLib.GType) type;
 				i++;
 			}
 			

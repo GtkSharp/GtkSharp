@@ -1,5 +1,62 @@
 2005-05-04  Dan Winship  <danw@novell.com>
 
+	* parser/gapi2xml.pl: make note of _get_type methods for enums
+
+	* */*-api.xml: Regen, adding gtype="..." to many enum types
+
+	* generator/EnumGen.cs (Generate): if the enum has the
+	"gtype" property, add a GTypeAttribute pointing to an internal
+	FooGType class whose GType property can be used to get the enum's
+	GType.
+
+	* generator/ObjectGen.cs:
+	s/ObjectManager.RegisterType/GType.Register/
+
+	* glib/GTypeAttribute.cs: attribute for indicating a property that
+	will return the GType of a type (particularly for enums, which
+	can't have GType properties added to them).
+
+	* glib/GType.cs: renamed from Type.cs to match the type name
+	(public static readonly GType ...): add a few missing types.
+	(Register): moved from ObjectManager.RegisterType
+	(LookupGType): moved from TypeConverter.LookupType and extended to
+	handle GTypeAttribute. Also, fix mappings for sbyte/byte/char, and
+	return specific GTypes for Object subclasses rather than always
+	returning GType.Object.	[Fixes #74699]
+	(LookupType): moved from ObjectWrapper.LookupType
+	(ToString): return the type name
+	
+	* glib/Object.cs (RegisterGType):
+	s/ObjectManager.Register/GType.Register/
+	(LookupGType): Make this protected internal so GType can access
+	it.
+
+	* glib/ObjectManager.cs (RegisterType): deprecate in favor of
+	GType.Register.
+	(LookupType): moved to GType
+	
+	* glib/TypeConverter.cs (LookupType): now a deprecated wrapper
+	around GType.LookupGType.
+
+	* glib/Value.cs: Use GType casts rather than TypeConverter
+
+	* gtk/NodeStore.cs (ScanType):
+	* gtk/ListStore.custom (ListStore): 
+	* gtk/TreeStore.custom (TreeStore): Use (GType) cast rather than
+	TypeConverter. Remove the error check and exception, since the
+	cast never returns GType.Invalid. (The check probably predates
+	GLib.ManagedValue.)
+
+	* gnome/PanelAppletFactory.cs (Register): Use a GType cast rather
+	than GLib.Object.LookupGType (which is no longer accessible after
+	an mcs bugfix)
+
+	* sample/GtkDemo/DemoIconView.cs (CreateStore): use the Type[]
+	constructor rather than the GType[] constructor, since it
+	translates typeof(Gdk.Pixbuf) correctly now.
+
+2005-05-04  Dan Winship  <danw@novell.com>
+
 	* generator/Parameters.cs (Parameters.Validate): If the parameters
 	end with "callback, gpointer, GDestroyNotify", then mark the
 	callback as having "notified" Scope.

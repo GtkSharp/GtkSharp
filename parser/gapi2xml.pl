@@ -145,6 +145,9 @@ while ($line = <STDIN>) {
 				my $boxtype = $1;
 				$boxtype =~ s/($ns)Type(\w+)/$ns$2/;
 				$boxdefs{$boxtype} = $boxdef;
+			} elsif ($line =~ /g_(enum|flags)_register_static/) {
+				$pedef =~ /^(\w+_get_type)/;
+				$enum_gtype{$class} = $1;
 			}
 			last if ($line =~ /^}/);
 		}
@@ -221,6 +224,9 @@ foreach $cname (sort(keys(%edefs))) {
 	if ($def =~ /^deprecated/) {
 		$enum_elem->setAttribute("deprecated", "1");
 		$def =~ s/deprecated//g;
+	}
+	if ($enum_gtype{$cname}) {
+		$enum_elem->setAttribute("gtype", $enum_gtype{$cname});
 	}
 	if ($def =~ /=\s*1\s*<<\s*\d+/) {
 		$enum_elem->setAttribute('type', "flags");

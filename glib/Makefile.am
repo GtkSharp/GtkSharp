@@ -22,6 +22,8 @@ sources =		 			\
 	FileUtils.cs				\
 	GException.cs				\
 	GString.cs				\
+	GType.cs				\
+	GTypeAttribute.cs			\
 	Idle.cs					\
 	IWrapper.cs				\
 	ListBase.cs				\
@@ -47,7 +49,6 @@ sources =		 			\
 	Thread.cs				\
 	Timeout.cs				\
 	TypeConverter.cs			\
-	Type.cs					\
 	TypeFundamentals.cs			\
 	UnwrappedObject.cs			\
 	ValueArray.cs				\

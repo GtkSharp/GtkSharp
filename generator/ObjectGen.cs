@@ -324,7 +324,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		/* Keep this in sync with the one in glib/ObjectManager.cs */
+		/* Keep this in sync with the one in glib/GType.cs */
 		private static string GetExpected (string cname)
 		{
 			for (int i = 1; i < cname.Length; i++) {
@@ -393,7 +393,7 @@ namespace GtkSharp.Generation {
 	
 			foreach (string key in dir_info.objects.Keys) {
 				if (GetExpected(key) != ((string) dir_info.objects[key]))
-					sw.WriteLine ("\t\t\tGLib.ObjectManager.RegisterType({0}.GType, typeof ({0}));", dir_info.objects [key]);
+					sw.WriteLine ("\t\t\tGLib.GType.Register ({0}.GType, typeof ({0}));", dir_info.objects [key]);
 			}
 					
 			sw.WriteLine ("\t\t}");
