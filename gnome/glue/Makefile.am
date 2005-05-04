@@ -18,7 +18,7 @@ libgnomesharpglue_2_la_SOURCES = 	\
 
 libgnomesharpglue_2_la_LIBADD = $(GNOME_LIBS)
 
-INCLUDES = $(GNOME_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GNOME_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgnomesharpglue.dll: $(libgnomesharpglue_2_la_OBJECTS) libgnomesharpglue.rc libgnomesharpglue.def
 	./build-dll libgnomesharpglue-2 $(VERSION)

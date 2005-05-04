@@ -17,7 +17,7 @@ libglibsharpglue_2_la_SOURCES = 	\
 
 libglibsharpglue_2_la_LIBADD = $(GLIB_LIBS)
 
-INCLUDES = $(GLIB_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GLIB_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue.dll: $(libgtksharpglue_2_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
 	./build-dll libgtksharpglue-2 $(VERSION)

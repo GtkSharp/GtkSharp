@@ -34,8 +34,10 @@ double pangosharp_attr_float_get_value (PangoAttrFloat *attr);
 PangoFontDescription *pangosharp_attr_font_desc_get_desc (PangoAttrFontDesc *attr);
 PangoRectangle pangosharp_attr_shape_get_ink_rect (PangoAttrShape *attr);
 PangoRectangle pangosharp_attr_shape_get_logical_rect (PangoAttrShape *attr);
+#ifdef GTK_SHARP_2_6
 int pangosharp_attr_size_get_size (PangoAttrSize *attr);
 gboolean pangosharp_attr_size_get_absolute (PangoAttrSize *attr);
+#endif
 /* */
 
 PangoAttrType
@@ -116,6 +118,7 @@ pangosharp_attr_shape_get_logical_rect (PangoAttrShape *attr)
 	return attr->logical_rect;
 }
 
+#ifdef GTK_SHARP_2_6
 int 
 pangosharp_attr_size_get_size (PangoAttrSize *attr)
 {
@@ -127,4 +130,5 @@ pangosharp_attr_size_get_absolute (PangoAttrSize *attr)
 {
 	return attr->absolute;
 }
+#endif
 

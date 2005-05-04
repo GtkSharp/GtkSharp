@@ -68,12 +68,14 @@ namespace Pango {
 				return new AttrScale (raw);
 			case Pango.AttrType.Fallback:
 				return new AttrFallback (raw);
+#if GTK_SHARP_2_6
 			case Pango.AttrType.LetterSpacing:
 				return new AttrLetterSpacing (raw);
 			case Pango.AttrType.UnderlineColor:
 				return new AttrUnderlineColor (raw);
 			case Pango.AttrType.StrikethroughColor:
 				return new AttrStrikethroughColor (raw);
+#endif
 			default:
 				return new Attribute (raw);
 			}

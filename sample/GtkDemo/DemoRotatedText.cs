@@ -2,6 +2,7 @@ using System;
 using Gtk;
 using Pango;
 
+#if GTK_SHARP_2_6
 namespace GtkDemo
 {
 	[Demo ("Rotated Text", "DemoRotatedText.cs")]
@@ -91,4 +92,5 @@ namespace GtkDemo
 		}
 	}
 }
+#endif
 

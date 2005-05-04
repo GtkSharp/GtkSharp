@@ -11,7 +11,7 @@ libatksharpglue_2_la_SOURCES = 	\
 
 libatksharpglue_2_la_LIBADD = $(BASE_DEPENDENCIES_LIBS)
 
-INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(BASE_DEPENDENCIES_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libatksharpglue.dll: $(libatksharpglue_2_la_OBJECTS) libatksharpglue.rc libatksharpglue.def
 	./build-dll libatksharpglue-2 $(VERSION)

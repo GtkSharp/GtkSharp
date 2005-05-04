@@ -27,7 +27,7 @@ libgtksharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgtksharpglue_2_la_LIBADD = $(GTK_LIBS)
 
-INCLUDES = $(GTK_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GTK_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgtksharpglue.dll: $(libgtksharpglue_2_la_OBJECTS) libgtksharpglue.rc libgtksharpglue.def
 	./build-dll libgtksharpglue-2 $(VERSION)

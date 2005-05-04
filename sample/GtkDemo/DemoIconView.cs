@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Gtk;
 
+#if GTK_SHARP_2_6
 namespace GtkDemo
 {
 	[Demo ("Icon View", "DemoIconView.cs")]
@@ -159,4 +160,5 @@ namespace GtkDemo
 		}
 	}
 }
+#endif
 

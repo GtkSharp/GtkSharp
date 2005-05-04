@@ -11,7 +11,7 @@ libpangosharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libpangosharpglue_2_la_LIBADD = $(PANGO_LIBS)
 
-INCLUDES = $(PANGO_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(PANGO_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libpangosharpglue.dll: $(libpangosharpglue_2_la_OBJECTS) libpangosharpglue.rc libpangosharpglue.def
 	./build-dll libpangosharpglue-2 $(VERSION)

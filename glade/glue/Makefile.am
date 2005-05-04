@@ -13,7 +13,7 @@ libgladesharpglue_2_la_SOURCES = 	\
 
 libgladesharpglue_2_la_LIBADD = $(GLADE_LIBS)
 
-INCLUDES = $(GLADE_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GLADE_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)
 
 libgladesharpglue.dll: $(libgladesharpglue_2_la_OBJECTS) libgladesharpglue.rc libgladesharpglue.def
 	./build-dll libgladesharpglue-2 $(VERSION)
