@@ -9,8 +9,19 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Display information about an application</summary>
+    <remarks>
+      <para>
+The <see cref="T:Gtk.AboutDialog" /> offers a simple way to display information about a program like its logo, name, copyright, website and license. It is also possible to give credits to the authors, documenters, translators and artists who have worked on the program. An about dialog is typically opened when the user selects the About option from the Help menu. All parts of the dialog are optional.
+</para>
+      <para>
+About dialogs often contain links and email addresses. <see cref="T:Gtk.AboutDialog" /> supports this by offering global hooks, which are called when the user clicks on a link or email address, see <see cref="M:Gtk.AboutDialog.SetEmailHook()" /> and <see cref="M:Gtk.AboutDialog.SetUrlHook()" />. Email addresses in the authors, documenters and artists properties are recognized by looking for &lt;user@host&gt;, URLs are recognized by looking for http://url, with url extending to the next space, tab or line break.
+</para>
+      <!--
+<para>
+To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possible, you can use the function <see cref="M:Gtk.ShowAboutDialog()" /> which constructs and shows a dialog and keeps it around so that it can be shown again.
+</para>-->
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
@@ -78,9 +89,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Gtk.AboutDialog" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -104,9 +115,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The license of the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is not wrapped in the text view, thus it must contain the intended linebreaks.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -117,9 +128,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The name of the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <!--If this is not set, it defaults to g_get_application_name().-->
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Copyright">
@@ -130,9 +143,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Copyright information for the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="TranslatorCredits">
@@ -143,9 +156,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Credits to the translators.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LogoIconName">
@@ -156,9 +169,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A named icon to use as the logo for the about box.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This property overrides the <see cref="P:Gtk.AboutDialog.Logo" /> property.
+
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="WebsiteLabel">
@@ -169,9 +184,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The label for the link to the website of the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If this is not set, it defaults to the URL specified in the <see cref="P:Gtk.AboutDialog.Website" /> property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Logo">
@@ -182,9 +197,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>A logo for the about box.</summary>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If this is not set, it defaults to <see cref="P:Gtk.WindowDefaultIconList()" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Website">
@@ -195,9 +210,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The URL for the link to the website of the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This should be a string starting with "http://".</remarks>
       </Docs>
     </Member>
     <Member MemberName="Comments">
@@ -208,9 +223,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Comments about the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Version">
@@ -221,9 +236,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The version of the program.</summary>
         <returns>a <see cref="T:System.String" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetEmailHook">
@@ -236,10 +251,10 @@
         <Parameter Name="func" Type="Gtk.AboutDialogActivateLinkFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /></param>
-        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Installs a global function to be called whenever the user activates an email link in an about dialog.</summary>
+        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />  to call when an email link is activated.</param>
+        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />,  the previous email hook.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetUrlHook">
@@ -252,10 +267,10 @@
         <Parameter Name="func" Type="Gtk.AboutDialogActivateLinkFunc" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /></param>
-        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /></returns>
-        <remarks>To be added</remarks>
+        <summary>Installs a global function to be called whenever the user activates a URL link in an about dialog.</summary>
+        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> to call when a URL link is activated.</param>
+        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />  that is the previous URL hook.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
