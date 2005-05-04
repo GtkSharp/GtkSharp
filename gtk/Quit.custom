@@ -25,7 +25,7 @@
 			GtkSharp.CallbackMarshalWrapper marshal;
 			IntPtr data;
 			DestroyNotify destroy;
-			NativeDestroyNotify handler;
+			GLib.DestroyNotify handler;
 
 			public QuitProxy (GtkSharp.FunctionWrapper function, GtkSharp.CallbackMarshalWrapper marshal, IntPtr data, DestroyNotify destroy)
 			{
@@ -33,7 +33,7 @@
 				this.function = function;
 				this.destroy = destroy;
 				this.data = data;
-				handler = new NativeDestroyNotify (OnDestroy);
+				handler = new GLib.DestroyNotify (OnDestroy);
 			}
 
 			void OnDestroy (IntPtr data)
@@ -45,7 +45,7 @@
 				gch.Free ();
 			}
 
-			public NativeDestroyNotify Handler {
+			public GLib.DestroyNotify Handler {
 				get {
 					return handler;
 				}
@@ -53,7 +53,7 @@
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern uint gtk_quit_add_full(uint main_level, GtkSharp.FunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, NativeDestroyNotify destroy);
+		static extern uint gtk_quit_add_full(uint main_level, GtkSharp.FunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, GLib.DestroyNotify destroy);
 
 		[Obsolete ("Replaced by Add method")]
 		public static uint AddFull (uint main_level, Function function, CallbackMarshal marshal, IntPtr data, DestroyNotify destroy) 
@@ -69,6 +69,6 @@
 		{
 			GtkSharp.FunctionWrapper function_wrapper = new GtkSharp.FunctionWrapper (function);
 			GCHandle gch = GCHandle.Alloc (function_wrapper);
-			return gtk_quit_add_full (main_level, function_wrapper.NativeDelegate, null, (IntPtr) gch, DestroyHelper.NotifyHandler);
+			return gtk_quit_add_full (main_level, function_wrapper.NativeDelegate, null, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
 		}
 

@@ -66,36 +66,6 @@
 			}
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func (IntPtr raw, IntPtr cell_renderer, GtkSharp.TreeCellDataFuncNative func, IntPtr func_data, NativeDestroyNotify destroy);
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_column_set_cell_data_func (IntPtr raw, IntPtr cell_renderer, GtkSharp.CellLayoutDataFuncNative func, IntPtr func_data, NativeDestroyNotify destroy);
-
-		public void SetCellDataFunc (CellRenderer cell_renderer, TreeCellDataFunc func) 
-		{
-			if (func == null) {
-				gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, (GtkSharp.TreeCellDataFuncNative) null, IntPtr.Zero, null);
-				return;
-			}
-
-			GtkSharp.TreeCellDataFuncWrapper wrapper = new GtkSharp.TreeCellDataFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (wrapper);
-			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
-		public void SetCellDataFunc (CellRenderer cell_renderer, CellLayoutDataFunc func)
-		{
-			if (func == null) {
-				gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, (GtkSharp.TreeCellDataFuncNative) null, IntPtr.Zero, null);
-				return;
-			}
-
-			GtkSharp.CellLayoutDataFuncWrapper func_wrapper = new GtkSharp.CellLayoutDataFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
 		public void SetCellDataFunc (CellRenderer cell_renderer, NodeCellDataFunc func)
 		{
 			if (func == null) {
@@ -105,7 +75,7 @@
 
 			NodeCellDataFuncWrapper func_wrapper = new NodeCellDataFuncWrapper (func);
 			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_tree_view_column_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+			gtk_cell_layout_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
 		}
 
 		[Obsolete ("Replaced by SetCellDataFunc (CellRenderer, TreeCellDataFunc) overload")]

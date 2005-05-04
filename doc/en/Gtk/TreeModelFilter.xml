@@ -92,31 +92,6 @@ in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
 	</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetVisibleFunc">
-      <MemberSignature Language="C#" Value="public void SetVisibleFunc (Gtk.TreeModelFilterVisibleFunc func, IntPtr data, Gtk.DestroyNotify destroy);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeModelFilterVisibleFunc" />
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the visible function used when filtering to be <paramref name="func" />.</summary>
-        <param name="func">a <see cref="T:Gtk.TreeModelFilterVisibleFunc" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>
-	  Note: this overload of the function is obsolete and requires you to manage the persistence
-          of func manually so it isn't garbage collected.  The method has been replaced by a single parameter
-          overload which manages delegate persistence internally.
-	  The function should return TRUE if the given row should be visible and
-	  FALSE otherwise.
-	</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ConvertIterToChildIter">
       <MemberSignature Language="C#" Value="public Gtk.TreeIter ConvertIterToChildIter (Gtk.TreeIter filter_iter);" />
       <MemberType>Method</MemberType>
@@ -1081,21 +1056,16 @@ in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="SetVisibleFunc">
-      <MemberSignature Language="C#" Value="public void SetVisibleFunc (Gtk.TreeModelFilterVisibleFunc func);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="VisibleFunc">
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelFilterVisibleFunc VisibleFunc { set; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.TreeModelFilterVisibleFunc</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeModelFilterVisibleFunc" />
-      </Parameters>
       <Docs>
-        <summary>Sets the visible function used when filtering to be <paramref name="func" />.</summary>
-        <param name="func">a <see cref="T:Gtk.TreeModelFilterVisibleFunc" /></param>
-        <remarks>
-	  The function should return <see langword="true" /> if the given row should be visible.
-	</remarks>
+        <summary>The function used to determine whether or not a row should be visible</summary>
+        <returns>a <see cref="T:Gtk.TreeModelFilterVisibleFunc" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SetModifyFunc">

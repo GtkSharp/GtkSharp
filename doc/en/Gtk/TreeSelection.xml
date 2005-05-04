@@ -285,7 +285,7 @@ class TreeSelectionSample
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetSelectFunction">
+    <Member MemberName="SetSelectFunction" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetSelectFunction (Gtk.TreeSelectionFunc func, IntPtr data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -301,7 +301,21 @@ class TreeSelectionSample
         <param name="func">A delegate to invoke before a node is (un)selected.</param>
         <param name="data">ignored</param>
         <param name="destroy">ignored</param>
-        <remarks>This overload is obsolete.  New code should use the single parameter overload.</remarks>
+        <remarks>This method is obsolete.  New code should use the <see cref="M:Gtk.TreeSelection.SelectFunction" /> property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SelectFunction">
+      <MemberSignature Language="C#" Value="public Gtk.TreeSelectionFunc SelectFunction { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeSelectionFunc</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A hook into selection and unselection</summary>
+        <returns>a <see cref="T:Gtk.TreeSelectionFunc" /></returns>
+        <remarks>
+          <para>If set, <paramref name="func" /> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true" /> if the state of the node may be toggled, and <see langword="false" /> if the state of the node should be left unchanged.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectIter">
@@ -536,23 +550,6 @@ class TreeSelectionSample
         <summary>Returns an array of <see cref="T:Gtk.TreePath" />s representing the selected rows.</summary>
         <returns>Selected rows in an array of <see cref="T:Gtk.TreePath" />s</returns>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="SetSelectFunction">
-      <MemberSignature Language="C#" Value="public void SetSelectFunction (Gtk.TreeSelectionFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeSelectionFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Add a hook into selection and unselection.</summary>
-        <param name="func">A delegate to invoke before a node is (un)selected.</param>
-        <remarks>
-          <para> If set, <paramref name="func" /> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true" /> if the state of the node may be toggled, and <see langword="false" /> if the state of the node should be left unchanged.</para>
-        </remarks>
       </Docs>
     </Member>
   </Members>

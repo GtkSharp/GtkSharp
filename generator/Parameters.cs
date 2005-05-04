@@ -98,6 +98,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool IsDestroyNotify {
+			get {
+				return CType == "GDestroyNotify";
+			}
+		}
+
 		public bool IsLength {
 			get {
 				
@@ -176,9 +182,15 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		string scope;
 		public string Scope {
 			get {
-				return elem.GetAttribute ("scope");
+				if (scope == null)
+					scope = elem.GetAttribute ("scope");
+				return scope;
+			}
+			set {
+				scope = value;
 			}
 		}
 
@@ -269,6 +281,12 @@ namespace GtkSharp.Generation {
 			if (HasCB || HideData) {
 				if (p.IsUserData && (idx == Count - 1))
 					return true;
+				if (p.IsUserData && (idx == Count - 2) &&
+				    this [idx + 1].IsDestroyNotify)
+					return true;
+				if (p.IsDestroyNotify && (idx == Count - 1) &&
+				    this [idx - 1].IsUserData)
+					return true;
 			}
 
 			return false;
@@ -309,7 +327,8 @@ namespace GtkSharp.Generation {
 			if (cleared)
 				return false;
 
-			foreach (Parameter p in param_list) {
+			for (int i = 0; i < param_list.Count; i++) {
+				Parameter p = this [i];
 				
 				if (p.IsEllipsis) {
 					Console.Write("Ellipsis parameter ");
@@ -325,8 +344,13 @@ namespace GtkSharp.Generation {
 					return false;
 				}
 
-				if (p.Generatable is CallbackGen)
+				if (p.Generatable is CallbackGen) {
 					has_cb = true;
+					if (i == Count - 3 &&
+					    this [i + 1].IsUserData &&
+					    this [i + 2].IsDestroyNotify)
+						p.Scope = "notified";
+				}
 			}
 			
 			return true;

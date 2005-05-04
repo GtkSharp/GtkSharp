@@ -1,4 +1,4 @@
-// Gtk.DestroyHelper.cs - internal DestroyNotify helper
+// GLib.DestroyNotify.cs - internal DestroyNotify helper
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
@@ -18,14 +18,14 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-namespace Gtk {
+namespace GLib {
 
 	using System;
 	using System.Runtime.InteropServices;
 
-	internal delegate void NativeDestroyNotify (IntPtr data);
+	public delegate void DestroyNotify (IntPtr data);
 
-	internal class DestroyHelper {
+	public class DestroyHelper {
 
 		private DestroyHelper () {}
 		
@@ -37,12 +37,12 @@ namespace Gtk {
 			gch.Free ();
 		}
 
-		static NativeDestroyNotify release_gchandle;
+		static DestroyNotify release_gchandle;
 
-		internal static NativeDestroyNotify NotifyHandler {
+		public static DestroyNotify NotifyHandler {
 			get {
 				if (release_gchandle == null)
-					release_gchandle = new NativeDestroyNotify (ReleaseGCHandle);
+					release_gchandle = new DestroyNotify (ReleaseGCHandle);
 				return release_gchandle;
 			}
 		}

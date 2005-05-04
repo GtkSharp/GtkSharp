@@ -14,7 +14,9 @@ references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dl
 sources =			\
 	Tool.cs
 
-customs = Pixbuf.custom
+customs = 			\
+	Handle.custom		\
+	Pixbuf.custom
 
 add_dist = rsvg-sharp-2.0.pc.in
 

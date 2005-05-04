@@ -102,6 +102,7 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
+			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify"));
 
 			// FIXME: These ought to be handled properly.
 			AddType (new SimpleGen ("GC", "IntPtr"));
@@ -113,14 +114,12 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GArray", "IntPtr"));
 			AddType (new SimpleGen ("GByteArray", "IntPtr"));
 			AddType (new SimpleGen ("GData", "IntPtr"));
-			AddType (new SimpleGen ("GDestroyNotify", "IntPtr"));
 			AddType (new SimpleGen ("GIOChannel", "IntPtr"));
 			AddType (new SimpleGen ("GTypeModule", "GLib.Object"));
 			AddType (new SimpleGen ("GHashTable", "System.IntPtr"));
 			AddType (new SimpleGen ("va_list", "IntPtr"));
 			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
 			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
-			AddType (new SimpleGen ("GDestroyNotify", "IntPtr"));
 		}
 		
 		public void AddType (IGeneratable gen)

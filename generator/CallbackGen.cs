@@ -50,9 +50,9 @@ namespace GtkSharp.Generation {
 			return var_name + ".NativeDelegate";
 		}
 
-		public override string FromNative(string var)
+		public override string FromNative (string var)
 		{
-			return var;
+			return NS + "Sharp." + Name + "Wrapper.GetManagedDelegate (" + var + ")";
 		}
 
 		public string GenWrapper (string ns, GenerationInfo gen_info)
@@ -145,6 +145,16 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tthis.managed = managed;");
 			sw.WriteLine ("\t\t\tif (managed != null)");
 			sw.WriteLine ("\t\t\t\tNativeDelegate = new " + wrapper + " (NativeCallback);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static " + NS + "." + Name + " GetManagedDelegate (" + wrapper + " native)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (native == null)");
+			sw.WriteLine ("\t\t\t\treturn null;");
+			sw.WriteLine ("\t\t\t" + Name + "Wrapper wrapper = (" + Name + "Wrapper) native.Target;");
+			sw.WriteLine ("\t\t\tif (wrapper == null)");
+			sw.WriteLine ("\t\t\t\treturn null;");
+			sw.WriteLine ("\t\t\treturn wrapper.managed;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ("\t}");
 			sw.WriteLine ("#endregion");

@@ -76,7 +76,7 @@ namespace GtkDemo
 			ListStore store = new ListStore (GLib.GType.String, GLib.GType.String, Gdk.Pixbuf.GType, GLib.GType.Boolean);
 
 			// Set sort column and function
-			store.SetDefaultSortFunc (SortFunc);
+			store.DefaultSortFunc = SortFunc;
 			store.SetSortColumnId (COL_DISPLAY_NAME, SortType.Ascending);
 
 			return store;

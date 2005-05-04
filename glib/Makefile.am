@@ -17,6 +17,7 @@ sources =		 			\
 	ConnectBeforeAttribute.cs		\
 	DefaultSignalHandlerAttribute.cs	\
 	DelegateWrapper.cs			\
+	DestroyNotify.cs			\
 	EnumWrapper.cs				\
 	FileUtils.cs				\
 	GException.cs				\

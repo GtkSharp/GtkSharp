@@ -85,45 +85,14 @@
 			return ret;
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_sortable_set_sort_func(IntPtr raw, int col_id, GtkSharp.TreeIterCompareFuncNative sort_func, IntPtr user_data, NativeDestroyNotify destroy);
-
 		[Obsolete ("Replaced by SetSortFunc (int, TreeIterCompareFunc) overload.")]
 		public void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
 		{
 			SetSortFunc (sort_column_id, sort_func);
 		}
 
-		public void SetSortFunc (int sort_column_id, TreeIterCompareFunc sort_func) 
-		{
-			if (sort_func == null) {
-				gtk_tree_sortable_set_sort_func (Handle, sort_column_id, null, IntPtr.Zero, null);
-				return;
-			}
-
-			GtkSharp.TreeIterCompareFuncWrapper sort_func_wrapper = new GtkSharp.TreeIterCompareFuncWrapper (sort_func);
-			GCHandle gch = GCHandle.Alloc (sort_func_wrapper);
-			gtk_tree_sortable_set_sort_func(Handle, sort_column_id, sort_func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_sortable_set_default_sort_func(IntPtr raw, GtkSharp.TreeIterCompareFuncNative sort_func, IntPtr user_data, NativeDestroyNotify destroy);
-
-		[Obsolete ("Replaced by SetDefaultSortFunc (TreeIterCompareFunc) overload.")]
+		[Obsolete ("Replaced by DefaultSortFunc property.")]
 		public void SetDefaultSortFunc (TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy) 
 		{
-			SetDefaultSortFunc (sort_func);
+			DefaultSortFunc = sort_func;
 		}
-
-		public void SetDefaultSortFunc (TreeIterCompareFunc sort_func) 
-		{
-			if (sort_func == null) {
-				gtk_tree_sortable_set_default_sort_func (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-
-			GtkSharp.TreeIterCompareFuncWrapper sort_func_wrapper = new GtkSharp.TreeIterCompareFuncWrapper (sort_func);
-			GCHandle gch = GCHandle.Alloc (sort_func_wrapper);
-			gtk_tree_sortable_set_default_sort_func(Handle, sort_func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-

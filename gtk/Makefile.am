@@ -14,7 +14,6 @@ sources = 				\
 	Application.cs			\
 	BindingAttribute.cs		\
 	ChildPropertyAttribute.cs	\
-	DestroyHelper.cs		\
 	ITreeNode.cs			\
 	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\
@@ -53,7 +52,6 @@ customs = 				\
 	EntryCompletion.custom		\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
-	FileFilter.custom		\
 	FileSelection.custom		\
 	FileSystemModel.custom		\
 	Frame.custom			\

@@ -58,27 +58,14 @@
 			return ret;
 		}
 
-		[Obsolete ("Replaced by SetVisibleFunc (TreeModelFilterVisibleFunc) overload.")]
-		public void SetVisibleFunc (TreeModelFilterVisibleFunc func, IntPtr data, Gtk.DestroyNotify destroy) 
+		[Obsolete ("Replaced by VisibleFunc property.")]
+		public void SetVisibleFunc (TreeModelFilterVisibleFunc func, IntPtr data, Gtk.DestroyNotify destroy)
 		{
-			SetVisibleFunc (func);
+			VisibleFunc = func;
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_model_filter_set_visible_func (IntPtr raw, GtkSharp.TreeModelFilterVisibleFuncNative func, IntPtr data, NativeDestroyNotify destroy);
-		public void SetVisibleFunc (TreeModelFilterVisibleFunc func) 
-		{
-			if (func == null) {
-				gtk_tree_model_filter_set_visible_func (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-			GtkSharp.TreeModelFilterVisibleFuncWrapper func_wrapper = new GtkSharp.TreeModelFilterVisibleFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_tree_model_filter_set_visible_func (Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, NativeDestroyNotify destroy);
+		static extern void gtk_tree_model_filter_set_modify_func(IntPtr raw, int n_columns, IntPtr[] types, GtkSharp.TreeModelFilterModifyFuncNative func, IntPtr data, GLib.DestroyNotify destroy);
 
 		public void SetModifyFunc (int n_columns, GLib.GType[] types, TreeModelFilterModifyFunc func) 
 		{
@@ -87,6 +74,6 @@
 			for (int i = 0; i < types.Length; i++)
 				native_types [i] = types [i].Val;
 			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
+			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
 		}
 

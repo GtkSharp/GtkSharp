@@ -20,7 +20,7 @@
 
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern uint gtk_input_add_full(int source, int condition, InputFunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, NativeDestroyNotify destroy);
+		static extern uint gtk_input_add_full(int source, int condition, InputFunctionNative function, GtkSharp.CallbackMarshalNative marshal, IntPtr data, GLib.DestroyNotify destroy);
 
 		[GLib.CDeclCallback]
 		delegate void InputFunctionNative(IntPtr data, int source, int condition);
@@ -52,7 +52,7 @@
 			GtkSharp.CallbackMarshalWrapper marshal;
 			IntPtr data;
 			DestroyNotify destroy;
-			NativeDestroyNotify handler;
+			GLib.DestroyNotify handler;
 
 			public InputProxy (InputFunctionWrapper function, GtkSharp.CallbackMarshalWrapper marshal, IntPtr data, DestroyNotify destroy)
 			{
@@ -60,7 +60,7 @@
 				this.function = function;
 				this.destroy = destroy;
 				this.data = data;
-				handler = new NativeDestroyNotify (OnDestroy);
+				handler = new GLib.DestroyNotify (OnDestroy);
 			}
 
 			void OnDestroy (IntPtr data)
@@ -72,7 +72,7 @@
 				gch.Free ();
 			}
 
-			public NativeDestroyNotify Handler {
+			public GLib.DestroyNotify Handler {
 				get {
 					return handler;
 				}

@@ -140,6 +140,22 @@ namespace GtkSharp.Generation {
 					CallbackGen cbgen = gen as CallbackGen;
 					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
 					switch (p.Scope) {
+					case "notified":
+						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper;", wrapper, name);
+						sw.WriteLine (indent + "\t\t\tIntPtr {0};", parameters [i + 1].Name);
+						sw.WriteLine (indent + "\t\t\t{0} {1};", parameters [i + 2].CSType, parameters [i + 2].Name);
+						sw.WriteLine (indent + "\t\t\tif ({0} == null) {{", name);
+						sw.WriteLine (indent + "\t\t\t\t{0}_wrapper = null;", name);
+						sw.WriteLine (indent + "\t\t\t\t{0} = IntPtr.Zero;", parameters [i + 1].Name);
+						sw.WriteLine (indent + "\t\t\t\t{0} = null;", parameters [i + 2].Name);
+						sw.WriteLine (indent + "\t\t\t} else {");
+
+						sw.WriteLine (indent + "\t\t\t\t{0}_wrapper = new {1} ({0});", name, wrapper);
+						sw.WriteLine (indent + "\t\t\t\t{0} = (IntPtr) GCHandle.Alloc ({1}_wrapper);", parameters [i + 1].Name, name);
+						sw.WriteLine (indent + "\t\t\t\t{0} = new {1} (GLib.DestroyHelper.NotifyHandler);", parameters [i + 2].Name, parameters [i + 2].CSType);
+						sw.WriteLine (indent + "\t\t\t}");
+						break;
+
 					case "call":
 					default:
 						if (p.Scope == String.Empty)

@@ -141,7 +141,7 @@ class Updater {
 		XmlTextWriter writer = new XmlTextWriter (filename, Encoding.ASCII);
 		writer.Formatting = Formatting.Indented;
 		doc.WriteContentTo (writer);
-		writer.Flush ();
+		writer.Close ();
 		Console.WriteLine (type.FullName);
 		return true;
 	}
@@ -149,6 +149,10 @@ class Updater {
 	bool Compare (Type t, XmlDocument doc)
 	{
 		bool changed = false;
+
+		XmlNode node = doc.SelectSingleNode ("/Type/@FullName");
+		if (node == null || node.InnerText != t.FullName)
+			return false;
 
 		if (!t.IsAbstract && typeof (System.Delegate).IsAssignableFrom (t))
 			return CompareDelegate (t, doc);

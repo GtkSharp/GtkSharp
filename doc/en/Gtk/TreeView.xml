@@ -261,7 +261,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetColumnDragFunction">
+    <Member MemberName="SetColumnDragFunction" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetColumnDragFunction (Gtk.TreeViewColumnDropFunc func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -277,7 +277,19 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
         <param name="func">an object of type <see cref="T:Gtk.TreeViewColumnDropFunc" /></param>
         <param name="user_data">ignored</param>
         <param name="destroy">ignored</param>
-        <remarks>This overload is obsolete.  New code should use the single parameter overload.</remarks>
+        <remarks>This method is obsolete.  New code should use the <see cref="M:Gtk.TreeView.ColumnDragFunction" /> property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColumnDragFunction">
+      <MemberSignature Language="C#" Value="public Gtk.TreeViewColumnDropFunc ColumnDragFunction { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeViewColumnDropFunc</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The function for determining where a column may be dropped when dragged.</summary>
+        <returns>a <see cref="T:Gtk.TreeViewColumnDropFunc" /></returns>
+        <remarks>This function is called on every column pair in turn at the beginning of a column drag to determine where a drop can take place. If the property is set to be <see langword="null" />, then <see cref="Gtk.TreeView" /> reverts to the default behavior of allowing all columns to be dropped everywhere.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollToCell">
@@ -446,7 +458,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetDestroyCountFunc">
+    <Member MemberName="SetDestroyCountFunc" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetDestroyCountFunc (Gtk.TreeDestroyCountFunc func, IntPtr data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -465,7 +477,19 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
         <remarks>It is meant for private use by Atk for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetSearchEqualFunc">
+    <Member MemberName="DestroyCountFunc">
+      <MemberSignature Language="C#" Value="public Gtk.TreeDestroyCountFunc DestroyCountFunc { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeDestroyCountFunc</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>This property should almost never be used. It is meant for private use by ATK for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</summary>
+        <returns>a <see cref="T:Gtk.TreeDestroyCountFunc" /></returns>
+        <remarks>It is meant for private use by Atk for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetSearchEqualFunc" Deprecated="true">
       <MemberSignature Language="C#" Value="public void SetSearchEqualFunc (Gtk.TreeViewSearchEqualFunc search_equal_func, IntPtr search_user_data, Gtk.DestroyNotify search_destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -481,7 +505,20 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
         <param name="search_equal_func">The <see cref="T:Gtk.TreeViewSearchEqualFunc" /> to invoke.</param>
         <param name="search_user_data">ignored</param>
         <param name="search_destroy">ignored</param>
-        <remarks>This overload is obsolete.  New code should use the single parameter overload.</remarks>
+        <remarks>This method is obsolete.  New code should use the <see cref="M:Gtk.TreeView.SearchEqualFunc" /> property.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SearchEqualFunc">
+      <MemberSignature Language="C#" Value="public Gtk.TreeViewSearchEqualFunc SearchEqualFunc { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.TreeViewSearchEqualFunc</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The compare function for the interactive search capabilities.</summary>
+        <returns>a <see cref="T:Gtk.TreeViewSearchEqualFunc" /></returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="UnsetRowsDragDest">
@@ -1826,53 +1863,6 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <remarks>This method actually creates the column, rather than relying on a column object to be passed in. There's an alternate invokation form if you'd like to pass in an existing column object.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetSearchEqualFunc">
-      <MemberSignature Language="C#" Value="public void SetSearchEqualFunc (Gtk.TreeViewSearchEqualFunc search_equal_func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="search_equal_func" Type="Gtk.TreeViewSearchEqualFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Sets the compare function for the interactive search capabilities.</summary>
-        <param name="search_equal_func">The <see cref="T:Gtk.TreeViewSearchEqualFunc" /> to invoke.</param>
-        <remarks />
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetDestroyCountFunc">
-      <MemberSignature Language="C#" Value="public void SetDestroyCountFunc (Gtk.TreeDestroyCountFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeDestroyCountFunc" />
-      </Parameters>
-      <Docs>
-        <summary>This function should almost never be used. It is meant for private use by ATK for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</summary>
-        <param name="func">an object of type <see cref="T:Gtk.TreeDestroyCountFunc" /></param>
-        <remarks>It is meant for private use by Atk for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetColumnDragFunction">
-      <MemberSignature Language="C#" Value="public void SetColumnDragFunction (Gtk.TreeViewColumnDropFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeViewColumnDropFunc" />
-      </Parameters>
-      <Docs>
-        <summary>Sets a user function for determining where a column may be dropped when dragged.</summary>
-        <param name="func">an object of type <see cref="T:Gtk.TreeViewColumnDropFunc" /></param>
-        <remarks>This function is called on every column pair in turn at the beginning of a column drag to determine where a drop can take place. If <paramref name="func" /> is set to be <see langword="null" />, then <see cref="Gtk.TreeView" /> reverts to the default behavior of allowing all columns to be dropped everywhere.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="HoverExpand">
       <MemberSignature Language="C#" Value="public bool HoverExpand { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1899,23 +1889,17 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetRowSeparatorFunc">
-      <MemberSignature Language="C#" Value="public void SetRowSeparatorFunc (Gtk.TreeViewRowSeparatorFunc func, IntPtr data, Gtk.DestroyNotify destroy);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="RowSeparatorFunc">
+      <MemberSignature Language="C#" Value="public Gtk.TreeViewRowSeparatorFunc RowSeparatorFunc { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Gtk.TreeViewRowSeparatorFunc</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Gtk.TreeViewRowSeparatorFunc" />
-        <Parameter Name="data" Type="System.IntPtr" />
-        <Parameter Name="destroy" Type="Gtk.DestroyNotify" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <param name="func">a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></param>
-        <param name="data">a <see cref="T:System.IntPtr" /></param>
-        <param name="destroy">a <see cref="T:Gtk.DestroyNotify" /></param>
-        <remarks>To be added</remarks>
+        <summary>Callback function to indicate whether or not a given row of the tree view should be rendered as a separator.</summary>
+        <returns>a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

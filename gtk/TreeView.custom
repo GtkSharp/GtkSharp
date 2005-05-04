@@ -162,63 +162,20 @@
 			return InsertColumn (col, pos);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_set_search_equal_func (IntPtr raw, GtkSharp.TreeViewSearchEqualFuncNative search_equal_func, IntPtr search_user_data, NativeDestroyNotify search_destroy);
-
-		[Obsolete ("Replaced by SetSearchEqualFunc (TreeViewSearchEqualFunc) overload.")]
+		[Obsolete ("Replaced by SearchEqualFunc property.")]
 		public void SetSearchEqualFunc (TreeViewSearchEqualFunc search_equal_func, IntPtr search_user_data, DestroyNotify search_destroy) 
 		{
-			SetSearchEqualFunc (search_equal_func);
+			SearchEqualFunc = search_equal_func;
 		}
 
-		public void SetSearchEqualFunc (TreeViewSearchEqualFunc search_equal_func) 
-		{
-			if (search_equal_func == null) {
-				gtk_tree_view_set_search_equal_func (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-			GtkSharp.TreeViewSearchEqualFuncWrapper wrapper = new GtkSharp.TreeViewSearchEqualFuncWrapper (search_equal_func);
-			GCHandle gch = GCHandle.Alloc (wrapper);
-			gtk_tree_view_set_search_equal_func (Handle, wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_set_destroy_count_func (IntPtr raw, GtkSharp.TreeDestroyCountFuncNative func, IntPtr data, NativeDestroyNotify destroy);
-
-		[Obsolete ("Replaced by SetDestroyCountFunc (TreeDestroyCountFunc) overload.")]
+		[Obsolete ("Replaced by DestroyCountFunc property.")]
 		public void SetDestroyCountFunc (TreeDestroyCountFunc func, IntPtr data, DestroyNotify destroy) 
 		{
-			SetDestroyCountFunc (func);
+			DestroyCountFunc = func;
 		}
 
-		public void SetDestroyCountFunc (TreeDestroyCountFunc func) 
-		{
-			if (func == null) {
-				gtk_tree_view_set_destroy_count_func (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-			GtkSharp.TreeDestroyCountFuncWrapper wrapper = new GtkSharp.TreeDestroyCountFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (wrapper);
-			gtk_tree_view_set_destroy_count_func (Handle, wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_tree_view_set_column_drag_function (IntPtr raw, GtkSharp.TreeViewColumnDropFuncNative func, IntPtr user_data, NativeDestroyNotify destroy);
-
-		[Obsolete ("Replaced by SetColumnDragFunction (TreeViewColumnDropFunc) overload.")]
+		[Obsolete ("Replaced by ColumnDragFunction property.")]
 		public void SetColumnDragFunction (TreeViewColumnDropFunc func, IntPtr user_data, DestroyNotify destroy) 
 		{
-			SetColumnDragFunction (func);
+			ColumnDragFunction = func;
 		}
-
-		public void SetColumnDragFunction (TreeViewColumnDropFunc func) 
-		{
-			if (func == null) {
-				gtk_tree_view_set_column_drag_function (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-			GtkSharp.TreeViewColumnDropFuncWrapper wrapper = new GtkSharp.TreeViewColumnDropFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (wrapper);
-			gtk_tree_view_set_column_drag_function (Handle, wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-

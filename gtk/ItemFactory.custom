@@ -36,23 +36,8 @@
 			GLib.Marshaller.Free (native);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern void gtk_item_factory_set_translate_func (IntPtr raw, GtkSharp.TranslateFuncNative func, IntPtr data, NativeDestroyNotify notify);
-
-		[Obsolete ("Replaced by SetTranslateFunc (TranslateFunc) overload.")]
+		[Obsolete ("Replaced by TranslateFunc property.")]
 		public void SetTranslateFunc (TranslateFunc func, IntPtr data, DestroyNotify notify) 
 		{
-			SetTranslateFunc (func);
+			TranslateFunc = func;
 		}
-
-		public void SetTranslateFunc (TranslateFunc func) 
-		{
-			if (func == null) {
-				gtk_item_factory_set_translate_func (Handle, null, IntPtr.Zero, null);
-				return;
-			}
-			GtkSharp.TranslateFuncWrapper func_wrapper = new GtkSharp.TranslateFuncWrapper (func);
-			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_item_factory_set_translate_func (Handle, func_wrapper.NativeDelegate, (IntPtr) gch, DestroyHelper.NotifyHandler);
-		}
-
