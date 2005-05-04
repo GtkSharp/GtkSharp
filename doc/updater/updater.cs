@@ -1150,7 +1150,7 @@ class Updater {
 		if (field.IsPublic)
 			return "public";
 
-		if (field.IsFamily)
+		if (field.IsFamily || field.IsFamilyOrAssembly)
 			return "protected";
 
 		else
@@ -1174,7 +1174,7 @@ class Updater {
 		if (method.IsPublic)
 			return "public";
 
-		if (method.IsFamily)
+		if (method.IsFamily || method.IsFamilyOrAssembly)
 			return "protected";
 		else
 			return null;
