@@ -9,8 +9,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Renders a combobox in a cell</summary>
+    <remarks>
+      <see cref="T:Gtk.CellRendererCombo" /> renders text in a cell like <see cref="T:Gtk.CellRendererText" /> from which it is derived. But while <see cref="T:Gtk.CellRendererText" /> offers a simple entry to edit the text, <see cref="T:Gtk.CellRendererCombo" /> offers a <see cref="T: Gtk.ComboBox" /> or <see cref="T:Gtk.ComboBoxEntry" /> widget to edit the text. The values to display in the combo box are taken from the tree model specified in the model property.
+
+The combo cell renderer takes care of adding a text cell renderer to the combo box and sets it to display the column specified by its text-column property. Further cell renderers can be added in a handler for the editing-started signal. </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.CellRendererText</BaseTypeName>
@@ -72,9 +75,9 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Default constructor</summary>
         <returns>a <see cref="T:Gtk.CellRendererCombo" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -98,9 +101,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Specifies the model column which holds the possible values for the combo box.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>
+          <block subset="none" type="note">
+            <para>this refers to the model specified in the model property, not the model backing the tree view to which this cell renderer is attached.
+  </para>
+          </block>
+          <see cref="T:Gtk.CellRendererCombo" /> automatically adds a text cell renderer for this column to its combo box.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Model">
@@ -111,9 +119,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Holds a tree model containing the possible values for the combo box.</summary>
         <returns>a <see cref="T:Gtk.TreeModel" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Use the <see cref="P:Gtk.CellRendererCombo.TextColumn" /> property to specify the column holding the values.</remarks>
       </Docs>
     </Member>
     <Member MemberName="HasEntry">
@@ -124,9 +132,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Whether to use an entry.</summary>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>If <see langword="true" />, the cell renderer will include an entry and allow to enter values other than the ones in the popup list.</remarks>
       </Docs>
     </Member>
   </Members>
