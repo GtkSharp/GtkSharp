@@ -1205,6 +1205,48 @@ mcs -resource:image.jpg sample.cs
           </example></remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (System.Reflection.Assembly assembly, string resource, int width, int height);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource" Type="System.String" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>Constructor for images embedded in an assembly when a specific size is required.</summary>
+        <param name="assembly">The <see cref="T:System.Reflection.Assembly" /> that contains the image.  
+<para>
+If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
+        <param name="resource">The name given as the resource in the assembly</param>
+        <param name="width">The required width for the pixbuf</param>
+        <param name="height">The required height for the pixbuf</param>
+        <returns>The <see cref="T:Gdk.Pixbuf" /> created from the resource stream</returns>
+        <remarks>
+          <para>
+   This method is used to construct a <see cref="T:Gdk.Pixbuf" /> from an embedded resource in an assembly with a specific size. 
+</para>
+          <para>
+   Typically this is used when application developers want to distribute images in a single executable.
+</para>
+
+If the assembly parameter is <see langword="null" />,  the image will be looked up on the calling assembly.
+
+<para>
+For example:
+</para><example>
+            <code lang="C#">
+Gdk.Pixbuf p = new Pixbuf (null, "image.jpg", 10, 10);
+  </code>
+          </example><para>Compile with:</para><example>
+            <code lang="Compilation">
+mcs -resource:image.jpg sample.cs
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
     <Member MemberName="LoadFromResource">
       <MemberSignature Language="C#" Value="public static Gdk.Pixbuf LoadFromResource (string resource);" />
       <MemberType>Method</MemberType>
@@ -1234,9 +1276,9 @@ mcs -resource:image.jpg sample.cs
       </Parameters>
       <Docs>
         <summary>Makes a new Pixbuf object from a <see cref="T:System.IO.Stream" />.</summary>
-        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
+        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image</param>
         <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
-        <remarks>Useful for creating a Pixbuf from an image file that resides in memory.
+        <remarks>Useful for creating a Pixbuf from an image file that resides in a stream.
 
 <example>
             <code lang="C#">
@@ -1248,6 +1290,89 @@ System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);
 
 /* create a pixbuf from the stream as if it was a file */
 Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (System.IO.Stream stream, int width, int height);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>Makes a new Pixbuf object from a <see cref="T:System.IO.Stream" /> with a given size.</summary>
+        <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image</param>
+        <param name="width"> a <see cref="T:System.Int32" /> specifying the required width</param>
+        <param name="height"> a <see cref="T:System.Int32" /> specifying the required height</param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>Useful for creating a Pixbuf with a specific size from an image file that resides in a stream.
+
+<example>
+            <code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];
+
+/* create a memory stream to the buffer */
+System.IO.MemoryStream memorystream = new System.IO.MemoryStream(buffer);    
+
+/* create a pixbuf from the stream as if it was a file */
+Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream, 10, 10);
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (byte [] buffer);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <summary>Makes a new Pixbuf object from a <see cref="T:System.Byte[]" />.</summary>
+        <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image</param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>Useful for creating a Pixbuf from an image file in memory.
+
+<example>
+            <code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];  
+
+/* create a pixbuf from the buffer as if it was a file */
+Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer);
+  </code>
+          </example></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (byte [] buffer, int width, int height);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <summary>Makes a new Pixbuf object from a <see cref="T:System.Byte[]" /> with a given size.</summary>
+        <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image</param>
+        <param name="width"> a <see cref="T:System.Int32" /> specifying the required width</param>
+        <param name="height"> a <see cref="T:System.Int32" /> specifying the required height</param>
+        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <remarks>Useful for creating a Pixbuf with a specific size from an image file in memory.
+
+<example>
+            <code lang="C#">
+/* buffer containing an image */
+System.Byte[] buffer = new System.Byte[256];  
+
+/* create a pixbuf from the buffer as if it was a file */
+Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
   </code>
           </example></remarks>
       </Docs>

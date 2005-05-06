@@ -50,7 +50,22 @@
 				Write (buffer, (uint) n);
 		}
 		
+		public PixbufLoader (string file, int width, int height) : this ()
+		{
+			SetSize(width, height);
+			
+			using(System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+			{
+				InitFromStream(stream);
+			}
+		}
+		
 		public PixbufLoader (System.IO.Stream stream) : this ()
+		{
+			InitFromStream(stream);
+		}
+		
+		private void InitFromStream (System.IO.Stream stream)
 		{
 			try {
 				LoadFromStream (stream);
@@ -58,8 +73,19 @@
 				Close ();
 			}
 		}
+		
+		public PixbufLoader (System.IO.Stream stream, int width, int height) : this()
+		{
+			SetSize(width, height);
+			InitFromStream(stream);
+		}
 
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource) : this ()
+		{
+			InitFromAssemblyResource(assembly, resource);
+		}
+		
+		private void InitFromAssemblyResource(System.Reflection.Assembly assembly, string resource)
 		{
 			try {
 				if (assembly == null)
@@ -76,6 +102,33 @@
 			} finally {
 				Close ();
 			}
+		}
+		
+		public PixbufLoader (System.Reflection.Assembly assembly, string resource, int width, int height) : this ()
+		{
+			SetSize(width, height);
+			InitFromAssemblyResource(assembly, resource);
+		}
+		
+		public PixbufLoader (byte[] buffer) : this()
+		{
+			InitFromBuffer(buffer);
+		}
+		
+		private void InitFromBuffer (byte[] buffer)
+		{
+			try {
+				Write (buffer, (uint)buffer.Length);
+			} finally {
+				Close ();
+			}
+		}
+		
+		
+		public PixbufLoader (byte[] buffer, int width, int height) : this()
+		{
+			SetSize(width, height);
+			InitFromBuffer(buffer);
 		}
 
 		static public PixbufLoader LoadFromResource (string resource)

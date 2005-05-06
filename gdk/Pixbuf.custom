@@ -6,7 +6,8 @@
 // 	Mike Kestner <mkestner@ximian.com>
 // 	Duncan Mak <duncan@ximian.com>
 //	Gonzalo Paniagua Javier <gonzalo@ximian.com>
-//	Martin Willemoes Hansen <mwh@sysrq.dk> 
+//	Martin Willemoes Hansen <mwh@sysrq.dk>
+//	Jose Faria   <spigaz@gmail.com> 
 //
 // Copyright (c) 2002 Vladimir Vukicevic
 // Copyright (c) 2003 Ximian, Inc. (Miguel de Icaza)
@@ -101,13 +102,31 @@
 		}
 
 		public Pixbuf (System.IO.Stream stream) : base (new PixbufLoader (stream).PixbufHandle) {}
-
+		
+		public Pixbuf (System.IO.Stream stream, int width, int height) : base(new PixbufLoader (stream, width, height).PixbufHandle) {}
+		
 		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
-			if (assembly == null)
-				assembly = System.Reflection.Assembly.GetCallingAssembly ();
-			Raw = new PixbufLoader (assembly, resource).PixbufHandle;
+			Raw = new PixbufLoader (CheckAssembly(assembly), resource).PixbufHandle;
 		}
+				
+		private System.Reflection.Assembly CheckAssembly(System.Reflection.Assembly assembly)
+		{
+			if (assembly == null)
+				return System.Reflection.Assembly.GetCallingAssembly ();
+			else
+				return assembly;
+		}
+		
+		public Pixbuf (System.Reflection.Assembly assembly, string resource, int width, int height) : base (IntPtr.Zero)
+		{
+			Raw = new PixbufLoader (CheckAssembly(assembly), resource, width, height).PixbufHandle;
+		}
+		
+		public Pixbuf (byte[] buffer) : base(new PixbufLoader (buffer).PixbufHandle) {}
+
+		
+		public Pixbuf (byte[] buffer, int width, int height) : base(new PixbufLoader (buffer, width, height).PixbufHandle) {}
 
 		static public Pixbuf LoadFromResource (string resource)
 		{
