@@ -44,7 +44,14 @@ namespace GtkDemo
 			// the centered square where we draw are [-RADIUS, RADIUS], [-RADIUS, RADIUS]
 			// We first center, then change the scale
 			deviceRadius = Math.Min (width, height) / 2;
+			// #define PANGO_MATRIX_INIT { 1., 0., 0., 1., 0., 0. }
 			Matrix matrix = new Matrix ();
+			matrix.Xx = 1.0;
+			matrix.Xy = 0.0;
+			matrix.Yx = 0.0;
+			matrix.Yy = 1.0;
+			matrix.X0 = 0.0;
+			matrix.Y0 = 0.0;
 			matrix.Translate (deviceRadius + (width - 2 * deviceRadius) / 2, deviceRadius + (height - 2 * deviceRadius) / 2);
 			matrix.Scale (deviceRadius / RADIUS, deviceRadius / RADIUS);
 
