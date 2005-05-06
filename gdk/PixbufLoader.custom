@@ -82,15 +82,12 @@
 
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource) : this ()
 		{
-			InitFromAssemblyResource(assembly, resource);
+			InitFromAssemblyResource(assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource);
 		}
 		
 		private void InitFromAssemblyResource(System.Reflection.Assembly assembly, string resource)
 		{
 			try {
-				if (assembly == null)
-					assembly = System.Reflection.Assembly.GetCallingAssembly ();
-
 				if (resource == null)
 					throw new ArgumentNullException ("resource");
 
@@ -107,7 +104,7 @@
 		public PixbufLoader (System.Reflection.Assembly assembly, string resource, int width, int height) : this ()
 		{
 			SetSize(width, height);
-			InitFromAssemblyResource(assembly, resource);
+			InitFromAssemblyResource(assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource);
 		}
 		
 		public PixbufLoader (byte[] buffer) : this()

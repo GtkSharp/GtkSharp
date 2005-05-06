@@ -107,20 +107,12 @@
 		
 		public Pixbuf (System.Reflection.Assembly assembly, string resource) : base (IntPtr.Zero)
 		{
-			Raw = new PixbufLoader (CheckAssembly(assembly), resource).PixbufHandle;
+			Raw = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource).PixbufHandle;
 		}
 				
-		private System.Reflection.Assembly CheckAssembly(System.Reflection.Assembly assembly)
-		{
-			if (assembly == null)
-				return System.Reflection.Assembly.GetCallingAssembly ();
-			else
-				return assembly;
-		}
-		
 		public Pixbuf (System.Reflection.Assembly assembly, string resource, int width, int height) : base (IntPtr.Zero)
 		{
-			Raw = new PixbufLoader (CheckAssembly(assembly), resource, width, height).PixbufHandle;
+			Raw = new PixbufLoader (assembly == null ? System.Reflection.Assembly.GetCallingAssembly () : assembly, resource, width, height).PixbufHandle;
 		}
 		
 		public Pixbuf (byte[] buffer) : base(new PixbufLoader (buffer).PixbufHandle) {}
