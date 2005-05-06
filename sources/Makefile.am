@@ -1,6 +1,7 @@
 EXTRA_DIST =				\
 	README				\
-	gtk-sharp-sources.xml		\
+	gtk-sharp-2.4-sources.xml	\
+	gtk-sharp-2.6-sources.xml	\
 	gda.patch			\
 	gnomedb.patch			\
 	gtkclipboard.patch 		\
