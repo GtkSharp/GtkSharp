@@ -68,7 +68,7 @@ namespace GtkDemo
 
 		Gdk.Pixbuf GetIcon (string name)
 		{
-			return Gtk.IconTheme.Default.LoadIcon (name, 32, (IconLookupFlags) 0);
+			return Gtk.IconTheme.Default.LoadIcon (name, 48, (IconLookupFlags) 0);
 		}
 
 		ListStore CreateStore ()
