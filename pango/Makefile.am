@@ -38,6 +38,7 @@ customs =			\
 	GlyphItem.custom	\
 	Layout.custom		\
 	LayoutLine.custom	\
+	Matrix.custom		\
 	TabArray.custom
 
 add_dist = makefile.win32
