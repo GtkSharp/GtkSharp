@@ -158,7 +158,7 @@ namespace GtkDemo
 
 			if (imageStream.PeekChar () != -1) {
 				byte[] bytes = imageStream.ReadBytes (256);
-				pixbufLoader.Write (bytes, (uint) bytes.Length);
+				pixbufLoader.Write (bytes);
 				return true; // leave the timeout active
 			} else {
 				imageStream.Close ();

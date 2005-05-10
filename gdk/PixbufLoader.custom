@@ -36,9 +36,15 @@
 			}
 		}
 
-		public bool Write (byte[] bytes)
+  		public bool Write (byte[] bytes)
+  		{
+			return this.Write (bytes, (ulong) bytes.Length);
+  		}
+  
+		[Obsolete ("Replaced by Write (byte[], ulong) for 64 bit portability")]
+		public bool Write (byte[] bytes, uint count)
 		{
-			return this.Write (bytes, (uint) bytes.Length);
+			return this.Write (bytes, (ulong) count);
 		}
 
 		private void LoadFromStream (System.IO.Stream input)
