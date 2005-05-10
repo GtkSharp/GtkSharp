@@ -61,7 +61,12 @@ namespace GLib {
 				if (o._obj == IntPtr.Zero)
 					continue;
 
-				g_object_unref (o._obj);
+				try {
+					g_object_unref (o._obj);
+				} catch (Exception e) {
+					Console.WriteLine ("Exception while disposing a " + o + "in Gtk#");
+					throw e;
+				}
 				o._obj = IntPtr.Zero;
 			}
 			return false;
