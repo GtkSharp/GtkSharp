@@ -330,3 +330,19 @@ public object StyleGetProperty (string property_name) {
 	value.Dispose ();
 	return ret;
 }
+
+[DllImport("libgtk-win32-2.0-0.dll")]
+static extern IntPtr gtk_widget_list_mnemonic_labels (IntPtr raw);
+
+public Widget[] ListMnemonicLabels ()
+{
+	IntPtr raw_ret = gtk_widget_list_mnemonic_labels (Handle);
+	if (raw_ret == IntPtr.Zero)
+		return new Widget [0];
+	GLib.List list = new GLib.List(raw_ret);
+	Widget[] result = new Widget [list.Count];
+	for (int i = 0; i < list.Count; i++)
+		result [i] = list [i] as Widget;
+	return result;
+}
+
