@@ -26,7 +26,8 @@ sources =			\
 	AttrUnderline.cs	\
 	AttrVariant.cs		\
 	AttrWeight.cs		\
-	Scale.cs
+	Scale.cs		\
+	Units.cs
 
 customs =			\
 	AttrIterator.custom	\
