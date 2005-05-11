@@ -24,6 +24,7 @@ sources = 				\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
 	Timeout.cs			\
+	TreeEnumerator.cs		\
 	TreeNodeAttribute.cs		\
 	TreeNode.cs			\
 	TreeNodeValueAttribute.cs
