@@ -85,3 +85,26 @@
 		{
 			SearchPath = path;
 		}
+
+#if GTK_SHARP_2_6
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_icon_theme_get_icon_sizes (IntPtr raw, IntPtr icon_name);
+
+		public int[] GetIconSizes (string icon_name) 
+		{
+			IntPtr icon_name_as_native = GLib.Marshaller.StringToPtrGStrdup (icon_name);
+			IntPtr raw_ret = gtk_icon_theme_get_icon_sizes(Handle, icon_name_as_native);
+			ArrayList result = new ArrayList ();
+			int offset = 0;
+			int size = Marshal.ReadInt32 (raw_ret, offset);
+			while (size != 0) {
+				result.Add (size);
+				offset += 4;
+				size = Marshal.ReadInt32 (raw_ret, offset);
+			}
+			GLib.Marshaller.Free (icon_name_as_native);
+			GLib.Marshaller.Free (raw_ret);
+			return (int[]) result.ToArray (typeof (int));
+		}
+#endif
+
