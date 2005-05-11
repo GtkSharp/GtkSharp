@@ -118,7 +118,8 @@ namespace GtkSharp.Generation {
 		{
 			gen_info.CurrentType = Name;
 
-			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, gen_info.AssemblyName);
+			string asm_name = gen_info.AssemblyName.Length == 0 ? NS.ToLower () + "-sharp" : gen_info.AssemblyName;
+			DirectoryInfo di = GetDirectoryInfo (gen_info.Dir, asm_name);
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 
@@ -214,7 +215,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\tstatic " + Name + " ()");
 				sw.WriteLine ("\t\t{");
-				sw.WriteLine ("\t\t\tGtkSharp." + Studlify (gen_info.AssemblyName) + ".ObjectManager.Initialize ();");
+				sw.WriteLine ("\t\t\tGtkSharp." + Studlify (asm_name) + ".ObjectManager.Initialize ();");
 				sw.WriteLine ("\t\t}");
 			}
 
