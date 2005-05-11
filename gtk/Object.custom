@@ -30,6 +30,23 @@
 		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref (IntPtr raw);
 
+		static void NativeDestroy (object o, EventArgs args)
+		{
+			GLib.Object obj = o as GLib.Object;
+			if (obj == null)
+				return;
+			obj.Dispose ();
+		}
+
+		static EventHandler native_destroy_handler;
+		static EventHandler NativeDestroyHandler {
+			get {
+				if (native_destroy_handler == null)
+					native_destroy_handler = new EventHandler (NativeDestroy);
+				return native_destroy_handler;
+			}
+		}
+
 		protected override IntPtr Raw {
 			get {
 				return base.Raw;
@@ -41,6 +58,7 @@
 
 				g_object_ref (value);
 				Sink ();
+				Destroyed += NativeDestroyHandler;
 			}
 		}
 
@@ -49,7 +67,9 @@
 
 		public virtual void Destroy ()
 		{
+			Destroyed -= NativeDestroyHandler;
 			gtk_object_destroy (Handle);
+			Dispose ();
 		}
 
 		public bool IsFloating {
