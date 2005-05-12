@@ -32,9 +32,10 @@
 
 		static void NativeDestroy (object o, EventArgs args)
 		{
-			GLib.Object obj = o as GLib.Object;
+			Gtk.Object obj = o as Gtk.Object;
 			if (obj == null)
 				return;
+			obj.Destroyed -= NativeDestroyHandler;
 			obj.Dispose ();
 		}
 
@@ -64,12 +65,6 @@
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		private static extern void gtk_object_destroy (IntPtr raw);
-
-		public override void Dispose ()
-		{
-			Destroyed -= NativeDestroyHandler;
-			base.Dispose ();
-		}
 
 		public virtual void Destroy ()
 		{
