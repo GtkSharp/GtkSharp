@@ -30,12 +30,21 @@
 		[DllImport("libgobject-2.0-0.dll")]
 		private static extern void g_object_ref (IntPtr raw);
 
+		static Hashtable managed_subclasses;
+		static Hashtable ManagedSubclasses {
+			get {
+				if (managed_subclasses == null)
+					managed_subclasses = new Hashtable ();
+				return managed_subclasses;
+			}
+		}
+
 		static void NativeDestroy (object o, EventArgs args)
 		{
 			Gtk.Object obj = o as Gtk.Object;
 			if (obj == null)
 				return;
-			obj.Destroyed -= NativeDestroyHandler;
+			ManagedSubclasses.Remove (obj);
 			obj.Dispose ();
 		}
 
@@ -46,6 +55,18 @@
 					native_destroy_handler = new EventHandler (NativeDestroy);
 				return native_destroy_handler;
 			}
+		}
+
+		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
+		{
+			base.CreateNativeObject (names, vals);
+			ManagedSubclasses [this] = this;
+		}
+
+		public override void Dispose ()
+		{
+			Destroyed -= NativeDestroyHandler;
+			base.Dispose ();
 		}
 
 		protected override IntPtr Raw {

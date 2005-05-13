@@ -25,9 +25,6 @@
 [Obsolete]		
 protected Widget (GLib.GType gtype) : base(gtype)
 {
-	IntPtr name = GLib.Marshaller.StringToPtrGStrdup ("parent-set");
-	g_signal_connect_data (Handle, name, NativeParentSetHandler, IntPtr.Zero, IntPtr.Zero, 0);
-	GLib.Marshaller.Free (name);
 }
 
 public override void Destroy ()
@@ -35,37 +32,9 @@ public override void Destroy ()
 	base.Destroy ();
 }
 
-delegate void NativeParentSetDelegate (IntPtr obj, IntPtr prev, IntPtr data);
-
-[DllImport("libgobject-2.0-0.dll")]
-static extern int g_signal_connect_data (IntPtr raw, IntPtr name, NativeParentSetDelegate hndlr, IntPtr data, IntPtr notify, int flags);
-
 protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 {
 	base.CreateNativeObject (names, vals);
-	IntPtr name = GLib.Marshaller.StringToPtrGStrdup ("parent-set");
-	g_signal_connect_data (Handle, name, NativeParentSetHandler, IntPtr.Zero, IntPtr.Zero, 0);
-	GLib.Marshaller.Free (name);
-}
-
-private static Hashtable ParentedWidgets = new Hashtable ();
-
-private static NativeParentSetDelegate native_parent_set_handler;
-private static NativeParentSetDelegate NativeParentSetHandler {
-	get {
-		if (native_parent_set_handler == null)
-			native_parent_set_handler = new NativeParentSetDelegate (Widget_ParentSet);
-		return native_parent_set_handler;
-	}
-}
-
-private static void Widget_ParentSet (IntPtr raw, IntPtr prev, IntPtr data)
-{
-	Widget w = GLib.Object.GetObject (raw) as Widget;
-	if (w.Parent == null)
-		ParentedWidgets.Remove (w);
-	else
-		ParentedWidgets[w] = w;
 }
 
 [DllImport("gtksharpglue-2")]

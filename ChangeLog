@@ -1,5 +1,13 @@
 2005-05-13  Mike Kestner  <mkestner@novell.com>
 
+	* gtk/Object.custom : hold refs for all managed subclasses. Release on
+	Destroy. Dispose plain wrappers on Destroy also.
+	* gtk/Widget.custom : remove the parent set hack since it's "handled"
+	on Gtk.Object now.  All this will get fixed properly when we have
+	access to owen's toggle_refs.
+
+2005-05-13  Mike Kestner  <mkestner@novell.com>
+
 	* generator/MethodBody.cs : don't create a new destroy notify
 	delegate, just use GLib.DestroyHelper.NotifyHandler directly.
 
