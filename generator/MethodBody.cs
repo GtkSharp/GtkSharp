@@ -152,7 +152,7 @@ namespace GtkSharp.Generation {
 
 						sw.WriteLine (indent + "\t\t\t\t{0}_wrapper = new {1} ({0});", name, wrapper);
 						sw.WriteLine (indent + "\t\t\t\t{0} = (IntPtr) GCHandle.Alloc ({1}_wrapper);", parameters [i + 1].Name, name);
-						sw.WriteLine (indent + "\t\t\t\t{0} = new {1} (GLib.DestroyHelper.NotifyHandler);", parameters [i + 2].Name, parameters [i + 2].CSType);
+						sw.WriteLine (indent + "\t\t\t\t{0} = GLib.DestroyHelper.NotifyHandler;", parameters [i + 2].Name, parameters [i + 2].CSType);
 						sw.WriteLine (indent + "\t\t\t}");
 						break;
 
