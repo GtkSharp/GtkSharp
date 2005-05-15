@@ -10,9 +10,23 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>The ListStore is a columned list data structure to be used with <see cref="T:Gtk.TreeView" /> widget. It is the model part in Model/View/Controller design paradigm. The contents of the ListStore can be sorted and are drag-and-drop ready.
-</summary>
-    <remarks />
+    <summary>The ListStore is a columned list data structure to be used with <see cref="T:Gtk.TreeView" /> widget. </summary>
+    <remarks>
+      <para>
+Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see cref="T:System.Collections.IEnumerable" /> interface, so code can be written like this:
+</para>
+      <para>
+        <example>
+          <code lang="C#">
+     void DumpColumnValues (ListStore store, int col)
+     {
+         foreach (object[] row in store) 
+              Console.WriteLine ("Value of column {0} is {2}", col, row [col]);
+     }
+  </code>
+        </example>
+      </para>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
@@ -1511,9 +1525,8 @@ The above example creates a new three columns list store. The types of the colum
         <returns>a <see cref="T:System.Collections.IEnumerator" /></returns>
         <remarks>
           <para> If the elements of the current instance are modified while an enumeration is in progress, a call to <see cref="M:System.Collections.IEnumerator.MoveNext" /> or <see cref="P:System.Collections.IEnumerator.Current" /> throws <see cref="T:System.InvalidOperationException" />.</para>
-	</remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>
 </Type>
-

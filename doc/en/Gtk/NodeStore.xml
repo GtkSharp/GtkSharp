@@ -10,8 +10,60 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Tree and List store for <see cref="T:Gtk.ITreeNode" /> objects.</summary>
+    <summary>A store for <see cref="T:Gtk.TreeView" /> that provides data from an arbitrary class.  It is simpler to use than the <see cref="T:Gtk.ListStore" />.</summary>
     <remarks>
+      <para>
+This class provides a simple mechanism of implementing the Model required by the <see cref="T:Gtk.TreeView" />.
+</para>
+      <example>
+        <code lang="C#">
+     [TreeNode (ColumnCount=2)]
+     class DemoNode {
+                string name;
+                string email;
+
+                public DemoNode (string name, string email)
+                {
+                        this.name = name;
+                        this.email = email;
+                }
+
+                [TreeNodeValue (Column=0)]
+                public string Name {
+                        get { return name; }
+                }
+
+                [TreeNodeValue (Column=1)]
+                public string EMail {
+                        get { return email; }
+                }
+     }
+
+     class Demo {
+         NodeStore store;
+
+         void PopulateStore ()
+         {
+             NodeStore store = new NodeStore (typeof (MyRow));
+             DemoNode my_node = new DemoNode ("Miguel de Icaza", "miguel@ximian.com");
+             store.AddNode (my_node);
+         }
+  </code>
+      </example>
+      <para>
+Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see cref="T:System.Collections.IEnumerable" /> interface, so code can be written like this:
+</para>
+      <para>
+        <example>
+          <code lang="C#">
+     void DumpColumnValues (NodeStore store, int col)
+     {
+         foreach (object[] row in store) 
+              Console.WriteLine ("Value of column {0} is {2}", col, row [col]);
+     }
+  </code>
+        </example>
+      </para>
     </remarks>
   </Docs>
   <Base>
