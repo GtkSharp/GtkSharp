@@ -2,23 +2,18 @@ lib_LTLIBRARIES = libgtksharpglue-2.la
 
 libgtksharpglue_2_la_SOURCES =	\
 	adjustment.c		\
-	button.c		\
 	cellrenderer.c		\
 	clipboard.c		\
-	colorseldialog.c        \
-	combo.c			\
+	colorseldialog.c	\
 	container.c		\
-	dialog.c		\
-	fileselection.c		\
-	inputdialog.c		\
-	layout.c		\
 	nodestore.c		\
 	object.c		\
-	paned.c			\
 	selectiondata.c		\
 	style.c			\
 	vmglueheaders.h		\
 	widget.c
+
+nodist_libgtksharpglue_2_la_SOURCES = generated.c
 
 # Adding a new glue file?
 # Please remember to update makefile.win32

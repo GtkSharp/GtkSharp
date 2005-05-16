@@ -51,18 +51,6 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params ob
 		AddButton ((string) button_data [i], (int) button_data [i + 1]);
 }
 
-[DllImport("gtksharpglue-2")]
-static extern IntPtr gtksharp_dialog_get_vbox (IntPtr i);
-public Gtk.VBox VBox {
-	get { return GLib.Object.GetObject (gtksharp_dialog_get_vbox (this.Handle), false) as VBox; }
-}
-
-[DllImport("gtksharpglue-2")]
-static extern IntPtr gtksharp_dialog_get_action_area (IntPtr i);
-public Gtk.HButtonBox ActionArea {
-	get { return GLib.Object.GetObject (gtksharp_dialog_get_action_area (this.Handle), false) as HButtonBox; }
-}
-
 public void AddActionWidget (Widget child, ResponseType response)
 {
 	this.AddActionWidget (child, (int) response);

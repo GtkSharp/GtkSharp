@@ -31,6 +31,7 @@ namespace GtkSharp.Generation {
 
 	public abstract class ClassBase : GenBase {
 		protected Hashtable props = new Hashtable();
+		protected Hashtable fields = new Hashtable();
 		protected Hashtable sigs = new Hashtable();
 		protected Hashtable methods = new Hashtable();
 		protected ArrayList interfaces = new ArrayList();
@@ -94,6 +95,13 @@ namespace GtkSharp.Generation {
 					props.Add (name, new Property (member, this));
 					break;
 
+				case "field":
+					name = member.GetAttribute("name");
+					while (fields.ContainsKey (name))
+						name += "mangled";
+					fields.Add (name, new ObjectField (member, this));
+					break;
+
 				case "signal":
 					name = member.GetAttribute("name");
 					while (sigs.ContainsKey(name))
@@ -132,6 +140,7 @@ namespace GtkSharp.Generation {
 			switch (name) {
 			case "method":
 			case "property":
+			case "field":
 			case "signal":
 			case "implements":
 			case "constructor":
@@ -194,6 +203,16 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		protected void GenFields (GenerationInfo gen_info)
+		{
+			foreach (ObjectField field in fields.Values) {
+				if (field.Validate ())
+					field.Generate (gen_info, "\t\t");
+				else
+					Console.WriteLine("in Object " + QualifiedName);
+			}
+		}
+
 		private void ParseImplements (XmlElement member)
 		{
 			foreach (XmlNode node in member.ChildNodes) {
@@ -211,7 +230,8 @@ namespace GtkSharp.Generation {
 		{	
 			string mname = method.Name;
 			return ((method.IsSetter || (method.IsGetter && mname.StartsWith("Get"))) &&
-				(props != null) && props.ContainsKey(mname.Substring(3)));
+				((props != null) && props.ContainsKey(mname.Substring(3)) ||
+				 (fields != null) && fields.ContainsKey(mname.Substring(3))));
 		}
 
 		public void GenMethods (GenerationInfo gen_info, Hashtable collisions, ClassBase implementor)

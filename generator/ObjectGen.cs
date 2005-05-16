@@ -44,7 +44,6 @@ namespace GtkSharp.Generation {
 				XmlElement member = (XmlElement) node;
 
 				switch (node.Name) {
-				case "field":
 				case "callback":
 					Statistics.IgnoreCount++;
 					break;
@@ -156,6 +155,7 @@ namespace GtkSharp.Generation {
 
 			GenCtors (gen_info);
 			GenProperties (gen_info);
+			GenFields (gen_info);
 			GenChildProperties (gen_info);
 			
 			bool has_sigs = (sigs != null && sigs.Count > 0);

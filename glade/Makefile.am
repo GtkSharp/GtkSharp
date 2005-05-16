@@ -1,4 +1,4 @@
-SUBDIRS = glue
+SUBDIRS = . glue
 
 if ENABLE_GLADE
 pkg = glade
@@ -12,6 +12,7 @@ INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml ../gt
 METADATA = Glade.metadata
 SYMBOLS =
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll
+glue_includes = glade/glade.h,glade/glade-parser.h
 
 sources =				\
 	HandlerNotFoundExeception.cs	\

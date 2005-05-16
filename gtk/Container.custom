@@ -101,27 +101,6 @@ public Widget[] FocusChain {
 }
 
 [DllImport("gtksharpglue-2")]
-static extern IntPtr gtksharp_container_get_focus_child(IntPtr raw);
-
-[DllImport("libgtk-win32-2.0-0.dll")]
-static extern void gtk_container_set_focus_child(IntPtr raw, IntPtr child);
-
-public Gtk.Widget FocusChild { 
-	get {
-		IntPtr raw_ret = gtksharp_container_get_focus_child (Handle);
-		Gtk.Widget ret;
-		if (raw_ret == IntPtr.Zero)
-			ret = null;
-		else
-			ret = (Gtk.Widget) GLib.Object.GetObject (raw_ret);
-		return ret;
-	}
-	set {
-		gtk_container_set_focus_child (Handle, value.Handle);
-	}
-}
-
-[DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, IntPtr cb, IntPtr data);
 
 [DllImport("gtksharpglue-2")]

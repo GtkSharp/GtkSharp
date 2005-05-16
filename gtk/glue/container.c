@@ -21,14 +21,6 @@
 
 #include <gtk/gtkcontainer.h>
 
-GtkWidget *gtksharp_container_get_focus_child (GtkContainer *container);
-
-GtkWidget *
-gtksharp_container_get_focus_child (GtkContainer *container)
-{
-	return container->focus_child;
-}
-
 void gtksharp_container_base_forall (GtkContainer *container, gboolean include_internals, GtkCallback cb, gpointer data);
 
 void 

@@ -11,6 +11,8 @@ libgladesharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 libgladesharpglue_2_la_SOURCES = 	\
 	gladexml.c
 
+nodist_libgladesharpglue_2_la_SOURCES = generated.c
+
 libgladesharpglue_2_la_LIBADD = $(GLADE_LIBS)
 
 INCLUDES = $(GLADE_CFLAGS) $(GTK_SHARP_VERSION_CFLAGS) -I$(top_srcdir)

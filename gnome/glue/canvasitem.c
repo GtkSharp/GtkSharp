@@ -23,14 +23,6 @@
 
 #include <libgnomecanvas/gnome-canvas.h>
 
-GnomeCanvas* gtksharp_gnome_canvas_item_get_canvas (GnomeCanvasItem *item);
-
-GnomeCanvas*
-gtksharp_gnome_canvas_item_get_canvas (GnomeCanvasItem *item)
-{
-	return item->canvas;
-}
-
 void gnomesharp_canvas_item_base_update (GnomeCanvasItem *item, double *affine, ArtSVP *clip_path, int flags);
 
 void 

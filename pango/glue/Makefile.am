@@ -2,8 +2,9 @@ lib_LTLIBRARIES = libpangosharpglue-2.la
 
 libpangosharpglue_2_la_SOURCES =	\
 	attribute.c			\
-	layoutline.c			\
 	units.c
+
+nodist_libpangosharpglue_2_la_SOURCES = generated.c
 
 # Adding a new glue file?
 # Please remember to update makefile.win32

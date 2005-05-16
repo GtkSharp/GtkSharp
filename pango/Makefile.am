@@ -4,6 +4,7 @@ pkg = pango
 METADATA = Pango.metadata
 SYMBOLS = pango-symbols.xml
 references = ../glib/glib-sharp.dll
+glue_includes = pango/pango.h
 
 sources =			\
 	Attribute.cs		\

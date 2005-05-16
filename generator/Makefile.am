@@ -33,6 +33,7 @@ sources = 				\
 	MethodBase.cs			\
 	MethodBody.cs			\
 	Method.cs			\
+	ObjectField.cs			\
 	ObjectGen.cs			\
 	OpaqueGen.cs			\
 	Parameters.cs			\

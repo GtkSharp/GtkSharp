@@ -55,6 +55,8 @@ gtksharp_gtk_widget_get_window (GtkWidget *widget)
 void
 gtksharp_gtk_widget_set_window (GtkWidget *widget, GdkWindow *window)
 {
+	if (widget->window)
+		g_object_unref (widget->window);
 	widget->window = g_object_ref (window);
 }
 

@@ -23,54 +23,8 @@
 #include <gdk/gdk.h>
 
 /* Forward declarations */
-gchar* gtksharp_gdk_device_get_name (GdkDevice *device);
-GdkInputSource gtksharp_gdk_device_get_source (GdkDevice *device);
-GdkInputMode gtksharp_gdk_device_get_mode (GdkDevice *device);
-gboolean gtksharp_gdk_device_has_cursor (GdkDevice *device);
-gint gtksharp_gdk_device_get_num_axes (GdkDevice *device);
-gint gtksharp_gdk_device_get_num_keys (GdkDevice *device);
-GdkDeviceAxis* gtksharp_gdk_device_get_axes (GdkDevice *device);
-GdkDeviceKey* gtksharp_gdk_device_get_keys (GdkDevice *device);
 GdkDeviceAxis gtksharp_gdk_device_get_device_axis (GdkDevice *device, guint i);
 GdkDeviceKey gtksharp_gdk_device_get_device_key (GdkDevice *device, guint i);
-/* */
-
-
-gchar*
-gtksharp_gdk_device_get_name (GdkDevice *device) 
-{
-	return device->name;
-}
-
-GdkInputSource
-gtksharp_gdk_device_get_source (GdkDevice *device) 
-{
-	return device->source;
-}
-
-GdkInputMode
-gtksharp_gdk_device_get_mode (GdkDevice *device)
-{
-	return device->mode;
-}
-
-gboolean
-gtksharp_gdk_device_has_cursor (GdkDevice *device)
-{
-	return device->has_cursor;
-}
-
-gint 
-gtksharp_gdk_device_get_num_axes (GdkDevice *device) 
-{
-	return device->num_axes;
-}
-
-gint
-gtksharp_gdk_device_get_num_keys (GdkDevice *device) 
-{
-	return device->num_keys;
-}
 
 GdkDeviceAxis
 gtksharp_gdk_device_get_device_axis (GdkDevice *device, guint i)

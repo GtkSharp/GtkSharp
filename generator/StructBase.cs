@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 
 	public abstract class StructBase : ClassBase {
 	
-		ArrayList fields = new ArrayList ();
+		new ArrayList fields = new ArrayList ();
 
 		protected StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
@@ -112,16 +112,19 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void GenFields (GenerationInfo gen_info)
+		protected new void GenFields (GenerationInfo gen_info)
 		{
-			StructField.bitfields = 0;
+			int bitfields = 0;
 			bool need_field = true;
+
 			foreach (StructField field in fields) {
-				if (field.IsBit) {
-					if (need_field)
+				if (field.IsBitfield) {
+					if (need_field) {
+						StreamWriter sw = gen_info.Writer;
+
+						sw.WriteLine ("\t\tprivate uint _bitfield{0};\n", bitfields++);
 						need_field = false;
-					else
-						continue;
+					}
 				} else
 					need_field = true;
 				field.Generate (gen_info, "\t\t");
@@ -133,7 +136,8 @@ namespace GtkSharp.Generation {
 			foreach (StructField field in fields) {
 				if (!field.Validate ()) {
 					Console.WriteLine ("in Struct " + QualifiedName);
-					return false;
+					if (!field.IsPointer)
+						return false;
 				}
 			}
 

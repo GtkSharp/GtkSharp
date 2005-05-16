@@ -1,4 +1,4 @@
-SUBDIRS = glue
+SUBDIRS = . glue
 
 if ENABLE_GNOME
 pkg = gnome
@@ -12,6 +12,7 @@ INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml ../gt
 METADATA = Gnome.metadata
 SYMBOLS =
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll ../art/art-sharp.dll
+glue_includes = gnome.h,libgnomeprint/gnome-print.h,libgnomeprint/gnome-print-paper.h
 
 sources =					\
 	BonoboUIVerb.cs				\

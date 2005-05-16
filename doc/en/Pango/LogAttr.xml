@@ -47,5 +47,189 @@
         <remarks>This is an internal method, and should not be used by user code.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="IsLineBreak">
+      <MemberSignature Language="C#" Value="public bool IsLineBreak { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not a line break is allowed before this character.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsMandatoryBreak">
+      <MemberSignature Language="C#" Value="public bool IsMandatoryBreak { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not a line break is required before this character.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsCharBreak">
+      <MemberSignature Language="C#" Value="public bool IsCharBreak { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not a break is allowed before this character when doing character wrap.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsWhite">
+      <MemberSignature Language="C#" Value="public bool IsWhite { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this is a whitespace character.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsCursorPosition">
+      <MemberSignature Language="C#" Value="public bool IsCursorPosition { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not the cursor can appear in front of this character.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="IsWordStart">
+      <MemberSignature Language="C#" Value="public bool IsWordStart { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this is the first character in a word.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	    Note that in degenerate cases, you could have both this
+	    propery and <see cref="M:Pango.LogAttr.IsWordEnd" /> set
+	    on the same character, most likely for sentences (e.g. no
+	    space after a period, so the next sentence starts right
+	    away)
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWordEnd">
+      <MemberSignature Language="C#" Value="public bool IsWordEnd { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this is the first non-word character after a word.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	    Note that in degenerate cases, you could have both this
+	    propery and <see cref="M:Pango.LogAttr.IsWordStart" /> set
+	    on the same character, most likely for sentences (e.g. no
+	    space after a period, so the next sentence starts right
+	    away)
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSentenceBoundary">
+      <MemberSignature Language="C#" Value="public bool IsSentenceBoundary { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this character is a sentence boundary.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	    There are two ways to divide sentences. The first assigns
+	    all intersentence whitespace/control/format chars to some
+	    sentence, so all characters are in some sentence; <see
+	    cref="M:Pango.LogAttr.IsSentenceBoundary" /> denotes the
+	    boundaries in this case. See <see
+	    cref="M:Pango.LogAttr.IsSentenceStart" /> and <see
+	    cref="M:Pango.LogAttr.IsSentenceEnd" /> for the other
+	    method.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSentenceStart">
+      <MemberSignature Language="C#" Value="public bool IsSentenceStart { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this is the first character in a sentence.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	    There are two ways to divide sentences. The first is the
+	    method used by <see
+	    cref="M:Pango.LogAttr.IsSentenceBoundary" /> (qv). The
+	    second way is to consider intersentence characters to not
+	    be part of any sentence, in which case <see
+	    cref="M:Pango.LogAttr.IsSentenceStart" /> identifies the
+	    first character in a sentence and <see
+	    cref="M:Pango.LogAttr.IsSentenceEnd" /> identifies the
+	    first non-sentence character after a sentence.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSentenceEnd">
+      <MemberSignature Language="C#" Value="public bool IsSentenceEnd { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether or not this is the first non-sentence character after a sentence.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+	    There are two ways to divide sentences. The first is the
+	    method used by <see
+	    cref="M:Pango.LogAttr.IsSentenceBoundary" /> (qv). The
+	    second way is to consider intersentence characters to not
+	    be part of any sentence, in which case <see
+	    cref="M:Pango.LogAttr.IsSentenceStart" /> identifies the
+	    first character in a sentence and <see
+	    cref="M:Pango.LogAttr.IsSentenceEnd" /> identifies the
+	    first non-sentence character after a sentence.
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackspaceDeletesCharacter">
+      <MemberSignature Language="C#" Value="public bool BackspaceDeletesCharacter { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Whether Backspace deletes individual characters rather than complete grapheme clusters.</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
   </Members>
 </Type>

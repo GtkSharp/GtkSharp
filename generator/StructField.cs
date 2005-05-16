@@ -60,20 +60,12 @@ namespace GtkSharp.Generation {
 				string type = base.CSType;
 				if (IsArray)
 					type += "[]";
-				else if (IsBit)
-					type = "uint";
 				else if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && type != "string")
 					type = "IntPtr";
 				else if (SymbolTable.Table.IsCallback (CType))
 					type = "IntPtr";
 
 				return type;
-			}
-		}
-
-		public bool IsBit {
-			get {
-				return elem.GetAttribute("bits") == "1";
 			}
 		}
 
@@ -94,11 +86,7 @@ namespace GtkSharp.Generation {
 				string result = "";
 				if ((IsPointer || SymbolTable.Table.IsOpaque (CType)) && CSType != "string")
 					result = "_";
-
-				if (IsBit)
-					result = String.Format ("_bitfield{0}", bitfields++);
-				else
-					result += SymbolTable.Table.MangleName (CName);
+				result += SymbolTable.Table.MangleName (CName);
 
 				return result;
 			}
@@ -124,16 +112,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool Validate ()
-		{
-			if (CSType == "" && !Hidden) {
-				Console.Write ("Field {0} has unknown Type {1} ", Name, CType);
-				Statistics.ThrottledCount++;
-				return false;
-			}
-			return true;
-		}
-
 		public override void Generate (GenerationInfo gen_info, string indent)
 		{
 			if (Hidden)
@@ -153,9 +131,8 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (IsPadding) {
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
-			} else if (IsBit) {
-				// FIXME
-				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
+			} else if (IsBitfield) {
+				base.Generate (gen_info, indent);
 			} else if (table.IsCallback (CType)) {
 				// FIXME
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
@@ -173,7 +150,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 
 				if (Access != "private") {
-					sw.WriteLine (indent + "" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine (indent + Access + " " + wrapped + " " + wrapped_name + " {");
 					sw.WriteLine (indent + "\tget { ");
 					sw.WriteLine (indent + "\t\treturn " + table.FromNativeReturn(CType, Name) + ";");
 					sw.WriteLine (indent + "\t}");
@@ -185,7 +162,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "private {0} {1};", CSType, Name);
 				sw.WriteLine ();
 				if (Access != "private") {
-					sw.WriteLine (indent + "" + Access + " " + wrapped + " " + wrapped_name + " {");
+					sw.WriteLine (indent + Access + " " + wrapped + " " + wrapped_name + " {");
 					sw.WriteLine (indent + "\tget { return " + table.FromNativeReturn (CType, Name) + "; }");
 					sw.WriteLine (indent + "}");
 				}

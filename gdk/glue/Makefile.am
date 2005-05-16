@@ -8,6 +8,8 @@ libgdksharpglue_2_la_SOURCES =	\
 	vmglueheaders.h		\
 	windowmanager.c
 
+nodist_libgdksharpglue_2_la_SOURCES = generated.c
+
 # Adding a new glue file?
 # Please remember to update makefile.win32
 

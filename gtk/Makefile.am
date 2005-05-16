@@ -8,6 +8,7 @@ SYMBOLS = gtk-symbols.xml
 INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml
 METADATA = Gtk.metadata
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll
+glue_includes = gtk/gtk.h
 
 sources = 				\
 	ActionEntry.cs			\
@@ -65,10 +66,8 @@ customs = 				\
 	ImageMenuItem.custom		\
 	Init.custom			\
 	Input.custom			\
-	InputDialog.custom		\
 	ItemFactory.custom		\
 	Label.custom			\
-	Layout.custom			\
 	ListStore.custom		\
 	MessageDialog.custom		\
 	Menu.custom			\

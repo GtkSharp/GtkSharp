@@ -33,7 +33,8 @@ generated-stamp: $(API) $(top_builddir)/generator/gapi_codegen.exe $(build_custo
 	$(RUNTIME) $(top_builddir)/generator/gapi_codegen.exe --generate $(API) \
 	$(api_includes)	\
 	--outdir=generated --customdir=$(srcdir) --assembly-name=$(ASSEMBLY_NAME)	\
-	--gluelib-name=$(pkg)sharpglue --glue-filename=glue/generated.c			\
+	--gluelib-name=$(pkg)sharpglue-2 --glue-filename=glue/generated.c		\
+	--glue-includes=$(glue_includes)						\
 	&& touch generated-stamp
 
 $(SNK): $(top_srcdir)/$(SNK)

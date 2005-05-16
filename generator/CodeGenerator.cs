@@ -40,6 +40,7 @@ namespace GtkSharp.Generation {
 			string custom_dir = "";
 			string assembly_name = "";
 			string glue_filename = "";
+			string glue_includes = "";
 			string gluelib_name = "";
 
 			SymbolTable table = SymbolTable.Table;
@@ -71,6 +72,10 @@ namespace GtkSharp.Generation {
 					generate = false;
 					glue_filename = arg.Substring (16);
 					continue;
+				} else if (arg.StartsWith ("--glue-includes=")) {
+					generate = false;
+					glue_includes = arg.Substring (16);
+					continue;
 				} else if (arg.StartsWith ("--gluelib-name=")) {
 					generate = false;
 					gluelib_name = arg.Substring (15);
@@ -85,8 +90,8 @@ namespace GtkSharp.Generation {
 			}
 
 			GenerationInfo gen_info = null;
-			if (dir != "" || assembly_name != "" || glue_filename != "" || gluelib_name != "")
-				gen_info = new GenerationInfo (dir, custom_dir, assembly_name, glue_filename, gluelib_name);
+			if (dir != "" || assembly_name != "" || glue_filename != "" || glue_includes != "" || gluelib_name != "")
+				gen_info = new GenerationInfo (dir, custom_dir, assembly_name, glue_filename, glue_includes, gluelib_name);
 			
 			foreach (IGeneratable gen in gens) {
 				if (gen_info == null)

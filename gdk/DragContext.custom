@@ -21,46 +21,6 @@
 
 
 [DllImport("gdksharpglue-2")]
-static extern DragProtocol gtksharp_drag_context_get_protocol (IntPtr ptr);
-
-public unsafe DragProtocol DragProtocol {
-	get {
-		return gtksharp_drag_context_get_protocol (this.Handle);
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
-static extern bool gtksharp_drag_context_get_is_source (IntPtr ptr);
-
-public bool IsSource {
-	get {
-		return gtksharp_drag_context_get_is_source (this.Handle);
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
-static extern IntPtr gtksharp_drag_context_get_source_window (IntPtr ptr);
-
-public Gdk.Window SourceWindow {
-	get {
-		return GLib.Object.GetObject (gtksharp_drag_context_get_source_window (this.Handle), false) as Gdk.Window;
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
-static extern IntPtr gtksharp_drag_context_get_dest_window (IntPtr ptr);
-
-public Gdk.Window DestWindow {
-	get {
-		return GLib.Object.GetObject (gtksharp_drag_context_get_dest_window (this.Handle), false) as Gdk.Window;
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
 static extern IntPtr gtksharp_drag_context_get_targets (IntPtr ptr);
 
 public Atom [] Targets {
@@ -76,43 +36,3 @@ public Atom [] Targets {
 		return entries;
 	}
 }
-
-
-[DllImport("gdksharpglue-2")]
-static extern DragAction gtksharp_drag_context_get_actions (IntPtr ptr);
-
-public DragAction Actions {
-	get {
-		return gtksharp_drag_context_get_actions (this.Handle);
-	}
-}
-
-[DllImport("gdksharpglue-2")]
-static extern DragAction gtksharp_drag_context_get_suggested_action (IntPtr ptr);
-
-public DragAction SuggestedAction {
-	get {
-		return gtksharp_drag_context_get_suggested_action (this.Handle);
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
-static extern DragAction gtksharp_drag_context_get_action (IntPtr ptr);
-
-public DragAction Action {
-	get {
-		return gtksharp_drag_context_get_action (this.Handle);
-	}
-}
-
-
-[DllImport("gdksharpglue-2")]
-static extern uint gtksharp_drag_context_get_start_time (IntPtr ptr);
-
-public uint StartTime {
-	get {
-		return gtksharp_drag_context_get_start_time (this.Handle);
-	}
-}
-

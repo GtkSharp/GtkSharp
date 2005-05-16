@@ -18,24 +18,6 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[DllImport("gtksharpglue-2")]
-		private static extern int gtksharp_gtk_selection_data_get_format (IntPtr selection_data);
-
-		public int Format {
-			get {
-				return gtksharp_gtk_selection_data_get_format (Handle);
-			}
-		}
-
-		[DllImport("gtksharpglue-2")]
-		private static extern int gtksharp_gtk_selection_data_get_length (IntPtr selection_data);
-
-		public int Length {
-			get {
-				return gtksharp_gtk_selection_data_get_length (Handle);
-			}
-		}
-
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		private static extern IntPtr gtk_selection_data_get_text (IntPtr selection_data);
 
@@ -72,24 +54,6 @@
 			Set(type, format, data, data.Length);
 		}
 
-		[DllImport("gtksharpglue-2")]
-		private static extern IntPtr gtksharp_gtk_selection_data_get_selection (IntPtr selection_data);
-
-		public Gdk.Atom Selection {
-			get {
-				return new Gdk.Atom (gtksharp_gtk_selection_data_get_selection (Handle));
-			}
-		}
-
-		[DllImport("gtksharpglue-2")]
-		private static extern IntPtr gtksharp_gtk_selection_data_get_target (IntPtr selection_data);
-
-		public Gdk.Atom Target {
-			get {
-				return new Gdk.Atom (gtksharp_gtk_selection_data_get_target (Handle));
-			}
-		}
-
 		[DllImport("libglib-2.0-0.dll")]
 		static extern void g_free (IntPtr ptr);
 
@@ -112,13 +76,3 @@
 					return new Gdk.Atom [0];
 			}
 		}
-
-		[DllImport("gtksharpglue-2")]
-		private static extern IntPtr gtksharp_gtk_selection_data_get_type (IntPtr selection_data);
-
-		public Gdk.Atom Type {
-			get {
-				return new Gdk.Atom (gtksharp_gtk_selection_data_get_type (Handle));
-			}
-		}
-

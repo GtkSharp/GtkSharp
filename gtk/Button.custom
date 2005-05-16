@@ -41,20 +41,6 @@ public Button (string stock_id) : base (IntPtr.Zero)
 	GLib.Marshaller.Free (native);
 }
 
-[DllImport("gtksharpglue-2")]
-static extern int gtksharp_button_get_in_button (IntPtr button);
-[DllImport("gtksharpglue-2")]
-static extern void gtksharp_button_set_in_button (IntPtr button, int b);
-
-public bool InButton {
-	get {
-		return gtksharp_button_get_in_button (Handle) == 1 ? true : false;
-	}
-	set {
-		gtksharp_button_set_in_button (Handle, value ? 1 : 0);
-	}
-}
-
 public Button (Widget widget) : this ()
 {
 	Add (widget);

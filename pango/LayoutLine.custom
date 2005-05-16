@@ -21,40 +21,6 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-[DllImport("pangosharpglue-2")]
-static extern IntPtr pangosharp_pango_layout_line_get_layout (IntPtr line);
-
-public Layout Layout {
-	get {
-		IntPtr raw_ret = pangosharp_pango_layout_line_get_layout (Handle);
-		Pango.Layout ret;
-		if (raw_ret == IntPtr.Zero)
-			ret = null;
-		else
-			ret = (Pango.Layout) GLib.Object.GetObject (raw_ret);
-		return ret;
-	}
-}
-
-[DllImport("pangosharpglue-2")]
-static extern int pangosharp_pango_layout_line_get_start_index (IntPtr line);
-
-public int StartIndex {
-	get {
-		return pangosharp_pango_layout_line_get_start_index (Handle);
-	}
-}
-
-[DllImport("pangosharpglue-2")]
-static extern int pangosharp_pango_layout_line_get_length (IntPtr line);
-
-public int Length {
-	get {
-		return pangosharp_pango_layout_line_get_length (Handle);
-	}
-}
-
-
 #if NOT_BROKEN
 [DllImport("libpango-1.0-0.dll")]
 static extern void pango_layout_line_get_x_ranges(IntPtr raw, int start_index, int end_index, out IntPtr ranges_handle, out int n_ranges);

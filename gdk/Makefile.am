@@ -5,6 +5,7 @@ SYMBOLS = gdk-symbols.xml
 INCLUDE_API = ../pango/pango-api.xml
 METADATA = Gdk.metadata
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll
+glue_includes = gdk/gdk.h
 
 sources = 			\
 	EventButton.cs		\

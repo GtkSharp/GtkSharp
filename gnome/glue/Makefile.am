@@ -9,12 +9,13 @@ endif
 libgnomesharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libgnomesharpglue_2_la_SOURCES = 	\
-	canvas.c 		\
 	canvasitem.c 		\
 	canvaspoints.c 		\
 	panelapplet.c		\
 	program.c		\
 	#
+
+nodist_libgnomesharpglue_2_la_SOURCES = generated.c
 
 libgnomesharpglue_2_la_LIBADD = $(GNOME_LIBS)
 

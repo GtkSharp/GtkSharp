@@ -49,8 +49,12 @@ namespace GtkSharp.Generation {
 		protected string ctype;
 		public string CType {
 			get {
-				if (ctype == null)
-					ctype = elem.GetAttribute ("type");
+				if (ctype == null) {
+					if (elem.GetAttribute("bits") == "1")
+						ctype = "gboolean";
+					else
+						ctype = elem.GetAttribute("type");
+				}
 				return ctype;
 			}
 		}
