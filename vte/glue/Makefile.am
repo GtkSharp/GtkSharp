@@ -14,7 +14,7 @@ libvtesharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 libvtesharpglue_2_la_LIBADD = $(VTE_LIBS)
 
-INCLUDES = $(VTE_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(GTK_CFLAGS) $(VTE_CFLAGS) -I$(top_srcdir)
 
 libvtesharpglue.dll: $(libvtesharpglue_2_la_OBJECTS) libvtesharpglue.rc libvtesharpglue.def
 	./build-dll libvtesharpglue-2 $(VERSION)
