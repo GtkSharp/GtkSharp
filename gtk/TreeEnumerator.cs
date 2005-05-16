@@ -35,10 +35,10 @@ namespace Gtk
 		{
 			this.model = model;
 			
-			model.RowChanged += model_changed;
-			model.RowDeleted += model_changed;
-			model.RowInserted += model_changed;
-			model.RowsReordered += model_changed;
+			model.RowChanged += new RowChangedHandler (row_changed);
+			model.RowDeleted += new RowDeletedHandler (row_deleted);
+			model.RowInserted += new RowInsertedHandler (row_inserted);
+			model.RowsReordered += new RowsReorderedHandler (rows_reordered);
 		}
 		
 		public object Current
@@ -76,7 +76,22 @@ namespace Gtk
 			changed = false;
 		}
 		
-		private void model_changed(object o, EventArgs args)
+		private void row_changed(object o, RowChangedArgs args)
+		{
+			changed = true;
+		}
+		
+		private void row_deleted(object o, RowDeletedArgs args)
+		{
+			changed = true;
+		}
+		
+		private void row_inserted(object o, RowInsertedArgs args)
+		{
+			changed = true;
+		}
+		
+		private void rows_reordered(object o, RowsReorderedArgs args)
 		{
 			changed = true;
 		}

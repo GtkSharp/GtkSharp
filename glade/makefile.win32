@@ -10,7 +10,7 @@ windows: generated-stamp
 	cd glue && make -f makefile.win32
 
 generated-stamp: ../generator/codegen.exe $(APIS) $(I_APIS) *.custom
-	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=glade-sharp && touch generated-stamp
+	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=glade-sharp --gluelib-name=gladesharpglue-2 --glue-filename=glue/generated.c --glue-includes=glade/glade.h,glade/glade-parser.h && touch generated-stamp
 
 glade-api.xml: glade-api.raw Glade.metadata
 	cp glade-api.raw glade-api.xml

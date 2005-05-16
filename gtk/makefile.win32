@@ -10,7 +10,7 @@ windows: generated-stamp
 	cd glue && make -f makefile.win32
 
 generated-stamp: ../generator/codegen.exe $(APIS) $(I_APIS) *.custom
-	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=gtk-sharp && touch generated-stamp
+	../generator/codegen --generate $(APIS) --include $(I_APIS) --outdir=generated --customdir=. --assembly-name=gtk-sharp --gluelib-name=gtksharpglue-2 --glue-filename=glue/generated.c --glue-includes=gtk/gtk.h && touch generated-stamp
 
 gtk-api.xml: gtk-api.raw Gtk.metadata
 	cp gtk-api.raw gtk-api.xml
