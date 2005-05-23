@@ -1,12 +1,10 @@
 <Type Name="Keymap" FullName="Gdk.Keymap">
-  <TypeSignature Language="C#" Value="public class Keymap : GLib.Object, IWrapper, IDisposable" Maintainer="ct" />
+  <TypeSignature Language="C#" Maintainer="ct" Value="public class Keymap : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -25,14 +23,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="LookupKey">
       <MemberSignature Language="C#" Value="public uint LookupKey (Gdk.KeymapKey key);" />
@@ -76,7 +67,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Keymap, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -90,7 +80,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gdk.Keymap'</returns>
+        <value>To be added: an object of type 'Gdk.Keymap'</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -104,7 +94,7 @@
         <summary>
         Member that represents the current direction of the keymap.
         </summary>
-        <returns>An object of type 'Pango.Direction', current keymap direction.</returns>
+        <value>An object of type 'Pango.Direction', current keymap direction.</value>
         <remarks>
         None
         </remarks>
@@ -125,7 +115,11 @@
         None
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="direction_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="KeysChanged">
       <MemberSignature Language="C#" Value="public event EventHandler KeysChanged;" />
       <MemberType>Event</MemberType>
@@ -137,7 +131,11 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="keys_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetForDisplay">
       <MemberSignature Language="C#" Value="public static Gdk.Keymap GetForDisplay (Gdk.Display display);" />
       <MemberType>Method</MemberType>
@@ -193,7 +191,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Keymap" />.</remarks>
       </Docs>
     </Member>
@@ -231,10 +229,13 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.Keymap" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.Keymap" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Keymap ();" />
       <MemberType>Constructor</MemberType>
@@ -242,12 +243,11 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Keymap" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEntriesForKeycode">
-      <MemberSignature Language="C#" Value="public void GetEntriesForKeycode (uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint [] keyvals);" />
+      <MemberSignature Language="C#" Value="public void GetEntriesForKeycode (uint hardware_keycode, out Gdk.KeymapKey[] keys, out uint[] keyvals);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>

@@ -1,12 +1,10 @@
 <Type Name="Range" FullName="Gtk.Range">
-  <TypeSignature Language="C#" Value="public class Range : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Range : Gtk.Widget" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,20 +17,7 @@
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="SetIncrements">
       <MemberSignature Language="C#" Value="public void SetIncrements (double step, double page);" />
@@ -92,7 +77,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Range, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -109,7 +93,7 @@
       <Docs>
         <summary>Manage the value of this range.</summary>
         <param name="value">The new value for this range.</param>
-        <returns>The current value of this range.</returns>
+        <value>The current value of this range.</value>
         <remarks />
       </Docs>
     </Member>
@@ -124,12 +108,16 @@
       <Docs>
         <summary>Manage whether the control of this range is manipulated in the opposite direction.</summary>
         <param name="value">Set to <see langword="true" /> to invert the controls.</param>
-        <returns>Whether visual control of the range is currently inverted.</returns>
+        <value>Whether visual control of the range is currently inverted.</value>
         <remarks>
           <para>Setting this to <see langword="true" /> causes a <see cref="T:Gtk.VScale" /> widget to move from right to left, instead of left to right.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="inverted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UpdatePolicy">
       <MemberSignature Language="C#" Value="public Gtk.UpdateType UpdatePolicy { set; get; };" />
       <MemberType>Property</MemberType>
@@ -141,10 +129,14 @@
       <Docs>
         <summary>Manage how often the value label is updated.</summary>
         <param name="value">A new update policy.</param>
-        <returns>The current update policy.</returns>
+        <value>The current update policy.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="update_policy")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Adjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Adjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -156,10 +148,14 @@
       <Docs>
         <summary>Manipulate the underlying model of this range.</summary>
         <param name="value">Sets a new <see cref="T:Gtk.Adjustment" /> object to model this range.</param>
-        <returns>The current <see cref="T:Gtk.Adjustment" /> underlying this range.</returns>
+        <value>The current <see cref="T:Gtk.Adjustment" /> underlying this range.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="adjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveSlider">
       <MemberSignature Language="C#" Value="public event Gtk.MoveSliderHandler MoveSlider;" />
       <MemberType>Event</MemberType>
@@ -171,7 +167,11 @@
         <summary>Fired when the user moves a slider.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_slider")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ValueChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ValueChanged;" />
       <MemberType>Event</MemberType>
@@ -185,7 +185,11 @@
           <para>Connect to this event with a standard <see cref="T:System.EventHandler" /> to find out when the value changes.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="value_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AdjustBounds">
       <MemberSignature Language="C#" Value="public event Gtk.AdjustBoundsHandler AdjustBounds;" />
       <MemberType>Event</MemberType>
@@ -197,7 +201,11 @@
         <summary>Fired when the bounds of the range are adjusted.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="adjust_bounds")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -207,7 +215,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Range" />.</remarks>
       </Docs>
     </Member>
@@ -263,10 +271,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Range" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Range ();" />
       <MemberType>Constructor</MemberType>
@@ -274,7 +285,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Range" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -289,7 +299,11 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="change_value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnChangeValue">
       <MemberSignature Language="C#" Value="protected virtual bool OnChangeValue (Gtk.ScrollType scroll, double new_value);" />
       <MemberType>Method</MemberType>

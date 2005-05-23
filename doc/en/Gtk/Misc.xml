@@ -1,12 +1,10 @@
 <Type Name="Misc" FullName="Gtk.Misc">
-  <TypeSignature Language="C#" Value="public class Misc : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="RJS" />
+  <TypeSignature Language="C#" Maintainer="RJS" Value="public class Misc : Gtk.Widget" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -27,20 +25,7 @@
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="SetAlignment">
       <MemberSignature Language="C#" Value="public void SetAlignment (float xalign, float yalign);" />
@@ -56,6 +41,7 @@
         <summary>Sets the alignment of the widget.</summary>
         <param name="xalign">The horizontal alignment, from 0 (left) to 1 (right).</param>
         <param name="yalign">The vertical alignment, from 0 (top) to 1 (bottom).</param>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetPadding">
@@ -72,6 +58,7 @@
         <summary>Sets the amount of space to add around the widget.</summary>
         <param name="xpad">The amount of space to add on the left and right of the widget, in pixels.</param>
         <param name="ypad">The amount of space to add on the top and bottom of the widget, in pixels.</param>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -96,7 +83,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Misc, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -124,10 +110,14 @@
       <Docs>
         <summary>The vertical alignment</summary>
         <param name="value">The vertical alignment, from 0 (top) to 1 (bottom).</param>
-        <returns>The vertical alignment</returns>
+        <value>The vertical alignment</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="yalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Xalign">
       <MemberSignature Language="C#" Value="public float Xalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -139,10 +129,14 @@
       <Docs>
         <summary>The horizontal alignment</summary>
         <param name="value">The horizontal alignment, from 0 (left) to 1 (right).</param>
-        <returns>The horizontal alignment</returns>
+        <value>The horizontal alignment</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="xalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Ypad">
       <MemberSignature Language="C#" Value="public int Ypad { set; get; };" />
       <MemberType>Property</MemberType>
@@ -154,10 +148,14 @@
       <Docs>
         <summary>The amount of space to add on the left and right of the widget, in pixels.</summary>
         <param name="value">The amount of space to add on the left and right of the widget, in pixels.</param>
-        <returns>The amount of space to add on the left and right of the widget, in pixels.</returns>
+        <value>The amount of space to add on the left and right of the widget, in pixels.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="ypad")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Xpad">
       <MemberSignature Language="C#" Value="public int Xpad { set; get; };" />
       <MemberType>Property</MemberType>
@@ -169,10 +167,14 @@
       <Docs>
         <summary>The amount of space to add on the top and bottom of the widget, in pixels.</summary>
         <param name="value">The amount of space to add on the top and bottom of the widget, in pixels.</param>
-        <returns>The amount of space to add on the top and bottom of the widget, in pixels.</returns>
+        <value>The amount of space to add on the top and bottom of the widget, in pixels.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="xpad")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetPadding">
       <MemberSignature Language="C#" Value="public void GetPadding (out int xpad, out int ypad);" />
       <MemberType>Method</MemberType>
@@ -218,7 +220,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Misc" />.</remarks>
       </Docs>
     </Member>
@@ -232,10 +234,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Misc" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Misc ();" />
       <MemberType>Constructor</MemberType>
@@ -243,7 +248,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Misc" /></returns>
         <remarks>Protected constructor.</remarks>
       </Docs>
     </Member>

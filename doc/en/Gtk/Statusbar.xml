@@ -1,12 +1,10 @@
 <Type Name="Statusbar" FullName="Gtk.Statusbar">
-  <TypeSignature Language="C#" Value="public class Statusbar : Gtk.HBox, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Statusbar : Gtk.HBox" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -79,20 +77,7 @@ class StatusbarSample
     <BaseTypeName>Gtk.HBox</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Push">
       <MemberSignature Language="C#" Value="public uint Push (uint context_id, string text);" />
@@ -186,7 +171,6 @@ class StatusbarSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Statusbar, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -199,7 +183,6 @@ class StatusbarSample
       <Parameters />
       <Docs>
         <summary>The main way to create a new status bar.</summary>
-        <returns>A new Statusbar</returns>
         <remarks>
           <para>Creates a new Statusbar with an empty message stack.</para>
         </remarks>
@@ -216,10 +199,14 @@ class StatusbarSample
       <Docs>
         <summary>Manage whether this Statusbar has a resizable grip over its bottom right corner.</summary>
         <param name="value">Set to <see langword="true" /> to render a resize grip over the Statusbar, <see langword="false" /> otherwise.</param>
-        <returns>Whether or not there is currently a resize grip on the Statusbar.</returns>
+        <value>Whether or not there is currently a resize grip on the Statusbar.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_resize_grip")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextPushed">
       <MemberSignature Language="C#" Value="public event Gtk.TextPushedHandler TextPushed;" />
       <MemberType>Event</MemberType>
@@ -233,7 +220,11 @@ class StatusbarSample
           <para>Connect to this event with a <see cref="T:Gtk.TextPushedHandler" />.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_pushed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextPopped">
       <MemberSignature Language="C#" Value="public event Gtk.TextPoppedHandler TextPopped;" />
       <MemberType>Event</MemberType>
@@ -247,7 +238,11 @@ class StatusbarSample
           <para>Connect to this event with a <see cref="T:Gtk.TextPoppedHandler" />.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_popped")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -257,7 +252,7 @@ class StatusbarSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Statusbar" />.</remarks>
       </Docs>
     </Member>
@@ -305,9 +300,12 @@ class StatusbarSample
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Statusbar" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

@@ -1,11 +1,9 @@
 <Type Name="Action" FullName="Gtk.Action">
-  <TypeSignature Language="C#" Value="public class Action : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Action : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -55,14 +53,7 @@ Each action can have one or more proxy menu item, toolbar button or other proxy 
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -243,10 +234,13 @@ If the widget is already connected to an action, it is disconnected first.</rema
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Action (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -257,7 +251,6 @@ If the widget is already connected to an action, it is disconnected first.</rema
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -277,7 +270,6 @@ If the widget is already connected to an action, it is disconnected first.</rema
         <param name="label"> the label displayed in menu items and on buttons</param>
         <param name="tooltip">a tooltip for the action, or <see langword="null" /> for no tooltip</param>
         <param name="stock_id">the stock icon to display in widgets representing the action, or <see langword="null" /></param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -293,7 +285,6 @@ If the widget is already connected to an action, it is disconnected first.</rema
         <summary>Creates a new action from the <paramref name="name" /> and <paramref name="label" />.</summary>
         <param name="name">A unique name for the action</param>
         <param name="label"> the label displayed in menu items and on buttons</param>
-        <returns>a <see cref="T:Gtk.Action" /></returns>
         <remarks>Convenience constructor for <see cref="C:Gtk.Action(System.String,System.String.System.String,System.String)" /> passing in <see langword="null" /> for the last two parameters.</remarks>
       </Docs>
     </Member>
@@ -306,7 +297,7 @@ If the widget is already connected to an action, it is disconnected first.</rema
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Action" />.</remarks>
       </Docs>
     </Member>
@@ -319,12 +310,16 @@ If the widget is already connected to an action, it is disconnected first.</rema
       <Parameters />
       <Docs>
         <summary>Whether the action is considered important.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>When <see langword="true" />, toolitem proxies for this action show text in <see cref="F:Gtk.ToolbarStyle.BothHoriz" /> mode.
 
 Default value: <see langword="false" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="is_important")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="VisibleVertical">
       <MemberSignature Language="C#" Value="public bool VisibleVertical { set; get; };" />
       <MemberType>Property</MemberType>
@@ -334,10 +329,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>When <see langword="true" />, toolitem proxies for this action are represented in the toolbar overflow menu.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Default value is <see langword="true" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="visible_vertical")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StockId">
       <MemberSignature Language="C#" Value="public string StockId { set; get; };" />
       <MemberType>Property</MemberType>
@@ -347,10 +346,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>The stock icon displayed in widgets representing this action.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="stock_id")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HideIfEmpty">
       <MemberSignature Language="C#" Value="public bool HideIfEmpty { set; get; };" />
       <MemberType>Property</MemberType>
@@ -360,10 +363,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>When <see langword="true" />, empty menu proxies for this action are hidden.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Default value: <see langword="true" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="hide_if_empty")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Name">
       <MemberSignature Language="C#" Value="public string Name { get; };" />
       <MemberType>Property</MemberType>
@@ -373,10 +380,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>A unique name for the action.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="name")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShortLabel">
       <MemberSignature Language="C#" Value="public string ShortLabel { set; get; };" />
       <MemberType>Property</MemberType>
@@ -386,10 +397,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>A shorter label that may be used on toolbar buttons.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="short_label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="VisibleHorizontal">
       <MemberSignature Language="C#" Value="public bool VisibleHorizontal { set; get; };" />
       <MemberType>Property</MemberType>
@@ -399,10 +414,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>Whether the toolbar item is visible when the toolbar is in a horizontal orientation.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Default value is <see langword="true" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="visible_horizontal")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ActionGroup">
       <MemberSignature Language="C#" Value="public Gtk.ActionGroup ActionGroup { set; get; };" />
       <MemberType>Property</MemberType>
@@ -412,10 +431,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>The GtkActionGroup this GtkAction is associated with.</summary>
-        <returns>a <see cref="T:Gtk.ActionGroup" /></returns>
+        <value>a <see cref="T:Gtk.ActionGroup" /></value>
         <remarks>Can be set to <see langword="null" /> for internal use.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="action_group")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Label">
       <MemberSignature Language="C#" Value="public string Label { set; get; };" />
       <MemberType>Property</MemberType>
@@ -425,10 +448,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>The label used for menu items and buttons that activate this action.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Tooltip">
       <MemberSignature Language="C#" Value="public string Tooltip { set; get; };" />
       <MemberType>Property</MemberType>
@@ -438,10 +465,14 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>A tooltip for this action.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Default value is <see langword="null" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="tooltip")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Sensitive">
       <MemberSignature Language="C#" Value="public bool Sensitive { set; get; };" />
       <MemberType>Property</MemberType>
@@ -451,7 +482,7 @@ Default value: <see langword="false" /></remarks>
       <Parameters />
       <Docs>
         <summary>Whether the action itself is sensitive.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <block subset="none" type="note">
             <para>
@@ -460,7 +491,11 @@ This does not necessarily mean effective sensitivity. See <see cref="P:Gtk.Actio
           </block>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="sensitive")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Visible">
       <MemberSignature Language="C#" Value="public bool Visible { set; get; };" />
       <MemberType>Property</MemberType>
@@ -470,7 +505,7 @@ This does not necessarily mean effective sensitivity. See <see cref="P:Gtk.Actio
       <Parameters />
       <Docs>
         <summary>Whether the action itself is visible.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <block subset="none" type="note">
             <para>
@@ -479,7 +514,11 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
           </block>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="visible")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AccelGroup">
       <MemberSignature Language="C#" Value="public Gtk.AccelGroup AccelGroup { set; };" />
       <MemberType>Property</MemberType>
@@ -488,7 +527,7 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gtk.AccelGroup" /> in which the accelerator for this action will be installed.</summary>
-        <returns>a <see cref="T:Gtk.AccelGroup" /> or <see langword="null" /></returns>
+        <value>a <see cref="T:Gtk.AccelGroup" /> or <see langword="null" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -501,7 +540,7 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       <Parameters />
       <Docs>
         <summary>whether the action is effectively sensitive.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <see langword="true" /> if the action and its associated action group are both sensitive. </remarks>
       </Docs>
@@ -515,7 +554,7 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       <Parameters />
       <Docs>
         <summary>Whether the action is effectively visible.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <see langword="true" /> if the action and its associated action group are both visible.</remarks>
       </Docs>
@@ -529,7 +568,7 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       <Parameters />
       <Docs>
         <summary>The accel path for this action.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>All proxy widgets associated with the action will have this accel path, so that their accelerators are consistent.</remarks>
       </Docs>
     </Member>
@@ -545,9 +584,13 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Proxies">
-      <MemberSignature Language="C#" Value="public Gtk.Widget [] Proxies { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] Proxies { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Widget[]</ReturnType>
@@ -555,7 +598,7 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       <Parameters />
       <Docs>
         <summary>Returns the proxy widgets for an action.</summary>
-        <returns>a <see cref="T:Gtk.Widget[]" /> of proxy widgets.</returns>
+        <value>a <see cref="T:Gtk.Widget[]" /> of proxy widgets.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -569,9 +612,13 @@ This does not necessarily mean effective visibility. See <see cref="P:Gtk.Action
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="visible_overflown")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

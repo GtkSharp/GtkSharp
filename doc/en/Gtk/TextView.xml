@@ -1,12 +1,10 @@
 <Type Name="TextView" FullName="Gtk.TextView">
-  <TypeSignature Language="C#" Value="public class TextView : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="duncan" />
+  <TypeSignature Language="C#" Maintainer="duncan" Value="public class TextView : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -64,20 +62,7 @@ class TextViewSample
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="BufferToWindowCoords">
       <MemberSignature Language="C#" Value="public void BufferToWindowCoords (Gtk.TextWindowType win, int buffer_x, int buffer_y, out int window_x, out int window_y);" />
@@ -609,7 +594,6 @@ class TextViewSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of TextView, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -622,7 +606,6 @@ class TextViewSample
       <Parameters />
       <Docs>
         <summary>Creates a new TextView</summary>
-        <returns>the newly-created TextView</returns>
         <remarks>
           <para>
             If you don't set the <see cref="P:Gtk.TextView.Buffer" /> before using
@@ -643,7 +626,6 @@ class TextViewSample
       <Docs>
         <summary>Creates a new TextView displaying a specified buffer.</summary>
         <param name="buffer">the buffer to be displayed</param>
-        <returns>a newly-created TextView</returns>
         <remarks>
           <para>
             Creates a new <see cref="T:Gtk.TextView" /> widget
@@ -661,7 +643,7 @@ class TextViewSample
       </ReturnValue>
       <Docs>
         <summary>The default text attributes</summary>
-        <returns>a <see cref="T:Gtk.TextAttribute" />s</returns>
+        <value>a <see cref="T:Gtk.TextAttribute" />s</value>
         <remarks>
           <para>
             Obtains a copy of the default text attributes. These are
@@ -690,10 +672,14 @@ class TextViewSample
           The <see cref="T:Gtk.TextBuffer" /> displayed by the text view
         </summary>
         <param name="value">the new buffer to be displayed</param>
-        <returns>the current buffer that is displayed</returns>
+        <value>the current buffer that is displayed</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="buffer")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CursorVisible">
       <MemberSignature Language="C#" Value="public bool CursorVisible { set; get; };" />
       <MemberType>Property</MemberType>
@@ -708,10 +694,14 @@ class TextViewSample
           <see langword="true" /> to display the insertion
           point
         </param>
-        <returns>whether the insertion point is visible</returns>
+        <value>whether the insertion point is visible</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="cursor_visible")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LeftMargin">
       <MemberSignature Language="C#" Value="public int LeftMargin { set; get; };" />
       <MemberType>Property</MemberType>
@@ -723,10 +713,14 @@ class TextViewSample
       <Docs>
         <summary>The default left margin</summary>
         <param name="value">the left margin in pixels</param>
-        <returns>the left margin</returns>
+        <value>the left margin</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="left_margin")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RightMargin">
       <MemberSignature Language="C#" Value="public int RightMargin { set; get; };" />
       <MemberType>Property</MemberType>
@@ -738,10 +732,14 @@ class TextViewSample
       <Docs>
         <summary>The default right margin</summary>
         <param name="value">the right margin in pixels</param>
-        <returns>the right margin</returns>
+        <value>the right margin</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="right_margin")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PixelsAboveLines">
       <MemberSignature Language="C#" Value="public int PixelsAboveLines { set; get; };" />
       <MemberType>Property</MemberType>
@@ -753,7 +751,7 @@ class TextViewSample
       <Docs>
         <summary>The default number of blank pixels above paragraphs</summary>
         <param name="value">the number of pixels above paragraphs</param>
-        <returns>the number of pixels above paragraphs</returns>
+        <value>the number of pixels above paragraphs</value>
         <remarks>
           <para>
             Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
@@ -761,7 +759,11 @@ class TextViewSample
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="pixels_above_lines")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Justification">
       <MemberSignature Language="C#" Value="public Gtk.Justification Justification { set; get; };" />
       <MemberType>Property</MemberType>
@@ -773,7 +775,7 @@ class TextViewSample
       <Docs>
         <summary>The default justification</summary>
         <param name="value">The <see cref="T:Gtk.Justification" /> for the text</param>
-        <returns>The default justification of paragraphs</returns>
+        <value>The default justification of paragraphs</value>
         <remarks>
           <para>
             Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
@@ -781,7 +783,11 @@ class TextViewSample
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="justification")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Indent">
       <MemberSignature Language="C#" Value="public int Indent { set; get; };" />
       <MemberType>Property</MemberType>
@@ -793,14 +799,18 @@ class TextViewSample
       <Docs>
         <summary>The default indentation for paragraphs</summary>
         <param name="value">the indentation in pixels</param>
-        <returns>the number of pixels of indentation</returns>
+        <value>the number of pixels of indentation</value>
         <remarks>
           <para>
             Tags in the <see cref="P:Gtk.TextView.Buffer" /> may override the default.
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="indent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Editable">
       <MemberSignature Language="C#" Value="public bool Editable { set; get; };" />
       <MemberType>Property</MemberType>
@@ -814,12 +824,16 @@ class TextViewSample
         <param name="value">
           <see langword="true" /> if the text is editable by the user
         </param>
-        <returns>
+        <value>
           whether or not the text can be edited by the user
-        </returns>
+        </value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="editable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WrapMode">
       <MemberSignature Language="C#" Value="public Gtk.WrapMode WrapMode { set; get; };" />
       <MemberType>Property</MemberType>
@@ -831,10 +845,14 @@ class TextViewSample
       <Docs>
         <summary>Whether to wrap lines never, at word boundaries, or at character boundaries.</summary>
         <param name="value">a <see cref="T:Gtk.WrapMode" /></param>
-        <returns>the <see cref="T:Gtk.WrapMode" /> of the text view </returns>
+        <value>the <see cref="T:Gtk.WrapMode" /> of the text view </value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="wrap_mode")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Tabs">
       <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { set; get; };" />
       <MemberType>Property</MemberType>
@@ -846,10 +864,14 @@ class TextViewSample
       <Docs>
         <summary>Custom tabs for this text</summary>
         <param name="value">a <see cref="T:Pango.TabArray" /></param>
-        <returns>custom tabes for this text</returns>
+        <value>custom tabes for this text</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="tabs")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PixelsBelowLines">
       <MemberSignature Language="C#" Value="public int PixelsBelowLines { set; get; };" />
       <MemberType>Property</MemberType>
@@ -861,7 +883,7 @@ class TextViewSample
       <Docs>
         <summary>The default number of pixels of blank space to put below paragraphs</summary>
         <param name="value">the number of pixels of blank space below paragraphs</param>
-        <returns>the blank space below paragraphs in pixels</returns>
+        <value>the blank space below paragraphs in pixels</value>
         <remarks>
           <para>
             Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
@@ -869,7 +891,11 @@ class TextViewSample
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="pixels_below_lines")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PixelsInsideWrap">
       <MemberSignature Language="C#" Value="public int PixelsInsideWrap { set; get; };" />
       <MemberType>Property</MemberType>
@@ -881,7 +907,7 @@ class TextViewSample
       <Docs>
         <summary>The default number of pixels of blank space to leave between display/wrapped lines within a paragraph</summary>
         <param name="value">default number of pixels between wrapped lines</param>
-        <returns>default number of pixels of blank space between wrapped lines</returns>
+        <value>default number of pixels of blank space between wrapped lines</value>
         <remarks>
           <para>
             Tags in the <see cref="P:Gtk.TextView.Buffer" /> may
@@ -889,7 +915,11 @@ class TextViewSample
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="pixels_inside_wrap")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ScrollAdjustmentsSet">
       <MemberSignature Language="C#" Value="public event Gtk.ScrollAdjustmentsSetHandler ScrollAdjustmentsSet;" />
       <MemberType>Event</MemberType>
@@ -901,7 +931,11 @@ class TextViewSample
         <summary>Fired whenever the adjustment values for the scrollbars are set.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_scroll_adjustments")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetAnchor">
       <MemberSignature Language="C#" Value="public event EventHandler SetAnchor;" />
       <MemberType>Event</MemberType>
@@ -913,7 +947,11 @@ class TextViewSample
         <summary>Fired whenever an anchor (e.g. <see cref="M:Gtk.TextChildAnchor" />) is set within the TextView. </summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_anchor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveCursor">
       <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
       <MemberType>Event</MemberType>
@@ -925,7 +963,11 @@ class TextViewSample
         <summary>Fired whenever the cursor is moved.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_cursor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PopulatePopup">
       <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
       <MemberType>Event</MemberType>
@@ -937,7 +979,11 @@ class TextViewSample
         <summary>Fired when the popup dialog on this object needs to be filled with data.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="populate_popup")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DeleteFromCursor">
       <MemberSignature Language="C#" Value="public event Gtk.DeleteFromCursorHandler DeleteFromCursor;" />
       <MemberType>Event</MemberType>
@@ -949,7 +995,11 @@ class TextViewSample
         <summary>Fired when text is deleted from the cursor (usually by hitting Backspace or Delete).</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="delete_from_cursor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CopyClipboard">
       <MemberSignature Language="C#" Value="public event EventHandler CopyClipboard;" />
       <MemberType>Event</MemberType>
@@ -961,7 +1011,11 @@ class TextViewSample
         <summary>Fired when text is copied to the clipboard.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="copy_clipboard")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveFocus">
       <MemberSignature Language="C#" Value="public event Gtk.MoveFocusHandler MoveFocus;" />
       <MemberType>Event</MemberType>
@@ -973,7 +1027,11 @@ class TextViewSample
         <summary>Fired when the keyboard focus changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PageHorizontally">
       <MemberSignature Language="C#" Value="public event Gtk.PageHorizontallyHandler PageHorizontally;" />
       <MemberType>Event</MemberType>
@@ -985,7 +1043,11 @@ class TextViewSample
         <summary>Fired when the user scrolls horizontally in this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="page_horizontally")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ToggleOverwrite">
       <MemberSignature Language="C#" Value="public event EventHandler ToggleOverwrite;" />
       <MemberType>Event</MemberType>
@@ -997,7 +1059,11 @@ class TextViewSample
         <summary>Fired whenever the insert/overwrite flag is toggled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggle_overwrite")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CutClipboard">
       <MemberSignature Language="C#" Value="public event EventHandler CutClipboard;" />
       <MemberType>Event</MemberType>
@@ -1009,7 +1075,11 @@ class TextViewSample
         <summary>Fired whenever a selection is cut to the clipboard.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cut_clipboard")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertAtCursor">
       <MemberSignature Language="C#" Value="public event Gtk.InsertAtCursorHandler InsertAtCursor;" />
       <MemberType>Event</MemberType>
@@ -1021,7 +1091,11 @@ class TextViewSample
         <summary>Fired whenever text is inserted at the cursor.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insert_at_cursor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PasteClipboard">
       <MemberSignature Language="C#" Value="public event EventHandler PasteClipboard;" />
       <MemberType>Event</MemberType>
@@ -1033,7 +1107,11 @@ class TextViewSample
         <summary>Fired whenever text is pasted from the clipboard.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="paste_clipboard")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetLineAtY">
       <MemberSignature Language="C#" Value="public void GetLineAtY (out Gtk.TextIter target_iter, int y, out int line_top);" />
       <MemberType>Method</MemberType>
@@ -1102,7 +1180,7 @@ class TextViewSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextView" />.</remarks>
       </Docs>
     </Member>
@@ -1291,10 +1369,13 @@ class TextViewSample
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.TextView" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetIterAtLocation">
       <MemberSignature Language="C#" Value="public Gtk.TextIter GetIterAtLocation (int x, int y);" />
       <MemberType>Method</MemberType>
@@ -1338,10 +1419,14 @@ class TextViewSample
       <Parameters />
       <Docs>
         <summary>Whether Tab will result in a tab character being entered.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Defaults to true.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="accepts_tab")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Overwrite">
       <MemberSignature Language="C#" Value="public bool Overwrite { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1351,10 +1436,14 @@ class TextViewSample
       <Parameters />
       <Docs>
         <summary>Whether entered text overwrites existing contents.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Defaults to false.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="overwrite")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="VisibleRect">
       <MemberSignature Language="C#" Value="public Gdk.Rectangle VisibleRect { get; };" />
       <MemberType>Property</MemberType>
@@ -1364,7 +1453,7 @@ class TextViewSample
       <Parameters />
       <Docs>
         <summary>Returns the currently-visible region of the buffer, in buffer coordinates.</summary>
-        <returns>a <see cref="T:Gdk.Rectangle" /></returns>
+        <value>a <see cref="T:Gdk.Rectangle" /></value>
         <remarks>
           You can convert to window coordinates with <see cref="M:Gtk.TextView.BufferToWindowCoords(Gtk.TextWindowType,System.Int32,System.Int32,System.Int32&amp;,System.Int32&amp;)" />.
         </remarks>
@@ -1381,7 +1470,11 @@ class TextViewSample
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="backspace")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnBackspace">
       <MemberSignature Language="C#" Value="protected virtual void OnBackspace ();" />
       <MemberType>Method</MemberType>

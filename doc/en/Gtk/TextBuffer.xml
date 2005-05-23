@@ -1,12 +1,10 @@
 <Type Name="TextBuffer" FullName="Gtk.TextBuffer">
-  <TypeSignature Language="C#" Value="public class TextBuffer : GLib.Object, IWrapper, IDisposable" Maintainer="duncan" />
+  <TypeSignature Language="C#" Maintainer="duncan" Value="public class TextBuffer : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,14 +17,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Clear">
       <MemberSignature Language="C#" Value="public void Clear ();" />
@@ -877,7 +868,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of TextBuffer, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -893,7 +883,6 @@
       <Docs>
         <summary>Creates a new text buffer.</summary>
         <param name="table">a tag table, or <see langword="null" /> to create a new one</param>
-        <returns>a newly created TextBuffer</returns>
         <remarks />
       </Docs>
     </Member>
@@ -908,7 +897,7 @@
       <Docs>
         <summary>The complete contents of the buffer</summary>
         <param name="value">a string to be the contents of the buffer</param>
-        <returns>The contents of the current buffer</returns>
+        <value>The contents of the current buffer</value>
         <remarks />
       </Docs>
     </Member>
@@ -920,7 +909,7 @@
       </ReturnValue>
       <Docs>
         <summary>Obtains the number of lines in the buffer.</summary>
-        <returns>The number of lines in the buffer</returns>
+        <value>The number of lines in the buffer</value>
         <remarks>
           <para>
             The results of this method is cached, so this is very fast.
@@ -936,7 +925,7 @@
       </ReturnValue>
       <Docs>
         <summary>The end of the buffer</summary>
-        <returns>The location of the end of the buffer</returns>
+        <value>The location of the end of the buffer</value>
         <remarks />
       </Docs>
     </Member>
@@ -954,10 +943,10 @@
           <see langword="true" /> if the buffer has
           been modified, <see langword="false" /> otherwise.
         </param>
-        <returns>
+        <value>
           <see langword="true" /> if the buffer has
           been modified, <see langword="false" /> otherwise.
-        </returns>
+        </value>
         <remarks>
           <para>
             Whenever the buffer is saved to disk, set this property to
@@ -978,10 +967,14 @@
       </ReturnValue>
       <Docs>
         <summary>The tag table of the current buffer</summary>
-        <returns>The current <see cref="T:Gtk.TextTagTable" /> of the buffer</returns>
+        <value>The current <see cref="T:Gtk.TextTagTable" /> of the buffer</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="tag_table")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionBound">
       <MemberSignature Language="C#" Value="public Gtk.TextMark SelectionBound { get; };" />
       <MemberType>Property</MemberType>
@@ -990,7 +983,7 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the mark that represents the selection bound.</summary>
-        <returns>a <see cref="T:Gtk.TextMark" /></returns>
+        <value>a <see cref="T:Gtk.TextMark" /></value>
         <remarks>
           <para>
             Returns the mark that represents the selection
@@ -1017,7 +1010,7 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the mark that represents the cursor (insertion point).</summary>
-        <returns>The mark of the insert point.</returns>
+        <value>The mark of the insert point.</value>
         <remarks>
           <para>
             This is equivelant to calling <see cref="M:Gtk.TextBuffer.GetMark(System.String)" /> for the
@@ -1034,7 +1027,7 @@
       </ReturnValue>
       <Docs>
         <summary>The number of characters in the buffer</summary>
-        <returns>The number of characters in the buffer</returns>
+        <value>The number of characters in the buffer</value>
         <remarks>
           <para>The result of this method is cached, so it is very fast.</para>
         </remarks>
@@ -1048,7 +1041,7 @@
       </ReturnValue>
       <Docs>
         <summary>The location of the beginning of the buffer</summary>
-        <returns>The location of the beginning of the buffer</returns>
+        <value>The location of the beginning of the buffer</value>
         <remarks>
           <para>
             This is the equivelant to calling <see cref="M:Gtk.TextBuffer.GetIterAtOffset(System.Int32)" /> to get the iter at character offset 0.
@@ -1067,7 +1060,11 @@
         <summary>Emitted when a UserAction ends on the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="end_user_action")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TagRemoved">
       <MemberSignature Language="C#" Value="public event Gtk.TagRemovedHandler TagRemoved;" />
       <MemberType>Event</MemberType>
@@ -1079,7 +1076,11 @@
         <summary>Emitted when a tag is removed from the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="remove_tag")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UserActionBegun">
       <MemberSignature Language="C#" Value="public event EventHandler UserActionBegun;" />
       <MemberType>Event</MemberType>
@@ -1091,7 +1092,11 @@
         <summary>Emitted when a UserAction is begun on the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="begin_user_action")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MarkSet">
       <MemberSignature Language="C#" Value="public event Gtk.MarkSetHandler MarkSet;" />
       <MemberType>Event</MemberType>
@@ -1103,7 +1108,11 @@
         <summary>Emitted when a mark is set in the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="mark_set")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TagApplied">
       <MemberSignature Language="C#" Value="public event Gtk.TagAppliedHandler TagApplied;" />
       <MemberType>Event</MemberType>
@@ -1115,7 +1124,11 @@
         <summary>Emitted when a tag is applied to the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="apply_tag")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChildAnchorInserted">
       <MemberSignature Language="C#" Value="public event Gtk.ChildAnchorInsertedHandler ChildAnchorInserted;" />
       <MemberType>Event</MemberType>
@@ -1127,7 +1140,11 @@
         <summary>Emitted when a ChildAnchor has been inserted in the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insert_child_anchor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MarkDeleted">
       <MemberSignature Language="C#" Value="public event Gtk.MarkDeletedHandler MarkDeleted;" />
       <MemberType>Event</MemberType>
@@ -1139,7 +1156,11 @@
         <summary>Emitted when a mark has been deleted from the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="mark_deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DeleteRange">
       <MemberSignature Language="C#" Value="public event Gtk.DeleteRangeHandler DeleteRange;" />
       <MemberType>Event</MemberType>
@@ -1151,7 +1172,11 @@
         <summary>Emitted when a range of text has been deleted from the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="delete_range")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PixbufInserted">
       <MemberSignature Language="C#" Value="public event Gtk.PixbufInsertedHandler PixbufInserted;" />
       <MemberType>Event</MemberType>
@@ -1163,7 +1188,11 @@
         <summary>Emitted when a Pixbuf is inserted into the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insert_pixbuf")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Changed">
       <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
       <MemberType>Event</MemberType>
@@ -1175,7 +1204,11 @@
         <summary>Emitted when the text in the buffer has been changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertText">
       <MemberSignature Language="C#" Value="public event Gtk.InsertTextHandler InsertText;" />
       <MemberType>Event</MemberType>
@@ -1187,7 +1220,11 @@
         <summary>Emitted when text is inserted into the buffer.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insert_text")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ModifiedChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ModifiedChanged;" />
       <MemberType>Event</MemberType>
@@ -1199,7 +1236,11 @@
         <summary>Emitted when the Modified status of the buffer is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="modified_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetIterAtOffset">
       <MemberSignature Language="C#" Value="public Gtk.TextIter GetIterAtOffset (int char_offset);" />
       <MemberType>Method</MemberType>
@@ -1356,7 +1397,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TextBuffer" />.</remarks>
       </Docs>
     </Member>
@@ -1556,10 +1597,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.TextBuffer" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetIterAtLineOffset">
       <MemberSignature Language="C#" Value="public Gtk.TextIter GetIterAtLineOffset (int line_number, int char_offset);" />
       <MemberType>Method</MemberType>
@@ -1660,7 +1704,13 @@
       <Parameters>
         <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="text" Type="System.String" />
-        <Parameter Name="tags" Type="Gtk.TextTag[]" />
+        <Parameter Name="tags" Type="Gtk.TextTag[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Inserts <paramref name="text" /> into buffer at <paramref name="iter" />, applying the list of <paramref name="tags" /> to the newly-inserted text.</summary>
@@ -1671,7 +1721,7 @@
       </Docs>
     </Member>
     <Member MemberName="InsertWithTagsByName">
-      <MemberSignature Language="C#" Value="public void InsertWithTagsByName (ref Gtk.TextIter iter, string text, string [] tagnames);" />
+      <MemberSignature Language="C#" Value="public void InsertWithTagsByName (ref Gtk.TextIter iter, string text, string[] tagnames);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1679,7 +1729,13 @@
       <Parameters>
         <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
         <Parameter Name="text" Type="System.String" />
-        <Parameter Name="tagnames" Type="System.String[]" />
+        <Parameter Name="tagnames" Type="System.String[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Inserts <paramref name="text" /> into buffer at <paramref name="iter" />, applying the list of tags with names <paramref name="tagnamess" /> to the newly-inserted text.</summary>

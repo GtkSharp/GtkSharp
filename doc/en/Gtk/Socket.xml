@@ -1,12 +1,10 @@
 <Type Name="Socket" FullName="Gtk.Socket">
-  <TypeSignature Language="C#" Value="public class Socket : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Socket : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -32,20 +30,7 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="AddId">
       <MemberSignature Language="C#" Value="public void AddId (uint window_id);" />
@@ -88,7 +73,6 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Socket, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -101,7 +85,6 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       <Parameters />
       <Docs>
         <summary>Default constructor</summary>
-        <returns>an object of type <see cref="T:Gtk.Socket" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -114,7 +97,7 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       </ReturnValue>
       <Docs>
         <summary>The window ID of a <see cref="T:Gtk.Socket" /> widget.</summary>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>This can be used to create a client embedded inside the socket, for instance with <see cref="C:Gtk.Plug()" />. The <see cref="T:Gtk.Socket" /> must have already be added into a toplevel window before you can make this call.</remarks>
       </Docs>
     </Member>
@@ -130,7 +113,11 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="plug_added")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PlugRemoved">
       <MemberSignature Language="C#" Value="public event Gtk.PlugRemovedHandler PlugRemoved;" />
       <MemberType>Event</MemberType>
@@ -142,7 +129,11 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
         <summary>This event is emitted when a client is removed from the socket.</summary>
         <remarks>The default action is to destroy the <see cref="T:Gtk.Socket" /> widget, so if you want to reuse it you must add a signal handler that returns <see langword="true" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="plug_removed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -152,7 +143,7 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Socket" />.</remarks>
       </Docs>
     </Member>
@@ -191,10 +182,13 @@ Console.WriteLine ("The ID of the sockets window is {0}", socket.Id);
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Socket" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Steal">
       <MemberSignature Language="C#" Value="public void Steal (uint wid);" />
       <MemberType>Method</MemberType>

@@ -1,12 +1,10 @@
 <Type Name="Display" FullName="Gdk.Display">
-  <TypeSignature Language="C#" Value="public class Display : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Display : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -32,14 +30,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="OpenDefaultLibgtkOnly">
       <MemberSignature Language="C#" Value="public static Gdk.Display OpenDefaultLibgtkOnly ();" />
@@ -263,7 +254,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
         <remarks>This is not typically used by C# code.</remarks>
       </Docs>
     </Member>
@@ -275,7 +265,7 @@
       </ReturnValue>
       <Docs>
         <summary>Get the default <see cref="T:Gdk.Screen" /> for the display.</summary>
-        <returns> the default <see cref="T:Gdk.Screen" /> object for display.</returns>
+        <value> the default <see cref="T:Gdk.Screen" /> object for display.</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -287,8 +277,8 @@
       </ReturnValue>
       <Docs>
         <summary>The name of the display</summary>
-        <returns>A <see cref="T:System.String" /> representing the
-        display name.</returns>
+        <value>A <see cref="T:System.String" /> representing the
+        display name.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -304,7 +294,7 @@
       <Docs>
         <summary>Sets the double-click timeout.</summary>
         <param name="value">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:Gdk.Display" />, or null if there is no default display.</returns>
+        <value>a <see cref="T:Gdk.Display" />, or null if there is no default display.</value>
         <remarks>
           <para>Sets the double click time (two clicks within this
 	      time interval count as a double click). Applications
@@ -321,7 +311,7 @@
       </ReturnValue>
       <Docs>
         <summary>The default screen..</summary>
-        <returns>The screen represending the DefaultScreen.</returns>
+        <value>The screen represending the DefaultScreen.</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -333,7 +323,7 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the core pointer device for the given display.</summary>
-        <returns>The core pointer <see cref="T:Gdk.Device" /> for the display.</returns>
+        <value>The core pointer <see cref="T:Gdk.Device" /> for the display.</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -345,8 +335,8 @@
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
-        <returns>
-        </returns>
+        <value>
+        </value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -358,7 +348,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -373,7 +363,11 @@
         <summary>This event is emitted when the connect to the windowing system is closed.</summary>
         <remarks>None.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="closed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetPointer">
       <MemberSignature Language="C#" Value="public void GetPointer (Gdk.Screen screen, out int x, out int y, out Gdk.ModifierType mask);" />
       <MemberType>Method</MemberType>
@@ -426,7 +420,7 @@
       <Parameters />
       <Docs>
         <summary>Gets the current location of the pointer and the current modifier mask for a given display.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -455,10 +449,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ListDevices">
       <MemberSignature Language="C#" Value="public Gdk.Device[] ListDevices ();" />
       <MemberType>Method</MemberType>
@@ -479,7 +476,6 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -568,7 +564,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <value>a <see cref="T:Gdk.Window" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -580,7 +576,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.UInt32" /></returns>
+        <value>a <see cref="T:System.UInt32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -593,7 +589,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.UInt32" /></returns>
+        <value>a <see cref="T:System.UInt32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

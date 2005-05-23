@@ -1,15 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Type Name="Widget" FullName="Gtk.Widget">
-  <TypeSignature Language="C#" Value="public class Widget : Gtk.Object, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class Widget : Gtk.Object, Atk.Implementor" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
-  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>$
+  <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>GtkWidget introduces style properties - these are basically object properties that are stored in the style object associated to the <paramref name="widget" />.</summary>
     <remarks>
@@ -20,22 +17,16 @@
       Use <see cref="M:Gtk.Widget.StyleGetProperty" /> to obtain the value of a style property.
      </para>
     </remarks>
-  </Docs><Base>
+  </Docs>
+  <Base>
     <BaseTypeName>Gtk.Object</BaseTypeName>
-  </Base><Interfaces>
+  </Base>
+  <Interfaces>
     <Interface>
       <InterfaceName>Atk.Implementor</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
-  </Interfaces><Attributes /><Members>
+  </Interfaces>
+  <Members>
     <Member MemberName="PushCompositeChild">
       <MemberSignature Language="C#" Value="public static void PushCompositeChild ();" />
       <MemberType>Method</MemberType>
@@ -104,7 +95,7 @@
       </Docs>
     </Member>
     <Member MemberName="RefAccessible">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object RefAccessible ();" />
+      <MemberSignature Language="C#" Value="public Atk.Object RefAccessible ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -1078,7 +1069,6 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Widget, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -1092,7 +1082,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the visual of the default colormap.</summary>
-        <returns>Returns a visual of the default colormap.</returns>
+        <value>Returns a visual of the default colormap.</value>
         <remarks>
           <para>
           Not really useful; used to be useful before <see cref="M:Gdk.Colormap.GetVisual" /> existed.
@@ -1108,7 +1098,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the default style used by all <paramref name="widgets" /> initially.</summary>
-        <returns>Returns the default style. This <see cref="T:Gtk.Style" /> object is owned by GTK+ and should not be modified or freed.</returns>
+        <value>Returns the default style. This <see cref="T:Gtk.Style" /> object is owned by GTK+ and should not be modified or freed.</value>
         <remarks>
           <para>
           Returns the default style used by all <paramref name="widgets" /> initially.
@@ -1127,7 +1117,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains the default colormap to use when creating <paramref name="widgets" />.</summary>
         <param name="value">A colormap (see <see cref="T:Gdk.Colormap" />).</param>
-        <returns>A <see cref="T:Gdk.Colormap" />.</returns>
+        <value>A <see cref="T:Gdk.Colormap" />.</value>
         <remarks>
           <para>
             <see cref="M:Gtk.Widget.PushColormap" /> is a better method to use if you only want to affect a few widgets, rather than all widgets.
@@ -1146,7 +1136,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains the default reading direction for <paramref name="widgets" />.</summary>
         <param name="value">A <see cref="P:Gtk.Widget.TextDirection" />.</param>
-        <returns>A <see cref="P:Gtk.Widget.TextDirection" />.</returns>
+        <value>A <see cref="P:Gtk.Widget.TextDirection" />.</value>
         <remarks>
           <para>
           Where the direction has not been explicitly set by <see cref="P:Gtk.Widget.Direction" />.
@@ -1162,7 +1152,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the default reading direction for <paramref name="widgets" />.</summary>
-        <returns>A <see cref="T:Atk.Object" />.</returns>
+        <value>A <see cref="T:Atk.Object" />.</value>
         <remarks>Obtains the default reading direction for <paramref name="widgets" />.</remarks>
       </Docs>
     </Member>
@@ -1177,7 +1167,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains the reading direction on a particular <paramref name="widget" />.</summary>
         <param name="value">A <see cref="T:Gtk.TextDirection" />.</param>
-        <returns>The reading direction for the <paramref name="widget" />.</returns>
+        <value>The reading direction for the <paramref name="widget" />.</value>
         <remarks>
           <para>
           This direction controls the primary direction for <paramref name="widgets" /> containing text, and also the direction in which the children of a container are packed. The ability to set the direction is present in order so that correct localization into languages with right-to-left reading directions can be done. Generally, applications will let the default reading direction present, except for containers where the containers are arranged in an order that is explicitely visual rather than logical (such as buttons for text justification). If the direction is set none, then the value set by <see cref="P:Gtk.Widget.DefaultDirection" /> will be used.
@@ -1196,7 +1186,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains the colormap that will be used to render <paramref name="widget" />.</summary>
         <param name="value">A colormap (see <see cref="T:Gdk.Colormap" />).</param>
-        <returns>A <see cref="T:Gdk.Colormap" />.</returns>
+        <value>A <see cref="T:Gdk.Colormap" />.</value>
         <remarks>
           <para>
           Widget must not have been previously realized.
@@ -1215,7 +1205,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains whether <paramref name="widget" /> should be mapped along with its when its parent is mapped and <paramref name="widget" /> has been shown with <see cref="M:Gtk.Widget.Show" />.</summary>
         <param name="value">If <see langword="true" />, <paramref name="widget" /> should be mapped along with its parent.</param>
-        <returns>Returns <see langword="true" /> if the <paramref name="widget" /> is mapped with the parent.</returns>
+        <value>Returns <see langword="true" /> if the <paramref name="widget" /> is mapped with the parent.</value>
         <remarks>
           <para>
           The child visibility can be set for <paramref name="widget" /> before it is added to a container with <see cref="P:Gtk.Widget.Parent" />, to avoid mapping children unnecessary before immediately unmapping them. However it will be reset to its default state of <see langword="true" /> when the <paramref name="widget" /> is removed from a container. 
@@ -1237,7 +1227,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains a <paramref name="widget" /> composite name.</summary>
         <param name="value">The name to set.</param>
-        <returns>The composite name of <paramref name="widget" />, or <see langword="null" /> if <paramref name="widget" /> is not a composite child. The string should not be freed when it is no longer needed.</returns>
+        <value>The composite name of <paramref name="widget" />, or <see langword="null" /> if <paramref name="widget" /> is not a composite child. The string should not be freed when it is no longer needed.</value>
         <remarks>
           <para>
           The <paramref name="widget" /> must be a composite child of its parent; see <see cref="M:Gtk.Widget.PushCompositeChild" />.
@@ -1253,7 +1243,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the topmost <paramref name="widget" /> in the container hierarchy <paramref name="widget" /> is a part of.</summary>
-        <returns>The topmost ancestor of <paramref name="widget" />, or <paramref name="widget" /> itself if there's no ancestor.</returns>
+        <value>The topmost ancestor of <paramref name="widget" />, or <paramref name="widget" /> itself if there's no ancestor.</value>
         <remarks>
           <para>
           Note the difference in behavior against <see cref="P:Gtk.Widget.GetAncestor" />, would return <see langword="null" /> if <paramref name="widget" /> wasn't inside a toplevel window, and if the window was inside a GtkWindow-derived <paramref name="widget" /> which was in turn inside the toplevel <see cref="T:Gtk.Window" />. While the second case may seem unlikely, it actually happens when a <see cref="T:Gtk.Plug" /> is embedded inside a <see cref="T:Gtk.Socket" /> within the same application. To reliably find the toplevel <see cref="T:Gtk.Window" />, use <see cref="P:Gtk.Widget.TopLevel" /> and check if the <see cref="F:Gtk.WidgetFlags.TopLevel" /> flag is set on the result.
@@ -1273,7 +1263,7 @@ To change the font of a simple Widget:
         <summary>Sets whether a <paramref name="widget" /> size allocation changes, the entire <paramref name="widget" /> is queued for drawing.</summary>
         <param name="value">
           <see langword="true" /> the entire <paramref name="widget" /> will be redrawn when it is allocated to a new size. <see langword="false" /> only the new portion of the <paramref name="widget" /> will be redrawn.</param>
-        <returns>Returns <see langword="true" /> because it is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
+        <value>Returns <see langword="true" /> because it is on by Default, but returns <see langword="false" /> if you turn it off.</value>
         <remarks>
           <para>
            By default, this setting is <see langword="true" /> and the entire <paramref name="widget" /> is redrawn on every size change. If your <paramref name="widget" /> leaves the upper left are unchanged when made bigger, turning this setting on will improve performance.
@@ -1296,7 +1286,7 @@ To change the font of a simple Widget:
         <summary>Use this property to turn off the double buffering.</summary>
         <param name="value">
           <see langword="true" /> is on by Default, <see langword="false" /> if you want to turn off double buffering no use call for true because it is default.</param>
-        <returns>Returns <see langword="true" /> because double buffering is on by Default, but returns <see langword="false" /> if you turn it off.</returns>
+        <value>Returns <see langword="true" /> because double buffering is on by Default, but returns <see langword="false" /> if you turn it off.</value>
         <remarks>
           <para>
            Widgets are double buffered by default, you can use this property to turn off the buffering. "Double buffered" simply means that <see cref="M:Gdk.Window.BeginPaintRegion" /> and <see cref="M:Gdk.Window.EndPaint" /> are called automatically around <see cref="F:Gtk.Widget.ExposeEvent" /> events sent to the <paramref name="widget" />. <see cref="M:Gdk.Window.BeginPaint" /> diverts all drawing to a <paramref name="widget" />'s window to an offscreen buffer, and <see cref="M:Gdk.Window.EndPaint" /> draws the buffer to the screen. The result is that users see the window update in one smooth step, and don't see individual graphics primitives being rendered. 
@@ -1315,7 +1305,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the settings object holding the settings (global property settings, RC file information, etc) used for this <paramref name="widget" />.</summary>
-        <returns>The relevant <see cref="T:Gtk.Settings" /> object.</returns>
+        <value>The relevant <see cref="T:Gtk.Settings" /> object.</value>
         <remarks>
           <para>
           Note that this property can only be called when the <see cref="T:Gtk.Widget" /> is attached to a toplevel, since the settings object is specific to a particular <see cref="T:Gdk.Screen" />.
@@ -1334,7 +1324,7 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets or obtains <paramref name="widget" />'s parent window.</summary>
         <param name="value">The new parent window.</param>
-        <returns>The parent window of <paramref name="widget" />.</returns>
+        <value>The parent window of <paramref name="widget" />.</value>
         <remarks>
           <para>
           Sets or obtains <paramref name="widget" />'s parent window.
@@ -1350,7 +1340,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains a <see cref="T:Pango.Context" /> with the appropriate colormap, font description and base direction for <paramref name="widget" />.</summary>
-        <returns />
+        <value />
         <remarks>
           <para>
           Unlike the context returned by <see cref="M:Gtk.Widget.CreatePangoContext" />, this context is owned by the <paramref name="widget" /> (it can be used until the screen for the <paramref name="widget" /> changes or the <paramref name="widget" /> is removed from its toplevel), and will be updated to match any changes to the <paramref name="widget" />'s attributes. 
@@ -1369,7 +1359,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the visual that will be used to render <paramref name="widget" />.</summary>
-        <returns>The visual for <paramref name="widget" />.</returns>
+        <value>The visual for <paramref name="widget" />.</value>
         <remarks>
           <para>
           Obtains the visual that will be used to render <paramref name="widget" />.
@@ -1385,7 +1375,7 @@ To change the font of a simple Widget:
       </ReturnValue>
       <Docs>
         <summary>Obtains the current modifier style for the <paramref name="widget" />.(As set by <see cref="M:Gtk.Widget.ModifyStyle" />)</summary>
-        <returns>The modifier style for the <paramref name="widget" />. This rc style is owned by the <paramref name="widget" />.</returns>
+        <value>The modifier style for the <paramref name="widget" />. This rc style is owned by the <paramref name="widget" />.</value>
         <remarks>
           <para>
           If no style has previously set, a new <see cref="T:Gtk.RcStyle" /> will be created with all values unset, and set as the modifier style for the <paramref name="widget" />. If you make changes to this rc style, you must call <see cref="M:Gtk.Widget.ModifyStyle" />, passing in the returned rc style, to make sure that your changes take effect.
@@ -1407,12 +1397,16 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Whether the <paramref name="widget" /> is visible.</summary>
         <param name="value">If <see langword="true" /> the widget is set to be visible.</param>
-        <returns>
-          <see langword="true" /> if the widget is meant to be visible.</returns>
+        <value>
+          <see langword="true" /> if the widget is meant to be visible.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="visible")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WidthRequest">
       <MemberSignature Language="C#" Value="public int WidthRequest { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1424,10 +1418,14 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Override for the width request for the <paramref name="widget" />.</summary>
         <param name="value">The width to be set for the <paramref name="widget" />.</param>
-        <returns>The width of the <paramref name="widget" />.</returns>
+        <value>The width of the <paramref name="widget" />.</value>
         <remarks>Or -1 if natural request should be used.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="width_request")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Sensitive">
       <MemberSignature Language="C#" Value="public bool Sensitive { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1439,8 +1437,8 @@ To change the font of a simple Widget:
       <Docs>
         <summary>Sets the sensitivity of the <see cref="T:Gtk.Widget" />. A widget is sensitive if the user can interact with it, otherwise, it is grayed.</summary>
         <param name="value">A System.Boolean value. Set to <see langword="true" /> to enable the <paramref name="widget" /> sensitivity, this is, whether the widget should respond to input or not.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> responds to input.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="widget" /> responds to input.</value>
         <remarks>
           <para>Insensitive widgets are "grayed out" and the user can't
 interact with them. Insensitive widgets are known as
@@ -1462,7 +1460,11 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="sensitive")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ReceivesDefault">
       <MemberSignature Language="C#" Value="public bool ReceivesDefault { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1474,11 +1476,15 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
       <Docs>
         <summary>Whether to make the <paramref name="widget" /> receive the default action when it is focused.</summary>
         <param name="value">If <see langword="true" /> the <paramref name="widget" /> will receive the default action when is focused.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="true" /> will receive the default action when is focused.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="true" /> will receive the default action when is focused.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="receives_default")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasFocus">
       <MemberSignature Language="C#" Value="public bool HasFocus { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1490,11 +1496,15 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
       <Docs>
         <summary>Whether the <paramref name="widget" /> has the input focus.</summary>
         <param name="value">If <see langword="true" /> the <paramref name="widget" /> has the input focus.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> has the input focus.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="widget" /> has the input focus.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ExtensionEvents">
       <MemberSignature Language="C#" Value="public Gdk.ExtensionMode ExtensionEvents { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1506,10 +1516,14 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
       <Docs>
         <summary>The mask that decides what kind of extension events the <paramref name="widget" /> gets.</summary>
         <param name="value">A Gdk.ExtensionMode.</param>
-        <returns>A Gdk.ExtensionMode.</returns>
+        <value>A Gdk.ExtensionMode.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="extension_events")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasDefault">
       <MemberSignature Language="C#" Value="public bool HasDefault { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1522,10 +1536,14 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
         <summary>
           <see langword="true" /> when the <paramref name="widget" /> currently is receiving the default action.</summary>
         <param name="value">If <paramref name="true" /> the <paramref name="widget" /> is the default <paramref name="widget" />.</param>
-        <returns>Evaluates to <see langword="true" />if the <paramref name="widget" /> currently is receiving the default action.</returns>
+        <value>Evaluates to <see langword="true" />if the <paramref name="widget" /> currently is receiving the default action.</value>
         <remarks>When the <paramref name="widget" /> is focused will receive the default action, and HasDefault will be <see langword="true" /> even if there is a different widget set as default.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_default")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CompositeChild">
       <MemberSignature Language="C#" Value="public bool CompositeChild { get; };" />
       <MemberType>Property</MemberType>
@@ -1534,11 +1552,15 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
       </ReturnValue>
       <Docs>
         <summary>Whether the <paramref name="widget" /> is part of a composite widget.</summary>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> is part of a composite widget.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="widget" /> is part of a composite widget.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="composite_child")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CanDefault">
       <MemberSignature Language="C#" Value="public bool CanDefault { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1551,8 +1573,8 @@ property <see cref="P:Gtk.Widget.CanDefault" /> will return false.
         <summary>Evaluates to <see langword="true" /> if the <paramref name="widget" /> is allowed to receive the default focus.</summary>
         <param name="value">
           <see cref="System.Boolean" /> value that get or set the capability of the widget to receive the default focus.</param>
-        <returns>
-          <see cref="System.Boolean" /> that indicates if the widget can grab the default focus, using <see cref="M:Gtk.Widget.GrabDefault()" />.</returns>
+        <value>
+          <see cref="System.Boolean" /> that indicates if the widget can grab the default focus, using <see cref="M:Gtk.Widget.GrabDefault()" />.</value>
         <remarks>
           <para>
 When this property is set to true, the widget itself will reserve space to
@@ -1584,7 +1606,11 @@ to false, the <see cref="P:Gtk.Widget.CanDefault" /> property will return false.
             <see cref="P:Gtk.Widget.HasDefault" /> [FIXME] This is a seealso instead see</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="can_default")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CanFocus">
       <MemberSignature Language="C#" Value="public bool CanFocus { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1596,8 +1622,8 @@ to false, the <see cref="P:Gtk.Widget.CanDefault" /> property will return false.
       <Docs>
         <summary>Determines whether the <paramref name="widget" /> is able to receive the focus.</summary>
         <param name="value">Set to <see langword="true" /> to give focus capability to the <paramref name="widget" />.</param>
-        <returns>Evaluates to <see langword="true" /> if the <paramref name="widget" /> is able to
-handle focus grabs.</returns>
+        <value>Evaluates to <see langword="true" /> if the <paramref name="widget" /> is able to
+handle focus grabs.</value>
         <remarks>
           <para>
 		    If the widget property <see cref="P:Gtk.Widget.Sensitive" /> evaluates
@@ -1617,7 +1643,11 @@ handle focus grabs.</returns>
 		  </para>[FIXME] This two links are seealso instead see: <see cref="P:Gtk.Widget.HasFocus" /> and
 		  <see cref="M:Gtk.Widget.GrabFocus()" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="can_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HeightRequest">
       <MemberSignature Language="C#" Value="public int HeightRequest { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1629,10 +1659,14 @@ handle focus grabs.</returns>
       <Docs>
         <summary>Override for the height request for the <paramref name="widget" />.</summary>
         <param name="value">The height to be set for the <paramref name="widget" />.</param>
-        <returns>The height of the <paramref name="widget" />.</returns>
+        <value>The height of the <paramref name="widget" />.</value>
         <remarks>Or -1 if natural request should be used.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="height_request")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AppPaintable">
       <MemberSignature Language="C#" Value="public bool AppPaintable { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1644,11 +1678,15 @@ handle focus grabs.</returns>
       <Docs>
         <summary>Whether the application will paint directly on the <paramref name="widget" />.</summary>
         <param name="value">If <see langword="true" /> the application will paint directly on the <paramref name="widget" />.</param>
-        <returns>
-          <see langword="true" /> if the application will paint directly on the <paramref name="widget" />.</returns>
+        <value>
+          <see langword="true" /> if the application will paint directly on the <paramref name="widget" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="app_paintable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Parent">
       <MemberSignature Language="C#" Value="public Gtk.Widget Parent { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1660,10 +1698,14 @@ handle focus grabs.</returns>
       <Docs>
         <summary>The parent widget of this <paramref name="widget" />.</summary>
         <param name="value">The parent widget.</param>
-        <returns>The parent widget.</returns>
+        <value>The parent widget.</value>
         <remarks>Must be a Container <paramref name="widget" />,</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="parent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Name">
       <MemberSignature Language="C#" Value="public string Name { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1675,10 +1717,14 @@ handle focus grabs.</returns>
       <Docs>
         <summary>The name of the <paramref name="widget" />.</summary>
         <param name="value">The name to be set for the <paramref name="widget" />.</param>
-        <returns>The name of the <paramref name="widget" />.</returns>
+        <value>The name of the <paramref name="widget" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="name")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Style">
       <MemberSignature Language="C#" Value="public Gtk.Style Style { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1690,10 +1736,14 @@ handle focus grabs.</returns>
       <Docs>
         <summary>The style of the <paramref name="widget" />.</summary>
         <param name="value">A style.</param>
-        <returns>A style.</returns>
+        <value>A style.</value>
         <remarks>Which contains information about how it will look (colors etc).</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="style")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UnmapEvent">
       <MemberSignature Language="C#" Value="public event Gtk.UnmapEventHandler UnmapEvent;" />
       <MemberType>Event</MemberType>
@@ -1705,7 +1755,11 @@ handle focus grabs.</returns>
         <summary>Fired whenever this widget (or its parent, if <see cref="M:Gtk.Widget.ChildVisible" /> is true for the parent) is told to hide itself.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="unmap_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Focused">
       <MemberSignature Language="C#" Value="public event Gtk.FocusedHandler Focused;" />
       <MemberType>Event</MemberType>
@@ -1715,10 +1769,13 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>Fired whenever this widget is focused.</summary>
-        <returns> a <see cref="T:Gtk.FocusedHandler" /></returns>
         <remarks>The widget gets this signal as the user uses keyboard shortcuts or tabs through the widgets in a window.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ParentSet">
       <MemberSignature Language="C#" Value="public event Gtk.ParentSetHandler ParentSet;" />
       <MemberType>Event</MemberType>
@@ -1730,7 +1787,11 @@ handle focus grabs.</returns>
         <summary>Fired whenever this widget's parent widget is set.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="parent_set")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="KeyReleaseEvent">
       <MemberSignature Language="C#" Value="public event Gtk.KeyReleaseEventHandler KeyReleaseEvent;" />
       <MemberType>Event</MemberType>
@@ -1742,7 +1803,11 @@ handle focus grabs.</returns>
         <summary>Fired when a key is released within this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="key_release_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Hidden">
       <MemberSignature Language="C#" Value="public event EventHandler Hidden;" />
       <MemberType>Event</MemberType>
@@ -1752,8 +1817,13 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>Fired whenever this widget is hidden.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="hide")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionRequestEvent">
       <MemberSignature Language="C#" Value="public event Gtk.SelectionRequestEventHandler SelectionRequestEvent;" />
       <MemberType>Event</MemberType>
@@ -1765,7 +1835,11 @@ handle focus grabs.</returns>
         <summary>Fired whenever the widget receives a request for a selection.</summary>
         <remarks>TODO: explain more about the X selection model </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_request_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DirectionChanged">
       <MemberSignature Language="C#" Value="public event Gtk.DirectionChangedHandler DirectionChanged;" />
       <MemberType>Event</MemberType>
@@ -1777,7 +1851,11 @@ handle focus grabs.</returns>
         <summary>Fired when the text direction for this widget is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="direction_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragLeave">
       <MemberSignature Language="C#" Value="public event Gtk.DragLeaveHandler DragLeave;" />
       <MemberType>Event</MemberType>
@@ -1789,7 +1867,11 @@ handle focus grabs.</returns>
         <summary>Fired when a drag action leaves this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_leave")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ScrollEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ScrollEventHandler ScrollEvent;" />
       <MemberType>Event</MemberType>
@@ -1801,7 +1883,11 @@ handle focus grabs.</returns>
         <summary>Fired when the widget is scrolled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="scroll_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="VisibilityNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.VisibilityNotifyEventHandler VisibilityNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -1813,7 +1899,11 @@ handle focus grabs.</returns>
         <summary>Fired whenever the visibility state of the widget changes--- partially visible or fully visible, for example.</summary>
         <remarks>It may be preferable to handle a <see cref="T:Gtk.Widget.ExposeEvent" />instead.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="visibility_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WindowStateEvent">
       <MemberSignature Language="C#" Value="public event Gtk.WindowStateEventHandler WindowStateEvent;" />
       <MemberType>Event</MemberType>
@@ -1825,7 +1915,11 @@ handle focus grabs.</returns>
         <summary>Emitted when the Window state changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="window_state_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Mapped">
       <MemberSignature Language="C#" Value="public event EventHandler Mapped;" />
       <MemberType>Event</MemberType>
@@ -1837,7 +1931,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget is mapped.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="map")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragBegin">
       <MemberSignature Language="C#" Value="public event Gtk.DragBeginHandler DragBegin;" />
       <MemberType>Event</MemberType>
@@ -1847,8 +1945,13 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>Fired on a source widget when the user begins a drag.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_begin")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HierarchyChanged">
       <MemberSignature Language="C#" Value="public event Gtk.HierarchyChangedHandler HierarchyChanged;" />
       <MemberType>Event</MemberType>
@@ -1860,7 +1963,11 @@ handle focus grabs.</returns>
         <summary>Fired when the hierarchy (parent or child relationships) of this widget or its parent or children changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="hierarchy_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ConfigureEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ConfigureEventHandler ConfigureEvent;" />
       <MemberType>Event</MemberType>
@@ -1872,7 +1979,11 @@ handle focus grabs.</returns>
         <summary>Fired when the configuration of the window has changed (it has been moved or resized).</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="configure_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="KeyPressEvent">
       <MemberSignature Language="C#" Value="public event Gtk.KeyPressEventHandler KeyPressEvent;" />
       <MemberType>Event</MemberType>
@@ -1884,7 +1995,11 @@ handle focus grabs.</returns>
         <summary>Fired when a key is pressed within this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="key_press_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MapEvent">
       <MemberSignature Language="C#" Value="public event Gtk.MapEventHandler MapEvent;" />
       <MemberType>Event</MemberType>
@@ -1896,7 +2011,11 @@ handle focus grabs.</returns>
         <summary>Fired just after the widget is mapped.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="map_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusGrabbed">
       <MemberSignature Language="C#" Value="public event EventHandler FocusGrabbed;" />
       <MemberType>Event</MemberType>
@@ -1908,7 +2027,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget grabs the keyboard focus.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="grab_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MotionNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.MotionNotifyEventHandler MotionNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -1920,7 +2043,11 @@ handle focus grabs.</returns>
         <summary>Fired when the pointer moves within this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="motion_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StateChanged">
       <MemberSignature Language="C#" Value="public event Gtk.StateChangedHandler StateChanged;" />
       <MemberType>Event</MemberType>
@@ -1932,7 +2059,11 @@ handle focus grabs.</returns>
         <summary>Fired when the state of the widget changes.</summary>
         <remarks>See <see cref="T:Gtk.StateType" /> for the possible states of a widget.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="state_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NoExposeEvent">
       <MemberSignature Language="C#" Value="public event Gtk.NoExposeEventHandler NoExposeEvent;" />
       <MemberType>Event</MemberType>
@@ -1944,7 +2075,11 @@ handle focus grabs.</returns>
         <summary>Emits NoExposeEvent</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="no_expose_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Unrealized">
       <MemberSignature Language="C#" Value="public event EventHandler Unrealized;" />
       <MemberType>Event</MemberType>
@@ -1956,7 +2091,11 @@ handle focus grabs.</returns>
         <summary>Fired when a widget is unrealized.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="unrealize")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ButtonReleaseEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ButtonReleaseEventHandler ButtonReleaseEvent;" />
       <MemberType>Event</MemberType>
@@ -1968,7 +2107,11 @@ handle focus grabs.</returns>
         <summary>Fired when a (mouse) button is released on this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="button_release_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionGet">
       <MemberSignature Language="C#" Value="public event Gtk.SelectionGetHandler SelectionGet;" />
       <MemberType>Event</MemberType>
@@ -1980,7 +2123,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget gets a selection from the clipboard.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_get")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SizeAllocated">
       <MemberSignature Language="C#" Value="public event Gtk.SizeAllocatedHandler SizeAllocated;" />
       <MemberType>Event</MemberType>
@@ -1992,7 +2139,11 @@ handle focus grabs.</returns>
         <summary>Fired when size is allocated for this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="size_allocate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PopupMenu">
       <MemberSignature Language="C#" Value="public event Gtk.PopupMenuHandler PopupMenu;" />
       <MemberType>Event</MemberType>
@@ -2004,7 +2155,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget's popup menu is activated.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="popup_menu")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ExposeEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ExposeEventHandler ExposeEvent;" />
       <MemberType>Event</MemberType>
@@ -2016,7 +2171,11 @@ handle focus grabs.</returns>
         <summary>Fired when the widget needs to be (fully or partially) redrawn.</summary>
         <remarks>See <see cref="T:Gtk.ExposeEventArgs" />, <see cref="T:Gtk.ExposeEventHandler" />. </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="expose_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Shown">
       <MemberSignature Language="C#" Value="public event EventHandler Shown;" />
       <MemberType>Event</MemberType>
@@ -2028,7 +2187,11 @@ handle focus grabs.</returns>
         <summary>Fired when the widget is shown.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="show")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.SelectionNotifyEventHandler SelectionNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -2040,7 +2203,11 @@ handle focus grabs.</returns>
         <summary>Emitted when a selection is made.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusInEvent">
       <MemberSignature Language="C#" Value="public event Gtk.FocusInEventHandler FocusInEvent;" />
       <MemberType>Event</MemberType>
@@ -2052,7 +2219,11 @@ handle focus grabs.</returns>
         <summary>Fired when the widget has just gained the focus.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="focus_in_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ButtonPressEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ButtonPressEventHandler ButtonPressEvent;" />
       <MemberType>Event</MemberType>
@@ -2064,7 +2235,11 @@ handle focus grabs.</returns>
         <summary>Fired when a button is pressed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="button_press_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PropertyNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.PropertyNotifyEventHandler PropertyNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -2076,7 +2251,11 @@ handle focus grabs.</returns>
         <summary>Emitted when a property is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="property_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HelpShown">
       <MemberSignature Language="C#" Value="public event Gtk.HelpShownHandler HelpShown;" />
       <MemberType>Event</MemberType>
@@ -2088,7 +2267,11 @@ handle focus grabs.</returns>
         <summary>Fired when the help text is shown.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="show_help")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ClientEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ClientEventHandler ClientEvent;" />
       <MemberType>Event</MemberType>
@@ -2100,7 +2283,11 @@ handle focus grabs.</returns>
         <summary>Fired when a message is received from another application.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="client_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ProximityInEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ProximityInEventHandler ProximityInEvent;" />
       <MemberType>Event</MemberType>
@@ -2112,7 +2299,11 @@ handle focus grabs.</returns>
         <summary>Fired when the user is using a stylus or touch screen and their pointer comes near the widget.</summary>
         <remarks>See <see cref="T:Gdk.EventProximity" /> for context.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="proximity_in_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ProximityOutEvent">
       <MemberSignature Language="C#" Value="public event Gtk.ProximityOutEventHandler ProximityOutEvent;" />
       <MemberType>Event</MemberType>
@@ -2124,7 +2315,11 @@ handle focus grabs.</returns>
         <summary>Fired when the user is using a stylus or touch screen and their pointer leaves the area near the widget.</summary>
         <remarks>See <see cref="T:Gdk.EventProximity" /> for context.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="proximity_out_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DestroyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.DestroyEventHandler DestroyEvent;" />
       <MemberType>Event</MemberType>
@@ -2136,7 +2331,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget is destroyed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="destroy_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionReceived">
       <MemberSignature Language="C#" Value="public event Gtk.SelectionReceivedHandler SelectionReceived;" />
       <MemberType>Event</MemberType>
@@ -2148,7 +2347,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget is the destination of a received selection.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_received")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragDataGet">
       <MemberSignature Language="C#" Value="public event Gtk.DragDataGetHandler DragDataGet;" />
       <MemberType>Event</MemberType>
@@ -2160,7 +2363,11 @@ handle focus grabs.</returns>
         <summary>Fired when the drag-and-drop process gets data from a source widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_data_get")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EnterNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.EnterNotifyEventHandler EnterNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -2172,7 +2379,11 @@ handle focus grabs.</returns>
         <summary>The pointer has just entered the widget.</summary>
         <remarks>If the <see cref="P:Gtk.Widget.CanFocus" /> flag is set, Widget will gain the focus, and the widget might be drawn differently. If the handler returns False, the event might be passed to the parent of widget (if no other handler of widget has returned True).</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="enter_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragDataReceived">
       <MemberSignature Language="C#" Value="public event Gtk.DragDataReceivedHandler DragDataReceived;" />
       <MemberType>Event</MemberType>
@@ -2184,7 +2395,11 @@ handle focus grabs.</returns>
         <summary>Fired on a destination widget when it receives dragged data.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_data_received")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragMotion">
       <MemberSignature Language="C#" Value="public event Gtk.DragMotionHandler DragMotion;" />
       <MemberType>Event</MemberType>
@@ -2196,7 +2411,11 @@ handle focus grabs.</returns>
         <summary>Fired on a source widget when the user is moving a dragged selection.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_motion")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SizeRequested">
       <MemberSignature Language="C#" Value="public event Gtk.SizeRequestedHandler SizeRequested;" />
       <MemberType>Event</MemberType>
@@ -2208,7 +2427,11 @@ handle focus grabs.</returns>
         <summary>Fired when this widget needs to notify another object of its preferred size.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="size_request")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GrabNotify">
       <MemberSignature Language="C#" Value="public event Gtk.GrabNotifyHandler GrabNotify;" />
       <MemberType>Event</MemberType>
@@ -2220,7 +2443,11 @@ handle focus grabs.</returns>
         <summary>Emitted when a widget grabs focus.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="grab_notify")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StyleSet">
       <MemberSignature Language="C#" Value="public event Gtk.StyleSetHandler StyleSet;" />
       <MemberType>Event</MemberType>
@@ -2232,7 +2459,11 @@ handle focus grabs.</returns>
         <summary>Fired when a <see cref="T:Gtk.Style" /> is set for this widget.t</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="style_set")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusOutEvent">
       <MemberSignature Language="C#" Value="public event Gtk.FocusOutEventHandler FocusOutEvent;" />
       <MemberType>Event</MemberType>
@@ -2244,7 +2475,11 @@ handle focus grabs.</returns>
         <summary>Fired when the focus leaves this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="focus_out_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChildNotified">
       <MemberSignature Language="C#" Value="public event Gtk.ChildNotifiedHandler ChildNotified;" />
       <MemberType>Event</MemberType>
@@ -2256,7 +2491,11 @@ handle focus grabs.</returns>
         <summary>Emitted when a child has been notified.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="child_notify")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Unmapped">
       <MemberSignature Language="C#" Value="public event EventHandler Unmapped;" />
       <MemberType>Event</MemberType>
@@ -2268,7 +2507,11 @@ handle focus grabs.</returns>
         <summary>Fired when the widget is unmapped on the screen.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="unmap")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragEnd">
       <MemberSignature Language="C#" Value="public event Gtk.DragEndHandler DragEnd;" />
       <MemberType>Event</MemberType>
@@ -2280,7 +2523,11 @@ handle focus grabs.</returns>
         <summary>Fired on a source widget when a drag operation is completed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_end")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionClearEvent">
       <MemberSignature Language="C#" Value="public event Gtk.SelectionClearEventHandler SelectionClearEvent;" />
       <MemberType>Event</MemberType>
@@ -2292,7 +2539,11 @@ handle focus grabs.</returns>
         <summary>Fired when the current selection is cleared.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_clear_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MnemonicActivated">
       <MemberSignature Language="C#" Value="public event Gtk.MnemonicActivatedHandler MnemonicActivated;" />
       <MemberType>Event</MemberType>
@@ -2304,7 +2555,11 @@ handle focus grabs.</returns>
         <summary>Fired when someone presses a mnemonic key.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="mnemonic_activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragDrop">
       <MemberSignature Language="C#" Value="public event Gtk.DragDropHandler DragDrop;" />
       <MemberType>Event</MemberType>
@@ -2316,7 +2571,11 @@ handle focus grabs.</returns>
         <summary>Fired on a source widget when dragged data is dropped.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_drop")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LeaveNotifyEvent">
       <MemberSignature Language="C#" Value="public event Gtk.LeaveNotifyEventHandler LeaveNotifyEvent;" />
       <MemberType>Event</MemberType>
@@ -2328,7 +2587,11 @@ handle focus grabs.</returns>
         <summary>Fired when the mouse leaves this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="leave_notify_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DeleteEvent">
       <MemberSignature Language="C#" Value="public event Gtk.DeleteEventHandler DeleteEvent;" />
       <MemberType>Event</MemberType>
@@ -2340,7 +2603,11 @@ handle focus grabs.</returns>
         <summary>Fired when the user has clicked on the "close" button in the window's frame (the button that is automatically set by the window manager).</summary>
         <remarks>If the handler returns False, the widget will be destroyed (and the window closed), but if the handler returns True, nothing will be done. This is a good way to prevent the user from closing your application's window if there should be some cleanups first (like saving the document).</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="delete_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Realized">
       <MemberSignature Language="C#" Value="public event EventHandler Realized;" />
       <MemberType>Event</MemberType>
@@ -2352,7 +2619,11 @@ handle focus grabs.</returns>
         <summary>Emitted when a widget is realized.</summary>
         <remarks>The default handler creates the Gdk window associated with the widget, and its ancestors.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="realize")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DragDataDelete">
       <MemberSignature Language="C#" Value="public event Gtk.DragDataDeleteHandler DragDataDelete;" />
       <MemberType>Event</MemberType>
@@ -2364,7 +2635,11 @@ handle focus grabs.</returns>
         <summary>Fired on a source widget when dragged data is deleted.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="drag_data_delete")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RootWindow">
       <MemberSignature Language="C#" Value="public Gdk.Window RootWindow { get; };" />
       <MemberType>Property</MemberType>
@@ -2373,7 +2648,7 @@ handle focus grabs.</returns>
       </ReturnValue>
       <Docs>
         <summary>The root window this Widget is attached to.</summary>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <value>a <see cref="T:Gdk.Window" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -2385,7 +2660,7 @@ handle focus grabs.</returns>
       </ReturnValue>
       <Docs>
         <summary>Obtains the <see cref="T:Gdk.Display" /> for the toplevel window associated with this <paramref name="widget" />.</summary>
-        <returns>The <see cref="T:Gdk.Display" /> for the toplevel for this <paramref name="widget" />.</returns>
+        <value>The <see cref="T:Gdk.Display" /> for the toplevel for this <paramref name="widget" />.</value>
         <remarks>
           <para>
 	  This method can only be called after the <paramref name="widget" /> has been added to a widget hierarchy with a <see cref="T:Gtk.Window" /> at the top.
@@ -2404,7 +2679,7 @@ handle focus grabs.</returns>
       </ReturnValue>
       <Docs>
         <summary>Obtains the <see cref="T:Gdk.Screen" /> from the toplevel window associated with this <paramref name="widget" />.</summary>
-        <returns>The <see cref="T:Gdk.Screen" /> for the toplevel for this <paramref name="widget" />.</returns>
+        <value>The <see cref="T:Gdk.Screen" /> for the toplevel for this <paramref name="widget" />.</value>
         <remarks>
           <para>
 	  This method can only be called after the <paramref name="widget" /> has been added to a widget hierarchy with a <see cref="T:Gtk.Window" /> at the top. 
@@ -2425,15 +2700,19 @@ handle focus grabs.</returns>
       </Parameters>
       <Docs>
         <summary>Determines if the <paramref name="widget" /> is the focus widget within its toplevel.</summary>
-        <returns>
-          <see langword="true" /> if the <paramref name="widget" /> is the focus widget.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="widget" /> is the focus widget.</value>
         <remarks>
           <para>
           This does not mean that the <see cref="P:Gtk.Widget.HasFocus" /> flag is necessarily set; <see cref="P:Gtk.Widget.HasFocus" /> will only be set if the toplevel <paramref name="widget" /> additionally has the global input focus.
          </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="is_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ScreenChanged">
       <MemberSignature Language="C#" Value="public event Gtk.ScreenChangedHandler ScreenChanged;" />
       <MemberType>Event</MemberType>
@@ -2445,7 +2724,11 @@ handle focus grabs.</returns>
         <summary>Emitted when the screen has changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="screen_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Intersect">
       <MemberSignature Language="C#" Value="public bool Intersect (Gdk.Rectangle area, out Gdk.Rectangle intersection);" />
       <MemberType>Method</MemberType>
@@ -2594,7 +2877,11 @@ handle focus grabs.</returns>
         <summary>Emits the WidgetEvent.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StyleGetProperty">
       <MemberSignature Language="C#" Value="public object StyleGetProperty (string property_name);" />
       <MemberType>Method</MemberType>
@@ -2608,6 +2895,7 @@ handle focus grabs.</returns>
         <summary>Obtains the value of a style property of <paramref name="widget" />.</summary>
         <param name="property_name">The name of a style property.</param>
         <remarks />
+        <returns>To be added.</returns>
       </Docs>
     </Member>
     <Member MemberName="HasScreen">
@@ -2619,7 +2907,7 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>Checks whether there is a <see cref="T:Gdk.Screen" /> is associated with this <paramref name="widget" />.</summary>
-        <returns>see langword="true" /&gt; if there is a <see cref="T:Gdk.Screen" /> associated with the <paramref name="widget" />.</returns>
+        <value>see langword="true" /&gt; if there is a <see cref="T:Gdk.Screen" /> associated with the <paramref name="widget" />.</value>
         <remarks>All toplevel <paramref name="widgets" /> have an associated screen, and all <paramref name="widgets" /> added into a hierarchy with a toplevel window at the top.</remarks>
       </Docs>
     </Member>
@@ -2632,7 +2920,7 @@ handle focus grabs.</returns>
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Widget" />.</remarks>
       </Docs>
     </Member>
@@ -3150,10 +3438,13 @@ handle focus grabs.</returns>
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="State">
       <MemberSignature Language="C#" Value="public Gtk.StateType State { set; get; };" />
       <MemberType>Property</MemberType>
@@ -3164,7 +3455,7 @@ handle focus grabs.</returns>
       <Docs>
         <summary>Sets or obtains the state of a <paramref name="widget" /> (insensitive, prelighted, etc.).</summary>
         <param name="value">New state for <paramref name="widget" />.</param>
-        <returns>New state for <paramref name="widget" />.</returns>
+        <value>New state for <paramref name="widget" />.</value>
         <remarks>
           <para>Usually you should set the state using wrapper fuctions such as <see cref="P:Gtk.Widget.Sensitive" />. This property is for use in widget implementations. This property should not be used to check the state of a Gtk.Checkbutton or Gtk.ToggleButton, use <see cref="P:Gtk.ToggleButton.Active" />.</para>
         </remarks>
@@ -3181,7 +3472,11 @@ handle focus grabs.</returns>
         <summary>Fired when the closures for this widget's accelerator change.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="accel_closures_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnDeleteEvent">
       <MemberSignature Language="C#" Value="protected virtual bool OnDeleteEvent (Gdk.Event evnt);" />
       <MemberType>Method</MemberType>
@@ -3662,7 +3957,7 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>Obtains or sets the event mask for the <paramref name="widget" /> (a bitfield containing flags from <see cref="T:Gdk.EventMask" />).</summary>
-        <returns>a <see cref="T:Gdk.EventMask" /></returns>
+        <value>a <see cref="T:Gdk.EventMask" /></value>
         <remarks>
           <para>
          The event mask determines which events a <paramref name="widget" /> will receive. Keep in mind that different widgets have different default event masks, and by changing the event mask you may disrupt a <paramref name="widget" />'s fuctionalit, so be careful.
@@ -3678,7 +3973,11 @@ xs    <Member MemberName="OnMapEvent">
         </para>
         </remarks>
       </Docs>
-    </Member><Member MemberName="OnSizeRequested">
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="events")</AttributeName>
+        </Attribute>
+      </Attributes></Member><Member MemberName="OnSizeRequested">
       <MemberSignature Language="C#" Value="protected virtual void OnSizeRequested (ref Gtk.Requisition requisition);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -3701,7 +4000,7 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>Obtains or sets the underlying Gdk.Window used to display the contents of the <paramref name="widget" />.</summary>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <value>a <see cref="T:Gdk.Window" /></value>
         <remarks />
       </Docs>
     </Member><Member MemberName="Flags">
@@ -3713,7 +4012,7 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>Obtains or sets the flags for this <paramref name="widget" />.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
           <para>
           This property should only be used when writing custom widgets in C#. The <see cref="M:Gtk.Widget.WidgetFlags" /> property is a preferred more strongly typed member.  This member is obsolete in Gtk# 2.0.
@@ -3723,7 +4022,11 @@ xs    <Member MemberName="OnMapEvent">
           </para>
         </remarks>
       </Docs>
-    </Member><Member MemberName="SizeRequest">
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member><Member MemberName="SizeRequest">
       <MemberSignature Language="C#" Value="public Gtk.Requisition SizeRequest ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -3752,7 +4055,6 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
         <remarks />
       </Docs>
     </Member><Member MemberName="FocusLineWidth">
@@ -3764,7 +4066,7 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>The width of the focus line in a <paramref name="widget" />.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
           <para>
           Subclasses of <paramref name="widget" /> use this style property to correctly layout their children.
@@ -3780,14 +4082,14 @@ xs    <Member MemberName="OnMapEvent">
       <Parameters />
       <Docs>
         <summary>Gets or Sets the widget's allocation.</summary>
-        <returns>a <see cref="T:Gdk.Rectangle" /> representing the size of the widget's allocation.
+        <value>a <see cref="T:Gdk.Rectangle" /> representing the size of the widget's allocation.
 <para>
 When the top-level widget has determined how much space its child would like to have, the second phase of the size negotiation, size allocation, begins. Depending on its configuration (see <see cref="P:Gtk.Window.Resizable" />), the top-level widget may be able to expand in order to satisfy the size request or it may have to ignore the size request and keep its fixed size. It then tells its child widget how much space it gets by calling <see cref="M:Gtk.Widget.SizeAllocate(Gdk.Rectangle)" />. The child widget divides the space among its children and tells each child how much space it got, and so on. Under normal circumstances, a <see cref="T:Gtk.Window" /> will always give its child the amount of space the child requested.
 </para><para>
 A child's size allocation is represented by a <see cref="T:Gtk.Allocation" />. This struct contains not only a width and height, but also a position (i.e. X and Y coordinates), so that containers can tell their children not only how much space they have gotten, but also where they are positioned inside the space available to the container.
 </para><para>
 Widgets are required to honor the size allocation they receive; a size request is only a request, and widgets must be able to cope with any size. 
-</para></returns>
+</para></value>
         <remarks>None.</remarks>
       </Docs>
     </Member><Member MemberName="Requisition">
@@ -3799,8 +4101,9 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Gets or Sets the widget's requisition</summary>
-        <returns>a <see cref="T:Gtk.Requisition" /> representing the widget's requisition</returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Requisition" /> representing the widget's requisition</value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member><Member MemberName="IsMapped">
       <MemberSignature Language="C#" Value="public bool IsMapped { get; };" />
@@ -3811,7 +4114,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Check to see if the widget is Mapped</summary>
-        <returns>true if the widget is Mapped, false otherwise.</returns>
+        <value>true if the widget is Mapped, false otherwise.</value>
         <remarks>None.</remarks>
       </Docs>
     </Member><Member MemberName="IsRealized">
@@ -3823,7 +4126,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Checks to see if the widget is Realized</summary>
-        <returns>returns true if the widget is Realized</returns>
+        <value>returns true if the widget is Realized</value>
         <remarks>None.</remarks>
       </Docs>
     </Member><Member MemberName="IsNoWindow">
@@ -3835,7 +4138,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidgetFlags.NoWindow</summary>
-        <returns>True if the NoWindow flag is set.</returns>
+        <value>True if the NoWindow flag is set.</value>
         <remarks>None.</remarks>
       </Docs>
     </Member><Member MemberName="IsTopLevel">
@@ -3847,7 +4150,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidgetFlags.Toplevel</summary>
-        <returns>True if the Toplevel flag is set.</returns>
+        <value>True if the Toplevel flag is set.</value>
         <remarks>None</remarks>
       </Docs>
     </Member><Member MemberName="HasGrab">
@@ -3859,7 +4162,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidgetFlags.HasGrab</summary>
-        <returns>True if the HasGrab flag is set.</returns>
+        <value>True if the HasGrab flag is set.</value>
         <remarks>None.</remarks>
       </Docs>
     </Member><Member MemberName="IsCompositeChild">
@@ -3871,7 +4174,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidgetFlags.CompositeChild</summary>
-        <returns>True if the CompositeChild flag is set</returns>
+        <value>True if the CompositeChild flag is set</value>
         <remarks>None</remarks>
       </Docs>
     </Member><Member MemberName="IsAppPaintable">
@@ -3883,7 +4186,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidgetFlags.AppPaintable</summary>
-        <returns>True if the AppPaintable flag is set</returns>
+        <value>True if the AppPaintable flag is set</value>
         <remarks>None</remarks>
       </Docs>
     </Member><Member MemberName="IsDoubleBuffered">
@@ -3895,7 +4198,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check Flags for WidetFlags.DoubleBuffered</summary>
-        <returns>True if the DoubleBuffered flag is set.</returns>
+        <value>True if the DoubleBuffered flag is set.</value>
         <remarks>None</remarks>
       </Docs>
     </Member><Member MemberName="IsDrawable">
@@ -3907,7 +4210,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Convenience property to check if the widget is Visible and Realized.</summary>
-        <returns>True if the widget is able to be drawn on</returns>
+        <value>True if the widget is able to be drawn on</value>
         <remarks>None</remarks>
       </Docs>
     </Member><Member MemberName="SetFlag">
@@ -3963,7 +4266,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Obtains the widget's requisition.</summary>
-        <returns>a <see cref="T:Gtk.Requisition" /></returns>
+        <value>a <see cref="T:Gtk.Requisition" /></value>
         <remarks>
           <para>
           Obtains requisition, unless someone has forced a particular geometry, in which case it returns that geometry instead of the widget's requisition. This method differs from <see cref="M:Gtk.Widget.SizeRequest" /> in that it retrieves the last size request value, while the <see cref="M:Gtk.Widget.SizeRequest" /> method recomputes the size request and fills in the requisition, and then returns the recomputed value.
@@ -3982,10 +4285,14 @@ Widgets are required to honor the size allocation they receive; a size request i
 	  This property determines whether the widget will be affected by 
 	  <see cref="M:Gtk.Widget.ShowAll" /> and <see cref="M:Gtk.Widget.HideAll" />.
 	</summary>
-        <returns>a <see cref="T:System.Boolean" />, true if the widget should be affected</returns>
+        <value>a <see cref="T:System.Boolean" />, true if the widget should be affected</value>
         <remarks />
       </Docs>
-    </Member><Member MemberName="AccelCanActivate">
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="no_show_all")</AttributeName>
+        </Attribute>
+      </Attributes></Member><Member MemberName="AccelCanActivate">
       <MemberSignature Language="C#" Value="public event Gtk.AccelCanActivateHandler AccelCanActivate;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
@@ -4000,7 +4307,11 @@ Widgets are required to honor the size allocation they receive; a size request i
 	</summary>
         <remarks>See <see cref="M:Gtk.Widget.OnAccelCanActivate" /> for more details.</remarks>
       </Docs>
-    </Member><Member MemberName="OnAccelCanActivate">
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="can_activate_accel")</AttributeName>
+        </Attribute>
+      </Attributes></Member><Member MemberName="OnAccelCanActivate">
       <MemberSignature Language="C#" Value="protected virtual bool OnAccelCanActivate (uint signal_id);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -4205,7 +4516,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Parameters />
       <Docs>
         <summary>Contains Widget specific flags values.</summary>
-        <returns>a <see cref="T:Gtk.WidgetFlags" /></returns>
+        <value>a <see cref="T:Gtk.WidgetFlags" /></value>
         <remarks />
       </Docs>
     </Member><Member MemberName="WidgetEventAfter">
@@ -4219,7 +4530,11 @@ Widgets are required to honor the size allocation they receive; a size request i
         <summary>Emits the WidgetEventAfter.</summary>
         <remarks />
       </Docs>
-    </Member><Member MemberName="OnWidgetEventAfter">
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="event-after")</AttributeName>
+        </Attribute>
+      </Attributes></Member><Member MemberName="OnWidgetEventAfter">
       <MemberSignature Language="C#" Value="protected virtual void OnWidgetEventAfter (Gdk.Event evnt);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
@@ -4231,7 +4546,7 @@ Widgets are required to honor the size allocation they receive; a size request i
       <Docs>
         <summary>Default handler for the <see cref="M:Gtk.Widget.WidgetEventAfter" /> event.</summary>
         <param name="evnt">a <see cref="T:Gdk.Event" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Widget.WidgetEventAfter" /> event.</remarks>
       </Docs>
-    </Member></Members></Type>
+    </Member></Members>
+</Type>

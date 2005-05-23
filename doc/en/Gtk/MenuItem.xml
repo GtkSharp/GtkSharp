@@ -1,12 +1,10 @@
 <Type Name="MenuItem" FullName="Gtk.MenuItem">
-  <TypeSignature Language="C#" Value="public class MenuItem : Gtk.Item, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class MenuItem : Gtk.Item" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -30,20 +28,7 @@
     <BaseTypeName>Gtk.Item</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="RemoveSubmenu">
       <MemberSignature Language="C#" Value="public void RemoveSubmenu ();" />
@@ -130,7 +115,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of MenuItem, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -143,7 +127,6 @@
       <Parameters />
       <Docs>
         <summary>A constructor.</summary>
-        <returns>An instance of <see cref="T:Gtk.MenuItem" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -157,7 +140,6 @@
       <Docs>
         <summary>Creates a new MenuItem containing a label.</summary>
         <param name="label">The label text on the menu item, with an underscore in front of the mnemonic character.</param>
-        <returns>A <see cref="T:Gtk.MenuItem" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -172,7 +154,7 @@
       <Docs>
         <summary>Sets or obtains the widget submenu.</summary>
         <param name="value">The submenu.</param>
-        <returns>A submenu for this menu item, or <see langword="null" /> if none.</returns>
+        <value>A submenu for this menu item, or <see langword="null" /> if none.</value>
         <remarks />
       </Docs>
     </Member>
@@ -187,7 +169,7 @@
       <Docs>
         <summary>Sets the accelerator path.</summary>
         <param name="value">An accelerator path, corresponding to this menu item's functionality, or <see langword="null" /> to unset the current path.</param>
-        <returns>The accelerator path of the menu item.</returns>
+        <value>The accelerator path of the menu item.</value>
         <remarks>
           <para>
           Sets the accelerator path, through which runtime changes of the menu item's accelerator caused by the user can be identified and saved to persistant storage.
@@ -206,7 +188,7 @@
       <Docs>
         <summary>Sets or obtains whether the menu item appears justified at the right side of a menu bar.</summary>
         <param name="value">If <see langword="true" /> the menu item will appear at the far right if added to a menu bar.</param>
-        <returns>Returns <see langword="true" /> if the menu item will appear at the far right if added to a menu bar.</returns>
+        <value>Returns <see langword="true" /> if the menu item will appear at the far right if added to a menu bar.</value>
         <remarks />
       </Docs>
     </Member>
@@ -221,7 +203,11 @@
         <summary>Emitted when the item is activated.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ActivateItem">
       <MemberSignature Language="C#" Value="public event EventHandler ActivateItem;" />
       <MemberType>Event</MemberType>
@@ -233,7 +219,11 @@
         <summary>Emitted when the item is activated, but also if the menu item has a submenu. For normal applications, the relevant event is <see cref="F:Gtk.MenuItem.Activated" />.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate_item")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ToggleSizeAllocated">
       <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeAllocatedHandler ToggleSizeAllocated;" />
       <MemberType>Event</MemberType>
@@ -245,7 +235,11 @@
         <summary>Emitted when size is allocated.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggle_size_allocate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ToggleSizeRequested">
       <MemberSignature Language="C#" Value="public event Gtk.ToggleSizeRequestedHandler ToggleSizeRequested;" />
       <MemberType>Event</MemberType>
@@ -257,7 +251,11 @@
         <summary>Emitted when size is requested.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggle_size_request")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -267,7 +265,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MenuItem" />.</remarks>
       </Docs>
     </Member>
@@ -335,10 +333,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.MenuItem" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ToggleSizeRequest">
       <MemberSignature Language="C#" Value="public int ToggleSizeRequest ();" />
       <MemberType>Method</MemberType>

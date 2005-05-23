@@ -1,12 +1,10 @@
 <Type Name="Button" FullName="Gtk.Button">
-  <TypeSignature Language="C#" Value="public class Button : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Duncan Mak" />
+  <TypeSignature Language="C#" Maintainer="Duncan Mak" Value="public class Button : Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -58,20 +56,7 @@ public class ButtonApp  {
     <BaseTypeName>Gtk.Bin</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="UseStock">
       <MemberSignature Language="C#" Value="public bool UseStock { set; get; };" />
@@ -85,12 +70,16 @@ public class ButtonApp  {
         <summary>Whether the <see cref="T:Gtk.Button" /> should use a <see cref="T:Gtk.Stock" />.</summary>
         <param name="value">Boolean value to select if the
   <see cref="T:Gtk.Button" /> uses a <see cref="T:Gtk.Stock" /> or not.</param>
-        <returns>Gets a value indicating if the <see cref="T:Gtk.Button" /> uses a <see cref="T:Gtk.Stock" />.</returns>
+        <value>Gets a value indicating if the <see cref="T:Gtk.Button" /> uses a <see cref="T:Gtk.Stock" />.</value>
         <remarks>It is possible to create a <see cref="T:Gtk.Button" /> from <see cref="T:Gtk.Stock" />, which is recommended for consistency in <see cref="N:Gnome" />
   apps. They also provide a <see cref="T:Gtk.Label" /> and a key shortcut. 
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_stock")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UseUnderline">
       <MemberSignature Language="C#" Value="public bool UseUnderline { set; get; };" />
       <MemberType>Property</MemberType>
@@ -103,11 +92,15 @@ public class ButtonApp  {
         <summary>Indicates if a mnemonic is associated with the <see cref="T:Gtk.Button" />.</summary>
         <param name="value">Boolean value to select if the <see cref="T:Gtk.Button" /> uses
 	underline or not.</param>
-        <returns>Gets a value indicating if the <see cref="T:Gtk.Button" /> uses underline
-  or not.</returns>
+        <value>Gets a value indicating if the <see cref="T:Gtk.Button" /> uses underline
+  or not.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_underline")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Relief">
       <MemberSignature Language="C#" Value="public Gtk.ReliefStyle Relief { set; get; };" />
       <MemberType>Property</MemberType>
@@ -120,11 +113,15 @@ public class ButtonApp  {
         <summary>The <see cref="T:Gtk.ReliefStyle" /> for the <see cref="T:Gtk.Button" />.</summary>
         <param name="value">The <see cref="T:Gtk.ReliefStyle" /> for
   the <see cref="T:Gtk.Button" />.</param>
-        <returns>An instance of <see cref="T:Gtk.ReliefStyle" /> that
-  represents the relief style of the <see cref="T:Gtk.Button" />.</returns>
+        <value>An instance of <see cref="T:Gtk.ReliefStyle" /> that
+  represents the relief style of the <see cref="T:Gtk.Button" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="relief")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Label">
       <MemberSignature Language="C#" Value="public string Label { set; get; };" />
       <MemberType>Property</MemberType>
@@ -137,10 +134,14 @@ public class ButtonApp  {
         <summary>The text of the <see cref="T:Gtk.Label" /> in the <see cref="T:Gtk.Button" />.</summary>
         <param name="value">A <see cref="T:System.String" /> to be used for
   the <see cref="T:Gtk.Button" />'s <see cref="T:Gtk.Label" /></param>
-        <returns>The <see cref="T:System.String" /> contained by the <see cref="T:Gtk.Button" />.</returns>
+        <value>The <see cref="T:System.String" /> contained by the <see cref="T:Gtk.Button" />.</value>
         <remarks>If you want the Label to have a mnemonic you need to set <see cref="P:Gtk.Button.UseUnderline" /> to <see langword="true" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Activated">
       <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
       <MemberType>Event</MemberType>
@@ -153,7 +154,11 @@ public class ButtonApp  {
           Event launched when the <see cref="T:Gtk.Button" /> is activated.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Clicked">
       <MemberSignature Language="C#" Value="public event EventHandler Clicked;" />
       <MemberType>Event</MemberType>
@@ -166,7 +171,11 @@ public class ButtonApp  {
           Event launched when the <see cref="T:Gtk.Button" /> is clicked.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="clicked")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Left">
       <MemberSignature Language="C#" Value="public event EventHandler Left;" />
       <MemberType>Event</MemberType>
@@ -179,7 +188,11 @@ public class ButtonApp  {
           Event launched when the cursor leaves the <see cref="T:Gtk.Button" /> area.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="leave")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Pressed">
       <MemberSignature Language="C#" Value="public event EventHandler Pressed;" />
       <MemberType>Event</MemberType>
@@ -192,7 +205,11 @@ public class ButtonApp  {
           Event launched when the <see cref="T:Gtk.Button" /> is pressed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="pressed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Released">
       <MemberSignature Language="C#" Value="public event EventHandler Released;" />
       <MemberType>Event</MemberType>
@@ -205,7 +222,11 @@ public class ButtonApp  {
           Event launched when the <see cref="T:Gtk.Button" /> is released.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="released")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Entered">
       <MemberSignature Language="C#" Value="public event EventHandler Entered;" />
       <MemberType>Event</MemberType>
@@ -218,7 +239,11 @@ public class ButtonApp  {
           Event launched when the cursor enters the <see cref="T:Gtk.Button" /> area.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="enter")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NewWithLabel">
       <MemberSignature Language="C#" Value="public static Gtk.Button NewWithLabel (string label);" />
       <MemberType>Method</MemberType>
@@ -316,7 +341,6 @@ public class ButtonApp  {
       <Parameters />
       <Docs>
         <summary>Default parameterless constructor.</summary>
-        <returns>An instance of <see cref="T:Gtk.Button" />.</returns>
         <remarks>This is the default constructor for the <see cref="T:Gtk.Button" /> class.</remarks>
       </Docs>
     </Member>
@@ -330,7 +354,6 @@ public class ButtonApp  {
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:Gtk.Button" /></returns>
         <remarks>This is not typically used by C# code.</remarks>
       </Docs>
     </Member>
@@ -343,7 +366,7 @@ public class ButtonApp  {
       <Parameters />
       <Docs>
         <summary>Whether or not the cursor is inside the button.</summary>
-        <returns>a <see cref="T:System.Boolean" />, true if the cursor is inside the button.</returns>
+        <value>a <see cref="T:System.Boolean" />, true if the cursor is inside the button.</value>
         <remarks />
       </Docs>
     </Member>
@@ -374,7 +397,6 @@ public class ButtonApp  {
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.Button" /> containing the image and text from a stock item.</summary>
         <param name="stock_id">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
         <remarks>The valid names of Stock items can be found in the <see cref="T:Gtk.Stock" /> class.</remarks>
       </Docs>
     </Member>
@@ -387,7 +409,7 @@ public class ButtonApp  {
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Button" />.</remarks>
       </Docs>
     </Member>
@@ -487,10 +509,13 @@ public class ButtonApp  {
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Button (Gtk.Widget widget);" />
       <MemberType>Constructor</MemberType>
@@ -501,7 +526,6 @@ public class ButtonApp  {
       <Docs>
         <summary>Constructs a button containing a specified Child widget.</summary>
         <param name="widget">a child <see cref="T:Gtk.Widget" /></param>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -517,11 +541,15 @@ public class ButtonApp  {
         <summary>
 	  Whether the button grabs focus when it is clicked with the mouse.
 	</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="focus_on_click")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Xalign">
       <MemberSignature Language="C#" Value="public float Xalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -535,13 +563,17 @@ public class ButtonApp  {
 	   or <see cref="T:Gtk.Alignment" />, this property 
 	   can be used to control its horizontal alignment. 
 	</summary>
-        <returns>a <see cref="T:System.Single" />; 
+        <value>a <see cref="T:System.Single" />; 
 	  0.0 is left aligned, 1.0 is right aligned.
-	</returns>
+	</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="xalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Yalign">
       <MemberSignature Language="C#" Value="public float Yalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -555,14 +587,18 @@ public class ButtonApp  {
 	   or <see cref="T:Gtk.Alignment" />, this property 
 	   can be used to control its vertical alignment. 
 	</summary>
-        <returns>
+        <value>
 	  a <see cref="T:System.Single" />;
 	  0.0 is top aligned, 1.0 is bottom aligned.
-	</returns>
+	</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="yalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetAlignment">
       <MemberSignature Language="C#" Value="public void GetAlignment (out float xalign, out float yalign);" />
       <MemberType>Method</MemberType>
@@ -616,9 +652,13 @@ public class ButtonApp  {
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.Widget" /></returns>
+        <value>a <see cref="T:Gtk.Widget" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="image")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

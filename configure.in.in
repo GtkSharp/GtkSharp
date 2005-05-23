@@ -218,6 +218,16 @@ else
 enable_vte=no
 fi
 
+MONODOC_REQUIRED_VERSION=1.0.6.99
+PKG_CHECK_MODULES(MONODOC_DEPS, monodoc >= $MONODOC_REQUIRED_VERSION, enable_monodoc=yes, enable_monodoc=no)
+AC_PATH_PROG(MONODOC, monodoc, no)
+AC_PATH_PROG(MONODOCER, monodocer, no)
+if test "x$MONODOCER" = "xno" -o "x$MONODOC" = "xno"; then
+  enable_monodoc=no
+fi
+AC_SUBST(MONODOC)
+AC_SUBST(MONODOCER)
+
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
@@ -227,8 +237,9 @@ AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
-AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
+AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
+AM_CONDITIONAL(ENABLE_ALL_OPTIONAL, test "x$enable_libart" = "xyes" -a "x$enable_gnomevfs" = "xyes" -a "x$enable_gnome" = "xyes" -a "x$enable_glade" = "xyes" -a "x$enable_gda" = "xyes" -a "x$enable_gnomedb" = "xyes" -a "x$enable_rsvg" = "xyes" -a "x$enable_gtkhtml" = "xyes" -a "x$enable_vte" = "xyes" -a "x$enable_dotnet" = "xyes" -a "x$enable_monodoc" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -333,5 +344,6 @@ echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"
 echo "            autogen.sh to include them in the build."
 echo ""
+echo "   * Documentation build enabled: $enable_monodoc "
 echo "---"
 

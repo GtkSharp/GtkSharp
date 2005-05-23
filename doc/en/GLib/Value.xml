@@ -1,12 +1,10 @@
 <Type Name="Value" FullName="GLib.Value">
-  <TypeSignature Language="C#" Value="public class Value" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public struct Value" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -17,8 +15,11 @@
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
   </Base>
-  <Interfaces />
-  <Attributes />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Value (bool val);" />
@@ -30,7 +31,6 @@
       <Docs>
         <summary>Constructs a Value from a specified boolean.</summary>
         <param name="val">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -45,7 +45,6 @@
       <Docs>
         <summary>Constructs a Value from a specified double.</summary>
         <param name="val">an object of type <see cref="T:System.Double" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -60,7 +59,6 @@
       <Docs>
         <summary>Constructs a Value from a specified float.</summary>
         <param name="val">an object of type <see cref="T:System.Single" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -75,7 +73,6 @@
       <Docs>
         <summary>Constructs a Value from a specified integer.</summary>
         <param name="val">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -90,7 +87,6 @@
       <Docs>
         <summary>Constructs a Value from a specified object.</summary>
         <param name="val">an object of type <see cref="T:GLib.Object" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -105,7 +101,6 @@
       <Docs>
         <summary>Constructs a Value from a specified pointer.</summary>
         <param name="val">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -120,7 +115,6 @@
       <Docs>
         <summary>Constructs a Value from a specified string.</summary>
         <param name="val">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -135,7 +129,6 @@
       <Docs>
         <summary>Constructs a Value from a specified uint.</summary>
         <param name="val">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -150,13 +143,12 @@
       <Docs>
         <summary>Constructs a Value from a specified ushort.</summary>
         <param name="val">an object of type <see cref="T:System.UInt16" /></param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -178,7 +170,6 @@
       <Docs>
         <summary>Constructs a Value from any object, including a managed type.</summary>
         <param name="obj">a <see cref="T:System.Object" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -197,10 +188,13 @@
         <param name="obj">a <see cref="T:System.IntPtr" /></param>
         <param name="prop_name">a <see cref="T:System.String" /></param>
         <param name="val">a <see cref="T:GLib.Opaque" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Val">
       <MemberSignature Language="C#" Value="public object Val { set; get; };" />
       <MemberType>Property</MemberType>
@@ -210,7 +204,7 @@
       <Parameters />
       <Docs>
         <summary>Accesses the value.</summary>
-        <returns>a <see cref="T:System.Object" /></returns>
+        <value>a <see cref="T:System.Object" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -224,7 +218,6 @@
       <Docs>
         <summary>Constructs an initialized value for a given type.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -268,7 +261,6 @@
         <summary>Constructs a value initialized for a given property name.</summary>
         <param name="obj">a <see cref="T:GLib.Object" /></param>
         <param name="prop_name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -286,10 +278,13 @@
         <param name="obj">a <see cref="T:GLib.Object" /></param>
         <param name="prop_name">a <see cref="T:System.String" /></param>
         <param name="wrap">a <see cref="T:GLib.EnumWrapper" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Value (GLib.Opaque val, string type_name);" />
       <MemberType>Constructor</MemberType>
@@ -302,7 +297,6 @@
         <summary>Constructs a Value from an <see cref="T:GLib.Opaque" /> object of a given type</summary>
         <param name="val">an <see cref="T:GLib.Opaque" /> object</param>
         <param name="type_name">the (C/GType) name of <paramref name="val" />'s type</param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -319,7 +313,6 @@
         <summary>Constructs a Value from an <see cref="T:GLib.Opaque" /> object of a given type</summary>
         <param name="wrap">an <see cref="T:GLib.EnumWrapper" /> value</param>
         <param name="type_name">the (C/GType) name of <paramref name="wrap" />'s type</param>
-        <returns>an object of type <see cref="T:GLib.Value" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -334,7 +327,6 @@
       <Docs>
         <summary>Constructs a value for a 64 bit integer.</summary>
         <param name="val">a <see cref="T:System.Int64" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -348,8 +340,247 @@
       <Docs>
         <summary>Constructs a value for a 64 bit unsigned integer.</summary>
         <param name="val">a <see cref="T:System.UInt64" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
         <remarks />
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static bool op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static int op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static uint op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static ushort op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt16</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static long op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static ulong op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt64</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.EnumWrapper op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.EnumWrapper</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static float op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static double op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static string op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static IntPtr op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.Opaque op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Opaque</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.Boxed op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Boxed</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.Object op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="op_Explicit">
+      <MemberSignature Language="C#" Value="public static GLib.UnwrappedObject op_Explicit (GLib.Value val);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.UnwrappedObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="val" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="val">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

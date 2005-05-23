@@ -1,12 +1,10 @@
 <Type Name="TreeSelection" FullName="Gtk.TreeSelection">
-  <TypeSignature Language="C#" Value="public class TreeSelection : GLib.Object, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class TreeSelection : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -69,14 +67,7 @@ class Selection
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="SelectPath">
       <MemberSignature Language="C#" Value="public void SelectPath (Gtk.TreePath path);" />
@@ -312,7 +303,7 @@ class TreeSelectionSample
       </ReturnValue>
       <Docs>
         <summary>A hook into selection and unselection</summary>
-        <returns>a <see cref="T:Gtk.TreeSelectionFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeSelectionFunc" /></value>
         <remarks>
           <para>If set, <paramref name="func" /> is called before any node is selected or unselected, giving some control over which nodes are selected. The select function should return <see langword="true" /> if the state of the node may be toggled, and <see langword="false" /> if the state of the node should be left unchanged.</para>
         </remarks>
@@ -357,7 +348,6 @@ class TreeSelectionSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of TreeSelection, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -374,7 +364,7 @@ class TreeSelectionSample
       <Docs>
         <summary>Manages the way rows can be selected.</summary>
         <param name="value">A new mode of selection.</param>
-        <returns>The current mode dictating selection behaviour.</returns>
+        <value>The current mode dictating selection behaviour.</value>
         <remarks>
           <para>Rows may be deselected by changing this property. For example, if <see cref="P:Gtk.SelectionMode.Multiple" /> rows are selected and the mode is changed to <see cref="P:Gtk.SelectionMode.Single" /> or <see cref="P:Gtk.SelectionMode.Browse" />.</para>
         </remarks>
@@ -388,7 +378,7 @@ class TreeSelectionSample
       </ReturnValue>
       <Docs>
         <summary>Get the data associated with the <see cref="T:Gtk.TreeSelectionFunc" /> that has been setup for this <see cref="T:Gtk.TreeSelection" />.</summary>
-        <returns>The raw data that was set when <see cref="M:Gtk.TreeSelection.SetSelectFunction(Gtk.TreeSelectionFunc,System.IntPtr,Gtk.DestroyNotify)" /> was called.</returns>
+        <value>The raw data that was set when <see cref="M:Gtk.TreeSelection.SetSelectFunction(Gtk.TreeSelectionFunc,System.IntPtr,Gtk.DestroyNotify)" /> was called.</value>
         <remarks />
       </Docs>
     </Member>
@@ -400,7 +390,7 @@ class TreeSelectionSample
       </ReturnValue>
       <Docs>
         <summary>Get the <see cref="T:Gtk.TreeView" /> that this <see cref="T:Gtk.TreeSelection" /> is associated with.</summary>
-        <returns>The <see cref="T:Gtk.TreeView" /> that this <see cref="T:Gtk.TreeSelection" /> is tied to.</returns>
+        <value>The <see cref="T:Gtk.TreeView" /> that this <see cref="T:Gtk.TreeSelection" /> is tied to.</value>
         <remarks>
           <para>A <see cref="T:Gtk.TreeSelection" /> object can only be retrieved from a <see cref="T:Gtk.TreeView" />. That is done with its <see cref="P:Gtk.TreeView.Selection" /> property.</para>
         </remarks>
@@ -419,7 +409,11 @@ class TreeSelectionSample
           <para>This event is mostly a hint. It may only be fired once when a range of rows are selected, and it may occasionally be fired when nothing has happened.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UnselectRange">
       <MemberSignature Language="C#" Value="public void UnselectRange (Gtk.TreePath start_path, Gtk.TreePath end_path);" />
       <MemberType>Method</MemberType>
@@ -482,7 +476,7 @@ class TreeSelectionSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TreeSelection" />.</remarks>
       </Docs>
     </Member>
@@ -508,10 +502,13 @@ class TreeSelectionSample
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.TreeSelection" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetSelectedRows">
       <MemberSignature Language="C#" Value="public Gtk.TreePath[] GetSelectedRows (out Gtk.TreeModel model);" />
       <MemberType>Method</MemberType>
@@ -535,7 +532,6 @@ class TreeSelectionSample
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.TreeSelection" /></returns>
         <remarks />
       </Docs>
     </Member>

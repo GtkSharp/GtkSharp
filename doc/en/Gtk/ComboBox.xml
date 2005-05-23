@@ -1,11 +1,9 @@
 <Type Name="ComboBox" FullName="Gtk.ComboBox">
-  <TypeSignature Language="C#" Value="public class ComboBox : Gtk.Bin, CellLayout, IWrapper, Implementor, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class ComboBox : Gtk.Bin, Gtk.CellEditable, Gtk.CellLayout" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -67,19 +65,12 @@ class ComboBoxSample
   </Base>
   <Interfaces>
     <Interface>
+      <InterfaceName>Gtk.CellEditable</InterfaceName>
+    </Interface>
+    <Interface>
       <InterfaceName>Gtk.CellLayout</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="NewText">
       <MemberSignature Language="C#" Value="public static Gtk.ComboBox NewText ();" />
@@ -257,7 +248,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="Reorder">
-      <MemberSignature Language="C#" Value="public virtual void Reorder (Gtk.CellRenderer cell, int position);" />
+      <MemberSignature Language="C#" Value="public void Reorder (Gtk.CellRenderer cell, int position);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -277,7 +268,7 @@ class ComboBoxSample
       </Docs>i
     </Member>
     <Member MemberName="PackEnd">
-      <MemberSignature Language="C#" Value="public virtual void PackEnd (Gtk.CellRenderer cell, bool expand);" />
+      <MemberSignature Language="C#" Value="public void PackEnd (Gtk.CellRenderer cell, bool expand);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -298,7 +289,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="PackStart">
-      <MemberSignature Language="C#" Value="public virtual void PackStart (Gtk.CellRenderer cell, bool expand);" />
+      <MemberSignature Language="C#" Value="public void PackStart (Gtk.CellRenderer cell, bool expand);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -319,7 +310,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="AddAttribute">
-      <MemberSignature Language="C#" Value="public virtual void AddAttribute (Gtk.CellRenderer cell, string attribute, int column);" />
+      <MemberSignature Language="C#" Value="public void AddAttribute (Gtk.CellRenderer cell, string attribute, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -345,7 +336,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="ClearAttributes">
-      <MemberSignature Language="C#" Value="public virtual void ClearAttributes (Gtk.CellRenderer cell);" />
+      <MemberSignature Language="C#" Value="public void ClearAttributes (Gtk.CellRenderer cell);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -364,7 +355,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public virtual void Clear ();" />
+      <MemberSignature Language="C#" Value="public void Clear ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -377,7 +368,7 @@ class ComboBoxSample
       </Docs>
     </Member>
     <Member MemberName="SetCellDataFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func);" />
+      <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -408,10 +399,13 @@ class ComboBoxSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ComboBox" /></returns>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ComboBox (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -422,7 +416,6 @@ class ComboBoxSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gtk.ComboBox" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -433,7 +426,6 @@ class ComboBoxSample
       <Parameters />
       <Docs>
         <summary>Default constructor</summary>
-        <returns>a <see cref="T:Gtk.ComboBox" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -447,7 +439,6 @@ class ComboBoxSample
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.ComboBox" /> that uses <paramref name="model" /></summary>
         <param name="model">a <see cref="T:Gtk.TreeModel" /></param>
-        <returns>a <see cref="T:Gtk.ComboBox" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -460,7 +451,7 @@ class ComboBoxSample
       <Parameters />
       <Docs>
         <summary>GType Property</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native GLib.GType value for Combo.</remarks>
       </Docs>
     </Member>
@@ -473,7 +464,7 @@ class ComboBoxSample
       <Parameters />
       <Docs>
         <summary>Wrap width for laying out the items in a grid.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
           <para>
 Allowed values: &gt;= 0
@@ -483,7 +474,11 @@ Default value: 0
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="wrap_width")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColumnSpanColumn">
       <MemberSignature Language="C#" Value="public int ColumnSpanColumn { set; get; };" />
       <MemberType>Property</MemberType>
@@ -493,10 +488,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The column with column span information.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>The column span column contains integers which indicate how many columns an item should span.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="column_span_column")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Active">
       <MemberSignature Language="C#" Value="public int Active { set; get; };" />
       <MemberType>Property</MemberType>
@@ -506,10 +505,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The index of the currently active item.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>-1 if there is no active item.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="active")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowSpanColumn">
       <MemberSignature Language="C#" Value="public int RowSpanColumn { set; get; };" />
       <MemberType>Property</MemberType>
@@ -519,10 +522,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The column with row span information</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>The row span column contains integers which indicate how many rows an item should span.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="row_span_column")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Model">
       <MemberSignature Language="C#" Value="public Gtk.TreeModel Model { set; get; };" />
       <MemberType>Property</MemberType>
@@ -532,7 +539,7 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The <see cref="T:Gtk.TreeModel" /> which is acting as data source for the <see cref="T:Gtk.ComboBox" />.</summary>
-        <returns>a <see cref="T:Gtk.TreeModel" /></returns>
+        <value>a <see cref="T:Gtk.TreeModel" /></value>
         <remarks>Will unset a previously set model (if applicable). If model is <see langword="null" />, then it will unset the model.
 
 
@@ -541,7 +548,11 @@ Default value: 0
   </para>
           </block></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="model")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Changed">
       <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
       <MemberType>Event</MemberType>
@@ -553,16 +564,26 @@ Default value: 0
         <summary>Emitted when the selected item is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetAttributes">
-      <MemberSignature Language="C#" Value="public virtual void SetAttributes (Gtk.CellRenderer cell, object [] attrs);" />
+      <MemberSignature Language="C#" Value="public void SetAttributes (Gtk.CellRenderer cell, object[] attrs);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="attrs" Type="System.Object[]" />
+        <Parameter Name="attrs" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Sets the attribute to column bindings for a renderer.</summary>
@@ -580,10 +601,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has-frame")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AddTearoffs">
       <MemberSignature Language="C#" Value="public bool AddTearoffs { set; get; };" />
       <MemberType>Property</MemberType>
@@ -593,10 +618,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="add-tearoffs")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusOnClick">
       <MemberSignature Language="C#" Value="public bool FocusOnClick { set; get; };" />
       <MemberType>Property</MemberType>
@@ -606,10 +635,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="focus_on_click")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PopupAccessible">
       <MemberSignature Language="C#" Value="public Atk.Object PopupAccessible { get; };" />
       <MemberType>Property</MemberType>
@@ -619,7 +652,7 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Atk.Object" /></returns>
+        <value>a <see cref="T:Atk.Object" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -632,12 +665,12 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingDone">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler EditingDone;" />
+      <MemberSignature Language="C#" Value="public event EventHandler EditingDone;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -647,9 +680,13 @@ Default value: 0
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="editing_done")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WidgetRemoved">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler WidgetRemoved;" />
+      <MemberSignature Language="C#" Value="public event EventHandler WidgetRemoved;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -659,7 +696,11 @@ Default value: 0
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="remove_widget")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowSeparatorFunc">
       <MemberSignature Language="C#" Value="public Gtk.TreeViewRowSeparatorFunc RowSeparatorFunc { set; get; };" />
       <MemberType>Property</MemberType>
@@ -669,12 +710,12 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>Callback function to indicate whether or not a given row of the combo box should be rendered as a separator.</summary>
-        <returns>a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="RemoveWidget">
-      <MemberSignature Language="C#" Value="public virtual void RemoveWidget ();" />
+      <MemberSignature Language="C#" Value="public void RemoveWidget ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -686,7 +727,7 @@ Default value: 0
       </Docs>
     </Member>
     <Member MemberName="FinishEditing">
-      <MemberSignature Language="C#" Value="public virtual void FinishEditing ();" />
+      <MemberSignature Language="C#" Value="public void FinishEditing ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -698,7 +739,7 @@ Default value: 0
       </Docs>
     </Member>
     <Member MemberName="StartEditing">
-      <MemberSignature Language="C#" Value="public virtual void StartEditing (Gdk.Event evnt);" />
+      <MemberSignature Language="C#" Value="public void StartEditing (Gdk.Event evnt);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>

@@ -1,11 +1,9 @@
 <Type Name="ToggleAction" FullName="Gtk.ToggleAction">
-  <TypeSignature Language="C#" Value="public class ToggleAction : Gtk.Action, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class ToggleAction : Gtk.Action" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -17,14 +15,7 @@
     <BaseTypeName>Gtk.Action</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -74,10 +65,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ToggleAction" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ToggleAction (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -87,7 +81,9 @@
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-label displayed in menu items and on buttons        <param name="raw">a <see cref="T:System.IntPtr" /></param><returns>a <see cref="T:Gtk.ToggleAction" /></returns><remarks>This is not typically used by C# code.</remarks></Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <remarks>This is not typically used by C# code.</remarks>
+      </Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ToggleAction (string name, string label, string tooltip, string stock_id);" />
@@ -105,7 +101,6 @@ label displayed in menu items and on buttons        <param name="raw">a <see cre
         <param name="label">a <see cref="T:System.String" />, the label displayed in menu items and on buttons</param>
         <param name="tooltip">a <see cref="T:System.String" />, a tooltip for the action</param>
         <param name="stock_id">a <see cref="T:System.String" />, the stock icon to display in widgets representing the action</param>
-        <returns>a <see cref="T:Gtk.ToggleAction" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -119,7 +114,7 @@ label displayed in menu items and on buttons        <param name="raw">a <see cre
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ToggleAction" />.</remarks>
       </Docs>
     </Member>
@@ -134,11 +129,15 @@ label displayed in menu items and on buttons        <param name="raw">a <see cre
         <summary>
 	  Whether the action should have proxies like a radio action.
 	</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="draw_as_radio")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Active">
       <MemberSignature Language="C#" Value="public bool Active { set; get; };" />
       <MemberType>Property</MemberType>
@@ -148,7 +147,7 @@ label displayed in menu items and on buttons        <param name="raw">a <see cre
       <Parameters />
       <Docs>
         <summary>Sets the checked state on the toggle action.</summary>
-        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if checked</returns>
+        <value>a <see cref="T:System.Boolean" />, <see langword="true" /> if checked</value>
         <remarks>
         </remarks>
       </Docs>
@@ -165,6 +164,10 @@ label displayed in menu items and on buttons        <param name="raw">a <see cre
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggled")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

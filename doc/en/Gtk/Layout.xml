@@ -1,12 +1,10 @@
 <Type Name="Layout" FullName="Gtk.Layout">
-  <TypeSignature Language="C#" Value="public class Layout : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Layout : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,20 +17,12 @@
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="GetSize">
       <MemberSignature Language="C#" Value="public void GetSize (out uint width, out uint height);" />
@@ -132,7 +122,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Layout, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -150,7 +139,6 @@
         <summary>Creates a new <see cref="T:Gtk.Layout" /> object.</summary>
         <param name="hadjustment">an object of type <see cref="T:Gtk.Adjustment" /></param>
         <param name="vadjustment">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Layout" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -166,11 +154,15 @@
       <Docs>
         <summary>The width of the layout.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="width")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Hadjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Hadjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -182,11 +174,15 @@
       <Docs>
         <summary>The <see cref="T:Gtk.Adjustment" /> for the horizontal position.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="hadjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Vadjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Vadjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -198,11 +194,15 @@
       <Docs>
         <summary>The <see cref="T:Gtk.Adjustment" /> for the vertical position.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="vadjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Height">
       <MemberSignature Language="C#" Value="public uint Height { set; get; };" />
       <MemberType>Property</MemberType>
@@ -214,11 +214,15 @@
       <Docs>
         <summary>The height of the layout.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="height")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ScrollAdjustmentsSet">
       <MemberSignature Language="C#" Value="public event Gtk.ScrollAdjustmentsSetHandler ScrollAdjustmentsSet;" />
       <MemberType>Event</MemberType>
@@ -230,7 +234,11 @@
         <summary>Fired whenever the scroll adjustment units are set for this widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_scroll_adjustments")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="BinWindow">
       <MemberSignature Language="C#" Value="public Gdk.Window BinWindow { get; };" />
       <MemberType>Property</MemberType>
@@ -239,7 +247,7 @@
       </ReturnValue>
       <Docs>
         <summary>The window object for this layout widget.</summary>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <value>a <see cref="T:Gdk.Window" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -252,7 +260,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Layout" />.</remarks>
       </Docs>
     </Member>
@@ -283,10 +291,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Layout" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Thaw">
       <MemberSignature Language="C#" Value="public void Thaw ();" />
       <MemberType>Method</MemberType>
@@ -296,7 +307,8 @@
       <Parameters />
       <Docs>
         <summary>Deprecated. Do not use.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Freeze">
@@ -308,7 +320,8 @@
       <Parameters />
       <Docs>
         <summary>Deprecated. Do not use.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">

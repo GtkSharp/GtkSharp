@@ -1,12 +1,10 @@
 <Type Name="Terminal" FullName="Vte.Terminal">
-  <TypeSignature Language="C#" Value="public class Terminal : Gtk.Widget, Implementor, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Terminal : Gtk.Widget" />
   <AssemblyInfo>
     <AssemblyName>vte-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -128,17 +126,7 @@ class T
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -858,10 +846,13 @@ class T
       <Docs>
         <summary>Internal Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Vte.Terminal" /></returns>
         <remarks>This should not be called by normal applications.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Terminal (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -872,7 +863,6 @@ class T
       <Docs>
         <summary>Internal Constructor.</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Vte.Terminal" /></returns>
         <remarks>This should not be called by normal user code.</remarks>
       </Docs>
     </Member>
@@ -883,7 +873,6 @@ class T
       <Parameters />
       <Docs>
         <summary>Default Constructor</summary>
-        <returns>a <see cref="T:Vte.Terminal" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -896,7 +885,7 @@ class T
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Vte.Terminal" />.</remarks>
       </Docs>
     </Member>
@@ -909,7 +898,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's char_ascent field</returns>
+        <value> the contents of terminal's char_ascent field</value>
         <remarks />
       </Docs>
     </Member>
@@ -922,7 +911,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's adjustment field</returns>
+        <value> the contents of terminal's adjustment field</value>
         <remarks />
       </Docs>
     </Member>
@@ -935,7 +924,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's column_count field</returns>
+        <value> the contents of terminal's column_count field</value>
         <remarks />
       </Docs>
     </Member>
@@ -947,7 +936,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the background color for text which does not have a specific background color assigned.</summary>
-        <returns> the new background color</returns>
+        <value> the new background color</value>
         <remarks>Only has effect when no background image is set and when the terminal is not transparent.</remarks>
       </Docs>
     </Member>
@@ -959,8 +948,8 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Controls whether or not the terminal will forcibly scroll to the bottom of the viewable history when the user presses a key.</summary>
-        <returns>
-          <see langword="true" /> if the terminal should scroll on keystrokes</returns>
+        <value>
+          <see langword="true" /> if the terminal should scroll on keystrokes</value>
         <remarks>Modifier keys do not trigger this behavior.</remarks>
       </Docs>
     </Member>
@@ -973,7 +962,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns>a <see cref="T:System.Int64" /></returns>
+        <value>a <see cref="T:System.Int64" /></value>
         <remarks> the contents of terminal's char_width field</remarks>
       </Docs>
     </Member>
@@ -986,7 +975,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns>the contents of terminal's char_descent field</returns>
+        <value>the contents of terminal's char_descent field</value>
         <remarks />
       </Docs>
     </Member>
@@ -999,8 +988,8 @@ class T
       <Parameters />
       <Docs>
         <summary>Controls whether or not the terminal will present a visible bell to the user when the child outputs the "bl" sequence.</summary>
-        <returns>
-          <see langword="true" /> if visible bell is enabled, <see langword="false" /> if not</returns>
+        <value>
+          <see langword="true" /> if visible bell is enabled, <see langword="false" /> if not</value>
         <remarks>The terminal will clear itself to the default foreground color and then repaint itself.</remarks>
       </Docs>
     </Member>
@@ -1012,8 +1001,8 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets whether or not the cursor will blink.</summary>
-        <returns>
-          <see langword="true" /> if the cursor should blink</returns>
+        <value>
+          <see langword="true" /> if the cursor should blink</value>
         <remarks>The length of the blinking cycle is controlled by the "gtk-cursor-blink-time" GTK+ setting.</remarks>
       </Docs>
     </Member>
@@ -1025,7 +1014,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>A convenience function which converts name into a PangoFontDescription and passes it to <see cref="P:Vte.Terminal.Font" />.</summary>
-        <returns> A string describing the font.</returns>
+        <value> A string describing the font.</value>
         <remarks />
       </Docs>
     </Member>
@@ -1038,7 +1027,7 @@ class T
       <Parameters />
       <Docs>
         <summary>Sets what type of terminal the widget attempts to emulate by scanning for control sequences defined in the system's termcap file.</summary>
-        <returns> the name of a terminal description</returns>
+        <value> the name of a terminal description</value>
         <remarks>Unless you are interested in this feature, always use "xterm".</remarks>
       </Docs>
     </Member>
@@ -1051,8 +1040,8 @@ class T
       <Parameters />
       <Docs>
         <summary>Whether a <see cref="T:Vte.Terminal" /> is using Xft to draw text.</summary>
-        <returns>
-          <see langword="true" /> if the terminal is using Xft to render, <see langword="false" /> if the terminal is using Pango or Xlib.</returns>
+        <value>
+          <see langword="true" /> if the terminal is using Xft to render, <see langword="false" /> if the terminal is using Pango or Xlib.</value>
         <remarks>This function allows an application to determine which mode the widget is in. This setting cannot be changed by the caller, but in practice usually matches the behavior of Gtk itself.</remarks>
       </Docs>
     </Member>
@@ -1064,7 +1053,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Modifies the terminal's backspace key binding, which controls what string or control sequence the terminal sends to its child when the user presses the backspace key.</summary>
-        <returns> a <see cref="T:Vte.TerminalEraseBinding" /> for the backspace key</returns>
+        <value> a <see cref="T:Vte.TerminalEraseBinding" /> for the backspace key</value>
         <remarks />
       </Docs>
     </Member>
@@ -1077,7 +1066,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's icon_title field</returns>
+        <value> the contents of terminal's icon_title field</value>
         <remarks />
       </Docs>
     </Member>
@@ -1089,8 +1078,8 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Controls whether or not the terminal will forcibly scroll to the bottom of the viewable history when the new data is received from the child.</summary>
-        <returns>
-          <see langword="true" /> if the terminal should scroll on output</returns>
+        <value>
+          <see langword="true" /> if the terminal should scroll on output</value>
         <remarks />
       </Docs>
     </Member>
@@ -1102,8 +1091,8 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the terminal's background image to the pixmap stored in the root window, adjusted so that if there are no windows below your application, the widget will appear to be transparent.</summary>
-        <returns>
-          <see langword="true" /> if the terminal should fake transparency</returns>
+        <value>
+          <see langword="true" /> if the terminal should fake transparency</value>
         <remarks />
       </Docs>
     </Member>
@@ -1115,7 +1104,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Color" /></returns>
+        <value>a <see cref="T:Gdk.Color" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -1127,7 +1116,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Modifies the terminal's delete key binding, which controls what string or control sequence the terminal sends to its child when the user presses the delete key.</summary>
-        <returns>a <see cref="T:Vte.TerminalEraseBinding" /> for the delete key</returns>
+        <value>a <see cref="T:Vte.TerminalEraseBinding" /> for the delete key</value>
         <remarks />
       </Docs>
     </Member>
@@ -1140,7 +1129,7 @@ class T
       <Parameters />
       <Docs>
         <summary>The encoding the terminal will expect data from the child to be encoded with.</summary>
-        <returns> a valid gconv target</returns>
+        <value> a valid gconv target</value>
         <remarks>For certain terminal types, applications executing in the terminal can change the encoding. The default encoding is defined by the application's locale settings.</remarks>
       </Docs>
     </Member>
@@ -1153,8 +1142,8 @@ class T
       <Parameters />
       <Docs>
         <summary>Controls whether or not the terminal will attempt to draw bold text by repainting text with a different offset.</summary>
-        <returns>
-          <see langword="true" /> if the terminal should attempt to draw bold text</returns>
+        <value>
+          <see langword="true" /> if the terminal should attempt to draw bold text</value>
         <remarks />
       </Docs>
     </Member>
@@ -1166,8 +1155,8 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets a background image for the widget.</summary>
-        <returns>
-          <see cref="T:Gdk.Pixbuf" /> to use, or <see langword="null" /> to cancel</returns>
+        <value>
+          <see cref="T:Gdk.Pixbuf" /> to use, or <see langword="null" /> to cancel</value>
         <remarks>Text which would otherwise be drawn using the default background color will instead be drawn over the specified image. If necessary, the image will be tiled to cover the widget's entire visible area.</remarks>
       </Docs>
     </Member>
@@ -1179,7 +1168,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>When the user double-clicks to start selection, the terminal will extend the selection on word boundaries.</summary>
-        <returns> a specification</returns>
+        <value> a specification</value>
         <remarks>
           <para>When the user double-clicks to start selection, the terminal will extend the selection on word boundaries.  It will treat characters passed in as parts of words, and all other characters as word separators. Ranges of characters can be specified by separating them with a hyphen.
 </para>
@@ -1197,7 +1186,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's row_count field</returns>
+        <value> the contents of terminal's row_count field</value>
         <remarks />
       </Docs>
     </Member>
@@ -1210,7 +1199,7 @@ class T
       <Parameters />
       <Docs>
         <summary>Some terminal emulations specify a status line which is separate from the main display area, and define a means for applications to move the cursor to the status line and back.</summary>
-        <returns>The current contents of the terminal's status line. For terminals like "xterm", this will usually be the empty string. The string must not be modified or freed by the caller.</returns>
+        <value>The current contents of the terminal's status line. For terminals like "xterm", this will usually be the empty string. The string must not be modified or freed by the caller.</value>
         <remarks />
       </Docs>
     </Member>
@@ -1222,7 +1211,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -1234,7 +1223,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the color used to draw dim text in the default foreground color.</summary>
-        <returns> the new dim color</returns>
+        <value> the new dim color</value>
         <remarks />
       </Docs>
     </Member>
@@ -1246,7 +1235,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the length of the scrollback buffer used by the terminal.</summary>
-        <returns>the length of the history buffer</returns>
+        <value>the length of the history buffer</value>
         <remarks>The size of the scrollback buffer will be set to the larger of this value and the number of visible rows the widget can display, so 0 can safely be used to disable scrollback. Note that this setting only affects the normal screen buffer. For terminal types which have an alternate screen buffer, no scrollback is allowed.</remarks>
       </Docs>
     </Member>
@@ -1259,7 +1248,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's char_height field</returns>
+        <value> the contents of terminal's char_height field</value>
         <remarks />
       </Docs>
     </Member>
@@ -1271,7 +1260,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets a background image for the widget.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>If specified by <see cref="P:Vte.Terminal.BackgroundSaturation" />, the terminal will make its in-memory copy of the image darker for its own use.
 
 <para>This is a convenience wrapper for <see cref="P:Vte.Terminal.BackgroundImage" />. If your application intends to create multiple terminal widgets using the same background, performing this step yourself and just using <see cref="P:Vte.Terminal.BackgroundImage" /> will reduce memory consumption.
@@ -1286,7 +1275,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the color used to draw bold text in the default foreground color.</summary>
-        <returns> the new bold color</returns>
+        <value> the new bold color</value>
         <remarks />
       </Docs>
     </Member>
@@ -1298,7 +1287,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Adjust the brightness of the background image.</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>
           <para>If a background image has been set using <see cref="P:Vte.Terminal.BackgroundImage" />, <see cref="P:Vte.Terminal.BackgroundImageFile" />, or <see cref="P:Vte.Terminal.Background.Transparent" />, the terminal will adjust the brightness of the image before drawing the image. To do so, the terminal will create a copy of the background image (or snapshot of the root window) and modify its pixel values.
 </para>
@@ -1316,7 +1305,7 @@ class T
       <Parameters />
       <Docs>
         <summary>An accessor function provided for the benefit of language bindings.</summary>
-        <returns> the contents of terminal's window_title field</returns>
+        <value> the contents of terminal's window_title field</value>
         <remarks> the contents of terminal's window_title field</remarks>
       </Docs>
     </Member>
@@ -1329,8 +1318,8 @@ class T
       <Parameters />
       <Docs>
         <summary>The value of the terminal's mouse autohide setting.</summary>
-        <returns>
-          <see langword="true" /> if the autohide should be enabled</returns>
+        <value>
+          <see langword="true" /> if the autohide should be enabled</value>
         <remarks>When autohiding is enabled, the mouse cursor will be hidden when the user presses a key and shown when the user moves the mouse.</remarks>
       </Docs>
     </Member>
@@ -1342,7 +1331,7 @@ class T
       </ReturnValue>
       <Docs>
         <summary>Sets the foreground color used to draw normal text</summary>
-        <returns> the new foreground color</returns>
+        <value> the new foreground color</value>
         <remarks />
       </Docs>
     </Member>
@@ -1355,7 +1344,7 @@ class T
       <Parameters />
       <Docs>
         <summary>Controls whether or not the terminal will beep when the child outputs the "bl" sequence.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <see langword="true" /> if the terminal should beep</remarks>
       </Docs>
@@ -1369,8 +1358,8 @@ class T
       <Parameters />
       <Docs>
         <summary>Checks if the terminal currently contains selected text.</summary>
-        <returns>
-          <see langword="true" /> if part of the text in the terminal is selected.</returns>
+        <value>
+          <see langword="true" /> if part of the text in the terminal is selected.</value>
         <remarks>Note that this is different from determining if the terminal is the owner of any <see cref="T:Gtk.Clipboard" /> items.</remarks>
       </Docs>
     </Member>
@@ -1385,7 +1374,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="restore-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LowerWindow">
       <MemberSignature Language="C#" Value="public event EventHandler LowerWindow;" />
       <MemberType>Event</MemberType>
@@ -1397,7 +1390,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="lower-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MaximizeWindow">
       <MemberSignature Language="C#" Value="public event EventHandler MaximizeWindow;" />
       <MemberType>Event</MemberType>
@@ -1409,7 +1406,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="maximize-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IncreaseFontSize">
       <MemberSignature Language="C#" Value="public event EventHandler IncreaseFontSize;" />
       <MemberType>Event</MemberType>
@@ -1421,7 +1422,11 @@ class T
         <summary>Emitted when the user hits the '+' key while holding the Control key.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="increase-font-size")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextModified">
       <MemberSignature Language="C#" Value="public event EventHandler TextModified;" />
       <MemberType>Event</MemberType>
@@ -1433,7 +1438,11 @@ class T
         <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
         <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text-modified")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RaiseWindow">
       <MemberSignature Language="C#" Value="public event EventHandler RaiseWindow;" />
       <MemberType>Event</MemberType>
@@ -1445,7 +1454,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="raise-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextInserted">
       <MemberSignature Language="C#" Value="public event EventHandler TextInserted;" />
       <MemberType>Event</MemberType>
@@ -1457,7 +1470,11 @@ class T
         <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
         <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text-inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StatusLineChanged">
       <MemberSignature Language="C#" Value="public event EventHandler StatusLineChanged;" />
       <MemberType>Event</MemberType>
@@ -1469,7 +1486,11 @@ class T
         <summary>Emitted whenever the contents of the status line are modified or cleared.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="status-line-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IconifyWindow">
       <MemberSignature Language="C#" Value="public event EventHandler IconifyWindow;" />
       <MemberType>Event</MemberType>
@@ -1481,7 +1502,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="iconify-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChildExited">
       <MemberSignature Language="C#" Value="public event EventHandler ChildExited;" />
       <MemberType>Event</MemberType>
@@ -1493,7 +1518,11 @@ class T
         <summary>This signal is emitted when the terminal detects that a child started using <see cref="M:Vte.Terminal.ForkCommand()" /> has exited.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="child-exited")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextDeleted">
       <MemberSignature Language="C#" Value="public event EventHandler TextDeleted;" />
       <MemberType>Event</MemberType>
@@ -1505,7 +1534,11 @@ class T
         <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
         <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text-deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveWindow">
       <MemberSignature Language="C#" Value="public event Vte.MoveWindowHandler MoveWindow;" />
       <MemberType>Event</MemberType>
@@ -1517,7 +1550,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RefreshWindow">
       <MemberSignature Language="C#" Value="public event EventHandler RefreshWindow;" />
       <MemberType>Event</MemberType>
@@ -1529,7 +1566,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="refresh-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DeiconifyWindow">
       <MemberSignature Language="C#" Value="public event EventHandler DeiconifyWindow;" />
       <MemberType>Event</MemberType>
@@ -1541,7 +1582,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="deiconify-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IconTitleChanged">
       <MemberSignature Language="C#" Value="public event EventHandler IconTitleChanged;" />
       <MemberType>Event</MemberType>
@@ -1553,7 +1598,11 @@ class T
         <summary>Emitted when the terminal's icon_title field is modified.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="icon-title-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DecreaseFontSize">
       <MemberSignature Language="C#" Value="public event EventHandler DecreaseFontSize;" />
       <MemberType>Event</MemberType>
@@ -1565,7 +1614,11 @@ class T
         <summary>Emitted when the user hits the '-' key while holding the Control key.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="decrease-font-size")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextScrolled">
       <MemberSignature Language="C#" Value="public event Vte.TextScrolledHandler TextScrolled;" />
       <MemberType>Event</MemberType>
@@ -1577,7 +1630,11 @@ class T
         <summary>An internal signal used for communication between the terminal and its accessibility peer.</summary>
         <remarks>May not be emitted under certain circumstances.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text-scrolled")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CharSizeChanged">
       <MemberSignature Language="C#" Value="public event Vte.CharSizeChangedHandler CharSizeChanged;" />
       <MemberType>Event</MemberType>
@@ -1589,7 +1646,11 @@ class T
         <summary>Emitted whenever selection of a new font causes the values of the char_width or char_height fields to change.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="char-size-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EncodingChanged">
       <MemberSignature Language="C#" Value="public event EventHandler EncodingChanged;" />
       <MemberType>Event</MemberType>
@@ -1601,7 +1662,11 @@ class T
         <summary>Emitted when the terminals encoding type is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="encoding-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WindowTitleChanged">
       <MemberSignature Language="C#" Value="public event EventHandler WindowTitleChanged;" />
       <MemberType>Event</MemberType>
@@ -1613,7 +1678,11 @@ class T
         <summary>Emitted when the terminal's window_title field is modified.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="window-title-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ContentsChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ContentsChanged;" />
       <MemberType>Event</MemberType>
@@ -1625,7 +1694,11 @@ class T
         <summary>Emitted whenever the visible appearance of the terminal has changed.</summary>
         <remarks>Used primarily by <see cref="T:Vte.TerminalAccessible" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="contents-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CursorMoved">
       <MemberSignature Language="C#" Value="public event EventHandler CursorMoved;" />
       <MemberType>Event</MemberType>
@@ -1637,7 +1710,11 @@ class T
         <summary>Emitted whenever the cursor moves to a new character cell.</summary>
         <remarks>Used primarily by <see cref="T:Vte.TerminalAccessible" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cursor-moved")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionChanged">
       <MemberSignature Language="C#" Value="public event EventHandler SelectionChanged;" />
       <MemberType>Event</MemberType>
@@ -1649,7 +1726,11 @@ class T
         <summary>Emitted whenever the contents of terminal's selection changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Eof">
       <MemberSignature Language="C#" Value="public event EventHandler Eof;" />
       <MemberType>Event</MemberType>
@@ -1661,7 +1742,11 @@ class T
         <summary>To be added</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="eof")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EmulationChanged">
       <MemberSignature Language="C#" Value="public event EventHandler EmulationChanged;" />
       <MemberType>Event</MemberType>
@@ -1673,7 +1758,11 @@ class T
         <summary>Emitted when the terminal emulation type is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="emulation-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ResizeWindow">
       <MemberSignature Language="C#" Value="public event Vte.ResizeWindowHandler ResizeWindow;" />
       <MemberType>Event</MemberType>
@@ -1685,7 +1774,11 @@ class T
         <summary>Emitted at the child application's request.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="resize-window")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Commit">
       <MemberSignature Language="C#" Value="public event Vte.CommitHandler Commit;" />
       <MemberType>Event</MemberType>
@@ -1697,7 +1790,11 @@ class T
         <summary>Emitted whenever the terminal receives input from the user and prepares to send it to the child process.</summary>
         <remarks>The signal is emitted even when there is no child process.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="commit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Font">
       <MemberSignature Language="C#" Value="public Pango.FontDescription Font { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1707,12 +1804,12 @@ class T
       <Parameters />
       <Docs>
         <summary>The font used for rendering all text displayed by the terminal, overriding any fonts set using <see cref="M:Gtk.Widget.ModifyFont()" />.</summary>
-        <returns>The <see cref="T:Pango.FontDescription" /> of the desired font.</returns>
+        <value>The <see cref="T:Pango.FontDescription" /> of the desired font.</value>
         <remarks>The terminal will immediately attempt to load the desired font, retrieve its metrics, and attempts to resize itself to keep the same number of rows and columns.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ForkCommand">
-      <MemberSignature Language="C#" Value="public int ForkCommand (string command, string [] argv, string [] envv, string directory, bool lastlog, bool utmp, bool wtmp);" />
+      <MemberSignature Language="C#" Value="public int ForkCommand (string command, string[] argv, string[] envv, string directory, bool lastlog, bool utmp, bool wtmp);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>

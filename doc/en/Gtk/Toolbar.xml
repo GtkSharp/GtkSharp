@@ -1,12 +1,10 @@
 <Type Name="Toolbar" FullName="Gtk.Toolbar">
-  <TypeSignature Language="C#" Value="public class Toolbar : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Duncan Mak" />
+  <TypeSignature Language="C#" Maintainer="Duncan Mak" Value="public class Toolbar : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -33,20 +31,12 @@
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="PrependSpace">
       <MemberSignature Language="C#" Value="public void PrependSpace ();" />
@@ -209,7 +199,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Toolbar, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -222,7 +211,6 @@
       <Parameters />
       <Docs>
         <summary>Creates a new toolbar.</summary>
-        <returns>The newly-created toolbar.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -237,7 +225,7 @@
       <Docs>
         <summary>This function sets the size of stock icons in the toolbar. You can call it both before you add the icons and after they have been added. The size you set will override user preferences for the default icon size.</summary>
         <param name="value">The <see cref="T:Gtk.IconSize" /> that stock icons in the toolbar shall have.</param>
-        <returns>The icon size for the toolbar.</returns>
+        <value>The icon size for the toolbar.</value>
         <remarks />
       </Docs>
     </Member>
@@ -252,7 +240,7 @@
       <Docs>
         <summary>Sets if the tooltips of a toolbar should be active or not.</summary>
         <param name="value">set to <see langword="false" /> to disable the tooltips, or <see langword="true" /> to enable them.</param>
-        <returns>Whether tooltips are enabled.</returns>
+        <value>Whether tooltips are enabled.</value>
         <remarks />
       </Docs>
     </Member>
@@ -267,10 +255,14 @@
       <Docs>
         <summary>Alters the view of toolbar to display either icons only, text only, or both.</summary>
         <param name="value">The new style for toolbar. </param>
-        <returns>The current style of toolbar.</returns>
+        <value>The current style of toolbar.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="toolbar_style")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Orientation">
       <MemberSignature Language="C#" Value="public Gtk.Orientation Orientation { set; get; };" />
       <MemberType>Property</MemberType>
@@ -282,10 +274,14 @@
       <Docs>
         <summary>Sets the <see cref="T:Gtk.Orientation" /> of the toolbar to either <see cref="T:Gtk.Orientation.Horizontal" /> or <see cref="T:Gtk.Orientation.Vertical" />.</summary>
         <param name="value">The orientation of the toolbar.</param>
-        <returns>The orientation of the toolbar.</returns>
+        <value>The orientation of the toolbar.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="orientation")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StyleChanged">
       <MemberSignature Language="C#" Value="public event Gtk.StyleChangedHandler StyleChanged;" />
       <MemberType>Event</MemberType>
@@ -297,7 +293,11 @@
         <summary>Used if you wish to perform an action when the orientation of a toolbar is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="style-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OrientationChanged">
       <MemberSignature Language="C#" Value="public event Gtk.OrientationChangedHandler OrientationChanged;" />
       <MemberType>Event</MemberType>
@@ -309,7 +309,11 @@
         <summary>Used if you wish to perform an action when ever the style of a toolbar is adjusted.</summary>
         <remarks>For example, this would be a useful signal to connect to if you want to display more items on the toolbar when it is in icon-only mode; each item takes less space on the bar.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="orientation-changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -319,7 +323,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Toolbar" />.</remarks>
       </Docs>
     </Member>
@@ -388,6 +392,7 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
         <param name="icon">a <see cref="T:Gtk.Widget" />, the icon to use for this widget</param>
         <param name="cb">a <see cref="T:Gtk.SignalFunc" />, a callback function to use when the new widget is touched.</param>
         <returns>a <see cref="T:Gtk.Widget" /></returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertElement">
@@ -572,10 +577,13 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Toolbar" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowArrow">
       <MemberSignature Language="C#" Value="public bool ShowArrow { set; get; };" />
       <MemberType>Property</MemberType>
@@ -585,10 +593,14 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
       <Parameters />
       <Docs>
         <summary>Whether to show an arrow if the toolbar doesn't fit.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_arrow")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ReliefStyle">
       <MemberSignature Language="C#" Value="public Gtk.ReliefStyle ReliefStyle { get; };" />
       <MemberType>Property</MemberType>
@@ -598,7 +610,7 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
       <Parameters />
       <Docs>
         <summary>The relief style of buttons on the toolbar.</summary>
-        <returns>a <see cref="T:Gtk.ReliefStyle" /></returns>
+        <value>a <see cref="T:Gtk.ReliefStyle" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -611,7 +623,7 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
       <Parameters />
       <Docs>
         <summary>The number of items on the toolbar.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -630,7 +642,11 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
 	  to display a context menu on the toolbar.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="popup_context_menu")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnPopupContextMenu">
       <MemberSignature Language="C#" Value="protected virtual bool OnPopupContextMenu (int x, int y, int button_number);" />
       <MemberType>Method</MemberType>
@@ -767,8 +783,9 @@ If type == <see cref="T:Gtk.ToolbarChildType.Widget" />, widget is used as the n
       <Parameters />
       <Docs>
         <summary>The number of items in the toolbar.</summary>
-        <returns>The number of itesm.</returns>
-        <remarks></remarks>
+        <value>The number of itesm.</value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertStock">

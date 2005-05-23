@@ -1,12 +1,10 @@
 <Type Name="Table" FullName="Gtk.Table">
-  <TypeSignature Language="C#" Value="public class Table : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Table : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -41,20 +39,12 @@ public Widget MakeTableTester()
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="SetColSpacing">
       <MemberSignature Language="C#" Value="public void SetColSpacing (uint column, uint spacing);" />
@@ -191,12 +181,13 @@ public Widget MakeTableTester()
         <Parameter Name="bottom_attach" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>Packs a widget into the table with default packing options.</summary>
-        <param name="child">The <see cref="T:Gtk.Widget" /> to add.</param>
+        <param name="widget">To be added.</param>
         <param name="left_attach">The column number to attach the left side of <paramref name="child" /> to.</param>
         <param name="right_attach">The column number to attach the right side of <paramref name="child" /> to.</param>
         <param name="top_attach">The row number to attach the top of <paramref name="child" /> to.</param>
         <param name="bottom_attach">The row number to attach the bottom of <paramref name="child" /> to.</param>
+        <summary>Packs a widget into the table with default packing options.</summary>
+        <param name="child">The <see cref="T:Gtk.Widget" /> to add.</param>
         <remarks>
           <para>To pack widgets into the table with more control over size and padding, use the alternative <see cref="M:Gtk.Table.Attach(Gtk.Widget,uint,uint,uint,uint,Gtk.AttachOptions,Gtk.AttachOptions,uint,uint)" /> method.</para>
         </remarks>
@@ -224,7 +215,6 @@ public Widget MakeTableTester()
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Table, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -244,7 +234,6 @@ public Widget MakeTableTester()
         <param name="rows">The number of rows in this table.</param>
         <param name="columns">The number of columns in this table.</param>
         <param name="homogeneous">If homogeneous is TRUE, the table boxes (cells)  are resized to the size of the largest widget in the table. If homogeneous is FALSE, the size of a table boxes is dictated by the tallest widget in its same row, and the widest widget in its column (i.e. all cells are the same).</param>
-        <returns>A new Table.</returns>
         <remarks>
           <para>The size of the table can be altered after its creation using the <see cref="M:Gtk.able.Resize" /> method.</para>
         </remarks>
@@ -258,7 +247,7 @@ public Widget MakeTableTester()
       </ReturnValue>
       <Docs>
         <summary>Retrieve the spacing that gets placed between newly added rows by default.</summary>
-        <returns>Spacing between rows that will be added, in pixels.</returns>
+        <value>Spacing between rows that will be added, in pixels.</value>
         <remarks />
       </Docs>
     </Member>
@@ -270,7 +259,7 @@ public Widget MakeTableTester()
       </ReturnValue>
       <Docs>
         <summary>The default number of pixels between columns.</summary>
-        <returns>A <see cref="T:System.UInt32" />.</returns>
+        <value>A <see cref="T:System.UInt32" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -286,10 +275,14 @@ public Widget MakeTableTester()
         <summary>The number of pixels between columns if it isn't the default value.</summary>
         <param name="value">
           <see cref="T:System.UInt32" />.</param>
-        <returns>A <see cref="T:System.UInt32" />.</returns>
+        <value>A <see cref="T:System.UInt32" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="column_spacing")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NColumns">
       <MemberSignature Language="C#" Value="public uint NColumns { set; get; };" />
       <MemberType>Property</MemberType>
@@ -301,10 +294,14 @@ public Widget MakeTableTester()
       <Docs>
         <summary>Manage the number of columns in this Table.</summary>
         <param name="value">The number of columns that this table should have.</param>
-        <returns>The number of columns this table currently has.</returns>
+        <value>The number of columns this table currently has.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="n_columns")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Homogeneous">
       <MemberSignature Language="C#" Value="public bool Homogeneous { set; get; };" />
       <MemberType>Property</MemberType>
@@ -317,11 +314,15 @@ public Widget MakeTableTester()
         <summary>Manage whether all cells must be of equal size.</summary>
         <param name="value">
           <see langword="true" /> to set all cells to an equal size, <see langword="false" /> otherwise.</param>
-        <returns>
-          <see langword="true" /> if all cells are currently equally sized, <see langword="false" /> otherwise.</returns>
+        <value>
+          <see langword="true" /> if all cells are currently equally sized, <see langword="false" /> otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="homogeneous")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowSpacing">
       <MemberSignature Language="C#" Value="public uint RowSpacing { set; get; };" />
       <MemberType>Property</MemberType>
@@ -333,11 +334,15 @@ public Widget MakeTableTester()
       <Docs>
         <summary>The space between table rows.</summary>
         <param name="value">A <see cref="T:System.UInt32" />.</param>
-        <returns>
-          <see cref="T:System.UInt32" />.</returns>
+        <value>
+          <see cref="T:System.UInt32" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="row_spacing")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NRows">
       <MemberSignature Language="C#" Value="public uint NRows { set; get; };" />
       <MemberType>Property</MemberType>
@@ -349,10 +354,14 @@ public Widget MakeTableTester()
       <Docs>
         <summary>Manage the number of rows in this Table.</summary>
         <param name="value">The number of rows that this table should have.</param>
-        <returns>The number of rows this table currently has.</returns>
+        <value>The number of rows this table currently has.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="n_rows")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -362,7 +371,7 @@ public Widget MakeTableTester()
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Table" />.</remarks>
       </Docs>
     </Member>
@@ -376,10 +385,13 @@ public Widget MakeTableTester()
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Table" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Item">
       <MemberSignature Language="C#" Value="public override Gtk.Container+ContainerChild Item { get; };" />
       <MemberType>Property</MemberType>

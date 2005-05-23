@@ -1,12 +1,10 @@
 <Type Name="NoOpObject" FullName="Atk.NoOpObject">
-  <TypeSignature Language="C#" Value="public class NoOpObject : Atk.Object, Component, IWrapper, Action, EditableText, Image, Selection, Table, Text, Value, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class NoOpObject : Atk.Object, Atk.Action, Atk.Component, Atk.EditableText, Atk.Hypertext, Atk.Image, Atk.Selection, Atk.Table, Atk.Text, Atk.Value" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -18,16 +16,16 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>Atk.Component</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
       <InterfaceName>Atk.Action</InterfaceName>
     </Interface>
     <Interface>
+      <InterfaceName>Atk.Component</InterfaceName>
+    </Interface>
+    <Interface>
       <InterfaceName>Atk.EditableText</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Atk.Hypertext</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>Atk.Image</InterfaceName>
@@ -44,17 +42,10 @@
     <Interface>
       <InterfaceName>Atk.Value</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="SetCurrentValue">
-      <MemberSignature Language="C#" Value="public virtual bool SetCurrentValue (GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public bool SetCurrentValue (GLib.Value value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -70,7 +61,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetMinimumValue">
-      <MemberSignature Language="C#" Value="public virtual void GetMinimumValue (GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public void GetMinimumValue (GLib.Value value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -85,7 +76,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetMaximumValue">
-      <MemberSignature Language="C#" Value="public virtual void GetMaximumValue (GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public void GetMaximumValue (GLib.Value value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -100,7 +91,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetOffsetAtPoint">
-      <MemberSignature Language="C#" Value="public virtual int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);" />
+      <MemberSignature Language="C#" Value="public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -120,7 +111,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetSelection">
-      <MemberSignature Language="C#" Value="public virtual bool SetSelection (int selection_num, int start_offset, int end_offset);" />
+      <MemberSignature Language="C#" Value="public bool SetSelection (int selection_num, int start_offset, int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -140,7 +131,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetCaretOffset">
-      <MemberSignature Language="C#" Value="public virtual bool SetCaretOffset (int offset);" />
+      <MemberSignature Language="C#" Value="public bool SetCaretOffset (int offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -156,7 +147,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetText">
-      <MemberSignature Language="C#" Value="public virtual string GetText (int start_offset, int end_offset);" />
+      <MemberSignature Language="C#" Value="public string GetText (int start_offset, int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -174,7 +165,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetColumnHeader">
-      <MemberSignature Language="C#" Value="public virtual void SetColumnHeader (int column, Atk.Object header);" />
+      <MemberSignature Language="C#" Value="public void SetColumnHeader (int column, Atk.Object header);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -191,7 +182,7 @@
       </Docs>
     </Member>
     <Member MemberName="RemoveColumnSelection">
-      <MemberSignature Language="C#" Value="public virtual bool RemoveColumnSelection (int column);" />
+      <MemberSignature Language="C#" Value="public bool RemoveColumnSelection (int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -207,7 +198,7 @@
       </Docs>
     </Member>
     <Member MemberName="RemoveRowSelection">
-      <MemberSignature Language="C#" Value="public virtual bool RemoveRowSelection (int row);" />
+      <MemberSignature Language="C#" Value="public bool RemoveRowSelection (int row);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -223,7 +214,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetRowExtentAt">
-      <MemberSignature Language="C#" Value="public virtual int GetRowExtentAt (int row, int column);" />
+      <MemberSignature Language="C#" Value="public int GetRowExtentAt (int row, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -241,7 +232,7 @@
       </Docs>
     </Member>
     <Member MemberName="IsRowSelected">
-      <MemberSignature Language="C#" Value="public virtual bool IsRowSelected (int row);" />
+      <MemberSignature Language="C#" Value="public bool IsRowSelected (int row);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -257,7 +248,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetRowDescription">
-      <MemberSignature Language="C#" Value="public virtual void SetRowDescription (int row, string description);" />
+      <MemberSignature Language="C#" Value="public void SetRowDescription (int row, string description);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -274,7 +265,7 @@
       </Docs>
     </Member>
     <Member MemberName="IsColumnSelected">
-      <MemberSignature Language="C#" Value="public virtual bool IsColumnSelected (int column);" />
+      <MemberSignature Language="C#" Value="public bool IsColumnSelected (int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -290,7 +281,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetRowHeader">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object GetRowHeader (int row);" />
+      <MemberSignature Language="C#" Value="public Atk.Object GetRowHeader (int row);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -306,7 +297,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetIndexAt">
-      <MemberSignature Language="C#" Value="public virtual int GetIndexAt (int row, int column);" />
+      <MemberSignature Language="C#" Value="public int GetIndexAt (int row, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -324,7 +315,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetColumnDescription">
-      <MemberSignature Language="C#" Value="public virtual void SetColumnDescription (int column, string description);" />
+      <MemberSignature Language="C#" Value="public void SetColumnDescription (int column, string description);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -341,7 +332,7 @@
       </Docs>
     </Member>
     <Member MemberName="RefAt">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object RefAt (int row, int column);" />
+      <MemberSignature Language="C#" Value="public Atk.Object RefAt (int row, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -359,7 +350,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetRowDescription">
-      <MemberSignature Language="C#" Value="public virtual string GetRowDescription (int row);" />
+      <MemberSignature Language="C#" Value="public string GetRowDescription (int row);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -375,7 +366,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetRowHeader">
-      <MemberSignature Language="C#" Value="public virtual void SetRowHeader (int row, Atk.Object header);" />
+      <MemberSignature Language="C#" Value="public void SetRowHeader (int row, Atk.Object header);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -392,7 +383,7 @@
       </Docs>
     </Member>
     <Member MemberName="AddColumnSelection">
-      <MemberSignature Language="C#" Value="public virtual bool AddColumnSelection (int column);" />
+      <MemberSignature Language="C#" Value="public bool AddColumnSelection (int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -408,7 +399,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetColumnDescription">
-      <MemberSignature Language="C#" Value="public virtual string GetColumnDescription (int column);" />
+      <MemberSignature Language="C#" Value="public string GetColumnDescription (int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -424,7 +415,7 @@
       </Docs>
     </Member>
     <Member MemberName="IsSelected">
-      <MemberSignature Language="C#" Value="public virtual bool IsSelected (int row, int column);" />
+      <MemberSignature Language="C#" Value="public bool IsSelected (int row, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -442,7 +433,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetColumnHeader">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object GetColumnHeader (int column);" />
+      <MemberSignature Language="C#" Value="public Atk.Object GetColumnHeader (int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -458,7 +449,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetColumnExtentAt">
-      <MemberSignature Language="C#" Value="public virtual int GetColumnExtentAt (int row, int column);" />
+      <MemberSignature Language="C#" Value="public int GetColumnExtentAt (int row, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -476,7 +467,7 @@
       </Docs>
     </Member>
     <Member MemberName="AddRowSelection">
-      <MemberSignature Language="C#" Value="public virtual bool AddRowSelection (int row);" />
+      <MemberSignature Language="C#" Value="public bool AddRowSelection (int row);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -492,7 +483,7 @@
       </Docs>
     </Member>
     <Member MemberName="SelectAllSelection">
-      <MemberSignature Language="C#" Value="public virtual bool SelectAllSelection ();" />
+      <MemberSignature Language="C#" Value="public bool SelectAllSelection ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -505,7 +496,7 @@
       </Docs>
     </Member>
     <Member MemberName="IsChildSelected">
-      <MemberSignature Language="C#" Value="public virtual bool IsChildSelected (int i);" />
+      <MemberSignature Language="C#" Value="public bool IsChildSelected (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -521,7 +512,7 @@
       </Docs>
     </Member>
     <Member MemberName="ClearSelection">
-      <MemberSignature Language="C#" Value="public virtual bool ClearSelection ();" />
+      <MemberSignature Language="C#" Value="public bool ClearSelection ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -534,7 +525,7 @@
       </Docs>
     </Member>
     <Member MemberName="RefSelection">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object RefSelection (int i);" />
+      <MemberSignature Language="C#" Value="public Atk.Object RefSelection (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -550,7 +541,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetImageDescription">
-      <MemberSignature Language="C#" Value="public virtual bool SetImageDescription (string description);" />
+      <MemberSignature Language="C#" Value="public bool SetImageDescription (string description);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -566,7 +557,7 @@
       </Docs>
     </Member>
     <Member MemberName="DeleteText">
-      <MemberSignature Language="C#" Value="public virtual void DeleteText (int start_pos, int end_pos);" />
+      <MemberSignature Language="C#" Value="public void DeleteText (int start_pos, int end_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -583,7 +574,7 @@
       </Docs>
     </Member>
     <Member MemberName="PasteText">
-      <MemberSignature Language="C#" Value="public virtual void PasteText (int position);" />
+      <MemberSignature Language="C#" Value="public void PasteText (int position);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -598,7 +589,7 @@
       </Docs>
     </Member>
     <Member MemberName="CutText">
-      <MemberSignature Language="C#" Value="public virtual void CutText (int start_pos, int end_pos);" />
+      <MemberSignature Language="C#" Value="public void CutText (int start_pos, int end_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -615,7 +606,7 @@
       </Docs>
     </Member>
     <Member MemberName="CopyText">
-      <MemberSignature Language="C#" Value="public virtual void CopyText (int start_pos, int end_pos);" />
+      <MemberSignature Language="C#" Value="public void CopyText (int start_pos, int end_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -632,7 +623,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetRunAttributes">
-      <MemberSignature Language="C#" Value="public virtual bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset);" />
+      <MemberSignature Language="C#" Value="public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -652,7 +643,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetDescription">
-      <MemberSignature Language="C#" Value="public virtual string GetDescription (int i);" />
+      <MemberSignature Language="C#" Value="public string GetDescription (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -668,7 +659,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetDescription">
-      <MemberSignature Language="C#" Value="public virtual bool SetDescription (int i, string desc);" />
+      <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -686,7 +677,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetKeybinding">
-      <MemberSignature Language="C#" Value="public virtual string GetKeybinding (int i);" />
+      <MemberSignature Language="C#" Value="public string GetKeybinding (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -702,7 +693,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetName">
-      <MemberSignature Language="C#" Value="public virtual string GetName (int i);" />
+      <MemberSignature Language="C#" Value="public string GetName (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -718,7 +709,7 @@
       </Docs>
     </Member>
     <Member MemberName="DoAction">
-      <MemberSignature Language="C#" Value="public virtual bool DoAction (int i);" />
+      <MemberSignature Language="C#" Value="public bool DoAction (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -734,7 +725,7 @@
       </Docs>
     </Member>
     <Member MemberName="RemoveFocusHandler">
-      <MemberSignature Language="C#" Value="public virtual void RemoveFocusHandler (uint handler_id);" />
+      <MemberSignature Language="C#" Value="public void RemoveFocusHandler (uint handler_id);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -749,7 +740,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetPosition">
-      <MemberSignature Language="C#" Value="public virtual bool SetPosition (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public bool SetPosition (int x, int y, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -769,7 +760,7 @@
       </Docs>
     </Member>
     <Member MemberName="GrabFocus">
-      <MemberSignature Language="C#" Value="public virtual bool GrabFocus ();" />
+      <MemberSignature Language="C#" Value="public bool GrabFocus ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -782,7 +773,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetExtents">
-      <MemberSignature Language="C#" Value="public virtual bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -806,7 +797,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetSize">
-      <MemberSignature Language="C#" Value="public virtual bool SetSize (int width, int height);" />
+      <MemberSignature Language="C#" Value="public bool SetSize (int width, int height);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -824,7 +815,7 @@
       </Docs>
     </Member>
     <Member MemberName="AddFocusHandler">
-      <MemberSignature Language="C#" Value="public virtual uint AddFocusHandler (Atk.FocusHandler handler);" />
+      <MemberSignature Language="C#" Value="public uint AddFocusHandler (Atk.FocusHandler handler);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.UInt32</ReturnType>
@@ -840,7 +831,7 @@
       </Docs>
     </Member>
     <Member MemberName="Contains">
-      <MemberSignature Language="C#" Value="public virtual bool Contains (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public bool Contains (int x, int y, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -860,7 +851,7 @@
       </Docs>
     </Member>
     <Member MemberName="RefAccessibleAtPoint">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -901,7 +892,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of NoOpObject, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -917,73 +907,72 @@
       <Docs>
         <summary>Creates a new <see cref="T:Atk.NoOpObject" /> instance.</summary>
         <param name="obj">an object of type <see cref="T:GLib.Object" /></param>
-        <returns>an object of type <see cref="T:Atk.NoOpObject" /></returns>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultAttributes">
-      <MemberSignature Language="C#" Value="public virtual GLib.SList DefaultAttributes { get; };" />
+      <MemberSignature Language="C#" Value="public GLib.SList DefaultAttributes { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.SList</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:GLib.SList" /></returns>
+        <value>an object of type <see cref="T:GLib.SList" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NSelections">
-      <MemberSignature Language="C#" Value="public virtual int NSelections { get; };" />
+      <MemberSignature Language="C#" Value="public int NSelections { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="CaretOffset">
-      <MemberSignature Language="C#" Value="public virtual int CaretOffset { get; };" />
+      <MemberSignature Language="C#" Value="public int CaretOffset { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharacterCount">
-      <MemberSignature Language="C#" Value="public virtual int CharacterCount { get; };" />
+      <MemberSignature Language="C#" Value="public int CharacterCount { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public virtual int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Caption">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object Caption { set; get; };" />
+      <MemberSignature Language="C#" Value="public Atk.Object Caption { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -993,12 +982,12 @@
       <Docs>
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:Atk.Object" /></param>
-        <returns>an object of type <see cref="T:Atk.Object" /></returns>
+        <value>an object of type <see cref="T:Atk.Object" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Summary">
-      <MemberSignature Language="C#" Value="public virtual Atk.Object Summary { set; get; };" />
+      <MemberSignature Language="C#" Value="public Atk.Object Summary { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Object</ReturnType>
@@ -1008,48 +997,48 @@
       <Docs>
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:Atk.Object" /></param>
-        <returns>an object of type <see cref="T:Atk.Object" /></returns>
+        <value>an object of type <see cref="T:Atk.Object" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NRows">
-      <MemberSignature Language="C#" Value="public virtual int NRows { get; };" />
+      <MemberSignature Language="C#" Value="public int NRows { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionCount">
-      <MemberSignature Language="C#" Value="public virtual int SelectionCount { get; };" />
+      <MemberSignature Language="C#" Value="public int SelectionCount { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImageDescription">
-      <MemberSignature Language="C#" Value="public virtual string ImageDescription { get; };" />
+      <MemberSignature Language="C#" Value="public string ImageDescription { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextContents">
-      <MemberSignature Language="C#" Value="public virtual string TextContents { set; };" />
+      <MemberSignature Language="C#" Value="public string TextContents { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1059,48 +1048,48 @@
       <Docs>
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="NActions">
-      <MemberSignature Language="C#" Value="public virtual int NActions { get; };" />
+      <MemberSignature Language="C#" Value="public int NActions { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="MdiZorder">
-      <MemberSignature Language="C#" Value="public virtual int MdiZorder { get; };" />
+      <MemberSignature Language="C#" Value="public int MdiZorder { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Layer">
-      <MemberSignature Language="C#" Value="public virtual Atk.Layer Layer { get; };" />
+      <MemberSignature Language="C#" Value="public Atk.Layer Layer { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Layer</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>an object of type <see cref="T:Atk.Layer" /></returns>
+        <value>an object of type <see cref="T:Atk.Layer" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextChanged">
-      <MemberSignature Language="C#" Value="public virtual event Atk.TextChangedHandler TextChanged;" />
+      <MemberSignature Language="C#" Value="public event Atk.TextChangedHandler TextChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextChangedHandler</ReturnType>
@@ -1110,9 +1099,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextSelectionChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler TextSelectionChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler TextSelectionChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1122,9 +1115,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_selection_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextCaretMoved">
-      <MemberSignature Language="C#" Value="public virtual event Atk.TextCaretMovedHandler TextCaretMoved;" />
+      <MemberSignature Language="C#" Value="public event Atk.TextCaretMovedHandler TextCaretMoved;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextCaretMovedHandler</ReturnType>
@@ -1134,9 +1131,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_caret_moved")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowDeleted">
-      <MemberSignature Language="C#" Value="public virtual event Atk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="C#" Value="public event Atk.RowDeletedHandler RowDeleted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.RowDeletedHandler</ReturnType>
@@ -1146,9 +1147,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowInserted">
-      <MemberSignature Language="C#" Value="public virtual event Atk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="C#" Value="public event Atk.RowInsertedHandler RowInserted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.RowInsertedHandler</ReturnType>
@@ -1158,9 +1163,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ModelChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler ModelChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler ModelChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1170,9 +1179,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="model_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColumnInserted">
-      <MemberSignature Language="C#" Value="public virtual event Atk.ColumnInsertedHandler ColumnInserted;" />
+      <MemberSignature Language="C#" Value="public event Atk.ColumnInsertedHandler ColumnInserted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.ColumnInsertedHandler</ReturnType>
@@ -1182,9 +1195,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="column_inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowReordered">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler RowReordered;" />
+      <MemberSignature Language="C#" Value="public event EventHandler RowReordered;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1194,9 +1211,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_reordered")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColumnDeleted">
-      <MemberSignature Language="C#" Value="public virtual event Atk.ColumnDeletedHandler ColumnDeleted;" />
+      <MemberSignature Language="C#" Value="public event Atk.ColumnDeletedHandler ColumnDeleted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.ColumnDeletedHandler</ReturnType>
@@ -1206,9 +1227,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="column_deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColumnReordered">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler ColumnReordered;" />
+      <MemberSignature Language="C#" Value="public event EventHandler ColumnReordered;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1218,9 +1243,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="column_reordered")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler SelectionChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler SelectionChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1230,9 +1259,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextAttributesChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler TextAttributesChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler TextAttributesChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -1242,9 +1275,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="text_attributes_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetRowAtIndex">
-      <MemberSignature Language="C#" Value="public virtual int GetRowAtIndex (int index_);" />
+      <MemberSignature Language="C#" Value="public int GetRowAtIndex (int index_);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1260,7 +1297,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetColumnAtIndex">
-      <MemberSignature Language="C#" Value="public virtual int GetColumnAtIndex (int index_);" />
+      <MemberSignature Language="C#" Value="public int GetColumnAtIndex (int index_);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1276,7 +1313,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetLocalizedName">
-      <MemberSignature Language="C#" Value="public virtual string GetLocalizedName (int i);" />
+      <MemberSignature Language="C#" Value="public string GetLocalizedName (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1292,7 +1329,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetPosition">
-      <MemberSignature Language="C#" Value="public virtual void GetPosition (out int x, out int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public void GetPosition (out int x, out int y, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1311,7 +1348,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetExtents">
-      <MemberSignature Language="C#" Value="public virtual void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1334,7 +1371,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetSize">
-      <MemberSignature Language="C#" Value="public virtual void GetSize (out int width, out int height);" />
+      <MemberSignature Language="C#" Value="public void GetSize (out int width, out int height);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1351,7 +1388,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetImagePosition">
-      <MemberSignature Language="C#" Value="public virtual void GetImagePosition (out int x, out int y, Atk.CoordType coord_type);" />
+      <MemberSignature Language="C#" Value="public void GetImagePosition (out int x, out int y, Atk.CoordType coord_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1370,7 +1407,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetImageSize">
-      <MemberSignature Language="C#" Value="public virtual void GetImageSize (out int width, out int height);" />
+      <MemberSignature Language="C#" Value="public void GetImageSize (out int width, out int height);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1387,7 +1424,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetSelectedRows">
-      <MemberSignature Language="C#" Value="public virtual int GetSelectedRows (out int selected);" />
+      <MemberSignature Language="C#" Value="public int GetSelectedRows (out int selected);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1403,7 +1440,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetSelectedColumns">
-      <MemberSignature Language="C#" Value="public virtual int GetSelectedColumns (out int selected);" />
+      <MemberSignature Language="C#" Value="public int GetSelectedColumns (out int selected);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1419,7 +1456,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetTextAfterOffset">
-      <MemberSignature Language="C#" Value="public virtual string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1441,7 +1478,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetSelection">
-      <MemberSignature Language="C#" Value="public virtual string GetSelection (int selection_num, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public string GetSelection (int selection_num, out int start_offset, out int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1461,7 +1498,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetTextBeforeOffset">
-      <MemberSignature Language="C#" Value="public virtual string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1483,7 +1520,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetCharacterExtents">
-      <MemberSignature Language="C#" Value="public virtual void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords);" />
+      <MemberSignature Language="C#" Value="public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1508,7 +1545,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetRunAttributes">
-      <MemberSignature Language="C#" Value="public virtual GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.SList</ReturnType>
@@ -1528,7 +1565,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetTextAtOffset">
-      <MemberSignature Language="C#" Value="public virtual string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
+      <MemberSignature Language="C#" Value="public string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -1558,7 +1595,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Atk.NoOpObject" />.</remarks>
       </Docs>
     </Member>
@@ -1744,12 +1781,15 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Atk.NoOpObject" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Atk.NoOpObject" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertText">
-      <MemberSignature Language="C#" Value="public virtual int InsertText (string str1ng);" />
+      <MemberSignature Language="C#" Value="public int InsertText (string str1ng);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1765,7 +1805,7 @@
       </Docs>
     </Member>
     <Member MemberName="NLinks">
-      <MemberSignature Language="C#" Value="public virtual int NLinks { get; };" />
+      <MemberSignature Language="C#" Value="public int NLinks { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1773,12 +1813,12 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="LinkSelected">
-      <MemberSignature Language="C#" Value="public virtual event Atk.LinkSelectedHandler LinkSelected;" />
+      <MemberSignature Language="C#" Value="public event Atk.LinkSelectedHandler LinkSelected;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.LinkSelectedHandler</ReturnType>
@@ -1788,9 +1828,13 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="link_selected")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetBoundedRanges">
-      <MemberSignature Language="C#" Value="public virtual Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type);" />
+      <MemberSignature Language="C#" Value="public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.TextRange</ReturnType>
@@ -1812,7 +1856,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetRangeExtents">
-      <MemberSignature Language="C#" Value="public virtual void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect);" />
+      <MemberSignature Language="C#" Value="public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1833,7 +1877,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetLink">
-      <MemberSignature Language="C#" Value="public virtual Atk.Hyperlink GetLink (int link_index);" />
+      <MemberSignature Language="C#" Value="public Atk.Hyperlink GetLink (int link_index);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Atk.Hyperlink</ReturnType>
@@ -1849,7 +1893,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetLinkIndex">
-      <MemberSignature Language="C#" Value="public virtual int GetLinkIndex (int char_index);" />
+      <MemberSignature Language="C#" Value="public int GetLinkIndex (int char_index);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1880,7 +1924,7 @@
       </Docs>
     </Member>
     <Member MemberName="CurrentValue">
-      <MemberSignature Language="C#" Value="public virtual GLib.Value CurrentValue { get; };" />
+      <MemberSignature Language="C#" Value="public GLib.Value CurrentValue { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.Value</ReturnType>
@@ -1888,12 +1932,12 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:GLib.Value" /></returns>
+        <value>a <see cref="T:GLib.Value" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCharacterAtOffset">
-      <MemberSignature Language="C#" Value="public virtual char GetCharacterAtOffset (int offset);" />
+      <MemberSignature Language="C#" Value="public char GetCharacterAtOffset (int offset);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Char</ReturnType>
@@ -1910,7 +1954,7 @@
       </Docs>
     </Member>
     <Member MemberName="BoundsChanged">
-      <MemberSignature Language="C#" Value="public virtual event Atk.BoundsChangedHandler BoundsChanged;" />
+      <MemberSignature Language="C#" Value="public event Atk.BoundsChangedHandler BoundsChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Atk.BoundsChangedHandler</ReturnType>
@@ -1920,7 +1964,11 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="bounds_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnBoundsChanged">
       <MemberSignature Language="C#" Value="protected virtual void OnBoundsChanged (Atk.Rectangle bounds);" />
       <MemberType>Method</MemberType>

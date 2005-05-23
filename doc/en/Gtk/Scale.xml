@@ -1,12 +1,10 @@
 <Type Name="Scale" FullName="Gtk.Scale">
-  <TypeSignature Language="C#" Value="public class Scale : Gtk.Range, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Scale : Gtk.Range" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,20 +17,7 @@
     <BaseTypeName>Gtk.Range</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -56,7 +41,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Scale, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -73,12 +57,16 @@
       <Docs>
         <summary>Manage the position of the value, relative to the slider.</summary>
         <param name="value">The position to place the value</param>
-        <returns>Where the value is currently being drawn.</returns>
+        <value>Where the value is currently being drawn.</value>
         <remarks>
           <para>Note: This property is only meaningful is a value is being drawn. To ensure a value is drawn, use the <see cref="P:Gtk.Scale.DrawValue" /> property.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="value_pos")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DrawValue">
       <MemberSignature Language="C#" Value="public bool DrawValue { set; get; };" />
       <MemberType>Property</MemberType>
@@ -91,12 +79,16 @@
         <summary>Manage whether a label is displayed to show the current value.</summary>
         <param name="value">
           <see langword="true" /> to display the value, <see langword="false" /> otherwise.</param>
-        <returns>Whether the value is currently being displayed.</returns>
+        <value>Whether the value is currently being displayed.</value>
         <remarks>
           <para>Use the <see cref="P:Gtk.Scale.ValuePos" /> property to alter the position of displayed value.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="draw_value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Digits">
       <MemberSignature Language="C#" Value="public int Digits { set; get; };" />
       <MemberType>Property</MemberType>
@@ -108,10 +100,14 @@
       <Docs>
         <summary>Manage the number of decimal places for this slider.</summary>
         <param name="value">The number of decimal places to display.</param>
-        <returns>The number of decimal places currently being displayed.</returns>
+        <value>The number of decimal places currently being displayed.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="digits")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FormatValue">
       <MemberSignature Language="C#" Value="public event Gtk.FormatValueHandler FormatValue;" />
       <MemberType>Event</MemberType>
@@ -125,7 +121,11 @@
           <para>Note: The signature of this event handler is currently incorrect.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="format_value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -135,7 +135,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Scale" />.</remarks>
       </Docs>
     </Member>
@@ -165,10 +165,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Scale" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Scale ();" />
       <MemberType>Constructor</MemberType>
@@ -176,7 +179,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Scale" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -189,7 +191,7 @@
       <Parameters />
       <Docs>
         <summary>Gets the <see cref="T:Pango.Layout" /> used to display the scale. </summary>
-        <returns>a <see cref="T:Pango.Layout" /></returns>
+        <value>a <see cref="T:Pango.Layout" /></value>
         <remarks>
         </remarks>
       </Docs>

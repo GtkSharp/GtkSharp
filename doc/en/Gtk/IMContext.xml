@@ -1,12 +1,10 @@
 <Type Name="IMContext" FullName="Gtk.IMContext">
-  <TypeSignature Language="C#" Value="public class IMContext : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class IMContext : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -17,14 +15,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="FocusIn">
       <MemberSignature Language="C#" Value="public void FocusIn ();" />
@@ -150,7 +141,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of IMContext, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -170,7 +160,7 @@
 	  <see cref="T:Gdk.Window" /> in which the input appears. 
 	</summary>
         <param name="value">a <see cref="T:Gdk.Window" /></param>
-        <returns>a <see cref="T:Gdk.Window" /></returns>
+        <value>a <see cref="T:Gdk.Window" /></value>
         <remarks>
 	  The client window is
 	  used in order to correctly position status windows. It may
@@ -192,7 +182,7 @@
 	  position has been made. 
 	</summary>
         <param name="value">a <see cref="T:Gdk.Rectangle" /></param>
-        <returns>a <see cref="T:Gdk.Rectangle" /></returns>
+        <value>a <see cref="T:Gdk.Rectangle" /></value>
         <remarks>
 	  The location is relative to the client window.
 	</remarks>
@@ -212,7 +202,7 @@
 	  to display feedback. 
 	</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
 	  If <paramref name="use_preedit" /> is <see langword="false" /> (default
 	  is <see langword="true" />), then the IM context may use some other method to display
@@ -231,7 +221,11 @@
         <summary>Event fired when the preedit string is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="preedit_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PreeditStart">
       <MemberSignature Language="C#" Value="public event EventHandler PreeditStart;" />
       <MemberType>Event</MemberType>
@@ -243,7 +237,11 @@
         <summary>Event fired when pre-editing is started.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="preedit_start")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SurroundingDeleted">
       <MemberSignature Language="C#" Value="public event Gtk.SurroundingDeletedHandler SurroundingDeleted;" />
       <MemberType>Event</MemberType>
@@ -255,7 +253,11 @@
         <summary>Event fired when the input method needs to delete the context text.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="delete_surrounding")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Commit">
       <MemberSignature Language="C#" Value="public event Gtk.CommitHandler Commit;" />
       <MemberType>Event</MemberType>
@@ -267,7 +269,11 @@
         <summary>Commit text event.</summary>
         <remarks>The event is emitted when the input method has processed all the keystrokes for an individual text element, including pre-edit keystrokes.  The resulting text is located in <see cref="M:Gtk.CommitArgs.Str" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="commit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RetrieveSurrounding">
       <MemberSignature Language="C#" Value="public event Gtk.RetrieveSurroundingHandler RetrieveSurrounding;" />
       <MemberType>Event</MemberType>
@@ -281,7 +287,11 @@
 	</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="retrieve_surrounding")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PreeditEnd">
       <MemberSignature Language="C#" Value="public event EventHandler PreeditEnd;" />
       <MemberType>Event</MemberType>
@@ -293,7 +303,11 @@
         <summary>Event fired when pre-editing is completed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="preedit_end")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetSurrounding">
       <MemberSignature Language="C#" Value="public void SetSurrounding (string text, int cursor_index);" />
       <MemberType>Method</MemberType>
@@ -360,7 +374,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.IMContext" />.</remarks>
       </Docs>
     </Member>
@@ -456,10 +470,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.IMContext" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetPreeditString">
       <MemberSignature Language="C#" Value="public void GetPreeditString (out string str, out Pango.AttrList attrs, out int cursor_pos);" />
       <MemberType>Method</MemberType>
@@ -472,13 +489,13 @@
         <Parameter Name="cursor_pos" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
+        <param name="str">a <see cref="T:System.String" />, a location to store , the retrieved string.</param>
+        <param name="attrs">a <see cref="T:Pango.AttrList" />, location to store the retrieved attribute list.</param>
+        <param name="cursor_pos">To be added.</param>
         <summary>
 	  Retrieve the current preedit string for the input context
 	  and a list of attributes to apply to the string.
 	</summary>
-        <param name="str">a <see cref="T:System.String" />, a location to store , the retrieved string.</param>
-        <param name="attrs">a <see cref="T:Pango.AttrList" />, location to store the retrieved attribute list.</param>
-        <returns>a <see cref="T:System.Int32" />, the position of the cursor (in bytes) within the preedit string.</returns>
         <remarks>
 	  This string should be displayed inserted at the insertion
 	  point. 
@@ -492,7 +509,6 @@
       <Parameters />
       <Docs>
         <summary>Protected Constructor.</summary>
-        <returns>a <see cref="T:Gtk.IMContext" /></returns>
         <remarks />
       </Docs>
     </Member>

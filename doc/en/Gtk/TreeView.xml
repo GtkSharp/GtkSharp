@@ -1,12 +1,10 @@
 <Type Name="TreeView" FullName="Gtk.TreeView">
-  <TypeSignature Language="C#" Value="public class TreeView : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class TreeView : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -229,20 +227,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="RemoveColumn">
       <MemberSignature Language="C#" Value="public int RemoveColumn (Gtk.TreeViewColumn column);" />
@@ -288,7 +273,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       </ReturnValue>
       <Docs>
         <summary>The function for determining where a column may be dropped when dragged.</summary>
-        <returns>a <see cref="T:Gtk.TreeViewColumnDropFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeViewColumnDropFunc" /></value>
         <remarks>This function is called on every column pair in turn at the beginning of a column drag to determine where a drop can take place. If the property is set to be <see langword="null" />, then <see cref="Gtk.TreeView" /> reverts to the default behavior of allowing all columns to be dropped everywhere.</remarks>
       </Docs>
     </Member>
@@ -485,7 +470,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       </ReturnValue>
       <Docs>
         <summary>This property should almost never be used. It is meant for private use by ATK for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</summary>
-        <returns>a <see cref="T:Gtk.TreeDestroyCountFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeDestroyCountFunc" /></value>
         <remarks>It is meant for private use by Atk for determining the number of visible children that are removed when the user collapses a row, or a row is deleted.</remarks>
       </Docs>
     </Member>
@@ -517,7 +502,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Parameters />
       <Docs>
         <summary>The compare function for the interactive search capabilities.</summary>
-        <returns>a <see cref="T:Gtk.TreeViewSearchEqualFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeViewSearchEqualFunc" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -530,6 +515,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Parameters />
       <Docs>
         <summary>Disables the TreeView as a drag-and-drop destination.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendColumn">
@@ -710,7 +696,6 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of TreeView, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -723,7 +708,6 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Parameters />
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.TreeView" /> object.</summary>
-        <returns>an object of type <see cref="T:Gtk.TreeView" /></returns>
         <remarks>This is the default constructor for <see cref="T:Gtk.TreeView" /></remarks>
       </Docs>
     </Member>
@@ -737,7 +721,6 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.TreeView" /> object.</summary>
         <param name="model">an object of type <see cref="T:Gtk.TreeModel" /></param>
-        <returns>an object of type <see cref="T:Gtk.TreeView" /></returns>
         <remarks>In this constructor the <see cref="P:Gtk.TreeView.Model" /> is set from <paramref name="model" />.</remarks>
       </Docs>
     </Member>
@@ -752,11 +735,15 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Docs>
         <summary>The model for the TreeView.</summary>
         <param name="value">an object of type <see cref="T:Gtk.TreeModel" /></param>
-        <returns>an object of type <see cref="T:Gtk.TreeModel" /></returns>
+        <value>an object of type <see cref="T:Gtk.TreeModel" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="model")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Selection">
       <MemberSignature Language="C#" Value="public Gtk.TreeSelection Selection { get; };" />
       <MemberType>Property</MemberType>
@@ -765,7 +752,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       </ReturnValue>
       <Docs>
         <summary>Gets the <see cref="T:Gtk.TreeSelection" /> associated with the TreeView.</summary>
-        <returns>an object of type <see cref="T:Gtk.TreeSelection" /></returns>
+        <value>an object of type <see cref="T:Gtk.TreeSelection" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -778,7 +765,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       </ReturnValue>
       <Docs>
         <summary>The window that this TreeView renders to.</summary>
-        <returns>an object of type <see cref="T:Gdk.Window" /></returns>
+        <value>an object of type <see cref="T:Gdk.Window" /></value>
         <remarks>This property is primarily used to confirm that events on the TreeView are executed within the correct window.</remarks>
       </Docs>
     </Member>
@@ -793,7 +780,7 @@ For a example how to handle selection events see <see cref="T:Gtk.TreeSelection"
       <Docs>
         <summary>Whether to display alternating, shaded rows in the <see cref="Gtk.TreeView" />.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
           <para>Setting <see cref="P:Gtk.TreeView.RulesHint" /> to <see langword="true" /> sets a hint to the theme engine to draw rows in alternating colors.</para>
           <para>
@@ -801,7 +788,11 @@ This property tells GTK# that the user interface for your application requires u
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="rules_hint")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EnableSearch">
       <MemberSignature Language="C#" Value="public bool EnableSearch { set; get; };" />
       <MemberType>Property</MemberType>
@@ -813,11 +804,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>View allows user to search through columns interactively.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="enable_search")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HeadersVisible">
       <MemberSignature Language="C#" Value="public bool HeadersVisible { set; get; };" />
       <MemberType>Property</MemberType>
@@ -829,11 +824,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>Show the column header buttons.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="headers_visible")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ExpanderColumn">
       <MemberSignature Language="C#" Value="public Gtk.TreeViewColumn ExpanderColumn { set; get; };" />
       <MemberType>Property</MemberType>
@@ -845,11 +844,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>Set the column for the expander column.</summary>
         <param name="value">an object of type <see cref="T:Gtk.TreeViewColumn" /></param>
-        <returns>an object of type <see cref="T:Gtk.TreeViewColumn" /></returns>
+        <value>an object of type <see cref="T:Gtk.TreeViewColumn" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="expander_column")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Reorderable">
       <MemberSignature Language="C#" Value="public bool Reorderable { set; get; };" />
       <MemberType>Property</MemberType>
@@ -861,11 +864,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>View is reorderable.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="reorderable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Hadjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Hadjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -877,11 +884,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>Horizontal Adjustment for the widget.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="hadjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HeadersClickable">
       <MemberSignature Language="C#" Value="public bool HeadersClickable { set; get; };" />
       <MemberType>Property</MemberType>
@@ -891,10 +902,14 @@ This property tells GTK# that the user interface for your application requires u
       <Parameters />
       <Docs>
         <summary>Column headers respond to click events.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="headers_clickable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Vadjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Vadjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -906,11 +921,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>Vertical Adjustment for the widget.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="vadjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SearchColumn">
       <MemberSignature Language="C#" Value="public int SearchColumn { set; get; };" />
       <MemberType>Property</MemberType>
@@ -922,11 +941,15 @@ This property tells GTK# that the user interface for your application requires u
       <Docs>
         <summary>Model column to search through when searching through code.</summary>
         <param name="value">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="search_column")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ScrollAdjustmentsSet">
       <MemberSignature Language="C#" Value="public event Gtk.ScrollAdjustmentsSetHandler ScrollAdjustmentsSet;" />
       <MemberType>Event</MemberType>
@@ -938,7 +961,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever the scrollbar adjustment units are set.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_scroll_adjustments")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowExpanded">
       <MemberSignature Language="C#" Value="public event Gtk.RowExpandedHandler RowExpanded;" />
       <MemberType>Event</MemberType>
@@ -950,7 +977,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever a row of the TreeView is expanded.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_expanded")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveCursor">
       <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
       <MemberType>Event</MemberType>
@@ -962,7 +993,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever the cursor is moved on this TreeView.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_cursor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TestExpandRow">
       <MemberSignature Language="C#" Value="public event Gtk.TestExpandRowHandler TestExpandRow;" />
       <MemberType>Event</MemberType>
@@ -974,7 +1009,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the widget wants to find out whether a row can be expanded or not.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="test_expand_row")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectCursorRow">
       <MemberSignature Language="C#" Value="public event Gtk.SelectCursorRowHandler SelectCursorRow;" />
       <MemberType>Event</MemberType>
@@ -986,7 +1025,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the row the cursor is on is selected.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="select_cursor_row")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowCollapsed">
       <MemberSignature Language="C#" Value="public event Gtk.RowCollapsedHandler RowCollapsed;" />
       <MemberType>Event</MemberType>
@@ -998,7 +1041,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever a row is collapsed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_collapsed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColumnsChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ColumnsChanged;" />
       <MemberType>Event</MemberType>
@@ -1010,7 +1057,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the columns of this tree change.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="columns_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ExpandCollapseCursorRow">
       <MemberSignature Language="C#" Value="public event Gtk.ExpandCollapseCursorRowHandler ExpandCollapseCursorRow;" />
       <MemberType>Event</MemberType>
@@ -1022,7 +1073,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the row where the cursor is is expanded or collapsed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="expand_collapse_cursor_row")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowActivated">
       <MemberSignature Language="C#" Value="public event Gtk.RowActivatedHandler RowActivated;" />
       <MemberType>Event</MemberType>
@@ -1034,7 +1089,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when a row is activated; see <see cref="M:Gtk.TreeView.ActivateRow" />.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_activated")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TestCollapseRow">
       <MemberSignature Language="C#" Value="public event Gtk.TestCollapseRowHandler TestCollapseRow;" />
       <MemberType>Event</MemberType>
@@ -1046,7 +1105,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the system wants to know whether a particular row can be collapsed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="test_collapse_row")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CursorChanged">
       <MemberSignature Language="C#" Value="public event EventHandler CursorChanged;" />
       <MemberType>Event</MemberType>
@@ -1058,7 +1121,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the cursor changes (rows).</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cursor_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetPathAtPos">
       <MemberSignature Language="C#" Value="public bool GetPathAtPos (int x, int y, out Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
@@ -1112,7 +1179,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the cursor toggles a row.</summary>
         <remarks>(FIXME: explain in more detail.)</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggle_cursor_row")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StartInteractiveSearch">
       <MemberSignature Language="C#" Value="public event Gtk.StartInteractiveSearchHandler StartInteractiveSearch;" />
       <MemberType>Event</MemberType>
@@ -1124,7 +1195,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the user begins a search of the tree.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="start_interactive_search")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectAll">
       <MemberSignature Language="C#" Value="public event Gtk.SelectAllHandler SelectAll;" />
       <MemberType>Event</MemberType>
@@ -1136,7 +1211,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever all rows of the TreeView are selected.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="select_all")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectCursorParent">
       <MemberSignature Language="C#" Value="public event Gtk.SelectCursorParentHandler SelectCursorParent;" />
       <MemberType>Event</MemberType>
@@ -1148,7 +1227,11 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired when the parent row of the current row is selected.</summary>
         <remarks>(FIXME: explain in more detail.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="select_cursor_parent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UnselectAll">
       <MemberSignature Language="C#" Value="public event Gtk.UnselectAllHandler UnselectAll;" />
       <MemberType>Event</MemberType>
@@ -1160,9 +1243,13 @@ This property tells GTK# that the user interface for your application requires u
         <summary>Fired whenever all rows of the TreeView are specifically deselected.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="unselect_all")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AppendColumn">
-      <MemberSignature Language="C#" Value="public Gtk.TreeViewColumn AppendColumn (string title, Gtk.CellRenderer cell, object [] attrs);" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeViewColumn AppendColumn (string title, Gtk.CellRenderer cell, object[] attrs);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeViewColumn</ReturnType>
@@ -1170,7 +1257,13 @@ This property tells GTK# that the user interface for your application requires u
       <Parameters>
         <Parameter Name="title" Type="System.String" />
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="attrs" Type="System.Object[]" />
+        <Parameter Name="attrs" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Adds a <see cref="T:Gtk.CellRenderer" /> with a specific column title and attributes.</summary>
@@ -1341,12 +1434,15 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Docs>
         <summary>TreeView constructor</summary>
         <param name="store">a <see cref="T:Gtk.NodeStore" /></param>
-        <returns>a <see cref="T:Gtk.TreeView" /></returns>
         <remarks>Creates a <see cref="T:Gtk.TreeView" /> with <paramref name="store" /> as
           its <see cref="P:Gtk.TreeView.Model" />.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Use NodeView with NodeStores", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EnableModelDragSource">
       <MemberSignature Language="C#" Value="public void EnableModelDragSource (Gdk.ModifierType start_button_mask, Gtk.TargetEntry[] targets, Gdk.DragAction actions);" />
       <MemberType>Method</MemberType>
@@ -1392,7 +1488,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TreeView" />.</remarks>
       </Docs>
     </Member>
@@ -1666,12 +1762,15 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.TreeView" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Columns">
-      <MemberSignature Language="C#" Value="public Gtk.TreeViewColumn [] Columns { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeViewColumn[] Columns { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeViewColumn[]</ReturnType>
@@ -1679,7 +1778,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>A list of all the columns currently in this TreeView.</summary>
-        <returns>a <see cref="T:Gtk.TreeViewColumn[]" /></returns>
+        <value>a <see cref="T:Gtk.TreeViewColumn[]" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1787,10 +1886,14 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>Whether or not to assume all rows are the same height.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>This is an optimization; set to <see langword="true" /> for fastest performance.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="fixed_height_mode")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertColumn">
       <MemberSignature Language="C#" Value="public int InsertColumn (int pos, string title, Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc cell_data);" />
       <MemberType>Method</MemberType>
@@ -1820,7 +1923,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </Docs>
     </Member>
     <Member MemberName="InsertColumn">
-      <MemberSignature Language="C#" Value="public int InsertColumn (int pos, string title, Gtk.CellRenderer cell, object [] attrs);" />
+      <MemberSignature Language="C#" Value="public int InsertColumn (int pos, string title, Gtk.CellRenderer cell, object[] attrs);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1829,7 +1932,13 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="pos" Type="System.Int32" />
         <Parameter Name="title" Type="System.String" />
         <Parameter Name="cell" Type="Gtk.CellRenderer" />
-        <Parameter Name="attrs" Type="System.Object[]" />
+        <Parameter Name="attrs" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Convenience function that inserts a new column into the tree view
@@ -1872,10 +1981,14 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="hover_expand")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HoverSelection">
       <MemberSignature Language="C#" Value="public bool HoverSelection { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1885,10 +1998,14 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="hover_selection")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowSeparatorFunc">
       <MemberSignature Language="C#" Value="public Gtk.TreeViewRowSeparatorFunc RowSeparatorFunc { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1898,8 +2015,25 @@ tree_view.AppendColumn ("title", text, "text", 0);
       <Parameters />
       <Docs>
         <summary>Callback function to indicate whether or not a given row of the tree view should be rendered as a separator.</summary>
-        <returns>a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeViewRowSeparatorFunc" /></value>
         <remarks />
+      </Docs>
+    </Member>
+  <Member MemberName="GetCursor">
+      <MemberSignature Language="C#" Value="public void GetCursor (out Gtk.TreePath path, out Gtk.TreeViewColumn focus_column);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="focus_column" Type="Gtk.TreeViewColumn&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">To be added.</param>
+        <param name="focus_column">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

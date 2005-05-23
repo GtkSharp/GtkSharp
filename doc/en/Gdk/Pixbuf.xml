@@ -1,12 +1,10 @@
 <Type Name="Pixbuf" FullName="Gdk.Pixbuf">
-  <TypeSignature Language="C#" Value="public class Pixbuf : GLib.Object, IWrapper, IDisposable" Maintainer="miguel" />
+  <TypeSignature Language="C#" Maintainer="miguel" Value="public class Pixbuf : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -40,14 +38,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="FromPixdata">
       <MemberSignature Language="C#" Value="public static Gdk.Pixbuf FromPixdata (Gdk.Pixdata pixdata, bool copy_pixels);" />
@@ -280,8 +271,7 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Gets an image from a Gdk.Image</summary>
-        <param name="image">Source Image (A <see cref="T:Gdk.Image" />)</param>
+        <param name="src">To be added.</param>
         <param name="cmap">A colormap (if src does not have one set) (A <see cref="T:Gdk.Colormap" /></param>
         <param name="src_x">Source X coordinate within drawable.</param>
         <param name="src_y">Source Y coordinate within drawable.</param>
@@ -291,6 +281,8 @@
         if dest is <see langword="null" />.</param>
         <param name="width">Width in pixels of region to get.</param>
         <param name="height">Height in pixels of region to get.</param>
+        <summary>Gets an image from a Gdk.Image</summary>
+        <param name="image">Source Image (A <see cref="T:Gdk.Image" />)</param>
         <returns>
           <para>
 	    The value of the Pixbuf (the same one that was passed) or
@@ -429,7 +421,7 @@
         <ReturnType>Gdk.Pixbuf</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="drawable" Type="Gdk.Drawable" />
+        <Parameter Name="src" Type="Gdk.Drawable" />
         <Parameter Name="cmap" Type="Gdk.Colormap" />
         <Parameter Name="src_x" Type="System.Int32" />
         <Parameter Name="src_y" Type="System.Int32" />
@@ -439,8 +431,7 @@
         <Parameter Name="height" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Gets image from a Gdk.Drawable</summary>
-        <param name="drawable">Source drawable (A <see cref="T:Gdk.Drawable" />)</param>
+        <param name="src">To be added.</param>
         <param name="cmap">A colormap (if src does not have one set) (A <see cref="T:Gdk.Colormap" /></param>
         <param name="src_x">Source X coordinate within drawable.</param>
         <param name="src_y">Source Y coordinate within drawable.</param>
@@ -450,6 +441,8 @@
         if dest is <see langword="null" />.</param>
         <param name="width">Width in pixels of region to get.</param>
         <param name="height">Height in pixels of region to get.</param>
+        <summary>Gets image from a Gdk.Drawable</summary>
+        <param name="drawable">Source drawable (A <see cref="T:Gdk.Drawable" />)</param>
         <returns>
           <para>
 	    The value of the Pixbuf (the same one that was passed) or
@@ -860,7 +853,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Pixbuf, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -951,10 +943,14 @@
       </ReturnValue>
       <Docs>
         <summary>Number of bits per color sample in a pixbuf.</summary>
-        <returns>The number of bits per color sample in the pixbuf</returns>
+        <value>The number of bits per color sample in the pixbuf</value>
         <remarks>None.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="bits_per_sample")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Height">
       <MemberSignature Language="C#" Value="public int Height { get; };" />
       <MemberType>Property</MemberType>
@@ -963,9 +959,9 @@
       </ReturnValue>
       <Docs>
         <summary>Height of the image</summary>
-        <returns>
+        <value>
           <para>The height in pixels of the image</para>
-        </returns>
+        </value>
         <remarks>
           <para>
 	    See also the <see cref="P:Gdk.Pixbuf.Width" />, <see cref="P:Gdk.Pixbuf.Rowstride" /> and <see cref="P:Gdk.Pixbuf.NChannels" /> for more information about
@@ -973,7 +969,11 @@
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="height")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasAlpha">
       <MemberSignature Language="C#" Value="public bool HasAlpha { get; };" />
       <MemberType>Property</MemberType>
@@ -982,9 +982,9 @@
       </ReturnValue>
       <Docs>
         <summary>Returns whether the Pixbuf contains an alpha channel</summary>
-        <returns>
+        <value>
           <see langword="true" /> if the image contains an Alpha
-        channel, <see langword="false" /> otherwise.</returns>
+        channel, <see langword="false" /> otherwise.</value>
         <remarks>
           <para>
 	    The Pixbuf object handles images in either the RGB format,
@@ -993,7 +993,11 @@
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_alpha")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Width">
       <MemberSignature Language="C#" Value="public int Width { get; };" />
       <MemberType>Property</MemberType>
@@ -1002,16 +1006,20 @@
       </ReturnValue>
       <Docs>
         <summary>The width of the image</summary>
-        <returns>
+        <value>
           <para>The width in pixels of the image</para>
-        </returns>
+        </value>
         <remarks>
           <para>
 	    This is the width of the image in pixels.  See the <see cref="P:Gdk.Pixbuf.Rowstride" /> property as well.
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="width")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NChannels">
       <MemberSignature Language="C#" Value="public int NChannels { get; };" />
       <MemberType>Property</MemberType>
@@ -1020,13 +1028,17 @@
       </ReturnValue>
       <Docs>
         <summary>The number of channels on a Pixbuf</summary>
-        <returns>Returns the number of channels on a Pixbuf</returns>
+        <value>Returns the number of channels on a Pixbuf</value>
         <remarks>
 	  The possible values are 3 (for RGB encoding) and 4 (for RGB
 	  with an alpha transparency channel encoding).
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="n_channels")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Rowstride">
       <MemberSignature Language="C#" Value="public int Rowstride { get; };" />
       <MemberType>Property</MemberType>
@@ -1035,7 +1047,7 @@
       </ReturnValue>
       <Docs>
         <summary>Rowstride of the Pixbuf</summary>
-        <returns>The rowstride property for the Pixbuf</returns>
+        <value>The rowstride property for the Pixbuf</value>
         <remarks>
           <para>
 	    Queries the rowstride of a pixbuf.  The rowstring is the
@@ -1047,7 +1059,11 @@
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="rowstride")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Colorspace">
       <MemberSignature Language="C#" Value="public Gdk.Colorspace Colorspace { get; };" />
       <MemberType>Property</MemberType>
@@ -1056,14 +1072,18 @@
       </ReturnValue>
       <Docs>
         <summary>The colorspace for this Pixbuf</summary>
-        <returns>The colorspace used by this Pixbuf</returns>
+        <value>The colorspace used by this Pixbuf</value>
         <remarks>
           <para>
 	    Currently Pixbuf only support the RGB colorspace.
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="colorspace")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CreateFromDrawable">
       <MemberSignature Language="C#" Value="public Gdk.Pixbuf CreateFromDrawable (Gdk.Drawable src, Gdk.Colormap cmap, int src_x, int src_y, int dest_x, int dest_y, int width, int height);" />
       <MemberType>Method</MemberType>
@@ -1137,7 +1157,7 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (int data_length, Void* data, bool copy_pixels);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (int data_length, void* data, bool copy_pixels);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1150,7 +1170,6 @@
         <param name="data_length">The length in bytes of the data to be read.</param>
         <param name="data">The raw data representing the serialized <see cref="T:Gdk.Pixdata" /> structure.</param>
         <param name="copy_pixels">If true, the "data" parameter will be copied and the copy will be used for the Pixbuf. If false, the data will be used as is and the Pixbuf will be dependent on it.</param>
-        <returns>A new <see cref="T:Gdk.Pixbuf" />.</returns>
         <remarks>None</remarks>
       </Docs>
     </Member>
@@ -1181,7 +1200,6 @@
 <para>
 If the value is <see langword="null" />,  the image will be looked up on the calling assembly.</para></param>
         <param name="resource">The name given as the resource in the assembly</param>
-        <returns>The <see cref="T:Gdk.Pixbuf" /> created from the resource stream</returns>
         <remarks>
           <para>
    This method is used to construct a <see cref="T:Gdk.Pixbuf" /> from an embedded resource in an assembly. 
@@ -1223,7 +1241,6 @@ If the value is <see langword="null" />,  the image will be looked up on the cal
         <param name="resource">The name given as the resource in the assembly</param>
         <param name="width">The required width for the pixbuf</param>
         <param name="height">The required height for the pixbuf</param>
-        <returns>The <see cref="T:Gdk.Pixbuf" /> created from the resource stream</returns>
         <remarks>
           <para>
    This method is used to construct a <see cref="T:Gdk.Pixbuf" /> from an embedded resource in an assembly with a specific size. 
@@ -1277,7 +1294,6 @@ mcs -resource:image.jpg sample.cs
       <Docs>
         <summary>Makes a new Pixbuf object from a <see cref="T:System.IO.Stream" />.</summary>
         <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image</param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>Useful for creating a Pixbuf from an image file that resides in a stream.
 
 <example>
@@ -1308,7 +1324,6 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream);
         <param name="stream">a <see cref="T:System.IO.Stream" /> containing the image</param>
         <param name="width"> a <see cref="T:System.Int32" /> specifying the required width</param>
         <param name="height"> a <see cref="T:System.Int32" /> specifying the required height</param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>Useful for creating a Pixbuf with a specific size from an image file that resides in a stream.
 
 <example>
@@ -1326,7 +1341,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream, 10, 10);
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (byte [] buffer);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (byte[] buffer);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1335,7 +1350,6 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream, 10, 10);
       <Docs>
         <summary>Makes a new Pixbuf object from a <see cref="T:System.Byte[]" />.</summary>
         <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image</param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>Useful for creating a Pixbuf from an image file in memory.
 
 <example>
@@ -1350,7 +1364,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer);
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (byte [] buffer, int width, int height);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (byte[] buffer, int width, int height);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1363,7 +1377,6 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer);
         <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image</param>
         <param name="width"> a <see cref="T:System.Int32" /> specifying the required width</param>
         <param name="height"> a <see cref="T:System.Int32" /> specifying the required height</param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>Useful for creating a Pixbuf with a specific size from an image file in memory.
 
 <example>
@@ -1378,7 +1391,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (byte [] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (byte[] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1404,14 +1417,11 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
         <param name="height">a <see cref="T:System.Int32" /></param>
         <param name="rowstride">a <see cref="T:System.Int32" /></param>
         <param name="destroy_fn">a <see cref="T:Gdk.PixbufDestroyNotify" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /> with a reference count of 1, or 
-	  null if not enough memory could be allocated for the image buffer.
-	</returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (int data_length, byte [] data, bool copy_pixels);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (int data_length, byte[] data, bool copy_pixels);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1424,12 +1434,11 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
         <param name="data_length">The length in bytes of the data to be read.</param>
         <param name="data">A serialized <see cref="T:Gdk.Pixdata" /> structure, generated with <see cref="M:Gdk.Pixdata.Serialize" />.</param>
         <param name="copy_pixels">If true, the "data" parameter will be copied and the copy will be used for the Pixbuf. If false, the data will be used as is and the Pixbuf will be dependent on it.</param>
-        <returns>A new <see cref="T:Gdk.Pixbuf" />.</returns>
         <remarks>None</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Pixbuf (string [] data);" />
+      <MemberSignature Language="C#" Value="public Pixbuf (string[] data);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -1438,7 +1447,6 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Docs>
         <summary>Public constructor.</summary>
         <param name="data">a <see cref="T:System.String[]" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -1451,7 +1459,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Pixbuf" />.</remarks>
       </Docs>
     </Member>
@@ -1465,12 +1473,15 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.Pixbuf" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Formats">
-      <MemberSignature Language="C#" Value="public static Gdk.PixbufFormat [] Formats { get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.PixbufFormat[] Formats { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.PixbufFormat[]</ReturnType>
@@ -1478,7 +1489,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.PixbufFormat[]" /></returns>
+        <value>a <see cref="T:Gdk.PixbufFormat[]" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1491,12 +1502,12 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Parameters />
       <Docs>
         <summary>The pixels contained by this Pixbuf object.</summary>
-        <returns>a <see cref="T:System.IntPtr" />, pointer to the underlying C data</returns>
+        <value>a <see cref="T:System.IntPtr" />, pointer to the underlying C data</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Savev">
-      <MemberSignature Language="C#" Value="public bool Savev (string filename, string type, string [] option_keys, string [] option_values);" />
+      <MemberSignature Language="C#" Value="public bool Savev (string filename, string type, string[] option_keys, string[] option_values);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1663,12 +1674,11 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
         <param name="filename">a <see cref="T:System.String" /></param>
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToBuffer">
-      <MemberSignature Language="C#" Value="public byte [] SaveToBuffer (string type, string [] option_keys, string [] option_values);" />
+      <MemberSignature Language="C#" Value="public byte[] SaveToBuffer (string type, string[] option_keys, string[] option_values);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Byte[]</ReturnType>
@@ -1688,7 +1698,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       </Docs>
     </Member>
     <Member MemberName="SaveToBuffer">
-      <MemberSignature Language="C#" Value="public byte [] SaveToBuffer (string type);" />
+      <MemberSignature Language="C#" Value="public byte[] SaveToBuffer (string type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Byte[]</ReturnType>
@@ -1721,7 +1731,7 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       </Docs>
     </Member>
     <Member MemberName="SaveToCallback">
-      <MemberSignature Language="C#" Value="public void SaveToCallback (Gdk.PixbufSaveFunc save_func, string type, string [] option_keys, string [] option_values);" />
+      <MemberSignature Language="C#" Value="public void SaveToCallback (Gdk.PixbufSaveFunc save_func, string type, string[] option_keys, string[] option_values);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1819,8 +1829,58 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
         <param name="width">a <see cref="T:System.Int32" /></param>
         <param name="height">a <see cref="T:System.Int32" /></param>
         <param name="preserve_aspect_ratio">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (byte[] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="data" Type="System.Byte[]" />
+        <Parameter Name="has_alpha" Type="System.Boolean" />
+        <Parameter Name="bits_per_sample" Type="System.Int32" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+        <Parameter Name="destroy_fn" Type="Gdk.PixbufDestroyNotify" />
+      </Parameters>
+      <Docs>
+        <param name="data">To be added.</param>
+        <param name="has_alpha">To be added.</param>
+        <param name="bits_per_sample">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <param name="rowstride">To be added.</param>
+        <param name="destroy_fn">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Pixbuf (byte[] data, bool copy_pixels);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="data" Type="System.Byte[]" />
+        <Parameter Name="copy_pixels" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="data">To be added.</param>
+        <param name="copy_pixels">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public object Clone ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

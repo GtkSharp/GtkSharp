@@ -1,12 +1,10 @@
 <Type Name="Calendar" FullName="Gtk.Calendar">
-  <TypeSignature Language="C#" Value="public class Calendar : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Calendar : Gtk.Widget" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -46,20 +44,7 @@ void HandleDaySelected (object obj, EventArgs args)
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="UnmarkDay">
       <MemberSignature Language="C#" Value="public bool UnmarkDay (uint day);" />
@@ -220,7 +205,6 @@ void HandleDaySelected (object obj, EventArgs args)
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Calendar, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -233,7 +217,6 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>Creates a new Calendar displaying the current month and having the current day selected</summary>
-        <returns>A new Calendar.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -250,7 +233,11 @@ void HandleDaySelected (object obj, EventArgs args)
           <para>This may happen when the user explicitly advances the year, or when advancing from December to January.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="next_year")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DaySelectedDoubleClick">
       <MemberSignature Language="C#" Value="public event EventHandler DaySelectedDoubleClick;" />
       <MemberType>Event</MemberType>
@@ -262,7 +249,11 @@ void HandleDaySelected (object obj, EventArgs args)
         <summary>Fired when the user "double clicks" on a day.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="day_selected_double_click")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PrevYear">
       <MemberSignature Language="C#" Value="public event EventHandler PrevYear;" />
       <MemberType>Event</MemberType>
@@ -276,7 +267,11 @@ void HandleDaySelected (object obj, EventArgs args)
           <para>This may happen when the user explicitly advances the year, or when clicking 'back' from January to December.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="prev_year")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MonthChanged">
       <MemberSignature Language="C#" Value="public event EventHandler MonthChanged;" />
       <MemberType>Event</MemberType>
@@ -288,7 +283,11 @@ void HandleDaySelected (object obj, EventArgs args)
         <summary>Fired when the current month changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="month_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NextMonth">
       <MemberSignature Language="C#" Value="public event EventHandler NextMonth;" />
       <MemberType>Event</MemberType>
@@ -300,7 +299,11 @@ void HandleDaySelected (object obj, EventArgs args)
         <summary>Fired when the month of the Calendar moves to the next one.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="next_month")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DaySelected">
       <MemberSignature Language="C#" Value="public event EventHandler DaySelected;" />
       <MemberType>Event</MemberType>
@@ -312,7 +315,11 @@ void HandleDaySelected (object obj, EventArgs args)
         <summary>Fired when a day is selected on the Calendar.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="day_selected")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PrevMonth">
       <MemberSignature Language="C#" Value="public event EventHandler PrevMonth;" />
       <MemberType>Event</MemberType>
@@ -324,7 +331,11 @@ void HandleDaySelected (object obj, EventArgs args)
         <summary>Fired when the Calendar moves to the previous month.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="prev_month")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetDate">
       <MemberSignature Language="C#" Value="public DateTime GetDate ();" />
       <MemberType>Method</MemberType>
@@ -349,7 +360,7 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Calendar" />.</remarks>
       </Docs>
     </Member>
@@ -447,10 +458,13 @@ void HandleDaySelected (object obj, EventArgs args)
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Calendar" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Date">
       <MemberSignature Language="C#" Value="public DateTime Date { set; get; };" />
       <MemberType>Property</MemberType>
@@ -460,7 +474,7 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>a DateTime that contains the current day for the Calendar widget</summary>
-        <returns>a <see cref="T:System.DateTime" /></returns>
+        <value>a <see cref="T:System.DateTime" /></value>
         <remarks>Setting the date fires Calendar changes events (Day, Month/Year)</remarks>
       </Docs>
     </Member>
@@ -473,11 +487,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>The selected day as a number between 1 and 31, or 0 to unselect the currently selected day.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="day")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowWeekNumbers">
       <MemberSignature Language="C#" Value="public bool ShowWeekNumbers { set; get; };" />
       <MemberType>Property</MemberType>
@@ -487,11 +505,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>If <see langword="true" />, week numbers are displayed</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_week_numbers")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowDayNames">
       <MemberSignature Language="C#" Value="public bool ShowDayNames { set; get; };" />
       <MemberType>Property</MemberType>
@@ -501,11 +523,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>If <see langword="true" />, day names are displayed.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_day_names")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowHeading">
       <MemberSignature Language="C#" Value="public bool ShowHeading { set; get; };" />
       <MemberType>Property</MemberType>
@@ -515,11 +541,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>If <see langword="true" />, a heading is displayed</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_heading")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Month">
       <MemberSignature Language="C#" Value="public int Month { set; get; };" />
       <MemberType>Property</MemberType>
@@ -529,11 +559,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>The selected month as a number between 0 and 11.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="month")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Year">
       <MemberSignature Language="C#" Value="public int Year { set; get; };" />
       <MemberType>Property</MemberType>
@@ -543,11 +577,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>The selected year.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="year")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="NoMonthChange">
       <MemberSignature Language="C#" Value="public bool NoMonthChange { set; get; };" />
       <MemberType>Property</MemberType>
@@ -557,11 +595,15 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>If <see langword="true" />, the selected month can not be changed.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="no_month_change")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DisplayOptions">
       <MemberSignature Language="C#" Value="public Gtk.CalendarDisplayOptions DisplayOptions { set; get; };" />
       <MemberType>Property</MemberType>
@@ -571,7 +613,7 @@ void HandleDaySelected (object obj, EventArgs args)
       <Parameters />
       <Docs>
         <summary>Set the display options for this Calendar.</summary>
-        <returns>One or more values from <see cref="T:Gtk.CalendarDisplayOptions" />, combined using a bit-wise OR.</returns>
+        <value>One or more values from <see cref="T:Gtk.CalendarDisplayOptions" />, combined using a bit-wise OR.</value>
         <remarks>
           <para>This method allows fine control over which parts of the Calendar, such as day names, are displayed. The <see cref="T:Gtk.CalendarDisplayOptions" /> describe the choices in more detail.</para>
         </remarks>

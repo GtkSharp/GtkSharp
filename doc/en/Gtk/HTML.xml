@@ -1,12 +1,10 @@
 <Type Name="HTML" FullName="Gtk.HTML">
-  <TypeSignature Language="C#" Value="public class HTML : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Miguel de Icaza" />
+  <TypeSignature Language="C#" Maintainer="Miguel de Icaza" Value="public class HTML : Gtk.Layout" />
   <AssemblyInfo>
     <AssemblyName>gtkhtml-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -147,20 +145,7 @@ namespace HtmlTest
     <BaseTypeName>Gtk.Layout</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Construct">
       <MemberSignature Language="C#" Value="public static void Construct (Gtk.Widget html);" />
@@ -962,7 +947,6 @@ class X {
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of HTML, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -975,7 +959,6 @@ class X {
       <Parameters />
       <Docs>
         <summary>Creates an empty <see cref="T:Gtk.HTML" /> widget.</summary>
-        <returns>The new constructed <see cref="T:Gtk.HTML" /> widget.</returns>
         <remarks>
           <para>
 	    It creates an empty <see cref="T:Gtk.HTML" /> widget.  The
@@ -995,15 +978,19 @@ class X {
       <Docs>
         <summary>Whether the contents can be edited.</summary>
         <param name="value">Editing state.</param>
-        <returns>
+        <value>
           <see langword="true" /> if the contents are editable,
-        <see langword="false" />otherwise. </returns>
+        <see langword="false" />otherwise. </value>
         <remarks>
 	  Whether this <see cref="T:Gtk.HTML" /> instance can be used as an HTML
 	  editor.  Note:  <see cref="M:Gtk.HTML.Begin" /> must be called before this can be set = <see langword="true" />.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="editable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ParagraphIndentation">
       <MemberSignature Language="C#" Value="public uint ParagraphIndentation { get; };" />
       <MemberType>Property</MemberType>
@@ -1012,7 +999,7 @@ class X {
       </ReturnValue>
       <Docs>
         <summary>The indentation level of a paragraph.</summary>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1027,7 +1014,7 @@ class X {
       <Docs>
         <summary>The base URL of this document.</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1042,10 +1029,14 @@ class X {
       <Docs>
         <summary>The title of this HTML document.</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="title")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DefaultContentType">
       <MemberSignature Language="C#" Value="public string DefaultContentType { set; };" />
       <MemberType>Property</MemberType>
@@ -1057,7 +1048,7 @@ class X {
       <Docs>
         <summary>The default content type.</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1072,7 +1063,7 @@ class X {
       <Docs>
         <summary>The style of a paragraph.</summary>
         <param name="value">an object of type <see cref="T:Gtk.HTMLParagraphStyle" /></param>
-        <returns>an object of type <see cref="T:Gtk.HTMLParagraphStyle" /></returns>
+        <value>an object of type <see cref="T:Gtk.HTMLParagraphStyle" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1087,7 +1078,7 @@ class X {
       <Docs>
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1102,7 +1093,7 @@ class X {
       <Docs>
         <summary>The current widget magnification level.</summary>
         <param name="value">an object of type <see cref="T:System.Double" /></param>
-        <returns>an object of type <see cref="T:System.Double" /></returns>
+        <value>an object of type <see cref="T:System.Double" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1117,7 +1108,7 @@ class X {
       <Docs>
         <summary>The alignment of text (right, left, center)</summary>
         <param name="value">an object of type <see cref="T:Gtk.HTMLParagraphAlignment" /></param>
-        <returns>an object of type <see cref="T:Gtk.HTMLParagraphAlignment" /></returns>
+        <value>an object of type <see cref="T:Gtk.HTMLParagraphAlignment" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1132,7 +1123,7 @@ class X {
       <Docs>
         <summary>Whether to allow framesets in this widget.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1147,7 +1138,11 @@ class X {
         <summary>Fired when the font style under the cursor is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insertion_font_style_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TitleChanged">
       <MemberSignature Language="C#" Value="public event Gtk.TitleChangedHandler TitleChanged;" />
       <MemberType>Event</MemberType>
@@ -1163,7 +1158,11 @@ class X {
 	  the <see cref="P:Gtk.HTML.Title" /> property.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="title_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetBase">
       <MemberSignature Language="C#" Value="public event Gtk.SetBaseHandler SetBase;" />
       <MemberType>Event</MemberType>
@@ -1175,7 +1174,11 @@ class X {
         <summary>Fired when the base URL of the document is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_base")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SizeChanged">
       <MemberSignature Language="C#" Value="public event EventHandler SizeChanged;" />
       <MemberType>Event</MemberType>
@@ -1187,7 +1190,11 @@ class X {
         <summary>Fired when the size of text is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="size_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CurrentParagraphStyleChanged">
       <MemberSignature Language="C#" Value="public event Gtk.CurrentParagraphStyleChangedHandler CurrentParagraphStyleChanged;" />
       <MemberType>Event</MemberType>
@@ -1199,7 +1206,11 @@ class X {
         <summary>Fired when the text style of this paragraph is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="current_paragraph_style_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LoadDone">
       <MemberSignature Language="C#" Value="public event EventHandler LoadDone;" />
       <MemberType>Event</MemberType>
@@ -1211,7 +1222,11 @@ class X {
         <summary>Fired after a webpage is finished loading.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="load_done")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CursorMove">
       <MemberSignature Language="C#" Value="public event Gtk.CursorMoveHandler CursorMove;" />
       <MemberType>Event</MemberType>
@@ -1226,7 +1241,11 @@ class X {
 	  the cursor has moved.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cursor_move")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnCommand">
       <MemberSignature Language="C#" Value="public event Gtk.OnCommandHandler OnCommand;" />
       <MemberType>Event</MemberType>
@@ -1238,7 +1257,11 @@ class X {
         <summary>Fired when a command is issued to the widget.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="command")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UrlRequested">
       <MemberSignature Language="C#" Value="public event Gtk.UrlRequestedHandler UrlRequested;" />
       <MemberType>Event</MemberType>
@@ -1315,7 +1338,11 @@ class X {
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="url_requested")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IframeCreated">
       <MemberSignature Language="C#" Value="public event Gtk.IframeCreatedHandler IframeCreated;" />
       <MemberType>Event</MemberType>
@@ -1327,7 +1354,11 @@ class X {
         <summary>Fired after an IFRAME is created.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="iframe_created")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Scroll">
       <MemberSignature Language="C#" Value="public event Gtk.ScrollHandler Scroll;" />
       <MemberType>Event</MemberType>
@@ -1339,7 +1370,11 @@ class X {
         <summary>Fired when the widget is scrolled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="scroll")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CurrentParagraphIndentationChanged">
       <MemberSignature Language="C#" Value="public event Gtk.CurrentParagraphIndentationChangedHandler CurrentParagraphIndentationChanged;" />
       <MemberType>Event</MemberType>
@@ -1351,7 +1386,11 @@ class X {
         <summary>Fired when the indent level of the current paragraph is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="current_paragraph_indentation_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CurrentParagraphAlignmentChanged">
       <MemberSignature Language="C#" Value="public event Gtk.CurrentParagraphAlignmentChangedHandler CurrentParagraphAlignmentChanged;" />
       <MemberType>Event</MemberType>
@@ -1363,7 +1402,11 @@ class X {
         <summary>Fired when the alignment of the current paragraph is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="current_paragraph_alignment_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertionColorChanged">
       <MemberSignature Language="C#" Value="public event Gtk.InsertionColorChangedHandler InsertionColorChanged;" />
       <MemberType>Event</MemberType>
@@ -1375,7 +1418,11 @@ class X {
         <summary>Fired when the text color to insert is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insertion_color_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LinkClicked">
       <MemberSignature Language="C#" Value="public event Gtk.LinkClickedHandler LinkClicked;" />
       <MemberType>Event</MemberType>
@@ -1427,7 +1474,11 @@ class X {
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="link_clicked")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Submit">
       <MemberSignature Language="C#" Value="public event Gtk.SubmitHandler Submit;" />
       <MemberType>Event</MemberType>
@@ -1439,7 +1490,11 @@ class X {
         <summary>Fired when a form submit button is clicked.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="submit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Redirect">
       <MemberSignature Language="C#" Value="public event Gtk.RedirectHandler Redirect;" />
       <MemberType>Event</MemberType>
@@ -1451,7 +1506,11 @@ class X {
         <summary>Fired when an HTTP redirect is received.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="redirect")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnUrl">
       <MemberSignature Language="C#" Value="public event Gtk.OnUrlHandler OnUrl;" />
       <MemberType>Event</MemberType>
@@ -1505,7 +1564,11 @@ class X {
 	  </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="on_url")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetBaseTarget">
       <MemberSignature Language="C#" Value="public event Gtk.SetBaseTargetHandler SetBaseTarget;" />
       <MemberType>Event</MemberType>
@@ -1517,7 +1580,11 @@ class X {
         <summary>Fired when the base URL target is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_base_target")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LoadFromString">
       <MemberSignature Language="C#" Value="public void LoadFromString (string str);" />
       <MemberType>Method</MemberType>
@@ -1543,7 +1610,6 @@ class X {
       <Docs>
         <summary>A constructor.</summary>
         <param name="Astr">an object of type <see cref="T:System.String" />(FIXME: check this)</param>
-        <returns>an object of type <see cref="T:Gtk.HTML" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -1558,10 +1624,14 @@ class X {
       <Docs>
         <summary>The base URL of the document.</summary>
         <param name="value">A <see cref="T:System.String" /> containing the URL</param>
-        <returns>A <see cref="T:System.String" /> containing the URL.</returns>
+        <value>A <see cref="T:System.String" /> containing the URL.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="document_base")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TargetBase">
       <MemberSignature Language="C#" Value="public string TargetBase { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1573,10 +1643,14 @@ class X {
       <Docs>
         <summary>To be added</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="target_base")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MagicLinks">
       <MemberSignature Language="C#" Value="public bool MagicLinks { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1588,7 +1662,7 @@ class X {
       <Docs>
         <summary>Whether magic links (auto-recognizing URLs and making them clickable) is activated.</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1603,7 +1677,7 @@ class X {
       <Docs>
         <summary>Whether magic smileys (automatically recognizing smileys and turning them into small graphics) is activated.</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1618,7 +1692,7 @@ class X {
       <Docs>
         <summary>To be added</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1633,7 +1707,7 @@ class X {
       <Docs>
         <summary>Whether or not to check spelling inline by indicating misspelled words.</summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1721,7 +1795,11 @@ class X {
         <summary>To be added</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="object_requested")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasUndo">
       <MemberSignature Language="C#" Value="public bool HasUndo { get; };" />
       <MemberType>Property</MemberType>
@@ -1731,7 +1809,7 @@ class X {
       <Parameters />
       <Docs>
         <summary>Whether the widget has an Undo option or not.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -1744,7 +1822,7 @@ class X {
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.HTML" />.</remarks>
       </Docs>
     </Member>
@@ -2051,10 +2129,13 @@ class X {
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.HTML" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Indent">
       <MemberSignature Language="C#" Value="public IntPtr Indent { set; };" />
       <MemberType>Property</MemberType>
@@ -2063,7 +2144,7 @@ class X {
       </ReturnValue>
       <Docs>
         <summary>Sets the indentation level for the widget.</summary>
-        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <value>a <see cref="T:System.IntPtr" /></value>
         <remarks />
       </Docs>
     </Member>

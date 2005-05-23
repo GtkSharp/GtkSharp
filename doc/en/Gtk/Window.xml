@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Type Name="Window" FullName="Gtk.Window">
-  <TypeSignature Language="C#" Value="public class Window : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class Window : Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -18,20 +15,7 @@
     <BaseTypeName>Gtk.Bin</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="BeginMoveDrag">
       <MemberSignature Language="C#" Value="public void BeginMoveDrag (int button, int root_x, int root_y, uint timestamp);" />
@@ -723,7 +707,6 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Internal constructor.</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Window, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -739,7 +722,6 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Creates a new Window object, based on the <paramref name="type" />.</summary>
         <param name="type">A <see cref="T:Gtk.WindowType" />.</param>
-        <returns>A <see cref="T:Gtk.Window" />.</returns>
         <remarks>
           <para>
 	  Creates a new Window object, wich can be of type TopLevel ( most of the cases ) or PopUp. Take care with the use of PopUp type, since it is not controlled by the window manager.
@@ -757,7 +739,6 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Creates a new TopLevel Window object, with <paramref name="string" /> as the title.</summary>
         <param name="title">A string.</param>
-        <returns>A <see cref="T:Gtk.Window" />.</returns>
         <remarks>
           <para>
 	  Creates a new TopLevel Window object, using <paramref name="string" /> as the title. You get the same if you use the public Window ( Gtk.WindowType type ) constructor and later set the string Title property.
@@ -776,7 +757,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or unsets the default <paramref name="widget" /> for a <see cref="T:Gtk.Window" /> about.</summary>
         <param name="value">Widget to be the default, or <see langword="null" /> to unset the default <paramref name="widget" /> for the toplevel.</param>
-        <returns>A <see cref="T:Gtk.Widget" />.</returns>
+        <value>A <see cref="T:Gtk.Widget" />.</value>
         <remarks>
           <para>
 	  The default <paramref name="widget" /> is the widget that's activated when the user presses Enter in a dialog (for example). When setting (rather than unsetting) the default <paramref name="widget" /> it's generally easier to call <see cref="M:Gtk.Widget.GrabFocus" /> on the <paramref name="widget" />. Before making a default <paramref name="widget" />, you must set the <see cref="F:Gtk.WidgetFlags.CanDefault" /> flag on the <paramref name="widget" /> you'd like to make the default.
@@ -795,8 +776,8 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>If this function is called on a <paramref name="window" /> with setting of <see langword="true" />, before it is realized or showed, it will have a "frame" <paramref name="window" /> around widget-&gt;window, accessible in window-&gt;frame. Or it access the "frame" <paramref name="window" /> exterior to widget-&gt;window.</summary>
         <param name="value">A <see langword="boolean" />.</param>
-        <returns>
-          <see langword="true" /> if a frame has been added to the <paramref name="window" /> via <see cref="P:Gtk.Window.HasFrame" />.</returns>
+        <value>
+          <see langword="true" /> if a frame has been added to the <paramref name="window" /> via <see cref="P:Gtk.Window.HasFrame" />.</value>
         <remarks>
           <para>
 	  Using the event <see cref="F:Gtk.WIndow.FrameEvent" /> you can receive all events targeted at the frame. This method is used by the linux-fb port to implement managed windows, but it could concievably be used by X-programs that want to do their  own window decorations.
@@ -818,14 +799,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the meaning of coordinates passed to <see cref="M:Gtk.Window.Move" />.</summary>
         <param name="value">A window gravity.</param>
-        <returns>A window gravity.</returns>
+        <value>A window gravity.</value>
         <remarks>
           <para>
 	  The default window gravity is <see cref="F:Gdk.Gravity.NorthWest" /> which is typically "do what you mean". See <see cref="M:Gtk.Window.Move" /> and <see cref="T:Gdk.Gravity" />.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="gravity")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MnemonicModifier">
       <MemberSignature Language="C#" Value="public Gdk.ModifierType MnemonicModifier { set; get; };" />
       <MemberType>Property</MemberType>
@@ -837,7 +822,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the mnemonic modifier for this <paramref name="window" />.</summary>
         <param name="value">The modfier mask.</param>
-        <returns>The modifier mask used to activate mnemonics on this <paramref name="window" />.</returns>
+        <value>The modifier mask used to activate mnemonics on this <paramref name="window" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -852,14 +837,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the type hint for <paramref name="window" />.</summary>
         <param name="value">The window type.</param>
-        <returns>The type hint for <paramref name="window" />.</returns>
+        <value>The type hint for <paramref name="window" />.</value>
         <remarks>
           <para>
 	  By setting the type hint for the <paramref name="window" />, you allow the window manager to decorate and handle the <paramref name="window" /> in a way which is suitable to the function of the <paramref name="window" /> in your application. This property should be called before the <paramref name="window" /> becomes visible.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="type_hint")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TransientFor">
       <MemberSignature Language="C#" Value="public Gtk.Window TransientFor { set; get; };" />
       <MemberType>Property</MemberType>
@@ -871,7 +860,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the transient parent window.</summary>
         <param name="value">Parent <paramref name="window" />.</param>
-        <returns />
+        <value />
         <remarks>
           <para>
 	  Dialog windows should be transient for the main <paramref name="window" /> they were spawned from, this allows windows managers to e.g. keep the dialog on top of the main <paramref name="window" />, or center the dialog over the main <paramref name="window" />.
@@ -894,7 +883,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Sets a <paramref name="widget" /> to be the focus widget for the <paramref name="window" /> if it is not the current focus widget, and its focusable, or retrieves the current focused <paramref name="widget" /> within the <paramref name="window" />.</summary>
         <param name="value">
           <paramref name="Widget" /> to be the new focus widget, or <see langword="null" /> to unset any focus widget for the toplevel window.</param>
-        <returns>The currently focused <paramref name="widget" />, or <see langword="null" /> if there is none.</returns>
+        <value>The currently focused <paramref name="widget" />, or <see langword="null" /> if there is none.</value>
         <remarks>
           <para>
 	  To set the focus to a particular <paramref name="widget" /> in the toplevel, it is usually more convenient to use <see cref="M:Gtk.Widget.GrabFocus" />.
@@ -916,7 +905,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the role of the <paramref name="window" />.</summary>
         <param name="value">Unique identifier for the <paramref name="window" /> to be used when restoring a session.</param>
-        <returns>The role of the <paramref name="window" /> if set, or <see langword="null" />. The returned is owned by the widget and must not be modified or freed.</returns>
+        <value>The role of the <paramref name="window" /> if set, or <see langword="null" />. The returned is owned by the widget and must not be modified or freed.</value>
         <remarks>
           <para>
 	 This property is only useful on X11, not with other GTK# targets.
@@ -926,7 +915,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
 	 If a <paramref name="window" /> already has a unique title, you don't need to set the role, since the WM can use the title to identigy the <paramref name="window" /> when restoring the session.
 	</para></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="role")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Decorated">
       <MemberSignature Language="C#" Value="public bool Decorated { set; get; };" />
       <MemberType>Property</MemberType>
@@ -939,8 +932,8 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Sets or obtains whether the <paramref name="window" /> has been set to have decorations.</summary>
         <param name="value">
           <see langword="true" /> to decorate the <paramref name="window" />.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> has been set to have decorations.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> has been set to have decorations.</value>
         <remarks>
           <para>
 	  With this property you control if a <paramref name="window" /> will be decorated or not.
@@ -950,7 +943,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="decorated")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Resizable">
       <MemberSignature Language="C#" Value="public bool Resizable { set; get; };" />
       <MemberType>Property</MemberType>
@@ -963,15 +960,19 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>Sets or obtains whether a <paramref name="window" /> will be resizable by the user or not.</summary>
         <param name="value">
           <see langword="true" /> if the user can resize this <paramref name="window" />.</param>
-        <returns>
-          <see langword="true" /> if the user can resize the <paramref name="window" />.</returns>
+        <value>
+          <see langword="true" /> if the user can resize the <paramref name="window" />.</value>
         <remarks>
           <para>
 	  By default, the <paramref name="window" /> are resizable, so you can change the size of them. But if you set this property to false, the user won't be able to change the size of them.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="resizable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WindowPosition">
       <MemberSignature Language="C#" Value="public Gtk.WindowPosition WindowPosition { set; get; };" />
       <MemberType>Property</MemberType>
@@ -983,14 +984,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting/getting the <paramref name="window" /> position.</summary>
         <param name="value">A <paramref name="window" /> position. See also <see cref="T:Gtk.WindowPosition" />.</param>
-        <returns>The <paramref name="window" /> position. See also <see cref="T:Gtk.WindowPosition" />.</returns>
+        <value>The <paramref name="window" /> position. See also <see cref="T:Gtk.WindowPosition" />.</value>
         <remarks>
           <para>
 	  This property will alow you to define where a <paramref name="window" /> must be displayed on the screen. It work with the <see cref="T:Gtk.WindowPosition" /> enum, so maybe you should check it before use it.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="window_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DefaultHeight">
       <MemberSignature Language="C#" Value="public int DefaultHeight { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1002,14 +1007,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting or obtaining the default height of a <paramref name="window" />.</summary>
         <param name="value">A <paramref name="window" /> height.</param>
-        <returns>The default height of the <paramref name="window" />.</returns>
+        <value>The default height of the <paramref name="window" />.</value>
         <remarks>
           <para>
 	  This property will allow you to define the default height for your <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="default_height")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DestroyWithParent">
       <MemberSignature Language="C#" Value="public bool DestroyWithParent { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1021,14 +1030,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains whether the transient parent of <paramref name="window" /> will also destroy <paramref name="window" /> itself</summary>
         <param name="value">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>
           <para>
 	  This is useful for dialogs that shouldn't persist beyond the livefime of the main <paramref name="window" /> they're associated with, for example.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="destroy_with_parent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Modal">
       <MemberSignature Language="C#" Value="public bool Modal { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1040,8 +1053,8 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the modal status of <paramref name="window" />.</summary>
         <param name="value">Whether the <paramref name="window" /> is modal.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> is set to be modal and establishes a grab when shown.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> is set to be modal and establishes a grab when shown.</value>
         <remarks>
           <para>
 	  Modal windows prevent interaction with other windows in the same application. To keep modal dialogs on top of main application windows, use <see cref="P:Gtk.Window.TransientFor" /> to make the dialog transient for the parent; most window managers will then disallow lowering the dialog below the parent.
@@ -1051,7 +1064,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="modal")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AllowGrow">
       <MemberSignature Language="C#" Value="public bool AllowGrow { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1063,11 +1080,15 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains if the <paramref name="window" /> can be resized to a larger size by the user.</summary>
         <param name="value">If <see langword="true" /> the <paramref name="window" /> can be resized.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> can be resized.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> can be resized.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="allow_grow")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Title">
       <MemberSignature Language="C#" Value="public string Title { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1079,14 +1100,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting the <paramref name="window" /> title.</summary>
         <param name="value">Title of the <paramref name="window" />.</param>
-        <returns>The title of the <paramref name="window" />, or <see langword="null" /> if none has been set explicitely. The returned string is owned by the <paramref name="widget" /> and must not be modified or freed.</returns>
+        <value>The title of the <paramref name="window" />, or <see langword="null" /> if none has been set explicitely. The returned string is owned by the <paramref name="widget" /> and must not be modified or freed.</value>
         <remarks>
           <para>
 	  This property will allow you to set the <paramref name="window" /> title. The title of a <paramref name="window" /> will be displayed in its title bar. Since the title bar is rendered by the window managers on X Window System, the way it appears will depend on the user preferences. This title should help the users to distinguish a <paramref name="window" /> from others opened. A good title will have the application name an the actual document, for example.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="title")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Type">
       <MemberSignature Language="C#" Value="public Gtk.WindowType Type { get; };" />
       <MemberType>Property</MemberType>
@@ -1095,14 +1120,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>The type of <paramref name="window" />.</summary>
-        <returns>The <paramref name="window" /> type.</returns>
+        <value>The <paramref name="window" /> type.</value>
         <remarks>
           <para>
 	  See also <see cref="T:Gtk.WindowType" />.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="type")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DefaultWidth">
       <MemberSignature Language="C#" Value="public int DefaultWidth { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1114,14 +1143,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting or obtaining the default width of a <paramref name="window" />.</summary>
         <param name="value">A <paramref name="window" />.</param>
-        <returns>The default width of the <paramref name="window" />.</returns>
+        <value>The default width of the <paramref name="window" />.</value>
         <remarks>
           <para>
 	  This property will allow you to define the default width for <paramref name="window" />. It only define the default one, so if the <paramref name="window" /> is resized, it won't be able to do anything.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="default_width")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Icon">
       <MemberSignature Language="C#" Value="public Gdk.Pixbuf Icon { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1133,10 +1166,14 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting the icon for a <paramref name="window" />.</summary>
         <param name="value">An icon.</param>
-        <returns>The default icon for <paramref name="window" />.</returns>
+        <value>The default icon for <paramref name="window" />.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="icon")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AllowShrink">
       <MemberSignature Language="C#" Value="public bool AllowShrink { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1148,15 +1185,19 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains if the <paramref name="window" /> has no mininum size.</summary>
         <param name="value">If <see langword="true" /> the <paramref name="window" /> has no minimum size.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> has no minimum size.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> has no minimum size.</value>
         <remarks>
           <para>
 	  Setting this to <paramref name="true" /> is 99% of the time a bad idea.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="allow_shrink")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="KeysChanged">
       <MemberSignature Language="C#" Value="public event EventHandler KeysChanged;" />
       <MemberType>Event</MemberType>
@@ -1168,7 +1209,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>KeysChanged event.</summary>
         <remarks>This event is emited when the <see cref="T:Gtk.AccelGroup" /> or mnemonic associated with the <see cref="T:Gtk.Window" /> is changed.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="keys_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveFocus">
       <MemberSignature Language="C#" Value="public event Gtk.MoveFocusHandler MoveFocus;" />
       <MemberType>Event</MemberType>
@@ -1180,7 +1225,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>MoveFocus event.</summary>
         <remarks>This event is emited when the focus is moved from one child to another.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetFocus">
       <MemberSignature Language="C#" Value="public event Gtk.SetFocusHandler SetFocus;" />
       <MemberType>Event</MemberType>
@@ -1192,7 +1241,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>SetFocus event.</summary>
         <remarks>This event is emited when the focused widget is set.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DefaultActivated">
       <MemberSignature Language="C#" Value="public event EventHandler DefaultActivated;" />
       <MemberType>Event</MemberType>
@@ -1204,7 +1257,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>DefaultActivated event.</summary>
         <remarks>This event is emited when the keybinding for default widget activation is triggered.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate_default")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusActivated">
       <MemberSignature Language="C#" Value="public event EventHandler FocusActivated;" />
       <MemberType>Event</MemberType>
@@ -1216,7 +1273,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>FocusActivated event.</summary>
         <remarks>This event is emited when the keybinding for focused widget activation is triggered.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FrameEvent">
       <MemberSignature Language="C#" Value="public event Gtk.FrameEventHandler FrameEvent;" />
       <MemberType>Event</MemberType>
@@ -1228,7 +1289,11 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
         <summary>FrameEvent event.</summary>
         <remarks>This event is emited when <see cref="M:Gtk.Window.HasFrame" /> has been set to true and an event occurs on the resulting frame.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="frame_event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AutoStartupNotification">
       <MemberSignature Language="C#" Value="public static bool AutoStartupNotification { set; };" />
       <MemberType>Property</MemberType>
@@ -1240,8 +1305,8 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Property used for setting the automatic startup notification.</summary>
         <param name="value">If <see langword="true" /> automatically do startup notification.</param>
-        <returns>
-          <see langword="true" /> if set to automatically do startup notification.</returns>
+        <value>
+          <see langword="true" /> if set to automatically do startup notification.</value>
         <remarks>
           <para>
 	  By default, after showing the first <see cref="T:Gtk.Window" /> for each <see cref="T:Gdk.Screen" />, GTK# calls <see cref="M:Gdk.Global.NotifyStartupComplete" />. Use this property to disable the automatic startup notification. 
@@ -1263,14 +1328,18 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the <see cref="T:Gdk.Screen" /> where the <paramref name="window" /> is displayed.</summary>
         <param name="value">A <see cref="T:Gdk.Screen" />.</param>
-        <returns>A <see cref="T:Gdk.Screen" />.</returns>
+        <value>A <see cref="T:Gdk.Screen" />.</value>
         <remarks>
           <para>
 	  If the <paramref name="window" /> is already mapped, it will be unmapped, and then remapped on the new screen.
 	 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="screen")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IsActive">
       <MemberSignature Language="C#" Value="public bool IsActive { get; };" />
       <MemberType>Property</MemberType>
@@ -1279,12 +1348,16 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>Whether the toplevel is the current active <paramref name="window" />.</summary>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> is the toplevel.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> is the toplevel.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="is_active")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasToplevelFocus">
       <MemberSignature Language="C#" Value="public bool HasToplevelFocus { get; };" />
       <MemberType>Property</MemberType>
@@ -1293,12 +1366,16 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>Whether the input focus is within this <paramref name="window" />.</summary>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> has the input focus.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> has the input focus.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_toplevel_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SkipPagerHint">
       <MemberSignature Language="C#" Value="public bool SkipPagerHint { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1310,12 +1387,16 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Whether the <paramref name="window" /> should not be in the pager.</summary>
         <param name="value">If <see langword="true" /> then the <paramref name="window" /> will not be in the pager.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> should not be in the pager.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> should not be in the pager.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="skip_pager_hint")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SkipTaskbarHint">
       <MemberSignature Language="C#" Value="public bool SkipTaskbarHint { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1327,12 +1408,16 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Whether the <paramref name="window" /> should not be in the taskbar.</summary>
         <param name="value">If <see langword="true" /> then the <paramref name="window" /> will not be in the taskbar.</param>
-        <returns>
-          <see langword="true" /> if the <paramref name="window" /> should not be in the taskbar.</returns>
+        <value>
+          <see langword="true" /> if the <paramref name="window" /> should not be in the taskbar.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="skip_taskbar_hint")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetDefaultIconFromFile">
       <MemberSignature Language="C#" Value="public static bool SetDefaultIconFromFile (string filename);" />
       <MemberType>Method</MemberType>
@@ -1418,7 +1503,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Parameters />
       <Docs>
         <summary>GType Property</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native GObject type for <see cref="T:Gtk.Window" />.</remarks>
       </Docs>
     </Member>
@@ -1514,12 +1599,15 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Protected constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Window" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native GType for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DefaultIconList">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf [] DefaultIconList { set; get; };" />
+      <MemberSignature Language="C#" Value="public static Gdk.Pixbuf[] DefaultIconList { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf[]</ReturnType>
@@ -1528,7 +1616,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the icon list to be used as fallback for windows that haven't had <see cref="M:Gtk.Window.IconList" /> called on them to set up a window-specific icon list.</summary>
         <param name="value">An array of <see cref="T:Gdk.Pixbuf" />.</param>
-        <returns>An array of icons list.</returns>
+        <value>An array of icons list.</value>
         <remarks>
           <para>
 	  This method allows you to set up the icon for all windows in your app at once. 
@@ -1537,7 +1625,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </Docs>
     </Member>
     <Member MemberName="IconList">
-      <MemberSignature Language="C#" Value="public Gdk.Pixbuf [] IconList { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gdk.Pixbuf[] IconList { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixbuf[]</ReturnType>
@@ -1546,7 +1634,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Docs>
         <summary>Sets or obtains the list of icons representing a <see cref="T:Gtk.Window" />.</summary>
         <param name="value">An array of <see cref="T:Gdk.Pixbuf" />s.</param>
-        <returns>An array of <see cref="T:Gdk.Pixbuf[]" />s.</returns>
+        <value>An array of <see cref="T:Gdk.Pixbuf[]" />s.</value>
         <remarks>
           <para>
 	  The icon is used when <paramref name="window" /> is minimized (also known as iconified). Some window managers or desktop environments may also place it in the window frame, or display it in other contexts.
@@ -1592,7 +1680,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Parameters />
       <Docs>
         <summary>Sets or obtains the default size of <paramref name="window" />.</summary>
-        <returns>a <see cref="T:Gdk.Size" /></returns>
+        <value>a <see cref="T:Gdk.Size" /></value>
         <remarks>
           <para>
          A value of -1 for the size indicates that a default size has not been explicitly set for that dimension, so the "natural" size of the <paramref name="window" /> will be used.
@@ -1626,7 +1714,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>Sets an icon to be used as fallback for windows that have not had <see cref="M:Gtk.Window.SetIcon()" /> called on them from a pixbuf.</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <value>a <see cref="T:Gdk.Pixbuf" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -1640,11 +1728,15 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       <Parameters />
       <Docs>
         <summary>Windows may set a hint asking the desktop environment not to receive the input focus.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <see langword="true" /> to let this window receive input focus</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="accept_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="KeepBelow">
       <MemberSignature Language="C#" Value="public bool KeepBelow { set; };" />
       <MemberType>Property</MemberType>
@@ -1653,7 +1745,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>Asks to keep window below, so that it stays in bottom.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it below, and not all window managers support putting windows below. But normally the window will be kept below. Just do not write code that crashes if not.</para>
           <para>It is permitted to call this function before showing a window, in which case the window will be kept below when it appears onscreen initially.</para>
@@ -1671,7 +1763,7 @@ Console.WriteLine("Width: {0}, Height: {1}" , width , height);</code>
       </ReturnValue>
       <Docs>
         <summary>Asks to keep window above, so that it stays on top.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
           <para>Note that you should not assume the window is definitely below afterward, because other entities (e.g. the user or window manager) could not keep it above, and not all window managers support putting windows below. But normally the window will be kept above. Just do not write code that crashes if not.</para>
           <para>It is permitted to call this function before showing a window, in which case the window will be kept above when it appears onscreen initially.</para>
@@ -1752,7 +1844,7 @@ Sometimes when you think you want to use allow_shrink, the real problem is that 
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -1765,10 +1857,14 @@ Sometimes when you think you want to use allow_shrink, the real problem is that 
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="icon_name")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusOnMap">
       <MemberSignature Language="C#" Value="public bool FocusOnMap { set; get; };" />
       <MemberType>Property</MemberType>
@@ -1778,9 +1874,13 @@ Sometimes when you think you want to use allow_shrink, the real problem is that 
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="focus_on_map")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

@@ -1,12 +1,10 @@
 <Type Name="ProgressBar" FullName="Gtk.ProgressBar">
-  <TypeSignature Language="C#" Value="public class ProgressBar : Gtk.Progress, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class ProgressBar : Gtk.Widget" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -28,20 +26,7 @@
     <BaseTypeName>Gtk.Widget</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Pulse">
       <MemberSignature Language="C#" Value="public void Pulse ();" />
@@ -79,7 +64,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of ProgressBar, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -92,7 +76,6 @@
       <Parameters />
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.ProgressBar" />.</summary>
-        <returns>an object of type <see cref="T:Gtk.ProgressBar" /></returns>
         <remarks>Creates a new <see cref="T:Gtk.ProgressBar" />.</remarks>
       </Docs>
     </Member>
@@ -107,10 +90,14 @@
       <Docs>
         <summary>Details about the increments used in updating the ProgressBar.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="adjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DiscreteBlocks">
       <MemberSignature Language="C#" Value="public uint DiscreteBlocks { set; get; };" />
       <MemberType>Property</MemberType>
@@ -122,10 +109,14 @@
       <Docs>
         <summary>The number of blocks that the <see cref="T:Gtk.ProgressBar" /> is divided into.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>The number of blocks that the <see cref="T:Gtk.ProgressBar" /> is divided into when the style is discrete.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="discrete_blocks")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Text">
       <MemberSignature Language="C#" Value="public string Text { set; get; };" />
       <MemberType>Property</MemberType>
@@ -137,11 +128,15 @@
       <Docs>
         <summary>The text displayed superimposed on the <see cref="T:Gtk.ProgressBar" />.</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks>The text displayed superimposed on the <see cref="T:Gtk.ProgressBar" />, if any, otherwise <see langword="null" />.
 					The return value is a reference to the text, not a copy of it, so will become invalid if you change the text in the <see cref="T:Gtk.ProgressBar" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="text")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Orientation">
       <MemberSignature Language="C#" Value="public Gtk.ProgressBarOrientation Orientation { set; get; };" />
       <MemberType>Property</MemberType>
@@ -153,10 +148,14 @@
       <Docs>
         <summary>The current <see cref="T:Gtk.ProgressBar" /> orientation.</summary>
         <param name="value">an object of type <see cref="T:Gtk.ProgressBarOrientation" /></param>
-        <returns>an object of type <see cref="T:Gtk.ProgressBarOrientation" /></returns>
+        <value>an object of type <see cref="T:Gtk.ProgressBarOrientation" /></value>
         <remarks>The current <see cref="T:Gtk.ProgressBar" /> orientation.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="orientation")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ActivityStep">
       <MemberSignature Language="C#" Value="public uint ActivityStep { set; get; };" />
       <MemberType>Property</MemberType>
@@ -168,11 +167,15 @@
       <Docs>
         <summary>The step value used when the <see cref="T:Gtk.ProgressBar" /> is in activity mode.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>The step value used when the <see cref="T:Gtk.ProgressBar" /> is in activity mode.
 					The step is the amount by which the progress is incremented each iteration.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="activity_step")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Fraction">
       <MemberSignature Language="C#" Value="public double Fraction { set; get; };" />
       <MemberType>Property</MemberType>
@@ -184,10 +187,14 @@
       <Docs>
         <summary>The current fraction of the task that has been completed.</summary>
         <param name="value">an object of type <see cref="T:System.Double" /></param>
-        <returns>an object of type <see cref="T:System.Double" /></returns>
+        <value>an object of type <see cref="T:System.Double" /></value>
         <remarks>The current fraction of the task that has been completed.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="fraction")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ActivityBlocks">
       <MemberSignature Language="C#" Value="public uint ActivityBlocks { set; get; };" />
       <MemberType>Property</MemberType>
@@ -199,11 +206,15 @@
       <Docs>
         <summary>The number of blocks used when the <see cref="T:Gtk.ProgressBar" /> is in activity mode.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>The number of blocks used when the <see cref="T:Gtk.ProgressBar" /> is in activity mode.
 					Larger numbers make the visible block smaller.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="activity_blocks")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="BarStyle">
       <MemberSignature Language="C#" Value="public Gtk.ProgressBarStyle BarStyle { set; get; };" />
       <MemberType>Property</MemberType>
@@ -215,12 +226,16 @@
       <Docs>
         <summary>The style for drawing the <see cref="T:Gtk.ProgressBar" />.</summary>
         <param name="value">an object of type <see cref="T:Gtk.ProgressBarStyle" /></param>
-        <returns>an object of type <see cref="T:Gtk.ProgressBarStyle" /></returns>
+        <value>an object of type <see cref="T:Gtk.ProgressBarStyle" /></value>
         <remarks>The style for drawing the <see cref="T:Gtk.ProgressBar" />.
 					Continuous - The <see cref="T:Gtk.ProgressBar" /> grows in a smooth, continuous manner.
 					Discrete - The <see cref="T:Gtk.ProgressBar" /> grows in discrete, visible blocks.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="bar_style")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PulseStep">
       <MemberSignature Language="C#" Value="public double PulseStep { set; get; };" />
       <MemberType>Property</MemberType>
@@ -232,10 +247,14 @@
       <Docs>
         <summary>The fraction of total <see cref="T:Gtk.ProgressBar" /> length to move the bouncing block for each call to <see cref="M:Gtk.ProgressBar.Pulse()" />.</summary>
         <param name="value">an object of type <see cref="T:System.Double" /></param>
-        <returns>an object of type <see cref="T:System.Double" /></returns>
+        <value>an object of type <see cref="T:System.Double" /></value>
         <remarks>The fraction of total <see cref="T:Gtk.ProgressBar" /> length to move the bouncing block for each call to <see cref="M:Gtk.ProgressBar.Pulse()" />.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="pulse_step")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -245,7 +264,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ProgressBar" />.</remarks>
       </Docs>
     </Member>
@@ -259,10 +278,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ProgressBar" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Update">
       <MemberSignature Language="C#" Value="public void Update (double percentage);" />
       <MemberType>Method</MemberType>
@@ -289,7 +311,6 @@
       <Docs>
         <summary>Public constructor.</summary>
         <param name="adjustment">a <see cref="T:Gtk.Adjustment" /></param>
-        <returns>a <see cref="T:Gtk.ProgressBar" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -303,9 +324,13 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Pango.EllipsizeMode" /></returns>
+        <value>a <see cref="T:Pango.EllipsizeMode" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="ellipsize")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

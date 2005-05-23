@@ -1,12 +1,10 @@
 <Type Name="Entry" FullName="Gnome.Entry">
-  <TypeSignature Language="C#" Value="public class Entry : Gtk.Combo, Editable, IWrapper, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Entry : Gtk.Combo, Gtk.Editable" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -21,26 +19,15 @@
     <Interface>
       <InterfaceName>Gtk.Editable</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="SelectRegion">
-      <MemberSignature Language="C#" Value="public virtual void SelectRegion (int start, int end);" />
+      <MemberSignature Language="C#" Value="public void SelectRegion (int start, int end);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -58,7 +45,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetChars">
-      <MemberSignature Language="C#" Value="public virtual string GetChars (int start_pos, int end_pos);" />
+      <MemberSignature Language="C#" Value="public string GetChars (int start_pos, int end_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -77,7 +64,7 @@
       </Docs>
     </Member>
     <Member MemberName="DeleteText">
-      <MemberSignature Language="C#" Value="public virtual void DeleteText (int start_pos, int end_pos);" />
+      <MemberSignature Language="C#" Value="public void DeleteText (int start_pos, int end_pos);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -95,7 +82,7 @@
       </Docs>
     </Member>
     <Member MemberName="CopyClipboard">
-      <MemberSignature Language="C#" Value="public virtual void CopyClipboard ();" />
+      <MemberSignature Language="C#" Value="public void CopyClipboard ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -107,7 +94,7 @@
       </Docs>
     </Member>
     <Member MemberName="DeleteSelection">
-      <MemberSignature Language="C#" Value="public virtual void DeleteSelection ();" />
+      <MemberSignature Language="C#" Value="public void DeleteSelection ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -120,7 +107,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetSelectionBounds">
-      <MemberSignature Language="C#" Value="public virtual bool GetSelectionBounds (out int start, out int end);" />
+      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -139,7 +126,7 @@
       </Docs>
     </Member>
     <Member MemberName="CutClipboard">
-      <MemberSignature Language="C#" Value="public virtual void CutClipboard ();" />
+      <MemberSignature Language="C#" Value="public void CutClipboard ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -151,7 +138,7 @@
       </Docs>
     </Member>
     <Member MemberName="PasteClipboard">
-      <MemberSignature Language="C#" Value="public virtual void PasteClipboard ();" />
+      <MemberSignature Language="C#" Value="public void PasteClipboard ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -246,7 +233,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Entry, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -262,13 +248,12 @@
       <Docs>
         <summary>Creates a new <see cref="T:Gnome.Entry" /> instance.</summary>
         <param name="history_id">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:Gnome.Entry" /></returns>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsEditable">
-      <MemberSignature Language="C#" Value="public virtual bool IsEditable { set; get; };" />
+      <MemberSignature Language="C#" Value="public bool IsEditable { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -278,13 +263,13 @@
       <Docs>
         <summary>Whether the <see cref="T:Gnome.Entry" /> is editable by the user.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="Position">
-      <MemberSignature Language="C#" Value="public virtual int Position { set; get; };" />
+      <MemberSignature Language="C#" Value="public int Position { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -294,7 +279,7 @@
       <Docs>
         <summary>The position of the cursor in the entry.</summary>
         <param name="value">an object of type <see cref="T:System.Int32" /></param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -310,7 +295,7 @@
       <Docs>
         <summary>Internal limit on number of history items saved to the config file.</summary>
         <param name="value">an object of type <see cref="T:System.UInt32" /></param>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>Zero is an acceptable value, but the same thing is accomplished by setting the <see cref="P:Gnome.Entry.HistoryId" /> to <see langword="null" />.</remarks>
       </Docs>
     </Member>
@@ -322,11 +307,15 @@
       </ReturnValue>
       <Docs>
         <summary>The internal <see cref="T:Gtk.Entry" /> of the <see cref="T:Gnome.Entry" />.</summary>
-        <returns>an object of type <see cref="T:Gtk.Entry" /></returns>
+        <value>an object of type <see cref="T:Gtk.Entry" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="gtk_entry")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HistoryId">
       <MemberSignature Language="C#" Value="public string HistoryId { set; get; };" />
       <MemberType>Property</MemberType>
@@ -338,13 +327,17 @@
       <Docs>
         <summary>The history id of the <see cref="T:Gnome.Entry" /> widget.</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="history_id")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Changed">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler Changed;" />
+      <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -355,7 +348,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Activated">
       <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
       <MemberType>Event</MemberType>
@@ -367,9 +364,13 @@
         <summary>Emitted when the <see cref="T:Gnome.Entry" /> is activated.</summary>
         <remarks>This usually occurs when the user presses the "enter" or "return" key.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="InsertText">
-      <MemberSignature Language="C#" Value="public virtual void InsertText (string new_text, ref int position);" />
+      <MemberSignature Language="C#" Value="public void InsertText (string new_text, ref int position);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -394,7 +395,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gnome.Entry" />.</remarks>
       </Docs>
     </Member>
@@ -466,12 +467,15 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gnome.Entry" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextDeleted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.TextDeletedHandler TextDeleted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.TextDeletedHandler TextDeleted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextDeletedHandler</ReturnType>
@@ -481,9 +485,13 @@
         <summary>Emitted when text is deleted from the entry.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="delete_text")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TextInserted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.TextInsertedHandler TextInserted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.TextInsertedHandler TextInserted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextInsertedHandler</ReturnType>
@@ -493,6 +501,10 @@
         <summary>Emitted when text is inserted into the entry.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="insert_text")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

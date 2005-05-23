@@ -1,12 +1,10 @@
 <Type Name="Object" FullName="Gtk.Object">
-  <TypeSignature Language="C#" Value="public class Object : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Object : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -20,14 +18,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Destroy">
       <MemberSignature Language="C#" Value="public virtual void Destroy ();" />
@@ -83,7 +74,6 @@ The object is only destroyed if all the references to the object are released, t
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Object, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -100,10 +90,14 @@ The object is only destroyed if all the references to the object are released, t
       <Docs>
         <summary>Helper property to associate information with an object.</summary>
         <param name="value">The value to store/retrieve</param>
-        <returns />
+        <value />
         <remarks>This is not very useful with the Gtk# binding as it is with the C binding. </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="user_data")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Destroyed">
       <MemberSignature Language="C#" Value="public event EventHandler Destroyed;" />
       <MemberType>Event</MemberType>
@@ -115,7 +109,11 @@ The object is only destroyed if all the references to the object are released, t
         <summary>Raised to signal that all references to this object should be removed.</summary>
         <remarks>This event is triggered if someone has invoked the <see cref="T:Gtk.Object" />'s <see cref="M:Gtk.Object.Destroy" /> method.  It is used to inform that all references to the object must be discarded at this point.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="destroy")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Raw">
       <MemberSignature Language="C#" Value="protected override IntPtr Raw { set; get; };" />
       <MemberType>Property</MemberType>
@@ -128,7 +126,7 @@ The object is only destroyed if all the references to the object are released, t
 	  Diagnostic method to print the raw object and its reference count
 	as debug information.
 	</summary>
-        <returns>a <see cref="T:System.IntPtr" />, the internal C data underlying this object.</returns>
+        <value>a <see cref="T:System.IntPtr" />, the internal C data underlying this object.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -155,10 +153,13 @@ The object is only destroyed if all the references to the object are released, t
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Object" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -168,7 +169,7 @@ The object is only destroyed if all the references to the object are released, t
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Object" />.</remarks>
       </Docs>
     </Member>
@@ -179,7 +180,6 @@ The object is only destroyed if all the references to the object are released, t
       <Parameters />
       <Docs>
         <summary>Internal.</summary>
-        <returns>a <see cref="T:Gtk.Object" /></returns>
         <remarks>Internal constructor.</remarks>
       </Docs>
     </Member>
@@ -192,7 +192,7 @@ The object is only destroyed if all the references to the object are released, t
       <Parameters />
       <Docs>
         <summary>Determines if the object reference is floating.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>An object is floating until it is added to a container which claims ownership of the floating reference.</remarks>
       </Docs>
     </Member>

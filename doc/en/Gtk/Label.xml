@@ -1,12 +1,10 @@
 <Type Name="Label" FullName="Gtk.Label">
-  <TypeSignature Language="C#" Value="public class Label : Gtk.Misc, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Duncan Mak" />
+  <TypeSignature Language="C#" Maintainer="Duncan Mak" Value="public class Label : Gtk.Misc" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -29,20 +27,7 @@
     <BaseTypeName>Gtk.Misc</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="GetSelectionBounds">
       <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
@@ -147,7 +132,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Label, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -167,7 +151,6 @@
           widget.
         </summary>
         <param name="str">The text of the label</param>
-        <returns> the new label widget</returns>
         <remarks>
           <para>
             Creates a new label with the given text inside it. You can
@@ -198,6 +181,7 @@
             explicitly using <see cref="M:Gtk.Label.MnemonicWidget" />.
           </para>
         </remarks>
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Markup">
@@ -211,7 +195,7 @@
       <Docs>
         <summary>Parses str which is marked up with the Pango text markup language</summary>
         <param name="value">a markup string (see Pango markup format)</param>
-        <returns>a GtkLabel</returns>
+        <value>a GtkLabel</value>
         <remarks>
           <para>
             Parses <paramref name="value" /> which is marked up with the
@@ -235,8 +219,8 @@
           <see langword="true" /> makes it
           break lines if text exceeds the size of the widget. <see langword="false" /> lets the text get cut off by the edge of the widget if it exceeds the widget size.
         </param>
-        <returns>
-          <see langword="true" /> if the lines of the label are automatically wrapped.</returns>
+        <value>
+          <see langword="true" /> if the lines of the label are automatically wrapped.</value>
         <remarks />
       </Docs>
     </Member>
@@ -251,7 +235,7 @@
       <Docs>
         <summary>The text within the <see cref="T:Gtk.Label" /> widget.</summary>
         <param name="value">The text you want to set.</param>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>
           <para>
             When setting the text within the <see cref="T:Gtk.Label" /> widget, it overwrites any text that was there before.
@@ -267,7 +251,7 @@
       </ReturnValue>
       <Docs>
         <summary>Gets the <see cref="T:Pango.Layout" /> used to display the label.</summary>
-        <returns> the <see cref="T:Pango.Layout" /> for this label</returns>
+        <value> the <see cref="T:Pango.Layout" /> for this label</value>
         <remarks>
           <para>
             Gets the <see cref="T:Pango.Layout" /> used to display the label. The layout
@@ -293,7 +277,7 @@
           attribute list based on the parse results.
         </summary>
         <param name="value"> a markup string (see Pango markup format)</param>
-        <returns>a new label widget</returns>
+        <value>a new label widget</value>
         <remarks>
           <para>
             Parses <paramref name="value" /> which is marked up with the
@@ -324,13 +308,17 @@
           <see langword="true" /> to allow selecting text in the
         label, and <see langword="false" /> to disallow.
         </param>
-        <returns>
+        <value>
           <see langword="true" /> if the label is selectable, and
         <see langword="false" /> if not.
-        </returns>
+        </value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="selectable")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Justify">
       <MemberSignature Language="C#" Value="public Gtk.Justification Justify { set; get; };" />
       <MemberType>Property</MemberType>
@@ -342,7 +330,7 @@
       <Docs>
         <summary>The alignment of the lines in the text of the label relative to each other</summary>
         <param name="value">a <see cref="T:Gtk.Justification" /></param>
-        <returns>The justification of the label</returns>
+        <value>The justification of the label</value>
         <remarks>
           <para>
             Sets the alignment of the lines in the text of the label
@@ -353,7 +341,11 @@
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="justify")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CursorPosition">
       <MemberSignature Language="C#" Value="public int CursorPosition { get; };" />
       <MemberType>Property</MemberType>
@@ -362,11 +354,15 @@
       </ReturnValue>
       <Docs>
         <summary>The current position of the insertion cursor in characters.</summary>
-        <returns>The current position of the insertion cursor in characters</returns>
+        <value>The current position of the insertion cursor in characters</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="cursor_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionBound">
       <MemberSignature Language="C#" Value="public int SelectionBound { get; };" />
       <MemberType>Property</MemberType>
@@ -375,11 +371,15 @@
       </ReturnValue>
       <Docs>
         <summary>The position of the opposite end of the selection from the cursor in characters.</summary>
-        <returns>The position of the opposite end of the selection from the cursor in characters.</returns>
+        <value>The position of the opposite end of the selection from the cursor in characters.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="selection_bound")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MnemonicWidget">
       <MemberSignature Language="C#" Value="public Gtk.Widget MnemonicWidget { set; get; };" />
       <MemberType>Property</MemberType>
@@ -391,11 +391,15 @@
       <Docs>
         <summary>The widget to be activated when the label's mnemonic key is pressed.</summary>
         <param name="value">The widget to be activated when the label's mnemonic key is pressed.</param>
-        <returns>The widget to be activated when the label's mnemonic key is pressed.</returns>
+        <value>The widget to be activated when the label's mnemonic key is pressed.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="mnemonic_widget")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LabelProp">
       <MemberSignature Language="C#" Value="public string LabelProp { set; get; };" />
       <MemberType>Property</MemberType>
@@ -407,11 +411,15 @@
       <Docs>
         <summary>The text from a label widget including any embedded underlines indicating mnemonics and Pango markup.</summary>
         <param name="value">The text of the label widget</param>
-        <returns>The text of the label widget.</returns>
+        <value>The text of the label widget.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Pattern">
       <MemberSignature Language="C#" Value="public string Pattern { set; };" />
       <MemberType>Property</MemberType>
@@ -425,8 +433,13 @@
         <param name="value">A string with _ characters in positions correspond to characters in the text to underline.</param>
         <remarks>
         </remarks>
+        <value>To be added.</value>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="pattern")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MnemonicKeyval">
       <MemberSignature Language="C#" Value="public uint MnemonicKeyval { get; };" />
       <MemberType>Property</MemberType>
@@ -435,11 +448,15 @@
       </ReturnValue>
       <Docs>
         <summary>The mnemonic accelerator key for this label.</summary>
-        <returns>The mnemonic accelerator key for this label.</returns>
+        <value>The mnemonic accelerator key for this label.</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="mnemonic_keyval")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Wrap">
       <MemberSignature Language="C#" Value="public bool Wrap { set; get; };" />
       <MemberType>Property</MemberType>
@@ -452,11 +469,15 @@
         <summary>Whether lines should be wrapped if the text becomes too wide.</summary>
         <param name="value">
           <see langword="true" /> to wrap lines</param>
-        <returns>whether lines should be wrapped</returns>
+        <value>whether lines should be wrapped</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="wrap")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UseUnderline">
       <MemberSignature Language="C#" Value="public bool UseUnderline { set; get; };" />
       <MemberType>Property</MemberType>
@@ -472,14 +493,18 @@
         </summary>
         <param name="value">
           <see langword="true" /> to use underline</param>
-        <returns>
+        <value>
           Whether an underline in the text indicates the next
           character should be used for the mnemonic accelerator key.
-        </returns>
+        </value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_underline")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UseMarkup">
       <MemberSignature Language="C#" Value="public bool UseMarkup { set; get; };" />
       <MemberType>Property</MemberType>
@@ -493,10 +518,14 @@
         <param name="value">
           <see langword="true" /> to parse the
         text as Pango markup, <see langword="false" /> as plain-text</param>
-        <returns />
+        <value />
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_markup")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Attributes">
       <MemberSignature Language="C#" Value="public Pango.AttrList Attributes { set; get; };" />
       <MemberType>Property</MemberType>
@@ -508,7 +537,7 @@
       <Docs>
         <summary>The attribute list set on the label.</summary>
         <param name="value">a <see cref="T:Pango.AttrList" /></param>
-        <returns>the attribute list set on the label</returns>
+        <value>the attribute list set on the label</value>
         <remarks>
           <para>
             This function does not reflect attributes that come from
@@ -521,7 +550,11 @@
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="attributes")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveCursor">
       <MemberSignature Language="C#" Value="public event Gtk.MoveCursorHandler MoveCursor;" />
       <MemberType>Event</MemberType>
@@ -534,7 +567,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_cursor")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PopulatePopup">
       <MemberSignature Language="C#" Value="public event Gtk.PopulatePopupHandler PopulatePopup;" />
       <MemberType>Event</MemberType>
@@ -547,7 +584,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="populate_popup")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CopyClipboard">
       <MemberSignature Language="C#" Value="public event EventHandler CopyClipboard;" />
       <MemberType>Event</MemberType>
@@ -560,7 +601,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="copy_clipboard")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -570,7 +615,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Label" />.</remarks>
       </Docs>
     </Member>
@@ -630,10 +675,13 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Label" /></returns>
         <remarks>This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="New">
       <MemberSignature Language="C#" Value="public static Gtk.Label New (string str);" />
       <MemberType>Method</MemberType>
@@ -657,7 +705,6 @@
       <Parameters />
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.Label" /> without text.</summary>
-        <returns>a <see cref="T:Gtk.Label" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -710,10 +757,14 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="angle")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SingleLineMode">
       <MemberSignature Language="C#" Value="public bool SingleLineMode { set; get; };" />
       <MemberType>Property</MemberType>
@@ -723,10 +774,14 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="single-line-mode")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Ellipsize">
       <MemberSignature Language="C#" Value="public Pango.EllipsizeMode Ellipsize { set; get; };" />
       <MemberType>Property</MemberType>
@@ -736,10 +791,14 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Pango.EllipsizeMode" /></returns>
+        <value>a <see cref="T:Pango.EllipsizeMode" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="ellipsize")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="WidthChars">
       <MemberSignature Language="C#" Value="public int WidthChars { set; get; };" />
       <MemberType>Property</MemberType>
@@ -749,10 +808,14 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="width_chars")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MaxWidthChars">
       <MemberSignature Language="C#" Value="public int MaxWidthChars { set; get; };" />
       <MemberType>Property</MemberType>
@@ -762,8 +825,47 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
+      </Docs>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="max_width_chars")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
+  <Member MemberName="GetLayoutOffsets">
+      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (out int x, out int y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="y" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">To be added.</param>
+        <param name="y">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="GetSelectionBounds">
+      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="end" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="start">To be added.</param>
+        <param name="end">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

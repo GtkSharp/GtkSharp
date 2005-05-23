@@ -1,11 +1,9 @@
 <Type Name="Expander" FullName="Gtk.Expander">
-  <TypeSignature Language="C#" Value="public class Expander : Gtk.Bin, Implementor, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Expander : Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -113,17 +111,7 @@ class DemoExpander : Gtk.Window
     <BaseTypeName>Gtk.Bin</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -159,10 +147,13 @@ class DemoExpander : Gtk.Window
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Expander" /></returns>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Expander (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -173,7 +164,6 @@ class DemoExpander : Gtk.Window
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gtk.Expander" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -187,7 +177,6 @@ class DemoExpander : Gtk.Window
       <Docs>
         <summary>Creates a new expander with <paramref name="label" /> as its label.</summary>
         <param name="label">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Gtk.Expander" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -200,7 +189,7 @@ class DemoExpander : Gtk.Window
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Expander" />.</remarks>
       </Docs>
     </Member>
@@ -213,7 +202,7 @@ class DemoExpander : Gtk.Window
       <Parameters />
       <Docs>
         <summary>The text of the label of the expander.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>
           <para>
 If the label text has not been set the return value will be <see langword="null " />.
@@ -223,7 +212,11 @@ Setting the label will also clear any previously set labels.
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UseMarkup">
       <MemberSignature Language="C#" Value="public bool UseMarkup { set; get; };" />
       <MemberType>Property</MemberType>
@@ -233,12 +226,16 @@ Setting the label will also clear any previously set labels.
       <Parameters />
       <Docs>
         <summary>Whether the text of the label contains markup in Pango's text markup language.</summary>
-        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if the label's text should be parsed for markup
+        <value>a <see cref="T:System.Boolean" />, <see langword="true" /> if the label's text should be parsed for markup
 
-</returns>
+</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_markup")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Spacing">
       <MemberSignature Language="C#" Value="public int Spacing { set; get; };" />
       <MemberType>Property</MemberType>
@@ -248,7 +245,7 @@ Setting the label will also clear any previously set labels.
       <Parameters />
       <Docs>
         <summary>Space to put between the label and the child.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
           <para>
 Allowed values: &gt;= 0
@@ -258,7 +255,11 @@ Default value: 0
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="spacing")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Expanded">
       <MemberSignature Language="C#" Value="public bool Expanded { set; get; };" />
       <MemberType>Property</MemberType>
@@ -268,10 +269,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The state of the expander.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>Returns <see langword="true" /> if the child widget is revealed.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="expanded")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UseUnderline">
       <MemberSignature Language="C#" Value="public bool UseUnderline { set; get; };" />
       <MemberType>Property</MemberType>
@@ -281,10 +286,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>Whether an embedded underline in the expander label indicates a mnemonic.</summary>
-        <returns>a <see cref="T:System.Boolean" />, <see langword="true" /> if underlines in the text indicate mnemonics</returns>
+        <value>a <see cref="T:System.Boolean" />, <see langword="true" /> if underlines in the text indicate mnemonics</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="use_underline")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LabelWidget">
       <MemberSignature Language="C#" Value="public Gtk.Widget LabelWidget { set; get; };" />
       <MemberType>Property</MemberType>
@@ -294,10 +303,14 @@ Default value: 0
       <Parameters />
       <Docs>
         <summary>The label widget for the expander.</summary>
-        <returns> the label <see cref="T:Gtk.Widget" />, or <see langword="null" /> if there is none.</returns>
+        <value> the label <see cref="T:Gtk.Widget" />, or <see langword="null" /> if there is none.</value>
         <remarks>This is the widget that will appear embedded alongside the expander arrow.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label_widget")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Activated">
       <MemberSignature Language="C#" Value="public event EventHandler Activated;" />
       <MemberType>Event</MemberType>
@@ -309,7 +322,11 @@ Default value: 0
         <summary>Emitted when the expander is toggled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="New">
       <MemberSignature Language="C#" Value="public static Gtk.Expander New (string label);" />
       <MemberType>Method</MemberType>
@@ -323,7 +340,8 @@ Default value: 0
         <summary>Public constructor.</summary>
         <param name="label">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:Gtk.Expander" /></returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>

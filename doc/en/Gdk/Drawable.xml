@@ -1,12 +1,10 @@
 <Type Name="Drawable" FullName="Gdk.Drawable">
-  <TypeSignature Language="C#" Value="public class Drawable : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Drawable : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -18,14 +16,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="DrawPoints">
       <MemberSignature Language="C#" Value="public void DrawPoints (Gdk.GC gc, Gdk.Point points, int npoints);" />
@@ -113,14 +104,15 @@
         <Parameter Name="background" Type="Gdk.Color" />
       </Parameters>
       <Docs>
-        <summary>Render a <see cref="T:Pango.LayoutLine" /> onto the Drawable
-	  object, overriding the layout's normal colors.</summary>
         <param name="gc">A <see cref="T:Gdk.GC" />, the graphics context to use</param>
         <param name="x">the X position of the start of string (in pixels)</param>
         <param name="y">the Y position of the baseline (in pixels)</param>
-        <param name="layout">A <see cref="T:Pango.LayoutLine" />, a line of text to render</param>
+        <param name="line">To be added.</param>
         <param name="foreground">the foreground color</param>
         <param name="background">the background color</param>
+        <summary>Render a <see cref="T:Pango.LayoutLine" /> onto the Drawable
+	  object, overriding the layout's normal colors.</summary>
+        <param name="layout">A <see cref="T:Pango.LayoutLine" />, a line of text to render</param>
         <remarks>Render a <see cref="T:Pango.LayoutLine" /> onto the Drawable
 	  object, overriding the layout's normal colors with 
 	  <paramref name="foreground" /> and/or <paramref name="background" />. 
@@ -414,7 +406,6 @@ understand; thus, use <see cref="M:Gdk.Drawable.DrawLayout" /> instead of this f
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Drawable, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -431,7 +422,7 @@ understand; thus, use <see cref="M:Gdk.Drawable.DrawLayout" /> instead of this f
       <Docs>
         <summary>The color map for this Drawable. </summary>
         <param name="value">The new <see cref="T:Gdk.Colormap" /> for the Drawable.</param>
-        <returns>The current <see cref="T:Gdk.Colormap" /> on the Drawable.</returns>
+        <value>The current <see cref="T:Gdk.Colormap" /> on the Drawable.</value>
         <remarks>You only need to set the color map if the drawable-creating function did not have a way to determine the colormap, and you then use drawable operations that require a colormap. The colormap for all drawables and graphics contexts you intend to use together should match. i.e. when using a #GdkGC to draw to a drawable, or copying one drawable to another, the colormaps should match.</remarks>
       </Docs>
     </Member>
@@ -443,7 +434,7 @@ understand; thus, use <see cref="M:Gdk.Drawable.DrawLayout" /> instead of this f
       </ReturnValue>
       <Docs>
         <summary>Computes the region of a drawable that is potentially visible.</summary>
-        <returns>A <see cref="T:Gdk.Region" /></returns>
+        <value>A <see cref="T:Gdk.Region" /></value>
         <remarks>This does not necessarily take into account if the window is obscured by other windows, but no area outside of this region is visible.
 
 <para>
@@ -459,7 +450,7 @@ You must call <see cref="M:Gdk.Region.Destroy()" /> when done.
       </ReturnValue>
       <Docs>
         <summary>Computes the region of a drawable that potentially can be written to by drawing primitives.</summary>
-        <returns>A <see cref="T:Gdk.Region" />.  You must call <see cref="M:Gdk.Region.Destroy()" /> when done.</returns>
+        <value>A <see cref="T:Gdk.Region" />.  You must call <see cref="M:Gdk.Region.Destroy()" /> when done.</value>
         <remarks>Computes the region of a drawable that potentially can be written to by drawing primitives. This region will not take into account the clip region for the GC, and may also not take into account other factors such as if the window is obscured by other windows, but no area outside of this region will be affected by drawing primitives.
 
 <para>
@@ -475,7 +466,7 @@ You must call the Destroy method on the returned region when done.
       </ReturnValue>
       <Docs>
         <summary>Gets the <see cref="T:Gdk.Visual" /> describing the pixel format of drawable.</summary>
-        <returns>A <see cref="T:Gdk.Visual" /></returns>
+        <value>A <see cref="T:Gdk.Visual" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -487,7 +478,7 @@ You must call the Destroy method on the returned region when done.
       </ReturnValue>
       <Docs>
         <summary>Obtains the bit depth of the drawable.</summary>
-        <returns>The bit depth.</returns>
+        <value>The bit depth.</value>
         <remarks>Obtains the bit depth of the drawable, that is, the number of bits that make up a pixel in the drawable's visual. Examples are 8 bits per pixel, 24 bits per pixel, etc.</remarks>
       </Docs>
     </Member>
@@ -499,7 +490,7 @@ You must call the Destroy method on the returned region when done.
       </ReturnValue>
       <Docs>
         <summary>Gets the <see cref="T:Gdk.Screen" /> associated with a <see cref="T:Gdk.Drawable." /></summary>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
+        <value>a <see cref="T:Gdk.Screen" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -511,7 +502,7 @@ You must call the Destroy method on the returned region when done.
       </ReturnValue>
       <Docs>
         <summary>Gets the <see cref="T:Gdk.Display" /> associated with the <see cref="T:Gdk.Drawable" />.</summary>
-        <returns>The <see cref="T:Gdk.Display" />.</returns>
+        <value>The <see cref="T:Gdk.Display" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -706,7 +697,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Drawable" />.</remarks>
       </Docs>
     </Member>
@@ -720,10 +711,13 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.Drawable" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Gdk.Drawable" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Drawable ();" />
       <MemberType>Constructor</MemberType>
@@ -731,12 +725,11 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       <Parameters />
       <Docs>
         <summary>This is a constructor used by derivative types of Drawable. This is not typically used by C# code.</summary>
-        <returns>a <see cref="T:Gdk.Drawable" /></returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="DrawRgbImage">
-      <MemberSignature Language="C#" Value="public void DrawRgbImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] rgb_buf, int rowstride);" />
+      <MemberSignature Language="C#" Value="public void DrawRgbImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] rgb_buf, int rowstride);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -765,7 +758,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       </Docs>
     </Member>
     <Member MemberName="DrawRgb32ImageDithalign">
-      <MemberSignature Language="C#" Value="public void DrawRgb32ImageDithalign (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] buf, int rowstride, int xdith, int ydith);" />
+      <MemberSignature Language="C#" Value="public void DrawRgb32ImageDithalign (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] buf, int rowstride, int xdith, int ydith);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -798,7 +791,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       </Docs>
     </Member>
     <Member MemberName="DrawIndexedImage">
-      <MemberSignature Language="C#" Value="public void DrawIndexedImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] buf, int rowstride, Gdk.RgbCmap cmap);" />
+      <MemberSignature Language="C#" Value="public void DrawIndexedImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] buf, int rowstride, Gdk.RgbCmap cmap);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -829,7 +822,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       </Docs>
     </Member>
     <Member MemberName="DrawRgb32Image">
-      <MemberSignature Language="C#" Value="public void DrawRgb32Image (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] buf, int rowstride);" />
+      <MemberSignature Language="C#" Value="public void DrawRgb32Image (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] buf, int rowstride);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -858,7 +851,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       </Docs>
     </Member>
     <Member MemberName="DrawGrayImage">
-      <MemberSignature Language="C#" Value="public void DrawGrayImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] buf, int rowstride);" />
+      <MemberSignature Language="C#" Value="public void DrawGrayImage (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] buf, int rowstride);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -887,7 +880,7 @@ The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
       </Docs>
     </Member>
     <Member MemberName="DrawRgbImageDithalign">
-      <MemberSignature Language="C#" Value="public void DrawRgbImageDithalign (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte [] rgb_buf, int rowstride, int xdith, int ydith);" />
+      <MemberSignature Language="C#" Value="public void DrawRgbImageDithalign (Gdk.GC gc, int x, int y, int width, int height, Gdk.RgbDither dith, byte[] rgb_buf, int rowstride, int xdith, int ydith);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>

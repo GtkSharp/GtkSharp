@@ -1,12 +1,10 @@
 <Type Name="Adjustment" FullName="Gtk.Adjustment">
-  <TypeSignature Language="C#" Value="public class Adjustment : Gtk.Object, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Adjustment : Gtk.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -21,14 +19,7 @@
     <BaseTypeName>Gtk.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="SetBounds">
       <MemberSignature Language="C#" Value="public void SetBounds (double lower, double upper, double step_increment, double page_increment, double page_size);" />
@@ -132,7 +123,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Adjustment, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -158,7 +148,6 @@
         <param name="step_increment">The increment to use to make minor changes to the value.</param>
         <param name="page_increment">The increment to use to make major changes to the value.</param>
         <param name="page_size">The page size. In a <see cref="T:Gtk.Scrollbar" /> this is the size of the area that is currently visible.</param>
-        <returns>A new Adjustment</returns>
         <remarks />
       </Docs>
     </Member>
@@ -173,12 +162,16 @@
       <Docs>
         <summary>Manage the size of a 'page'.</summary>
         <param name="value">The new page size.</param>
-        <returns>The current size of pages in this Adjustment.</returns>
+        <value>The current size of pages in this Adjustment.</value>
         <remarks>
           <para>In a <see cref="T:Gtk.Scrollbar" /> this is the size of the area which is currently visible.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="page-size")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PageIncrement">
       <MemberSignature Language="C#" Value="public double PageIncrement { set; get; };" />
       <MemberType>Property</MemberType>
@@ -190,12 +183,16 @@
       <Docs>
         <summary>Manage the increment used to make major changes to the value.</summary>
         <param name="value">A new value for the PageIncrement</param>
-        <returns>The current PageIncrement.</returns>
+        <value>The current PageIncrement.</value>
         <remarks>
           <para>The usefulness of this value is entirely dependent upon the context in whic hthe Adjustment is used.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="page-increment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Value">
       <MemberSignature Language="C#" Value="public double Value { set; get; };" />
       <MemberType>Property</MemberType>
@@ -207,12 +204,16 @@
       <Docs>
         <summary>Manage the current <paramref name="value" />.</summary>
         <param name="value">A new value for this Adjustment.</param>
-        <returns>The current value of this adjustment.</returns>
+        <value>The current value of this adjustment.</value>
         <remarks>
           <para>If you set this property, you should manually call <see cref="M:Gtk.Adjustment.ChangeValue" /> so that all listening objects are notified of the change.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ValueChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ValueChanged;" />
       <MemberType>Event</MemberType>
@@ -226,7 +227,11 @@
           <para>This event can be handled to be notified of changes to the Adjustment's value. However, this relies on all objects that change the <see cref="P:Gtk.Adjustment.Value" /> calling <see cref="M:Gtk.Adjustment.ChangeValue" />.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="value_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Changed">
       <MemberSignature Language="C#" Value="public event EventHandler Changed;" />
       <MemberType>Event</MemberType>
@@ -240,7 +245,11 @@
           <para>If the Adjustment's properties change, (such as <see cref="P:Gtk.Adjustment.Upper" />, <see cref="P:Gtk.Adjustment.Lower" /> etc.), it is up to whichever class changes the values to call <see cref="M:Gtk.Adjustment.Change" /> to ensure this event is fired.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -250,7 +259,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Adjustment" />.</remarks>
       </Docs>
     </Member>
@@ -288,10 +297,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Adjustment" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Lower">
       <MemberSignature Language="C#" Value="public double Lower { set; get; };" />
       <MemberType>Property</MemberType>
@@ -301,10 +313,14 @@
       <Parameters />
       <Docs>
         <summary>Retrieve the lower bound of this Adjustment.</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>The minimum possible value that is currently allowed.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="lower")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Upper">
       <MemberSignature Language="C#" Value="public double Upper { set; get; };" />
       <MemberType>Property</MemberType>
@@ -314,10 +330,14 @@
       <Parameters />
       <Docs>
         <summary>Retrieve the upper bound of this Adjustment.</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>The maximum possible value that is currently allowed.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="upper")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StepIncrement">
       <MemberSignature Language="C#" Value="public double StepIncrement { set; get; };" />
       <MemberType>Property</MemberType>
@@ -327,12 +347,16 @@
       <Parameters />
       <Docs>
         <summary>The increment to use to make minor changes to the value.</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>
           <para>In a <see cref="T:Gtk.Scrollbar" /> this increment is used when the mouse is clicked on the arrows at the top and bottom of the <see cref="T:Gtk.Scrollbar" />, to scroll by a small amount.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="step-increment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Adjustment ();" />
       <MemberType>Constructor</MemberType>
@@ -340,7 +364,6 @@
       <Parameters />
       <Docs>
         <summary>Default constructor.</summary>
-        <returns>a <see cref="T:Gtk.Adjustment" /></returns>
         <remarks />
       </Docs>
     </Member>

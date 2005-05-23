@@ -1,12 +1,10 @@
 <Type Name="Object" FullName="GLib.Object">
-  <TypeSignature Language="C#" Value="public class Object : IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Object : GLib.IWrapper, System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -24,7 +22,6 @@
       <InterfaceName>System.IDisposable</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Dispose">
       <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
@@ -51,14 +48,14 @@
       </Docs>
     </Member>
     <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public virtual IntPtr Handle { get; };" />
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The raw GObject reference associated with this object.</summary>
-        <returns>an object of type <see cref="T:System.IntPtr" /></returns>
+        <value>an object of type <see cref="T:System.IntPtr" /></value>
         <remarks>Subclasses can use Raw property for read/write access.</remarks>
       </Docs>
     </Member>
@@ -73,7 +70,7 @@
       <Docs>
         <summary>The raw GObject reference associated with this wrapper.</summary>
         <param name="value">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:System.IntPtr" /></returns>
+        <value>an object of type <see cref="T:System.IntPtr" /></value>
         <remarks>	Only subclasses of Object can access this read/write property.  For public read-only access, use the Handle property. This property should only be used from constructors to set a native object pointer instantiated by the constructor. The constructor should chain to base (IntPtr.Zero) on the base class to ensure that no other native objects are instantiated for the class.</remarks>
       </Docs>
     </Member>
@@ -85,7 +82,7 @@
       </ReturnValue>
       <Docs>
         <summary>Stores and Accesses arbitrary data on the Object.</summary>
-        <returns>a <see cref="T:System.Collections.Hashtable" /></returns>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>
 	  This property is obsolete and should not be used unless you explicitly retain a reference to the
 	  <see cref="T:GLib.Object" />.  Otherwise the Data hashtable will be lost when the Garbage Collector
@@ -95,7 +92,11 @@
 	  the role of this property.
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Can cause instability due to garbage collection of GLib.Objects.", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o, bool owned_ref);" />
       <MemberType>Method</MemberType>
@@ -137,7 +138,7 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -186,7 +187,6 @@
       <Docs>
         <summary>Creates a new <see cref="T:GLib.Object" /> instance, using the GLib-provided type.</summary>
         <param name="gtype">The <see cref="T:GLib.GType" /> to register with the GLib type system.</param>
-        <returns>a <see cref="T:GLib.Object" /></returns>
         <remarks>
           <para>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.
 </para>
@@ -195,7 +195,11 @@
 </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="TypeName">
       <MemberSignature Language="C#" Value="protected string TypeName { get; };" />
       <MemberType>Property</MemberType>
@@ -204,7 +208,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -216,10 +220,14 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Collections.Hashtable" /></returns>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AfterSignals">
       <MemberSignature Language="C#" Value="protected System.Collections.Hashtable AfterSignals { get; };" />
       <MemberType>Property</MemberType>
@@ -228,10 +236,14 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Collections.Hashtable" /></returns>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="BeforeHandlers">
       <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList BeforeHandlers { get; };" />
       <MemberType>Property</MemberType>
@@ -240,10 +252,14 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.ComponentModel.EventHandlerList" /></returns>
+        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AfterHandlers">
       <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList AfterHandlers { get; };" />
       <MemberType>Property</MemberType>
@@ -252,10 +268,14 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.ComponentModel.EventHandlerList" /></returns>
+        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RefCount">
       <MemberSignature Language="C#" Value="protected int RefCount { get; };" />
       <MemberType>Property</MemberType>
@@ -264,7 +284,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -331,7 +351,7 @@
       </Docs>
     </Member>
     <Member MemberName="CreateNativeObject">
-      <MemberSignature Language="C#" Value="protected virtual void CreateNativeObject (string [] names, GLib.Value[] vals);" />
+      <MemberSignature Language="C#" Value="protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -390,7 +410,6 @@
       <Docs>
         <summary>Constructs the object from a C-based pointer to the GLib object.</summary>
         <param name="raw">The pointer to the native C object.</param>
-        <returns>a <see cref="T:GLib.Object" /></returns>
         <remarks>
           <para>
 This constructor is used to associate a C-based GLib object with its equivalent object in the managed world.   
@@ -473,7 +492,7 @@ This method is called by the generated classes by the Gtk# framework.
       </ReturnValue>
       <Docs>
         <summary>Data hash to persistently store managed objects.</summary>
-        <returns>a <see cref="T:System.Collections.Hashtable" /></returns>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>This data hash is persistent until the native object is destroyed and can therefore outlast a GLib.Object wrapper class.</remarks>
       </Docs>
     </Member>

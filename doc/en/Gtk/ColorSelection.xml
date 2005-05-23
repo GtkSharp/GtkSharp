@@ -1,12 +1,10 @@
 <Type Name="ColorSelection" FullName="Gtk.ColorSelection">
-  <TypeSignature Language="C#" Value="public class ColorSelection : Gtk.VBox, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class ColorSelection : Gtk.VBox" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -20,20 +18,7 @@
     <BaseTypeName>Gtk.VBox</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -57,7 +42,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of ColorSelection, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -70,7 +54,6 @@
       <Parameters />
       <Docs>
         <summary>The main way to create a new ColorSelection</summary>
-        <returns>A new ColorSelection</returns>
         <remarks />
       </Docs>
     </Member>
@@ -85,7 +68,7 @@
       <Docs>
         <summary>Get the alpha value of the previous color</summary>
         <param name="value">A new setting for the 'previous' alpha value.</param>
-        <returns>The previous alpha value - an integer between 0 and 65535.</returns>
+        <value>The previous alpha value - an integer between 0 and 65535.</value>
         <remarks>
           <para>It may be confusing for a user if this property is set with no interaction from them.</para>
         </remarks>
@@ -102,10 +85,14 @@
       <Docs>
         <summary>Manage the current color of the ColorSelection.</summary>
         <param name="value">A color to set as the 'current' color.</param>
-        <returns>The currently selected color in this ColorSelection.</returns>
+        <value>The currently selected color in this ColorSelection.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="current_color")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasPalette">
       <MemberSignature Language="C#" Value="public bool HasPalette { set; get; };" />
       <MemberType>Property</MemberType>
@@ -118,11 +105,15 @@
         <summary>Manage whether or not the ColorSelection displays a palette.</summary>
         <param name="value">
           <see langword="true" /> to display a palette in the ColorSelection, <see langword="false" /> otherwise.</param>
-        <returns>
-          <see langword="true" /> if a palette is currently part of the ColorSelection, <see langword="false" /> otherwise.</returns>
+        <value>
+          <see langword="true" /> if a palette is currently part of the ColorSelection, <see langword="false" /> otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_palette")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="HasOpacityControl">
       <MemberSignature Language="C#" Value="public bool HasOpacityControl { set; get; };" />
       <MemberType>Property</MemberType>
@@ -135,11 +126,15 @@
         <summary>Manage whether or not opacity is part of the ColorSelection.</summary>
         <param name="value">
           <see langword="true" /> to display opacity controls, <see langword="false" /> otherwise.</param>
-        <returns>
-          <see langword="true" /> if the user can edit opacity, <see langword="false" /> otherwise.</returns>
+        <value>
+          <see langword="true" /> if the user can edit opacity, <see langword="false" /> otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_opacity_control")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CurrentAlpha">
       <MemberSignature Language="C#" Value="public ushort CurrentAlpha { set; get; };" />
       <MemberType>Property</MemberType>
@@ -151,10 +146,14 @@
       <Docs>
         <summary>Manage the current alpha value of the ColorSelection.</summary>
         <param name="value">Sets the current opacity.</param>
-        <returns>The existing opacity of this ColorSelection.</returns>
+        <value>The existing opacity of this ColorSelection.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="current_alpha")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ColorChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ColorChanged;" />
       <MemberType>Event</MemberType>
@@ -166,7 +165,11 @@
         <summary>This event is fired when the current color changes in the ColorSelection.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="color_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PreviousColor">
       <MemberSignature Language="C#" Value="public Gdk.Color PreviousColor { set; get; };" />
       <MemberType>Property</MemberType>
@@ -178,7 +181,7 @@
       <Docs>
         <summary>The color that was selected before the current one.</summary>
         <param name="value">An object of type <see cref="M:Gdk.Color" /></param>
-        <returns>a <see cref="M:Gdk.Color" /></returns>
+        <value>a <see cref="M:Gdk.Color" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -223,8 +226,8 @@
       <Parameters />
       <Docs>
         <summary>The current state of the ColorSelection</summary>
-        <returns>
-          <see langword="true" /> if the user is currently dragging a color around, <see langword="false" /> if the selection has stopped.</returns>
+        <value>
+          <see langword="true" /> if the user is currently dragging a color around, <see langword="false" /> if the selection has stopped.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -238,7 +241,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ColorSelection" />.</remarks>
       </Docs>
     </Member>
@@ -264,10 +267,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ColorSelection" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UpdatePolicy">
       <MemberSignature Language="C#" Value="public Gtk.UpdateType UpdatePolicy { set; };" />
       <MemberType>Property</MemberType>
@@ -276,9 +282,13 @@
       </ReturnValue>
       <Docs>
         <summary>Deprecated. Do not use.</summary>
-        <returns>a <see cref="T:Gtk.UpdateType" /></returns>
+        <value>a <see cref="T:Gtk.UpdateType" /></value>
         <remarks>Before it was deprecated, this property set the policy controlling when ColorChanged signals are emitted.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

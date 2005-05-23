@@ -1,12 +1,10 @@
 <Type Name="Frame" FullName="Gtk.Frame">
-  <TypeSignature Language="C#" Value="public class Frame : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Frame : Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -20,20 +18,7 @@
     <BaseTypeName>Gtk.Bin</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -57,7 +42,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Frame, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -73,7 +57,6 @@
       <Docs>
         <summary>Create a new frame with a label in the top left corner.</summary>
         <param name="label">The text to appear as this frame's label</param>
-        <returns>A new Frame.</returns>
         <remarks>
           <para>This creates a new frame with a <see cref="T:Gtk.Label" /> widget in the top left corner, displaying the text passed in as <paramref name="label" />.</para>
         </remarks>
@@ -86,7 +69,6 @@
       <Parameters />
       <Docs>
         <summary>Create a new frame with no label</summary>
-        <returns>A new Frame with a null <see cref="P:Gtk.Frame.LabelWidget" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -101,12 +83,16 @@
       <Docs>
         <summary>Manage the widget that acts as a frame's <see cref="T:Gtk.Label" />.</summary>
         <param name="value">A widget to replace the existing label.</param>
-        <returns>The current <see cref="T:Gtk.Widget" /> in use as this Frame's label.</returns>
+        <value>The current <see cref="T:Gtk.Widget" /> in use as this Frame's label.</value>
         <remarks>
           <para>Despite its name, this property does not have to set a <see cref="T:Gtk.Label" /> widget as its label. Because of the way that Gtk containers work, you may add an arbitrary widget as the label for this frame. However, a genuine <see cref="T:Gtk.Label" /> is recommended for consistency with other applications.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label_widget")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LabelYalign">
       <MemberSignature Language="C#" Value="public float LabelYalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -118,10 +104,14 @@
       <Docs>
         <summary>Set the vertical alignment of the <see cref="P:Gtk.Frame.LabelWidget" />.</summary>
         <param name="value">A new vertical alignment between 0 and 1.0</param>
-        <returns>The existing vertical alignment of this Frame's label</returns>
+        <value>The existing vertical alignment of this Frame's label</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label_yalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="LabelXalign">
       <MemberSignature Language="C#" Value="public float LabelXalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -133,10 +123,14 @@
       <Docs>
         <summary>Set the horizontal alignment of the <see cref="P:Gtk.Frame.LabelWidget" />.</summary>
         <param name="value">A new horizontal alignment between 0 and 1.0</param>
-        <returns>The existing horizontal alignment of this Frame's label</returns>
+        <value>The existing horizontal alignment of this Frame's label</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label_xalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShadowType">
       <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { set; get; };" />
       <MemberType>Property</MemberType>
@@ -148,10 +142,14 @@
       <Docs>
         <summary>Manage the appearance of this frame's border.</summary>
         <param name="value">A new shadow type.</param>
-        <returns>The current shadow style that this Frame is rendered with.</returns>
+        <value>The current shadow style that this Frame is rendered with.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="shadow_type")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Label">
       <MemberSignature Language="C#" Value="public string Label { set; get; };" />
       <MemberType>Property</MemberType>
@@ -163,10 +161,14 @@
       <Docs>
         <summary>The string that is visible as the Frame's label</summary>
         <param name="value">Sets the text of the label, if this Frame has one.</param>
-        <returns>The text of a label if <see cref="P:Gtk.Frame.LabelWidget" /> is a <see cref="T:Gtk.Label" />, null otherwise.</returns>
+        <value>The text of a label if <see cref="P:Gtk.Frame.LabelWidget" /> is a <see cref="T:Gtk.Label" />, null otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="label")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Shadow">
       <MemberSignature Language="C#" Value="public Gtk.ShadowType Shadow { set; get; };" />
       <MemberType>Property</MemberType>
@@ -178,10 +180,14 @@
       <Docs>
         <summary>Manage the appearance of this frame's border.</summary>
         <param name="value">A new shadow type.</param>
-        <returns>The current shadow style that this Frame is rendered with.</returns>
+        <value>The current shadow style that this Frame is rendered with.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="shadow")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -191,7 +197,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Frame" />.</remarks>
       </Docs>
     </Member>
@@ -205,9 +211,12 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Frame" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

@@ -1,12 +1,10 @@
 <Type Name="MenuShell" FullName="Gtk.MenuShell">
-  <TypeSignature Language="C#" Value="public class MenuShell : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class MenuShell : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -21,20 +19,7 @@
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Prepend">
       <MemberSignature Language="C#" Value="public void Prepend (Gtk.Widget child);" />
@@ -188,7 +173,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of MenuShell, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -205,7 +189,11 @@
         <summary>An action signal that activates the current menu item within the menu shell.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="activate_current")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveCurrent">
       <MemberSignature Language="C#" Value="public event Gtk.MoveCurrentHandler MoveCurrent;" />
       <MemberType>Event</MemberType>
@@ -217,7 +205,11 @@
         <summary>An action signal which moves the current menu item in the direction specified by <paramref name="direction" />.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_current")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectionDone">
       <MemberSignature Language="C#" Value="public event EventHandler SelectionDone;" />
       <MemberType>Event</MemberType>
@@ -229,7 +221,11 @@
         <summary>This signal is emitted when a selection has been completed within a menu shell.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="selection-done")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Deactivated">
       <MemberSignature Language="C#" Value="public event EventHandler Deactivated;" />
       <MemberType>Event</MemberType>
@@ -241,7 +237,11 @@
         <summary>This signal is emitted when a menu shell is deactivated.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="deactivate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectFirst">
       <MemberSignature Language="C#" Value="public void SelectFirst (bool search_sensitive);" />
       <MemberType>Method</MemberType>
@@ -272,7 +272,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MenuShell" />.</remarks>
       </Docs>
     </Member>
@@ -340,10 +340,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.MenuShell" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected MenuShell ();" />
       <MemberType>Constructor</MemberType>
@@ -351,7 +354,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.MenuShell" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -366,7 +368,11 @@
         <summary>An action signal which cancels the selection within the menu shell.Causes the <see cref="F:Gtk.MenuShell.SelectionDone" /> signal to be emitted.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cancel")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnCanceled">
       <MemberSignature Language="C#" Value="protected virtual void OnCanceled ();" />
       <MemberType>Method</MemberType>

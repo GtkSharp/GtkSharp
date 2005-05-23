@@ -1,12 +1,10 @@
 <Type Name="Paned" FullName="Gtk.Paned">
-  <TypeSignature Language="C#" Value="public class Paned : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Paned : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -40,20 +38,12 @@ public Widget GetExampleFrame()
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="Pack2">
       <MemberSignature Language="C#" Value="public void Pack2 (Gtk.Widget child, bool resize, bool shrink);" />
@@ -170,7 +160,6 @@ public Widget GetExampleFrame()
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Paned, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -184,7 +173,7 @@ public Widget GetExampleFrame()
       </ReturnValue>
       <Docs>
         <summary>An accessor to the second child widget of this container</summary>
-        <returns>The child widget added with <see cref="M:Gtk.Paned.Pack2" /> or <see cref="M:Gtk.Paned.Add2" />.</returns>
+        <value>The child widget added with <see cref="M:Gtk.Paned.Pack2" /> or <see cref="M:Gtk.Paned.Add2" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -196,7 +185,7 @@ public Widget GetExampleFrame()
       </ReturnValue>
       <Docs>
         <summary>An accessor to the first child widget of this container</summary>
-        <returns>The child widget added with <see cref="M:Gtk.Paned.Pack1" /> or <see cref="M:Gtk.Paned.Add1" />.</returns>
+        <value>The child widget added with <see cref="M:Gtk.Paned.Pack1" /> or <see cref="M:Gtk.Paned.Add1" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -211,10 +200,14 @@ public Widget GetExampleFrame()
       <Docs>
         <summary>Manage the position of the splitter bar that separates the 2 child widgets.</summary>
         <param name="value`">The number of pixels the splitter should appear from the left/top edge.</param>
-        <returns>The current position ofh</returns>
+        <value>The current position ofh</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PositionSet">
       <MemberSignature Language="C#" Value="public bool PositionSet { set; get; };" />
       <MemberType>Property</MemberType>
@@ -227,10 +220,14 @@ public Widget GetExampleFrame()
         <summary>Whether the position property (related to <see cref="P:Gtk.Paned.MinPosition" /> and
 	  <see cref="P:Gtk.Paned.MaxPosition" />) should be used.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="position_set")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CycleHandleFocus">
       <MemberSignature Language="C#" Value="public event Gtk.CycleHandleFocusHandler CycleHandleFocus;" />
       <MemberType>Event</MemberType>
@@ -251,7 +248,11 @@ public Widget GetExampleFrame()
           set reversed to <see langword="true" />.
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cycle_handle_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MoveHandle">
       <MemberSignature Language="C#" Value="public event Gtk.MoveHandleHandler MoveHandle;" />
       <MemberType>Event</MemberType>
@@ -265,7 +266,11 @@ public Widget GetExampleFrame()
         </summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="move_handle")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CancelPosition">
       <MemberSignature Language="C#" Value="public event Gtk.CancelPositionHandler CancelPosition;" />
       <MemberType>Event</MemberType>
@@ -279,7 +284,11 @@ public Widget GetExampleFrame()
         </summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cancel_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AcceptPosition">
       <MemberSignature Language="C#" Value="public event Gtk.AcceptPositionHandler AcceptPosition;" />
       <MemberType>Event</MemberType>
@@ -295,7 +304,11 @@ public Widget GetExampleFrame()
           cause the child widget with the focus to be activated.
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="accept_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ToggleHandleFocus">
       <MemberSignature Language="C#" Value="public event Gtk.ToggleHandleFocusHandler ToggleHandleFocus;" />
       <MemberType>Event</MemberType>
@@ -309,7 +322,11 @@ public Widget GetExampleFrame()
         </summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggle_handle_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CycleChildFocus">
       <MemberSignature Language="C#" Value="public event Gtk.CycleChildFocusHandler CycleChildFocus;" />
       <MemberType>Event</MemberType>
@@ -321,7 +338,11 @@ public Widget GetExampleFrame()
         <summary>Emitted when F6 or Shift-F6 is pressed while paned has the focus.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cycle_child_focus")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -331,7 +352,7 @@ public Widget GetExampleFrame()
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Paned" />.</remarks>
       </Docs>
     </Member>
@@ -432,10 +453,13 @@ public Widget GetExampleFrame()
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Paned" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Paned ();" />
       <MemberType>Constructor</MemberType>
@@ -443,7 +467,6 @@ public Widget GetExampleFrame()
       <Parameters />
       <Docs>
         <summary>Default constructor.</summary>
-        <returns>a <see cref="T:Gtk.Paned" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -458,11 +481,15 @@ public Widget GetExampleFrame()
         <summary>The largest possible value for the position property. 
 	  This property is derived from the size and shrinkability of the widget's children.
 	</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="max_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="MinPosition">
       <MemberSignature Language="C#" Value="public int MinPosition { get; };" />
       <MemberType>Property</MemberType>
@@ -474,11 +501,15 @@ public Widget GetExampleFrame()
         <summary>The smallest possible value for the position property. 
 	  This property is derived from the size and shrinkability of the widget's children.
 	</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="min_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Item">
       <MemberSignature Language="C#" Value="public override Gtk.Container+ContainerChild Item { get; };" />
       <MemberType>Property</MemberType>

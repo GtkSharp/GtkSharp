@@ -1,12 +1,10 @@
 <Type Name="Menu" FullName="Gtk.Menu">
-  <TypeSignature Language="C#" Value="public class Menu : Gtk.MenuShell, Implementor, IWrapper, IDisposable" Maintainer="Hector Gomez M" />
+  <TypeSignature Language="C#" Maintainer="Hector Gomez M" Value="public class Menu : Gtk.MenuShell" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -71,20 +69,12 @@ public class MenuApp
     <BaseTypeName>Gtk.MenuShell</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="Detach">
       <MemberSignature Language="C#" Value="public void Detach ();" />
@@ -292,7 +282,6 @@ class PopupSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Menu, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -305,7 +294,6 @@ class PopupSample
       <Parameters />
       <Docs>
         <summary>A constructor.</summary>
-        <returns>An instance of <see cref="T:Gtk.Menu" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -317,7 +305,7 @@ class PopupSample
       </ReturnValue>
       <Docs>
         <summary>Returns the selected menu item from the menu.</summary>
-        <returns>The <see cref="T:Gtk.MenuItem" /> that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.</returns>
+        <value>The <see cref="T:Gtk.MenuItem" /> that was last selected in the menu. If a selection has not yet been made, the first menu item is selected.</value>
         <remarks>
           <para>
           This is used by the <see cref="T:Gtk.OptionMenu" />.
@@ -336,7 +324,7 @@ class PopupSample
       <Docs>
         <summary>Sets an accelerator path for this menu from which accelerator paths for its immediate children, its menu items, can be constructed.</summary>
         <param name="value">A valid accelerator path.</param>
-        <returns>void</returns>
+        <value>void</value>
         <remarks>
           <para>
           The main purpose of this function is to spare the programmer the inconvenience of having to call <see cref="P:Gtk.MenuItem.AccelPath" /> on each menu item that should support runtime user changable accelerators. Instead, by just calling <see cref="P:Gtk.MenuItem.AccelPath" /> on their parent, each menu item of this menu, that contains a label describing its purpose, automatically gets an accel path assigned. 
@@ -352,7 +340,7 @@ class PopupSample
       </ReturnValue>
       <Docs>
         <summary>Returns the <see cref="T:Gtk.Widget" /> that the menu is attached to.</summary>
-        <returns>The <see cref="T:Gtk.Widget" /> that the menu is attached to.</returns>
+        <value>The <see cref="T:Gtk.Widget" /> that the menu is attached to.</value>
         <remarks />
       </Docs>
     </Member>
@@ -367,14 +355,18 @@ class PopupSample
       <Docs>
         <summary>Sets or obtains the tearoff state of the menu.</summary>
         <param name="value">If <see langword="true" />, menu is displayed as a tearoff menu.</param>
-        <returns>Returns <see langword="true" /> if the menu is currently torn off.</returns>
+        <value>Returns <see langword="true" /> if the menu is currently torn off.</value>
         <remarks>
           <para>
           A menu is normally displayed as drop down menu which persists as long as the menu is active. It can also be displayed as a tearoff menu which persists until it is closed or reattached.
          </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="tearoff-state")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AccelGroup">
       <MemberSignature Language="C#" Value="public Gtk.AccelGroup AccelGroup { set; get; };" />
       <MemberType>Property</MemberType>
@@ -386,7 +378,7 @@ class PopupSample
       <Docs>
         <summary>Sets or obtains the <see cref="T:Gtk.AccelGroup" /> which holds global accelerators for the menu.</summary>
         <param name="value">The <see cref="T:Gtk.AccelGroup" /> to be associated with the menu.</param>
-        <returns>The <see cref="T:Gtk.AccelGroup" /> associated with the menu.</returns>
+        <value>The <see cref="T:Gtk.AccelGroup" /> associated with the menu.</value>
         <remarks>
           <para>
           This accelerator group needs to also be added to all windows that this menu is being used in with <see cref="M:Gtk.Window.AddAccelGroup" />, in order for those windows to support all the accelerators contained in this group.
@@ -405,7 +397,7 @@ class PopupSample
       <Docs>
         <summary>Sets or obtains the title for the menu.</summary>
         <param name="value">A string containing the title for the menu.</param>
-        <returns>The title of the menu, or <see langword="null" /> if the menu has no title set on it. This string is owned by the widget and should not be modified or freed.</returns>
+        <value>The title of the menu, or <see langword="null" /> if the menu has no title set on it. This string is owned by the widget and should not be modified or freed.</value>
         <remarks>
           <para>
           The title is displayed when the menu is shown as a tearoff menu.
@@ -424,10 +416,14 @@ class PopupSample
       <Docs>
         <summary>The title of this menu when it is torn off</summary>
         <param name="value">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="tearoff-title")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Screen">
       <MemberSignature Language="C#" Value="public Gdk.Screen Screen { set; get; };" />
       <MemberType>Property</MemberType>
@@ -437,7 +433,7 @@ class PopupSample
       <Parameters />
       <Docs>
         <summary>The physical screen this menu is placed on.</summary>
-        <returns>a <see cref="T:Gdk.Screen" /></returns>
+        <value>a <see cref="T:Gdk.Screen" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -469,7 +465,7 @@ class PopupSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Menu" />.</remarks>
       </Docs>
     </Member>
@@ -483,10 +479,13 @@ class PopupSample
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Menu" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Monitor">
       <MemberSignature Language="C#" Value="public int Monitor { set; };" />
       <MemberType>Property</MemberType>
@@ -495,7 +494,7 @@ class PopupSample
       </ReturnValue>
       <Docs>
         <summary>The number of the monitor on which the menu should be popped up.</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>
         </remarks>
       </Docs>

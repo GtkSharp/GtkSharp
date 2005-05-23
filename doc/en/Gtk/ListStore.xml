@@ -1,12 +1,10 @@
 <Type Name="ListStore" FullName="Gtk.ListStore">
-  <TypeSignature Language="C#" Value="public class ListStore : GLib.Object, TreeModel, IWrapper, TreeDragSource, TreeDragDest, TreeSortable, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class ListStore : GLib.Object, Gtk.TreeDragDest, Gtk.TreeDragSource, Gtk.TreeModel, Gtk.TreeSortable, System.Collections.IEnumerable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -33,31 +31,24 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>Gtk.TreeModel</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
+      <InterfaceName>Gtk.TreeDragDest</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>Gtk.TreeDragSource</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>Gtk.TreeDragDest</InterfaceName>
+      <InterfaceName>Gtk.TreeModel</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>Gtk.TreeSortable</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public virtual int IterNChildren ();" />
+      <MemberSignature Language="C#" Value="public int IterNChildren ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -73,7 +64,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public virtual bool IterChildren (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -101,7 +92,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="ChangeSortColumn">
-      <MemberSignature Language="C#" Value="public virtual void ChangeSortColumn ();" />
+      <MemberSignature Language="C#" Value="public void ChangeSortColumn ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -113,7 +104,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="SetSortColumnId">
-      <MemberSignature Language="C#" Value="public virtual void SetSortColumnId (int sort_column_id, Gtk.SortType order);" />
+      <MemberSignature Language="C#" Value="public void SetSortColumnId (int sort_column_id, Gtk.SortType order);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -130,7 +121,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="SetSortFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
+      <MemberSignature Language="C#" Value="public void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -151,7 +142,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="SetDefaultSortFunc" Deprecated="true">
-      <MemberSignature Language="C#" Value="public virtual void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
+      <MemberSignature Language="C#" Value="public void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -170,19 +161,19 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="DefaultSortFunc">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreeIterCompareFunc DefaultSortFunc { set; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeIterCompareFunc DefaultSortFunc { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeIterCompareFunc</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The function that will be used by default to sort columns.</summary>
-        <returns>a <see cref="T:Gtk.TreeIterCompareFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeIterCompareFunc" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="RowDropPossible">
-      <MemberSignature Language="C#" Value="public virtual bool RowDropPossible (Gtk.TreePath dest_path, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool RowDropPossible (Gtk.TreePath dest_path, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -201,7 +192,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="DragDataReceived">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataReceived (Gtk.TreePath dest, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool DragDataReceived (Gtk.TreePath dest, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -219,7 +210,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="DragDataGet">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataGet (Gtk.TreePath path, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool DragDataGet (Gtk.TreePath path, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -239,7 +230,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="RowDraggable">
-      <MemberSignature Language="C#" Value="public virtual bool RowDraggable (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool RowDraggable (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -255,7 +246,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="DragDataDelete">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataDelete (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool DragDataDelete (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -271,7 +262,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="EmitRowChanged">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -288,7 +279,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="Foreach">
-      <MemberSignature Language="C#" Value="public virtual void Foreach (Gtk.TreeModelForeachFunc func);" />
+      <MemberSignature Language="C#" Value="public void Foreach (Gtk.TreeModelForeachFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -303,7 +294,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="GetIterFirst">
-      <MemberSignature Language="C#" Value="public virtual bool GetIterFirst (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool GetIterFirst (out Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -319,7 +310,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="EmitRowHasChildToggled">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -338,7 +329,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="GetPath">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreePath</ReturnType>
@@ -354,7 +345,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterHasChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterHasChild (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -370,7 +361,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="RefNode">
-      <MemberSignature Language="C#" Value="public virtual void RefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -388,7 +379,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public virtual int IterNChildren (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public int IterNChildren (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -404,7 +395,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="EmitRowInserted">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -421,7 +412,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="EmitRowDeleted">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowDeleted (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public void EmitRowDeleted (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -436,7 +427,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="GetValist">
-      <MemberSignature Language="C#" Value="public virtual void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
+      <MemberSignature Language="C#" Value="public void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -453,7 +444,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="UnrefNode">
-      <MemberSignature Language="C#" Value="public virtual void UnrefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -544,39 +535,38 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of ListStore, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public virtual int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The number of columns in this ListStore.</summary>
-        <returns>A <see cref="System.Int32" /></returns>
+        <value>A <see cref="System.Int32" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Flags">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreeModelFlags Flags { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeModelFlags</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The flags for this ListStore. </summary>
-        <returns>A <see cref="T:Gtk.TreeModelFlags" /></returns>
+        <value>A <see cref="T:Gtk.TreeModelFlags" /></value>
         <remarks>Flags are about the shape of this object's data; see the
 	  class documentation for more details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SortColumnChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler SortColumnChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler SortColumnChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -586,9 +576,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when the sorting column has changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="sort_column_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowHasChildToggled">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowHasChildToggledHandler</ReturnType>
@@ -598,9 +592,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when the display of a given row's children is toggled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_has_child_toggled")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowInserted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowInsertedHandler RowInserted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowInsertedHandler</ReturnType>
@@ -610,9 +608,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when a row of data is inserted.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowDeleted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowDeletedHandler</ReturnType>
@@ -622,9 +624,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when a row is deleted.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowChanged">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowChangedHandler RowChanged;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowChangedHandler</ReturnType>
@@ -634,9 +640,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when a row has changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowsReordered">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowsReorderedHandler RowsReordered;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowsReorderedHandler RowsReordered;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowsReorderedHandler</ReturnType>
@@ -646,9 +656,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <summary>Fired when the order of rows has changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="rows_reordered")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterNthChild (out Gtk.TreeIter iter, int n);" />
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -667,7 +681,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -678,16 +692,17 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
         <Parameter Name="n" Type="System.Int32" />
       </Parameters>
       <Docs>
+        <param name="iter">a <see cref="T:Gtk.TreeIter&amp;" /></param>
+        <param name="parent">To be added.</param>
+        <param name="n">a <see cref="T:System.Int32" /></param>
         <summary>Sets <paramref name="iter" /> to be the child of <paramref name="parent" />, using the given index.  The first index is 0.  If <paramref name="n" /> is too big, or <paramref name="parent" /> has no children, <paramref name="iter" /> is set to an invalid iterator and false is returned.  <paramref name="parent" /> will remain a valid node after this function has been called.  As a special case, if <paramref name="parent" /> is <see langword="null" />, then the <paramref name="n" />th root node is set.
 </summary>
-        <param name="iter">a <see cref="T:Gtk.TreeIter&amp;" /></param>
-        <param name="n">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.Boolean" />, true if <paramref name="parent" /> has an <paramref name="n" />th child.</returns>
         <remarks>This invocation form is closer to the underlying C API, but it's probably less useful for most C# purposes.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterFromString">
-      <MemberSignature Language="C#" Value="public virtual bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
+      <MemberSignature Language="C#" Value="public bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -705,7 +720,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public virtual bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -725,7 +740,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="GetIter">
-      <MemberSignature Language="C#" Value="public virtual bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -743,7 +758,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="IterParent">
-      <MemberSignature Language="C#" Value="public virtual bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
+      <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -761,13 +776,19 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="AppendValues">
-      <MemberSignature Language="C#" Value="public Gtk.TreeIter AppendValues (object [] values);" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeIter AppendValues (object[] values);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeIter</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="values" Type="System.Object[]" />
+        <Parameter Name="values" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Appends a new row to the ListStore and puts the objects in <paramref name="values" /> in it.</summary>
@@ -793,7 +814,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName="GetStringFromIter">
-      <MemberSignature Language="C#" Value="public virtual string GetStringFromIter (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public string GetStringFromIter (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -887,16 +908,21 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ListStore (Type [] types);" />
+      <MemberSignature Language="C#" Value="public ListStore (Type[] types);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-        <Parameter Name="types" Type="System.Type[]" />
+        <Parameter Name="types" Type="System.Type[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Creates a new store. The columns' type specified by the argument.</summary>
         <param name="types">a <see cref="T:System.Type[]" /></param>
-        <returns>a <see cref="T:Gtk.ListStore" /></returns>
         <remarks>
           <example>
             <code lang="C#">
@@ -908,7 +934,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="GetSortColumnId">
-      <MemberSignature Language="C#" Value="public virtual bool GetSortColumnId (out int sort_column_id, out Gtk.SortType order);" />
+      <MemberSignature Language="C#" Value="public bool GetSortColumnId (out int sort_column_id, out Gtk.SortType order);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -926,7 +952,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, bool value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, bool value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -945,7 +971,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, double value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, double value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -964,7 +990,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, int value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, int value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -983,7 +1009,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, string value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1002,7 +1028,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, float value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1021,7 +1047,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, uint value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1040,7 +1066,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, object value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, object value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1059,7 +1085,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public virtual object GetValue (Gtk.TreeIter iter, int column);" />
+      <MemberSignature Language="C#" Value="public object GetValue (Gtk.TreeIter iter, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -1078,7 +1104,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="HasDefaultSortFunc">
-      <MemberSignature Language="C#" Value="public virtual bool HasDefaultSortFunc { get; };" />
+      <MemberSignature Language="C#" Value="public bool HasDefaultSortFunc { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1086,8 +1112,8 @@ The above example creates a new three columns list store. The types of the colum
       <Parameters />
       <Docs>
         <summary>Find out whether this ListStore has a default sort function.</summary>
-        <returns>a <see cref="T:System.Boolean" />, true if there is a default
-	sort function.</returns>
+        <value>a <see cref="T:System.Boolean" />, true if there is a default
+	sort function.</value>
         <remarks>To set a default sort function, use the <see cref="M:Gtk.ListStore.DefaultSortFunc" /> property.</remarks>
       </Docs>
     </Member>
@@ -1100,19 +1126,19 @@ The above example creates a new three columns list store. The types of the colum
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.ListStore" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ColumnTypes">
-      <MemberSignature Language="C#" Value="public GLib.GType [] ColumnTypes { set; };" />
+      <MemberSignature Language="C#" Value="public GLib.GType[] ColumnTypes { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType[]</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The types in each column of a ListStore.</summary>
-        <returns>a <see cref="T:GLib.GType[]" /></returns>
+        <value>a <see cref="T:GLib.GType[]" /></value>
         <remarks>
 	    This property is meant primarily for classes that
 	    inherit from <see cref="T:Gtk.ListStore" />, and should
@@ -1137,7 +1163,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="GetColumnType">
-      <MemberSignature Language="C#" Value="public virtual GLib.GType GetColumnType (int index_);" />
+      <MemberSignature Language="C#" Value="public GLib.GType GetColumnType (int index_);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -1259,21 +1285,29 @@ The above example creates a new three columns list store. The types of the colum
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.ListStore" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public ListStore (GLib.GType[] types);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
-        <Parameter Name="types" Type="GLib.GType[]" />
+        <Parameter Name="types" Type="GLib.GType[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Default constructor.</summary>
         <param name="types">a <see cref="T:GLib.GType[]" /></param>
-        <returns>a <see cref="T:Gtk.ListStore" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -1390,7 +1424,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="EmitRowsReordered">
-      <MemberSignature Language="C#" Value="public virtual int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1424,7 +1458,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public virtual void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1445,7 +1479,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="IterNext">
-      <MemberSignature Language="C#" Value="public virtual bool IterNext (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1467,13 +1501,12 @@ The above example creates a new three columns list store. The types of the colum
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.ListStore" /></returns>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSortFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberSignature Language="C#" Value="public void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1512,7 +1545,7 @@ The above example creates a new three columns list store. The types of the colum
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>

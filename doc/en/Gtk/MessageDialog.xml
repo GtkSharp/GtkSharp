@@ -1,12 +1,10 @@
 <Type Name="MessageDialog" FullName="Gtk.MessageDialog">
-  <TypeSignature Language="C#" Value="public class MessageDialog : Gtk.Dialog, Implementor, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class MessageDialog : Gtk.Dialog" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -70,20 +68,7 @@ md.Modal = false;
     <BaseTypeName>Gtk.Dialog</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -107,14 +92,13 @@ md.Modal = false;
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of <see cref="T:Gtk.MessageDialog" />, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, string format, object [] args);" />
+      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, string format, object[] args);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -123,7 +107,13 @@ md.Modal = false;
         <Parameter Name="type" Type="Gtk.MessageType" />
         <Parameter Name="bt" Type="Gtk.ButtonsType" />
         <Parameter Name="format" Type="System.String" />
-        <Parameter Name="args" Type="System.Object[]" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Creates an instance of <see cref="T:Gtk.MessageDialog" /></summary>
@@ -133,7 +123,6 @@ md.Modal = false;
         <param name="bt">the buttons to display</param>
         <param name="format">the message format string</param>
         <param name="args">optional arguments for <paramref name="format" /></param>
-        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
         <remarks>
           <para>
 	      Creates an instance of <see cref="T:Gtk.MessageDialog" /><example>
@@ -147,7 +136,7 @@ MessageDialog md = new MessageDialog
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, bool use_markup, string format, object [] args);" />
+      <MemberSignature Language="C#" Value="public MessageDialog (Gtk.Window parent_window, Gtk.DialogFlags flags, Gtk.MessageType type, Gtk.ButtonsType bt, bool use_markup, string format, object[] args);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
@@ -157,7 +146,13 @@ MessageDialog md = new MessageDialog
         <Parameter Name="bt" Type="Gtk.ButtonsType" />
         <Parameter Name="use_markup" Type="System.Boolean" />
         <Parameter Name="format" Type="System.String" />
-        <Parameter Name="args" Type="System.Object[]" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Creates an instance of <see cref="T:Gtk.MessageDialog" /></summary>
@@ -168,7 +163,6 @@ MessageDialog md = new MessageDialog
         <param name="use_markup">whether or not <paramref name="format" /> uses Pango markup</param>
         <param name="format">the message format string</param>
         <param name="args">optional arguments for <paramref name="format" /></param>
-        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
         <remarks>Like the other constructor, but allows you to pass a non-marked-up string.</remarks>
       </Docs>
     </Member>
@@ -180,10 +174,14 @@ MessageDialog md = new MessageDialog
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gtk.MessageType" /> of the <see cref="T:Gtk.Dialog" /></summary>
-        <returns>an object of type <see cref="T:Gtk.MessageDialog" /></returns>
+        <value>an object of type <see cref="T:Gtk.MessageDialog" /></value>
         <remarks>The <see cref="T:Gtk.MessageType" /> of the <see cref="T:Gtk.Dialog" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="message_type")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -193,7 +191,7 @@ MessageDialog md = new MessageDialog
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.MessageDialog" />.</remarks>
       </Docs>
     </Member>
@@ -207,10 +205,13 @@ MessageDialog md = new MessageDialog
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Markup">
       <MemberSignature Language="C#" Value="public string Markup { set; };" />
       <MemberType>Property</MemberType>
@@ -219,7 +220,7 @@ MessageDialog md = new MessageDialog
       </ReturnValue>
       <Docs>
         <summary>Markup for the message to display in the dialog.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Markup should be in Pango markup format. (TODO: check this.)</remarks>
       </Docs>
     </Member>
@@ -230,7 +231,6 @@ MessageDialog md = new MessageDialog
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gtk.MessageDialog" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

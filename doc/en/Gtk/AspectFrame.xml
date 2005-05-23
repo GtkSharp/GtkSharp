@@ -1,12 +1,10 @@
 <Type Name="AspectFrame" FullName="Gtk.AspectFrame">
-  <TypeSignature Language="C#" Value="public class AspectFrame : Gtk.Frame, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class AspectFrame : Gtk.Frame" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,20 +17,7 @@
     <BaseTypeName>Gtk.Frame</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Set">
       <MemberSignature Language="C#" Value="public void Set (float xalign, float yalign, float ratio, bool obey_child);" />
@@ -79,7 +64,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of AspectFrame, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -103,7 +87,6 @@
         <param name="yalign">Vertical alignment of the child within the allocation of the AspectFrame.</param>
         <param name="ratio">The desired aspect ratio.</param>
         <param name="obey_child">If <see langword="true" />, ratio is ignored, and the aspect ratio is taken from the requistion of the child.</param>
-        <returns>A new AspectFrame</returns>
         <remarks>
           <para>Alignment values range from 0.0 (left/top aligned) to 1.0 (right/bottom aligned).</para>
         </remarks>
@@ -120,10 +103,14 @@
       <Docs>
         <summary>Vertical alignment of the child widget in the AspectFrame.</summary>
         <param name="value">A value between 0.0 (top aligned) and 1.0 (bottom aligned).</param>
-        <returns>A value between 0.0 and 1.0.</returns>
+        <value>A value between 0.0 and 1.0.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="yalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Xalign">
       <MemberSignature Language="C#" Value="public float Xalign { set; get; };" />
       <MemberType>Property</MemberType>
@@ -135,10 +122,14 @@
       <Docs>
         <summary>Horiontal alignment of the child widget in the AspectFrame.</summary>
         <param name="value">A value between 0.0 (left aligned) and 1.0 (right aligned).</param>
-        <returns>A value between 0.0 and 1.0.</returns>
+        <value>A value between 0.0 and 1.0.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="xalign")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Ratio">
       <MemberSignature Language="C#" Value="public float Ratio { set; get; };" />
       <MemberType>Property</MemberType>
@@ -150,12 +141,16 @@
       <Docs>
         <summary>The aspect ratio of the child widget's size.</summary>
         <param name="value">A ratio between 0.0 and 1.0</param>
-        <returns>The aspect ratio between 0.0 and 1.0 representing the child's size constraints.</returns>
+        <value>The aspect ratio between 0.0 and 1.0 representing the child's size constraints.</value>
         <remarks>
           <para>Setting this ratio is ignored if <see cref="P:Gtk.AspectFrame.ObeyChild" /> is set to <see langword="true" />.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="ratio")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ObeyChild">
       <MemberSignature Language="C#" Value="public bool ObeyChild { set; get; };" />
       <MemberType>Property</MemberType>
@@ -168,10 +163,14 @@
         <summary>Allow the frame to use its child widget's aspect ratio.</summary>
         <param name="value">
           <see langword="true" /> for the AspectFrame to use the child widget's size ratio, <see langword="false" /> for <see cref="P:Gtk.AspectFrame.Ratio" /> to control the ratio.</param>
-        <returns>The current size ratio of the child widget</returns>
+        <value>The current size ratio of the child widget</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="obey_child")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -181,7 +180,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.AspectFrame" />.</remarks>
       </Docs>
     </Member>
@@ -195,9 +194,12 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.AspectFrame" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

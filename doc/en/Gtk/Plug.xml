@@ -1,12 +1,10 @@
 <Type Name="Plug" FullName="Gtk.Plug">
-  <TypeSignature Language="C#" Value="public class Plug : Gtk.Window, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Plug : Gtk.Window" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -24,20 +22,7 @@
     <BaseTypeName>Gtk.Window</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Construct">
       <MemberSignature Language="C#" Value="public void Construct (uint socket_id);" />
@@ -77,7 +62,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Plug, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -93,7 +77,6 @@
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.Plug" /> widget inside the <see cref="T:Gtk.Socket" /> identified by socket_id.</summary>
         <param name="socket_id">an object of type <see cref="System.UInt32" /></param>
-        <returns>an object of type <see cref="T:Gtk.Plug" /></returns>
         <remarks>
 					Creates a new <see cref="T:Gtk.Plug" /> widget inside the <see cref="T:Gtk.Socket" /> identified by socket_id.
 					If socket_id is 0, the <see cref="T:Gtk.Plug" /> is left "unplugged" and can later be plugged into a <see cref="T:Gtk.Socket" /> by <see cref="M:Gtk.Socket.AddId(System.UInt32)" />.
@@ -108,7 +91,7 @@
       </ReturnValue>
       <Docs>
         <summary>Gets the window ID of a <see cref="T:Gtk.Plug" /> widget.</summary>
-        <returns>an object of type <see cref="T:System.UInt32" /></returns>
+        <value>an object of type <see cref="T:System.UInt32" /></value>
         <remarks>Gets the window ID of a <see cref="T:Gtk.Plug" /> widget, which can then be used to embed this window inside another window,
 				for instance with <see cref="M:Gtk.Socket.AddId(System.UInt32)" />.</remarks>
       </Docs>
@@ -125,7 +108,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="embedded")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ConstructForDisplay">
       <MemberSignature Language="C#" Value="public void ConstructForDisplay (Gdk.Display display, uint socket_id);" />
       <MemberType>Method</MemberType>
@@ -157,7 +144,6 @@
         <summary>Public constructor.</summary>
         <param name="display">a <see cref="T:Gdk.Display" /></param>
         <param name="socket_id">a <see cref="T:System.UInt32" />, the ID of the socket to connect to on <paramref name="display" />.</param>
-        <returns>a <see cref="T:Gtk.Plug" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -171,7 +157,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Plug" />.</remarks>
       </Docs>
     </Member>
@@ -197,10 +183,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Plug" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Plug ();" />
       <MemberType>Constructor</MemberType>
@@ -208,7 +197,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Plug" /></returns>
         <remarks>
         </remarks>
       </Docs>

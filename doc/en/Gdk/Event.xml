@@ -1,12 +1,10 @@
 <Type Name="Event" FullName="Gdk.Event">
-  <TypeSignature Language="C#" Value="public class Event : GLib.Boxed" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Event : GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -16,8 +14,11 @@
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
-  <Interfaces />
-  <Attributes />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Event (IntPtr raw);" />
@@ -29,7 +30,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Event, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -43,7 +43,7 @@
       </ReturnValue>
       <Docs>
         <summary>the type of the event.</summary>
-        <returns>the type of the event.</returns>
+        <value>the type of the event.</value>
         <remarks>None.</remarks>
       </Docs>
     </Member>
@@ -56,12 +56,12 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Event" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public virtual IntPtr Handle { get; };" />
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -69,7 +69,7 @@
       <Parameters />
       <Docs>
         <summary>IntPtr for the unmanaged structure.</summary>
-        <returns>The <see cref="T:System.IntPtr" /> to the unmanaged GdkEvent structure.</returns>
+        <value>The <see cref="T:System.IntPtr" /> to the unmanaged GdkEvent structure.</value>
         <remarks>This property should rarely if ever need to be accessed.</remarks>
       </Docs>
     </Member>
@@ -82,7 +82,7 @@
       <Parameters />
       <Docs>
         <summary>The window which received the event.</summary>
-        <returns>The window which received the event.</returns>
+        <value>The window which received the event.</value>
         <remarks>This is a <see cref="T:Gdk.Window" /> not a <see cref="T:Gtk.Window" />.</remarks>
       </Docs>
     </Member>
@@ -95,7 +95,7 @@
       <Parameters />
       <Docs>
         <summary>true if the event was sent explicitly (e.g. using XSendEvent).</summary>
-        <returns>true if the event was sent explicitly (e.g. using XSendEvent).</returns>
+        <value>true if the event was sent explicitly (e.g. using XSendEvent).</value>
         <remarks>None.</remarks>
       </Docs>
     </Member>

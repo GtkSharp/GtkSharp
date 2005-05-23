@@ -1,12 +1,10 @@
 <Type Name="Box" FullName="Gtk.Box">
-  <TypeSignature Language="C#" Value="public class Box : Gtk.Container, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class Box : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -23,20 +21,12 @@
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="SetChildPacking">
       <MemberSignature Language="C#" Value="public void SetChildPacking (Gtk.Widget child, bool expand, bool fill, uint padding, Gtk.PackType pack_type);" />
@@ -184,7 +174,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Box, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -201,10 +190,14 @@
       <Docs>
         <summary>Adjust the spacing between child widgets.</summary>
         <param name="value">The number of pixels of space to put between child widgets.</param>
-        <returns>The current pixel spacing between child widgets</returns>
+        <value>The current pixel spacing between child widgets</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="spacing")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Homogeneous">
       <MemberSignature Language="C#" Value="public bool Homogeneous { set; get; };" />
       <MemberType>Property</MemberType>
@@ -216,11 +209,15 @@
       <Docs>
         <summary>Set the size of all child widgets to be the same</summary>
         <param name="value">If <see langword="true" />, all child widgets are forced to have the same size, otherwise they appear at their preferred size.</param>
-        <returns>
-          <see langword="true" /> if child widgets size themselves equally, false otherwise.</returns>
+        <value>
+          <see langword="true" /> if child widgets size themselves equally, false otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="homogeneous")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="QueryChildPacking">
       <MemberSignature Language="C#" Value="public void QueryChildPacking (Gtk.Widget child, out bool expand, out bool fill, out uint padding, out Gtk.PackType pack_type);" />
       <MemberType>Method</MemberType>
@@ -253,7 +250,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Box" />.</remarks>
       </Docs>
     </Member>
@@ -267,10 +264,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Box" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Box ();" />
       <MemberType>Constructor</MemberType>
@@ -278,7 +278,6 @@
       <Parameters />
       <Docs>
         <summary>Protected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Box" /></returns>
         <remarks>
         </remarks>
       </Docs>

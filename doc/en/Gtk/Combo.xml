@@ -1,12 +1,10 @@
 <Type Name="Combo" FullName="Gtk.Combo">
-  <TypeSignature Language="C#" Value="public class Combo : Gtk.HBox, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Combo : Gtk.HBox" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -84,20 +82,12 @@ class ComboSample
     <BaseTypeName>Gtk.HBox</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="SetItemString">
       <MemberSignature Language="C#" Value="public void SetItemString (Gtk.Item item, string item_value);" />
@@ -151,7 +141,6 @@ class ComboSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of <see cref="T:Gtk.Combo" />, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -164,7 +153,6 @@ class ComboSample
       <Parameters />
       <Docs>
         <summary>Creates a new <see cref="T:Gtk.Combo" />.</summary>
-        <returns>an object of type <see cref="T:Gtk.Combo" /></returns>
         <remarks>This is the default contructor for <see cref="T:Gtk.Combo" /></remarks>
       </Docs>
     </Member>
@@ -176,7 +164,7 @@ class ComboSample
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gtk.Button" /> asociated with the <see cref="T:Gtk.Combo" />.</summary>
-        <returns>an object of type <see cref="T:Gtk.Button" /></returns>
+        <value>an object of type <see cref="T:Gtk.Button" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -189,7 +177,7 @@ class ComboSample
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gtk.Entry" /> asociated with the <see cref="T:Gtk.Combo" />.</summary>
-        <returns>an object of type <see cref="T:Gtk.Entry" /></returns>
+        <value>an object of type <see cref="T:Gtk.Entry" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -205,7 +193,7 @@ class ComboSample
       <Docs>
         <summary>Does nothing. ---- REMOVE ---- See EnableArrowKeys.</summary>
         <param name="value">A <see cref="T:System.Boolean" />.</param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -220,8 +208,8 @@ class ComboSample
       <Docs>
         <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list. See also EnableArrowKeys.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Boolean" /></param>
-        <returns>
-          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</returns>
+        <value>
+          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</value>
         <remarks>This is on by default.</remarks>
       </Docs>
     </Member>
@@ -236,10 +224,14 @@ class ComboSample
       <Docs>
         <summary>See <see cref="P:Gtk.Combo.EnableArrowKeys" /></summary>
         <param name="value">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="enable_arrows_always")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ValueInList">
       <MemberSignature Language="C#" Value="public bool ValueInList { set; get; };" />
       <MemberType>Property</MemberType>
@@ -252,11 +244,15 @@ class ComboSample
         <summary>Specifies whether the value entered in the text entry field must match one of the values in the list.</summary>
         <param name="value">
           <see langword="true" /> if the value entered must match one of the values in the list.</param>
-        <returns>
-          <see langword="true" /> if the value entered must match one of the values in the list.</returns>
+        <value>
+          <see langword="true" /> if the value entered must match one of the values in the list.</value>
         <remarks>If this is set then the user will not be able to perform any other action until a valid value has been entered.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="value_in_list")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AllowEmpty">
       <MemberSignature Language="C#" Value="public bool AllowEmpty { set; get; };" />
       <MemberType>Property</MemberType>
@@ -269,11 +265,15 @@ class ComboSample
         <summary>Specifies if an empty field is acceptable.</summary>
         <param name="value">
           <see langword="true" /> if an empty value is considered valid.</param>
-        <returns>
-          <see langword="true" /> if an empty value is considered valid.</returns>
+        <value>
+          <see langword="true" /> if an empty value is considered valid.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="allow_empty")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EnableArrowKeys">
       <MemberSignature Language="C#" Value="public bool EnableArrowKeys { set; get; };" />
       <MemberType>Property</MemberType>
@@ -286,11 +286,15 @@ class ComboSample
         <summary>Specifies if the arrow (cursor) keys can be used to step through the items in the list.</summary>
         <param name="value">
           A <see cref="T:System.Boolean" />; <see langword="true" /> if the arrow keys can be used to step through the items in the list.</param>
-        <returns>
-          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</returns>
+        <value>
+          <see langword="true" /> if the arrow keys can be used to step through the items in the list.</value>
         <remarks>This is <see langword="true" /> by default.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="enable_arrow_keys")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CaseSensitive">
       <MemberSignature Language="C#" Value="public bool CaseSensitive { set; get; };" />
       <MemberType>Property</MemberType>
@@ -303,11 +307,15 @@ class ComboSample
         <summary>Specifies whether the text entered into the <see cref="T:Gtk.Entry" /> field and the text in the list items is case sensitive.</summary>
         <param name="value">
           <see langword="true" /> if the text in the list items is case sensitive.</param>
-        <returns>
-          <see langword="true" /> if the text in the list items is case sensitive.</returns>
+        <value>
+          <see langword="true" /> if the text in the list items is case sensitive.</value>
         <remarks>This may be useful, for example, when you have set true ValueInList to limit the values entered, but you are not worried about differences in case.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="case_sensitive")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -317,7 +325,7 @@ class ComboSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Combo" />.</remarks>
       </Docs>
     </Member>
@@ -331,19 +339,22 @@ class ComboSample
       <Docs>
         <summary>Protected constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Combo" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PopdownStrings">
-      <MemberSignature Language="C#" Value="public string [] PopdownStrings { set; };" />
+      <MemberSignature Language="C#" Value="public string[] PopdownStrings { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>Property to set all of the items in the popup list.</summary>
-        <returns>An array of strings.</returns>
+        <value>An array of strings.</value>
         <remarks />
       </Docs>
     </Member>
@@ -361,7 +372,8 @@ class ComboSample
         <summary>Whether entered values must already be present in the list.</summary>
         <param name="val">a <see cref="T:System.Boolean" /></param>
         <param name="ok_if_empty">a <see cref="T:System.Boolean" /></param>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,12 +1,10 @@
 <Type Name="Pixmap" FullName="Gdk.Pixmap">
-  <TypeSignature Language="C#" Value="public class Pixmap : Gdk.Drawable, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Pixmap : Gdk.Drawable" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -20,14 +18,7 @@ The depth of a pixmap is the number of bits per pixels. Bitmaps are simply pixma
     <BaseTypeName>Gdk.Drawable</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Lookup">
       <MemberSignature Language="C#" Value="public static Gdk.Pixmap Lookup (uint anid);" />
@@ -89,7 +80,6 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Pixmap, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -179,7 +169,6 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
         <param name="width">The width of the new pixmap in pixels.</param>
         <param name="height">	The height of the new pixmap in pixels.</param>
         <param name="depth">The depth (number of bits per pixel) of the new pixmap. If -1, and drawable is not <see langword="null" />, the depth of the new pixmap will be equal to that of drawable.</param>
-        <returns>The new pixmap with the given size and depth</returns>
         <remarks>Create a new pixmap with a given size and depth. </remarks>
       </Docs>
     </Member>
@@ -192,7 +181,7 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.Pixmap" />.</remarks>
       </Docs>
     </Member>
@@ -206,10 +195,13 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.Pixmap" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Pixmap (Gdk.Drawable drawable, int width, int height);" />
       <MemberType>Constructor</MemberType>
@@ -224,12 +216,11 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
         <param name="drawable">A <see cref="T:Gdk.Drawable" />, used to determine default values for the new pixmap.</param>
         <param name="width">The width of the new pixmap in pixels.</param>
         <param name="height">The height of the new pixmap in pixels.</param>
-        <returns>The new <see cref="T:Gdk.Pixmap" />.</returns>
         <remarks>Creates a new pixmap with a given size and depth.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateFromXpmD">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixmap CreateFromXpmD (Gdk.Drawable drawable, out Gdk.Pixmap mask, Gdk.Color transparent_color, string [] data);" />
+      <MemberSignature Language="C#" Value="public static Gdk.Pixmap CreateFromXpmD (Gdk.Drawable drawable, out Gdk.Pixmap mask, Gdk.Color transparent_color, string[] data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixmap</ReturnType>
@@ -297,7 +288,7 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
       </Docs>
     </Member>
     <Member MemberName="ColormapCreateFromXpmD">
-      <MemberSignature Language="C#" Value="public static Gdk.Pixmap ColormapCreateFromXpmD (Gdk.Drawable drawable, Gdk.Colormap colormap, out Gdk.Pixmap mask, Gdk.Color transparent_color, string [] data);" />
+      <MemberSignature Language="C#" Value="public static Gdk.Pixmap ColormapCreateFromXpmD (Gdk.Drawable drawable, Gdk.Colormap colormap, out Gdk.Pixmap mask, Gdk.Color transparent_color, string[] data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.Pixmap</ReturnType>

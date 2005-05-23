@@ -1,12 +1,10 @@
 <Type Name="Dialog" FullName="Gtk.Dialog">
-  <TypeSignature Language="C#" Value="public class Dialog : Gtk.Window, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Duncan Mak" />
+  <TypeSignature Language="C#" Maintainer="Duncan Mak" Value="public class Dialog : Gtk.Window" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -153,20 +151,7 @@ namespace GtkDialogSample
     <BaseTypeName>Gtk.Window</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="AddActionWidget">
       <MemberSignature Language="C#" Value="public void AddActionWidget (Gtk.Widget child, int response_id);" />
@@ -283,7 +268,6 @@ namespace GtkDialogSample
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Dialog, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -296,7 +280,6 @@ namespace GtkDialogSample
       <Parameters />
       <Docs>
         <summary>Creates a new dialog box.</summary>
-        <returns>an object of type <see cref="T:Gtk.Dialog" />.</returns>
         <remarks>
             Creates a new dialog box.
             This is an internal constructor, and should not be used by user code.
@@ -304,14 +287,20 @@ namespace GtkDialogSample
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, object [] button_data);" />
+      <MemberSignature Language="C#" Value="public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, object[] button_data);" />
       <MemberType>Constructor</MemberType>
       <ReturnValue />
       <Parameters>
         <Parameter Name="title" Type="System.String" />
         <Parameter Name="parent" Type="Gtk.Window" />
         <Parameter Name="flags" Type="Gtk.DialogFlags" />
-        <Parameter Name="button_data" Type="System.Object[]" />
+        <Parameter Name="button_data" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Creates a new dialog box.</summary>
@@ -319,7 +308,6 @@ namespace GtkDialogSample
         <param name="parent">a parent <see cref="T:Gtk.Window" />, or <see langword="null" /> for an unparented dialog.</param>
         <param name="flags">dialog characteristic such as modality and destruction policy.</param>
         <param name="button_data">a list of button text/response pairs if desired.</param>
-        <returns>a <see cref="T:Gtk.Dialog" /></returns>
         <remarks>
             Creates a new <see cref="T:Gtk.Dialog" /> with the specified title and parent widget.
             The <see cref="T:Gtk.DialogFlags" /> argument can be used to make the dialog modal (<see cref="F:Gtk.DialogFlags.Modal" />)
@@ -335,7 +323,7 @@ namespace GtkDialogSample
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gtk.VBox" /> that contains other widgets in this dialog.</summary>
-        <returns>an object of type <see cref="T:Gtk.VBox" />.</returns>
+        <value>an object of type <see cref="T:Gtk.VBox" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -350,10 +338,14 @@ namespace GtkDialogSample
       <Docs>
         <summary>Whether to display a <see cref="T:Gtk.HSeperator" />.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>Whether to display a <see cref="T:Gtk.HSeperator" /> in the <see cref="T:Gtk.Dialog" /> above the <see cref="P:Gtk.Dialog.ActionArea" /></remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has_separator")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Response">
       <MemberSignature Language="C#" Value="public event Gtk.ResponseHandler Response;" />
       <MemberType>Event</MemberType>
@@ -371,7 +363,11 @@ namespace GtkDialogSample
           Otherwise, it depends on which action widget was clicked.
 	</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="response")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Close">
       <MemberSignature Language="C#" Value="public event EventHandler Close;" />
       <MemberType>Event</MemberType>
@@ -383,7 +379,11 @@ namespace GtkDialogSample
         <summary>Emitted when the dialog is closed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="close")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ActionArea">
       <MemberSignature Language="C#" Value="public Gtk.HButtonBox ActionArea { get; };" />
       <MemberType>Property</MemberType>
@@ -393,7 +393,7 @@ namespace GtkDialogSample
       <Parameters />
       <Docs>
         <summary>The area of the Dialog where the action widgets are placed.</summary>
-        <returns>a <see cref="T:Gtk.HButtonBox" /></returns>
+        <value>a <see cref="T:Gtk.HButtonBox" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -406,7 +406,7 @@ namespace GtkDialogSample
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Dialog" />.</remarks>
       </Docs>
     </Member>
@@ -432,10 +432,13 @@ namespace GtkDialogSample
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Dialog" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="AddActionWidget">
       <MemberSignature Language="C#" Value="public void AddActionWidget (Gtk.Widget child, Gtk.ResponseType response);" />
       <MemberType>Method</MemberType>
@@ -497,7 +500,7 @@ namespace GtkDialogSample
       </ReturnValue>
       <Docs>
         <summary>Sets the default response_id.</summary>
-        <returns>a <see cref="T:Gtk.ResponseType" /></returns>
+        <value>a <see cref="T:Gtk.ResponseType" /></value>
         <remarks>Sets the default response_id.</remarks>
       </Docs>
     </Member>

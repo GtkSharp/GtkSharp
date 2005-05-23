@@ -1,12 +1,10 @@
 <Type Name="DisplayManager" FullName="Gdk.DisplayManager">
-  <TypeSignature Language="C#" Value="public class DisplayManager : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class DisplayManager : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -17,14 +15,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Get">
       <MemberSignature Language="C#" Value="public static Gdk.DisplayManager Get ();" />
@@ -62,7 +53,6 @@
       <Docs>
         <summary>Internal constructor.</summary>
         <param name="raw">raw unmanaged pointer.</param>
-        <returns>A new <see cref="T:Gdk.DisplayManager" /></returns>
         <remarks>This constructor is internal and should not be used.</remarks>
       </Docs>
     </Member>
@@ -77,10 +67,14 @@
       <Docs>
         <summary>Access and modify the default display.</summary>
         <param name="value">Sets the <see cref="T:Gdk.Display" /> as the default display.</param>
-        <returns>The default <see cref="T:Gdk.Display" />.</returns>
+        <value>The default <see cref="T:Gdk.Display" />.</value>
         <remarks>None.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="default-display")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DisplayOpened">
       <MemberSignature Language="C#" Value="public event Gdk.DisplayOpenedHandler DisplayOpened;" />
       <MemberType>Event</MemberType>
@@ -92,7 +86,11 @@
         <summary>Event emitted when a display is opened.</summary>
         <remarks>None.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="display_opened")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -102,7 +100,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gdk.DisplayManager" />.</remarks>
       </Docs>
     </Member>
@@ -131,10 +129,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gdk.DisplayManager" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ListDisplays">
       <MemberSignature Language="C#" Value="public Gdk.Display[] ListDisplays ();" />
       <MemberType>Method</MemberType>
@@ -155,7 +156,6 @@
       <Parameters />
       <Docs>
         <summary>Do not use.</summary>
-        <returns>A useless <see cref="T:Gdk.DisplayManager" /></returns>
         <remarks>This object is a singleton object, and should be accessed through <see cref="M:Gdk.DisplayManager.Get" /> instead of creating a new instance.</remarks>
       </Docs>
     </Member>

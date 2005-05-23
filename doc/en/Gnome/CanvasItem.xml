@@ -1,12 +1,10 @@
 <Type Name="CanvasItem" FullName="Gnome.CanvasItem">
-  <TypeSignature Language="C#" Value="public class CanvasItem : Gtk.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class CanvasItem : Gtk.Object" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -87,14 +85,7 @@
     <BaseTypeName>Gtk.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Lower">
       <MemberSignature Language="C#" Value="public void Lower (int positions);" />
@@ -472,7 +463,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of CanvasItem, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -486,7 +476,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>To be added: an object of type 'Gnome.Canvas'</returns>
+        <value>To be added: an object of type 'Gnome.Canvas'</value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -501,11 +491,15 @@
       <Docs>
         <summary>The parent item</summary>
         <param name="value">the parent item</param>
-        <returns>the parent item</returns>
+        <value>the parent item</value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="parent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CanvasEvent">
       <MemberSignature Language="C#" Value="public event Gnome.CanvasEventHandler CanvasEvent;" />
       <MemberType>Event</MemberType>
@@ -524,7 +518,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="event")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -534,7 +532,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gnome.CanvasItem" />.</remarks>
       </Docs>
     </Member>
@@ -564,10 +562,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gnome.CanvasItem" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public CanvasItem (Gnome.CanvasGroup group, GLib.GType type);" />
       <MemberType>Constructor</MemberType>
@@ -580,7 +581,6 @@
         <summary>To be added</summary>
         <param name="group">a <see cref="T:Gnome.CanvasGroup" /></param>
         <param name="type">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gnome.CanvasItem" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -591,7 +591,6 @@
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gnome.CanvasItem" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -670,7 +669,7 @@
       </Docs>
     </Member>
     <Member MemberName="Update">
-      <MemberSignature Language="C#" Value="protected virtual void Update (double [] affine, ref Art.SVP clip_path, int flags);" />
+      <MemberSignature Language="C#" Value="protected virtual void Update (double[] affine, ref Art.SVP clip_path, int flags);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -689,7 +688,7 @@
       </Docs>
     </Member>
     <Member MemberName="AffineAbsolute">
-      <MemberSignature Language="C#" Value="public void AffineAbsolute (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void AffineAbsolute (double[] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -708,7 +707,7 @@
       </Docs>
     </Member>
     <Member MemberName="AffineRelative">
-      <MemberSignature Language="C#" Value="public void AffineRelative (double [] affine);" />
+      <MemberSignature Language="C#" Value="public void AffineRelative (double[] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -744,6 +743,36 @@
         <param name="etime">a <see cref="T:System.UInt32" /></param>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="I2cAffine">
+      <MemberSignature Language="C#" Value="public void I2cAffine (out double[] affine);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="affine" Type="System.Double[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="affine">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="I2wAffine">
+      <MemberSignature Language="C#" Value="public void I2wAffine (out double[] affine);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="affine" Type="System.Double[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="affine">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

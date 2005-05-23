@@ -1,12 +1,10 @@
 <Type Name="Hyperlink" FullName="Atk.Hyperlink">
-  <TypeSignature Language="C#" Value="public class Hyperlink : GLib.Object, Action, IWrapper, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Hyperlink : GLib.Object, Atk.Action" />
   <AssemblyInfo>
     <AssemblyName>atk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -20,20 +18,10 @@
     <Interface>
       <InterfaceName>Atk.Action</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="GetDescription">
-      <MemberSignature Language="C#" Value="public virtual string GetDescription (int i);" />
+      <MemberSignature Language="C#" Value="public string GetDescription (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -49,7 +37,7 @@
       </Docs>
     </Member>
     <Member MemberName="SetDescription">
-      <MemberSignature Language="C#" Value="public virtual bool SetDescription (int i, string desc);" />
+      <MemberSignature Language="C#" Value="public bool SetDescription (int i, string desc);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -67,7 +55,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetKeybinding">
-      <MemberSignature Language="C#" Value="public virtual string GetKeybinding (int i);" />
+      <MemberSignature Language="C#" Value="public string GetKeybinding (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -83,7 +71,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetName">
-      <MemberSignature Language="C#" Value="public virtual string GetName (int i);" />
+      <MemberSignature Language="C#" Value="public string GetName (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -99,7 +87,7 @@
       </Docs>
     </Member>
     <Member MemberName="DoAction">
-      <MemberSignature Language="C#" Value="public virtual bool DoAction (int i);" />
+      <MemberSignature Language="C#" Value="public bool DoAction (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -171,21 +159,20 @@ Multiple anchors are primarily used by client-side image maps.
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Hyperlink, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="NActions">
-      <MemberSignature Language="C#" Value="public virtual int NActions { get; };" />
+      <MemberSignature Language="C#" Value="public int NActions { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The number of actions.</summary>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -197,7 +184,7 @@ Multiple anchors are primarily used by client-side image maps.
       </ReturnValue>
       <Docs>
         <summary>Gets the number of anchors associated with this hyperlink.</summary>
-        <returns>the number of anchors associated with this hyperlink</returns>
+        <value>the number of anchors associated with this hyperlink</value>
         <remarks />
       </Docs>
     </Member>
@@ -209,10 +196,14 @@ Multiple anchors are primarily used by client-side image maps.
       </ReturnValue>
       <Docs>
         <summary>Gets the index with the hypertext document at which this link ends.</summary>
-        <returns> the index with the hypertext document at which this link ends</returns>
+        <value> the index with the hypertext document at which this link ends</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="end-index")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="StartIndex">
       <MemberSignature Language="C#" Value="public int StartIndex { get; };" />
       <MemberType>Property</MemberType>
@@ -221,12 +212,16 @@ Multiple anchors are primarily used by client-side image maps.
       </ReturnValue>
       <Docs>
         <summary>Gets the index with the hypertext document at which this link begins.</summary>
-        <returns> the index with the hypertext document at which this link begins</returns>
+        <value> the index with the hypertext document at which this link begins</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="start-index")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetLocalizedName">
-      <MemberSignature Language="C#" Value="public virtual string GetLocalizedName (int i);" />
+      <MemberSignature Language="C#" Value="public string GetLocalizedName (int i);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -250,7 +245,7 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>Since the document that a link is associated with may have changed this method returns <see langword="true" /> if the link is still valid (with respect to the document it references) and <see langword="false" /> otherwise.</summary>
-        <returns> whether or not this link is still valid</returns>
+        <value> whether or not this link is still valid</value>
         <remarks />
       </Docs>
     </Member>
@@ -263,7 +258,7 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>Indicates whether the link currently displays some or all of its content inline.</summary>
-        <returns> whether or not this link displays its content inline.</returns>
+        <value> whether or not this link displays its content inline.</value>
         <remarks>Ordinary HTML links will usually return <see langword="false" />, but an inline &lt;src&gt; HTML element will return <see langword="true" />.</remarks>
       </Docs>
     </Member>
@@ -276,7 +271,7 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Atk.Hyperlink" />.</remarks>
       </Docs>
     </Member>
@@ -290,10 +285,13 @@ Multiple anchors are primarily used by client-side image maps.
       <Docs>
         <summary>Internal constructor</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Atk.Hyperlink" /></returns>
         <remarks>This is a constructor used by derivative types of <see cref="T:Atk.Hyperlink" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Hyperlink ();" />
       <MemberType>Constructor</MemberType>
@@ -301,7 +299,6 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>Default constructor</summary>
-        <returns>a <see cref="T:Atk.Hyperlink" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -314,10 +311,14 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="number-of-anchors")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SelectedLink">
       <MemberSignature Language="C#" Value="public bool SelectedLink { get; };" />
       <MemberType>Property</MemberType>
@@ -327,10 +328,14 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="selected-link")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IsSelectedLink">
       <MemberSignature Language="C#" Value="public bool IsSelectedLink { get; };" />
       <MemberType>Property</MemberType>
@@ -340,7 +345,7 @@ Multiple anchors are primarily used by client-side image maps.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -355,7 +360,11 @@ Multiple anchors are primarily used by client-side image maps.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="link_activated")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnLinkActivated">
       <MemberSignature Language="C#" Value="protected virtual void OnLinkActivated ();" />
       <MemberType>Method</MemberType>

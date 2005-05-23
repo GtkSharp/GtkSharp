@@ -1,12 +1,10 @@
 <Type Name="AccelGroup" FullName="Gtk.AccelGroup">
-  <TypeSignature Language="C#" Value="public class AccelGroup : GLib.Object, IWrapper, IDisposable" Maintainer="RJS" />
+  <TypeSignature Language="C#" Maintainer="RJS" Value="public class AccelGroup : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -35,14 +33,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="FromAccelClosure">
       <MemberSignature Language="C#" Value="public static Gtk.AccelGroup FromAccelClosure (IntPtr closure);" />
@@ -109,6 +100,7 @@
         match the key and modifiers for the path.</summary>
         <param name="accel_path">Path used for determining key and modifiers.</param>
         <param name="closure">Closure to be executed upon accelerator activation</param>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisconnectKey">
@@ -127,6 +119,7 @@
         <param name="accel_mods">Modifier combination of the accelerator.</param>
         <returns>
           <see langword="true" /> if there was an accelerator which could be removed, <see langword="false" /> otherwise.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Lock">
@@ -196,7 +189,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of AccelGroup, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -209,7 +201,6 @@
       <Parameters />
       <Docs>
         <summary>Default public constructor.</summary>
-        <returns>A new <see cref="T:Gtk.AccelGroup" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -224,7 +215,11 @@
         <summary />
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="accel_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Find">
       <MemberSignature Language="C#" Value="public Gtk.AccelKey Find (Gtk.AccelGroupFindFunc find_func);" />
       <MemberType>Method</MemberType>
@@ -271,7 +266,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.AccelGroup" />.</remarks>
       </Docs>
     </Member>
@@ -304,10 +299,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.AccelGroup" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Activate">
       <MemberSignature Language="C#" Value="public bool Activate (int accel_quark, GLib.Object acceleratable, uint accel_key, Gdk.ModifierType accel_mods);" />
       <MemberType>Method</MemberType>
@@ -344,7 +342,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="accel_activate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnAccelActivate">
       <MemberSignature Language="C#" Value="protected virtual bool OnAccelActivate (GLib.Object acceleratable, uint keyval, Gdk.ModifierType modifier);" />
       <MemberType>Method</MemberType>

@@ -1,12 +1,10 @@
 <Type Name="NodeStore" FullName="Gtk.NodeStore">
-  <TypeSignature Language="C#" Value="public class NodeStore : GLib.Object, IWrapper, IDisposable" Maintainer="Mike Kestner" />
+  <TypeSignature Language="C#" Maintainer="Mike Kestner" Value="public class NodeStore : GLib.Object, System.Collections.IEnumerable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -71,13 +69,9 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="AddNode">
       <MemberSignature Language="C#" Value="public void AddNode (Gtk.ITreeNode node);" />
@@ -132,6 +126,7 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
           Looks up the node corresponding to <paramref name="path" /> and returns it,
 	  or null if the node cannot be found.
         </remarks>
+        <returns>To be added.</returns>
       </Docs>
     </Member>
     <Member MemberName="RemoveNode">
@@ -161,7 +156,6 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       <Docs>
         <summary>NodeStore constructor</summary>
         <param name="node_type">a <see cref="T:System.Type" /></param>
-        <returns>a <see cref="T:Gtk.NodeStore" /></returns>
         <remarks>
           Creates a <see cref="T:Gtk.NodeStore" /> for nodes of the specified <paramref name="node_type" />.
           The type provided in <paramref name="node_type" /> must implement <see cref="T:Gtk.ITreeNode" />.
@@ -177,13 +171,13 @@ Iteration: In new versions of Gtk# (2.0 and up) this class implements the <see c
       <Parameters />
       <Docs>
         <summary>Native type value.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>

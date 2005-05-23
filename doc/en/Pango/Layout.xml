@@ -1,11 +1,9 @@
 <Type Name="Layout" FullName="Pango.Layout">
-  <TypeSignature Language="C#" Value="public class Layout : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Layout : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -69,14 +67,7 @@ class LayoutSample : DrawingArea
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -297,6 +288,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <param name="trailing">a <see cref="T:System.Int32" /> to store where in the grapheme the user clicked. It will either
 	  be zero or the number of characters in the grapheme. 0 represents the trailing edge of the grapheme.</param>
         <returns>a <see cref="T:System.Boolean" />, true if the coordinates are inside the Layout.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ContextChanged">
@@ -338,13 +330,16 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       </Parameters>
       <Docs>
         <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Layout, wrapping the C object.</returns>
+        <param name="gtype">Pointer to the C object.</param>
         <remarks>
           <para>This is an internal constructor and should not be used by user code.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Layout (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -354,8 +349,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       </Parameters>
       <Docs>
         <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
-        <param name="context">a <see cref="T:Pango.Context" />.</param>
-        <returns>a new <see cref="T:Pango.Layout" />.</returns>
+        <param name="raw">a <see cref="T:Pango.Context" />.</param>
         <remarks />
       </Docs>
     </Member>
@@ -369,7 +363,6 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Create a new PangoLayout object with attributes initialized to default values for a particular <see cref="T:Pango.Context" />.</summary>
         <param name="context">a <see cref="T:Pango.Context" />.</param>
-        <returns>a new <see cref="T:Pango.Layout" />.</returns>
         <remarks />
       </Docs>
     </Member>
@@ -382,7 +375,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Pango.Layout" />.</remarks>
       </Docs>
     </Member>
@@ -395,7 +388,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>The default font description for the layout.</summary>
-        <returns>a <see cref="T:Pango.FontDescription" /></returns>
+        <value>a <see cref="T:Pango.FontDescription" /></value>
         <remarks>If no font description is set on the layout, the font description from the layout's context is used.</remarks>
       </Docs>
     </Member>
@@ -409,7 +402,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Gets or sets the wrap mode</summary>
         <param name="value"> the new wrap mode</param>
-        <returns> Active wrap mode.</returns>
+        <value> Active wrap mode.</value>
         <remarks>The wrap mode only has an effect if a width is set on the layout using <see cref="P:Pango.Layout.Width" />. To turn off wrapping, set the width to -1.</remarks>
       </Docs>
     </Member>
@@ -422,7 +415,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>Sets the text of the layout.</summary>
-        <returns>a <see cref="T:System.String" /> in UTF-8 encoding.</returns>
+        <value>a <see cref="T:System.String" /> in UTF-8 encoding.</value>
         <remarks />
       </Docs>
     </Member>
@@ -435,7 +428,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>Sets the width to which the lines of the Layout should be wrapped.</summary>
-        <returns>an object of type <see cref="T:System.String" /></returns>
+        <value>an object of type <see cref="T:System.String" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -449,7 +442,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Set or return the alignment for lines within the layout that do not take up the full width.</summary>
         <param name="alignment">a <see cref="T:Pango.Alignment" /> object.</param>
-        <returns>an object of type <see cref="T:Pango.Alignment" /></returns>
+        <value>an object of type <see cref="T:Pango.Alignment" /></value>
         <returns>an object of type <see cref="T:Pango.Alignment" /></returns>
         <remarks>
         </remarks>
@@ -465,7 +458,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Sets whether or not each complete line should be stretched to fill the entire width of the layout.</summary>
         <param name="value">whether the lines in the layout should be justified.</param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>This stretching is typically done by adding whitespace, but for some scripts (such as Arabic), the justification is done by extending the characters.</remarks>
       </Docs>
     </Member>
@@ -479,7 +472,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>the amount of spacing between the lines of the layout.</summary>
         <param name="value"> the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)</param>
-        <returns>the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)            </returns>
+        <value>the amount of spacing (in <see cref="T:Pango.GlyphUnit" />)            </value>
         <remarks />
       </Docs>
     </Member>
@@ -493,7 +486,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Sets/gets the text attributes for a Layout object.</summary>
         <param name="value">an object of type <see cref="T:Pango.AttrList" /></param>
-        <returns>a <see cref="T:Pango.AttrList" /></returns>
+        <value>a <see cref="T:Pango.AttrList" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -507,7 +500,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>An iterator to iterate over the visual extents of the layout.</summary>
         <param name="value">an object of type <see cref="T:Pango.AttrList" /></param>
-        <returns>a new <see cref="T:Pango.LayoutIter" />.</returns>
+        <value>a new <see cref="T:Pango.LayoutIter" />.</value>
         <remarks />
       </Docs>
     </Member>
@@ -520,7 +513,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>the <see cref="T:Pango.Context" /> used for this layout.</summary>
-        <returns>an object of type <see cref="T:Pango.LayoutIter" /></returns>
+        <value>an object of type <see cref="T:Pango.LayoutIter" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -533,7 +526,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>Whether or not to treat newlines and similar characters as paragraph separators.</summary>
-        <returns>an object of type <see cref="T:Pango.Context" /></returns>
+        <value>an object of type <see cref="T:Pango.Context" /></value>
         <remarks>
           <para>If set to true, do not treat newlines and similar characters as paragraph separators; instead, keep all text in a single paragraph, and display a glyph for paragraph separator characters.</para>
           <para>Used when you want to allow editing of newlines on a single text line.</para>
@@ -550,7 +543,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>The tabs to use for the layout.</summary>
         <param name="value">the tabs to use for the layout.</param>
-        <returns>the current <see cref="T:Pango.TabArray" /> used by this layout. If no <see cref="T:Pango.TabArray" /> has been set, then the default tabs are in use and null is returned.</returns>
+        <value>the current <see cref="T:Pango.TabArray" /> used by this layout. If no <see cref="T:Pango.TabArray" /> has been set, then the default tabs are in use and null is returned.</value>
         <remarks>
           <para>By default, tabs are every 8 spaces.</para>
           <para>Setting new tabs overrides the default tabs. If Tabs is set to null, the default tabs are reinstated.</para>
@@ -567,7 +560,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Docs>
         <summary>Set or return the amount by which the first line should be shorter than the rest of the lines.</summary>
         <param name="value">an object of type <see cref="T:System.Int32" />, the new indent</param>
-        <returns>an object of type <see cref="T:System.Int32" /></returns>
+        <value>an object of type <see cref="T:System.Int32" /></value>
         <remarks>The value can be negative, in which case the subsequent lines will be shorter than the first line. (However, in either case, the entire width of the layout will be given by the value.</remarks>
       </Docs>
     </Member>
@@ -580,12 +573,12 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>Retrieves the count of lines for the layout.</summary>
-        <returns>An integer, the line count</returns>
+        <value>An integer, the line count</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Lines">
-      <MemberSignature Language="C#" Value="public Pango.LayoutLine [] Lines { get; };" />
+      <MemberSignature Language="C#" Value="public Pango.LayoutLine[] Lines { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.LayoutLine[]</ReturnType>
@@ -593,11 +586,12 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>The count of lines for the layout.</summary>
-        <returns>The count of lines for the layout.</returns>
+        <value>The count of lines for the layout.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LogAttrs">
-      <MemberSignature Language="C#" Value="public Pango.LogAttr [] LogAttrs { get; };" />
+      <MemberSignature Language="C#" Value="public Pango.LogAttr[] LogAttrs { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.LogAttr[]</ReturnType>
@@ -605,7 +599,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>Retrieves an array of logical attributes for each character in the layout.</summary>
-        <returns>a <see cref="T:Pango.LogAttr[]" /></returns>
+        <value>a <see cref="T:Pango.LogAttr[]" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -639,7 +633,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -652,7 +646,7 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Pango.EllipsizeMode" /></returns>
+        <value>a <see cref="T:Pango.EllipsizeMode" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

@@ -1,12 +1,10 @@
 <Type Name="CheckMenuItem" FullName="Gtk.CheckMenuItem">
-  <TypeSignature Language="C#" Value="public class CheckMenuItem : Gtk.MenuItem, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class CheckMenuItem : Gtk.MenuItem" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -21,20 +19,7 @@
     <BaseTypeName>Gtk.MenuItem</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Toggle">
       <MemberSignature Language="C#" Value="public void Toggle ();" />
@@ -70,7 +55,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of CheckMenuItem, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -83,7 +67,6 @@
       <Parameters />
       <Docs>
         <summary>Creates a CheckMenuItem with no label</summary>
-        <returns>A new CheckMenuItem</returns>
         <remarks />
       </Docs>
     </Member>
@@ -97,7 +80,6 @@
       <Docs>
         <summary>Create a new CheckMenuItem with the specified <paramref name="label" />.</summary>
         <param name="label">The text to appear on the menu item.</param>
-        <returns>A new CheckMenuItem</returns>
         <remarks>
           <para>The text label will be created using <see cref="M:Gtk.Label.NewWithNmemonic" />, so underscores in the label indicate the mnemonic for the menu item.</para>
         </remarks>
@@ -115,14 +97,18 @@
         <summary>Manages whether the CheckMenuItem is in the 'inconsistent' state.</summary>
         <param name="value">
           <see langword="true" /> to mark the check box as inconsistent, <see langword="false" /> otherwise.</param>
-        <returns>
-          <see langword="true" /> if this CheckMenuItem is in the inconsistent state, <see langword="false" /> otherwise.</returns>
+        <value>
+          <see langword="true" /> if this CheckMenuItem is in the inconsistent state, <see langword="false" /> otherwise.</value>
         <remarks>
           <para>If the user has selected a range of elements (such as some text or spreadsheet cells) that are affected by a boolean setting, and the current values in that range are inconsistent, you may want to display the check in an "in between" state. This property turns on "in between" display.</para>
           <para>Normally you would turn off the inconsistent state again if the user explicitly selects a setting. This has to be done manually, this property only affects visual appearance, it doesn't affect the semantics of the widget.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="inconsistent")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Active">
       <MemberSignature Language="C#" Value="public bool Active { set; get; };" />
       <MemberType>Property</MemberType>
@@ -135,10 +121,14 @@
         <summary>The 'active' state of the CheckMenuItem</summary>
         <param name="value">
           <see langword="true" /> if the menu item has been set active, <see langword="false" /> otherwise.</param>
-        <returns />
+        <value />
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="active")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Toggled">
       <MemberSignature Language="C#" Value="public event EventHandler Toggled;" />
       <MemberType>Event</MemberType>
@@ -152,7 +142,11 @@
           <para>Connect to this event with a standard <see cref="T:System.EventHandler" />.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="toggled")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -162,7 +156,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.CheckMenuItem" />.</remarks>
       </Docs>
     </Member>
@@ -188,10 +182,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.CheckMenuItem" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DrawAsRadio">
       <MemberSignature Language="C#" Value="public bool DrawAsRadio { set; get; };" />
       <MemberType>Property</MemberType>
@@ -201,11 +198,15 @@
       <Parameters />
       <Docs>
         <summary>Whether the menu item looks like a radio menu item.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="draw_as_radio")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowToggle">
       <MemberSignature Language="C#" Value="public bool ShowToggle { set; };" />
       <MemberType>Property</MemberType>
@@ -214,11 +215,15 @@
       </ReturnValue>
       <Docs>
         <summary>Whether this menu item can be toggled.</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EmitToggled">
       <MemberSignature Language="C#" Value="public void EmitToggled ();" />
       <MemberType>Method</MemberType>

@@ -1,12 +1,10 @@
 <Type Name="HandleBox" FullName="Gtk.HandleBox">
-  <TypeSignature Language="C#" Value="public class HandleBox : Gtk.Bin, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class HandleBox : Gtk.Bin" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -22,20 +20,7 @@
     <BaseTypeName>Gtk.Bin</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Finalize">
       <MemberSignature Language="C#" Value="protected override void Finalize ();" />
@@ -59,7 +44,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of HandleBox, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -72,7 +56,6 @@
       <Parameters />
       <Docs>
         <summary>The main way to create a HandleBox.</summary>
-        <returns>A new HandleBox.</returns>
         <remarks>
           <para>Creates a new HandleBox, with the <see cref="P:Gtk.HandleBox.HandlePosition" /> set to the <see cref="P:Gtk.PositionType.Left" />.</para>
         </remarks>
@@ -89,12 +72,16 @@
       <Docs>
         <summary>Manage which edge a detached HandleBox must reattach to.</summary>
         <param name="value">The new edge</param>
-        <returns>The current edge that snapping works with.</returns>
+        <value>The current edge that snapping works with.</value>
         <remarks>
           <para>To ensure good usability, this edge should be set to a side of the HandleBox whose position or size will not be altered when the child is detached.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="snap_edge")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShadowType">
       <MemberSignature Language="C#" Value="public Gtk.ShadowType ShadowType { set; get; };" />
       <MemberType>Property</MemberType>
@@ -106,7 +93,7 @@
       <Docs>
         <summary>Manage the appearance of the <see cref="T:Gtk.Container" /> surrounding the child widget.</summary>
         <param name="value">The new style of shadow to use for this HandleBox.</param>
-        <returns>The current style of shadow in use.</returns>
+        <value>The current style of shadow in use.</value>
         <remarks />
       </Docs>
     </Member>
@@ -121,13 +108,17 @@
       <Docs>
         <summary>Manage where the handle of this container is placed.</summary>
         <param name="value">A new position for the handle.</param>
-        <returns>The current position of the handle.</returns>
+        <value>The current position of the handle.</value>
         <remarks>
           <para>Note: In western cultures, anything other than a <see cref="P:Gtk.PositionType.Left" /> handle for horizontal HandleBoxes, or a <see cref="P:Gtk.PositionType.Top" /> handle for vertical HandleBoxes, may seem strange to users.</para>
           <para>The reverse is likely to be true for cultures with languages that are written from right to left.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="handle_position")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Shadow">
       <MemberSignature Language="C#" Value="public Gtk.ShadowType Shadow { set; get; };" />
       <MemberType>Property</MemberType>
@@ -139,10 +130,14 @@
       <Docs>
         <summary>Manage the appearance of the <see cref="T:Gtk.Container" /> surrounding the child widget.</summary>
         <param name="value">The new style of shadow to use for this HandleBox.</param>
-        <returns>The current style of shadow in use.</returns>
+        <value>The current style of shadow in use.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="shadow")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChildAttached">
       <MemberSignature Language="C#" Value="public event Gtk.ChildAttachedHandler ChildAttached;" />
       <MemberType>Event</MemberType>
@@ -154,7 +149,11 @@
         <summary>This event is fired when the contents of the HandleBox are reattached to the main window. </summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="child_attached")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChildDetached">
       <MemberSignature Language="C#" Value="public event Gtk.ChildDetachedHandler ChildDetached;" />
       <MemberType>Event</MemberType>
@@ -166,7 +165,11 @@
         <summary>This event is fired when the contents of the handlebox are detached from the main window.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="child_detached")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SnapEdgeSet">
       <MemberSignature Language="C#" Value="public bool SnapEdgeSet { set; get; };" />
       <MemberType>Property</MemberType>
@@ -178,10 +181,14 @@
       <Docs>
         <summary>Whether to use the value from the snap_edge property or a value derived from handle_position.</summary>
         <param name="value">a <see cref="T:System.Boolean" />, true to use the snap_edge property</param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="snap_edge_set")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -191,7 +198,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.HandleBox" />.</remarks>
       </Docs>
     </Member>
@@ -235,9 +242,12 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.HandleBox" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

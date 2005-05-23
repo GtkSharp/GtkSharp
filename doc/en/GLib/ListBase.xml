@@ -1,12 +1,10 @@
 <Type Name="ListBase" FullName="GLib.ListBase">
-  <TypeSignature Language="C#" Value="public abstract class ListBase : IDisposable, ICollection, IEnumerable, IWrapper, ICloneable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public abstract class ListBase : GLib.IWrapper, System.Collections.ICollection, System.ICloneable, System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,22 +17,23 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>System.Collections.ICollection</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
       <InterfaceName>System.ICloneable</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="element_type">
       <MemberSignature Language="C#" Value="protected Type element_type;" />
@@ -50,7 +49,7 @@
       </Docs>
     </Member>
     <Member MemberName="Clone">
-      <MemberSignature Language="C#" Value="public virtual object Clone ();" />
+      <MemberSignature Language="C#" Value="public abstract object Clone ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -63,7 +62,7 @@
       </Docs>
     </Member>
     <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -75,7 +74,7 @@
       </Docs>
     </Member>
     <Member MemberName="CopyTo">
-      <MemberSignature Language="C#" Value="public virtual void CopyTo (Array array, int index);" />
+      <MemberSignature Language="C#" Value="public void CopyTo (Array array, int index);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -151,50 +150,50 @@
       </Docs>
     </Member>
     <Member MemberName="SyncRoot">
-      <MemberSignature Language="C#" Value="public virtual object SyncRoot { get; };" />
+      <MemberSignature Language="C#" Value="public object SyncRoot { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>Synchronization root.</summary>
-        <returns>always <see langword="null" /></returns>
+        <value>always <see langword="null" /></value>
         <remarks>Always returns <see langword="null" /> since this type is never synchronized.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsSynchronized">
-      <MemberSignature Language="C#" Value="public virtual bool IsSynchronized { get; };" />
+      <MemberSignature Language="C#" Value="public bool IsSynchronized { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>Indicates if the list is synchronized.</summary>
-        <returns>always <see langword="false" /></returns>
+        <value>always <see langword="false" /></value>
         <remarks>Always returns false. </remarks>
       </Docs>
     </Member>
     <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public virtual int Count { get; };" />
+      <MemberSignature Language="C#" Value="public int Count { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The number of elements in the list.</summary>
-        <returns>the number of elements in the list as an <see cref="T:System.Int32" /></returns>
+        <value>the number of elements in the list as an <see cref="T:System.Int32" /></value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public virtual IntPtr Handle { get; };" />
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>A raw list reference for marshaling situations.</summary>
-        <returns>an object of type <see cref="T:System.IntPtr" /></returns>
+        <value>an object of type <see cref="T:System.IntPtr" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -210,12 +209,12 @@
       <Docs>
         <summary>Indicates if the native handle is owned by the Managed list class.</summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>Identifies the list as one that needs to be freed.  Only set this to true if you want the object to release the associated native list when it is disposed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>
@@ -244,7 +243,7 @@
       </Docs>
     </Member>
     <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object Item { get; };" />
+      <MemberSignature Language="C#" Value="public object Item[int index] { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -255,7 +254,7 @@
       <Docs>
         <summary>Indexer for list members.</summary>
         <param name="index">a <see cref="T:System.Int32" /> representing the 0 indexed offset to the member.</param>
-        <returns>the list member at <paramref name="index" /> as an <see cref="T:System.Object" />.</returns>
+        <value>the list member at <paramref name="index" /> as an <see cref="T:System.Object" />.</value>
         <remarks />
       </Docs>
     </Member>

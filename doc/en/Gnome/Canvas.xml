@@ -1,12 +1,10 @@
 <Type Name="Canvas" FullName="Gnome.Canvas">
-  <TypeSignature Language="C#" Value="public class Canvas : Gtk.Layout, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="duncan" />
+  <TypeSignature Language="C#" Maintainer="duncan" Value="public class Canvas : Gtk.Layout" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -110,20 +108,7 @@
     <BaseTypeName>Gtk.Layout</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="UpdateBbox">
       <MemberSignature Language="C#" Value="public static void UpdateBbox (Gnome.CanvasItem item, int x1, int y1, int x2, int y2);" />
@@ -693,7 +678,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Canvas, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -706,7 +690,6 @@
       <Parameters />
       <Docs>
         <summary>Creates a new empty canvas in non-antialiased mode.</summary>
-        <returns>A newly-created canvas.</returns>
         <remarks>
           <para>
             Creates a new empty canvas in non-antialiased mode. If you
@@ -732,7 +715,7 @@
           The value of dither should be <see cref="F:Gdk.RgbDither.None" />,
           <see cref="F:Gdk.RgbDither.Normal" />, or <see cref="F:Gdk.RGBDither.Max" />.
           The default canvas setting is <see cref="F:Gdk.RgbDither.Normal" /></param>
-        <returns>The type of dithering used to render an antialiased canvas.</returns>
+        <value>The type of dithering used to render an antialiased canvas.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -754,7 +737,7 @@
         <param name="value">
           Whether to center the scrolling region in the canvas window when it is smaller than the canvas' allocation.
         </param>
-        <returns>Whether the scroll region is being centered in the canvas window.</returns>
+        <value>Whether the scroll region is being centered in the canvas window.</value>
         <remarks>
           <para>
             When the scrolling region of the canvas is smaller than
@@ -784,6 +767,7 @@
         <remarks>
           <para>This is typically only needed by item implementations.</para>
         </remarks>
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Aa">
@@ -794,8 +778,8 @@
       </ReturnValue>
       <Docs>
         <summary>Whether to enable anti-aliasing mode</summary>
-        <returns>
-          <see langword="true" /> to enable anti-aliasing</returns>
+        <value>
+          <see langword="true" /> to enable anti-aliasing</value>
         <remarks>
           <para>
             Note that this parameter can only be set at the time of
@@ -805,7 +789,11 @@
           </para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="aa")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="DrawBackground">
       <MemberSignature Language="C#" Value="public event Gnome.DrawBackgroundHandler DrawBackground;" />
       <MemberType>Event</MemberType>
@@ -822,7 +810,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="draw_background")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RenderBackground">
       <MemberSignature Language="C#" Value="public event Gnome.RenderBackgroundHandler RenderBackground;" />
       <MemberType>Event</MemberType>
@@ -840,7 +832,11 @@
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="render_background")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GetScrollRegion">
       <MemberSignature Language="C#" Value="public void GetScrollRegion (out double x1, out double y1, out double x2, out double y2);" />
       <MemberType>Method</MemberType>
@@ -894,7 +890,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gnome.Canvas" />.</remarks>
       </Docs>
     </Member>
@@ -946,10 +942,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gnome.Canvas" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="PixelsPerUnit">
       <MemberSignature Language="C#" Value="public double PixelsPerUnit { set; get; };" />
       <MemberType>Property</MemberType>
@@ -959,7 +958,7 @@
       <Parameters />
       <Docs>
         <summary>Gets or Sets the number of pixels that correspond to one canvas unit.</summary>
-        <returns>a <see cref="T:System.Double" /></returns>
+        <value>a <see cref="T:System.Double" /></value>
         <remarks>
           <para>
             The anchor point for zooming, i.e. the point that stays
@@ -973,6 +972,21 @@
             window is used as the anchor point.
           </para>
         </remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="W2cAffine">
+      <MemberSignature Language="C#" Value="public void W2cAffine (out double[] affine);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="affine" Type="System.Double[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="affine">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

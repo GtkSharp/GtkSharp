@@ -1,80 +1,53 @@
-SUBDIRS = updater 
+ASSEMBLER = $(MONODOC) --assemble
 
-ASSEMBLER = monodoc --assemble
-UPDATER = $(RUNTIME) updater/updater.exe
+ASSEMBLIES = 				\
+	glib-sharp.dll			\
+	pango-sharp.dll			\
+	atk-sharp.dll			\
+	gdk-sharp.dll			\
+	gtk-sharp.dll			\
+	glade-sharp.dll			\
+	gnome-vfs-sharp.dll		\
+	art-sharp.dll			\
+	gnome-sharp.dll			\
+	gda-sharp.dll			\
+	gnomedb-sharp.dll		\
+	gconf-sharp.dll			\
+	gconf-sharp-peditors.dll	\
+	gtkhtml-sharp.dll		\
+	rsvg-sharp.dll			\
+	vte-sharp.dll			\
+	gtk-dotnet.dll
 
-if ENABLE_GLADE
-GLADE_DIR = glade
+UPDATE_ASSEMBLIES = $(addprefix -assembly:lib/, $(ASSEMBLIES))
+
+if ENABLE_ALL_OPTIONAL
+UPDATER = $(MONODOCER) -path:en $(UPDATE_ASSEMBLIES)
 else
-GLADE_DIR =
+UPDATER = echo "All optional assemblies must be built to use the updater." && exit 1
 endif
-
-if ENABLE_GNOMEVFS
-GNOME_VFS_DIR = gnomevfs
-else
-GNOME_VFS_DIR =
-endif
-
-if ENABLE_GNOME
-GNOME_DIR = art gnome gconf/GConf gconf/GConf.PropertyEditors
-else
-GNOME_DIR =
-endif
-
-if ENABLE_GTKHTML
-GTKHTML_DIR = gtkhtml
-else
-GTKHTML_DIR =
-endif
-
-if ENABLE_GDA
-GDA_DIR = gda
-else
-GDA_DIR =
-endif
-
-if ENABLE_GNOMEDB
-GNOMEDB_DIR = gnomedb
-else
-GNOMEDB_DIR =
-endif
-
-if ENABLE_RSVG
-RSVG_DIR = rsvg
-else
-RSVG_DIR =
-endif
-
-if ENABLE_VTE
-VTE_DIR = vte
-else
-VTE_DIR =
-endif
-
-if ENABLE_DOTNET
-DOTNET_DIR = gtkdotnet
-else
-DOTNET_DIR =
-endif
-
-UPDATE_DIRS=glib pango atk gdk gtk glade $(GNOME_VFS_DIR) $(GNOME_DIR) $(GDA_DIR) $(GNOMEDB_DIR) $(RSVG_DIR) $(GTKHTML_DIR) $(VTE_DIR) $(DOTNET_DIR)
-NAMESPACES=GLib Pango Atk Gdk Gtk Gtk.DotNet Glade Art Gnome.Vfs Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
 
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
 	$(ASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
 
-update:
-	for i in $(UPDATE_DIRS); do                    		\
-		cp ../$$i/*.dll updater;				\
-		$(UPDATER) ../$$i/*.dll -o ./en || exit 1;	\
-        done
+get-assemblies:
+	mkdir -p lib
+	cp $(top_builddir)/*/*.dll lib
+	cp $(top_builddir)/*/*.dll.config lib
+	cp $(top_builddir)/gconf/*/*.dll lib
+	cp $(top_builddir)/gconf/*/*.dll.config lib
 
-CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree
+update: get-assemblies
+	$(UPDATER)
+
+CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree lib
 
 EXTRA_DIST =			\
 	gtk-sharp-docs.source
+
+NAMESPACES=GLib Pango Atk Gdk Gtk Gtk.DotNet Glade Art Gnome.Vfs Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
 
 dist-hook:
 	mkdir -p $(distdir)/en
@@ -87,3 +60,4 @@ dist-hook:
 
 push:
 	scp gtk-sharp-docs* miguel@www.go-mono.com:/mono/lib/monodoc/sources
+

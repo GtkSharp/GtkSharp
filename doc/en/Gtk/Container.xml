@@ -1,12 +1,10 @@
 <Type Name="Container" FullName="Gtk.Container">
-  <TypeSignature Language="C#" Value="public class Container : Gtk.Widget, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Container : Gtk.Widget, System.Collections.IEnumerable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -34,19 +32,14 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Reflection.DefaultMember(MemberName="Item")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Members>
     <Member MemberName="CheckResize">
       <MemberSignature Language="C#" Value="public void CheckResize ();" />
@@ -174,6 +167,7 @@
         <param name="property_name">the child property name</param>
         <param name="value">the value of the <paramref name="property_name" /> property of <paramref name="child" /></param>
         <remarks>You will not normally need to use this method; Gtk# automatically generates child property accessors for all <see cref="T:Gtk.Container" /> subclasses.</remarks>
+        <returns>To be added.</returns>
       </Docs>
     </Member>
     <Member MemberName="PropagateExpose">
@@ -244,7 +238,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Container, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -261,7 +254,7 @@
       <Docs>
         <summary>The vertical focus adjustment.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -276,7 +269,7 @@
       <Docs>
         <summary>The horizontal focus adjustment.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Adjustment" /></param>
-        <returns>an object of type <see cref="T:Gtk.Adjustment" /></returns>
+        <value>an object of type <see cref="T:Gtk.Adjustment" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -291,7 +284,7 @@
       <Docs>
         <summary>Moves the focus to a particular child widget or finds the last-focused widget.</summary>
         <param name="value">A <see cref="T:Gtk.Widget" />, a child of this container.</param>
-        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
+        <value>an object of type <see cref="T:Gtk.Widget" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -308,7 +301,7 @@
 	  reallocation redraws get automatically redrawn if any of their 
 	  children changed allocation. </summary>
         <param name="value">an object of type <see cref="T:System.Boolean" /></param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks />
       </Docs>
     </Member>
@@ -323,10 +316,14 @@
       <Docs>
         <summary>A child widget for this container.</summary>
         <param name="value">an object of type <see cref="T:Gtk.Widget" /></param>
-        <returns>an object of type <see cref="T:Gtk.Widget" /></returns>
+        <value>an object of type <see cref="T:Gtk.Widget" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="child")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ResizeMode">
       <MemberSignature Language="C#" Value="public Gtk.ResizeMode ResizeMode { set; get; };" />
       <MemberType>Property</MemberType>
@@ -338,10 +335,14 @@
       <Docs>
         <summary>How this container behaves when resized.</summary>
         <param name="value">an object of type <see cref="T:Gtk.ResizeMode" /></param>
-        <returns>an object of type <see cref="T:Gtk.ResizeMode" /></returns>
+        <value>an object of type <see cref="T:Gtk.ResizeMode" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="resize_mode")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="BorderWidth">
       <MemberSignature Language="C#" Value="public uint BorderWidth { set; get; };" />
       <MemberType>Property</MemberType>
@@ -353,10 +354,14 @@
       <Docs>
         <summary>This container's border width.</summary>
         <param name="value">A <see cref="T:System.UInt32" /></param>
-        <returns>A <see cref="T:System.UInt32" /></returns>
+        <value>A <see cref="T:System.UInt32" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="border_width")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Added">
       <MemberSignature Language="C#" Value="public event Gtk.AddedHandler Added;" />
       <MemberType>Event</MemberType>
@@ -368,7 +373,11 @@
         <summary>Fired when a child widget is added to the container via <see cref="M:Gtk.Container.Add" />.</summary>
         <remarks>Note that this event is fired only when <see cref="M:Gtk.Container.Add" /> (or its C equivalent) is called. It is not a generic widget-added notification. For example, calling <see cref="M:Gtk.Box.PackStart" /> will not result in this event firing.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="add")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="FocusChildSet">
       <MemberSignature Language="C#" Value="public event Gtk.FocusChildSetHandler FocusChildSet;" />
       <MemberType>Event</MemberType>
@@ -380,7 +389,11 @@
         <summary>Fired when the focus moves to a child widget of this container.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="set-focus-child")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Removed">
       <MemberSignature Language="C#" Value="public event Gtk.RemovedHandler Removed;" />
       <MemberType>Event</MemberType>
@@ -392,7 +405,11 @@
         <summary>Fired when a child widget is removed from this container</summary>
         <remarks>Note that this event is fired only when <see cref="M:Gtk.Container.Remove" /> (or its C equivalent) is called. If a <see cref="T:Gtk.Container" /> subclass defines additional methods for removing widgets, then calling those methods will not result in this event being fired.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="remove")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ResizeChecked">
       <MemberSignature Language="C#" Value="public event EventHandler ResizeChecked;" />
       <MemberType>Event</MemberType>
@@ -404,7 +421,11 @@
         <summary>Fired when this container's resizability is queried.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="check_resize")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -414,7 +435,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Container" />.</remarks>
       </Docs>
     </Member>
@@ -520,12 +541,15 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Container" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Children">
-      <MemberSignature Language="C#" Value="public Gtk.Widget [] Children { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] Children { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Widget[]</ReturnType>
@@ -533,7 +557,7 @@
       <Parameters />
       <Docs>
         <summary>Obtains an array of the container's (non-internal) children.</summary>
-        <returns>An array of non-internal children.</returns>
+        <value>An array of non-internal children.</value>
         <remarks>
           <para>
 		Returns the container's non-internal children; that is, generally, the
@@ -557,7 +581,7 @@ foreach (Widget w in myContainer) {
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.IEnumerator</ReturnType>
@@ -591,7 +615,7 @@ foreach (Widget w in myContainer) {
       <Parameters />
       <Docs>
         <summary>Allows you to enumerate all of the container's children.</summary>
-        <returns>an <see cref="T:System.Collections.IEnumerable" /></returns>
+        <value>an <see cref="T:System.Collections.IEnumerable" /></value>
         <remarks>
 	    Enumerates all of the container's children, including those widgets that are
 	    internal implementation details of the container.
@@ -599,7 +623,7 @@ foreach (Widget w in myContainer) {
       </Docs>
     </Member>
     <Member MemberName="FocusChain">
-      <MemberSignature Language="C#" Value="public Gtk.Widget [] FocusChain { set; get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] FocusChain { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Widget[]</ReturnType>
@@ -607,7 +631,7 @@ foreach (Widget w in myContainer) {
       <Parameters />
       <Docs>
         <summary>Sets or obtains a focus chain of the container, overriding the one computed automatically by Gtk#.</summary>
-        <returns>An array of <paramref name="widgets" />.</returns>
+        <value>An array of <paramref name="widgets" />.</value>
         <remarks>
           <para>
 	  In principle each <see cref="T:Gtk.Widget" /> in the chain should be a descendant of the <see cref="T:Gtk.Container" />, but this is not enforced by this method, since it is allowed to set the focus chain before you pack the widgets, or have a widget in the chain that is not always packed. The necessary checks are done when the focus chain is actually traversed.	   
@@ -625,7 +649,6 @@ foreach (Widget w in myContainer) {
       <Parameters />
       <Docs>
         <summary>Protected constructor for chaining by descendant classes.</summary>
-        <returns>a <see cref="T:Gtk.Container" /></returns>
         <remarks>
         </remarks>
       </Docs>
@@ -708,7 +731,7 @@ foreach (Widget w in myContainer) {
       </Docs>
     </Member>
     <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public virtual Gtk.Container+ContainerChild Item { get; };" />
+      <MemberSignature Language="C#" Value="public virtual Gtk.Container+ContainerChild Item[Gtk.Widget w] { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Container+ContainerChild</ReturnType>
@@ -719,7 +742,7 @@ foreach (Widget w in myContainer) {
       <Docs>
         <summary>Access for child properties</summary>
         <param name="w">a child of this container</param>
-        <returns>a <see cref="T:Gtk.Container+ContainerChild" /></returns>
+        <value>a <see cref="T:Gtk.Container+ContainerChild" /></value>
         <remarks>The base <see cref="T:Gtk.Container+ContainerChild" /> type is not very useful; you will normally need to cast it to a subclass of the appropriate type.</remarks>
       </Docs>
     </Member>

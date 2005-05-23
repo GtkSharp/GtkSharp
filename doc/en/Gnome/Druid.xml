@@ -1,12 +1,10 @@
 <Type Name="Druid" FullName="Gnome.Druid">
-  <TypeSignature Language="C#" Value="public class Druid : Gtk.Container, Implementor, IWrapper, IDisposable" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Druid : Gtk.Container" />
   <AssemblyInfo>
     <AssemblyName>gnome-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -24,17 +22,7 @@ The widget which ultimately holds all of the druid's pages and information. This
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="PrependPage">
       <MemberSignature Language="C#" Value="public void PrependPage (Gnome.DruidPage page);" />
@@ -133,7 +121,6 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Druid, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -146,7 +133,6 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>Creates a new GnomeDruid widget.</summary>
-        <returns>a new <see cref="T:Gnome.Druid" /> Widget.</returns>
         <remarks>You need to add this druid to a dialog yourself, it is not a dialog.</remarks>
       </Docs>
     </Member>
@@ -161,7 +147,7 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Docs>
         <summary>This will make <paramref name="page" /> the currently showing page in the druid.</summary>
         <param name="value">an object of type <see cref="T:Gnome.DruidPage" /></param>
-        <returns>an object of type <see cref="T:Gnome.DruidPage" /></returns>
+        <value>an object of type <see cref="T:Gnome.DruidPage" /></value>
         <remarks>
           <paramref name="page" /> must already be in the druid.</remarks>
       </Docs>
@@ -181,12 +167,16 @@ The widget which ultimately holds all of the druid's pages and information. This
         <param name="value">
           <para>The <see cref="T:Gnome.DruidPage" /> to be brought to the foreground.</para>
         </param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>
           <para>The page must already be in the druid.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_finish")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ShowHelp">
       <MemberSignature Language="C#" Value="public bool ShowHelp { set; get; };" />
       <MemberType>Property</MemberType>
@@ -198,10 +188,14 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Docs>
         <summary>Used to specify if the druid is currently showing the last page of the sequence.</summary>
         <param name="value"> If true, then the "Next" button is changed to be "Finish".</param>
-        <returns>an object of type <see cref="T:System.Boolean" /></returns>
+        <value>an object of type <see cref="T:System.Boolean" /></value>
         <remarks>If set to true, the druid will display "Finish", rather than "Next".</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="show_help")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Help">
       <MemberSignature Language="C#" Value="public event EventHandler Help;" />
       <MemberType>Event</MemberType>
@@ -213,7 +207,11 @@ The widget which ultimately holds all of the druid's pages and information. This
         <summary>Used to specify if the "Help" button on the druid is visible.</summary>
         <remarks>If set to true, the "Help" button is shown in the lower left corner of the widget.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="help")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Cancel">
       <MemberSignature Language="C#" Value="public event EventHandler Cancel;" />
       <MemberType>Event</MemberType>
@@ -226,7 +224,11 @@ The widget which ultimately holds all of the druid's pages and information. This
         <remarks>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cancel")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -236,7 +238,7 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gnome.Druid" />.</remarks>
       </Docs>
     </Member>
@@ -274,10 +276,13 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gnome.Druid" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ConstructWithWindow">
       <MemberSignature Language="C#" Value="public Gtk.Widget ConstructWithWindow (string title, Gtk.Window parent, bool close_on_cancel);" />
       <MemberType>Method</MemberType>
@@ -312,7 +317,6 @@ The widget which ultimately holds all of the druid's pages and information. This
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="close_on_cancel">a <see cref="T:System.Boolean" /></param>
         <param name="window">a <see cref="T:Gtk.Widget" /></param>
-        <returns>a <see cref="T:Gnome.Druid" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -328,7 +332,6 @@ The widget which ultimately holds all of the druid's pages and information. This
         <summary>To be added</summary>
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="close_on_cancel">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:Gnome.Druid" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -346,7 +349,6 @@ The widget which ultimately holds all of the druid's pages and information. This
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="parent">a <see cref="T:Gtk.Window" /></param>
         <param name="close_on_cancel">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:Gnome.Druid" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -366,7 +368,6 @@ The widget which ultimately holds all of the druid's pages and information. This
         <param name="parent">a <see cref="T:Gtk.Window" /></param>
         <param name="close_on_cancel">a <see cref="T:System.Boolean" /></param>
         <param name="window">a <see cref="T:Gtk.Widget" /></param>
-        <returns>a <see cref="T:Gnome.Druid" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -379,8 +380,9 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>The druid's "Finish" button.</summary>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Button" /></value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="NextButton">
@@ -392,8 +394,9 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>The druid's "Next" button.</summary>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Button" /></value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HelpButton">
@@ -405,8 +408,9 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>The druid's "Help" button.</summary>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Button" /></value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BackButton">
@@ -418,8 +422,9 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>The druid's "Back" button.</summary>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Button" /></value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelButton">
@@ -431,8 +436,9 @@ The widget which ultimately holds all of the druid's pages and information. This
       <Parameters />
       <Docs>
         <summary>The druid's "Cancel" button.</summary>
-        <returns>a <see cref="T:Gtk.Button" /></returns>
-        <remarks></remarks>
+        <value>a <see cref="T:Gtk.Button" /></value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
   </Members>

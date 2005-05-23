@@ -1,12 +1,10 @@
 <Type Name="TreeModelSort" FullName="Gtk.TreeModelSort">
-  <TypeSignature Language="C#" Value="public class TreeModelSort : GLib.Object, TreeModel, IWrapper, TreeSortable, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class TreeModelSort : GLib.Object, Gtk.TreeDragSource, Gtk.TreeModel, Gtk.TreeSortable" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -18,25 +16,18 @@
   </Base>
   <Interfaces>
     <Interface>
-      <InterfaceName>Gtk.TreeModel</InterfaceName>
+      <InterfaceName>Gtk.TreeDragSource</InterfaceName>
     </Interface>
     <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
+      <InterfaceName>Gtk.TreeModel</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>Gtk.TreeSortable</InterfaceName>
     </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public virtual int IterNChildren ();" />
+      <MemberSignature Language="C#" Value="public int IterNChildren ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -49,7 +40,7 @@
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public virtual bool IterChildren (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -66,7 +57,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangeSortColumn">
-      <MemberSignature Language="C#" Value="public virtual void ChangeSortColumn ();" />
+      <MemberSignature Language="C#" Value="public void ChangeSortColumn ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -78,7 +69,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSortColumnId">
-      <MemberSignature Language="C#" Value="public virtual void SetSortColumnId (int sort_column_id, Gtk.SortType order);" />
+      <MemberSignature Language="C#" Value="public void SetSortColumnId (int sort_column_id, Gtk.SortType order);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -95,7 +86,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSortFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
+      <MemberSignature Language="C#" Value="public void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -116,7 +107,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDefaultSortFunc" Deprecated="true">
-      <MemberSignature Language="C#" Value="public virtual void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
+      <MemberSignature Language="C#" Value="public void SetDefaultSortFunc (Gtk.TreeIterCompareFunc sort_func, IntPtr user_data, Gtk.DestroyNotify destroy);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -135,19 +126,19 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultSortFunc">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreeIterCompareFunc DefaultSortFunc { set; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeIterCompareFunc DefaultSortFunc { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeIterCompareFunc</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The function to sort columns not otherwise specified by <see cref="T:Gtk.TreeModelSort.SetSortFunc" />.</summary>
-        <returns>a <see cref="T:Gtk.TreeIterCompareFunc" /></returns>
+        <value>a <see cref="T:Gtk.TreeIterCompareFunc" /></value>
         <remarks>This property is meant to be used together with <see cref="T:Gtk.TreeModelSort.ChangeSortColumn" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowChanged">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowChanged (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -164,7 +155,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Foreach">
-      <MemberSignature Language="C#" Value="public virtual void Foreach (Gtk.TreeModelForeachFunc func);" />
+      <MemberSignature Language="C#" Value="public void Foreach (Gtk.TreeModelForeachFunc func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -179,7 +170,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterFirst">
-      <MemberSignature Language="C#" Value="public virtual bool GetIterFirst (out Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool GetIterFirst (out Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -195,7 +186,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowHasChildToggled">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowHasChildToggled (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -212,7 +203,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPath">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public Gtk.TreePath GetPath (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreePath</ReturnType>
@@ -229,7 +220,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterHasChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterHasChild (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterHasChild (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -246,7 +237,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RefNode">
-      <MemberSignature Language="C#" Value="public virtual void RefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void RefNode (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -265,7 +256,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterNChildren">
-      <MemberSignature Language="C#" Value="public virtual int IterNChildren (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public int IterNChildren (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -281,7 +272,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowInserted">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void EmitRowInserted (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -299,7 +290,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowDeleted">
-      <MemberSignature Language="C#" Value="public virtual void EmitRowDeleted (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public void EmitRowDeleted (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -314,7 +305,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValist">
-      <MemberSignature Language="C#" Value="public virtual void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
+      <MemberSignature Language="C#" Value="public void GetValist (Gtk.TreeIter iter, IntPtr var_args);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -331,7 +322,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="UnrefNode">
-      <MemberSignature Language="C#" Value="public virtual void UnrefNode (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public void UnrefNode (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -423,7 +414,6 @@ node is always the parent.</remarks>
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of TreeModelSort, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -439,36 +429,35 @@ node is always the parent.</remarks>
       <Docs>
         <summary>Constructor.</summary>
         <param name="child_model">A <see cref="Gtk.TreeModel" />, the child model for the new object.</param>
-        <returns>A new <see cref="T:Gtk.TreeModelSort" /></returns>
         <remarks>FIXME: needs more explanation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="NColumns">
-      <MemberSignature Language="C#" Value="public virtual int NColumns { get; };" />
+      <MemberSignature Language="C#" Value="public int NColumns { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>The number of columns supported by the <see cref="T:Gtk.TreeModel" /> object.</summary>
-        <returns>An integer count of the columns.</returns>
+        <value>An integer count of the columns.</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Flags">
-      <MemberSignature Language="C#" Value="public virtual Gtk.TreeModelFlags Flags { get; };" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeModelFlags Flags { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeModelFlags</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>Returns a set of flags supported by this interface. The flags are a bitwise combination of <see cref="T:GtkTreeModelFlags" />. </summary>
-        <returns>a <see cref="T:GtkTreeModelFlags" /></returns>
+        <value>a <see cref="T:GtkTreeModelFlags" /></value>
         <remarks>The flags supported should not change during the lifecycle of the tree model.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SortColumnChanged">
-      <MemberSignature Language="C#" Value="public virtual event EventHandler SortColumnChanged;" />
+      <MemberSignature Language="C#" Value="public event EventHandler SortColumnChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>System.EventHandler</ReturnType>
@@ -478,9 +467,13 @@ node is always the parent.</remarks>
         <summary>Fired when the sort column is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="sort_column_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowHasChildToggled">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowHasChildToggledHandler RowHasChildToggled;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowHasChildToggledHandler</ReturnType>
@@ -490,9 +483,13 @@ node is always the parent.</remarks>
         <summary>Fired when the child state of a row is toggled.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_has_child_toggled")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowInserted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowInsertedHandler RowInserted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowInsertedHandler RowInserted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowInsertedHandler</ReturnType>
@@ -502,9 +499,13 @@ node is always the parent.</remarks>
         <summary>Fired when a new row is inserted into the tree.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowDeleted">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowDeletedHandler RowDeleted;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowDeletedHandler RowDeleted;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowDeletedHandler</ReturnType>
@@ -514,9 +515,13 @@ node is always the parent.</remarks>
         <summary>Fired when a row is deleted from the tree.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_deleted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowChanged">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowChangedHandler RowChanged;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowChangedHandler RowChanged;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowChangedHandler</ReturnType>
@@ -526,9 +531,13 @@ node is always the parent.</remarks>
         <summary>Fired when a tree row is changed.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowsReordered">
-      <MemberSignature Language="C#" Value="public virtual event Gtk.RowsReorderedHandler RowsReordered;" />
+      <MemberSignature Language="C#" Value="public event Gtk.RowsReorderedHandler RowsReordered;" />
       <MemberType>Event</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.RowsReorderedHandler</ReturnType>
@@ -538,9 +547,13 @@ node is always the parent.</remarks>
         <summary>Fired when rows are reordered or moved around.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="rows_reordered")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterNthChild (out Gtk.TreeIter iter, int n);" />
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, int n);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -558,7 +571,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterNthChild">
-      <MemberSignature Language="C#" Value="public virtual bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
+      <MemberSignature Language="C#" Value="public bool IterNthChild (out Gtk.TreeIter iter, Gtk.TreeIter parent, int n);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -578,7 +591,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIterFromString">
-      <MemberSignature Language="C#" Value="public virtual bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
+      <MemberSignature Language="C#" Value="public bool GetIterFromString (out Gtk.TreeIter iter, string path_string);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -596,7 +609,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterChildren">
-      <MemberSignature Language="C#" Value="public virtual bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
+      <MemberSignature Language="C#" Value="public bool IterChildren (out Gtk.TreeIter iter, Gtk.TreeIter parent);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -615,7 +628,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIter">
-      <MemberSignature Language="C#" Value="public virtual bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool GetIter (out Gtk.TreeIter iter, Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -634,7 +647,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterParent">
-      <MemberSignature Language="C#" Value="public virtual bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
+      <MemberSignature Language="C#" Value="public bool IterParent (out Gtk.TreeIter iter, Gtk.TreeIter child);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -652,7 +665,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetStringFromIter">
-      <MemberSignature Language="C#" Value="public virtual string GetStringFromIter (Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public string GetStringFromIter (Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
@@ -684,7 +697,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSortColumnId">
-      <MemberSignature Language="C#" Value="public virtual bool GetSortColumnId (out int sort_column_id, out Gtk.SortType order);" />
+      <MemberSignature Language="C#" Value="public bool GetSortColumnId (out int sort_column_id, out Gtk.SortType order);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -702,7 +715,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, bool value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, bool value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -721,7 +734,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, double value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, double value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -740,7 +753,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, int value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, int value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -759,7 +772,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, string value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, string value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -778,7 +791,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, float value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, float value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -797,7 +810,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, uint value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, uint value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -812,10 +825,11 @@ node is always the parent.</remarks>
         <param name="iter">a <see cref="T:Gtk.TreeIter" /></param>
         <param name="column">a <see cref="T:System.Int32" /></param>
         <param name="value">a <see cref="T:System.UInt32" /></param>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValue">
-      <MemberSignature Language="C#" Value="public virtual void SetValue (Gtk.TreeIter iter, int column, object value);" />
+      <MemberSignature Language="C#" Value="public void SetValue (Gtk.TreeIter iter, int column, object value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -834,13 +848,19 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendValues">
-      <MemberSignature Language="C#" Value="public Gtk.TreeIter AppendValues (object [] values);" />
+      <MemberSignature Language="C#" Value="public Gtk.TreeIter AppendValues (object[] values);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TreeIter</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="values" Type="System.Object[]" />
+        <Parameter Name="values" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
       </Parameters>
       <Docs>
         <summary>Add the list of objects in <paramref name="values" /> to the model; there should be enough objects to fill one row of the model.</summary>
@@ -850,7 +870,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public virtual object GetValue (Gtk.TreeIter iter, int column);" />
+      <MemberSignature Language="C#" Value="public object GetValue (Gtk.TreeIter iter, int column);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -868,7 +888,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="HasDefaultSortFunc">
-      <MemberSignature Language="C#" Value="public virtual bool HasDefaultSortFunc { get; };" />
+      <MemberSignature Language="C#" Value="public bool HasDefaultSortFunc { get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -876,7 +896,7 @@ node is always the parent.</remarks>
       <Parameters />
       <Docs>
         <summary>Return whether this TreeModel has a default sort function or not.</summary>
-        <returns>a <see cref="T:System.Boolean" />, true if a default sort function exists.</returns>
+        <value>a <see cref="T:System.Boolean" />, true if a default sort function exists.</value>
         <remarks>See <see cref="M:Gtk.TreeModelSort.DefaultSortFunc" /> to set a default sort function.</remarks>
       </Docs>
     </Member>
@@ -889,12 +909,12 @@ node is always the parent.</remarks>
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.TreeModelSort" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetColumnType">
-      <MemberSignature Language="C#" Value="public virtual GLib.GType GetColumnType (int index_);" />
+      <MemberSignature Language="C#" Value="public GLib.GType GetColumnType (int index_);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>GLib.GType</ReturnType>
@@ -1016,10 +1036,13 @@ node is always the parent.</remarks>
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.TreeModelSort" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ConvertChildIterToIter">
       <MemberSignature Language="C#" Value="public Gtk.TreeIter ConvertChildIterToIter (Gtk.TreeIter child_iter);" />
       <MemberType>Method</MemberType>
@@ -1053,7 +1076,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EmitRowsReordered">
-      <MemberSignature Language="C#" Value="public virtual int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public int EmitRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1071,7 +1094,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetValue">
-      <MemberSignature Language="C#" Value="public virtual void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
+      <MemberSignature Language="C#" Value="public void GetValue (Gtk.TreeIter iter, int column, ref GLib.Value value);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -1090,7 +1113,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IterNext">
-      <MemberSignature Language="C#" Value="public virtual bool IterNext (ref Gtk.TreeIter iter);" />
+      <MemberSignature Language="C#" Value="public bool IterNext (ref Gtk.TreeIter iter);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1106,7 +1129,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DragDataDelete">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataDelete (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool DragDataDelete (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1122,7 +1145,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RowDraggable">
-      <MemberSignature Language="C#" Value="public virtual bool RowDraggable (Gtk.TreePath path);" />
+      <MemberSignature Language="C#" Value="public bool RowDraggable (Gtk.TreePath path);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1138,7 +1161,7 @@ node is always the parent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DragDataGet">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataGet (Gtk.TreePath path, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool DragDataGet (Gtk.TreePath path, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1164,12 +1187,16 @@ node is always the parent.</remarks>
       <Parameters />
       <Docs>
         <summary>Tree data model.</summary>
-        <returns>a <see cref="T:Gtk.TreeModel" /></returns>
+        <value>a <see cref="T:Gtk.TreeModel" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="model")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SetSortFunc">
-      <MemberSignature Language="C#" Value="public virtual void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
+      <MemberSignature Language="C#" Value="public void SetSortFunc (int sort_column_id, Gtk.TreeIterCompareFunc sort_func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>

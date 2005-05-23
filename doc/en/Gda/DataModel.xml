@@ -1,12 +1,10 @@
 <Type Name="DataModel" FullName="Gda.DataModel">
-  <TypeSignature Language="C#" Value="public class DataModel : GLib.Object, IWrapper, IDisposable" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class DataModel : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gda-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -21,27 +19,9 @@ Basic data model class.
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
-    <Member MemberName="Finalize">
-      <MemberSignature Language="C#" Value="protected override void Finalize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
+    
     <Member MemberName="ToCommaSeparated">
       <MemberSignature Language="C#" Value="public string ToCommaSeparated ();" />
       <MemberType>Method</MemberType>
@@ -460,7 +440,6 @@ This is the main function for accessing data in a model.
       <Docs>
         <summary>To be added</summary>
         <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Gda.DataModel" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -477,7 +456,7 @@ This is the main function for accessing data in a model.
 Returns the number of rows in the given data model.
 </para>
         </summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -497,7 +476,7 @@ Gets the type of command that generated this data model.
 Sets the type of command that generated this data model.
 </para>
         </summary>
-        <returns>a <see cref="T:Gda.CommandType" /></returns>
+        <value>a <see cref="T:Gda.CommandType" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -517,7 +496,7 @@ Gets the text of command that generated this data model.
 Sets the command text of the given model.
 </para>
         </summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -534,7 +513,7 @@ Sets the command text of the given model.
 Returns the number of columns in the given data model.
 </para>
         </summary>
-        <returns>a <see cref="T:System.Int32" /></returns>
+        <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -549,7 +528,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowInsertedEvent">
       <MemberSignature Language="C#" Value="public event Gda.RowInsertedEventHandler RowInsertedEvent;" />
       <MemberType>Event</MemberType>
@@ -561,7 +544,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_inserted")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowRemovedEvent">
       <MemberSignature Language="C#" Value="public event Gda.RowRemovedEventHandler RowRemovedEvent;" />
       <MemberType>Event</MemberType>
@@ -573,7 +560,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_removed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="RowUpdatedEvent">
       <MemberSignature Language="C#" Value="public event Gda.RowUpdatedEventHandler RowUpdatedEvent;" />
       <MemberType>Event</MemberType>
@@ -585,7 +576,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="row_updated")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="CancelEditing">
       <MemberSignature Language="C#" Value="public event EventHandler CancelEditing;" />
       <MemberType>Event</MemberType>
@@ -597,7 +592,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="cancel_edit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="BeginEditing">
       <MemberSignature Language="C#" Value="public event EventHandler BeginEditing;" />
       <MemberType>Event</MemberType>
@@ -609,7 +608,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="begin_edit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="EndEditing">
       <MemberSignature Language="C#" Value="public event EventHandler EndEditing;" />
       <MemberType>Event</MemberType>
@@ -621,7 +624,11 @@ Returns the number of columns in the given data model.
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="end_edit")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="IsEditing">
       <MemberSignature Language="C#" Value="public bool IsEditing { get; };" />
       <MemberType>Property</MemberType>
@@ -631,7 +638,7 @@ Returns the number of columns in the given data model.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -644,7 +651,7 @@ Returns the number of columns in the given data model.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:System.Boolean" /></returns>
+        <value>a <see cref="T:System.Boolean" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -657,7 +664,7 @@ Returns the number of columns in the given data model.
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gda.DataModel" />.</remarks>
       </Docs>
     </Member>
@@ -764,10 +771,13 @@ Returns the number of columns in the given data model.
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gda.DataModel" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected DataModel ();" />
       <MemberType>Constructor</MemberType>
@@ -775,7 +785,6 @@ Returns the number of columns in the given data model.
       <Parameters />
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gda.DataModel" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>

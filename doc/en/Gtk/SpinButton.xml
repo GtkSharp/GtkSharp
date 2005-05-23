@@ -1,12 +1,10 @@
 <Type Name="SpinButton" FullName="Gtk.SpinButton">
-  <TypeSignature Language="C#" Value="public class SpinButton : Gtk.Entry, Editable, IWrapper, CellEditable, Implementor, IWrapper, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class SpinButton : Gtk.Entry" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -46,29 +44,7 @@ private void OutputValue(object source, System.EventArgs args)
     <BaseTypeName>Gtk.Entry</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>Gtk.Editable</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>Gtk.CellEditable</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>Atk.Implementor</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Spin">
       <MemberSignature Language="C#" Value="public void Spin (Gtk.SpinType direction, double increment);" />
@@ -212,7 +188,6 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of SpinButton, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -232,7 +207,6 @@ private void OutputValue(object source, System.EventArgs args)
         <param name="adjustment">A <see cref="T:Gtk.Adjustment" /></param>
         <param name="climb_rate">A <see cref="T:System.Double" /></param>
         <param name="digits">A <see cref="T:uint" /></param>
-        <returns>A <see cref="T:Gtk.SpinButton" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -250,7 +224,6 @@ private void OutputValue(object source, System.EventArgs args)
         <param name="min">Minimum allowable value.</param>
         <param name="max">Maximum allowable value.</param>
         <param name="step">The value to alter the SpinButton by when a <see cref="Gtk.SpinButton.Spin" /> is carried out on it.</param>
-        <returns>A new SpinButton.</returns>
         <remarks>
           <para>The default value of the new SpinButton is initially set to <paramref name="min" />.</para>
           <para>The default page increment is set to 10 * <paramref name="step" />.</para>
@@ -266,7 +239,7 @@ private void OutputValue(object source, System.EventArgs args)
       </ReturnValue>
       <Docs>
         <summary>Retrieve the current value as an integer.</summary>
-        <returns>The value of the SpinButton with integer precision.</returns>
+        <value>The value of the SpinButton with integer precision.</value>
         <remarks />
       </Docs>
     </Member>
@@ -282,10 +255,14 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>Manage whether or not the SpinButton accepts non-numeric input.</summary>
         <param name="value">
           <see langword="true" /> if non-numeric text can be entered into the text entry of the SpinButton, <see langword="false" /> otherwise.</param>
-        <returns>Whether the SpinButton currently accepts only numeric input.</returns>
+        <value>Whether the SpinButton currently accepts only numeric input.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="numeric")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ClimbRate">
       <MemberSignature Language="C#" Value="public double ClimbRate { set; get; };" />
       <MemberType>Property</MemberType>
@@ -297,10 +274,14 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>The acceleration rate when user holds down a button.</summary>
         <param name="value">A <see cref="T:System.Double" /></param>
-        <returns>A <see cref="T:System.Double" /></returns>
+        <value>A <see cref="T:System.Double" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="climb_rate")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Wrap">
       <MemberSignature Language="C#" Value="public bool Wrap { set; get; };" />
       <MemberType>Property</MemberType>
@@ -312,13 +293,17 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>Manage whether a SpinButton's value wraps around to the opposite limit when the upper or lower limit of the range is exceeded.</summary>
         <param name="value">Set to <see langword="true" /> to cause values to wrap from maximum to minimum, <see langword="false" /> to force the value at the limits to remain unchanged.</param>
-        <returns>Whether this SpinButton wraps its maximum/minimum values when spinning.</returns>
+        <value>Whether this SpinButton wraps its maximum/minimum values when spinning.</value>
         <remarks>
           <para>If this property is set to <see langword="true" />, then when the user tries to change the value in a SpinButton, (usually by clicking one of the arrows), the next value after the maximum will wrap to the minimum.</para>
           <para>Alternatively, if this property is set to <see langword="false" />, then trying to increase the value of the SpinButton when it is at the maximum value, will have no effect. Likewise when trying to decrement the value at its minimum.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="wrap")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Value">
       <MemberSignature Language="C#" Value="public double Value { set; get; };" />
       <MemberType>Property</MemberType>
@@ -330,12 +315,16 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>The current value of the SpinButton.</summary>
         <param name="value">Sets a new value in this SpinButton</param>
-        <returns>The current value of the SpinButton.</returns>
+        <value>The current value of the SpinButton.</value>
         <remarks>
           <para>The value of the SpinButton is limited by the precision set with the <see cref="P:Gtk.SpinButton.Digits" /> property.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Digits">
       <MemberSignature Language="C#" Value="public uint Digits { set; get; };" />
       <MemberType>Property</MemberType>
@@ -347,12 +336,16 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>Manage the precision that this SpinButton's value is displayed with.</summary>
         <param name="value">The number of digits to be displayed for the spin button's value.</param>
-        <returns>The maximum number of digits that the SpinButton will currently display.</returns>
+        <value>The maximum number of digits that the SpinButton will currently display.</value>
         <remarks>
           <para>Up to 20 digit precision is allowed.</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="digits")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="SnapToTicks">
       <MemberSignature Language="C#" Value="public bool SnapToTicks { set; get; };" />
       <MemberType>Property</MemberType>
@@ -365,11 +358,15 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>Manage whether values are corrected to the nearest step increment when a SpinButton is activated with an invalid value.</summary>
         <param name="value">
           <see langword="true" /> if invalid values should be corrected, <see langword="false" /> otherwise.</param>
-        <returns>
-          <see langword="true" /> if values are snapped to the nearest step, <see langword="false" /> otherwise.</returns>
+        <value>
+          <see langword="true" /> if values are snapped to the nearest step, <see langword="false" /> otherwise.</value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="snap_to_ticks")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="UpdatePolicy">
       <MemberSignature Language="C#" Value="public Gtk.SpinButtonUpdatePolicy UpdatePolicy { set; get; };" />
       <MemberType>Property</MemberType>
@@ -381,10 +378,14 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>The policy for how to update this SpinButton when its value changes.</summary>
         <param name="value">A <see cref="T:Gtk.SpinButtonUpdatePolicy" /></param>
-        <returns>A <see cref="T:Gtk.SpinButtonUpdatePolicy" /></returns>
+        <value>A <see cref="T:Gtk.SpinButtonUpdatePolicy" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="update_policy")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Adjustment">
       <MemberSignature Language="C#" Value="public Gtk.Adjustment Adjustment { set; get; };" />
       <MemberType>Property</MemberType>
@@ -396,10 +397,14 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>The lower/upper/step range of this widget's values.</summary>
         <param name="value">A <see cref="T:Gtk.Adjustment" /></param>
-        <returns>A <see cref="T:Gtk.Adjustment" /></returns>
+        <value>A <see cref="T:Gtk.Adjustment" /></value>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="adjustment")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Output">
       <MemberSignature Language="C#" Value="public event Gtk.OutputHandler Output;" />
       <MemberType>Event</MemberType>
@@ -411,7 +416,11 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>Fired when this widget outputs its value.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="output")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ValueChanged">
       <MemberSignature Language="C#" Value="public event EventHandler ValueChanged;" />
       <MemberType>Event</MemberType>
@@ -423,7 +432,11 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>This event is fired after the SpinButton's value changes.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="value_changed")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="Input">
       <MemberSignature Language="C#" Value="public event Gtk.InputHandler Input;" />
       <MemberType>Event</MemberType>
@@ -435,7 +448,11 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>Fired when the user inputs a new value.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="input")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="ChangeValue">
       <MemberSignature Language="C#" Value="public event Gtk.ChangeValueHandler ChangeValue;" />
       <MemberType>Event</MemberType>
@@ -447,7 +464,11 @@ private void OutputValue(object source, System.EventArgs args)
         <summary>Fired in order to change the button's value.</summary>
         <remarks />
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="change_value")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -457,7 +478,7 @@ private void OutputValue(object source, System.EventArgs args)
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.SpinButton" />.</remarks>
       </Docs>
     </Member>
@@ -527,9 +548,12 @@ private void OutputValue(object source, System.EventArgs args)
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.SpinButton" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

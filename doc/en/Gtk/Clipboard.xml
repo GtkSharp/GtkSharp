@@ -1,12 +1,10 @@
 <Type Name="Clipboard" FullName="Gtk.Clipboard">
-  <TypeSignature Language="C#" Value="public class Clipboard : GLib.Opaque, IWrapper" Maintainer="John Luke" />
+  <TypeSignature Language="C#" Maintainer="John Luke" Value="public class Clipboard : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -24,11 +22,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="Get">
       <MemberSignature Language="C#" Value="public static Gtk.Clipboard Get (Gdk.Atom selection);" />
@@ -113,7 +107,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of Clipboard, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -127,7 +120,7 @@
       </ReturnValue>
       <Docs>
         <summary>The owner of the clipboard, if any; otherwise <see langword="null" />.</summary>
-        <returns>an object of type <see cref="T:GLib.Object" /></returns>
+        <value>an object of type <see cref="T:GLib.Object" /></value>
         <remarks>If the clipboard contents callbacks were set with <see cref="M:Gtk.Clipboard.SetWithOwner()" />, and the <see cref="M:Gtk.Clipboard.SetWithData()" /> or <see cref="M:Gtk.Clipboard.Clear()" /> has not been subsequently called, it will return the owner set by <see cref="M:Gtk.Clipboard.SetWithOwner()" />.</remarks>
       </Docs>
     </Member>
@@ -139,7 +132,7 @@
       </ReturnValue>
       <Docs>
         <summary>Sets the contents of the clipboard to the given UTF-8 string.</summary>
-        <returns>a <see cref="T:System.String" /></returns>
+        <value>a <see cref="T:System.String" /></value>
         <remarks>Gtk# will make a copy of the text and take responsibility for responding for requests for the text, and for converting the text into the requested format.</remarks>
       </Docs>
     </Member>
@@ -166,7 +159,7 @@
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Gdk.Display" /> associated with the clipboard.</summary>
-        <returns>a <see cref="T:Gdk.Display" /></returns>
+        <value>a <see cref="T:Gdk.Display" /></value>
         <remarks>
         </remarks>
       </Docs>
@@ -258,7 +251,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.Clipboard" />.</remarks>
       </Docs>
     </Member>
@@ -306,10 +299,13 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.Clipboard" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected Clipboard ();" />
       <MemberType>Constructor</MemberType>
@@ -317,7 +313,6 @@
       <Parameters />
       <Docs>
         <summary>Proctected constructor.</summary>
-        <returns>a <see cref="T:Gtk.Clipboard" /></returns>
         <remarks />
       </Docs>
     </Member>
@@ -377,7 +372,7 @@
       </ReturnValue>
       <Docs>
         <summary>To be added</summary>
-        <returns>a <see cref="T:Gdk.Pixbuf" /></returns>
+        <value>a <see cref="T:Gdk.Pixbuf" /></value>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -392,7 +387,11 @@
         <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="owner_change")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="OnOwnerChange">
       <MemberSignature Language="C#" Value="protected virtual void OnOwnerChange (ref Gdk.EventOwnerChange evnt);" />
       <MemberType>Method</MemberType>

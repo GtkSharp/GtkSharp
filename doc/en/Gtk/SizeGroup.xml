@@ -1,12 +1,10 @@
 <Type Name="SizeGroup" FullName="Gtk.SizeGroup">
-  <TypeSignature Language="C#" Value="public class SizeGroup : GLib.Object, IWrapper, IDisposable" Maintainer="Lee Mallabone" />
+  <TypeSignature Language="C#" Maintainer="Lee Mallabone" Value="public class SizeGroup : GLib.Object" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -33,14 +31,7 @@
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
   <Interfaces>
-    <Interface>
-      <InterfaceName>GLib.IWrapper</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="AddWidget">
       <MemberSignature Language="C#" Value="public void AddWidget (Gtk.Widget widget);" />
@@ -94,7 +85,6 @@
       <Docs>
         <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
-        <returns>An instance of SizeGroup, wrapping the C object.</returns>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
@@ -110,7 +100,6 @@
       <Docs>
         <summary>Create a new SizeGroup.</summary>
         <param name="mode">The mode to indicate direction(s) that should have their sizes tied together.</param>
-        <returns>A new SizeGroup</returns>
         <remarks>
           <para>The direction that size is tied can be altered later using the <see cref="P:Gtk.SizeGroup.Mode" /> property.</para>
         </remarks>
@@ -127,14 +116,18 @@
       <Docs>
         <summary>Sets a mode to determine which direction this SizeGroup controls.</summary>
         <param name="value">A new direction 'mode' for this SizeGroup to tie together.</param>
-        <returns>The current 'mode' that indicates the direction this SizeGroup ties together.</returns>
+        <value>The current 'mode' that indicates the direction this SizeGroup ties together.</value>
         <remarks>
           <para>
         			The mode of the size group determines whether the widgets in the SizeGroup should all have the same <see cref="P:Gtk.SizeGroupMode.Horizontal" /> or <see cref="P:Gtk.SizeGroupMode.Vertical" /> requisition, or should all have the same requisition in <see cref="P:Gtk.SizeGroupMode.Both" /> directions.	
         		</para>
         </remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="mode")</AttributeName>
+        </Attribute>
+      </Attributes></Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -144,7 +137,7 @@
       <Parameters />
       <Docs>
         <summary>GType Property.</summary>
-        <returns>a <see cref="T:GLib.GType" /></returns>
+        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.SizeGroup" />.</remarks>
       </Docs>
     </Member>
@@ -158,9 +151,12 @@
       <Docs>
         <summary>Protected Constructor.</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <returns>a <see cref="T:Gtk.SizeGroup" /></returns>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
-    </Member>
+    <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes></Member>
   </Members>
 </Type>

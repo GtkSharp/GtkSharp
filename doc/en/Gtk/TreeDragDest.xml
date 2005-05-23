@@ -1,28 +1,24 @@
 <Type Name="TreeDragDest" FullName="Gtk.TreeDragDest">
-  <TypeSignature Language="C#" Value="public abstract interface TreeDragDest;" Maintainer="auto" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public interface TreeDragDest : GLib.IWrapper" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <AssemblyCulture>neutral</AssemblyCulture>
-    <Attributes />
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>An interface to represent the rows of a tree when something is drag-and-dropped onto them.</summary>
     <remarks />
   </Docs>
-  <Base />
   <Interfaces>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes />
   <Members>
     <Member MemberName="RowDropPossible">
-      <MemberSignature Language="C#" Value="public virtual bool RowDropPossible (Gtk.TreePath dest_path, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool RowDropPossible (Gtk.TreePath dest_path, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -32,17 +28,18 @@
         <Parameter Name="selection_data" Type="Gtk.SelectionData" />
       </Parameters>
       <Docs>
+        <param name="dest_path">To be added.</param>
+        <param name="selection_data">a <see cref="M:Gtk.SelectionData" />, the data to drop</param>
         <summary>
 	  Determines whether a drop is possible before the given <paramref name="dest" />, at the same depth as <paramref name="dest" />. i.e., can we drop the data in <paramref name="selection_data" /> at that location. <paramref name="dest" /> does not have to exist; the return value will almost certainly be FALSE if the parent of <paramref name="dest" /> doesn't exist, though.
 </summary>
         <param name="dest">a <see cref="M:Gtk.TreePath" />, the potential drop target</param>
-        <param name="selection_data">a <see cref="M:Gtk.SelectionData" />, the data to drop</param>
         <returns>A boolean for whether the drop is possible.</returns>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="DragDataReceived">
-      <MemberSignature Language="C#" Value="public virtual bool DragDataReceived (Gtk.TreePath dest, Gtk.SelectionData selection_data);" />
+      <MemberSignature Language="C#" Value="public bool DragDataReceived (Gtk.TreePath dest, Gtk.SelectionData selection_data);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -52,11 +49,12 @@
         <Parameter Name="selection_data" Type="Gtk.SelectionData" />
       </Parameters>
       <Docs>
+        <param name="dest">To be added.</param>
+        <param name="selection_data"> a  <see cref="M:Gtk.SelectionData" />, the data to drop</param>
         <summary>
 	  Asks the TreeDragDest to insert a row before the given <paramref name="dest_path" />, deriving the contents of the row from the given <see cref="M:Gtk.SelectionData" />.
 	</summary>
         <param name="dest_path">a <see cref="M:Gtk.TreePath" />, where to drop the data</param>
-        <param name="selection_data"> a  <see cref="M:Gtk.SelectionData" />, the data to drop</param>
         <returns>A boolean for whether the row was dropped successfully.</returns>
         <remarks>If dest_path is outside the tree so that inserting before it is impossible, FALSE will be returned. Also, FALSE may be returned if the new row cannot be created for some model-specific reason. Should robustly handle a destination path no longer found in the model.</remarks>
       </Docs>
