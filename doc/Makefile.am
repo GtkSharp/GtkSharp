@@ -42,6 +42,9 @@ get-assemblies:
 update: get-assemblies
 	$(UPDATER)
 
+update-delete: get-assemblies
+	$(UPDATER) --delete
+
 CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree lib
 
 EXTRA_DIST =			\

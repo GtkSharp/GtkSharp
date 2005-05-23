@@ -29,25 +29,7 @@
   <Interfaces>
   </Interfaces>
   <Members>
-    <Member MemberName="GetSelectionBounds">
-      <MemberSignature Language="C#" Value="public bool GetSelectionBounds (out int start, out int end);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="start" Type="System.Int32" RefType="out" />
-        <Parameter Name="end" Type="System.Int32" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Gets the selected range of characters in the label.</summary>
-        <param name="start"> return location for start of selection, as a character offset</param>
-        <param name="end"> return location for end of selection, as a character offset</param>
-        <returns>returns <see langword="true" /> if there is a selection.</returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
+    
     <Member MemberName="SelectRegion">
       <MemberSignature Language="C#" Value="public void SelectRegion (int start_offset, int end_offset);" />
       <MemberType>Method</MemberType>
@@ -74,54 +56,8 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetLayoutOffsets">
-      <MemberSignature Language="C#" Value="public void GetLayoutOffsets (out int x, out int y);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="x" Type="System.Int32" RefType="out" />
-        <Parameter Name="y" Type="System.Int32" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Obtains the coordinates where the label will draw the <see cref="T:Pango.Layout" />
-          representing the text in the label
-        </summary>
-        <param name="x">
-          location to store X offset of layout, or <see langword="null" /></param>
-        <param name="y">
-          location to store Y offset of layout, or <see langword="null" /></param>
-        <remarks>
-          <para>
-            Obtains the coordinates where the label will draw the
-            <see cref="T:Pango.Layout" /> representing the text in the label; useful to
-            convert mouse events into coordinates inside the
-            <see cref="T:Pango.Layout" />, e.g. to take some action if some part of the
-            label is clicked. Of course you will need to create a
-            <see cref="T:Gtk.EventBox" /> to receive the events, and pack the label
-            inside it, since labels are a <see cref="F:Gtk.WindowType.NoWindow" />
-            widget. Remember when using the
-            <see cref="T:Pango.Layout" />functions you
-            need to convert to and from pixels using PANGO_PIXELS() or
-            PANGO_SCALE.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Finalize">
-      <MemberSignature Language="C#" Value="protected override void Finalize ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Disposes the resources associated with the object.</summary>
-        <remarks />
-      </Docs>
-    </Member>
+    
+    
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Label (IntPtr raw);" />
       <MemberType>Constructor</MemberType>
@@ -170,7 +106,6 @@
       </Parameters>
       <Docs>
         <summary>Sets the text of the label</summary>
-        <param name="value">the text for this label</param>
         <remarks>
           <para>
             Sets the text of the label. If characters in <paramref name="value" />
@@ -194,7 +129,6 @@
       </Parameters>
       <Docs>
         <summary>Parses str which is marked up with the Pango text markup language</summary>
-        <param name="value">a markup string (see Pango markup format)</param>
         <value>a GtkLabel</value>
         <remarks>
           <para>
@@ -215,10 +149,6 @@
       </Parameters>
       <Docs>
         <summary>Toggles line wrapping within the GtkLabel widget.</summary>
-        <param name="value">
-          <see langword="true" /> makes it
-          break lines if text exceeds the size of the widget. <see langword="false" /> lets the text get cut off by the edge of the widget if it exceeds the widget size.
-        </param>
         <value>
           <see langword="true" /> if the lines of the label are automatically wrapped.</value>
         <remarks />
@@ -234,7 +164,6 @@
       </Parameters>
       <Docs>
         <summary>The text within the <see cref="T:Gtk.Label" /> widget.</summary>
-        <param name="value">The text you want to set.</param>
         <value>a <see cref="T:System.String" /></value>
         <remarks>
           <para>
@@ -276,7 +205,6 @@
           Pango text markup language, setting the text of the label and
           attribute list based on the parse results.
         </summary>
-        <param name="value"> a markup string (see Pango markup format)</param>
         <value>a new label widget</value>
         <remarks>
           <para>
@@ -304,10 +232,6 @@
       </Parameters>
       <Docs>
         <summary>Toggle whether or not the label allow the user to select text from the label, for copy-and-paste.</summary>
-        <param name="value">
-          <see langword="true" /> to allow selecting text in the
-        label, and <see langword="false" /> to disallow.
-        </param>
         <value>
           <see langword="true" /> if the label is selectable, and
         <see langword="false" /> if not.
@@ -329,7 +253,6 @@
       </Parameters>
       <Docs>
         <summary>The alignment of the lines in the text of the label relative to each other</summary>
-        <param name="value">a <see cref="T:Gtk.Justification" /></param>
         <value>The justification of the label</value>
         <remarks>
           <para>
@@ -390,7 +313,6 @@
       </Parameters>
       <Docs>
         <summary>The widget to be activated when the label's mnemonic key is pressed.</summary>
-        <param name="value">The widget to be activated when the label's mnemonic key is pressed.</param>
         <value>The widget to be activated when the label's mnemonic key is pressed.</value>
         <remarks>
         </remarks>
@@ -410,7 +332,6 @@
       </Parameters>
       <Docs>
         <summary>The text from a label widget including any embedded underlines indicating mnemonics and Pango markup.</summary>
-        <param name="value">The text of the label widget</param>
         <value>The text of the label widget.</value>
         <remarks>
         </remarks>
@@ -430,7 +351,6 @@
       </Parameters>
       <Docs>
         <summary>A string with _ characters in positions correspond to characters in the text to underline.</summary>
-        <param name="value">A string with _ characters in positions correspond to characters in the text to underline.</param>
         <remarks>
         </remarks>
         <value>To be added.</value>
@@ -467,8 +387,6 @@
       </Parameters>
       <Docs>
         <summary>Whether lines should be wrapped if the text becomes too wide.</summary>
-        <param name="value">
-          <see langword="true" /> to wrap lines</param>
         <value>whether lines should be wrapped</value>
         <remarks>
         </remarks>
@@ -491,8 +409,6 @@
           Whether an underline in the text indicates the next
           character should be used for the mnemonic accelerator key.
         </summary>
-        <param name="value">
-          <see langword="true" /> to use underline</param>
         <value>
           Whether an underline in the text indicates the next
           character should be used for the mnemonic accelerator key.
@@ -515,9 +431,6 @@
       </Parameters>
       <Docs>
         <summary>Whether the label's text is interpreted as marked up with the Pango text markup language.</summary>
-        <param name="value">
-          <see langword="true" /> to parse the
-        text as Pango markup, <see langword="false" /> as plain-text</param>
         <value />
         <remarks />
       </Docs>
@@ -536,7 +449,6 @@
       </Parameters>
       <Docs>
         <summary>The attribute list set on the label.</summary>
-        <param name="value">a <see cref="T:Pango.AttrList" /></param>
         <value>the attribute list set on the label</value>
         <remarks>
           <para>

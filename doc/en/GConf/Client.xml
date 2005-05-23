@@ -89,54 +89,6 @@ catch (GConf.NoSuchKeyException)
         <remarks>This is the default constructor for <see cref="T:GConf.Client" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Get">
-      <MemberSignature Language="C#" Value="public override object Get (string key);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Gets a value from the GConf source.</summary>
-        <param name="key">an object of type <see cref="T:System.String" /></param>
-        <returns>an object of type <see cref="T:System.Object" /></returns>
-        <remarks>Normally you will need to convert the value to the correct type before using it.
-		Here is how you could set a <see cref="T:Gtk.Toolbar" /> to use the system-wide setting for style.</remarks>
-        <example>
-          <code language="C#">
-// assuming you have a Gtk.Toolbar named toolbar1
-
-string val;
-
-try
-{
-	GConf.Client gconfclient = new GConf.Client ();
-	val = (string) gconfclient.Get ("/desktop/gnome/interface/toolbar_style");
-}
-catch (GConf.NoSuchKeyException)
-{
-	val = "both";       
-}
-		
-switch (val) {
-	case "both":
-		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Both;
-		break;
-	case "text":
-		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Text;
-		break;
-	case "both_horiz":
-		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.BothHoriz;
-		break;
-	default:
-		toolbar1.ToolbarStyle = Gtk.ToolbarStyle.Icons;
-		break;
-}
-			</code>
-        </example>
-      </Docs>
-    </Member>
+    
   </Members>
 </Type>
