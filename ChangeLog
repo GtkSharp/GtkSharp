@@ -1,3 +1,30 @@
+2005-05-24  Dan Winship  <danw@novell.com>
+
+	* parser/gapi2xml.pl: Make the enum value parser do the right
+	thing with parenthesized values ("FOO = (1 << 2)") and within-type
+	aliases ("GTK_ANCHOR_N = GTK_ANCHOR_NORTH"). Make it intentionally
+	do the wrong thing with unparsable values (outputting them as-is
+	into the api file) so that we are forced to fix them with metadata
+	rather than silently getting incorrect values.
+
+	* gdk/gdk-api-2.4.raw: 
+	* gdk/gdk-api-2.6.raw (PixdataType): Now recognized as flags,
+	not enum
+
+	* gtk/Gtk.metadata: hide the enums ArgFlags and RcTokenType (which
+	are not used by any wrapped API, and which formerly contained
+	entirely wrong values).
+
+	* gtk/gtk-api-2.4.raw: 
+	* gtk/gtk-api-2.6.raw (AnchorType, SelectionMode): update with
+	values for aliases
+
+	* gnome/Gnome.metadata: fix value of Gnome.PrintButtons.Cancel
+
+	* gnome/gnome-api.raw (PrintUnitBase, PaperSelectorFlags,
+	PrintDialogFlags, PrintDialogRangeFlags): Now recognized as flags,
+	with values.
+
 2005-05-24  John Luke  <john.luke@gmail.com>
 
 	* configure.in.in: remove doc/updater/Makefile to fix build

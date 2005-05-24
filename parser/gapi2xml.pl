@@ -228,12 +228,12 @@ foreach $cname (sort(keys(%edefs))) {
 	if ($enum_gtype{$cname}) {
 		$enum_elem->setAttribute("gtype", $enum_gtype{$cname});
 	}
-	if ($def =~ /=\s*1\s*<<\s*\d+/) {
+	if ($def =~ /<</) {
 		$enum_elem->setAttribute('type', "flags");
 	} else {
 		$enum_elem->setAttribute('type', "enum");
 	}
-	$def =~ /\{(.*)\}/;
+	$def =~ /\{(.*\S)\s*\}/;
 	@vals = split(/,\s*/, $1);
 	$vals[0] =~ s/^\s+//;
 	@v0 = split(/_/, $vals[0]);
@@ -252,12 +252,14 @@ foreach $cname (sort(keys(%edefs))) {
 	}
 	
 	foreach $val (@vals) {
-		if ($val =~ /$common\_?(\w+)\s*=\s*(\-?\d+.*)/) {
+		$val =~ s/=\s*\(\s*(.*\S)\s*\)\s*/= \1/;
+		if ($val =~ /$common\_?(\w+)\s*=\s*(.*)$/) {
 			$name = $1;
-			if ($2 =~ /1u?\s*<<\s*(\d+)/) {
-				$enumval = "1 << $1";
-			} else {
-				$enumval = $2;
+			$enumval = $2;
+			if ($enumval =~ /^(\d+|0x[0-9A-Fa-f]+)u?\s*<<\s*(\d+)$/) {
+				$enumval = "$1 << $2";
+			} elsif ($enumval =~ /^$common\_?(\w+)$/) {
+				$enumval = StudlyCaps(lc($1))
 			}
 		} elsif ($val =~ /$common\_?(\w+)/) {
 			$name = $1; $enumval = "";
