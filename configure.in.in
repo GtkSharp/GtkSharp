@@ -66,19 +66,6 @@ BUILD_GTK_LIBS=`$PKG_CONFIG --libs gtk+-2.0`
 AC_SUBST(BUILD_GTK_CFLAGS)
 AC_SUBST(BUILD_GTK_LIBS)
 
-PKG_PATH=
-AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
-	if test x$with_crosspkgdir = "x"; then
-		if test -s $PKG_CONFIG_PATH; then
-			PKG_PATH=$PKG_CONFIG_PATH
-		fi
-	else
-		PKG_PATH=$with_crosspkgdir
-		PKG_CONFIG_PATH=$PKG_PATH
-		export PKG_CONFIG_PATH
-	fi
-)
-
 MONO_REQUIRED_VERSION=1.0
 PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
 
