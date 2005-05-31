@@ -34,7 +34,7 @@ namespace GLib {
 		bool disposed = false;
 		Hashtable data;
 		static Hashtable Objects = new Hashtable();
-		static Queue PendingDestroys = new Queue ();
+		static ArrayList PendingDestroys = new ArrayList ();
 		static bool idle_queued;
 
 		~Object ()
@@ -67,6 +67,7 @@ namespace GLib {
 					Console.WriteLine ("Exception while disposing a " + o + " in Gtk#");
 					throw e;
 				}
+				Objects.Remove (o._obj);
 				o._obj = IntPtr.Zero;
 			}
 			return false;
@@ -78,9 +79,8 @@ namespace GLib {
 				return;
 
 			disposed = true;
-			Objects.Remove (_obj);
 			lock (PendingDestroys){
-				PendingDestroys.Enqueue (this);
+				PendingDestroys.Add (this);
 				lock (typeof (Object)){
 					if (!idle_queued){
 						Idle.Add (new IdleHandler (PerformQueuedUnrefs));
@@ -101,7 +101,11 @@ namespace GLib {
 
 			Object obj;
 			WeakReference weak_ref = Objects[o] as WeakReference;
+
 			if (weak_ref != null && weak_ref.IsAlive) {
+				lock (PendingDestroys)
+					PendingDestroys.Remove (weak_ref.Target);
+
 				obj = weak_ref.Target as GLib.Object;
 				if (owned_ref)
 					g_object_unref (obj._obj);
