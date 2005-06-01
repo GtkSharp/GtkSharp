@@ -316,6 +316,10 @@ namespace GLib {
 					return (string) this;
 				else if (type == ManagedValue.GType)
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
+				else if (g_type_is_a (type.Val, GLib.GType.Enum.Val))
+					return (EnumWrapper) this;
+				else if (g_type_is_a (type.Val, GLib.GType.Flags.Val))
+					return (EnumWrapper) this;
 				else if (g_type_is_a (type.Val, GType.Object.Val))
 					return (GLib.Object) this;
 				else
@@ -354,6 +358,10 @@ namespace GLib {
 					g_value_set_pointer (ref this, buf);
 				} else if (type == ManagedValue.GType) {
 					g_value_set_boxed (ref this, ManagedValue.WrapObject (value));
+				} else if (g_type_is_a (type.Val, GLib.GType.Enum.Val)) {
+					g_value_set_enum (ref this, (int) value);
+				} else if (g_type_is_a (type.Val, GLib.GType.Flags.Val)) {
+					g_value_set_flags (ref this, (uint) value);
 				} else if (g_type_is_a (type.Val, GLib.GType.Boxed.Val)) {
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);
