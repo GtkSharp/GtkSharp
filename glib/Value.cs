@@ -167,6 +167,25 @@ namespace GLib {
 			g_value_set_boxed (ref this, val.Handle);
 		}
 
+		public Value (string[] val) : this (new GLib.GType (g_strv_get_type ()))
+		{
+			if (val == null) {
+				g_value_set_boxed (ref this, IntPtr.Zero);
+				return;
+			}
+
+			IntPtr native_array = Marshal.AllocHGlobal ((val.Length + 1) * IntPtr.Size);
+			for (int i = 0; i < val.Length; i++)
+				Marshal.WriteIntPtr (native_array, i * IntPtr.Size, GLib.Marshaller.StringToPtrGStrdup (val[i]));
+			Marshal.WriteIntPtr (native_array, val.Length * IntPtr.Size, IntPtr.Zero);
+
+			g_value_set_boxed (ref this, native_array);
+
+			for (int i = 0; i < val.Length; i++)
+				GLib.Marshaller.Free (Marshal.ReadIntPtr (native_array, i * IntPtr.Size));
+			Marshal.FreeHGlobal (native_array);
+		}
+
 
 		public void Dispose () 
 		{
@@ -258,6 +277,20 @@ namespace GLib {
 			return new UnwrappedObject (g_value_get_object (ref val));
 		}
 
+		public static explicit operator string[] (Value val)
+		{
+			IntPtr native_array = g_value_get_boxed (ref val);
+			if (native_array == IntPtr.Zero)
+				return null;
+
+			int count = 0;
+			while (Marshal.ReadIntPtr (native_array, count * IntPtr.Size) != IntPtr.Zero)
+				count++;
+			string[] strings = new string[count];
+			for (int i = 0; i < count; i++)
+				strings[i] = GLib.Marshaller.Utf8PtrToString (Marshal.ReadIntPtr (native_array, i * IntPtr.Size));
+			return strings;
+		}
 
 		public object Val
 		{
@@ -437,5 +470,8 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_strv_get_type ();
 	}
 }

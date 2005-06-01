@@ -1,3 +1,21 @@
+2005-06-01  Dan Winship  <danw@novell.com>
+
+	* glib/Value.cs: Add a constructor and an explicit cast for
+	string[] (using a G_TYPE_STRV boxed value).
+
+	* generator/SymbolTable.cs (SymbolTable): Map GStrv to string[].
+	(The mapping relies on the above GLib.Value magic, so it only
+	works correctly for properties, but that's ok, because GStrv isn't
+	a real type anyway and only shows up in the api files for
+	G_TYPE_STRV properties.) Makes the Gtk.AboutDialog Artists,
+	Authors, and Documenters properties show up.
+
+	* gtk/Gtk.metadata: hide
+	AboutDialog.Get/SetArtists/Authors/Documenters, which can't be
+	used to implement the Artists/Authors/Documenters properties,
+	because the generated code doesn't know to NULL-terminate the
+	arrays.
+
 2005-05-31  Mike Kestner  <mkestner@novell.com>
 
 	* glib/Object.cs : rework the weakref release mechanism to avoid a

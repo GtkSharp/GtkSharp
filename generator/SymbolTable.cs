@@ -92,6 +92,7 @@ namespace GtkSharp.Generation {
 			AddType (new ConstStringGen ("const-char"));
 			AddType (new MarshalGen ("gchar", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
 			AddType (new MarshalGen ("char", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
+			AddType (new SimpleGen ("GStrv", "string[]"));
 
 			// manually wrapped types requiring more complex marshaling
 			AddType (new ManualGen ("GObject", "GLib.Object", "GLib.Object.GetObject ({0})"));
