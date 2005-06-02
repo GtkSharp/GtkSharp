@@ -152,6 +152,8 @@ while ($line = <STDIN>) {
 			last if ($line =~ /^}/);
 		}
 		$typefuncs{lc($class)} = $pedef;
+	} elsif ($line =~ /^G_DEFINE_TYPE_WITH_CODE\s*\(\s*(\w+)/) {
+		$typefuncs{lc($1)} = $line;
 	} elsif ($line =~ /^(deprecated)?(const|G_CONST_RETURN)?\s*(struct\s+)?\w+\s*\**(\s*(const|G_CONST_RETURN)\s*\**)?\s*(\w+)\s*\(/) {
 		$fname = $6;
 		$fdef = "";
@@ -375,7 +377,11 @@ foreach $type (sort(keys(%objects))) {
 
 	# Get the interfaces from the class_init func.
 	if ($typefunc) {
-		parseTypeFunc($obj_el, $typefunc);
+		if ($typefunc =~ /G_DEFINE_TYPE_WITH_CODE/) {
+			parseTypeFuncMacro($obj_el, $typefunc);
+		} else {
+			parseTypeFunc($obj_el, $typefunc);
+		}
 	} else {
 		warn "Don't have a GetType func for $inst.\n" if $debug;
 	}
@@ -1020,6 +1026,28 @@ sub parseInitFunc
 	}
 
 	addVirtualMethods ($classdef, $obj_el);
+}
+
+sub parseTypeFuncMacro
+{
+	my ($obj_el, $typefunc) = @_;
+
+	$impls_node = undef;
+	while ($typefunc =~ /G_IMPLEMENT_INTERFACE\s*\(\s*(\w+)/) {
+		$iface = $1;
+		if (not $impls_node) {
+			$impls_node = $doc->createElement ("implements");
+			$obj_el->appendChild ($impls_node);
+		}
+		addImplementsElem ($prop, $impl_node);
+		if ($iface =~ /(\w+)_TYPE_(\w+)/) {
+			$impl_elem = $doc->createElement('interface');
+			$name = StudlyCaps (lc ("$1_$2"));
+			$impl_elem->setAttribute ("cname", "$name");
+			$impls_node->appendChild($impl_elem);
+		}
+		$typefunc =~ s/G_IMPLEMENT_INTERFACE\s*\(.*?\)//;
+	}
 }
 
 sub parseTypeFunc

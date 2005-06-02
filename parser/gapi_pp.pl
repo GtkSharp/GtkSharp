@@ -189,7 +189,7 @@ foreach $fname (@srcs, @privhdrs) {
 	}
 
 	while ($line = <INFILE>) {
-		next if ($line !~ /^(struct|\w+_class_init|\w+_base_init|\w+_get_type\b)/);
+		next if ($line !~ /^(struct|\w+_class_init|\w+_base_init|\w+_get_type\b|G_DEFINE_TYPE_WITH_CODE)/);
 
 		if ($line =~ /^struct/) {
 			# need some of these to parse out parent types
@@ -198,6 +198,15 @@ foreach $fname (@srcs, @privhdrs) {
 				print $line;
 				next;
 			}
+		} elsif ($line =~ /^G_DEFINE_TYPE_WITH_CODE/) {
+			my $macro;
+			while ($line =~ /(.*)\\$/) {
+				$macro .= $1;
+				$line = <INFILE>;
+			}
+			$macro .= $line;
+			print $macro;
+			next;
 		}
 
 		$comment = 0;
