@@ -15,6 +15,7 @@ sources = 				\
 	ClassBase.cs			\
 	ClassGen.cs			\
 	CodeGenerator.cs		\
+	ConstFilenameGen.cs		\
 	ConstStringGen.cs		\
 	Ctor.cs				\
 	EnumGen.cs			\

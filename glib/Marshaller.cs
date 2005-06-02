@@ -37,6 +37,25 @@ namespace GLib {
 			g_free (ptr);
 		}
 
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_filename_to_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+
+		public static string FilenamePtrToString (IntPtr ptr) 
+		{
+			IntPtr dummy, error;
+			IntPtr utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
+			if (error != IntPtr.Zero)
+				throw new GLib.GException (error);
+			return Utf8PtrToString (utf8);
+		}
+
+		public static string FilenamePtrToStringGFree (IntPtr ptr) 
+		{
+			string ret = FilenamePtrToString (ptr);
+			g_free (ptr);
+			return ret;
+		}
+
 		[DllImport("glibsharpglue-2")]
 		static extern UIntPtr glibsharp_strlen (IntPtr mem);
 
@@ -74,6 +93,24 @@ namespace GLib {
 				g_free (ptrs[i]);
 			}
 			return ret;
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_filename_from_utf8 (IntPtr mem, int len, IntPtr read, out IntPtr written, out IntPtr error);
+
+		public static IntPtr StringToFilenamePtr (string str) 
+		{
+			if (str == null)
+				return IntPtr.Zero;
+
+			IntPtr dummy, error;
+			IntPtr utf8 = StringToPtrGStrdup (str);
+			IntPtr result = g_filename_from_utf8 (utf8, -1, IntPtr.Zero, out dummy, out error);
+			g_free (utf8);
+			if (error != IntPtr.Zero)
+				throw new GException (error);
+
+			return result;
 		}
 
 		public static IntPtr StringToPtrGStrdup (string str) {

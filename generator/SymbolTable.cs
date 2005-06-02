@@ -90,6 +90,8 @@ namespace GtkSharp.Generation {
 			AddType (new ConstStringGen ("const-gchar"));
 			AddType (new ConstStringGen ("const-xmlChar"));
 			AddType (new ConstStringGen ("const-char"));
+			AddType (new ConstFilenameGen ("const-gfilename"));
+			AddType (new MarshalGen ("gfilename", "string", "IntPtr", "GLib.Marshaller.StringToFilenamePtr({0})", "GLib.Marshaller.FilenamePtrToStringGFree({0})"));
 			AddType (new MarshalGen ("gchar", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
 			AddType (new MarshalGen ("char", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
 			AddType (new SimpleGen ("GStrv", "string[]"));
@@ -153,6 +155,19 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		private bool IsConstString (string type)
+		{
+			switch (type) {
+			case "const-gchar":
+			case "const-char":
+			case "const-xmlChar":
+			case "const-gfilename":
+				return true;
+			default:
+				return false;
+			}
+		}
+
 		private string Trim(string type)
 		{
 			// HACK: If we don't detect this here, there is no
@@ -161,8 +176,8 @@ namespace GtkSharp.Generation {
 
 			string trim_type = type.TrimEnd('*');
 
-			// HACK: Similar to above, but for const strings
-			if (trim_type == "const-gchar" || trim_type == "const-char" || trim_type == "const-xmlChar") return trim_type;
+			if (IsConstString (trim_type))
+				return trim_type;
 			
 			if (trim_type.StartsWith("const-")) return trim_type.Substring(6);
 			return trim_type;
