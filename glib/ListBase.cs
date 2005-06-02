@@ -1,8 +1,9 @@
-// SList.cs - GSList class wrapper implementation
+// ListBase.cs - List base class implementation
 //
-// Authors: Mike Kestner <mkestner@speakeasy.net>
+// Authors: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2002 Mike Kestner
+// Copyright (c) 2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -134,12 +135,18 @@ namespace GLib {
 			orig.CopyTo (array, index); 
 		}
 
+		public class FilenameString {
+			private FilenameString () {}
+		}
+
 		internal object DataMarshal (IntPtr data) 
 		{
 			object ret = null;
 			if (element_type != null) {
 				if (element_type == typeof (string))
 					ret = Marshaller.Utf8PtrToString (data);
+				else if (element_type == typeof (FilenameString))
+					ret = Marshaller.FilenamePtrToString (data);
 				else if (element_type == typeof (int))
 					ret = (int) data;
 				else if (element_type.IsValueType)
