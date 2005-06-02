@@ -45,7 +45,7 @@
         <summary>Marshals an array of utf8 string from native memory and frees the native strings.</summary>
         <param name="ptrs">a <see cref="T:System.IntPtr[]" /></param>
         <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="StringToPtrGStrdup">
@@ -74,10 +74,10 @@
         <Parameter Name="args" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obsolete.</summary>
         <param name="args">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="ArrayPtrToArgv">
@@ -91,11 +91,11 @@
         <Parameter Name="argc" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Obsolete.</summary>
         <param name="array">a <see cref="T:System.IntPtr" /></param>
         <param name="argc">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
       </Docs>
     </Member>
     <Member MemberName="DateTimeTotime_t">
@@ -108,10 +108,10 @@
         <Parameter Name="time" Type="System.DateTime" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Marshals DateTime structures to native time_t values.</summary>
         <param name="time">a <see cref="T:System.DateTime" /></param>
         <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="time_tToDateTime">
@@ -124,10 +124,10 @@
         <Parameter Name="time_t" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Marshals native time_t values to DateTime values.</summary>
         <param name="time_t">a <see cref="T:System.IntPtr" /></param>
         <returns>a <see cref="T:System.DateTime" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GUnicharToChar">
@@ -246,9 +246,57 @@
         <Parameter Name="ptr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Free a native pointer allocated by GLib.</summary>
         <param name="ptr">a <see cref="T:System.IntPtr" /></param>
-        <remarks>To be added</remarks>
+        <remarks />
+      </Docs>
+    </Member>
+  <Member MemberName="FilenamePtrToString">
+      <MemberSignature Language="C#" Value="public static string FilenamePtrToString (IntPtr ptr);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptr" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="ptr">A native filename-encoded string pointer.</param>
+        <summary>Marshals a native filename-encoded string to a managed string.</summary>
+        <returns>A managed string.</returns>
+        <remarks>The native pointer is not freed after marshaling. Use with const strings.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="FilenamePtrToStringGFree">
+      <MemberSignature Language="C#" Value="public static string FilenamePtrToStringGFree (IntPtr ptr);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptr" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="ptr">A native filename-encoded string pointer.</param>
+        <summary>Marshals a native filename-encoded string to a managed string.</summary>
+        <returns>A managed string.</returns>
+        <remarks>The native pointer is freed after marshaling.</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="StringToFilenamePtr">
+      <MemberSignature Language="C#" Value="public static IntPtr StringToFilenamePtr (string str);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">A managed string to be marshaled.</param>
+        <summary>Marshals a string to a filename encoded native pointer.</summary>
+        <returns>A pointer to a newly allocated native string.</returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>
