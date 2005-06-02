@@ -45,6 +45,7 @@
 			if (obj == null)
 				return;
 			ManagedSubclasses.Remove (obj);
+			obj.Destroyed -= NativeDestroyHandler;
 			obj.Dispose ();
 		}
 
@@ -61,11 +62,11 @@
 		{
 			base.CreateNativeObject (names, vals);
 			ManagedSubclasses [this] = this;
+			Destroyed += NativeDestroyHandler;
 		}
 
 		public override void Dispose ()
 		{
-			Destroyed -= NativeDestroyHandler;
 			base.Dispose ();
 		}
 
@@ -80,7 +81,6 @@
 
 				g_object_ref (value);
 				Sink ();
-				Destroyed += NativeDestroyHandler;
 			}
 		}
 
