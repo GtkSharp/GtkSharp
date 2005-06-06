@@ -36,7 +36,7 @@ namespace GtkDemo
 			double deviceRadius;
 
 			// Get the default renderer for the screen, and set it up for drawing 
-			Gdk.PangoRenderer renderer = new Gdk.PangoRenderer (drawingArea.Screen);
+			Gdk.PangoRenderer renderer = Gdk.PangoRenderer.GetDefault (drawingArea.Screen);
 			renderer.Drawable = drawingArea.GdkWindow;
 			renderer.Gc = drawingArea.Style.BlackGC;
 
