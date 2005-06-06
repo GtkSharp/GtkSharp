@@ -24,7 +24,6 @@ sources = 					\
 	AsyncWriteCallbackNative.cs		\
 	Directory.cs				\
 	FileInfo.cs				\
-	Handle.cs				\
 	MimeType.cs				\
 	ModuleCallback.cs			\
 	ModuleCallbackAuthentication.cs		\

@@ -37,7 +37,7 @@ namespace Gnome.Vfs {
 		
 		public static void Cancel (Handle handle)
 		{
-			gnome_vfs_async_cancel (handle.Raw);
+			gnome_vfs_async_cancel (handle.Handle);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -46,7 +46,7 @@ namespace Gnome.Vfs {
 		public static void Close (Handle handle, AsyncCallback callback)
 		{
 			AsyncCallbackWrapper wrapper = new AsyncCallbackWrapper (callback, null);
-			gnome_vfs_async_close (handle.Raw, wrapper.NativeDelegate, IntPtr.Zero);
+			gnome_vfs_async_close (handle.Handle, wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -87,7 +87,7 @@ namespace Gnome.Vfs {
 		public static void Read (Handle handle, out byte buffer, uint bytes, AsyncReadCallback callback)
 		{
 			AsyncReadCallbackWrapper wrapper = new AsyncReadCallbackWrapper (callback, null);
-			gnome_vfs_async_read (handle.Raw, out buffer, bytes, wrapper.NativeDelegate, IntPtr.Zero);
+			gnome_vfs_async_read (handle.Handle, out buffer, bytes, wrapper.NativeDelegate, IntPtr.Zero);
 		}
 		
 		[DllImport ("gnomevfs-2")]
@@ -96,7 +96,7 @@ namespace Gnome.Vfs {
 		public static void Seek (Handle handle, SeekPosition whence, long offset, AsyncCallback callback)
 		{
 			AsyncCallbackWrapper wrapper = new AsyncCallbackWrapper (callback, null);
-			gnome_vfs_async_seek (handle.Raw, whence, offset, wrapper.NativeDelegate, IntPtr.Zero);
+			gnome_vfs_async_seek (handle.Handle, whence, offset, wrapper.NativeDelegate, IntPtr.Zero);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -105,7 +105,7 @@ namespace Gnome.Vfs {
 		public static void Write (Handle handle, out byte buffer, uint bytes, AsyncWriteCallback callback)
 		{
 			AsyncWriteCallbackWrapper wrapper = new AsyncWriteCallbackWrapper (callback, null);
-			gnome_vfs_async_write (handle.Raw, out buffer, bytes, wrapper.NativeDelegate, IntPtr.Zero);
+			gnome_vfs_async_write (handle.Handle, out buffer, bytes, wrapper.NativeDelegate, IntPtr.Zero);
 		}
 		
 	}

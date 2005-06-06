@@ -45,8 +45,10 @@ namespace GtkSharp.Generation {
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 				string m_type = p.MarshalType;
-				if (p.Generatable is CallbackGen)
-					m_type = impl_ns + "Sharp" + p.MarshalType.Substring(p.MarshalType.IndexOf("."));
+				if (p.Generatable is CallbackGen) {
+					string[] toks = p.MarshalType.Split ('.');
+					m_type = impl_ns + "Sharp." + toks [toks.Length - 1];
+				}
 
 				parms [i] = "";
 				if (p.CType == "GError**")

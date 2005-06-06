@@ -31,7 +31,7 @@ namespace Gnome.Vfs {
 
 		public static Result Close (Handle handle)
 		{
-			return gnome_vfs_close (handle.Raw);
+			return gnome_vfs_close (handle.Handle);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -99,7 +99,7 @@ namespace Gnome.Vfs {
 		
 		public static Result Read (Handle handle, out byte buffer, ulong bytes, out ulong bytes_read)
 		{
-			return gnome_vfs_read (handle.Raw, out buffer, bytes, out bytes_read);
+			return gnome_vfs_read (handle.Handle, out buffer, bytes, out bytes_read);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -107,7 +107,7 @@ namespace Gnome.Vfs {
 		
 		public static Result Seek (Handle handle, SeekPosition whence, long offset)
 		{
-			return gnome_vfs_seek (handle.Raw, whence, offset);
+			return gnome_vfs_seek (handle.Handle, whence, offset);
 		}
 		
 		[DllImport ("gnomevfs-2")]
@@ -115,7 +115,7 @@ namespace Gnome.Vfs {
 		
 		public static Result Write (Handle handle, out byte buffer, ulong bytes, out ulong bytes_written)
 		{
-			return gnome_vfs_write (handle.Raw, out buffer, bytes, out bytes_written);
+			return gnome_vfs_write (handle.Handle, out buffer, bytes, out bytes_written);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -123,7 +123,7 @@ namespace Gnome.Vfs {
 		
 		public static Result Tell (Handle handle, out ulong offset)
 		{
-			return gnome_vfs_tell (handle.Raw, out offset);
+			return gnome_vfs_tell (handle.Handle, out offset);
 		}
 
 		[DllImport ("gnomevfs-2")]
@@ -139,7 +139,7 @@ namespace Gnome.Vfs {
 		
 		public static Result Truncate (Handle handle, ulong length)
 		{
-			return gnome_vfs_truncate_handle (handle.Raw, length);
+			return gnome_vfs_truncate_handle (handle.Handle, length);
 		}
 		
 		[DllImport ("gnomevfs-2")]
@@ -150,7 +150,7 @@ namespace Gnome.Vfs {
 		// time what other possible uses/parameters this method has.
 		public static Result FileControl (Handle handle, string operation, out string data)
 		{
-			return gnome_vfs_file_control (handle.Raw, operation, out data);
+			return gnome_vfs_file_control (handle.Handle, operation, out data);
 		}
 	}
 }
