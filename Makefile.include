@@ -17,7 +17,7 @@ EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(customs) 
 
 build_symbols = $(addprefix --symbols=$(srcdir)/, $(SYMBOLS))
 
-$(API): $(METADATA) $(RAW_API) $(SYMBOLS)
+$(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/parser/gapi-fixup.exe
 	cp $(srcdir)/$(RAW_API) $(API)
 	chmod u+w $(API)
 	@if test -n '$(METADATA)'; then		\
