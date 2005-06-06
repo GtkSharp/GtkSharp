@@ -67,8 +67,13 @@ namespace GLib {
 				gtypes[type] = native_type;
 		}
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_type_init ();
+
 		static GType ()
 		{
+			g_type_init ();
+
 			Register (GType.Char, typeof (sbyte));
 			Register (GType.UChar, typeof (byte));
 			Register (GType.Boolean, typeof (bool));
