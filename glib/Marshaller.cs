@@ -282,7 +282,8 @@ namespace GLib {
 		public static Array ListToArray (ListBase list, System.Type type)
 		{
 			Array result = Array.CreateInstance (type, list.Count);
-			list.CopyTo (result, 0);
+			if (list.Count > 0)
+				list.CopyTo (result, 0);
 			return result;
 		}
 	}

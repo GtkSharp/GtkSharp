@@ -108,7 +108,7 @@ namespace GtkSharp.Generation {
 				var += ", true";
 			else if (ElementType != String.Empty) {
 				string type_str = "typeof (" + ElementType + ")";
-				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2});", ElementType, IGen.FromNativeReturn (var + ", " + type_str), type_str);
+				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + type_str), type_str);
 			}
 			return IGen.FromNativeReturn (var);
 		}

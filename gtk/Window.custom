@@ -76,22 +76,6 @@
 			}
 		}
 
-		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_window_list_toplevels();
-
-		public static Window[] ListToplevels ()
-		{
-			IntPtr raw_ret = gtk_window_list_toplevels();
-			if (raw_ret == IntPtr.Zero)
-				return new Window [0];
-
-			GLib.List list = new GLib.List(raw_ret);
-			Window[] result = new Window [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				result [i] = list [i] as Window;
-			return result;
-		}
-
 		public Gdk.Size DefaultSize {
 			get {
 				return new Gdk.Size (DefaultWidth, DefaultHeight);
