@@ -278,6 +278,13 @@ namespace GLib {
 			Marshal.StructureToPtr (o, result, false);
 			return result;
 		}
+
+		public static Array ListToArray (ListBase list, System.Type type)
+		{
+			Array result = Array.CreateInstance (type, list.Count);
+			list.CopyTo (result, 0);
+			return result;
+		}
 	}
 }
 

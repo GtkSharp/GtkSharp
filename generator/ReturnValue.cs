@@ -43,6 +43,10 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
+
+				if (ElementType != String.Empty)
+					return ElementType + "[]";
+
 				return IGen.QualifiedName + (IsArray ? "[]" : String.Empty);
 			}
 		}
@@ -102,8 +106,10 @@ namespace GtkSharp.Generation {
 				return String.Empty;
 			if (Owned)
 				var += ", true";
-			else if (ElementType != String.Empty)
-				var += ", typeof (" + ElementType + ")";
+			else if (ElementType != String.Empty) {
+				string type_str = "typeof (" + ElementType + ")";
+				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2});", ElementType, IGen.FromNativeReturn (var + ", " + type_str), type_str);
+			}
 			return IGen.FromNativeReturn (var);
 		}
 			
@@ -113,6 +119,7 @@ namespace GtkSharp.Generation {
 				Console.Write("rettype: " + CType);
 				return false;
 			}
+
 			return true;
 		}
 	}
