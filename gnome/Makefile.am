@@ -8,10 +8,10 @@ else
 pkg = 
 endif
 
-INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml ../gtk/gtk-api.xml ../art/art-api.xml
+INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml ../gtk/gtk-api.xml ../art/art-api.xml ../gnomevfs/gnome-vfs-api.xml
 METADATA = Gnome.metadata
 SYMBOLS =
-references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll ../art/art-sharp.dll
+references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll ../gtk/gtk-sharp.dll ../art/art-sharp.dll ../gnomevfs/gnome-vfs-sharp.dll
 glue_includes = gnome.h,libgnomeprint/gnome-print.h,libgnomeprint/gnome-print-paper.h
 
 sources =					\

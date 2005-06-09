@@ -51,21 +51,30 @@ namespace Gnome.Vfs {
 			public IntPtr reserved5;
 		}
 	
-		// This needs to be internal so other Gnome.Vfs code can use it for native calls.
-		internal FileInfoNative info;
+		IntPtr handle;
+		bool needs_dispose = false;
 
 		[DllImport ("gnomevfs-2")]
-		private static extern FileInfoNative gnome_vfs_file_info_new ();
+		private static extern void gnome_vfs_file_info_unref (IntPtr handle);
 
-		[DllImport ("gnomevfs-2")]
-		private static extern void gnome_vfs_file_info_copy (ref FileInfoNative dest, ref FileInfoNative src);
-
-		[DllImport ("gnomevfs-2")]
-		private static extern Result gnome_vfs_get_file_info_uri (IntPtr uri, ref FileInfoNative info, FileInfoOptions options);
-
-		internal FileInfo (FileInfoNative info)
+		~FileInfo ()
 		{
-			gnome_vfs_file_info_copy (ref this.info, ref info);
+			if (needs_dispose)
+				gnome_vfs_file_info_unref (Handle);
+		}
+		
+		[DllImport ("gnomevfs-2")]
+		private static extern IntPtr gnome_vfs_file_info_new ();
+
+		public FileInfo ()
+		{
+			needs_dispose = true;
+			handle = gnome_vfs_file_info_new ();
+		}
+
+		public FileInfo (IntPtr handle)
+		{
+			this.handle = handle;
 		}
 
 		public FileInfo (string uri) : this (uri, FileInfoOptions.Default) {}
@@ -74,24 +83,30 @@ namespace Gnome.Vfs {
 
 		public FileInfo (Uri uri) : this (uri, FileInfoOptions.Default) {}
 		
-		public FileInfo (Uri uri, FileInfoOptions options)
-		{
-			info = gnome_vfs_file_info_new ();
+		[DllImport ("gnomevfs-2")]
+		private static extern Result gnome_vfs_get_file_info_uri (IntPtr uri, IntPtr info, int options);
 
-			Result result = gnome_vfs_get_file_info_uri (uri.Handle, ref info, options);
+		public FileInfo (Uri uri, FileInfoOptions options) : this ()
+		{
+			Result result = gnome_vfs_get_file_info_uri (uri.Handle, Handle, (int) options);
 			Vfs.ThrowException (uri, result);
 		}
 		
-		[DllImport ("gnomevfs-2")]
-		private static extern void gnome_vfs_file_info_clear (ref FileInfoNative info);
-		
-		~FileInfo ()
-		{
-			gnome_vfs_file_info_clear (ref info);
+		FileInfoNative Native {
+			get {
+				return (FileInfoNative) Marshal.PtrToStructure (handle, typeof (FileInfoNative));
+			}
 		}
-		
+
+		public IntPtr Handle {
+			get {
+				return handle;
+			}
+		}
+
 		public string Name {
 			get {
+				FileInfoNative info = Native;
 				if (info.name != IntPtr.Zero)
 					return GLib.Marshaller.Utf8PtrToString (info.name);
 				else
@@ -101,14 +116,14 @@ namespace Gnome.Vfs {
 		
 		public FileInfoFields ValidFields {
 			get {
-				return info.valid_fields;
+				return Native.valid_fields;
 			}
 		}
 		
 		public FileType Type {
 			get {
 				if ((ValidFields & FileInfoFields.Type) != 0)
-					return info.type;
+					return Native.type;
 				else
 					throw new ArgumentException ("Type is not set");
 			}
@@ -117,7 +132,7 @@ namespace Gnome.Vfs {
 		public FilePermissions Permissions {
 			get {
 				if ((ValidFields & FileInfoFields.Permissions) != 0)
-					return info.permissions;
+					return Native.permissions;
 				else
 					throw new ArgumentException ("Permissions is not set");
 			}
@@ -126,7 +141,7 @@ namespace Gnome.Vfs {
 		public FileFlags Flags {
 			get {
 				if ((ValidFields & FileInfoFields.Flags) != 0)
-					return info.flags;
+					return Native.flags;
 				else
 					throw new ArgumentException ("Flags is not set");
 			}
@@ -135,7 +150,7 @@ namespace Gnome.Vfs {
 		public long Device {
 			get {
 				if ((ValidFields & FileInfoFields.Device) != 0)
-					return info.dev_t;
+					return Native.dev_t;
 				else
 					throw new ArgumentException ("Device is not set");
 			}
@@ -144,7 +159,7 @@ namespace Gnome.Vfs {
 		public long Inode {
 			get {
 				if ((ValidFields & FileInfoFields.Inode) != 0)
-					return info.inode;
+					return Native.inode;
 				else
 					throw new ArgumentException ("Inode is not set");
 			}
@@ -153,7 +168,7 @@ namespace Gnome.Vfs {
 		public uint LinkCount {
 			get {
 				if ((ValidFields & FileInfoFields.LinkCount) != 0)
-					return info.link_count;
+					return Native.link_count;
 				else
 					throw new ArgumentException ("LinkCount is not set");
 			}
@@ -161,20 +176,20 @@ namespace Gnome.Vfs {
 		
 		public uint Uid {
 			get {
-				return info.uid;
+				return Native.uid;
 			}
 		}
 		
 		public uint Gid {
 			get {
-				return info.gid;
+				return Native.gid;
 			}
 		}
 		
 		public long Size {
 			get {
 				if ((ValidFields & FileInfoFields.Size) != 0)
-					return info.size;
+					return Native.size;
 				else
 					throw new ArgumentException ("Size is not set");
 			}
@@ -183,7 +198,7 @@ namespace Gnome.Vfs {
 		public long BlockCount {
 			get {
 				if ((ValidFields & FileInfoFields.BlockCount) != 0)
-					return info.block_count;
+					return Native.block_count;
 				else
 					throw new ArgumentException ("BlockCount is not set");
 			}
@@ -192,7 +207,7 @@ namespace Gnome.Vfs {
 		public uint IoBlockSize {
 			get {
 				if ((ValidFields & FileInfoFields.IoBlockSize) != 0)
-					return info.io_block_size;
+					return Native.io_block_size;
 				else
 					throw new ArgumentException ("IoBlockSize is not set");
 			}
@@ -201,7 +216,7 @@ namespace Gnome.Vfs {
 		public System.DateTime Atime {
 			get {
 				if ((ValidFields & FileInfoFields.Atime) != 0)
-					return GLib.Marshaller.time_tToDateTime (info.atime);
+					return GLib.Marshaller.time_tToDateTime (Native.atime);
 				else
 					throw new ArgumentException ("Atime is not set");
 			}
@@ -210,7 +225,7 @@ namespace Gnome.Vfs {
 		public System.DateTime Mtime {
 			get {
 				if ((ValidFields & FileInfoFields.Mtime) != 0)
-					return GLib.Marshaller.time_tToDateTime (info.mtime);
+					return GLib.Marshaller.time_tToDateTime (Native.mtime);
 				else
 					throw new ArgumentException ("Mtime is not set");
 			}
@@ -219,7 +234,7 @@ namespace Gnome.Vfs {
 		public System.DateTime Ctime  {
 			get {
 				if ((ValidFields & FileInfoFields.Ctime) != 0)
-					return GLib.Marshaller.time_tToDateTime (info.ctime);
+					return GLib.Marshaller.time_tToDateTime (Native.ctime);
 				else
 					throw new ArgumentException ("Ctime is not set");
 			}
@@ -227,6 +242,7 @@ namespace Gnome.Vfs {
 		
 		public string SymlinkName {
 			get {
+				FileInfoNative info = Native;
 				if ((ValidFields & FileInfoFields.SymlinkName) != 0 &&
 				    info.symlink_name != IntPtr.Zero)
 					return GLib.Marshaller.Utf8PtrToString (info.symlink_name);
@@ -237,6 +253,7 @@ namespace Gnome.Vfs {
 		
 		public string MimeType {
 			get {
+				FileInfoNative info = Native;
 				if ((ValidFields & FileInfoFields.MimeType) != 0 &&
 				    info.mime_type != IntPtr.Zero)
 					return GLib.Marshaller.Utf8PtrToString (info.mime_type);
@@ -280,8 +297,17 @@ namespace Gnome.Vfs {
 			}
 		}
 
+		[DllImport ("gnomevfs-2")]
+		private static extern void gnome_vfs_file_info_clear (IntPtr info);
+		
+		public void Clear ()
+		{
+			gnome_vfs_file_info_clear (Handle);
+		}
+
 		public override String ToString ()
 		{
+			FileInfoNative info = Native;
 			string result = "Name        = " + Name + "\n" +
 					"ValidFields = " + info.valid_fields + "\n";
 			if ((ValidFields & FileInfoFields.Type) != 0)
@@ -291,7 +317,7 @@ namespace Gnome.Vfs {
 			if ((ValidFields & FileInfoFields.Flags) != 0) {
 				result += "Flags       = ";
 				bool flag = false;
-				if ((Flags & FileFlags.None) != 0) {
+				if (Flags == FileFlags.None) {
 					result += "None";
 					flag = true;
 				}

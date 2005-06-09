@@ -47,11 +47,11 @@
 		}
 
 		[DllImport("gnomevfs-2")]
-		static extern Result gnome_vfs_set_file_info_uri (IntPtr raw, ref FileInfo.FileInfoNative info, SetFileInfoMask mask);
+		static extern Result gnome_vfs_set_file_info_uri (IntPtr raw, IntPtr info, SetFileInfoMask mask);
 
 		public Result SetFileInfo (FileInfo info, SetFileInfoMask mask)
 		{
-			return gnome_vfs_set_file_info_uri (Handle, ref info.info, mask);
+			return gnome_vfs_set_file_info_uri (Handle, info.Handle, mask);
 		}
 
 		[DllImport("gnomevfs-2")]

@@ -147,6 +147,8 @@ namespace GLib {
 					ret = Marshaller.Utf8PtrToString (data);
 				else if (element_type == typeof (FilenameString))
 					ret = Marshaller.FilenamePtrToString (data);
+				else if (element_type == typeof (IntPtr))
+					ret = data;
 				else if (element_type.IsSubclassOf (typeof (GLib.Object)))
 					ret = GLib.Object.GetObject (data, false);
 				else if (element_type == typeof (int))

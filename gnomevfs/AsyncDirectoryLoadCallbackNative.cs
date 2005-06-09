@@ -29,10 +29,11 @@ namespace Gnome.Vfs {
 
 		public void NativeCallback (IntPtr handle, Result result, IntPtr list, uint entries_read, IntPtr data)
 		{
-			GLib.List infos = new GLib.List (list, typeof (FileInfo.FileInfoNative));
+			GLib.List infos = new GLib.List (list, typeof (IntPtr));
 			FileInfo[] entries = new FileInfo [infos.Count];
-			for (int i = 0; i < infos.Count; i++)
-				entries[i] = new FileInfo ((FileInfo.FileInfoNative) infos [i]);
+			int i = 0;
+			foreach (IntPtr info in infos) 
+				entries[i++] = new FileInfo (info);
 			
 			_managed (result, entries, entries_read);			
 		}

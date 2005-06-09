@@ -44,20 +44,18 @@ namespace Gnome.Vfs {
 		[DllImport ("gnomevfs-2")]
 		private static extern Result gnome_vfs_directory_list_load (out IntPtr list, string uri, FileInfoOptions options);
 
-		[DllImport ("gnomevfs-2")]
-		private static extern void gnome_vfs_file_info_list_free (IntPtr list);
-
 		public static FileInfo[] GetEntries (string text_uri, FileInfoOptions options)
 		{
 			IntPtr raw_ret;
 			Result result = gnome_vfs_directory_list_load (out raw_ret, text_uri, options);
 			Vfs.ThrowException (text_uri, result);
 			
-			GLib.List list = new GLib.List (raw_ret, typeof (FileInfo.FileInfoNative));
+			GLib.List list = new GLib.List (raw_ret, typeof (IntPtr));
+			list.Managed = true;
 			FileInfo[] entries = new FileInfo [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				entries[i] = new FileInfo ((FileInfo.FileInfoNative) list [i]);
-			gnome_vfs_file_info_list_free (raw_ret);
+			int i = 0;
+			foreach (IntPtr info in list)
+				entries[i++] = new FileInfo (info);
 			
 			return entries;
 		}

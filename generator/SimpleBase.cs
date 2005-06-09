@@ -35,7 +35,7 @@ namespace GtkSharp.Generation {
 			this.ctype = ctype;
 			this.type = toks[toks.Length - 1];
 			if (toks.Length > 2)
-				this.ns = String.Join (".", toks, 0, toks.Length - 2);
+				this.ns = String.Join (".", toks, 0, toks.Length - 1);
 			else if (toks.Length == 2)
 				this.ns = toks[0];
 		}
