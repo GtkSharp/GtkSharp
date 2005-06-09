@@ -42,6 +42,8 @@ namespace GLib {
 
 		public static string FilenamePtrToString (IntPtr ptr) 
 		{
+			if (ptr == IntPtr.Zero) return null;
+			
 			IntPtr dummy, error;
 			IntPtr utf8 = g_filename_to_utf8 (ptr, -1, IntPtr.Zero, out dummy, out error);
 			if (error != IntPtr.Zero)
