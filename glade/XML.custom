@@ -320,7 +320,12 @@
 					widget = GetWidget (field.Name);
 
 				if (widget != null)
-					field.SetValue (target, widget, flags, null, null);
+					try {
+						field.SetValue (target, widget, flags, null, null);
+					} catch (Exception e) {
+						Console.WriteLine ("Unable to set value for field " + field.Name);
+						throw e;
+					}
 			}
 		}
 		
