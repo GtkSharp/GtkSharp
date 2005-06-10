@@ -867,7 +867,8 @@ sub addPropElem
 
 	$prop_elem->setAttribute('readable', "true") if ($mode =~ /READ/);
 	$prop_elem->setAttribute('writeable', "true") if ($mode =~ /WRIT/);
-	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONS/);
+	$prop_elem->setAttribute('construct', "true") if ($mode =~ /CONSTRUCT(?!_)/);
+	$prop_elem->setAttribute('construct-only', "true") if ($mode =~ /CONSTRUCT_ONLY/);
 }
 
 sub parseTypeToken
