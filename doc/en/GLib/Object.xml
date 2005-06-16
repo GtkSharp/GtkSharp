@@ -33,9 +33,9 @@
       <Docs>
         <summary>Disposes of the raw object.</summary>
         <remarks>Only override this if the Raw object should not be unreferenced when the object is garbage collected.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    
     <Member MemberName="Handle">
       <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
       <MemberType>Property</MemberType>
@@ -80,11 +80,12 @@
 	  the role of this property.
         </remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Can cause instability due to garbage collection of GLib.Objects.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="GetObject">
       <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o, bool owned_ref);" />
       <MemberType>Method</MemberType>
@@ -103,7 +104,6 @@
         <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return GObject references.</remarks>
       </Docs>
     </Member>
-    
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -170,11 +170,12 @@
 </para>
         </remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="TypeName">
       <MemberSignature Language="C#" Value="protected string TypeName { get; };" />
       <MemberType>Property</MemberType>
@@ -198,11 +199,12 @@
         <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="AfterSignals">
       <MemberSignature Language="C#" Value="protected System.Collections.Hashtable AfterSignals { get; };" />
       <MemberType>Property</MemberType>
@@ -214,11 +216,12 @@
         <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="BeforeHandlers">
       <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList BeforeHandlers { get; };" />
       <MemberType>Property</MemberType>
@@ -230,11 +233,12 @@
         <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="AfterHandlers">
       <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList AfterHandlers { get; };" />
       <MemberType>Property</MemberType>
@@ -246,11 +250,12 @@
         <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
         <remarks>To be added</remarks>
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by GLib.Signal marshaling mechanism.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="RefCount">
       <MemberSignature Language="C#" Value="protected int RefCount { get; };" />
       <MemberType>Property</MemberType>
@@ -279,7 +284,6 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    
     <Member MemberName="g_signal_chain_from_overridden">
       <MemberSignature Language="C#" Value="protected static void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);" />
       <MemberType>Method</MemberType>
@@ -395,6 +399,7 @@ This method is called by the generated classes by the Gtk# framework.
         <param name="property">the property to watch (the underlying GObject property name, not the managed wrapper property)</param>
         <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when <paramref name="property" /> changes</param>
         <remarks>This connects to the GObject "notify" signal with a detail argument of <paramref name="property" />, to receive notifications when that property changes.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="AddNotification">
@@ -410,6 +415,7 @@ This method is called by the generated classes by the Gtk# framework.
         <summary>Request property-change notifications for all GObject properties</summary>
         <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when a GObject property changes</param>
         <remarks>This connects to the GObject "notify" signal with no detail argument, to receive notifications when any property changes.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="RemoveNotification">
@@ -427,6 +433,7 @@ This method is called by the generated classes by the Gtk# framework.
         <param name="property">the property</param>
         <param name="handler">the <see cref="T:GLib.NotifyHandler" /></param>
         <remarks>This disconnects from notifications for <paramref name="property" />.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="RemoveNotification">
@@ -442,6 +449,7 @@ This method is called by the generated classes by the Gtk# framework.
         <summary>Cancels property-change notifications</summary>
         <param name="handler">the <see cref="T:GLib.NotifyHandler" /></param>
         <remarks>This disconnects from generic property change notifications. (This only affects notifications created with the corresponding generic version of <see cref="M:GLib.Object.AddNotification" />. It does not remove notifications for specific properties.)</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="PersistentData">
@@ -454,6 +462,7 @@ This method is called by the generated classes by the Gtk# framework.
         <summary>Data hash to persistently store managed objects.</summary>
         <value>a <see cref="T:System.Collections.Hashtable" /></value>
         <remarks>This data hash is persistent until the native object is destroyed and can therefore outlast a GLib.Object wrapper class.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
   </Members>
