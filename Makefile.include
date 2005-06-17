@@ -28,7 +28,7 @@ $(API): $(METADATA) $(RAW_API) $(SYMBOLS) $(top_builddir)/parser/gapi-fixup.exe
 build_customs = $(addprefix $(srcdir)/, $(customs))
 api_includes = $(addprefix -I:, $(INCLUDE_API))
 
-generated-stamp: $(API) $(top_builddir)/generator/gapi_codegen.exe $(build_customs)
+generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.exe $(build_customs)
 	rm -f generated/* &&	\
 	$(RUNTIME) $(top_builddir)/generator/gapi_codegen.exe --generate $(API) \
 	$(api_includes)	\

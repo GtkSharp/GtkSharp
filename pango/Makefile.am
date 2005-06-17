@@ -31,6 +31,7 @@ sources =			\
 	Units.cs
 
 customs =			\
+	Analysis.custom		\
 	AttrIterator.custom	\
 	Context.custom		\
 	Coverage.custom		\
