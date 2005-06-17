@@ -2,11 +2,12 @@
 # Run this to set configure.in up for an API version.
 
 GTK_SHARP_VERSION=2.5.5.99
+ASSEMBLY_VERSION=2.6.0.0
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-sed -e "s/@GTK_SHARP_VERSION@/$GTK_SHARP_VERSION/" -e 's/@GTK_REQUIRED_VERSION@/2.6.0/' -e 's/@VERSIONCSDEFINES@/-define:GTK_SHARP_2_6/' -e 's/@VERSIONCFLAGS@/-DGTK_SHARP_2_6/' $srcdir/configure.in.in > $srcdir/configure.in
+sed -e "s/@GTK_SHARP_VERSION@/$GTK_SHARP_VERSION/" -e 's/@GTK_REQUIRED_VERSION@/2.6.0/' -e 's/@VERSIONCSDEFINES@/-define:GTK_SHARP_2_6/' -e 's/@VERSIONCFLAGS@/-DGTK_SHARP_2_6/' -e "s/@ASSEMBLY_VERSION@/$ASSEMBLY_VERSION/" $srcdir/configure.in.in > $srcdir/configure.in
 
 ln -f $srcdir/pango/pango-api-2.6.raw $srcdir/pango/pango-api.raw
 ln -f $srcdir/atk/atk-api-2.6.raw $srcdir/atk/atk-api.raw
