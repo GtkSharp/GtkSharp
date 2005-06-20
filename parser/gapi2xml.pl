@@ -503,7 +503,7 @@ sub addFieldElems
 		}
 		next if ($field !~ /\S/);
 		$field =~ s/\s+(\*+)/\1 /g;
-		$field =~ s/(\w+)\s+const /const \1 /g;
+		$field =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$field =~ s/const /const\-/g;
 		$field =~ s/struct /struct\-/g;
 		$field =~ s/.*\*\///g;
@@ -774,7 +774,7 @@ sub addParamsElem
 	foreach $parm (@params) {
 		$parm_num++;
 		$parm =~ s/\s+(\*+)/\1 /g;
-		$parm =~ s/(\w+)\s+const /const \1 /g;
+		$parm =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$parm =~ s/(\*+)\s*const\s+/\1 /g;
 		$parm =~ s/const\s+/const-/g;
 		$parm =~ s/unsigned\s+/unsigned-/g;
