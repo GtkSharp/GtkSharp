@@ -40,6 +40,11 @@ namespace GtkSharp.Generation {
 			return "GLib.Marshaller.Utf8PtrToString (" + var + ")";
 		}
 
+		public override string ToNativeReturn (string var)
+		{
+			return "GLib.Marshaller.StringToPtrGStrdup (" + var + ")";
+		}
+
 		public string AllocNative (string managed_var)
 		{
 			return "GLib.Marshaller.StringToPtrGStrdup (" + managed_var + ")";

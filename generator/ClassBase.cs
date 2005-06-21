@@ -250,7 +250,7 @@ namespace GtkSharp.Generation {
 					{
 						oname = method.Name;
 						oprotection = method.Protection;
-						method.Name = Name + "." + method.Name;
+						method.Name = QualifiedName + "." + method.Name;
 						method.Protection = "";
 					}
 					method.Generate (gen_info, implementor);
