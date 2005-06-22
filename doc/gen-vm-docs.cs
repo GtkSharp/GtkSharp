@@ -31,7 +31,6 @@ namespace GtkSharp.Docs {
 
 		public static int Main (string[] args)
 		{
-			string api_filename = "";
 			XmlDocument api_doc = new XmlDocument ();
 
 			BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
@@ -51,27 +50,20 @@ namespace GtkSharp.Docs {
 
 					Hashtable sigs = new Hashtable ();
 
-					foreach (EventInfo ei in t.GetEvents (flags)) {
-						foreach (Attribute attr in ei.GetCustomAttributes (false)) {
-							if (attr.ToString () == "GLib.SignalAttribute") {
-								sigs [((GLib.SignalAttribute) attr).CName] = ei.Name;
-								break;
-							}
-						}
-					}
+					foreach (EventInfo ei in t.GetEvents (flags))
+						foreach (GLib.SignalAttribute attr in ei.GetCustomAttributes (typeof (GLib.SignalAttribute), false))
+							sigs [attr.CName] = ei.Name;
+					
 
 					if (sigs.Count == 0) continue;
 
 					Hashtable vms = new Hashtable ();
 
 					foreach (MethodInfo mi in t.GetMethods (flags)) {
-						foreach (Attribute attr in mi.GetCustomAttributes (false)) {
-							if (attr.ToString () == "GLib.DefaultSignalHandlerAttribute") {
-								string conn_name = ((GLib.DefaultSignalHandlerAttribute) attr).ConnectionMethod;
-								if (sigs.ContainsValue (conn_name.Substring (8)))
-									vms [mi.Name] = conn_name.Substring (8);
-								break;
-							}
+						foreach (GLib.DefaultSignalHandlerAttribute attr in mi.GetCustomAttributes (typeof (GLib.DefaultSignalHandlerAttribute), false)) {
+							string conn_name = attr.ConnectionMethod;
+							if (sigs.ContainsValue (conn_name.Substring (8)))
+								vms [mi.Name] = conn_name.Substring (8);
 						}
 					}
 
@@ -91,6 +83,7 @@ namespace GtkSharp.Docs {
 
 					XPathNavigator api_nav = api_doc.CreateNavigator ();
 
+					bool dirty = false;
 					foreach (string vm in vms.Keys) {
 
 						XPathNodeIterator iter = api_nav.Select ("/Type/Members/Member[@MemberName='" + vm + "']");
@@ -100,16 +93,18 @@ namespace GtkSharp.Docs {
 							XmlElement rem = elem ["Docs"] ["remarks"];
 							string summary = summ.InnerXml;
 							string remarks = rem.InnerXml;
-							if (summary == "To be added" && remarks == "To be added") {
+							if (summary == "To be added." && remarks == "To be added.") {
 								summ.InnerXml = "Default handler for the <see cref=\"M:" + t + "." + vms [vm] + "\" /> event.";
 								rem.InnerXml = "Override this method in a subclass to provide a default handler for the <see cref=\"M:" + t + "." + vms [vm] + "\" /> event.";
+								dirty = true;
 							} else
 								Console.WriteLine ("Member had docs:" + vm);
 						} else {
 							Console.WriteLine ("Member not found:" + vm);
 						}
 
-						api_doc.Save (filename);
+						if (dirty)
+							api_doc.Save (filename);
 					}
 				}
 			}
