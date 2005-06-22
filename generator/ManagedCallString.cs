@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 			for (int i = 0; i < parms.Count; i ++) {
 				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
-				result [i] = igen is StructGen ? "ref " : (p.PassAs == "" ? "" : p.PassAs + " ");
+				result [i] = p.PassAs == "" ? "" : p.PassAs + " ";
 				result [i] += ((bool)special[i]) ? "my" + p.Name : igen.FromNative (p.Name);
 			}
 

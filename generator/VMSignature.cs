@@ -62,8 +62,6 @@ namespace GtkSharp.Generation {
 
 			foreach (Parameter p in parms) {
 				result [i] = p.PassAs != "" ? p.PassAs + " " : "";
-				if (p.Generatable is StructGen)
-					result [i] += "ref ";
 				result [i++] += p.CSType + " " + p.Name;
 			}
 
