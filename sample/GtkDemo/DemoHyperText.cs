@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections;
 using Gtk;
 
 namespace GtkDemo
@@ -40,6 +41,8 @@ namespace GtkDemo
 			ShowAll ();
 		}
 
+		Hashtable tag_pages = new Hashtable ();
+
 		// Inserts a piece of text into the buffer, giving it the usual
 		// appearance of a hyperlink in a web browser: blue and underlined.
 		// Additionally, attaches some data on the tag, to make it recognizable
@@ -49,7 +52,7 @@ namespace GtkDemo
 			TextTag tag = new TextTag (null);
 			tag.Foreground = "blue";
 			tag.Underline = Pango.Underline.Single;
-			tag.PersistentData.Add ("page", page);
+			tag_pages [tag] = page;
 			buffer.TagTable.Add (tag);
 			buffer.InsertWithTags (ref iter, text, tag);
 		}
@@ -97,7 +100,7 @@ namespace GtkDemo
 		void FollowIfLink (TextView view, TextIter iter)
 		{
 			foreach (TextTag tag in iter.Tags) {
-				object page = tag.PersistentData ["page"];
+				object page = tag_pages [tag];
 				if (page is int)
 					ShowPage (view.Buffer, (int)page);
 			}
@@ -112,7 +115,7 @@ namespace GtkDemo
 			TextIter iter = view.GetIterAtLocation (x, y);
 
 			foreach (TextTag tag in iter.Tags) {
-				if (tag.PersistentData ["page"] is int) {
+				if (tag_pages [tag] is int) {
 					hovering = true;
 					break;
 				}
