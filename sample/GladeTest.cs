@@ -58,6 +58,11 @@ namespace GladeSamples {
 		{
 			Console.WriteLine ("Button 2 entered");
 		}
+
+		public void OnQuitActivated (object o, EventArgs args)
+		{
+			Application.Quit ();
+		}
 	}
 }
 
