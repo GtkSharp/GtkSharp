@@ -27,7 +27,6 @@ namespace GConf
 	{
 		IntPtr Raw = IntPtr.Zero;
 		Hashtable dirs = new Hashtable ();
-		Hashtable callbacks = new Hashtable ();
 
 		[DllImport("gconf-2")]
 		static extern IntPtr gconf_client_get_default ();
@@ -78,44 +77,70 @@ namespace GConf
 		[DllImport("gconf-2")]
 		static extern uint gconf_client_add_dir (IntPtr client, string dir, int preload, out IntPtr err);
 
-		void AddDir (string dir)
+		DirectoryConnections GetConnections (string dir)
 		{
-			IntPtr err;
-			
 			if (dirs.Contains (dir))
-				return;
+				return dirs [dir] as DirectoryConnections;
 
-			dirs.Add (dir, 1);
+			IntPtr err;
 			gconf_client_add_dir (Raw, dir, 0, out err);
 			if (err != IntPtr.Zero)
 				throw new GLib.GException (err);
+
+			DirectoryConnections result = new DirectoryConnections (this, dir);
+			dirs.Add (dir, result);
+			return result;
 		}
 		
-		[DllImport("gconf-2")]
-		static extern uint gconf_client_notify_add (IntPtr client, string dir, NotifyFuncNative func, IntPtr user_data, IntPtr destroy_notify, out IntPtr err);
+		class DirectoryConnections {
+
+			string path;
+			IntPtr handle;
+			Hashtable connections = new Hashtable ();
+
+			public DirectoryConnections (Client client, string dir)
+			{
+				handle = client.Raw;
+				path = dir;
+			}
+
+			[DllImport("gconf-2")]
+			static extern uint gconf_client_notify_add (IntPtr client, string dir, NotifyFuncNative func, IntPtr user_data, IntPtr destroy_notify, out IntPtr err);
 		
+			public void Add (NotifyEventHandler notify)
+			{
+				IntPtr error;
+				uint id = gconf_client_notify_add (handle, path, NotifyWrapper.Wrap (notify), IntPtr.Zero, IntPtr.Zero, out error);
+				if (error != IntPtr.Zero)
+					throw new GLib.GException (error);
+
+				connections [id] = notify;
+			}
+
+			[DllImport("gconf-2")]
+			static extern void gconf_client_notify_remove (IntPtr client, uint cnxn);
+
+			public void Remove (NotifyEventHandler notify)
+			{
+				ArrayList removes = new ArrayList ();
+				foreach (uint id in connections.Keys)
+					if (connections [id] == notify)
+						removes.Add (id);
+				foreach (uint id in removes) {
+					gconf_client_notify_remove (handle, id);
+					connections.Remove (id);
+				}
+			}
+		}
+
 		public void AddNotify (string dir, NotifyEventHandler notify)
 		{
-			IntPtr err;
-
-			AddDir (dir);
-			uint cnxn = gconf_client_notify_add (Raw, dir, NotifyWrapper.Wrap (notify), IntPtr.Zero, IntPtr.Zero, out err);
-			if (err != IntPtr.Zero)
-				throw new GLib.GException (err);
-			callbacks.Add (notify, cnxn);
+			GetConnections (dir).Add (notify);
 		}
-
-		[DllImport("gconf-2")]
-		static extern void gconf_client_notify_remove (IntPtr client, uint cnxn);
 
 		public void RemoveNotify (string dir, NotifyEventHandler notify)
 		{
-			if (!callbacks.Contains (notify))
-				return;
-			
-			uint cnxn = (uint) callbacks[notify];
-			gconf_client_notify_remove (Raw, cnxn);
-			callbacks.Remove (notify);
+			GetConnections (dir).Remove (notify);
 		}
 
 		[DllImport("gconf-2")]
