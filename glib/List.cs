@@ -91,17 +91,13 @@ namespace GLib {
 			return g_list_nth_data (Handle, n);
 		}
 
+		public List (IntPtr raw) : this (raw, null) {}
 
-		public List (IntPtr raw) : base (raw)
-		{
-		}
+		public List (System.Type element_type) : this (IntPtr.Zero, element_type) {}
 
-		public List (System.Type element_type) : base (IntPtr.Zero, element_type)
-		{
-		}
+		public List (IntPtr raw, System.Type element_type) : this (raw, element_type, false, false) {}
 
-		public List (IntPtr raw, System.Type element_type) : base (raw, element_type)
-		{
-		}
+		public List (IntPtr raw, System.Type element_type, bool owned, bool elements_owned) : base (raw, element_type, owned, elements_owned) {}
+
 	}
 }

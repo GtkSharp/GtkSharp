@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -25,6 +25,7 @@ namespace GtkSharp.Generation {
 	using System.Xml;
 
 	public class ReturnValue  {
+
 		
 		private XmlElement elem;
 
@@ -51,9 +52,30 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		string ElementCType {
+			get {
+				if (elem != null && elem.HasAttribute ("element_type"))
+					return elem.GetAttribute ("element_type");
+
+				return String.Empty;
+			}
+		}
+
+		bool ElementsOwned {
+			get {
+				if (elem != null && elem.GetAttribute ("elements_owned") == "true")
+					return true;
+
+				return false;
+			}
+		}
+
 		string ElementType {
 			get {
-				return elem == null ? String.Empty : elem.GetAttribute("element_type");
+				if (ElementCType.Length > 0)
+					return SymbolTable.Table.GetCSType (ElementCType);
+
+				return String.Empty;
 			}
 		}
 
@@ -104,12 +126,13 @@ namespace GtkSharp.Generation {
 		{
 			if (IGen == null)
 				return String.Empty;
-			if (Owned)
-				var += ", true";
-			else if (ElementType != String.Empty) {
+
+			if (ElementType != String.Empty) {
 				string type_str = "typeof (" + ElementType + ")";
-				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + type_str), type_str);
-			}
+				string args = type_str + ", " + (Owned ? "true" : "false") + ", " + (ElementsOwned ? "true" : "false");
+				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + args), type_str);
+			} else if (Owned)
+				var += ", true";
 			return IGen.FromNativeReturn (var);
 		}
 			

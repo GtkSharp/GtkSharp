@@ -31,6 +31,7 @@ namespace GLib {
 		private IntPtr list_ptr = IntPtr.Zero;
 		private int length = -1;
 		private bool managed = false;
+		private bool elements_owned = false;
 		protected System.Type element_type = null;
 
                 abstract internal IntPtr NthData (uint index);
@@ -41,19 +42,12 @@ namespace GLib {
 		abstract internal IntPtr Append (IntPtr current, IntPtr raw);
 		abstract internal IntPtr Prepend (IntPtr current, IntPtr raw);
 
-		private ListBase ()
-		{
-		}
-
-		internal ListBase (IntPtr list, System.Type element_type)
+		internal ListBase (IntPtr list, System.Type element_type, bool owned, bool elements_owned)
 		{
 			list_ptr = list;
 			this.element_type = element_type;
-		}
-		
-		internal ListBase (IntPtr list)
-		{
-			list_ptr = list;
+			managed = owned;
+			this.elements_owned = elements_owned;
 		}
 		
 		~ListBase ()
@@ -61,6 +55,7 @@ namespace GLib {
 			Dispose (false);
 		}
 		
+		[Obsolete ("Replaced by owned parameter on ctor.")]
 		public bool Managed {
 			set { managed = value; }
 		}
@@ -68,18 +63,6 @@ namespace GLib {
 		public IntPtr Handle {
 			get {
 				return list_ptr;
-			}
-		}
-
-		internal IntPtr Raw {
-			get {
-				return list_ptr;
-			}
-			set {
-				if (managed && list_ptr != IntPtr.Zero)
-					FreeList ();
-
-				list_ptr = value;
 			}
 		}
 
@@ -172,14 +155,15 @@ namespace GLib {
 
 		public void Empty ()
 		{
-			for (uint i = 0; i < Count; i++)
-			{
-				if (typeof (GLib.Object).IsAssignableFrom (element_type))
-					g_object_unref (NthData (i));
-				else
-					g_free (NthData (i));
-			}
-			FreeList ();
+			if (elements_owned)
+				for (uint i = 0; i < Count; i++)
+					if (typeof (GLib.Object).IsAssignableFrom (element_type))
+						g_object_unref (NthData (i));
+					else
+						g_free (NthData (i));
+
+			if (managed)
+				FreeList ();
 		}
 
 		private class ListEnumerator : IEnumerator
@@ -231,10 +215,7 @@ namespace GLib {
 
 		protected virtual void Dispose (bool disposing)
 		{
-			if (!managed)
-				return;
-
-			FreeList ();
+			Empty ();
 		}
 		
 		void FreeList ()
