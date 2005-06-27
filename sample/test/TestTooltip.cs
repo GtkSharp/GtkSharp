@@ -19,11 +19,9 @@ namespace WidgetViewer {
 		public Gtk.Window Create ()
 		{
 			window = new Window ("Tooltips");
-			window.Width = 200;
+			window.DefaultSize = new Gdk.Size (200, 150);
 			tooltips = new Tooltips ();
 
-			window.Data ("tooltips", tooltip);
-			
 			return window;
 		}
 
