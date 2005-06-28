@@ -18,6 +18,7 @@ sources =			\
 	TestFlipping.cs 	\
 	TestSizeGroup.cs	\
 	TestCombo.cs 		\
+	TestComboBox.cs		\
 	WidgetViewer.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources))

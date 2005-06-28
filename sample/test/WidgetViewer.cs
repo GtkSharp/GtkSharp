@@ -41,6 +41,7 @@ namespace WidgetViewer {
 			AddButton ("Check Buttons", new EventHandler (Check_Buttons));
 			AddButton ("Color Selection", new EventHandler (Color_Selection));
 			AddButton ("Combo Box", new EventHandler (Combo_Box));
+			AddButton ("New Combo Box", new EventHandler (New_Combo_Box));
 			AddButton ("Dialog", new EventHandler (Dialog));
 			AddButton ("File Selection", new EventHandler (File_Selection));
 			AddButton ("Menus", new EventHandler (Menus));
@@ -149,6 +150,11 @@ namespace WidgetViewer {
 		static void Size_Groups (object o, EventArgs args)
 		{
 			AddWindow (TestSizeGroup.Create ());
+		}
+
+		static void New_Combo_Box (object o, EventArgs args)
+		{
+			AddWindow (TestComboBox.Create ());
 		}
 
 		static void Combo_Box (object o, EventArgs args)
