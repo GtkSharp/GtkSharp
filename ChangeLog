@@ -1,3 +1,18 @@
+2005-06-30  Dan Winship  <danw@novell.com>
+
+	* generator/Parameters.cs (AllowComplexRefs): new property for
+	whether or not to allow "complex" ref/out args.
+	(Validate): update for that
+
+	* generator/Signal.cs: set AllowComplexRefs false on the params.
+	(Validate): fix the messages
+	(GenCallback, GenEventHandler): properly handle ref/out args, by
+	manually pointerifying them (except for boxed args, which are
+	already pointers).
+
+	* glib/Marshaller.cs (StructureToPtrAlloc): Rename from
+	PtrToStructureAlloc, since it wraps Marshal.StructureToPtr.
+
 2005-06-28  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/ComboBox.custom : add ctor (string[]).

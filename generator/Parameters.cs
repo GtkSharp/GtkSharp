@@ -310,6 +310,12 @@ namespace GtkSharp.Generation {
 			set { is_static = value; }
 		}
 
+		bool allow_complex_refs;
+		public bool AllowComplexRefs {
+			get { return allow_complex_refs; }
+			set { allow_complex_refs = value; }
+		}
+
 		bool cleared = false;
 		void Clear ()
 		{
@@ -342,6 +348,14 @@ namespace GtkSharp.Generation {
 					Console.Write("Name: " + p.Name + " Type: " + p.CType + " ");
 					Clear ();
 					return false;
+				}
+
+				if (p.PassAs != "" && !allow_complex_refs) {
+					if (!(p.Generatable is BoxedGen) &&
+					    !(p.Generatable is SimpleGen)) {
+						Console.Write("Complex " + p.PassAs + " param " + p.Name + " ");
+						return false;
+					}
 				}
 
 				if (p.Generatable is CallbackGen) {

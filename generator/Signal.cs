@@ -41,6 +41,7 @@ namespace GtkSharp.Generation {
 			name = elem.GetAttribute ("name");
 			retval = new ReturnValue (elem ["return-type"]);
 			parms = new Parameters (elem["parameters"]);
+			parms.AllowComplexRefs = false;
 			this.container_type = container_type;
 		}
 
@@ -56,16 +57,16 @@ namespace GtkSharp.Generation {
 		public bool Validate ()
 		{
 			if (Name == "") {
-				Console.Write ("bad signal " + Name);
+				Console.Write ("Nameless signal ");
 				Statistics.ThrottledCount++;
 				return false;
 			}
 			
-			if (!parms.Validate ())
+			if (!parms.Validate () || !retval.Validate ()) {
+				Console.Write (" in signal " + Name + " ");
+				Statistics.ThrottledCount++;
 				return false;
-
-			if (!retval.Validate ())
-				return false;
+			}
 
 			return true;
 		}
@@ -208,16 +209,18 @@ namespace GtkSharp.Generation {
 			for (int idx = 1; idx < parms.Count; idx++) {
 				Parameter p = parms [idx];
 				IGeneratable igen = p.Generatable;
-				if (p.PassAs == "out")
+				if (p.PassAs != "out") {
+					if (igen is ManualGen) {
+						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
+						sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
+						sw.WriteLine("\t\t\telse {");
+						sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+						sw.WriteLine("\t\t\t}");
+					} else
+						sw.WriteLine("\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+				}
+				if (p.PassAs != "")
 					finish += "\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
-				else if (igen is ManualGen) {
-					sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
-					sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
-					sw.WriteLine("\t\t\telse {");
-					sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
-					sw.WriteLine("\t\t\t}");
-				} else
-					sw.WriteLine("\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
 			}
 			sw.WriteLine("\t\t\t{0} handler = ({0}) sig.Handler;", EventHandlerQualifiedName);
 			sw.WriteLine("\t\t\thandler (GLib.Object.GetObject (arg0), args);");
@@ -299,13 +302,28 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tinst_and_params.Append (vals [0]);");
 			string cleanup = "";
 			for (int i = 1; i < parms.Count; i++) {
-				if (parms [i].PassAs == "out") {
-					sw.WriteLine ("\t\t\tvals [" + i + "] = GLib.Value.Empty;");
-					cleanup += "\t\t\t" + parms [i].Name + " = (" + parms [i].CSType + ") vals [" + i + "];\n";
-				} else if (parms [i].IsLength && parms [i - 1].IsString)
+				Parameter p = parms [i];
+				if (p.PassAs != "") {
+					if (SymbolTable.Table.IsBoxed (p.CType)) {
+						if (p.PassAs == "ref")
+							sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + ");");
+						else
+							sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value ((GLib.GType)typeof (" + p.CSType + "));");
+						cleanup += "\t\t\t" + p.Name + " = (" + p.CSType + ") vals [" + i + "];\n";
+					} else {
+						if (p.PassAs == "ref")
+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Marshaller.StructureToPtrAlloc ((" + p.CSType + ") " + p.Name + ");");
+						else
+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.CSType + ")));");
+
+						sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + "_ptr);");
+						cleanup += "\t\t\t" + p.Name + " = (" + p.CSType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.CSType + "));\n";
+						cleanup += "\t\t\tMarshal.FreeHGlobal (" + p.Name + "_ptr);\n";
+					}
+				} else if (p.IsLength && parms [i - 1].IsString)
 					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
 				else
-					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i].Name + ");");
+					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + ");");
 
 				sw.WriteLine ("\t\t\tinst_and_params.Append (vals [" + i + "]);");
 			}

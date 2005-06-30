@@ -274,7 +274,7 @@ namespace GLib {
 			return glibsharp_utf16_to_unichar ((ushort) c);
 		}
 
-		public static IntPtr PtrToStructureAlloc (object o)
+		public static IntPtr StructureToPtrAlloc (object o)
 		{
 			IntPtr result = Marshal.AllocHGlobal (Marshal.SizeOf (o));
 			Marshal.StructureToPtr (o, result, false);
