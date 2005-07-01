@@ -310,7 +310,7 @@ namespace GtkSharp.Generation {
 			set { is_static = value; }
 		}
 
-		bool allow_complex_refs;
+		bool allow_complex_refs = true;
 		public bool AllowComplexRefs {
 			get { return allow_complex_refs; }
 			set { allow_complex_refs = value; }
