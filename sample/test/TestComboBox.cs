@@ -53,7 +53,10 @@ namespace WidgetViewer {
 
 		static void OnComboActivated (object o, EventArgs args)
 		{
-			Console.WriteLine ((o as ComboBox).ActiveText);
+			ComboBox combo = o as ComboBox;
+			TreeIter iter;
+			combo.GetActiveIter (out iter);
+			Console.WriteLine ((string)combo.Model.GetValue (iter, 0));
 		}
 	}
 }
