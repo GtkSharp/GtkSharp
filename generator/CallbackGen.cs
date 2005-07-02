@@ -55,16 +55,16 @@ namespace GtkSharp.Generation {
 			return NS + "Sharp." + Name + "Wrapper.GetManagedDelegate (" + var + ")";
 		}
 
-		public string GenWrapper (string ns, GenerationInfo gen_info)
+		public string GenWrapper (GenerationInfo gen_info)
 		{
 			string wrapper = Name + "Native";
-			string qualname = ns + "Sharp." + wrapper;
+			string qualname = MarshalType;
 
-			isig = new ImportSignature (parms, NS);
+			isig = new ImportSignature (parms);
 
 			StreamWriter sw = gen_info.OpenStream (qualname);
 
-			sw.WriteLine ("namespace " + ns + "Sharp {");
+			sw.WriteLine ("namespace " + NS + "Sharp {");
 			sw.WriteLine ();
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ();
@@ -160,7 +160,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("#endregion");
 			sw.WriteLine ("}");
 			sw.Close ();
-			return ns + "Sharp." + Name + "Wrapper";
+			return NS + "Sharp." + Name + "Wrapper";
 		}
 		
 		public override void Generate (GenerationInfo gen_info)
@@ -191,7 +191,7 @@ namespace GtkSharp.Generation {
 
 			sw.Close ();
 			
-			GenWrapper (NS, gen_info);
+			GenWrapper (gen_info);
 
 			Statistics.CBCount++;
 		}

@@ -39,7 +39,7 @@ namespace GtkSharp.Generation {
 			this.elem = elem;
 			retval = new ReturnValue (elem ["return-type"]);
 			parms = new Parameters (elem["parameters"]);
-			isig = new ImportSignature (parms, container_type.NS);
+			isig = new ImportSignature (parms);
 		}
 
 		public string CName {

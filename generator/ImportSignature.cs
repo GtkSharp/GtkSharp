@@ -28,12 +28,10 @@ namespace GtkSharp.Generation {
 	public class ImportSignature {
 
 		Parameters parameters;
-		string impl_ns;
 
-		public ImportSignature (Parameters parms, string impl_ns) 
+		public ImportSignature (Parameters parms) 
 		{
 			parameters = parms;
-			this.impl_ns = impl_ns;
 		}
 
 		public override string ToString ()
@@ -44,18 +42,13 @@ namespace GtkSharp.Generation {
 			string[] parms = new string [parameters.Count];
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
-				string m_type = p.MarshalType;
-				if (p.Generatable is CallbackGen) {
-					string[] toks = p.MarshalType.Split ('.');
-					m_type = impl_ns + "Sharp." + toks [toks.Length - 1];
-				}
 
 				parms [i] = "";
 				if (p.CType == "GError**")
 					parms [i] += "out ";
 				else if (p.PassAs != "")
 					parms [i] += p.PassAs + " ";
-				parms [i] += m_type + " " + p.Name;
+				parms [i] += p.MarshalType + " " + p.Name;
 			}
 
 			string import_sig = String.Join (", ", parms);

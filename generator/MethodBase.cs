@@ -47,7 +47,7 @@ namespace GtkSharp.Generation {
 		public MethodBody Body {
 			get {
 				if (body == null)
-					body = new MethodBody (parms, container_type.NS);
+					body = new MethodBody (parms);
 				return body;
 			}
 		}
@@ -62,7 +62,7 @@ namespace GtkSharp.Generation {
 		public ImportSignature ImportSignature {
 			get {
 				if (isig == null)
-					isig = new ImportSignature (parms, container_type.NS);
+					isig = new ImportSignature (parms);
 				return isig;
 			}
 		}

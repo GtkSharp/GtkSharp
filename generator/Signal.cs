@@ -340,7 +340,7 @@ namespace GtkSharp.Generation {
 
 		private void GenDefaultHandlerDelegate (StreamWriter sw, ClassBase implementor)
 		{
-			ImportSignature isig = new ImportSignature (parms, container_type.NS);
+			ImportSignature isig = new ImportSignature (parms);
 			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + isig.ToString () + ");\n");

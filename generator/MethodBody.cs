@@ -29,12 +29,10 @@ namespace GtkSharp.Generation {
 	public class MethodBody  {
 		
 		Parameters parameters;
-		private string impl_ns;
 
-		public MethodBody (Parameters parms, string impl_ns) {
-			
+		public MethodBody (Parameters parms) 
+		{
 			parameters = parms;
-			this.impl_ns = impl_ns;
 		}
 
 		private string CastFromInt (string type)
@@ -138,7 +136,7 @@ namespace GtkSharp.Generation {
 
 				if (gen is CallbackGen) {
 					CallbackGen cbgen = gen as CallbackGen;
-					string wrapper = cbgen.GenWrapper(impl_ns, gen_info);
+					string wrapper = cbgen.GenWrapper(gen_info);
 					switch (p.Scope) {
 					case "notified":
 						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper;", wrapper, name);
