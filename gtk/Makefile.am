@@ -90,12 +90,16 @@ customs = 				\
 	Table.custom			\
 	TargetEntry.custom		\
 	TargetList.custom		\
+	TargetPair.custom		\
+	TextAttributes.custom		\
+	TextAppearance.custom		\
 	TextBuffer.custom		\
 	TextChildAnchor.custom		\
 	TextIter.custom			\
 	TextTag.custom			\
 	TextView.custom			\
 	Toolbar.custom			\
+	TooltipsData.custom		\
 	TreeIter.custom			\
 	TreeModel.custom		\
 	TreeModelFilter.custom		\

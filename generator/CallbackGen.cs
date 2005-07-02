@@ -25,7 +25,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class CallbackGen : GenBase {
+	public class CallbackGen : GenBase, IAccessor {
 
 		private Parameters parms;
 		private Signature sig = null;
@@ -53,6 +53,13 @@ namespace GtkSharp.Generation {
 		public override string FromNative (string var)
 		{
 			return NS + "Sharp." + Name + "Wrapper.GetManagedDelegate (" + var + ")";
+		}
+
+		public void WriteAccessors (StreamWriter sw, string indent, string var)
+		{
+			sw.WriteLine (indent + "get {");
+			sw.WriteLine (indent + "\treturn " + FromNative (var) + ";");
+			sw.WriteLine (indent + "}");
 		}
 
 		public string GenWrapper (GenerationInfo gen_info)

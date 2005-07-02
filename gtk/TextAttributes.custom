@@ -1,8 +1,8 @@
-// Gdk.WindowAttr.custom - Gdk Window class customizations
+// Gtk.TextAttributes.custom - Gtk TextAttributes class customizations
 //
-// Author: Mike Kestner <mkestner@novell.com>
+// Authors:    Mike Kestner  <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2005 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -20,40 +20,34 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		public EventMask Mask {
-			get {
-				return (EventMask) EventMask;
-			}
-			set {
-				EventMask = (int) value;
-			}
-		}
 
-		[Obsolete ("Replaced by Visual property.")]
-		public Gdk.Visual visual {
+		[Obsolete ("Replaced by Font property.")]
+		public Pango.FontDescription font {
 			get { 
-				Gdk.Visual ret = (Gdk.Visual) GLib.Object.GetObject(_visual);
+				Pango.FontDescription ret = new Pango.FontDescription(_font);
+				if (ret == null) ret = new Pango.FontDescription(_font);
 				return ret;
 			}
-			set { _visual = value.Handle; }
+			set { _font = value.Handle; }
 		}
 
-		[Obsolete ("Replaced by Colormap property.")]
-		public Gdk.Colormap colormap {
+		[Obsolete ("Replaced by Tabs property.")]
+		public Pango.TabArray tabs {
 			get { 
-				Gdk.Colormap ret = (Gdk.Colormap) GLib.Object.GetObject(_colormap);
+				Pango.TabArray ret = new Pango.TabArray(_tabs);
+				if (ret == null) ret = new Pango.TabArray(_tabs);
 				return ret;
 			}
-			set { _colormap = value.Handle; }
+			set { _tabs = value.Handle; }
 		}
 
-		[Obsolete ("Replaced by Cursor property.")]
-		public Gdk.Cursor cursor {
+		[Obsolete ("Replaced by Language property.")]
+		public Pango.Language language {
 			get { 
-				Gdk.Cursor ret = new Gdk.Cursor(_cursor);
-				if (ret == null) ret = new Gdk.Cursor(_cursor);
+				Pango.Language ret = new Pango.Language(_language);
+				if (ret == null) ret = new Pango.Language(_language);
 				return ret;
 			}
-			set { _cursor = value.Handle; }
+			set { _language = value.Handle; }
 		}
 

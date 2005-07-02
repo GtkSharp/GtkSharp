@@ -27,7 +27,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class InterfaceGen : ClassBase {
+	public class InterfaceGen : ObjectBase {
 
 		ArrayList vms = new ArrayList ();
 		ArrayList members = new ArrayList ();

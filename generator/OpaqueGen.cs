@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 	using System.IO;
 	using System.Xml;
 
-	public class OpaqueGen : ClassBase {
+	public class OpaqueGen : HandleBase {
 
 		public OpaqueGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 	

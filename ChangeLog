@@ -1,5 +1,27 @@
 2005-07-02  Mike Kestner  <mkestner@novell.com>
 
+	* generator/CallbackGen.cs : implement new IAccessor iface so that
+	callback fields on structs can now be accessed.
+	* generator/ClassBase.cs : remove/abstract some methods incorrectly
+	located here.
+	* generator/ClassGen.cs : implement methods previously inherited from
+	ClassBase incorrectly.
+	* generator/HandleBase.cs : new base class for native ptr wrappers.
+	Implements new IAccessor interface and code moved from ClassBase.
+	* generator/IAccessor.cs : new iface to generate field/prop accessors.
+	* generator/InterfaceGen.cs : derive from new ObjectBase.
+	* generator/LPGen.cs : implement IAccessor.
+	* generator/LPUGen.cs : implement IAccessor.
+	* generator/ObjectBase.cs : new base class for Object/Iface types.
+	* generator/ObjectGen.cs : derive from new ObjectBase.
+	* generator/OpaqueGen.cs : derive from HandleBase.
+	* generator/StructField.cs : refactor Generate method using new
+	IAccessor interface.
+	* */*.custom : add obsolete impls for some existing c_cased struct
+	field accessors that are now StudlyNamed.
+
+2005-07-02  Mike Kestner  <mkestner@novell.com>
+
 	* generator/CallbackGen.cs : remove an old workaround that put
 	the native wrapper class into the implementor's *Sharp namespace.
 	Use new ImportSignature sig.

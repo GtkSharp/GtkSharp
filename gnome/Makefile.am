@@ -46,6 +46,7 @@ customs =					\
 	DruidPageEdge.custom			\
 	Font.custom				\
 	FontFamily.custom			\
+	GPFontEntry.custom			\
 	IconList.custom				\
 	IconTextItem.custom			\
 	PanelApplet.custom			\
@@ -54,7 +55,8 @@ customs =					\
 	PrintDialog.custom			\
 	PrintJob.custom				\
 	Program.custom				\
-	Scores.custom
+	Scores.custom				\
+	UIInfo.custom
 
 add_dist = gnome-sharp-2.0.pc.in
 

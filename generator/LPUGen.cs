@@ -22,8 +22,9 @@
 namespace GtkSharp.Generation {
 
 	using System;
+	using System.IO;
 
-	public class LPUGen : SimpleGen {
+	public class LPUGen : SimpleGen, IAccessor {
 		
 		public LPUGen (string ctype) : base (ctype, "ulong") {}
 
@@ -41,6 +42,16 @@ namespace GtkSharp.Generation {
 		public override string FromNative(string var)
 		{
 			return "(ulong) " + var;
+		}
+
+		public void WriteAccessors (StreamWriter sw, string indent, string var)
+		{
+			sw.WriteLine (indent + "get {");
+			sw.WriteLine (indent + "\treturn " + FromNative (var) + ";");
+			sw.WriteLine (indent + "}");
+			sw.WriteLine (indent + "set {");
+			sw.WriteLine (indent + "\t" + var + " = " + CallByName ("value") + ";");
+			sw.WriteLine (indent + "}");
 		}
 	}
 }

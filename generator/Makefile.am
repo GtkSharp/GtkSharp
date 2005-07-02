@@ -22,6 +22,8 @@ sources = 				\
 	FieldBase.cs			\
 	GenBase.cs			\
 	GenerationInfo.cs		\
+	HandleBase.cs			\
+	IAccessor.cs			\
 	IGeneratable.cs			\
 	IManualMarshaler.cs		\
 	ImportSignature.cs		\
@@ -35,6 +37,7 @@ sources = 				\
 	MethodBody.cs			\
 	Method.cs			\
 	ObjectField.cs			\
+	ObjectBase.cs			\
 	ObjectGen.cs			\
 	OpaqueGen.cs			\
 	Parameters.cs			\

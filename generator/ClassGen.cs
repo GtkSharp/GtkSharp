@@ -31,6 +31,33 @@ namespace GtkSharp.Generation {
 
 		public ClassGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 
+		public override string AssignToName {
+			get {
+				return String.Empty;
+			}
+		}
+
+		public override string MarshalType {
+			get {
+				return String.Empty;
+			}
+		}
+
+		public override string CallByName () 
+		{
+			return String.Empty;
+		}
+
+		public override string CallByName (string var) 
+		{
+			return String.Empty;
+		}
+
+		public override string FromNative (string var) 
+		{
+			return String.Empty;
+		}
+
 		public override void Generate (GenerationInfo gen_info)
 		{
 			gen_info.CurrentType = Name;

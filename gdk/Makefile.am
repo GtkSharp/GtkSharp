@@ -38,12 +38,16 @@ customs = 			\
 	DisplayManager.custom	\
 	DragContext.custom	\
 	Drawable.custom		\
+	EdgeTable.custom	\
+	GCValues.custom		\
 	Global.custom		\
 	Input.custom		\
 	Keymap.custom		\
+	PangoAttrStipple.custom \
 	Pixmap.custom		\
 	Pixbuf.custom		\
 	PixbufAnimation.custom	\
+	PixbufFrame.custom	\
 	PixbufLoader.custom	\
 	Pixdata.custom		\
 	Point.custom		\

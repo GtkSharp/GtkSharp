@@ -135,6 +135,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public abstract string AssignToName { get; }
+
+		public abstract string CallByName ();
+
 		protected bool IsNodeNameHandled (string name)
 		{
 			switch (name) {
@@ -152,31 +156,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override string MarshalType {
-			get {
-				return "IntPtr";
-			}
-		}
-
-		public override string CallByName (string name)
-		{
-			return name + " == null ? IntPtr.Zero : " + name + ".Handle";
-		}
-
-		public virtual string CallByName ()
-		{
-			return "Handle";
-		}
-
-		public virtual string AssignToName {
-			get { return "Raw"; }
-		}
-
-		public override string FromNative(string var)
-		{
-			return "GLib.Object.GetObject(" + var + ") as " + QualifiedName;
-		}
-		
 		protected void GenProperties (GenerationInfo gen_info)
 		{		
 			if (props.Count == 0)

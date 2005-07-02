@@ -28,7 +28,7 @@ namespace GtkSharp.Generation {
 	using System.Text;
 	using System.Xml;
 
-	public class ObjectGen : ClassBase  {
+	public class ObjectGen : ObjectBase  {
 
 		private ArrayList strings = new ArrayList();
 		private ArrayList vm_nodes = new ArrayList();

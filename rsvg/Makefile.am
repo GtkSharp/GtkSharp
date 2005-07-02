@@ -16,7 +16,8 @@ sources =			\
 
 customs = 			\
 	Handle.custom		\
-	Pixbuf.custom
+	Pixbuf.custom		\
+	State.custom
 
 add_dist = rsvg-sharp-2.0.pc.in
 
