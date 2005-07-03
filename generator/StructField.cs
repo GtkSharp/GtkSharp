@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public int ArrayLength {
+		int ArrayLength {
 			get {
 				if (!IsArray)
 					return 0;
@@ -96,19 +96,9 @@ namespace GtkSharp.Generation {
 		string StudlyName {
 			get {
 				string studly = base.Name;
-				if (studly != "")
-					return studly;
+				if (studly == "")
+					throw new Exception ("API file must be regenerated with a current version of the GAPI parser. It is incompatible with this version of the GAPI code generator.");
 
-				// FIXME: this is backward compatibility for API files
-				// output by older versions of the parser. It can go
-				// away at some point.
-				string name = CName;
-				string[] segs = name.Split('_');
-				foreach (string s in segs) {
-					if (s.Trim () == "")
-						continue;
-					studly += (s.Substring(0,1).ToUpper() + s.Substring(1));
-				}
 				return studly;
 			}
 		}
@@ -130,7 +120,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (indent + "{0} {1} {2};", Access, CSType, StudlyName);
 			} else if (IsBitfield) {
 				base.Generate (gen_info, indent);
-			} else if (table [CType] is IAccessor) {
+			} else if (gen is IAccessor) {
 				sw.WriteLine (indent + "private {0} {1};", gen.MarshalType, Name);
 
 				if (Access != "private") {
