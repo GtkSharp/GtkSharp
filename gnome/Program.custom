@@ -34,7 +34,7 @@ struct PropertyArg {
 
 [DllImport("gnomesharpglue-2")]
 static extern System.IntPtr
-gtksharp_gnome_program_init (string app_id, string app_version, ref ModuleInfo module, int argc, string[] argv, int nargs, PropertyArg[] args);
+gtksharp_gnome_program_init (string app_id, string app_version, IntPtr module, int argc, string[] argv, int nargs, PropertyArg[] args);
 
 public Program (string app_id, string app_version, ModuleInfo module, string[] argv, params object[] props) : base (IntPtr.Zero)
 {
@@ -68,7 +68,7 @@ public Program (string app_id, string app_version, ModuleInfo module, string[] a
 	/* FIXME: Is there a way to access this in .NET? */ 
 	new_argv[0] = app_id;
 	Array.Copy (argv, 0, new_argv, 1, argv.Length);
-	Raw = gtksharp_gnome_program_init (app_id, app_version, ref module, new_argv.Length, new_argv, nargs, args);
+	Raw = gtksharp_gnome_program_init (app_id, app_version, module.Handle, new_argv.Length, new_argv, nargs, args);
 
 	//
 	// Dynamically reset the signal handlers, because Gnome overwrites them
