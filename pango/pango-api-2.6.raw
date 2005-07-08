@@ -190,13 +190,6 @@
         <parameter type="gpointer" name="data" />
       </parameters>
     </callback>
-    <callback name="FcDecoderFindFunc" cname="PangoFcDecoderFindFunc">
-      <return-type type="PangoFcDecoder*" />
-      <parameters>
-        <parameter type="FcPattern*" name="pattern" />
-        <parameter type="gpointer" name="user_data" />
-      </parameters>
-    </callback>
     <callback name="FontsetForeachFunc" cname="PangoFontsetForeachFunc">
       <return-type type="gboolean" />
       <parameters>
@@ -274,124 +267,6 @@
         <parameters>
           <parameter type="const-PangoMatrix*" name="matrix" />
         </parameters>
-      </method>
-    </object>
-    <object name="FcDecoder" cname="PangoFcDecoder" parent="GObject">
-      <virtual_method name="GetCharset" cname="get_charset">
-        <return-type type="FcCharSet*" />
-        <parameters>
-          <parameter type="PangoFcDecoder*" name="decoder" />
-          <parameter type="PangoFcFont*" name="fcfont" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GetGlyph" cname="get_glyph">
-        <return-type type="PangoGlyph" />
-        <parameters>
-          <parameter type="PangoFcDecoder*" name="decoder" />
-          <parameter type="PangoFcFont*" name="fcfont" />
-          <parameter type="guint32" name="wc" />
-        </parameters>
-      </virtual_method>
-      <method name="GetCharset" cname="pango_fc_decoder_get_charset">
-        <return-type type="FcCharSet*" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="fcfont" />
-        </parameters>
-      </method>
-      <method name="GetGlyph" cname="pango_fc_decoder_get_glyph">
-        <return-type type="PangoGlyph" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="fcfont" />
-          <parameter type="guint32" name="wc" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="pango_fc_decoder_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-    </object>
-    <object name="FcFont" cname="PangoFcFont" parent="PangoFont">
-      <property name="Pattern" cname="pattern" type="gpointer" writeable="true" construct-only="true" />
-      <virtual_method name="LockFace" cname="lock_face">
-        <return-type type="FT_Face" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="UnlockFace" cname="unlock_face">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="HasChar" cname="has_char">
-        <return-type type="gboolean" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-          <parameter type="gunichar" name="wc" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GetGlyph" cname="get_glyph">
-        <return-type type="guint" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-          <parameter type="gunichar" name="wc" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="GetUnknownGlyph" cname="get_unknown_glyph">
-        <return-type type="PangoGlyph" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-          <parameter type="gunichar" name="wc" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="Shutdown" cname="shutdown">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoFcFont*" name="font" />
-        </parameters>
-      </virtual_method>
-      <method name="DescriptionFromPattern" cname="pango_fc_font_description_from_pattern" shared="true">
-        <return-type type="PangoFontDescription*" />
-        <parameters>
-          <parameter type="FcPattern*" name="pattern" />
-          <parameter type="gboolean" name="include_size" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="pango_fc_font_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <method name="LockFace" cname="pango_fc_font_lock_face">
-        <return-type type="FT_Face" />
-      </method>
-      <method name="UnlockFace" cname="pango_fc_font_unlock_face">
-        <return-type type="void" />
-      </method>
-    </object>
-    <object name="FcFontMap" cname="PangoFcFontMap" parent="PangoFontMap">
-      <virtual_method name="DefaultSubstitute" cname="default_substitute">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoFcFontMap*" name="fontmap" />
-          <parameter type="FcPattern*" name="pattern" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="NewFont" cname="new_font">
-        <return-type type="PangoFcFont*" />
-        <parameters>
-          <parameter type="PangoFcFontMap*" name="fontmap" />
-          <parameter type="FcPattern*" name="pattern" />
-        </parameters>
-      </virtual_method>
-      <method name="AddDecoderFindFunc" cname="pango_fc_font_map_add_decoder_find_func">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoFcDecoderFindFunc" name="findfunc" />
-          <parameter type="gpointer" name="user_data" />
-          <parameter type="GDestroyNotify" name="dnotify" />
-        </parameters>
-      </method>
-      <method name="GetType" cname="pango_fc_font_map_get_type" shared="true">
-        <return-type type="GType" />
       </method>
     </object>
     <object name="Font" cname="PangoFont" parent="GObject">
@@ -983,53 +858,6 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-PangoMatrix*" name="matrix" />
-        </parameters>
-      </method>
-    </object>
-    <object name="XftRenderer" cname="PangoXftRenderer" parent="PangoRenderer">
-      <field name="Display" cname="display" type="Display*" />
-      <field name="Screen" cname="screen" type="int" />
-      <field name="Draw" cname="draw" type="XftDraw*" />
-      <field name="Priv" cname="priv" type="PangoXftRendererPrivate*" />
-      <property name="Display" cname="display" type="gpointer" writeable="true" construct-only="true" />
-      <property name="Screen" cname="screen" type="gint" writeable="true" construct-only="true" />
-      <virtual_method name="CompositeTrapezoids" cname="composite_trapezoids">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoXftRenderer*" name="xftrenderer" />
-          <parameter type="PangoRenderPart" name="part" />
-          <parameter type="XTrapezoid*" name="trapezoids" />
-          <parameter type="int" name="n_trapezoids" />
-        </parameters>
-      </virtual_method>
-      <virtual_method name="CompositeGlyphs" cname="composite_glyphs">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoXftRenderer*" name="xftrenderer" />
-          <parameter type="XftFont*" name="xft_font" />
-          <parameter type="XftGlyphSpec*" name="glyphs" />
-          <parameter type="int" name="n_glyphs" />
-        </parameters>
-      </virtual_method>
-      <method name="GetType" cname="pango_xft_renderer_get_type" shared="true">
-        <return-type type="GType" />
-      </method>
-      <constructor cname="pango_xft_renderer_new">
-        <parameters>
-          <parameter type="Display*" name="display" />
-          <parameter type="int" name="screen" />
-        </parameters>
-      </constructor>
-      <method name="SetDefaultColor" cname="pango_xft_renderer_set_default_color">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoColor*" name="default_color" />
-        </parameters>
-      </method>
-      <method name="SetDraw" cname="pango_xft_renderer_set_draw">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="XftDraw*" name="draw" />
         </parameters>
       </method>
     </object>
@@ -2196,63 +2024,6 @@
         <return-type type="PangoDirection" />
         <parameters>
           <parameter type="gunichar" name="ch" />
-        </parameters>
-      </method>
-    </class>
-    <class name="Xft" cname="PangoXft_">
-      <method name="PictureRender" cname="pango_xft_picture_render" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="Display*" name="display" />
-          <parameter type="Picture" name="src_picture" />
-          <parameter type="Picture" name="dest_picture" />
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyphString*" name="glyphs" />
-          <parameter type="gint" name="x" />
-          <parameter type="gint" name="y" />
-        </parameters>
-      </method>
-      <method name="Render" cname="pango_xft_render" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="XftDraw*" name="draw" />
-          <parameter type="XftColor*" name="color" />
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyphString*" name="glyphs" />
-          <parameter type="gint" name="x" />
-          <parameter type="gint" name="y" />
-        </parameters>
-      </method>
-      <method name="RenderLayout" cname="pango_xft_render_layout" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="XftDraw*" name="draw" />
-          <parameter type="XftColor*" name="color" />
-          <parameter type="PangoLayout*" name="layout" />
-          <parameter type="int" name="x" />
-          <parameter type="int" name="y" />
-        </parameters>
-      </method>
-      <method name="RenderLayoutLine" cname="pango_xft_render_layout_line" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="XftDraw*" name="draw" />
-          <parameter type="XftColor*" name="color" />
-          <parameter type="PangoLayoutLine*" name="line" />
-          <parameter type="int" name="x" />
-          <parameter type="int" name="y" />
-        </parameters>
-      </method>
-      <method name="RenderTransformed" cname="pango_xft_render_transformed" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="XftDraw*" name="draw" />
-          <parameter type="XftColor*" name="color" />
-          <parameter type="PangoMatrix*" name="matrix" />
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyphString*" name="glyphs" />
-          <parameter type="int" name="x" />
-          <parameter type="int" name="y" />
         </parameters>
       </method>
     </class>
