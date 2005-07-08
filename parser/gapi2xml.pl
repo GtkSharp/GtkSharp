@@ -497,7 +497,7 @@ sub addFieldElems
 	my $access = $defaultaccess;
 
 	foreach $field (@fields) {
-		if ($field =~ m!^/\*< (public|private) >.*\*/(.*)$!) {
+		if ($field =~ m!/\*< (public|private) >.*\*/(.*)$!) {
 			$access = $1;
 			$field = $2;
 		}
