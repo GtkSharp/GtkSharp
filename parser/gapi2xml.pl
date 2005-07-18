@@ -73,7 +73,7 @@ while ($line = <STDIN>) {
 		$sdef = $line;
 		while ($line = <STDIN>) {
 			$sdef .= $line;
-			last if ($line =~ /^}/);
+			last if ($line =~ /^(deprecated)?}/);
 		}
 		$sdef =~ s!/\*.*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
@@ -127,7 +127,7 @@ while ($line = <STDIN>) {
 		$pedef = $line;
 		while ($line = <STDIN>) {
 			$pedef .= $line;
-			last if ($line =~ /^}/);
+			last if ($line =~ /^(deprecated)?}/);
 		}
 		$pedefs{lc($class)} = $pedef;
 	} elsif ($line =~ /^(\w+)_get_type\b/) {
@@ -149,7 +149,7 @@ while ($line = <STDIN>) {
 				$pedef =~ /^(\w+_get_type)/;
 				$enum_gtype{$class} = $1;
 			}
-			last if ($line =~ /^}/);
+			last if ($line =~ /^(deprecated)?}/);
 		}
 		$typefuncs{lc($class)} = $pedef;
 	} elsif ($line =~ /^G_DEFINE_TYPE_WITH_CODE\s*\(\s*(\w+)/) {

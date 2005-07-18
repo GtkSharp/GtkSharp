@@ -16,7 +16,6 @@ glue_includes = gnome.h,libgnomeprint/gnome-print.h,libgnomeprint/gnome-print-pa
 
 sources =					\
 	BonoboUIVerb.cs				\
-	IconData.cs				\
 	IconTheme.cs				\
 	Modules.cs				\
 	PanelAppletFactory.cs
