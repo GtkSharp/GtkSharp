@@ -41,7 +41,6 @@ namespace GtkSharp.Generation {
 			name = elem.GetAttribute ("name");
 			retval = new ReturnValue (elem ["return-type"]);
 			parms = new Parameters (elem["parameters"]);
-			parms.AllowComplexRefs = false;
 			this.container_type = container_type;
 		}
 
@@ -312,12 +311,12 @@ namespace GtkSharp.Generation {
 						cleanup += "\t\t\t" + p.Name + " = (" + p.CSType + ") vals [" + i + "];\n";
 					} else {
 						if (p.PassAs == "ref")
-							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Marshaller.StructureToPtrAlloc ((" + p.CSType + ") " + p.Name + ");");
+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Marshaller.StructureToPtrAlloc (" + p.Generatable.CallByName (p.Name) + ");");
 						else
-							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.CSType + ")));");
+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.MarshalType + ")));");
 
 						sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + "_ptr);");
-						cleanup += "\t\t\t" + p.Name + " = (" + p.CSType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.CSType + "));\n";
+						cleanup += "\t\t\t" + p.Name + " = " + p.Generatable.FromNative ("(" + p.MarshalType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.MarshalType + "))") + ";\n";
 						cleanup += "\t\t\tMarshal.FreeHGlobal (" + p.Name + "_ptr);\n";
 					}
 				} else if (p.IsLength && parms [i - 1].IsString)
