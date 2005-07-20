@@ -58,3 +58,11 @@
 		{
 			SelectFunction = func;
 		}
+
+		[DllImport("libgtk-win32-2.0-0.dll", EntryPoint="gtk_tree_selection_get_selected")]
+		static extern bool gtk_tree_selection_get_selected_without_model (IntPtr raw, IntPtr model, out Gtk.TreeIter iter);
+		
+		public bool GetSelected (out Gtk.TreeIter iter)
+		{
+			return gtk_tree_selection_get_selected_without_model (Handle, IntPtr.Zero, out iter);
+		}
