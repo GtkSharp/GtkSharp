@@ -10,6 +10,78 @@
     <summary>An object designed to filter the contents of a column or columns
 in a <see cref="T:Gtk.TreeModel" /> for display.</summary>
     <remarks />
+	<example>
+	  <code lang="C#">
+using System;
+using Gtk;
+
+public class MyWindow : Window
+{
+        TreeView view;
+        TreeModelFilter filter;
+        Entry search;
+
+        static void Main ()
+        {
+                Application.Init ();
+                new MyWindow ();
+                Application.Run ();
+        }
+
+        public MyWindow () : base ("MyWindow")
+        {
+                this.SetDefaultSize (400, 300);
+                this.DeleteEvent += new DeleteEventHandler (OnMyWindowDelete);
+
+                view = new TreeView ();
+                view.AppendColumn ("test", new CellRendererText (), "text", 0);
+
+                TreeStore store = new TreeStore (typeof (string));
+                string[] names = new string[] {"bob", "joe", "joseph", "frank"};
+                foreach (string name in names)
+                        store.AppendValues (name);
+                view.Model = store;
+
+                filter = new TreeModelFilter (store, null);
+                filter.VisibleFunc = SearchFilterFunc;
+
+                VBox vbox = new VBox (false, 6);
+                search = new Entry ();
+                search.Activated += OnSearch;
+                Label l = new Label ("Search:");
+                l.Xalign = 0.0f;
+                vbox.PackStart (l, false, true, 0);
+                vbox.PackStart (search, false, true, 0);
+                vbox.PackStart (view, true, true, 0);
+                this.Add (vbox);
+
+                this.ShowAll ();
+        }
+
+        bool SearchFilterFunc (TreeModel model, TreeIter iter)
+        {
+                // no search term, show all
+                if (search.Text.Trim ().Length &lt; 1)
+                        return true;
+
+                string t = (string) model.GetValue (iter, 0);
+                return t.StartsWith (search.Text.Trim ());
+        }
+
+        void OnSearch (object sender, EventArgs a)
+        {
+                view.Model = filter;
+                filter.Refilter ();
+        }
+
+        void OnMyWindowDelete (object sender, DeleteEventArgs a)
+        {
+                Application.Quit ();
+                a.RetVal = true;
+        }
+}
+	  </code>
+	</example>
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>
