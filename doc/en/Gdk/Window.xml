@@ -350,43 +350,44 @@
       </Docs>
     </Member>
     <Member MemberName="InvalidateMaybeRecurse">
-      <MemberSignature Language="C#" Value="public void InvalidateMaybeRecurse (Gdk.Region region, IntPtr user_data);" />
+      <MemberSignature Language="C#" Value="public void InvalidateMaybeRecurse (Gdk.Region region, Gdk.InvalidateMaybeRecurseChildFunc child_func);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="region" Type="Gdk.Region" />
-        <Parameter Name="user_data" Type="System.IntPtr" />
+        <Parameter Name="child_func" Type="Gdk.InvalidateMaybeRecurseChildFunc" />
       </Parameters>
       <Docs>
-        <summary>Adds <paramref name="region" /> to the update area for the 
-	  window. The update area is the region that needs to be 
-	  redrawn, or "dirty region." 
-	</summary>
         <param name="region">A <see cref="T:Gdk.Region" /></param>
-        <param name="user_data">A <see cref="T:IntPtr" /></param>
+        <param name="child_func">Function to use to decide if to recurse to a child. <see langword="null" /> means never recurse.</param>
+        <summary>Adds a region to the update area for a window and some of its children</summary>
         <remarks>
-          <p>function to use to decide if to recurse to a child,
-            %NULL means never recurse.
-	  </p>
-          <p>The call<see cref="M:Gdk.Window.ProcessUpdates" />
-	    sends one or more expose events to the
-	    window, which together cover the entire update area. An
-	    application would normally redraw the contents of the whole window
-	    in response to those expose events.</p>
-          <p>GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates" /> on 
-	    your behalf whenever your program returns to the main loop 
-	    and becomes idle, so normally there's no need to do that 
-	    manually, you just need to invalidate regions that you know 
-	    should be redrawn.</p>
-          <p>(TODO: See bugzilla.ximian.com bug # 66241, to which the following
-	    text pertains.)
-	    <i>The <paramref name="child_func" /> parameter controls whether the region of
-	      each child window that intersects <paramref name="region" /> will also be invalidated.
-	      Only children for which <paramref name="child_func" /> returns TRUE will have the area
-	      invalidated.</i></p>
-        </remarks>
+	    <p>
+		Adds <paramref name="region" /> to the update area for
+		the window. The update area is the region that needs
+		to be redrawn, or "dirty region." The call <see cref="M:Gdk.Window.ProcessUpdates" /> sends one or
+		more expose events to the window, which together cover
+		the entire update area. An application would normally
+		redraw the contents of the whole window in response to
+		those expose events.
+	    </p>
+	    <p>
+		GDK will call <see cref="M:Gdk.Window.ProcessAllUpdates" /> on your
+		behalf whenever your program returns to the main loop
+		and becomes idle, so normally there's no need to do
+		that manually, you just need to invalidate regions
+		that you know should be redrawn.
+	    </p>
+	    <p>
+		The <paramref name="child_func" /> parameter controls
+		whether the region of each child window that
+		intersects <paramref name="region" /> will also be
+		invalidated. Only children for which <paramref name="child_func" /> returns <see langword="true" />
+		will have the area invalidated.
+	    </p>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginMoveDrag">

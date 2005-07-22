@@ -507,16 +507,7 @@
           <parameter type="int" name="y0" />
           <parameter type="int" name="x1" />
           <parameter type="int" name="y1" />
-          <callback cname="callback">
-            <return-type type="void" />
-            <parameters>
-              <parameter type="void*" name="callback_data" />
-              <parameter type="int" name="y" />
-              <parameter type="int" name="start" />
-              <parameter type="ArtSVPRenderAAStep*" name="steps" />
-              <parameter type="int" name="n_steps" />
-            </parameters>
-          </callback>
+          <parameter type="RenderAaCallback" name="callback" />
           <parameter type="void*" name="callback_data" />
         </parameters>
       </method>
@@ -752,6 +743,16 @@
     <alias name="ArtU16" cname="art_u16" type="unsigned short" />
     <alias name="ArtU32" cname="art_u32" type="unsigned int" />
     <alias name="ArtU8" cname="art_u8" type="unsigned char" />
+    <callback name="RenderAaCallback" cname="RenderAaCallback">
+      <return-type type="void" />
+      <parameters>
+        <parameter type="void*" name="callback_data" />
+        <parameter type="int" name="y" />
+        <parameter type="int" name="start" />
+        <parameter type="ArtSVPRenderAAStep*" name="steps" />
+        <parameter type="int" name="n_steps" />
+      </parameters>
+    </callback>
     <class name="Affine" cname="ArtAffine_">
       <method name="Equal" cname="art_affine_equal" shared="true">
         <return-type type="int" />

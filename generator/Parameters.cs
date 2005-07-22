@@ -280,9 +280,9 @@ namespace GtkSharp.Generation {
 
 			if (HasCB || HideData) {
 				if (p.IsUserData && (idx == Count - 1))
-					return true;
-				if (p.IsUserData && (idx == Count - 2) &&
-				    this [idx + 1].IsDestroyNotify)
+                                        return true;
+				if (p.IsUserData && idx > 0 &&
+				    this [idx - 1].Generatable is CallbackGen)
 					return true;
 				if (p.IsDestroyNotify && (idx == Count - 1) &&
 				    this [idx - 1].IsUserData)

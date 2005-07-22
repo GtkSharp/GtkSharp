@@ -51,6 +51,48 @@
 
 2005-07-19  Dan Winship  <danw@novell.com>
 
+	* parser/gapi2xml.pl (addParamsElem): change the handling of
+	anonymous function pointer types in method signatures. Before, we
+	added a <callback> child to the <parameters> node, but the
+	generator just ignored it. Now we add the callback (with a made-up
+	name) to the toplevel node, and add an ordinary <param> node
+	referencing it to the <parameters> node. Also, if the last param
+	of the callback is a gpointer, rename it from "arg#" to "data" so
+	it will be treated correctly (as the user data passed from the
+	calling method). [Fixes #66241]
+
+	* art/art-api.raw: 
+	* gdk/gdk-api-2.4.raw: 
+	* gdk/gdk-api-2.6.raw: Regen
+
+	* generator/Parameters.cs (IsHidden): loosen the definition of
+	hideable user_data; it doesn't have to occur at the end of the
+	parameter list, as long as there's a callback arg before it.
+
+	* generator/MethodBody.cs (GetCallString): Use Parameters.IsHidden
+	to decide whether or not to squash user_data params, rather than
+	trying to duplicate its logic. As a side effect, this also causes
+	a handful of methods that take non-hidden IntPtr arguments to
+	start actually passing those arguments to C rather than always
+	passing IntPtr.Zero.
+
+	* generator/Method.cs (Equals, GetHashCode): Remove unnecessary
+	and possibly erroneous hashing overrides.
+
+	* gtk/Gtk.metadata: Hide Gtk.Container.ForeachFull, since it's
+	useless and wasn't in gtk# 1.0
+
+	* gtk/Menu.custom (Popup):
+	* gtk/TextIter.custom (ForwardFindChar, BackwardFindChar):
+	* gnome/App.custom (CreateMenusInterp, InsertMenusInterp,
+	CreateToolbarInterp):
+	* gnome/Client.custom (RequestInteractionInterp):
+	* gnome/Popup.custom (MenuDoPopupModal, MenuDoPopup): Add
+	[Obsolete] compat overloads for methods that have now lost a
+	useless IntPtr.
+
+2005-07-19  Dan Winship  <danw@novell.com>
+
 	* generator/Parameters.cs: Remove the AllowComplexRefs flag.
 	(They're always allowed now.)
 

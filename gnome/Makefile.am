@@ -41,6 +41,7 @@ customs =					\
 	CanvasShape.custom			\
 	CanvasText.custom			\
 	CanvasWidget.custom			\
+	Client.custom				\
 	Druid.custom				\
 	DruidPageEdge.custom			\
 	Font.custom				\
@@ -49,6 +50,7 @@ customs =					\
 	IconList.custom				\
 	IconTextItem.custom			\
 	PanelApplet.custom			\
+	Popup.custom				\
 	Print.custom				\
 	PrintContext.custom			\
 	PrintDialog.custom			\

@@ -20,9 +20,14 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+	[Obsolete("Replaced by overload without IntPtr argument")]
+	public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time) {
+		Popup (parent_menu_shell, parent_menu_item, func, button, activate_time);
+	}
+
 	public void Popup ()
 	{
-		this.Popup (null, null, null, IntPtr.Zero, 3, Global.CurrentEventTime);
+		Popup (null, null, null, 3, Global.CurrentEventTime);
 	}
 
 	[DllImport("libgtk-win32-2.0-0.dll")]

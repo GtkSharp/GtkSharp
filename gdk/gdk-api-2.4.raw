@@ -2289,13 +2289,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GdkRegion*" name="region" />
-          <callback cname="child_func">
-            <return-type type="gboolean" />
-            <parameters>
-              <parameter type="GdkWindow*" name="arg1" />
-              <parameter type="gpointer" name="arg2" />
-            </parameters>
-          </callback>
+          <parameter type="InvalidateMaybeRecurseChildFunc" name="child_func" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
@@ -3314,6 +3308,13 @@
         <return-type type="gchar*" />
       </method>
     </struct>
+    <callback name="InvalidateMaybeRecurseChildFunc" cname="InvalidateMaybeRecurseChildFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="GdkWindow*" name="arg1" />
+        <parameter type="gpointer" name="data" />
+      </parameters>
+    </callback>
     <class name="Global" cname="GdkGlobal">
       <method name="AddClientMessageFilter" cname="gdk_add_client_message_filter" shared="true">
         <return-type type="void" />

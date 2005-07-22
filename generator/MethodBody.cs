@@ -92,7 +92,8 @@ namespace GtkSharp.Generation {
 
 				if (p.CType == "GError**") {
 					call_parm = call_parm.Replace (p.Name, "error");
-				} else if (p.IsUserData && !parameters.HideData && (i == parameters.Count - 1)) {
+				} else if (p.IsUserData && parameters.IsHidden (p) && !parameters.HideData &&
+					   (i == 0 || parameters [i - 1].Scope != "notified")) {
 					call_parm = "IntPtr.Zero"; 
 				}
 

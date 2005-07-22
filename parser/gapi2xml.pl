@@ -780,11 +780,20 @@ sub addParamsElem
 		$parm =~ s/unsigned\s+/unsigned-/g;
 		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
 			my $ret = $1; my $cbn = $2; my $params = $3;
-			$cb_elem = addNameElem($parms_elem, 'callback', $cbn);
+			my $type = $parent->getAttribute('name') . StudlyCaps($cbn);
+			$cb_elem = addNameElem($ns_elem, 'callback', $type, $ns);
 			addReturnElem($cb_elem, $ret);
 			if ($params && ($params ne "void")) {
 				addParamsElem($cb_elem, split(/,/, $params));
+				my $data_parm = $cb_elem->lastChild()->lastChild();
+				if ($data_parm && $data_parm->getAttribute('type') eq "gpointer") {
+				    $data_parm->setAttribute('name', 'data');
+				}
 			}
+			$parm_elem = $doc->createElement('parameter');
+			$parm_elem->setAttribute('type', $type);
+			$parm_elem->setAttribute('name', $cbn);
+			$parms_elem->appendChild($parm_elem);
 			next;
 		} elsif ($parm =~ /\.\.\./) {
 			$parm_elem = $doc->createElement('parameter');

@@ -90,30 +90,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public override bool Equals (object o)
-		{
-			if (!(o is Method))
-				return false;
-			Method a = this;
-			Method b = (Method) o;
-
-			if (a.Name != b.Name)
-				return false;
-
-			if (a.Signature == null)
-				return b.Signature == null;
-
-			if (b.Signature == null)
-				return false;
-
-			return (a.Signature.Types == b.Signature.Types);
-		}
-
-		public override int GetHashCode ()
-		{
-			return Name.GetHashCode () ^ (Signature == null ? 0 : Signature.Types.GetHashCode ());
-		}
-
 		private bool Initialize ()
 		{
 			if (initialized)

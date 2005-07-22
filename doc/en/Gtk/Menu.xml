@@ -139,7 +139,7 @@ public class MenuApp
       </Docs>
     </Member>
     <Member MemberName="Popup">
-      <MemberSignature Language="C#" Value="public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time);" />
+      <MemberSignature Language="C#" Value="public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, uint button, uint activate_time);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -148,7 +148,6 @@ public class MenuApp
         <Parameter Name="parent_menu_shell" Type="Gtk.Widget" />
         <Parameter Name="parent_menu_item" Type="Gtk.Widget" />
         <Parameter Name="func" Type="Gtk.MenuPositionFunc" />
-        <Parameter Name="data" Type="System.IntPtr" />
         <Parameter Name="button" Type="System.UInt32" />
         <Parameter Name="activate_time" Type="System.UInt32" />
       </Parameters>
@@ -157,12 +156,11 @@ public class MenuApp
         <param name="parent_menu_shell">The menu shell containing the triggering menu item, or <see langword="null" />.</param>
         <param name="parent_menu_item">The menu item whose activation triggered the popup, or <see langword="null" />.</param>
         <param name="func">A user supplied function used to position the menu, or <see langword="null" />.</param>
-        <param name="data">A user supplied data to be passed to func.</param>
         <param name="button">The mouse button which was pressed to initiate the event.</param>
         <param name="activate_time">The time at which the activation event occurred.</param>
         <remarks>
           <para>
-          Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, and <paramref name="func" /> parameters, and <see cref="F:System.IntPtr.Zero" /> for <paramref name="data" /> parameter. The default menu positioning function will position the menu at the current mouse cursor position.
+          Applications can use this function to display context-sensitive menus, and will typically supply <see langword="null" /> for the <paramref name="parent_menu_shell" />, <paramref name="parent_menu_item" />, and <paramref name="func" /> parameters. The default menu positioning function will position the menu at the current mouse cursor position.
          </para>
           <para>
           The <paramref name="button" /> parameter should be the mouse button pressed to initiate the menu popup. If the menu popup was initiated by something other than a mouse button press, such as a mouse button release or a keypress, button should be zero(0).
@@ -214,7 +212,7 @@ class PopupSample
 	private void OnEventBoxPressed (object o, ButtonPressEventArgs args)
 	{
 		if (args.Event.button == 3)
-			menu.Popup (null, null, null, IntPtr.Zero, 3, Gtk.Global.CurrentEventTime);
+			menu.Popup (null, null, null, 3, Gtk.Global.CurrentEventTime);
 	}
 	
 	private void OnHelloActivated (object o, EventArgs args)
@@ -229,6 +227,31 @@ class PopupSample
 }
           </code>
         </example>
+      </Docs>
+    </Member>
+    <Member MemberName="Popup">
+      <MemberSignature Language="C#" Value="public void Popup (Gtk.Widget parent_menu_shell, Gtk.Widget parent_menu_item, Gtk.MenuPositionFunc func, IntPtr data, uint button, uint activate_time);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parent_menu_shell" Type="Gtk.Widget" />
+        <Parameter Name="parent_menu_item" Type="Gtk.Widget" />
+        <Parameter Name="func" Type="Gtk.MenuPositionFunc" />
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="button" Type="System.UInt32" />
+        <Parameter Name="activate_time" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <summary>Obsolete. Replaced by <see cref="Gtk.Menu.Popup(Gtk.Widget,Gtk.Widget,Gtk.MenuPositionFunc,System.UInt32,System.UInt32)" />.</summary>
+        <param name="parent_menu_shell">The menu shell containing the triggering menu item, or <see langword="null" />.</param>
+        <param name="parent_menu_item">The menu item whose activation triggered the popup, or <see langword="null" />.</param>
+        <param name="func">A user supplied function used to position the menu, or <see langword="null" />.</param>
+        <param name="data">Ignored.</param>
+        <param name="button">The mouse button which was pressed to initiate the event.</param>
+        <param name="activate_time">The time at which the activation event occurred.</param>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Reposition">

@@ -88,7 +88,7 @@ class PopupSample
       </Docs>
     </Member>
     <Member MemberName="MenuDoPopup">
-      <MemberSignature Language="C#" Value="public static void MenuDoPopup (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, IntPtr pos_data, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
+      <MemberSignature Language="C#" Value="public static void MenuDoPopup (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -96,24 +96,47 @@ class PopupSample
       <Parameters>
         <Parameter Name="popup" Type="Gtk.Widget" />
         <Parameter Name="pos_func" Type="Gtk.MenuPositionFunc" />
-        <Parameter Name="pos_data" Type="System.IntPtr" />
         <Parameter Name="evnt" Type="Gdk.EventButton" />
         <Parameter Name="user_data" Type="System.IntPtr" />
         <Parameter Name="for_widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>You can use this function to pop up a menu.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
-        <param name="pos_data">a <see cref="T:System.IntPtr" /></param>
         <param name="evnt">a <see cref="T:Gdk.EventButton" /></param>
         <param name="user_data">a <see cref="T:System.IntPtr" /></param>
         <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>You can use this function to pop up a menu.</summary>
         <remarks>
           <para>When a menu item callback is invoked, the specified user_data will be passed to it.</para>
-          <para>The <paramref name="pos_func" /> and <paramref name="pos_data" /> parameters are the same as for <see cref="M:Gtk.Menu.Popup(Gtk.Widget,Gtk.MenuPositionFunc,System.IntPtr,Gdk.EventButton,System.IntPtr,Gtk.Widget)" />, i.e. you can use them to specify a function to position the menu explicitly. If you want the default position (near the mouse), pass <see langword="null" /> for these parameters.</para>
+          <para>The <paramref name="pos_func" /> parameter is the same as for <see cref="M:Gtk.Menu.Popup(Gtk.Widget,Gtk.MenuPositionFunc,System.IntPtr,Gdk.EventButton,System.IntPtr,Gtk.Widget)" />, i.e. you can use it to specify a function to position the menu explicitly. If you want the default position (near the mouse), pass <see langword="null" />.</para>
           <para>The event parameter is needed to figure out the mouse button that activated the menu and the time at which this happened. If you pass in <see langword="null" />, then no button and the current time will be used as defaults.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MenuDoPopup">
+      <MemberSignature Language="C#" Value="public static void MenuDoPopup (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, IntPtr data, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="popup" Type="Gtk.Widget" />
+        <Parameter Name="pos_func" Type="Gtk.MenuPositionFunc" />
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="evnt" Type="Gdk.EventButton" />
+        <Parameter Name="user_data" Type="System.IntPtr" />
+        <Parameter Name="for_widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="popup">a <see cref="T:Gtk.Widget" /></param>
+        <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
+        <param name="data">a <see cref="T:System.IntPtr" /></param>
+        <param name="evnt">a <see cref="T:Gdk.EventButton" /></param>
+        <param name="user_data">a <see cref="T:System.IntPtr" /></param>
+        <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Obsolete. Replaced by overload with no <see cref="T:System.IntPtr" /> argument.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="MenuNewWithAccelgroup">
@@ -193,7 +216,7 @@ class PopupSample
       </Docs>
     </Member>
     <Member MemberName="MenuDoPopupModal">
-      <MemberSignature Language="C#" Value="public static int MenuDoPopupModal (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, IntPtr pos_data, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
+      <MemberSignature Language="C#" Value="public static int MenuDoPopupModal (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -201,19 +224,17 @@ class PopupSample
       <Parameters>
         <Parameter Name="popup" Type="Gtk.Widget" />
         <Parameter Name="pos_func" Type="Gtk.MenuPositionFunc" />
-        <Parameter Name="pos_data" Type="System.IntPtr" />
         <Parameter Name="evnt" Type="Gdk.EventButton" />
         <Parameter Name="user_data" Type="System.IntPtr" />
         <Parameter Name="for_widget" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>You can use this function to pop up a menu modally.</summary>
         <param name="popup">a <see cref="T:Gtk.Widget" /></param>
         <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
-        <param name="pos_data">a <see cref="T:System.IntPtr" /></param>
         <param name="evnt">a <see cref="T:Gdk.EventButton" /></param>
         <param name="user_data">a <see cref="T:System.IntPtr" /></param>
         <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>You can use this function to pop up a menu modally.</summary>
         <returns>a <see cref="T:System.Int32" /></returns>
         <remarks>Same as <see cref="M:Gnome.Popup.MenuDoPopup()" />, but modal.</remarks>
       </Docs>
@@ -228,5 +249,32 @@ class PopupSample
         <remarks>The default constructor for <see cref="T:Gnome.Popup" />.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="MenuDoPopupModal">
+      <MemberSignature Language="C#" Value="public static int MenuDoPopupModal (Gtk.Widget popup, Gtk.MenuPositionFunc pos_func, IntPtr data, Gdk.EventButton evnt, IntPtr user_data, Gtk.Widget for_widget);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="popup" Type="Gtk.Widget" />
+        <Parameter Name="pos_func" Type="Gtk.MenuPositionFunc" />
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="evnt" Type="Gdk.EventButton" />
+        <Parameter Name="user_data" Type="System.IntPtr" />
+        <Parameter Name="for_widget" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="popup">a <see cref="T:Gtk.Widget" /></param>
+        <param name="pos_func">a <see cref="T:Gtk.MenuPositionFunc" /></param>
+        <param name="data">To be added.</param>
+        <param name="evnt">a <see cref="T:Gdk.EventButton" /></param>
+        <param name="user_data">a <see cref="T:System.IntPtr" /></param>
+        <param name="for_widget">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Obsolete. Replaced by overload with no <see cref="T:System.IntPtr" /> argument.</summary>
+        <returns>a <see cref="T:System.Int32" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    
   </Members>
 </Type>
