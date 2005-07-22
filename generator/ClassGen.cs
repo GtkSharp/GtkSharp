@@ -77,7 +77,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (" {");
 			sw.WriteLine ();
 
-			GenProperties (gen_info);
+			GenProperties (gen_info, null);
 			GenMethods (gen_info, null, null);
 			
 			sw.WriteLine ("#endregion");

@@ -135,7 +135,7 @@ namespace GtkSharp.Generation {
 			base.GenerateImports (gen_info, indent);
 		}
 
-		public override void Generate (GenerationInfo gen_info, string indent)
+		public virtual void Generate (GenerationInfo gen_info, string indent)
 		{
 			if (Ignored || Hidden)
 				return;

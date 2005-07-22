@@ -1,3 +1,21 @@
+2005-07-21  Dan Winship  <danw@novell.com>
+
+	* parser/gapi2xml.pl (parseInitFunc): handle interface properties
+	as well as class properties
+
+	* gtk/gtk-api-2.4.raw: 
+	* gtk/gtk-api-2.6.raw: Regen (adding properties to GtkFileChooser).
+
+	* generator/Property.cs (GenerateDecl): new method to generate
+	just a property declaration (for an interface).
+	(Generate): Add an "implementor" arg as with Method.Generate.
+
+	* generator/InterfaceGen.cs (Generate): Generate properties. Also,
+	validate methods *before* checking if they should be ignored,
+	since certain Method properties aren't set until Validate-time.
+
+	* generator/*.cs: misc minor changes/reorg for the above.
+
 2005-07-19  Todd Berman  <tberman@off.net>
 
 	* gtk/TreeSelection.custom: Add an overload for GetSelected to remove

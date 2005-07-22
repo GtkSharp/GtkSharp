@@ -117,8 +117,6 @@ namespace GtkSharp.Generation {
 			if (Setter != null)
 				Setter.GenerateImport (gen_info.Writer);
 		}
-
-		public abstract void Generate (GenerationInfo gen_info, string indent);
 	}
 }
 

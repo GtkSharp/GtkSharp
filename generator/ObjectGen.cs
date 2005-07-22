@@ -154,7 +154,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 
 			GenCtors (gen_info);
-			GenProperties (gen_info);
+			GenProperties (gen_info, null);
 			GenFields (gen_info);
 			GenChildProperties (gen_info);
 			
@@ -202,6 +202,7 @@ namespace GtkSharp.Generation {
 						continue;
 					ClassBase igen = table.GetClassGen (iface);
 					igen.GenMethods (gen_info, collisions, this);
+					igen.GenProperties (gen_info, this);
 					igen.GenSignals (gen_info, this);
 				}
 			}
@@ -275,7 +276,7 @@ namespace GtkSharp.Generation {
 
 			foreach (ChildProperty prop in childprops.Values) {
 				if (prop.Validate ())
-					prop.Generate (gen_info, "\t\t\t");
+					prop.Generate (gen_info, "\t\t\t", null);
 				else
 					Console.WriteLine("in Object " + QualifiedName);
 			}

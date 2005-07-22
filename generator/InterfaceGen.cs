@@ -279,11 +279,17 @@ namespace GtkSharp.Generation {
 			}
 
 			foreach (Method method in methods.Values) {
-				if (IgnoreMethod (method))
-					continue;
-
-				if (method.Validate ())
+				if (method.Validate ()) {
+					if (IgnoreMethod (method))
+						continue;
 					method.GenerateDecl (sw);
+				} else
+					Console.WriteLine ("of interface " + QualifiedName);
+			}
+
+			foreach (Property prop in props.Values) {
+				if (prop.Validate ())
+					prop.GenerateDecl (sw, "\t\t");
 				else
 					Console.WriteLine ("of interface " + QualifiedName);
 			}

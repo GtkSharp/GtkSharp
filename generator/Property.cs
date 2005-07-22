@@ -67,7 +67,26 @@ namespace GtkSharp.Generation {
 			return "SetProperty(" + qpname + ", val)";
 		}
 
-		public override void Generate (GenerationInfo gen_info, string indent)
+		public void GenerateDecl (StreamWriter sw, string indent)
+		{
+			if (Hidden || (!Readable && !Writable))
+				return;
+
+			string name = Name;
+			if (name == container_type.Name)
+				name += "Prop";
+
+			sw.WriteLine (indent + CSType + " " + name + " {");
+			sw.Write (indent + "\t");
+			if (Readable || Getter != null)
+				sw.Write ("get; ");
+			if (Writable || Setter != null)
+				sw.Write ("set;");
+			sw.WriteLine ();
+			sw.WriteLine (indent + "}");
+		}
+
+		public void Generate (GenerationInfo gen_info, string indent, ClassBase implementor)
 		{
 			SymbolTable table = SymbolTable.Table;
 			StreamWriter sw = gen_info.Writer;
@@ -78,6 +97,8 @@ namespace GtkSharp.Generation {
 			string modifiers = "";
 
 			if (IsNew || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
+				modifiers = "new ";
+			else if (implementor != null && implementor.Parent.GetPropertyRecursively (Name) != null)
 				modifiers = "new ";
 
 			string name = Name;

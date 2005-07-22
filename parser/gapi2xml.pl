@@ -1001,7 +1001,7 @@ sub parseInitFunc
 			
 		if ($line =~ /#define/) {
 			# FIXME: This ignores the bool helper macro thingie.
-		} elsif ($line =~ /g_object_class_install_prop/) {
+		} elsif ($line =~ /g_object_(class|interface)_install_prop/) {
 			my $prop = $line;
 			do {
 				$prop .= $init_lines[++$linenum];

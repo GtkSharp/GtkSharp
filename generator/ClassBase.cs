@@ -156,14 +156,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected void GenProperties (GenerationInfo gen_info)
+		public void GenProperties (GenerationInfo gen_info, ClassBase implementor)
 		{		
 			if (props.Count == 0)
 				return;
 
 			foreach (Property prop in props.Values) {
 				if (prop.Validate ())
-					prop.Generate (gen_info, "\t\t");
+					prop.Generate (gen_info, "\t\t", implementor);
 				else
 					Console.WriteLine("in Object " + QualifiedName);
 			}
