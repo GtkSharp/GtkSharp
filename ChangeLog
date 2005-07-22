@@ -1,5 +1,31 @@
 2005-07-21  Dan Winship  <danw@novell.com>
 
+	* glib/Value.cs: Obsolete the EnumWrapper and UnwrappedObject
+	constructors and casts. Add a new Enum cast.
+	(Val): Handle Pointer values. Change the handling of Enum/Flags
+	values to return the value directly rather than returning an
+	EnumWrapper. Remove the Char (ie, "byte") handling since there
+	aren't any char properties in all of gtk-sharp and the generator
+	mistakenly converts them to strings anyway.
+
+	* glib/EnumWrapper.cs: 
+	* glib/UnwrappedObject.cs: Mark these Obsolete.
+
+	* glib/glue/type.c (gtksharp_get_parent_type,
+	gtksharp_get_type_name_for_id): 
+	* glib/glue/value.c (gtksharp_value_get_value_type): Remove some
+	unneeded glue methods.
+
+	* generator/Ctor.cs (Generate):
+	* generator/Property.cs (Generate): Simplify the enum and object
+	property glue to not use EnumWrapper or UnwrappedObject.
+
+	* sample/valtest/*: a regression test for GLib.Value
+
+	* configure.in.in: add sample/valtest
+
+2005-07-21  Dan Winship  <danw@novell.com>
+
 	* parser/gapi2xml.pl (parseInitFunc): handle interface properties
 	as well as class properties
 

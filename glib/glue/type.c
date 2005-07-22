@@ -29,10 +29,6 @@ gboolean gtksharp_is_object (gpointer obj);
 
 GType    gtksharp_get_type_id (GObject *obj);
 
-GType    gtksharp_get_parent_type (GType typ);
-
-G_CONST_RETURN gchar   *gtksharp_get_type_name_for_id (GType typ);
-
 GType    gtksharp_register_type (gchar *name, GType parent);
 
 void     gtksharp_override_virtual_method (GType g_type, const gchar *name, GCallback callback);
@@ -54,18 +50,6 @@ GType
 gtksharp_get_type_id (GObject *obj)
 {
 	return G_TYPE_FROM_INSTANCE (obj);
-}
-
-GType
-gtksharp_get_parent_type (GType typ)
-{
-	return g_type_parent (typ);
-}
-
-G_CONST_RETURN gchar *
-gtksharp_get_type_name_for_id (GType typ)
-{
-	return g_type_name (typ);
 }
 
 GType

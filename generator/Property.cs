@@ -108,12 +108,8 @@ namespace GtkSharp.Generation {
 			string qpname = "\"" + CName + "\"";
 
 			string v_type = "";
-			if (table.IsEnum(CType)) {
-				v_type = "(int) (GLib.EnumWrapper)";
-			} else if (table.IsObject(CType) || table.IsInterface (CType)) {
-				v_type = "(GLib.UnwrappedObject)";
-			} else if (table.IsBoxed (CType)) {
-				v_type = "(GLib.Boxed)";
+			if (table.IsInterface (CType)) {
+				v_type = "(GLib.Object)";
 			} else if (table.IsOpaque (CType)) {
 				v_type = "(GLib.Opaque)";
 			}
@@ -131,10 +127,7 @@ namespace GtkSharp.Generation {
 			} else if (Readable) {
 				sw.WriteLine(indent + "get {");
 				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
-				if (table.IsObject (CType) || table.IsInterface (CType)) {
-					sw.WriteLine(indent + "\tSystem.IntPtr raw_ret = (System.IntPtr) {0} val;", v_type);
-					sw.WriteLine(indent + "\t" + CSType + " ret = " + table.FromNativeReturn(CType, "raw_ret") + ";");
-				} else if (table.IsOpaque (CType) || table.IsBoxed (CType)) {
+				if (table.IsOpaque (CType) || table.IsBoxed (CType)) {
 					sw.WriteLine(indent + "\t" + CSType + " ret = (" + CSType + ") val;");
 				} else {
 					sw.Write(indent + "\t" + CSType + " ret = ");
@@ -157,9 +150,7 @@ namespace GtkSharp.Generation {
 			} else if (Writable) {
 				sw.WriteLine(indent + "set {");
 				sw.Write(indent + "\tGLib.Value val = ");
-				if (table.IsEnum(CType)) {
-					sw.WriteLine("new GLib.Value(new GLib.EnumWrapper ((int) value, {0}), \"{1}\");", table.IsEnumFlags (CType) ? "true" : "false", CType);
-				} else if (table.IsBoxed (CType)) {
+				if (table.IsBoxed (CType)) {
 					sw.WriteLine("(GLib.Value) value;");
 				} else if (table.IsOpaque (CType)) {
 					sw.WriteLine("new GLib.Value(value, \"{0}\");", CType);

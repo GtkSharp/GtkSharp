@@ -82,6 +82,7 @@ namespace GLib {
 			g_value_set_uint64 (ref this, val);
 		}
 
+		[Obsolete ("Replaced by Value(object) constructor")]
 		public Value (EnumWrapper wrap, string type_name)
 		{
 			type = IntPtr.Zero;
@@ -228,12 +229,21 @@ namespace GLib {
 			return g_value_get_uint64 (ref val);
 		}
 
+		[Obsolete ("Replaced by Enum cast")]
 		public static explicit operator EnumWrapper (Value val)
 		{
 			if (glibsharp_value_holds_flags (ref val))
 				return new EnumWrapper ((int)g_value_get_flags (ref val), true);
 			else
 				return new EnumWrapper (g_value_get_enum (ref val), false);
+		}
+
+		public static explicit operator Enum (Value val)
+		{
+			if (glibsharp_value_holds_flags (ref val))
+				return (Enum)Enum.ToObject (GType.LookupType (val.type), g_value_get_flags (ref val));
+			else
+				return (Enum)Enum.ToObject (GType.LookupType (val.type), g_value_get_enum (ref val));
 		}
 
 		public static explicit operator float (Value val)
@@ -272,6 +282,7 @@ namespace GLib {
 			return GLib.Object.GetObject (g_value_get_object (ref val), false);
 		}
 
+		[Obsolete ("Replaced by GLib.Object cast")]
 		public static explicit operator GLib.UnwrappedObject (Value val)
 		{
 			return new UnwrappedObject (g_value_get_object (ref val));
@@ -295,86 +306,79 @@ namespace GLib {
 		public object Val
 		{
 			get {
-				GLib.GType type = new GLib.GType (gtksharp_value_get_value_type (ref this));
-				if (type == GType.Char)
-					return (char) this;
-				else if (type == GType.Boolean)
+				if (type == GType.Boolean.Val)
 					return (bool) this;
-				else if (type == GType.Int)
+				else if (type == GType.Int.Val)
 					return (int) this;
-				else if (type == GType.UInt)
+				else if (type == GType.UInt.Val)
 					return (uint) this;
-				else if (type == GType.Int64)
+				else if (type == GType.Int64.Val)
 					return (long) this;
-				else if (type == GType.UInt64)
+				else if (type == GType.UInt64.Val)
 					return (ulong) this;
-				else if (type == GType.Float)
+				else if (g_type_is_a (type, GType.Enum.Val) ||
+					 g_type_is_a (type, GType.Flags.Val))
+					return (Enum) this;
+				else if (type == GType.Float.Val)
 					return (float) this;
-				else if (type == GType.Double)
+				else if (type == GType.Double.Val)
 					return (double) this;
-				else if (type == GType.String)
+				else if (type == GType.String.Val)
 					return (string) this;
-				else if (type == ManagedValue.GType)
+				else if (type == GType.Pointer.Val)
+					return (IntPtr) this;
+				else if (type == ManagedValue.GType.Val)
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
-				else if (g_type_is_a (type.Val, GLib.GType.Enum.Val))
-					return (EnumWrapper) this;
-				else if (g_type_is_a (type.Val, GLib.GType.Flags.Val))
-					return (EnumWrapper) this;
-				else if (g_type_is_a (type.Val, GType.Object.Val))
+				else if (g_type_is_a (type, GType.Object.Val))
 					return (GLib.Object) this;
 				else
-					throw new Exception ("Unknown type");
+					throw new Exception ("Unknown type " + new GType (type).ToString ());
 			}
 			set {
-				IntPtr buf;
-				GType type = (GType) value.GetType();
-				if (type == GType.Char)
-					g_value_set_char (ref this, (char) value);
-				else if (type == GType.Boolean)
+				if (type == GType.Boolean.Val)
 					g_value_set_boolean (ref this, (bool) value);
-				else if (type == GType.Int)
+				else if (type == GType.Int.Val)
 					g_value_set_int (ref this, (int) value);
-				else if (type == GType.UInt)
+				else if (type == GType.UInt.Val)
 					g_value_set_uint (ref this, (uint) value);
-				else if (type == GType.Int64)
+				else if (type == GType.Int64.Val)
 					g_value_set_int64 (ref this, (long) value);
-				else if (type == GType.UInt64)
+				else if (type == GType.UInt64.Val)
 					g_value_set_uint64 (ref this, (ulong) value);
-				else if (type == GType.Float)
+				else if (g_type_is_a (type, GType.Enum.Val))
+					g_value_set_enum (ref this, (int)value);
+				else if (g_type_is_a (type, GType.Flags.Val))
+					g_value_set_flags (ref this, (uint)(int)value);
+				else if (type == GType.Float.Val)
 					g_value_set_float (ref this, (float) value);
-				else if (type == GType.Double)
+				else if (type == GType.Double.Val)
 					g_value_set_double (ref this, (double) value);
-				else if (type == GType.String) {
+				else if (type == GType.String.Val) {
 					IntPtr native = GLib.Marshaller.StringToPtrGStrdup ((string)value);
 					g_value_set_string (ref this, native);
 					GLib.Marshaller.Free (native);
-				} else if (type == GType.Pointer) {
+				} else if (type == GType.Pointer.Val) {
 					if (value is IWrapper) {
 						g_value_set_pointer (ref this, ((IWrapper)value).Handle);
 						return;
 					}
-					buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
+					IntPtr buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
 					Marshal.StructureToPtr (value, buf, false);
 					g_value_set_pointer (ref this, buf);
-				} else if (type == ManagedValue.GType) {
+				} else if (type == ManagedValue.GType.Val)
 					g_value_set_boxed (ref this, ManagedValue.WrapObject (value));
-				} else if (g_type_is_a (type.Val, GLib.GType.Enum.Val)) {
-					g_value_set_enum (ref this, (int) value);
-				} else if (g_type_is_a (type.Val, GLib.GType.Flags.Val)) {
-					g_value_set_flags (ref this, (uint) value);
-				} else if (g_type_is_a (type.Val, GLib.GType.Boxed.Val)) {
+				else if (g_type_is_a (type, GType.Object.Val))
+					g_value_set_object (ref this, ((GLib.Object) value).Handle);
+				else if (g_type_is_a (type, GType.Boxed.Val)) {
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);
 						return;
 					}
-					buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
-					Marshal.StructureToPtr (value, buf, false);
+					IntPtr buf = Marshaller.StructureToPtrAlloc (value);
 					g_value_set_boxed (ref this, buf);
 					Marshal.FreeHGlobal (buf);
-				} else if (g_type_is_a (type.Val, GType.Object.Val))
-					g_value_set_object (ref this, ((GLib.Object) value).Handle);
-				else
-					throw new Exception ("Unknown type");
+				} else
+					throw new Exception ("Unknown type " + new GType (type).ToString ());
 			}
 		}
 
@@ -430,8 +434,6 @@ namespace GLib {
 		static extern void g_value_set_enum (ref Value val, int data);
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_flags (ref Value val, uint data);
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_value_set_char (ref Value val, char data);
 		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_value_get_boolean (ref Value val);
@@ -472,9 +474,6 @@ namespace GLib {
 		static extern uint g_value_get_flags (ref Value val);
 		[DllImport("glibsharpglue-2")]
 		static extern bool glibsharp_value_holds_flags (ref Value val);
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_get_value_type (ref Value val);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);

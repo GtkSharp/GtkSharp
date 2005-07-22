@@ -24,8 +24,7 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 	
-	// <summary> Enum wrapping class </summary>
-	// <remarks> </remarks>
+	[Obsolete ("Replaced by direct enum type casts to/from GLib.Value")]
 	public class EnumWrapper {
 		int val;
 		public bool flags;

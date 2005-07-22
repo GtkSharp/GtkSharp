@@ -89,8 +89,6 @@ namespace GtkSharp.Generation {
 			StreamWriter sw = gen_info.Writer;
 			gen_info.CurrentMember = CName;
 
-			SymbolTable table = SymbolTable.Table;
-
 			GenerateImport (sw);
 			
 			if (IsStatic)
@@ -130,12 +128,7 @@ namespace GtkSharp.Generation {
 									indent += "\t";
 								}
 								sw.WriteLine (indent + "names.Add (\"" + names [i] + "\");");
-								sw.Write (indent + "vals.Add (");
-
-								if (table.IsEnum (p.CType))
-									sw.WriteLine ("new GLib.Value (this, \"" + names[i] + "\", new GLib.EnumWrapper ((int)" + values[i] + ", " + (table.IsEnumFlags (p.CType) ? "true" : "false") + ")));");
-								else
-									sw.WriteLine ("new GLib.Value (" + values[i] + "));");
+								sw.WriteLine (indent + "vals.Add (new GLib.Value (" + values[i] + "));");
 
 								if (p.Generatable is ClassBase && !(p.Generatable is StructBase))
 									sw.WriteLine ("\t\t\t\t}");

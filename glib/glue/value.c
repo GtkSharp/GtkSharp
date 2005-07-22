@@ -25,7 +25,6 @@
 void gtksharp_value_create_from_property (GValue *value, GObject *obj, const gchar* name);
 void gtksharp_value_create_from_type_and_property (GValue *value, GType gtype, const gchar* name);
 void gtksharp_value_create_from_type_name (GValue *value, const gchar *type_name);
-GType gtksharp_value_get_value_type (GValue *value);
 gpointer glibsharp_value_get_boxed (GValue *value);
 void glibsharp_value_set_boxed (GValue *value, gpointer boxed);
 gboolean glibsharp_value_holds_flags (GValue *value);
@@ -49,14 +48,6 @@ void
 gtksharp_value_create_from_type_name (GValue *value, const gchar *type_name)
 {
 	g_value_init (value, g_type_from_name (type_name));
-}
-
-GType
-gtksharp_value_get_value_type (GValue *value) 
-{
-	g_return_val_if_fail (value != NULL, G_TYPE_INVALID);
-	g_return_val_if_fail (G_IS_VALUE (value), G_TYPE_INVALID);
-	return G_VALUE_TYPE (value);
 }
 
 gpointer 
