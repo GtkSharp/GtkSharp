@@ -27,6 +27,7 @@ namespace WidgetViewer {
 
 			ComboBoxEntry combo = new Gtk.ComboBoxEntry (new string[] {"Foo", "Bar"});
 			combo.Changed += new EventHandler (OnComboActivated);
+			combo.Entry.Changed += new EventHandler (OnComboEntryChanged);
 			box2.PackStart (combo, true, true, 0);
 
 			HSeparator separator = new HSeparator ();
@@ -55,8 +56,14 @@ namespace WidgetViewer {
 		{
 			ComboBox combo = o as ComboBox;
 			TreeIter iter;
-			combo.GetActiveIter (out iter);
-			Console.WriteLine ((string)combo.Model.GetValue (iter, 0));
+			if (combo.GetActiveIter (out iter))
+				Console.WriteLine ((string)combo.Model.GetValue (iter, 0));
+		}
+
+		static void OnComboEntryChanged (object o, EventArgs args)
+		{
+			Entry entry = o as Entry;
+			Console.WriteLine ("Entry text is: " + entry.Text);
 		}
 	}
 }
