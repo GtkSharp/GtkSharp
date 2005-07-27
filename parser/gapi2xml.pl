@@ -774,6 +774,7 @@ sub addParamsElem
 	foreach $parm (@params) {
 		$parm_num++;
 		$parm =~ s/\s+(\*+)/\1 /g;
+		my $out = $parm =~ s/G_CONST_RETURN/const/g;
 		$parm =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$parm =~ s/(\*+)\s*const\s+/\1 /g;
 		$parm =~ s/const\s+/const-/g;
@@ -817,6 +818,9 @@ sub addParamsElem
 		if ($name =~ /(\w+)\[.*\]/) {
 			$name = $1;
 			$parm_elem->setAttribute('array', "true");
+		}
+		if ($out) {
+			$parm_elem->setAttribute('pass_as', "out");
 		}
 		$parm_elem->setAttribute('name', $name);
 	}

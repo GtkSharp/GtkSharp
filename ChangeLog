@@ -1,3 +1,20 @@
+2005-07-27  Dan Winship  <danw@novell.com>
+
+	* parser/gapi2xml.pl (addParamsElem): deal with G_CONST_RETURN in
+	params... some functions use that to mark const "out" params. In
+	fact, let's use it as a hint to mark them pass_as="out" too...
+
+	* pango/pango-api-2.4.raw: 
+	* pango/pango-api-2.6.raw: 
+	* gtk/gtk-api-2.6.raw: Regen, fixing pango_script_iter_get_range
+	and gtk_image_get_icon_name.
+
+	* pango/Pango.metadata: 
+	* pango/ScriptIter.cs: Alas, exposing GetRange makes it clear that
+	PangoScriptIter is really weird and we weren't wrapping it
+	correctly before anyway, so mark the whole thing hidden and wrap
+	it by hand.
+
 2005-07-25  Mike Kestner  <mkestner@novell.com>
 
 	* gnome/Gnome.metadata : mark IconList.GetIconFilename retval const.

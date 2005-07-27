@@ -28,6 +28,7 @@ sources =			\
 	AttrVariant.cs		\
 	AttrWeight.cs		\
 	Scale.cs		\
+	ScriptIter.cs		\
 	Units.cs
 
 customs =			\
