@@ -2,6 +2,7 @@ EXTRA_DIST =				\
 	README				\
 	gtk-sharp-2.4-sources.xml	\
 	gtk-sharp-2.6-sources.xml	\
+	gtk-sharp-2.8-sources.xml	\
 	gda.patch			\
 	gnomedb.patch			\
 	gtkclipboard.patch 		\
@@ -18,6 +19,11 @@ GTK_2_6_DOWNLOADS = \
 	ftp://ftp.gtk.org/pub/gtk/v2.6/pango-1.8.0.tar.bz2                                      \
 	ftp://ftp.gtk.org/pub/gtk/v2.6/atk-1.9.0.tar.bz2                                        \
 	ftp://ftp.gtk.org/pub/gtk/v2.6/gtk+-2.6.4.tar.bz2
+
+GTK_2_8_DOWNLOADS = \
+	ftp://ftp.gtk.org/pub/gtk/v2.7/pango-1.9.1.tar.bz2                                      \
+	ftp://ftp.gtk.org/pub/gtk/v2.6/atk-1.9.0.tar.bz2                                        \
+	ftp://ftp.gtk.org/pub/gtk/v2.7/gtk+-2.7.4.tar.bz2
 
 GNOME_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/gnome-vfs-2.6.0.tar.bz2	\
@@ -44,7 +50,7 @@ GTKHTML_SOURCEFILES = \
         gtkhtml-3.0.10/src/gtkhtml-stream.c \
         gtkhtml-3.0.10/src/gtkhtml-stream.h
 
-api: api-2.4 api-2.6
+api: api-2.4 api-2.6 api-2.8
 
 api-2.4:
 	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.4-sources.xml
@@ -52,7 +58,10 @@ api-2.4:
 api-2.6:
 	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.6-sources.xml
 
-get-source-code: get-2.4-sources get-2.6-sources get-gnome-sources get-gtkhtml-code
+api-2.8:
+	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.8-sources.xml
+
+get-source-code: get-2.4-sources get-2.6-sources get-2.8-sources get-gnome-sources get-gtkhtml-code
 
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.10.tar.bz2 --output-document=- | tar -xj $(GTKHTML_SOURCEFILES)
@@ -72,6 +81,14 @@ get-2.6-sources:
 	ln -f -s gtkfilechooserprivate.h gtk+-2.6.4/gtk/gtkfilechooserpriv.h
 	patch -p0 gtk+-2.6.4/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
 	patch -p0 gtk+-2.6.4/gtk/gtkclipboard.h < gtkclipboard.patch
+
+get-2.8-sources:
+	for i in $(GTK_2_8_DOWNLOADS); do                  \
+		wget $$i --output-document=- | tar -xj ;   \
+	done;
+	ln -f -s gtkfilechooserprivate.h gtk+-2.7.4/gtk/gtkfilechooserpriv.h
+	patch -p0 gtk+-2.7.4/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
+	patch -p0 gtk+-2.7.4/gtk/gtkclipboard.h < gtkclipboard.patch
 
 get-gnome-sources:
 	for i in $(GNOME_DOWNLOADS); do                    \

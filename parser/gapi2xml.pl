@@ -121,7 +121,7 @@ while ($line = <STDIN>) {
 		}
 		$sdef =~ s!/\*[^<].*?(\*/|\n)!!g;
 		$sdef =~ s/\n\s*//g;
-		$sdefs{$sname} = $sdef;
+		$sdefs{$sname} = $sdef if (!exists ($sdefs{$sname}));
 	} elsif ($line =~ /^(\w+)_(class|base)_init\b/) {
 		$class = StudlyCaps($1);
 		$pedef = $line;
