@@ -1,4 +1,4 @@
-// FontFamily.custom - customizations to Gnome.FontFamily
+// FontFamily.cs - customizations to Gnome.FontFamily
 //
 // Authors: Mike Kestner  <mkestner@ximian.com>
 //
@@ -18,6 +18,14 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+namespace Gnome {
+
+	using System;
+	using System.Runtime.InteropServices;
+
+	public class FontFamily {
+
+		private FontFamily () {}
 
 		[DllImport("gnomeprint-2-2")]
 		static extern IntPtr gnome_font_family_list ();
@@ -35,22 +43,5 @@
 				result [i++] = val;
 			return result;
 		}
-
-		[DllImport("gnomeprint-2-2")]
-		static extern IntPtr gnome_font_family_style_list (IntPtr raw);
-
-		public string[] StyleList ()
-		{
-			IntPtr list_ptr = gnome_font_family_style_list (Handle);
-			if (list_ptr == IntPtr.Zero)
-				return new string [0];
-
-			GLib.List list = new GLib.List (list_ptr, typeof (string));
-			string[] result = new string [list.Count];
-			int i = 0;
-			foreach (string val in list)
-				result [i++] = val;
-			return result;
-		}
-
-
+	}
+}

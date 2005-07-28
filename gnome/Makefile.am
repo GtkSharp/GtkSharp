@@ -16,6 +16,7 @@ glue_includes = gnome.h,libgnomeprint/gnome-print.h,libgnomeprint/gnome-print-pa
 
 sources =					\
 	BonoboUIVerb.cs				\
+	FontFamily.cs				\
 	IconTheme.cs				\
 	Modules.cs				\
 	PanelAppletFactory.cs
@@ -45,8 +46,6 @@ customs =					\
 	Druid.custom				\
 	DruidPageEdge.custom			\
 	Font.custom				\
-	FontFamily.custom			\
-	GPFontEntry.custom			\
 	IconList.custom				\
 	IconTextItem.custom			\
 	PanelApplet.custom			\
