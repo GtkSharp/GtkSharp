@@ -161,6 +161,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool Owned {
+			get {
+				return elem.GetAttribute ("owned") == "true";
+			}
+		}
+
 		public string PropertyName {
 			get {
 				return elem.GetAttribute("property_name");
@@ -206,7 +212,14 @@ namespace GtkSharp.Generation {
 				call_parm = call_parm.Replace ("ref ", "");
 
 			return call_parm;
+		}
 
+		public string FromNative (string var)
+		{
+			if (Generatable is HandleBase)
+				return ((HandleBase)Generatable).FromNative (var, Owned);
+			else
+				return Generatable.FromNative (var);
 		}
 
 		public string StudlyName {

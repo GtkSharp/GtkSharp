@@ -26,7 +26,10 @@ namespace Pango {
 		[DllImport("libpango-1.0-0.dll")]
 		static extern IntPtr pango_attr_font_desc_new (IntPtr font_desc);
 
-		public AttrFontDesc (Pango.FontDescription font_desc) : this (pango_attr_font_desc_new (font_desc.Handle)) {}
+		[DllImport("libpango-1.0-0.dll")]
+		static extern IntPtr pango_font_description_copy(IntPtr raw);
+
+		public AttrFontDesc (Pango.FontDescription font_desc) : this (pango_attr_font_desc_new (pango_font_description_copy (font_desc.Handle))) {}
 
 		internal AttrFontDesc (IntPtr raw) : base (raw) {}
 

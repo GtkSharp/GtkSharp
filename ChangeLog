@@ -1,3 +1,81 @@
+2005-07-29  Dan Winship  <danw@novell.com>
+
+	Automatic memory management for opaque types [#49565]
+	
+	* glib/Opaque.cs (Owned): new property saying whether or not gtk#
+	owns the memory.
+	(Opaque): Set Owned to true in the void ctor and false in the
+	IntPtr one.
+	(GetOpaque): add a new overload that can also create opaques, a la
+	GLib.Object.GetObject.
+	(Ref, Unref, Free): empty virtual methods to be overridden by
+	subclasses.
+	(set_Raw): Unref() and possibly Free() the old value, Ref() the
+	new one.
+	(~Opaque, Dispose): set Raw to IntPtr.Zero (triggering Free/Unref
+	if needed)
+
+	* parser/gapi2xml.pl (addReturnElem): if the method is named Copy
+	and returns a pointer, set the "owned" attribute on the
+	return-type.
+
+	* */*-api.raw: Regen
+	
+	* generator/HandleBase.cs (FromNative): Add new
+	FromNative/FromNativeReturn overloads that takes a "bool owned"
+	param. Implement the 1-arg FromNative and FromNativeReturn in
+	terms of that.
+
+	* generator/ObjectBase.cs (FromNative): Implement HandleBase's new
+	overload. Use the two-arg version of GLib.Object.GetObject when
+	"owned" is true.
+
+	* generator/OpaqueGen.cs (Generate): Pull out Ref, Unref, and
+	Free/Destroy/Dispose methods and handle them specially by
+	overriding Opaque.Ref, .Unref, and .Free appropriately. (If any
+	of the methods are marked deprecated, output a deprecated
+	do-nothing method as well, to save us from having to write all
+	those deprecated methods by hand.)
+	(FromNative): use GetOpaque, passing "owned".
+
+	* generator/ReturnValue.cs (FromNative): if the value is a
+	HandleBase, pass Owned to its FromNative().
+
+	* generator/Parameters.cs (Owned): new property (for use on out
+	params)
+	(FromNative): Call FromNative() on the generatable, handling Owned
+	in the case of HandleBase.
+
+	* generator/ManagedCallString.cs:
+	* generator/MethodBody.cs:
+	* generator/Signal.cs: use param.FromNative() rather than
+	param.Generatable.FromNative(), to get ownership right.
+
+	* */*.metadata: Mark opaque ref/unref/free methods deprecated
+	(except where we were hiding them before). Add "owned" attributes
+	to return values and out params as needed.
+
+	* pango/AttrIterator.custom (GetFont): work around a
+	memory-management oddity of the underlying method.
+
+	* pango/AttrFontDesc.cs (AttrFontDesc): copy the passed-in
+	FontDescriptor, since the attribute will assume ownership of it.
+
+	* gtk/TreeView.custom (GetPathAtPos): set the "owned" flag on the
+	returned TreePaths.
+
+	* gtk/TargetList.custom: Remove refcounting stuff, which is
+	now handled automatically
+
+	* gtk/NodeStore.cs (GetPath): clear the Owned flag on the created
+	TreePath so that the underlying structure doesn't get freed when
+	the function returns
+
+	* gtkhtml/HTMLStream.custom (Destroy): hide this and then
+	reimplement it by hand to keep OpaqueGen from using it in
+	Dispose(), since calling it after an HTMLStream.Close() will
+	result in a crash.
+
 2005-08-01  Todd Berman  <tberman@off.net>
 
 	* gtk/Gtk.metadata: Change the Gtk.Style.Paint* methods to use a

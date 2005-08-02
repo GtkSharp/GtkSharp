@@ -31,25 +31,53 @@ namespace GLib {
 	using System.ComponentModel;
 	using System.Runtime.InteropServices;
 
-	public class Opaque : IWrapper {
+	public class Opaque : IWrapper, IDisposable {
 
 		IntPtr _obj;
+		bool owned;
+
+		// We don't have to do as much work here as GLib.Object.GetObject
+		// does; users can't subclass opaque types, so nothing bad will happen
+		// if we accidentally end up creating two wrappers for the same object.
+
 		static Hashtable Opaques = new Hashtable();
 
-		public static Opaque GetOpaque(IntPtr o)
+		public static Opaque GetOpaque (IntPtr o)
 		{
-			WeakReference reference = (WeakReference) Opaques[(int)o];
-			if (reference == null || !reference.IsAlive)
+			WeakReference reference = (WeakReference) Opaques[o];
+			if (reference == null)
 				return null;
+			if (!reference.IsAlive) {
+				Opaques.Remove (o);
+				return null;
+			}
 
 			return (Opaque) reference.Target;
   		}
   
-		public Opaque () {}
+		public static Opaque GetOpaque (IntPtr o, Type type, bool owned)
+		{
+			Opaque opaque = GetOpaque (o);
+			if (opaque != null) {
+				if (owned)
+					opaque.owned = true;
+				return opaque;
+			}
+
+			opaque = (Opaque)Activator.CreateInstance (type, new object[] { o });
+			opaque.owned = owned;
+			return opaque;
+  		}
+  
+		public Opaque ()
+		{
+			owned = true;
+		}
 
 		public Opaque (IntPtr raw)
 		{
 			Raw = raw;
+			owned = false;
 		}
 
 		protected IntPtr Raw {
@@ -57,14 +85,50 @@ namespace GLib {
 				return _obj;
 			}
 			set {
-				Opaques [value] = new WeakReference (this);
+				if (_obj != IntPtr.Zero) {
+					Opaques.Remove (_obj);
+					Unref (_obj);
+					if (owned)
+						Free (_obj);
+				}
 				_obj = value;
+				if (_obj != IntPtr.Zero) {
+					Ref (_obj);
+					Opaques [_obj] = new WeakReference (this);
+				}
 			}
 		}       
+
+		~Opaque ()
+		{
+			Dispose ();
+		}
+
+		public virtual void Dispose ()
+		{
+			Raw = IntPtr.Zero;
+			GC.SuppressFinalize (this);
+		}
+
+		// These take an IntPtr arg so we don't get conflicts if we need
+		// to have an "[Obsolete] public void Ref ()"
+
+		protected virtual void Ref (IntPtr raw) {}
+		protected virtual void Unref (IntPtr raw) {}
+		protected virtual void Free (IntPtr raw) {}
 
 		public IntPtr Handle {
 			get {
 				return _obj;
+			}
+		}
+
+		public bool Owned {
+			get {
+				return owned;
+			}
+			set {
+				owned = value;
 			}
 		}
 

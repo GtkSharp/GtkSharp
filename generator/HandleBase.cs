@@ -51,10 +51,27 @@ namespace GtkSharp.Generation {
 			return "Handle";
 		}
 
+		public abstract string FromNative (string var, bool owned);
+
+		public override string FromNative (string var)
+		{
+			return FromNative (var, false);
+		}
+
+		public string FromNativeReturn (string var, bool owned)
+		{
+			return FromNative (var, owned);
+		}
+
+		public override string FromNativeReturn (string var)
+		{
+			return FromNativeReturn (var, false);
+		}
+
 		public void WriteAccessors (StreamWriter sw, string indent, string var)
 		{
 			sw.WriteLine (indent + "get {");
-			sw.WriteLine (indent + "\treturn " + FromNative (var) + ";");
+			sw.WriteLine (indent + "\treturn " + FromNative (var, false) + ";");
 			sw.WriteLine (indent + "}");
 			sw.WriteLine (indent + "set {");
 			sw.WriteLine (indent + "\t" + var + " = " + CallByName ("value") + ";");

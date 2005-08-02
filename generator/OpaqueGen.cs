@@ -30,9 +30,9 @@ namespace GtkSharp.Generation {
 
 		public OpaqueGen (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 	
-		public override string FromNative(string var)
+		public override string FromNative(string var, bool owned)
 		{
-			return var + " == IntPtr.Zero ? null : new " + QualifiedName + "(" + var + ")";
+			return var + " == IntPtr.Zero ? null : (" + QualifiedName + ") GLib.Opaque.GetOpaque (" + var + ", typeof (" + QualifiedName + "), " + (owned ? "true" : "false") + ")";
 		}
 
 		private bool DisableRawCtor {
@@ -58,6 +58,9 @@ namespace GtkSharp.Generation {
 
 			SymbolTable table = SymbolTable.Table;
 
+			Method ref_, unref, dispose;
+			GetSpecialMethods (out ref_, out unref, out dispose);
+
 			sw.Write ("\tpublic class " + Name);
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
 			if (cs_parent != "")
@@ -70,6 +73,54 @@ namespace GtkSharp.Generation {
 			GenFields (gen_info);
 			GenMethods (gen_info, null, null);
 			GenCtors (gen_info);
+
+			if (ref_ != null) {
+				ref_.GenerateImport (sw);
+				sw.WriteLine ("\t\tprotected override void Ref (IntPtr raw)");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\t" + ref_.CName + " (raw);");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+
+				if (ref_.IsDeprecated) {
+					sw.WriteLine ("\t\t[Obsolete(\"" + QualifiedName + " is now refcounted automatically\")]");
+					if (ref_.ReturnType == "void")
+						sw.WriteLine ("\t\tpublic void Ref () {}");
+					else
+						sw.WriteLine ("\t\tpublic " + Name + " Ref () { return this; }");
+					sw.WriteLine ();
+				}
+			}
+			if (unref != null) {
+				unref.GenerateImport (sw);
+				sw.WriteLine ("\t\tprotected override void Unref (IntPtr raw)");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\t" + unref.CName + " (raw);");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+
+				if (unref.IsDeprecated) {
+					sw.WriteLine ("\t\t[Obsolete(\"" + QualifiedName + " is now refcounted automatically\")]");
+					sw.WriteLine ("\t\tpublic void Unref () {}");
+					sw.WriteLine ();
+				}	
+			}
+
+			if (dispose != null) {
+				dispose.GenerateImport (sw);
+				sw.WriteLine ("\t\tprotected override void Free (IntPtr raw)");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\t" + dispose.CName + " (raw);");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+
+				if (dispose.IsDeprecated) {
+					sw.WriteLine ("\t\t[Obsolete(\"" + QualifiedName + " is now freed automatically\")]");
+					sw.WriteLine ("\t\tpublic void " + dispose.Name + " () {}");
+					sw.WriteLine ();
+				}	
+			}
+
 			sw.WriteLine ("#endregion");
 			
 			AppendCustom(sw, gen_info.CustomDir);
@@ -80,6 +131,34 @@ namespace GtkSharp.Generation {
 			sw.Close ();
 			gen_info.Writer = null;
 			Statistics.OpaqueCount++;
+		}
+
+		void GetSpecialMethods (out Method ref_, out Method unref, out Method dispose)
+		{
+			ref_ = CheckSpecialMethod (GetMethod ("Ref"));
+			unref = CheckSpecialMethod (GetMethod ("Unref"));
+
+			dispose = GetMethod ("Free");
+			if (dispose == null) {
+				dispose = GetMethod ("Destroy");
+				if (dispose == null)
+					dispose = GetMethod ("Dispose");
+			}
+			dispose = CheckSpecialMethod (dispose);
+		}
+
+		Method CheckSpecialMethod (Method method)
+		{
+			if (method == null)
+				return null;
+			if (method.ReturnType != "void" &&
+			    method.ReturnType != QualifiedName)
+				return null;
+			if (method.Signature.ToString () != "")
+				return null;
+
+			methods.Remove (method.Name);
+			return method;
 		}
 
 		protected override void GenCtors (GenerationInfo gen_info)

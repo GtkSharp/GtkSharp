@@ -213,10 +213,10 @@ namespace GtkSharp.Generation {
 						sw.WriteLine("\t\t\tif (arg{0} == IntPtr.Zero)", idx);
 						sw.WriteLine("\t\t\t\targs.Args[{0}] = null;", idx - 1);
 						sw.WriteLine("\t\t\telse {");
-						sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+						sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + p.FromNative ("arg" + idx)  + ";");
 						sw.WriteLine("\t\t\t}");
 					} else
-						sw.WriteLine("\t\t\targs.Args[" + (idx - 1) + "] = " + igen.FromNative ("arg" + idx)  + ";");
+						sw.WriteLine("\t\t\targs.Args[" + (idx - 1) + "] = " + p.FromNative ("arg" + idx)  + ";");
 				}
 				if (p.PassAs != "")
 					finish += "\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
@@ -316,7 +316,7 @@ namespace GtkSharp.Generation {
 							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.MarshalType + ")));");
 
 						sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + "_ptr);");
-						cleanup += "\t\t\t" + p.Name + " = " + p.Generatable.FromNative ("(" + p.MarshalType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.MarshalType + "))") + ";\n";
+						cleanup += "\t\t\t" + p.Name + " = " + p.FromNative ("(" + p.MarshalType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.MarshalType + "))") + ";\n";
 						cleanup += "\t\t\tMarshal.FreeHGlobal (" + p.Name + "_ptr);\n";
 					}
 				} else if (p.IsLength && parms [i - 1].IsString)

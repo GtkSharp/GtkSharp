@@ -28,9 +28,9 @@ namespace GtkSharp.Generation {
 
 		protected ObjectBase (XmlElement ns, XmlElement elem) : base (ns, elem) {}
 					
-		public override string FromNative(string var)
+		public override string FromNative (string var, bool owned)
 		{
-			return "GLib.Object.GetObject(" + var + ") as " + QualifiedName;
+			return "GLib.Object.GetObject(" + var + (owned ? ", true" : "") + ") as " + QualifiedName;
 		}
 	}
 }

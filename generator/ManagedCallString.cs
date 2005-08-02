@@ -40,7 +40,7 @@ namespace GtkSharp.Generation {
 
 				IGeneratable igen = p.Generatable;
 				if ((igen is StructGen || p.PassAs != "") &&
-				    (p.Name != igen.FromNative (p.Name)))
+				    (p.Name != p.FromNative (p.Name)))
 					this.special.Add (true);
 				else
 					this.special.Add (false);
@@ -60,7 +60,7 @@ namespace GtkSharp.Generation {
 
 				ret += indent + igen.QualifiedName + " my" + p.Name;
 				if (igen is StructGen || p.PassAs == "ref")
-					ret += " = " + igen.FromNative (p.Name);
+					ret += " = " + p.FromNative (p.Name);
 				ret += ";\n";
 			}
 
@@ -76,9 +76,8 @@ namespace GtkSharp.Generation {
 
 			for (int i = 0; i < parms.Count; i ++) {
 				Parameter p = parms [i] as Parameter;
-				IGeneratable igen = p.Generatable;
 				result [i] = p.PassAs == "" ? "" : p.PassAs + " ";
-				result [i] += ((bool)special[i]) ? "my" + p.Name : igen.FromNative (p.Name);
+				result [i] += ((bool)special[i]) ? "my" + p.Name : p.FromNative (p.Name);
 			}
 
 			return String.Join (", ", result);

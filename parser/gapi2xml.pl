@@ -836,6 +836,9 @@ sub addReturnElem
 	my $ret_elem = $doc->createElement('return-type');
 	$parent->appendChild($ret_elem);
 	$ret_elem->setAttribute('type', $ret);
+	if ($parent->getAttribute('name') eq "Copy" && $ret =~ /\*$/) {
+		$ret_elem->setAttribute('owned', 'true');
+	}
 	return $ret_elem;
 }
 

@@ -82,6 +82,7 @@
 			if (raw_ret) {
 				column = (Gtk.TreeViewColumn) GLib.Object.GetObject (columnHandle, false);
 				path = new TreePath (pathHandle);
+				path.Owned = true;
 			} else {
 				path = null;
 				column = null;
@@ -96,9 +97,10 @@
 			IntPtr pathHandle;
 			IntPtr columnHandle;
 			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
-			if (raw_ret)
+			if (raw_ret) {
 				path = new TreePath (pathHandle);
-			else
+				path.Owned = true;
+			} else
 				path = null;
 
 			return raw_ret;
@@ -111,6 +113,7 @@
 			bool raw_ret = gtk_tree_view_get_path_at_pos_intptr (Handle, x, y, out pathHandle, out columnHandle, IntPtr.Zero, IntPtr.Zero);
 			if (raw_ret) {
 				path = new TreePath (pathHandle);
+				path.Owned = true;
 				column = (Gtk.TreeViewColumn) GLib.Object.GetObject (columnHandle, false);
 			} else {
 				path = null;

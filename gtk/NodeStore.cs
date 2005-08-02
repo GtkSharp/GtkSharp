@@ -451,6 +451,8 @@ namespace Gtk {
 			idx = Nodes.IndexOf (node);
 			if (idx < 0) throw new Exception ("Node not found in Nodes list");
 			path.PrependIndex (idx);
+
+			path.Owned = false;
 			return path;
 		}
 

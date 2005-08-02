@@ -30,3 +30,14 @@ public void Write (string buffer)
 
 	gtk_html_stream_write (Handle, bytes, new UIntPtr ((ulong)bytes.Length));
 }
+
+// We hide this method and then reimplement it by hand to keep OpaqueGen from using
+// it in Dispose(), since calling it after a Close() will result in a crash.
+
+[DllImport("gtkhtml-3.0")]
+static extern void gtk_html_stream_destroy (IntPtr stream);
+
+public void Destroy ()
+{
+	gtk_html_stream_destroy (Handle);
+}

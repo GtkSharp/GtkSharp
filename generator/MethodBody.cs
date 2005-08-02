@@ -183,7 +183,7 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = p.Generatable;
 
 				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + gen.FromNative (p.Name + "_as_native") + ";");
+					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + p.FromNative (p.Name + "_as_native") + ";");
 				else if (p.IsArray && gen is IManualMarshaler) {
 					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < native_" + p.Name + ".Length; i++)");
 					sw.WriteLine(indent + "\t\t\t\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + p.Name + "[i]") + ";");

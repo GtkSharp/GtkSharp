@@ -29,6 +29,7 @@
 			desc = new FontDescription ();
 			IntPtr language_handle, list_handle;
 			pango_attr_iterator_get_font (Handle, desc.Handle, out language_handle, out list_handle);
+			desc.Family = desc.Family; // change static string to allocated one
 			language = language_handle == IntPtr.Zero ? null : new Language (language_handle);
 			if (list_handle == IntPtr.Zero) {
 				extra_attrs = new Pango.Attribute [0];

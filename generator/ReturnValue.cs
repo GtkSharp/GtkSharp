@@ -131,9 +131,10 @@ namespace GtkSharp.Generation {
 				string type_str = "typeof (" + ElementType + ")";
 				string args = type_str + ", " + (Owned ? "true" : "false") + ", " + (ElementsOwned ? "true" : "false");
 				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + args), type_str);
-			} else if (Owned)
-				var += ", true";
-			return IGen.FromNativeReturn (var);
+			} else if (IGen is HandleBase)
+				return ((HandleBase)IGen).FromNative (var, Owned);
+			else
+				return IGen.FromNativeReturn (var);
 		}
 			
 		public bool Validate ()
