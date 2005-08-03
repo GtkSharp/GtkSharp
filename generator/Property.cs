@@ -112,6 +112,8 @@ namespace GtkSharp.Generation {
 				v_type = "(GLib.Object)";
 			} else if (table.IsOpaque (CType)) {
 				v_type = "(GLib.Opaque)";
+			} else if (table.IsEnum (CType)) {
+				v_type = "(Enum)";
 			}
 
 			GenerateImports (gen_info, indent);
