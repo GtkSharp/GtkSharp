@@ -7,12 +7,14 @@ ASSEMBLY_VERSION=2.6.0.0
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-sed -e "s/@GTK_SHARP_VERSION@/$GTK_SHARP_VERSION/" -e 's/@GTK_REQUIRED_VERSION@/2.6.0/' -e 's/@VERSIONCSDEFINES@/-define:GTK_SHARP_2_6/' -e 's/@VERSIONCFLAGS@/-DGTK_SHARP_2_6/' -e "s/@ASSEMBLY_VERSION@/$ASSEMBLY_VERSION/" $srcdir/configure.in.in > $srcdir/configure.in
+sed -e "s/@GTK_SHARP_VERSION@/$GTK_SHARP_VERSION/" -e 's/@GTK_REQUIRED_VERSION@/2.6.0/' -e 's/@GNOME_REQUIRED_VERSION@/2.10.0/' -e 's/@VERSIONCSDEFINES@/-define:GTK_SHARP_2_6/' -e 's/@VERSIONCFLAGS@/-DGTK_SHARP_2_6/' -e "s/@ASSEMBLY_VERSION@/$ASSEMBLY_VERSION/" $srcdir/configure.in.in > $srcdir/configure.in
 
 ln -f $srcdir/pango/pango-api-2.6.raw $srcdir/pango/pango-api.raw
 ln -f $srcdir/atk/atk-api-2.6.raw $srcdir/atk/atk-api.raw
 ln -f $srcdir/gdk/gdk-api-2.6.raw $srcdir/gdk/gdk-api.raw
 ln -f $srcdir/gtk/gtk-api-2.6.raw $srcdir/gtk/gtk-api.raw
+ln -f $srcdir/gnomevfs/gnome-vfs-api-2.10.raw $srcdir/gnomevfs/gnome-vfs-api.raw
+ln -f $srcdir/gnome/gnome-api-2.10.raw $srcdir/gnome/gnome-api.raw
 
 DIE=0
 
