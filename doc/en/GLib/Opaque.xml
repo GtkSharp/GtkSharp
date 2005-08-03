@@ -1,5 +1,5 @@
 <Type Name="Opaque" FullName="GLib.Opaque">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public class Opaque : GLib.IWrapper" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Opaque : GLib.IWrapper, System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -17,6 +17,9 @@
   <Interfaces>
     <Interface>
       <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
     </Interface>
   </Interfaces>
   <Members>
@@ -88,7 +91,94 @@
         <remarks>Only subclasses of Opaque can access this read/write property.</remarks>
       </Docs>
     </Member>
-    
-    
+    <Member MemberName="GetOpaque">
+      <MemberSignature Language="C#" Value="public static GLib.Opaque GetOpaque (IntPtr o, Type type, bool owned);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Opaque</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.IntPtr" />
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="owned" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <summary>Used to obtain a CLI typed object associated with a given raw pointer.</summary>
+        <param name="o">a <see cref="T:System.IntPtr" /></param>
+        <param name="type">a <see cref="T:System.Type" /></param>
+        <param name="owned">a <see cref="T:System.Boolean" /></param>
+        <returns>a <see cref="T:GLib.Object" /></returns>
+        <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return opaque type pointers.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Disposes the raw object.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Ref">
+      <MemberSignature Language="C#" Value="protected virtual void Ref (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">The raw pointer.</param>
+        <summary>Overridden in generated subclasses that perform refcounting.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Unref">
+      <MemberSignature Language="C#" Value="protected virtual void Unref (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">The raw pointer.</param>
+        <summary>Overridden in generated subclasses that perform refcounting.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="protected virtual void Free (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">The raw pointer.</param>
+        <summary>Overridden in generated subclasses to free the raw data.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Owned">
+      <MemberSignature Language="C#" Value="public bool Owned { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether or not this <see cref="T:GLib.Opaque" /> wrapper owns the raw object.</summary>
+        <value><see langword="true" /> if the wrapper owns the raw object.</value>
+        <remarks>By default, this is set to <see langword="true" /> for opaque objects created with the no-argument constructor, and <see langword="false" /> for opaque objects created with the <see cref="T:System.IntPtr" /> constructor. Methods that return an opaque object can override this by setting the <see cref="M:GLib.Opaque.Owned" /> property accordingly to obey the memory-management conventions of the underlying C code.</remarks>
+      </Docs>
+    </Member>
   </Members>
 </Type>
