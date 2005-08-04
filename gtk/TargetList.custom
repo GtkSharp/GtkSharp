@@ -34,3 +34,17 @@
 		public void Remove(string target) {
 			Remove(Gdk.Atom.Intern (target, false));
 		}
+
+		[DllImport("gtksharpglue-2")]
+		static extern int gtksharp_target_list_length (IntPtr list);
+
+		[DllImport("gtksharpglue-2")]
+		static extern void gtksharp_target_list_to_entry_array (IntPtr list, [In, Out] TargetEntry[] entries);
+
+		public static explicit operator TargetEntry[] (TargetList list)
+		{
+			int length = gtksharp_target_list_length (list.Handle);
+			TargetEntry[] entries = new TargetEntry[length];
+			gtksharp_target_list_to_entry_array (list.Handle, entries);
+			return entries;
+		}
