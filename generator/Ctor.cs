@@ -76,12 +76,15 @@ namespace GtkSharp.Generation {
 
 			Body.Initialize(gen_info, false, false, ""); 
 
-			sw.Write("\t\t\treturn ");
+			sw.Write("\t\t\t" + name + " result = ");
 			if (container_type is StructBase)
 				sw.Write ("{0}.New (", name);
 			else
 				sw.Write ("new {0} (", name);
 			sw.WriteLine (CName + "(" + Body.GetCallString (false) + "));");
+			Body.Finish (sw, ""); 
+			Body.HandleException (sw, ""); 
+			sw.WriteLine ("\t\t\treturn result;");
 		}
 
 		public void Generate (GenerationInfo gen_info)
