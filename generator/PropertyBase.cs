@@ -86,7 +86,7 @@ namespace GtkSharp.Generation {
 				if (getter == null) {
 					getter = container_type.GetMethod ("Get" + Name);
 					if (getter != null && getter.Name == "Get" + Name &&
-					    getter.Validate () && getter.IsGetter)
+					    getter.IsGetter)
 						cstype = getter.ReturnType;
 					else
 						getter = null;
@@ -101,7 +101,7 @@ namespace GtkSharp.Generation {
 				if (setter == null) {
 					setter = container_type.GetMethod ("Set" + Name);
 					if (setter != null && setter.Name == "Set" + Name &&
-					    setter.Validate () && setter.IsSetter)
+					    setter.IsSetter)
 						cstype = setter.Signature.Types;
 					else
 						setter = null;

@@ -39,6 +39,23 @@ namespace GtkSharp.Generation {
 			parms.HideData = true;
 		}
 
+		public override bool Validate ()
+		{
+			if (!retval.Validate ()) {
+				Console.WriteLine ("rettype: " + retval.CType + " in callback " + CName);
+				Statistics.ThrottledCount++;
+				return false;
+			}
+
+			if (!parms.Validate ()) {
+				Console.WriteLine (" in callback " + CName);
+				Statistics.ThrottledCount++;
+				return false;
+			}
+
+			return true;
+		}
+
 		public override string MarshalType {
 			get {
 				return NS + "Sharp." + Name + "Native";
@@ -173,16 +190,6 @@ namespace GtkSharp.Generation {
 		public override void Generate (GenerationInfo gen_info)
 		{
 			gen_info.CurrentType = Name;
-			if (!retval.Validate ()) {
-				Console.WriteLine("rettype: " + retval.CType + " in callback " + CName);
-				Statistics.ThrottledCount++;
-				return;
-			}
-
-			if (!parms.Validate ()) {
-				Console.WriteLine(" in callback " + CName + " **** Stubbing it out ****");
-				Statistics.ThrottledCount++;
-			}
 
 			sig = new Signature (parms);
 

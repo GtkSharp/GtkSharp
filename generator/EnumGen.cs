@@ -50,7 +50,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		
+		public override bool Validate ()
+		{
+			return true;
+		}
+
 		public override string MarshalType {
 			get {
 				return "int";

@@ -31,7 +31,6 @@ namespace GtkSharp.Generation {
 		
 		private ReturnValue retval;
 
-		private bool initialized = false;
 		private string call;
 		private string name;
 		private string protection = "public";
@@ -90,30 +89,18 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		private bool Initialize ()
+		public override bool Validate ()
 		{
-			if (initialized)
-				return true;
+			if (!retval.Validate () || !base.Validate ()) {
+				Console.Write(" in method " + Name + " ");
+				return false;
+			}
 
 			Parameters parms = Parameters;
 			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
 			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
-			
+
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
-
-			initialized = true;
-			return true;
-		}
-		
-		public override bool Validate ()
-		{
-			if (!base.Validate () || !Initialize ())
-				return false;
-
-			if (!retval.Validate ()) {
-				Console.Write(" in method " + Name + " ");
-				return false;
-			}
 
 			return true;
 		}
@@ -150,7 +137,7 @@ namespace GtkSharp.Generation {
 				sw.Write("override ");
 			else if (Name == "GetGType" && container_type is ObjectGen)
 				sw.Write("new ");
-			else if (Modifiers == "new " || (dup != null && dup.Initialize () && ((dup.Signature != null && Signature != null && dup.Signature.ToString() == Signature.ToString()) || (dup.Signature == null && Signature == null))))
+			else if (Modifiers == "new " || (dup != null && ((dup.Signature != null && Signature != null && dup.Signature.ToString() == Signature.ToString()) || (dup.Signature == null && Signature == null))))
 				sw.Write("new ");
 
 			if (is_get || is_set) {
@@ -173,16 +160,13 @@ namespace GtkSharp.Generation {
 
 		public void GenerateDecl (StreamWriter sw)
 		{
-			if (!Initialize ()) 
-				return;
-
 			if (IsStatic)
 				return;
 
 			if (is_get || is_set)
 			{
 				Method comp = GetComplement ();
-				if (comp != null && comp.Validate () && is_set)
+				if (comp != null && is_set)
 					return;
 			
 				sw.Write("\t\t");
@@ -225,9 +209,6 @@ namespace GtkSharp.Generation {
 		{
 			Method comp = null;
 
-			if (!Initialize ()) 
-				return;
-
 			gen_info.CurrentMember = Name;
 			if (implementor != null && IsStatic)
 				return;
@@ -238,13 +219,14 @@ namespace GtkSharp.Generation {
 				if (Modifiers != "new " && container_type.GetPropertyRecursively (Name.Substring (3)) != null)
 					return;
 				comp = GetComplement ();
-				if (comp != null && comp.Validate () && is_set && Parameters.AccessorReturnType == comp.ReturnType)
-					return;
-				if (comp != null && is_set && Parameters.AccessorReturnType != comp.ReturnType)
-				{
-					is_set = false;
-					call = "(Handle, " + Body.GetCallString (false) + ")";
-					comp = null;
+				if (comp != null && is_set) {
+					if (Parameters.AccessorReturnType == comp.ReturnType)
+						return;
+					else {
+						is_set = false;
+						call = "(Handle, " + Body.GetCallString (false) + ")";
+						comp = null;
+					}
 				}
 				/* some setters take more than one arg */
 				if (comp != null && !comp.is_set)

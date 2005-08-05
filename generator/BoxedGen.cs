@@ -33,9 +33,6 @@ namespace GtkSharp.Generation {
 		{
 			gen_info.CurrentType = Name;
 
-			if (!Validate ())
-				return;
-
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
 			base.Generate (gen_info);
 			sw.WriteLine ("\t\t[DllImport(\"glibsharpglue-2\")]");

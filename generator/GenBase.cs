@@ -116,6 +116,8 @@ namespace GtkSharp.Generation {
 			return CallByName (var);
 		}
 
+		public abstract bool Validate ();
+
 		public void Generate ()
 		{
 			GenerationInfo geninfo = new GenerationInfo (ns);

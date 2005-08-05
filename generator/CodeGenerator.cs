@@ -89,6 +89,16 @@ namespace GtkSharp.Generation {
 					gens.AddRange (curr_gens);
 			}
 
+			// Now that everything is loaded, validate all the to-be-
+			// generated generatables and then remove the invalid ones.
+			ArrayList invalids = new ArrayList ();
+			foreach (IGeneratable gen in gens) {
+				if (!gen.Validate ())
+					invalids.Add (gen);
+			}
+			foreach (IGeneratable gen in invalids)
+				gens.Remove (gen);
+
 			GenerationInfo gen_info = null;
 			if (dir != "" || assembly_name != "" || glue_filename != "" || glue_includes != "" || gluelib_name != "")
 				gen_info = new GenerationInfo (dir, custom_dir, assembly_name, glue_filename, glue_includes, gluelib_name);

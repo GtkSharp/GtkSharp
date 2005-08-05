@@ -96,6 +96,11 @@ namespace GtkSharp.Generation {
 			return CallByName (var);
 		}
 
+		public bool Validate ()
+		{
+			return true;
+		}
+
 		public void Generate ()
 		{
 		}

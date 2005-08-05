@@ -1,5 +1,28 @@
 2005-08-04  Dan Winship  <danw@novell.com>
 
+	Change the way generatable validation works. Some generatable
+	properties can't be set until Validate-time (eg, Method.IsGetter),
+	but it's annoying for every potential user of those properties to
+	have to make sure it has Validated the generatable first. So now
+	we add an explicit Validate() step after everything is loaded but
+	before anything is Generated, so that at Generation time,
+	everything can be assumed to have been Validated.
+
+	* generator/IGeneratable.cs: add "bool Validate()"
+
+	* generator/CodeGenerator.cs (Main): after loading all of the
+	generatables, DeAlias the SymbolTable, Validate() all the
+	generatables, and discard any invalid ones.
+
+	* generator/*.cs: Implement Validate() trivially in generatables
+	that didn't implement it before. Move Validate() calls from
+	Generate() to Validate(). Remove non-hierarchical Validate()
+	calls.
+
+	* generator/SymbolTable.cs: GPtrArray is IntPtr, not IntPtr[]
+	
+2005-08-04  Dan Winship  <danw@novell.com>
+
 	* gtk/TargetList.custom: add an operator for casting to
 	TargetEntry[], so you can use methods like
 	TargetList.AddTextTargets() in situations where you need a

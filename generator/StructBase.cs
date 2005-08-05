@@ -131,7 +131,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public bool Validate ()
+		public override bool Validate ()
 		{
 			foreach (StructField field in fields) {
 				if (!field.Validate ()) {
@@ -141,7 +141,7 @@ namespace GtkSharp.Generation {
 				}
 			}
 
-			return true;
+			return base.Validate ();
 		}
 
 		public override void Generate (GenerationInfo gen_info)

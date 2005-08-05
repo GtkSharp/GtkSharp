@@ -111,7 +111,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GC", "IntPtr"));
 			AddType (new SimpleGen ("GError", "IntPtr"));
 			AddType (new SimpleGen ("GMemChunk", "IntPtr"));
-			AddType (new SimpleGen ("GPtrArray", "IntPtr[]"));
+			AddType (new SimpleGen ("GPtrArray", "IntPtr"));
 			AddType (new SimpleGen ("GTimeVal", "IntPtr"));
 			AddType (new SimpleGen ("GClosure", "IntPtr"));
 			AddType (new SimpleGen ("GArray", "IntPtr"));

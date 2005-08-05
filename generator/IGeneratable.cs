@@ -56,6 +56,8 @@ namespace GtkSharp.Generation {
 		// Generates an expression to convert var to ToNativeReturnType
 		string ToNativeReturn (string var);
 
+		bool Validate ();
+
 		void Generate ();
 
 		void Generate (GenerationInfo gen_info);

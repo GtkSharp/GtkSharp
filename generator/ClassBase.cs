@@ -123,6 +123,77 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override bool Validate ()
+		{
+			if (Parent != null && !Parent.Validate ())
+				return false;
+			foreach (string iface in interfaces) {
+				IGeneratable gen = SymbolTable.Table[iface];
+				if (!(gen is InterfaceGen)) {
+					Console.WriteLine (QualifiedName + " implements unknown GInterface " + iface);
+					return false;
+				}
+				if (!gen.Validate ()) {
+					Console.WriteLine (QualifiedName + " implements invalid GInterface " + iface);
+					return false;
+				}
+			}
+
+			ArrayList invalids = new ArrayList ();
+
+			foreach (Property prop in props.Values) {
+				if (!prop.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (prop);
+				}
+			}
+			foreach (Property prop in invalids)
+				props.Remove (prop.Name);
+			invalids.Clear ();
+
+			foreach (Signal sig in sigs.Values) {
+				if (!sig.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (sig);
+				}
+			}
+			foreach (Signal sig in invalids)
+				sigs.Remove (sig.Name);
+			invalids.Clear ();
+
+			foreach (ObjectField field in fields.Values) {
+				if (!field.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (field);
+				}
+			}
+			foreach (ObjectField field in invalids)
+				fields.Remove (field.Name);
+			invalids.Clear ();
+
+			foreach (Method method in methods.Values) {
+				if (!method.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (method);
+				}
+			}
+			foreach (Method method in invalids)
+				methods.Remove (method.Name);
+			invalids.Clear ();
+
+			foreach (Ctor ctor in ctors) {
+				if (!ctor.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (ctor);
+				}
+			}
+			foreach (Ctor ctor in invalids)
+				ctors.Remove (ctor);
+			invalids.Clear ();
+
+			return true;
+		}
+
 		public bool IsDeprecated {
 			get {
 				return deprecated;
@@ -161,12 +232,8 @@ namespace GtkSharp.Generation {
 			if (props.Count == 0)
 				return;
 
-			foreach (Property prop in props.Values) {
-				if (prop.Validate ())
-					prop.Generate (gen_info, "\t\t", implementor);
-				else
-					Console.WriteLine("in Object " + QualifiedName);
-			}
+			foreach (Property prop in props.Values)
+				prop.Generate (gen_info, "\t\t", implementor);
 		}
 
 		public void GenSignals (GenerationInfo gen_info, ClassBase implementor)
@@ -174,22 +241,14 @@ namespace GtkSharp.Generation {
 			if (sigs == null)
 				return;
 
-			foreach (Signal sig in sigs.Values) {
-				if (sig.Validate ())
-					sig.Generate (gen_info, implementor);
-				else
-					Console.WriteLine("in Object " + QualifiedName);
-			}
+			foreach (Signal sig in sigs.Values)
+				sig.Generate (gen_info, implementor);
 		}
 
 		protected void GenFields (GenerationInfo gen_info)
 		{
-			foreach (ObjectField field in fields.Values) {
-				if (field.Validate ())
-					field.Generate (gen_info, "\t\t");
-				else
-					Console.WriteLine("in Object " + QualifiedName);
-			}
+			foreach (ObjectField field in fields.Values)
+				field.Generate (gen_info, "\t\t");
 		}
 
 		private void ParseImplements (XmlElement member)
@@ -222,25 +281,18 @@ namespace GtkSharp.Generation {
 				if (IgnoreMethod (method))
 				    	continue;
 
-				if (method.Validate ())
-				{
-					string oname = null, oprotection = null;
-					if (collisions != null && collisions.Contains (method.Name))
-					{
-						oname = method.Name;
-						oprotection = method.Protection;
-						method.Name = QualifiedName + "." + method.Name;
-						method.Protection = "";
-					}
-					method.Generate (gen_info, implementor);
-					if (oname != null)
-					{
-						method.Name = oname;
-						method.Protection = oprotection;
-					}
+				string oname = null, oprotection = null;
+				if (collisions != null && collisions.Contains (method.Name)) {
+					oname = method.Name;
+					oprotection = method.Protection;
+					method.Name = QualifiedName + "." + method.Name;
+					method.Protection = "";
 				}
-				else
-					Console.WriteLine("in Object " + QualifiedName);
+				method.Generate (gen_info, implementor);
+				if (oname != null) {
+					method.Name = oname;
+					method.Protection = oprotection;
+				}
 			}
 		}
 
@@ -357,19 +409,16 @@ namespace GtkSharp.Generation {
 			clash_map = new Hashtable();
 
 			foreach (Ctor ctor in ctors) {
-				if (ctor.Validate ()) {
-					if (clash_map.Contains (ctor.Signature.Types)) {
-						Ctor clash = clash_map [ctor.Signature.Types] as Ctor;
-						Ctor alter = ctor.Preferred ? clash : ctor;
-						alter.IsStatic = true;
-						if (Parent != null && Parent.HasStaticCtor (alter.StaticName))
-							alter.Modifiers = "new ";
-					} else
-						clash_map [ctor.Signature.Types] = ctor;
-
-					valid_ctors.Add (ctor);
+				if (clash_map.Contains (ctor.Signature.Types)) {
+					Ctor clash = clash_map [ctor.Signature.Types] as Ctor;
+					Ctor alter = ctor.Preferred ? clash : ctor;
+					alter.IsStatic = true;
+					if (Parent != null && Parent.HasStaticCtor (alter.StaticName))
+						alter.Modifiers = "new ";
 				} else
-					Console.WriteLine("in Type " + QualifiedName);
+					clash_map [ctor.Signature.Types] = ctor;
+
+				valid_ctors.Add (ctor);
 			}
 
 			ctors = valid_ctors;

@@ -71,6 +71,22 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override bool Validate ()
+		{
+			ArrayList invalids = new ArrayList ();
+
+			foreach (ChildProperty prop in childprops.Values) {
+				if (!prop.Validate ()) {
+					Console.WriteLine ("in Object " + QualifiedName);
+					invalids.Add (prop);
+				}
+			}
+			foreach (ChildProperty prop in invalids)
+				childprops.Remove (prop);
+
+			return base.Validate ();
+		}
+
 		private bool DisableVoidCtor {
 			get {
 				return Elem.HasAttribute ("disable_void_ctor");
@@ -274,12 +290,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tprotected internal " + Name + "Child (Gtk.Container parent, Gtk.Widget child) : base (parent, child) {}");
 			sw.WriteLine ("");
 
-			foreach (ChildProperty prop in childprops.Values) {
-				if (prop.Validate ())
-					prop.Generate (gen_info, "\t\t\t", null);
-				else
-					Console.WriteLine("in Object " + QualifiedName);
-			}
+			foreach (ChildProperty prop in childprops.Values)
+				prop.Generate (gen_info, "\t\t\t", null);
 
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ("");

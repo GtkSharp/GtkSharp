@@ -171,11 +171,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t// signals");
 			foreach (Signal sig in sigs.Values) {
-				if (sig.Validate ()) {
-					sig.GenerateDecl (sw);
-					sig.GenEventHandler (gen_info);
-				} else
-					Console.WriteLine ("of interface " + QualifiedName);
+				sig.GenerateDecl (sw);
+				sig.GenEventHandler (gen_info);
 			}
 		}
 
@@ -204,17 +201,14 @@ namespace GtkSharp.Generation {
 				//if (IgnoreMethod (method))
 					//continue;
 
-				if (method.Validate ()) {
-					if (!vm_decls.Contains (method.Declaration) && method.Name != "GetGType") {
-						if (need_comment) {
-							sw.WriteLine ();
-							sw.WriteLine ("\t\t// non-virtual methods");
-							need_comment = false;
-						}
-						method.GenerateDecl (sw);
+				if (!vm_decls.Contains (method.Declaration) && method.Name != "GetGType") {
+					if (need_comment) {
+						sw.WriteLine ();
+						sw.WriteLine ("\t\t// non-virtual methods");
+						need_comment = false;
 					}
-				} else
-					Console.WriteLine ("of interface " + QualifiedName);
+					method.GenerateDecl (sw);
+				}
 			}
 		}
 
@@ -271,28 +265,18 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			
 			foreach (Signal sig in sigs.Values) {
-				if (sig.Validate ()) {
-					sig.GenerateDecl (sw);
-					sig.GenEventHandler (gen_info);
-				} else
-					Console.WriteLine ("of interface " + QualifiedName);
+				sig.GenerateDecl (sw);
+				sig.GenEventHandler (gen_info);
 			}
 
 			foreach (Method method in methods.Values) {
-				if (method.Validate ()) {
-					if (IgnoreMethod (method))
-						continue;
-					method.GenerateDecl (sw);
-				} else
-					Console.WriteLine ("of interface " + QualifiedName);
+				if (IgnoreMethod (method))
+					continue;
+				method.GenerateDecl (sw);
 			}
 
-			foreach (Property prop in props.Values) {
-				if (prop.Validate ())
-					prop.GenerateDecl (sw, "\t\t");
-				else
-					Console.WriteLine ("of interface " + QualifiedName);
-			}
+			foreach (Property prop in props.Values)
+				prop.GenerateDecl (sw, "\t\t");
 
 			AppendCustom (sw, gen_info.CustomDir);
 
