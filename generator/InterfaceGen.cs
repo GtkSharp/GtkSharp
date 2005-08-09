@@ -52,6 +52,23 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override bool ValidateForSubclass ()
+		{
+			ArrayList invalids = new ArrayList ();
+
+			foreach (Method method in methods.Values) {
+				if (!method.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (method);
+				}
+			}
+			foreach (Method method in invalids)
+				methods.Remove (method.Name);
+			invalids.Clear ();
+
+			return base.ValidateForSubclass ();
+		}
+
 		string IfaceName {
 			get {
 				return Name + "Iface";

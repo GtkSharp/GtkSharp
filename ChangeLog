@@ -1,5 +1,17 @@
 2005-08-09  Dan Winship  <danw@novell.com>
 
+	* generator/ClassBase.cs (Validate): Don't fully validate the
+	parent class and interfaces (because we don't want to see the
+	warnings about certain GtkWidget methods in every single library
+	that defines a widget, etc). Instead, use the new
+	ValidateForSubclass() method.
+	(ValidateForSubclass): only validate the signals
+
+	* generator/InterfaceGen.cs (ValidateForSubclass): for interfaces
+	we need to validate the methods too.
+
+2005-08-09  Dan Winship  <danw@novell.com>
+
 	* generator/OpaqueGen.cs (Generate): Tweak the generated Ref/Unref
 	a bit; only Ref the pointer if Owned is false (and then set it to
 	true), and vice versa for Unref.

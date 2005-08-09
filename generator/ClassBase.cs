@@ -125,15 +125,15 @@ namespace GtkSharp.Generation {
 
 		public override bool Validate ()
 		{
-			if (Parent != null && !Parent.Validate ())
+			if (Parent != null && !Parent.ValidateForSubclass ())
 				return false;
 			foreach (string iface in interfaces) {
-				IGeneratable gen = SymbolTable.Table[iface];
-				if (!(gen is InterfaceGen)) {
+				InterfaceGen igen = SymbolTable.Table[iface] as InterfaceGen;
+				if (igen == null) {
 					Console.WriteLine (QualifiedName + " implements unknown GInterface " + iface);
 					return false;
 				}
-				if (!gen.Validate ()) {
+				if (!igen.ValidateForSubclass ()) {
 					Console.WriteLine (QualifiedName + " implements invalid GInterface " + iface);
 					return false;
 				}
@@ -189,6 +189,23 @@ namespace GtkSharp.Generation {
 			}
 			foreach (Ctor ctor in invalids)
 				ctors.Remove (ctor);
+			invalids.Clear ();
+
+			return true;
+		}
+
+		public virtual bool ValidateForSubclass ()
+		{
+			ArrayList invalids = new ArrayList ();
+
+			foreach (Signal sig in sigs.Values) {
+				if (!sig.Validate ()) {
+					Console.WriteLine ("in type " + QualifiedName);
+					invalids.Add (sig);
+				}
+			}
+			foreach (Signal sig in invalids)
+				sigs.Remove (sig.Name);
 			invalids.Clear ();
 
 			return true;
