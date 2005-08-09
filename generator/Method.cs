@@ -148,8 +148,13 @@ namespace GtkSharp.Generation {
 				sw.Write(" ");
 				if (Name.StartsWith ("Get") || Name.StartsWith ("Set"))
 					sw.Write (Name.Substring (3));
-				else
-					sw.Write (Name);
+				else {
+					int dot = Name.LastIndexOf ('.');
+					if (dot != -1 && (Name.Substring (dot + 1, 3) == "Get" || Name.Substring (dot + 1, 3) == "Set"))
+						sw.Write (Name.Substring (0, dot + 1) + Name.Substring (dot + 4));
+					else
+						sw.Write (Name);
+				}
 				sw.WriteLine(" { ");
 			} else if (IsAccessor) {
 				sw.Write (Signature.AccessorType + " " + Name + "(" + Signature.AsAccessor + ")");

@@ -143,7 +143,7 @@ namespace GtkSharp.Generation {
 
 				SymbolTable table = SymbolTable.Table;
 				ClassBase ret_wrapper = table.GetClassGen (retval.CType);
-				if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen))
+				if (ret_wrapper != null && (ret_wrapper is ObjectGen || ret_wrapper is OpaqueGen || ret_wrapper is InterfaceGen))
 					sw.WriteLine ("(({0}) {1}).Handle;", retval.CSType, invoke);
 				else if (table.IsStruct (retval.CType) || table.IsBoxed (retval.CType)) {
 					// Shoot. I have no idea what to do here.
