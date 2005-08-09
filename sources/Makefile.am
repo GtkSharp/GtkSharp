@@ -3,8 +3,6 @@ EXTRA_DIST =				\
 	gtk-sharp-2.4-sources.xml	\
 	gtk-sharp-2.6-sources.xml	\
 	gtk-sharp-2.8-sources.xml	\
-	gda.patch			\
-	gnomedb.patch			\
 	gtkclipboard.patch 		\
 	gtk_tree_model_signal_fix.patch \
 	gtkhtml-font-style-enum.patch
@@ -50,8 +48,6 @@ GNOME_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libglade-2.3.6.tar.bz2		\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libart_lgpl-2.3.16.tar.bz2	\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/librsvg-2.6.4.tar.bz2         	\
-	http://ftp.gnome.org/pub/GNOME/sources/libgda/1.0/libgda-1.0.0.tar.bz2			\
-	http://ftp.gnome.org/pub/GNOME/sources/libgnomedb/1.0/libgnomedb-1.0.0.tar.bz2		\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/vte-0.11.10.tar.bz2
 
 GTKHTML_SOURCEFILES = \
@@ -108,6 +104,6 @@ get-gnome-sources:
 	for i in $(GNOME_DOWNLOADS); do                    \
 		wget $$i --output-document=- | tar -xj ;   \
 	done;
-	patch -p0 libgnomedb-1.0.0/libgnomedb/gnome-db-list.c < gnomedb.patch
-	patch -p0 libgda-1.0.0/libgda/gda-export.c < gda.patch
+
+
 
