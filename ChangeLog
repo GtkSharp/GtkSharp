@@ -10,6 +10,19 @@
 	* generator/InterfaceGen.cs (ValidateForSubclass): for interfaces
 	we need to validate the methods too.
 
+	* generator/ObjectGen.cs (Generate): Check for interface method
+	collisions against the class's own methods too, not just its other
+	interfaces. Also, it's only a collision if the methods' signatures
+	have the same types.
+
+	* generator/Signal.cs (GenDefaultHandlerDelegate): Use
+	"{0}_managed" rather than "obj" for the internal variable name, to
+	avoid compile problems with signals that have a parameter named
+	"obj".
+
+	* generator/SymbolTable.cs (MangleName): mangle "internal" to
+	"_internal".
+
 2005-08-09  Dan Winship  <danw@novell.com>
 
 	* generator/OpaqueGen.cs (Generate): Tweak the generated Ref/Unref

@@ -377,6 +377,8 @@ namespace GtkSharp.Generation {
 				return "read_only";
 			case "interface":
 				return "iface";
+			case "internal":
+				return "_internal";
 			default:
 				break;
 			}

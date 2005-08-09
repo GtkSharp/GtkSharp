@@ -346,10 +346,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
 			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\t{0} obj = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
+			sw.WriteLine ("\t\t\t{0} {1}_managed = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
 			sw.Write (call.Setup ("\t\t\t"));
 			sw.Write ("\t\t\t{0}", IsVoid ? "" : retval.CSType == retval.ToNativeType ? "return " : retval.CSType + " raw_ret = ");
-			sw.WriteLine ("obj.{0} ({1});", "On" + Name, call.ToString ());
+			sw.WriteLine ("{2}_managed.{0} ({1});", "On" + Name, call.ToString (), parms[0].Name);
 			sw.Write (call.Finish ("\t\t\t"));
 			if (!IsVoid && retval.CSType != retval.ToNativeType)
 				sw.WriteLine ("\t\t\treturn {0};", SymbolTable.Table.ToNativeReturn (retval.CType, "raw_ret"));

@@ -128,7 +128,7 @@ namespace GtkSharp.Generation {
 			
 			return result;
 		}
- 
+
 		public override void Generate (GenerationInfo gen_info)
 		{
 			gen_info.CurrentType = Name;
@@ -202,14 +202,17 @@ namespace GtkSharp.Generation {
 			
 			if (interfaces.Count != 0) {
 				Hashtable all_methods = new Hashtable ();
+				foreach (Method m in Methods.Values)
+					all_methods[m.Name] = m;
 				Hashtable collisions = new Hashtable ();
 				foreach (string iface in interfaces) {
 					ClassBase igen = table.GetClassGen (iface);
 					foreach (Method m in igen.Methods.Values) {
-						if (all_methods.Contains (m.Name))
+						Method collision = all_methods[m.Name] as Method;
+						if (collision != null && collision.Signature.Types == m.Signature.Types)
 							collisions[m.Name] = true;
 						else
-							all_methods[m.Name] = true;
+							all_methods[m.Name] = m;
 					}
 				}
 					
