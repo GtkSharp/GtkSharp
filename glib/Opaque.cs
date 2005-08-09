@@ -65,7 +65,13 @@ namespace GLib {
 			}
 
 			opaque = (Opaque)Activator.CreateInstance (type, new object[] { o });
-			opaque.owned = owned;
+			if (owned) {
+				if (opaque.owned) {
+					// The constructor took a Ref it shouldn't have, so undo it
+					opaque.Unref (o);
+				} else
+					opaque.owned = true;
+			}
 			return opaque;
   		}
   
@@ -76,8 +82,8 @@ namespace GLib {
 
 		public Opaque (IntPtr raw)
 		{
-			Raw = raw;
 			owned = false;
+			Raw = raw;
 		}
 
 		protected IntPtr Raw {

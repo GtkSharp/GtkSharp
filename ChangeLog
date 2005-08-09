@@ -1,3 +1,24 @@
+2005-08-09  Dan Winship  <danw@novell.com>
+
+	* generator/OpaqueGen.cs (Generate): Tweak the generated Ref/Unref
+	a bit; only Ref the pointer if Owned is false (and then set it to
+	true), and vice versa for Unref.
+
+	* glib/Opaque.cs (Opaque): set owned before setting Raw, so
+	that Raw will be reffed properly.
+	(GetOpaque): Fix this up to dtrt in all cases with refcounted
+	opaques.
+	
+	* gtk/TreeView.custom (GetPathAtPos): Use "GetOpaque(...)" rather
+	than "new TreePath()"
+
+	* sample/opaquetest/*: regression test for opaque free/ref/unref
+	handling
+
+	* sample/Makefile.am (SUBDIRS): add opaquetest
+
+	* configure.in.in (AC_OUTPUT): add opaquetest files
+
 2005-08-04  Dan Winship  <danw@novell.com>
 
 	Change the way generatable validation works. Some generatable

@@ -78,7 +78,10 @@ namespace GtkSharp.Generation {
 				ref_.GenerateImport (sw);
 				sw.WriteLine ("\t\tprotected override void Ref (IntPtr raw)");
 				sw.WriteLine ("\t\t{");
-				sw.WriteLine ("\t\t\t" + ref_.CName + " (raw);");
+				sw.WriteLine ("\t\t\tif (!Owned) {");
+				sw.WriteLine ("\t\t\t\t" + ref_.CName + " (raw);");
+				sw.WriteLine ("\t\t\t\tOwned = true;");
+				sw.WriteLine ("\t\t\t}");
 				sw.WriteLine ("\t\t}");
 				sw.WriteLine ();
 
@@ -95,7 +98,10 @@ namespace GtkSharp.Generation {
 				unref.GenerateImport (sw);
 				sw.WriteLine ("\t\tprotected override void Unref (IntPtr raw)");
 				sw.WriteLine ("\t\t{");
-				sw.WriteLine ("\t\t\t" + unref.CName + " (raw);");
+				sw.WriteLine ("\t\t\tif (Owned) {");
+				sw.WriteLine ("\t\t\t\t" + unref.CName + " (raw);");
+				sw.WriteLine ("\t\t\t\tOwned = false;");
+				sw.WriteLine ("\t\t\t}");
 				sw.WriteLine ("\t\t}");
 				sw.WriteLine ();
 
