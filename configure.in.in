@@ -155,16 +155,6 @@ PKG_CHECK_MODULES(GLADE, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=y
 AC_SUBST(GLADE_CFLAGS)
 AC_SUBST(GLADE_LIBS)
 
-LIBGDA_REQUIRED_VERSION=1.0.0
-PKG_CHECK_MODULES(LIBGDA_DEPENDENCIES, libgda >= $LIBGDA_REQUIRED_VERSION, enable_gda=yes, enable_gda=no)
-
-enable_gnomedb=no
-if test "x$enable_gnome" = "xyes"; then
-if test "x$enable_gda" = "xyes"; then
-	PKG_CHECK_MODULES(LIBGNOMEDB_DEPENDENCIES, libgnomedb >= $LIBGDA_REQUIRED_VERSION, enable_gnomedb=yes, enable_gnomedb=no)
-fi
-fi
-
 RSVG_REQUIRED_VERSION=2.0.1
 PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
 
@@ -226,14 +216,12 @@ AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
 AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
-AM_CONDITIONAL(ENABLE_GDA, test "x$enable_gda" = "xyes")
-AM_CONDITIONAL(ENABLE_GNOMEDB, test "x$enable_gnomedb" = "xyes")
 AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
 AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
 AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
-AM_CONDITIONAL(ENABLE_ALL_OPTIONAL, test "x$enable_libart" = "xyes" -a "x$enable_gnomevfs" = "xyes" -a "x$enable_gnome" = "xyes" -a "x$enable_glade" = "xyes" -a "x$enable_gda" = "xyes" -a "x$enable_gnomedb" = "xyes" -a "x$enable_rsvg" = "xyes" -a "x$enable_gtkhtml" = "xyes" -a "x$enable_vte" = "xyes" -a "x$enable_dotnet" = "xyes" -a "x$enable_monodoc" = "xyes")
+AM_CONDITIONAL(ENABLE_ALL_OPTIONAL, test "x$enable_libart" = "xyes" -a "x$enable_gnomevfs" = "xyes" -a "x$enable_gnome" = "xyes" -a "x$enable_glade" = "xyes" -a "x$enable_rsvg" = "xyes" -a "x$enable_gtkhtml" = "xyes" -a "x$enable_vte" = "xyes" -a "x$enable_dotnet" = "xyes" -a "x$enable_monodoc" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -276,12 +264,6 @@ gnome/glue/Makefile
 gnomevfs/Makefile
 gnomevfs/gnome-vfs-sharp.dll.config
 gnomevfs/gnome-vfs-sharp-2.0.pc
-gda/Makefile
-gda/gda-sharp.dll.config
-gda/gda-sharp-2.0.pc
-gnomedb/Makefile
-gnomedb/gnomedb-sharp.dll.config
-gnomedb/gnomedb-sharp-2.0.pc
 gconf/Makefile
 gconf/doc/Makefile
 gconf/GConf/Makefile
@@ -330,8 +312,6 @@ echo "      * art-sharp.dll: $enable_libart"
 echo "      * gnomevfs-sharp.dll: $enable_gnomevfs"
 echo "      * gnome-sharp.dll: $enable_gnome"
 echo "      * glade-sharp.dll: $enable_glade"
-echo "      * gda-sharp.dll: $enable_gda"
-echo "      * gnomedb-sharp.dll: $enable_gnomedb"
 echo "      * rsvg-sharp.dll: $enable_rsvg "
 echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
 echo "      * vte-sharp.dll: $enable_vte "
