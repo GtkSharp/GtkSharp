@@ -10,8 +10,6 @@ ASSEMBLIES = 				\
 	gnome-vfs-sharp.dll		\
 	art-sharp.dll			\
 	gnome-sharp.dll			\
-	gda-sharp.dll			\
-	gnomedb-sharp.dll		\
 	gconf-sharp.dll			\
 	gconf-sharp-peditors.dll	\
 	gtkhtml-sharp.dll		\
@@ -50,7 +48,7 @@ CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree lib
 EXTRA_DIST =			\
 	gtk-sharp-docs.source
 
-NAMESPACES=GLib Pango Atk Gdk Gtk Gtk.DotNet Glade Art Gnome.Vfs Gnome Gda GnomeDb GConf GConf.PropertyEditors Rsvg Vte
+NAMESPACES=GLib Pango Atk Gdk Gtk Gtk.DotNet Glade Art Gnome.Vfs Gnome GConf GConf.PropertyEditors Rsvg Vte
 
 dist-hook:
 	mkdir -p $(distdir)/en
