@@ -61,6 +61,8 @@ namespace GtkSharp.Generation {
 			Method ref_, unref, dispose;
 			GetSpecialMethods (out ref_, out unref, out dispose);
 
+			if (IsDeprecated)
+				sw.WriteLine ("\t[Obsolete]");
 			sw.Write ("\tpublic class " + Name);
 			string cs_parent = table.GetCSType(Elem.GetAttribute("parent"));
 			if (cs_parent != "")
