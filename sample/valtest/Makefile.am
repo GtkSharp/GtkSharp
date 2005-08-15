@@ -17,8 +17,8 @@ libvalobj_la_LIBADD = $(GTK_LIBS)
 
 INCLUDES = $(GTK_CFLAGS)
 
-Valobj.cs:
-	$(RUNTIME) ../../generator/gapi_codegen.exe --generate valobj-api.xml --include ../../gtk/gtk-api.xml ../../gdk/gdk-api.xml --outdir=. --assembly-name=valobj-sharp
+Valobj.cs: valobj-api.xml
+	$(RUNTIME) ../../generator/gapi_codegen.exe --generate $(srcdir)/valobj-api.xml --include ../../gtk/gtk-api.xml ../../gdk/gdk-api.xml --outdir=. --assembly-name=valobj-sharp
 
 api:
 	PATH=../../parser:$PATH $(RUNTIME) ../../parser/gapi-parser.exe valobj-sources.xml
@@ -27,3 +27,8 @@ install:
 
 CLEANFILES =		\
 	Valobj.cs
+
+EXTRA_DIST =		\
+	Valtest.cs	\
+	valobj-api.xml	\
+	valobj-sources.xml
