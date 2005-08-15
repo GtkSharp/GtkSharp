@@ -1,5 +1,5 @@
 <Type Name="TextAttributes" FullName="Gtk.TextAttributes">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct TextAttributes" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class TextAttributes : GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -12,7 +12,7 @@
     <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces />
   <Members>
@@ -24,7 +24,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>No attributes at all.</summary>
+        <summary>Obsolete: use <see langword="null" />.</summary>
+        <remarks />
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Gtk.TextAttributes is a reference type now, use null", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextAttributes ();" />
+      <MemberType>Constructor</MemberType>
+      <Parameters />
+      <Docs>
+        <summary>Public constructor.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -36,8 +50,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Public constructor.</summary>
+        <summary>Obsolete, replaced by normal constructor</summary>
         <returns>A new <see cref="T:Gtk.TextAttributes" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TextAttributes (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Constructor for internal use only.</summary>
+        <param name="raw">An <see cref="IntPtr" />, a pointer to the C object.</param>
         <remarks />
       </Docs>
     </Member>
@@ -51,24 +77,13 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Constructor for internal use only.</summary>
+        <summary>Obsolete constructor for internal use only.</summary>
         <param name="raw">An <see cref="IntPtr" />, a pointer to the C object.</param>
         <returns>a new <see cref="T:Gtk.TextAttributes" /></returns>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Ref">
-      <MemberSignature Language="C#" Value="public void Ref ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Increments the reference count.</summary>
-        <remarks />
-      </Docs>
-    </Member>
+    
     <Member MemberName="CopyValues">
       <MemberSignature Language="C#" Value="public void CopyValues (Gtk.TextAttributes dest);" />
       <MemberType>Method</MemberType>
@@ -97,16 +112,17 @@
         <remarks>FIXME: elaborate the difference between this and Copy, and see if the differences in the underlying C library carry over to the C# library</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Unref">
-      <MemberSignature Language="C#" Value="public void Unref ();" />
-      <MemberType>Method</MemberType>
+    
+    <Member MemberName="Language">
+      <MemberSignature Language="C#" Value="public Pango.Language Language { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Pango.Language</ReturnType>
       </ReturnValue>
-      <Parameters />
       <Docs>
-        <summary>Decrements the reference count for this object, freeing the underlying C data structure if the refcount reaches 0.</summary>
+        <summary>The language of this text.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="language">
@@ -122,11 +138,24 @@
         <value>a <see cref="Pango.Language" /></value>
         <remarks />
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by Language property.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
+    <Member MemberName="Tabs">
+      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.TabArray</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The tab stops for this text.</summary>
+        <remarks />
+        <value>To be added.</value>
+      </Docs>
+    </Member>
     <Member MemberName="tabs">
       <MemberSignature Language="C#" Value="public Pango.TabArray tabs { set; get; };" />
       <MemberType>Property</MemberType>
@@ -140,11 +169,24 @@
         <value>a <see cref="T:Pango.TabArray" /></value>
         <remarks />
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by Tabs property.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
+    <Member MemberName="Font">
+      <MemberSignature Language="C#" Value="public Pango.FontDescription Font { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Pango.FontDescription</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The font for this text.</summary>
+        <remarks />
+        <value>To be added.</value>
+      </Docs>
+    </Member>
     <Member MemberName="font">
       <MemberSignature Language="C#" Value="public Pango.FontDescription font { set; get; };" />
       <MemberType>Property</MemberType>
@@ -158,11 +200,12 @@
         <value>a <see cref="T:Pango.FontDescription" /></value>
         <remarks />
       </Docs>
-    <Attributes>
+      <Attributes>
         <Attribute>
           <AttributeName>System.Obsolete(Message="Replaced by Font property.", IsError=False)</AttributeName>
         </Attribute>
-      </Attributes></Member>
+      </Attributes>
+    </Member>
     <Member MemberName="GType">
       <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
       <MemberType>Property</MemberType>
@@ -177,146 +220,135 @@
       </Docs>
     </Member>
     <Member MemberName="Appearance">
-      <MemberSignature Language="C#" Value="public Gtk.TextAppearance Appearance;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Gtk.TextAppearance Appearance { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextAppearance</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The appearance of this text: colors, underlining, etc.</summary>
         <remarks>See <see cref="T:Gtk.TextAppearance" /> for more details.</remarks>
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Justification">
-      <MemberSignature Language="C#" Value="public Gtk.Justification Justification;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Gtk.Justification Justification { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.Justification</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The justification of this text.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Direction">
-      <MemberSignature Language="C#" Value="public Gtk.TextDirection Direction;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Gtk.TextDirection Direction { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.TextDirection</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>Whether this text runs right-to-left or left-to-right.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="FontScale">
-      <MemberSignature Language="C#" Value="public double FontScale;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public double FontScale { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The scale of this text.</summary>
         <remarks>For more information about font scaling, see <see cref="T:Pango.Scale" /></remarks>
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="LeftMargin">
-      <MemberSignature Language="C#" Value="public int LeftMargin;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int LeftMargin { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The size of the left margin.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Indent">
-      <MemberSignature Language="C#" Value="public int Indent;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int Indent { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The size of the indent.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="RightMargin">
-      <MemberSignature Language="C#" Value="public int RightMargin;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int RightMargin { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The size of the right margin.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="PixelsAboveLines">
-      <MemberSignature Language="C#" Value="public int PixelsAboveLines;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int PixelsAboveLines { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The number of blank pixels above a line of text.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="PixelsBelowLines">
-      <MemberSignature Language="C#" Value="public int PixelsBelowLines;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int PixelsBelowLines { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The number of blank pixels below a line of text.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="PixelsInsideWrap">
-      <MemberSignature Language="C#" Value="public int PixelsInsideWrap;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int PixelsInsideWrap { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The number of pixels between wrapped lines.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="WrapMode">
-      <MemberSignature Language="C#" Value="public Gtk.WrapMode WrapMode;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Gtk.WrapMode WrapMode { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gtk.WrapMode</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>The line-wrapping style for this text.</summary>
         <remarks />
+        <value>To be added.</value>
       </Docs>
     </Member>
     <Member MemberName="Invisible">
@@ -373,74 +405,6 @@
         <value>a <see cref="T:System.Boolean" /></value>
         <remarks />
         <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Gtk.TextAttributes boxed);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="boxed" Type="Gtk.TextAttributes" />
-      </Parameters>
-      <Docs>
-        <param name="boxed">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static Gtk.TextAttributes op_Explicit (GLib.Value val);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.TextAttributes</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="val" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <param name="val">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  <Member MemberName="Font">
-      <MemberSignature Language="C#" Value="public Pango.FontDescription Font { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.FontDescription</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  <Member MemberName="Tabs">
-      <MemberSignature Language="C#" Value="public Pango.TabArray Tabs { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.TabArray</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  <Member MemberName="Language">
-      <MemberSignature Language="C#" Value="public Pango.Language Language { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.Language</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

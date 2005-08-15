@@ -1,5 +1,5 @@
 <Type Name="GlyphString" FullName="Pango.GlyphString">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct GlyphString" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class GlyphString : GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -12,19 +12,32 @@
     <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces />
   <Members>
     <Member MemberName="Zero">
       <MemberSignature Language="C#" Value="public static Pango.GlyphString Zero;" />
       <MemberType>Field</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Pango.GlyphString is a reference type now, use null", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>Pango.GlyphString</ReturnType>
       </ReturnValue>
+      <Docs>
+        <summary>Obsolete: just use <see langword="null" /> now.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GlyphString ();" />
+      <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
-        <summary>Returns an empty <see cref="T:Pango.GlyphString" /></summary>
+        <summary>Creates a new <see cref="T:Pango.GlyphString" /> object.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -36,9 +49,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Generates a new <see cref="T:Pango.GlyphString" /> object.</summary>
+        <summary>Obsolete. Replaced by an ordinary constructor</summary>
         <returns>a <see cref="T:Pango.GlyphString" /> object.</returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GlyphString (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Internal method</summary>
+        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <remarks>This is an internal method, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="New">
@@ -51,10 +76,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal method</summary>
+        <summary>Obsolete internal constructor</summary>
         <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <returns>an object of type <see cref="T:Pango.GlyphString" /></returns>
-        <remarks>This is an internal method, and should not be used by user code.</remarks>
+        <returns>a <see cref="T:Pango.GlyphString" /> object.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -87,18 +112,6 @@
         <param name="ink_rect">a  <see cref="T:Pango.Rectangle" /> used to store the extents of the glyph as drawn or <see langword="null" /> to indicate that the result is not needed.</param>
         <param name="logical_rect">a <see cref="T:Pango.Rectangle" /> used to store the logical extents of the glyph or <see langword="null" /> to indicate that the result is not needed.</param>
         <remarks>The coordinate system for each rectangle has its origin at the base line and horizontal origin of the character with increasing coordinates extending to the right and down. The units of the rectangles are in 1 / <see cref="F:Pango.Scale.PangoScale" /> of a device unit.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public void Free ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Frees this object's memory.</summary>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ExtentsRange">
@@ -136,18 +149,6 @@
         <summary>Resizes this GlyphString to the given length.</summary>
         <value>The new length of the string.</value>
         <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="glyphs">
-      <MemberSignature Language="C#" Value="public Pango.GlyphInfo glyphs { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.GlyphInfo</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>an array of <see cref="T:Pango.GlyphInfo" /></summary>
-        <value>an object of type <see cref="T:Pango.GlyphInfo" /></value>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="XToIndex">
@@ -192,15 +193,14 @@
       </Docs>
     </Member>
     <Member MemberName="NumGlyphs">
-      <MemberSignature Language="C#" Value="public int NumGlyphs;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int NumGlyphs { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>the number of glyphs in the string.</summary>
+        <value>the number of glyphs in the string.</value>
         <remarks />
       </Docs>
     </Member>
@@ -248,38 +248,6 @@
         <param name="embedding_level">a <see cref="T:System.Int32" />, the embedding level of the string</param>
         <returns>a <see cref="T:System.Int32" />, a pointer to an array of logical widths for each character.</returns>
         <remarks />
-      </Docs>
-    </Member>
-  <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static GLib.Value op_Explicit (Pango.GlyphString boxed);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="boxed" Type="Pango.GlyphString" />
-      </Parameters>
-      <Docs>
-        <param name="boxed">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static Pango.GlyphString op_Explicit (GLib.Value val);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Pango.GlyphString</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="val" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <param name="val">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

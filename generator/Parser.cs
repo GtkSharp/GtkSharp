@@ -96,7 +96,8 @@ namespace GtkSharp.Generation {
 					continue;
 
 				bool is_opaque = false;
-				if (elem.HasAttribute ("opaque"))
+				if (elem.GetAttribute ("opaque") == "true" ||
+				    elem.GetAttribute ("opaque") == "1")
 					is_opaque = true;
 
 				switch (def.Name) {

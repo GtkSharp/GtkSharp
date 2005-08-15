@@ -596,6 +596,18 @@ sub addFuncElems
 
 		parseParms ($el, $mdef, $drop_1st);
 
+		# Don't add "free" to this regexp; that will wrongly catch all boxed types
+		if ($mname =~ /$prefix(new|destroy|ref|unref)/ &&
+		    ($obj_el->nodeName eq "boxed" || $obj_el->nodeName eq "struct") &&
+		    $obj_el->getAttribute("opaque") ne "true") {
+			$obj_el->setAttribute("opaque", "true");
+			for my $field ($obj_el->getElementsByTagName("field")) {
+				if (!$field->getAttribute("access")) {
+					$field->setAttribute("access", "public");
+					$field->setAttribute("writeable", "true");
+				}
+			}
+		}
 	}
 }
 

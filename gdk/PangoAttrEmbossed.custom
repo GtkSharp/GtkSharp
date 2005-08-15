@@ -1,6 +1,4 @@
-// Gdk.PangoAttrStipple.custom - Gdk PangoAttrStipple class customizations
-//
-// Author:   Mike Kestner <mkestner@novell.com>
+// Gdk.PangoAttrEmbossed.custom - Gdk PangoAttrEmbossed class customizations
 //
 // Copyright (c) 2005 Novell, Inc.
 //
@@ -20,19 +18,19 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[Obsolete("Gdk.PangoAttrStipple is a reference type now, use null")]
-		public static PangoAttrStipple Zero = null;
+		[Obsolete("Gdk.PangoAttrEmbossed is a reference type now, use null")]
+		public static PangoAttrEmbossed Zero = null;
 
-		[Obsolete("Replaced by PangoAttrStipple(IntPtr) constructor")]
-		public static PangoAttrStipple New (IntPtr raw)
+		[Obsolete("Replaced by PangoAttrEmbossed(IntPtr) constructor")]
+		public static PangoAttrEmbossed New (IntPtr raw)
 		{
-			return new PangoAttrStipple (raw);
+			return new PangoAttrEmbossed (raw);
 		}
 
-		[Obsolete("Replaced by PangoAttrStipple(Gdk.Pixmap) constructor")]
-		public static PangoAttrStipple New (Gdk.Pixmap stipple)
+		[Obsolete("Replaced by PangoAttrEmbossed(bool) constructor")]
+		public static PangoAttrEmbossed New (bool embossed)
 		{
-			return new PangoAttrStipple (stipple);
+			return new PangoAttrEmbossed (embossed);
 		}
 
 		[Obsolete("Replaced by explicit Pango.Attribute cast")]
@@ -42,18 +40,12 @@
 			}
 		}
 
-		[Obsolete ("Replaced by Stipple property.")]
-		public Gdk.Pixmap stipple {
-			get { return Stipple; }
-			set { Stipple = value; }
+		public static explicit operator Pango.Attribute (PangoAttrEmbossed attr_embossed)
+		{
+			return Pango.Attribute.GetAttribute (attr_embossed.Handle);
 		}
 
-		public static explicit operator Pango.Attribute (PangoAttrStipple attr_stipple)
+		public static explicit operator PangoAttrEmbossed (Pango.Attribute attr)
 		{
-			return Pango.Attribute.GetAttribute (attr_stipple.Handle);
-		}
-
-		public static explicit operator PangoAttrStipple (Pango.Attribute attr)
-		{
-			return new PangoAttrStipple (attr.Handle);
+			return new PangoAttrEmbossed (attr.Handle);
 		}

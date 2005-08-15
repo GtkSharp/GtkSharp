@@ -21,33 +21,36 @@
 // Boston, MA 02111-1307, USA.
 
 
+		[Obsolete("Gtk.TextAttributes is a reference type now, use null")]
+		public static TextAttributes Zero = null;
+
+		[Obsolete("Replaced by TextAttributes(IntPtr) constructor")]
+		public static TextAttributes New (IntPtr raw)
+		{
+			return new TextAttributes (raw);
+		}
+
+		[Obsolete("Replaced by TextAttributes() constructor")]
+		public static TextAttributes New ()
+		{
+			return new TextAttributes ();
+		}
+
 		[Obsolete ("Replaced by Font property.")]
 		public Pango.FontDescription font {
-			get { 
-				Pango.FontDescription ret = new Pango.FontDescription(_font);
-				if (ret == null) ret = new Pango.FontDescription(_font);
-				return ret;
-			}
-			set { _font = value.Handle; }
+			get { return Font; }
+			set { Font = value; }
 		}
 
 		[Obsolete ("Replaced by Tabs property.")]
 		public Pango.TabArray tabs {
-			get { 
-				Pango.TabArray ret = new Pango.TabArray(_tabs);
-				if (ret == null) ret = new Pango.TabArray(_tabs);
-				return ret;
-			}
-			set { _tabs = value.Handle; }
+			get { return Tabs; }
+			set { Tabs = value; }
 		}
 
 		[Obsolete ("Replaced by Language property.")]
 		public Pango.Language language {
-			get { 
-				Pango.Language ret = new Pango.Language(_language);
-				if (ret == null) ret = new Pango.Language(_language);
-				return ret;
-			}
-			set { _language = value.Handle; }
+			get { return Language; }
+			set { Language = value; }
 		}
 

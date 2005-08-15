@@ -40,8 +40,11 @@ customs =			\
 	FontMap.custom		\
 	Global.custom		\
 	GlyphItem.custom	\
+	GlyphString.custom	\
+	Item.custom		\
 	Layout.custom		\
 	LayoutLine.custom	\
+	LayoutRun.custom	\
 	Matrix.custom		\
 	TabArray.custom
 

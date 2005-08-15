@@ -1,5 +1,5 @@
 <Type Name="RgbCmap" FullName="Gdk.RgbCmap">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct RgbCmap" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class RgbCmap : GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -12,7 +12,7 @@
     <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces />
   <Members>
@@ -24,7 +24,36 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an empty <see cref="T:Gdk.RgbCmap" /></summary>
+        <summary>Obsolete: use <see langword="null" /></summary>
+        <remarks />
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Gdk.RgbCmap is a reference type now, use null", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public RgbCmap (uint[] colors);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="colors" Type="System.UInt32[]" />
+      </Parameters>
+      <Docs>
+        <summary>Constructs a new <see cref="T:Gdk.RgbCmap" /> with the given colors.</summary>
+        <param name="colors">An array of colors in the form 0xRRGGBB.</param>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public RgbCmap (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Internal constructor.</summary>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
         <remarks />
       </Docs>
     </Member>
@@ -38,65 +67,21 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Constructor.</summary>
+        <summary>Obsolete internal constructor.</summary>
         <param name="raw">a <see cref="M:IntPtr" /></param>
         <returns>a <see cref="M:Gdk.RgbCmap" /></returns>
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public void Free ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Do not use. For internal use only.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Gdk.RgbCmap New (out uint colors, int n_colors);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gdk.RgbCmap</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="colors" Type="System.UInt32&amp;" RefType="out" />
-        <Parameter Name="n_colors" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="colors">a <see cref="T:System.UInt32&amp;" /></param>
-        <param name="n_colors">a <see cref="T:System.Int32" /></param>
-        <returns>a <see cref="T:Gdk.RgbCmap" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Colors">
-      <MemberSignature Language="C#" Value="public uint[] Colors;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="NColors">
-      <MemberSignature Language="C#" Value="public int NColors;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int NColors { get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The number of colors in the colormap.</summary>
+        <value>The number of colors in the colormap.</value>
         <remarks />
       </Docs>
     </Member>

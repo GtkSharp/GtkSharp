@@ -1,8 +1,6 @@
-// Pango.GlyphItem.custom - Pango GlyphItem class customizations
+// Pango.LayoutRun.custom - Pango.LayoutRun class customizations
 //
-// Author: Mike Kestner  <mkestner@ximian.com>
-//
-// Copyright (c) 2004-2005 Novell, Inc.
+// Copyright (c) 2005 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -19,25 +17,6 @@
 // License along with this program; if not, write to the
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
-
-
-		[DllImport("libpango-1.0-0.dll")]
-		static extern IntPtr pango_glyph_item_apply_attrs(ref Pango.GlyphItem raw, IntPtr text, IntPtr list);
-
-		public GlyphItem[] ApplyAttrs (string text, Pango.AttrList list)
-		{
-			IntPtr native_text = GLib.Marshaller.StringToPtrGStrdup (text);
-			IntPtr list_handle = pango_glyph_item_apply_attrs (ref this, native_text, list.Handle);
-			GLib.Marshaller.Free (native_text);
-			if (list_handle == IntPtr.Zero)
-				return new GlyphItem [0];
-			GLib.SList item_list = new GLib.SList (list_handle, typeof (GlyphItem));
-			GlyphItem[] result = new GlyphItem [item_list.Count];
-			int i = 0;
-			foreach (GlyphItem item in item_list)
-				result [i++] = item;
-			return result;
-		}
 
 		[Obsolete ("Replaced by Glyphs property")]
 		public Pango.GlyphString glyphs {

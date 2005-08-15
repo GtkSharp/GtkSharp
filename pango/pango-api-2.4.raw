@@ -654,9 +654,9 @@
       <field name="Attr" cname="attr" type="PangoAttribute" />
       <field name="Value" cname="value" type="double" />
     </struct>
-    <struct name="AttrFontDesc" cname="PangoAttrFontDesc">
-      <field name="Attr" cname="attr" type="PangoAttribute" />
-      <field name="Desc" cname="desc" type="PangoFontDescription*" />
+    <struct name="AttrFontDesc" cname="PangoAttrFontDesc" opaque="true">
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
+      <field name="Desc" cname="desc" type="PangoFontDescription*" access="public" writeable="true" />
       <constructor cname="pango_attr_font_desc_new">
         <parameters>
           <parameter type="const-PangoFontDescription*" name="desc" />
@@ -702,9 +702,9 @@
         </parameters>
       </method>
     </struct>
-    <struct name="AttrLanguage" cname="PangoAttrLanguage">
-      <field name="Attr" cname="attr" type="PangoAttribute" />
-      <field name="Value" cname="value" type="PangoLanguage*" />
+    <struct name="AttrLanguage" cname="PangoAttrLanguage" opaque="true">
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
+      <field name="Value" cname="value" type="PangoLanguage*" access="public" writeable="true" />
       <constructor cname="pango_attr_language_new">
         <parameters>
           <parameter type="PangoLanguage*" name="language" />
@@ -762,10 +762,10 @@
         <return-type type="void" />
       </method>
     </boxed>
-    <struct name="AttrShape" cname="PangoAttrShape">
-      <field name="Attr" cname="attr" type="PangoAttribute" />
-      <field name="InkRect" cname="ink_rect" type="PangoRectangle" />
-      <field name="LogicalRect" cname="logical_rect" type="PangoRectangle" />
+    <struct name="AttrShape" cname="PangoAttrShape" opaque="true">
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
+      <field name="InkRect" cname="ink_rect" type="PangoRectangle" access="public" writeable="true" />
+      <field name="LogicalRect" cname="logical_rect" type="PangoRectangle" access="public" writeable="true" />
       <constructor cname="pango_attr_shape_new">
         <parameters>
           <parameter type="const-PangoRectangle*" name="ink_rect" />
@@ -777,10 +777,10 @@
       <field name="Attr" cname="attr" type="PangoAttribute" />
       <field name="Value" cname="value" type="char*" />
     </struct>
-    <struct name="Attribute" cname="PangoAttribute">
-      <field name="Klass" cname="klass" type="const-PangoAttrClass*" />
-      <field name="StartIndex" cname="start_index" type="guint" />
-      <field name="EndIndex" cname="end_index" type="guint" />
+    <struct name="Attribute" cname="PangoAttribute" opaque="true">
+      <field name="Klass" cname="klass" type="const-PangoAttrClass*" access="public" writeable="true" />
+      <field name="StartIndex" cname="start_index" type="guint" access="public" writeable="true" />
+      <field name="EndIndex" cname="end_index" type="guint" access="public" writeable="true" />
       <method name="Copy" cname="pango_attribute_copy">
         <return-type type="PangoAttribute*" owned="true" />
       </method>
@@ -1039,10 +1039,10 @@
         </parameters>
       </method>
     </struct>
-    <boxed name="GlyphString" cname="PangoGlyphString">
-      <field name="NumGlyphs" cname="num_glyphs" type="gint" />
-      <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" />
-      <field name="LogClusters" cname="log_clusters" type="gint*" />
+    <boxed name="GlyphString" cname="PangoGlyphString" opaque="true">
+      <field name="NumGlyphs" cname="num_glyphs" type="gint" access="public" writeable="true" />
+      <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" access="public" writeable="true" />
+      <field name="LogClusters" cname="log_clusters" type="gint*" access="public" writeable="true" />
       <field name="Space" cname="space" type="gint" access="private" />
       <method name="Copy" cname="pango_glyph_string_copy">
         <return-type type="PangoGlyphString*" owned="true" />
@@ -1114,11 +1114,11 @@
     <struct name="GlyphVisAttr" cname="PangoGlyphVisAttr">
       <field name="IsClusterStart" cname="is_cluster_start" bits="1" type="guint" />
     </struct>
-    <struct name="Item" cname="PangoItem">
-      <field name="Offset" cname="offset" type="gint" />
-      <field name="Length" cname="length" type="gint" />
-      <field name="NumChars" cname="num_chars" type="gint" />
-      <field name="Analysis" cname="analysis" type="PangoAnalysis" />
+    <struct name="Item" cname="PangoItem" opaque="true">
+      <field name="Offset" cname="offset" type="gint" access="public" writeable="true" />
+      <field name="Length" cname="length" type="gint" access="public" writeable="true" />
+      <field name="NumChars" cname="num_chars" type="gint" access="public" writeable="true" />
+      <field name="Analysis" cname="analysis" type="PangoAnalysis" access="public" writeable="true" />
       <method name="Copy" cname="pango_item_copy">
         <return-type type="PangoItem*" owned="true" />
       </method>
@@ -1233,13 +1233,13 @@
         <return-type type="gboolean" />
       </method>
     </struct>
-    <struct name="LayoutLine" cname="PangoLayoutLine">
-      <field name="Layout" cname="layout" type="PangoLayout*" />
-      <field name="StartIndex" cname="start_index" type="gint" />
-      <field name="Length" cname="length" type="gint" />
-      <field name="Runs" cname="runs" type="GSList*" />
-      <field name="IsParagraphStart" cname="is_paragraph_start" bits="1" type="guint" />
-      <field name="ResolvedDir" cname="resolved_dir" bits="3" type="guint" />
+    <struct name="LayoutLine" cname="PangoLayoutLine" opaque="true">
+      <field name="Layout" cname="layout" type="PangoLayout*" access="public" writeable="true" />
+      <field name="StartIndex" cname="start_index" type="gint" access="public" writeable="true" />
+      <field name="Length" cname="length" type="gint" access="public" writeable="true" />
+      <field name="Runs" cname="runs" type="GSList*" access="public" writeable="true" />
+      <field name="IsParagraphStart" cname="is_paragraph_start" bits="1" type="guint" access="public" writeable="true" />
+      <field name="ResolvedDir" cname="resolved_dir" bits="3" type="guint" access="public" writeable="true" />
       <method name="GetExtents" cname="pango_layout_line_get_extents">
         <return-type type="void" />
         <parameters>

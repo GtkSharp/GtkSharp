@@ -31,6 +31,10 @@ namespace GtkSharp.Generation {
 		
 		public override void Generate (GenerationInfo gen_info)
 		{
+			Method copy = methods["Copy"] as Method;
+			methods.Remove ("Copy");
+			methods.Remove ("Free");
+
 			gen_info.CurrentType = Name;
 
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name);
@@ -56,6 +60,14 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tIntPtr boxed_ptr = glibsharp_value_get_boxed (ref val);");
 			sw.WriteLine ("\t\t\treturn New (boxed_ptr);");
 			sw.WriteLine ("\t\t}");
+
+			if (copy != null && copy.IsDeprecated) {
+				sw.WriteLine ();
+				sw.WriteLine ("\t\t[Obsolete(\"This is a no-op\")]");
+				sw.WriteLine ("\t\tpublic " + QualifiedName + " Copy() {");
+				sw.WriteLine ("\t\t\treturn this;");
+				sw.WriteLine ("\t\t}");
+			}
 
 			sw.WriteLine ("#endregion");
                         AppendCustom(sw, gen_info.CustomDir);

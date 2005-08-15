@@ -1,5 +1,5 @@
 <Type Name="Item" FullName="Pango.Item">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public struct Item" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class Item : GLib.Opaque" />
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>
@@ -12,7 +12,7 @@
     <remarks />
   </Docs>
   <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
+    <BaseTypeName>GLib.Opaque</BaseTypeName>
   </Base>
   <Interfaces />
   <Members>
@@ -27,6 +27,20 @@
         <summary>Returns an empty <see cref="T:Pango.Item" /></summary>
         <remarks />
       </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete(Message="Pango.Item is a reference type now, use null", IsError=False)</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Item ();" />
+      <MemberType>Constructor</MemberType>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new Item</summary>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="New">
       <MemberSignature Language="C#" Value="public static Pango.Item New ();" />
@@ -36,9 +50,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new Item</summary>
+        <summary>Obsolete: replaced by ordinary constructor</summary>
         <returns>a new <see cref="T:Pango.Item" /></returns>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Item (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <summary>Internal method.</summary>
+        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <remarks>This is an internal method, and should not be used by user code.</remarks>
       </Docs>
     </Member>
     <Member MemberName="New">
@@ -51,22 +77,10 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal method</summary>
+        <summary>Obsolete internal constructor</summary>
         <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
         <returns>an object of type <see cref="T:Pango.Item" /></returns>
         <remarks>This is an internal method, and should not be used by user code.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public void Free ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Free a <see cref="T:Pango.Item" /> and all associated memory.</summary>
-        <remarks />
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -101,54 +115,50 @@
       </Docs>
     </Member>
     <Member MemberName="Offset">
-      <MemberSignature Language="C#" Value="public int Offset;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int Offset { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>the offset of the segment from the beginning of the string in bytes.</summary>
+        <value>the offset of the segment from the beginning of the string in bytes.</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Length">
-      <MemberSignature Language="C#" Value="public int Length;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int Length { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>the length of the segment in bytes.</summary>
+        <value>the length of the segment in bytes.</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="NumChars">
-      <MemberSignature Language="C#" Value="public int NumChars;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public int NumChars { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>the length of the segment in characters.</summary>
+        <value>the length of the segment in characters.</value>
         <remarks />
       </Docs>
     </Member>
     <Member MemberName="Analysis">
-      <MemberSignature Language="C#" Value="public Pango.Analysis Analysis;" />
-      <MemberType>Field</MemberType>
+      <MemberSignature Language="C#" Value="public Pango.Analysis Analysis { set; get; };" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Pango.Analysis</ReturnType>
       </ReturnValue>
-      <Parameters>
-      </Parameters>
       <Docs>
         <summary>the properties of the segment.</summary>
+        <value>the properties of the segment.</value>
         <remarks />
       </Docs>
     </Member>

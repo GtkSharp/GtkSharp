@@ -43,6 +43,7 @@ customs = 			\
 	Global.custom		\
 	Input.custom		\
 	Keymap.custom		\
+	PangoAttrEmbossed.custom\
 	PangoAttrStipple.custom \
 	Pixmap.custom		\
 	Pixbuf.custom		\
@@ -53,6 +54,7 @@ customs = 			\
 	Point.custom		\
 	Rectangle.custom	\
 	Region.custom		\
+	RgbCmap.custom		\
 	Screen.custom		\
 	Selection.custom	\
 	WindowAttr.custom	\

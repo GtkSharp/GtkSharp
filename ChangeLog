@@ -1,5 +1,67 @@
 2005-08-11  Dan Winship  <danw@novell.com>
 
+	* parser/gapi2xml.pl (addFuncElems): if a struct or boxed type has
+	a constructor or a ref, unref, or destroy method, then it must be
+	a reference type, so mark it "opaque" but then also mark all of
+	its fields public and writable.
+
+	* */*-api*.raw: Regen
+
+	* generator/Parser.cs (ParseNamespace): make the opaque attribute
+	check actually look at the value of the attribute rather than just
+	checking if it's there, so that you can change a struct's opaque
+	attribute from "true" to "false" via metadata and have that work.
+
+	* generator/BoxedGen.cs (Generate): do not generate the boxed's
+	"Free" method (since it's guaranteed to crash when we pass it a
+	stack pointer). If "Copy" is marked deprecated, create a
+	deprecated no-op for it, otherwise just skip it (since otherwise
+	it will just leak memory when we copy its result onto the stack).
+
+	* pango/Pango.metadata: deprecate Pango.Color.Copy and
+	Pango.Matrix.Copy. Hide some array fields in Pango.GlyphString
+	that we've never generated correctly. Tweak Pango.LayoutLine
+	fields to be the same as they used to be.
+
+	* pango/GlyphItem.custom (glyphs, item):
+	* pango/GlyphString.custom (Zero, New):
+	* pango/Item.custom (Zero, New):
+	* pango/LayoutRun.custom (glyphs, item): add deprecated API compat
+
+	* gdk/Gdk.metadata: undo the parser's new opaquification of
+	Gdk.Font; it's been deprecated since pre-gtk# times, and no one
+	should be using it, so there's no point in fixing it now. Fix up a
+	few other things to match how they used to be. Fix RgbCmap's
+	constructor args.
+
+	* gdk/RgbCmap.custom (Zero, New): deprecated API compat
+
+	* gdk/PangoAttrEmbossed.custom:
+	* gdk/PangoAttrStipple.custom (Zero, New, Attr): deprecated API
+	compat
+	(explicit operator ...): allow casting back and forth between
+	Pango.Attribute. (We can't usefully make them real subclasses of
+	Pango.Attribute, because there's no way for
+	Pango.Attribute.GetAttribute() to be able to dtrt with them.)
+
+	* gtk/Gtk.metadata: deprecate Gtk.Requisition.Copy,
+	Gtk.TextIter.Copy, and Gtk.TreeIter.Copy. Mark the return value of
+	TextView.DefaultAttributes as "owned". Mark TargetList's fields
+	private so it stays how it used to be.
+
+	* gtk/TextAttributes.custom (Zero, New): deprecated API compat
+
+	* gnomevfs/Gnomevfs.metadata: remove a bunch of opaque
+	declarations that the parser figures out on its own now.
+
+	* art/Art.metadata:
+	* glade/Glade.metadata:
+	* rsvg/Rsvg.metadata: un-mark everything the parser marked opaque
+	in these libraries, because all of the structs in question would
+	still be unusably broken, so the API churn would be pointless.
+
+2005-08-11  Dan Winship  <danw@novell.com>
+
 	* generator/OpaqueGen.cs (Generate):
 	* generator/StructBase.cs (Generate): Add the [Obsolete] attribute
 	to deprecated structs/boxeds/opaques too. (Affects Gdk.Font,
