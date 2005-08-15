@@ -3,7 +3,7 @@
 // Authors: Mike Kestner <mkestner@speakeasy.net>
 //
 // Copyright (c) 2001-2003 Mike Kestner
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004-2005 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -99,14 +99,18 @@ namespace GLib {
 			if (o == IntPtr.Zero)
 				return null;
 
-			Object obj;
+			Object obj = null;
 			WeakReference weak_ref = Objects[o] as WeakReference;
 
-			if (weak_ref != null && weak_ref.IsAlive) {
-				lock (PendingDestroys)
-					PendingDestroys.Remove (weak_ref.Target);
+			if (weak_ref != null && weak_ref.IsAlive)
+				obj = weak_ref.Target as Object;
 
-				obj = weak_ref.Target as GLib.Object;
+			if (obj == null)
+				obj = Objects[o] as Object;
+
+			if (obj != null && obj._obj == o) {
+				lock (PendingDestroys)
+					PendingDestroys.Remove (obj);
 				if (owned_ref)
 					g_object_unref (obj._obj);
 				return obj;
@@ -215,6 +219,7 @@ namespace GLib {
 			for (int i = 0; i < names.Length; i++)
 				native_names [i] = GLib.Marshaller.StringToPtrGStrdup (names [i]);
 			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, native_names, vals);
+			Objects [_obj] = this;
 			foreach (IntPtr p in native_names)
 				GLib.Marshaller.Free (p);
 		}
