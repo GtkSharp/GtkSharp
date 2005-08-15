@@ -26,6 +26,8 @@ api:
 install:
 
 CLEANFILES =		\
+	valtest.exe	\
+	valtest.exe.mdb	\
 	Valobj.cs
 
 EXTRA_DIST =		\

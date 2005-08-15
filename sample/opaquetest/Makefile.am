@@ -26,7 +26,9 @@ api:
 
 install:
 
-CLEANFILES =		\
+CLEANFILES =			\
+	opaquetest.exe		\
+	opaquetest.exe.mdb	\
 	generated/*.cs
 
 EXTRA_DIST =		\
