@@ -11,10 +11,10 @@ windows: generated-stamp
 generated-stamp: ../generator/codegen.exe $(APIS)
 	../generator/codegen --generate $(APIS) --outdir=generated --customdir=. --assembly-name=pango-sharp --gluelib-name=pangosharpglue-2 --glue-filename=glue/generated.c --glue-includes=pango/pango.h && touch generated-stamp
 
-pango-api.xml: pango-api.raw Pango.metadata
+pango-api.xml: pango-api.raw pango-symbols.xml Pango.metadata
 	cp pango-api.raw pango-api.xml
 	chmod u+w pango-api.xml
-	../parser/gapi-fixup.exe --api=pango-api.xml --metadata=Pango.metadata
+	../parser/gapi-fixup.exe --api=pango-api.xml --metadata=Pango.metadata --symbols=pango-symbols.xml
 
 clean:
 	rm -f generated-stamp
