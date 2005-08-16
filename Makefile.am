@@ -12,3 +12,5 @@ EXTRA_DIST = 			\
 
 #DISTCLEANFILES = AssemblyInfo.cs
 
+configure.in: bootstrap.status configure.in.in 
+	$(SHELL) $<
