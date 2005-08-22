@@ -23,9 +23,11 @@ namespace Gtk {
 
 	using System;
 	using System.Collections;
+	using System.Threading;
 
 	public abstract class TreeNode : ITreeNode {
 
+		// Only use interlocked operations
 		static int next_idx = 0;
 
 		int id;
@@ -34,7 +36,7 @@ namespace Gtk {
 
 		public TreeNode ()
 		{
-			id = next_idx++;
+			id = Interlocked.Increment (ref next_idx);
 		}
 
 		public int ID {

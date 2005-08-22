@@ -1,5 +1,10 @@
 2005-08-22  Ben Maurer  <bmaurer@novell.com>
 
+	* gtk/TreeNode.cs: Add Interlocked.Increment rather than ++. This
+	makes it safe to create tree nodes in a worker thread as long as
+	you reparent them into the tree with another thread. Thanks to mk
+	for allowing a bit of threadedness in :-).
+	
 	* gtk/NodeView.cs: Fix leak here. r=mkestner
 
 2005-08-22  Mike Kestner  <mkestner@novell.com>
