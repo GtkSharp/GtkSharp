@@ -789,7 +789,7 @@ sub addParamsElem
 		my $out = $parm =~ s/G_CONST_RETURN/const/g;
 		$parm =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$parm =~ s/(\*+)\s*const\s+/\1 /g;
-		$parm =~ s/(\w+)\s+const\s+\*/const \1 */g;
+		$parm =~ s/(\w+)\s+const\s*\*/const \1\*/g;
 		$parm =~ s/const\s+/const-/g;
 		$parm =~ s/unsigned\s+/unsigned-/g;
 		if ($parm =~ /(.*)\(\s*\**\s*(\w+)\)\s+\((.*)\)/) {
