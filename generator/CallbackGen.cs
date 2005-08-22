@@ -31,6 +31,7 @@ namespace GtkSharp.Generation {
 		private Signature sig = null;
 		private ImportSignature isig = null;
 		private ReturnValue retval;
+		private bool valid = true;
 
 		public CallbackGen (XmlElement ns, XmlElement elem) : base (ns, elem) 
 		{
@@ -44,21 +45,27 @@ namespace GtkSharp.Generation {
 			if (!retval.Validate ()) {
 				Console.WriteLine ("rettype: " + retval.CType + " in callback " + CName);
 				Statistics.ThrottledCount++;
+				valid = false;
 				return false;
 			}
 
 			if (!parms.Validate ()) {
 				Console.WriteLine (" in callback " + CName);
 				Statistics.ThrottledCount++;
+				valid = false;
 				return false;
 			}
 
+			valid = true;
 			return true;
 		}
 
 		public override string MarshalType {
 			get {
-				return NS + "Sharp." + Name + "Native";
+				if (valid)
+					return NS + "Sharp." + Name + "Native";
+				else
+					return "";
 			}
 		}
 
