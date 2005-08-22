@@ -31,6 +31,7 @@ namespace Gtk {
 	public class NodeView : TreeView {
 
 		NodeStore store;
+		NodeSelection selection;
 
 		public NodeView (NodeStore store) : base (IntPtr.Zero)
 		{
@@ -49,7 +50,9 @@ namespace Gtk {
 
 		public NodeSelection NodeSelection { 
 			get {
-				return new NodeSelection (Selection);
+				if (selection == null)
+					selection = new NodeSelection (Selection);
+				return selection;
 			}
 		}
 
