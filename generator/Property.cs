@@ -55,6 +55,13 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool IsDeprecated {
+			get {
+				return !container_type.IsDeprecated &&
+					elem.GetAttribute ("deprecated") == "1";
+			}
+		}
+
 		protected virtual string PropertyAttribute (string qpname) {
 			return "[GLib.Property (" + qpname + ")]";
 		}
@@ -118,6 +125,10 @@ namespace GtkSharp.Generation {
 
 			GenerateImports (gen_info, indent);
 
+			if (IsDeprecated ||
+			    (Getter != null && Getter.IsDeprecated) ||
+			    (Setter != null && Setter.IsDeprecated))
+				sw.WriteLine (indent + "[Obsolete]");
 			sw.WriteLine (indent + PropertyAttribute (qpname));
 			sw.WriteLine (indent + "public " + modifiers + CSType + " " + name + " {");
 			indent += "\t";

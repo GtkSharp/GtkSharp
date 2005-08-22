@@ -1,5 +1,19 @@
 2005-08-22  Dan Winship  <danw@novell.com>
 
+	* generator/Property.cs (Generate): Mark properties [Obsolete] if
+	they or their accessors are marked deprecated. (Affects
+	Gtk.Entry.Editable, Gtk.FontSelection.Font,
+	Gtk.Notebook.*TabBorder, Gtk.Object.UserData, and a bunch of old
+	Gtk.ProgressBar properties).
+
+	* gtk/Gtk.metadata: Hide Entry.Editable. Mark Notebook.Homogeneous
+	deprecated.
+
+	* gtk/Entry.custom: Implement Editable property with an Obsolete
+	pointing to IsEditable.
+
+2005-08-22  Dan Winship  <danw@novell.com>
+
 	* generator/CallbackGen.cs (Validate, MarshalType): if validation
 	fails, set MarshalType to "" to propagate that failure into
 	methods that have args of this type. [Fixes #75851]
