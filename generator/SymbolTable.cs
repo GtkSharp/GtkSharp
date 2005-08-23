@@ -49,6 +49,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gint", "int"));
 			AddType (new SimpleGen ("guint", "uint"));
 			AddType (new SimpleGen ("int", "int"));
+			AddType (new SimpleGen ("unsigned", "uint"));
 			AddType (new SimpleGen ("unsigned int", "uint"));
 			AddType (new SimpleGen ("unsigned-int", "uint"));
 			AddType (new SimpleGen ("gshort", "short"));
