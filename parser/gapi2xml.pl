@@ -844,6 +844,7 @@ sub addReturnElem
 {
 	my ($parent, $ret) = @_;
 
+	$ret =~ s/(\w+)\s+const\s*\*/const \1\*/g;
 	$ret =~ s/const|G_CONST_RETURN/const-/g;
 	$ret =~ s/\s+//g;
 	$ret =~ s/(const-)?(\w+)\*(const-)\*/const-\2\*\*/g;
