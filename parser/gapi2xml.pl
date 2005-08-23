@@ -504,6 +504,7 @@ sub addFieldElems
 		next if ($field !~ /\S/);
 		$field =~ s/\s+(\*+)/\1 /g;
 		$field =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
+		$parm =~ s/(\w+)\s+const\s*\*/const \1\*/g;
 		$field =~ s/const /const\-/g;
 		$field =~ s/struct /struct\-/g;
 		$field =~ s/.*\*\///g;
