@@ -27,6 +27,7 @@ namespace GLib {
 	using System.ComponentModel;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
+	using System.Text;
 
 	public class Object : IWrapper, IDisposable {
 
@@ -162,10 +163,36 @@ namespace GLib {
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_register_type (IntPtr name, IntPtr parent_type);
 
+
+		static int type_uid;
+		static string BuildEscapedName (System.Type t)
+		{
+			string qn = t.FullName;
+			// Just a random guess
+			StringBuilder sb = new StringBuilder (20 + qn.Length);
+			sb.Append ("__gtksharp_");
+			sb.Append (type_uid++);
+			sb.Append ("_");
+			foreach (char c in qn) {
+				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+					sb.Append (c);
+				else if (c == '.')
+					sb.Append ('_');
+				else if ((uint) c <= byte.MaxValue) {
+					sb.Append ('+');
+					sb.Append (((byte) c).ToString ("x2"));
+				} else {
+					sb.Append ('-');
+					sb.Append (((uint) c).ToString ("x4"));
+				}
+			}
+			return sb.ToString ();
+		}
+
 		protected static GType RegisterGType (System.Type t)
 		{
 			GType parent_gtype = LookupGType (t.BaseType);
-			string name = t.FullName.Replace(".", "_");
+			string name = BuildEscapedName (t);
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
 			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
 			GLib.Marshaller.Free (native_name);
