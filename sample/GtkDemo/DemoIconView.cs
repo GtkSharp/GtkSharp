@@ -53,8 +53,8 @@ namespace GtkDemo
 			IconView iconView = new IconView (store);
 			iconView.SelectionMode = SelectionMode.Multiple;
 
-			upButton.Clicked += OnUpClicked;
-			homeButton.Clicked += OnHomeClicked;
+			upButton.Clicked += new EventHandler (OnUpClicked);
+			homeButton.Clicked += new EventHandler (OnHomeClicked);
 
 			iconView.TextColumn = COL_DISPLAY_NAME;
 			iconView.PixbufColumn = COL_PIXBUF;
@@ -77,7 +77,7 @@ namespace GtkDemo
 			ListStore store = new ListStore (typeof (string), typeof (string), typeof (Gdk.Pixbuf), typeof (bool));
 
 			// Set sort column and function
-			store.DefaultSortFunc = SortFunc;
+			store.DefaultSortFunc = new TreeIterCompareFunc (SortFunc);
 			store.SetSortColumnId (COL_DISPLAY_NAME, SortType.Ascending);
 
 			return store;
