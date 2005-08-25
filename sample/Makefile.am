@@ -113,7 +113,7 @@ vte-example.exe: $(srcdir)/VteTest.cs $(assemblies)
 custom-cellrenderer.exe: $(srcdir)/CustomCellRenderer.cs $(assemblies)
 	$(CSC) /debug /out:custom-cellrenderer.exe $(references) $(srcdir)/CustomCellRenderer.cs
 
-dotnet_references = $(references) $(addprefix -r:, $(DOTNET_ASSEMBLY)) -r:System.Drawing
+dotnet_references = $(references) $(addprefix -r:, $(DOTNET_ASSEMBLY)) -r:System.Drawing.dll
 
 drawing-sample.exe: $(srcdir)/DrawingSample.cs $(assemblies) $(DOTNET_ASSEMBLIES)
 	$(CSC) /debug /out:drawing-sample.exe $(dotnet_references) $(srcdir)/DrawingSample.cs

@@ -13,12 +13,12 @@ CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
 DISTCLEANFILES = $(ASSEMBLY).config
 
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../gdk/gdk-sharp.dll
-build_references = $(addprefix -r:, $(references)) -r:System.Drawing
+build_references = $(addprefix -r:, $(references)) -r:System.Drawing.dll
 
 sources =		 			\
 	Graphics.cs
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) ../AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
 EXTRA_DIST =				\
 	$(sources)			\
@@ -29,9 +29,19 @@ EXTRA_DIST =				\
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
-$(ASSEMBLY): $(build_sources) $(references) gtk-sharp.snk
+AssemblyInfo.cs: $(top_srcdir)/AssemblyInfo.cs
+	cp $(top_srcdir)/AssemblyInfo.cs .
+
+if PLATFORM_WIN32
+GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=gtk-sharp.snk $(ASSEMBLY)
+else
+GAPI_CDECL_INSERT=
+endif
+
+$(ASSEMBLY): $(build_sources) $(references) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) /nowarn:0612 /out:$(ASSEMBLY) /target:library $(build_references) $(build_sources)
+	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(build_references) $(build_sources)
+	$(GAPI_CDECL_INSERT)
 
 install-data-local:
 	@if test -n '$(TARGET)'; then						\

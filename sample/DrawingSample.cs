@@ -18,11 +18,11 @@ class X {
 
 		// Event-based drawing
 		b = new DrawingArea ();
-		b.ExposeEvent += ExposeHandler;
-		b.SizeAllocated += SizeAllocatedHandler;
+		b.ExposeEvent += new ExposeEventHandler (ExposeHandler);
+		b.SizeAllocated += new SizeAllocatedHandler (SizeAllocatedHandler);
 
 		Button c = new Button ("Quit");
-		c.Clicked += quit;
+		c.Clicked += new EventHandler (quit);
 
 		MovingText m = new MovingText ();
 		
