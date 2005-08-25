@@ -4,7 +4,7 @@ TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs
 DISTCLEANFILES = $(ASSEMBLY).config
 
 references = 
@@ -66,8 +66,8 @@ EXTRA_DIST =				\
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
-AssemblyInfo.cs: $(top_srcdir)/AssemblyInfo.cs
-	cp $(top_srcdir)/AssemblyInfo.cs .
+AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
+	cp $(top_builddir)/AssemblyInfo.cs .
 
 if PLATFORM_WIN32
 GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=gtk-sharp.snk $(ASSEMBLY)

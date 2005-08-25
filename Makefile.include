@@ -10,7 +10,7 @@ noinst_DATA = $(TARGET)
 TARGET_API = $(pkg:=-api.xml)
 gapidir = $(datadir)/gapi-2.0
 gapi_DATA = $(TARGET_API)
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb generated-stamp generated/*.cs $(API) glue/generated.c $(SNK)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb generated-stamp generated/*.cs $(API) glue/generated.c $(SNK) AssemblyInfo.cs
 DISTCLEANFILES = $(ASSEMBLY).config
 
 EXTRA_DIST = $(RAW_API) $(SYMBOLS) $(ASSEMBLY).config.in $(METADATA) $(customs) $(sources) $(add_dist)
@@ -40,8 +40,8 @@ generated-stamp: $(API) $(INCLUDE_API) $(top_builddir)/generator/gapi_codegen.ex
 $(SNK): $(top_srcdir)/$(SNK)
 	cp $(top_srcdir)/$(SNK) .
 
-AssemblyInfo.cs: $(top_srcdir)/AssemblyInfo.cs
-	cp $(top_srcdir)/AssemblyInfo.cs .
+AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
+	cp $(top_builddir)/AssemblyInfo.cs .
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 build_references = $(addprefix /r:, $(references))
