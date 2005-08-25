@@ -100,7 +100,7 @@ public class OpaqueTest {
 
 		Console.WriteLine ("Testing returning a Gtk#-owned opaque from C# to C");
 		ret_op = new Opaque ();
-		op = Opaque.Check (ReturnOpaque, GC);
+		op = Opaque.Check (new Gtksharp.OpaqueReturnFunc (ReturnOpaque), new Gtksharp.GCFunc (GC));
 		if (op.Serial != Opaque.LastSerial || Opaquetest.Error)
 			Error ("Error during Opaque.Check. Expected {0}, Got {1}", Opaque.LastSerial, op.Serial);
 		op.Dispose ();
@@ -109,7 +109,7 @@ public class OpaqueTest {
 
 		Console.WriteLine ("Testing returning a Gtk#-owned opaque to a C method that will free it");
 		ret_op = new Opaque ();
-		op = Opaque.CheckFree (ReturnOpaque, GC);
+		op = Opaque.CheckFree (new Gtksharp.OpaqueReturnFunc (ReturnOpaque), new Gtksharp.GCFunc (GC));
 		if (Opaquetest.Error)
 			Error ("Error during Opaque.CheckFree.");
 		Opaquetest.ExpectError = true;
@@ -125,7 +125,7 @@ public class OpaqueTest {
 		Console.WriteLine ("Testing leaking a C-owned opaque");
 		ret_op = new Opaque ();
 		ret_op.Owned = false;
-		op = Opaque.Check (ReturnOpaque, GC);
+		op = Opaque.Check (new Gtksharp.OpaqueReturnFunc (ReturnOpaque), new Gtksharp.GCFunc (GC));
 		if (op.Serial != Opaque.LastSerial || Opaquetest.Error)
 			Error ("Error during Opaque.Check. Expected {0}, Got {1}", Opaque.LastSerial, op.Serial);
 		handle = op.Handle;
@@ -139,7 +139,7 @@ public class OpaqueTest {
 		Console.WriteLine ("Testing handing over a C-owned opaque to a C method that will free it");
 		ret_op = new Opaque ();
 		ret_op.Owned = false;
-		op = Opaque.CheckFree (ReturnOpaque, GC);
+		op = Opaque.CheckFree (new Gtksharp.OpaqueReturnFunc (ReturnOpaque), new Gtksharp.GCFunc (GC));
 		if (Opaquetest.Error)
 			Error ("Error during Opaque.CheckFree.");
 		Opaquetest.ExpectError = true;
@@ -222,7 +222,7 @@ public class OpaqueTest {
 
 		Console.WriteLine ("Testing returning a Gtk#-owned refcounted from C# to C");
 		ret_ref = new Refcounted ();
-		ref1 = Refcounted.Check (ReturnRefcounted, GC);
+		ref1 = Refcounted.Check (new Gtksharp.RefcountedReturnFunc (ReturnRefcounted), new Gtksharp.GCFunc (GC));
 		if (ref1.Serial != Refcounted.LastSerial || Opaquetest.Error)
 			Error ("Error during Refcounted.Check. Expected {0}, Got {1}", Refcounted.LastSerial, ref1.Serial);
 		ref1.Dispose ();
@@ -231,7 +231,7 @@ public class OpaqueTest {
 
 		Console.WriteLine ("Testing returning a Gtk#-owned refcounted to a C method that will free it");
 		ret_ref = new Refcounted ();
-		ref1 = Refcounted.CheckUnref (ReturnRefcounted, GC);
+		ref1 = Refcounted.CheckUnref (new Gtksharp.RefcountedReturnFunc (ReturnRefcounted), new Gtksharp.GCFunc (GC));
 		if (Opaquetest.Error)
 			Error ("Error during Refcounted.CheckUnref.");
 		Opaquetest.ExpectError = true;
@@ -247,7 +247,7 @@ public class OpaqueTest {
 		Console.WriteLine ("Testing leaking a C-owned refcounted");
 		ret_ref = new Refcounted ();
 		ret_ref.Owned = false;
-		ref1 = Refcounted.Check (ReturnRefcounted, GC);
+		ref1 = Refcounted.Check (new Gtksharp.RefcountedReturnFunc (ReturnRefcounted), new Gtksharp.GCFunc (GC));
 		if (ref1.Serial != Refcounted.LastSerial || Opaquetest.Error)
 			Error ("Error during Refcounted.Check. Expected {0}, Got {1}", Refcounted.LastSerial, ref1.Serial);
 		handle = ref1.Handle;
@@ -261,7 +261,7 @@ public class OpaqueTest {
 		Console.WriteLine ("Testing handing over a C-owned refcounted to a C method that will free it");
 		ret_ref = new Refcounted ();
 		ret_ref.Owned = false;
-		ref1 = Refcounted.CheckUnref (ReturnRefcounted, GC);
+		ref1 = Refcounted.CheckUnref (new Gtksharp.RefcountedReturnFunc (ReturnRefcounted), new Gtksharp.GCFunc (GC));
 		if (Opaquetest.Error)
 			Error ("Error during Refcounted.CheckUnref.");
 		Opaquetest.ExpectError = true;

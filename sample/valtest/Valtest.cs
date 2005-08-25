@@ -89,20 +89,20 @@ public class Valtest {
 
 		try {
 			val = new GLib.Value (ENUM_VAL);
-			if ((Gtk.ArrowType)val != ENUM_VAL)
-				CVError ("enum cast", ENUM_VAL, (Gtk.ArrowType)val, val.Val);
-			if ((Gtk.ArrowType)val.Val != ENUM_VAL)
-				CVError ("enum Val", ENUM_VAL, (Gtk.ArrowType)val, val.Val);
+			if ((Gtk.ArrowType)(Enum)val != ENUM_VAL)
+				CVError ("enum cast", ENUM_VAL, (Gtk.ArrowType)(Enum)val, val.Val);
+			if ((Gtk.ArrowType)(Enum)val.Val != ENUM_VAL)
+				CVError ("enum Val", ENUM_VAL, (Gtk.ArrowType)(Enum)val, val.Val);
 		} catch (Exception e) {
 			ExceptionError ("enum", e);
 		}
 
 		try {
 			val = new GLib.Value (FLAGS_VAL);
-			if ((Gtk.AttachOptions)val != FLAGS_VAL)
-				CVError ("flags cast", FLAGS_VAL, (Gtk.AttachOptions)val, val.Val);
-			if ((Gtk.AttachOptions)val.Val != FLAGS_VAL)
-				CVError ("flags Val", FLAGS_VAL, (Gtk.AttachOptions)val, val.Val);
+			if ((Gtk.AttachOptions)(Enum)val != FLAGS_VAL)
+				CVError ("flags cast", FLAGS_VAL, (Gtk.AttachOptions)(Enum)val, val.Val);
+			if ((Gtk.AttachOptions)(Enum)val.Val != FLAGS_VAL)
+				CVError ("flags Val", FLAGS_VAL, (Gtk.AttachOptions)(Enum)val, val.Val);
 		} catch (Exception e) {
 			ExceptionError ("flags", e);
 		}

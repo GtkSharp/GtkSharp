@@ -5,7 +5,7 @@ assemblies=../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-s
 references=$(addprefix /r:, $(assemblies))
 
 opaquetest.exe: OpaqueTest.cs generated/*.cs $(assemblies)
-	$(CSC) /out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs generated/*.cs
+	$(CSC) /out:opaquetest.exe $(references) $(srcdir)/OpaqueTest.cs $(GENERATED_SOURCES)
 
 libopaque_la_SOURCES =	\
 	opaques.c	\
