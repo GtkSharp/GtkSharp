@@ -70,7 +70,8 @@ namespace GLib {
 			this.marshaler = marshaler;
 			gc_handle = GCHandle.Alloc (this);
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
-			g_object_set_data_full (handle, native_key, (IntPtr) gc_handle, notify);
+			if (handle != IntPtr.Zero)
+				g_object_set_data_full (handle, native_key, (IntPtr) gc_handle, notify);
 			GLib.Marshaller.Free (native_key);
 		}
 
@@ -82,7 +83,11 @@ namespace GLib {
 		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
 		{
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
-			IntPtr data = g_object_get_data (obj.Handle, native_key);
+			IntPtr data;
+			if (obj.Handle == IntPtr.Zero)
+				data = IntPtr.Zero;
+			else
+				data = g_object_get_data (obj.Handle, native_key);
 			GLib.Marshaller.Free (native_key);
 			if (data == IntPtr.Zero)
 				return new Signal (obj, name, marshaler);
@@ -152,7 +157,8 @@ namespace GLib {
 		void DisconnectObject ()
 		{
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
-			g_object_set_data (handle, native_key, IntPtr.Zero);
+			if (handle != IntPtr.Zero)
+				g_object_set_data (handle, native_key, IntPtr.Zero);
 			GLib.Marshaller.Free (native_key);
 		}
 
