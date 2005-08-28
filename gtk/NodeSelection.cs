@@ -130,5 +130,28 @@ namespace Gtk {
 				return results;
 			}
 		}
+
+		public ITreeNode SelectedNode {
+			get {
+				if (Mode == SelectionMode.Multiple)
+					throw new InvalidOperationException ("SelectedNode is not valid with multi-selection mode");
+				
+				ITreeNode [] sn = SelectedNodes;
+				if (sn.Length == 0)
+					return null;
+				return sn [0];
+			}
+			set {
+				// with multiple mode, the behavior
+				// here would be unclear. Does it just
+				// select the `value' node or does it
+				// make the `value' node the only
+				// selected node.
+				if (Mode == SelectionMode.Multiple)
+					throw new InvalidOperationException ("SelectedNode is not valid with multi-selection mode");
+				
+				SelectNode (value);
+			}
+		}
 	}
 }
