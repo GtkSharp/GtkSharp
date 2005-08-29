@@ -1,5 +1,3 @@
-ASSEMBLER = $(MONODOC) --assemble
-
 ASSEMBLIES = 				\
 	glib-sharp.dll			\
 	pango-sharp.dll			\
@@ -28,7 +26,7 @@ endif
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
-	$(ASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
+	$(MDASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
 
 get-assemblies:
 	mkdir -p lib

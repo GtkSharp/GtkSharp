@@ -221,14 +221,14 @@ else
 enable_vte=no
 fi
 
-MONODOC_REQUIRED_VERSION=1.0.6.99
-PKG_CHECK_MODULES(MONODOC_DEPS, monodoc >= $MONODOC_REQUIRED_VERSION, enable_monodoc=yes, enable_monodoc=no)
-AC_PATH_PROG(MONODOC, monodoc, no)
+AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
 AC_PATH_PROG(MONODOCER, monodocer, no)
-if test "x$MONODOCER" = "xno" -o "x$MONODOC" = "xno"; then
+if test "x$MONODOCER" = "xno" -o "x$MDASSEMBLER" = "xno"; then
   enable_monodoc=no
+else
+  enable_monodoc=yes
 fi
-AC_SUBST(MONODOC)
+AC_SUBST(MDASSEMBLER)
 AC_SUBST(MONODOCER)
 
 AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
