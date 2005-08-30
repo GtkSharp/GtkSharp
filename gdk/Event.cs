@@ -79,6 +79,9 @@ namespace Gdk {
 
 		public static Event GetEvent (IntPtr raw)
 		{
+			if (raw == IntPtr.Zero)
+				return null;
+
 			switch (gtksharp_gdk_event_get_event_type (raw)) {
 			case EventType.Expose:
 				return new EventExpose (raw);
