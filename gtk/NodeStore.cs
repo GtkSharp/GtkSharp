@@ -370,6 +370,7 @@ namespace Gtk {
 			node.Changed += new EventHandler (changed_cb);
 			node.ChildAdded += new TreeNodeAddedHandler (child_added_cb);
 			node.ChildRemoved += new TreeNodeRemovedHandler (child_deleted_cb);
+			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
 
 			for (int i = 0; i < node.ChildCount; i++)
 				AddNodeInternal (node [i]);
@@ -379,8 +380,6 @@ namespace Gtk {
 		{
 			nodes.Add (node);
 			AddNodeInternal (node);
-
-			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
 		}
 
 		public void AddNode (ITreeNode node, int position)
