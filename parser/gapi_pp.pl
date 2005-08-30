@@ -81,6 +81,8 @@ foreach $fname (@hdrs) {
 			while ($line !~ /\*\//) {$line = <INFILE>;}
 		} elsif ($line =~ /^extern/) {
 			while ($line !~ /;/) {$line = <INFILE>;}
+		} elsif ($line =~ /^#ifndef\s+\w+_H_*\b/) {
+			while ($line !~ /#define/) {$line = <INFILE>;}
 		} elsif ($line =~ /$private_regex/) {
 			$nested = 0;
 			while ($line = <INFILE>) {
