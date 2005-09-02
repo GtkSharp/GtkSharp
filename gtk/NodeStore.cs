@@ -319,7 +319,7 @@ namespace Gtk {
 					int col = attr.Column;
 
 					if (getters [col] != null)
-						throw new Exception ("You have two TreeNodeValueAttributes with the same column");
+						throw new Exception (String.Format ("You have two TreeNodeValueAttributes with the Column={0}", col));
 					
 					getters [col] = mi;
 					Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType
