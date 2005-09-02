@@ -238,5 +238,169 @@ void LongComputation ()
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+  <Member MemberName="Invoke">
+      <MemberSignature Language="C#" Value="public static void Invoke (EventHandler d);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="d" Type="System.EventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="d">An event handler to invoke on the main thread.</param>
+        <summary>Invoke the given EventHandler in the GUI thread.</summary>
+        <remarks>
+	   Use this method to invoke the given delegate code in the
+    	   main thread.  This is necessary since Gtk# does not allow
+	   multiple threads to perform operations on Gtk objects as it
+	   the toolkit is not thread-safe.
+	   <para>
+	     This mechanism is simpler to use than <see
+    	     cref="T:Gtk.ThreadNotify"/> since it does not require the
+    	     creation of a notifier per event.
+	   </para>
+	   <para>
+	     This is particularly useful with C# 2.0 as it is possible
+	     to use anonymous methods with it, for example:
+	   </para>
+      <example>
+        <code lang="C#">
+	using Gtk;
+	using Gdk;
+	using System;
+	using System.Threading;
+
+	public class HelloThreads  {
+		static Label msg;
+		static Button but;
+		static int count;
+		static Thread thr;
+		
+		public static int Main (string[] args)
+		{
+			Application.Init ();
+			Gtk.Window win = new Gtk.Window ("Gtk# Threaded Counter");
+			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+			msg = new Label ("Click to quit");
+			but = new Button (msg);
+			but.Clicked += delegate { thr.Abort (); Application.Quit (); };
+			win.Add (but);
+			win.ShowAll ();
+
+			thr = new Thread (ThreadMethod);
+			thr.Start ();
+			
+			Application.Run ();
+			
+			return 0;
+		}
+
+		static void ThreadMethod ()
+		{
+			Console.WriteLine ("Starting thread");
+			while (true){
+				count++;
+				Thread.Sleep (500);
+				Application.Invoke (delegate {
+					msg.Text = String.Format ("Click to Quit ({0})", count);
+				});
+			}
+		}
+		
+		static void Window_Delete (object obj, DeleteEventArgs args)
+		{
+			Application.Quit ();
+			args.RetVal = true;
+		}
+        </code>
+      </example>
+	</remarks>
+      </Docs>
+    </Member>
+  <Member MemberName="Invoke">
+      <MemberSignature Language="C#" Value="public static void Invoke (object sender, EventArgs args, EventHandler d);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="args" Type="System.EventArgs" />
+        <Parameter Name="d" Type="System.EventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="sender">The sender to pass to the event handler..</param>
+        <param name="args">The argument to pass to the event handler.</param>
+        <param name="d">An event handler to invoke on the main thread.</param>
+        <summary>Invoke the given EventHandler in the GUI thread.</summary>
+        <remarks>
+    	   Use this method to invoke the given delegate code in the
+        	   main thread.  This is necessary since Gtk# does not allow
+    	   multiple threads to perform operations on Gtk objects as it
+    	   the toolkit is not thread-safe.
+    	   <para>
+    	     This mechanism is simpler to use than <see
+        	     cref="T:Gtk.ThreadNotify"/> since it does not require the
+        	     creation of a notifier per event.
+    	   </para>
+    	   <para>
+    	     This is particularly useful with C# 2.0 as it is possible
+    	     to use anonymous methods with it, for example:
+    	   </para>
+          <example>
+            <code lang="C#">
+    	using Gtk;
+    	using Gdk;
+    	using System;
+    	using System.Threading;
+    
+    	public class HelloThreads  {
+    		static Label msg;
+    		static Button but;
+    		static int count;
+    		static Thread thr;
+    		
+    		public static int Main (string[] args)
+    		{
+    			Application.Init ();
+    			Gtk.Window win = new Gtk.Window ("Gtk# Threaded Counter");
+    			win.DeleteEvent += new DeleteEventHandler (Window_Delete);
+    			msg = new Label ("Click to quit");
+    			but = new Button (msg);
+    			but.Clicked += delegate { thr.Abort (); Application.Quit (); };
+    			win.Add (but);
+    			win.ShowAll ();
+    
+    			thr = new Thread (ThreadMethod);
+    			thr.Start ();
+    			
+    			Application.Run ();
+    			
+    			return 0;
+    		}
+    
+    		static void ThreadMethod ()
+    		{
+    			Console.WriteLine ("Starting thread");
+    			while (true){
+    				count++;
+    				Thread.Sleep (500);
+    				Application.Invoke (delegate {
+    					msg.Text = String.Format ("Click to Quit ({0})", count);
+    				});
+    			}
+    		}
+    		
+    		static void Window_Delete (object obj, DeleteEventArgs args)
+    		{
+    			Application.Quit ();
+    			args.RetVal = true;
+    		}
+            </code>
+          </example>
+    	</remarks>
+      </Docs>
+    </Member>
   </Members>
 </Type>

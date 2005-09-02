@@ -3,7 +3,7 @@
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <AssemblyVersion>2.4.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -75,17 +75,17 @@ public class DemoEntryCompletion : Window
   </Interfaces>
   <Members>
     <Member MemberName="OnActionActivated">
-      <MemberSignature Language="C#" Value="protected virtual void OnActionActivated (int index_);" />
+      <MemberSignature Language="C#" Value="protected virtual void OnActionActivated (int index);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
         <summary>This method is called whenever an action is activated.</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
+        <param name="index">a <see cref="T:System.Int32" /></param>
         <remarks />
         <since version="Gtk# 2.6" />
       </Docs>
@@ -109,45 +109,47 @@ public class DemoEntryCompletion : Window
       </Docs>
     </Member>
     <Member MemberName="InsertActionMarkup">
-      <MemberSignature Language="C#" Value="public void InsertActionMarkup (int index_, string markup);" />
+      <MemberSignature Language="C#" Value="public void InsertActionMarkup (int index, string markup);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="index" Type="System.Int32" />
         <Parameter Name="markup" Type="System.String" />
       </Parameters>
       <Docs>
+        <param name="index">To be added.</param>
+        <param name="markup">a <see cref="T:System.String" /></param>
         <summary>
 	  Inserts an action in the completion's action item list at 
 	  position <paramref name="index_" /> with markup 
 	  <paramref name="markup" />.
 	</summary>
         <param name="index_">a <see cref="T:System.Int32" /></param>
-        <param name="markup">a <see cref="T:System.String" /></param>
         <remarks />
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
     <Member MemberName="InsertActionText">
-      <MemberSignature Language="C#" Value="public void InsertActionText (int index_, string text);" />
+      <MemberSignature Language="C#" Value="public void InsertActionText (int index, string text);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="index" Type="System.Int32" />
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
+        <param name="index">To be added.</param>
+        <param name="text">a <see cref="T:System.String" /></param>
         <summary>	  
 	  Inserts an action in the completion's action item list at 
 	  position <paramref name="index_" /> with text 
 	  <paramref name="text" />.
 	</summary>
         <param name="index_">a <see cref="T:System.Int32" /></param>
-        <param name="text">a <see cref="T:System.String" /></param>
         <remarks>
 	  If you want the item to have markup, use <see cref="M:Gtk.EntryCompletion.InsertActionMarkup" />.
 	</remarks>
@@ -171,20 +173,20 @@ public class DemoEntryCompletion : Window
       </Docs>
     </Member>
     <Member MemberName="DeleteAction">
-      <MemberSignature Language="C#" Value="public void DeleteAction (int index_);" />
+      <MemberSignature Language="C#" Value="public void DeleteAction (int index);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
         <summary> 
-	  Deletes the action at <paramref name="index_" />
+	  Deletes the action at <paramref name="index" />
 	  from the action list for this completion.
 	</summary>
-        <param name="index_">a <see cref="T:System.Int32" /></param>
+        <param name="index">a <see cref="T:System.Int32" /></param>
         <remarks />
         <since version="Gtk# 2.6" />
       </Docs>
@@ -385,7 +387,7 @@ public class DemoEntryCompletion : Window
       </Attributes>
     </Member>
     <Member MemberName="TextColumn">
-      <MemberSignature Language="C#" Value="public int TextColumn { set; get; };" />
+      <MemberSignature Language="C#" Value="public int TextColumn { set; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -401,11 +403,7 @@ public class DemoEntryCompletion : Window
 	</remarks>
         <since version="Gtk# 2.6" />
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Property(Name="text_column")</AttributeName>
-        </Attribute>
-      </Attributes>
+      
     </Member>
     <Member MemberName="Entry">
       <MemberSignature Language="C#" Value="public Gtk.Widget Entry { get; };" />
@@ -570,24 +568,7 @@ public class DemoEntryCompletion : Window
         </Attribute>
       </Attributes>
     </Member>
-    <Member MemberName="PrefixInserted">
-      <MemberSignature Language="C#" Value="public event Gtk.PrefixInsertedHandler PrefixInserted;" />
-      <MemberType>Event</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.PrefixInsertedHandler</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>GLib.Signal(CName="insert_prefix")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
+    
     <Member MemberName="OnPrefixInserted">
       <MemberSignature Language="C#" Value="protected virtual bool OnPrefixInserted (string prefix);" />
       <MemberType>Method</MemberType>
@@ -605,18 +586,6 @@ public class DemoEntryCompletion : Window
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-    <Member MemberName="InsertPrefix">
-      <MemberSignature Language="C#" Value="public void InsertPrefix ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-        <since version="Gtk# 2.6" />
-      </Docs>
-    </Member>
+    
   </Members>
 </Type>
