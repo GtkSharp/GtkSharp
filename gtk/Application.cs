@@ -141,5 +141,45 @@ namespace Gtk {
 				return new Gdk.Event (gtk_get_current_event ());
 			}
 		}
+
+		internal class InvokeCB {
+			EventHandler d;
+			object sender;
+			EventArgs args;
+			
+			internal InvokeCB (EventHandler d)
+			{
+				this.d = d;
+				args = EventArgs.Empty;
+				sender = this;
+			}
+			
+			internal InvokeCB (EventHandler d, object sender, EventArgs args)
+			{
+				this.d = d;
+				this.args = args;
+				this.sender = sender;
+			}
+			
+			internal bool Invoke ()
+			{
+				d (sender, args);
+				return false;
+			}
+		}
+		
+		public static void Invoke (EventHandler d)
+		{
+			InvokeCB icb = new InvokeCB (d);
+			
+			GLib.Idle.Add (new GLib.IdleHandler (icb.Invoke));
+		}
+
+		public static void Invoke (object sender, EventArgs args, EventHandler d)
+		{
+			InvokeCB icb = new InvokeCB (d);
+			
+			GLib.Idle.Add (new GLib.IdleHandler (icb.Invoke));
+		}
 	}
 }
