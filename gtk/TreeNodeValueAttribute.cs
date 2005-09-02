@@ -23,7 +23,7 @@ namespace Gtk {
 
 	using System;
 
-	[AttributeUsage (AttributeTargets.Property, AllowMultiple = true)]
+	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 	public sealed class TreeNodeValueAttribute : Attribute {
 
 		int col;

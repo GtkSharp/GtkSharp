@@ -25,16 +25,12 @@ namespace Gtk {
 
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class TreeNodeAttribute : Attribute {
-		int col_count;
 		bool list_only;
-
+		
+		[Obsolete ("This is no longer needed; it gets detected by Gtk#")]
 		public int ColumnCount {
-			get {
-				return col_count;
-			}
-			set {
-				col_count = value;
-			}
+			get { return 0; }
+			set { }
 		}
 
 		public bool ListOnly {

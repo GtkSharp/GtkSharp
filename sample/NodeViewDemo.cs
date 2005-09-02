@@ -10,25 +10,21 @@ namespace GtkSamples {
 	using System.Reflection;
 	using Gtk;
 
-	[TreeNode (ColumnCount=2)]
 	public class DemoTreeNode : TreeNode {
-
-		string name;
 		string desc;
 		static int count = 0;
 
 		public DemoTreeNode (string name, string desc)
 		{
-			this.name = name;
+			this.Name = name;
 			this.desc = desc;
 			count++;
 		}
-
-		[TreeNodeValue (Column=0)]
-		public string Name {
-			get { return name; }
-		}
-
+		
+		// TreeNodeValues can come from both properties and fields
+		[TreeNodeValue (Column=0)]	
+		public string Name;
+		
 		[TreeNodeValue (Column=1)]
 		public string Description {
 			get { return desc; }

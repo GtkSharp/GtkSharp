@@ -92,8 +92,8 @@ namespace Gtk {
 
 		Hashtable node_hash = new IDHashtable ();
  		GLib.GType[] ctypes; 
-		PropertyInfo[] getters;
-		int n_cols = 1;
+		MemberInfo [] getters;
+		int n_cols;
 		bool list_only = false;
 		ArrayList nodes = new ArrayList ();
 		TreeModelIfaceDelegates tree_model_iface;
@@ -150,7 +150,11 @@ namespace Gtk {
 			if (node == null)
 				return;
 			g_value_init (ref val, ctypes [col].Val);
-			object col_val = getters[col].GetValue (node, null);
+			object col_val;
+			if (getters [col] is PropertyInfo)
+				col_val = ((PropertyInfo) getters [col]).GetValue (node, null);
+			else
+				col_val = ((FieldInfo) getters [col]).GetValue (node);
 			val.Val = col_val;
 		}
 
@@ -293,19 +297,34 @@ namespace Gtk {
 
 		void ScanType (Type type)
 		{
-			foreach (TreeNodeAttribute attr in type.GetCustomAttributes (typeof (TreeNodeAttribute), false)) {
-				n_cols = attr.ColumnCount;
-				list_only = attr.ListOnly;
-			}
+			TreeNodeAttribute tna = (TreeNodeAttribute) Attribute.GetCustomAttribute (type, typeof (TreeNodeAttribute), false);
+			if (tna != null)
+				list_only = tna.ListOnly;
+			
+			ArrayList minfos = new ArrayList ();
+			
+			foreach (PropertyInfo pi in type.GetProperties ())
+				foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
+					minfos.Add (pi);
+			
+			foreach (FieldInfo fi in type.GetFields ())
+				foreach (TreeNodeValueAttribute attr in fi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false))
+					minfos.Add (fi);
+			
+ 			ctypes = new GLib.GType [minfos.Count];
+ 			getters = new MemberInfo [minfos.Count];
 
- 			ctypes = new GLib.GType [n_cols];
- 			getters = new PropertyInfo [n_cols];
-
-			foreach (PropertyInfo pi in type.GetProperties ()) {
-				foreach (TreeNodeValueAttribute attr in pi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
+			foreach (MemberInfo mi in minfos) {
+				foreach (TreeNodeValueAttribute attr in mi.GetCustomAttributes (typeof (TreeNodeValueAttribute), false)) {
 					int col = attr.Column;
-					getters [col] = pi;
-                                        ctypes[col] = (GLib.GType) pi.PropertyType;
+
+					if (getters [col] != null)
+						throw new Exception ("You have two TreeNodeValueAttributes with the same column");
+					
+					getters [col] = mi;
+					Type t = mi is PropertyInfo ? ((PropertyInfo) mi).PropertyType
+					                            : ((FieldInfo) mi).FieldType;
+					ctypes [col] = (GLib.GType) t;
 				}
 			}
 		}
