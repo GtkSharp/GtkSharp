@@ -177,7 +177,7 @@ namespace Gtk {
 
 		public static void Invoke (object sender, EventArgs args, EventHandler d)
 		{
-			InvokeCB icb = new InvokeCB (d);
+			InvokeCB icb = new InvokeCB (d, sender, args);
 			
 			GLib.Idle.Add (new GLib.IdleHandler (icb.Invoke));
 		}
