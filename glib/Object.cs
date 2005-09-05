@@ -114,6 +114,7 @@ namespace GLib {
 					PendingDestroys.Remove (obj);
 				if (owned_ref)
 					g_object_unref (obj._obj);
+				obj.disposed = false;
 				return obj;
 			}
 
