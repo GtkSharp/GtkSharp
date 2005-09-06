@@ -347,10 +347,17 @@ namespace Gtk {
 		[DllImport("gtksharpglue-2")]
 		static extern void gtksharp_node_store_emit_row_inserted (IntPtr handle, IntPtr path, int node_idx);
 
+		private void EmitRowInserted (ITreeNode node)
+		{
+			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
+			for (int i = 0; i < node.ChildCount; i++)
+				EmitRowInserted (node [i]);
+		}
+
 		private void child_added_cb (object o, ITreeNode child)
 		{
 			AddNodeInternal (child);
-			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (child.ID), child.ID);
+			EmitRowInserted (child);
 		}
 
 		[DllImport("gtksharpglue-2")]
@@ -398,19 +405,14 @@ namespace Gtk {
 		{
 			nodes.Add (node);
 			AddNodeInternal (node);
-			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
-			for (int i = 0; i < node.ChildCount; i++)
-				gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node[i].ID), node[i].ID);
+			EmitRowInserted (node);
 		}
 
 		public void AddNode (ITreeNode node, int position)
 		{
 			nodes.Insert (position, node);
 			AddNodeInternal (node);
-
-			gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node.ID), node.ID);
-			for (int i = 0; i < node.ChildCount; i++)
-				gtksharp_node_store_emit_row_inserted (Handle, get_path_cb (node[i].ID), node[i].ID);
+			EmitRowInserted (node);
 		}
 
 		public void RemoveNode (ITreeNode node)
