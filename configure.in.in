@@ -225,8 +225,10 @@ AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
 AC_PATH_PROG(MONODOCER, monodocer, no)
 if test "x$MONODOCER" = "xno" -o "x$MDASSEMBLER" = "xno"; then
   enable_monodoc=no
+  doc_sources_dir=
 else
   enable_monodoc=yes
+  doc_sources_dir="`pkg-config --variable=sourcesdir monodoc`"
 fi
 AC_SUBST(MDASSEMBLER)
 AC_SUBST(MONODOCER)
@@ -341,5 +343,9 @@ echo "            corresponding development packages for them, rerun"
 echo "            autogen.sh to include them in the build."
 echo ""
 echo "   * Documentation build enabled: $enable_monodoc "
+if test "x$enable_monodoc" = "xyes" -a "x$doc_sources_dir" != "x$prefix/lib/monodoc/sources"; then
+  echo "      WARNING: The install prefix is different than the monodoc prefix."
+  echo "               Monodoc will not be able to load the documentation."
+fi
 echo "---"
 

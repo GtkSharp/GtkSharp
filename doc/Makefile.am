@@ -23,6 +23,17 @@ else
 UPDATER = echo "All optional assemblies must be built to use the updater." && exit 1
 endif
 
+if ENABLE_MONODOC
+SOURCESDIR=$(prefix)/lib/monodoc/sources
+TARGETS=gtk-sharp-docs.zip gtk-sharp-docs.tree gtk-sharp-docs.source
+else
+SOURCESDIR=$(datadir)
+TARGETS=
+endif
+
+monodocdir=$(SOURCESDIR)
+monodoc_DATA=$(TARGETS)
+
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
