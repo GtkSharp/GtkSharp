@@ -429,6 +429,13 @@ namespace Gtk {
 			gtksharp_node_store_emit_row_deleted (Handle, path.Handle);
 		}
 
+		public void Clear ()
+		{
+			while (nodes.Count > 0)
+				RemoveNode ((ITreeNode)nodes [0]);
+			
+		}
+		
 		private ITreeNode GetNodeAtPath (TreePath path)
 		{
 			int[] indices = path.Indices;
