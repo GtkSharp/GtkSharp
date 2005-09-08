@@ -51,6 +51,7 @@ customs = 				\
 	ComboBoxEntry.custom		\
 	Container.custom		\
 	Dialog.custom			\
+	Drag.custom			\
 	Entry.custom			\
 	EntryCompletion.custom		\
 	FileChooser.custom		\
