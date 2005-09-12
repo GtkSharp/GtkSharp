@@ -8,7 +8,40 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>An HBox is a specific type of <see cref="T:Gtk.Container" /> for packing widgets horizontally.</summary>
+    <summary>An HBox is a specific type of <see cref="T:Gtk.Container" /> for packing widgets horizontally.
+
+
+<example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class HBoxTester {
+     
+     static void Main ()
+     {
+          Application.Init ();
+          Window myWindow = new Window ("HBox Widget");
+
+          HBox myBox = new HBox (false, 4);
+
+          //Add some buttons to the horizontal box
+          AddButton (myBox);
+          AddButton (myBox);
+          
+          //Add the box to a Window container
+          myWindow.Add (myBox);
+          myWindow.ShowAll ();
+          Application.Run ();
+     }
+
+     static void AddButton (HBox box)
+     {
+          box.PackStart (new Button ("Button"), true, false, 0);
+     }     
+}
+  </code>
+      </example></summary>
     <remarks>
       <para>Other ways of laying out widgets include using a vertical box, (see <see cref="T:Gtk.VBox" />), a table, (see <see cref="T:Gtk.Table" />), button boxes, etc.</para>
       <para>

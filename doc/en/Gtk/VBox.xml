@@ -8,7 +8,38 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A VBox is a specific type of <see cref="T:Gtk.Container" /> for packing widgets vertically.</summary>
+    <summary>A VBox is a specific type of <see cref="T:Gtk.Container" /> for packing widgets vertically.
+<example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class VBoxTester {
+	
+	static void Main ()
+	{
+		Application.Init ();
+		Window myWindow = new Window ("VBox Widget");
+
+		VBox myBox = new VBox (false, 4);
+
+		//Add some buttons to the vertical box
+		AddButton (myBox);
+		AddButton (myBox);
+		
+		//Add the box to a Window container
+		myWindow.Add (myBox);
+		myWindow.ShowAll ();
+		Application.Run ();
+	}
+
+	static void AddButton (VBox box)
+	{
+		box.PackStart (new Button ("Button"), true, false, 0);
+	}	
+}
+  </code>
+      </example></summary>
     <remarks>
       <para>Other ways of laying out widgets include using a horizontal box, (see <see cref="T:Gtk.HBox" />), a table, (see <see cref="T:Gtk.Table" />), button boxes, etc.</para>
       <para>
