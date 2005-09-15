@@ -96,21 +96,29 @@ namespace GtkSharp.Parsing {
 			while (rmv_iter.MoveNext ()) {
 				string path = rmv_iter.Current.GetAttribute ("path", "");
 				XPathNodeIterator api_iter = api_nav.Select (path);
+				bool matched = false;
 				while (api_iter.MoveNext ()) {
 					XmlElement api_node = ((IHasXmlNode)api_iter.Current).GetNode () as XmlElement;
 					api_node.ParentNode.RemoveChild (api_node);
+					matched = true;
 				}
+				if (!matched)
+					Console.WriteLine ("Warning: <remove-node path=\"{0}\"/> matched no nodes", path);
 			}
 
 			XPathNodeIterator add_iter = meta_nav.Select ("/metadata/add-node");
 			while (add_iter.MoveNext ()) {
 				string path = add_iter.Current.GetAttribute ("path", "");
 				XPathNodeIterator api_iter = api_nav.Select (path);
+				bool matched = false;
 				while (api_iter.MoveNext ()) {
 					XmlElement api_node = ((IHasXmlNode)api_iter.Current).GetNode () as XmlElement;
 					foreach (XmlNode child in ((IHasXmlNode)add_iter.Current).GetNode().ChildNodes)
 						api_node.AppendChild (api_doc.ImportNode (child, true));
+					matched = true;
 				}
+				if (!matched)
+					Console.WriteLine ("Warning: <add-node path=\"{0}\"/> matched no nodes", path);
 			}
 
 			XPathNodeIterator attr_iter = meta_nav.Select ("/metadata/attr");
@@ -118,10 +126,14 @@ namespace GtkSharp.Parsing {
 				string path = attr_iter.Current.GetAttribute ("path", "");
 				string attr_name = attr_iter.Current.GetAttribute ("name", "");
 				XPathNodeIterator api_iter = api_nav.Select (path);
+				bool matched = false;
 				while (api_iter.MoveNext ()) {
 					XmlElement node = ((IHasXmlNode)api_iter.Current).GetNode () as XmlElement;
 					node.SetAttribute (attr_name, attr_iter.Current.Value);
+					matched = true;
 				}
+				if (!matched)
+					Console.WriteLine ("Warning: <attr path=\"{0}\"/> matched no nodes", path);
 			}
 
 			XPathNodeIterator move_iter = meta_nav.Select ("/metadata/move-node");
@@ -130,6 +142,7 @@ namespace GtkSharp.Parsing {
 				XPathExpression expr = api_nav.Compile (path);
 				string parent = move_iter.Current.Value;
 				XPathNodeIterator parent_iter = api_nav.Select (parent);
+				bool matched = false;
 				while (parent_iter.MoveNext ()) {
 					XmlNode parent_node = ((IHasXmlNode)parent_iter.Current).GetNode ();
 					XPathNodeIterator path_iter = parent_iter.Current.Clone ().Select (expr);
@@ -138,7 +151,10 @@ namespace GtkSharp.Parsing {
 						parent_node.AppendChild (node.Clone ());
 						node.ParentNode.RemoveChild (node);
 					}
+					matched = true;
 				}
+				if (!matched)
+					Console.WriteLine ("Warning: <move-node path=\"{0}\"/> matched no nodes", path);
 			}
 
 			if (symbol_doc != null) {
