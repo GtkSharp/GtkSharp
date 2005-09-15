@@ -20,6 +20,7 @@ sources =				\
 
 customs =				\
 	Global.custom			\
+	Interface.custom		\
 	XML.custom
 
 add_dist = makefile.win32 glade-sharp-2.0.pc.in
