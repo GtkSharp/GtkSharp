@@ -8,7 +8,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
+    <summary>An icon listing/chooser display.</summary>
     <remarks>To be added</remarks>
   </Docs>
   <Base>
@@ -27,8 +27,8 @@
         <Parameter Name="not_shown" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="not_shown">To be added: an object of type 'bool'</param>
+        <summary>Clear the currently shown icons, the ones that weren't shown yet are not cleared unless the not_shown parameter is given, in which case even those are cleared.</summary>
+        <param name="not_shown">Set to 'true' to clear even the icons that were not shown yet.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -42,9 +42,9 @@
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="filename">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Selects the icon filename. This icon must have already been added and shown.</summary>
+        <param name="filename">icon filename</param>
+        <remarks>see also ShowIcons</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddDefaults">
@@ -55,8 +55,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Adds the default pixmap directory into the selection widget.</summary>
+        <remarks> It doesn't show the icons in the selection until you do ShowIcons.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowIcons">
@@ -67,8 +67,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Shows the icons inside the widget that were added with AddDefaults and AddDirectory. Before this function is called the icons aren't actually added to the listing and can't be picked by the user.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="AddDirectory">
@@ -81,9 +81,9 @@
         <Parameter Name="dir" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dir">To be added: an object of type 'string'</param>
-        <remarks>To be added</remarks>
+        <summary>Adds the icons from the directory dir to the selection widget.</summary>
+        <param name="dir">Directory with pixmaps</param>
+        <remarks> It doesn't show the icons in the selection until you do ShowIcons.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetIcon">
@@ -96,10 +96,10 @@
         <Parameter Name="full_path" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Gets the currently selected icon name.</summary>
         <param name="full_path">To be added: an object of type 'bool'</param>
-        <returns>To be added: an object of type 'string'</returns>
-        <remarks>To be added</remarks>
+        <returns>The name of the icon that is currently selected.</returns>
+        <remarks>If full_path is true, it returns the full path to the icon, if none is selected it returns NULL.</remarks>
       </Docs>
     </Member>
     <Member MemberName="StopLoading">
@@ -110,7 +110,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Stop the loading of images when we are in the loop in ShowIcons, otherwise it does nothing and is harmless, it should be used say if the dialog was hidden or when we want to quickly stop loading the images to do something else without destroying the icon selection object. The remaining icons can be shown by ShowIcons.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -135,7 +135,7 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a new icon selection widget, it uses GnomeIconList for the listing of icons.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -146,7 +146,7 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The Gtk.VBox widget that is used to pack the different elements of the selection into.</summary>
         <value>To be added: an object of type 'Gtk.Widget'</value>
         <remarks>To be added</remarks>
       </Docs>
@@ -158,7 +158,7 @@
         <ReturnType>Gtk.Widget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
+        <summary>The IconList widget that is used for the display of icons</summary>
         <value>To be added: an object of type 'Gtk.Widget'</value>
         <remarks>To be added</remarks>
       </Docs>
