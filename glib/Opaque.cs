@@ -69,8 +69,8 @@ namespace GLib {
 				if (opaque.owned) {
 					// The constructor took a Ref it shouldn't have, so undo it
 					opaque.Unref (o);
-				} else
-					opaque.owned = true;
+				}
+				opaque.owned = true;
 			}
 			return opaque;
   		}
