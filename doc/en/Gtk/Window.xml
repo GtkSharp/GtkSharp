@@ -8,7 +8,36 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Toplevel <paramref name="widget" /> which can contain other widgets.</summary>
+    <summary>Toplevel <paramref name="widget" /> which can contain other widgets.
+
+
+<example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+class WindowTester {
+	static void Main ()
+	{
+		Application.Init ();
+		Window myWindow = new Window ("This is a window");
+		myWindow.DeleteEvent += OnDelete;
+		myWindow.SetDefaultSize (200, 200);
+
+		//Put a button in the Window
+		Button button = new Button ("Click");
+		myWindow.Add (button);
+		myWindow.ShowAll ();
+		Application.Run ();
+	}
+
+	static void OnDelete (object o, DeleteEventArgs e)
+	{
+		Application.Quit ();
+	}	
+}
+  </code>
+      </example></summary>
     <remarks>Toplevel <paramref name="widget" /> which can contain other widgets.</remarks>
   </Docs>
   <Base>
