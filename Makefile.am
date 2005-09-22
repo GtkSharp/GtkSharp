@@ -4,6 +4,7 @@ EXTRA_DIST = 			\
 	gtk-sharp.snk		\
 	gapi-cdecl-insert	\
 	makefile.win32		\
+	policy.config.in	\
 	AssemblyInfo.cs.in	\
 	ChangeLog		\
 	HACKING			\

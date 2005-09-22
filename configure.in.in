@@ -7,6 +7,8 @@ AM_MAINTAINER_MODE
 
 API_VERSION=@ASSEMBLY_VERSION@
 AC_SUBST(API_VERSION)
+POLICY_VERSIONS=@POLICY_VERSIONS@
+AC_SUBST(POLICY_VERSIONS)
 
 PACKAGE_VERSION=gtk-sharp-2.0
 AC_SUBST(PACKAGE_VERSION)
@@ -91,6 +93,11 @@ PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true
 AC_PATH_PROG(GACUTIL, gacutil, no)
 if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found. You need to install either the mono or .Net SDK.])
+fi
+
+AC_PATH_PROG(AL, al, no)
+if test "x$AL" = "xno" ; then
+	AC_MSG_ERROR([No al tool found. You need to install either the mono or .Net SDK.])
 fi
 
 if test "x$has_mono" = "xtrue"; then
@@ -249,6 +256,7 @@ AC_SUBST(CFLAGS)
 AC_OUTPUT([
 AssemblyInfo.cs
 Makefile
+policy.config
 sources/Makefile
 parser/Makefile
 parser/gapi-2.0.pc

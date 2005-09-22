@@ -6,8 +6,11 @@ endif
 
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = gconf-sharp-peditors
-noinst_DATA = $(TARGET)
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk
+noinst_DATA = $(TARGET) $(POLICY_ASSEMBLIES)
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
+
+POLICY_ASSEMBLIES = $(addsuffix .$(ASSEMBLY), $(addprefix policy., $(POLICY_VERSIONS)))
+POLICY_CONFIGS = $(addsuffix .config, $(addprefix policy., $(POLICY_VERSIONS)))
 
 EXTRA_DIST =				\
 	PropertyEditorColorPicker.cs	\
@@ -37,15 +40,34 @@ $(ASSEMBLY): $(build_sources) gtk-sharp.snk
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
 
+$(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
+	@for i in "$(POLICY_VERSIONS)"; do	\
+	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
+	  sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$$i/" $(top_builddir)/policy.config > policy.$$i.config;	\
+	  $(AL) -link:policy.$$i.config -out:policy.$$i.$(ASSEMBLY) -keyfile:gtk-sharp.snk;	\
+	done
+
 install-data-local:
-	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";	\
-	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;	\
+	@if test -n '$(TARGET)'; then							\
+	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";				\
+	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;			\
+	  if test -n '$(POLICY_VERSIONS)'; then						\
+	    for i in $(POLICY_VERSIONS); do						\
+	      echo "$(GACUTIL) /i policy.$$i.$(ASSEMBLY) /f $(GACUTIL_FLAGS)";		\
+	      $(GACUTIL) /i policy.$$i.$(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;	\
+	    done									\
+	  fi										\
 	fi
 
 uninstall-local:
-	@if test -n '$(TARGET)'; then						\
-	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
-	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
+	@if test -n '$(TARGET)'; then							\
+	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";			\
+	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
+	  if test -n '$(POLICY_VERSIONS)'; then						\
+	    for i in $(POLICY_VERSIONS); do						\
+	      echo "$(GACUTIL) /u policy.$$i.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";	\
+	      $(GACUTIL) /u policy.$$i.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;	\
+	    done									\
+	  fi										\
 	fi
 
