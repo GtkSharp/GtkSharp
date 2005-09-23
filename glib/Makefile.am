@@ -4,6 +4,8 @@ TARGET = $(ASSEMBLY)
 ASSEMBLY = $(ASSEMBLY_NAME).dll
 ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config $(POLICY_ASSEMBLIES)
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = glib-sharp-2.0.pc
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
 DISTCLEANFILES = $(ASSEMBLY).config
@@ -65,6 +67,7 @@ dist_sources = $(sources)
 EXTRA_DIST =				\
 	$(dist_sources)			\
 	$(ASSEMBLY).config.in		\
+	glib-sharp-2.0.pc.in		\
 	makefile.win32
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
