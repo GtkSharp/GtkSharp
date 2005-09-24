@@ -44,7 +44,12 @@ class T
 		Gdk.Color.Parse ("black", ref black);
 		// FIXME: following line is broken
 		//term.ColorForeground = black;
-		term.SetColors (black, white, white, 16);
+		
+		// Create a palette with 0 colors. this could be replaced with
+		// a palette of colors with a size of 0, 8, 16, or 24.
+		Gdk.Color[] palette = new Gdk.Color[0];
+		
+		term.SetColors (black, white, palette, palette.Length);
 		
 		//Console.WriteLine (term.UsingXft);
 		//Console.WriteLine (term.Encoding);
