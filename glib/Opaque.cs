@@ -36,35 +36,15 @@ namespace GLib {
 		IntPtr _obj;
 		bool owned;
 
-		// We don't have to do as much work here as GLib.Object.GetObject
-		// does; users can't subclass opaque types, so nothing bad will happen
-		// if we accidentally end up creating two wrappers for the same object.
-
-		static Hashtable Opaques = new Hashtable();
-
+		[Obsolete ("Use more explicit overload.  This method always returns null")]
 		public static Opaque GetOpaque (IntPtr o)
 		{
-			WeakReference reference = (WeakReference) Opaques[o];
-			if (reference == null)
-				return null;
-			if (!reference.IsAlive) {
-				Opaques.Remove (o);
-				return null;
-			}
+			return null;
+		}
 
-			return (Opaque) reference.Target;
-  		}
-  
 		public static Opaque GetOpaque (IntPtr o, Type type, bool owned)
 		{
-			Opaque opaque = GetOpaque (o);
-			if (opaque != null) {
-				if (owned)
-					opaque.owned = true;
-				return opaque;
-			}
-
-			opaque = (Opaque)Activator.CreateInstance (type, new object[] { o });
+			Opaque opaque = (Opaque)Activator.CreateInstance (type, new object[] { o });
 			if (owned) {
 				if (opaque.owned) {
 					// The constructor took a Ref it shouldn't have, so undo it
@@ -92,7 +72,6 @@ namespace GLib {
 			}
 			set {
 				if (_obj != IntPtr.Zero) {
-					Opaques.Remove (_obj);
 					Unref (_obj);
 					if (owned)
 						Free (_obj);
@@ -100,7 +79,6 @@ namespace GLib {
 				_obj = value;
 				if (_obj != IntPtr.Zero) {
 					Ref (_obj);
-					Opaques [_obj] = new WeakReference (this);
 				}
 			}
 		}       

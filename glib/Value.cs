@@ -269,7 +269,7 @@ namespace GLib {
 
 		public static explicit operator GLib.Opaque (Value val)
 		{
-			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val));
+			return GLib.Opaque.GetOpaque (g_value_get_boxed (ref val), (Type) new GType (val.type), false);
 		}
 
 		public static explicit operator GLib.Boxed (Value val)
