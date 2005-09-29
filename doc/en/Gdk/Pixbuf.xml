@@ -32,6 +32,69 @@
 	Pixbufs can also be saved to a number of different file
 	formats. 
       </para>
+      <para>An example that composites two images next to each other.
+<example>
+          <code lang="C#">
+// Compile with: mcs -pkg:gtk-sharp PixmapComposite.cs
+// Usage: PixmapComposite.exe image-1.jpg image-2.jpg composite.jpg
+using Gdk;
+using System;
+
+public class PixmapComposite
+{
+	public static void Main (string [] args)
+	{
+		// Check arguments, this takes three.
+		if (args.Length &lt; 3)
+			throw new Exception ("USAGE: image1Filename image2Filename "
+				+ "compositeFilename");
+
+		// Figure out the output type
+		string type = "jpeg";
+
+		if (args [2].ToLower ().EndsWith (".jpg"))
+			type = "jpeg";
+		else if (args [2].ToLower ().EndsWith (".png"))
+			type = "png";
+		else
+			throw new Exception ("Only JPG and PNG images are supported for "
+				+ "the composite image");
+
+		// Init the system
+		Gdk.Global.InitCheck(ref args);
+
+		// Load the images
+		Pixbuf image1 = new Pixbuf (args [0]);
+		Pixbuf image2 = new Pixbuf (args [1]);
+
+		// Create the composite image
+		Colorspace colorspace = image1.Colorspace;
+		bool hasAlpha	      = image1.HasAlpha;
+		int bitsPerSample     = image1.BitsPerSample;
+		Pixbuf composite      = new Pixbuf (colorspace,
+			hasAlpha,
+			bitsPerSample,
+			image1.Width + image2.Width,
+			image1.Height);
+		
+		// Composite the images on the central one
+		image1.Composite (composite,
+			0, 0, image1.Width, image1.Height,
+			0.0, 0.0, 1.0, 1.0,
+			InterpType.Hyper,
+			255);
+		image2.Composite (composite,
+			image1.Width, 0, image2.Width, image2.Height,
+			image1.Width, 0.0, 1.0, 1.0,
+			InterpType.Hyper,
+			255);
+		
+		// Write out the image as a JPG
+		composite.Save (args [2], type);
+	}
+}
+</code>
+        </example></para>
     </remarks>
   </Docs>
   <Base>
