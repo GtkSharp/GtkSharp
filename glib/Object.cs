@@ -80,11 +80,18 @@ namespace GLib {
 				return;
 
 			disposed = true;
+			if (MainContext.Depth > 0) {
+				g_object_unref (_obj);
+				Objects.Remove (_obj);
+				GC.SuppressFinalize (this);
+				return;
+			}
+
 			lock (PendingDestroys){
 				PendingDestroys.Add (this);
 				lock (typeof (Object)){
 					if (!idle_queued){
-						Idle.Add (new IdleHandler (PerformQueuedUnrefs));
+						Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
 						idle_queued = true;
 					}
 				}

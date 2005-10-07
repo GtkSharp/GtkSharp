@@ -1,3 +1,11 @@
+2005-10-07 Gonzalo Paniagua Javier <gonzalo@ximian.com>
+
+	* glib/MainContext.cs: added a Depth property to p/invoke g_main_depth.
+	* glib/Object.cs:
+	(Dispose): immediately call g_object_unref without queueing when
+	possible (MainContext.Depth > 0) and use Timeout.Add instead of Idle.Add
+	to get our unref callback scheduled more reliably.
+
 2005-10-05  Mike Kestner  <mkestner@novell.com>
 
 	* bootstrap : bump version for beta3.
