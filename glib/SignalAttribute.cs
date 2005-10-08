@@ -25,6 +25,7 @@ namespace GLib {
 	using System;
 
 	[Serializable]
+	[AttributeUsage (AttributeTargets.Event, Inherited=false)]
 	public sealed class SignalAttribute : Attribute 
 	{
 		private string cname;

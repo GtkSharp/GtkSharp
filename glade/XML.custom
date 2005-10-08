@@ -270,7 +270,7 @@
 			static bool SignalFilter (System.Reflection.MemberInfo m, object filterCriteria) 
 			{
 				string signame = (filterCriteria as string);
-				object[] attrs = m.GetCustomAttributes (typeof (GLib.SignalAttribute), true);
+				object[] attrs = m.GetCustomAttributes (typeof (GLib.SignalAttribute), false);
 				if (attrs.Length > 0)
 				{
 					foreach (GLib.SignalAttribute a in attrs)
@@ -307,7 +307,7 @@
 			
 			foreach (System.Reflection.FieldInfo field in fields)
 			{
-				object[] attrs = field.GetCustomAttributes (typeof (WidgetAttribute), true);
+				object[] attrs = field.GetCustomAttributes (typeof (WidgetAttribute), false);
 				if (attrs == null || attrs.Length == 0)
 					continue;
 				// The widget to field binding must be 1:1, so only check
