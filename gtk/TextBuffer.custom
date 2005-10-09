@@ -22,6 +22,7 @@
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern void gtk_text_buffer_set_text (IntPtr raw, IntPtr text, int len);
 
+#if !GTK_SHARP_2_8
 public string Text {
 	get {
 		return GetText (StartIter, EndIter, false);
@@ -32,6 +33,7 @@ public string Text {
 		GLib.Marshaller.Free (native);
 	}
 }
+#endif
 
 public void Clear ()
 {

@@ -168,12 +168,14 @@ namespace GtkSharp.Generation {
 
 		private string ReturnGType {
 			get {
-				ClassBase igen = SymbolTable.Table.GetClassGen (retval.CType);
+				IGeneratable igen = SymbolTable.Table [retval.CType];
 
 				if (igen is ObjectGen)
 					return "GLib.GType.Object";
 				if (igen is BoxedGen)
 					return retval.CSType + ".GType";
+				if (igen is EnumGen)
+					return retval.CSType + "GType.GType";
 
 				switch (retval.CSType) {
 				case "bool":
