@@ -88,7 +88,7 @@ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	$(GAPI_CDECL_INSERT)
 
 $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
-	@for i in "$(POLICY_VERSIONS)"; do	\
+	@for i in $(POLICY_VERSIONS); do	\
 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
 	  sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$$i/" $(top_builddir)/policy.config > policy.$$i.config;	\
 	  $(AL) -link:policy.$$i.config -out:policy.$$i.$(ASSEMBLY) -keyfile:gtk-sharp.snk;	\

@@ -47,7 +47,7 @@ AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
 	cp $(top_builddir)/AssemblyInfo.cs .
 
 $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config $(SNK)
-	@for i in "$(POLICY_VERSIONS)"; do	\
+	@for i in $(POLICY_VERSIONS); do	\
 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
 	  sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@POLICY@/$$i/" $(top_builddir)/policy.config > policy.$$i.config;	\
 	  $(AL) -link:policy.$$i.config -out:policy.$$i.$(ASSEMBLY) -keyfile:$(SNK);	\
