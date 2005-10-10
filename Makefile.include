@@ -54,12 +54,14 @@ $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config $(SNK)
 	done
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
-build_references = $(addprefix /r:, $(references))
+build_references = $(addprefix /r:, $(references)) $(CAIRO_REFERENCE)
 
 if PLATFORM_WIN32
 GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=$(SNK) $(ASSEMBLY)
+CAIRO_REFERENCE=
 else
 GAPI_CDECL_INSERT=
+CAIRO_REFERENCE=/r:Mono.Cairo.dll
 endif
 
 $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
