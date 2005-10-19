@@ -150,10 +150,10 @@
 		}*/
 		
 		[DllImport("gnomeprint-2-2")]
-		static extern int gnome_print_setfont (IntPtr raw, ref Font font);
+		static extern int gnome_print_setfont (IntPtr raw, IntPtr font);
 		
 		public PrintReturnCode SetFont (Font font) {
-			return (PrintReturnCode)gnome_print_setfont (Handle, ref font);
+			return (PrintReturnCode)gnome_print_setfont (Handle, font == null ? IntPtr.Zero : font.Handle);
 		}
 		
 		[DllImport("gnomeprint-2-2")]
