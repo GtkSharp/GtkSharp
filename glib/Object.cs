@@ -80,13 +80,6 @@ namespace GLib {
 				return;
 
 			disposed = true;
-			if (MainContext.Depth > 0) {
-				g_object_unref (_obj);
-				Objects.Remove (_obj);
-				GC.SuppressFinalize (this);
-				return;
-			}
-
 			lock (PendingDestroys){
 				PendingDestroys.Add (this);
 				lock (typeof (Object)){
