@@ -1348,8 +1348,8 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(memorystream, 10, 10);
         <Parameter Name="buffer" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <summary>Makes a new Pixbuf object from a <see cref="T:System.Byte[]" />.</summary>
-        <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image</param>
+        <summary>Makes a new Pixbuf object from a <see cref="T:System.Byte[]" /> containing an encoded image.</summary>
+        <param name="buffer">a <see cref="T:System.Byte[]" /> containing the image in one of the formats recognized by Pixbuf (png, tiff, jpeg, etc).</param>
         <remarks>Useful for creating a Pixbuf from an image file in memory.
 
 <example>
@@ -1407,19 +1407,20 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
         <Parameter Name="destroy_fn" Type="Gdk.PixbufDestroyNotify" />
       </Parameters>
       <Docs>
-        <summary>Public constructor; creates a new <see cref="T:Gdk.Pixbuf" />
-	  and allocates a buffer for it. Note that the buffer is not cleared;
-	  you will have to fill it completely yourself.
-	</summary>
-        <param name="data">a <see cref="T:System.Byte[]" /></param>
-        <param name="colorspace">a <see cref="T:Gdk.Colorspace" /></param>
-        <param name="has_alpha">a <see cref="T:System.Boolean" /></param>
-        <param name="bits_per_sample">a <see cref="T:System.Int32" /></param>
-        <param name="width">a <see cref="T:System.Int32" /></param>
-        <param name="height">a <see cref="T:System.Int32" /></param>
-        <param name="rowstride">a <see cref="T:System.Int32" /></param>
-        <param name="destroy_fn">a <see cref="T:Gdk.PixbufDestroyNotify" /></param>
-        <remarks />
+        <summary>Public constructor; creates a new <see cref="T:Gdk.Pixbuf" /> from an in-memory RGB or RGBA buffer.</summary>
+        <param name="data">The data that contains the image in RGB or RGBA format.</param>
+        <param name="colorspace">The <see cref="T:Gdk.Colorspace" /> for the image data.</param>
+        <param name="has_alpha">Whether the data contains an alpha channel (RGBA format).</param>
+        <param name="bits_per_sample">Currently only 8 is supported (1 byte per channel).</param>
+        <param name="width">Width of the image in pixels.</param>
+        <param name="height">Height of the image in pixels.</param>
+        <param name="rowstride">The rowstride is the number of bytes consumed by a single row in the image.</param>
+        <param name="destroy_fn">A routine to invoke when the reference count to this image reaches zero.</param>
+        <remarks>The image must be in RGB format or RGBA format, where each channel takes one byte.   
+
+<para>
+   For performance reasons sometimes images have some padding at the end of each row, this is done to ensure that access to the data is aligned.  The <paramref name="row_stride" /> argument is the size in bytes of each row.   If no padding is added the <paramref name="row_stride" /> is just: <paramref name="width" /> * (3 + <paramref name="has_alpha" />).
+</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -1881,8 +1882,8 @@ Gdk.Pixbuf pb = new Gdk.Pixbuf(buffer, 10, 10);
       <Docs>
         <param name="data">To be added.</param>
         <param name="copy_pixels">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Constructor for pixbufs that that have embedded images created with the gdk-pixbuf-source program.</summary>
+        <remarks>This is used to create pixbufs from images that have been embedded using the gdk-pixbuf-csource command line tool. </remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
