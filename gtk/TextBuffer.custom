@@ -41,6 +41,12 @@ public void Clear ()
 	Delete (ref start, ref end);
 }
 
+[Obsolete ("Replaced by 'ref TextIter, ref TextIter' overload")]
+public void Delete (TextIter start, TextIter end )
+{
+	Delete (ref start, ref end);
+}
+
 // overload to paste clipboard contents at cursor editable by default.
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern void gtk_text_buffer_paste_clipboard (IntPtr raw, IntPtr clip, IntPtr iter, bool default_edit);
@@ -53,11 +59,29 @@ public void PasteClipboard (Gtk.Clipboard clipboard)
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern void gtk_text_buffer_insert (IntPtr raw, ref Gtk.TextIter iter, IntPtr text, int len);
 
+[Obsolete ("Replaced by 'ref TextIter iter' overload")]
+public void Insert (TextIter iter, string text)
+{
+	Insert (ref iter, text);
+}
+
 public void Insert (ref Gtk.TextIter iter, string text)
 {
 	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (text);
 	gtk_text_buffer_insert (Handle, ref iter, native, -1);
 	GLib.Marshaller.Free (native);
+}
+
+[Obsolete ("Replaced by 'ref TextIter iter' overload")]
+public void InsertRange (TextIter iter, TextIter start, TextIter end )
+{
+	InsertRange (ref iter, start, end);
+}
+
+[Obsolete ("Replaced by 'ref TextIter iter' overload")]
+public void InsertWithTags (TextIter iter, string text, params TextTag[] tags)
+{
+	InsertWithTags (ref iter, text, tags);
 }
 
 public void InsertWithTags (ref TextIter iter, string text, params TextTag[] tags)
