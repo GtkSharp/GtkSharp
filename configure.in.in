@@ -104,6 +104,12 @@ if test "x$has_mono" = "xtrue"; then
 GACUTIL_FLAGS='/package $(PACKAGE_VERSION) /gacdir $(DESTDIR)$(prefix)/lib'
 GENERATED_SOURCES=generated/*.cs
 AC_PATH_PROG(RUNTIME, mono, no)
+
+# If mono is found, it's in the path.  Require it to be in the path at runtime as well
+if test "x$RUNTIME" != "no" ; then
+	RUNTIME=mono
+fi
+
 AC_PATH_PROG(CSC, mcs, no)
 if test `uname -s` = "Darwin"; then
 	LIB_PREFIX=
