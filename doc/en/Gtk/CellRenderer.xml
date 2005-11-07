@@ -466,7 +466,63 @@
         <param name="cell_area">a <see cref="T:Gdk.Rectangle" /></param>
         <param name="flags">a <see cref="T:System.Int32" /></param>
         <returns>a <see cref="T:Gtk.CellEditable" /></returns>
-        <remarks>Some cell renderers may use events; for example, <see cref="T:CellRendererToggle" /> toggles when it gets a mouse click.</remarks>
+        <remarks>Some cell renderers may use events; for example, <see cref="T:CellRendererToggle" /> toggles when it gets a mouse click.
+<para>
+The following example illustrates a CellRenderText derived class that implements auto-completion in the entry widget.
+</para><example>
+            <code lang="C#">
+public class CellRendererCompletion : CellRendererText
+{
+	public delegate ListStore CompletionStoreNeededDelegate(TreeView tree, out int textColumn);
+	
+	// Delegate that is called to obtain a ListStore that contains entries
+	// for the column being editted. TreeView.GetCursor(out path, out column)
+	// can be used to determine the column being editted.
+	public static CompletionStoreNeededDelegate CompletionStoreNeededEventHandler;
+	
+	// Required constructor that may be called by the framework.
+	public CellRendererCompletion(System.IntPtr raw) : base(raw)
+	{
+	}
+
+	public CellRendererCompletion()
+	{
+	}
+
+	public override CellEditable StartEditing(Gdk.Event evnt, Widget widget, string path, 
+                   Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
+	{
+		// get the entry widget
+		Entry entry = base.StartEditing (evnt, widget, path, background_area, cell_area, flags) as Gtk.Entry;
+
+		// make it auto-complete
+		TreeView treeview = widget as TreeView;
+		int textColumn = 0;
+
+		entry.Completion = new EntryCompletion();
+		entry.Completion.Model = CreateCompletionModel(treeview, out textColumn);
+		entry.Completion.TextColumn = textColumn;
+
+		return entry;
+	}
+
+	// Gets the ListStore that contains the auto-complete entries
+	// to be shown when editting this cell. Typical use might use
+	// TreeView.GetCursor(out path, out column) to get the column name
+	// being editted to build an appropriate list.
+	private static TreeModel CreateCompletionModel(TreeView treeview, out int textColumn)
+	{
+		textColumn = 0;
+		
+		if (CompletionStoreNeededEventHandler != null)
+			return CompletionStoreNeededEventHandler(treeview, out textColumn);
+			
+		return null;
+	}
+
+}
+</code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingCanceled">
