@@ -104,23 +104,15 @@ public static Rectangle Union (Rectangle r1, Rectangle r2)
 
 public void Intersect (Rectangle r)
 {
-	if (!IntersectsWith (r)) {
-		X = 0;
-		Y = 0;
-		Width = 0;
-		Height = 0;
-	}
-
-	X = Math.Max (Left, r.Left);
-	Y = Math.Max (Top, r.Top);
-	Width = Math.Min (Right, r.Right) - X;
-	Height = Math.Min (Bottom, r.Bottom) - Y;
+	this = Intersect (this, r);
 }
 
 public static Rectangle Intersect (Rectangle r1, Rectangle r2)
 {
-	Rectangle r = r1;
-	r.Intersect (r2);
+	Rectangle r;
+	if (!r1.Intersect (r2, out r))
+		return new Rectangle ();
+	
 	return r;
 }
 
