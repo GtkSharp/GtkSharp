@@ -46,7 +46,7 @@ namespace GtkSharp.Generation {
 
 		public override string CallByName (string var_name)
 		{
-			return var_name + ".Handle";
+			return var_name + " == null ? IntPtr.Zero : " + var_name + ".Handle";
 		}
 		
 		public override string FromNative(string var)
