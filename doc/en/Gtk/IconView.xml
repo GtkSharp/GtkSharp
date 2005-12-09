@@ -3,7 +3,7 @@
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <AssemblyVersion>2.8.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -491,7 +491,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="selection_mode")</AttributeName>
+          <AttributeName>GLib.Property(Name="selection-mode")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -565,7 +565,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="item_width")</AttributeName>
+          <AttributeName>GLib.Property(Name="item-width")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -583,7 +583,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="text_column")</AttributeName>
+          <AttributeName>GLib.Property(Name="text-column")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -619,7 +619,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="pixbuf_column")</AttributeName>
+          <AttributeName>GLib.Property(Name="pixbuf-column")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -637,7 +637,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="row_spacing")</AttributeName>
+          <AttributeName>GLib.Property(Name="row-spacing")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -655,7 +655,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="column_spacing")</AttributeName>
+          <AttributeName>GLib.Property(Name="column-spacing")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -673,7 +673,7 @@ public class DemoIconView : Window
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="markup_column")</AttributeName>
+          <AttributeName>GLib.Property(Name="markup-column")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -843,6 +843,285 @@ public class DemoIconView : Window
           <AttributeName>GLib.Signal(CName="select_cursor_item")</AttributeName>
         </Attribute>
       </Attributes>
+    </Member>
+    <Member MemberName="GetCursor">
+      <MemberSignature Language="C#" Value="public bool GetCursor (out Gtk.TreePath path, out Gtk.CellRenderer cell);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="cell" Type="Gtk.CellRenderer&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">The cursor path.</param>
+        <param name="cell">The currently focused cell.</param>
+        <summary>Gets the path and cell of the current cursor location.</summary>
+        <returns>
+          <see langword="true" />if the cursor is set.</returns>
+        <remarks>The <paramref name="path" /> will be <see langword="null" /> if the cursor is not currently set.  The <paramref name="cell" /> will be <see langword="null" /> if no cell has focus.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDragIcon">
+      <MemberSignature Language="C#" Value="public Gdk.Pixmap CreateDragIcon (Gtk.TreePath path);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixmap</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> to an item in the view.</param>
+        <summary>Creates a pixmap representation of an item.</summary>
+        <returns>a <see cref="T:Gdk.Pixmap" /> representation of the item at <paramref name="path" />.</returns>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="UnsetModelDragDest">
+      <MemberSignature Language="C#" Value="public void UnsetModelDragDest ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Unsets the view as a Drag destination.</summary>
+        <remarks>Reverses the effects of <see cref="M:Gtk.IconView.EnableModelDragDest" />.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetVisibleRange">
+      <MemberSignature Language="C#" Value="public bool GetVisibleRange (out Gtk.TreePath start_path, out Gtk.TreePath end_path);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="end_path" Type="Gtk.TreePath&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="start_path">The first visible item.</param>
+        <param name="end_path">The last visible item.</param>
+        <summary>Gets the visible range of items in the view.</summary>
+        <returns>
+          <see langword="true" /> if the start and end paths were set.</returns>
+        <remarks>There may be invisible paths between the start and end paths.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDestItemAtPos">
+      <MemberSignature Language="C#" Value="public bool GetDestItemAtPos (int drag_x, int drag_y, out Gtk.TreePath path, out Gtk.IconViewDropPosition pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="drag_x" Type="System.Int32" />
+        <Parameter Name="drag_y" Type="System.Int32" />
+        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="pos" Type="Gtk.IconViewDropPosition&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="drag_x">x coordinate of position.</param>
+        <param name="drag_y">y coordinate of position.</param>
+        <param name="path">returns a <see cref="T:Gtk.TreePath" /> for the item.</param>
+        <param name="pos">returns a <see cref="T:Gtk.IconViewDropPosition" />.</param>
+        <summary>Determines the destination item at a position.</summary>
+        <returns>
+          <see langword="true" /> if there is an item at the position.</returns>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetItemAtPos">
+      <MemberSignature Language="C#" Value="public bool GetItemAtPos (int x, int y, out Gtk.TreePath path, out Gtk.CellRenderer cell);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="cell" Type="Gtk.CellRenderer&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="x">x position in widget coordinates.</param>
+        <param name="y">y position in widget coordinates.</param>
+        <param name="path">returns a <see cref="T:Gtk.TreePath" /> representing the item at the position.</param>
+        <param name="cell">returns a <see cref="T:Gtk.CellRenderer" /> representing the cell at the position.</param>
+        <summary>Obtains the item and cell at a given position.</summary>
+        <returns>
+          <see langword="true" /> if there is an item at the position.</returns>
+        <remarks>Extends on <see cref="M:Gtk.IconView.GetPathAtPos" /> by additionally returning a cell renderer at the specified position.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDragDestItem">
+      <MemberSignature Language="C#" Value="public void SetDragDestItem (Gtk.TreePath path, Gtk.IconViewDropPosition pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="pos" Type="Gtk.IconViewDropPosition" />
+      </Parameters>
+      <Docs>
+        <param name="path">The item to highlight, or <see langword="null" />.</param>
+        <param name="pos">Indicates where to drop relative to the item.</param>
+        <summary>Sets up drag feedback for an item.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="UnsetModelDragSource">
+      <MemberSignature Language="C#" Value="public void UnsetModelDragSource ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Unsets the view as a drag source.</summary>
+        <remarks>Reverses the effects of <see cref="M:Gtk.IconView.EnableModelDragSource" />.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetCursor">
+      <MemberSignature Language="C#" Value="public void SetCursor (Gtk.TreePath path, Gtk.CellRenderer cell, bool start_editing);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="start_editing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="path">the item to select.</param>
+        <param name="cell">the cell to focus, or <see langword="null" />.</param>
+        <param name="start_editing">indicates if the cell should be placed in edit mode.</param>
+        <summary>Selects an item and sets keyboard focus to a cell.</summary>
+        <remarks>Normally followed by a call to <see cref="M:Gtk.Widget.GrabFocus" />.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="Reorderable">
+      <MemberSignature Language="C#" Value="public bool Reorderable { set; get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="reorderable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates whether the list can be reordered via Drag and Drop.</summary>
+        <value>
+          <see langword="true" /> to allow reordering.</value>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="EnableModelDragSource">
+      <MemberSignature Language="C#" Value="public void EnableModelDragSource (Gdk.ModifierType start_button_mask, Gtk.TargetEntry[] targets, Gdk.DragAction actions);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_button_mask" Type="Gdk.ModifierType" />
+        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
+        <Parameter Name="actions" Type="Gdk.DragAction" />
+      </Parameters>
+      <Docs>
+        <param name="start_button_mask">buttons allowed to start drag.</param>
+        <param name="targets">an array of <see cref="Gtk.TargetEntry" /> items supported.</param>
+        <param name="actions">drag actions supported from the view.</param>
+        <summary>Enables the view as a Drag source.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="EnableModelDragDest">
+      <MemberSignature Language="C#" Value="public void EnableModelDragDest (Gtk.TargetEntry[] targets, Gdk.DragAction actions);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targets" Type="Gtk.TargetEntry[]" />
+        <Parameter Name="actions" Type="Gdk.DragAction" />
+      </Parameters>
+      <Docs>
+        <param name="targets">an array of <see cref="Gtk.TargetEntry" /> items supported.</param>
+        <param name="actions">drop actions supported by the view.</param>
+        <summary>Enables the view as a Drop destination.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetDragDestItem">
+      <MemberSignature Language="C#" Value="public void GetDragDestItem (out Gtk.TreePath path, out Gtk.IconViewDropPosition pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="pos" Type="Gtk.IconViewDropPosition&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">returns a <see cref="T:Gtk.TreePath" /> for the highlighted item, or <see langword="null" />.</param>
+        <param name="pos">returns the relative drop information for the highlighted item.</param>
+        <summary>Gets Drag information for the currently highlighted item.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollToPath">
+      <MemberSignature Language="C#" Value="public void ScrollToPath (Gtk.TreePath path);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> of the item to be made visible by scrolling.</param>
+        <summary>Scrolls the view to make an item visible.</summary>
+        <remarks>The minimum amount of scrolling will be done to make the item visible.  To control the item's final position within the visible part of the widget, use the other overload of this method.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollToPath">
+      <MemberSignature Language="C#" Value="public void ScrollToPath (Gtk.TreePath path, float row_align, float col_align);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="Gtk.TreePath" />
+        <Parameter Name="row_align" Type="System.Single" />
+        <Parameter Name="col_align" Type="System.Single" />
+      </Parameters>
+      <Docs>
+        <param name="path">a <see cref="T:Gtk.TreePath" /> of the item to be made visible by scrolling.</param>
+        <param name="row_align">a value between 0.0 and 1.0.</param>
+        <param name="col_align">a value between 0.0 and 1.0.</param>
+        <summary>Scrolls the view to make an item visible.</summary>
+        <remarks>Using row_align of 0.5 and col_align of 0.5 will try to center the item in the visible part of the widget.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
     </Member>
   </Members>
 </Type>

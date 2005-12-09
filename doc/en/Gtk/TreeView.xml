@@ -4,7 +4,7 @@
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <AssemblyVersion>2.8.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -792,7 +792,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="rules_hint")</AttributeName>
+          <AttributeName>GLib.Property(Name="rules-hint")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -812,7 +812,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="enable_search")</AttributeName>
+          <AttributeName>GLib.Property(Name="enable-search")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -832,7 +832,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="headers_visible")</AttributeName>
+          <AttributeName>GLib.Property(Name="headers-visible")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -852,7 +852,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="expander_column")</AttributeName>
+          <AttributeName>GLib.Property(Name="expander-column")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -911,7 +911,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="headers_clickable")</AttributeName>
+          <AttributeName>GLib.Property(Name="headers-clickable")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -951,7 +951,7 @@ This property tells GTK# that the user interface for your application requires u
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="search_column")</AttributeName>
+          <AttributeName>GLib.Property(Name="search-column")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1903,7 +1903,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="fixed_height_mode")</AttributeName>
+          <AttributeName>GLib.Property(Name="fixed-height-mode")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -2002,7 +2002,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="hover_expand")</AttributeName>
+          <AttributeName>GLib.Property(Name="hover-expand")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -2021,7 +2021,7 @@ tree_view.AppendColumn ("title", text, "text", 0);
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Property(Name="hover_selection")</AttributeName>
+          <AttributeName>GLib.Property(Name="hover-selection")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -2050,10 +2050,30 @@ tree_view.AppendColumn ("title", text, "text", 0);
         <Parameter Name="focus_column" Type="Gtk.TreeViewColumn&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <param name="focus_column">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="path">returns a <see cref="Gtk.TreePath" /> to the selected row, or <see langword="null" /> if there is no current selection.</param>
+        <param name="focus_column">returns the focused <see cref="Gtk.TreeViewColumn" />, or <see langword="null" />.</param>
+        <summary>Gets the currently selected row and focused column.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetVisibleRange">
+      <MemberSignature Language="C#" Value="public bool GetVisibleRange (out Gtk.TreePath start_path, out Gtk.TreePath end_path);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="start_path" Type="Gtk.TreePath&amp;" RefType="out" />
+        <Parameter Name="end_path" Type="Gtk.TreePath&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="start_path">returns a <see cref="Gtk.TreePath" /> to the first visible row.</param>
+        <param name="end_path">returns a <see cref="Gtk.TreePath" /> to the last visible row.</param>
+        <summary>Gets the visible rows of the view.</summary>
+        <returns>
+          <see langword="true" /> if the start and end paths were set.</returns>
+        <remarks>Note: there may be invisible paths between the start and end paths returned.</remarks>
+        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
   </Members>

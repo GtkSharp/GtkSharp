@@ -4,7 +4,7 @@
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <AssemblyVersion>2.8.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -1343,9 +1343,9 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </Parameters>
       <Docs>
         <param name="boxed">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Converts to a native GValue.</summary>
+        <returns>a native GValue.</returns>
+        <remarks>Internal. Provided for bindings.</remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
@@ -1359,9 +1359,75 @@ If the GTK_TEXT_SEARCH_VISIBLE_ONLY flag is present, the match may have invisibl
       </Parameters>
       <Docs>
         <param name="val">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Converts from a native GValue.</summary>
+        <returns>a TextIter.</returns>
+        <remarks>Internal. Provided for bindings.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleLine">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleLine ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves to the beginning of the previous visible line.</summary>
+        <returns>
+          <see langword="true" /> if the iter could be moved.</returns>
+        <remarks>Moves <paramref name="iter" /> to the start of the previous visible line. If iter was at character offset 0, this function returns <see langword="false" />. If iter was already on line 0, but not at the start of the line, iter is snapped to the start of the line and the function returns <see langword="true" />. (Note that this implies that in a loop calling this function, the line number may not change on every iteration, if your first iteration is on line 0.).</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="BackwardVisibleLines">
+      <MemberSignature Language="C#" Value="public bool BackwardVisibleLines (int count);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">The number of lines to move.</param>
+        <summary>Moves backward by a specified number of visible lines.</summary>
+        <returns>
+          <see langword="true" /> if the result of the move is a referenceable position.</returns>
+        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved forward by 0 - count lines.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardVisibleLine">
+      <MemberSignature Language="C#" Value="public bool ForwardVisibleLine ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves to the start of the next visible line.</summary>
+        <returns>
+          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
+        <remarks>. Returns <see langword="true" /> if there was a next line to move to, and <see langword="false" /> if the iter was moved to the end of the buffer and is now not dereferenceable, or if the iter was already at the end of the buffer.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForwardVisibleLines">
+      <MemberSignature Language="C#" Value="public bool ForwardVisibleLines (int count);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">The number of lines to move.</param>
+        <summary>Moves forward by a specified number of visible lines.</summary>
+        <returns>
+          <see langword="true" /> if the iter could be moved and is dereferenceable after the move.</returns>
+        <remarks>If <paramref name="count" /> would move past the start or end of the buffer, the iter is moved to the start or end of the buffer. The return value indicates whether the iterator moved onto a dereferenceable position. If the iterator didn't move, or moved onto the end iterator, then <see langword="false" /> is returned. If count is 0, the function does nothing and returns <see langword="false" />. If count is negative, the iter is moved backward by 0 - count lines.</remarks>
+        <since version="Gtk# 2.8" />
       </Docs>
     </Member>
   </Members>

@@ -3,7 +3,7 @@
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.6.0.0</AssemblyVersion>
+    <AssemblyVersion>2.8.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -1013,9 +1013,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>Indicates if Hidden files and directories should be visible.</summary>
         <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
+        <remarks />
         <since version="Gtk# 2.6" />
       </Docs>
       <Attributes>
@@ -1023,6 +1023,60 @@
           <AttributeName>GLib.Property(Name="show-hidden")</AttributeName>
         </Attribute>
       </Attributes>
+    </Member>
+    <Member MemberName="ConfirmOverwrite">
+      <MemberSignature Language="C#" Value="public event Gtk.ConfirmOverwriteHandler ConfirmOverwrite;" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="confirm-overwrite")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.ConfirmOverwriteHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates a file overwrite has been requested.</summary>
+        <remarks> This event is raised when the user has selected a file name that already exists and the file chooser is in <see cref="F:Gtk.FileChooserAction.Save" /> mode.
+
+Most applications just need to turn on the <see cref="P:Gtk.FileChooserDialog.DoOverwriteConfirmation" /> property and they will automatically get a stock confirmation dialog. Applications which need to customize this behavior should do that, and also connect to this event.
+
+A <see cref="T:Gtk.ConfirmOverwriteHandler" /> connected to this event must set <see cref="M:GLib.SignalArgs.RetVal" /> to the <see cref="T:Gtk.FileChooserConfirmation" /> value indicating the action to take. If the handler determines that the user wants to select a different filename, it should return <see cref="F:Gtk.FileChooserConfirmation.SelectAgain" />. If it determines that the user is satisfied with his choice of file name, it should return  <see cref="F:Gtk.FileChooserConfirmation.AcceptFilename" />. On the other hand, if it determines that the stock confirmation dialog should be used, it should return  <see cref="F:Gtk.FileChooserConfirmation.Confirm" />.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnConfirmOverwrite">
+      <MemberSignature Language="C#" Value="protected virtual Gtk.FileChooserConfirmation OnConfirmOverwrite ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.FileChooserConfirmation</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gtk.FileChooserDialog.ConfirmOverwrite" /> event.</summary>
+        <returns>To be added.</returns>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.FileChooserDialog.ConfirmOverwrite" /> event.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="DoOverwriteConfirmation">
+      <MemberSignature Language="C#" Value="public bool DoOverwriteConfirmation { set; get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="do-overwrite-confirmation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Enables Overwrite Confirmation in the dialog.</summary>
+        <value>
+          <see langword="true" /> if confirmation should be performed.</value>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
     </Member>
   </Members>
 </Type>
