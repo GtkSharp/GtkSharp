@@ -66,6 +66,7 @@ customs = 				\
 	IconFactory.custom		\
 	IconSet.custom			\
 	IconTheme.custom		\
+	IconView.custom			\
 	Image.custom			\
 	ImageMenuItem.custom		\
 	Init.custom			\
