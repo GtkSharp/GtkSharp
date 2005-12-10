@@ -1,5 +1,5 @@
 <Type Name="IconView" FullName="Gtk.IconView">
-  <TypeSignature Language="C#" Maintainer="auto" Value="public class IconView : Gtk.Container" />
+  <TypeSignature Language="C#" Maintainer="auto" Value="public class IconView : Gtk.Container, Gtk.CellLayout" />
   <AssemblyInfo>
     <AssemblyName>gtk-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
@@ -184,6 +184,9 @@ public class DemoIconView : Window
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
   <Interfaces>
+    <Interface>
+      <InterfaceName>Gtk.CellLayout</InterfaceName>
+    </Interface>
   </Interfaces>
   <Members>
     <Member MemberName="OnSelectionChanged">
@@ -1120,6 +1123,151 @@ public class DemoIconView : Window
         <param name="col_align">a value between 0.0 and 1.0.</param>
         <summary>Scrolls the view to make an item visible.</summary>
         <remarks>Using row_align of 0.5 and col_align of 0.5 will try to center the item in the visible part of the widget.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetCellDataFunc">
+      <MemberSignature Language="C#" Value="public void SetCellDataFunc (Gtk.CellRenderer cell, Gtk.CellLayoutDataFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="func" Type="Gtk.CellLayoutDataFunc" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> of the view.</param>
+        <param name="func">a <see cref="T:Gtk.CellLayoutDataFunc" />, or <see langword="null" /> to remove an existing delegate.</param>
+        <summary>Sets the Cell Data delegate for a renderer.</summary>
+        <remarks>The Cell data func is an alternative to binding attributes to model columns. The delegate is invoked any time the cell is renderer and it should set up all the appropriate renderer information.</remarks>
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="ClearAttributes">
+      <MemberSignature Language="C#" Value="public void ClearAttributes (Gtk.CellRenderer cell);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> of the view.</param>
+        <summary>Clears attribute bindings for a cell renderer.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Clears attribute bindings and removes all renderers.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddAttribute">
+      <MemberSignature Language="C#" Value="public void AddAttribute (Gtk.CellRenderer cell, string attribute, int column);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="attribute" Type="System.String" />
+        <Parameter Name="column" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> of the view.</param>
+        <param name="attribute">an attribute name on <paramref name="cell" />.</param>
+        <param name="column">the model column index to bind to <paramref name="attribute" />.</param>
+        <summary>Binds a model column to an Attribute of a Cell Renderer.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="PackEnd">
+      <MemberSignature Language="C#" Value="public void PackEnd (Gtk.CellRenderer cell, bool expand);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="expand" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> to add to the view.</param>
+        <param name="expand">indicates if the <paramref name="cell" /> should expand to available space.</param>
+        <summary>Packs a renderer at the end of a cell.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="Reorder">
+      <MemberSignature Language="C#" Value="public void Reorder (Gtk.CellRenderer cell, int position);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> of the view.</param>
+        <param name="position">desired index within the list of renderers.</param>
+        <summary>Moves a renderer to a position in the list of renderers.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="PackStart">
+      <MemberSignature Language="C#" Value="public void PackStart (Gtk.CellRenderer cell, bool expand);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="expand" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> to add to the view.</param>
+        <param name="expand">indicates if the <paramref name="cell" /> should expand to available space.</param>
+        <summary>Packs a renderer to the beginning of the cell.</summary>
+        <remarks />
+        <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetAttributes">
+      <MemberSignature Language="C#" Value="public void SetAttributes (Gtk.CellRenderer cell, object[] attrs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cell" Type="Gtk.CellRenderer" />
+        <Parameter Name="attrs" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="cell">a <see cref="T:Gtk.CellRenderer" /> of the view.</param>
+        <param name="attrs">an array of name/value pairs.</param>
+        <summary>Set the attributes of a given Cell Renderer.</summary>
+        <remarks />
         <since version="Gtk# 2.8" />
       </Docs>
     </Member>
