@@ -16,6 +16,7 @@ sources = 			\
 	EventDND.cs		\
 	EventExpose.cs		\
 	EventFocus.cs		\
+	EventGrabBroken.cs	\
 	EventKey.cs		\
 	EventMotion.cs		\
 	EventProperty.cs	\

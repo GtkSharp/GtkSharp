@@ -128,6 +128,10 @@ namespace Gdk {
 				return new EventWindowState (raw);
 			case EventType.Setting:
 				return new EventSetting (raw);
+#if GTK_SHARP_2_8
+			case EventType.GrabBroken:
+				return new EventGrabBroken (raw);
+#endif
 			case EventType.Map:
 			case EventType.Unmap:
 			case EventType.NoExpose:
