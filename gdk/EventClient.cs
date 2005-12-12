@@ -61,8 +61,10 @@ namespace Gdk {
 					Marshal.Copy (s, 0, gtksharp_gdk_event_client_get_data (Handle), 10);
 					return s;
 				case 32:
+					IntPtr data_ptr = gtksharp_gdk_event_client_get_data (Handle);
 					long[] l = new long [5];
-					Marshal.Copy (l, 0, gtksharp_gdk_event_client_get_data (Handle), 5);
+					for (int i = 0; i < 5; i++)
+						l [i] = (long) Marshal.ReadIntPtr (data_ptr, i);
 					return l;
 				default:
 					throw new Exception ("Invalid Data Format: " + DataFormat);
