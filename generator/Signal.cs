@@ -322,7 +322,7 @@ namespace GtkSharp.Generation {
 						cleanup += "\t\t\tMarshal.FreeHGlobal (" + p.Name + "_ptr);\n";
 					}
 				} else if (p.IsLength && parms [i - 1].IsString)
-					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + parms [i-1].Name + ".Length);");
+					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (System.Text.Encoding.UTF8.GetByteCount (" + parms [i-1].Name + "));");
 				else
 					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + ");");
 
