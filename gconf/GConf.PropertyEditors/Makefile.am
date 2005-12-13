@@ -36,9 +36,16 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) ../../AssemblyInfo.cs
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
+if PLATFORM_WIN32
+GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=gtk-sharp.snk $(ASSEMBLY)
+else
+GAPI_CDECL_INSERT=
+endif
+
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) /out:$(ASSEMBLY) /target:library $(references) $(build_sources)
+	$(GAPI_CDECL_INSERT)
 
 $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
 	@for i in $(POLICY_VERSIONS); do	\
