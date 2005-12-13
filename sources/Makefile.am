@@ -33,9 +33,9 @@ GTK_2_6_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.10/2.10.0/sources/gnome-panel-2.10.0.tar.bz2
 
 GTK_2_8_DOWNLOADS = \
-	ftp://ftp.gtk.org/pub/gtk/v2.7/pango-1.9.1.tar.bz2                                      	\
-	ftp://ftp.gtk.org/pub/gtk/v2.6/atk-1.9.0.tar.bz2                                        	\
-	ftp://ftp.gtk.org/pub/gtk/v2.7/gtk+-2.7.4.tar.bz2						\
+	ftp://ftp.gtk.org/pub/gtk/v2.8/pango-1.10.2.tar.bz2                                      	\
+	ftp://ftp.gtk.org/pub/gtk/v2.8/atk-1.10.3.tar.bz2                                        	\
+	ftp://ftp.gtk.org/pub/gtk/v2.8/gtk+-2.8.9.tar.bz2						\
 	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/gnome-vfs-2.10.0.tar.bz2		\
 	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/libgnome-2.10.0.tar.bz2       	\
 	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/libgnomecanvas-2.10.0.tar.bz2 	\
@@ -96,9 +96,9 @@ get-2.8-sources:
 	for i in $(GTK_2_8_DOWNLOADS); do                  \
 		wget $$i --output-document=- | tar -xj ;   \
 	done;
-	ln -f -s gtkfilechooserprivate.h gtk+-2.7.4/gtk/gtkfilechooserpriv.h
-	patch -p0 gtk+-2.7.4/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
-	patch -p0 gtk+-2.7.4/gtk/gtkclipboard.h < gtkclipboard.patch
+	ln -f -s gtkfilechooserprivate.h gtk+-2.8.9/gtk/gtkfilechooserpriv.h
+	patch -p0 gtk+-2.8.9/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
+	patch -p0 gtk+-2.8.9/gtk/gtkclipboard.h < gtkclipboard.patch
 
 get-gnome-sources:
 	for i in $(GNOME_DOWNLOADS); do                    \

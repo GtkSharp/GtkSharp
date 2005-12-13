@@ -2029,6 +2029,8 @@
       <field name="Closed" cname="closed" bits="1" type="guint" />
       <field name="NormalGcs" cname="normal_gcs" array_len="32" type="GdkGC*" />
       <field name="ExposureGcs" cname="exposure_gcs" array_len="32" type="GdkGC*" />
+      <field name="FontOptions" cname="font_options" type="cairo_font_options_t*" />
+      <field name="Resolution" cname="resolution" type="double" />
       <signal name="SizeChanged" cname="size_changed" when="LAST">
         <return-type type="void" />
         <parameters>
@@ -2049,6 +2051,9 @@
       </method>
       <method name="GetDisplay" cname="gdk_screen_get_display">
         <return-type type="GdkDisplay*" />
+      </method>
+      <method name="GetFontOptionsLibgtkOnly" cname="gdk_screen_get_font_options_libgtk_only">
+        <return-type type="const-cairo_font_options_t*" />
       </method>
       <method name="GetHeight" cname="gdk_screen_get_height">
         <return-type type="gint" />
@@ -2081,6 +2086,9 @@
       </method>
       <method name="GetNumber" cname="gdk_screen_get_number">
         <return-type type="gint" />
+      </method>
+      <method name="GetResolutionLibgtkOnly" cname="gdk_screen_get_resolution_libgtk_only">
+        <return-type type="gdouble" />
       </method>
       <method name="GetRgbColormap" cname="gdk_screen_get_rgb_colormap">
         <return-type type="GdkColormap*" />
@@ -2138,6 +2146,18 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GdkColormap*" name="colormap" />
+        </parameters>
+      </method>
+      <method name="SetFontOptionsLibgtkOnly" cname="gdk_screen_set_font_options_libgtk_only">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-cairo_font_options_t*" name="options" />
+        </parameters>
+      </method>
+      <method name="SetResolutionLibgtkOnly" cname="gdk_screen_set_resolution_libgtk_only">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="dpi" />
         </parameters>
       </method>
       <method name="Width" cname="gdk_screen_width" shared="true">
@@ -3481,6 +3501,7 @@
       <field name="Destroyed" cname="destroyed" bits="2" type="guint" />
       <field name="AcceptFocus" cname="accept_focus" bits="1" type="guint" />
       <field name="FocusOnMap" cname="focus_on_map" bits="1" type="guint" />
+      <field name="Shaped" cname="shaped" bits="1" type="guint" />
       <field name="EventMask" cname="event_mask" type="GdkEventMask" />
       <method name="GetType" cname="gdk_window_object_get_type" shared="true">
         <return-type type="GType" />
