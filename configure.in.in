@@ -152,6 +152,13 @@ AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
 
+PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, has_mono_cairo=true, has_mono_cairo=false)
+AC_SUBST(MONO_CAIRO_LIBS)
+
+if test "x$has_mono_cairo" = "xfalse" -a "x$API_VERSION" = "x2.8.0.0"; then
+	AC_MSG_ERROR([You need to install Mono.Cairo.dll and its pkgconfig file or set PKG_CONFIG_PATH to find it.])
+fi
+
 GTK_REQUIRED_VERSION=@GTK_REQUIRED_VERSION@
 
 PKG_CHECK_MODULES(GLIB, gobject-2.0 >= $GTK_REQUIRED_VERSION)
