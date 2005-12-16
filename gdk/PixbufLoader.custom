@@ -73,6 +73,9 @@
 		
 		private void InitFromStream (System.IO.Stream stream)
 		{
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+
 			try {
 				LoadFromStream (stream);
 			} finally {
@@ -93,14 +96,14 @@
 		
 		private void InitFromAssemblyResource(System.Reflection.Assembly assembly, string resource)
 		{
+			if (assembly == null)
+				throw new ArgumentNullException ("assembly");
+
+			System.IO.Stream s = assembly.GetManifestResourceStream (resource);
+			if (s == null)
+				throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
+
 			try {
-				if (resource == null)
-					throw new ArgumentNullException ("resource");
-
-				System.IO.Stream s = assembly.GetManifestResourceStream (resource);
-				if (s == null)
-					throw new ArgumentException ("'" + resource + "' is not a valid resource name of assembly '" + assembly + "'.");
-
 				LoadFromStream (s);
 			} finally {
 				Close ();
