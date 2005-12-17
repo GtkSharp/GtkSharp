@@ -1,117 +1,155 @@
-//
-// Sample program demostrating using Cairo with Gtk#
-//
-using Gtk;
-using Gdk;
 using System;
+using Gtk;
 using Cairo;
 
-class X {
-	static DrawingArea a, b;
-	
+class Knockout : DrawingArea
+{
 	static void Main ()
 	{
 		Application.Init ();
-		Gtk.Window w = new Gtk.Window ("Hello");
-
-		a = new DrawingArea ();
-		a.ExposeEvent += new ExposeEventHandler (LineExposeHandler);
-
-		b = new DrawingArea ();
-		b.ExposeEvent += new ExposeEventHandler (CirclesExposeHandler);
-		b.SizeAllocated += new SizeAllocatedHandler (SizeAllocatedHandler);
-		
-		Box box = new HBox (true, 0);
-		//box.Add (a);
-		box.Add (b);
-		w.Add (box);
-		
-		w.ShowAll ();
+		new Knockout ();
 		Application.Run ();
 	}
 
-	static void LineExposeHandler (object obj, ExposeEventArgs args)
+	Knockout ()
 	{
-		int offx, offy;
-
-		using (Cairo.Graphics o = GtkCairo.GraphicsFromWindow (args.Event.Window, out offx, out offy)){
-			o.SetRGBColor (1, 0, 0);
-			o.Translate (-offx, -offy);
-			o.MoveTo (0, 0);
-			o.LineTo (100, 100);
-			o.Stroke ();
-		}
+		Window win = new Window ("Cairo with Gtk#");
+		win.SetDefaultSize (400, 400);
+		win.DeleteEvent += new DeleteEventHandler (OnQuit);
+		win.Add (this);
+		win.ShowAll ();
 	}
 
-	static Rectangle rect;
+	void OvalPath (Context cr, double xc, double yc, double xr, double yr)
+	{
+		Matrix m = cr.Matrix;
+
+		cr.Translate (xc, yc);
+		cr.Scale (1.0, yr / xr);
+		cr.MoveTo (xr, 0.0);
+		cr.Arc (0, 0, xr, 0, 2 * Math.PI);
+		cr.ClosePath ();
+
+		cr.Matrix = m;
+	}
+
+	void FillChecks (Context cr, int x, int y, int width, int height)
+	{
+		int CHECK_SIZE = 32;
 		
-	static void SizeAllocatedHandler (object obj, SizeAllocatedArgs args)
-	{
-		rect = args.Allocation;
+		cr.Save ();
+		Surface check = cr.Target.CreateSimilar (Content.Color, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
+		
+		// draw the check
+		Context cr2 = new Context (check);
+		cr2.Operator = Operator.Source;
+		cr2.Color = new Color (0.4, 0.4, 0.4);
+		cr2.Rectangle (0, 0, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
+		cr2.Fill ();
+
+		cr2.Color = new Color (0.7, 0.7, 0.7);
+		cr2.Rectangle (x, y, CHECK_SIZE, CHECK_SIZE);
+		cr2.Fill ();
+
+		cr2.Rectangle (x + CHECK_SIZE, y + CHECK_SIZE, CHECK_SIZE, CHECK_SIZE);
+		cr2.Fill ();
+		//cr2.Destroy ();
+
+		// Fill the whole surface with the check
+		SurfacePattern check_pattern = new SurfacePattern (check);
+		check_pattern.Extend = Extend.Repeat;
+		cr.Source = check_pattern;
+		cr.Rectangle (0, 0, width, height);
+		cr.Fill ();
+
+		check_pattern.Destroy ();
+		check.Destroy ();
+		cr.Restore ();
 	}
 
-	static void CirclesExposeHandler (object obj, ExposeEventArgs args)
+	void Draw3Circles (Context cr, int xc, int yc, double radius, double alpha)
 	{
-		Rectangle area = args.Event.Area;
-		Gdk.Window window = args.Event.Window;
-		Pixmap p = new Pixmap (window, area.Width, area.Height, -1);
+		double subradius = radius * (2 / 3.0 - 0.1);
 
-		int x, y;
-		//Cairo.Object o = p.CairoGraphics ();
-		using (Cairo.Graphics o = GtkCairo.GraphicsFromWindow (window, out x, out y))
-		{
-			o.Translate (-area.X, -area.Y);
-			DrawCircles (o, rect);
-			
-			//using (Gdk.GC gc = new Gdk.GC (window)){
-			//window.DrawDrawable (gc, p, 0, 0, area.x, area.y, area.height, area.width);
-			//}
-		}
-	}
-	
-	static void DrawCircles (Cairo.Graphics o, Gdk.Rectangle rect)
-	{
-		FillChecks (o, rect);
+		cr.Color = new Color (1.0, 0.0, 0.0, alpha);
+		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * 0.5), yc - radius / 3.0 * Math.Sin (Math.PI * 0.5), subradius, subradius);
+		cr.Fill ();
+
+		cr.Color = new Color (0.0, 1.0, 0.0, alpha);
+		OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 2 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 2 / 0.3)), subradius, subradius);
+		cr.Fill ();
+
+		cr.Color = new Color (0.0, 0.0, 1.0, alpha);
+    	OvalPath (cr, xc + radius / 3.0 * Math.Cos (Math.PI * (0.5 + 4 / 0.3)), yc - radius / 3.0 * Math.Sin (Math.PI * (0.5 + 4 / 0.3)), subradius, subradius);
+		cr.Fill ();
 	}
 
-	const int CS = 32;
-
-	static void FillChecks (Cairo.Graphics o, Gdk.Rectangle rect)
+	void Draw (Context cr, int width, int height)
 	{
-		Surface check;
-		// Draw the check
-		o.Save ();
-		using (check = Surface.CreateSimilar (o.TargetSurface, Format.RGB24, 2 * CS, 2 * CS)){
-#if true
-			o.Save ();
-			check.Repeat = 1;
-			
-			o.TargetSurface = check;
-			o.Operator = Operator.Src;
-			o.SetRGBColor (0.4, 0.4, 0.4);
-			
-			// Clear the background
-			o.Rectangle (0, 0, 2*CS, 2*CS);
-			o.Fill ();
-			o.SetRGBColor (0.7, 0.7, 0.7);
-			o.Rectangle (0, CS, CS, CS *2);
-			o.Fill ();
-			o.Rectangle (CS, 0, CS*2, CS);
-			o.Fill ();
-			o.Restore ();
+		double radius = 0.5 * Math.Min (width, height) - 10;
+		int xc = width / 2;
+		int yc = height / 2;
 
-			// Fill the surface with the check
-			//o.SetPattern (check);
-			o.Rectangle (0, 0, rect.Width, rect.Height);
-			o.Fill ();
-#endif
-		}
-		o.Restore ();
-		o.SetRGBColor (1, 0, 0);
-		o.Alpha = 0.5;
-		Console.WriteLine (rect);
-		o.MoveTo (0, 0);
-		o.LineTo (rect.Width, rect.Height);
-		o.Stroke ();
+		Surface overlay = cr.Target.CreateSimilar (Content.ColorAlpha, width, height);
+		Surface punch   = cr.Target.CreateSimilar (Content.Alpha, width, height);
+		Surface circles = cr.Target.CreateSimilar (Content.ColorAlpha, width, height);
+
+		FillChecks (cr, 0, 0, width, height);
+		cr.Save ();
+
+		// Draw a black circle on the overlay
+		Context cr_overlay = new Context (overlay);
+		cr_overlay.Color = new Color (0.0, 0.0, 0.0);
+		OvalPath (cr_overlay, xc, yc, radius, radius);
+		cr_overlay.Fill ();
+
+		// Draw 3 circles to the punch surface, then cut
+		// that out of the main circle in the overlay
+		Context cr_tmp = new Context (punch);
+		Draw3Circles (cr_tmp, xc, yc, radius, 1.0);
+		//cr_tmp.Destroy ();
+
+		cr_overlay.Operator = Operator.DestOut;
+		cr_overlay.SetSourceSurface (punch, 0, 0);
+		cr_overlay.Paint ();
+
+		// Now draw the 3 circles in a subgroup again
+		// at half intensity, and use OperatorAdd to join up
+		// without seams.
+		Context cr_circles = new Context (circles);
+		cr_circles.Operator = Operator.Over;
+		Draw3Circles (cr_circles, xc, yc, radius, 0.5);
+		// cr_circles.Destroy ();
+
+		cr_overlay.Operator = Operator.Add;
+		cr_overlay.SetSourceSurface (circles, 0, 0);
+		cr_overlay.Paint ();
+		// cr_overlay.Destroy ();
+
+		cr.SetSourceSurface (overlay, 0, 0);
+		cr.Paint ();
+
+		overlay.Destroy ();
+		punch.Destroy ();
+		circles.Destroy ();
+	}
+
+	protected override bool OnExposeEvent (Gdk.EventExpose e)
+	{
+		#if GTK_SHARP_2_8
+		Context cr = Gdk.CairoHelper.Create (e.Window);
+		#else
+		Context cr = Gdk.Graphics.CreateDrawable (e.Window);
+		#endif
+		int w, h;
+		e.Window.GetSize (out w, out h);
+		Draw (cr, w, h);
+		return true;
+	}
+
+	void OnQuit (object sender, DeleteEventArgs e)
+	{
+		Application.Quit ();
 	}
 }
+
