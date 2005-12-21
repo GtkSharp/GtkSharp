@@ -195,7 +195,7 @@ namespace GtkSharp.Generation {
 					sw.WriteLine (indent + "\t\t\t*raw_ptr = value;");
 				} else {
 					sw.WriteLine (indent + "\t\t\t" + table.GetMarshalReturnType (CType) + "* raw_ptr = (" + table.GetMarshalReturnType (CType) + "*)(((byte*)" + container_type.CallByName () + ") + " + offsetName + ");");
-					sw.WriteLine (indent + "\t\t\t*raw_ptr = " + table.CallByName (ctype, "value") + ";");
+					sw.WriteLine (indent + "\t\t\t*raw_ptr = " + table.ToNativeReturn (ctype, "value") + ";");
 				}
 				sw.WriteLine (indent + "\t\t}");
 				sw.WriteLine (indent + "\t}");

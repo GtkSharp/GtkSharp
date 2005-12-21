@@ -159,7 +159,7 @@ namespace GtkSharp.Generation {
 				} else if (table.IsEnum (retval.CType))
 					sw.WriteLine ("(int) {0};", invoke);
 				else
-					sw.WriteLine ("({0}) {1};", retval.MarshalType, table.ToNativeReturn (retval.CType, invoke));
+					sw.WriteLine ("({0}) ({1});", retval.MarshalType, table.ToNativeReturn (retval.CType, invoke));
 			} else
 				sw.WriteLine (invoke + ";");
 
