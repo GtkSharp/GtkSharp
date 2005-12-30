@@ -35,5 +35,15 @@ namespace GLib
 		{
 			g_thread_init (IntPtr.Zero);
 		}
+
+		[DllImport("glibsharpglue-2")]
+		static extern bool glibsharp_g_thread_supported ();
+
+		public static bool Supported
+		{
+			get {
+				return glibsharp_g_thread_supported ();
+			}
+		}
 	}
 }

@@ -1,3 +1,12 @@
+2005-12-30  Alp Toker  <alp@atoker.com>
+
+	* Thread.cs: Add GLib.Thread.Supported, should be checked to avoid doing
+	Thread.Init() twice (Mono runtime initialises GLib threads itself, MS
+	runtime doesn't)
+	* glue/thread.c: g_thread_supported() is a macro, so needs glue
+	* glue/Makefile.am:
+	* glue/makefile.win32: Update makefiles with new glue file.
+
 2005-12-21  Lluis Sanchez Gual  <lluis@novell.com>
 
 	* generator/FieldBase.cs: Properly convert marshalled value 

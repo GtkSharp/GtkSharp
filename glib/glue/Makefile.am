@@ -10,7 +10,8 @@ libglibsharpglue_2_la_SOURCES = 	\
 	type.c			\
 	unichar.c		\
 	value.c			\
-	valuearray.c
+	valuearray.c	\
+	thread.c
 
 # Adding a new glue file?
 # Please remember to update makefile.win32
