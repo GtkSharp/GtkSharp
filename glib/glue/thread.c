@@ -1,4 +1,4 @@
-/* list.c : Glue to access fields in GList.
+/* thread.c : glue functions for GLib.Thread
  *
  * Author: Alp Toker  <alp@atoker.com>
  *
