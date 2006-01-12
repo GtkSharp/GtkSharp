@@ -71,7 +71,7 @@ namespace GtkSharp.Generation {
 					}
 				} else if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
 					string string_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
-					result[i] = igen.CallByName (CastFromInt (p.CSType) + string_name + ".Length");
+					result[i] = igen.CallByName (CastFromInt (p.CSType) + "System.Text.Encoding.UTF8.GetByteCount (" +  string_name + ")");
 					continue;
 				} else if (p.IsArray && p.MarshalType != p.CSType) {
 					result[i] = "native_" + p.Name;
