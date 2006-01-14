@@ -242,7 +242,7 @@ namespace GLib {
 
 		public static IntPtr DateTimeTotime_t (DateTime time)
 		{
-			return new IntPtr (((int)time.Subtract (local_epoch).TotalSeconds));
+			return new IntPtr (((int)time.Subtract (local_epoch).TotalSeconds) - utc_offset);
 		}
 
 		public static DateTime time_tToDateTime (IntPtr time_t)
