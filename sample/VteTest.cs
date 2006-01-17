@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using Gtk;
-using Gnome;
 using Vte;
 
 class T
 {
+	private Gtk.Window window;
+
 	static void Main (string[] args)
 	{
 		new T (args);
@@ -13,10 +14,11 @@ class T
 	
 	T (string[] args)
 	{
-		Program program = new Program ("vte-sharp-test", "0.0", Modules.UI, args);
-		App app = new App ("vte-sharp-test", "Test for vte widget");
-		app.SetDefaultSize (600, 450);
-		app.DeleteEvent += new DeleteEventHandler (OnAppDelete);
+
+		Application.Init();
+		window = new Gtk.Window("Test for vte widget");
+		window.SetDefaultSize(600, 450);
+		window.DeleteEvent += new DeleteEventHandler (OnAppDelete);
 		
 		HBox hbox = new HBox ();
 		Terminal term = new Terminal ();
@@ -71,9 +73,9 @@ class T
 		int pid = term.ForkCommand (Environment.GetEnvironmentVariable ("SHELL"), argv, envv, Environment.CurrentDirectory, false, true, true);
 		Console.WriteLine ("Child pid: {0}", pid);
 
-		app.Contents = hbox;
-		app.ShowAll ();
-		program.Run ();
+		window.Add(hbox);
+		window.ShowAll();
+		Application.Run();
 	}
 
 	private void OnTextDeleted (object o, EventArgs args)
