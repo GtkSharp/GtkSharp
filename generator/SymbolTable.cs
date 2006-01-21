@@ -85,7 +85,7 @@ namespace GtkSharp.Generation {
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
 			AddType (new LPUGen ("gsize"));
-			AddType (new AliasGen ("off_t", "size_t"));
+			AddType (new AliasGen ("off_t", "ssize_t"));
 
 			// string types
 			AddType (new ConstStringGen ("const-gchar"));
