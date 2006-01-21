@@ -82,6 +82,7 @@ customs = 				\
 	Plug.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
+	RadioToolButton.custom		\
 	ScrolledWindow.custom		\
 	SelectionData.custom		\
 	Settings.custom			\
