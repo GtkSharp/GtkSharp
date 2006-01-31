@@ -46,11 +46,6 @@
 
 		public About (string name, string version, string copyright, string comments, string[] authors, string[] documenters, string translator_credits, Gdk.Pixbuf logo_pixbuf) : base (IntPtr.Zero)
 		{
-			if (GetType () != typeof (About)) {
-				CreateNativeObject (new string[0], new GLib.Value[0]);
-				Construct (name, version, copyright, comments, authors, documenters,translator_credits, logo_pixbuf);
-				return;
-			}
 			IntPtr nname = GLib.Marshaller.StringToPtrGStrdup (name);
 			IntPtr nversion = GLib.Marshaller.StringToPtrGStrdup (version);
 			IntPtr ncopyright = GLib.Marshaller.StringToPtrGStrdup (copyright);
@@ -58,7 +53,13 @@
 			IntPtr ntranslator_credits = GLib.Marshaller.StringToPtrGStrdup (translator_credits);
 			IntPtr[] nauthors = NullTerm (authors);
 			IntPtr[] ndocumenters = NullTerm (documenters);
-			Raw = gnome_about_new (nname, nversion, ncopyright, ncomments, nauthors, ndocumenters, ntranslator_credits, (logo_pixbuf != null) ? logo_pixbuf.Handle : IntPtr.Zero);
+
+			if (GetType () != typeof (About)) {
+				CreateNativeObject (new string[0], new GLib.Value[0]);
+				gnome_about_construct (Handle, nname, nversion, ncopyright, ncomments, nauthors, ndocumenters, ntranslator_credits, logo_pixbuf == null ? IntPtr.Zero : logo_pixbuf.Handle);
+			} else
+				Raw = gnome_about_new (nname, nversion, ncopyright, ncomments, nauthors, ndocumenters, ntranslator_credits, (logo_pixbuf != null) ? logo_pixbuf.Handle : IntPtr.Zero);
+
 			GLib.Marshaller.Free (nname);
 			GLib.Marshaller.Free (nversion);
 			GLib.Marshaller.Free (ncopyright);
