@@ -43,7 +43,7 @@ public Dialog (string title, Gtk.Window parent, Gtk.DialogFlags flags, params ob
 			HasSeparator = false;
 	} else {
 		IntPtr native = GLib.Marshaller.StringToPtrGStrdup (title);
-		Raw = gtk_dialog_new_with_buttons (native, parent.Handle, (int) flags, IntPtr.Zero);
+		Raw = gtk_dialog_new_with_buttons (native, parent == null ? IntPtr.Zero : parent.Handle, (int) flags, IntPtr.Zero);
 		GLib.Marshaller.Free (native);
 	}
 
