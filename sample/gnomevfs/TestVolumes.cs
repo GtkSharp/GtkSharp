@@ -8,10 +8,10 @@ namespace TestGnomeVfs {
 			Gnome.Vfs.Vfs.Initialize ();
 			
 			VolumeMonitor monitor = VolumeMonitor.Get ();
-			monitor.DriveConnected += OnDriveConnected;
-			monitor.DriveDisconnected += OnDriveDisconnected;
-			monitor.VolumeMounted += OnVolumeMounted;
-			monitor.VolumeUnmounted += OnVolumeUnmounted;
+			monitor.DriveConnected += new DriveConnectedHandler (OnDriveConnected);
+			monitor.DriveDisconnected += new DriveDisconnectedHandler (OnDriveDisconnected);
+			monitor.VolumeMounted += new VolumeMountedHandler (OnVolumeMounted);
+			monitor.VolumeUnmounted += new VolumeUnmountedHandler (OnVolumeUnmounted);
 			
 			Volume[] vols = monitor.MountedVolumes;
 			Console.WriteLine ("Mounted volumes:");
