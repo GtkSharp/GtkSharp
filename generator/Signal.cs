@@ -334,8 +334,12 @@ namespace GtkSharp.Generation {
 				sw.WriteLine (cleanup);
 			sw.WriteLine ("\t\t\tforeach (GLib.Value v in vals)");
 			sw.WriteLine ("\t\t\t\tv.Dispose ();");
-			if (!IsVoid)
-				sw.WriteLine ("\t\t\treturn (" + retval.CSType + ") ret;");
+			if (!IsVoid) {
+				IGeneratable igen = SymbolTable.Table [retval.CType];
+				sw.WriteLine ("\t\t\t" + retval.CSType + " result = (" + (igen is EnumGen ? retval.CSType + ") (Enum" : retval.CSType) + ") ret;");
+				sw.WriteLine ("\t\t\tret.Dispose ();");
+				sw.WriteLine ("\t\t\treturn result;");
+			}
 			sw.WriteLine ("\t\t}\n");
 		}
 
