@@ -12,17 +12,22 @@ TARGETS =			\
 	TestSyncStream.exe	\
 	TestSyncWrite.exe	\
 	TestUnlink.exe		\
-	TestVolumes.exe		\
-	TestXfer.exe
+	TestVolumes.exe
 else
 TARGETS =
 endif
 
-assemblies=../../glib/glib-sharp.dll ../../gnomevfs/gnome-vfs-sharp.dll
-references = $(addprefix /r:, $(assemblies)) /r:Mono.GetOptions
+if ENABLE_MONOGETOPTIONS
+EXTRA_TARGETS = TestXfer.exe
+else
+EXTRA_TARGETS =
+endif
 
-noinst_SCRIPTS = $(TARGETS)
-CLEANFILES = $(TARGETS)
+assemblies=../../glib/glib-sharp.dll ../../gnomevfs/gnome-vfs-sharp.dll
+references = $(addprefix /r:, $(assemblies))
+
+noinst_SCRIPTS = $(TARGETS) $(EXTRA_TARGETS)
+CLEANFILES = $(TARGETS) $(EXTRA_TARGETS)
 
 EXTRA_DIST = 			\
 	TestAsync.cs		\
@@ -80,4 +85,4 @@ TestVolumes.exe: $(srcdir)/TestVolumes.cs $(assemblies)
 	$(CSC) /out:TestVolumes.exe $(references) $(srcdir)/TestVolumes.cs
 
 TestXfer.exe: $(srcdir)/TestXfer.cs $(assemblies)
-	$(CSC) /out:TestXfer.exe $(references) $(srcdir)/TestXfer.cs
+	$(CSC) /out:TestXfer.exe $(references) -r:Mono.GetOptions.dll $(srcdir)/TestXfer.cs
