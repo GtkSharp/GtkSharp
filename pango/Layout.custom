@@ -64,7 +64,7 @@ public void SetMarkupWithAccel (string markup, char accel_marker, out char accel
 					return new LogAttr [0];
 				LogAttr [] result = new LogAttr [count];
 				for (int i = 0; i < count; i++) {
-					IntPtr fam_ptr = Marshal.ReadIntPtr (new IntPtr ((int)array_ptr + i * IntPtr.Size));
+					IntPtr fam_ptr = Marshal.ReadIntPtr (array_ptr, i * IntPtr.Size);
 					result [i] = LogAttr.New (fam_ptr);
 				}
 
