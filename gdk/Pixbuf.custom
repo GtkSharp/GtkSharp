@@ -259,7 +259,7 @@
 		static extern void g_free (IntPtr raw);
 
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out uint buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
+		static extern unsafe bool gdk_pixbuf_save_to_bufferv (IntPtr raw, out IntPtr buffer, out IntPtr buffer_size, IntPtr type, IntPtr[] option_keys, IntPtr[] option_values, out IntPtr error);
 
 		IntPtr[] NullTerm (string[] src)
 		{
@@ -289,7 +289,7 @@
 		{
 			IntPtr error = IntPtr.Zero;
 			IntPtr buffer;
-			uint buffer_size;
+			IntPtr buffer_size;
 			IntPtr ntype = GLib.Marshaller.StringToPtrGStrdup (type);
 			IntPtr[] nkeys = NullTerm (option_keys);
 			IntPtr[] nvals = NullTerm (option_values);
@@ -300,7 +300,7 @@
 
 			if (!saved)
 				throw new GLib.GException (error);
-			byte[] result = new byte [buffer_size];
+			byte[] result = new byte [(int)buffer_size];
 			Marshal.Copy (buffer, result, 0, (int) buffer_size);
 			g_free (buffer);
 			return result;
