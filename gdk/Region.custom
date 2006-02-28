@@ -34,7 +34,7 @@ public Rectangle[] GetRectangles ()
 
 	Rectangle[] ret = new Rectangle[n];
 	int step = Marshal.SizeOf(typeof(Rectangle));
-	int ptr = (int)rectangles;
+	long ptr = (long)rectangles;
 	for (int i = 0; i < n; i++) {
 		ret[i] = (Rectangle)Marshal.PtrToStructure((IntPtr)ptr, typeof(Rectangle));
 		ptr += step;
