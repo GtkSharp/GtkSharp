@@ -8,7 +8,29 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Allows the installation of Timeout Handlers on the GLib main loop.</summary>
+    <summary>Allows the installation of Timeout Handlers on the GLib main loop.
+It's in a way very similar to a System.Windows.Forms.Timer class.
+You can use timeouts to invoke routines at specified intervals of time.
+The diferance between GLib.Timeout and System.Windows.Forms.Timer is that Timeouts are always invoked on the thread that owns the Gtk mainloop
+
+
+<example>
+        <code lang="C#">
+	void StartClock () 
+	{
+		GLib.Timeout.Add(1000, new GLib.TimeoutHandler(update_status));
+	}
+
+	bool update_status ()
+	{
+		time_label.Text=DateTime.Now.ToString ();
+		//returning true means that the timeout routine should be invoked
+		//again after the timeout period expires.  Returning false would 
+		//terminate the timeout.
+		return true;
+	}
+  </code>
+      </example></summary>
     <remarks>Use the <see cref="M:GLib.Timeout.Add" /> method to install timeout handlers into the mainloop.</remarks>
   </Docs>
   <Base>
