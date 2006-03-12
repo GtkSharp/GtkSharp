@@ -470,9 +470,12 @@ class T
       </Parameters>
       <Docs>
         <summary>Default handler for the <see cref="M:Vte.Terminal.Commit" /> event.</summary>
-        <param name="p0">a <see cref="T:System.String" /></param>
-        <param name="p1">a <see cref="T:System.UInt32" /></param>
-        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Vte.Terminal.Commit" /> event.</remarks>
+        <param name="p0">a <see cref="T:System.String" /> Representing the input data to commit. This can be a single character or a string.</param>
+        <param name="p1">a <see cref="T:System.UInt32" /> The length of P0.</param>
+        <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Vte.Terminal.Commit" /> event.
+<block subset="none" type="note">
+            <para />
+          </block>P0 can contain control characters. Every key the user presses will emmit a commit signal. About the only thing that will send a sring in P0 will be if the users pasts in some text. Also you must call the parent or base class OnCommit or things will get ugly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MatchSetCursor">
