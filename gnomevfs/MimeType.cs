@@ -27,100 +27,131 @@ namespace Gnome.Vfs {
 		private string mimetype;
 
 		[DllImport ("gnomevfs-2")]
-		static extern string gnome_vfs_get_mime_type (string uri);
+		static extern IntPtr gnome_vfs_get_mime_type (IntPtr uri);
 		
 		public MimeType (Uri uri)
 		{
-			mimetype = gnome_vfs_get_mime_type (uri.ToString ());
+			IntPtr uri_native = GLib.Marshaller.StringToPtrGStrdup (uri.ToString ());
+			mimetype = GLib.Marshaller.PtrToStringGFree (gnome_vfs_get_mime_type (uri_native));
+			GLib.Marshaller.Free (uri_native);
 		}
 
 		[DllImport ("gnomevfs-2")]
-		static extern bool gnome_vfs_mime_type_is_known (string mime_type);
+		static extern bool gnome_vfs_mime_type_is_known (IntPtr mime_type);
 
 		public MimeType (string mimetype)
 		{
-			if (!gnome_vfs_mime_type_is_known (mimetype))
+			IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+			if (!gnome_vfs_mime_type_is_known (mimetype_native))
 				throw new ArgumentException ("Unknown mimetype");
 			this.mimetype = mimetype;
+			GLib.Marshaller.Free (mimetype_native);
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern string gnome_vfs_get_mime_type_for_data (ref byte data, int size);
+		static extern IntPtr gnome_vfs_get_mime_type_for_data (ref byte data, int size);
 		
 		public MimeType (byte[] buffer, int size)
 		{
-			mimetype = gnome_vfs_get_mime_type_for_data (ref buffer[0], size);
+			mimetype = GLib.Marshaller.Utf8PtrToString (gnome_vfs_get_mime_type_for_data (ref buffer[0], size));
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern MimeActionType gnome_vfs_mime_get_default_action_type (string mime_type);
+		static extern MimeActionType gnome_vfs_mime_get_default_action_type (IntPtr mime_type);
 		
 		[DllImport ("gnomevfs-2")]
-		static extern Result gnome_vfs_mime_set_default_action_type (string mime_type, MimeActionType action_type);
+		static extern Result gnome_vfs_mime_set_default_action_type (IntPtr mime_type, MimeActionType action_type);
 
 		public MimeActionType DefaultActionType {
 			get {
-				return gnome_vfs_mime_get_default_action_type (mimetype);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				MimeActionType result = gnome_vfs_mime_get_default_action_type (mimetype_native);
+				GLib.Marshaller.Free (mimetype_native);
+				return result;
 			}
 			set {
-				Result result = gnome_vfs_mime_set_default_action_type (mimetype, value);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				Result result = gnome_vfs_mime_set_default_action_type (mimetype_native, value);
+				GLib.Marshaller.Free (mimetype_native);
 				Vfs.ThrowException (result);
 			}
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern MimeAction gnome_vfs_mime_get_default_action (string mime_type);
+		static extern MimeAction gnome_vfs_mime_get_default_action (IntPtr mime_type);
 
 		public MimeAction DefaultAction {
 			get {
-				return gnome_vfs_mime_get_default_action (mimetype);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				MimeAction result = gnome_vfs_mime_get_default_action (mimetype_native);
+				GLib.Marshaller.Free (mimetype_native);
+				return result;
 			}
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern string gnome_vfs_mime_get_description (string mime_type);
+		static extern IntPtr gnome_vfs_mime_get_description (IntPtr mime_type);
 
 		[DllImport ("gnomevfs-2")]
-		static extern Result gnome_vfs_mime_set_description (string mime_type, string description);
+		static extern Result gnome_vfs_mime_set_description (IntPtr mime_type, IntPtr description);
 
 		public string Description {
 			get {
-				return gnome_vfs_mime_get_description (mimetype);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				string result = GLib.Marshaller.Utf8PtrToString (gnome_vfs_mime_get_description (mimetype_native));
+				GLib.Marshaller.Free (mimetype_native);
+				return result;
 			}
 			set {
-				Result result = gnome_vfs_mime_set_description (mimetype, value);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				IntPtr desc_native = GLib.Marshaller.StringToPtrGStrdup (value);
+				Result result = gnome_vfs_mime_set_description (mimetype_native, desc_native);
+				GLib.Marshaller.Free (mimetype_native);
+				GLib.Marshaller.Free (desc_native);
 				Vfs.ThrowException (result);
 			}
 		}
 		
 		[DllImport ("gnomevfs-2")]
-		static extern string gnome_vfs_mime_get_icon (string mime_type);
+		static extern IntPtr gnome_vfs_mime_get_icon (IntPtr mime_type);
 		
 		[DllImport ("gnomevfs-2")]
-		static extern Result gnome_vfs_mime_set_icon (string mime_type, string filename);
+		static extern Result gnome_vfs_mime_set_icon (IntPtr mime_type, IntPtr filename);
 		
 		public string Icon {
 			get {
-				return gnome_vfs_mime_get_icon (mimetype);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				string result = GLib.Marshaller.Utf8PtrToString (gnome_vfs_mime_get_icon (mimetype_native));
+				GLib.Marshaller.Free (mimetype_native);
+				return result;
 			}
 			set {
-				Result result = gnome_vfs_mime_set_icon (mimetype, value);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				IntPtr icon_native = GLib.Marshaller.StringToPtrGStrdup (value);
+				Result result = gnome_vfs_mime_set_icon (mimetype_native, icon_native);
+				GLib.Marshaller.Free (mimetype_native);
+				GLib.Marshaller.Free (icon_native);
 				Vfs.ThrowException (result);
 			}
 		}
 
 		[DllImport ("gnomevfs-2")]
-		static extern bool gnome_vfs_mime_can_be_executable (string mime_type);
+		static extern bool gnome_vfs_mime_can_be_executable (IntPtr mime_type);
 
 		[DllImport ("gnomevfs-2")]
-		static extern Result gnome_vfs_mime_set_can_be_executable (string mime_type, bool value);
+		static extern Result gnome_vfs_mime_set_can_be_executable (IntPtr mime_type, bool value);
 		
 		public bool CanBeExecutable {
 			get {
-				return gnome_vfs_mime_can_be_executable (mimetype);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				bool result = gnome_vfs_mime_can_be_executable (mimetype_native);
+				GLib.Marshaller.Free (mimetype_native);
+				return result;
 			}
 			set {
-				Result result = gnome_vfs_mime_set_can_be_executable (mimetype, value);
+				IntPtr mimetype_native = GLib.Marshaller.StringToPtrGStrdup (mimetype);
+				Result result = gnome_vfs_mime_set_can_be_executable (mimetype_native, value);
+				GLib.Marshaller.Free (mimetype_native);
 				Vfs.ThrowException (result);
 			}
 		}
@@ -138,7 +169,10 @@ namespace Gnome.Vfs {
 		
 		public static string GetMimeTypeForUri (string uri)
 		{
-			return gnome_vfs_get_mime_type (uri);
+			IntPtr uri_native = GLib.Marshaller.StringToPtrGStrdup (uri.ToString ());
+			string mimetype = GLib.Marshaller.PtrToStringGFree (gnome_vfs_get_mime_type (uri_native));
+			GLib.Marshaller.Free (uri_native);
+			return mimetype;
 		}
 	}
 }
