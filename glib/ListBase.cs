@@ -31,7 +31,7 @@ namespace GLib {
 		private IntPtr list_ptr = IntPtr.Zero;
 		private int length = -1;
 		private bool managed = false;
-		private bool elements_owned = false;
+		internal bool elements_owned = false;
 		protected System.Type element_type = null;
 
                 abstract internal IntPtr NthData (uint index);
@@ -134,6 +134,8 @@ namespace GLib {
 					ret = data;
 				else if (element_type.IsSubclassOf (typeof (GLib.Object)))
 					ret = GLib.Object.GetObject (data, false);
+				else if (element_type.IsSubclassOf (typeof (GLib.Opaque)))
+					ret = GLib.Opaque.GetOpaque (data, element_type, elements_owned);
 				else if (element_type == typeof (int))
 					ret = (int) data;
 				else if (element_type.IsValueType)
@@ -159,7 +161,9 @@ namespace GLib {
 				for (uint i = 0; i < Count; i++)
 					if (typeof (GLib.Object).IsAssignableFrom (element_type))
 						g_object_unref (NthData (i));
-					else
+					else if (typeof (GLib.Opaque).IsAssignableFrom (element_type))
+						GLib.Opaque.GetOpaque (NthData (i), element_type, true).Dispose ();
+					else 
 						g_free (NthData (i));
 
 			if (managed)

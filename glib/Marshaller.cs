@@ -286,6 +286,10 @@ namespace GLib {
 			Array result = Array.CreateInstance (type, list.Count);
 			if (list.Count > 0)
 				list.CopyTo (result, 0);
+
+			if (type.IsSubclassOf (typeof (GLib.Opaque)))
+				list.elements_owned = false;
+
 			return result;
 		}
 	}
