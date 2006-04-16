@@ -86,7 +86,7 @@ namespace Gtk.DotNet {
 				
 				IntPtr display = gdk_x11_drawable_get_xdisplay (x_drawable);
 				
-				Type. graphics = typeof (System.Drawing.Graphics);
+				Type graphics = typeof (System.Drawing.Graphics);
 				MethodInfo mi = graphics.GetMethod ("FromXDrawable", BindingFlags.Static | BindingFlags.NonPublic);
 				if (mi == null)
 					throw new NotImplementedException ("In this implementation I can not get a graphics from a drawable");
