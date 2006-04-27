@@ -8,7 +8,39 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>A dialog box for choosing files.</summary>
-    <remarks>Similar to <see cref="T:Gtk.FileChooserWidget" /> but in a dialog.</remarks>
+    <remarks>Similar to <see cref="T:Gtk.FileChooserWidget" /> but in a dialog.
+
+<para /><example>
+        <code lang="C#">
+static string Open (FileChooserAction action)
+{
+        string title = Catalog.GetString ("Open");
+
+        if (action == FileChooserAction.SelectFolder)
+                title = Catalog.GetString ("Select Folder");
+
+        FileChooserDialog chooser = new FileChooserDialog (title,
+                                                           window,
+                                                           action);
+
+        chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
+        chooser.AddButton (Stock.Open, ResponseType.Ok);
+
+        chooser.SetUri (uri.ToString ());
+        int response = chooser.Run ();
+
+	string ret = null;
+
+        if ((ResponseType) response == ResponseType.Ok) {
+                ret = chooser.Uri;
+        }
+
+        chooser.Destroy ();
+	return ret;
+}
+
+  </code>
+      </example></remarks>
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>
