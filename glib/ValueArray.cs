@@ -29,6 +29,9 @@ namespace GLib {
 
 		private IntPtr handle = IntPtr.Zero;
 
+		static private ArrayList PendingFrees = new ArrayList ();
+		static private bool idle_queued = false;
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_array_new (uint n_preallocs);
 
@@ -62,8 +65,34 @@ namespace GLib {
 			if (Handle == IntPtr.Zero)
 				return;
 
-			g_value_array_free (Handle);
+			lock (PendingFrees) {
+				PendingFrees.Add (handle);
+
+				if (! idle_queued) {
+					Timeout.Add (50, new TimeoutHandler (PerformFrees));
+					idle_queued = true;
+				}
+			}
+
 			handle = IntPtr.Zero;
+		}
+
+		static bool PerformFrees ()
+		{
+			IntPtr[] handles;
+
+			lock (PendingFrees) {
+				idle_queued = false;
+
+				handles = new IntPtr [PendingFrees.Count];
+				PendingFrees.CopyTo (handles, 0);
+				PendingFrees.Clear ();
+			}
+
+			foreach (IntPtr h in handles)
+				g_value_array_free (h);
+
+			return false;
 		}
 		
 		public IntPtr Handle {

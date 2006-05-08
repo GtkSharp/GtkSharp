@@ -1,3 +1,10 @@
+2006-05-08  Joe Shaw  <joeshaw@novell.com>
+
+	* glib/ValueArray.cs: Don't immediately free ValueArrays; queue
+	them up to be freed in the main thread by using a Timeout.  This
+	fixes SMP deadlocks when the GValues contained therein aren't
+	threadsafe (like GDK resources).  Fixes Novell bug #168650.
+
 2006-05-04  Peter Johanson  <peter@peterjohanson.com>
 
 	* gtk/glue/cellrenderer.c: Revert r59683, as it causes issues for
