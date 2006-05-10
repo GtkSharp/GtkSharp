@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<api>
-  <!--
+<api
+  ><!--
 
         This file was automatically generated.
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
--->
-  <namespace name="Gdk" library="libgdk-win32-2.0-0.dll">
+--><namespace name="Gdk" library="libgdk-win32-2.0-0.dll">
     <enum name="AxisUse" cname="GdkAxisUse" gtype="gdk_axis_use_get_type" type="enum">
       <member cname="GDK_AXIS_IGNORE" name="Ignore" />
       <member cname="GDK_AXIS_X" name="X" />
@@ -319,8 +318,11 @@
       <member cname="GDK_BUTTON3_MASK" name="Button3Mask" value="1 &lt;&lt; 10" />
       <member cname="GDK_BUTTON4_MASK" name="Button4Mask" value="1 &lt;&lt; 11" />
       <member cname="GDK_BUTTON5_MASK" name="Button5Mask" value="1 &lt;&lt; 12" />
+      <member cname="GDK_SUPER_MASK" name="SuperMask" value="1 &lt;&lt; 26" />
+      <member cname="GDK_HYPER_MASK" name="HyperMask" value="1 &lt;&lt; 27" />
+      <member cname="GDK_META_MASK" name="MetaMask" value="1 &lt;&lt; 28" />
       <member cname="GDK_RELEASE_MASK" name="ReleaseMask" value="1 &lt;&lt; 30" />
-      <member cname="GDK_MODIFIER_MASK" name="ModifierMask" value="GDK_RELEASE_MASK | 0x1fff" />
+      <member cname="GDK_MODIFIER_MASK" name="ModifierMask" value="0x5c001fff" />
     </enum>
     <enum name="NotifyType" cname="GdkNotifyType" gtype="gdk_notify_type_get_type" type="enum">
       <member cname="GDK_NOTIFY_ANCESTOR" name="Ancestor" />
@@ -467,6 +469,12 @@
       <member cname="GDK_WINDOW_TYPE_HINT_UTILITY" name="Utility" />
       <member cname="GDK_WINDOW_TYPE_HINT_DOCK" name="Dock" />
       <member cname="GDK_WINDOW_TYPE_HINT_DESKTOP" name="Desktop" />
+      <member cname="GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU" name="DropdownMenu" />
+      <member cname="GDK_WINDOW_TYPE_HINT_POPUP_MENU" name="PopupMenu" />
+      <member cname="GDK_WINDOW_TYPE_HINT_TOOLTIP" name="Tooltip" />
+      <member cname="GDK_WINDOW_TYPE_HINT_NOTIFICATION" name="Notification" />
+      <member cname="GDK_WINDOW_TYPE_HINT_COMBO" name="Combo" />
+      <member cname="GDK_WINDOW_TYPE_HINT_DND" name="Dnd" />
     </enum>
     <callback name="DestroyNotify" cname="GdkDestroyNotify">
       <return-type type="void" />
@@ -847,7 +855,13 @@
       <method name="SupportsCursorColor" cname="gdk_display_supports_cursor_color">
         <return-type type="gboolean" />
       </method>
+      <method name="SupportsInputShapes" cname="gdk_display_supports_input_shapes">
+        <return-type type="gboolean" />
+      </method>
       <method name="SupportsSelectionNotification" cname="gdk_display_supports_selection_notification">
+        <return-type type="gboolean" />
+      </method>
+      <method name="SupportsShapes" cname="gdk_display_supports_shapes">
         <return-type type="gboolean" />
       </method>
       <method name="Sync" cname="gdk_display_sync">
@@ -2000,6 +2014,16 @@
           <parameter type="GdkNativeWindow" name="anid" />
         </parameters>
       </method>
+      <method name="ForeignNewForScreen" cname="gdk_pixmap_foreign_new_for_screen" shared="true">
+        <return-type type="GdkPixmap*" />
+        <parameters>
+          <parameter type="GdkScreen*" name="screen" />
+          <parameter type="GdkNativeWindow" name="anid" />
+          <parameter type="gint" name="width" />
+          <parameter type="gint" name="height" />
+          <parameter type="gint" name="depth" />
+        </parameters>
+      </method>
       <method name="GetType" cname="gdk_pixmap_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -2031,7 +2055,15 @@
       <field name="ExposureGcs" cname="exposure_gcs" array_len="32" type="GdkGC*" />
       <field name="FontOptions" cname="font_options" type="cairo_font_options_t*" />
       <field name="Resolution" cname="resolution" type="double" />
+      <property name="FontOptions" cname="font-options" type="gpointer" readable="true" writeable="true" />
+      <property name="Resolution" cname="resolution" type="gdouble" readable="true" writeable="true" />
       <signal name="SizeChanged" cname="size_changed" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkScreen*" name="screen" />
+        </parameters>
+      </signal>
+      <signal name="CompositedChanged" cname="composited_changed" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GdkScreen*" name="screen" />
@@ -2043,6 +2075,9 @@
           <parameter type="GdkEvent*" name="event" />
         </parameters>
       </method>
+      <method name="GetActiveWindow" cname="gdk_screen_get_active_window">
+        <return-type type="GdkWindow*" />
+      </method>
       <method name="GetDefault" cname="gdk_screen_get_default" shared="true">
         <return-type type="GdkScreen*" />
       </method>
@@ -2052,7 +2087,7 @@
       <method name="GetDisplay" cname="gdk_screen_get_display">
         <return-type type="GdkDisplay*" />
       </method>
-      <method name="GetFontOptionsLibgtkOnly" cname="gdk_screen_get_font_options_libgtk_only">
+      <method name="GetFontOptions" cname="gdk_screen_get_font_options">
         <return-type type="const-cairo_font_options_t*" />
       </method>
       <method name="GetHeight" cname="gdk_screen_get_height">
@@ -2087,7 +2122,7 @@
       <method name="GetNumber" cname="gdk_screen_get_number">
         <return-type type="gint" />
       </method>
-      <method name="GetResolutionLibgtkOnly" cname="gdk_screen_get_resolution_libgtk_only">
+      <method name="GetResolution" cname="gdk_screen_get_resolution">
         <return-type type="gdouble" />
       </method>
       <method name="GetRgbColormap" cname="gdk_screen_get_rgb_colormap">
@@ -2130,11 +2165,17 @@
       <method name="GetWidthMm" cname="gdk_screen_get_width_mm">
         <return-type type="gint" />
       </method>
+      <method name="GetWindowStack" cname="gdk_screen_get_window_stack">
+        <return-type type="GList*" />
+      </method>
       <method name="Height" cname="gdk_screen_height" shared="true">
         <return-type type="gint" />
       </method>
       <method name="HeightMm" cname="gdk_screen_height_mm" shared="true">
         <return-type type="gint" />
+      </method>
+      <method name="IsComposited" cname="gdk_screen_is_composited">
+        <return-type type="gboolean" />
       </method>
       <method name="ListVisuals" cname="gdk_screen_list_visuals">
         <return-type type="GList*" />
@@ -2148,13 +2189,13 @@
           <parameter type="GdkColormap*" name="colormap" />
         </parameters>
       </method>
-      <method name="SetFontOptionsLibgtkOnly" cname="gdk_screen_set_font_options_libgtk_only">
+      <method name="SetFontOptions" cname="gdk_screen_set_font_options">
         <return-type type="void" />
         <parameters>
           <parameter type="const-cairo_font_options_t*" name="options" />
         </parameters>
       </method>
-      <method name="SetResolutionLibgtkOnly" cname="gdk_screen_set_resolution_libgtk_only">
+      <method name="SetResolution" cname="gdk_screen_set_resolution">
         <return-type type="void" />
         <parameters>
           <parameter type="gdouble" name="dpi" />
@@ -2425,6 +2466,9 @@
       <method name="GetToplevels" cname="gdk_window_get_toplevels" shared="true">
         <return-type type="GList*" />
       </method>
+      <method name="GetTypeHint" cname="gdk_window_get_type_hint">
+        <return-type type="GdkWindowTypeHint" />
+      </method>
       <method name="GetUpdateArea" cname="gdk_window_get_update_area">
         <return-type type="GdkRegion*" />
       </method>
@@ -2442,6 +2486,22 @@
       </method>
       <method name="Iconify" cname="gdk_window_iconify">
         <return-type type="void" />
+      </method>
+      <method name="InputShapeCombineMask" cname="gdk_window_input_shape_combine_mask">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkBitmap*" name="mask" />
+          <parameter type="gint" name="x" />
+          <parameter type="gint" name="y" />
+        </parameters>
+      </method>
+      <method name="InputShapeCombineRegion" cname="gdk_window_input_shape_combine_region">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkRegion*" name="shape_region" />
+          <parameter type="gint" name="offset_x" />
+          <parameter type="gint" name="offset_y" />
+        </parameters>
       </method>
       <method name="InvalidateMaybeRecurse" cname="gdk_window_invalidate_maybe_recurse">
         <return-type type="void" />
@@ -2488,6 +2548,9 @@
         <return-type type="void" />
       </method>
       <method name="Maximize" cname="gdk_window_maximize">
+        <return-type type="void" />
+      </method>
+      <method name="MergeChildInputShapes" cname="gdk_window_merge_child_input_shapes">
         <return-type type="void" />
       </method>
       <method name="MergeChildShapes" cname="gdk_window_merge_child_shapes">
@@ -2589,6 +2652,9 @@
         <parameters>
           <parameter type="const-GdkColor*" name="color" />
         </parameters>
+      </method>
+      <method name="SetChildInputShapes" cname="gdk_window_set_child_input_shapes">
+        <return-type type="void" />
       </method>
       <method name="SetChildShapes" cname="gdk_window_set_child_shapes">
         <return-type type="void" />
@@ -3054,6 +3120,7 @@
       <field name="String" cname="string" type="gchar*" />
       <field name="HardwareKeycode" cname="hardware_keycode" type="guint16" />
       <field name="Group" cname="group" type="guint8" />
+      <field name="IsModifier" cname="is_modifier" bits="1" type="guint" />
     </struct>
     <struct name="EventMotion" cname="GdkEventMotion">
       <field name="Type" cname="type" type="GdkEventType" />
@@ -3362,7 +3429,7 @@
       <method name="RectIn" cname="gdk_region_rect_in">
         <return-type type="GdkOverlapType" />
         <parameters>
-          <parameter type="GdkRectangle*" name="rect" />
+          <parameter type="GdkRectangle*" name="rectangle" />
         </parameters>
       </method>
       <method name="Rectangle" cname="gdk_region_rectangle" shared="true">
@@ -3517,6 +3584,12 @@
         <parameters>
           <parameter type="const-gchar*" name="atom_name" />
           <parameter type="gboolean" name="only_if_exists" />
+        </parameters>
+      </method>
+      <method name="InternStaticString" cname="gdk_atom_intern_static_string" shared="true">
+        <return-type type="GdkAtom" />
+        <parameters>
+          <parameter type="const-gchar*" name="atom_name" />
         </parameters>
       </method>
       <method name="Name" cname="gdk_atom_name">
@@ -3746,6 +3819,15 @@
           <parameter type="GdkPixbuf*" name="pixbuf" />
           <parameter type="double" name="pixbuf_x" />
           <parameter type="double" name="pixbuf_y" />
+        </parameters>
+      </method>
+      <method name="SetSourcePixmap" cname="gdk_cairo_set_source_pixmap" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="GdkPixmap*" name="pixmap" />
+          <parameter type="double" name="pixmap_x" />
+          <parameter type="double" name="pixmap_y" />
         </parameters>
       </method>
     </class>
@@ -4691,9 +4773,7 @@
           <parameter type="GCallback" name="leave_fn" />
         </parameters>
       </method>
-    </class>
-  </namespace>
-  <namespace name="Gdk" library="libgdk_pixbuf-2.0-0.dll">
+    </class></namespace><namespace name="Gdk" library="libgdk_pixbuf-2.0-0.dll">
     <enum name="Colorspace" cname="GdkColorspace" gtype="gdk_colorspace_get_type" type="enum">
       <member cname="GDK_COLORSPACE_RGB" name="Rgb" />
     </enum>
@@ -5374,6 +5454,4 @@
           <parameter type="GdkPixdataDumpType" name="dump_type" />
         </parameters>
       </method>
-    </struct>
-  </namespace>
-</api>
+    </struct></namespace></api>

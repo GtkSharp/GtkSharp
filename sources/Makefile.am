@@ -5,6 +5,7 @@ EXTRA_DIST =				\
 	gtk-sharp-2.8-sources.xml	\
 	gtkclipboard.patch 		\
 	gtk_tree_model_signal_fix.patch \
+	gtk_tree_model_signal_fix-2.10.patch \
 	gtkhtml-font-style-enum.patch
 
 
@@ -44,6 +45,18 @@ GTK_2_8_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/libgnomeprintui-2.10.0.1.tar.bz2	\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.10/2.10.0/sources/gnome-panel-2.10.0.tar.bz2
 
+GTK_2_10_DOWNLOADS = \
+	ftp://ftp.gtk.org/pub/gtk/v2.9/pango-1.11.99.tar.bz2                                      	\
+	ftp://ftp.gtk.org/pub/gtk/v2.8/atk-1.10.3.tar.bz2                                        	\
+	ftp://ftp.gtk.org/pub/gtk/v2.9/gtk+-2.9.0.tar.bz2						\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/gnome-vfs-2.14.1.tar.bz2		\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnome-2.14.1.tar.bz2       	\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnomecanvas-2.14.0.tar.bz2 	\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnomeui-2.14.1.tar.bz2     	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/libgnomeprint-2.12.1.tar.bz2		\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/libgnomeprintui-2.12.1.tar.bz2	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/gnome-panel-2.14.1.tar.bz2
+
 GNOME_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libglade-2.3.6.tar.bz2		\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libart_lgpl-2.3.16.tar.bz2	\
@@ -60,7 +73,7 @@ GTKHTML_SOURCEFILES = \
         gtkhtml-3.0.10/src/gtkhtml-stream.c \
         gtkhtml-3.0.10/src/gtkhtml-stream.h
 
-api: api-2.4 api-2.6 api-2.8
+api: api-2.4 api-2.6 api-2.8 api-2.10
 
 api-2.4:
 	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.4-sources.xml
@@ -71,7 +84,10 @@ api-2.6:
 api-2.8:
 	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.8-sources.xml
 
-get-source-code: get-2.4-sources get-2.6-sources get-2.8-sources get-gnome-sources get-gtkhtml-code
+api-2.10:
+	PATH=../parser:$$PATH $(RUNTIME) ../parser/gapi-parser.exe gtk-sharp-2.10-sources.xml
+
+get-source-code: get-2.4-sources get-2.6-sources get-2.8-sources get-2.10-sources get-gnome-sources get-gtkhtml-code
 
 get-gtkhtml-code:
 	wget http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.0/gtkhtml-3.0.10.tar.bz2 --output-document=- | tar -xj $(GTKHTML_SOURCEFILES)
@@ -99,6 +115,15 @@ get-2.8-sources:
 	ln -f -s gtkfilechooserprivate.h gtk+-2.8.9/gtk/gtkfilechooserpriv.h
 	patch -p0 gtk+-2.8.9/gtk/gtktreemodel.c < gtk_tree_model_signal_fix.patch
 	patch -p0 gtk+-2.8.9/gtk/gtkclipboard.h < gtkclipboard.patch
+
+get-2.10-sources:
+	for i in $(GTK_2_10_DOWNLOADS); do                  \
+		wget $$i --output-document=- | tar -xj ;   \
+	done;
+	ln -f -s gtkfilechooserprivate.h gtk+-2.9.0/gtk/gtkfilechooserpriv.h
+	patch -p0 gtk+-2.9.0/gtk/gtktreemodel.c < gtk_tree_model_signal_fix-2.10.patch
+	echo "typedef struct _GtkClipboard GtkClipboard;" >> gtk+-2.9.0/gtk/gtkclipboard.h
+	echo "typedef struct _GtkClipboardClass GtkClipboardClass;" >> gtk+-2.9.0/gtk/gtkclipboard.h
 
 get-gnome-sources:
 	for i in $(GNOME_DOWNLOADS); do                    \

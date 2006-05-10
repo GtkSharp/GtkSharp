@@ -31,6 +31,7 @@ sources =		 			\
 	GType.cs				\
 	GTypeAttribute.cs			\
 	Idle.cs					\
+	InitiallyUnowned.cs			\
 	IWrapper.cs				\
 	ListBase.cs				\
 	List.cs					\

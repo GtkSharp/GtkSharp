@@ -98,6 +98,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GStrv", "string[]"));
 
 			// manually wrapped types requiring more complex marshaling
+			AddType (new ManualGen ("GInitiallyUnowned", "GLib.InitiallyUnowned", "GLib.Object.GetObject ({0})"));
 			AddType (new ManualGen ("GObject", "GLib.Object", "GLib.Object.GetObject ({0})"));
 			AddType (new ManualGen ("GList", "GLib.List"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
