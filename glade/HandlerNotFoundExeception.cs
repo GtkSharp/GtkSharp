@@ -52,6 +52,17 @@ namespace Glade {
 			this.delegate_type = delegate_type;
 		}				 
 
+		public HandlerNotFoundException (string message, string handler_name, string signal_name, 
+						 EventInfo evnt, Type delegate_type)
+			: base ((message != null) ? message : "No handler " + handler_name + " found for signal " + signal_name,
+				null)
+		{
+			this.handler_name = handler_name;
+			this.signal_name = signal_name;
+			this.evnt = evnt;
+			this.delegate_type = delegate_type;
+		}				 
+
 		protected HandlerNotFoundException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{

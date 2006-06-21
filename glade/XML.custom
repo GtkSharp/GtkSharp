@@ -257,11 +257,68 @@
 	
 						if (!connected) 
 						{
-							throw new HandlerNotFoundException (handler_name, signal_name, ei, delegate_type);
+							string msg = ExplainError (ei.Name, delegate_type, handler_type, handler_name);
+							throw new HandlerNotFoundException (msg, handler_name, signal_name, ei, delegate_type);
 						}
 					}
 				}
 	
+			}
+
+			static string GetSignature (System.Reflection.MethodInfo method)
+			{
+				if (method == null)
+					return null;
+
+				System.Reflection.ParameterInfo [] parameters = method.GetParameters ();
+				System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+				sb.Append ('(');
+				foreach (System.Reflection.ParameterInfo info in parameters) {
+					sb.Append (info.ParameterType.ToString ());
+					sb.Append (',');
+				}
+				if (sb.Length != 0)
+					sb.Length--;
+
+				sb.Append (')');
+				return sb.ToString ();
+			}
+
+			static string GetSignature (Type delegate_type)
+			{
+				System.Reflection.MethodInfo method = delegate_type.GetMethod ("Invoke");
+				return GetSignature (method);
+			}
+
+			const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.NonPublic |
+							System.Reflection.BindingFlags.Public |
+							System.Reflection.BindingFlags.Static |
+							System.Reflection.BindingFlags.Instance;
+			static string GetSignature (Type klass, string method_name)
+			{
+				try {
+					System.Reflection.MethodInfo method = klass.GetMethod (method_name, flags);
+					return GetSignature (method);
+				} catch {
+					// May be more than one method with that name and none matches
+					return null;
+				}
+			}
+
+			static string ExplainError (string event_name, Type deleg, Type klass, string method)
+			{
+				if (deleg == null || klass == null || method == null)
+					return null;
+
+				System.Text.StringBuilder sb = new System.Text.StringBuilder ();
+				string expected = GetSignature (deleg);
+				string actual = GetSignature (klass, method);
+				if (actual == null)
+					return null;
+					sb.AppendFormat ("The handler for the event {0} should take '{1}', " +
+						"but the signature of the provided handler ('{2}') is '{3}'\n",
+						event_name, expected, method, actual);
+				return sb.ToString ();
 			}
 	
 			System.Reflection.MemberFilter signalFilter = new System.Reflection.MemberFilter (SignalFilter);
