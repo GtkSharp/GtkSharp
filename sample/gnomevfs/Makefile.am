@@ -13,13 +13,15 @@ TARGETS =			\
 	TestSyncWrite.exe	\
 	TestUnlink.exe		\
 	TestVolumes.exe
-else
-TARGETS =
-endif
 
 if ENABLE_MONOGETOPTIONS
 EXTRA_TARGETS = TestXfer.exe
 else
+EXTRA_TARGETS =
+endif
+
+else
+TARGETS =
 EXTRA_TARGETS =
 endif
 
