@@ -46,9 +46,9 @@ GTK_2_8_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.10/2.10.0/sources/gnome-panel-2.10.0.tar.bz2
 
 GTK_2_10_DOWNLOADS = \
-	ftp://ftp.gtk.org/pub/gtk/v2.9/pango-1.11.99.tar.bz2                                      	\
+	ftp://ftp.gtk.org/pub/gtk/v2.11/pango-1.13.3.tar.bz2                                      	\
 	ftp://ftp.gtk.org/pub/gtk/v2.8/atk-1.10.3.tar.bz2                                        	\
-	ftp://ftp.gtk.org/pub/gtk/v2.9/gtk+-2.9.0.tar.bz2						\
+	ftp://ftp.gtk.org/pub/gtk/v2.10/gtk+-2.10.0.tar.bz2						\
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/gnome-vfs-2.14.1.tar.bz2		\
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnome-2.14.1.tar.bz2       	\
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnomecanvas-2.14.0.tar.bz2 	\
@@ -120,10 +120,10 @@ get-2.10-sources:
 	for i in $(GTK_2_10_DOWNLOADS); do                  \
 		wget $$i --output-document=- | tar -xj ;   \
 	done;
-	ln -f -s gtkfilechooserprivate.h gtk+-2.9.0/gtk/gtkfilechooserpriv.h
-	patch -p0 gtk+-2.9.0/gtk/gtktreemodel.c < gtk_tree_model_signal_fix-2.10.patch
-	echo "typedef struct _GtkClipboard GtkClipboard;" >> gtk+-2.9.0/gtk/gtkclipboard.h
-	echo "typedef struct _GtkClipboardClass GtkClipboardClass;" >> gtk+-2.9.0/gtk/gtkclipboard.h
+	ln -f -s gtkfilechooserprivate.h gtk+-2.10.0/gtk/gtkfilechooserpriv.h
+	patch -p0 gtk+-2.10.0/gtk/gtktreemodel.c < gtk_tree_model_signal_fix-2.10.patch
+	echo "typedef struct _GtkClipboard GtkClipboard;" >> gtk+-2.10.0/gtk/gtkclipboard.h
+	echo "typedef struct _GtkClipboardClass GtkClipboardClass;" >> gtk+-2.10.0/gtk/gtkclipboard.h
 
 get-gnome-sources:
 	for i in $(GNOME_DOWNLOADS); do                    \

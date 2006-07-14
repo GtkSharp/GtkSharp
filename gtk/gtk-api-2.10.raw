@@ -42,6 +42,7 @@
       <member cname="GTK_ARROW_DOWN" name="Down" />
       <member cname="GTK_ARROW_LEFT" name="Left" />
       <member cname="GTK_ARROW_RIGHT" name="Right" />
+      <member cname="GTK_ARROW_NONE" name="None" />
     </enum>
     <enum name="AssistantPageType" cname="GtkAssistantPageType" gtype="gtk_assistant_page_type_get_type" type="enum">
       <member cname="GTK_ASSISTANT_PAGE_CONTENT" name="Content" />
@@ -115,6 +116,7 @@
       <member cname="GTK_DEBUG_MODULES" name="Modules" value="1 &lt;&lt; 7" />
       <member cname="GTK_DEBUG_GEOMETRY" name="Geometry" value="1 &lt;&lt; 8" />
       <member cname="GTK_DEBUG_ICONTHEME" name="Icontheme" value="1 &lt;&lt; 9" />
+      <member cname="GTK_DEBUG_PRINTING" name="Printing" value="1 &lt;&lt; 10" />
     </enum>
     <enum name="DeleteType" cname="GtkDeleteType" gtype="gtk_delete_type_get_type" type="enum">
       <member cname="GTK_DELETE_CHARS" name="Chars" />
@@ -244,6 +246,7 @@
       <member cname="GTK_MESSAGE_WARNING" name="Warning" />
       <member cname="GTK_MESSAGE_QUESTION" name="Question" />
       <member cname="GTK_MESSAGE_ERROR" name="Error" />
+      <member cname="GTK_MESSAGE_OTHER" name="Other" />
     </enum>
     <enum name="MetricType" cname="GtkMetricType" gtype="gtk_metric_type_get_type" type="enum">
       <member cname="GTK_PIXELS" name="Pixels" />
@@ -328,6 +331,16 @@
     <enum name="PrintBackendError" cname="GtkPrintBackendError" type="enum">
       <member cname="GTK_PRINT_BACKEND_ERROR_GENERIC" name="Generic" />
     </enum>
+    <enum name="PrintCapabilities" cname="GtkPrintCapabilities" gtype="gtk_print_capabilities_get_type" type="flags">
+      <member cname="GTK_PRINT_CAPABILITY_PAGE_SET" name="PageSet" value="1 &lt;&lt; 0" />
+      <member cname="GTK_PRINT_CAPABILITY_COPIES" name="Copies" value="1 &lt;&lt; 1" />
+      <member cname="GTK_PRINT_CAPABILITY_COLLATE" name="Collate" value="1 &lt;&lt; 2" />
+      <member cname="GTK_PRINT_CAPABILITY_REVERSE" name="Reverse" value="1 &lt;&lt; 3" />
+      <member cname="GTK_PRINT_CAPABILITY_SCALE" name="Scale" value="1 &lt;&lt; 4" />
+      <member cname="GTK_PRINT_CAPABILITY_GENERATE_PDF" name="GeneratePdf" value="1 &lt;&lt; 5" />
+      <member cname="GTK_PRINT_CAPABILITY_GENERATE_PS" name="GeneratePs" value="1 &lt;&lt; 6" />
+      <member cname="GTK_PRINT_CAPABILITY_PREVIEW" name="Preview" value="1 &lt;&lt; 7" />
+    </enum>
     <enum name="PrintDuplex" cname="GtkPrintDuplex" gtype="gtk_print_duplex_get_type" type="enum">
       <member cname="GTK_PRINT_DUPLEX_SIMPLEX" name="Simplex" />
       <member cname="GTK_PRINT_DUPLEX_HORIZONTAL" name="Horizontal" />
@@ -338,10 +351,17 @@
       <member cname="GTK_PRINT_ERROR_INTERNAL_ERROR" name="InternalError" />
       <member cname="GTK_PRINT_ERROR_NOMEM" name="Nomem" />
     </enum>
+    <enum name="PrintOperationAction" cname="GtkPrintOperationAction" gtype="gtk_print_operation_action_get_type" type="enum">
+      <member cname="GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG" name="PrintDialog" />
+      <member cname="GTK_PRINT_OPERATION_ACTION_PRINT" name="Print" />
+      <member cname="GTK_PRINT_OPERATION_ACTION_PREVIEW" name="Preview" />
+      <member cname="GTK_PRINT_OPERATION_ACTION_EXPORT" name="Export" />
+    </enum>
     <enum name="PrintOperationResult" cname="GtkPrintOperationResult" gtype="gtk_print_operation_result_get_type" type="enum">
       <member cname="GTK_PRINT_OPERATION_RESULT_ERROR" name="Error" />
       <member cname="GTK_PRINT_OPERATION_RESULT_APPLY" name="Apply" />
       <member cname="GTK_PRINT_OPERATION_RESULT_CANCEL" name="Cancel" />
+      <member cname="GTK_PRINT_OPERATION_RESULT_IN_PROGRESS" name="InProgress" />
     </enum>
     <enum name="PrintPages" cname="GtkPrintPages" gtype="gtk_print_pages_get_type" type="enum">
       <member cname="GTK_PRINT_PAGES_ALL" name="All" />
@@ -368,6 +388,7 @@
     <enum name="PrinterOptionType" cname="GtkPrinterOptionType" type="enum">
       <member cname="GTK_PRINTER_OPTION_TYPE_BOOLEAN" name="Boolean" />
       <member cname="GTK_PRINTER_OPTION_TYPE_PICKONE" name="Pickone" />
+      <member cname="GTK_PRINTER_OPTION_TYPE_ALTERNATIVE" name="Alternative" />
       <member cname="GTK_PRINTER_OPTION_TYPE_STRING" name="String" />
       <member cname="GTK_PRINTER_OPTION_TYPE_FILESAVE" name="Filesave" />
     </enum>
@@ -457,10 +478,8 @@
     <enum name="RecentManagerError" cname="GtkRecentManagerError" gtype="gtk_recent_manager_error_get_type" type="enum">
       <member cname="GTK_RECENT_MANAGER_ERROR_NOT_FOUND" name="NotFound" />
       <member cname="GTK_RECENT_MANAGER_ERROR_INVALID_URI" name="InvalidUri" />
-      <member cname="GTK_RECENT_MANAGER_ERROR_INVALID_MIME" name="InvalidMime" />
       <member cname="GTK_RECENT_MANAGER_ERROR_INVALID_ENCODING" name="InvalidEncoding" />
       <member cname="GTK_RECENT_MANAGER_ERROR_NOT_REGISTERED" name="NotRegistered" />
-      <member cname="GTK_RECENT_MANAGER_ERROR_BAD_EXEC_STRING" name="BadExecString" />
       <member cname="GTK_RECENT_MANAGER_ERROR_READ" name="Read" />
       <member cname="GTK_RECENT_MANAGER_ERROR_WRITE" name="Write" />
       <member cname="GTK_RECENT_MANAGER_ERROR_UNKNOWN" name="Unknown" />
@@ -649,6 +668,12 @@
       <member cname="GTK_TREE_VIEW_DROP_AFTER" name="After" />
       <member cname="GTK_TREE_VIEW_DROP_INTO_OR_BEFORE" name="IntoOrBefore" />
       <member cname="GTK_TREE_VIEW_DROP_INTO_OR_AFTER" name="IntoOrAfter" />
+    </enum>
+    <enum name="TreeViewGridLines" cname="GtkTreeViewGridLines" gtype="gtk_tree_view_grid_lines_get_type" type="enum">
+      <member cname="GTK_TREE_VIEW_GRID_LINES_NONE" name="None" />
+      <member cname="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" name="Horizontal" />
+      <member cname="GTK_TREE_VIEW_GRID_LINES_VERTICAL" name="Vertical" />
+      <member cname="GTK_TREE_VIEW_GRID_LINES_BOTH" name="Both" />
     </enum>
     <enum name="UIManagerItemType" cname="GtkUIManagerItemType" type="flags">
       <member cname="GTK_UI_MANAGER_AUTO" name="Auto" />
@@ -1043,6 +1068,13 @@
         <parameter type="const-gchar*" name="key" />
         <parameter type="const-gchar*" name="value" />
         <parameter type="gpointer" name="user_data" />
+      </parameters>
+    </callback>
+    <callback name="PrinterFunc" cname="GtkPrinterFunc">
+      <return-type type="gboolean" />
+      <parameters>
+        <parameter type="GtkPrinter*" name="printer" />
+        <parameter type="gpointer" name="data" />
       </parameters>
     </callback>
     <callback name="PrinterOptionSetFunc" cname="GtkPrinterOptionSetFunc">
@@ -1927,6 +1959,61 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="uri" />
+        </parameters>
+      </method>
+    </interface>
+    <interface name="PrintOperationPreview" cname="GtkPrintOperationPreview">
+      <signal name="Ready" cname="ready" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+          <parameter type="GtkPrintContext*" name="context" />
+        </parameters>
+      </signal>
+      <signal name="GotPageSize" cname="got-page-size" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+          <parameter type="GtkPrintContext*" name="context" />
+          <parameter type="GtkPageSetup*" name="page_setup" />
+        </parameters>
+      </signal>
+      <virtual_method name="RenderPage" cname="render_page">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+          <parameter type="gint" name="page_nr" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="IsSelected" cname="is_selected">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+          <parameter type="gint" name="page_nr" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="EndPreview" cname="end_preview">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+        </parameters>
+      </virtual_method>
+      <method name="EndPreview" cname="gtk_print_operation_preview_end_preview">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="gtk_print_operation_preview_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="IsSelected" cname="gtk_print_operation_preview_is_selected">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="gint" name="page_nr" />
+        </parameters>
+      </method>
+      <method name="RenderPage" cname="gtk_print_operation_preview_render_page">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gint" name="page_nr" />
         </parameters>
       </method>
     </interface>
@@ -3872,6 +3959,7 @@
       <property name="Xalign" cname="xalign" type="gfloat" readable="true" writeable="true" />
       <property name="Yalign" cname="yalign" type="gfloat" readable="true" writeable="true" />
       <property name="Image" cname="image" type="GtkWidget" readable="true" writeable="true" />
+      <property name="ImagePosition" cname="image-position" type="GtkPositionType" readable="true" writeable="true" />
       <signal name="Pressed" cname="pressed" when="FIRST">
         <return-type type="void" />
         <parameters>
@@ -3930,6 +4018,9 @@
       <method name="GetImage" cname="gtk_button_get_image">
         <return-type type="GtkWidget*" />
       </method>
+      <method name="GetImagePosition" cname="gtk_button_get_image_position">
+        <return-type type="GtkPositionType" />
+      </method>
       <method name="GetLabel" cname="gtk_button_get_label">
         <return-type type="const-gchar*" />
       </method>
@@ -3987,6 +4078,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkWidget*" name="image" />
+        </parameters>
+      </method>
+      <method name="SetImagePosition" cname="gtk_button_set_image_position">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPositionType" name="position" />
         </parameters>
       </method>
       <method name="SetLabel" cname="gtk_button_set_label">
@@ -4583,6 +4680,7 @@
       <field name="Priv" cname="priv" type="GtkCellViewPrivate*" />
       <property name="Background" cname="background" type="gchar*" writeable="true" />
       <property name="BackgroundGdk" cname="background-gdk" type="GdkColor" readable="true" writeable="true" />
+      <property name="Model" cname="model" type="GtkTreeModel" readable="true" writeable="true" />
       <implements>
         <interface cname="GtkCellLayout" />
       </implements>
@@ -8251,6 +8349,7 @@
       <field name="SingleLineMode" cname="single_line_mode" bits="1" type="guint" />
       <field name="HaveTransform" cname="have_transform" bits="1" type="guint" />
       <field name="InClick" cname="in_click" bits="1" type="guint" />
+      <field name="WrapMode" cname="wrap_mode" bits="3" type="guint" />
       <field name="MnemonicKeyval" cname="mnemonic_keyval" type="guint" />
       <field name="Text" cname="text" type="gchar*" />
       <field name="Attrs" cname="attrs" type="PangoAttrList*" />
@@ -8288,6 +8387,7 @@
       <property name="Justify" cname="justify" type="GtkJustification" readable="true" writeable="true" />
       <property name="Pattern" cname="pattern" type="gchar*" writeable="true" />
       <property name="Wrap" cname="wrap" type="gboolean" readable="true" writeable="true" />
+      <property name="WrapMode" cname="wrap-mode" type="PangoWrapMode" readable="true" writeable="true" />
       <property name="Selectable" cname="selectable" type="gboolean" readable="true" writeable="true" />
       <property name="MnemonicKeyval" cname="mnemonic-keyval" type="guint" readable="true" />
       <property name="MnemonicWidget" cname="mnemonic-widget" type="GtkWidget" readable="true" writeable="true" />
@@ -8331,6 +8431,9 @@
       </method>
       <method name="GetLineWrap" cname="gtk_label_get_line_wrap">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetLineWrapMode" cname="gtk_label_get_line_wrap_mode">
+        <return-type type="PangoWrapMode" />
       </method>
       <method name="GetMaxWidthChars" cname="gtk_label_get_max_width_chars">
         <return-type type="gint" />
@@ -8426,6 +8529,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="wrap" />
+        </parameters>
+      </method>
+      <method name="SetLineWrapMode" cname="gtk_label_set_line_wrap_mode">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoWrapMode" name="wrap_mode" />
         </parameters>
       </method>
       <method name="SetMarkup" cname="gtk_label_set_markup">
@@ -9246,6 +9355,7 @@
       <property name="UseMarkup" cname="use-markup" type="gboolean" readable="true" writeable="true" />
       <property name="SecondaryText" cname="secondary-text" type="gchar*" readable="true" writeable="true" />
       <property name="SecondaryUseMarkup" cname="secondary-use-markup" type="gboolean" readable="true" writeable="true" />
+      <property name="Image" cname="image" type="GtkWidget" readable="true" writeable="true" />
       <method name="FormatSecondaryMarkup" cname="gtk_message_dialog_format_secondary_markup">
         <return-type type="void" />
         <parameters>
@@ -9283,6 +9393,12 @@
           <parameter ellipsis="true" printf_format_args="true" />
         </parameters>
       </constructor>
+      <method name="SetImage" cname="gtk_message_dialog_set_image">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkWidget*" name="image" />
+        </parameters>
+      </method>
       <method name="SetMarkup" cname="gtk_message_dialog_set_markup">
         <return-type type="void" />
         <parameters>
@@ -9718,6 +9834,7 @@
         <parameters>
           <parameter type="GtkNotebookWindowCreationFunc" name="func" />
           <parameter type="gpointer" name="data" />
+          <parameter type="GDestroyNotify" name="destroy" />
         </parameters>
       </method>
     </object>
@@ -10231,6 +10348,8 @@
       <property name="Name" cname="name" type="gchar*" readable="true" writeable="true" construct-only="true" />
       <property name="Backend" cname="backend" type="GtkPrintBackend" readable="true" writeable="true" construct-only="true" />
       <property name="IsVirtual" cname="is-virtual" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="AcceptsPdf" cname="accepts-pdf" type="gboolean" readable="true" writeable="true" construct-only="true" />
+      <property name="AcceptsPs" cname="accepts-ps" type="gboolean" readable="true" writeable="true" construct-only="true" />
       <property name="StateMessage" cname="state-message" type="gchar*" readable="true" />
       <property name="Location" cname="location" type="gchar*" readable="true" />
       <property name="IconName" cname="icon-name" type="gchar*" readable="true" />
@@ -10242,6 +10361,12 @@
           <parameter type="gboolean" name="success" />
         </parameters>
       </signal>
+      <method name="AcceptsPdf" cname="gtk_printer_accepts_pdf">
+        <return-type type="gboolean" />
+      </method>
+      <method name="AcceptsPs" cname="gtk_printer_accepts_ps">
+        <return-type type="gboolean" />
+      </method>
       <method name="Compare" cname="gtk_printer_compare">
         <return-type type="gint" />
         <parameters>
@@ -10548,7 +10673,7 @@
         <parameters>
           <parameter type="GtkPrintBackend*" name="backend" />
           <parameter type="GtkPrintJob*" name="job" />
-          <parameter type="gint" name="data_fd" />
+          <parameter type="GIOChannel*" name="data_io" />
           <parameter type="GtkPrintJobCompleteFunc" name="callback" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="dnotify" />
@@ -10564,9 +10689,10 @@
         <return-type type="cairo_surface_t*" />
         <parameters>
           <parameter type="GtkPrinter*" name="printer" />
+          <parameter type="GtkPrintSettings*" name="settings" />
           <parameter type="gdouble" name="height" />
           <parameter type="gdouble" name="width" />
-          <parameter type="gint" name="cache_fd" />
+          <parameter type="GIOChannel*" name="cache_io" />
         </parameters>
       </virtual_method>
       <virtual_method name="PrinterGetOptions" cname="printer_get_options">
@@ -10575,6 +10701,7 @@
           <parameter type="GtkPrinter*" name="printer" />
           <parameter type="GtkPrintSettings*" name="settings" />
           <parameter type="GtkPageSetup*" name="page_setup" />
+          <parameter type="GtkPrintCapabilities" name="capabilities" />
         </parameters>
       </virtual_method>
       <virtual_method name="PrinterMarkConflicts" cname="printer_mark_conflicts">
@@ -10617,6 +10744,12 @@
           <parameter type="double*" name="right" />
         </parameters>
       </virtual_method>
+      <virtual_method name="PrinterGetCapabilities" cname="printer_get_capabilities">
+        <return-type type="GtkPrintCapabilities" />
+        <parameters>
+          <parameter type="GtkPrinter*" name="printer" />
+        </parameters>
+      </virtual_method>
       <method name="AddPrinter" cname="gtk_print_backend_add_printer">
         <return-type type="void" />
         <parameters>
@@ -10648,7 +10781,7 @@
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintJob*" name="job" />
-          <parameter type="gint" name="data_fd" />
+          <parameter type="GIOChannel*" name="data_io" />
           <parameter type="GtkPrintJobCompleteFunc" name="callback" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="dnotify" />
@@ -10666,18 +10799,15 @@
       <method name="SetListDone" cname="gtk_print_backend_set_list_done">
         <return-type type="void" />
       </method>
-      <method name="UnrefAtIdle" cname="gtk_print_backend_unref_at_idle">
-        <return-type type="void" />
-      </method>
     </object>
     <object name="PrintContext" cname="GtkPrintContext" parent="GObject">
-      <method name="CreateContext" cname="gtk_print_context_create_context">
+      <method name="CreatePangoContext" cname="gtk_print_context_create_pango_context">
         <return-type type="PangoContext*" />
       </method>
-      <method name="CreateLayout" cname="gtk_print_context_create_layout">
+      <method name="CreatePangoLayout" cname="gtk_print_context_create_pango_layout">
         <return-type type="PangoLayout*" />
       </method>
-      <method name="GetCairo" cname="gtk_print_context_get_cairo">
+      <method name="GetCairoContext" cname="gtk_print_context_get_cairo_context">
         <return-type type="cairo_t*" />
       </method>
       <method name="GetDpiX" cname="gtk_print_context_get_dpi_x">
@@ -10686,14 +10816,14 @@
       <method name="GetDpiY" cname="gtk_print_context_get_dpi_y">
         <return-type type="gdouble" />
       </method>
-      <method name="GetFontmap" cname="gtk_print_context_get_fontmap">
-        <return-type type="PangoFontMap*" />
-      </method>
       <method name="GetHeight" cname="gtk_print_context_get_height">
         <return-type type="gdouble" />
       </method>
       <method name="GetPageSetup" cname="gtk_print_context_get_page_setup">
         <return-type type="GtkPageSetup*" />
+      </method>
+      <method name="GetPangoFontmap" cname="gtk_print_context_get_pango_fontmap">
+        <return-type type="PangoFontMap*" />
       </method>
       <method name="GetType" cname="gtk_print_context_get_type" shared="true">
         <return-type type="GType" />
@@ -10701,22 +10831,31 @@
       <method name="GetWidth" cname="gtk_print_context_get_width">
         <return-type type="gdouble" />
       </method>
+      <method name="SetCairoContext" cname="gtk_print_context_set_cairo_context">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="double" name="dpi_x" />
+          <parameter type="double" name="dpi_y" />
+        </parameters>
+      </method>
     </object>
     <object name="PrintJob" cname="GtkPrintJob" parent="GObject">
       <field name="Priv" cname="priv" type="GtkPrintJobPrivate*" />
       <field name="PrintPages" cname="print_pages" type="GtkPrintPages" />
       <field name="PageRanges" cname="page_ranges" type="GtkPageRange*" />
-      <field name="NumPageRanges" cname="num_page_ranges" type="int" />
+      <field name="NumPageRanges" cname="num_page_ranges" type="gint" />
       <field name="PageSet" cname="page_set" type="GtkPageSet" />
-      <field name="NumCopies" cname="num_copies" type="int" />
-      <field name="Collate" cname="collate" type="gboolean" />
-      <field name="Reverse" cname="reverse" type="gboolean" />
-      <field name="Scale" cname="scale" type="double" />
-      <field name="RotateToOrientation" cname="rotate_to_orientation" type="gboolean" />
+      <field name="NumCopies" cname="num_copies" type="gint" />
+      <field name="Scale" cname="scale" type="gdouble" />
+      <field name="RotateToOrientation" cname="rotate_to_orientation" bits="1" type="guint" />
+      <field name="Collate" cname="collate" bits="1" type="guint" />
+      <field name="Reverse" cname="reverse" bits="1" type="guint" />
       <property name="Title" cname="title" type="gchar*" readable="true" writeable="true" construct-only="true" />
       <property name="Printer" cname="printer" type="GtkPrinter" readable="true" writeable="true" construct-only="true" />
       <property name="Settings" cname="settings" type="GtkPrintSettings" readable="true" writeable="true" construct-only="true" />
       <property name="PageSetup" cname="page-setup" type="GtkPageSetup" readable="true" writeable="true" construct-only="true" />
+      <property name="TrackPrintStatus" cname="track-print-status" type="gboolean" readable="true" writeable="true" />
       <signal name="StatusChanged" cname="status-changed" when="LAST">
         <return-type type="void" />
         <parameters>
@@ -10741,6 +10880,9 @@
       <method name="GetTitle" cname="gtk_print_job_get_title">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetTrackPrintStatus" cname="gtk_print_job_get_track_print_status">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetType" cname="gtk_print_job_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -10753,12 +10895,11 @@
         </parameters>
       </constructor>
       <method name="Send" cname="gtk_print_job_send">
-        <return-type type="gboolean" />
+        <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintJobCompleteFunc" name="callback" />
           <parameter type="gpointer" name="user_data" />
           <parameter type="GDestroyNotify" name="dnotify" />
-          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="SetSourceFile" cname="gtk_print_job_set_source_file">
@@ -10768,17 +10909,37 @@
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
+      <method name="SetTrackPrintStatus" cname="gtk_print_job_set_track_print_status">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="track_status" />
+        </parameters>
+      </method>
     </object>
     <object name="PrintOperation" cname="GtkPrintOperation" parent="GObject">
       <field name="Priv" cname="priv" type="GtkPrintOperationPrivate*" />
-      <signal name="BeginPrint" cname="begin_print" when="LAST">
+      <signal name="Done" cname="done" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperation*" name="operation" />
+          <parameter type="GtkPrintOperationResult" name="result" />
+        </parameters>
+      </signal>
+      <signal name="BeginPrint" cname="begin-print" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintOperation*" name="operation" />
           <parameter type="GtkPrintContext*" name="context" />
         </parameters>
       </signal>
-      <signal name="RequestPageSetup" cname="request_page_setup" when="LAST">
+      <signal name="Paginate" cname="paginate" when="LAST">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkPrintOperation*" name="operation" />
+          <parameter type="GtkPrintContext*" name="context" />
+        </parameters>
+      </signal>
+      <signal name="RequestPageSetup" cname="request-page-setup" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintOperation*" name="operation" />
@@ -10787,7 +10948,7 @@
           <parameter type="GtkPageSetup*" name="setup" />
         </parameters>
       </signal>
-      <signal name="DrawPage" cname="draw_page" when="LAST">
+      <signal name="DrawPage" cname="draw-page" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintOperation*" name="operation" />
@@ -10795,7 +10956,7 @@
           <parameter type="gint" name="page_nr" />
         </parameters>
       </signal>
-      <signal name="EndPrint" cname="end_print" when="LAST">
+      <signal name="EndPrint" cname="end-print" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPrintOperation*" name="operation" />
@@ -10808,19 +10969,56 @@
           <parameter type="GtkPrintOperation*" name="operation" />
         </parameters>
       </signal>
+      <signal name="CreateCustomWidget" cname="create-custom-widget" when="LAST">
+        <return-type type="GtkWidget*" />
+        <parameters>
+          <parameter type="GtkPrintOperation*" name="operation" />
+        </parameters>
+      </signal>
+      <signal name="CustomWidgetApply" cname="custom-widget-apply" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintOperation*" name="operation" />
+          <parameter type="GtkWidget*" name="widget" />
+        </parameters>
+      </signal>
+      <signal name="Preview" cname="preview" when="LAST">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GtkPrintOperation*" name="operation" />
+          <parameter type="GtkPrintOperationPreview*" name="preview" />
+          <parameter type="GtkPrintContext*" name="context" />
+          <parameter type="GtkWindow*" name="parent" />
+        </parameters>
+      </signal>
       <property name="DefaultPageSetup" cname="default-page-setup" type="GtkPageSetup" readable="true" writeable="true" />
       <property name="PrintSettings" cname="print-settings" type="GtkPrintSettings" readable="true" writeable="true" />
       <property name="JobName" cname="job-name" type="gchar*" readable="true" writeable="true" />
-      <property name="NumberOfPages" cname="number-of-pages" type="gint" readable="true" writeable="true" />
+      <property name="NPages" cname="n-pages" type="gint" readable="true" writeable="true" />
       <property name="CurrentPage" cname="current-page" type="gint" readable="true" writeable="true" />
       <property name="UseFullPage" cname="use-full-page" type="gboolean" readable="true" writeable="true" />
+      <property name="TrackPrintStatus" cname="track-print-status" type="gboolean" readable="true" writeable="true" />
       <property name="Unit" cname="unit" type="GtkUnit" readable="true" writeable="true" />
-      <property name="ShowDialog" cname="show-dialog" type="gboolean" readable="true" writeable="true" />
-      <property name="PdfTarget" cname="pdf-target" type="gchar*" readable="true" writeable="true" />
+      <property name="ShowProgress" cname="show-progress" type="gboolean" readable="true" writeable="true" />
+      <property name="AllowAsync" cname="allow-async" type="gboolean" readable="true" writeable="true" />
+      <property name="ExportFilename" cname="export-filename" type="gchar*" readable="true" writeable="true" />
       <property name="Status" cname="status" type="GtkPrintStatus" readable="true" />
       <property name="StatusString" cname="status-string" type="gchar*" readable="true" />
+      <property name="CustomTabLabel" cname="custom-tab-label" type="gchar*" readable="true" writeable="true" />
+      <implements>
+        <interface cname="GtkPrintOperationPreview" />
+      </implements>
+      <method name="Cancel" cname="gtk_print_operation_cancel">
+        <return-type type="void" />
+      </method>
       <method name="GetDefaultPageSetup" cname="gtk_print_operation_get_default_page_setup">
         <return-type type="GtkPageSetup*" />
+      </method>
+      <method name="GetError" cname="gtk_print_operation_get_error">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GError**" name="error" />
+        </parameters>
       </method>
       <method name="GetPrintSettings" cname="gtk_print_operation_get_print_settings">
         <return-type type="GtkPrintSettings*" />
@@ -10841,14 +11039,15 @@
       <method name="Run" cname="gtk_print_operation_run">
         <return-type type="GtkPrintOperationResult" />
         <parameters>
+          <parameter type="GtkPrintOperationAction" name="action" />
           <parameter type="GtkWindow*" name="parent" />
           <parameter type="GError**" name="error" />
         </parameters>
       </method>
-      <method name="RunAsync" cname="gtk_print_operation_run_async">
+      <method name="SetAllowAsync" cname="gtk_print_operation_set_allow_async">
         <return-type type="void" />
         <parameters>
-          <parameter type="GtkWindow*" name="parent" />
+          <parameter type="gboolean" name="allow_async" />
         </parameters>
       </method>
       <method name="SetCurrentPage" cname="gtk_print_operation_set_current_page">
@@ -10857,10 +11056,22 @@
           <parameter type="gint" name="current_page" />
         </parameters>
       </method>
+      <method name="SetCustomTabLabel" cname="gtk_print_operation_set_custom_tab_label">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="label" />
+        </parameters>
+      </method>
       <method name="SetDefaultPageSetup" cname="gtk_print_operation_set_default_page_setup">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkPageSetup*" name="default_page_setup" />
+        </parameters>
+      </method>
+      <method name="SetExportFilename" cname="gtk_print_operation_set_export_filename">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="filename" />
         </parameters>
       </method>
       <method name="SetJobName" cname="gtk_print_operation_set_job_name">
@@ -10869,16 +11080,10 @@
           <parameter type="const-gchar*" name="job_name" />
         </parameters>
       </method>
-      <method name="SetNrOfPages" cname="gtk_print_operation_set_nr_of_pages">
+      <method name="SetNPages" cname="gtk_print_operation_set_n_pages">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="n_pages" />
-        </parameters>
-      </method>
-      <method name="SetPdfTarget" cname="gtk_print_operation_set_pdf_target">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="const-gchar*" name="filename" />
         </parameters>
       </method>
       <method name="SetPrintSettings" cname="gtk_print_operation_set_print_settings">
@@ -10887,10 +11092,16 @@
           <parameter type="GtkPrintSettings*" name="print_settings" />
         </parameters>
       </method>
-      <method name="SetShowDialog" cname="gtk_print_operation_set_show_dialog">
+      <method name="SetShowProgress" cname="gtk_print_operation_set_show_progress">
         <return-type type="void" />
         <parameters>
-          <parameter type="gboolean" name="show_dialog" />
+          <parameter type="gboolean" name="show_progress" />
+        </parameters>
+      </method>
+      <method name="SetTrackPrintStatus" cname="gtk_print_operation_set_track_print_status">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="track_status" />
         </parameters>
       </method>
       <method name="SetUnit" cname="gtk_print_operation_set_unit">
@@ -10980,7 +11191,7 @@
       <method name="GetMediaType" cname="gtk_print_settings_get_media_type">
         <return-type type="const-gchar*" />
       </method>
-      <method name="GetNumCopies" cname="gtk_print_settings_get_num_copies">
+      <method name="GetNCopies" cname="gtk_print_settings_get_n_copies">
         <return-type type="gint" />
       </method>
       <method name="GetNumberUp" cname="gtk_print_settings_get_number_up">
@@ -11018,9 +11229,6 @@
       </method>
       <method name="GetPrintPages" cname="gtk_print_settings_get_print_pages">
         <return-type type="GtkPrintPages" />
-      </method>
-      <method name="GetPrintToFile" cname="gtk_print_settings_get_print_to_file">
-        <return-type type="gboolean" />
       </method>
       <method name="GetPrinter" cname="gtk_print_settings_get_printer">
         <return-type type="const-gchar*" />
@@ -11122,7 +11330,7 @@
           <parameter type="const-gchar*" name="media_type" />
         </parameters>
       </method>
-      <method name="SetNumCopies" cname="gtk_print_settings_set_num_copies">
+      <method name="SetNCopies" cname="gtk_print_settings_set_n_copies">
         <return-type type="void" />
         <parameters>
           <parameter type="gint" name="num_copies" />
@@ -11185,12 +11393,6 @@
           <parameter type="GtkPrintPages" name="pages" />
         </parameters>
       </method>
-      <method name="SetPrintToFile" cname="gtk_print_settings_set_print_to_file">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="gboolean" name="print_to_file" />
-        </parameters>
-      </method>
       <method name="SetPrinter" cname="gtk_print_settings_set_printer">
         <return-type type="void" />
         <parameters>
@@ -11240,6 +11442,13 @@
       <property name="CurrentPage" cname="current-page" type="gint" readable="true" writeable="true" />
       <property name="PrintSettings" cname="print-settings" type="GtkPrintSettings" readable="true" writeable="true" />
       <property name="SelectedPrinter" cname="selected-printer" type="GtkPrinter" readable="true" />
+      <method name="AddCustomTab" cname="gtk_print_unix_dialog_add_custom_tab">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkWidget*" name="child" />
+          <parameter type="GtkWidget*" name="tab_label" />
+        </parameters>
+      </method>
       <method name="GetCurrentPage" cname="gtk_print_unix_dialog_get_current_page">
         <return-type type="gint" />
       </method>
@@ -11267,6 +11476,12 @@
           <parameter type="gint" name="current_page" />
         </parameters>
       </method>
+      <method name="SetManualCapabilities" cname="gtk_print_unix_dialog_set_manual_capabilities">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrintCapabilities" name="capabilities" />
+        </parameters>
+      </method>
       <method name="SetPageSetup" cname="gtk_print_unix_dialog_set_page_setup">
         <return-type type="void" />
         <parameters>
@@ -11291,6 +11506,7 @@
       <field name="PulseFraction" cname="pulse_fraction" type="gdouble" />
       <field name="ActivityDir" cname="activity_dir" bits="1" type="guint" />
       <field name="Ellipsize" cname="ellipsize" bits="3" type="guint" />
+      <field name="Dirty" cname="dirty" bits="1" type="guint" />
       <property name="Adjustment" cname="adjustment" type="GtkAdjustment" readable="true" writeable="true" />
       <property name="Orientation" cname="orientation" type="GtkProgressBarOrientation" readable="true" writeable="true" />
       <property name="BarStyle" cname="bar-style" type="GtkProgressBarStyle" readable="true" writeable="true" />
@@ -11951,14 +12167,12 @@
         <parameters>
           <parameter type="const-gchar*" name="uri" />
           <parameter type="const-GtkRecentData*" name="recent_data" />
-          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="AddItem" cname="gtk_recent_manager_add_item">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-gchar*" name="uri" />
-          <parameter type="GError**" name="error" />
         </parameters>
       </method>
       <method name="ErrorQuark" cname="gtk_recent_manager_error_quark" shared="true">
@@ -12715,6 +12929,14 @@
       <method name="GetBlinking" cname="gtk_status_icon_get_blinking">
         <return-type type="gboolean" />
       </method>
+      <method name="GetGeometry" cname="gtk_status_icon_get_geometry">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="GdkScreen**" name="screen" />
+          <parameter type="GdkRectangle*" name="area" />
+          <parameter type="GtkOrientation*" name="orientation" />
+        </parameters>
+      </method>
       <method name="GetIconName" cname="gtk_status_icon_get_icon_name">
         <return-type type="const-gchar*" />
       </method>
@@ -13447,6 +13669,7 @@
       <property name="TagTable" cname="tag-table" type="GtkTextTagTable" readable="true" writeable="true" construct-only="true" />
       <property name="Text" cname="text" type="gchar*" readable="true" writeable="true" />
       <property name="HasSelection" cname="has-selection" type="gboolean" readable="true" />
+      <property name="CursorPosition" cname="cursor-position" type="gint" readable="true" />
       <property name="CopyTargetList" cname="copy-target-list" type="GtkTargetList" readable="true" />
       <property name="PasteTargetList" cname="paste-target-list" type="GtkTargetList" readable="true" />
       <signal name="InsertText" cname="insert_text" when="LAST">
@@ -15367,7 +15590,7 @@
         <return-type type="void" />
       </method>
       <method name="ConvertChildIterToIter" cname="gtk_tree_model_filter_convert_child_iter_to_iter">
-        <return-type type="void" />
+        <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTreeIter*" name="filter_iter" />
           <parameter type="GtkTreeIter*" name="child_iter" />
@@ -15818,6 +16041,9 @@
       <property name="HoverExpand" cname="hover-expand" type="gboolean" readable="true" writeable="true" />
       <property name="ShowExpanders" cname="show-expanders" type="gboolean" readable="true" writeable="true" />
       <property name="LevelIndentation" cname="level-indentation" type="gint" readable="true" writeable="true" />
+      <property name="RubberBanding" cname="rubber-banding" type="gboolean" readable="true" writeable="true" />
+      <property name="EnableGridLines" cname="enable-grid-lines" type="GtkTreeViewGridLines" readable="true" writeable="true" />
+      <property name="EnableTreeLines" cname="enable-tree-lines" type="gboolean" readable="true" writeable="true" />
       <signal name="SetScrollAdjustments" cname="set_scroll_adjustments" when="LAST">
         <return-type type="void" />
         <parameters>
@@ -15834,7 +16060,7 @@
           <parameter type="GtkTreeViewColumn*" name="column" />
         </parameters>
       </signal>
-      <signal name="TestExpandRow" cname="test_expand_row" when="LAST">
+      <signal name="TestExpandRow" cname="test-expand-row" when="LAST">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
@@ -15842,7 +16068,7 @@
           <parameter type="GtkTreePath*" name="path" />
         </parameters>
       </signal>
-      <signal name="TestCollapseRow" cname="test_collapse_row" when="LAST">
+      <signal name="TestCollapseRow" cname="test-collapse-row" when="LAST">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
@@ -15850,7 +16076,7 @@
           <parameter type="GtkTreePath*" name="path" />
         </parameters>
       </signal>
-      <signal name="RowExpanded" cname="row_expanded" when="LAST">
+      <signal name="RowExpanded" cname="row-expanded" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
@@ -15858,7 +16084,7 @@
           <parameter type="GtkTreePath*" name="path" />
         </parameters>
       </signal>
-      <signal name="RowCollapsed" cname="row_collapsed" when="LAST">
+      <signal name="RowCollapsed" cname="row-collapsed" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
@@ -15866,13 +16092,13 @@
           <parameter type="GtkTreePath*" name="path" />
         </parameters>
       </signal>
-      <signal name="ColumnsChanged" cname="columns_changed" when="LAST">
+      <signal name="ColumnsChanged" cname="columns-changed" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
         </parameters>
       </signal>
-      <signal name="CursorChanged" cname="cursor_changed" when="LAST">
+      <signal name="CursorChanged" cname="cursor-changed" when="LAST">
         <return-type type="void" />
         <parameters>
           <parameter type="GtkTreeView*" name="tree_view" />
@@ -16043,11 +16269,17 @@
       <method name="GetEnableSearch" cname="gtk_tree_view_get_enable_search">
         <return-type type="gboolean" />
       </method>
+      <method name="GetEnableTreeLines" cname="gtk_tree_view_get_enable_tree_lines">
+        <return-type type="gboolean" />
+      </method>
       <method name="GetExpanderColumn" cname="gtk_tree_view_get_expander_column">
         <return-type type="GtkTreeViewColumn*" />
       </method>
       <method name="GetFixedHeightMode" cname="gtk_tree_view_get_fixed_height_mode">
         <return-type type="gboolean" />
+      </method>
+      <method name="GetGridLines" cname="gtk_tree_view_get_grid_lines">
+        <return-type type="GtkTreeViewGridLines" />
       </method>
       <method name="GetHadjustment" cname="gtk_tree_view_get_hadjustment">
         <return-type type="GtkAdjustment*" />
@@ -16083,6 +16315,9 @@
       </method>
       <method name="GetRowSeparatorFunc" cname="gtk_tree_view_get_row_separator_func">
         <return-type type="GtkTreeViewRowSeparatorFunc" />
+      </method>
+      <method name="GetRubberBanding" cname="gtk_tree_view_get_rubber_banding">
+        <return-type type="gboolean" />
       </method>
       <method name="GetRulesHint" cname="gtk_tree_view_get_rules_hint">
         <return-type type="gboolean" />
@@ -16253,6 +16488,12 @@
           <parameter type="gboolean" name="enable_search" />
         </parameters>
       </method>
+      <method name="SetEnableTreeLines" cname="gtk_tree_view_set_enable_tree_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enabled" />
+        </parameters>
+      </method>
       <method name="SetExpanderColumn" cname="gtk_tree_view_set_expander_column">
         <return-type type="void" />
         <parameters>
@@ -16263,6 +16504,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="enable" />
+        </parameters>
+      </method>
+      <method name="SetGridLines" cname="gtk_tree_view_set_grid_lines">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkTreeViewGridLines" name="grid_lines" />
         </parameters>
       </method>
       <method name="SetHadjustment" cname="gtk_tree_view_set_hadjustment">
@@ -16313,6 +16560,12 @@
           <parameter type="GtkTreeViewRowSeparatorFunc" name="func" />
           <parameter type="gpointer" name="data" />
           <parameter type="GtkDestroyNotify" name="destroy" />
+        </parameters>
+      </method>
+      <method name="SetRubberBanding" cname="gtk_tree_view_set_rubber_banding">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="enable" />
         </parameters>
       </method>
       <method name="SetRulesHint" cname="gtk_tree_view_set_rules_hint">
@@ -17484,6 +17737,9 @@
           <parameter type="GtkWidget*" name="widget" />
         </parameters>
       </virtual_method>
+      <implements>
+        <interface cname="AtkImplementor" />
+      </implements>
       <method name="Activate" cname="gtk_widget_activate">
         <return-type type="gboolean" />
       </method>
@@ -18148,6 +18404,13 @@
         <return-type type="void" />
       </method>
     </object>
+    <object name="Win32EmbedWidget" cname="GtkWin32EmbedWidget" parent="GtkWindow">
+      <field name="ParentWindow" cname="parent_window" type="GdkWindow*" />
+      <field name="OldWindowProcedure" cname="old_window_procedure" type="gpointer" />
+      <method name="GetType" cname="gtk_win32_embed_widget_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </object>
     <object name="Window" cname="GtkWindow" parent="GtkBin">
       <field name="Title" cname="title" type="gchar*" />
       <field name="WmclassName" cname="wmclass_name" type="gchar*" />
@@ -18212,6 +18475,7 @@
       <property name="Decorated" cname="decorated" type="gboolean" readable="true" writeable="true" />
       <property name="Deletable" cname="deletable" type="gboolean" readable="true" writeable="true" />
       <property name="Gravity" cname="gravity" type="GdkGravity" readable="true" writeable="true" />
+      <property name="TransientFor" cname="transient-for" type="GtkWindow" readable="true" writeable="true" construct="true" />
       <signal name="SetFocus" cname="set_focus" when="LAST">
         <return-type type="void" />
         <parameters>
@@ -18928,15 +19192,6 @@
     </struct>
     <alias name="ClassInitFunc" cname="GtkClassInitFunc" type="GBaseInitFunc" />
     <alias name="EnumValue" cname="GtkEnumValue" type="GEnumValue" />
-    <struct name="FileChooserSettings" cname="GtkFileChooserSettings">
-      <field name="Object" cname="object" type="GObject" />
-      <field name="LocationMode" cname="location_mode" type="LocationMode" />
-      <field name="SettingsRead" cname="settings_read" bits="1" type="guint" />
-      <field name="ShowHidden" cname="show_hidden" bits="1" type="guint" />
-    </struct>
-    <struct name="FileChooserSettingsClass" cname="GtkFileChooserSettingsClass">
-      <field name="ParentClass" cname="parent_class" type="GObjectClass" />
-    </struct>
     <struct name="FileFilterInfo" cname="GtkFileFilterInfo">
       <field name="Contains" cname="contains" type="GtkFileFilterFlags" />
       <field name="Filename" cname="filename" type="const-gchar*" />
@@ -19302,6 +19557,30 @@
         </parameters>
       </method>
     </boxed>
+    <struct name="PrintWin32Devnames" cname="GtkPrintWin32Devnames">
+      <field name="Driver" cname="driver" type="char*" />
+      <field name="Device" cname="device" type="char*" />
+      <field name="Output" cname="output" type="char*" />
+      <field name="Flags" cname="flags" type="int" />
+      <method name="Free" cname="gtk_print_win32_devnames_free">
+        <return-type type="void" />
+      </method>
+      <method name="FromPrinterName" cname="gtk_print_win32_devnames_from_printer_name" shared="true">
+        <return-type type="HGLOBAL" />
+        <parameters>
+          <parameter type="const-char*" name="printer" />
+        </parameters>
+      </method>
+      <method name="FromWin32" cname="gtk_print_win32_devnames_from_win32" shared="true">
+        <return-type type="GtkPrintWin32Devnames*" />
+        <parameters>
+          <parameter type="HGLOBAL" name="global" />
+        </parameters>
+      </method>
+      <method name="ToWin32" cname="gtk_print_win32_devnames_to_win32">
+        <return-type type="HGLOBAL" />
+      </method>
+    </struct>
     <struct name="RadioActionEntry" cname="GtkRadioActionEntry">
       <field name="Name" cname="name" type="const-gchar*" />
       <field name="StockId" cname="stock_id" type="const-gchar*" />
@@ -19393,7 +19672,7 @@
           <parameter type="const-gchar*" name="app_name" />
           <parameter type="gchar**" name="app_exec" />
           <parameter type="guint*" name="count" />
-          <parameter type="time_t*" name="time" />
+          <parameter type="time_t*" name="time_" />
         </parameters>
       </method>
       <method name="GetApplications" cname="gtk_recent_info_get_applications">
@@ -20489,6 +20768,15 @@
       </method>
       <method name="DisableSetlocale" cname="gtk_disable_setlocale" shared="true">
         <return-type type="void" />
+      </method>
+      <method name="EnumeratePrinters" cname="gtk_enumerate_printers" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkPrinterFunc" name="func" />
+          <parameter type="gpointer" name="data" />
+          <parameter type="GDestroyNotify" name="destroy" />
+          <parameter type="gboolean" name="wait" />
+        </parameters>
       </method>
       <method name="EventsPending" cname="gtk_events_pending" shared="true">
         <return-type type="gboolean" />
@@ -22346,6 +22634,7 @@
       <static-string cname="GTK_STOCK_ORIENTATION_LANDSCAPE" name="OrientationLandscape" value="gtk-orientation-landscape" />
       <static-string cname="GTK_STOCK_ORIENTATION_PORTRAIT" name="OrientationPortrait" value="gtk-orientation-portrait" />
       <static-string cname="GTK_STOCK_ORIENTATION_REVERSE_LANDSCAPE" name="OrientationReverseLandscape" value="gtk-orientation-reverse-landscape" />
+      <static-string cname="GTK_STOCK_ORIENTATION_REVERSE_PORTRAIT" name="OrientationReversePortrait" value="gtk-orientation-reverse-portrait" />
       <static-string cname="GTK_STOCK_PASTE" name="Paste" value="gtk-paste" />
       <static-string cname="GTK_STOCK_PREFERENCES" name="Preferences" value="gtk-preferences" />
       <static-string cname="GTK_STOCK_PRINT" name="Print" value="gtk-print" />
