@@ -49,13 +49,13 @@ GTK_2_10_DOWNLOADS = \
 	ftp://ftp.gtk.org/pub/gtk/v2.11/pango-1.13.3.tar.bz2                                      	\
 	ftp://ftp.gtk.org/pub/gtk/v2.8/atk-1.10.3.tar.bz2                                        	\
 	ftp://ftp.gtk.org/pub/gtk/v2.10/gtk+-2.10.0.tar.bz2						\
-	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/gnome-vfs-2.14.1.tar.bz2		\
-	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnome-2.14.1.tar.bz2       	\
-	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnomecanvas-2.14.0.tar.bz2 	\
-	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.1/sources/libgnomeui-2.14.1.tar.bz2     	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/libgnomeprint-2.12.1.tar.bz2		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/libgnomeprintui-2.12.1.tar.bz2	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.1/sources/gnome-panel-2.14.1.tar.bz2
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/gnome-vfs-2.15.3.tar.bz2		\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnome-2.15.1.tar.bz2       	\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnomecanvas-2.14.0.tar.bz2 	\
+	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnomeui-2.15.2.tar.bz2     	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/libgnomeprint-2.12.1.tar.bz2		\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/libgnomeprintui-2.12.1.tar.bz2	\
+	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/gnome-panel-2.14.2.tar.bz2
 
 GNOME_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libglade-2.3.6.tar.bz2		\
