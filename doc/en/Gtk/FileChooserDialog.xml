@@ -7,40 +7,34 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A dialog box for choosing files.</summary>
+    <summary>
+      <see cref="T:Gtk.FileChooserDialog" /> is a dialog box suitable for use with "File/Open" or "File/Save as" commands. This widget works by putting a <see cref="T:Gtk.FileChooserWidget" /> inside a <see cref="T:Gtk.Dialog" />. It exposes the <see cref="T:Gtk.FileChooser" /> interface, so you can use all of the <see cref="T:Gtk.FileChooser" /> functions on the file chooser dialog as well as those for <see cref="T:Gtk.Dialog" />.</summary>
     <remarks>Similar to <see cref="T:Gtk.FileChooserWidget" /> but in a dialog.
 
-<para /><example>
-        <code lang="C#">
-static string Open (FileChooserAction action)
-{
-        string title = Catalog.GetString ("Open");
 
-        if (action == FileChooserAction.SelectFolder)
-                title = Catalog.GetString ("Select Folder");
+<para> Typical usage. In the simplest of cases, you can use the following code to select a file for opening: 
+<example>
+          <code lang="C#">
+public class MainWindow: Gtk.Window {
+	
+	protected virtual void OnBtnLoadFileClicked(object sender, System.EventArgs e)
+	{
+		Gtk.FileChooserDialog fc=
+		new Gtk.FileChooserDialog("Choose the file to open",
+		                            this,
+		                            FileChooserAction.Open,
+		                            "Cancel",ResponseType.Cancel,
+		                            "Open",ResponseType.Accept);
 
-        FileChooserDialog chooser = new FileChooserDialog (title,
-                                                           window,
-                                                           action);
-
-        chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
-        chooser.AddButton (Stock.Open, ResponseType.Ok);
-
-        chooser.SetUri (uri.ToString ());
-        int response = chooser.Run ();
-
-	string ret = null;
-
-        if ((ResponseType) response == ResponseType.Ok) {
-                ret = chooser.Uri;
-        }
-
-        chooser.Destroy ();
-	return ret;
-}
-
-  </code>
-      </example></remarks>
+		if (fc.Run() == (int)ResponseType.Accept) 
+		{
+			System.IO.FileStream file=System.IO.File.OpenRead(fc.Filename);
+			file.Close();
+		}
+		//Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
+		fc.Destroy();
+	}
+  </code></example></para></remarks>
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>
@@ -1001,10 +995,10 @@ static string Open (FileChooserAction action)
       <Docs>
         <summary>Creates a file chooser dialog.</summary>
         <param name="title">a title <see cref="T:System.String" /></param>
-        <param name="parent">a parent <see cref="T:Gtk.Window" /> for the dialog, or <see langword="null" />.</param>
+        <param name="parent">a parent <see cref="T:Gtk.Window" /> for the dialog, or <see langword="null" />. See <see cref="P:Gtk.Window.TransientFor" />.</param>
         <param name="action">an action, for example save or open.</param>
-        <param name="button_data">a list of button text/response pairs for buttons to be added to the dialog, if desired.</param>
-        <remarks />
+        <param name="button_data">a list of button text/response pairs for buttons to be added to the dialog, if desired. The pair format is <see cref="T:System.String" />, <see cref="T:Gtk.ResponseType" /> (see an example in overview section of <see cref="T:Gtk.FileChooserDialog" />)</param>
+        <remarks>By default, a <see cref="T:Gtk.FileChooserDialog" /> comes with no buttons, so you'd better provide at least the most basics one (Save/Cancel or Open/Cancel) or your user won't be able to do anything apart from closing the dialog ( closing the dialog returns <see cref="T:ResponseType" />.None )</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
