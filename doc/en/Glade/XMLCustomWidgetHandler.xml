@@ -14,7 +14,36 @@
     <param name="int1">To be added.</param>
     <param name="int2">To be added.</param>
     <summary>Event handler.</summary>
-    <remarks>this delegate is used for custom methods to call when a custom widget is found.</remarks>
+    <remarks>this delegate is used for custom methods to call when a custom widget is found.
+
+<code lang="C#">
+public class View{
+    
+	private Glade.XML gui; //Our gui made with glade
+    
+   	public View(){
+		// You have to made the handler before creating the view
+        	Glade.XML.CustomHandler = CreationCustomWidget;
+		// creation of the view
+        	gui=new Glade.XML("/home/alex/glade/projet.glade","View","");
+		// the handlers of the view are defined in this instance
+        	gui.Autoconnect(this);
+    	}
+
+    	// Basic handler
+	public void  OnDeleteWindow(object o,DeleteEventArgs arg){  Application.Quit }
+
+       	// func_name: the name of the function (written in the field "creation function name" in glade)
+	// so we can distinguish between the custom widget we want to create
+	// name, string1, etc parameters set in glade
+	public Widget CreationCustomWidget(Glade.XML xml, string func_name, string name, string string1, string string2, int int1, int int2){
+		Button b = new Button("Hello Button");
+		b.Show();
+		return b;
+	}
+}
+
+</code></remarks>
     <returns>To be added.</returns>
   </Docs>
   <Base>
