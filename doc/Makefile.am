@@ -17,11 +17,7 @@ ASSEMBLIES = 				\
 
 UPDATE_ASSEMBLIES = $(addprefix -assembly:lib/, $(ASSEMBLIES))
 
-if ENABLE_ALL_OPTIONAL
 UPDATER = $(MONODOCER) -path:en $(UPDATE_ASSEMBLIES)
-else
-UPDATER = echo "All optional assemblies must be built to use the updater." && exit 1
-endif
 
 if ENABLE_MONODOC
 SOURCESDIR=$(prefix)/lib/monodoc/sources

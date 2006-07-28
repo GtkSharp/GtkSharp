@@ -1,4 +1,4 @@
-SUBDIRS = sources generator parser glib pango atk gdk gtk glade art gnomevfs gnome gtkhtml gconf rsvg vte gtkdotnet sample doc
+SUBDIRS = sources generator parser glib pango atk gdk gtk glade gtkdotnet sample doc
 
 EXTRA_DIST = 			\
 	gtk-sharp.snk		\
@@ -10,8 +10,6 @@ EXTRA_DIST = 			\
 	HACKING			\
 	README			\
 	README.generator
-
-#DISTCLEANFILES = AssemblyInfo.cs
 
 configure.in: bootstrap.status configure.in.in 
 	$(SHELL) $<

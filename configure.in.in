@@ -173,73 +173,10 @@ PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_REQUIRED_VERSION)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
-## Versions of dependencies
-GNOME_REQUIRED_VERSION=@GNOME_REQUIRED_VERSION@
-ART_REQUIRED_VERSION=2.3.16
-
-PKG_CHECK_MODULES(LIBART, libart-2.0 >= $ART_REQUIRED_VERSION, enable_libart=yes, enable_libart=no)
-AC_SUBST(LIBART_CFLAGS)
-AC_SUBST(LIBART_LIBS)
-
-PKG_CHECK_MODULES(GNOMEVFS, gnome-vfs-2.0 >= $GNOME_REQUIRED_VERSION, enable_gnomevfs=yes, enable_gnomevfs=no)
-AC_SUBST(GNOMEVFS_CFLAGS)
-AC_SUBST(GNOMEVFS_LIBS)
-
-GNOMECANVAS_REQUIRED_VERSION=@GNOMECANVAS_REQUIRED_VERSION@
-GNOMEPANEL_REQUIRED_VERSION=@GNOMEPANEL_REQUIRED_VERSION@
-GNOMEPRINT_REQUIRED_VERSION=@GNOMEPRINT_REQUIRED_VERSION@
-
-PKG_CHECK_MODULES(GNOME, libgnomecanvas-2.0 >= $GNOMECANVAS_REQUIRED_VERSION libgnomeui-2.0 >= $GNOME_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOMEPRINT_REQUIRED_VERSION gmodule-2.0 >= $GTK_REQUIRED_VERSION libpanelapplet-2.0 >= $GNOMEPANEL_REQUIRED_VERSION, enable_gnome=yes, enable_gnome=no)
-AC_SUBST(GNOME_CFLAGS)
-AC_SUBST(GNOME_LIBS)
-
 GLADE_REQUIRED_VERSION=2.3.6
 PKG_CHECK_MODULES(GLADE, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=yes, enable_glade=no)
 AC_SUBST(GLADE_CFLAGS)
 AC_SUBST(GLADE_LIBS)
-
-RSVG_REQUIRED_VERSION=2.0.1
-PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
-
-if test "x$enable_gnome" = "xyes"; then
-GTKHTML_REQUIRED_VERSION=3.8.0
-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.8 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
-if test "x$enable_gtkhtml" = "xyes"; then
-GTKHTML_VERSION=3.8
-GTKHTML_SOVERSION=15
-else
-GTKHTML_REQUIRED_VERSION=3.6.0
-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.6 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
-if test "x$enable_gtkhtml" = "xyes"; then
-GTKHTML_VERSION=3.6
-GTKHTML_SOVERSION=18
-else
-GTKHTML_REQUIRED_VERSION=3.2.0
-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
-if test "x$enable_gtkhtml" = "xyes"; then
-GTKHTML_VERSION=3.1
-GTKHTML_SOVERSION=11
-else
-GTKHTML_REQUIRED_VERSION=3.0.10
-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.0 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
-if test "x$enable_gtkhtml" = "xyes"; then
-GTKHTML_VERSION=3.0
-GTKHTML_SOVERSION=4
-else
-GTKHTML_VERSION=
-GTKHTML_SOVERSION=
-fi
-fi
-fi
-fi
-AC_SUBST(GTKHTML_VERSION)
-AC_SUBST(GTKHTML_SOVERSION)
-else
-enable_gtkhtml=no
-fi
-
-VTE_REQUIRED_VERSION=0.11.10
-PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
 
 AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
 AC_PATH_PROG(MONODOCER, monodocer, no)
@@ -253,17 +190,10 @@ fi
 AC_SUBST(MDASSEMBLER)
 AC_SUBST(MONODOCER)
 
-AM_CONDITIONAL(ENABLE_LIBART, test "x$enable_libart" = "xyes")
-AM_CONDITIONAL(ENABLE_GNOMEVFS, test "x$enable_gnomevfs" = "xyes")
-AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
-AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
-AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
-AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
 AM_CONDITIONAL(ENABLE_MONOGETOPTIONS, test "x$has_mono" = "xtrue")
-AM_CONDITIONAL(ENABLE_ALL_OPTIONAL, test "x$enable_libart" = "xyes" -a "x$enable_gnomevfs" = "xyes" -a "x$enable_gnome" = "xyes" -a "x$enable_glade" = "xyes" -a "x$enable_rsvg" = "xyes" -a "x$enable_gtkhtml" = "xyes" -a "x$enable_vte" = "xyes" -a "x$enable_dotnet" = "xyes" -a "x$enable_monodoc" = "xyes")
 
 AC_SUBST(CFLAGS)
 
@@ -287,9 +217,6 @@ pango/pango-sharp.dll.config
 pango/glue/Makefile
 atk/Makefile
 atk/atk-sharp.dll.config
-art/Makefile
-art/art-sharp.dll.config
-art/art-sharp-2.0.pc
 gdk/Makefile
 gdk/gdk-sharp.dll.config
 gdk/glue/Makefile
@@ -301,41 +228,13 @@ glade/Makefile
 glade/glade-sharp.dll.config
 glade/glade-sharp-2.0.pc
 glade/glue/Makefile
-gnome/Makefile
-gnome/gnome-sharp.dll.config
-gnome/gnome-sharp-2.0.pc
-gnome/glue/Makefile
-gnomevfs/Makefile
-gnomevfs/gnome-vfs-sharp.dll.config
-gnomevfs/gnome-vfs-sharp-2.0.pc
-gconf/Makefile
-gconf/doc/Makefile
-gconf/GConf/Makefile
-gconf/GConf/gconf-sharp.dll.config
-gconf/GConf/gconf-sharp-2.0.pc
-gconf/GConf.PropertyEditors/Makefile
-gconf/tools/Makefile
-gconf/tools/gconfsharp2-schemagen
-gtkhtml/Makefile
-gtkhtml/gtkhtml-sharp.dll.config
-gtkhtml/gtkhtml-sharp-2.0.pc
-rsvg/Makefile
-rsvg/rsvg-sharp.dll.config
-rsvg/rsvg-sharp-2.0.pc
-vte/Makefile
-vte/glue/Makefile
-vte/vte-sharp.dll.config
-vte/vte-sharp-2.0.pc
 gtkdotnet/Makefile
 gtkdotnet/gtk-dotnet.dll.config
 gtkdotnet/gtk-dotnet-2.0.pc
 doc/Makefile
 sample/GtkDemo/Makefile
 sample/Makefile
-sample/gconf/Makefile
-sample/gnomevfs/Makefile
 sample/pixmaps/Makefile
-sample/rsvg/Makefile
 sample/test/Makefile
 sample/valtest/Makefile
 sample/valtest/valtest.exe.config
@@ -352,13 +251,7 @@ echo "   * $CS compiler: $CSC $CSFLAGS"
 echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
-echo "      * art-sharp.dll: $enable_libart"
-echo "      * gnomevfs-sharp.dll: $enable_gnomevfs"
-echo "      * gnome-sharp.dll: $enable_gnome"
 echo "      * glade-sharp.dll: $enable_glade"
-echo "      * rsvg-sharp.dll: $enable_rsvg "
-echo "      * gtkhtml-sharp.dll: $enable_gtkhtml "
-echo "      * vte-sharp.dll: $enable_vte "
 echo "      * gtk-dotnet.dll: $enable_dotnet "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
