@@ -33,7 +33,7 @@ class PrintSample
 		Application.Run ();
 	}
 	
-	void MyPrint (PrintContext gpc)
+	void MyPrint (Gnome.PrintContext gpc)
 	{
 		gpc.BeginPage ("demo");
 		gpc.MoveTo (1, 700);
@@ -43,8 +43,8 @@ class PrintSample
 	
 	void OnPrintClicked (object o, EventArgs args)
 	{
-		PrintJob pj = new PrintJob (PrintConfig.Default ());
-		PrintDialog dialog = new PrintDialog (pj, "Print Test", 0);
+		Gnome.PrintJob pj = new Gnome.PrintJob (Gnome.PrintConfig.Default ());
+		Gnome.PrintDialog dialog = new Gnome.PrintDialog (pj, "Print Test", 0);
 		int response = dialog.Run ();
 		Console.WriteLine ("response: " + response);
 		
@@ -55,7 +55,7 @@ class PrintSample
 			return;
 		}
 
-		PrintContext ctx = pj.Context;
+		Gnome.PrintContext ctx = pj.Context;
 		MyPrint (ctx); 
 
 		pj.Close ();

@@ -53,8 +53,8 @@ GTK_2_10_DOWNLOADS = \
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnome-2.15.1.tar.bz2       	\
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnomecanvas-2.14.0.tar.bz2 	\
 	http://ftp.gnome.org/pub/GNOME/platform/2.15/2.15.4/sources/libgnomeui-2.15.2.tar.bz2     	\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/libgnomeprint-2.12.1.tar.bz2		\
-	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/libgnomeprintui-2.12.1.tar.bz2	\
+	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/libgnomeprint-2.10.0.tar.bz2		\
+	http://ftp.gnome.org/pub/GNOME/platform/2.10/2.10.0/sources/libgnomeprintui-2.10.0.1.tar.bz2	\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.15/2.15.4/sources/gnome-panel-2.14.2.tar.bz2
 
 GNOME_DOWNLOADS = \

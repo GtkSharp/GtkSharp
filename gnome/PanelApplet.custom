@@ -9,6 +9,7 @@ public void SetupMenu (string xml, BonoboUIVerb[] items)
 	IntPtr native = GLib.Marshaller.StringToPtrGStrdup (xml);
 	panel_applet_setup_menu (Handle, native, nulled_items, IntPtr.Zero);
 	GLib.Marshaller.Free (native);
+	PersistentData ["setup_menu_verbs"] = items;
 }
 
 public abstract void Creation ();

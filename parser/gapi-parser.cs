@@ -158,7 +158,9 @@ namespace GtkSharp.Parsing {
 			
 				XmlDocument final = new XmlDocument ();
 				final.Load (prefile);
-				final.Save (outfile);
+				XmlTextWriter writer = new XmlTextWriter (outfile, null);
+				writer.Formatting = Formatting.Indented;
+				final.Save (writer);
 				File.Delete (prefile);
 			}
 

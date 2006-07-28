@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<api>
-  <!--
+<api
+  ><!--
 
         This file was automatically generated.
         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
 
--->
-  <namespace name="Gnome" library="gnome-2">
+--><namespace name="Gnome" library="gnome-2">
     <enum name="FileDomain" cname="GnomeFileDomain" gtype="gnome_file_domain_get_type" type="enum">
       <member cname="GNOME_FILE_DOMAIN_UNKNOWN" name="Unknown" />
       <member cname="GNOME_FILE_DOMAIN_LIBDIR" name="Libdir" />
@@ -39,6 +38,7 @@
       <member cname="GNOME_URL_ERROR_NO_DEFAULT" name="NoDefault" />
       <member cname="GNOME_URL_ERROR_NOT_SUPPORTED" name="NotSupported" />
       <member cname="GNOME_URL_ERROR_VFS" name="Vfs" />
+      <member cname="GNOME_URL_ERROR_CANCELLED" name="Cancelled" />
     </enum>
     <callback name="ModuleClassInitHook" cname="GnomeModuleClassInitHook">
       <return-type type="void" />
@@ -46,6 +46,9 @@
         <parameter type="GnomeProgramClass*" name="klass" />
         <parameter type="const-GnomeModuleInfo*" name="mod_info" />
       </parameters>
+    </callback>
+    <callback name="ModuleGetGOptionGroupFunc" cname="GnomeModuleGetGOptionGroupFunc">
+      <return-type type="GOptionGroup*" />
     </callback>
     <callback name="ModuleHook" cname="GnomeModuleHook">
       <return-type type="void" />
@@ -73,6 +76,7 @@
       <property name="PoptTable" cname="popt-table" type="gpointer" writeable="true" construct-only="true" />
       <property name="PoptFlags" cname="popt-flags" type="gint" writeable="true" construct-only="true" />
       <property name="PoptContext" cname="popt-context" type="gpointer" readable="true" />
+      <property name="GoptionContext" cname="goption-context" type="gpointer" readable="true" writeable="true" construct-only="true" />
       <property name="HumanReadableName" cname="human-readable-name" type="gchar*" readable="true" writeable="true" construct-only="true" />
       <property name="GnomePath" cname="gnome-path" type="gchar*" readable="true" writeable="true" construct-only="true" />
       <property name="AppId" cname="app-id" type="gchar*" readable="true" />
@@ -201,11 +205,12 @@
       <field name="InstanceInit" cname="instance_init" type="GnomeModuleHook" />
       <field name="PreArgsParse" cname="pre_args_parse" type="GnomeModuleHook" />
       <field name="PostArgsParse" cname="post_args_parse" type="GnomeModuleHook" />
+      <field name="Options" cname="_options" type="struct-poptOption*" />
       <field name="Options" cname="options" type="struct-poptOption*" />
       <field name="InitPass" cname="init_pass" type="GnomeModuleInitHook" />
       <field name="ClassInit" cname="class_init" type="GnomeModuleClassInitHook" />
       <field name="OptPrefix" cname="opt_prefix" type="const-char*" />
-      <field name="Expansion1" cname="expansion1" type="gpointer" />
+      <field name="GetGoptionGroupFunc" cname="get_goption_group_func" type="GnomeModuleGetGOptionGroupFunc" />
       <method name="GetType" cname="gnome_module_info_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -718,9 +723,7 @@
       <method name="PrivateDirGet" cname="gnome_user_private_dir_get" shared="true">
         <return-type type="const-char*" />
       </method>
-    </class>
-  </namespace>
-  <namespace name="Gnome" library="gnomecanvas-2">
+    </class></namespace><namespace name="Gnome" library="gnomecanvas-2">
     <object name="Canvas" cname="GnomeCanvas" parent="GtkLayout">
       <field name="Root" cname="root" type="GnomeCanvasItem*" />
       <field name="RedrawArea" cname="redraw_area" type="ArtUta*" />
@@ -1018,7 +1021,7 @@
       </method>
     </object>
     <object name="CanvasBpath" cname="GnomeCanvasBpath" parent="GnomeCanvasShape">
-      <property name="Bpath" cname="bpath" type="gpointer" readable="true" writeable="true" />
+      <property name="Bpath" cname="bpath" type="GnomeCanvasPathDef" readable="true" writeable="true" />
       <method name="GetType" cname="gnome_canvas_bpath_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1479,7 +1482,7 @@
       <property name="FillStipple" cname="fill_stipple" type="GdkDrawable" readable="true" writeable="true" />
       <property name="OutlineStipple" cname="outline_stipple" type="GdkDrawable" readable="true" writeable="true" />
       <property name="WidthPixels" cname="width_pixels" type="guint" readable="true" writeable="true" />
-      <property name="WidthUnits" cname="width_units" type="gdouble" writeable="true" />
+      <property name="WidthUnits" cname="width_units" type="gdouble" readable="true" writeable="true" />
       <property name="CapStyle" cname="cap_style" type="GdkCapStyle" readable="true" writeable="true" />
       <property name="JoinStyle" cname="join_style" type="GdkJoinStyle" readable="true" writeable="true" />
       <property name="Wind" cname="wind" type="guint" readable="true" writeable="true" />
@@ -1563,8 +1566,8 @@
       <property name="FillColorGdk" cname="fill_color_gdk" type="GdkColor" readable="true" writeable="true" />
       <property name="FillColorRgba" cname="fill_color_rgba" type="guint" readable="true" writeable="true" />
       <property name="FillStipple" cname="fill_stipple" type="GdkDrawable" readable="true" writeable="true" />
-      <property name="TextWidth" cname="text_width" type="gdouble" readable="true" writeable="true" />
-      <property name="TextHeight" cname="text_height" type="gdouble" readable="true" writeable="true" />
+      <property name="TextWidth" cname="text_width" type="gdouble" readable="true" />
+      <property name="TextHeight" cname="text_height" type="gdouble" readable="true" />
       <method name="GetType" cname="gnome_canvas_text_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1606,7 +1609,7 @@
         <return-type type="void" />
       </method>
     </struct>
-    <struct name="CanvasPathDef" cname="GnomeCanvasPathDef" opaque="true">
+    <boxed name="CanvasPathDef" cname="GnomeCanvasPathDef" opaque="true">
       <method name="AllClosed" cname="gnome_canvas_path_def_all_closed">
         <return-type type="gboolean" />
       </method>
@@ -1678,6 +1681,9 @@
       <method name="FirstBpath" cname="gnome_canvas_path_def_first_bpath">
         <return-type type="ArtBpath*" />
       </method>
+      <method name="GetType" cname="gnome_canvas_path_def_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
       <method name="HasCurrentpoint" cname="gnome_canvas_path_def_has_currentpoint">
         <return-type type="gboolean" />
       </method>
@@ -1747,7 +1753,7 @@
       <method name="Unref" cname="gnome_canvas_path_def_unref">
         <return-type type="void" />
       </method>
-    </struct>
+    </boxed>
     <boxed name="CanvasPoints" cname="GnomeCanvasPoints" opaque="true">
       <field name="Coords" cname="coords" type="double*" access="public" writeable="true" />
       <field name="NumPoints" cname="num_points" type="int" access="public" writeable="true" />
@@ -1767,9 +1773,7 @@
         <return-type type="GnomeCanvasPoints*" />
       </method>
     </boxed>
-    <struct name="CanvasShapePriv" cname="GnomeCanvasShapePriv" opaque="true" />
-  </namespace>
-  <namespace name="Gnome" library="gnomeui-2">
+    <struct name="CanvasShapePriv" cname="GnomeCanvasShapePriv" opaque="true" /></namespace><namespace name="Gnome" library="gnomeui-2">
     <enum name="ClientFlags" cname="GnomeClientFlags" gtype="gnome_client_flags_get_type" type="flags">
       <member cname="GNOME_CLIENT_IS_CONNECTED" name="IsConnected" value="1 &lt;&lt; 0" />
       <member cname="GNOME_CLIENT_RESTARTED" name="Restarted" value="1 &lt;&lt; 1" />
@@ -1846,7 +1850,7 @@
       <member cname="GNOME_SAVE_LOCAL" name="Local" />
       <member cname="GNOME_SAVE_BOTH" name="Both" />
     </enum>
-    <enum name="ThemeFileParseError" cname="GnomeThemeFileParseError" type="enum">
+    <enum name="ThemeFileParseError" cname="GnomeThemeFileParseError" deprecated="1" type="enum">
       <member cname="GNOME_THEME_FILE_PARSE_ERROR_INVALID_SYNTAX" name="Syntax" />
       <member cname="GNOME_THEME_FILE_PARSE_ERROR_INVALID_ESCAPES" name="Escapes" />
       <member cname="GNOME_THEME_FILE_PARSE_ERROR_INVALID_CHARS" name="Chars" />
@@ -4418,7 +4422,7 @@
     </struct>
     <struct name="PasswordDialogDetails" cname="GnomePasswordDialogDetails" opaque="true" />
     <struct name="ThemeFile" cname="GnomeThemeFile" opaque="true">
-      <method name="ForeachKey" cname="gnome_theme_file_foreach_key">
+      <method name="ForeachKey" cname="gnome_theme_file_foreach_key" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="const-char*" name="section" />
@@ -4427,17 +4431,17 @@
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="ForeachSection" cname="gnome_theme_file_foreach_section">
+      <method name="ForeachSection" cname="gnome_theme_file_foreach_section" deprecated="1">
         <return-type type="void" />
         <parameters>
           <parameter type="GnomeThemeFileSectionFunc" name="func" />
           <parameter type="gpointer" name="user_data" />
         </parameters>
       </method>
-      <method name="Free" cname="gnome_theme_file_free">
+      <method name="Free" cname="gnome_theme_file_free" deprecated="1">
         <return-type type="void" />
       </method>
-      <method name="GetInteger" cname="gnome_theme_file_get_integer">
+      <method name="GetInteger" cname="gnome_theme_file_get_integer" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char*" name="section" />
@@ -4445,7 +4449,7 @@
           <parameter type="int*" name="val" />
         </parameters>
       </method>
-      <method name="GetLocaleString" cname="gnome_theme_file_get_locale_string">
+      <method name="GetLocaleString" cname="gnome_theme_file_get_locale_string" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char*" name="section" />
@@ -4453,7 +4457,7 @@
           <parameter type="char**" name="val" />
         </parameters>
       </method>
-      <method name="GetRaw" cname="gnome_theme_file_get_raw">
+      <method name="GetRaw" cname="gnome_theme_file_get_raw" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char*" name="section" />
@@ -4462,7 +4466,7 @@
           <parameter type="char**" name="val" />
         </parameters>
       </method>
-      <method name="GetString" cname="gnome_theme_file_get_string">
+      <method name="GetString" cname="gnome_theme_file_get_string" deprecated="1">
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-char*" name="section" />
@@ -4470,16 +4474,16 @@
           <parameter type="char**" name="val" />
         </parameters>
       </method>
-      <constructor cname="gnome_theme_file_new_from_string">
+      <constructor cname="gnome_theme_file_new_from_string" deprecated="1">
         <parameters>
           <parameter type="char*" name="data" />
           <parameter type="GError**" name="error" />
         </parameters>
       </constructor>
-      <method name="ParseErrorQuark" cname="gnome_theme_file_parse_error_quark" shared="true">
+      <method name="ParseErrorQuark" cname="gnome_theme_file_parse_error_quark" deprecated="1" shared="true">
         <return-type type="GQuark" />
       </method>
-      <method name="ToString" cname="gnome_theme_file_to_string">
+      <method name="ToString" cname="gnome_theme_file_to_string" deprecated="1">
         <return-type type="char*" />
       </method>
     </struct>
@@ -4569,6 +4573,15 @@
           <parameter type="GnomeGdkPixbufLoadCallback" name="load_callback" />
           <parameter type="GnomeGdkPixbufDoneCallback" name="done_callback" />
           <parameter type="gpointer" name="callback_data" />
+        </parameters>
+      </method>
+      <method name="PixbufNewFromUriAtScale" cname="gnome_gdk_pixbuf_new_from_uri_at_scale" shared="true">
+        <return-type type="GdkPixbuf*" />
+        <parameters>
+          <parameter type="const-char*" name="uri" />
+          <parameter type="gint" name="width" />
+          <parameter type="gint" name="height" />
+          <parameter type="gboolean" name="preserve_aspect_ratio" />
         </parameters>
       </method>
       <method name="PixbufNewFromUriCancel" cname="gnome_gdk_pixbuf_new_from_uri_cancel" shared="true">
@@ -4833,9 +4846,7 @@
       <static-string cname="GNOME_STOCK_TRASH" name="Trash" value="gnome-stock-trash" />
       <static-string cname="GNOME_STOCK_TRASH_FULL" name="TrashFull" value="gnome-stock-trash-full" />
       <static-string cname="GNOME_STOCK_VOLUME" name="Volume" value="gnome-stock-volume" />
-    </object>
-  </namespace>
-  <namespace name="Gnome" library="gnomeprint-2-2">
+    </object></namespace><namespace name="Gnome" library="gnomeprint-2-2">
     <enum name="FontWeight" cname="GnomeFontWeight" type="enum">
       <member cname="GNOME_FONT_LIGHTEST" name="Lightest" value="100" />
       <member cname="GNOME_FONT_EXTRA_LIGHT" name="ExtraLight" value="100" />
@@ -6395,9 +6406,7 @@
           <parameter type="gboolean" name="append" />
         </parameters>
       </method>
-    </class>
-  </namespace>
-  <namespace name="Gnome" library="gnomeprintui-2-2">
+    </class></namespace><namespace name="Gnome" library="gnomeprintui-2-2">
     <enum name="PaperSelectorFlags" cname="GnomePaperSelectorFlags" gtype="gnome_paper_selector_flags_get_type" type="flags">
       <member cname="GNOME_PAPER_SELECTOR_MARGINS" name="Margins" value="1 &lt;&lt; 0" />
       <member cname="GNOME_PAPER_SELECTOR_FEED_ORIENTATION" name="FeedOrientation" value="1 &lt;&lt; 1" />
@@ -6671,9 +6680,7 @@
           <parameter type="const-GnomePrintUnit*" name="unit" />
         </parameters>
       </method>
-    </object>
-  </namespace>
-  <namespace name="Gnome" library="panel-applet-2">
+    </object></namespace><namespace name="Gnome" library="panel-applet-2">
     <enum name="PanelAppletBackgroundType" cname="PanelAppletBackgroundType" type="enum">
       <member cname="PANEL_NO_BACKGROUND" name="NoBackground" />
       <member cname="PANEL_COLOR_BACKGROUND" name="ColorBackground" />
@@ -6902,6 +6909,12 @@
           <parameter type="guint32" name="timestamp" />
         </parameters>
       </method>
+      <method name="SetBackgroundWidget" cname="panel_applet_set_background_widget">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GtkWidget*" name="widget" />
+        </parameters>
+      </method>
       <method name="SetFlags" cname="panel_applet_set_flags">
         <return-type type="void" />
         <parameters>
@@ -6958,6 +6971,4 @@
         </parameters>
       </method>
     </object>
-    <alias name="PanelAppletOrient" cname="PanelAppletOrient" type="GNOME_Vertigo_PanelOrient" />
-  </namespace>
-</api>
+    <alias name="PanelAppletOrient" cname="PanelAppletOrient" type="GNOME_Vertigo_PanelOrient" /></namespace></api>
