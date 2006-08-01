@@ -292,7 +292,8 @@ namespace Mono.AssemblyCompare
 				string name = n.Attributes ["name"].Value;
 				if (CheckIfAdd (name, n)) {
 					string key = GetNodeKey (name, n);
-					keys.Add (key, name);
+					//keys.Add (key, name);
+					keys [key] = name;
 					LoadExtraData (key, n);
 				}
 			}
@@ -628,6 +629,7 @@ namespace Mono.AssemblyCompare
 		string layout;
 		XMLAttributes attributes;
 		XMLInterfaces interfaces;
+		XMLGenericTypeConstraints genericConstraints;
 		XMLFields fields;
 		XMLConstructors constructors;
 		XMLProperties properties;
@@ -678,6 +680,12 @@ namespace Mono.AssemblyCompare
 			if (child != null && child.Name == "interfaces") {
 				interfaces = new XMLInterfaces ();
 				interfaces.LoadData (child);
+				child = child.NextSibling;
+			}
+
+			if (child != null && child.Name == "generic-type-constraints") {
+				genericConstraints = new XMLGenericTypeConstraints ();
+				genericConstraints.LoadData (child);
 				child = child.NextSibling;
 			}
 
@@ -773,6 +781,14 @@ namespace Mono.AssemblyCompare
 
 				interfaces.CompareTo (doc, parent, oclass.interfaces);
 				counters.AddPartialToPartial (interfaces.Counters);
+			}
+
+			if (genericConstraints != null || oclass.genericConstraints != null) {
+				if (genericConstraints == null)
+					genericConstraints = new XMLGenericTypeConstraints ();
+
+				genericConstraints.CompareTo (doc, parent, oclass.genericConstraints);
+				counters.AddPartialToPartial (genericConstraints.Counters);
 			}
 
 			if (fields != null || oclass.fields != null) {
@@ -1077,15 +1093,45 @@ namespace Mono.AssemblyCompare
 
 		public override string GetNodeKey (string name, XmlNode node)
 		{
-			string target = string.Empty;
-			if (node.Attributes["target"] != null)
-				target = node.Attributes["target"].Value;
-			int i = 0;
-			while (keys.ContainsKey (name)) {
-				name = String.Format ("{0} [{1}]:{1}", name, target, i++);
+			string key = null;
+
+			// if multiple attributes with the same name (type) exist, then we 
+			// cannot be sure which attributes correspond, so we must use the
+			// name of the attribute (type) and the name/value of its properties
+			// as key
+
+			XmlNodeList attributes = node.ParentNode.SelectNodes("attribute[@name='" + name + "']");
+			if (attributes.Count > 1) {
+				ArrayList keyParts = new ArrayList ();
+
+				XmlNodeList properties = node.SelectNodes ("properties/property");
+				foreach (XmlNode property in properties) {
+					XmlAttributeCollection attrs = property.Attributes;
+					if (attrs["value"] != null) {
+						keyParts.Add (attrs["name"].Value + "=" + attrs["value"].Value);
+					} else {
+						keyParts.Add (attrs["name"].Value + "=");
+					}
+				}
+
+				// sort properties by name, as order of properties in XML is 
+				// undefined
+				keyParts.Sort ();
+
+				// insert name (type) of attribute
+				keyParts.Insert (0, name);
+
+				StringBuilder sb = new StringBuilder ();
+				foreach (string value in keyParts) {
+					sb.Append (value);
+					sb.Append (';');
+				}
+				key = sb.ToString ();
+			} else {
+				key = name;
 			}
 
-			return name;
+			return key;
 		}
 
 		protected override void LoadExtraData(string name, XmlNode node)
@@ -1107,7 +1153,6 @@ namespace Mono.AssemblyCompare
 				properties[name] = p;
 			}
 		}
-
 
 		public override string GroupName {
 			get { return "attributes"; }
@@ -1134,6 +1179,47 @@ namespace Mono.AssemblyCompare
 
 		public override string Name {
 			get { return "interface"; }
+		}
+	}
+
+	abstract class XMLGenericGroup : XMLNameGroup
+	{
+		string attributes;
+
+		protected override void LoadExtraData (string name, XmlNode node)
+		{
+			attributes = ((XmlElement) node).GetAttribute ("generic-attribute");
+		}
+
+		protected override void CompareToInner (string name, XmlNode parent, XMLNameGroup other)
+		{
+			base.CompareToInner (name, parent, other);
+
+			XMLGenericGroup g = (XMLGenericGroup) other;
+			if (attributes != g.attributes)
+				AddWarning (parent, "Incorrect generic attributes: '{0}' != '{1}'", attributes, g.attributes);
+		}
+	}
+
+	class XMLGenericTypeConstraints : XMLGenericGroup
+	{
+		public override string GroupName {
+			get { return "generic-type-constraints"; }
+		}
+
+		public override string Name {
+			get { return "generic-type-constraint"; }
+		}
+	}
+
+	class XMLGenericMethodConstraints : XMLGenericGroup
+	{
+		public override string GroupName {
+			get { return "generic-method-constraints"; }
+		}
+
+		public override string Name {
+			get { return "generic-method-constraint"; }
 		}
 	}
 
@@ -1194,9 +1280,6 @@ namespace Mono.AssemblyCompare
 				}
 			}
 
-			if (!CheckAttributes)
-				return;
-
 			XMLMember member = (XMLMember) other;
 			string acc = access [name] as string;
 			if (acc == null)
@@ -1218,12 +1301,6 @@ namespace Mono.AssemblyCompare
 		protected virtual string ConvertToString (int att)
 		{
 			return null;
-		}
-
-		protected virtual bool CheckAttributes {
-			get {
-				return true;
-			}
 		}
 	}
 	
@@ -1281,14 +1358,6 @@ namespace Mono.AssemblyCompare
 		{
 			FieldAttributes fa = (FieldAttributes) att;
 			return fa.ToString ();
-		}
-
-		protected override bool CheckAttributes {
-			get {
-				// FIXME: set this to true once bugs #60086 and 
-				// #60090 are fixed
-				return false;
-			}
 		}
 
 		public override string GroupName {
@@ -1513,6 +1582,17 @@ namespace Mono.AssemblyCompare
 	{
 		Hashtable returnTypes;
 		Hashtable parameters;
+		Hashtable genericConstraints;
+		Hashtable signatureFlags;
+
+		[Flags]
+		enum SignatureFlags
+		{
+			None = 0,
+			Abstract = 1,
+			Virtual = 2,
+			Static = 4
+		}
 
 		protected override void LoadExtraData (string name, XmlNode node)
 		{
@@ -1524,6 +1604,19 @@ namespace Mono.AssemblyCompare
 				returnTypes [name] = xatt.Value;
 			}
 
+			SignatureFlags flags = SignatureFlags.None;
+			if (((XmlElement) node).GetAttribute ("abstract") == "true")
+				flags |= SignatureFlags.Abstract;
+			if (((XmlElement) node).GetAttribute ("static") == "true")
+				flags |= SignatureFlags.Static;
+			if (((XmlElement) node).GetAttribute ("virtual") == "true")
+				flags |= SignatureFlags.Virtual;
+			if (flags != SignatureFlags.None) {
+				if (signatureFlags == null)
+					signatureFlags = new Hashtable ();
+				signatureFlags [name] = flags;
+			}
+
 			XmlNode parametersNode = node.SelectSingleNode ("parameters");
 			if (parametersNode != null) {
 				if (parameters == null)
@@ -1533,6 +1626,15 @@ namespace Mono.AssemblyCompare
 				parms.LoadData (parametersNode);
 
 				parameters[name] = parms;
+			}
+
+			XmlNode genericNode = node.SelectSingleNode ("generic-method-constraints");
+			if (genericNode != null) {
+				if (genericConstraints == null)
+					genericConstraints = new Hashtable ();
+				XMLGenericMethodConstraints csts = new XMLGenericMethodConstraints ();
+				csts.LoadData (genericNode);
+				genericConstraints [name] = csts;
 			}
 
 			base.LoadExtraData (name, node);
@@ -1548,6 +1650,25 @@ namespace Mono.AssemblyCompare
 			try {
 				base.CompareToInner(name, parent, other);
 				XMLMethods methods = (XMLMethods) other;
+
+				SignatureFlags flags = signatureFlags != null &&
+					signatureFlags.ContainsKey (name) ?
+					(SignatureFlags) signatureFlags [name] :
+					SignatureFlags.None;
+				SignatureFlags oflags = methods.signatureFlags != null &&
+					methods.signatureFlags.ContainsKey (name) ?
+					(SignatureFlags) methods.signatureFlags [name] :
+					SignatureFlags.None;
+
+				if (flags!= oflags) {
+					if (flags == SignatureFlags.None)
+						AddWarning (parent, String.Format ("should not be {0}", oflags));
+					else if (oflags == SignatureFlags.None)
+						AddWarning (parent, String.Format ("should be {0}", flags));
+					else
+						AddWarning (parent, String.Format ("{0} and should be {1}", oflags, flags));
+				}
+
 				if (returnTypes != null) {
 					string rtype = returnTypes[name] as string;
 					string ortype = null;
@@ -1577,6 +1698,12 @@ namespace Mono.AssemblyCompare
 		protected override string ConvertToString (int att)
 		{
 			MethodAttributes ma = (MethodAttributes) att;
+			// ignore ReservedMasks
+			ma &= ~ MethodAttributes.ReservedMask;
+			ma &= ~ MethodAttributes.VtableLayoutMask;
+			if ((ma & MethodAttributes.FamORAssem) != 0)
+				ma = (ma & ~ MethodAttributes.FamORAssem) | MethodAttributes.Family;
+
 			// ignore the HasSecurity attribute for now
 			if ((ma & MethodAttributes.HasSecurity) != 0)
 				ma = (MethodAttributes) (att - (int) MethodAttributes.HasSecurity);
@@ -1590,14 +1717,6 @@ namespace Mono.AssemblyCompare
 				ma = (MethodAttributes) (att - (int) MethodAttributes.PinvokeImpl);
 
 			return ma.ToString ();
-		}
-
-		protected override  bool CheckAttributes {
-			get {
-				// FIXME: set this to true once bugs #60086 and 
-				// #60090 are fixed
-				return false;
-			}
 		}
 
 		public override string GroupName {

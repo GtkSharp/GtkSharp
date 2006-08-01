@@ -265,7 +265,7 @@ namespace Mono.AssemblyInfo
 			AddAttribute (nclass, "type", classType);
 
 			if (type.BaseType != null)
-				AddAttribute (nclass, "base", type.BaseType.FullName);
+				AddAttribute (nclass, "base", type.BaseType.ToString ());
 
 			if (type.IsSealed)
 				AddAttribute (nclass, "sealed", "true");
@@ -297,10 +297,34 @@ namespace Mono.AssemblyInfo
 						continue;
 					}
 					XmlNode iface = document.CreateElement ("interface", null);
-					AddAttribute (iface, "name", t.FullName);
+					AddAttribute (iface, "name", t.ToString ());
 					ifaces.AppendChild (iface);
 				}
 			}
+
+#if NET_2_0
+			// Generic constraints
+			Type [] gargs = type.GetGenericArguments ();
+			XmlElement ngeneric = (gargs.Length == 0) ? null :
+				document.CreateElement ("generic-type-constraints");
+			foreach (Type garg in gargs) {
+				Type [] csts = garg.GetGenericParameterConstraints ();
+				if (csts.Length == 0 || csts [0] == typeof (object))
+					continue;
+				XmlElement el = document.CreateElement ("generic-type-constraint");
+				el.SetAttribute ("name", garg.ToString ());
+				el.SetAttribute ("generic-attribute",
+					garg.GenericParameterAttributes.ToString ());
+				ngeneric.AppendChild (el);
+				foreach (Type ct in csts) {
+					XmlElement cel = document.CreateElement ("type");
+					cel.AppendChild (document.CreateTextNode (ct.FullName));
+					el.AppendChild (cel);
+				}
+			}
+			if (ngeneric != null && ngeneric.FirstChild != null)
+				nclass.AppendChild (ngeneric);
+#endif
 
 			ArrayList members = new ArrayList ();
 
@@ -310,7 +334,7 @@ namespace Mono.AssemblyInfo
 				FieldData fd = new FieldData (document, nclass, fields);
 				// Special case for enum fields
 				if (classType == "enum") {
-					string etype = fields [0].GetType ().FullName;
+					string etype = fields [0].GetType ().ToString ();
 					AddAttribute (nclass, "enumtype", etype);
 				}
 				members.Add (fd);
@@ -541,7 +565,7 @@ namespace Mono.AssemblyInfo
 		{
 			base.AddExtraData (p, member);
 			FieldInfo field = (FieldInfo) member;
-			AddAttribute (p, "fieldtype", field.FieldType.FullName);
+			AddAttribute (p, "fieldtype", field.FieldType.ToString ());
 
 			if (field.IsLiteral) {
 				object value = field.GetValue (null);
@@ -586,7 +610,8 @@ namespace Mono.AssemblyInfo
 		{
 			base.AddExtraData (p, member);
 			PropertyInfo prop = (PropertyInfo) member;
-			AddAttribute (p, "ptype", prop.PropertyType.FullName);
+			Type t = prop.PropertyType;
+			AddAttribute (p, "ptype", prop.PropertyType.ToString ());
 			MethodInfo _get = prop.GetGetMethod (true);
 			MethodInfo _set = prop.GetSetMethod (true);
 			bool haveGet = (_get != null && TypeData.MustDocumentMethod(_get));
@@ -608,14 +633,14 @@ namespace Mono.AssemblyInfo
 			AddAttribute (p, "params", parms);
 
 			MethodData data = new MethodData (document, p, methods);
-			data.NoMemberAttributes = true;
+			//data.NoMemberAttributes = true;
 			data.DoOutput ();
 		}
 
 		protected override string GetMemberAttributes (MemberInfo member)
 		{
 			PropertyInfo prop = (PropertyInfo) member;
-			return ((int) prop.Attributes).ToString (CultureInfo.InvariantCulture);
+			return ((int) prop.Attributes & (0xFFFFFFFF ^ (int) PropertyAttributes.ReservedMask)).ToString (CultureInfo.InvariantCulture);
 		}
 
 		public override string ParentTag {
@@ -650,7 +675,7 @@ namespace Mono.AssemblyInfo
 		{
 			base.AddExtraData (p, member);
 			EventInfo evt = (EventInfo) member;
-			AddAttribute (p, "eventtype", evt.EventHandlerType.FullName);
+			AddAttribute (p, "eventtype", evt.EventHandlerType.ToString ());
 		}
 
 		public override string ParentTag {
@@ -676,13 +701,47 @@ namespace Mono.AssemblyInfo
 			MethodBase method = (MethodBase) member;
 			string name = method.Name;
 			string parms = Parameters.GetSignature (method.GetParameters ());
+#if NET_2_0
+			MethodInfo mi = method as MethodInfo;
+			Type [] genArgs = mi == null ? Type.EmptyTypes :
+				mi.GetGenericArguments ();
+			if (genArgs.Length > 0) {
+				string [] genArgNames = new string [genArgs.Length];
+				for (int i = 0; i < genArgs.Length; i++) {
+					genArgNames [i] = genArgs [i].Name;
+					string genArgCsts = String.Empty;
+					Type [] gcs = genArgs [i].GetGenericParameterConstraints ();
+					if (gcs.Length > 0) {
+						string [] gcNames = new string [gcs.Length];
+						for (int g = 0; g < gcs.Length; g++)
+							gcNames [g] = gcs [g].FullName;
+						genArgCsts = String.Concat (
+							"(",
+							string.Join (", ", gcNames),
+							") ",
+							genArgNames [i]);
+					}
+					else
+						genArgCsts = genArgNames [i];
+					if ((genArgs [i].GenericParameterAttributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0)
+						genArgCsts = "class " + genArgCsts;
+					else if ((genArgs [i].GenericParameterAttributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0)
+						genArgCsts = "struct " + genArgCsts;
+					genArgNames [i] = genArgCsts;
+				}
+				return String.Format ("{0}<{2}>({1})",
+					name,
+					parms,
+					string.Join (",", genArgNames));
+			}
+#endif
 			return String.Format ("{0}({1})", name, parms);
 		}
 
 		protected override string GetMemberAttributes (MemberInfo member)
 		{
 			MethodBase method = (MethodBase) member;
-			return ((int) method.Attributes).ToString (CultureInfo.InvariantCulture);
+			return ((int)( method.Attributes & ~MethodAttributes.ReservedMask)).ToString (CultureInfo.InvariantCulture);
 		}
 
 		protected override void AddExtraData (XmlNode p, MemberInfo member)
@@ -693,14 +752,50 @@ namespace Mono.AssemblyInfo
 				((MethodBase) member).GetParameters ());
 			parms.DoOutput ();
 
+			if (!(member is MethodBase))
+				return;
+
+			MethodBase mbase = (MethodBase) member;
+
+			if (mbase.IsAbstract)
+				AddAttribute (p, "abstract", "true");
+			if (mbase.IsVirtual)
+				AddAttribute (p, "virtual", "true");
+			if (mbase.IsStatic)
+				AddAttribute (p, "static", "true");
+
 			if (!(member is MethodInfo))
 				return;
 
 			MethodInfo method = (MethodInfo) member;
-			AddAttribute (p, "returntype", method.ReturnType.FullName);
+			AddAttribute (p, "returntype", method.ReturnType.ToString ());
 
 			AttributeData.OutputAttributes (document, p,
 				method.ReturnTypeCustomAttributes.GetCustomAttributes (false));
+#if NET_2_0
+			// Generic constraints
+			Type [] gargs = method.GetGenericArguments ();
+			XmlElement ngeneric = (gargs.Length == 0) ? null :
+				document.CreateElement ("generic-method-constraints");
+			foreach (Type garg in gargs) {
+				Type [] csts = garg.GetGenericParameterConstraints ();
+				if (csts.Length == 0 || csts [0] == typeof (object))
+					continue;
+				XmlElement el = document.CreateElement ("generic-method-constraint");
+				el.SetAttribute ("name", garg.ToString ());
+				el.SetAttribute ("generic-attribute",
+					garg.GenericParameterAttributes.ToString ());
+				ngeneric.AppendChild (el);
+				foreach (Type ct in csts) {
+					XmlElement cel = document.CreateElement ("type");
+					cel.AppendChild (document.CreateTextNode (ct.FullName));
+					el.AppendChild (cel);
+				}
+			}
+			if (ngeneric != null && ngeneric.FirstChild != null)
+				p.AppendChild (ngeneric);
+#endif
+
 		}
 
 		public override bool NoMemberAttributes {
@@ -762,7 +857,7 @@ namespace Mono.AssemblyInfo
 				}
 
 				Type t = parameter.ParameterType;
-				AddAttribute (paramNode, "type", t.FullName);
+				AddAttribute (paramNode, "type", t.ToString ());
 
 				if (parameter.IsOptional) {
 					AddAttribute (paramNode, "optional", "true");
@@ -781,18 +876,11 @@ namespace Mono.AssemblyInfo
 	class AttributeData : BaseData
 	{
 		object [] atts;
-		string target;
 
-		AttributeData (XmlDocument doc, XmlNode parent, object[] attributes, string target)
+		AttributeData (XmlDocument doc, XmlNode parent, object[] attributes)
 			: base (doc, parent)
 		{
 			atts = attributes;
-			this.target = target;
-		}
-
-		AttributeData (XmlDocument doc, XmlNode parent, object [] attributes)
-			: this (doc, parent, attributes, null)
-		{
 		}
 
 		public override void DoOutput ()
@@ -822,7 +910,7 @@ namespace Mono.AssemblyInfo
 					continue;
 
 				XmlNode node = document.CreateElement ("attribute");
-				AddAttribute (node, "name", t.FullName);
+				AddAttribute (node, "name", t.ToString ());
 
 				XmlNode properties = null;
 				foreach (PropertyInfo pi in TypeData.GetProperties (t)) {
@@ -855,23 +943,13 @@ namespace Mono.AssemblyInfo
 					}
 				}
 
-				if (target != null) {
-					AddAttribute (node, "target", target);
-				}
-
 				natts.AppendChild (node);
 			}
 		}
 
 		public static void OutputAttributes (XmlDocument doc, XmlNode parent, object[] attributes)
 		{
-			AttributeData ad = new AttributeData (doc, parent, attributes, null);
-			ad.DoOutput ();
-		}
-
-		public static void OutputAttributes (XmlDocument doc, XmlNode parent, object [] attributes, string target)
-		{
-			AttributeData ad = new AttributeData (doc, parent, attributes, target);
+			AttributeData ad = new AttributeData (doc, parent, attributes);
 			ad.DoOutput ();
 		}
 
@@ -903,7 +981,7 @@ namespace Mono.AssemblyInfo
 				else
 					modifier = "";
 
-				string type_name = info.ParameterType.ToString ();
+				string type_name = info.ParameterType.ToString ().Replace ('<', '[').Replace ('>', ']');
 				sb.AppendFormat ("{0}{1}, ", modifier, type_name);
 			}
 
