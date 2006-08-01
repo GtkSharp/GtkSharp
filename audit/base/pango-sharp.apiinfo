@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="pango-sharp" version="1.0.0.0">
+  <assembly name="pango-sharp" version="2.8.0.0">
     <attributes>
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
@@ -17,6 +17,13 @@
       <namespace name="Pango">
         <classes>
           <class name="Alignment" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.AlignmentGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -34,7 +41,22 @@
               <field name="Zero" attrib="22" fieldtype="Pango.Analysis" />
             </fields>
             <properties>
-              <property name="font" attrib="1536" ptype="Pango.Font" params="">
+              <property name="ExtraAttrs" attrib="0" ptype="Pango.Attribute[]" params="">
+                <methods>
+                  <method name="get_ExtraAttrs()" returntype="Pango.Attribute[]">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="font" attrib="0" ptype="Pango.Font" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Font property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_font()" returntype="Pango.Font">
                     <parameters />
@@ -46,7 +68,27 @@
                   </method>
                 </methods>
               </property>
-              <property name="lang_engine" attrib="1536" ptype="Pango.EngineLang" params="">
+              <property name="Font" attrib="0" ptype="Pango.Font" params="">
+                <methods>
+                  <method name="get_Font()" returntype="Pango.Font">
+                    <parameters />
+                  </method>
+                  <method name="set_Font(Pango.Font)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Font" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="lang_engine" attrib="0" ptype="Pango.EngineLang" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by LangEngine property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_lang_engine()" returntype="Pango.EngineLang">
                     <parameters />
@@ -58,7 +100,15 @@
                   </method>
                 </methods>
               </property>
-              <property name="language" attrib="1536" ptype="Pango.Language" params="">
+              <property name="language" attrib="0" ptype="Pango.Language" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Language property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_language()" returntype="Pango.Language">
                     <parameters />
@@ -70,12 +120,56 @@
                   </method>
                 </methods>
               </property>
-              <property name="shape_engine" attrib="1536" ptype="Pango.EngineShape" params="">
+              <property name="LangEngine" attrib="0" ptype="Pango.EngineLang" params="">
+                <methods>
+                  <method name="get_LangEngine()" returntype="Pango.EngineLang">
+                    <parameters />
+                  </method>
+                  <method name="set_LangEngine(Pango.EngineLang)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.EngineLang" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Language" attrib="0" ptype="Pango.Language" params="">
+                <methods>
+                  <method name="get_Language()" returntype="Pango.Language">
+                    <parameters />
+                  </method>
+                  <method name="set_Language(Pango.Language)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Language" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="shape_engine" attrib="0" ptype="Pango.EngineShape" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by ShapeEngine property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_shape_engine()" returntype="Pango.EngineShape">
                     <parameters />
                   </method>
                   <method name="set_shape_engine(Pango.EngineShape)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.EngineShape" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="ShapeEngine" attrib="0" ptype="Pango.EngineShape" params="">
+                <methods>
+                  <method name="get_ShapeEngine()" returntype="Pango.EngineShape">
+                    <parameters />
+                  </method>
+                  <method name="set_ShapeEngine(Pango.EngineShape)" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="Pango.EngineShape" />
                     </parameters>
@@ -91,110 +185,108 @@
               </method>
             </methods>
           </class>
-          <class name="Attr" type="class" base="System.Object" charset="Ansi" layout="Auto">
+          <class name="AttrBackground" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
             <constructors>
-              <constructor name=".ctor()" attrib="6278">
-                <parameters />
+              <constructor name=".ctor(Pango.Color)" attrib="6278">
+                <parameters>
+                  <parameter name="color" position="0" attrib="0" type="Pango.Color" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt16, System.UInt16, System.UInt16)" attrib="6278">
+                <parameters>
+                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
+                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
+                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Color" attrib="0" ptype="Pango.Color" params="">
+                <methods>
+                  <method name="get_Color()" returntype="Pango.Color">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrDataCopyFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="6278">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
               </constructor>
             </constructors>
             <methods>
-              <method name="BackgroundNew(System.UInt16, System.UInt16, System.UInt16)" attrib="150" returntype="Pango.Attribute">
+              <method name="BeginInvoke(System.AsyncCallback, System.Object)" attrib="454" returntype="System.IAsyncResult">
                 <parameters>
-                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
-                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
-                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
+                  <parameter name="callback" position="0" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="1" attrib="0" type="System.Object" />
                 </parameters>
               </method>
-              <method name="FamilyNew(System.String)" attrib="150" returntype="Pango.Attribute">
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" returntype="System.IntPtr">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke()" attrib="454" returntype="System.IntPtr">
+                <parameters />
+              </method>
+            </methods>
+          </class>
+          <class name="AttrFallback" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Boolean)" attrib="6278">
+                <parameters>
+                  <parameter name="fallback" position="0" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Fallback" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_Fallback()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrFamily" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.String)" attrib="6278">
                 <parameters>
                   <parameter name="family" position="0" attrib="0" type="System.String" />
                 </parameters>
-              </method>
-              <method name="ForegroundNew(System.UInt16, System.UInt16, System.UInt16)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
-                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
-                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
-                </parameters>
-              </method>
-              <method name="RiseNew(System.Int32)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="rise" position="0" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="ScaleNew(System.Double)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="scale_factor" position="0" attrib="0" type="System.Double" />
-                </parameters>
-              </method>
-              <method name="SizeNew(System.Int32)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="size" position="0" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="StretchNew(Pango.Stretch)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="stretch" position="0" attrib="0" type="Pango.Stretch" />
-                </parameters>
-              </method>
-              <method name="StrikethroughNew(System.Boolean)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="strikethrough" position="0" attrib="0" type="System.Boolean" />
-                </parameters>
-              </method>
-              <method name="StyleNew(Pango.Style)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="style" position="0" attrib="0" type="Pango.Style" />
-                </parameters>
-              </method>
-              <method name="TypeRegister(System.String)" attrib="150" returntype="Pango.AttrType">
-                <parameters>
-                  <parameter name="name" position="0" attrib="0" type="System.String" />
-                </parameters>
-              </method>
-              <method name="UnderlineNew(Pango.Underline)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="underline" position="0" attrib="0" type="Pango.Underline" />
-                </parameters>
-              </method>
-              <method name="VariantNew(Pango.Variant)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="variant" position="0" attrib="0" type="Pango.Variant" />
-                </parameters>
-              </method>
-              <method name="WeightNew(Pango.Weight)" attrib="150" returntype="Pango.Attribute">
-                <parameters>
-                  <parameter name="weight" position="0" attrib="0" type="Pango.Weight" />
-                </parameters>
-              </method>
-            </methods>
-          </class>
-          <class name="AttrClass" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Type" attrib="6" fieldtype="Pango.AttrType" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrClass" />
-            </fields>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrClass">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
-            </methods>
-          </class>
-          <class name="AttrColor" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Color" attrib="6" fieldtype="Pango.Color" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrColor" />
-            </fields>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrColor">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
-            </methods>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Family" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_Family()" returntype="System.String">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="AttrFilterFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
             <interfaces>
@@ -222,67 +314,132 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Pango.Attribute)" attrib="198" returntype="System.Boolean">
+              <method name="Invoke(Pango.Attribute)" attrib="454" returntype="System.Boolean">
                 <parameters>
                   <parameter name="attribute" position="0" attrib="0" type="Pango.Attribute" />
                 </parameters>
               </method>
             </methods>
           </class>
-          <class name="AttrFloat" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Value" attrib="6" fieldtype="System.Double" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrFloat" />
-            </fields>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrFloat">
+          <class name="AttrFontDesc" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.FontDescription)" attrib="6278">
                 <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="font_desc" position="0" attrib="0" type="Pango.FontDescription" />
                 </parameters>
-              </method>
-            </methods>
-          </class>
-          <class name="AttrFontDesc" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrFontDesc" />
-            </fields>
+              </constructor>
+            </constructors>
             <properties>
-              <property name="desc" attrib="1536" ptype="Pango.FontDescription" params="">
+              <property name="Desc" attrib="0" ptype="Pango.FontDescription" params="">
                 <methods>
-                  <method name="get_desc()" returntype="Pango.FontDescription">
+                  <method name="get_Desc()" returntype="Pango.FontDescription">
                     <parameters />
                   </method>
-                  <method name="set_desc(Pango.FontDescription)" returntype="System.Void">
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrForeground" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Color)" attrib="6278">
+                <parameters>
+                  <parameter name="color" position="0" attrib="0" type="Pango.Color" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt16, System.UInt16, System.UInt16)" attrib="6278">
+                <parameters>
+                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
+                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
+                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Color" attrib="0" ptype="Pango.Color" params="">
+                <methods>
+                  <method name="get_Color()" returntype="Pango.Color">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="Attribute" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <properties>
+              <property name="EndIndex" attrib="0" ptype="System.UInt32" params="">
+                <methods>
+                  <method name="get_EndIndex()" returntype="System.UInt32">
+                    <parameters />
+                  </method>
+                  <method name="set_EndIndex(System.UInt32)" returntype="System.Void">
                     <parameters>
-                      <parameter name="value" position="0" attrib="0" type="Pango.FontDescription" />
+                      <parameter name="value" position="0" attrib="0" type="System.UInt32" />
                     </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_Handle()" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="StartIndex" attrib="0" ptype="System.UInt32" params="">
+                <methods>
+                  <method name="get_StartIndex()" returntype="System.UInt32">
+                    <parameters />
+                  </method>
+                  <method name="set_StartIndex(System.UInt32)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.UInt32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Type" attrib="0" ptype="Pango.AttrType" params="">
+                <methods>
+                  <method name="get_Type()" returntype="Pango.AttrType">
+                    <parameters />
                   </method>
                 </methods>
               </property>
             </properties>
             <methods>
-              <method name="New(Pango.FontDescription)" attrib="150" returntype="Pango.AttrFontDesc">
+              <method name="Copy()" attrib="134" returntype="Pango.Attribute">
+                <parameters />
+              </method>
+              <method name="Dispose()" attrib="486" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="Equal(Pango.Attribute)" attrib="134" returntype="System.Boolean">
                 <parameters>
-                  <parameter name="desc" position="0" attrib="0" type="Pango.FontDescription" />
+                  <parameter name="attr2" position="0" attrib="0" type="Pango.Attribute" />
                 </parameters>
               </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrFontDesc">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
+              <method name="Finalize()" attrib="196" returntype="System.Void">
+                <parameters />
               </method>
-            </methods>
-          </class>
-          <class name="AttrInt" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Value" attrib="6" fieldtype="System.Int32" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrInt" />
-            </fields>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrInt">
+              <method name="GetAttribute(System.IntPtr)" attrib="150" returntype="Pango.Attribute">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
@@ -292,6 +449,7 @@
           <class name="AttrIterator" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -301,7 +459,7 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Attrs" attrib="1536" ptype="Pango.Attribute[]" params="">
+              <property name="Attrs" attrib="0" ptype="Pango.Attribute[]" params="">
                 <methods>
                   <method name="get_Attrs()" returntype="Pango.Attribute[]">
                     <parameters />
@@ -314,7 +472,20 @@
                 <parameters />
               </method>
               <method name="Destroy()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.AttrIterator is now freed automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
               <method name="Get(Pango.AttrType)" attrib="134" returntype="Pango.Attribute">
                 <parameters>
@@ -339,41 +510,54 @@
               </method>
             </methods>
           </class>
-          <class name="AttrLanguage" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrLanguage" />
-            </fields>
+          <class name="AttrLanguage" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Language)" attrib="6278">
+                <parameters>
+                  <parameter name="language" position="0" attrib="0" type="Pango.Language" />
+                </parameters>
+              </constructor>
+            </constructors>
             <properties>
-              <property name="value" attrib="1536" ptype="Pango.Language" params="">
+              <property name="Language" attrib="0" ptype="Pango.Language" params="">
                 <methods>
-                  <method name="get_value()" returntype="Pango.Language">
+                  <method name="get_Language()" returntype="Pango.Language">
                     <parameters />
-                  </method>
-                  <method name="set_value(Pango.Language)" returntype="System.Void">
-                    <parameters>
-                      <parameter name="value" position="0" attrib="0" type="Pango.Language" />
-                    </parameters>
                   </method>
                 </methods>
               </property>
             </properties>
-            <methods>
-              <method name="New(Pango.Language)" attrib="150" returntype="Pango.AttrLanguage">
+          </class>
+          <class name="AttrLetterSpacing" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Int32)" attrib="6278">
                 <parameters>
-                  <parameter name="language" position="0" attrib="0" type="Pango.Language" />
+                  <parameter name="letter_spacing" position="0" attrib="0" type="System.Int32" />
                 </parameters>
-              </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrLanguage">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
-            </methods>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="LetterSpacing" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_LetterSpacing()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="AttrList" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor()" attrib="6278">
@@ -386,14 +570,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Iterator" attrib="1536" ptype="Pango.AttrIterator" params="">
+              <property name="Iterator" attrib="0" ptype="Pango.AttrIterator" params="">
                 <methods>
                   <method name="get_Iterator()" returntype="Pango.AttrIterator">
                     <parameters />
@@ -425,7 +609,20 @@
                   <parameter name="attr" position="0" attrib="0" type="Pango.Attribute" />
                 </parameters>
               </method>
-              <method name="Ref()" attrib="134" returntype="System.Void">
+              <method name="Ref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="Ref()" attrib="134" returntype="Pango.AttrList">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.AttrList is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="Splice(Pango.AttrList, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
@@ -436,103 +633,358 @@
                 </parameters>
               </method>
               <method name="Unref()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.AttrList is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Unref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
             </methods>
           </class>
-          <class name="AttrShape" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="InkRect" attrib="6" fieldtype="Pango.Rectangle" />
-              <field name="LogicalRect" attrib="6" fieldtype="Pango.Rectangle" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrShape" />
-            </fields>
-            <methods>
-              <method name="New(Pango.Rectangle, Pango.Rectangle)" attrib="150" returntype="Pango.AttrShape">
+          <class name="AttrRise" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Int32)" attrib="6278">
+                <parameters>
+                  <parameter name="rise" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Rise" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Rise()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrScale" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Double)" attrib="6278">
+                <parameters>
+                  <parameter name="scale" position="0" attrib="0" type="System.Double" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Scale" attrib="0" ptype="System.Double" params="">
+                <methods>
+                  <method name="get_Scale()" returntype="System.Double">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrShape" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Rectangle, Pango.Rectangle)" attrib="6278">
                 <parameters>
                   <parameter name="ink_rect" position="0" attrib="0" type="Pango.Rectangle" />
                   <parameter name="logical_rect" position="1" attrib="0" type="Pango.Rectangle" />
                 </parameters>
-              </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrShape">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
-            </methods>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="InkRect" attrib="0" ptype="Pango.Rectangle" params="">
+                <methods>
+                  <method name="get_InkRect()" returntype="Pango.Rectangle">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="LogicalRect" attrib="0" ptype="Pango.Rectangle" params="">
+                <methods>
+                  <method name="get_LogicalRect()" returntype="Pango.Rectangle">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
-          <class name="AttrString" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Attr" attrib="6" fieldtype="Pango.Attribute" />
-              <field name="Value" attrib="6" fieldtype="System.String" />
-              <field name="Zero" attrib="22" fieldtype="Pango.AttrString" />
-            </fields>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.AttrString">
+          <class name="AttrSize" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Int32, System.Boolean)" attrib="6278">
                 <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="size" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="absolute" position="1" attrib="0" type="System.Boolean" />
                 </parameters>
-              </method>
-            </methods>
+              </constructor>
+              <constructor name=".ctor(System.Int32)" attrib="6278">
+                <parameters>
+                  <parameter name="size" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Absolute" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_Absolute()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Size" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Size()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrStretch" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Stretch)" attrib="6278">
+                <parameters>
+                  <parameter name="stretch" position="0" attrib="0" type="Pango.Stretch" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Stretch" attrib="0" ptype="Pango.Stretch" params="">
+                <methods>
+                  <method name="get_Stretch()" returntype="Pango.Stretch">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrStrikethrough" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Boolean)" attrib="6278">
+                <parameters>
+                  <parameter name="strikethrough" position="0" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Strikethrough" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_Strikethrough()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrStrikethroughColor" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Color)" attrib="6278">
+                <parameters>
+                  <parameter name="color" position="0" attrib="0" type="Pango.Color" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt16, System.UInt16, System.UInt16)" attrib="6278">
+                <parameters>
+                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
+                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
+                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Color" attrib="0" ptype="Pango.Color" params="">
+                <methods>
+                  <method name="get_Color()" returntype="Pango.Color">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrStyle" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Style)" attrib="6278">
+                <parameters>
+                  <parameter name="style" position="0" attrib="0" type="Pango.Style" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Style" attrib="0" ptype="Pango.Style" params="">
+                <methods>
+                  <method name="get_Style()" returntype="Pango.Style">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="AttrType" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.AttrTypeGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
             </interfaces>
             <fields>
+              <field name="AbsoluteSize" attrib="32854" fieldtype="Pango.AttrType" value="20" />
               <field name="Background" attrib="32854" fieldtype="Pango.AttrType" value="10" />
+              <field name="Fallback" attrib="32854" fieldtype="Pango.AttrType" value="16" />
               <field name="Family" attrib="32854" fieldtype="Pango.AttrType" value="2" />
               <field name="FontDesc" attrib="32854" fieldtype="Pango.AttrType" value="8" />
               <field name="Foreground" attrib="32854" fieldtype="Pango.AttrType" value="9" />
               <field name="Invalid" attrib="32854" fieldtype="Pango.AttrType" value="0" />
               <field name="Language" attrib="32854" fieldtype="Pango.AttrType" value="1" />
+              <field name="LetterSpacing" attrib="32854" fieldtype="Pango.AttrType" value="17" />
               <field name="Rise" attrib="32854" fieldtype="Pango.AttrType" value="13" />
               <field name="Scale" attrib="32854" fieldtype="Pango.AttrType" value="15" />
               <field name="Shape" attrib="32854" fieldtype="Pango.AttrType" value="14" />
               <field name="Size" attrib="32854" fieldtype="Pango.AttrType" value="7" />
               <field name="Stretch" attrib="32854" fieldtype="Pango.AttrType" value="6" />
               <field name="Strikethrough" attrib="32854" fieldtype="Pango.AttrType" value="12" />
+              <field name="StrikethroughColor" attrib="32854" fieldtype="Pango.AttrType" value="19" />
               <field name="Style" attrib="32854" fieldtype="Pango.AttrType" value="3" />
               <field name="Underline" attrib="32854" fieldtype="Pango.AttrType" value="11" />
+              <field name="UnderlineColor" attrib="32854" fieldtype="Pango.AttrType" value="18" />
               <field name="Variant" attrib="32854" fieldtype="Pango.AttrType" value="5" />
               <field name="Weight" attrib="32854" fieldtype="Pango.AttrType" value="4" />
             </fields>
           </class>
-          <class name="Attribute" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="EndIndex" attrib="6" fieldtype="System.UInt32" />
-              <field name="StartIndex" attrib="6" fieldtype="System.UInt32" />
-              <field name="Zero" attrib="22" fieldtype="Pango.Attribute" />
-            </fields>
+          <class name="AttrUnderline" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Underline)" attrib="6278">
+                <parameters>
+                  <parameter name="underline" position="0" attrib="0" type="Pango.Underline" />
+                </parameters>
+              </constructor>
+            </constructors>
             <properties>
-              <property name="klass" attrib="1536" ptype="Pango.AttrClass" params="">
+              <property name="Underline" attrib="0" ptype="Pango.Underline" params="">
                 <methods>
-                  <method name="get_klass()" returntype="Pango.AttrClass">
+                  <method name="get_Underline()" returntype="Pango.Underline">
                     <parameters />
                   </method>
                 </methods>
               </property>
             </properties>
-            <methods>
-              <method name="Copy()" attrib="134" returntype="Pango.Attribute">
-                <parameters />
-              </method>
-              <method name="Destroy()" attrib="134" returntype="System.Void">
-                <parameters />
-              </method>
-              <method name="Equal(Pango.Attribute)" attrib="134" returntype="System.Boolean">
+          </class>
+          <class name="AttrUnderlineColor" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Color)" attrib="6278">
                 <parameters>
-                  <parameter name="attr2" position="0" attrib="0" type="Pango.Attribute" />
+                  <parameter name="color" position="0" attrib="0" type="Pango.Color" />
                 </parameters>
-              </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.Attribute">
+              </constructor>
+              <constructor name=".ctor(System.UInt16, System.UInt16, System.UInt16)" attrib="6278">
                 <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="red" position="0" attrib="0" type="System.UInt16" />
+                  <parameter name="green" position="1" attrib="0" type="System.UInt16" />
+                  <parameter name="blue" position="2" attrib="0" type="System.UInt16" />
                 </parameters>
-              </method>
-            </methods>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Color" attrib="0" ptype="Pango.Color" params="">
+                <methods>
+                  <method name="get_Color()" returntype="Pango.Color">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrVariant" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Variant)" attrib="6278">
+                <parameters>
+                  <parameter name="variant" position="0" attrib="0" type="Pango.Variant" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Variant" attrib="0" ptype="Pango.Variant" params="">
+                <methods>
+                  <method name="get_Variant()" returntype="Pango.Variant">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrWeight" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Weight)" attrib="6278">
+                <parameters>
+                  <parameter name="weight" position="0" attrib="0" type="Pango.Weight" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Weight" attrib="0" ptype="Pango.Weight" params="">
+                <methods>
+                  <method name="get_Weight()" returntype="Pango.Weight">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="Color" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
             <fields>
@@ -542,7 +994,7 @@
               <field name="Zero" attrib="22" fieldtype="Pango.Color" />
             </fields>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
@@ -552,9 +1004,14 @@
             </properties>
             <methods>
               <method name="Copy()" attrib="134" returntype="Pango.Color">
-                <parameters />
-              </method>
-              <method name="Free()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="This is a no-op" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="New(System.IntPtr)" attrib="150" returntype="Pango.Color">
@@ -598,7 +1055,7 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="BaseDir" attrib="1536" ptype="Pango.Direction" params="">
+              <property name="BaseDir" attrib="0" ptype="Pango.Direction" params="">
                 <methods>
                   <method name="get_BaseDir()" returntype="Pango.Direction">
                     <parameters />
@@ -610,14 +1067,14 @@
                   </method>
                 </methods>
               </property>
-              <property name="Families" attrib="1536" ptype="Pango.FontFamily[]" params="">
+              <property name="Families" attrib="0" ptype="Pango.FontFamily[]" params="">
                 <methods>
                   <method name="get_Families()" returntype="Pango.FontFamily[]">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="FontDescription" attrib="1536" ptype="Pango.FontDescription" params="">
+              <property name="FontDescription" attrib="0" ptype="Pango.FontDescription" params="">
                 <methods>
                   <method name="get_FontDescription()" returntype="Pango.FontDescription">
                     <parameters />
@@ -629,14 +1086,21 @@
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="FontMap" attrib="0" ptype="Pango.FontMap" params="">
+                <methods>
+                  <method name="get_FontMap()" returntype="Pango.FontMap">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Language" attrib="1536" ptype="Pango.Language" params="">
+              <property name="Language" attrib="0" ptype="Pango.Language" params="">
                 <methods>
                   <method name="get_Language()" returntype="Pango.Language">
                     <parameters />
@@ -644,6 +1108,18 @@
                   <method name="set_Language(Pango.Language)" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="Pango.Language" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Matrix" attrib="0" ptype="Pango.Matrix" params="">
+                <methods>
+                  <method name="get_Matrix()" returntype="Pango.Matrix">
+                    <parameters />
+                  </method>
+                  <method name="set_Matrix(Pango.Matrix)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Matrix" />
                     </parameters>
                   </method>
                 </methods>
@@ -688,6 +1164,7 @@
           <class name="Coverage" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor()" attrib="6278">
@@ -720,7 +1197,20 @@
                 </parameters>
               </method>
               <method name="Ref()" attrib="134" returntype="Pango.Coverage">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.Coverage is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Ref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
               <method name="Set(System.Int32, Pango.CoverageLevel)" attrib="134" returntype="System.Void">
                 <parameters>
@@ -734,11 +1224,31 @@
                 </parameters>
               </method>
               <method name="Unref()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.Coverage is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Unref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
             </methods>
           </class>
           <class name="CoverageLevel" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.CoverageLevelGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -752,6 +1262,13 @@
             </fields>
           </class>
           <class name="Direction" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.DirectionGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -759,14 +1276,38 @@
             </interfaces>
             <fields>
               <field name="Ltr" attrib="32854" fieldtype="Pango.Direction" value="0" />
+              <field name="Neutral" attrib="32854" fieldtype="Pango.Direction" value="6" />
               <field name="Rtl" attrib="32854" fieldtype="Pango.Direction" value="1" />
               <field name="TtbLtr" attrib="32854" fieldtype="Pango.Direction" value="2" />
               <field name="TtbRtl" attrib="32854" fieldtype="Pango.Direction" value="3" />
+              <field name="WeakLtr" attrib="32854" fieldtype="Pango.Direction" value="4" />
+              <field name="WeakRtl" attrib="32854" fieldtype="Pango.Direction" value="5" />
+            </fields>
+          </class>
+          <class name="EllipsizeMode" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.EllipsizeModeGType" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.IComparable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IFormattable" />
+            </interfaces>
+            <fields>
+              <field name="End" attrib="32854" fieldtype="Pango.EllipsizeMode" value="3" />
+              <field name="Middle" attrib="32854" fieldtype="Pango.EllipsizeMode" value="2" />
+              <field name="None" attrib="32854" fieldtype="Pango.EllipsizeMode" value="0" />
+              <field name="Start" attrib="32854" fieldtype="Pango.EllipsizeMode" value="1" />
             </fields>
           </class>
           <class name="EngineLang" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -779,6 +1320,7 @@
           <class name="EngineShape" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -817,7 +1359,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="FontMap" attrib="0" ptype="Pango.FontMap" params="">
+                <methods>
+                  <method name="get_FontMap()" returntype="Pango.FontMap">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
@@ -860,6 +1409,7 @@
           <class name="FontDescription" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor()" attrib="6278">
@@ -872,7 +1422,16 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Family" attrib="1536" ptype="System.String" params="">
+              <property name="AbsoluteSize" attrib="0" ptype="System.Double" params="System.Double">
+                <methods>
+                  <method name="set_AbsoluteSize(System.Double)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Double" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Family" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Family()" returntype="System.String">
                     <parameters />
@@ -884,7 +1443,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="FamilyStatic" attrib="1536" ptype="System.String" params="System.String">
+              <property name="FamilyStatic" attrib="0" ptype="System.String" params="System.String">
                 <methods>
                   <method name="set_FamilyStatic(System.String)" returntype="System.Void">
                     <parameters>
@@ -893,28 +1452,28 @@
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Hash" attrib="1536" ptype="System.UInt32" params="">
+              <property name="Hash" attrib="0" ptype="System.UInt32" params="">
                 <methods>
                   <method name="get_Hash()" returntype="System.UInt32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="SetFields" attrib="1536" ptype="Pango.FontMask" params="">
+              <property name="SetFields" attrib="0" ptype="Pango.FontMask" params="">
                 <methods>
                   <method name="get_SetFields()" returntype="Pango.FontMask">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Size" attrib="1536" ptype="System.Int32" params="">
+              <property name="Size" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Size()" returntype="System.Int32">
                     <parameters />
@@ -926,7 +1485,14 @@
                   </method>
                 </methods>
               </property>
-              <property name="Stretch" attrib="1536" ptype="Pango.Stretch" params="">
+              <property name="SizeIsAbsolute" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_SizeIsAbsolute()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Stretch" attrib="0" ptype="Pango.Stretch" params="">
                 <methods>
                   <method name="get_Stretch()" returntype="Pango.Stretch">
                     <parameters />
@@ -938,7 +1504,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Style" attrib="1536" ptype="Pango.Style" params="">
+              <property name="Style" attrib="0" ptype="Pango.Style" params="">
                 <methods>
                   <method name="get_Style()" returntype="Pango.Style">
                     <parameters />
@@ -950,7 +1516,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Variant" attrib="1536" ptype="Pango.Variant" params="">
+              <property name="Variant" attrib="0" ptype="Pango.Variant" params="">
                 <methods>
                   <method name="get_Variant()" returntype="Pango.Variant">
                     <parameters />
@@ -962,7 +1528,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Weight" attrib="1536" ptype="Pango.Weight" params="">
+              <property name="Weight" attrib="0" ptype="Pango.Weight" params="">
                 <methods>
                   <method name="get_Weight()" returntype="Pango.Weight">
                     <parameters />
@@ -993,7 +1559,20 @@
                   <parameter name="desc2" position="0" attrib="0" type="Pango.FontDescription" />
                 </parameters>
               </method>
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Free()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.FontDescription is now freed automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="FromString(System.String)" attrib="150" returntype="Pango.FontDescription">
@@ -1055,14 +1634,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="FaceName" attrib="1536" ptype="System.String" params="">
+              <property name="FaceName" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_FaceName()" returntype="System.String">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
@@ -1076,6 +1655,12 @@
               </method>
               <method name="Finalize()" attrib="196" returntype="System.Void">
                 <parameters />
+              </method>
+              <method name="ListSizes(out System.Int32&amp;, out System.Int32&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="sizes" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="n_sizes" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
               </method>
             </methods>
           </class>
@@ -1108,21 +1693,28 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Faces" attrib="1536" ptype="Pango.FontFace[]" params="">
+              <property name="Faces" attrib="0" ptype="Pango.FontFace[]" params="">
                 <methods>
                   <method name="get_Faces()" returntype="Pango.FontFace[]">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Name" attrib="1536" ptype="System.String" params="">
+              <property name="IsMonospace" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsMonospace()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Name" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Name()" returntype="System.String">
                     <parameters />
@@ -1178,14 +1770,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Families" attrib="1536" ptype="Pango.FontFamily[]" params="">
+              <property name="Families" attrib="0" ptype="Pango.FontFamily[]" params="">
                 <methods>
                   <method name="get_Families()" returntype="Pango.FontFamily[]">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
@@ -1227,6 +1819,11 @@
           </class>
           <class name="FontMask" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
             <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.FontMaskGType" />
+                </properties>
+              </attribute>
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
@@ -1246,6 +1843,7 @@
           <class name="FontMetrics" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -1255,37 +1853,65 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="ApproximateCharWidth" attrib="1536" ptype="System.Int32" params="">
+              <property name="ApproximateCharWidth" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_ApproximateCharWidth()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="ApproximateDigitWidth" attrib="1536" ptype="System.Int32" params="">
+              <property name="ApproximateDigitWidth" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_ApproximateDigitWidth()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Ascent" attrib="1536" ptype="System.Int32" params="">
+              <property name="Ascent" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Ascent()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Descent" attrib="1536" ptype="System.Int32" params="">
+              <property name="Descent" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Descent()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="StrikethroughPosition" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_StrikethroughPosition()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="StrikethroughThickness" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_StrikethroughThickness()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="UnderlinePosition" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_UnderlinePosition()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="UnderlineThickness" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_UnderlineThickness()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
@@ -1293,10 +1919,36 @@
             </properties>
             <methods>
               <method name="Ref()" attrib="134" returntype="Pango.FontMetrics">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.FontMetrics is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
+              <method name="Ref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Unref()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.FontMetrics is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Unref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
             </methods>
           </class>
@@ -1329,14 +1981,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Metrics" attrib="1536" ptype="Pango.FontMetrics" params="">
+              <property name="Metrics" attrib="0" ptype="Pango.FontMetrics" params="">
                 <methods>
                   <method name="get_Metrics()" returntype="Pango.FontMetrics">
                     <parameters />
@@ -1348,9 +2000,49 @@
               <method name="Finalize()" attrib="196" returntype="System.Void">
                 <parameters />
               </method>
+              <method name="Foreach(Pango.FontsetForeachFunc)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="func" position="0" attrib="0" type="Pango.FontsetForeachFunc" />
+                </parameters>
+              </method>
               <method name="GetFont(System.UInt32)" attrib="134" returntype="Pango.Font">
                 <parameters>
                   <parameter name="wc" position="0" attrib="0" type="System.UInt32" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="FontsetForeachFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="6278">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(Pango.Fontset, Pango.Font, System.AsyncCallback, System.Object)" attrib="454" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="fontset" position="0" attrib="0" type="Pango.Fontset" />
+                  <parameter name="font" position="1" attrib="0" type="Pango.Font" />
+                  <parameter name="callback" position="2" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="3" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke(Pango.Fontset, Pango.Font)" attrib="454" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="fontset" position="0" attrib="0" type="Pango.Fontset" />
+                  <parameter name="font" position="1" attrib="0" type="Pango.Font" />
                 </parameters>
               </method>
             </methods>
@@ -1362,6 +2054,11 @@
               </constructor>
             </constructors>
             <methods>
+              <method name="FindBaseDir(System.String)" attrib="150" returntype="Pango.Direction">
+                <parameters>
+                  <parameter name="text" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
               <method name="FindParagraphBoundary(System.String, out System.Int32&amp;, out System.Int32&amp;)" attrib="150" returntype="System.Void">
                 <parameters>
                   <parameter name="text" position="0" attrib="0" type="System.String" />
@@ -1376,6 +2073,17 @@
                   <parameter name="language" position="2" attrib="0" type="Pango.Language" />
                   <parameter name="log_attrs" position="3" attrib="0" type="Pango.LogAttr" />
                   <parameter name="attrs_len" position="4" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="ItemizeWithBaseDir(Pango.Context, Pango.Direction, System.String, System.Int32, System.Int32, Pango.AttrList, Pango.AttrIterator)" attrib="150" returntype="GLib.List">
+                <parameters>
+                  <parameter name="context" position="0" attrib="0" type="Pango.Context" />
+                  <parameter name="base_dir" position="1" attrib="0" type="Pango.Direction" />
+                  <parameter name="text" position="2" attrib="0" type="System.String" />
+                  <parameter name="start_index" position="3" attrib="0" type="System.Int32" />
+                  <parameter name="length" position="4" attrib="0" type="System.Int32" />
+                  <parameter name="attrs" position="5" attrib="0" type="Pango.AttrList" />
+                  <parameter name="cached_iter" position="6" attrib="0" type="Pango.AttrIterator" />
                 </parameters>
               </method>
               <method name="ParseMarkup(System.String, System.Char, out Pango.AttrList&amp;, out System.String&amp;, out System.Char&amp;)" attrib="150" returntype="System.Boolean">
@@ -1435,6 +2143,16 @@
                   <parameter name="out_param" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
                 </parameters>
               </method>
+              <method name="ScriptForUnichar(System.Char)" attrib="150" returntype="Pango.Script">
+                <parameters>
+                  <parameter name="ch" position="0" attrib="0" type="System.Char" />
+                </parameters>
+              </method>
+              <method name="ScriptGetSampleLanguage(Pango.Script)" attrib="150" returntype="Pango.Language">
+                <parameters>
+                  <parameter name="script" position="0" attrib="0" type="Pango.Script" />
+                </parameters>
+              </method>
               <method name="SkipSpace(System.String&amp;)" attrib="150" returntype="System.Boolean">
                 <parameters>
                   <parameter name="pos" position="0" attrib="0" type="System.String&amp;" direction="ref" />
@@ -1448,6 +2166,11 @@
               <method name="TrimString(System.String)" attrib="150" returntype="System.String">
                 <parameters>
                   <parameter name="str" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
+              <method name="UnicharDirection(System.Char)" attrib="150" returntype="Pango.Direction">
+                <parameters>
+                  <parameter name="ch" position="0" attrib="0" type="System.Char" />
                 </parameters>
               </method>
             </methods>
@@ -1487,17 +2210,57 @@
               <field name="Zero" attrib="22" fieldtype="Pango.GlyphItem" />
             </fields>
             <properties>
-              <property name="glyphs" attrib="1536" ptype="Pango.GlyphString" params="">
+              <property name="glyphs" attrib="0" ptype="Pango.GlyphString" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Glyphs property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_glyphs()" returntype="Pango.GlyphString">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="item" attrib="1536" ptype="Pango.Item" params="">
+              <property name="Glyphs" attrib="0" ptype="Pango.GlyphString" params="">
+                <methods>
+                  <method name="get_Glyphs()" returntype="Pango.GlyphString">
+                    <parameters />
+                  </method>
+                  <method name="set_Glyphs(Pango.GlyphString)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.GlyphString" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="item" attrib="0" ptype="Pango.Item" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Item property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_item()" returntype="Pango.Item">
                     <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Item" attrib="0" ptype="Pango.Item" params="">
+                <methods>
+                  <method name="get_Item()" returntype="Pango.Item">
+                    <parameters />
+                  </method>
+                  <method name="set_Item(Pango.Item)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Item" />
+                    </parameters>
                   </method>
                 </methods>
               </property>
@@ -1507,6 +2270,16 @@
                 <parameters>
                   <parameter name="text" position="0" attrib="0" type="System.String" />
                   <parameter name="list" position="1" attrib="0" type="Pango.AttrList" />
+                </parameters>
+              </method>
+              <method name="Free()" attrib="134" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="LetterSpace(System.String, Pango.LogAttr, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="text" position="0" attrib="0" type="System.String" />
+                  <parameter name="log_attrs" position="1" attrib="0" type="Pango.LogAttr" />
+                  <parameter name="letter_spacing" position="2" attrib="0" type="System.Int32" />
                 </parameters>
               </method>
               <method name="New(System.IntPtr)" attrib="150" returntype="Pango.GlyphItem">
@@ -1522,33 +2295,59 @@
               </method>
             </methods>
           </class>
-          <class name="GlyphString" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
+          <class name="GlyphString" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
             <fields>
-              <field name="NumGlyphs" attrib="6" fieldtype="System.Int32" />
-              <field name="Space" attrib="6" fieldtype="System.Int32" />
-              <field name="Zero" attrib="22" fieldtype="Pango.GlyphString" />
+              <field name="Zero" attrib="22" fieldtype="Pango.GlyphString">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.GlyphString is a reference type now, use null" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
             </fields>
+            <constructors>
+              <constructor name=".ctor()" attrib="6278">
+                <parameters />
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="6278">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Size" attrib="1536" ptype="System.Int32" params="System.Int32">
+              <property name="NumGlyphs" attrib="0" ptype="System.Int32" params="">
                 <methods>
-                  <method name="set_Size(System.Int32)" returntype="System.Void">
+                  <method name="get_NumGlyphs()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                  <method name="set_NumGlyphs(System.Int32)" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="System.Int32" />
                     </parameters>
                   </method>
                 </methods>
               </property>
-              <property name="glyphs" attrib="1536" ptype="Pango.GlyphInfo" params="">
+              <property name="Size" attrib="0" ptype="System.Int32" params="System.Int32">
                 <methods>
-                  <method name="get_glyphs()" returntype="Pango.GlyphInfo">
-                    <parameters />
+                  <method name="set_Size(System.Int32)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Int32" />
+                    </parameters>
                   </method>
                 </methods>
               </property>
@@ -1573,8 +2372,10 @@
                   <parameter name="logical_rect" position="4" attrib="0" type="Pango.Rectangle" />
                 </parameters>
               </method>
-              <method name="Free()" attrib="134" returntype="System.Void">
-                <parameters />
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
               <method name="GetLogicalWidths(System.String, System.Int32)" attrib="134" returntype="System.Int32">
                 <parameters>
@@ -1591,9 +2392,25 @@
                 </parameters>
               </method>
               <method name="New()" attrib="150" returntype="Pango.GlyphString">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by GlyphString() constructor" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="New(System.IntPtr)" attrib="150" returntype="Pango.GlyphString">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by GlyphString(IntPtr) constructor" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
@@ -1613,6 +2430,20 @@
             <fields>
               <field name="Zero" attrib="22" fieldtype="Pango.GlyphVisAttr" />
             </fields>
+            <properties>
+              <property name="IsClusterStart" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsClusterStart()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsClusterStart(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
             <methods>
               <method name="New(System.IntPtr)" attrib="150" returntype="Pango.GlyphVisAttr">
                 <parameters>
@@ -1621,64 +2452,122 @@
               </method>
             </methods>
           </class>
-          <class name="IntSet" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
+          <class name="Item" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
             <fields>
-              <field name="Size" attrib="6" fieldtype="System.Int32" />
-              <field name="Start" attrib="6" fieldtype="System.Int32" />
-              <field name="Zero" attrib="22" fieldtype="Pango.IntSet" />
+              <field name="Zero" attrib="22" fieldtype="Pango.Item">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.Item is a reference type now, use null" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
             </fields>
-            <methods>
-              <method name="Add(System.Int32)" attrib="134" returntype="System.Void">
-                <parameters>
-                  <parameter name="glyph" position="0" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="AddRange(System.Int32, System.Int32)" attrib="134" returntype="System.Void">
-                <parameters>
-                  <parameter name="start" position="0" attrib="0" type="System.Int32" />
-                  <parameter name="end" position="1" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="Contains(System.Int32)" attrib="134" returntype="System.Boolean">
-                <parameters>
-                  <parameter name="member" position="0" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="Destroy()" attrib="134" returntype="System.Void">
+            <constructors>
+              <constructor name=".ctor()" attrib="6278">
                 <parameters />
-              </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.IntSet">
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="6278">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
-              </method>
-              <method name="New()" attrib="150" returntype="Pango.IntSet">
-                <parameters />
-              </method>
-            </methods>
-          </class>
-          <class name="Item" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Analysis" attrib="6" fieldtype="Pango.Analysis" />
-              <field name="Length" attrib="6" fieldtype="System.Int32" />
-              <field name="NumChars" attrib="6" fieldtype="System.Int32" />
-              <field name="Offset" attrib="6" fieldtype="System.Int32" />
-              <field name="Zero" attrib="22" fieldtype="Pango.Item" />
-            </fields>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Analysis" attrib="0" ptype="Pango.Analysis" params="">
+                <methods>
+                  <method name="get_Analysis()" returntype="Pango.Analysis">
+                    <parameters />
+                  </method>
+                  <method name="set_Analysis(Pango.Analysis)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Analysis" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Length" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Length()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                  <method name="set_Length(System.Int32)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Int32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="NumChars" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_NumChars()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                  <method name="set_NumChars(System.Int32)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Int32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Offset" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Offset()" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                  <method name="set_Offset(System.Int32)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Int32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
             <methods>
               <method name="Copy()" attrib="134" returntype="Pango.Item">
                 <parameters />
               </method>
-              <method name="Free()" attrib="134" returntype="System.Void">
-                <parameters />
-              </method>
-              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.Item">
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </method>
               <method name="New()" attrib="150" returntype="Pango.Item">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Item() constructor" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.Item">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Item(IntPtr) constructor" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
               <method name="Split(System.Int32, System.Int32)" attrib="134" returntype="Pango.Item">
                 <parameters>
@@ -1691,6 +2580,7 @@
           <class name="Language" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -1700,14 +2590,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="SampleString" attrib="1536" ptype="System.String" params="">
+              <property name="SampleString" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_SampleString()" returntype="System.String">
                     <parameters />
@@ -1719,6 +2609,11 @@
               <method name="FromString(System.String)" attrib="150" returntype="Pango.Language">
                 <parameters>
                   <parameter name="language" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
+              <method name="IncludesScript(Pango.Script)" attrib="134" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="script" position="0" attrib="0" type="Pango.Script" />
                 </parameters>
               </method>
               <method name="Matches(System.String)" attrib="134" returntype="System.Boolean">
@@ -1759,7 +2654,7 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Alignment" attrib="1536" ptype="Pango.Alignment" params="">
+              <property name="Alignment" attrib="0" ptype="Pango.Alignment" params="">
                 <methods>
                   <method name="get_Alignment()" returntype="Pango.Alignment">
                     <parameters />
@@ -1771,7 +2666,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Attributes" attrib="1536" ptype="Pango.AttrList" params="">
+              <property name="Attributes" attrib="0" ptype="Pango.AttrList" params="">
                 <methods>
                   <method name="get_Attributes()" returntype="Pango.AttrList">
                     <parameters />
@@ -1783,15 +2678,42 @@
                   </method>
                 </methods>
               </property>
-              <property name="Context" attrib="1536" ptype="Pango.Context" params="">
+              <property name="AutoDir" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_AutoDir()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_AutoDir(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Context" attrib="0" ptype="Pango.Context" params="">
                 <methods>
                   <method name="get_Context()" returntype="Pango.Context">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="FontDescription" attrib="1536" ptype="Pango.FontDescription" params="Pango.FontDescription">
+              <property name="Ellipsize" attrib="0" ptype="Pango.EllipsizeMode" params="">
                 <methods>
+                  <method name="get_Ellipsize()" returntype="Pango.EllipsizeMode">
+                    <parameters />
+                  </method>
+                  <method name="set_Ellipsize(Pango.EllipsizeMode)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.EllipsizeMode" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="FontDescription" attrib="0" ptype="Pango.FontDescription" params="">
+                <methods>
+                  <method name="get_FontDescription()" returntype="Pango.FontDescription">
+                    <parameters />
+                  </method>
                   <method name="set_FontDescription(Pango.FontDescription)" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="Pango.FontDescription" />
@@ -1799,14 +2721,14 @@
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Indent" attrib="1536" ptype="System.Int32" params="">
+              <property name="Indent" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Indent()" returntype="System.Int32">
                     <parameters />
@@ -1818,14 +2740,14 @@
                   </method>
                 </methods>
               </property>
-              <property name="Iter" attrib="1536" ptype="Pango.LayoutIter" params="">
+              <property name="Iter" attrib="0" ptype="Pango.LayoutIter" params="">
                 <methods>
                   <method name="get_Iter()" returntype="Pango.LayoutIter">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Justify" attrib="1536" ptype="System.Boolean" params="">
+              <property name="Justify" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_Justify()" returntype="System.Boolean">
                     <parameters />
@@ -1837,28 +2759,28 @@
                   </method>
                 </methods>
               </property>
-              <property name="LineCount" attrib="1536" ptype="System.Int32" params="">
+              <property name="LineCount" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_LineCount()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Lines" attrib="1536" ptype="Pango.LayoutLine[]" params="">
+              <property name="Lines" attrib="0" ptype="Pango.LayoutLine[]" params="">
                 <methods>
                   <method name="get_Lines()" returntype="Pango.LayoutLine[]">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="LogAttrs" attrib="1536" ptype="Pango.LogAttr[]" params="">
+              <property name="LogAttrs" attrib="0" ptype="Pango.LogAttr[]" params="">
                 <methods>
                   <method name="get_LogAttrs()" returntype="Pango.LogAttr[]">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="SingleParagraphMode" attrib="1536" ptype="System.Boolean" params="">
+              <property name="SingleParagraphMode" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_SingleParagraphMode()" returntype="System.Boolean">
                     <parameters />
@@ -1870,7 +2792,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Spacing" attrib="1536" ptype="System.Int32" params="">
+              <property name="Spacing" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Spacing()" returntype="System.Int32">
                     <parameters />
@@ -1882,7 +2804,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Tabs" attrib="1536" ptype="Pango.TabArray" params="">
+              <property name="Tabs" attrib="0" ptype="Pango.TabArray" params="">
                 <methods>
                   <method name="get_Tabs()" returntype="Pango.TabArray">
                     <parameters />
@@ -1894,14 +2816,14 @@
                   </method>
                 </methods>
               </property>
-              <property name="Text" attrib="1536" ptype="System.String" params="">
+              <property name="Text" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Text()" returntype="System.String">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Width" attrib="1536" ptype="System.Int32" params="">
+              <property name="Width" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Width()" returntype="System.Int32">
                     <parameters />
@@ -1913,7 +2835,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Wrap" attrib="1536" ptype="Pango.WrapMode" params="">
+              <property name="Wrap" attrib="0" ptype="Pango.WrapMode" params="">
                 <methods>
                   <method name="get_Wrap()" returntype="Pango.WrapMode">
                     <parameters />
@@ -2017,6 +2939,7 @@
           <class name="LayoutIter" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -2026,28 +2949,35 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Baseline" attrib="1536" ptype="System.Int32" params="">
+              <property name="Baseline" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Baseline()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Index" attrib="1536" ptype="System.Int32" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Index" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Index()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Line" attrib="1536" ptype="Pango.LayoutLine" params="">
+              <property name="Line" attrib="0" ptype="Pango.LayoutLine" params="">
                 <methods>
                   <method name="get_Line()" returntype="Pango.LayoutLine">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Run" attrib="1536" ptype="Pango.LayoutRun" params="">
+              <property name="Run" attrib="0" ptype="Pango.LayoutRun" params="">
                 <methods>
                   <method name="get_Run()" returntype="Pango.LayoutRun">
                     <parameters />
@@ -2059,7 +2989,20 @@
               <method name="AtLastLine()" attrib="134" returntype="System.Boolean">
                 <parameters />
               </method>
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Free()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.LayoutIter is now freed automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="GetCharExtents(Pango.Rectangle)" attrib="134" returntype="System.Void">
@@ -2114,6 +3057,7 @@
           <class name="LayoutLine" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="6278">
@@ -2123,21 +3067,42 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Layout" attrib="1536" ptype="Pango.Layout" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="IsParagraphStart" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsParagraphStart()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Layout" attrib="0" ptype="Pango.Layout" params="">
                 <methods>
                   <method name="get_Layout()" returntype="Pango.Layout">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Length" attrib="1536" ptype="System.Int32" params="">
+              <property name="Length" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Length()" returntype="System.Int32">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="StartIndex" attrib="1536" ptype="System.Int32" params="">
+              <property name="ResolvedDir" attrib="0" ptype="System.UInt32" params="">
+                <methods>
+                  <method name="get_ResolvedDir()" returntype="System.UInt32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="StartIndex" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_StartIndex()" returntype="System.Int32">
                     <parameters />
@@ -2171,11 +3136,37 @@
                   <parameter name="trailing" position="1" attrib="0" type="System.Boolean" />
                 </parameters>
               </method>
-              <method name="Ref()" attrib="134" returntype="System.Void">
+              <method name="Ref()" attrib="134" returntype="Pango.LayoutLine">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.LayoutLine is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
+              <method name="Ref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Unref()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.LayoutLine is now refcounted automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
+              </method>
+              <method name="Unref(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
               </method>
               <method name="XToIndex(System.Int32, out System.Int32&amp;, out System.Int32&amp;)" attrib="134" returntype="System.Boolean">
                 <parameters>
@@ -2191,17 +3182,57 @@
               <field name="Zero" attrib="22" fieldtype="Pango.LayoutRun" />
             </fields>
             <properties>
-              <property name="glyphs" attrib="1536" ptype="Pango.GlyphString" params="">
+              <property name="glyphs" attrib="0" ptype="Pango.GlyphString" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Glyphs property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_glyphs()" returntype="Pango.GlyphString">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="item" attrib="1536" ptype="Pango.Item" params="">
+              <property name="Glyphs" attrib="0" ptype="Pango.GlyphString" params="">
+                <methods>
+                  <method name="get_Glyphs()" returntype="Pango.GlyphString">
+                    <parameters />
+                  </method>
+                  <method name="set_Glyphs(Pango.GlyphString)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.GlyphString" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="item" attrib="0" ptype="Pango.Item" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Item property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_item()" returntype="Pango.Item">
                     <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Item" attrib="0" ptype="Pango.Item" params="">
+                <methods>
+                  <method name="get_Item()" returntype="Pango.Item">
+                    <parameters />
+                  </method>
+                  <method name="set_Item(Pango.Item)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Item" />
+                    </parameters>
                   </method>
                 </methods>
               </property>
@@ -2218,10 +3249,205 @@
             <fields>
               <field name="Zero" attrib="22" fieldtype="Pango.LogAttr" />
             </fields>
+            <properties>
+              <property name="BackspaceDeletesCharacter" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_BackspaceDeletesCharacter()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_BackspaceDeletesCharacter(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsCharBreak" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsCharBreak()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsCharBreak(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsCursorPosition" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsCursorPosition()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsCursorPosition(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsLineBreak" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsLineBreak()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsLineBreak(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsMandatoryBreak" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsMandatoryBreak()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsMandatoryBreak(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsSentenceBoundary" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsSentenceBoundary()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsSentenceBoundary(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsSentenceEnd" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsSentenceEnd()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsSentenceEnd(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsSentenceStart" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsSentenceStart()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsSentenceStart(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsWhite" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsWhite()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsWhite(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsWordEnd" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsWordEnd()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsWordEnd(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="IsWordStart" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsWordStart()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsWordStart(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
             <methods>
               <method name="New(System.IntPtr)" attrib="150" returntype="Pango.LogAttr">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="Matrix" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
+            <fields>
+              <field name="Identity" attrib="22" fieldtype="Pango.Matrix" />
+              <field name="X0" attrib="6" fieldtype="System.Double" />
+              <field name="Xx" attrib="6" fieldtype="System.Double" />
+              <field name="Xy" attrib="6" fieldtype="System.Double" />
+              <field name="Y0" attrib="6" fieldtype="System.Double" />
+              <field name="Yx" attrib="6" fieldtype="System.Double" />
+              <field name="Yy" attrib="6" fieldtype="System.Double" />
+              <field name="Zero" attrib="22" fieldtype="Pango.Matrix" />
+            </fields>
+            <properties>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+            <methods>
+              <method name="Concat(Pango.Matrix)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="new_matrix" position="0" attrib="0" type="Pango.Matrix" />
+                </parameters>
+              </method>
+              <method name="Copy()" attrib="134" returntype="Pango.Matrix">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="This is a no-op" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+                <parameters />
+              </method>
+              <method name="New(System.IntPtr)" attrib="150" returntype="Pango.Matrix">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="Rotate(System.Double)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="degrees" position="0" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="Scale(System.Double, System.Double)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="scale_x" position="0" attrib="0" type="System.Double" />
+                  <parameter name="scale_y" position="1" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="Translate(System.Double, System.Double)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="tx" position="0" attrib="0" type="System.Double" />
+                  <parameter name="ty" position="1" attrib="0" type="System.Double" />
                 </parameters>
               </method>
             </methods>
@@ -2242,16 +3468,211 @@
               </method>
             </methods>
           </class>
+          <class name="Renderer" type="class" base="GLib.Object" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor()" attrib="6276">
+                <parameters />
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="6278">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(GLib.GType)" attrib="6276">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" null="true" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+                <parameters>
+                  <parameter name="gtype" position="0" attrib="0" type="GLib.GType" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Matrix" attrib="0" ptype="Pango.Matrix" params="">
+                <methods>
+                  <method name="get_Matrix()" returntype="Pango.Matrix">
+                    <parameters />
+                  </method>
+                  <method name="set_Matrix(Pango.Matrix)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Matrix" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
+            <methods>
+              <method name="Activate()" attrib="134" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="Deactivate()" attrib="134" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="DrawErrorUnderline(System.Int32, System.Int32, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="x" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="y" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="width" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="3" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="DrawGlyph(Pango.Font, System.UInt32, System.Double, System.Double)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="font" position="0" attrib="0" type="Pango.Font" />
+                  <parameter name="glyph" position="1" attrib="0" type="System.UInt32" />
+                  <parameter name="x" position="2" attrib="0" type="System.Double" />
+                  <parameter name="y" position="3" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="DrawGlyphs(Pango.Font, Pango.GlyphString, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="font" position="0" attrib="0" type="Pango.Font" />
+                  <parameter name="glyphs" position="1" attrib="0" type="Pango.GlyphString" />
+                  <parameter name="x" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="y" position="3" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="DrawLayout(Pango.Layout, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="layout" position="0" attrib="0" type="Pango.Layout" />
+                  <parameter name="x" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="y" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="DrawLayoutLine(Pango.LayoutLine, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="line" position="0" attrib="0" type="Pango.LayoutLine" />
+                  <parameter name="x" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="y" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="DrawRectangle(Pango.RenderPart, System.Int32, System.Int32, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="part" position="0" attrib="0" type="Pango.RenderPart" />
+                  <parameter name="x" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="y" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="width" position="3" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="4" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="DrawTrapezoid(Pango.RenderPart, System.Double, System.Double, System.Double, System.Double, System.Double, System.Double)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="part" position="0" attrib="0" type="Pango.RenderPart" />
+                  <parameter name="y1_" position="1" attrib="0" type="System.Double" />
+                  <parameter name="x11" position="2" attrib="0" type="System.Double" />
+                  <parameter name="x21" position="3" attrib="0" type="System.Double" />
+                  <parameter name="y2" position="4" attrib="0" type="System.Double" />
+                  <parameter name="x12" position="5" attrib="0" type="System.Double" />
+                  <parameter name="x22" position="6" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="Finalize()" attrib="196" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="GetColor(Pango.RenderPart)" attrib="134" returntype="Pango.Color">
+                <parameters>
+                  <parameter name="part" position="0" attrib="0" type="Pango.RenderPart" />
+                </parameters>
+              </method>
+              <method name="PartChanged(Pango.RenderPart)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="part" position="0" attrib="0" type="Pango.RenderPart" />
+                </parameters>
+              </method>
+              <method name="SetColor(Pango.RenderPart, Pango.Color)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="part" position="0" attrib="0" type="Pango.RenderPart" />
+                  <parameter name="color" position="1" attrib="0" type="Pango.Color" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="RenderPart" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.RenderPartGType" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.IComparable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IFormattable" />
+            </interfaces>
+            <fields>
+              <field name="Background" attrib="32854" fieldtype="Pango.RenderPart" value="1" />
+              <field name="Foreground" attrib="32854" fieldtype="Pango.RenderPart" value="0" />
+              <field name="Strikethrough" attrib="32854" fieldtype="Pango.RenderPart" value="3" />
+              <field name="Underline" attrib="32854" fieldtype="Pango.RenderPart" value="2" />
+            </fields>
+          </class>
           <class name="Scale" type="class" base="System.Object" sealed="true" charset="Ansi" layout="Auto">
             <fields>
               <field name="Large" attrib="54" fieldtype="System.Double" />
               <field name="Medium" attrib="54" fieldtype="System.Double" />
               <field name="PangoScale" attrib="54" fieldtype="System.Double" />
               <field name="Small" attrib="54" fieldtype="System.Double" />
-              <field name="XX_Large" attrib="54" fieldtype="System.Double" />
-              <field name="XX_Small" attrib="54" fieldtype="System.Double" />
-              <field name="X_Large" attrib="54" fieldtype="System.Double" />
-              <field name="X_Small" attrib="54" fieldtype="System.Double" />
+              <field name="X_Large" attrib="54" fieldtype="System.Double">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by XLarge" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
+              <field name="X_Small" attrib="54" fieldtype="System.Double">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by XSmall" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
+              <field name="XLarge" attrib="54" fieldtype="System.Double" />
+              <field name="XSmall" attrib="54" fieldtype="System.Double" />
+              <field name="XX_Large" attrib="54" fieldtype="System.Double">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by XXLarge" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
+              <field name="XX_Small" attrib="54" fieldtype="System.Double">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by XXSmall" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+              </field>
+              <field name="XXLarge" attrib="54" fieldtype="System.Double" />
+              <field name="XXSmall" attrib="54" fieldtype="System.Double" />
             </fields>
             <constructors>
               <constructor name=".ctor()" attrib="6278">
@@ -2259,7 +3680,136 @@
               </constructor>
             </constructors>
           </class>
+          <class name="Script" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.ScriptGType" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.IComparable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IFormattable" />
+            </interfaces>
+            <fields>
+              <field name="Arabic" attrib="32854" fieldtype="Pango.Script" value="2" />
+              <field name="Armenian" attrib="32854" fieldtype="Pango.Script" value="3" />
+              <field name="Bengali" attrib="32854" fieldtype="Pango.Script" value="4" />
+              <field name="Bopomofo" attrib="32854" fieldtype="Pango.Script" value="5" />
+              <field name="Braille" attrib="32854" fieldtype="Pango.Script" value="46" />
+              <field name="Buginese" attrib="32854" fieldtype="Pango.Script" value="55" />
+              <field name="Buhid" attrib="32854" fieldtype="Pango.Script" value="44" />
+              <field name="CanadianAboriginal" attrib="32854" fieldtype="Pango.Script" value="40" />
+              <field name="Cherokee" attrib="32854" fieldtype="Pango.Script" value="6" />
+              <field name="Common" attrib="32854" fieldtype="Pango.Script" value="0" />
+              <field name="Coptic" attrib="32854" fieldtype="Pango.Script" value="7" />
+              <field name="Cypriot" attrib="32854" fieldtype="Pango.Script" value="47" />
+              <field name="Cyrillic" attrib="32854" fieldtype="Pango.Script" value="8" />
+              <field name="Deseret" attrib="32854" fieldtype="Pango.Script" value="9" />
+              <field name="Devanagari" attrib="32854" fieldtype="Pango.Script" value="10" />
+              <field name="Ethiopic" attrib="32854" fieldtype="Pango.Script" value="11" />
+              <field name="Georgian" attrib="32854" fieldtype="Pango.Script" value="12" />
+              <field name="Glagolitic" attrib="32854" fieldtype="Pango.Script" value="56" />
+              <field name="Gothic" attrib="32854" fieldtype="Pango.Script" value="13" />
+              <field name="Greek" attrib="32854" fieldtype="Pango.Script" value="14" />
+              <field name="Gujarati" attrib="32854" fieldtype="Pango.Script" value="15" />
+              <field name="Gurmukhi" attrib="32854" fieldtype="Pango.Script" value="16" />
+              <field name="Han" attrib="32854" fieldtype="Pango.Script" value="17" />
+              <field name="Hangul" attrib="32854" fieldtype="Pango.Script" value="18" />
+              <field name="Hanunoo" attrib="32854" fieldtype="Pango.Script" value="43" />
+              <field name="Hebrew" attrib="32854" fieldtype="Pango.Script" value="19" />
+              <field name="Hiragana" attrib="32854" fieldtype="Pango.Script" value="20" />
+              <field name="Inherited" attrib="32854" fieldtype="Pango.Script" value="1" />
+              <field name="InvalidCode" attrib="32854" fieldtype="Pango.Script" value="-1" />
+              <field name="Kannada" attrib="32854" fieldtype="Pango.Script" value="21" />
+              <field name="Katakana" attrib="32854" fieldtype="Pango.Script" value="22" />
+              <field name="Kharoshthi" attrib="32854" fieldtype="Pango.Script" value="60" />
+              <field name="Khmer" attrib="32854" fieldtype="Pango.Script" value="23" />
+              <field name="Lao" attrib="32854" fieldtype="Pango.Script" value="24" />
+              <field name="Latin" attrib="32854" fieldtype="Pango.Script" value="25" />
+              <field name="Limbu" attrib="32854" fieldtype="Pango.Script" value="48" />
+              <field name="LinearB" attrib="32854" fieldtype="Pango.Script" value="51" />
+              <field name="Malayalam" attrib="32854" fieldtype="Pango.Script" value="26" />
+              <field name="Mongolian" attrib="32854" fieldtype="Pango.Script" value="27" />
+              <field name="Myanmar" attrib="32854" fieldtype="Pango.Script" value="28" />
+              <field name="NewTaiLue" attrib="32854" fieldtype="Pango.Script" value="54" />
+              <field name="Ogham" attrib="32854" fieldtype="Pango.Script" value="29" />
+              <field name="OldItalic" attrib="32854" fieldtype="Pango.Script" value="30" />
+              <field name="OldPersian" attrib="32854" fieldtype="Pango.Script" value="59" />
+              <field name="Oriya" attrib="32854" fieldtype="Pango.Script" value="31" />
+              <field name="Osmanya" attrib="32854" fieldtype="Pango.Script" value="49" />
+              <field name="Runic" attrib="32854" fieldtype="Pango.Script" value="32" />
+              <field name="Shavian" attrib="32854" fieldtype="Pango.Script" value="50" />
+              <field name="Sinhala" attrib="32854" fieldtype="Pango.Script" value="33" />
+              <field name="SylotiNagri" attrib="32854" fieldtype="Pango.Script" value="58" />
+              <field name="Syriac" attrib="32854" fieldtype="Pango.Script" value="34" />
+              <field name="Tagalog" attrib="32854" fieldtype="Pango.Script" value="42" />
+              <field name="Tagbanwa" attrib="32854" fieldtype="Pango.Script" value="45" />
+              <field name="TaiLe" attrib="32854" fieldtype="Pango.Script" value="52" />
+              <field name="Tamil" attrib="32854" fieldtype="Pango.Script" value="35" />
+              <field name="Telugu" attrib="32854" fieldtype="Pango.Script" value="36" />
+              <field name="Thaana" attrib="32854" fieldtype="Pango.Script" value="37" />
+              <field name="Thai" attrib="32854" fieldtype="Pango.Script" value="38" />
+              <field name="Tibetan" attrib="32854" fieldtype="Pango.Script" value="39" />
+              <field name="Tifinagh" attrib="32854" fieldtype="Pango.Script" value="57" />
+              <field name="Ugaritic" attrib="32854" fieldtype="Pango.Script" value="53" />
+              <field name="Yi" attrib="32854" fieldtype="Pango.Script" value="41" />
+            </fields>
+          </class>
+          <class name="ScriptIter" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.String)" attrib="6278">
+                <parameters>
+                  <parameter name="text" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="6278">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="Finalize()" attrib="196" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="Free()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by garbage collection" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
+                <parameters />
+              </method>
+              <method name="GetRange(out System.Int32&amp;, out System.Int32&amp;, out Pango.Script&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="start" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="len" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="script" position="2" attrib="2" type="Pango.Script&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="Next()" attrib="134" returntype="System.Boolean">
+                <parameters />
+              </method>
+            </methods>
+          </class>
           <class name="Stretch" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.StretchGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2278,6 +3828,13 @@
             </fields>
           </class>
           <class name="Style" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.StyleGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2290,6 +3847,13 @@
             </fields>
           </class>
           <class name="TabAlign" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.TabAlignGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2302,6 +3866,7 @@
           <class name="TabArray" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Int32, System.Boolean)" attrib="6278">
@@ -2317,21 +3882,21 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="PositionsInPixels" attrib="1536" ptype="System.Boolean" params="">
+              <property name="PositionsInPixels" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_PositionsInPixels()" returntype="System.Boolean">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Size" attrib="1536" ptype="System.Int32" params="">
+              <property name="Size" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Size()" returntype="System.Int32">
                     <parameters />
@@ -2343,7 +3908,20 @@
               <method name="Copy()" attrib="134" returntype="Pango.TabArray">
                 <parameters />
               </method>
+              <method name="Free(System.IntPtr)" attrib="196" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Free()" attrib="134" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Pango.TabArray is now freed automatically" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters />
               </method>
               <method name="GetTab(System.Int32, out Pango.TabAlign&amp;, out System.Int32&amp;)" attrib="134" returntype="System.Void">
@@ -2374,6 +3952,13 @@
             </methods>
           </class>
           <class name="Underline" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.UnderlineGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2381,12 +3966,34 @@
             </interfaces>
             <fields>
               <field name="Double" attrib="32854" fieldtype="Pango.Underline" value="2" />
+              <field name="Error" attrib="32854" fieldtype="Pango.Underline" value="4" />
               <field name="Low" attrib="32854" fieldtype="Pango.Underline" value="3" />
               <field name="None" attrib="32854" fieldtype="Pango.Underline" value="0" />
               <field name="Single" attrib="32854" fieldtype="Pango.Underline" value="1" />
             </fields>
           </class>
+          <class name="Units" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <methods>
+              <method name="FromPixels(System.Int32)" attrib="150" returntype="System.Int32">
+                <parameters>
+                  <parameter name="pixels" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="ToPixels(System.Int32)" attrib="150" returntype="System.Int32">
+                <parameters>
+                  <parameter name="units" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
           <class name="Variant" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.VariantGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2398,6 +4005,13 @@
             </fields>
           </class>
           <class name="Weight" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.WeightGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />
@@ -2408,11 +4022,19 @@
               <field name="Heavy" attrib="32854" fieldtype="Pango.Weight" value="900" />
               <field name="Light" attrib="32854" fieldtype="Pango.Weight" value="300" />
               <field name="Normal" attrib="32854" fieldtype="Pango.Weight" value="400" />
+              <field name="Semibold" attrib="32854" fieldtype="Pango.Weight" value="600" />
               <field name="Ultrabold" attrib="32854" fieldtype="Pango.Weight" value="800" />
               <field name="Ultralight" attrib="32854" fieldtype="Pango.Weight" value="200" />
             </fields>
           </class>
           <class name="WrapMode" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.WrapModeGType" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.IComparable" />
               <interface name="System.IConvertible" />

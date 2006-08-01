@@ -3,6 +3,7 @@ MCS=mcs
 all: extract-missing.exe mono-api-info.exe mono-api-diff.exe
 
 check: all
+	rm -rf curr diff
 	./get-apiinfo.pl .. curr
 	./get-apidiff.pl base curr diff
 	./get-missing.pl diff

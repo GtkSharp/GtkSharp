@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="glade-sharp" version="1.0.0.0">
+  <assembly name="glade-sharp" version="2.8.0.0">
     <attributes>
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
@@ -60,7 +60,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Glade.XML, Gtk.Widget, System.String, System.String)" attrib="198" returntype="System.Void">
+              <method name="Invoke(Glade.XML, Gtk.Widget, System.String, System.String)" attrib="454" returntype="System.Void">
                 <parameters>
                   <parameter name="xml" position="0" attrib="0" type="Glade.XML" />
                   <parameter name="widget" position="1" attrib="0" type="Gtk.Widget" />
@@ -126,7 +126,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Glade.XML, Gtk.Widget, Glade.WidgetInfo)" attrib="198" returntype="System.Void">
+              <method name="Invoke(Glade.XML, Gtk.Widget, Glade.WidgetInfo)" attrib="454" returntype="System.Void">
                 <parameters>
                   <parameter name="xml" position="0" attrib="0" type="Glade.XML" />
                   <parameter name="parent" position="1" attrib="0" type="Gtk.Widget" />
@@ -142,14 +142,14 @@
               <field name="Zero" attrib="22" fieldtype="Glade.ChildInfo" />
             </fields>
             <properties>
-              <property name="child" attrib="1536" ptype="Glade.WidgetInfo" params="">
+              <property name="child" attrib="0" ptype="Glade.WidgetInfo" params="">
                 <methods>
                   <method name="get_child()" returntype="Glade.WidgetInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="properties" attrib="1536" ptype="Glade.Property" params="">
+              <property name="properties" attrib="0" ptype="Glade.Property" params="">
                 <methods>
                   <method name="get_properties()" returntype="Glade.Property">
                     <parameters />
@@ -193,7 +193,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Glade.XML, Gtk.Widget, System.String)" attrib="198" returntype="Gtk.Widget">
+              <method name="Invoke(Glade.XML, Gtk.Widget, System.String)" attrib="454" returntype="Gtk.Widget">
                 <parameters>
                   <parameter name="xml" position="0" attrib="0" type="Glade.XML" />
                   <parameter name="parent" position="1" attrib="0" type="Gtk.Widget" />
@@ -246,12 +246,20 @@
               <method name="RegisterWidget(GLib.GType, Glade.NewFunc, Glade.BuildChildrenFunc, Glade.FindInternalChildFunc)" attrib="150" returntype="System.Void">
                 <parameters>
                   <parameter name="type" position="0" attrib="0" type="GLib.GType" />
-                  <parameter name="_new" position="1" attrib="0" type="Glade.NewFunc" />
+                  <parameter name="new_func" position="1" attrib="0" type="Glade.NewFunc" />
                   <parameter name="build_children" position="2" attrib="0" type="Glade.BuildChildrenFunc" />
                   <parameter name="find_internal_child" position="3" attrib="0" type="Glade.FindInternalChildFunc" />
                 </parameters>
               </method>
               <method name="SetCustomHandler(Glade.XMLCustomWidgetHandler)" attrib="150" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Glade.XML.CustomHandler static property." />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters>
                   <parameter name="handler" position="0" attrib="0" type="Glade.XMLCustomWidgetHandler" />
                 </parameters>
@@ -263,10 +271,27 @@
               <interface name="System.Runtime.Serialization.ISerializable" />
             </interfaces>
             <constructors>
+              <constructor name=".ctor(System.String, System.String, System.String, System.Reflection.EventInfo, System.Type)" attrib="6278">
+                <parameters>
+                  <parameter name="message" position="0" attrib="0" type="System.String" />
+                  <parameter name="handler_name" position="1" attrib="0" type="System.String" />
+                  <parameter name="signal_name" position="2" attrib="0" type="System.String" />
+                  <parameter name="evnt" position="3" attrib="0" type="System.Reflection.EventInfo" />
+                  <parameter name="delegate_type" position="4" attrib="0" type="System.Type" />
+                </parameters>
+              </constructor>
               <constructor name=".ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)" attrib="6276">
                 <parameters>
                   <parameter name="info" position="0" attrib="0" type="System.Runtime.Serialization.SerializationInfo" />
                   <parameter name="context" position="1" attrib="0" type="System.Runtime.Serialization.StreamingContext" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.String, System.String, System.Reflection.EventInfo, System.Type)" attrib="6278">
+                <parameters>
+                  <parameter name="handler_name" position="0" attrib="0" type="System.String" />
+                  <parameter name="signal_name" position="1" attrib="0" type="System.String" />
+                  <parameter name="evnt" position="2" attrib="0" type="System.Reflection.EventInfo" />
+                  <parameter name="delegate_type" position="3" attrib="0" type="System.Type" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.String, System.String, System.Reflection.EventInfo, System.Type, System.Exception)" attrib="6278">
@@ -278,38 +303,30 @@
                   <parameter name="inner" position="4" attrib="0" type="System.Exception" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.String, System.String, System.Reflection.EventInfo, System.Type)" attrib="6278">
-                <parameters>
-                  <parameter name="handler_name" position="0" attrib="0" type="System.String" />
-                  <parameter name="signal_name" position="1" attrib="0" type="System.String" />
-                  <parameter name="evnt" position="2" attrib="0" type="System.Reflection.EventInfo" />
-                  <parameter name="delegate_type" position="3" attrib="0" type="System.Type" />
-                </parameters>
-              </constructor>
             </constructors>
             <properties>
-              <property name="DelegateType" attrib="1536" ptype="System.Type" params="">
+              <property name="DelegateType" attrib="0" ptype="System.Type" params="">
                 <methods>
                   <method name="get_DelegateType()" returntype="System.Type">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Event" attrib="1536" ptype="System.Reflection.EventInfo" params="">
+              <property name="Event" attrib="0" ptype="System.Reflection.EventInfo" params="">
                 <methods>
                   <method name="get_Event()" returntype="System.Reflection.EventInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="HandlerName" attrib="1536" ptype="System.String" params="">
+              <property name="HandlerName" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_HandlerName()" returntype="System.String">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="SignalName" attrib="1536" ptype="System.String" params="">
+              <property name="SignalName" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_SignalName()" returntype="System.String">
                     <parameters />
@@ -334,9 +351,24 @@
               <field name="Zero" attrib="22" fieldtype="Glade.Interface" />
             </fields>
             <properties>
-              <property name="toplevels" attrib="1536" ptype="Glade.WidgetInfo" params="">
+              <property name="toplevels" attrib="0" ptype="Glade.WidgetInfo" params="">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by Toplevels property" />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <methods>
                   <method name="get_toplevels()" returntype="Glade.WidgetInfo">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Toplevels" attrib="0" ptype="Glade.WidgetInfo[]" params="">
+                <methods>
+                  <method name="get_Toplevels()" returntype="Glade.WidgetInfo[]">
                     <parameters />
                   </method>
                 </methods>
@@ -386,7 +418,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Glade.XML, GLib.GType, Glade.WidgetInfo)" attrib="198" returntype="Gtk.Widget">
+              <method name="Invoke(Glade.XML, GLib.GType, Glade.WidgetInfo)" attrib="454" returntype="Gtk.Widget">
                 <parameters>
                   <parameter name="xml" position="0" attrib="0" type="Glade.XML" />
                   <parameter name="widget_type" position="1" attrib="0" type="GLib.GType" />
@@ -437,6 +469,20 @@
               <field name="Object" attrib="6" fieldtype="System.String" />
               <field name="Zero" attrib="22" fieldtype="Glade.SignalInfo" />
             </fields>
+            <properties>
+              <property name="After" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_After()" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_After(System.Boolean)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
             <methods>
               <method name="New(System.IntPtr)" attrib="150" returntype="Glade.SignalInfo">
                 <parameters>
@@ -478,6 +524,9 @@
                 </properties>
               </attribute>
             </attributes>
+            <interfaces>
+              <interface name="System.Runtime.InteropServices._Attribute" />
+            </interfaces>
             <constructors>
               <constructor name=".ctor()" attrib="6278">
                 <parameters />
@@ -489,14 +538,14 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Name" attrib="1536" ptype="System.String" params="">
+              <property name="Name" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Name()" returntype="System.String">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Specified" attrib="1536" ptype="System.Boolean" params="">
+              <property name="Specified" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_Specified()" returntype="System.Boolean">
                     <parameters />
@@ -508,6 +557,7 @@
           <class name="WidgetInfo" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
             <fields>
               <field name="Classname" attrib="6" fieldtype="System.String" />
+              <field name="Name" attrib="6" fieldtype="System.String" />
               <field name="NAccels" attrib="6" fieldtype="System.UInt32" />
               <field name="NAtkActions" attrib="6" fieldtype="System.UInt32" />
               <field name="NAtkProps" attrib="6" fieldtype="System.UInt32" />
@@ -515,60 +565,59 @@
               <field name="NProperties" attrib="6" fieldtype="System.UInt32" />
               <field name="NRelations" attrib="6" fieldtype="System.UInt32" />
               <field name="NSignals" attrib="6" fieldtype="System.UInt32" />
-              <field name="Name" attrib="6" fieldtype="System.String" />
               <field name="Zero" attrib="22" fieldtype="Glade.WidgetInfo" />
             </fields>
             <properties>
-              <property name="accels" attrib="1536" ptype="Glade.AccelInfo" params="">
+              <property name="accels" attrib="0" ptype="Glade.AccelInfo" params="">
                 <methods>
                   <method name="get_accels()" returntype="Glade.AccelInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="atk_actions" attrib="1536" ptype="Glade.AtkActionInfo" params="">
+              <property name="atk_actions" attrib="0" ptype="Glade.AtkActionInfo" params="">
                 <methods>
                   <method name="get_atk_actions()" returntype="Glade.AtkActionInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="atk_props" attrib="1536" ptype="Glade.Property" params="">
+              <property name="atk_props" attrib="0" ptype="Glade.Property" params="">
                 <methods>
                   <method name="get_atk_props()" returntype="Glade.Property">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="children" attrib="1536" ptype="Glade.ChildInfo" params="">
+              <property name="children" attrib="0" ptype="Glade.ChildInfo" params="">
                 <methods>
                   <method name="get_children()" returntype="Glade.ChildInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="parent" attrib="1536" ptype="Glade.WidgetInfo" params="">
+              <property name="parent" attrib="0" ptype="Glade.WidgetInfo" params="">
                 <methods>
                   <method name="get_parent()" returntype="Glade.WidgetInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="properties" attrib="1536" ptype="Glade.Property" params="">
+              <property name="properties" attrib="0" ptype="Glade.Property" params="">
                 <methods>
                   <method name="get_properties()" returntype="Glade.Property">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="relations" attrib="1536" ptype="Glade.AtkRelationInfo" params="">
+              <property name="relations" attrib="0" ptype="Glade.AtkRelationInfo" params="">
                 <methods>
                   <method name="get_relations()" returntype="Glade.AtkRelationInfo">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="signals" attrib="1536" ptype="Glade.SignalInfo" params="">
+              <property name="signals" attrib="0" ptype="Glade.SignalInfo" params="">
                 <methods>
                   <method name="get_signals()" returntype="Glade.SignalInfo">
                     <parameters />
@@ -653,21 +702,30 @@
               </constructor>
             </constructors>
             <properties>
-              <property name="Filename" attrib="1536" ptype="System.String" params="">
+              <property name="CustomHandler" attrib="0" ptype="Glade.XMLCustomWidgetHandler" params="Glade.XMLCustomWidgetHandler">
+                <methods>
+                  <method name="set_CustomHandler(Glade.XMLCustomWidgetHandler)" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Glade.XMLCustomWidgetHandler" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Filename" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Filename()" returntype="System.String">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="GType" attrib="1536" ptype="GLib.GType" params="">
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" returntype="GLib.GType">
                     <parameters />
                   </method>
                 </methods>
               </property>
-              <property name="Item" attrib="1536" ptype="Gtk.Widget" params="System.String">
+              <property name="Item" attrib="0" ptype="Gtk.Widget" params="System.String">
                 <methods>
                   <method name="get_Item(System.String)" returntype="Gtk.Widget">
                     <parameters>
@@ -676,7 +734,7 @@
                   </method>
                 </methods>
               </property>
-              <property name="Toplevel" attrib="1536" ptype="Gtk.Window" params="Gtk.Window">
+              <property name="Toplevel" attrib="0" ptype="Gtk.Window" params="Gtk.Window">
                 <methods>
                   <method name="set_Toplevel(Gtk.Window)" returntype="System.Void">
                     <parameters>
@@ -792,6 +850,14 @@
                 </parameters>
               </method>
               <method name="SetCustomHandler(Glade.XMLCustomWidgetHandler)" attrib="150" returntype="System.Void">
+                <attributes>
+                  <attribute name="System.ObsoleteAttribute">
+                    <properties>
+                      <property name="Message" value="Replaced by CustomHandler property." />
+                      <property name="IsError" value="False" />
+                    </properties>
+                  </attribute>
+                </attributes>
                 <parameters>
                   <parameter name="handler" position="0" attrib="0" type="Glade.XMLCustomWidgetHandler" />
                 </parameters>
@@ -858,7 +924,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(System.String, GLib.Object, System.String, System.String, GLib.Object, System.Boolean)" attrib="198" returntype="System.Void">
+              <method name="Invoke(System.String, GLib.Object, System.String, System.String, GLib.Object, System.Boolean)" attrib="454" returntype="System.Void">
                 <parameters>
                   <parameter name="handler_name" position="0" attrib="0" type="System.String" />
                   <parameter name="objekt" position="1" attrib="0" type="GLib.Object" />
@@ -902,7 +968,7 @@
                   <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
                 </parameters>
               </method>
-              <method name="Invoke(Glade.XML, System.String, System.String, System.String, System.String, System.Int32, System.Int32)" attrib="198" returntype="Gtk.Widget">
+              <method name="Invoke(Glade.XML, System.String, System.String, System.String, System.String, System.Int32, System.Int32)" attrib="454" returntype="Gtk.Widget">
                 <parameters>
                   <parameter name="xml" position="0" attrib="0" type="Glade.XML" />
                   <parameter name="func_name" position="1" attrib="0" type="System.String" />
