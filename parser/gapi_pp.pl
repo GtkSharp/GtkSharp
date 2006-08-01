@@ -210,7 +210,8 @@ foreach $fname (@srcs, @privhdrs) {
 				}
 				$line = <INFILE>;
 			} while ($parens > 0);
-			print $macro;
+			print "$macro\n";
+			next if ($line !~ /^(struct|\w+_class_init|\w+_base_init)/);
 		}
 
 		if ($line =~ /^struct/) {
