@@ -71,3 +71,15 @@
 			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
 		}
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern bool gtk_tree_model_filter_convert_child_iter_to_iter (IntPtr raw, out Gtk.TreeIter filter_iter, ref Gtk.TreeIter child_iter);
+
+		public TreeIter ConvertChildIterToIter (Gtk.TreeIter child_iter)
+		{
+			TreeIter filter_iter;
+			if (gtk_tree_model_filter_convert_child_iter_to_iter(Handle, out filter_iter, ref child_iter))
+				return filter_iter;
+			else
+				return TreeIter.Zero;
+		}
+
