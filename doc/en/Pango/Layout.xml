@@ -3,7 +3,7 @@
   <AssemblyInfo>
     <AssemblyName>pango-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -66,8 +66,7 @@ class LayoutSample : DrawingArea
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName="MoveCursorVisually">
       <MemberSignature Language="C#" Value="public void MoveCursorVisually (bool strong, int old_index, int old_trailing, int direction, out int new_index, out int new_trailing);" />
@@ -634,5 +633,25 @@ The X coordinate of the resulting <see cref="T:Pango.Rectangle" /> represents th
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
-  </Members>
+  <Member MemberName="IndexToLineX">
+      <MemberSignature Language="C#" Value="public void IndexToLineX (int index_, bool trailing, out int line, out int x_pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index_" Type="System.Int32" />
+        <Parameter Name="trailing" Type="System.Boolean" />
+        <Parameter Name="line" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="x_pos" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="index_">a byte index of a grapheme within the layout.</param>
+        <param name="trailing">Somewhat confusingly, <see langword="false" /> for the trailing edge of the grapheme, <see langword="true" /> for the leading.</param>
+        <param name="line">Returns the line index of the grapheme, starting with index 0.</param>
+        <param name="x_pos">Returns the x offset of the grapheme in Pango units.</param>
+        <summary>Converts from a byte index to a line and X position.</summary>
+        <remarks>The <paramref name="x_pos" /> is measured from the left edge of the line.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs></Member></Members>
 </Type>
