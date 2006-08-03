@@ -7,7 +7,7 @@ EXTRA_DIST =				\
 
 
 GTK_2_10_DOWNLOADS = \
-	ftp://ftp.gtk.org/pub/gtk/v2.11/pango-1.13.3.tar.bz2                           	\
+	ftp://ftp.gtk.org/pub/gtk/v2.10/pango-1.12.3.tar.bz2                           	\
 	ftp://ftp.gtk.org/pub/gtk/v2.8/atk-1.10.3.tar.bz2                              	\
 	ftp://ftp.gtk.org/pub/gtk/v2.10/gtk+-2.10.0.tar.bz2				\
 	http://ftp.gnome.org/pub/GNOME/desktop/2.6/2.6.0/sources/libglade-2.3.6.tar.bz2
