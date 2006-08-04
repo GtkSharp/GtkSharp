@@ -50,3 +50,23 @@
 			return result;
 		}
 
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern IntPtr gdk_screen_get_font_options(IntPtr raw);
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_screen_set_font_options(IntPtr raw, IntPtr options);
+
+		[GLib.Property ("font-options")]
+		public Cairo.FontOptions FontOptions {
+			get  {
+				IntPtr raw_ret = gdk_screen_get_font_options(Handle);
+				if (raw_ret == IntPtr.Zero)
+					return null;
+				System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.CreateInstance;
+				return Activator.CreateInstance (typeof (Cairo.FontOptions), flags, null, new object [] {raw_ret}, null) as Cairo.FontOptions;
+			}
+			set  {
+				gdk_screen_set_font_options(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+

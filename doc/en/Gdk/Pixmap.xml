@@ -4,7 +4,7 @@
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -17,8 +17,7 @@ The depth of a pixmap is the number of bits per pixels. Bitmaps are simply pixma
   <Base>
     <BaseTypeName>Gdk.Drawable</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName="Lookup">
       <MemberSignature Language="C#" Value="public static Gdk.Pixmap Lookup (uint anid);" />
@@ -397,6 +396,31 @@ For example in the X backend, a native pixmap handle is an Xlib XID.
         <returns>The bitmap.</returns>
         <remarks>None.</remarks>
         <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="ForeignNewForScreen">
+      <MemberSignature Language="C#" Value="public static Gdk.Pixmap ForeignNewForScreen (Gdk.Screen screen, uint anid, int width, int height, int depth);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Pixmap</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="screen" Type="Gdk.Screen" />
+        <Parameter Name="anid" Type="System.UInt32" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="depth" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="screen">the desired screen.</param>
+        <param name="anid">Native pixmap handle, for example, an xlib XID.</param>
+        <param name="width">Width of pixmap <paramref name="anid" />.</param>
+        <param name="height">Height of pixmap <paramref name="anid" />.</param>
+        <param name="depth">Depth of pixmap <paramref name="anid" />.</param>
+        <summary>Wraps a native Pixmap for a screen.</summary>
+        <returns>a <see cref="T:Gdk.Pixmap" /> wrapping the native ID, or <see langword="null" /> if the native pixmap is destroyed.</returns>
+        <remarks>Use this method as an alternative to <see cref="M:Gdk.Pixmap.ForeignNewForDisplay" /> when the dimensions and screen are known, which saves a roundtrip to the server on X.</remarks>
+        <since version="Gtk# 2.10" />
       </Docs>
     </Member>
   </Members>

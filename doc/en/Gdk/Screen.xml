@@ -4,7 +4,7 @@
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -14,8 +14,7 @@
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public Screen (IntPtr raw);" />
@@ -428,6 +427,111 @@ Console.WriteLine("You have {0} monitors.",numMonitors);
         <value>a  <see cref="T:Gdk.Colormap" /> or <see langword="null" />.</value>
         <remarks>The windowing system may not support this capability, in which case <see langword="null" /> will be returned. Even if a non-<see langword="null" /> value is returned, its possible that the drawable's alpha channel won't be honored when displaying on screen: in particular, for X an appropriate windowing manager and compositing manager must be running to provide appropriate display.</remarks>
         <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="CompositedChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler CompositedChanged;" />
+      <MemberType>Event</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Signal(CName="composited_changed")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Raised when the composited status of the screen changes.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnCompositedChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnCompositedChanged ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Default handler for the <see cref="M:Gdk.Screen.CompositedChanged" /> event.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="Resolution">
+      <MemberSignature Language="C#" Value="public double Resolution { set; get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="resolution")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The resolution for fonts on the screen.</summary>
+        <value>the scaling factor from pango units to cairo units.</value>
+        <remarks>The default is -1.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="FontOptions">
+      <MemberSignature Language="C#" Value="public Cairo.FontOptions FontOptions { set; get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="font-options")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Cairo.FontOptions</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The default font options for the screen.</summary>
+        <value>The default <see cref="Cairo.FontOptions" />.</value>
+        <remarks>If multiple accesses to this information are needed, you may want to consider cacheing the result.  The get accessor needs to use reflection to create the FontOptions instance and could possibly cause performance issues if called frequently.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="ActiveWindow">
+      <MemberSignature Language="C#" Value="public Gdk.Window ActiveWindow { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current active window for the screen.</summary>
+        <value>a <see cref="Gdk.Window" />.</value>
+        <remarks>Returns <see langword="null" /> if there is no current active window or the window manager doesn't support the necessary properties to determine the active window.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsComposited">
+      <MemberSignature Language="C#" Value="public bool IsComposited { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates if compositing is supported.</summary>
+        <value>If <see langword="true" /> compositing is supported.</value>
+        <remarks>Indicates if RGBA visuals with an alpha value can be expected to have their alpha channel drawn properly on screen.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="WindowStack">
+      <MemberSignature Language="C#" Value="public Gdk.Window[] WindowStack { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Window[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current window stack for the screen.</summary>
+        <value>an array of <see cref="Gdk.Window" /> representing the window stack.</value>
+        <remarks>This property depends on optional Window Manager features.  If the feature is not supported, an empty array will be returned.</remarks>
+        <since version="Gtk# 2.10" />
       </Docs>
     </Member>
   </Members>

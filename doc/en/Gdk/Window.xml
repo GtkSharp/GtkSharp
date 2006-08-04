@@ -4,7 +4,7 @@
     <AssemblyName>gdk-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -19,8 +19,7 @@
   <Base>
     <BaseTypeName>Gdk.Drawable</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName="ProcessAllUpdates">
       <MemberSignature Language="C#" Value="public static void ProcessAllUpdates ();" />
@@ -1370,7 +1369,7 @@ in a child).
       </Docs>
     </Member>
     <Member MemberName="TypeHint">
-      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { set; };" />
+      <MemberSignature Language="C#" Value="public Gdk.WindowTypeHint TypeHint { set; get; };" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>Gdk.WindowTypeHint</ReturnType>
@@ -2025,6 +2024,72 @@ The color must be allocated;
           <see langword="true" /> to set the hint, or <see langword="false" /> to clear it.</value>
         <remarks />
         <since version="Gtk# 2.8" />
+      </Docs>
+    </Member>
+    <Member MemberName="InputShapeCombineMask">
+      <MemberSignature Language="C#" Value="public void InputShapeCombineMask (Gdk.Pixmap mask, int x, int y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mask" Type="Gdk.Pixmap" />
+        <Parameter Name="x" Type="System.Int32" />
+        <Parameter Name="y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="mask">a <see cref="T:Gdk.Pixmap" /> containing the mask.</param>
+        <param name="x">x offset within the Window.</param>
+        <param name="y">y offset within the Window.</param>
+        <summary>Applies an Input shape mask to the Window.</summary>
+        <remarks>Depends on optional features within the windowing environment.  If those features aren't supporting the method has no effect.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetChildInputShapes">
+      <MemberSignature Language="C#" Value="public void SetChildInputShapes ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Sets the input mask to the union of all child window masks.</summary>
+        <remarks>Ignores the windows own mask.  If you wish to add the child window masks to the parent, use <see cref="M:Gdk.Window.MergeChildInputShapes" />.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="InputShapeCombineRegion">
+      <MemberSignature Language="C#" Value="public void InputShapeCombineRegion (Gdk.Region shape_region, int offset_x, int offset_y);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="shape_region" Type="Gdk.Region" />
+        <Parameter Name="offset_x" Type="System.Int32" />
+        <Parameter Name="offset_y" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="shape_region">a <see cref="T:Gdk.Region" /> containing the desired input mask.</param>
+        <param name="offset_x">x offset within the Window.</param>
+        <param name="offset_y">y offset within the Window.</param>
+        <summary>Applies an Input shape region to the Window.</summary>
+        <remarks>Depends on optional features within the windowing environment.  If those features aren't supporting the method has no effect.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="MergeChildInputShapes">
+      <MemberSignature Language="C#" Value="public void MergeChildInputShapes ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Merges the union of all child window masks into the Input mask.</summary>
+        <remarks>Includes the current window input mask.  To ignore the parent mask, use <see cref="M:Gdk.Window.SetChildInputShapes" />.</remarks>
+        <since version="Gtk# 2.10" />
       </Docs>
     </Member>
   </Members>
