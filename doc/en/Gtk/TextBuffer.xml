@@ -16,8 +16,7 @@
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName="Clear">
       <MemberSignature Language="C#" Value="public void Clear ();" />
@@ -1883,6 +1882,290 @@
         <param name="end">To be added.</param>
         <summary>Delete text between two iterators.</summary>
         <remarks>This overload is obsolete, replaced by ref TextIter overloads since the iters passed in are updated by the caller.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnregisterSerializeFormat">
+      <MemberSignature Language="C#" Value="public void UnregisterSerializeFormat (Gdk.Atom format);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="format">format to unregister.</param>
+        <summary>Removes a Serialization format from the registry.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterDeserializeTagset">
+      <MemberSignature Language="C#" Value="public Gdk.Atom RegisterDeserializeTagset (string tagset_name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tagset_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="tagset_name">name of tagset, or <see langword="null" />.</param>
+        <summary>Registers TextBuffer's internal serialization format.</summary>
+        <returns>The newly registered format's mime type.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterSerializeFormat">
+      <MemberSignature Language="C#" Value="public Gdk.Atom RegisterSerializeFormat (string mime_type, Gtk.TextBufferSerializeFunc function);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mime_type" Type="System.String" />
+        <Parameter Name="function" Type="Gtk.TextBufferSerializeFunc" />
+      </Parameters>
+      <Docs>
+        <param name="mime_type">A MIME type target.</param>
+        <param name="function">Serialization formatter for the specified <paramref name="mime_type" />.</param>
+        <summary>Registers a serialization formatter for a given MIME type.</summary>
+        <returns />
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterSerializeTagset">
+      <MemberSignature Language="C#" Value="public Gdk.Atom RegisterSerializeTagset (string tagset_name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tagset_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="tagset_name">name of tagset, or <see langword="null" />.</param>
+        <summary>Registers TextBuffer's internal serialization format.</summary>
+        <returns>The newly registered format's mime type.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterDeserializeFormat">
+      <MemberSignature Language="C#" Value="public Gdk.Atom RegisterDeserializeFormat (string mime_type, Gtk.TextBufferDeserializeFunc function);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mime_type" Type="System.String" />
+        <Parameter Name="function" Type="Gtk.TextBufferDeserializeFunc" />
+      </Parameters>
+      <Docs>
+        <param name="mime_type">a MIME type target.</param>
+        <param name="function">Serialization formatter for the specified <paramref name="mime_type" />.</param>
+        <summary>Registers a deserialization handler for a given MIME type.</summary>
+        <returns>an atom representing the MIME type.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="UnregisterDeserializeFormat">
+      <MemberSignature Language="C#" Value="public void UnregisterDeserializeFormat (Gdk.Atom format);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="format">format Atom for a MIME type.</param>
+        <summary>Removes a registered MIME type handler from the buffer.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="DeserializeGetCanCreateTags">
+      <MemberSignature Language="C#" Value="public bool DeserializeGetCanCreateTags (Gdk.Atom format);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="Gdk.Atom" />
+      </Parameters>
+      <Docs>
+        <param name="format">a MIME type Atom.</param>
+        <summary>Determines if tag creation is supported for a MIME type deserializer.</summary>
+        <returns>if <see langword="true" />, tag creation is supported.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="DeserializeSetCanCreateTags">
+      <MemberSignature Language="C#" Value="public void DeserializeSetCanCreateTags (Gdk.Atom format, bool can_create_tags);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="Gdk.Atom" />
+        <Parameter Name="can_create_tags" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="format">a MIME type Atom.</param>
+        <param name="can_create_tags">a <see cref="T:System.Boolean" />.</param>
+        <summary>Enables or disables arbitrary tag creation.</summary>
+        <remarks>In most cases, you don't want to do this, as it will put arbitrary tags in the buffer.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="CursorPosition">
+      <MemberSignature Language="C#" Value="public int CursorPosition { get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="cursor-position")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Position of the insert mark.</summary>
+        <value>a <see cref="T:System.Int32" /> representing the offset to the cursor from the beginning of the buffer.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="PasteTargetList">
+      <MemberSignature Language="C#" Value="public Gtk.TargetList PasteTargetList { get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="paste-target-list")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TargetList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Obtains the paste TargetList.</summary>
+        <value>a <see cref="Gtk.TargetList" />.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="HasSelection">
+      <MemberSignature Language="C#" Value="public bool HasSelection { get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="has-selection")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates presence of a selection.</summary>
+        <value>if <see langword="true" />, there is text selected currently.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="CopyTargetList">
+      <MemberSignature Language="C#" Value="public Gtk.TargetList CopyTargetList { get; };" />
+      <MemberType>Property</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>GLib.Property(Name="copy-target-list")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Gtk.TargetList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Obtains the copy TargetList.</summary>
+        <value>a <see cref="T:Gtk.TargetList" />.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="Deserialize">
+      <MemberSignature Language="C#" Value="public bool Deserialize (Gtk.TextBuffer content_buffer, Gdk.Atom format, ref Gtk.TextIter iter, byte[] data, ulong length);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="content_buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="format" Type="Gdk.Atom" />
+        <Parameter Name="iter" Type="Gtk.TextIter&amp;" RefType="ref" />
+        <Parameter Name="data" Type="System.Byte[]" />
+        <Parameter Name="length" Type="System.UInt64" />
+      </Parameters>
+      <Docs>
+        <param name="content_buffer">buffer to deserialize content.</param>
+        <param name="format">MIME type format.</param>
+        <param name="iter">insertion point.</param>
+        <param name="data">serialized data.</param>
+        <param name="length">length of serialized data.</param>
+        <summary>Deserialize content.</summary>
+        <returns>a <see cref="T:System.Boolean" />.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="Serialize">
+      <MemberSignature Language="C#" Value="public byte[] Serialize (Gtk.TextBuffer content_buffer, Gdk.Atom format, Gtk.TextIter start, Gtk.TextIter end);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="content_buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="format" Type="Gdk.Atom" />
+        <Parameter Name="start" Type="Gtk.TextIter" />
+        <Parameter Name="end" Type="Gtk.TextIter" />
+      </Parameters>
+      <Docs>
+        <param name="content_buffer">buffer containing text to serialize.</param>
+        <param name="format">MIME type format.</param>
+        <param name="start">beginning of desired text.</param>
+        <param name="end">end of desired text.</param>
+        <summary>Serializes a range of text.</summary>
+        <returns>the serialized data stream.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="DeserializeFormats">
+      <MemberSignature Language="C#" Value="public Gdk.Atom[] DeserializeFormats { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The supported MIME type formats for deserialization.</summary>
+        <value>an array of MIME type Atoms.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SerializeFormats">
+      <MemberSignature Language="C#" Value="public Gdk.Atom[] SerializeFormats { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Atom[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The supported MIME type formats for Serialization.</summary>
+        <value>an array of MIME type Atoms.</value>
+        <remarks />
+        <since version="Gtk# 2.10" />
       </Docs>
     </Member>
   </Members>
