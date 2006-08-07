@@ -80,6 +80,7 @@ customs = 				\
 	Notebook.custom			\
 	Object.custom			\
 	Plug.custom			\
+	Printer.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\
 	RadioToolButton.custom		\
