@@ -66,3 +66,52 @@
 		{
 			Text = text;
 		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern IntPtr gtk_clipboard_wait_for_rich_text (IntPtr raw, IntPtr buffer, out IntPtr format, out UIntPtr length);
+
+		public byte[] WaitForRichText(Gtk.TextBuffer buffer, out Gdk.Atom format) 
+		{
+			UIntPtr length;
+			IntPtr format_as_native;
+			IntPtr raw_ret = gtk_clipboard_wait_for_rich_text (Handle, buffer == null ? IntPtr.Zero : buffer.Handle, out format_as_native, out length);
+			format = format_as_native == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format_as_native, typeof (Gdk.Atom), false);
+			if (raw_ret == IntPtr.Zero)
+				return new byte [0];
+			int sz = (int) (uint) length;
+			byte[] ret = new byte [sz];
+			Marshal.Copy (ret, 0, raw_ret, sz);
+			return ret;
+		}
+
+		public delegate void RichTextReceivedFunc (Gtk.Clipboard clipboard, Gdk.Atom format, byte[] text);
+
+		static RichTextReceivedFuncNative rt_rcvd_marshaler;
+
+		[GLib.CDeclCallback]
+		delegate void RichTextReceivedFuncNative (IntPtr clipboard, IntPtr format, IntPtr text, UIntPtr length, IntPtr data);
+
+
+		void RichTextReceivedCallback (IntPtr clipboard_ptr, IntPtr format_ptr, IntPtr text_ptr, UIntPtr length, IntPtr data)
+		{
+			Gtk.Clipboard clipboard = GLib.Object.GetObject(clipboard_ptr) as Gtk.Clipboard;
+			Gdk.Atom format = format_ptr == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format_ptr, typeof (Gdk.Atom), false);
+			int sz = (int) (uint) length;
+			byte[] text = new byte [sz];
+			Marshal.Copy (text, 0, text_ptr, sz);
+			GCHandle gch = (GCHandle) data;
+			RichTextReceivedFunc cb = gch.Target as RichTextReceivedFunc;
+			cb (clipboard, format, text);
+			gch.Free ();
+		}
+
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_clipboard_request_rich_text(IntPtr raw, IntPtr buffer, RichTextReceivedFuncNative cb, IntPtr user_data);
+
+		public void RequestRichText (Gtk.TextBuffer buffer, RichTextReceivedFunc cb) 
+		{
+			if (rt_rcvd_marshaler == null)
+				rt_rcvd_marshaler = new RichTextReceivedFuncNative (RichTextReceivedCallback);
+			gtk_clipboard_request_rich_text (Handle, buffer == null ? IntPtr.Zero : buffer.Handle, rt_rcvd_marshaler, (IntPtr) GCHandle.Alloc (cb));
+		}
+

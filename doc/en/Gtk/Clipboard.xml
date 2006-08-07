@@ -21,8 +21,7 @@
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
   </Base>
-  <Interfaces>
-  </Interfaces>
+  <Interfaces></Interfaces>
   <Members>
     <Member MemberName="Get">
       <MemberSignature Language="C#" Value="public static Gtk.Clipboard Get (Gdk.Atom selection);" />
@@ -492,6 +491,60 @@
         <summary>Default handler for the <see cref="M:Gtk.Clipboard.OwnerChange" /> event.</summary>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Gtk.Clipboard.OwnerChange" /> event.</remarks>
         <since version="Gtk# 2.6" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitIsRichTextAvailable">
+      <MemberSignature Language="C#" Value="public bool WaitIsRichTextAvailable (Gtk.TextBuffer buffer);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">a <see cref="T:Gtk.TextBuffer" />.</param>
+        <summary>Tests if Rich Text is available for pasting.</summary>
+        <returns>if <see langword="true" />, rich text is available.</returns>
+        <remarks>This method is slightly faster that <see cref="M:Gtk.Clipboard.WaitForRichText" /> since it doesn't retrieve the actual text. Uses the main loop, so events and timeouts may be dispatched during the wait.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForRichText">
+      <MemberSignature Language="C#" Value="public byte[] WaitForRichText (Gtk.TextBuffer buffer, out Gdk.Atom format);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="format" Type="Gdk.Atom&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="format">To be added.</param>
+        <summary>Requests contents as Rich Text.</summary>
+        <returns>a byte array holding the contents.</returns>
+        <remarks>Uses the main loop, so events and timeouts may be dispatched during the wait.</remarks>
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestRichText">
+      <MemberSignature Language="C#" Value="public void RequestRichText (Gtk.TextBuffer buffer, Gtk.Clipboard+RichTextReceivedFunc cb);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="Gtk.TextBuffer" />
+        <Parameter Name="cb" Type="Gtk.Clipboard+RichTextReceivedFunc" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">a <see cref="T:Gtk.TextBuffer" />.</param>
+        <param name="cb">callback to invoke when data is prepared.</param>
+        <summary>Requests the contents as Rich Text asynchronously.</summary>
+        <remarks />
+        <since version="Gtk# 2.10" />
       </Docs>
     </Member>
   </Members>
