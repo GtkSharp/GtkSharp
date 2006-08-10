@@ -1,5 +1,5 @@
 assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
-references = $(addprefix /r:, $(assemblies))
+references = $(addprefix /r:, $(assemblies)) -r:Mono.Cairo
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)
@@ -31,7 +31,8 @@ sources = \
 	DemoStockBrowser.cs		\
 	DemoTextView.cs			\
 	DemoTreeStore.cs		\
-	DemoUIManager.cs
+	DemoUIManager.cs		\
+	DemoPrinting.cs
 
 images = \
 	images/gnome-foot.png,gnome-foot.png \
