@@ -970,13 +970,13 @@ sub addSignalElem
 		return $class;
 	}
 
-	if ($class =~ /;\s*(\/\*< public >\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
-		$ret = $3; $parms = $4;
+	if ($class =~ /;\s*(\/\*< (public|protected) >\s*\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
+		$ret = $4; $parms = $5;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
 			addParamsElem($sig_elem, split(/,/, $parms));
 		}
-		$class =~ s/;\s*(\/\*< public >\*\/)?(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
+		$class =~ s/;\s*(\/\*< (public|protected) >\s*\*\/)?(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
 		die "$method $class";
 	}
