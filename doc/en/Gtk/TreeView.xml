@@ -18,25 +18,9 @@
 	To create a tree or list in GTK#, you need to use the <see cref="T:Gtk.TreeModel" /> interface, in conjunction with the
 	<see cref="T:Gtk.TreeView" /> widget.  This widget is designed around a
 	Model/View/Controller design and consists of four major parts:
-	<list type="bullet">
-          <item>
-            <term>
-              <see cref="T:Gtk.TreeView" />, the tree view widget
-			</term>
-          </item>
-          <item>
-            <term>
-              <see cref="T:Gtk.TreeViewColumn" />, the view column.
-			</term>
-          </item>
-          <item>
-            <term>The cell renderers (<see cref="T:Gtk.CellRenderer" /> and others).</term>
-          </item>
-          <item>
-            <term>
-              <see cref="T:Gtk.TreeModel" />, the model interface.</term>
-          </item>
-        </list></para>
+	<list type="bullet"><item><term><see cref="T:Gtk.TreeView" />, the tree view widget
+			</term></item><item><term><see cref="T:Gtk.TreeViewColumn" />, the view column.
+			</term></item><item><term>The cell renderers (<see cref="T:Gtk.CellRenderer" /> and others).</term></item><item><term><see cref="T:Gtk.TreeModel" />, the model interface.</term></item></list></para>
       <para>
 	The View is composed of the first three, while the last is the
 	Model. One of the prime benefits of the MVC design is that
@@ -53,8 +37,7 @@
 	"False", "On" or "Off", or should you render it as a checkbox?
       </para>
       <para>A simple list:
-      <example>
-          <code lang="C#">
+      <example><code lang="C#">
 using System;
 using Gtk;
 
@@ -97,11 +80,9 @@ public class TreeViewSample {
 		args.RetVal = true;
 	}
 }
-	</code>
-        </example></para>
+	</code></example></para>
       <para>A more advanced example:
-      <example>
-          <code lang="C#">
+      <example><code lang="C#">
 using System;
 using System.Reflection;
 using Gtk;
@@ -217,15 +198,15 @@ public class TreeViewDemo {
 		System.Environment.Exit (0);
 	}
 }
-        </code>
-        </example></para>
+        </code></example></para>
       <para>For a example how to handle selection events, or to determine the currently selected row, see <see cref="T:Gtk.TreeSelection" />.</para>
     </remarks>
   </Docs>
   <Base>
     <BaseTypeName>Gtk.Container</BaseTypeName>
   </Base>
-  <Interfaces></Interfaces>
+  <Interfaces>
+  </Interfaces>
   <Members>
     <Member MemberName="RemoveColumn">
       <MemberSignature Language="C#" Value="public int RemoveColumn (Gtk.TreeViewColumn column);" />
@@ -1139,7 +1120,63 @@ This property tells GTK# that the user interface for your application requires u
       <Parameters />
       <Docs>
         <summary>Raised when the cursor changes (rows).</summary>
-        <remarks />
+        <remarks>
+          <example>
+            <code lang="C#">
+using Gtk;
+using System;
+
+class MainClass
+{
+     public static int Main (string[] args)
+     {
+          Application.Init ();
+          
+          Window win = new Window("TreeView Cursor Changed Example");
+          win.DeleteEvent += OnWindowDelete;
+          
+          TreeStore store = new TreeStore(typeof(string), typeof(string));
+          for (int i = 0; i &lt; 5; i++)
+               store.AppendValues("demo " + i, "data " + i);
+          
+          TreeView tv = new TreeView();
+          tv.HeadersVisible = true;
+          tv.Selection.Mode = SelectionMode.Single;
+          
+          tv.AppendColumn("Demo", new CellRendererText(), "text", 0);
+          tv.AppendColumn("Data", new CellRendererText(), "text", 1);
+          tv.CursorChanged += OnCursorChanged;
+          
+          tv.Model = store;
+          
+          win.Add(tv);
+               
+          win.ShowAll();
+          Application.Run ();
+          
+          return 0;
+     }
+     
+     static void OnWindowDelete(object obj, DeleteEventArgs args)
+     {
+          Application.Quit();
+     }
+     
+     static void OnCursorChanged(object obj, EventArgs e)
+     {
+          TreeSelection selection = (obj as TreeView).Selection;
+          
+          TreeModel model;
+          TreeIter iter;
+          
+          // The iter will point to the selected row
+          if(selection.GetSelected(out model, out iter))
+          	Console.WriteLine("Path of selected row = {0}", model.GetPath(iter));               
+     }     
+}
+  </code>
+          </example>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
