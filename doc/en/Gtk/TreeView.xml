@@ -1086,6 +1086,47 @@ This property tells GTK# that the user interface for your application requires u
 	This event is usually raised when the user doubleclicks a row.
   </para>
           </block>
+          <example>
+            <code lang="C#">
+using System;
+using Gtk;
+ 
+class Selection
+{
+	static void Main ()
+	{
+		Application.Init ();
+		Window win = new Window ("Row activated sample");
+		win.DeleteEvent += OnWinDelete;
+
+		TreeView tv = new TreeView ();
+		tv.AppendColumn ("Items", new CellRendererText (), "text", 0);
+
+		ListStore store = new ListStore (typeof (string));
+		store.AppendValues ("item 1");
+		store.AppendValues ("item 2");
+		
+		tv.Model = store;
+		tv.RowActivated += OnRowActivate;
+
+		win.Add (tv);
+		win.ShowAll ();
+		Application.Run ();
+	}
+   
+	static void OnRowActivate (object o, RowActivatedArgs args)
+	{
+		Console.WriteLine("row {0} was doubleclicked", args.Path);
+	}
+   
+	static void OnWinDelete (object o, DeleteEventArgs args)
+	{
+		Application.Quit ();
+	}
+}
+
+  </code>
+          </example>
         </remarks>
       </Docs>
       <Attributes>
