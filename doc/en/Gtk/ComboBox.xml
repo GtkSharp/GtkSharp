@@ -416,7 +416,23 @@ class ComboBoxSample
       <Parameters />
       <Docs>
         <summary>Default constructor</summary>
-        <remarks />
+        <remarks>
+          <example>
+            <code lang="C#">
+Gtk.ComboBox cb = new ComboBox();
+cb.Clear();
+CellRendererText cell = new CellRendererText();
+cb.PackStart(cell, false);
+cb.AddAttribute(cell, "text", 0);
+ListStore store = new ListStore(typeof (string));
+cb.Model = store;
+
+store.AppendValues ("Hello");
+store.AppendValues ("Gtk");
+store.AppendValues ("ComboBox");
+  </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
