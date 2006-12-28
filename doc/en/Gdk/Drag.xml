@@ -27,9 +27,9 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Drops on the current destination.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <param name="time_">the timestamp for this operation.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -50,17 +50,17 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Updates the drag context when the pointer moves or the set of actions changes.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="dest_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol" /></param>
-        <param name="x_root">a <see cref="T:System.Int32" /></param>
-        <param name="y_root">a <see cref="T:System.Int32" /></param>
-        <param name="suggested_action">a <see cref="T:Gdk.DragAction" /></param>
-        <param name="possible_actions">a <see cref="T:Gdk.DragAction" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <param name="dest_window"> the new destination window, obtained by <see cref="M:Gdk.Drag.FindWindow" />.</param>
+        <param name="protocol">the DND protocol in use, obtained by <see cref="M:Gdk.Drag.FindWindow" />.</param>
+        <param name="x_root">the x position of the pointer in root coordinates.</param>
+        <param name="y_root">the y position of the pointer in root coordinates. </param>
+        <param name="suggested_action">the suggested action.</param>
+        <param name="possible_actions">the possible actions.</param>
+        <param name="time_">the timestamp for this operation.</param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks>This function is called by the drag source.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Abort">
@@ -74,9 +74,9 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Aborts a drag without dropping.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
+        <param name="time_">the timestamp for this operation.</param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -92,11 +92,11 @@
         <Parameter Name="time_" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Selects one of the actions offered by the drag source.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="action">a <see cref="T:Gdk.DragAction" /></param>
-        <param name="time_">a <see cref="T:System.UInt32" /></param>
-        <remarks>To be added</remarks>
+        <param name="action">the selected action which will be taken when a drop happens, or 0 to indicate that a drop will not be accepted.</param>
+        <param name="time_">the timestamp for this operation. </param>
+        <remarks>This function is called by the drag destination in response to <see cref="M:Gdk.Drag.Motion" /> called by the drag source.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSelection">
@@ -109,9 +109,9 @@
         <Parameter Name="context" Type="Gdk.DragContext" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Returns the selection atom for the current source window.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <returns>a <see cref="T:Gdk.Atom" /></returns>
+        <returns>the selection atom.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -137,11 +137,11 @@
         <Parameter Name="protocol" Type="Gdk.DragProtocol&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="display">a <see cref="T:Gdk.Display" /></param>
-        <param name="xid">a <see cref="T:System.UInt32" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol&amp;" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
+        <summary>Finds out the DND protocol supported by a window.</summary>
+        <param name="display">the <see cref="T:Gdk.Display" /> where the destination window resides.</param>
+        <param name="xid">the X id of the destination window.</param>
+        <param name="protocol">location where the supported DND protocol is returned.</param>
+        <returns>the X id of the window where the drop should happen. This may be xid or the X id of a proxy window, or None if xid doesn't support Drag and Drop.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -156,10 +156,10 @@
         <Parameter Name="protocol" Type="Gdk.DragProtocol&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="xid">a <see cref="T:System.UInt32" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol&amp;" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
+        <summary>Finds out the DND protocol supported by a window.</summary>
+        <param name="xid">the X id of the destination window.</param>
+        <param name="protocol">location where the supported DND protocol is returned.</param>
+        <returns>the X id of the window where the drop should happen. This may be xid or the X id of a proxy window, or None if xid doesn't support Drag and Drop. </returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -178,14 +178,16 @@
         <Parameter Name="protocol" Type="Gdk.DragProtocol&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds the destination window and DND protocol to use at the given pointer position.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="drag_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="x_root">a <see cref="T:System.Int32" /></param>
-        <param name="y_root">a <see cref="T:System.Int32" /></param>
-        <param name="dest_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol" /></param>
-        <remarks>To be added</remarks>
+        <param name="drag_window">a window which may be at the pointer position, but should be ignored, since it is put up by the drag source as an icon.</param>
+        <param name="x_root">the x position of the pointer in root coordinates.</param>
+        <param name="y_root">the y position of the pointer in root coordinates.</param>
+        <param name="dest_window">location to store the destination window in.</param>
+        <param name="protocol">location to store the DND protocol in.</param>
+        <remarks>
+          <para>This function is called by the drag source to obtain the dest_window and protocol parameters for <see cref="M:Gdk.Drag.Motion" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FindWindowForScreen">
@@ -204,15 +206,15 @@
         <Parameter Name="protocol" Type="Gdk.DragProtocol&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Finds the destination window and DND protocol to use at the given pointer position.</summary>
         <param name="context">a <see cref="T:Gdk.DragContext" /></param>
-        <param name="drag_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="screen">a <see cref="T:Gdk.Screen" /></param>
-        <param name="x_root">a <see cref="T:System.Int32" /></param>
-        <param name="y_root">a <see cref="T:System.Int32" /></param>
-        <param name="dest_window">a <see cref="T:Gdk.Window" /></param>
-        <param name="protocol">a <see cref="T:Gdk.DragProtocol" /></param>
-        <remarks>To be added</remarks>
+        <param name="drag_window">a window which may be at the pointer position, but should be ignored, since it is put up by the drag source as an icon.</param>
+        <param name="screen">the screen where the destination window is sought.</param>
+        <param name="x_root">the x position of the pointer in root coordinates.</param>
+        <param name="y_root">the y position of the pointer in root coordinates.</param>
+        <param name="dest_window">location to store the destination window in.</param>
+        <param name="protocol">location to store the DND protocol in. </param>
+        <remarks>This function is called by the drag source to obtain the dest_window and protocol parameters for <see cref="M:Gdk.Drag.Motion" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DropSucceeded">
