@@ -31,9 +31,9 @@ namespace GtkDemo
                 {
 			print = new PrintOperation ();
 			
-			print.BeginPrint += OnBeginPrint;
-			print.DrawPage += OnDrawPage;
-			print.EndPrint += OnEndPrint;
+			print.BeginPrint += new BeginPrintHandler (OnBeginPrint);
+			print.DrawPage += new DrawPageHandler (OnDrawPage);
+			print.EndPrint += new EndPrintHandler (OnEndPrint);
 
 			print.Run (PrintOperationAction.PrintDialog, null);
 		}

@@ -1,5 +1,5 @@
 assemblies = ../../glib/glib-sharp.dll ../../pango/pango-sharp.dll ../../atk/atk-sharp.dll ../../gdk/gdk-sharp.dll ../../gtk/gtk-sharp.dll
-references = $(addprefix /r:, $(assemblies)) -r:Mono.Cairo
+references = $(addprefix /r:, $(assemblies)) @MONO_CAIRO_LIBS@
 TARGETS = GtkDemo.exe
 DEBUGS = $(addsuffix .mdb, $(TARGETS)) 
 CLEANFILES = $(TARGETS) $(DEBUGS)
