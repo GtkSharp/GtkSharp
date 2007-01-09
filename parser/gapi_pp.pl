@@ -82,7 +82,7 @@ foreach $fname (@hdrs) {
 		} elsif ($line =~ /^extern/) {
 			while ($line !~ /;/) {$line = <INFILE>;}
 		} elsif ($line =~ /^#ifndef\s+\w+_H_*\b/) {
-			while ($line !~ /#define/) {$line = <INFILE>;}
+			while ($line !~ /#define|#endif/) {$line = <INFILE>;}
 		} elsif ($line =~ /$private_regex/) {
 			$nested = 0;
 			while ($line = <INFILE>) {
