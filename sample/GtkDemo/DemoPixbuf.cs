@@ -80,7 +80,8 @@ namespace GtkDemo
 
 			rowstride = frame.Rowstride;
 			pixels = new byte[(frame.Height - area.Y) * rowstride];
-			Marshal.Copy (frame.Pixels, pixels, rowstride * area.Y + area.X * 3, pixels.Length);
+			IntPtr src = (IntPtr)(frame.Pixels.ToInt64 () + rowstride * area.Y + area.X * 3);
+			Marshal.Copy (src, pixels, 0, pixels.Length);
 
 			widget.GdkWindow.DrawRgbImageDithalign (widget.Style.BlackGC,
 								area.X, area.Y, area.Width, area.Height,
