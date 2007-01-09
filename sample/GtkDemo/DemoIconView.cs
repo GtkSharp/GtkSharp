@@ -38,8 +38,8 @@ namespace GtkDemo
 			homeButton.IsImportant = true;
 			toolbar.Insert (homeButton, -1);
 
-			fileIcon = GetIcon ("gnome-fs-regular");
-			dirIcon = GetIcon ("gnome-fs-directory");
+			fileIcon = GetIcon (Stock.File);
+			dirIcon = GetIcon (Stock.Open);
 
 			ScrolledWindow sw = new ScrolledWindow ();
 			sw.ShadowType = ShadowType.EtchedIn;
