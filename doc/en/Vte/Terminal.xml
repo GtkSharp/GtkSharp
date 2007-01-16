@@ -4,7 +4,7 @@
     <AssemblyName>vte-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.8.0.0</AssemblyVersion>
+    <AssemblyVersion>2.16.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
@@ -473,9 +473,7 @@ class T
         <param name="p0">a <see cref="T:System.String" /> Representing the input data to commit. This can be a single character or a string.</param>
         <param name="p1">a <see cref="T:System.UInt32" /> The length of P0.</param>
         <remarks>Override this method in a subclass to provide a default handler for the <see cref="M:Vte.Terminal.Commit" /> event.
-<block subset="none" type="note">
-            <para />
-          </block>P0 can contain control characters. Every key the user presses will emmit a commit signal. About the only thing that will send a sring in P0 will be if the users pasts in some text. Also you must call the parent or base class OnCommit or things will get ugly.</remarks>
+<block subset="none" type="note"><para /></block>P0 can contain control characters. Every key the user presses will emmit a commit signal. About the only thing that will send a sring in P0 will be if the users pasts in some text. Also you must call the parent or base class OnCommit or things will get ugly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MatchSetCursor">
@@ -729,17 +727,17 @@ class T
       </Docs>
     </Member>
     <Member MemberName="FeedChild">
-      <MemberSignature Language="C#" Value="public void FeedChild (string data);" />
+      <MemberSignature Language="C#" Value="public void FeedChild (string text);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="data" Type="System.String" />
+        <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
         <summary>Sends a block of UTF-8 text to the child as if it were entered by the user at the keyboard.</summary>
-        <param name="data">a <see cref="T:System.String" /></param>
+        <param name="text">a <see cref="T:System.String" /></param>
         <remarks />
       </Docs>
     </Member>
@@ -840,7 +838,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete(Message=null, IsError=False)</AttributeName>
+          <AttributeName>System.Obsolete</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1367,7 +1365,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="restore-window")</AttributeName>
+          <AttributeName>GLib.Signal("restore-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1384,7 +1382,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="lower-window")</AttributeName>
+          <AttributeName>GLib.Signal("lower-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1401,7 +1399,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="maximize-window")</AttributeName>
+          <AttributeName>GLib.Signal("maximize-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1418,7 +1416,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="increase-font-size")</AttributeName>
+          <AttributeName>GLib.Signal("increase-font-size")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1435,7 +1433,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="text-modified")</AttributeName>
+          <AttributeName>GLib.Signal("text-modified")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1452,7 +1450,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="raise-window")</AttributeName>
+          <AttributeName>GLib.Signal("raise-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1469,7 +1467,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="text-inserted")</AttributeName>
+          <AttributeName>GLib.Signal("text-inserted")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1486,7 +1484,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="status-line-changed")</AttributeName>
+          <AttributeName>GLib.Signal("status-line-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1503,7 +1501,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="iconify-window")</AttributeName>
+          <AttributeName>GLib.Signal("iconify-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1520,7 +1518,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="child-exited")</AttributeName>
+          <AttributeName>GLib.Signal("child-exited")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1537,7 +1535,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="text-deleted")</AttributeName>
+          <AttributeName>GLib.Signal("text-deleted")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1554,7 +1552,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="move-window")</AttributeName>
+          <AttributeName>GLib.Signal("move-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1571,7 +1569,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="refresh-window")</AttributeName>
+          <AttributeName>GLib.Signal("refresh-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1588,7 +1586,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="deiconify-window")</AttributeName>
+          <AttributeName>GLib.Signal("deiconify-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1605,7 +1603,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="icon-title-changed")</AttributeName>
+          <AttributeName>GLib.Signal("icon-title-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1622,7 +1620,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="decrease-font-size")</AttributeName>
+          <AttributeName>GLib.Signal("decrease-font-size")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1639,7 +1637,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="text-scrolled")</AttributeName>
+          <AttributeName>GLib.Signal("text-scrolled")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1656,7 +1654,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="char-size-changed")</AttributeName>
+          <AttributeName>GLib.Signal("char-size-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1673,7 +1671,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="encoding-changed")</AttributeName>
+          <AttributeName>GLib.Signal("encoding-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1690,7 +1688,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="window-title-changed")</AttributeName>
+          <AttributeName>GLib.Signal("window-title-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1707,7 +1705,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="contents-changed")</AttributeName>
+          <AttributeName>GLib.Signal("contents-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1724,7 +1722,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="cursor-moved")</AttributeName>
+          <AttributeName>GLib.Signal("cursor-moved")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1741,7 +1739,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="selection-changed")</AttributeName>
+          <AttributeName>GLib.Signal("selection-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1758,7 +1756,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="eof")</AttributeName>
+          <AttributeName>GLib.Signal("eof")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1775,7 +1773,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="emulation-changed")</AttributeName>
+          <AttributeName>GLib.Signal("emulation-changed")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1792,7 +1790,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="resize-window")</AttributeName>
+          <AttributeName>GLib.Signal("resize-window")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1809,7 +1807,7 @@ class T
       </Docs>
       <Attributes>
         <Attribute>
-          <AttributeName>GLib.Signal(CName="commit")</AttributeName>
+          <AttributeName>GLib.Signal("commit")</AttributeName>
         </Attribute>
       </Attributes>
     </Member>
@@ -1873,6 +1871,144 @@ class T
           <see langword="true" /> if <paramref name="c" /> is considered to be a word character according to the current value of <see cref="P:Vte.Terminal.WordChars" />.</returns>
         <remarks>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FeedChildBinary">
+      <MemberSignature Language="C#" Value="public void FeedChildBinary (string data);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="data">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTextIncludeTrailingSpaces">
+      <MemberSignature Language="C#" Value="public string GetTextIncludeTrailingSpaces (bool is_selected, IntPtr data, IntPtr attributes);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="is_selected" Type="System.Boolean" />
+        <Parameter Name="data" Type="System.IntPtr" />
+        <Parameter Name="attributes" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="is_selected">To be added.</param>
+        <param name="data">To be added.</param>
+        <param name="attributes">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetFontFromStringFull">
+      <MemberSignature Language="C#" Value="public void SetFontFromStringFull (string name, Vte.TerminalAntiAlias antialias);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="antialias" Type="Vte.TerminalAntiAlias" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="antialias">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="SetFontFull">
+      <MemberSignature Language="C#" Value="public void SetFontFull (Pango.FontDescription font_desc, Vte.TerminalAntiAlias antialias);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="font_desc" Type="Pango.FontDescription" />
+        <Parameter Name="antialias" Type="Vte.TerminalAntiAlias" />
+      </Parameters>
+      <Docs>
+        <param name="font_desc">To be added.</param>
+        <param name="antialias">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="ColorHighlight">
+      <MemberSignature Language="C#" Value="public Gdk.Color ColorHighlight { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultEmulation">
+      <MemberSignature Language="C#" Value="public string DefaultEmulation { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="Opacity">
+      <MemberSignature Language="C#" Value="public ushort Opacity { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt16</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="ColorCursor">
+      <MemberSignature Language="C#" Value="public Gdk.Color ColorCursor { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gdk.Color</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
+      </Docs>
+    </Member>
+    <Member MemberName="Pty">
+      <MemberSignature Language="C#" Value="public int Pty { set; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+        <since version="Gnome# 2.16" />
       </Docs>
     </Member>
   </Members>
