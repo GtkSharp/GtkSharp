@@ -31,7 +31,6 @@ namespace GtkSharp.Docs {
 
 		public static int Main (string[] args)
 		{
-			string api_filename = "";
 			Hashtable hndlrs = new Hashtable ();
 			XmlDocument api_doc = new XmlDocument ();
 
@@ -84,7 +83,6 @@ namespace GtkSharp.Docs {
 					Stream stream = File.OpenRead (filename);
 					api_doc.Load (stream);
 					stream.Close ();
-					Console.WriteLine ("opened:" + filename);
 				} catch (XmlException e) {
 					Console.WriteLine (e);
 					return 1;
@@ -100,7 +98,8 @@ namespace GtkSharp.Docs {
 					XmlElement rem = elem ["remarks"];
 					string summary = summ.InnerXml;
 					string remarks = rem.InnerXml;
-					if (summary == "To be added" && remarks == "To be added") {
+					if (summary == "To be added." && remarks == "To be added.") {
+						Console.WriteLine (filename + ": Documenting summary and remarks");
 						summ.InnerXml = "Event handler.";
 						ArrayList sigs = hndlrs[hndlr] as ArrayList;
 						string rems;
@@ -113,13 +112,29 @@ namespace GtkSharp.Docs {
 							rems = "<para>The <see cref=\"M:" + sigs[0] + "\"/> event utilizes this delegate:</para>";
 						rems += "<para>Event data is passed via the <see cref=\"T:" + arg_type + "\"/> parameter.</para><para>To attach a <see cref=\"T:" + hndlr + "\"/> to an event, add the " + hndlr.Name + " instance to the event.  The methods referenced by the " + hndlr.Name + " instance are invoked whenever the event is raised, until the " + hndlr.Name + " is removed from the event.</para>";
 						rem.InnerXml = rems;
-					} else {
-						Console.WriteLine ("Delegate already has docs.");
+					}
+					XPathNavigator param_nav = api_doc.CreateNavigator ();
+					XPathNodeIterator param_iter = param_nav.Select ("/Type/Docs/param");
+					while (param_iter.MoveNext ()) {
+						XmlElement param = ((IHasXmlNode)param_iter.Current).GetNode () as XmlElement;
+						if (param.InnerXml == "To be added.") {
+							string param_name = param.GetAttribute ("name");
+							switch (param_name) {
+							case "o":
+								param.InnerXml = "Event sender.";
+								break;
+							case "args":
+								param.InnerXml = "Event arguments.";
+								break;
+							default:
+								Console.WriteLine (filename + ": Unexpected param " + param.GetAttribute ("name"));
+								break;
+							}
+							Console.WriteLine (filename + ": Documenting param " + param.GetAttribute ("name"));
+						}
 					}
 				}
 				api_doc.Save (filename);
-
-					
 
 				filename = "en/" + arg_type.Namespace + "/" + arg_type.Name + ".xml";
 
@@ -127,7 +142,6 @@ namespace GtkSharp.Docs {
 					Stream stream = File.OpenRead (filename);
 					api_doc.Load (stream);
 					stream.Close ();
-					Console.WriteLine ("opened:" + filename);
 				} catch (XmlException e) {
 					Console.WriteLine (e);
 					return 1;
@@ -141,7 +155,8 @@ namespace GtkSharp.Docs {
 					XmlElement rem = elem ["remarks"];
 					string summary = summ.InnerXml;
 					string remarks = rem.InnerXml;
-					if (summary == "To be added" && remarks == "To be added") {
+					if (summary == "To be added." && remarks == "To be added.") {
+						Console.WriteLine (filename + ": Documenting summary and remarks");
 						summ.InnerXml = "Event data.";
 						ArrayList sigs = hndlrs[hndlr] as ArrayList;
 						string rems;
@@ -153,8 +168,6 @@ namespace GtkSharp.Docs {
 						} else
 							rems = "<para>The <see cref=\"M:" + sigs[0] + "\"/> event invokes <see cref=\"T:" + hndlr + "\"/> delegates which pass event data via this class.</para>";
 						rem.InnerXml = rems;
-					} else {
-						Console.WriteLine ("Class already has docs.");
 					}
 				}
 
@@ -167,12 +180,12 @@ namespace GtkSharp.Docs {
 					XmlElement ret = elem ["Docs"] ["returns"];
 					string summary = summ.InnerXml;
 					string remarks = rem.InnerXml;
-					if (summary == "To be added" && remarks == "To be added") {
+					if (summary == "To be added." && remarks == "To be added.") {
+						Console.WriteLine (filename + ": Documenting constructor");
 						summ.InnerXml = "Public Constructor.";
-						ret.InnerXml = "A new <see cref=\"T:" + arg_type + "\"/>.";
+						if (ret != null)
+							ret.InnerXml = "A new <see cref=\"T:" + arg_type + "\"/>.";
 						rem.InnerXml = "Create a new <see cref=\"T:" + arg_type + "\"/> instance with this constructor if you need to invoke a <see cref=\"T:" + hndlr + "\"/> delegate.";
-					} else {
-						Console.WriteLine ("Ctor already has docs.");
 					}
 				}
 				api_doc.Save (filename);
