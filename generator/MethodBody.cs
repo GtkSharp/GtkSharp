@@ -155,6 +155,10 @@ namespace GtkSharp.Generation {
 						sw.WriteLine (indent + "\t\t\t}");
 						break;
 
+					case "async":
+						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", wrapper, name);
+						sw.WriteLine (indent + "\t\t\t{0}_wrapper.PersistUntilCalled ();", name);
+						break;
 					case "call":
 					default:
 						if (p.Scope == String.Empty)
