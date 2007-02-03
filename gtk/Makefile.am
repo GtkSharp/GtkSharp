@@ -88,6 +88,7 @@ customs = 				\
 	SelectionData.custom		\
 	Settings.custom			\
 	SpinButton.custom		\
+	StatusIcon.custom		\
 	Stock.custom			\
 	StockItem.custom		\
 	Style.custom			\
