@@ -81,7 +81,7 @@ namespace GtkSharp.Docs
 						XmlElement rem = elem ["Docs"] ["remarks"];
 						string summary = summ.InnerXml;
 						string remarks = rem.InnerXml;
-						if (summary == "To be added" && remarks == "To be added")
+						if (summary == "To be added." && remarks == "To be added.")
 						{
 							summ.InnerXml = "Protected Constructor.";
 							rem.InnerXml = "Chain to this constructor if you have manually registered a native <see cref=\"T:GLib.GType\" /> value for your subclass.";

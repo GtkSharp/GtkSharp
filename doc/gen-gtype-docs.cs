@@ -80,7 +80,7 @@ namespace GtkSharp.Docs
 						XmlElement rem = elem ["Docs"] ["remarks"];
 						string summary = summ.InnerXml;
 						string remarks = rem.InnerXml;
-						if (summary == "To be added" && remarks == "To be added")
+						if (summary == "To be added." && remarks == "To be added.")
 						{
 							summ.InnerXml = "GType Property.";
 							rem.InnerXml = "Returns the native <see cref=\"T:GLib.GType\" /> value for <see cref=\"T:" + t + "\" />.";
