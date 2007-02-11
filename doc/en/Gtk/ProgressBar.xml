@@ -20,6 +20,50 @@
 				In this mode, the application is required to call <see cref="M:Gtk.ProgressBar.Pulse()" /> perodically to update the progress bar.</para>
       <para>There is quite a bit of flexibility provided to control the appearance of the <see cref="T:Gtk.ProgressBar" />.
 				Functions are provided to control the orientation of the bar, optional text can be displayed along with the bar, and the step size used in activity mode can be set.</para>
+      <para>
+The following example show how percentage mode works
+</para>
+      <example>
+        <code lang="C#">
+using System;
+using Gtk;
+
+namespace TestGtkAlone
+{
+	public class TestProgress
+	{
+		static Gtk.ProgressBar PBar;
+		static void Main()
+		{
+			 Gtk.Application.Init();
+			 Gtk.Window WinPBar = new Window("Test Progress bar - Percentage mode");
+			 Gtk.HBox HContainer = new Gtk.HBox(false, 2);
+			 PBar = new ProgressBar();
+			 Gtk.Button ButtonStart = new Gtk.Button("Start Progress");
+			 HContainer.Add(PBar);
+			 HContainer.Add(ButtonStart);
+			 ButtonStart.Clicked += new EventHandler(ButtonStart_Clicked);
+			 WinPBar.Add(HContainer);
+			 WinPBar.ShowAll();
+			 
+			 Gtk.Application.Run();
+		}
+		
+		public static void ButtonStart_Clicked(object sender, EventArgs args)
+		{
+			PBar.Adjustment.Lower = 0;
+			PBar.Adjustment.Upper = 1000;
+			while (PBar.Adjustment.Value &lt; PBar.Adjustment.Upper) {
+				PBar.Adjustment.Value+=1;
+			}
+		}
+
+	}
+
+}
+
+</code>
+      </example>
     </remarks>
   </Docs>
   <Base>

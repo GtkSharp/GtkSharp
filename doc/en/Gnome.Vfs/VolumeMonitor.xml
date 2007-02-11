@@ -7,8 +7,37 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Abstraction for Removable devices.</summary>
+    <remarks>
+      <para>
+The VolumeMonitor offers a simple way to get removable devices: name, icon, type, etc and operations: Eject, Mount, Unmount and others.
+</para>
+      <para>
+In order to use, you need to execute the static method <see cref="M:Gnome.Vfs.VolumeMonitor.Get" />. This method give you a pointer to VolumeMonitor, this is a singleton, which means that it will exists and be valid until <see cref="M:Gnome.Vfs.Vfs.Shutdown" /></para>
+      <example>
+        <code lang="C#">
+	// This example show how to get all connected drives
+	using System;
+	using Gnome.Vfs;
+	namespace TestGnomeVFS
+	{
+		public class Test()
+		{
+			public static void Main()
+			{
+				Vfs.Initialize();
+				VolumeMonitor vMonitor = VolumeMonitor.Get();
+				Drive[] drv = vMonitor.ConnectedDrives;
+				foreach Drive d in drv) {
+					Console.WriteLine(d.DisplayName);
+				}
+				Vfs.Shutdown();
+			}
+		}
+	}
+  </code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
