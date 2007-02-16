@@ -40,6 +40,13 @@ customs = 				\
 	Button.custom			\
 	Calendar.custom			\
 	CellRenderer.custom		\
+	CellRendererAccel.custom	\
+	CellRendererCombo.custom	\
+	CellRendererPixbuf.custom	\
+	CellRendererProgress.custom	\
+	CellRendererSpin.custom		\
+	CellRendererText.custom		\
+	CellRendererToggle.custom	\
 	CellLayout.custom		\
 	CellView.custom			\
 	CheckMenuItem.custom		\

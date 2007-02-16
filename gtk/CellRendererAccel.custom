@@ -1,0 +1,38 @@
+//
+// CellRendererAccel.custom - Gtk CellRendererAccel class customizations
+//
+// Author: Peter Johanson <peter@peterjohanson.com>
+//
+// Copyright (C) 2007 Peter Johanson
+//
+// This code is inserted after the automatically generated code.
+//
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		public override void GetSize (Gtk.Widget widget, ref Gdk.Rectangle cell_area, out int x_offset, out int y_offset, out int width, out int height) 
+		{
+			CellRenderer.InternalGetSize (Gtk.CellRendererAccel.GType, this, widget, ref cell_area, out x_offset, out y_offset, out width, out height);
+		}
+
+		protected override void Render (Gdk.Drawable window, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gdk.Rectangle expose_area, Gtk.CellRendererState flags)
+		{
+			CellRenderer.InternalRender (Gtk.CellRendererAccel.GType, this, window, widget, background_area, cell_area, expose_area, flags);
+		}
+
+		public override Gtk.CellEditable StartEditing(Gdk.Event evnt, Gtk.Widget widget, string path, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, Gtk.CellRendererState flags) 
+		{
+			return Gtk.CellRenderer.InternalStartEditing (Gtk.CellRendererAccel.GType, this, evnt, widget, path, ref background_area, ref cell_area, flags);
+		}
