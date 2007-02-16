@@ -1,3 +1,15 @@
+2007-02-16  Mike Kestner  <mkestner@novell.com>
+
+	* glib/Object.cs : switch to ToggleRefs for all items created with
+	CreateNativeObject.  This gets all managed subclasses, with a little
+	overhang into simple wrappers.
+	* glib/ToggleRef.cs : new class to manage the weak to strong ref 
+	transitions as a native object flips between shared and unshared
+	ownership.
+	* gtk/Object.custom : revamp of the Destroyed signal handling. 
+	* gtk/Gtk.metadata : hide destroy signal so we can deal with it 
+	manually. [Fixes the reopen note of #72018.]
+
 2007-02-03  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/StatusIcon.custom : obsolete overload for backcompat on

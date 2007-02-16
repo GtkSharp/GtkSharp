@@ -55,6 +55,7 @@ sources =		 			\
 	Source.cs				\
 	Thread.cs				\
 	Timeout.cs				\
+	ToggleRef.cs				\
 	TypeConverter.cs			\
 	TypeFundamentals.cs			\
 	UnwrappedObject.cs			\

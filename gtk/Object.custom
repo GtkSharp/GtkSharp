@@ -1,8 +1,9 @@
 // Gtk.Object.custom - Gtk Object class customizations
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2002-2003 Mike Kestner
+// Copyright (c) 2007 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -20,25 +21,66 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+		static Hashtable destroy_handlers;
+		static Hashtable DestroyHandlers {
+			get {
+				if (destroy_handlers == null)
+					destroy_handlers = new Hashtable ();
+				return destroy_handlers;
+			}
+		}
 
-		[DllImport("gtksharpglue-2")]
-		private static extern bool gtksharp_object_is_floating (IntPtr raw);
+		private static void OverrideDestroyed (GLib.GType gtype)
+		{
+			// Do Nothing.  We don't want to hook into the native vtable.
+			// We will manually invoke the VM on signal invocation. The signal
+			// always raises before the default handler because this signal
+			// is RUN_CLEANUP.
+		}
 
-		[DllImport("gtksharpglue-2")]
-		private static extern bool gtksharp_object_set_floating (IntPtr raw, bool val);
+		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Object), ConnectionMethod="OverrideDestroyed")]
+		protected virtual void OnDestroyed ()
+		{
+			if (DestroyHandlers [Handle] == null)
+				return;
 
-		[DllImport("libgobject-2.0-0.dll")]
-		private static extern void g_object_ref (IntPtr raw);
+			EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+			handler (this, EventArgs.Empty);
+			DestroyHandlers [Handle] = null;
+			Dispose ();
+		}
+
+		[GLib.Signal("destroy")]
+		public event EventHandler Destroyed {
+			add {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				DestroyHandlers [Handle] = Delegate.Combine (handler, value);
+			}
+			remove {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				DestroyHandlers [Handle] = Delegate.Remove (handler, value);
+			}
+		}
+
+		event EventHandler InternalDestroyed {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "destroy");
+				sig.RemoveDelegate (value);
+			}
+		}
 
 		static void NativeDestroy (object o, EventArgs args)
 		{
 			Gtk.Object obj = o as Gtk.Object;
 			if (obj == null)
 				return;
-			obj.Destroyed -= NativeDestroyHandler;
-			obj.Dispose ();
+			obj.OnDestroyed ();
 		}
-
+		
 		static EventHandler native_destroy_handler;
 		static EventHandler NativeDestroyHandler {
 			get {
@@ -51,14 +93,16 @@
 		protected override void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
 			base.CreateNativeObject (names, vals);
-			Destroyed += NativeDestroyHandler;
 		}
 
 		public override void Dispose ()
 		{
+			InternalDestroyed -= NativeDestroyHandler;
 			base.Dispose ();
-			Destroyed -= NativeDestroyHandler;
 		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		private static extern void g_object_ref_sink (IntPtr raw);
 
 		protected override IntPtr Raw {
 			get {
@@ -69,8 +113,8 @@
 				if (value == IntPtr.Zero)
 					return;
 
-				g_object_ref (value);
-				Sink ();
+				g_object_ref_sink (value);
+				InternalDestroyed += NativeDestroyHandler;
 			}
 		}
 
@@ -81,6 +125,12 @@
 		{
 			gtk_object_destroy (Handle);
 		}
+
+		[DllImport("gtksharpglue-2")]
+		private static extern bool gtksharp_object_is_floating (IntPtr raw);
+
+		[DllImport("gtksharpglue-2")]
+		private static extern bool gtksharp_object_set_floating (IntPtr raw, bool val);
 
 		public bool IsFloating {
 			get {

@@ -63,7 +63,11 @@ namespace GLib {
 					continue;
 
 				try {
-					g_object_unref (o._obj);
+					ToggleRef toggle_ref = Objects [o._obj] as ToggleRef;
+					if (toggle_ref == null)
+						g_object_unref (o._obj);
+					else
+						toggle_ref.Free ();
 				} catch (Exception e) {
 					Console.WriteLine ("Exception while disposing a " + o + " in Gtk#");
 					throw e;
@@ -101,13 +105,17 @@ namespace GLib {
 				return null;
 
 			Object obj = null;
-			WeakReference weak_ref = Objects[o] as WeakReference;
+			object reference = Objects[o];
 
-			if (weak_ref != null && weak_ref.IsAlive)
-				obj = weak_ref.Target as Object;
-
-			if (obj == null)
-				obj = Objects[o] as Object;
+			if (reference is WeakReference) {
+				WeakReference weak_ref = reference as WeakReference;
+				if (weak_ref.IsAlive)
+					obj = weak_ref.Target as Object;
+			} else if (reference is ToggleRef) {
+				ToggleRef toggle_ref = reference as ToggleRef;
+				if (toggle_ref.IsAlive)
+					obj = toggle_ref.Target;
+			}
 
 			if (obj != null && obj._obj == o) {
 				lock (PendingDestroys)
@@ -247,7 +255,7 @@ namespace GLib {
 			for (int i = 0; i < names.Length; i++)
 				native_names [i] = GLib.Marshaller.StringToPtrGStrdup (names [i]);
 			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, native_names, vals);
-			Objects [_obj] = this;
+			Objects [_obj] = new ToggleRef (this);
 			foreach (IntPtr p in native_names)
 				GLib.Marshaller.Free (p);
 		}
