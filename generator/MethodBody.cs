@@ -57,7 +57,8 @@ namespace GtkSharp.Generation {
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 				IGeneratable igen = p.Generatable;
-				string name = (i == 0 && is_set) ? "value" : p.Name;
+				bool is_prop = is_set && (i == 0 || (i == 1 && p.IsArray && parameters[0].IsCount));
+				string name = is_prop ? "value" : p.Name;
 
 				if (p.IsCount) {
 					if (i > 0 && parameters [i - 1].IsArray) {
