@@ -238,7 +238,8 @@ foreach $cname (sort(keys(%edefs))) {
 	$def =~ /\{(.*\S)\s*\}/;
 	@vals = split(/,\s*/, $1);
 	$vals[0] =~ s/^\s+//;
-	@v0 = split(/_/, $vals[0]);
+	@nameandval = split(/=/, $vals[0]);
+	@v0 = split(/_/, $nameandval[0]);
 	if (@vals > 1) {
 		$done = 0;
 		for ($idx = 0, $regex = ""; $idx < @v0; $idx++) {
@@ -970,13 +971,13 @@ sub addSignalElem
 		return $class;
 	}
 
-	if ($class =~ /;\s*(\/\*< (public|protected) >\s*\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
+	if ($class =~ /;\s*(\/\*< (public|protected|private) >\s*\*\/)?(G_CONST_RETURN\s+)?(\w+\s*\**)\s*\(\s*\*\s*$method\)\s*\((.*?)\);/) {
 		$ret = $4; $parms = $5;
 		addReturnElem($sig_elem, $ret);
 		if ($parms && ($parms ne "void")) {
 			addParamsElem($sig_elem, split(/,/, $parms));
 		}
-		$class =~ s/;\s*(\/\*< (public|protected) >\s*\*\/)?(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
+		$class =~ s/;\s*(\/\*< (public|protected|private) >\s*\*\/)?(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
 		die "$method $class";
 	}
