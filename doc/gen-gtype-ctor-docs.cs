@@ -63,7 +63,6 @@ namespace GtkSharp.Docs
 						Stream stream = File.OpenRead (filename);
 						api_doc.Load (stream);
 						stream.Close ();
-						Console.WriteLine ("opened:" + filename);
 					}
 					catch (XmlException e)
 					{
@@ -79,23 +78,17 @@ namespace GtkSharp.Docs
 						XmlElement elem = ((IHasXmlNode)iter.Current).GetNode ().ParentNode.ParentNode as XmlElement;
 						XmlElement summ = elem ["Docs"] ["summary"];
 						XmlElement rem = elem ["Docs"] ["remarks"];
+						XmlElement param = elem ["Docs"] ["param"];
 						string summary = summ.InnerXml;
 						string remarks = rem.InnerXml;
 						if (summary == "To be added." && remarks == "To be added.")
 						{
-							summ.InnerXml = "Protected Constructor.";
-							rem.InnerXml = "Chain to this constructor if you have manually registered a native <see cref=\"T:GLib.GType\" /> value for your subclass.";
-						}
-						else
-						{
-							Console.WriteLine ("Member had docs: .ctor (GType)");
+							Console.WriteLine (filename + ": Documenting ctor(GType)");
+							summ.InnerXml = "Obsolete Protected Constructor.";
+							rem.InnerXml = "Do not use.  Replaced by <see cref=\"M:GLib.Object.CreateNativeObject\" /> which registers native types automatically.  Subclasses should chain to the IntPtr constructor passing <see cref=\"M:System.IntPtr.Zero\" /> and call CreateNativeObject instead of using this constructor.  This constructor is provided for backward compatibility if you have manually registered a native <see cref=\"T:GLib.GType\" /> value for your subclass.";
+							param.InnerXml = "Native type value.";
 						}
 					}
-					else
-					{
-						Console.WriteLine ("Member not found: .ctor (GType)");
-					}
-
 					api_doc.Save (filename);
 				}
 			}

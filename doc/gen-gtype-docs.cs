@@ -62,7 +62,6 @@ namespace GtkSharp.Docs
 						Stream stream = File.OpenRead (filename);
 						api_doc.Load (stream);
 						stream.Close ();
-						Console.WriteLine ("opened:" + filename);
 					}
 					catch (XmlException e)
 					{
@@ -78,23 +77,17 @@ namespace GtkSharp.Docs
 						XmlElement elem = ((IHasXmlNode)iter.Current).GetNode () as XmlElement;
 						XmlElement summ = elem ["Docs"] ["summary"];
 						XmlElement rem = elem ["Docs"] ["remarks"];
+						XmlElement val = elem ["Docs"] ["value"];
 						string summary = summ.InnerXml;
 						string remarks = rem.InnerXml;
 						if (summary == "To be added." && remarks == "To be added.")
 						{
+							Console.WriteLine (filename + ": documenting GType property");
 							summ.InnerXml = "GType Property.";
 							rem.InnerXml = "Returns the native <see cref=\"T:GLib.GType\" /> value for <see cref=\"T:" + t + "\" />.";
-						}
-						else
-						{
-							Console.WriteLine ("Member had docs: GType");
+							val.InnerXml = "The native <see cref=\"T:GLib.GType\" /> value.";
 						}
 					}
-					else
-					{
-						Console.WriteLine ("Member not found: GType");
-					}
-
 					api_doc.Save (filename);
 				}
 			}

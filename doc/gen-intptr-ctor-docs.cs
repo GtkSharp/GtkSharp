@@ -62,7 +62,6 @@ namespace GtkSharp.Docs
 						Stream stream = File.OpenRead (filename);
 						api_doc.Load (stream);
 						stream.Close ();
-						Console.WriteLine ("opened:" + filename);
 					}
 					catch (XmlException e)
 					{
@@ -78,23 +77,17 @@ namespace GtkSharp.Docs
 						XmlElement elem = ((IHasXmlNode)iter.Current).GetNode ().ParentNode.ParentNode as XmlElement;
 						XmlElement summ = elem ["Docs"] ["summary"];
 						XmlElement rem = elem ["Docs"] ["remarks"];
+						XmlElement param = elem ["Docs"] ["param"];
 						string summary = summ.InnerXml;
 						string remarks = rem.InnerXml;
-						if (summary == "To be added" && remarks == "To be added")
+						if (summary == "To be added." && remarks == "To be added.")
 						{
+							Console.WriteLine (filename + ": documenting IntPtr ctor");
 							summ.InnerXml = "Internal constructor";
-							rem.InnerXml = "This is not typically used by C# code.";
-						}
-						else
-						{
-							Console.WriteLine ("Member had docs: .ctor (IntPtr)");
+							rem.InnerXml = "This is not typically used by C# code.  Exposed primarily for use by language bindings to wrap native object instances.";
+							param.InnerXml = "Native object pointer.";
 						}
 					}
-					else
-					{
-						Console.WriteLine ("Member not found: .ctor (IntPtr)");
-					}
-
 					api_doc.Save (filename);
 				}
 			}
