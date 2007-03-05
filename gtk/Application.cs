@@ -39,8 +39,20 @@ namespace Gtk {
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern bool gtk_init_check (ref int argc, ref IntPtr argv);
 
+		[DllImport("libglib-2.0-0.dll")]
+		static extern bool g_set_prgname (IntPtr name);
+
+		static void SetPrgname ()
+		{
+			string name = System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			g_set_prgname (native_name);
+			GLib.Marshaller.Free (native_name);
+		}
+
 		public static void Init ()
 		{
+			SetPrgname ();
 			IntPtr argv = new IntPtr(0);
 			int argc = 0;
 
@@ -49,6 +61,7 @@ namespace Gtk {
 
 		static bool do_init (string progname, ref string[] args, bool check)
 		{
+			SetPrgname ();
 			bool res = false;
 			string[] progargs = new string[args.Length + 1];
 
