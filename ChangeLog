@@ -1,3 +1,13 @@
+2007-03-06  Mike Kestner  <mkestner@novell.com>
+
+	* generator/Signal.cs : add try/catch blocks to native callback
+	delegates so that exceptions are not propagated across the native
+	boundary.  Now raises GLib.ExceptionManager.UnhandledException.
+	* glib/ExceptionManager.cs : new class with UnhandledException
+	event and a static method to raise it.
+	* glib/Signal.cs : wrap the generic EventHandler callback delegate
+	with try/catch blocks and raise the UnhandledException event.
+
 2007-03-05  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Application.custom : set prgname in Init methods so

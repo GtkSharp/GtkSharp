@@ -25,6 +25,7 @@ sources =		 			\
 	DelegateWrapper.cs			\
 	DestroyNotify.cs			\
 	EnumWrapper.cs				\
+	ExceptionManager.cs			\
 	FileUtils.cs				\
 	GException.cs				\
 	GString.cs				\

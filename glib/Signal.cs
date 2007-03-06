@@ -173,12 +173,18 @@ namespace GLib {
 
 		static void voidObjectCallback (IntPtr handle, IntPtr gch)
 		{
-			Signal sig = ((GCHandle) gch).Target as Signal;
-			if (sig == null)
-				throw new Exception ("Unknown signal class GC handle received.");
+			try {
+				Signal sig = ((GCHandle) gch).Target as Signal;
+				if (sig == null) {
+					ExceptionManager.RaiseUnhandledException (new Exception ("Unknown signal class GC handle received."), false);
+					return;
+				}
 
-			EventHandler handler = (EventHandler) sig.Handler;
-			handler (Object.GetObject (handle), EventArgs.Empty);
+				EventHandler handler = (EventHandler) sig.Handler;
+				handler (Object.GetObject (handle), EventArgs.Empty);
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		static voidObjectDelegate event_handler_delegate;

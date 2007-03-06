@@ -17,7 +17,7 @@ ASSEMBLIES = 				\
 
 UPDATE_ASSEMBLIES = $(addprefix -assembly:lib/, $(ASSEMBLIES))
 
-UPDATER = $(MONODOCER) -path:en $(UPDATE_ASSEMBLIES)
+UPDATER = $(MONODOCER) -path:en -pretty $(UPDATE_ASSEMBLIES)
 
 if ENABLE_MONODOC
 SOURCESDIR=$(prefix)/lib/monodoc/sources
@@ -36,11 +36,14 @@ gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
 	$(MDASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
 
 get-assemblies:
+	echo "assumes gnome-sharp and gtk-sharp checkouts in same parent"
 	mkdir -p lib
 	cp $(top_builddir)/*/*.dll lib
 	cp $(top_builddir)/*/*.dll.config lib
-	cp $(top_builddir)/gconf/*/*.dll lib
-	cp $(top_builddir)/gconf/*/*.dll.config lib
+	cp $(top_builddir)/../gnome-sharp/*/*.dll lib
+	cp $(top_builddir)/../gnome-sharp/*/*.dll.config lib
+	cp $(top_builddir)/../gnome-sharp/gconf/*/*.dll lib
+	cp $(top_builddir)/../gnome-sharp/gconf/*/*.dll.config lib
 
 update: get-assemblies
 	$(UPDATER)
