@@ -56,11 +56,15 @@ namespace GLib {
 		delegate void SignalDestroyNotify (IntPtr data, IntPtr obj);
 		static void OnNativeDestroy (IntPtr data, IntPtr obj)
 		{
-			GCHandle gch = (GCHandle) data;
-			Signal s = gch.Target as Signal;
-			s.DisconnectHandler (s.before_id);
-			s.DisconnectHandler (s.after_id);
-			gch.Free ();
+			try {
+				GCHandle gch = (GCHandle) data;
+				Signal s = gch.Target as Signal;
+				s.DisconnectHandler (s.before_id);
+				s.DisconnectHandler (s.after_id);
+				gch.Free ();
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		private Signal (GLib.Object obj, string signal_name, Delegate marshaler)

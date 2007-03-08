@@ -34,10 +34,14 @@ namespace GLib {
 		delegate void DestroyNotify (IntPtr data);
 		static void OnNativeDestroy (IntPtr data)
 		{
-			GCHandle gch = (GCHandle) data;
-			WeakObject obj = gch.Target as WeakObject;
-			obj.Dispose ();
-			gch.Free ();
+			try {
+				GCHandle gch = (GCHandle) data;
+				WeakObject obj = gch.Target as WeakObject;
+				obj.Dispose ();
+				gch.Free ();
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		void Dispose ()

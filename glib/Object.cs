@@ -347,15 +347,19 @@ namespace GLib {
 
 		void NotifyCallback (IntPtr handle, IntPtr pspec, IntPtr gch)
 		{
-			GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
-			if (sig == null)
-				throw new Exception("Unknown signal GC handle received " + gch);
+			try {
+				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+				if (sig == null)
+					throw new Exception("Unknown signal GC handle received " + gch);
 
-			NotifyArgs args = new NotifyArgs ();
-			args.Args = new object[1];
-			args.Args[0] = pspec;
-			NotifyHandler handler = (NotifyHandler) sig.Handler;
-			handler (GLib.Object.GetObject (handle), args);
+				NotifyArgs args = new NotifyArgs ();
+				args.Args = new object[1];
+				args.Args[0] = pspec;
+				NotifyHandler handler = (NotifyHandler) sig.Handler;
+				handler (GLib.Object.GetObject (handle), args);
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		void ConnectNotification (string signal, NotifyHandler handler)

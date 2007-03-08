@@ -24,6 +24,7 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
+	[CDeclCallback]
 	public delegate bool TimeoutHandler ();
 
 	public class Timeout {
@@ -37,12 +38,17 @@ namespace GLib {
 
 			public bool Handler ()
 			{
-				TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
+				try {
+					TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
 
-				bool cont = timeout_handler ();
-				if (!cont)
-					Remove ();
-				return cont;
+					bool cont = timeout_handler ();
+					if (!cont)
+						Remove ();
+					return cont;
+				} catch (Exception e) {
+					ExceptionManager.RaiseUnhandledException (e, false);
+				}
+				return false;
 			}
 		}
 		

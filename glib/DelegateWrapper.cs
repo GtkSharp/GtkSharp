@@ -96,10 +96,14 @@ namespace GLib {
 		// object that owned the native delegate wrapper no longer
 		// exists and the instance of the delegate itself is removed from the hash table.
 		private void OnDestroy (IntPtr data) {
-			lock (typeof (DelegateWrapper)) {
-				if (instances.ContainsKey (this)) {
-					instances.Remove (this);
+			try {
+				lock (typeof (DelegateWrapper)) {
+					if (instances.ContainsKey (this)) {
+						instances.Remove (this);
+					}
 				}
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		}
 	}

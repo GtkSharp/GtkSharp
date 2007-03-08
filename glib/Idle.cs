@@ -27,6 +27,7 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
+	[CDeclCallback]
 	public delegate bool IdleHandler ();
 
 	public class Idle {
@@ -40,12 +41,17 @@ namespace GLib {
 
 			public bool Handler ()
 			{
-				IdleHandler idle_handler = (IdleHandler) real_handler;
+				try {
+					IdleHandler idle_handler = (IdleHandler) real_handler;
 
-				bool cont = idle_handler ();
-				if (!cont)
-					Remove ();
-				return cont;
+					bool cont = idle_handler ();
+					if (!cont)
+						Remove ();
+					return cont;
+				} catch (Exception e) {
+					ExceptionManager.RaiseUnhandledException (e, false);
+				}
+				return false;
 			}
 		}
 		

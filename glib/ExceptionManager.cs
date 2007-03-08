@@ -55,6 +55,7 @@ namespace GLib {
 				Console.Error.WriteLine ("Exception in Gtk# callback delegate");
 				Console.Error.WriteLine ("  Note: Applications can use GLib.ExceptionManager.UnhandledException to handle the exception.");
 				Console.Error.WriteLine (e);
+				Console.Error.WriteLine (new System.Diagnostics.StackTrace (true));
 				Environment.Exit (1);
 			}
 

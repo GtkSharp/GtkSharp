@@ -74,7 +74,7 @@ namespace GLib {
 				if (weak.IsAlive)
 					reference = weak.Target;
 				else
-					throw new Exception ("Toggling dead object wrapper");
+					throw new Exception ("Toggling dead wrapper");
 			}
 		}
 
@@ -83,9 +83,13 @@ namespace GLib {
 
 		static void RefToggled (IntPtr data, IntPtr handle, bool is_last_ref)
 		{
-			GCHandle gch = (GCHandle) data;
-			ToggleRef tref = gch.Target as ToggleRef;
-			tref.Toggle (is_last_ref);
+			try {
+				GCHandle gch = (GCHandle) data;
+				ToggleRef tref = gch.Target as ToggleRef;
+				tref.Toggle (is_last_ref);
+			} catch (Exception e) {
+				ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		static ToggleNotifyHandler toggle_notify_callback;
