@@ -145,9 +145,13 @@ public struct CallbackInvoker {
 
 static void ForallOld_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 {
-	Container obj = GLib.Object.GetObject (container, false) as Container;
-	CallbackInvoker invoker = new CallbackInvoker (cb, data);
-	obj.ForAll (include_internals, invoker);
+	try {
+		Container obj = GLib.Object.GetObject (container, false) as Container;
+		CallbackInvoker invoker = new CallbackInvoker (cb, data);
+		obj.ForAll (include_internals, invoker);
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
 }
 
 static void OverrideForallOld (GLib.GType gtype)
@@ -166,9 +170,13 @@ protected virtual void ForAll (bool include_internals, CallbackInvoker invoker)
 
 static void Forall_cb (IntPtr container, bool include_internals, IntPtr cb, IntPtr data)
 {
-	Container obj = GLib.Object.GetObject (container, false) as Container;
-	CallbackInvoker invoker = new CallbackInvoker (cb, data);
-	obj.ForAll (include_internals, new Gtk.Callback (invoker.Invoke));
+	try {
+		Container obj = GLib.Object.GetObject (container, false) as Container;
+		CallbackInvoker invoker = new CallbackInvoker (cb, data);
+		obj.ForAll (include_internals, new Gtk.Callback (invoker.Invoke));
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
 }
 
 static void OverrideForall (GLib.GType gtype)
@@ -203,9 +211,15 @@ static ChildTypeDelegate ChildTypeCallback;
 
 static IntPtr ChildType_cb (IntPtr raw)
 {
-	Container obj = GLib.Object.GetObject (raw, false) as Container;
-	GLib.GType gtype = obj.ChildType ();
-	return gtype.Val;
+	try {
+		Container obj = GLib.Object.GetObject (raw, false) as Container;
+		GLib.GType gtype = obj.ChildType ();
+		return gtype.Val;
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
+
+	return GLib.GType.Invalid.Val;
 }
 
 static void OverrideChildType (GLib.GType gtype)

@@ -198,10 +198,14 @@ static SetScrollAdjustmentsDelegate SetScrollAdjustmentsCallback;
 
 static void SetScrollAdjustments_cb (IntPtr widget, IntPtr hadj, IntPtr vadj)
 {
-	Widget obj = GLib.Object.GetObject (widget, false) as Widget;
-	Gtk.Adjustment h = GLib.Object.GetObject (hadj, false) as Gtk.Adjustment;
-	Gtk.Adjustment v = GLib.Object.GetObject (vadj, false) as Gtk.Adjustment;
-	obj.OnSetScrollAdjustments (h, v);
+	try {
+		Widget obj = GLib.Object.GetObject (widget, false) as Widget;
+		Gtk.Adjustment h = GLib.Object.GetObject (hadj, false) as Gtk.Adjustment;
+		Gtk.Adjustment v = GLib.Object.GetObject (vadj, false) as Gtk.Adjustment;
+		obj.OnSetScrollAdjustments (h, v);
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
 }
 
 static void ConnectSetScrollAdjustments (GLib.GType gtype)
@@ -237,9 +241,13 @@ private delegate void BindingHandler (IntPtr handle, IntPtr user_data);
 
 private static void BindingCallback (IntPtr handle, IntPtr user_data)
 {
-	Widget w = GLib.Object.GetObject (handle, false) as Widget;
-	BindingInvoker invoker = ((GCHandle) user_data).Target as BindingInvoker;
-	invoker.Invoke (w);
+	try {
+		Widget w = GLib.Object.GetObject (handle, false) as Widget;
+		BindingInvoker invoker = ((GCHandle) user_data).Target as BindingInvoker;
+		invoker.Invoke (w);
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
 }
 
 static BindingHandler binding_delegate;

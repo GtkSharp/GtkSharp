@@ -38,20 +38,24 @@
 		
 		static void GetSize_cb (IntPtr item, IntPtr widget, IntPtr cell_area_ptr, IntPtr x_offset, IntPtr y_offset, IntPtr width, IntPtr height)
 		{
-			CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
-			Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
-			Gdk.Rectangle cell_area = Gdk.Rectangle.New (cell_area_ptr);
-			int a, b, c, d;
+			try {
+				CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
+				Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
+				Gdk.Rectangle cell_area = Gdk.Rectangle.New (cell_area_ptr);
+				int a, b, c, d;
 
-			obj.GetSize (widg, ref cell_area, out a, out b, out c, out d);
-			if (x_offset != IntPtr.Zero)
-				Marshal.WriteInt32 (x_offset, a);
-			if (y_offset != IntPtr.Zero)
-				Marshal.WriteInt32 (y_offset, b);
-			if (width != IntPtr.Zero)
-				Marshal.WriteInt32 (width, c);
-			if (height != IntPtr.Zero)
-				Marshal.WriteInt32 (height, d);
+				obj.GetSize (widg, ref cell_area, out a, out b, out c, out d);
+				if (x_offset != IntPtr.Zero)
+					Marshal.WriteInt32 (x_offset, a);
+				if (y_offset != IntPtr.Zero)
+					Marshal.WriteInt32 (y_offset, b);
+				if (width != IntPtr.Zero)
+					Marshal.WriteInt32 (width, c);
+				if (height != IntPtr.Zero)
+					Marshal.WriteInt32 (height, d);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		static void OverrideGetSize (GLib.GType gtype)
@@ -88,10 +92,14 @@
 
 		static void Render_cb (IntPtr item, IntPtr window, IntPtr widget, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, ref Gdk.Rectangle expose_area, Gtk.CellRendererState flags)
 		{
-			CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
-			Gdk.Drawable wind = GLib.Object.GetObject (window, false) as Gdk.Drawable;
-			Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
-			obj.Render (wind, widg, background_area, cell_area, expose_area, flags);
+			try {
+				CellRenderer obj = GLib.Object.GetObject (item, false) as CellRenderer;
+				Gdk.Drawable wind = GLib.Object.GetObject (window, false) as Gdk.Drawable;
+				Gtk.Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
+				obj.Render (wind, widg, background_area, cell_area, expose_area, flags);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		static void OverrideRender (GLib.GType gtype)
@@ -125,13 +133,19 @@
 
 		static IntPtr StartEditing_cb (IntPtr raw, IntPtr evnt, IntPtr widget, IntPtr path, ref Gdk.Rectangle background_area, ref Gdk.Rectangle cell_area, Gtk.CellRendererState flags)
 		{
-			CellRenderer obj = GLib.Object.GetObject (raw, false) as CellRenderer;
-			Gdk.Event _event = new Gdk.Event (evnt);
-			Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
-			CellEditable retval = obj.StartEditing (_event, widg, GLib.Marshaller.Utf8PtrToString (path), background_area, cell_area, flags);
-			if (retval == null)
-				return IntPtr.Zero;
-			return retval.Handle;
+			try {
+				CellRenderer obj = GLib.Object.GetObject (raw, false) as CellRenderer;
+				Gdk.Event _event = new Gdk.Event (evnt);
+				Widget widg = GLib.Object.GetObject (widget, false) as Gtk.Widget;
+				CellEditable retval = obj.StartEditing (_event, widg, GLib.Marshaller.Utf8PtrToString (path), background_area, cell_area, flags);
+				if (retval == null)
+					return IntPtr.Zero;
+				return retval.Handle;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return IntPtr.Zero;
 		}
 
 		static void OverrideStartEditing (GLib.GType gtype)

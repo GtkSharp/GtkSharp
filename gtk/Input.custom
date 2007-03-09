@@ -29,10 +29,14 @@
 
 			public void NativeCallback (IntPtr data, int source, int condition)
 			{
-				IntPtr _arg0 = data;
-				int _arg1 = source;
-				Gdk.InputCondition _arg2 = (Gdk.InputCondition) condition;
-				managed ( _arg0,  _arg1,  _arg2);
+				try {
+					IntPtr _arg0 = data;
+					int _arg1 = source;
+					Gdk.InputCondition _arg2 = (Gdk.InputCondition) condition;
+					managed ( _arg0,  _arg1,  _arg2);
+				} catch (Exception e) {
+					GLib.ExceptionManager.RaiseUnhandledException (e, false);
+				}
 			}
 
 			internal InputFunctionNative NativeDelegate;

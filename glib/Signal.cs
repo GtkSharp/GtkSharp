@@ -178,6 +178,8 @@ namespace GLib {
 		static void voidObjectCallback (IntPtr handle, IntPtr gch)
 		{
 			try {
+				if (gch == IntPtr.Zero)
+					return;
 				Signal sig = ((GCHandle) gch).Target as Signal;
 				if (sig == null) {
 					ExceptionManager.RaiseUnhandledException (new Exception ("Unknown signal class GC handle received."), false);

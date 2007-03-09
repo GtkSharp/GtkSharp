@@ -94,15 +94,19 @@
 
 		void RichTextReceivedCallback (IntPtr clipboard_ptr, IntPtr format_ptr, IntPtr text_ptr, UIntPtr length, IntPtr data)
 		{
-			Gtk.Clipboard clipboard = GLib.Object.GetObject(clipboard_ptr) as Gtk.Clipboard;
-			Gdk.Atom format = format_ptr == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format_ptr, typeof (Gdk.Atom), false);
-			int sz = (int) (uint) length;
-			byte[] text = new byte [sz];
-			Marshal.Copy (text, 0, text_ptr, sz);
-			GCHandle gch = (GCHandle) data;
-			RichTextReceivedFunc cb = gch.Target as RichTextReceivedFunc;
-			cb (clipboard, format, text);
-			gch.Free ();
+			try {
+				Gtk.Clipboard clipboard = GLib.Object.GetObject(clipboard_ptr) as Gtk.Clipboard;
+				Gdk.Atom format = format_ptr == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (format_ptr, typeof (Gdk.Atom), false);
+				int sz = (int) (uint) length;
+				byte[] text = new byte [sz];
+				Marshal.Copy (text, 0, text_ptr, sz);
+				GCHandle gch = (GCHandle) data;
+				RichTextReceivedFunc cb = gch.Target as RichTextReceivedFunc;
+				cb (clipboard, format, text);
+				gch.Free ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]

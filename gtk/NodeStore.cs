@@ -113,32 +113,49 @@ namespace Gtk {
 
 		IntPtr get_column_type_cb (int col)
 		{
-			return ctypes [col].Val;
+			try {
+				return ctypes [col].Val;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return IntPtr.Zero;
 		}
 
 		bool get_node_cb (out int node_idx, IntPtr path)
 		{
-			if (path == IntPtr.Zero)
-				throw new ArgumentNullException ("path");
+			try {
+				if (path == IntPtr.Zero)
+					throw new ArgumentNullException ("path");
 
-			TreePath treepath = new TreePath (path);
+				TreePath treepath = new TreePath (path);
+				node_idx = -1;
+
+				ITreeNode node = GetNodeAtPath (treepath);
+				if (node == null)
+					return false;
+
+				node_idx = node.ID;
+				node_hash [node.ID] = node;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 			node_idx = -1;
-
-			ITreeNode node = GetNodeAtPath (treepath);
-			if (node == null)
-				return false;
-
-			node_idx = node.ID;
-			node_hash [node.ID] = node;
-			return true;
+			return false;
 		}
 
 		IntPtr get_path_cb (int node_idx)
 		{
-			ITreeNode node = node_hash [node_idx] as ITreeNode;
-			if (node == null) throw new Exception ("Invalid Node ID");
+			try {
+				ITreeNode node = node_hash [node_idx] as ITreeNode;
+				if (node == null) throw new Exception ("Invalid Node ID");
 
-			return GetPath (node).Handle;
+				return GetPath (node).Handle;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return IntPtr.Zero;
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -146,125 +163,160 @@ namespace Gtk {
 
 		void get_value_cb (int node_idx, int col, ref GLib.Value val)
 		{
-			ITreeNode node = node_hash [node_idx] as ITreeNode;
-			if (node == null)
-				return;
-			g_value_init (ref val, ctypes [col].Val);
-			object col_val;
-			if (getters [col] is PropertyInfo)
-				col_val = ((PropertyInfo) getters [col]).GetValue (node, null);
-			else
-				col_val = ((FieldInfo) getters [col]).GetValue (node);
-			val.Val = col_val;
+			try {
+				ITreeNode node = node_hash [node_idx] as ITreeNode;
+				if (node == null)
+					return;
+				g_value_init (ref val, ctypes [col].Val);
+				object col_val;
+				if (getters [col] is PropertyInfo)
+					col_val = ((PropertyInfo) getters [col]).GetValue (node, null);
+				else
+					col_val = ((FieldInfo) getters [col]).GetValue (node);
+				val.Val = col_val;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		bool next_cb (ref int node_idx)
 		{
-			ITreeNode node = node_hash [node_idx] as ITreeNode;
-			if (node == null)
-				return false;
+			try {
+				ITreeNode node = node_hash [node_idx] as ITreeNode;
+				if (node == null)
+					return false;
 
-			int idx;
-			if (node.Parent == null)
-				idx = Nodes.IndexOf (node);
-			else
-				idx = node.Parent.IndexOf (node);
+				int idx;
+				if (node.Parent == null)
+					idx = Nodes.IndexOf (node);
+				else
+					idx = node.Parent.IndexOf (node);
 			
-			if (idx < 0) throw new Exception ("Node not found in Nodes list");
+				if (idx < 0) throw new Exception ("Node not found in Nodes list");
 
-			if (node.Parent == null) {
-				if (++idx >= Nodes.Count)
-					return false;
-				node = Nodes [idx] as ITreeNode;
-			} else {
-				if (++idx >= node.Parent.ChildCount)
-					return false;
-				node = node.Parent [idx];
+				if (node.Parent == null) {
+					if (++idx >= Nodes.Count)
+						return false;
+					node = Nodes [idx] as ITreeNode;
+				} else {
+					if (++idx >= node.Parent.ChildCount)
+						return false;
+					node = node.Parent [idx];
+				}
+				node_hash [node.ID] = node;
+				node_idx = node.ID;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
-			node_hash [node.ID] = node;
-			node_idx = node.ID;
-			return true;
+			return false;
 		}
 
 		bool children_cb (out int child_idx, int parent)
 		{
-			child_idx = -1;
-			ITreeNode node;
+			try {
+				child_idx = -1;
+				ITreeNode node;
 
-			if (parent == -1) {
-				if (Nodes.Count <= 0)
-					return false;
-				node = Nodes [0] as ITreeNode;
-				child_idx = node.ID;
-				node_hash [node.ID] = node;
-				return true;
-			}
+				if (parent == -1) {
+					if (Nodes.Count <= 0)
+						return false;
+					node = Nodes [0] as ITreeNode;
+					child_idx = node.ID;
+					node_hash [node.ID] = node;
+					return true;
+				}
 				
-			node = node_hash [parent] as ITreeNode;
-			if (node == null || node.ChildCount <= 0)
-				return false;
+				node = node_hash [parent] as ITreeNode;
+				if (node == null || node.ChildCount <= 0)
+					return false;
 
-			ITreeNode child = node [0];
-			node_hash [child.ID] = child;
-			child_idx = child.ID;
-			return true;
+				ITreeNode child = node [0];
+				node_hash [child.ID] = child;
+				child_idx = child.ID;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			child_idx = -1;
+			return false;
 		}
 
 		bool has_child_cb (int node_idx)
 		{
-			ITreeNode node = node_hash [node_idx] as ITreeNode;
-			if (node == null || node.ChildCount <= 0)
-				return false;
+			try {
+				ITreeNode node = node_hash [node_idx] as ITreeNode;
+				if (node == null || node.ChildCount <= 0)
+					return false;
 
-			return true;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return false;
 		}
 
 		int n_children_cb (int node_idx)
 		{
-			if (node_idx == -1)
-				return Nodes.Count;
+			try {
+				if (node_idx == -1)
+					return Nodes.Count;
 				
-			ITreeNode node = node_hash [node_idx] as ITreeNode;
-			if (node == null || node.ChildCount <= 0)
-				return 0;
+				ITreeNode node = node_hash [node_idx] as ITreeNode;
+				if (node == null || node.ChildCount <= 0)
+					return 0;
 
-			return node.ChildCount;
+				return node.ChildCount;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return 0;
 		}
 
 		bool nth_child_cb (out int child_idx, int parent, int n)
 		{
 			child_idx = -1;
-			ITreeNode node;
+			try {
+				ITreeNode node;
 
-			if (parent == -1) {
-				if (Nodes.Count <= n)
-					return false;
-				node = Nodes [n] as ITreeNode;
-				child_idx = node.ID;
-				node_hash [node.ID] = node;
-				return true;
-			}
+				if (parent == -1) {
+					if (Nodes.Count <= n)
+						return false;
+					node = Nodes [n] as ITreeNode;
+					child_idx = node.ID;
+					node_hash [node.ID] = node;
+					return true;
+				}
 				
-			node = node_hash [parent] as ITreeNode;
-			if (node == null || node.ChildCount <= n)
-				return false;
+				node = node_hash [parent] as ITreeNode;
+				if (node == null || node.ChildCount <= n)
+					return false;
 
-			ITreeNode child = node [n];
-			node_hash [child.ID] = child;
-			child_idx = child.ID;
-			return true;
+				ITreeNode child = node [n];
+				node_hash [child.ID] = child;
+				child_idx = child.ID;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return false;
 		}
 
 		bool parent_cb (out int parent_idx, int child)
 		{
 			parent_idx = -1;
-			ITreeNode node = node_hash [child] as ITreeNode;
-			if (node == null || node.Parent == null)
-				return false;
+			try {
+				ITreeNode node = node_hash [child] as ITreeNode;
+				if (node == null || node.Parent == null)
+					return false;
 
-			node_hash [node.Parent.ID] = node.Parent;
-			parent_idx = node.Parent.ID;
-			return true;
+				node_hash [node.Parent.ID] = node.Parent;
+				parent_idx = node.Parent.ID;
+				return true;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return false;
 		}
 
 		[DllImport("gtksharpglue-2")]

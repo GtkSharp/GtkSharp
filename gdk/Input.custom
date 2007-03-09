@@ -2,7 +2,7 @@
 //
 // Author: Mike Kestner <mkestner@ximian.com> 
 //
-// Copyright (C) 2005 Novell, Inc.
+// Copyright (C) 2005, 2007 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -25,11 +25,15 @@
 
 		static void ReleaseGCHandle (IntPtr data)
 		{
-			if (data == IntPtr.Zero)
-				return;
+			try {
+				if (data == IntPtr.Zero)
+					return;
 
-			GCHandle gch = (GCHandle) data;
-			gch.Free ();
+				GCHandle gch = (GCHandle) data;
+				gch.Free ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
 		}
 
 		static InputDestroyNotify release_gchandle;
