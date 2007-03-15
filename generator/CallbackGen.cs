@@ -1,8 +1,9 @@
 // GtkSharp.Generation.CallbackGen.cs - The Callback Generatable.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2002-2003 Mike Kestner
+// Copyright (c) 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -108,8 +109,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic " + retval.MarshalType + " NativeCallback (" + isig + ")");
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\ttry {");
 
 			bool need_sep = false;
+			bool throws_error = false;
 			string call_str = "";
 			string cleanup_str = "";
 			for (int i = 0, idx = 0; i < parms.Count; i++)
@@ -117,17 +120,18 @@ namespace GtkSharp.Generation {
 				Parameter p = parms [i];
 
 				if (p.CType == "GError**") {
-					sw.WriteLine ("\t\t\t" + p.Name + " = IntPtr.Zero;");
+					sw.WriteLine ("\t\t\t\t" + p.Name + " = IntPtr.Zero;");
+					throws_error = true;
 					continue;
 				} else if (parms.IsHidden (p))
 					continue;
 
 				IGeneratable gen = p.Generatable;
 
-				sw.Write("\t\t\t" + p.CSType + " _arg" + idx);
+				sw.Write("\t\t\t\t" + p.CSType + " _arg" + idx);
 				if (p.PassAs == "out") {
 					sw.WriteLine(";");
-					cleanup_str += "\t\t\t" + p.Name + " = " + gen.CallByName ("_arg" + idx) + ";\n";
+					cleanup_str += "\t\t\t\t" + p.Name + " = " + gen.CallByName ("_arg" + idx) + ";\n";
 				} else
 					sw.WriteLine(" = " + gen.FromNative (p.Name) + ";");
 
@@ -139,13 +143,14 @@ namespace GtkSharp.Generation {
 				idx++;
 			}
 
-			cleanup_str += "\t\t\tif (release_on_call)\n\t\t\t\tgch.Free ();\n";
+			bool has_out_params = cleanup_str.Length > 0;
+			cleanup_str += "\t\t\t\tif (release_on_call)\n\t\t\t\t\tgch.Free ();\n";
 
-			sw.Write ("\t\t\t");
+			sw.Write ("\t\t\t\t");
 			string invoke = "managed (" + call_str + ")";
 			if (retval.MarshalType != "void") {
 				sw.Write (retval.MarshalType + " ret = ");
-				cleanup_str += "\t\t\treturn ret;\n";
+				cleanup_str += "\t\t\t\treturn ret;\n";
 
 				SymbolTable table = SymbolTable.Table;
 				ClassBase ret_wrapper = table.GetClassGen (retval.CType);
@@ -162,8 +167,19 @@ namespace GtkSharp.Generation {
 			} else
 				sw.WriteLine (invoke + ";");
 
-			if (cleanup_str != "")
-				sw.Write (cleanup_str);
+			sw.Write (cleanup_str);
+			bool fatal = (retval.MarshalType != "void" && retval.MarshalType != "bool") || has_out_params;
+			sw.WriteLine ("\t\t\t} catch (Exception e) {");
+			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
+			if (fatal) {
+				sw.WriteLine ("\t\t\t\t// NOTREACHED: Above call does not return.");
+				sw.WriteLine ("\t\t\t\tthrow e;");
+			} else if (retval.MarshalType == "bool") {
+				if (throws_error)
+					sw.WriteLine ("\t\t\t\terror = IntPtr.Zero;");
+				sw.WriteLine ("\t\t\t\treturn false;");
+			}
+			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tbool release_on_call = false;");
