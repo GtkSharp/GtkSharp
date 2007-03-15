@@ -9,7 +9,67 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>A VBox is a specific type of <see cref="T:Gtk.Container" /> for packing widgets vertically.
-</summary>
+<example><code lang="C#">
+using System;
+using Gtk;
+
+class VBoxTester {
+	
+	static void Main ()
+	{
+		Application.Init ();
+		Window myWindow = new Window ("VBox Widget");
+		myWindow.SetDefaultSize (250, 100);
+
+		VBox myBox = new VBox (false, 4);
+		
+		//Add the box to a Window container
+		myWindow.Add (myBox);
+
+		// Add some buttons to the container
+		VBoxTester.AddButton (myBox);
+		VBoxTester.AddButton (myBox);
+		VBoxTester.AddButton (myBox);		
+
+		myWindow.ShowAll ();
+		Application.Run ();
+	}
+
+	static void AddButton (VBox box)
+	{
+		box.PackStart (new Button ("Button"), true, false, 0);
+	}	
+}
+  </code></example><example><code lang="Visual Basic .NET">
+Imports System
+Imports Gtk
+
+Class VBoxTester
+        Shared Sub Main ()
+                Application.Init ()
+                Dim myWindow As New Window ("VBox Widget")
+
+                Dim myBox As New VBox (False, 0)
+
+                ' Add the box to a Window container
+                myWindow.Add (myBox)
+                myWindow.SetDefaultSize (250, 100)
+
+                ' Add some buttons to the box
+                VBoxTester.AddButton (myBox)
+                VBoxTester.AddButton (myBox)
+                VBoxTester.AddButton (myBox)
+
+                myWindow.ShowAll ()
+                Application.Run ()
+        End Sub
+
+        Shared Sub AddButton (ByVal box As VBox)
+                box.PackStart (New Button ("Button"), True, False, 0)
+        End Sub
+End Class
+
+  </code></example></summary>
     <remarks>
       <para>Other ways of laying out widgets include using a horizontal box, (see <see cref="T:Gtk.HBox" />), a table, (see <see cref="T:Gtk.Table" />), button boxes, etc.</para>
       <para>
