@@ -62,6 +62,7 @@ namespace GLib {
 		public void Free ()
 		{
 			g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+			reference = null;
 			gch.Free ();
 		}
 
@@ -73,8 +74,6 @@ namespace GLib {
 				WeakReference weak = reference as WeakReference;
 				if (weak.IsAlive)
 					reference = weak.Target;
-				else
-					throw new Exception ("Toggling dead wrapper");
 			}
 		}
 
