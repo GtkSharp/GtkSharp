@@ -40,7 +40,15 @@ namespace GLib {
 
 		~Object ()
 		{
-			Dispose ();
+			lock (PendingDestroys){
+				PendingDestroys.Add (this);
+				lock (typeof (Object)){
+					if (!idle_queued){
+						Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
+						idle_queued = true;
+					}
+				}
+			}
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -62,18 +70,7 @@ namespace GLib {
 				if (o._obj == IntPtr.Zero)
 					continue;
 
-				try {
-					ToggleRef toggle_ref = Objects [o._obj] as ToggleRef;
-					if (toggle_ref == null)
-						g_object_unref (o._obj);
-					else
-						toggle_ref.Free ();
-				} catch (Exception e) {
-					Console.WriteLine ("Exception while disposing a " + o + " in Gtk#");
-					throw e;
-				}
-				Objects.Remove (o._obj);
-				o._obj = IntPtr.Zero;
+				o.Dispose ();
 			}
 			return false;
 		}
@@ -84,15 +81,18 @@ namespace GLib {
 				return;
 
 			disposed = true;
-			lock (PendingDestroys){
-				PendingDestroys.Add (this);
-				lock (typeof (Object)){
-					if (!idle_queued){
-						Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
-						idle_queued = true;
-					}
-				}
+			try {
+				ToggleRef toggle_ref = Objects [_obj] as ToggleRef;
+				if (toggle_ref == null)
+					g_object_unref (_obj);
+				else
+					toggle_ref.Free ();
+			} catch (Exception e) {
+				Console.WriteLine ("Exception while disposing a " + this + " in Gtk#");
+				throw e;
 			}
+			Objects.Remove (_obj);
+			_obj = IntPtr.Zero;
 			GC.SuppressFinalize (this);
 		}
 

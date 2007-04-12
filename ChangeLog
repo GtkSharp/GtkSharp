@@ -1,5 +1,13 @@
 2007-04-12  Mike Kestner  <mkestner@novell.com>
 
+	* glib/Object.cs : do the Timeout switch in the finalizer
+	instead of in Dispose, where it can cause problems if people
+	override Dispose.
+	* generator/ObjectGen.cs : don't generate finalizers for every
+	subclass, just rely on the ~GLib.Object implementation.
+
+2007-04-12  Mike Kestner  <mkestner@novell.com>
+
 	* glib/Idle.cs :
 	* glib/Timeout.cs : don't add the CDeclCallback attr to the
 	public delegate type, since it causes a MissingMethod exception

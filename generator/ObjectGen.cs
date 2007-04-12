@@ -255,11 +255,6 @@ namespace GtkSharp.Generation {
 			if (!Elem.HasAttribute("parent"))
 				return;
 
-			gen_info.Writer.WriteLine("\t\t~" + Name + "()");
-			gen_info.Writer.WriteLine("\t\t{");
-			gen_info.Writer.WriteLine("\t\t\tDispose();");
-			gen_info.Writer.WriteLine("\t\t}");
-			gen_info.Writer.WriteLine();
 			if (!DisableGTypeCtor) {
 				gen_info.Writer.WriteLine("\t\t[Obsolete]");
 				gen_info.Writer.WriteLine("\t\tprotected " + Name + "(GLib.GType gtype) : base(gtype) {}");
