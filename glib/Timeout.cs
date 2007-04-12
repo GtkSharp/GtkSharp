@@ -24,16 +24,18 @@ namespace GLib {
 	using System;
 	using System.Runtime.InteropServices;
 
-	[CDeclCallback]
 	public delegate bool TimeoutHandler ();
 
 	public class Timeout {
+
+		[CDeclCallback]
+		delegate bool TimeoutHandlerInternal ();
 
 		internal class TimeoutProxy : SourceProxy {
 			public TimeoutProxy (TimeoutHandler real)
 			{
 				real_handler = real;
-				proxy_handler = new TimeoutHandler (Handler);
+				proxy_handler = new TimeoutHandlerInternal (Handler);
 			}
 
 			public bool Handler ()
@@ -54,13 +56,13 @@ namespace GLib {
 		
 		private Timeout () {} 
 		[DllImport("libglib-2.0-0.dll")]
-		static extern uint g_timeout_add (uint interval, TimeoutHandler d, IntPtr data);
+		static extern uint g_timeout_add (uint interval, TimeoutHandlerInternal d, IntPtr data);
 
 		public static uint Add (uint interval, TimeoutHandler hndlr)
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
-			uint code = g_timeout_add (interval, (TimeoutHandler) p.proxy_handler, IntPtr.Zero);
+			uint code = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
 			lock (Source.source_handlers)
 				Source.source_handlers [code] = p;
 

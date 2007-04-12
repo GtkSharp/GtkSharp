@@ -27,16 +27,19 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	[CDeclCallback]
 	public delegate bool IdleHandler ();
 
 	public class Idle {
+
+		[CDeclCallback]
+		delegate bool IdleHandlerInternal ();
+
 
 		internal class IdleProxy : SourceProxy {
 			public IdleProxy (IdleHandler real)
 			{
 				real_handler = real;
-				proxy_handler = new IdleHandler (Handler);
+				proxy_handler = new IdleHandlerInternal (Handler);
 			}
 
 			public bool Handler ()
@@ -60,12 +63,12 @@ namespace GLib {
 		}
 		
 		[DllImport("libglib-2.0-0.dll")]
-		static extern uint g_idle_add (IdleHandler d, IntPtr data);
+		static extern uint g_idle_add (IdleHandlerInternal d, IntPtr data);
 
 		public static uint Add (IdleHandler hndlr)
 		{
 			IdleProxy p = new IdleProxy (hndlr);
-			uint code = g_idle_add ((IdleHandler) p.proxy_handler, IntPtr.Zero);
+			uint code = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
 			lock (Source.source_handlers)
 				Source.source_handlers [code] = p;
 
