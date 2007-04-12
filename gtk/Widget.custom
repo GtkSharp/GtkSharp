@@ -1,8 +1,10 @@
 //
 // Gtk.Widget.custom - Gtk Widget class customizations
 //
-// Author: Rachel Hestilow <hestilow@ximian.com> 
+// Authors: Rachel Hestilow <hestilow@ximian.com>,
+//          Brad Taylor <brad@getcoded.net>
 //
+// Copyright (C) 2007 Brad Taylor
 // Copyright (C) 2002 Rachel Hestilow 
 //
 // This code is inserted after the automatically generated code.
@@ -217,6 +219,32 @@ static void ConnectSetScrollAdjustments (GLib.GType gtype)
 
 [GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectSetScrollAdjustments")]
 protected virtual void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustment vadj)
+{
+}
+
+[DllImport("gtksharpglue-2")]
+static extern int gtksharp_widget_connect_activate_signal (IntPtr gtype, ActivateDelegate cb);
+
+[GLib.CDeclCallback]
+delegate void ActivateDelegate (IntPtr widget);
+
+static ActivateDelegate ActivateCallback;
+
+static void Activate_cb (IntPtr widget)
+{
+	Widget obj = GLib.Object.GetObject (widget, false) as Widget;
+	obj.OnActivate ();
+}
+
+static void ConnectActivate (GLib.GType gtype)
+{
+	if (ActivateCallback == null)
+		ActivateCallback = new ActivateDelegate (Activate_cb);
+	gtksharp_widget_connect_activate_signal (gtype.Val, ActivateCallback);
+}
+
+[GLib.DefaultSignalHandler (Type=typeof (Gtk.Widget), ConnectionMethod="ConnectActivate")]
+protected virtual void OnActivate ()
 {
 }
 

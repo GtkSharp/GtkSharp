@@ -1,7 +1,9 @@
 /* widget.c : Glue to access fields in GtkWidget.
  *
- * Author: Rachel Hestilow  <hestilow@ximian.com>
+ * Authors: Rachel Hestilow  <hestilow@ximian.com>,
+ *          Brad Taylor <brad@getcoded.net>
  *
+ * Copyright (c) 2007 Brad Taylor
  * Copyright (c) 2002 Rachel Hestilow, Mike Kestner
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +33,7 @@ int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
 void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
 int gtksharp_gtk_widget_style_get_int (GtkWidget *widget, const char *name);
 void gtksharp_widget_connect_set_scroll_adjustments_signal (GType gtype, gpointer callback);
+void gtksharp_widget_connect_activate_signal (GType gtype, gpointer callback);
 void _gtksharp_marshal_VOID__OBJECT_OBJECT (GClosure *closure, GValue *return_value, guint n_param_values, const GValue *param_values, gpointer invocation_hint, gpointer marshal_data);
 int gtksharp_gtk_widget_get_flags (GtkWidget *widget);
 void gtksharp_gtk_widget_set_flags (GtkWidget *widget, int flags);
@@ -137,6 +140,18 @@ gtksharp_widget_connect_set_scroll_adjustments_signal (GType gtype, gpointer cb)
 		"set_scroll_adjustments", gtype, G_SIGNAL_RUN_LAST,
 		g_cclosure_new (cb, NULL, NULL), NULL, NULL, _gtksharp_marshal_VOID__OBJECT_OBJECT,
 		G_TYPE_NONE, 2, parm_types);
+}
+
+void 
+gtksharp_widget_connect_activate_signal (GType gtype, gpointer cb)
+{
+	GtkWidgetClass *klass = g_type_class_peek (gtype);
+	if (!klass)
+		klass = g_type_class_ref (gtype);
+	klass->activate_signal = g_signal_newv (
+		"activate_signal", gtype, G_SIGNAL_RUN_LAST,
+		g_cclosure_new (cb, NULL, NULL), NULL, NULL, g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0, NULL);
 }
 
 void
