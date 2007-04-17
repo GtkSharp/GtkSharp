@@ -83,3 +83,103 @@
 				return TreeIter.Zero;
 		}
 
+		[GLib.CDeclCallback]
+		delegate void RowsReorderedSignalDelegate (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr arg3, IntPtr gch);
+
+		static void RowsReorderedSignalCallback (IntPtr arg0, IntPtr arg1, IntPtr arg2, IntPtr arg3, IntPtr gch)
+		{
+			Gtk.RowsReorderedArgs args = new Gtk.RowsReorderedArgs ();
+			try {
+				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+				if (sig == null)
+					throw new Exception("Unknown signal GC handle received " + gch);
+
+				TreeModelFilter sender = GLib.Object.GetObject (arg0) as TreeModelFilter;
+				args.Args = new object[3];
+				args.Args[0] = arg1 == IntPtr.Zero ? null : (Gtk.TreePath) GLib.Opaque.GetOpaque (arg1, typeof (Gtk.TreePath), false);
+				args.Args[1] = Gtk.TreeIter.New (arg2);
+				int child_cnt = sender.IterNChildren ((TreeIter)args.Args[1]);
+				int[] new_order = new int [child_cnt];
+				Marshal.Copy (arg3, new_order, 0, child_cnt);
+				args.Args[2] = new_order;
+				Gtk.RowsReorderedHandler handler = (Gtk.RowsReorderedHandler) sig.Handler;
+				handler (sender, args);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void RowsReorderedVMDelegate (IntPtr tree_model, IntPtr path, IntPtr iter, IntPtr new_order);
+
+		static RowsReorderedVMDelegate RowsReorderedVMCallback;
+
+		static void rowsreordered_cb (IntPtr tree_model, IntPtr path_ptr, IntPtr iter_ptr, IntPtr new_order)
+		{
+			try {
+				TreeModelFilter store = GLib.Object.GetObject (tree_model, false) as TreeModelFilter;
+				TreePath path = GLib.Opaque.GetOpaque (path_ptr, typeof (TreePath), false) as TreePath;
+				TreeIter iter = TreeIter.New (iter_ptr);
+				int child_cnt = store.IterNChildren (iter);
+				int[] child_order = new int [child_cnt];
+				Marshal.Copy (new_order, child_order, 0, child_cnt);
+				store.OnRowsReordered (path, iter, child_order);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, true);
+				// NOTREACHED: above call doesn't return
+				throw e;
+			}
+		}
+
+		private static void OverrideRowsReordered (GLib.GType gtype)
+		{
+			if (RowsReorderedVMCallback == null)
+				RowsReorderedVMCallback = new RowsReorderedVMDelegate (rowsreordered_cb);
+			OverrideVirtualMethod (gtype, "rows_reordered", RowsReorderedVMCallback);
+		}
+
+		[Obsolete ("Replaced by int[] new_order overload.")]
+		[GLib.DefaultSignalHandler(Type=typeof(Gtk.TreeModelFilter), ConnectionMethod="OverrideRowsReordered")]
+		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, out int new_order)
+		{
+			new_order = -1;
+		}
+
+		[GLib.DefaultSignalHandler(Type=typeof(Gtk.TreeModelFilter), ConnectionMethod="OverrideRowsReordered")]
+		protected virtual void OnRowsReordered (Gtk.TreePath path, Gtk.TreeIter iter, int[] new_order)
+		{
+			int dummy;
+			OnRowsReordered (path, iter, out dummy);
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (4);
+			GLib.Value[] vals = new GLib.Value [4];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (path);
+			inst_and_params.Append (vals [1]);
+			vals [2] = new GLib.Value (iter);
+			inst_and_params.Append (vals [2]);
+			int cnt = IterNChildren (iter);
+			IntPtr new_order_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (int)) * cnt);
+			Marshal.Copy (new_order, 0, new_order_ptr, cnt);
+			vals [3] = new GLib.Value (new_order_ptr);
+			inst_and_params.Append (vals [3]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			Marshal.FreeHGlobal (new_order_ptr);
+
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[GLib.Signal("rows_reordered")]
+		public event Gtk.RowsReorderedHandler RowsReordered {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "rows_reordered", new RowsReorderedSignalDelegate(RowsReorderedSignalCallback));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "rows_reordered", new RowsReorderedSignalDelegate(RowsReorderedSignalCallback));
+				sig.RemoveDelegate (value);
+			}
+		}
+

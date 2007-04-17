@@ -21,6 +21,7 @@ sources = 				\
 	NodeStore.cs			\
 	NodeView.cs			\
 	RadioActionEntry.cs		\
+	RowsReorderedHandler.cs		\
 	StockManager.cs			\
 	ThreadNotify.cs			\
 	ToggleActionEntry.cs		\
