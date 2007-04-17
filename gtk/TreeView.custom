@@ -40,6 +40,24 @@
 			Raw = gtk_tree_view_new_with_model (store.Handle);
 		}
 
+		public Gdk.Color OddRowColor {
+			get {
+				GLib.Value value = StyleGetPropertyValue ("odd-row-color");
+				Gdk.Color ret = (Gdk.Color)value;
+				value.Dispose ();
+				return ret;
+			}
+		}
+
+		public Gdk.Color EvenRowColor {
+			get {
+				GLib.Value value = StyleGetPropertyValue ("even-row-color");
+				Gdk.Color ret = (Gdk.Color)value;
+				value.Dispose ();
+				return ret;
+			}
+		}
+
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern IntPtr gtk_tree_view_get_columns (IntPtr raw);
 

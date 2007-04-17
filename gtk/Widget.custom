@@ -331,6 +331,15 @@ public object StyleGetProperty (string property_name) {
 	return ret;
 }
 
+internal GLib.Value StyleGetPropertyValue (string property_name) {
+	GLib.Value value = new GLib.Value ();
+
+	IntPtr name = GLib.Marshaller.StringToPtrGStrdup (property_name);
+	gtksharp_widget_style_get_property (Handle, name, ref value);
+	GLib.Marshaller.Free (name);
+	return value;
+}
+
 [DllImport("libgtk-win32-2.0-0.dll")]
 static extern IntPtr gtk_widget_list_mnemonic_labels (IntPtr raw);
 
