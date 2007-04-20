@@ -64,6 +64,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual string NativeCallbackType {
+			get {
+				return MarshalType;
+			}
+		}
+
 		public virtual string MarshalReturnType {
 			get {
 				return MarshalType;

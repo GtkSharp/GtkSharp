@@ -100,12 +100,9 @@ namespace GtkSharp.Generation {
 
 					if (parms[i].PassAs != "")
 						result += parms[i].PassAs + " ";
-					result += (parms[i].MarshalType + " arg" + i);
+					result += (parms[i].NativeCallbackType + " arg" + i);
 				}
 				result += ", IntPtr gch";
-
-				result = result.Replace ("out ref", "out");
-				result = result.Replace ("ref ref", "ref");
 
 				return result;
 			}
@@ -232,7 +229,9 @@ namespace GtkSharp.Generation {
 					} else
 						sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + p.FromNative ("arg" + idx)  + ";");
 				}
-				if (p.PassAs != "")
+				if (igen is StructBase)
+					finish += "\t\t\t\tif (arg" + idx + " != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (args.Args[" + (idx-1) + "], arg" + idx + ", false);\n";
+				else if (p.PassAs != "")
 					finish += "\t\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";
 			}
 			sw.WriteLine("\t\t\t\t{0} handler = ({0}) sig.Handler;", EventHandlerQualifiedName);
@@ -372,12 +371,12 @@ namespace GtkSharp.Generation {
 
 		private void GenDefaultHandlerDelegate (StreamWriter sw, ClassBase implementor)
 		{
-			ImportSignature isig = new ImportSignature (parms);
+			NativeCallbackSignature sig = new NativeCallbackSignature (parms);
 			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
-			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + isig.ToString () + ");\n");
+			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + sig.ToString () + ");\n");
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
-			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + isig.ToString () + ")");
+			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + sig.ToString () + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\ttry {");
 			sw.WriteLine ("\t\t\t\t{0} {1}_managed = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);

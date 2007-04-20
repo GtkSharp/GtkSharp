@@ -1,3 +1,21 @@
+2007-04-20  Mike Kestner  <mkestner@novell.com>
+
+	* generator/CallbackGen.cs : switch to NativeCallbackSignature.
+	* generator/GenBase.cs : add NativeCallbackType member.
+	* generator/IGeneratable.cs : add NativeCallbackType member.
+	* generator/ManagedCallString.cs : add guarded post call struct
+	marshaling back to the native struct.
+	* generator/NativeCallbackSignature.cs : new parallel to ImportSignature
+	but using NativeCallbackType instead of MarshalType.
+	* generator/Signal.cs : switch vm and sig marshaler callbacks to 
+	NativeCallbackSignature. Perform guarding post call struct marshaling
+	back to the native struct.
+	* generator/Parameters.cs : add NativeCallbackType member.
+	* generator/SimpleBase.cs : add NativeCallbackType member.
+	* generator/StructBase.cs : add NativeCallbackType member using IntPtr
+	to support NULL handling.
+	* gtk/NodeCellDataFunc.cs : update native marshaler sig.
+
 2007-04-17  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Gtk.metadata : hide TreeModel.RowsReordered signal so we can do

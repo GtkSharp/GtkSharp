@@ -56,22 +56,25 @@ namespace GtkSharp.Generation {
 		}
 
 		public override string MarshalType {
-			get
-			{
+			get {
 				return "ref " + QualifiedName;
 			}
 		}
 
+		public override string NativeCallbackType {
+			get {
+				return "IntPtr";
+			}
+		}
+
 		public override string MarshalReturnType {
-			get
-			{
+			get {
 				return "IntPtr";
 			}
 		}
 
 		public override string ToNativeReturnType {
-			get
-			{
+			get {
 				return QualifiedName;
 			}
 		}
@@ -92,17 +95,11 @@ namespace GtkSharp.Generation {
 
 		public override string FromNative(string var)
 		{
-			return var;
-		}
-		
-		public override string FromNativeReturn(string var)
-		{
 			return QualifiedName + ".New (" + var + ")";
 		}
-
+		
 		public override string ToNativeReturn(string var)
 		{
-			// FIXME
 			return var;
 		}
 

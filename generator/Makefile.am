@@ -36,6 +36,7 @@ sources = 				\
 	MethodBase.cs			\
 	MethodBody.cs			\
 	Method.cs			\
+	NativeCallbackSignature.cs	\
 	ObjectField.cs			\
 	ObjectBase.cs			\
 	ObjectGen.cs			\

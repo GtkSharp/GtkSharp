@@ -28,11 +28,12 @@ namespace Gtk {
 
 	internal class NodeCellDataFuncWrapper {
 
-		public void NativeCallback (IntPtr tree_column, IntPtr cell, IntPtr tree_model, ref Gtk.TreeIter iter, IntPtr data)
+		public void NativeCallback (IntPtr tree_column, IntPtr cell, IntPtr tree_model, IntPtr iter_ptr, IntPtr data)
 		{
 			TreeViewColumn col = (Gtk.TreeViewColumn) GLib.Object.GetObject(tree_column);
 			CellRenderer renderer = (Gtk.CellRenderer) GLib.Object.GetObject(cell);
 			NodeStore store = (NodeStore) GLib.Object.GetObject(tree_model);
+			TreeIter iter = TreeIter.New (iter_ptr);
 			managed (col,  renderer,  store.GetNode (iter));
 		}
 

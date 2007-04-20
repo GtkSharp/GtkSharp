@@ -94,7 +94,10 @@ namespace GtkSharp.Generation {
 				Parameter p = parms [i] as Parameter;
 				IGeneratable igen = p.Generatable;
 
-				ret += indent + p.Name + " = " + igen.CallByName ("my" + p.Name) + ";\n";
+				if (igen is StructBase)
+					ret += indent + String.Format ("if ({0} != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (my{0}, {0}, false);\n", p.Name);
+				else
+					ret += indent + p.Name + " = " + igen.ToNativeReturn ("my" + p.Name) + ";\n";
 			}
 
 			return ret;

@@ -1,8 +1,9 @@
 // GtkSharp.Generation.IGeneratable.cs - Interface to generate code for a type.
 //
-// Author: Mike Kestner <mkestner@speakeasy.net>
+// Author: Mike Kestner <mkestner@novell.com>
 //
 // Copyright (c) 2001 Mike Kestner
+// Copyright (c) 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -35,6 +36,10 @@ namespace GtkSharp.Generation {
 		// The type (possibly including "ref" or "out") to use in the import
 		// signature when passing this generatable to unmanaged code
 		string MarshalType {get;}
+
+		// The type to use in the native delegate signature when marshaling to
+		// managed code from a native callback.
+		string NativeCallbackType {get;}
 
 		// The type to use as the return type in an import signature when
 		// receiving this generatable back from unmanaged code

@@ -155,6 +155,18 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string NativeCallbackType {
+			get {
+				string type = Generatable.NativeCallbackType;
+				if (type == "void")
+					type = "System.IntPtr";
+				if (IsArray) {
+					type += "[]";
+					type = type.Replace ("ref ", "");
+				}
+				return type;
+			}
+		}
 		public string Name {
 			get {
 				return SymbolTable.Table.MangleName (elem.GetAttribute("name"));
