@@ -303,6 +303,15 @@ namespace GLib {
 			return strings;
 		}
 
+		object ToBoxed ()
+		{
+			IntPtr boxed_ptr = g_value_get_boxed (ref this);
+			Type t = GType.LookupType (type);
+			if (t == null)
+				throw new Exception ("Unknown type " + new GType (type).ToString ());
+			return Marshal.PtrToStructure (boxed_ptr, t);
+		}
+
 		public object Val
 		{
 			get {
@@ -331,6 +340,8 @@ namespace GLib {
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
 				else if (g_type_is_a (type, GType.Object.Val))
 					return (GLib.Object) this;
+				else if (g_type_is_a (type, GType.Boxed.Val))
+					return ToBoxed ();
 				else
 					throw new Exception ("Unknown type " + new GType (type).ToString ());
 			}
