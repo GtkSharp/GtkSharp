@@ -98,9 +98,10 @@ namespace GtkSharp.Generation {
 					if (i > 0)
 						result += ", ";
 
-					if (parms[i].PassAs != "")
-						result += parms[i].PassAs + " ";
-					result += (parms[i].NativeCallbackType + " arg" + i);
+					Parameter p = parms [i];
+					if (p.PassAs != "" && !(p.Generatable is StructBase))
+						result += p.PassAs + " ";
+					result += (p.NativeCallbackType + " arg" + i);
 				}
 				result += ", IntPtr gch";
 
@@ -229,7 +230,7 @@ namespace GtkSharp.Generation {
 					} else
 						sw.WriteLine("\t\t\t\targs.Args[" + (idx - 1) + "] = " + p.FromNative ("arg" + idx)  + ";");
 				}
-				if (igen is StructBase)
+				if (igen is StructBase && p.PassAs == "ref")
 					finish += "\t\t\t\tif (arg" + idx + " != IntPtr.Zero) System.Runtime.InteropServices.Marshal.StructureToPtr (args.Args[" + (idx-1) + "], arg" + idx + ", false);\n";
 				else if (p.PassAs != "")
 					finish += "\t\t\t\targ" + idx + " = " + igen.ToNativeReturn ("((" + p.CSType + ")args.Args[" + (idx - 1) + "])") + ";\n";

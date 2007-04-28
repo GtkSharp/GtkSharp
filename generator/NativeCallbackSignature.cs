@@ -45,7 +45,7 @@ namespace GtkSharp.Generation {
 				parms [i] = "";
 				if (p.CType == "GError**")
 					parms [i] += "out ";
-				else if (p.PassAs != "")
+				else if (p.PassAs != "" && !(p.Generatable is StructBase))
 					parms [i] += p.PassAs + " ";
 				parms [i] += p.NativeCallbackType + " " + p.Name;
 			}
