@@ -376,9 +376,11 @@ namespace GLib {
 					IntPtr buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
 					Marshal.StructureToPtr (value, buf, false);
 					g_value_set_pointer (ref this, buf);
-				} else if (type == ManagedValue.GType.Val)
-					g_value_set_boxed (ref this, ManagedValue.WrapObject (value));
-				else if (g_type_is_a (type, GType.Object.Val))
+				} else if (type == ManagedValue.GType.Val) {
+					IntPtr wrapper = ManagedValue.WrapObject (value);
+					g_value_set_boxed (ref this, wrapper);
+					ManagedValue.ReleaseWrapper (wrapper);
+				} else if (g_type_is_a (type, GType.Object.Val))
 					g_value_set_object (ref this, ((GLib.Object) value).Handle);
 				else if (g_type_is_a (type, GType.Boxed.Val)) {
 					if (value is IWrapper) {

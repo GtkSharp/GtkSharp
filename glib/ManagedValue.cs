@@ -93,6 +93,14 @@ namespace GLib {
 				return null;
 			return ((GCHandle)ptr).Target;
 		}
+
+		public static void ReleaseWrapper (IntPtr ptr)
+		{
+			if (ptr == IntPtr.Zero)
+				return;
+
+			((GCHandle)ptr).Free ();
+		}
 	}
 }
 
