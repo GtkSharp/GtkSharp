@@ -1,0 +1,31 @@
+// Gdk.Property.custom - Custom implementation for Property class
+//
+// Authors: Mike Kestner <mkestner@novell.com>
+//
+// Copyright (c) 2007 Novell, Inc.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern void gdk_property_change(IntPtr window, IntPtr property, IntPtr type, int format, int mode, out byte data, int nelements);
+
+		[Obsolete ("Replaced by corrected overload with data parameter")]
+		public static byte Change(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, int format, Gdk.PropMode mode, int nelements) {
+			byte data;
+			gdk_property_change(window == null ? IntPtr.Zero : window.Handle, property == null ? IntPtr.Zero : property.Handle, type == null ? IntPtr.Zero : type.Handle, format, (int) mode, out data, nelements);
+			return data;
+		}
+

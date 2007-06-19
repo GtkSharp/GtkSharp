@@ -53,6 +53,7 @@ customs = 			\
 	PixbufLoader.custom	\
 	Pixdata.custom		\
 	Point.custom		\
+	Property.custom		\
 	Rectangle.custom	\
 	Region.custom		\
 	RgbCmap.custom		\
