@@ -29,3 +29,22 @@
 			return data;
 		}
 
+		[DllImport("libgdk-win32-2.0-0.dll")]
+		static extern bool gdk_property_get(IntPtr window, IntPtr property, IntPtr type, UIntPtr offset, UIntPtr length, int pdelete, out IntPtr actual_property_type, out int actual_format, out int actual_length, out IntPtr data);
+
+		public static bool Get(Gdk.Window window, Gdk.Atom property, Gdk.Atom type, ulong offset, ulong length, int pdelete, out Gdk.Atom actual_property_type, out int actual_format, out int actual_length, out byte[] data) {
+			IntPtr actual_property_type_as_native;
+			IntPtr actual_data;
+			bool raw_ret = gdk_property_get(window == null ? IntPtr.Zero : window.Handle, property == null ? IntPtr.Zero : property.Handle, type == null ? IntPtr.Zero : type.Handle, new UIntPtr (offset), new UIntPtr (length), pdelete, out actual_property_type_as_native, out actual_format, out actual_length, out actual_data);
+			data = null;
+			if (raw_ret) {
+				data = new byte [actual_length];
+				Marshal.Copy (actual_data, data, 0, actual_length);
+				GLib.Marshaller.Free (actual_data);
+			}
+
+			bool ret = raw_ret;
+			actual_property_type = actual_property_type_as_native == IntPtr.Zero ? null : (Gdk.Atom) GLib.Opaque.GetOpaque (actual_property_type_as_native, typeof (Gdk.Atom), false);
+			return ret;
+		}
+
