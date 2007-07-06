@@ -7,7 +7,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Event data.</summary>
+    <summary>This class extends <see cref="M:GLib.SignalArgs" /> with information about an activated accelerator.</summary>
     <remarks>
       <para>The <see cref="M:Gtk.AccelGroup.AccelActivate" /> event invokes <see cref="T:Gtk.AccelActivateHandler" /> delegates which pass event data via this class.</para>
     </remarks>
@@ -24,8 +24,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Public Constructor.</summary>
-        <remarks>Create a new <see cref="T:Gtk.AccelActivateArgs" /> instance with this constructor if you need to invoke a <see cref="T:Gtk.AccelActivateHandler" /> delegate.</remarks>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.AccelActivatedArgs" /> with the default values.</summary>
+        <remarks>When manually evoking an <see cref="T:Gtk.AccelActivateHandler" /> delegate, this constructor is used create the second argument.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Acceleratable">
@@ -36,8 +36,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The object on which the accelerator was activated</summary>
-        <value>a <see cref="T:GLib.Object" /></value>
+        <summary>Gets the object on which the accelerator was activated.</summary>
+        <value>A <see cref="T:GLib.Object" /> containing the object on which the accelerator was activated.</value>
         <remarks>
         </remarks>
       </Docs>
@@ -50,9 +50,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The accelerator keyval</summary>
-        <value>a <see cref="T:System.UInt32" /></value>
+        <summary>Gets the key value that was used to activate the accelerator.</summary>
+        <value>A <see cref="T:System.UInt32" /> containing the key value that was used to activate the accelerator.</value>
         <remarks>
+          <para>This value represents a specific non-modifier key on the keyboard.</para>
+          <para>A key combination may include a standard key and modifier keys, for example <c>Ctrl-S</c>. Check <see cref="P:Gtk.AccelActivateArgs.Modifier" /> for the modifiers that were applied.</para>
         </remarks>
       </Docs>
     </Member>
@@ -64,10 +66,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The modifier combination of the accelerator</summary>
-        <value>a <see cref="T:Gdk.ModifierType" /></value>
-        <remarks>
-        </remarks>
+        <summary>Gets the mouse and keyboard modifier combination that was used to activate the accelerator.</summary>
+        <value>A bitwise combined <see cref="T:Gdk.ModifierType" /> containing the mouse and keyboard modifier combination that was used to activate the accelerator.</value>
+        <remarks>Modifiers can include Ctrl, Shift, Alt, Meta keys (Windows, Apple), and mouse buttons. These are items that by themselves my perform no task, but when combined, often with <see cref="P:Gtk.AccelActivateArgs" />, represent an accelerator. For example, <c>Ctrl-S</c>, <c>Ctrl-Alt-Del</c>, <c>Ctrl-Left Mouse Button</c>, or <c>Apple-Control-Reset</c>.</remarks>
       </Docs>
     </Member>
   </Members>

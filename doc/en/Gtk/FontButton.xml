@@ -7,8 +7,52 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>A button to launch a font selection dialog.</summary>
+    <summary>This class extends <see cref="T:Gtk.Button" />, providing an simple button for font selection.</summary>
     <remarks>
+      <para>When clicked, a <see cref="T:Gtk.FontButton" /> shows a <see cref="T:Gtk.FontSelectionDialog" /> and when the dialog closes with a change, <see cref="E:Gtk.FontButton.FontSet" /> is evoked.</para>
+      <example>
+        <para>In the following example, a <see cref="T:Gtk.FontButton" /> is used to modify the font of a <see cref="T:Gtk.Label" />.</para>
+        <code lang="C#">using System;
+using Gtk;
+using Pango;
+
+public class FontButtonExample
+{
+	static Label label;
+	static FontButton button;
+	
+	public static void Main ()
+	{
+		Application.Init ();
+		
+		Window myWindow = new Window ("FontButton Example");
+		myWindow.DeleteEvent += OnDelete;
+
+		button = new FontButton ();
+		button.FontSet += OnFontSet;
+		
+		label = new Label ("Sample text");
+		
+		VBox box = new VBox ();
+		box.Add (button);
+		box.Add (label);
+		
+		myWindow.Add (box);
+		myWindow.ShowAll ();
+		Application.Run ();
+	}
+	
+	static void OnFontSet (object o, EventArgs e)
+	{
+		label.ModifyFont (FontDescription.FromString (button.FontName));
+	}
+	
+	static void OnDelete (object o, DeleteEventArgs e)
+	{
+		Application.Quit ();
+	}
+}</code>
+      </example>
     </remarks>
     <since version="Gtk# 2.4" />
   </Docs>
@@ -38,8 +82,8 @@
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.FontButton" /> for a specified native GLib type.</summary>
+        <param name="gtype">A <see cref="T:GLib.GType" /> object containing the native GLib type for the new instance.</param>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
       <Attributes>
@@ -56,9 +100,9 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks>This is not typically used by C# code.</remarks>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.FontButton" /> using an existing unmanaged object as its base.</summary>
+        <param name="raw">A <see cref="T:System.IntPtr" /> pointing to the raw object to be managed by the new instance.</param>
+        <remarks>This is not typically used by managed code. It is primarily used for enclosing an existing object, created by unmanaged code, in a managed wrapper.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -67,9 +111,8 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Public constructor.</summary>
-        <remarks>
-        </remarks>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.FontButton" /> with the default font.</summary>
+        <remarks>To specify the default font on creation, use <see cref="C:Gtk.FontButton(System.String)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -80,10 +123,9 @@
         <Parameter Name="fontname" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Public constructor with a font name.</summary>
-        <param name="fontname">a <see cref="T:System.String" />, name of font to display in font selection dialog.</param>
-        <remarks>
-        </remarks>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.FontButton" /> with a specified initial font.</summary>
+        <param name="fontname">A <see cref="T:System.String" /> object containing the name of the initial font to use in the new instance.</param>
+        <remarks>The value of <paramref name="fontname" /> is in the same format as described in the remarks on <see cref="P:Gtk.FontButton.FontName" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -94,9 +136,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.FontButton" />.</remarks>
+        <summary>Gets the GLib type of the current instance.</summary>
+        <value>A <see cref="T:GLib.GType" /> value representing the native GLib type of <see cref="T:Gtk.FontButton" />.</value>
+        <remarks>The value is used internally by the GLib type management system.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowSize">
@@ -107,10 +149,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>If this property is <see langword="true" />, the font size will be displayed along with the name of the selected font.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-        </remarks>
+        <summary>Gets and sets whether or not to show the font size in the button.</summary>
+        <value>
+          <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the font size will be displayed in the button.</para>
+        </value>
+        <remarks>Default Value: <see langword="true" /></remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -126,11 +169,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>
-	  If this property is set to <see langword="true" />, the selected font size will be shown in the label. 
-	</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>For a more WYSIWYG way to show the selected size, see the <see cref="P:Gtk.FontButton.UseSize" /> property.</remarks>
+        <summary>Gets and sets whether or not button label should be displayed using the selected font size.</summary>
+        <value>
+          <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the button label will be displayed using the selected font size. Otherwise in the default system font size.</para>
+        </value>
+        <remarks>For a more WYSIWYG way to show the selected size, see the <see cref="P:Gtk.FontButton.UseFont" /> property.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -146,9 +189,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Retrieves the name of the currently selected font.</summary>
-        <value>a <see cref="T:System.String" /></value>
+        <summary>Gets and sets the name of the currently selected font, including the style and size.</summary>
+        <value>A <see cref="T:System.String" /> object containing the name of the currently selected font, including the style and font.</value>
         <remarks>
+          <para>The font name contains the name, style, and size. For example, <c>"Bistream Vera Serif Bold Italic 24"</c>. If the style is not specified, <c>"Regular"</c> is assumed, and if the size is not specified, <c>"0"</c> is assumed.</para>
+          <para>Default Value: <c>"Sans 12"</c>. This value is identical to the one that would be used by <see cref="M:Gdk.Font.Load(System.String)" /> and <see cref="M:Pango.FontDescription.FromString(System.String)" />.</para>
         </remarks>
       </Docs>
       <Attributes>
@@ -165,10 +210,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Whether the label is drawn in the selected font.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-        </remarks>
+        <summary>Gets and sets whether or not button label should be displayed using the selected font.</summary>
+        <value>
+          <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the button label will be displayed using the selected font. Otherwise in the default system font.</para>
+        </value>
+        <remarks>Default Value: <see langword="false" /></remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -184,10 +230,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The title of the font dialog.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>
-        </remarks>
+        <summary>Gets and sets the title used for the <see cref="T:Gtk.FontSelectionDialog" /> created by the currrent instance.</summary>
+        <value>A <see cref="T:System.String" /> object containing the title used for the <see cref="T:Gtk.FontSelectionDialog" /> created by the currrent instance.</value>
+        <remarks>Default Value: <c>"Pick a Font"</c> or a translated version.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -203,10 +248,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns whether the name of the font style will be shown in the label.</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>
-        </remarks>
+        <summary>Gets and sets whether or not the font style will be shown with the font name in the button.</summary>
+        <value>
+          <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the font style will be displayed along with the name of the selected font, unless the style is "Regular".</para>
+        </value>
+        <remarks>Default Value: <see langword="true" /></remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -222,9 +268,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Event raised when the font is set.</summary>
-        <remarks>
-        </remarks>
+        <summary>This event is raised when the user closes the child <see cref="T:Gtk.FontSelectionDialog" /> after making a change.</summary>
+        <remarks>Child classes should override <see cref="M:Gtk.FontButton.OnFontSet" /> instead of adding a handler to this event.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -242,10 +287,9 @@
         <Parameter Name="fontname" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Sets or updates the currently-displayed font in font picker dialog.</summary>
-        <param name="fontname">a <see cref="T:System.String" />, name of font to display in font selection dialog</param>
-        <returns>A string containing the font name if the
-	  font selection dialog exists, otherwise <see langword="false" />.</returns>
+        <summary>Sets or updates the font displayed in the child <see cref="T:Gtk.FontSelectionDialog" />.</summary>
+        <param name="fontname">A <see cref="T:System.String" /> object containing the name of the font to display in the child <see cref="T:Gtk.FontSelectionDialog" />.</param>
+        <returns>The result of <see cref="M:Gtk.FontSelectionDialog.SetFontName(System.String)" /> if the child dialog exists. Otherwise <see langword="false" />.</returns>
         <remarks>
         </remarks>
       </Docs>

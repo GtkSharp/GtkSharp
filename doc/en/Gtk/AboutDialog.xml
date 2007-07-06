@@ -7,7 +7,7 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>Display information about an application</summary>
+    <summary>This class extends <see cref="Gtk.Dialog" />, providing a dialog to show information about a program.</summary>
     <remarks>
       <para>
 The <see cref="T:Gtk.AboutDialog" /> offers a simple way to display information about a program like its logo, name, copyright, website and license. It is also possible to give credits to the authors, documenters, translators and artists who have worked on the program. An about dialog is typically opened when the user selects the About option from the Help menu. All parts of the dialog are optional.
@@ -19,6 +19,73 @@ About dialogs often contain links and email addresses. <see cref="T:Gtk.AboutDia
 <para>
 To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possible, you can use the function <see cref="M:Gtk.ShowAboutDialog()" /> which constructs and shows a dialog and keeps it around so that it can be shown again.
 </para>-->
+      <example>
+        <para>The following example creates and shows a <see cref="T:Gtk.AboutDialog" /> from both assembly attributes and stored values.</para>
+        <code lang="C#">using Gtk;
+using System.Reflection;
+
+[assembly:AssemblyTitleAttribute ("About Dialog Example")]
+[assembly:AssemblyVersionAttribute ("1.0.0.0")]
+[assembly:AssemblyDescriptionAttribute (
+	"An example of the Gtk# AboutDialog using assembly attributes.")]
+[assembly:AssemblyCopyrightAttribute("Copyright 2007 Brian Nickel")]
+
+static public class AboutDialogExample
+{
+	public static void Main ()
+	{
+		Application.Init ();
+		
+		AboutDialog dialog = new AboutDialog ();
+		Assembly asm = Assembly.GetExecutingAssembly ();
+		
+		dialog.Name = (asm.GetCustomAttributes (
+			typeof (AssemblyTitleAttribute), false) [0]
+			as AssemblyTitleAttribute).Title;
+		
+		dialog.Version = asm.GetName ().Version.ToString ();
+		
+		dialog.Comments = (asm.GetCustomAttributes (
+			typeof (AssemblyDescriptionAttribute), false) [0]
+			as AssemblyDescriptionAttribute).Description;
+		
+		dialog.Copyright = (asm.GetCustomAttributes (
+			typeof (AssemblyCopyrightAttribute), false) [0]
+			as AssemblyCopyrightAttribute).Copyright;
+		
+		dialog.License = license;
+		
+		dialog.Authors = authors;
+		
+		dialog.Run ();
+	}
+	
+	private static string [] authors = new string [] {
+		"Brian Nickel &lt;name@domain.ext&gt;",
+		"Rupert T. Monkey &lt;name@domain.ext&gt;"
+	};
+	
+	private static string license =
+@"Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+""Software""), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+}</code>
+      </example>
     </remarks>
     <since version="Gtk# 2.6" />
   </Docs>
@@ -36,8 +103,8 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.AboutDialog" /> for a specified native GLib type.</summary>
+        <param name="gtype">A <see cref="T:GLib.GType" /> object containing the native GLib type for the new instance.</param>
         <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
       </Docs>
       <Attributes>
@@ -54,9 +121,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <remarks>This is not typically used by C# code.</remarks>
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.AboutDialog" /> using an existing unmanaged object as its base.</summary>
+        <param name="raw">A <see cref="T:System.IntPtr" /> pointing to the raw object to be managed by the new instance.</param>
+        <remarks>This is not typically used by managed code. It is primarily used for enclosing an existing object, created by unmanaged code, in a managed wrapper.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -65,8 +132,8 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Default constructor</summary>
-        <remarks />
+        <summary>Constructs and initializes a new instance of <see cref="T:Gtk.AboutDialog" /> for the executing assembly.</summary>
+        <remarks>With no properties set, the <see cref="T:Gtk.AboutDialog" /> window will display only the name of the executing assembly.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GType">
@@ -77,9 +144,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Gtk.AboutDialog" />.</remarks>
+        <summary>Gets the GLib type of the current instance.</summary>
+        <value>A <see cref="T:GLib.GType" /> value representing the native GLib type of <see cref="T:Gtk.AboutDialog" />.</value>
+        <remarks>The value is used internally by the GLib type management system.</remarks>
       </Docs>
     </Member>
     <Member MemberName="License">
@@ -90,9 +157,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The license of the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that the text is not wrapped in the text view, thus it must contain the intended linebreaks.</remarks>
+        <summary>Gets and sets the license text of the program.</summary>
+        <value>A <see cref="T:System.String" /> object containing the license text to display with the current instance.</value>
+        <remarks>This string is displayed in a text view in a secondary dialog, therefore it is fine to use a long multi-paragraph text. Note that by default the text is not wrapped in the text view, thus it must contain the intended linebreaks.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -108,11 +175,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The name of the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>
-          <!--If this is not set, it defaults to g_get_application_name().-->
-        </remarks>
+        <summary>Gets and sets the name of the program.</summary>
+        <value>A <see cref="T:System.String" /> object containing the name of the program.</value>
+        <remarks>The default value is the name of the executing assembly. This may be in the format "MyApplication.exe", "/path/to/MyApplication.exe", or "C:\Path\To\MyApplication.exe" depending on how the assembly was executed and on what platform.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -128,9 +193,11 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Copyright information for the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks />
+        <summary>Gets and sets copyright information for the program.</summary>
+        <value>A <see cref="T:System.String" /> object containing copyright information for the program.</value>
+        <remarks>
+          <para>The copyright text appears below the <see cref="T:Gtk.AboutDialog.Comments" /> text and above the <see cref="T:Gtk.AboutDialog.Website" /> link on the dialog. If unset, not copyright text will appear.</para>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -146,9 +213,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Credits to the translators.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>This string should be marked as translatable. The string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.</remarks>
+        <summary>Gets and sets credits for the translation of the program.</summary>
+        <value>A <see cref="T:System.String" /> object containing credits for the translation of the program.</value>
+        <remarks>This string should be marked as translatable. Each string may contain email addresses and URLs, which will be displayed as links. See the remarks on <see cref="T:Gtk.AboutDialog" /> for more details.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -164,11 +231,25 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>A named icon to use as the logo for the about box.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>This property overrides the <see cref="P:Gtk.AboutDialog.Logo" /> property.
-
-</remarks>
+        <summary>Gets and sets the name of the logo icon to display above the program name in the dialog.</summary>
+        <value>A <see cref="T:System.String" /> object containing the name of the logo icon to display above the program name in the dialog.</value>
+        <remarks>
+          <block subset="none" type="note">
+If set, this property overrides the <see cref="P:Gtk.AboutDialog.Logo" /> property.
+</block>
+          <para>The name should be equal to the name of the program, without any sort of extension, eg. <c>"monodoc"</c>. The dialog will use that name to load an icon by trying the following:</para>
+          <list type="number">
+            <item>
+              <term>The current icon theme, eg. <c>"/usr/share/icons/Tango/48x48/apps/monodoc.png"</c>.</term>
+            </item>
+            <item>
+              <term>The pixmap directory, eg. <c>"/usr/share/pixmaps/monodoc.png"</c></term>
+            </item>
+            <item>
+              <term>The broken image icon.</term>
+            </item>
+          </list>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -184,9 +265,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The label for the link to the website of the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>If this is not set, it defaults to the URL specified in the <see cref="P:Gtk.AboutDialog.Website" /> property.</remarks>
+        <summary>Gets and sets the text label to display for the link to <see cref="P:Gtk.AboutDialog.Website" />.</summary>
+        <value>A <see cref="T:System.String" /> containing the text label to display for the link to <see cref="P:Gtk.AboutDialog.Website" />.</value>
+        <remarks>This value is used to provide a user friendly link to the website, for example <c>"Visit home page."</c> or <c>"AppName website"</c>. If not set, the link defaults to the URL specified in the <see cref="P:Gtk.AboutDialog.Website" /> property.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -202,9 +283,14 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>A logo for the about box.</summary>
-        <value>a <see cref="T:Gdk.Pixbuf" /></value>
-        <remarks>If this is not set, it defaults to <see cref="P:Gtk.Window.DefaultIconList()" />.</remarks>
+        <summary>Gets and sets a logo to display above the program name in the dialog.</summary>
+        <value>A <see cref="T:Gdk.Pixbuf" /> object containing a logo to display above the program name in the dialog.</value>
+        <remarks>
+          <para>
+            <block subset="none" type="note">The prefered way to set the logo is through <see cref="P:Gtk.Logo.LogoIconName" />.</block>
+          </para>
+          <para>If this is not set, it defaults to <see cref="P:Gtk.Window.DefaultIconList()" />.</para>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -220,9 +306,15 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The URL for the link to the website of the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>This should be a string starting with "http://".</remarks>
+        <summary>Gets and sets the URL of the program's website.</summary>
+        <value>A <see cref="T:System.String" /> containing the URL of the program's website.</value>
+        <remarks>
+          <para>The value should be a string starting with "http://". If set, the link is displayed at the bottom of the dialog, however if <see cref="M:Gtk.AboutDialog.SetUriHook" /> has not been used, the URL will appear as plain text and not be clickable.</para>
+          <para>
+            <block subset="none" type="note">
+              <see cref="P:Gtk.AboutDialog.WebsiteLabel" /> may be used to provide a plain-text label for the link.</block>
+          </para>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -238,9 +330,12 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Comments about the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.</remarks>
+        <summary>Gets and sets a comment about the program to appear immediately below the program name in the dialog.</summary>
+        <value>A <see cref="T:System.String" /> object containing a comment, description, or subtitle for the program.</value>
+        <remarks>
+          <para>If unset, no comment text is displayed.</para>
+          <para>This string is displayed in a label in the main dialog, thus it should be a short explanation of the main purpose of the program, not a detailed list of features.</para>
+        </remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -256,9 +351,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>The version of the program.</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks />
+        <summary>Get and set the version of the program.</summary>
+        <value>A <see cref="T:System.String" /> object containing the version of the program.</value>
+        <remarks>The most appropriate value to put here would be the assembly version, but any string is valid, eg "2.0.0.1", "2.5.3", "2.0 RC1", etc.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -277,9 +372,13 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </Parameters>
       <Docs>
         <summary>Installs a global function to be called whenever the user activates an email link in an about dialog.</summary>
-        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />  to call when an email link is activated.</param>
-        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />,  the previous email hook.</returns>
-        <remarks />
+        <param name="func">A <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> delegate to be called when an email link is activated.</param>
+        <returns>The <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> delegate that was previously used as the email hook.</returns>
+        <remarks>If no hook is set, email addresses will appear in the dialogs as standard non-clickable text.
+
+<example><para>The following example uses the built in <see cref="Gnome.Url.Show(System.String)" /> to open emails:</para><code lang="C#">	Gtk.AboutDialog.SetEmailHook(delegate(Gtk.AboutDialog dialog, string email) {
+		Gnome.Url.Show("mailto:" + email);
+	});</code></example></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetUrlHook">
@@ -293,9 +392,17 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
       </Parameters>
       <Docs>
         <summary>Installs a global function to be called whenever the user activates a URL link in an about dialog.</summary>
-        <param name="func">a <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> to call when a URL link is activated.</param>
-        <returns>a <see cref="T:Gtk.AboutDialogActivateLinkFunc" />  that is the previous URL hook.</returns>
-        <remarks />
+        <param name="func">A <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> to be called when a URL link is activated.</param>
+        <returns>The <see cref="T:Gtk.AboutDialogActivateLinkFunc" /> delegate that was the previous used as the URL hook.</returns>
+        <remarks>
+          <para>If no hook is set, the <see cref="P:Gtk.AboutDialog.Website" /> will in the dialogs appear as standard non-clickable text.</para>
+          <example>
+            <para>The following example uses the built in <see cref="Gnome.Url.Show(System.String)" /> to open links:</para>
+            <code lang="C#">	Gtk.AboutDialog.SetUrlHook(delegate(Gtk.AboutDialog dialog, string link) {
+		Gnome.Url.Show(link);
+	});</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Documenters">
@@ -310,9 +417,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The people documenting the program.</summary>
-        <value>a <see cref="T:System.String[]" />.</value>
-        <remarks>Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.</remarks>
+        <summary>Gets and sets the list of people who contributed documentation to the program.</summary>
+        <value>A <see cref="T:System.String[]" /> containing the list of people who contributed documentation to the program.</value>
+        <remarks>Each string may contain email addresses and URLs, which will be displayed as links. See the remarks on <see cref="T:Gtk.AboutDialog" /> for more details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Authors">
@@ -327,9 +434,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The authors of the program.</summary>
-        <value>a <see cref="T:System.String[]" />.</value>
-        <remarks>Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.</remarks>
+        <summary>Gets and sets the list of people who authored the program.</summary>
+        <value>A <see cref="T:System.String[]" /> containing the list of people who authored the program.</value>
+        <remarks>Each string may contain email addresses and URLs, which will be displayed as links. See the remarks on <see cref="T:Gtk.AboutDialog" /> for more details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Artists">
@@ -344,9 +451,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The people who contributed artwork to the program.</summary>
-        <value>a <see cref="T:System.String[]" />.</value>
-        <remarks>Each string may contain email addresses and URLs, which will be displayed as links, see the introduction for more details.</remarks>
+        <summary>Gets and sets the list of people who contributed artwork to the program.</summary>
+        <value>A <see cref="T:System.String[]" /> containing the list of people who contributed artwork to the program.</value>
+        <remarks>Each string may contain email addresses and URLs, which will be displayed as links. See the remarks on <see cref="T:Gtk.AboutDialog" /> for more details.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WrapLicense">
@@ -361,10 +468,9 @@ To make constructing a <see cref="T:Gtk.AboutDialog" /> as convenient as possibl
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates if the License text is automatically wrapped.</summary>
-        <value>
-          <see langword="true" /> if the text is auto-wrapped.</value>
-        <remarks />
+        <summary>Gets and sets whether the text in the <see cref="P:Gtk.AboutDialog.License" /> is to be automatically wrapped.</summary>
+        <value>If <see langword="true" />, the text is auto-wrapped. Otherwise long lines of text will extend past the edge of the frame and a horizontal scroll bar will appear.</value>
+        <remarks>By default, this option is set to <see langword="false" />. Most standard licenses, as will be found in the LICENSE file of a package, are already manually wrapped and auto-wrapping is unneccessary an unwanted.</remarks>
         <since version="Gtk# 2.8" />
       </Docs>
     </Member>

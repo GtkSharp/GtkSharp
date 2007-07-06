@@ -8,9 +8,19 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <param name="about">The  <see cref="T:Gtk.AboutDialog" /> in which the link was activated.</param>
-    <param name="link">The URL or email address to which the activated link points..</param>
-    <summary>The type of the method which is called when a URL or email link in an about dialog.</summary>
-    <remarks />
+    <param name="link">A <see cref="T:System.String" /> containing the URL or email address to which the activated link points.</param>
+    <summary>The type of the method which is called when a URL or email link in an <see cref="T:Gtk.AboutDialog" />.</summary>
+    <remarks>
+      <example>
+        <para>The following example uses the built in <see cref="Gnome.Url.Show(System.String)" /> to open links:</para>
+        <code lang="C#">	void OpenLink (Gtk.AboutDialog dialog, string link)
+	{
+		Gnome.Url.Show(link);
+	}
+
+	Gtk.AboutDialog.SetUrlHook (new Gtk.AboutDialogActivateLinkFunc (OpenLink));</code>
+      </example>
+    </remarks>
     <since version="Gtk# 2.6" />
   </Docs>
   <Base>
