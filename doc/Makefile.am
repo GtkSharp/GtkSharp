@@ -68,5 +68,5 @@ dist-hook:
 
 
 push:
-	scp gtk-sharp-docs* miguel@www.go-mono.com:/mono/lib/monodoc/sources
+	scp gtk-sharp-docs* root@www.go-mono.com:/usr/lib/monodoc/sources/
 
