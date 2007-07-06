@@ -9,7 +9,43 @@
   <Docs>
     <summary>This class sets up a filter to include or exclude particular
     kinds of files; useful in file selection dialogs.</summary>
-    <remarks />
+    <remarks>
+      <para> Simple example showing FileFilter within the FileChooserDialog example:
+<example><code lang="C#">
+public class MainWindow: Gtk.Window {
+	
+	protected virtual void OnBtnLoadFileClicked(object sender, System.EventArgs e)
+	{
+		Gtk.FileChooserDialog fc=
+		new Gtk.FileChooserDialog("Choose the file to open",
+		                            this,
+		                            FileChooserAction.Open,
+		                            Gtk.Stock.Cancel,ResponseType.Cancel,
+		                            Gtk.Stock.Open,ResponseType.Accept);
+		//filter begins here...
+		FileFilter filter = new FileFilter();
+		filter.Name = "PNG and JPEG images";
+		filter.AddMimeType("image/png");
+		filter.AddPattern("*.png");
+		filter.AddMimeType("image/jpeg");
+		filter.AddPattern("*.jpg");
+		fc.AddFilter(filter);
+		//second filter
+		filter = new FileFilter();
+		filter.Name = "PNG Images (*.png)";
+		filter.AddMimeType("image/png");
+		filter.AddPattern("*.png");
+		fc.AddFilter(filter);
+		//end filter code
+		if (fc.Run() == (int)ResponseType.Accept) 
+		{
+			System.Console.WriteLine
+		}
+		//Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
+		fc.Destroy();
+	}
+  </code></example></para>
+    </remarks>
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>

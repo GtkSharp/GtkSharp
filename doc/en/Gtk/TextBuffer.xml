@@ -8,10 +8,60 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>
-      This is a store for formatted text for display in a <see cref="T:Gtk.TextView" />.
+    <summary>This class stores formatted text for display in a <see cref="T:Gtk.TextView" />.
     </summary>
-    <remarks />
+    <remarks>
+      <para>The relationship between <see cref="T:Gtk.TextBuffer" /> and <see cref="T:Gtk.TextView" /> objects is not necessarily one-to-one. All views must contain a buffer, but a buffer does not have to be assigned a view, and one buffer may be used by multiple views.</para>
+      <example>
+        <para>In the following example, a single <see cref="T:Gtk.TextBuffer" /> object is shared between two <see cref="T:Gtk.TextView" /> widgets.</para>
+        <code lang="C#">using Gtk;
+
+public class TextBufferExample
+{
+	public static void Main ()
+	{
+		// Initialize GTK.
+		Application.Init ();
+		
+		// Create a containing window.
+		Window window = new Window ("TextBuffer Example");
+		window.DeleteEvent += OnDelete;
+		window.SetDefaultSize (400, 300);
+		
+		// Create a buffer and vertical panes for the views.
+		TextBuffer buffer = new TextBuffer (new TextTagTable ());
+		VPaned paned = new VPaned ();
+		
+		// Create a text view for the buffer, make it scrollable, and
+		// add it to the first pane.
+		TextView view1 = new TextView (buffer);
+		ScrolledWindow scrolled_window1 = new ScrolledWindow ();
+		scrolled_window1.Add (view1);
+		paned.Add1 (scrolled_window1);
+		
+		// Create a second text view for the buffer, make it scrollable,
+		// and add it to the second pane.
+		TextView view2 = new TextView (buffer);
+		ScrolledWindow scrolled_window2 = new ScrolledWindow ();
+		scrolled_window2.Add (view2);
+		paned.Add2 (scrolled_window2);
+		
+		// Add the panes to the window and show it.
+		window.Add (paned);
+		window.ShowAll ();
+		
+		// Run the application.
+		Application.Run ();
+	}
+	
+	// Quit when the window is closed.
+	static void OnDelete (object o, DeleteEventArgs e)
+	{
+		Application.Quit ();
+	}
+}</code>
+      </example>
+    </remarks>
   </Docs>
   <Base>
     <BaseTypeName>GLib.Object</BaseTypeName>
