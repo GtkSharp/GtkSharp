@@ -44,11 +44,9 @@ namespace GtkSharp.Generation {
 				Parameter p = parameters [i];
 
 				parms [i] = "";
-				if (p.CType == "GError**")
-					parms [i] += "out ";
-				else if (p.PassAs != "")
+				if (p.PassAs != "")
 					parms [i] += p.PassAs + " ";
-				parms [i] += p.MarshalType + " " + p.Name;
+				parms [i] += p.NativeSignature;
 			}
 
 			string import_sig = String.Join (", ", parms);

@@ -36,6 +36,19 @@ namespace GtkSharp.Generation {
 			elem = e;
 		}
 
+		string call_name;
+		public string CallName {
+			get {
+				if (call_name == null)
+					return Name;
+				else
+					return call_name;
+			}
+			set {
+				call_name = value;
+			}
+		}
+
 		public string CType {
 			get {
 				string type = elem.GetAttribute("type");
@@ -179,14 +192,25 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual string NativeSignature {
+			get {
+				return MarshalType + " " + Name;
+			}
+		}
+
 		public string PropertyName {
 			get {
 				return elem.GetAttribute("property_name");
 			}
 		}
 
+		string pass_as;
+
 		public string PassAs {
 			get {
+				if (pass_as != null)
+					return pass_as;
+
 				if (elem.HasAttribute ("pass_as"))
 					return elem.GetAttribute ("pass_as");
 
@@ -197,6 +221,9 @@ namespace GtkSharp.Generation {
 					return "out";
 
 				return "";
+			}
+			set {
+				pass_as = value;
 			}
 		}
 
@@ -212,18 +239,42 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string CallByName (string call_parm_name)
-		{
-			string call_parm;
-			if (Generatable is CallbackGen)
-				call_parm = SymbolTable.Table.CallByName (CType, call_parm_name + "_wrapper");
-			else
-				call_parm = SymbolTable.Table.CallByName(CType, call_parm_name);
-			
-			if (IsArray)
-				call_parm = call_parm.Replace ("ref ", "");
+		public virtual string[] CallPreparation {
+			get {
+				IGeneratable gen = Generatable;
+				if (PassAs == "out" && CSType != MarshalType && !(gen is StructBase || gen is ByRefGen))
+					return new string [] { gen.MarshalType + " " + CallName + "_as_native;" };
+				else if (gen is IManualMarshaler)
+					return new string [] { gen.MarshalType + " " + CallName + "_as_native = " + (gen as IManualMarshaler).AllocNative (CallName) + ";" };
 
-			return call_parm;
+				return new string [0];
+			}
+		}
+
+		public virtual string CallString {
+			get {
+				if (IsArray && MarshalType != CSType)
+					return "native_" + CallName;
+
+				string call_parm;
+
+				IGeneratable gen = Generatable;
+				if (gen is CallbackGen)
+					call_parm = SymbolTable.Table.CallByName (CType, CallName + "_wrapper");
+				else if (PassAs != String.Empty) {
+					call_parm = PassAs + " " + CallName;
+					if (CSType != MarshalType && !(gen is StructBase || gen is ByRefGen))
+						call_parm += "_as_native";
+				} else if (gen is IManualMarshaler)
+					call_parm = CallName + "_as_native";
+				else
+					call_parm = SymbolTable.Table.CallByName(CType, CallName);
+			
+				if (IsArray)
+					call_parm = call_parm.Replace ("ref ", "");
+
+				return call_parm;
+			}
 		}
 
 		public string FromNative (string var)
@@ -250,6 +301,113 @@ namespace GtkSharp.Generation {
 		}
 	}
 
+	public class ArrayParameter : Parameter {
+
+		public ArrayParameter (XmlElement elem) : base (elem) {}
+
+		public override string[] CallPreparation {
+			get {
+				if (CSType == MarshalType)
+					return new string [0];
+
+				string[] result = new string [4];
+				result [0] = String.Format ("int cnt_{0} = {0} == null ? 0 : {0}.Length;", CallName);
+				result [1] = String.Format ("{0}[] native_{1} = new {0} [cnt_{1}];", MarshalType.TrimEnd('[', ']'), CallName);
+				result [2] = String.Format ("for (int i = 0; i < cnt_{0}; i++)", CallName);
+				IGeneratable gen = Generatable;
+				if (gen is IManualMarshaler)
+					result [3] = String.Format ("\tnative_{0} [i] = {1};", CallName, (gen as IManualMarshaler).AllocNative (CallName + "[i]"));
+				else
+					result [3] = String.Format ("\tnative_{0} [i] = {1};", CallName, gen.CallByName (CallName + "[i]"));
+				return result;
+			}
+		}
+
+		public override string CallString {
+			get {
+				if (CSType != MarshalType)
+					return "native_" + CallName;
+				else
+					return CallName;
+			}
+		}
+	}
+
+	public class ArrayCountPair : ArrayParameter {
+
+		XmlElement array_elem;
+		XmlElement count_elem;
+		bool invert;
+
+		public ArrayCountPair (XmlElement array_elem, XmlElement count_elem, bool invert) : base (array_elem)
+		{
+			this.array_elem = array_elem;
+			this.count_elem = count_elem;
+			this.invert = invert;
+		}
+
+		string CountType {
+			get {
+				return SymbolTable.Table.GetCSType(count_elem.GetAttribute("type"));
+			}
+		}
+
+		string CountCast {
+			get {
+				if (CountType == "int")
+					return String.Empty;
+				else
+					return "(" + CountType + ") ";
+			}
+		}
+
+		string CountName {
+			get {
+				return SymbolTable.Table.MangleName (count_elem.GetAttribute("name"));
+			}
+		}
+
+		string CallCount (string name)
+		{
+			string result = name + " == null ? 0 : ";
+			result += CountCast + name + ".Length";
+			IGeneratable gen = SymbolTable.Table[count_elem.GetAttribute("type")];
+			return gen.CallByName (result);
+		}
+
+		public override string CallString {
+			get {
+				if (invert)
+					return CallCount (CallName) + ", " + base.CallString;
+				else
+					return base.CallString + ", " + CallCount (CallName);
+			}
+		}
+
+		public override string NativeSignature {
+			get {
+				if (invert)
+					return CountType + " " + CountName + ", " + MarshalType + " " + Name;
+				else
+					return MarshalType + " " + Name + ", " + CountType + " " + CountName;
+			}
+		}
+	}
+
+	public class ErrorParameter : Parameter {
+
+		public ErrorParameter (XmlElement elem) : base (elem) 
+		{
+			PassAs = "out";
+		}
+
+		public override string CallString {
+			get {
+				return "out error";
+			}
+		}
+	}
+
 	public class Parameters : IEnumerable {
 		
 		ArrayList param_list = new ArrayList ();
@@ -259,10 +417,36 @@ namespace GtkSharp.Generation {
 			if (elem == null)
 				return;
 
-			foreach (XmlNode node in elem.ChildNodes) {
-				XmlElement parm = node as XmlElement;
-				if (parm != null && parm.Name == "parameter")
-					param_list.Add (new Parameter (parm));
+			for (int i = 0; i < elem.ChildNodes.Count; i++) {
+				XmlElement parm = elem.ChildNodes [i] as XmlElement;
+				if (parm == null || parm.Name != "parameter")
+					continue;
+				Parameter p = new Parameter (parm);
+				if (p.IsArray) {
+					p = new ArrayParameter (parm);
+					if (i < elem.ChildNodes.Count - 1) {
+						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
+						if (next != null || next.Name == "parameter") {
+							Parameter c = new Parameter (next);
+							if (c.IsCount) {
+								p = new ArrayCountPair (parm, next, false);
+								i++;
+							} 
+						}
+					}
+				} else if (p.IsCount && i < elem.ChildNodes.Count - 1) {
+					Console.WriteLine (elem.GetAttribute ("name"));
+					XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
+					if (next != null || next.Name == "parameter") {
+						Parameter a = new Parameter (next);
+						if (a.IsArray) {
+							p = new ArrayCountPair (next, parm, true);
+							i++;
+						}
+					}
+				} else if (p.CType == "GError**")
+					p = new ErrorParameter (parm);
+				param_list.Add (p);
 			}
 		}
 

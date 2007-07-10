@@ -40,60 +40,31 @@ namespace GtkSharp.Generation {
 			return type != "int" ? "(" + type + ") " : "";
 		}
 
-		private string CallArrayLength (string array_name, Parameter length)
-		{
-			string result = array_name + " != null ? ";
-			result += CastFromInt (length.CSType) + array_name + ".Length";
-			result += ": 0";
-			return length.Generatable.CallByName (result);
-		}
-
 		public string GetCallString (bool is_set)
 		{
 			if (parameters.Count == 0)
-				return "";
+				return String.Empty;
 
 			string[] result = new string [parameters.Count];
 			for (int i = 0; i < parameters.Count; i++) {
 				Parameter p = parameters [i];
 				IGeneratable igen = p.Generatable;
-				bool is_prop = is_set && (i == 0 || (i == 1 && p.IsArray && parameters[0].IsCount));
-				string name = is_prop ? "value" : p.Name;
 
-				if (p.IsCount) {
-					if (i > 0 && parameters [i - 1].IsArray) {
-						string array_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
-						result[i] = CallArrayLength (array_name, p);
-						continue;
-					} else if (i < parameters.Count - 1 && parameters [i + 1].IsArray) {
-						string array_name = (i == 0 && is_set) ? "value" : parameters [i + 1].Name;
-						result[i] = CallArrayLength (array_name, p);
-						continue;
-					}
-				} else if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
+				bool is_prop = is_set && i == 0;
+
+				if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
 					string string_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
 					result[i] = igen.CallByName (CastFromInt (p.CSType) + "System.Text.Encoding.UTF8.GetByteCount (" +  string_name + ")");
 					continue;
-				} else if (p.IsArray && p.MarshalType != p.CSType) {
-					result[i] = "native_" + p.Name;
-					continue;
 				}
 
-				string call_parm = p.CallByName (name);
+				if (is_prop)
+					p.CallName = "value";
+				else
+					p.CallName = p.Name;
+				string call_parm = p.CallString;
 
-				if (p.CType == "GError**") {
-					result [i] += "out ";				
-				} else if (p.PassAs != "") {
-					result [i] += p.PassAs + " ";
-
- 					if (p.CSType != p.MarshalType && !(igen is StructBase || igen is ByRefGen))
-						call_parm = p.Name + "_as_native";
-				} else if (igen is IManualMarshaler)
-					call_parm = p.Name + "_as_native";
-
-				if (p.CType == "GError**") {
-					call_parm = call_parm.Replace (p.Name, "error");
-				} else if (p.IsUserData && parameters.IsHidden (p) && !parameters.HideData &&
+				if (p.IsUserData && parameters.IsHidden (p) && !parameters.HideData &&
 					   (i == 0 || parameters [i - 1].Scope != "notified")) {
 					call_parm = "IntPtr.Zero"; 
 				}
@@ -122,19 +93,9 @@ namespace GtkSharp.Generation {
 				if (is_set)
 					name = "value";
 
-				if ((is_get || p.PassAs == "out") && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
-					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + name + "_as_native;");
-				else if (p.IsArray && p.MarshalType != p.CSType) {
-					sw.WriteLine(indent + "\t\t\tint cnt_" + p.Name + " = {0} == null ? 0 : {0}.Length;", name);
-					sw.WriteLine(indent + "\t\t\t{0}[] native_" + p.Name + " = new {0} [cnt_{1}];", p.MarshalType.TrimEnd('[', ']'), p.Name);
-					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < cnt_{0}; i++)", p.Name);
-					if (gen is IManualMarshaler)
-						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, (gen as IManualMarshaler).AllocNative (name + "[i]"));
-					else
-						sw.WriteLine(indent + "\t\t\t\tnative_{0} [i] = {1};", p.Name, p.CallByName (name + "[i]"));
-				} else if (gen is IManualMarshaler)
-					sw.WriteLine(indent + "\t\t\t" + gen.MarshalType + " " + p.Name + "_as_native = " + (gen as IManualMarshaler).AllocNative (name) + ";");
-
+				p.CallName = name;
+				foreach (string prep in p.CallPreparation)
+					sw.WriteLine (indent + "\t\t\t" + prep);
 
 				if (gen is CallbackGen) {
 					CallbackGen cbgen = gen as CallbackGen;
@@ -190,10 +151,10 @@ namespace GtkSharp.Generation {
 				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
 					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + p.FromNative (p.Name + "_as_native") + ";");
 				else if (p.IsArray && gen is IManualMarshaler) {
-					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < native_" + p.Name + ".Length; i++)");
-					sw.WriteLine(indent + "\t\t\t\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + p.Name + "[i]") + ";");
+					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < native_" + p.CallName + ".Length; i++)");
+					sw.WriteLine(indent + "\t\t\t\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + p.CallName + "[i]") + ";");
 				} else if (gen is IManualMarshaler)
-					sw.WriteLine(indent + "\t\t\t" + (gen as IManualMarshaler).ReleaseNative (p.Name + "_as_native") + ";");
+					sw.WriteLine(indent + "\t\t\t" + (gen as IManualMarshaler).ReleaseNative (p.CallName + "_as_native") + ";");
 			}
 		}
 
