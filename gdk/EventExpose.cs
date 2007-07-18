@@ -27,7 +27,7 @@ namespace Gdk {
 	public class EventExpose : Event {
 
 		[DllImport("gdksharpglue-2")]
-		static extern Rectangle gtksharp_gdk_event_expose_get_area (IntPtr evt);
+		static extern IntPtr gtksharp_gdk_event_expose_get_area (IntPtr evt);
 
 		[DllImport("gdksharpglue-2")]
 		static extern IntPtr gtksharp_gdk_event_expose_get_region (IntPtr evt);
@@ -39,7 +39,7 @@ namespace Gdk {
 
 		public Rectangle Area {
 			get {
-				return gtksharp_gdk_event_expose_get_area (Handle);
+				return (Gdk.Rectangle) Marshal.PtrToStructure (gtksharp_gdk_event_expose_get_area (Handle), typeof (Gdk.Rectangle));
 			}
 		}
 

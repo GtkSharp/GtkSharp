@@ -60,7 +60,7 @@ gdouble gtksharp_gdk_event_motion_get_x_root (GdkEventMotion *event);
 gdouble gtksharp_gdk_event_motion_get_y_root (GdkEventMotion *event);
 gdouble* gtksharp_gdk_event_motion_get_axes (GdkEventMotion *event);
 GdkDevice* gtksharp_gdk_event_motion_get_device (GdkEventMotion *event);
-GdkRectangle gtksharp_gdk_event_expose_get_area (GdkEventExpose *event);
+GdkRectangle* gtksharp_gdk_event_expose_get_area (GdkEventExpose *event);
 gint gtksharp_gdk_event_expose_get_count (GdkEventExpose *event);
 GdkRegion* gtksharp_gdk_event_expose_get_region (GdkEventExpose *event);
 GdkVisibilityState gtksharp_gdk_event_visibility_get_state (GdkEventVisibility *event);
@@ -306,10 +306,10 @@ gtksharp_gdk_event_motion_get_axes (GdkEventMotion *event)
 	return event->axes;
 }
 
-GdkRectangle
+GdkRectangle*
 gtksharp_gdk_event_expose_get_area (GdkEventExpose *event)
 {
-	return event->area;
+	return &event->area;
 }
 
 gint
