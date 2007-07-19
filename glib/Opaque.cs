@@ -51,7 +51,9 @@ namespace GLib {
 					opaque.Unref (o);
 				}
 				opaque.owned = true;
-			}
+			} else 
+				opaque = opaque.Copy (o);
+
 			return opaque;
   		}
   
@@ -100,6 +102,10 @@ namespace GLib {
 		protected virtual void Ref (IntPtr raw) {}
 		protected virtual void Unref (IntPtr raw) {}
 		protected virtual void Free (IntPtr raw) {}
+		protected virtual Opaque Copy (IntPtr raw) 
+		{
+			return this;
+		}
 
 		public IntPtr Handle {
 			get {
