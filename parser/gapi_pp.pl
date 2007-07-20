@@ -66,6 +66,8 @@ foreach $fname (@hdrs) {
 		$line = $prepend . $line;
 		$prepend = "";
 
+		while ($line =~ /(.*)\\$/) { $line = $1 . <INFILE>; }
+
 		if ($line =~ /#\s*define\s+\w+\s+\"/) {
 			$def = $line;
 			while ($def !~ /\".*\"/) {$def .= ($line = <INFILE>);}
