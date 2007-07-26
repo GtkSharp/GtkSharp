@@ -979,7 +979,7 @@ sub addSignalElem
 		}
 		$class =~ s/;\s*(\/\*< (public|protected|private) >\s*\*\/)?(G_CONST_RETURN\s+)?\w+\s*\**\s*\(\s*\*\s*$method\)\s*\(.*?\);/;/;
 	} else {
-		die "$method $class";
+		die "ERROR: Failed to parse method $method from class definition:\n$class";
 	}
 
 	return $class;
