@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		protected Parameters Parameters {
+		public Parameters Parameters {
 			get {
 				return parms;
 			}

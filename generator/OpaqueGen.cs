@@ -130,7 +130,7 @@ namespace GtkSharp.Generation {
 			}
 
 			Method copy = Methods ["Copy"] as Method;
-			if (copy != null) {
+			if (copy != null && copy.Parameters.Count == 0) {
 				sw.WriteLine ("\t\tprotected override GLib.Opaque Copy (IntPtr raw)");
 				sw.WriteLine ("\t\t{");
 				sw.WriteLine ("\t\t\tGLib.Opaque result = new " + QualifiedName + " (" + copy.CName + " (raw));");
