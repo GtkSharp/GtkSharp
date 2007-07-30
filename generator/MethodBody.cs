@@ -94,7 +94,7 @@ namespace GtkSharp.Generation {
 					name = "value";
 
 				p.CallName = name;
-				foreach (string prep in p.CallPreparation)
+				foreach (string prep in p.Prepare)
 					sw.WriteLine (indent + "\t\t\t" + prep);
 
 				if (gen is CallbackGen) {
@@ -143,19 +143,9 @@ namespace GtkSharp.Generation {
 
 		public void Finish (StreamWriter sw, string indent)
 		{
-			for (int i = 0; i < parameters.Count; i++) {
-				Parameter p = parameters [i];
-
-				IGeneratable gen = p.Generatable;
-
-				if (p.PassAs == "out" && p.CSType != p.MarshalType && !(gen is StructBase || gen is ByRefGen))
-					sw.WriteLine(indent + "\t\t\t" + p.Name + " = " + p.FromNative (p.Name + "_as_native") + ";");
-				else if (p.IsArray && gen is IManualMarshaler) {
-					sw.WriteLine(indent + "\t\t\tfor (int i = 0; i < native_" + p.CallName + ".Length; i++)");
-					sw.WriteLine(indent + "\t\t\t\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + p.CallName + "[i]") + ";");
-				} else if (gen is IManualMarshaler)
-					sw.WriteLine(indent + "\t\t\t" + (gen as IManualMarshaler).ReleaseNative (p.CallName + "_as_native") + ";");
-			}
+			foreach (Parameter p in parameters)
+				foreach (string s in p.Finish)
+					sw.WriteLine(indent + "\t\t\t" + s);
 		}
 
 		public void FinishAccessor (StreamWriter sw, Signature sig, string indent)
