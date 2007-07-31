@@ -366,13 +366,11 @@ namespace GtkSharp.Generation {
 
 	public class ArrayCountPair : ArrayParameter {
 
-		XmlElement array_elem;
 		XmlElement count_elem;
 		bool invert;
 
 		public ArrayCountPair (XmlElement array_elem, XmlElement count_elem, bool invert) : base (array_elem)
 		{
-			this.array_elem = array_elem;
 			this.count_elem = count_elem;
 			this.invert = invert;
 		}

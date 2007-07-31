@@ -61,14 +61,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public void GenerateImport (StreamWriter sw)
+		void GenerateImport (StreamWriter sw)
 		{
 			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
 			sw.WriteLine("\t\tstatic extern " + Safety + "IntPtr " + CName + "(" + ImportSignature + ");");
 			sw.WriteLine();
 		}
 
-		public void GenerateStatic (GenerationInfo gen_info)
+		void GenerateStatic (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer;
 			sw.WriteLine("\t\tpublic static " + Safety + Modifiers +  name + " " + StaticName + "(" + Signature + ")");
@@ -89,6 +89,9 @@ namespace GtkSharp.Generation {
 
 		public void Generate (GenerationInfo gen_info)
 		{
+			if (!Validate ())
+				return;
+
 			StreamWriter sw = gen_info.Writer;
 			gen_info.CurrentMember = CName;
 
