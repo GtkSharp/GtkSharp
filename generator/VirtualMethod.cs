@@ -32,14 +32,12 @@ namespace GtkSharp.Generation {
 		XmlElement elem;
 		ReturnValue retval;
 		Parameters parms;
-		ImportSignature isig;
 
 		public VirtualMethod (XmlElement elem, ClassBase container_type) 
 		{
 			this.elem = elem;
 			retval = new ReturnValue (elem ["return-type"]);
 			parms = new Parameters (elem["parameters"]);
-			isig = new ImportSignature (parms);
 		}
 
 		public string CName {
@@ -69,7 +67,7 @@ namespace GtkSharp.Generation {
 
 		public string NativeDelegate {
 			get {
-				return "delegate " + MarshalReturnType + " " + Name + "Delegate (" + isig + ");";
+				return "delegate " + MarshalReturnType + " " + Name + "Delegate (" + parms.ImportSignature + ");";
 			}
 		}
 
@@ -79,7 +77,7 @@ namespace GtkSharp.Generation {
 			string type = parms [0].CSType;
 			string name = parms [0].Name;
 			string call_string = "__obj." + Name + " (" + call + ")";
-			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + isig + ")");
+			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
 			sw.Write (call.Setup ("\t\t\t"));

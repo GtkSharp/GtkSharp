@@ -58,15 +58,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		ImportSignature isig;
-		public ImportSignature ImportSignature {
-			get {
-				if (isig == null)
-					isig = new ImportSignature (parms);
-				return isig;
-			}
-		}
-
 		public bool IsStatic {
 			get {
 				return is_static;

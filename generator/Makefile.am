@@ -26,7 +26,6 @@ sources = 				\
 	IAccessor.cs			\
 	IGeneratable.cs			\
 	IManualMarshaler.cs		\
-	ImportSignature.cs		\
 	InterfaceGen.cs			\
 	LPGen.cs			\
 	LPUGen.cs			\
@@ -36,7 +35,6 @@ sources = 				\
 	MethodBase.cs			\
 	MethodBody.cs			\
 	Method.cs			\
-	NativeCallbackSignature.cs	\
 	ObjectField.cs			\
 	ObjectBase.cs			\
 	ObjectGen.cs			\

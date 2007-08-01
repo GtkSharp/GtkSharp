@@ -192,9 +192,25 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public virtual string NativeCallbackSignature {
+			get {
+				string sig = NativeCallbackType + " " + Name;
+				if (PassAs != String.Empty && !(Generatable is StructBase))
+					sig = PassAs + " " + sig;
+				sig = sig.Replace ("out ref", "out");
+				sig = sig.Replace ("ref ref", "ref");
+				return sig;
+			}
+		}
+
 		public virtual string NativeSignature {
 			get {
-				return MarshalType + " " + Name;
+				string sig = MarshalType + " " + Name;
+				if (PassAs != String.Empty)
+					sig = PassAs + " " + sig;
+				sig = sig.Replace ("out ref", "out");
+				sig = sig.Replace ("ref ref", "ref");
+				return sig;
 			}
 		}
 
@@ -627,6 +643,32 @@ namespace GtkSharp.Generation {
 					return p.Name;
 				else
 					return null;
+			}
+		}
+
+		public string ImportSignature {
+			get {
+				if (Count == 0)
+					return String.Empty;
+
+				string[] result = new string [Count];
+				for (int i = 0; i < Count; i++)
+					result [i] = this [i].NativeSignature;
+
+				return String.Join (", ", result);
+			}
+		}
+
+		public string NativeCallbackSignature {
+			get {
+				if (Count == 0)
+					return String.Empty;
+
+				string[] result = new string [Count];
+				for (int i = 0; i < Count; i++)
+					result [i] = this [i].NativeCallbackSignature;
+
+				return String.Join (", ", result);
 			}
 		}
 	}

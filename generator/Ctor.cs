@@ -64,7 +64,7 @@ namespace GtkSharp.Generation {
 		void GenerateImport (StreamWriter sw)
 		{
 			sw.WriteLine("\t\t[DllImport(\"" + LibraryName + "\")]");
-			sw.WriteLine("\t\tstatic extern " + Safety + "IntPtr " + CName + "(" + ImportSignature + ");");
+			sw.WriteLine("\t\tstatic extern " + Safety + "IntPtr " + CName + "(" + Parameters.ImportSignature + ");");
 			sw.WriteLine();
 		}
 
