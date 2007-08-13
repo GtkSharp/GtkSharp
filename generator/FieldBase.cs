@@ -159,11 +159,14 @@ namespace GtkSharp.Generation {
 
 			if (Getter != null) {
 				sw.Write (indent + "\tget ");
-				Getter.GenerateBody (gen_info, "\t");
+				Getter.GenerateBody (gen_info, container_type, "\t");
 				sw.WriteLine ("");
 			} else if (getterName != null) {
 				sw.WriteLine (indent + "\tget {");
-				sw.WriteLine (indent + "\t\treturn " + table.FromNativeReturn (ctype, getterName + " (" + container_type.CallByName () + ")") + ";");
+				container_type.Prepare (sw, indent + "\t\t");
+				sw.WriteLine (indent + "\t\t" + CSType + " result = " + table.FromNativeReturn (ctype, getterName + " (" + container_type.CallByName () + ")") + ";");
+				container_type.Finish (sw, indent + "\t\t");
+				sw.WriteLine (indent + "\t\treturn result;");
 				sw.WriteLine (indent + "\t}");
 			} else if (Readable && offsetName != null) {
 				sw.WriteLine (indent + "\tget {");
@@ -181,11 +184,13 @@ namespace GtkSharp.Generation {
 
 			if (Setter != null) {
 				sw.Write (indent + "\tset ");
-				Setter.GenerateBody (gen_info, "\t");
+				Setter.GenerateBody (gen_info, container_type, "\t");
 				sw.WriteLine ("");
 			} else if (setterName != null) {
 				sw.WriteLine (indent + "\tset {");
+				container_type.Prepare (sw, indent + "\t\t");
 				sw.WriteLine (indent + "\t\t" + setterName + " (" + container_type.CallByName () + ", " + table.CallByName (ctype, "value") + ");");
+				container_type.Finish (sw, indent + "\t\t");
 				sw.WriteLine (indent + "\t}");
 			} else if (Writable && offsetName != null) {
 				sw.WriteLine (indent + "\tset {");

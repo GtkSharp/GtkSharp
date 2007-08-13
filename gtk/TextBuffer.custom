@@ -48,9 +48,6 @@ public void Delete (TextIter start, TextIter end )
 }
 
 // overload to paste clipboard contents at cursor editable by default.
-[DllImport("libgtk-win32-2.0-0.dll")]
-static extern void gtk_text_buffer_paste_clipboard (IntPtr raw, IntPtr clip, IntPtr iter, bool default_edit);
-
 public void PasteClipboard (Gtk.Clipboard clipboard)
 {
 	gtk_text_buffer_paste_clipboard(Handle, clipboard.Handle, IntPtr.Zero, true);

@@ -101,7 +101,7 @@ namespace GtkSharp.Generation {
 					Parameter p = parms [i];
 					if (p.PassAs != "" && !(p.Generatable is StructBase))
 						result += p.PassAs + " ";
-					result += (p.NativeCallbackType + " arg" + i);
+					result += (p.MarshalType + " arg" + i);
 				}
 				result += ", IntPtr gch";
 
@@ -374,9 +374,9 @@ namespace GtkSharp.Generation {
 		{
 			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
-			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + parms.NativeCallbackSignature + ");\n");
+			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + parms.ImportSignature + ");\n");
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
-			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + parms.NativeCallbackSignature + ")");
+			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\ttry {");
 			sw.WriteLine ("\t\t\t\t{0} {1}_managed = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);

@@ -281,8 +281,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 		
-		protected bool IgnoreMethod (Method method)
+		protected bool IgnoreMethod (Method method, ClassBase implementor)
 		{	
+			if (implementor != null && implementor.QualifiedName != this.QualifiedName && method.IsStatic)
+				return true;
+
 			string mname = method.Name;
 			return ((method.IsSetter || (method.IsGetter && mname.StartsWith("Get"))) &&
 				((props != null) && props.ContainsKey(mname.Substring(3)) ||
@@ -295,7 +298,7 @@ namespace GtkSharp.Generation {
 				return;
 
 			foreach (Method method in methods.Values) {
-				if (IgnoreMethod (method))
+				if (IgnoreMethod (method, implementor))
 				    	continue;
 
 				string oname = null, oprotection = null;
@@ -449,5 +452,12 @@ namespace GtkSharp.Generation {
 				ctor.Generate (gen_info);
 		}
 
+		public virtual void Finish (StreamWriter sw, string indent)
+		{
+		}
+
+		public virtual void Prepare (StreamWriter sw, string indent)
+		{
+		}
 	}
 }

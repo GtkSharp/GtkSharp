@@ -27,9 +27,10 @@ namespace GtkSharp.Generation {
 	using System.Text.RegularExpressions;
 	using System.Xml;
 
-	public abstract class StructBase : ClassBase {
+	public abstract class StructBase : ClassBase, IManualMarshaler {
 	
 		new ArrayList fields = new ArrayList ();
+		bool need_read_native = false;
 
 		protected StructBase (XmlElement ns, XmlElement elem) : base (ns, elem)
 		{
@@ -57,50 +58,40 @@ namespace GtkSharp.Generation {
 
 		public override string MarshalType {
 			get {
-				return "ref " + QualifiedName;
-			}
-		}
-
-		public override string NativeCallbackType {
-			get {
 				return "IntPtr";
 			}
 		}
 
-		public override string MarshalReturnType {
-			get {
-				return "IntPtr";
-			}
-		}
-
-		public override string ToNativeReturnType {
-			get {
-				return QualifiedName;
-			}
-		}
-
-		public override string CallByName (string var_name)
-		{
-			return "ref " + var_name;
+		public override string AssignToName {
+			get { throw new NotImplementedException (); }
 		}
 
 		public override string CallByName ()
 		{
-			return "ref this";
+			return "this_as_native";
 		}
 
-		public override string AssignToName {
-			get { return "raw"; }
-		}
-
-		public override string FromNative(string var)
+		public override string CallByName (string var)
 		{
-			return QualifiedName + ".New (" + var + ")";
+			return var + "_as_native";
+		}
+
+		public override string FromNative (string var)
+		{
+			if (DisableNew)
+				return var + " == IntPtr.Zero ? " + QualifiedName + ".Zero : (" + QualifiedName + ") System.Runtime.InteropServices.Marshal.PtrToStructure (" + var + ", typeof (" + QualifiedName + "))";
+			else
+				return QualifiedName + ".New (" + var + ")";
 		}
 		
-		public override string ToNativeReturn(string var)
+		public string AllocNative (string var)
 		{
-			return var;
+			return "GLib.Marshaller.StructureToPtrAlloc (" + var + ")";
+		}
+
+		public string ReleaseNative (string var)
+		{
+			return "Marshal.FreeHGlobal (" +var + ")";
 		}
 
 		private bool DisableNew {
@@ -165,10 +156,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic struct " + Name + " {");
 			sw.WriteLine ();
 
+			need_read_native = false;
 			GenFields (gen_info);
 			sw.WriteLine ();
 			GenCtors (gen_info);
-			GenMethods (gen_info, null, null);
+			GenMethods (gen_info, null, this);
+			if (need_read_native)
+				GenReadNative (sw);
 
 			if (!need_close)
 				return;
@@ -203,6 +197,27 @@ namespace GtkSharp.Generation {
 			base.GenCtors (gen_info);
 		}
 
+		void GenReadNative (StreamWriter sw)
+		{
+			sw.WriteLine ("\t\tstatic void ReadNative (IntPtr native, ref {0} target)", QualifiedName);
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\ttarget = New (native);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+		}
+
+		public override void Prepare (StreamWriter sw, string indent)
+		{
+			sw.WriteLine (indent + "IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));");
+			sw.WriteLine (indent + "System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);");
+		}
+
+		public override void Finish (StreamWriter sw, string indent)
+		{
+			need_read_native = true;
+			sw.WriteLine (indent + "ReadNative (this_as_native, ref this);");
+			sw.WriteLine (indent + "System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);");
+		}
 	}
 }
 

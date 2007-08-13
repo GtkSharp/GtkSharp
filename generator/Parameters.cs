@@ -155,11 +155,11 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string MarshalType {
+		public virtual string MarshalType {
 			get {
 				string type = SymbolTable.Table.GetMarshalType( elem.GetAttribute("type"));
-				if (type == "void")
-					type = "System.IntPtr";
+				if (type == "void" || Generatable is IManualMarshaler)
+					type = "IntPtr";
 				if (IsArray) {
 					type += "[]";
 					type = type.Replace ("ref ", "");
@@ -168,18 +168,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string NativeCallbackType {
-			get {
-				string type = Generatable.NativeCallbackType;
-				if (type == "void")
-					type = "System.IntPtr";
-				if (IsArray) {
-					type += "[]";
-					type = type.Replace ("ref ", "");
-				}
-				return type;
-			}
-		}
 		public string Name {
 			get {
 				return SymbolTable.Table.MangleName (elem.GetAttribute("name"));
@@ -189,17 +177,6 @@ namespace GtkSharp.Generation {
 		public bool Owned {
 			get {
 				return elem.GetAttribute ("owned") == "true";
-			}
-		}
-
-		public virtual string NativeCallbackSignature {
-			get {
-				string sig = NativeCallbackType + " " + Name;
-				if (PassAs != String.Empty && !(Generatable is StructBase))
-					sig = PassAs + " " + sig;
-				sig = sig.Replace ("out ref", "out");
-				sig = sig.Replace ("ref ref", "ref");
-				return sig;
 			}
 		}
 
@@ -259,7 +236,7 @@ namespace GtkSharp.Generation {
 			get {
 				IGeneratable gen = Generatable;
 				if (gen is IManualMarshaler) {
-					string result = " IntPtr native_" + CallName;
+					string result = "IntPtr native_" + CallName;
 					if (PassAs != "out")
 						result += " = " + (gen as IManualMarshaler).AllocNative (CallName);
 					return new string [] { result + ";" }; 
@@ -279,7 +256,7 @@ namespace GtkSharp.Generation {
 					return SymbolTable.Table.CallByName (CType, CallName + "_wrapper");
 				else if (PassAs != String.Empty) {
 					call_parm = PassAs + " ";
-					if (CSType != MarshalType && !(gen is StructBase || gen is ByRefGen))
+					if (CSType != MarshalType && !(gen is ByRefGen))
 						call_parm += "native_";
 					call_parm += CallName;
 				} else if (gen is IManualMarshaler)
@@ -336,6 +313,15 @@ namespace GtkSharp.Generation {
 
 		public ArrayParameter (XmlElement elem) : base (elem) {}
 
+		public override string MarshalType {
+			get {
+				if (Generatable is StructBase)
+					return CSType;
+				else
+					return base.MarshalType;
+			}
+		}
+
 		public override string[] Prepare {
 			get {
 				if (CSType == MarshalType)
@@ -365,6 +351,9 @@ namespace GtkSharp.Generation {
 
 		public override string[] Finish {
 			get {
+				if (CSType == MarshalType)
+					return new string [0];
+
 				IGeneratable gen = Generatable;
 				if (gen is IManualMarshaler) {
 					string [] result = new string [4];
@@ -453,46 +442,57 @@ namespace GtkSharp.Generation {
 		}
 	}
 
+	public class StructParameter : Parameter {
+
+		public StructParameter (XmlElement elem) : base (elem) {}
+
+		public override string MarshalType {
+			get {
+				return "IntPtr";
+			}
+		}
+
+		public override string[] Prepare {
+			get {
+				if (PassAs == "out")
+					return new string [] { "IntPtr native_" + CallName + " = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + Generatable.QualifiedName + ")));"};
+				else
+					return new string [] { "IntPtr native_" + CallName + " = " + (Generatable as IManualMarshaler).AllocNative (CallName) + ";"};
+			}
+		}
+
+		public override string CallString {
+			get {
+				return "native_" + CallName;
+			}
+		}
+
+		public override string[] Finish {
+			get {
+				string[] result = new string [2];
+				result [0] = CallName + " = " + FromNative ("native_" + CallName) + ";";
+				result [1] = (Generatable as IManualMarshaler).ReleaseNative ("native_" + CallName) + ";";
+				return result;
+			}
+		}
+
+		public override string NativeSignature {
+			get {
+				return "IntPtr " + CallName;
+			}
+		}
+	}
+
 	public class Parameters : IEnumerable {
 		
 		ArrayList param_list = new ArrayList ();
+		XmlElement elem;
 
-		public Parameters (XmlElement elem) {
-			
+		public Parameters (XmlElement elem) 
+		{
 			if (elem == null)
-				return;
-
-			for (int i = 0; i < elem.ChildNodes.Count; i++) {
-				XmlElement parm = elem.ChildNodes [i] as XmlElement;
-				if (parm == null || parm.Name != "parameter")
-					continue;
-				Parameter p = new Parameter (parm);
-				if (p.IsArray) {
-					p = new ArrayParameter (parm);
-					if (i < elem.ChildNodes.Count - 1) {
-						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-						if (next != null || next.Name == "parameter") {
-							Parameter c = new Parameter (next);
-							if (c.IsCount) {
-								p = new ArrayCountPair (parm, next, false);
-								i++;
-							} 
-						}
-					}
-				} else if (p.IsCount && i < elem.ChildNodes.Count - 1) {
-					Console.WriteLine (elem.GetAttribute ("name"));
-					XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
-					if (next != null || next.Name == "parameter") {
-						Parameter a = new Parameter (next);
-						if (a.IsArray) {
-							p = new ArrayCountPair (next, parm, true);
-							i++;
-						}
-					}
-				} else if (p.CType == "GError**")
-					p = new ErrorParameter (parm);
-				param_list.Add (p);
-			}
+				valid = true;
+			this.elem = elem;
 		}
 
 		public int Count {
@@ -564,11 +564,11 @@ namespace GtkSharp.Generation {
 			set { is_static = value; }
 		}
 
-		bool cleared = false;
 		void Clear ()
 		{
-			cleared = true;
+			elem = null;
 			param_list.Clear ();
+			param_list = null;
 		}
 
 		public IEnumerator GetEnumerator ()
@@ -576,18 +576,25 @@ namespace GtkSharp.Generation {
 			return param_list.GetEnumerator ();
 		}
 
+		bool valid = false;
+
 		public bool Validate ()
 		{
-			if (cleared)
+			if (valid)
+				return true;
+
+			if (elem == null)
 				return false;
 
-			for (int i = 0; i < param_list.Count; i++) {
-				Parameter p = this [i];
+			for (int i = 0; i < elem.ChildNodes.Count; i++) {
+				XmlElement parm = elem.ChildNodes [i] as XmlElement;
+				if (parm == null || parm.Name != "parameter")
+					continue;
+				Parameter p = new Parameter (parm);
 				
 				if (p.IsEllipsis) {
 					Console.Write("Ellipsis parameter ");
 					Clear ();
-					
 					return false;
 				}
 
@@ -598,15 +605,43 @@ namespace GtkSharp.Generation {
 					return false;
 				}
 
-				if (p.Generatable is CallbackGen) {
+				IGeneratable gen = p.Generatable;
+
+				if (p.IsArray) {
+					p = new ArrayParameter (parm);
+					if (i < elem.ChildNodes.Count - 1) {
+						XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
+						if (next != null || next.Name == "parameter") {
+							Parameter c = new Parameter (next);
+							if (c.IsCount) {
+								p = new ArrayCountPair (parm, next, false);
+								i++;
+							} 
+						}
+					}
+				} else if (p.IsCount && i < elem.ChildNodes.Count - 1) {
+					XmlElement next = elem.ChildNodes [i + 1] as XmlElement;
+					if (next != null || next.Name == "parameter") {
+						Parameter a = new Parameter (next);
+						if (a.IsArray) {
+							p = new ArrayCountPair (next, parm, true);
+							i++;
+						}
+					}
+				} else if (p.CType == "GError**")
+					p = new ErrorParameter (parm);
+				else if (gen is StructBase) {
+					p = new StructParameter (parm);
+				} else if (gen is CallbackGen) {
 					has_cb = true;
-					if (i == Count - 3 &&
-					    this [i + 1].IsUserData &&
-					    this [i + 2].IsDestroyNotify)
-						p.Scope = "notified";
 				}
+				param_list.Add (p);
 			}
 			
+			if (has_cb && Count > 2 && this [Count - 3].Generatable is CallbackGen && this [Count - 2].IsUserData && this [Count - 1].IsDestroyNotify)
+				this [Count - 3].Scope = "notified";
+
+			valid = true;
 			return true;
 		}
 
@@ -654,19 +689,6 @@ namespace GtkSharp.Generation {
 				string[] result = new string [Count];
 				for (int i = 0; i < Count; i++)
 					result [i] = this [i].NativeSignature;
-
-				return String.Join (", ", result);
-			}
-		}
-
-		public string NativeCallbackSignature {
-			get {
-				if (Count == 0)
-					return String.Empty;
-
-				string[] result = new string [Count];
-				for (int i = 0; i < Count; i++)
-					result [i] = this [i].NativeCallbackSignature;
 
 				return String.Join (", ", result);
 			}

@@ -287,7 +287,7 @@ namespace GtkSharp.Generation {
 			}
 
 			foreach (Method method in methods.Values) {
-				if (IgnoreMethod (method))
+				if (IgnoreMethod (method, this))
 					continue;
 				method.GenerateDecl (sw);
 			}

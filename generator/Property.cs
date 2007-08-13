@@ -135,7 +135,7 @@ namespace GtkSharp.Generation {
 
 			if (Getter != null) {
 				sw.Write(indent + "get ");
-				Getter.GenerateBody(gen_info, "\t");
+				Getter.GenerateBody(gen_info, implementor, "\t");
 				sw.WriteLine();
 			} else if (Readable) {
 				sw.WriteLine(indent + "get {");
@@ -158,7 +158,7 @@ namespace GtkSharp.Generation {
 
 			if (Setter != null) {
 				sw.Write(indent + "set ");
-				Setter.GenerateBody(gen_info, "\t");
+				Setter.GenerateBody(gen_info, implementor, "\t");
 				sw.WriteLine();
 			} else if (Writable) {
 				sw.WriteLine(indent + "set {");
