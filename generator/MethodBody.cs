@@ -72,11 +72,7 @@ namespace GtkSharp.Generation {
 				result [i] += call_parm;
 			}
 
-			string call_string = String.Join (", ", result);
-			call_string = call_string.Replace ("out ref", "out");
-			call_string = call_string.Replace ("out out ", "out ");
-			call_string = call_string.Replace ("ref ref", "ref");
-			return call_string;
+			return String.Join (", ", result);
 		}
 
 		public void Initialize (GenerationInfo gen_info, bool is_get, bool is_set, string indent)

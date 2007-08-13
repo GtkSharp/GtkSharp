@@ -185,8 +185,6 @@ namespace GtkSharp.Generation {
 				string sig = MarshalType + " " + Name;
 				if (PassAs != String.Empty)
 					sig = PassAs + " " + sig;
-				sig = sig.Replace ("out ref", "out");
-				sig = sig.Replace ("ref ref", "ref");
 				return sig;
 			}
 		}
