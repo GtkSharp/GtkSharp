@@ -240,7 +240,7 @@ namespace GtkSharp.Generation {
 					if (PassAs != "out")
 						result += " = " + (gen as IManualMarshaler).AllocNative (CallName);
 					return new string [] { result + ";" }; 
-				} else if (PassAs == "out" && CSType != MarshalType && !(gen is StructBase || gen is ByRefGen))
+				} else if (PassAs == "out" && CSType != MarshalType)
 					return new string [] { gen.MarshalType + " native_" + CallName + ";" };
 
 				return new string [0];
@@ -256,7 +256,7 @@ namespace GtkSharp.Generation {
 					return SymbolTable.Table.CallByName (CType, CallName + "_wrapper");
 				else if (PassAs != String.Empty) {
 					call_parm = PassAs + " ";
-					if (CSType != MarshalType && !(gen is ByRefGen))
+					if (CSType != MarshalType)
 						call_parm += "native_";
 					call_parm += CallName;
 				} else if (gen is IManualMarshaler)
@@ -279,7 +279,7 @@ namespace GtkSharp.Generation {
 					if (PassAs != "out")
 						result [i] = (gen as IManualMarshaler).ReleaseNative ("native_" + CallName) + ";";
 					return result;
-				} else if (PassAs != String.Empty && MarshalType != CSType && !(gen is StructBase || gen is ByRefGen))
+				} else if (PassAs != String.Empty && MarshalType != CSType)
 					return new string [] { CallName + " = " + gen.FromNative ("native_" + CallName) + ";" };
 				return new string [0];
 			}
@@ -630,7 +630,7 @@ namespace GtkSharp.Generation {
 					}
 				} else if (p.CType == "GError**")
 					p = new ErrorParameter (parm);
-				else if (gen is StructBase) {
+				else if (gen is StructBase || gen is ByRefGen) {
 					p = new StructParameter (parm);
 				} else if (gen is CallbackGen) {
 					has_cb = true;
