@@ -76,6 +76,11 @@ namespace GLib {
 			this.Append (Marshaller.StringToPtrGStrdup (item));
 		}
 
+		public void Append (object item)
+		{
+			this.Append (AllocNativeElement (item));
+		}
+
 		public void Prepend (IntPtr raw)
 		{
 			list_ptr = Prepend (list_ptr, raw);
@@ -120,6 +125,30 @@ namespace GLib {
 
 		public class FilenameString {
 			private FilenameString () {}
+		}
+
+		IntPtr AllocNativeElement (object element)
+		{
+			if (element_type == null) {
+				if (element is IWrapper)
+					return (element as IWrapper).Handle;
+				else
+					return (IntPtr) GCHandle.Alloc (element);
+			} else {
+				if (element_type == typeof (string))
+					return Marshaller.StringToPtrGStrdup (element as string);
+				else if (element_type == typeof (FilenameString))
+					return Marshaller.StringToFilenamePtr (element as string);
+				else if (element_type == typeof (IntPtr))
+					return (IntPtr) GCHandle.Alloc (element);
+				else if (typeof (IWrapper).IsAssignableFrom (element_type))
+					return (element as IWrapper).Handle;
+				else if (element_type == typeof (int))
+					return new IntPtr ((int) element);
+				else if (element_type.IsValueType)
+					return Marshaller.StructureToPtrAlloc (element);
+			}
+			return IntPtr.Zero;
 		}
 
 		internal object DataMarshal (IntPtr data) 

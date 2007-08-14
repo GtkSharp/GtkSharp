@@ -99,5 +99,11 @@ namespace GLib {
 		public SList (IntPtr raw, System.Type element_type) : this (raw, element_type, false, false) {}
 
 		public SList (IntPtr raw, System.Type element_type, bool owned, bool elements_owned) : base (raw, element_type, false, false) {}
+
+		public SList (object[] members, System.Type element_type, bool owned, bool elements_owned) : this (IntPtr.Zero, element_type, owned, elements_owned)
+		{
+			foreach (object o in members)
+				Append (o);
+		}
 	}
 }
