@@ -1,8 +1,8 @@
-// ClassInitializerAttribute.cs
+// IgnoreClassInitializersAttribute.cs
 //
 // Author:   Mike Kestner  <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -23,9 +23,9 @@ namespace GLib {
 
 	using System;
 
-	[Obsolete ("Replaced by TypeInitializerAttribute")]
-	public sealed class ClassInitializerAttribute : Attribute 
+	[AttributeUsage (AttributeTargets.Assembly)]
+	public sealed class IgnoreClassInitializersAttribute : Attribute 
 	{
-		public ClassInitializerAttribute () {}
+		public IgnoreClassInitializersAttribute () {}
 	}
 }

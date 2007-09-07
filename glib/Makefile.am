@@ -32,6 +32,7 @@ sources =		 			\
 	GType.cs				\
 	GTypeAttribute.cs			\
 	Idle.cs					\
+	IgnoreClassInitializersAttribute.cs	\
 	InitiallyUnowned.cs			\
 	IWrapper.cs				\
 	ListBase.cs				\
@@ -59,6 +60,7 @@ sources =		 			\
 	ToggleRef.cs				\
 	TypeConverter.cs			\
 	TypeFundamentals.cs			\
+	TypeInitializerAttribute.cs		\
 	UnwrappedObject.cs			\
 	ValueArray.cs				\
 	Value.cs				\

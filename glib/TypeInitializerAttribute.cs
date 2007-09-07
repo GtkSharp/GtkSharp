@@ -1,8 +1,8 @@
-// ClassInitializerAttribute.cs
+// TypeInitializerAttribute.cs
 //
 // Author:   Mike Kestner  <mkestner@novell.com>
 //
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -23,9 +23,26 @@ namespace GLib {
 
 	using System;
 
-	[Obsolete ("Replaced by TypeInitializerAttribute")]
-	public sealed class ClassInitializerAttribute : Attribute 
+	[AttributeUsage (AttributeTargets.Class)]
+	public sealed class TypeInitializerAttribute : Attribute 
 	{
-		public ClassInitializerAttribute () {}
+		string method_name;
+		Type type;
+
+		public TypeInitializerAttribute (Type type, string method_name) 
+		{
+			this.type = type;
+			this.method_name = method_name;
+		}
+
+		public string MethodName {
+			get { return method_name; }
+			set { method_name = value; }
+		}
+
+		public Type Type {
+			get { return type; }
+			set { type = value; }
+		}
 	}
 }
