@@ -28,6 +28,8 @@ sources =		 			\
 	ExceptionManager.cs			\
 	FileUtils.cs				\
 	GException.cs				\
+	GInterfaceAdapter.cs			\
+	GInterfaceAttribute.cs			\
 	GString.cs				\
 	GType.cs				\
 	GTypeAttribute.cs			\

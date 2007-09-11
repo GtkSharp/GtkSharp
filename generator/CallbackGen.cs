@@ -60,6 +60,14 @@ namespace GtkSharp.Generation {
 			return true;
 		}
 
+		public string InvokerName {
+			get {
+				if (!valid)
+					return String.Empty;
+				return NS + "Sharp." + Name + "Invoker";
+			}
+		}
+
 		public override string MarshalType {
 			get {
 				if (valid)
@@ -86,6 +94,72 @@ namespace GtkSharp.Generation {
 			sw.WriteLine (indent + "}");
 		}
 
+		string CastFromInt (string type)
+		{
+			return type != "int" ? "(" + type + ") " : "";
+		}
+
+		string InvokeString {
+			get {
+				if (parms.Count == 0)
+					return String.Empty;
+
+				string[] result = new string [parms.Count];
+				for (int i = 0; i < parms.Count; i++) {
+					Parameter p = parms [i];
+					IGeneratable igen = p.Generatable;
+
+					if (i > 0 && parms [i - 1].IsString && p.IsLength) {
+						string string_name = parms [i - 1].Name;
+						result[i] = igen.CallByName (CastFromInt (p.CSType) + "System.Text.Encoding.UTF8.GetByteCount (" +  string_name + ")");
+						continue;
+					}
+
+					p.CallName = p.Name;
+					result [i] = p.CallString;
+					if (p.IsUserData)
+						result [i] = "IntPtr.Zero"; 
+				}
+
+				return String.Join (", ", result);
+			}
+		}
+
+		MethodBody body;
+
+		void GenInvoker (GenerationInfo gen_info, StreamWriter sw)
+		{
+			sw.WriteLine ("\tinternal class " + Name + "Invoker {");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t" + Name + "Native native_cb;");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tinternal " + Name + "Invoker (" + Name + "Native native_cb)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tthis.native_cb = native_cb;");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tinternal " + QualifiedName + " Handler {");
+			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\treturn new " + QualifiedName + "(InvokeNative);");
+			sw.WriteLine ("\t\t\t}");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\t" + retval.CSType + " InvokeNative (" + sig + ")");
+			sw.WriteLine ("\t\t{");
+			body.Initialize (gen_info);
+			string call = "native_cb (" + InvokeString + ")";
+			if (retval.IsVoid)
+				sw.WriteLine ("\t\t\t" + call + ";");
+			else
+				sw.WriteLine ("\t\t\t" + retval.CSType + " result = " + retval.FromNative (call) + ";");
+			body.Finish (sw, String.Empty);
+			if (!retval.IsVoid)
+				sw.WriteLine ("\t\t\treturn result;");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ("\t}");
+			sw.WriteLine ();
+		}
+
 		public string GenWrapper (GenerationInfo gen_info)
 		{
 			string wrapper = Name + "Native";
@@ -94,7 +168,10 @@ namespace GtkSharp.Generation {
 			if (!Validate ())
 				return String.Empty;
 
-			StreamWriter sw = gen_info.OpenStream (qualname);
+			body = new MethodBody (parms);
+
+			StreamWriter save_sw = gen_info.Writer;
+			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (qualname);
 
 			sw.WriteLine ("namespace " + NS + "Sharp {");
 			sw.WriteLine ();
@@ -105,6 +182,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\tinternal delegate " + retval.MarshalType + " " + wrapper + "(" + parms.ImportSignature + ");");
 			sw.WriteLine ();
+			GenInvoker (gen_info, sw);
 			sw.WriteLine ("\tinternal class " + Name + "Wrapper {");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic " + retval.MarshalType + " NativeCallback (" + parms.ImportSignature + ")");
@@ -214,6 +292,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("#endregion");
 			sw.WriteLine ("}");
 			sw.Close ();
+			gen_info.Writer = save_sw;
 			return NS + "Sharp." + Name + "Wrapper";
 		}
 		

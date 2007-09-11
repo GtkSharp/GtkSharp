@@ -75,6 +75,11 @@ namespace GtkSharp.Generation {
 			return String.Join (", ", result);
 		}
 
+		public void Initialize (GenerationInfo gen_info)
+		{
+			Initialize (gen_info, false, false, String.Empty);
+		}
+
 		public void Initialize (GenerationInfo gen_info, bool is_get, bool is_set, string indent)
 		{
 			if (parameters.Count == 0)
@@ -124,7 +129,6 @@ namespace GtkSharp.Generation {
 						sw.WriteLine (indent + "\t\t\t{0} {1}_wrapper = new {0} ({1});", wrapper, name);
 						break;
 					}
-						
 				}
 			}
 
@@ -158,10 +162,17 @@ namespace GtkSharp.Generation {
 		
 		public bool ThrowsException {
 			get {
-				if (parameters.Count < 1)
-					return false;
+				int idx = parameters.Count - 1;
 
-				return parameters [parameters.Count - 1].CType == "GError**";
+				while (idx >= 0) {
+					if (parameters [idx].IsUserData)
+						idx--;
+					else if (parameters [idx].CType == "GError**")
+						return true;
+					else
+						break;
+				}
+				return false;
 			}
 		}
 	}

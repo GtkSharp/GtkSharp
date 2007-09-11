@@ -285,7 +285,9 @@ namespace GtkSharp.Generation {
 
 		public string FromNative (string var)
 		{
-			if (Generatable is HandleBase)
+			if (Generatable == null)
+				return String.Empty;
+			else if (Generatable is HandleBase)
 				return ((HandleBase)Generatable).FromNative (var, Owned);
 			else
 				return Generatable.FromNative (var);

@@ -183,6 +183,24 @@ namespace GLib {
 			}
  		}
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_type_add_interface_static (IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
+
+		static void AddInterfaces (GType gtype, Type t)
+		{
+			foreach (Type iface in t.GetInterfaces ()) {
+				if (!iface.IsDefined (typeof (GInterfaceAttribute), true) || iface.IsAssignableFrom (t.BaseType))
+					continue;
+
+				GInterfaceAttribute attr = iface.GetCustomAttributes (typeof (GInterfaceAttribute), false) [0] as GInterfaceAttribute;
+				GInterfaceAdapter adapter = Activator.CreateInstance (attr.AdapterType, null) as GInterfaceAdapter;
+				
+				GInterfaceInfo info = adapter.Info;
+				g_type_add_interface_static (gtype.Val, adapter.GType.Val, ref info);
+				Console.WriteLine (adapter);
+			}
+		}
+
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_register_type (IntPtr name, IntPtr parent_type);
 
@@ -221,6 +239,7 @@ namespace GLib {
 			GLib.GType.Register (gtype, t);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
+			AddInterfaces (gtype, t);
 			g_types[t] = gtype;
 			return gtype;
 		}

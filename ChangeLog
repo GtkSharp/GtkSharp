@@ -1,4 +1,27 @@
 2007-09-11  Mike Kestner  <mkestner@novell.com>
+
+	* gtk/Gtk.metadata: virtual_method rules for GInterface generation.
+	* generator/ReturnValue.cs (ToNative): new method for the virtual
+	method generation.
+	* generator/Parameters.cs (FromNative): null guarding.
+	* generator/ManagedCallString.cs: rework for interface method
+	generation including callback and error param support.
+	* generator/CallbackGen.cs: Invoker support. new class that deals
+	with persistence of native and wrapper delegates in native to managed
+	callback method signatures.
+	* generator/VirtualMethod.cs: support for generation of interface
+	methods, and all the funky parameters that come with that.
+	* generator/InterfaceGen.cs: Fill out the adapter implementation.
+	* generator/MethodBody.cs: Initialize overload. Extend ThrowsException
+	to support GError outside the last parameter slot.
+	* glib/GInterfaceAttribute.cs: New attribute to mark interfaces and
+	obtain adapter type.
+	* glib/Object.cs (AddInterfaces): interface registration method.
+	* glib/GInterfaceAdapter.cs: New abstract class for interface
+	adapter generation.
+	* glib/Makefile.am: add new files.
+
+2007-09-11  Mike Kestner  <mkestner@novell.com>
   
  	* gtk/Object.custom (Destroy): add a null check to avoid 
 	Gtk criticals.  The destroy case seems to be problematic with

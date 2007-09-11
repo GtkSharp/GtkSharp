@@ -53,6 +53,24 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool IsGetter {
+			get {
+				return (Name.StartsWith ("Get") || Name.StartsWith ("Has")) && ((!retval.IsVoid && parms.Count == 1) || (retval.IsVoid && parms.Count == 2 && parms [1].PassAs == "out"));
+			}
+		}
+	
+		bool IsSetter {
+			get {
+				if (!Name.StartsWith ("Set") || !retval.IsVoid)
+					return false;
+
+				if (parms.Count == 2 || (parms.Count == 4 && parms [1].Scope == "notified"))
+					return true;
+				else
+					return false;
+			}
+		}
+ 
 		public string MarshalReturnType {
 			get {
 				return SymbolTable.Table.GetToNativeReturnType (elem["return-type"].GetAttribute("type"));
@@ -73,39 +91,64 @@ namespace GtkSharp.Generation {
 
 		public void GenerateCallback (StreamWriter sw)
 		{
+			if (!Validate ())
+				return;
+
 			ManagedCallString call = new ManagedCallString (parms);
 			string type = parms [0].CSType;
 			string name = parms [0].Name;
 			string call_string = "__obj." + Name + " (" + call + ")";
+			if (IsGetter)
+				call_string = "__obj." + (Name.StartsWith ("Get") ? Name.Substring (3) : Name);
+			else if (IsSetter)
+				call_string = "__obj." + Name.Substring (3) + " = " + call;
 			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
 			sw.Write (call.Setup ("\t\t\t"));
-			if (retval.CSType == "void")
-				sw.WriteLine ("\t\t\t" + call_string + ";");
-			else {
-				sw.WriteLine ("\t\t\treturn " + SymbolTable.Table.ToNativeReturn (retval.CType, call_string) + ";");
-			}
+			if (retval.IsVoid) { 
+				if (IsGetter) {
+					Parameter p = parms [1];
+					string out_name = p.Name;
+					if (p.MarshalType != p.CSType)
+						out_name = "my" + out_name;
+					sw.WriteLine ("\t\t\t" + out_name + " = " + call_string + ";");
+				} else
+					sw.WriteLine ("\t\t\t" + call_string + ";");
+			} else
+				sw.WriteLine ("\t\t\t" + retval.ToNativeType + " result = " + retval.ToNative (call_string) + ";");
 			sw.Write (call.Finish ("\t\t\t"));
+			if (!retval.IsVoid)
+				sw.WriteLine ("\t\t\treturn result;");
 			sw.WriteLine ("\t\t}");
 		}
 
-		public bool Validate ()
+		enum ValidState {
+			Unvalidated,
+			Invalid,
+			Valid
+		}
+
+		ValidState vstate = ValidState.Unvalidated;
+
+		public bool IsValid {
+			get { 
+				if (vstate == ValidState.Unvalidated)
+					return Validate ();
+				else
+					return vstate == ValidState.Valid; 
+			}
+		}
+
+		bool Validate ()
 		{
 			if (!parms.Validate () || !retval.Validate ()) {
 				Console.Write ("in virtual method " + Name + " ");
+				vstate = ValidState.Invalid;
 				return false;
 			}
 
-			for (int i = 0; i < parms.Count; i++) {
-				Parameter p = parms [i];
-				if (p.Generatable is CallbackGen) {
-					Console.Write("Callback: " + p.CSType + " in virtual method " + Name + " ");
-					Statistics.ThrottledCount++;
-					return false;
-				}
-			}
-
+			vstate = ValidState.Valid;
 			return true;
 		}
 	}
