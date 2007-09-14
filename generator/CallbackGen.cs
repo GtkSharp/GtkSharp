@@ -129,6 +129,9 @@ namespace GtkSharp.Generation {
 
 		void GenInvoker (GenerationInfo gen_info, StreamWriter sw)
 		{
+			if (sig == null)
+				sig = new Signature (parms);
+
 			sw.WriteLine ("\tinternal class " + Name + "Invoker {");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t" + Name + "Native native_cb;");
