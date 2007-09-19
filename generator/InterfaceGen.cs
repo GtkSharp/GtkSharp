@@ -3,7 +3,7 @@
 // Author: Mike Kestner <mkestner@speakeasy.net>
 //
 // Copyright (c) 2001-2003 Mike Kestner
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004, 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the GNU General Public
@@ -73,18 +73,6 @@ namespace GtkSharp.Generation {
 			get {
 				return Name + "Iface";
 			}
-		}
-
-		void GenerateDelegates (StreamWriter sw)
-		{
-			if (vms.Count == 0)
-				return;
-
-			foreach (VirtualMethod vm in vms) {
-				if (vm.IsValid)
-					sw.WriteLine ("\t\t" + vm.NativeDelegate);
-			}
-			sw.WriteLine ();
 		}
 
 		void GenerateIfaceStruct (StreamWriter sw)
@@ -184,7 +172,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tinternal class " + Name + "Adapter : GLib.GInterfaceAdapter {");
 			sw.WriteLine ();
 
-			GenerateDelegates (sw);
 			GenerateIfaceStruct (sw);
 			GenerateStaticCtor (sw);
 			GenerateCallbacks (sw);

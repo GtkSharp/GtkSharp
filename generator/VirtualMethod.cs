@@ -83,12 +83,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string NativeDelegate {
-			get {
-				return "delegate " + MarshalReturnType + " " + Name + "Delegate (" + parms.ImportSignature + ");";
-			}
-		}
-
 		public void GenerateCallback (StreamWriter sw)
 		{
 			if (!Validate ())
@@ -102,6 +96,10 @@ namespace GtkSharp.Generation {
 				call_string = "__obj." + (Name.StartsWith ("Get") ? Name.Substring (3) : Name);
 			else if (IsSetter)
 				call_string = "__obj." + Name.Substring (3) + " = " + call;
+
+			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
+			sw.WriteLine ("\t\tdelegate " + MarshalReturnType + " " + Name + "Delegate (" + parms.ImportSignature + ");");
+			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
