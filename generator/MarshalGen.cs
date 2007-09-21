@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 		string call_fmt;
 		string from_fmt;
 
-		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt) : base (ctype, type)
+		public MarshalGen (string ctype, string type, string mtype, string call_fmt, string from_fmt) : base (ctype, type, "null")
 		{
 			this.mtype = mtype;
 			this.call_fmt = call_fmt;

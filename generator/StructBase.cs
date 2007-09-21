@@ -56,6 +56,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public override string DefaultValue {
+			get {
+				return QualifiedName + ".Zero";
+			}
+		}
+
 		public override string MarshalType {
 			get {
 				return "IntPtr";

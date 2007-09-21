@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 
 	public class LPGen : SimpleGen, IAccessor {
 		
-		public LPGen (string ctype) : base (ctype, "long") {}
+		public LPGen (string ctype) : base (ctype, "long", "0L") {}
 
 		public override string MarshalType {
 			get {

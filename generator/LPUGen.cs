@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 
 	public class LPUGen : SimpleGen, IAccessor {
 		
-		public LPUGen (string ctype) : base (ctype, "ulong") {}
+		public LPUGen (string ctype) : base (ctype, "ulong", "0") {}
 
 		public override string MarshalType {
 			get {

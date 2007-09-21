@@ -26,7 +26,7 @@ namespace GtkSharp.Generation {
 
 	public class ByRefGen : SimpleBase, IManualMarshaler {
 		
-		public ByRefGen (string ctype, string type) : base (ctype, type) {}
+		public ByRefGen (string ctype, string type) : base (ctype, type, type + ".Empty") {}
 		
 		public override string MarshalType {
 			get {

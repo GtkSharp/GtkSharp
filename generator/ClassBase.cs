@@ -227,6 +227,12 @@ namespace GtkSharp.Generation {
 
 		public abstract string CallByName ();
 
+		public override string DefaultValue {
+			get {
+				return "null";
+			}
+		}
+
 		protected bool IsNodeNameHandled (string name)
 		{
 			switch (name) {

@@ -45,6 +45,11 @@ namespace GtkSharp.Generation {
 		// generatable to unmanaged code
 		string ToNativeReturnType {get;}
 
+		// The value returned by callbacks that are interrupted prematurely
+		// by managed exceptions or other conditions where an appropriate
+		// value can't be otherwise obtained.
+		string DefaultValue {get;}
+
 		// Generates an expression to convert var_name to MarshalType
 		string CallByName (string var_name);
 

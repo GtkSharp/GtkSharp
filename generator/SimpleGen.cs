@@ -24,7 +24,8 @@ namespace GtkSharp.Generation {
 	using System;
 
 	public class SimpleGen : SimpleBase {
-		public SimpleGen (string ctype, string type) : base (ctype, type) {}
+		public SimpleGen (string ctype, string type, string default_value) : base (ctype, type, default_value) {}
+
 	}
 }
 

@@ -28,12 +28,12 @@ namespace GtkSharp.Generation {
 		
 		string from_fmt;
 
-		public ManualGen (string ctype, string type) : base (ctype, type) 
+		public ManualGen (string ctype, string type) : base (ctype, type, "null") 
 		{
 			from_fmt = "new " + QualifiedName + "({0})";
 		}
 
-		public ManualGen (string ctype, string type, string from_fmt) : base (ctype, type)
+		public ManualGen (string ctype, string type, string from_fmt) : base (ctype, type, "null")
 		{
 			this.from_fmt = from_fmt;
 		}

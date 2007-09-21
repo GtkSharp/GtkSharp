@@ -40,6 +40,10 @@ namespace GtkSharp.Generation {
 			parms.HideData = true;
 		}
 
+		public override string DefaultValue {
+			get { return "null"; }
+		}
+
 		public override bool Validate ()
 		{
 			if (!retval.Validate ()) {

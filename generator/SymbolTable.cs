@@ -43,37 +43,37 @@ namespace GtkSharp.Generation {
 		public SymbolTable ()
 		{
 			// Simple easily mapped types
-			AddType (new SimpleGen ("void", "void"));
-			AddType (new SimpleGen ("gpointer", "IntPtr"));
-			AddType (new SimpleGen ("gboolean", "bool"));
-			AddType (new SimpleGen ("gint", "int"));
-			AddType (new SimpleGen ("guint", "uint"));
-			AddType (new SimpleGen ("int", "int"));
-			AddType (new SimpleGen ("unsigned", "uint"));
-			AddType (new SimpleGen ("unsigned int", "uint"));
-			AddType (new SimpleGen ("unsigned-int", "uint"));
-			AddType (new SimpleGen ("gshort", "short"));
-			AddType (new SimpleGen ("gushort", "ushort"));
-			AddType (new SimpleGen ("short", "short"));
-			AddType (new SimpleGen ("guchar", "byte"));
-			AddType (new SimpleGen ("unsigned char", "byte"));
-			AddType (new SimpleGen ("unsigned-char", "byte"));
-			AddType (new SimpleGen ("guint1", "bool"));
-			AddType (new SimpleGen ("uint1", "bool"));
-			AddType (new SimpleGen ("gint8", "sbyte"));
-			AddType (new SimpleGen ("guint8", "byte"));
-			AddType (new SimpleGen ("gint16", "short"));
-			AddType (new SimpleGen ("guint16", "ushort"));
-			AddType (new SimpleGen ("gint32", "int"));
-			AddType (new SimpleGen ("guint32", "uint"));
-			AddType (new SimpleGen ("gint64", "long"));
-			AddType (new SimpleGen ("guint64", "ulong"));
-			AddType (new SimpleGen ("long long", "long"));
-			AddType (new SimpleGen ("gfloat", "float"));
-			AddType (new SimpleGen ("float", "float"));
-			AddType (new SimpleGen ("gdouble", "double"));
-			AddType (new SimpleGen ("double", "double"));
-			AddType (new SimpleGen ("GQuark", "int"));
+			AddType (new SimpleGen ("void", "void", String.Empty));
+			AddType (new SimpleGen ("gpointer", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("gboolean", "bool", "false"));
+			AddType (new SimpleGen ("gint", "int", "0"));
+			AddType (new SimpleGen ("guint", "uint", "0"));
+			AddType (new SimpleGen ("int", "int", "0"));
+			AddType (new SimpleGen ("unsigned", "uint", "0"));
+			AddType (new SimpleGen ("unsigned int", "uint", "0"));
+			AddType (new SimpleGen ("unsigned-int", "uint", "0"));
+			AddType (new SimpleGen ("gshort", "short", "0"));
+			AddType (new SimpleGen ("gushort", "ushort", "0"));
+			AddType (new SimpleGen ("short", "short", "0"));
+			AddType (new SimpleGen ("guchar", "byte", "0"));
+			AddType (new SimpleGen ("unsigned char", "byte", "0"));
+			AddType (new SimpleGen ("unsigned-char", "byte", "0"));
+			AddType (new SimpleGen ("guint1", "bool", "false"));
+			AddType (new SimpleGen ("uint1", "bool", "false"));
+			AddType (new SimpleGen ("gint8", "sbyte", "0"));
+			AddType (new SimpleGen ("guint8", "byte", "0"));
+			AddType (new SimpleGen ("gint16", "short", "0"));
+			AddType (new SimpleGen ("guint16", "ushort", "0"));
+			AddType (new SimpleGen ("gint32", "int", "0"));
+			AddType (new SimpleGen ("guint32", "uint", "0"));
+			AddType (new SimpleGen ("gint64", "long", "0"));
+			AddType (new SimpleGen ("guint64", "ulong", "0"));
+			AddType (new SimpleGen ("long long", "long", "0"));
+			AddType (new SimpleGen ("gfloat", "float", "0.0"));
+			AddType (new SimpleGen ("float", "float", "0.0"));
+			AddType (new SimpleGen ("gdouble", "double", "0.0"));
+			AddType (new SimpleGen ("double", "double", "0.0"));
+			AddType (new SimpleGen ("GQuark", "int", "0"));
 
 			// platform specific integer types. these will break on any
 			// platform where sizeof (long) != sizeof (pointer)
@@ -95,7 +95,7 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("gfilename", "string", "IntPtr", "GLib.Marshaller.StringToFilenamePtr({0})", "GLib.Marshaller.FilenamePtrToStringGFree({0})"));
 			AddType (new MarshalGen ("gchar", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
 			AddType (new MarshalGen ("char", "string", "IntPtr", "GLib.Marshaller.StringToPtrGStrdup({0})", "GLib.Marshaller.PtrToStringGFree({0})"));
-			AddType (new SimpleGen ("GStrv", "string[]"));
+			AddType (new SimpleGen ("GStrv", "string[]", "null"));
 
 			// manually wrapped types requiring more complex marshaling
 			AddType (new ManualGen ("GInitiallyUnowned", "GLib.InitiallyUnowned", "GLib.Object.GetObject ({0})"));
@@ -107,24 +107,24 @@ namespace GtkSharp.Generation {
 			AddType (new MarshalGen ("GString", "string", "IntPtr", "new GLib.GString ({0}).Handle", "GLib.GString.PtrToString ({0})"));
 			AddType (new MarshalGen ("GType", "GLib.GType", "IntPtr", "{0}.Val", "new GLib.GType({0})"));
 			AddType (new ByRefGen ("GValue", "GLib.Value"));
-			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify"));
+			AddType (new SimpleGen ("GDestroyNotify", "GLib.DestroyNotify", "null"));
 
 			// FIXME: These ought to be handled properly.
-			AddType (new SimpleGen ("GC", "IntPtr"));
-			AddType (new SimpleGen ("GError", "IntPtr"));
-			AddType (new SimpleGen ("GMemChunk", "IntPtr"));
-			AddType (new SimpleGen ("GPtrArray", "IntPtr"));
-			AddType (new SimpleGen ("GTimeVal", "IntPtr"));
-			AddType (new SimpleGen ("GClosure", "IntPtr"));
-			AddType (new SimpleGen ("GArray", "IntPtr"));
-			AddType (new SimpleGen ("GByteArray", "IntPtr"));
-			AddType (new SimpleGen ("GData", "IntPtr"));
-			AddType (new SimpleGen ("GIOChannel", "IntPtr"));
-			AddType (new SimpleGen ("GTypeModule", "GLib.Object"));
-			AddType (new SimpleGen ("GHashTable", "System.IntPtr"));
-			AddType (new SimpleGen ("va_list", "IntPtr"));
-			AddType (new SimpleGen ("GParamSpec", "IntPtr"));
-			AddType (new SimpleGen ("gconstpointer", "IntPtr"));
+			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GError", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GMemChunk", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GPtrArray", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GTimeVal", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GClosure", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GArray", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GByteArray", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GData", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GIOChannel", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GTypeModule", "GLib.Object", "null"));
+			AddType (new SimpleGen ("GHashTable", "System.IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("va_list", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("GParamSpec", "IntPtr", "IntPtr.Zero"));
+			AddType (new SimpleGen ("gconstpointer", "IntPtr", "IntPtr.Zero"));
 		}
 		
 		public void AddType (IGeneratable gen)

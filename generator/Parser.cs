@@ -145,9 +145,14 @@ namespace GtkSharp.Generation {
 			string name = symbol.GetAttribute ("name");
 			IGeneratable result = null;
 
-			if (type == "simple")
-				result = new SimpleGen (cname, name);
-			else if (type == "manual")
+			if (type == "simple") {
+				if (symbol.HasAttribute ("default_value"))
+					result = new SimpleGen (cname, name, symbol.GetAttribute ("default_value"));
+				else {
+					Console.WriteLine ("Simple type element " + cname + " has no specified default value");
+					result = new SimpleGen (cname, name, String.Empty);
+				}
+			} else if (type == "manual")
 				result = new ManualGen (cname, name);
 			else if (type == "alias")
 				result = new AliasGen (cname, name);

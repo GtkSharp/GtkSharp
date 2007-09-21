@@ -27,7 +27,7 @@ namespace GtkSharp.Generation {
 
 	public class ConstStringGen : SimpleBase, IManualMarshaler {
 		
-		public ConstStringGen (string ctype) : base (ctype, "string") {}
+		public ConstStringGen (string ctype) : base (ctype, "string", "null") {}
 
 		public override string MarshalType {
 			get {

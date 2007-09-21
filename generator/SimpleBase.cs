@@ -28,8 +28,9 @@ namespace GtkSharp.Generation {
 		string type;
 		string ctype;
 		string ns = String.Empty;
+		string default_value = String.Empty;
 
-		public SimpleBase (string ctype, string type)
+		public SimpleBase (string ctype, string type, string default_value)
 		{
 			string[] toks = type.Split('.');
 			this.ctype = ctype;
@@ -38,6 +39,7 @@ namespace GtkSharp.Generation {
 				this.ns = String.Join (".", toks, 0, toks.Length - 1);
 			else if (toks.Length == 2)
 				this.ns = toks[0];
+			this.default_value = default_value;
 		}
 		
 		public string CName {
@@ -67,6 +69,12 @@ namespace GtkSharp.Generation {
 		public virtual string MarshalReturnType {
 			get {
 				return MarshalType;
+			}
+		}
+
+		public virtual string DefaultValue {
+			get {
+				return default_value;
 			}
 		}
 

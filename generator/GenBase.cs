@@ -75,6 +75,8 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public abstract string DefaultValue { get; }
+
 		public string QualifiedName {
 			get {
 				return NS + "." + Name;

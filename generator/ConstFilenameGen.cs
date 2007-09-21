@@ -25,7 +25,7 @@ namespace GtkSharp.Generation {
 
 	public class ConstFilenameGen : SimpleBase, IManualMarshaler {
 		
-		public ConstFilenameGen (string ctype) : base (ctype, "string") {}
+		public ConstFilenameGen (string ctype) : base (ctype, "string", "null") {}
 
 		public override string MarshalType {
 			get {
