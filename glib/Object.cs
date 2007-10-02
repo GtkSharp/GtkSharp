@@ -269,6 +269,11 @@ namespace GLib {
 			Raw = raw;
 		}
 
+		protected Object ()
+		{
+			CreateNativeObject (new string [0], new GLib.Value [0]);
+		}
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_object_new (IntPtr gtype, IntPtr dummy);
 
