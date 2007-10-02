@@ -21,10 +21,7 @@
 			get {
 				IntPtr ptr = gtk_tree_path_get_indices(Handle);
 				int [] arr = new int [Depth];
-				int isize = Marshal.SizeOf (typeof (int));
-
-				for (int i = 0; i < arr.Length; i++)
-					arr [i] = Marshal.ReadInt32 ( ptr, i * isize);
+				Marshal.Copy (ptr, arr, 0, Depth);
 				return arr;
 			}
 		}
