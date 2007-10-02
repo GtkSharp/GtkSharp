@@ -48,6 +48,9 @@ namespace GtkSharp.Generation {
 				if (p.CType == "GError**")
 					continue;
 
+				if (p.Scope == "notified")
+					i += 2;
+
 				this.parms.Add (p);
 			}
 		}

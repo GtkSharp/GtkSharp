@@ -49,6 +49,7 @@ customs = 				\
 	CellRendererText.custom		\
 	CellRendererToggle.custom	\
 	CellLayout.custom		\
+	CellLayoutAdapter.custom	\
 	CellView.custom			\
 	CheckMenuItem.custom		\
 	Clipboard.custom		\
@@ -63,6 +64,7 @@ customs = 				\
 	Entry.custom			\
 	EntryCompletion.custom		\
 	FileChooser.custom		\
+	FileChooserAdapter.custom	\
 	FileChooserButton.custom	\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
@@ -115,11 +117,13 @@ customs = 				\
 	TooltipsData.custom		\
 	TreeIter.custom			\
 	TreeModel.custom		\
+	TreeModelAdapter.custom		\
 	TreeModelFilter.custom		\
 	TreeModelSort.custom		\
 	TreePath.custom			\
 	TreeSelection.custom		\
 	TreeSortable.custom		\
+	TreeSortableAdapter.custom	\
 	TreeStore.custom		\
 	TreeViewColumn.custom		\
 	TreeView.custom			\

@@ -552,6 +552,15 @@ namespace GtkSharp.Generation {
 			set { has_cb = value; }
 		}
 
+		public bool HasOutParam {
+			get {
+				foreach (Parameter p in this)
+					if (p.PassAs == "out")
+						return true;
+				return false;
+			}
+		}
+
 		bool hide_data;
 		public bool HideData {
 			get { return hide_data; }

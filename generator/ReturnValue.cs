@@ -52,6 +52,14 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public string DefaultValue {
+			get {
+				if (IGen == null)
+					return String.Empty;
+				return IGen.DefaultValue;
+			}
+		}
+
 		string ElementCType {
 			get {
 				if (elem != null && elem.HasAttribute ("element_type"))

@@ -16,7 +16,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe testdnd.exe actions.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -58,6 +58,9 @@ managedtreeviewdemo.exe: $(srcdir)/ManagedTreeViewDemo.cs $(assemblies)
 
 nodeviewdemo.exe: $(srcdir)/NodeViewDemo.cs $(assemblies)
 	$(CSC)  /out:nodeviewdemo.exe $(references) $(srcdir)/NodeViewDemo.cs
+
+treemodeldemo.exe: $(srcdir)/TreeModelDemo.cs $(assemblies)
+	$(CSC)  /out:treemodeldemo.exe $(references) $(srcdir)/TreeModelDemo.cs
 
 glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
 	$(CSC)  /out:glade-viewer.exe $(references) $(srcdir)/GladeViewer.cs
