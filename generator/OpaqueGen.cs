@@ -129,6 +129,7 @@ namespace GtkSharp.Generation {
 				}	
 			}
 
+#if false
 			Method copy = Methods ["Copy"] as Method;
 			if (copy != null && copy.Parameters.Count == 0) {
 				sw.WriteLine ("\t\tprotected override GLib.Opaque Copy (IntPtr raw)");
@@ -139,6 +140,7 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ("\t\t}");
 				sw.WriteLine ();
 			}
+#endif
 			sw.WriteLine ("#endregion");
 			
 			AppendCustom(sw, gen_info.CustomDir);
