@@ -20,43 +20,21 @@
 // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-		[GLib.CDeclCallback]
-		delegate void InputDestroyNotify (IntPtr data);
-
-		static void ReleaseGCHandle (IntPtr data)
-		{
-			try {
-				if (data == IntPtr.Zero)
-					return;
-
-				GCHandle gch = (GCHandle) data;
-				gch.Free ();
-			} catch (Exception e) {
-				GLib.ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
-		static InputDestroyNotify release_gchandle;
-
 		[DllImport("libgdk-win32-2.0-0.dll")]
-		static extern int gdk_input_add_full (int source, int condition, GdkSharp.InputFunctionNative function, IntPtr data, InputDestroyNotify destroy);
+		static extern int gdk_input_add_full (int source, int condition, GdkSharp.InputFunctionNative function, IntPtr data, GLib.DestroyNotify destroy);
 
 		[Obsolete]
 		public static int AddFull (int source, Gdk.InputCondition condition, Gdk.InputFunction function, IntPtr data, Gdk.DestroyNotify destroy) 
 		{
-			if (release_gchandle == null)
-				release_gchandle = new InputDestroyNotify (ReleaseGCHandle);
 			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
 			GCHandle gch = GCHandle.Alloc (function_wrapper);
-			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
+			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 
 		[Obsolete]
 		public static int Add (int source, Gdk.InputCondition condition, Gdk.InputFunction function) 
 		{
-			if (release_gchandle == null)
-				release_gchandle = new InputDestroyNotify (ReleaseGCHandle);
 			GdkSharp.InputFunctionWrapper function_wrapper = new GdkSharp.InputFunctionWrapper (function);
 			GCHandle gch = GCHandle.Alloc (function_wrapper);
-			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, release_gchandle);
+			return gdk_input_add_full (source, (int) condition, function_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}

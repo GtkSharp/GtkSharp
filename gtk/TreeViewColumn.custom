@@ -75,7 +75,7 @@
 
 			NodeCellDataFuncWrapper func_wrapper = new NodeCellDataFuncWrapper (func);
 			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_cell_layout_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
+			gtk_cell_layout_set_cell_data_func (Handle, cell_renderer == null ? IntPtr.Zero : cell_renderer.Handle, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 
 		[Obsolete ("Replaced by SetCellDataFunc (CellRenderer, TreeCellDataFunc) overload")]

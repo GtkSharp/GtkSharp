@@ -51,22 +51,6 @@ namespace GLib {
 		uint after_id = UInt32.MaxValue;
 		Delegate marshaler;
 
-		static SignalDestroyNotify notify = new SignalDestroyNotify (OnNativeDestroy);
-		[CDeclCallback]
-		delegate void SignalDestroyNotify (IntPtr data, IntPtr obj);
-		static void OnNativeDestroy (IntPtr data, IntPtr obj)
-		{
-			try {
-				GCHandle gch = (GCHandle) data;
-				Signal s = gch.Target as Signal;
-				s.DisconnectHandler (s.before_id);
-				s.DisconnectHandler (s.after_id);
-				gch.Free ();
-			} catch (Exception e) {
-				ExceptionManager.RaiseUnhandledException (e, false);
-			}
-		}
-
 		private Signal (GLib.Object obj, string signal_name, Delegate marshaler)
 		{
 			handle = obj.Handle;
@@ -75,7 +59,7 @@ namespace GLib {
 			gc_handle = GCHandle.Alloc (this);
 			IntPtr native_key = GLib.Marshaller.StringToPtrGStrdup (name + "_signal_marshaler");
 			if (handle != IntPtr.Zero)
-				g_object_set_data_full (handle, native_key, (IntPtr) gc_handle, notify);
+				g_object_set_data_full (handle, native_key, (IntPtr) gc_handle, DestroyHelper.NotifyHandler);
 			GLib.Marshaller.Free (native_key);
 		}
 
@@ -209,7 +193,7 @@ namespace GLib {
 		static extern void g_object_set_data (IntPtr instance, IntPtr key, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_set_data_full (IntPtr instance, IntPtr key, IntPtr data, SignalDestroyNotify notify);
+		static extern void g_object_set_data_full (IntPtr instance, IntPtr key, IntPtr data, DestroyNotify notify);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);

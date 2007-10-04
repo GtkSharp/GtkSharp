@@ -66,7 +66,7 @@
 			for (int i = 0; i < types.Length; i++)
 				native_types [i] = types [i].Val;
 			GCHandle gch = GCHandle.Alloc (func_wrapper);
-			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, new GLib.DestroyNotify (GLib.DestroyHelper.NotifyHandler));
+			gtk_tree_model_filter_set_modify_func (Handle, n_columns, native_types, func_wrapper.NativeDelegate, (IntPtr) gch, GLib.DestroyHelper.NotifyHandler);
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
