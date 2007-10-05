@@ -1,0 +1,60 @@
+<Type Name="TypeInitializerAttribute" FullName="GLib.TypeInitializerAttribute">
+  <TypeSignature Language="C#" Value="public sealed class TypeInitializerAttribute : Attribute" />
+  <AssemblyInfo>
+    <AssemblyName>glib-sharp</AssemblyName>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Attribute</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.AttributeUsage(System.AttributeTargets.Class)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TypeInitializerAttribute (Type type, string method_name);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="method_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="type">The Type to be Initialized.</param>
+        <param name="method_name">The method name to invoke.</param>
+        <summary>Public Constructor.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="MethodName">
+      <MemberSignature Language="C#" Value="public string MethodName { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>MethodName property.</summary>
+        <value>The name of a method to invoke at type initialization time.</value>
+        <remarks>The signature of the method should be void MethodName (GLib.GType, System.Type) and the method should be private static.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public Type Type { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Type Property.</summary>
+        <value>The Type which contains the method identified in <see cref="M:GLib.TypeInitializerAttribute.MethodName" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
+  </Members>
+  <Docs>
+    <summary>TypeInitializer Attribute.</summary>
+    <remarks>Replaces the <see cref="T:GLib.ClassInitializerAttribute" /> to allow for more efficient reflection memory usage.</remarks>
+  </Docs>
+</Type>
