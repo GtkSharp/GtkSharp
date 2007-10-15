@@ -177,7 +177,7 @@ namespace GtkSharp.Generation {
 
 		void GenerateHandleProp (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tpublic IntPtr Handle {");
+			sw.WriteLine ("\t\tpublic override IntPtr Handle {");
 			sw.WriteLine ("\t\t\tget {");
 			sw.WriteLine ("\t\t\t\treturn implementor == null ? IntPtr.Zero : implementor.Handle;");
 			sw.WriteLine ("\t\t\t}");

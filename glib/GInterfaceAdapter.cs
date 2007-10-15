@@ -52,6 +52,8 @@ namespace GLib {
 
 		public abstract GType GType { get; }
 
+		public abstract IntPtr Handle { get; }
+
 		internal GInterfaceInfo Info {
 			get {
 				return info;

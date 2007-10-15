@@ -133,6 +133,10 @@ namespace GLib {
 			g_value_set_object (ref this, val == null ? IntPtr.Zero : val.Handle);
 		}
 
+		public Value (GLib.GInterfaceAdapter val) : this (val == null ? GType.Object : val.GType)
+		{
+			g_value_set_object (ref this, val == null ? IntPtr.Zero : val.Handle);
+		}
 
 		public Value (GLib.Object obj, string prop_name)
 		{
