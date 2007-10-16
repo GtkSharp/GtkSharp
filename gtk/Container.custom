@@ -104,7 +104,7 @@ public Widget[] FocusChain {
 static extern void gtksharp_container_base_forall (IntPtr handle, bool include_internals, IntPtr cb, IntPtr data);
 
 [DllImport("gtksharpglue-2")]
-static extern void gtksharp_container_override_forall (GLib.GType gtype, ForallDelegate cb);
+static extern void gtksharp_container_override_forall (IntPtr gtype, ForallDelegate cb);
 
 [DllImport("gtksharpglue-2")]
 static extern void gtksharp_container_invoke_gtk_callback (IntPtr cb, IntPtr handle, IntPtr data);
@@ -158,7 +158,7 @@ static void OverrideForallOld (GLib.GType gtype)
 {
 	if (ForallOldCallback == null)
 		ForallOldCallback = new ForallDelegate (ForallOld_cb);
-	gtksharp_container_override_forall (gtype, ForallOldCallback);
+	gtksharp_container_override_forall (gtype.Val, ForallOldCallback);
 }
 
 [Obsolete ("Override the ForAll(bool,Gtk.Callback) method instead")]
@@ -183,7 +183,7 @@ static void OverrideForall (GLib.GType gtype)
 {
 	if (ForallCallback == null)
 		ForallCallback = new ForallDelegate (Forall_cb);
-	gtksharp_container_override_forall (gtype, ForallCallback);
+	gtksharp_container_override_forall (gtype.Val, ForallCallback);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof(Gtk.Container), ConnectionMethod="OverrideForall")]
@@ -202,7 +202,7 @@ protected virtual void ForAll (bool include_internals, Gtk.Callback callback)
 static extern IntPtr gtk_container_child_type(IntPtr raw);
 
 [DllImport("gtksharpglue-2")]
-static extern void gtksharp_container_override_child_type (GLib.GType type, ChildTypeDelegate cb);
+static extern void gtksharp_container_override_child_type (IntPtr type, ChildTypeDelegate cb);
 
 [GLib.CDeclCallback]
 delegate IntPtr ChildTypeDelegate (IntPtr raw);
@@ -226,7 +226,7 @@ static void OverrideChildType (GLib.GType gtype)
 {
 	if (ChildTypeCallback == null)
 		ChildTypeCallback = new ChildTypeDelegate (ChildType_cb);
-	gtksharp_container_override_child_type (gtype, ChildTypeCallback);
+	gtksharp_container_override_child_type (gtype.Val, ChildTypeCallback);
 }
 
 [GLib.DefaultSignalHandler (Type=typeof(Gtk.Container), ConnectionMethod="OverrideChildType")]
