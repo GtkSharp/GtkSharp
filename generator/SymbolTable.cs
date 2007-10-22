@@ -75,8 +75,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("double", "double", "0.0"));
 			AddType (new SimpleGen ("GQuark", "int", "0"));
 
-			// platform specific integer types. these will break on any
-			// platform where sizeof (long) != sizeof (pointer)
+			// platform specific integer types.
 			AddType (new LPGen ("ssize_t"));
 			AddType (new LPGen ("long"));
 			AddType (new LPGen ("glong"));

@@ -30,18 +30,30 @@ namespace GtkSharp.Generation {
 
 		public override string MarshalType {
 			get {
+#if WIN64LONGS
+				return "uint";
+#else
 				return "UIntPtr";
+#endif
 			}
 		}
 
 		public override string CallByName (string var_name)
 		{
+#if WIN64LONGS
+			return "(uint) " + var_name;
+#else
 			return "new UIntPtr (" + var_name + ")";
+#endif
 		}
 		
 		public override string FromNative(string var)
 		{
+#if WIN64LONGS
+			return var;
+#else
 			return "(ulong) " + var;
+#endif
 		}
 
 		public void WriteAccessors (StreamWriter sw, string indent, string var)

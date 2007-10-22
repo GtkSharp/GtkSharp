@@ -13,7 +13,16 @@ AC_SUBST(POLICY_VERSIONS)
 PACKAGE_VERSION=gtk-sharp-2.0
 AC_SUBST(PACKAGE_VERSION)
 
+WIN64DEFINES=
+
 case "$host" in
+	x86_64-*-mingw*|x86_64-*-cygwin*)
+		WIN64DEFINES="-define:WIN64LONGS"
+		platform_win32=yes
+		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
+		CC="gcc -mno-cygwin -g"
+		HOST_CC="gcc"
+		;;
 	*-*-mingw*|*-*-cygwin*)
 		platform_win32=yes
 		AC_DEFINE(PLATFORM_WIN32,1,[Platform is Win32])
@@ -70,7 +79,7 @@ AC_ARG_ENABLE(debug, [  --enable-debug          Build debugger (.mdb) files for 
 fi
 
 CSDEFINES='@VERSIONCSDEFINES@'
-CSFLAGS="$DEBUG_FLAGS $CSDEFINES"
+CSFLAGS="$DEBUG_FLAGS $CSDEFINES $WIN64DEFINES"
 AC_SUBST(CSFLAGS)
 
 GTK_SHARP_VERSION_CFLAGS='@VERSIONCFLAGS@'
