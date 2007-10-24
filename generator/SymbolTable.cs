@@ -74,6 +74,8 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("gdouble", "double", "0.0"));
 			AddType (new SimpleGen ("double", "double", "0.0"));
 			AddType (new SimpleGen ("GQuark", "int", "0"));
+			AddType (new SimpleGen ("GSourceFunc", "GLib.GSourceFunc", "null"));
+			AddType (new SimpleGen ("GCallback", "GLib.GCallback", "null"));
 
 			// platform specific integer types.
 			AddType (new LPGen ("ssize_t"));
