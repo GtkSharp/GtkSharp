@@ -103,7 +103,6 @@ namespace GtkSharp.Generation {
 					sw.WriteLine ("\t\t\t\t" + call_string + ";");
 			} else
 				sw.WriteLine ("\t\t\t\t" + retval.ToNativeType + " result = " + retval.ToNative (call_string) + ";");
-			string finish = call.Finish ("\t\t\t\t");
 			bool fatal = parms.HasOutParam || !retval.IsVoid;
 			sw.Write (call.Finish ("\t\t\t\t"));
 			if (!retval.IsVoid)
