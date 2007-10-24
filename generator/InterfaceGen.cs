@@ -198,16 +198,12 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 		}
 
-		void GenerateCastOperators (StreamWriter sw)
+		void GenerateImplementorProp (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tpublic static implicit operator {0}Adapter ({0}Implementor implementor)", Name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn new {0}Adapter (implementor);", Name);
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic static implicit operator {0}Implementor ({0}Adapter adapter)", Name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\treturn adapter.implementor;");
+			sw.WriteLine ("\t\tpublic " + Name + "Implementor Implementor {");
+			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\treturn implementor;");
+			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 		}
@@ -233,6 +229,7 @@ namespace GtkSharp.Generation {
 			GenerateGType (sw);
 			GenerateHandleProp (sw);
 			GenerateGetObject (sw);
+			GenerateImplementorProp (sw);
 
 			GenProperties (gen_info, null);
 
