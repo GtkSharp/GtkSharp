@@ -7,8 +7,11 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>A button to launch a file selection dialog</summary>
+    <remarks>The FileChooserButton is a widget that lets the user select a file. It implements the <see cref="T:Gtk.FileChooser" /> interface. Visually, it is a file name with a button to bring up a <see cref="T:Gtk.FileChooserDialog" />. The user can then use that dialog to change the file associated with that button. This widget does not support setting the "select-multiple" property to TRUE.
+<block subset="none" type="note"><para>
+The GtkFileChooserButton will ellipsize the label, and thus will thus request little horizontal space. To give the button more space, you should call <see cref="M:Gtk.Widget.SizeRequest()" />, set <see cref="P:Gtk.FileChooserButton.WidthChars" />, or pack the button in such a way that other interface elements give space to the widget.
+</para></block></remarks>
     <since version="Gtk# 2.6" />
   </Docs>
   <Base>
@@ -60,7 +63,7 @@
         <Parameter Name="action" Type="Gtk.FileChooserAction" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a FileChooserButton.</summary>
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="action">a <see cref="T:System.Int32" /></param>
         <remarks>To be added</remarks>
@@ -76,7 +79,7 @@
         <Parameter Name="backend" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Creates a FileChooserButton with a specific backend.</summary>
         <param name="title">a <see cref="T:System.String" /></param>
         <param name="action">a <see cref="T:System.Int32" /></param>
         <param name="backend">a <see cref="T:System.String" /></param>
@@ -91,8 +94,11 @@
         <Parameter Name="dialog" Type="Gtk.Widget" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="dialog">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Creates a FileChooserButton which uses a specific widget as it's file-picking window.</summary>
+        <param name="dialog">a <see cref="T:Gtk.Widget" />.
+<block subset="none" type="note">
+dialog must be a <see cref="T:Gtk.Dialog" /> (or subclass) which implements the <see cref="T:Gtk.FileChooser" /> interface and must not have <see cref="P:Gtk.Window.DestroyWithParent" /> = <see langword="true" />.
+</block></param>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -135,7 +141,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
+        <summary>The width of the entry and label inside the button, in characters.</summary>
         <value>a <see cref="T:System.Int32" /></value>
         <remarks>To be added</remarks>
       </Docs>

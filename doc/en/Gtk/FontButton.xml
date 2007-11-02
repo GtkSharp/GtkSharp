@@ -8,52 +8,7 @@
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
     <summary>This class extends <see cref="T:Gtk.Button" />, providing an simple button for font selection.</summary>
-    <remarks>
-      <para>When clicked, a <see cref="T:Gtk.FontButton" /> shows a <see cref="T:Gtk.FontSelectionDialog" /> and when the dialog closes with a change, <see cref="E:Gtk.FontButton.FontSet" /> is evoked.</para>
-      <example>
-        <para>In the following example, a <see cref="T:Gtk.FontButton" /> is used to modify the font of a <see cref="T:Gtk.Label" />.</para>
-        <code lang="C#">using System;
-using Gtk;
-using Pango;
-
-public class FontButtonExample
-{
-	static Label label;
-	static FontButton button;
-	
-	public static void Main ()
-	{
-		Application.Init ();
-		
-		Window myWindow = new Window ("FontButton Example");
-		myWindow.DeleteEvent += OnDelete;
-
-		button = new FontButton ();
-		button.FontSet += OnFontSet;
-		
-		label = new Label ("Sample text");
-		
-		VBox box = new VBox ();
-		box.Add (button);
-		box.Add (label);
-		
-		myWindow.Add (box);
-		myWindow.ShowAll ();
-		Application.Run ();
-	}
-	
-	static void OnFontSet (object o, EventArgs e)
-	{
-		label.ModifyFont (FontDescription.FromString (button.FontName));
-	}
-	
-	static void OnDelete (object o, DeleteEventArgs e)
-	{
-		Application.Quit ();
-	}
-}</code>
-      </example>
-    </remarks>
+    <remarks>The FontButton is a button which displays the currently selected font and allows to open a font selection dialog to change the font. It is suitable widget for selecting a font in a preference dialog.</remarks>
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>
@@ -153,7 +108,7 @@ public class FontButtonExample
         <value>
           <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the font size will be displayed in the button.</para>
         </value>
-        <remarks>Default Value: <see langword="true" /></remarks>
+        <remarks>For a more WYSIWYG way to show the selected size, see the <see cref="P:Gtk.FontButton.UseSize" /> property.</remarks>
       </Docs>
       <Attributes>
         <Attribute>
@@ -169,11 +124,11 @@ public class FontButtonExample
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets and sets whether or not button label should be displayed using the selected font size.</summary>
+        <summary>If this property is set to <see langword="true" />, the label will be drawn in the  selected font size.</summary>
         <value>
           <para>A <see cref="T:System.Boolean" />. If <see langword="true" />, the button label will be displayed using the selected font size. Otherwise in the default system font size.</para>
         </value>
-        <remarks>For a more WYSIWYG way to show the selected size, see the <see cref="P:Gtk.FontButton.UseFont" /> property.</remarks>
+        <remarks />
       </Docs>
       <Attributes>
         <Attribute>
@@ -289,7 +244,7 @@ public class FontButtonExample
       <Docs>
         <summary>Sets or updates the font displayed in the child <see cref="T:Gtk.FontSelectionDialog" />.</summary>
         <param name="fontname">A <see cref="T:System.String" /> object containing the name of the font to display in the child <see cref="T:Gtk.FontSelectionDialog" />.</param>
-        <returns>The result of <see cref="M:Gtk.FontSelectionDialog.SetFontName(System.String)" /> if the child dialog exists. Otherwise <see langword="false" />.</returns>
+        <returns>The return value of <see cref="M:Gtk.FontSelectionDialog.SetFontName()" /> if the font selection dialog exists, otherwise <see langword="false" />.</returns>
         <remarks>
         </remarks>
       </Docs>
