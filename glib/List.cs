@@ -104,5 +104,10 @@ namespace GLib {
 			foreach (object o in elements)
 				Append (o);
 		}
+		public List (Array elements, System.Type element_type, bool owned, bool elements_owned) : this (IntPtr.Zero, element_type, owned, elements_owned) 
+		{
+			foreach (object o in elements)
+				Append (o);
+		}
 	}
 }

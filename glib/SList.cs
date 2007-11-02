@@ -105,5 +105,11 @@ namespace GLib {
 			foreach (object o in members)
 				Append (o);
 		}
+
+		public SList (Array members, System.Type element_type, bool owned, bool elements_owned) : this (IntPtr.Zero, element_type, owned, elements_owned)
+		{
+			foreach (object o in members)
+				Append (o);
+		}
 	}
 }
