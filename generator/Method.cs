@@ -89,6 +89,16 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		string BaseName {
+			get {
+				string name = Name;
+				int idx = Name.LastIndexOf (".");
+				if (idx > 0)
+					name = Name.Substring (idx + 1);
+				return name;
+			}
+		}
+
 		public override bool Validate ()
 		{
 			if (!retval.Validate () || !base.Validate ()) {
@@ -96,9 +106,10 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 
+			string name = BaseName;
 			Parameters parms = Parameters;
-			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && Name.Length > 3 && (Name.StartsWith ("Get") || Name.StartsWith ("Is") || Name.StartsWith ("Has")));
-			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && (Name.Length > 3 && Name.Substring(0, 3) == "Set"));
+			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && name.Length > 3 && (name.StartsWith ("Get") || name.StartsWith ("Is") || name.StartsWith ("Has")));
+			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && (name.Length > 3 && name.Substring(0, 3) == "Set"));
 
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
@@ -113,7 +124,7 @@ namespace GtkSharp.Generation {
 			else
 				complement = 'G';
 			
-			return container_type.GetMethod (complement + name.Substring (1));
+			return container_type.GetMethod (complement + BaseName.Substring (1));
 		}
 		
 		public string Declaration {
