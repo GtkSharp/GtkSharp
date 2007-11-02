@@ -247,9 +247,20 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       <Parameters>
       </Parameters>
       <Docs>
-        <summary>The size of the font in pango units.</summary>
-        <value> the size field for the font description in pango units. Returns 0 if the stretch field has not previously been set. Use <see cref="M:Pango.FontDescription.SetFields()" /> to find out if the field was explicitly set or not.</value>
-        <remarks>There are <see cref="F:Pango.Scale.PangoScale" /> pango units in one device unit - for fonts, font points are the device unit. Therefore, the size of the font in points is <see cref="P:Pango.FontDescription.Size" /> /  <see cref="F:Pango.Scale.PangoScale" />.</remarks>
+        <summary>The size of the font in fractional points.</summary>
+        <value>
+          <para>
+The size field for the font description scaled by <see cref="F:Pango.Scale.PangoScale" />. Setting this field is in fractional points. When getting the Size the value is either in points or device units. Use <see cref="P:Pango.FontDescription.SizeIsAbsolute" /> to find out which is the case.
+
+</para>
+          <para>
+Returns 0 if the size field has not previously been set. Use <see cref="M:Pango.FontDescription.SetFields()" /> to find out if the field was explicitly set or not.
+</para>
+        </value>
+        <remarks>
+          <para>There are <see cref="F:Pango.Scale.PangoScale" /> pango units in one device unit - for fonts, font points are the device unit. Therefore, the size of the font in points is <see cref="P:Pango.FontDescription.Size" /> /  <see cref="F:Pango.Scale.PangoScale" />.</para>
+          <para>Use <see cref="P:Pango.FontDescription.AbsoluteSize" /> if you need to set a particular size in device units</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FamilyStatic">
@@ -342,9 +353,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Boolean" /></value>
-        <remarks>To be added</remarks>
+        <summary>Determines whether the size of the font is in points (not absolute) or device units (absolute).</summary>
+        <value>a <see cref="T:System.Boolean" />, indicating whether the Size for the FontDescription is in points or device units.</value>
+        <remarks>See <see cref="P:Pango.FontDescription.Size" /> and <see cref="P:Pango.FontDescription.AbsoluteSize" />.</remarks>
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
@@ -355,9 +366,9 @@ Any one of the options may be absent. If FAMILY-LIST is absent, then the family_
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Double" /></value>
-        <remarks>To be added</remarks>
+        <summary>The size of the font in device units.</summary>
+        <value>A <see cref="T:System.Double" />, the new size in Pango units.</value>
+        <remarks>There are <see cref="F:Pango.Scale.PangoScale" /> Pango units in one device unit. For an output backend where a device unit is a pixel, an AbsoluteSize  value of 10 * <see cref="F:Pango.Scale.PangoScale" /> gives a 10 pixel font.</remarks>
         <since version="Gtk# 2.6" />
       </Docs>
     </Member>
