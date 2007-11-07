@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="pango-sharp" version="2.8.0.0">
+  <assembly name="pango-sharp" version="2.10.0.0">
     <attributes>
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
@@ -100,6 +100,18 @@
                   </method>
                 </methods>
               </property>
+              <property name="LangEngine" attrib="0" ptype="Pango.EngineLang" params="">
+                <methods>
+                  <method name="get_LangEngine()" attrib="2182" returntype="Pango.EngineLang">
+                    <parameters />
+                  </method>
+                  <method name="set_LangEngine(Pango.EngineLang)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.EngineLang" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="language" attrib="0" ptype="Pango.Language" params="">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -116,18 +128,6 @@
                   <method name="set_language(Pango.Language)" attrib="2182" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="Pango.Language" />
-                    </parameters>
-                  </method>
-                </methods>
-              </property>
-              <property name="LangEngine" attrib="0" ptype="Pango.EngineLang" params="">
-                <methods>
-                  <method name="get_LangEngine()" attrib="2182" returntype="Pango.EngineLang">
-                    <parameters />
-                  </method>
-                  <method name="set_LangEngine(Pango.EngineLang)" attrib="2182" returntype="System.Void">
-                    <parameters>
-                      <parameter name="value" position="0" attrib="0" type="Pango.EngineLang" />
                     </parameters>
                   </method>
                 </methods>
@@ -986,6 +986,81 @@
               </property>
             </properties>
           </class>
+          <class name="CairoHelper" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <constructors>
+              <constructor name=".ctor()" attrib="2182">
+                <parameters />
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="ContextGetResolution(Pango.Context)" attrib="150" static="true" returntype="System.Double">
+                <parameters>
+                  <parameter name="context" position="0" attrib="0" type="Pango.Context" />
+                </parameters>
+              </method>
+              <method name="ContextSetResolution(Pango.Context, System.Double)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="context" position="0" attrib="0" type="Pango.Context" />
+                  <parameter name="dpi" position="1" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="CreateLayout(Cairo.Context)" attrib="150" static="true" returntype="Pango.Layout">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                </parameters>
+              </method>
+              <method name="GlyphStringPath(Cairo.Context, Pango.Font, Pango.GlyphString)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="font" position="1" attrib="0" type="Pango.Font" />
+                  <parameter name="glyphs" position="2" attrib="0" type="Pango.GlyphString" />
+                </parameters>
+              </method>
+              <method name="LayoutLinePath(Cairo.Context, Pango.LayoutLine)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="line" position="1" attrib="0" type="Pango.LayoutLine" />
+                </parameters>
+              </method>
+              <method name="LayoutPath(Cairo.Context, Pango.Layout)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="layout" position="1" attrib="0" type="Pango.Layout" />
+                </parameters>
+              </method>
+              <method name="ShowGlyphString(Cairo.Context, Pango.Font, Pango.GlyphString)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="font" position="1" attrib="0" type="Pango.Font" />
+                  <parameter name="glyphs" position="2" attrib="0" type="Pango.GlyphString" />
+                </parameters>
+              </method>
+              <method name="ShowLayout(Cairo.Context, Pango.Layout)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="layout" position="1" attrib="0" type="Pango.Layout" />
+                </parameters>
+              </method>
+              <method name="ShowLayoutLine(Cairo.Context, Pango.LayoutLine)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="line" position="1" attrib="0" type="Pango.LayoutLine" />
+                </parameters>
+              </method>
+              <method name="UpdateContext(Cairo.Context, Pango.Context)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="context" position="1" attrib="0" type="Pango.Context" />
+                </parameters>
+              </method>
+              <method name="UpdateLayout(Cairo.Context, Pango.Layout)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="layout" position="1" attrib="0" type="Pango.Layout" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
           <class name="Color" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
             <fields>
               <field name="Blue" attrib="6" fieldtype="System.UInt16" />
@@ -1126,9 +1201,6 @@
               </property>
             </properties>
             <methods>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="GetMetrics(Pango.FontDescription, Pango.Language)" attrib="134" returntype="Pango.FontMetrics">
                 <parameters>
                   <parameter name="desc" position="0" attrib="0" type="Pango.FontDescription" />
@@ -1376,9 +1448,6 @@
             </properties>
             <methods>
               <method name="Describe()" attrib="134" returntype="Pango.FontDescription">
-                <parameters />
-              </method>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
                 <parameters />
               </method>
               <method name="FindShaper(Pango.Language, System.UInt32)" attrib="134" returntype="Pango.EngineShape">
@@ -1653,9 +1722,6 @@
               <method name="Describe()" attrib="134" returntype="Pango.FontDescription">
                 <parameters />
               </method>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="ListSizes(out System.Int32&amp;, out System.Int32&amp;)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="sizes" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
@@ -1723,9 +1789,6 @@
               </property>
             </properties>
             <methods>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="ListFaces(Pango.FontFace)" attrib="134" returntype="System.Int32">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -1786,9 +1849,6 @@
               </property>
             </properties>
             <methods>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="ListFamilies(Pango.FontFamily)" attrib="134" returntype="System.Int32">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -1997,9 +2057,6 @@
               </property>
             </properties>
             <methods>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="Foreach(Pango.FontsetForeachFunc)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="func" position="0" attrib="0" type="Pango.FontsetForeachFunc" />
@@ -2073,6 +2130,11 @@
                   <parameter name="language" position="2" attrib="0" type="Pango.Language" />
                   <parameter name="log_attrs" position="3" attrib="0" type="Pango.LogAttr" />
                   <parameter name="attrs_len" position="4" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="IsZeroWidth(System.Char)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="ch" position="0" attrib="0" type="System.Char" />
                 </parameters>
               </method>
               <method name="ItemizeWithBaseDir(Pango.Context, Pango.Direction, System.String, System.Int32, System.Int32, Pango.AttrList, Pango.AttrIterator)" attrib="150" static="true" returntype="GLib.List">
@@ -2855,9 +2917,6 @@
               <method name="Copy()" attrib="134" returntype="Pango.Layout">
                 <parameters />
               </method>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
-              </method>
               <method name="GetCursorPos(System.Int32, out Pango.Rectangle&amp;, out Pango.Rectangle&amp;)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="index_" position="0" attrib="0" type="System.Int32" />
@@ -2892,6 +2951,14 @@
                 <parameters>
                   <parameter name="width" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
                   <parameter name="height" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="IndexToLineX(System.Int32, System.Boolean, out System.Int32&amp;, out System.Int32&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="index_" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="trailing" position="1" attrib="0" type="System.Boolean" />
+                  <parameter name="line" position="2" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="x_pos" position="3" attrib="2" type="System.Int32&amp;" direction="out" />
                 </parameters>
               </method>
               <method name="IndexToPos(System.Int32)" attrib="134" returntype="Pango.Rectangle">
@@ -3403,6 +3470,13 @@
               <field name="Zero" attrib="22" fieldtype="Pango.Matrix" />
             </fields>
             <properties>
+              <property name="FontScaleFactor" attrib="0" ptype="System.Double" params="">
+                <methods>
+                  <method name="get_FontScaleFactor()" attrib="2182" returntype="System.Double">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" attrib="2198" static="true" returntype="GLib.GType">
@@ -3581,9 +3655,6 @@
                   <parameter name="x12" position="5" attrib="0" type="System.Double" />
                   <parameter name="x22" position="6" attrib="0" type="System.Double" />
                 </parameters>
-              </method>
-              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
-                <parameters />
               </method>
               <method name="GetColor(Pango.RenderPart)" attrib="134" returntype="Pango.Color">
                 <parameters>
