@@ -55,7 +55,14 @@ namespace GtkSharp.Auditing {
 					Console.WriteLine ("Missing type: " + node.GetAttribute ("name"));
 				else if (node.ParentNode.ParentNode.Name == "class")
 					Console.WriteLine ("Missing " + node.Name + " " + (node.ParentNode.ParentNode as XmlElement).GetAttribute ("name") + "." + node.GetAttribute ("name"));
-				else
+				else if (node.Name == "attribute") {
+					if (node.ParentNode.ParentNode.Name == "class")
+						Console.WriteLine ("Missing attribute (" + (node as XmlElement).GetAttribute ("name") + ") on type: " + (node.ParentNode.ParentNode as XmlElement).GetAttribute ("name"));
+					else if (node.ParentNode.ParentNode.ParentNode.ParentNode.Name == "class")
+						Console.WriteLine ("Missing attribute (" + (node as XmlElement).GetAttribute ("name") + ") on " + (node.ParentNode.ParentNode.ParentNode.ParentNode as XmlElement).GetAttribute ("name") + "." + (node.ParentNode.ParentNode as XmlElement).GetAttribute ("name"));
+					else
+						Console.WriteLine ("oopsie: " + node.Name + " " + node.ParentNode.ParentNode.Name);
+				} else
 					Console.WriteLine ("oopsie: " + node.Name + " " + node.ParentNode.ParentNode.Name);
 			}
 
