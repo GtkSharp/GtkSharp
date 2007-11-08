@@ -133,6 +133,24 @@ namespace GLib {
 				return ret.Replace ("%", "%%");
 		}
 
+		public static string[] PtrToStringArrayGFree (IntPtr string_array)
+		{
+			if (string_array == IntPtr.Zero)
+				return new string [0];
+	
+			int count = 0;
+			while (Marshal.ReadIntPtr (string_array, count*IntPtr.Size) != IntPtr.Zero)
+				++count;
+	
+			string[] members = new string[count];
+			for (int i = 0; i < count; ++i) {
+				IntPtr s = Marshal.ReadIntPtr (string_array, i * IntPtr.Size);
+				members[i] = GLib.Marshaller.PtrToStringGFree (s);
+			}
+			GLib.Marshaller.Free (string_array);
+			return members;
+		}
+
 		// Argv marshalling -- unpleasantly complex, but
 		// don't know of a better way to do it.
 		//
