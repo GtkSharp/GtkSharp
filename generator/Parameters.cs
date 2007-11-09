@@ -81,7 +81,7 @@ namespace GtkSharp.Generation {
 
 		public bool IsArray {
 			get {
-				return elem.HasAttribute("array");
+				return elem.HasAttribute("array") || elem.HasAttribute("null_term_array");
 			}
 		}
 
@@ -311,7 +311,12 @@ namespace GtkSharp.Generation {
 
 	public class ArrayParameter : Parameter {
 
-		public ArrayParameter (XmlElement elem) : base (elem) {}
+		bool null_terminated;
+
+		public ArrayParameter (XmlElement elem) : base (elem) 
+		{
+			null_terminated = elem.HasAttribute ("null_term_array");
+		}
 
 		public override string MarshalType {
 			get {
@@ -322,6 +327,12 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		bool NullTerminated {
+			get {
+				return null_terminated;
+			}
+		}
+
 		public override string[] Prepare {
 			get {
 				if (CSType == MarshalType)
@@ -329,13 +340,16 @@ namespace GtkSharp.Generation {
 
 				ArrayList result = new ArrayList ();
 				result.Add (String.Format ("int cnt_{0} = {0} == null ? 0 : {0}.Length;", CallName));
-				result.Add (String.Format ("{0}[] native_{1} = new {0} [cnt_{1}];", MarshalType.TrimEnd('[', ']'), CallName));
+				result.Add (String.Format ("{0}[] native_{1} = new {0} [cnt_{1}" + (NullTerminated ? " + 1" : "") + "];", MarshalType.TrimEnd('[', ']'), CallName));
 				result.Add (String.Format ("for (int i = 0; i < cnt_{0}; i++)", CallName));
 				IGeneratable gen = Generatable;
 				if (gen is IManualMarshaler)
 					result.Add (String.Format ("\tnative_{0} [i] = {1};", CallName, (gen as IManualMarshaler).AllocNative (CallName + "[i]")));
 				else
 					result.Add (String.Format ("\tnative_{0} [i] = {1};", CallName, gen.CallByName (CallName + "[i]")));
+
+				if (NullTerminated)
+					result.Add (String.Format ("native_{0} [cnt_{0} + 1] = IntPtr.Zero;", CallName));
 				return (string[]) result.ToArray (typeof (string));
 			}
 		}
