@@ -1,0 +1,472 @@
+<Type Name="IOChannel" FullName="GLib.IOChannel">
+  <TypeSignature Language="C#" Value="public class IOChannel : GLib.IWrapper, IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>glib-sharp</AssemblyName>
+    <AssemblyVersion>2.10.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GLib.IWrapper</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public IOChannel (int fd);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="fd" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="fd">A UNIX file descriptor.</param>
+        <summary>Public constructor.</summary>
+        <remarks>Constructs a channel for a UNIX file descriptor or pipe.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public IOChannel (string filename, string mode);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+        <Parameter Name="mode" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">Path to a file.</param>
+        <param name="mode">One of "r", "w", "a", "r+", "w+", "a+", with the same meaning as fopen.</param>
+        <summary>Public constructor.</summary>
+        <remarks>Constructs a channel for a file with a given mode.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddWatch">
+      <MemberSignature Language="C#" Value="public uint AddWatch (int priority, GLib.IOCondition condition, GLib.IOFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="priority" Type="System.Int32" />
+        <Parameter Name="condition" Type="GLib.IOCondition" />
+        <Parameter Name="func" Type="GLib.IOFunc" />
+      </Parameters>
+      <Docs>
+        <param name="priority">Priority level.  Default priority is 0.  System defined values range from -100 (High priority) to 300 (Low priority).</param>
+        <param name="condition">Conditions to notify.</param>
+        <param name="func">Notification callback delegate.</param>
+        <summary>Adds a notification watch to the mainloop at a given priority.</summary>
+        <returns>A source ID which can be removed with <see cref="M:GLib.Source.Remove" />.</returns>
+        <remarks>
+          <para>The following example spawns a process to run the pwd command and writes the output to the console using an IOChannel watch:</para>
+          <para>
+            <example>
+              <code lang="C#">
+using GLib;
+using System;
+
+public class SpawnTest  {
+
+	public static void Main (string[] args)
+	{
+		new SpawnTest ();
+	}
+
+	MainLoop main_loop;
+	IOChannel channel;
+
+	public SpawnTest ()
+	{
+		main_loop = new MainLoop ();
+
+		try {
+			Process proc;
+			int stdin = Process.IgnorePipe;
+			int stdout = Process.RequestPipe;
+			int stderr = Process.IgnorePipe;
+			GLib.Process.SpawnAsyncWithPipes (null, new string[] {"pwd"}, null, SpawnFlags.SearchPath, null, out proc, ref stdin, ref stdout, ref stderr);
+			channel = new IOChannel (stdout);
+			channel.AddWatch (0, IOCondition.In | IOCondition.Hup, new IOFunc (ReadStdout));
+		} catch (Exception e) {
+			Console.WriteLine ("Exception in Spawn: " + e);
+		}
+
+		main_loop.Run ();
+	}
+
+	bool ReadStdout (IOChannel source, IOCondition condition)
+	{
+		if ((condition &amp; IOCondition.In) == IOCondition.In) {
+			string txt;
+			if (source.ReadToEnd (out txt) == IOStatus.Normal)
+				Console.WriteLine ("[SpawnTest output] " + txt);
+		}
+		if ((condition &amp; IOCondition.Hup) == IOCondition.Hup) {
+			source.Dispose ();
+			main_loop.Quit ();
+			return true;
+		}
+		return true;
+	}
+}
+</code>
+            </example>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BufferCondition">
+      <MemberSignature Language="C#" Value="public GLib.IOCondition BufferCondition { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOCondition</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>BufferCondition property.</summary>
+        <value>Indicates if there is data to read or room to output to the channel.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Buffered">
+      <MemberSignature Language="C#" Value="public bool Buffered { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Buffered property.</summary>
+        <value>A boolean value indicating if buffering is active.</value>
+        <remarks>Buffering can only be altered when the <see cref="M:GLib.IOChannel.Encoding" /> is <see langword="null" />. All other encodings must be buffered.  It can only be cleared after the buffer has been flushed.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BufferSize">
+      <MemberSignature Language="C#" Value="public ulong BufferSize { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>BufferSize property.</summary>
+        <value>The buffer size, or 0 to pick a reasonable size.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CloseOnUnref">
+      <MemberSignature Language="C#" Value="public bool CloseOnUnref { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>CloseOnUnref property.</summary>
+        <value>A boolean indicating if the channel should be closed on disposal.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Disposes the channel.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Encoding">
+      <MemberSignature Language="C#" Value="public string Encoding { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Encoding property.</summary>
+        <value>Specifies the native encoding of the channel.  Use <see langword="null" /> for binary channels. The default encoding is UTF8.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ErrorFromErrno">
+      <MemberSignature Language="C#" Value="public static GLib.IOChannelError ErrorFromErrno (int en);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOChannelError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="en" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="en">Error number.</param>
+        <summary>Converts an error number to an Error value.</summary>
+        <returns>The error.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Flags">
+      <MemberSignature Language="C#" Value="public GLib.IOFlags Flags { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOFlags</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Flags property.</summary>
+        <value>The IO Flags for the channel.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus Flush ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Flushes the write buffer for the channel.</summary>
+        <returns>Status of the operation.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FromHandle">
+      <MemberSignature Language="C#" Value="public static GLib.IOChannel FromHandle (IntPtr handle);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOChannel</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Native channel pointer.</param>
+        <summary>Wraps a native channel.</summary>
+        <returns>A managed channel instance.</returns>
+        <remarks>Provided for language binding use.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Handle property.</summary>
+        <value>A point to the native channel.</value>
+        <remarks>Provided for language binding use.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Init">
+      <MemberSignature Language="C#" Value="protected void Init ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Init method.</summary>
+        <remarks>Provided for subclassers to initialize derived channels.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LineTerminator">
+      <MemberSignature Language="C#" Value="public char[] LineTerminator { set; get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Char[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>LineTerminator property.</summary>
+        <value>The chars representing line termination in the channel.</value>
+        <remarks>This property is represented as an array of chars to allow for null char terminators.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadChars">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus ReadChars (byte[] buf, out ulong bytes_read);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buf" Type="System.Byte[]" />
+        <Parameter Name="bytes_read" Type="System.UInt64&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="buf">Buffer to store the read data.</param>
+        <param name="bytes_read">Length of data read.</param>
+        <summary>Reads data from the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks>Method fills the buffer with as many complete utf8 characters as possible. Provided primarily for binary data reading in null encodings.  Use <see cref="M:GLib.IOChannel.ReadLine" /> for text stream reading to strings.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadLine">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus ReadLine (out string str_return);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str_return" Type="System.String&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="str_return">Returns the next line in the channel.</param>
+        <summary>Reads a line from the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadLine">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus ReadLine (out string str_return, out ulong terminator_pos);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str_return" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="terminator_pos" Type="System.UInt64&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="str_return">Returns the text read.</param>
+        <param name="terminator_pos">Location of line terminator.</param>
+        <summary>Reads the next line in the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadToEnd">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus ReadToEnd (out string str_return);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str_return" Type="System.String&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="str_return">Returns the text read.</param>
+        <summary>Reads to the end of the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadUnichar">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus ReadUnichar (out uint thechar);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="thechar" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="thechar">Returns the UCS4 character.</param>
+        <summary>Reads a UCS4 character from the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SeekPosition">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus SeekPosition (long offset, GLib.SeekType type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int64" />
+        <Parameter Name="type" Type="GLib.SeekType" />
+      </Parameters>
+      <Docs>
+        <param name="offset">Byte offset.</param>
+        <param name="type">Base position.</param>
+        <summary>Seeks to a position in the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Shutdown">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus Shutdown (bool flush);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="flush" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="flush">A boolean indicating if buffer should be flushed.</param>
+        <summary>Shuts down a channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="UnixFd">
+      <MemberSignature Language="C#" Value="public int UnixFd { get; };" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>UnixFd property.</summary>
+        <value>An integer representing the descriptor value.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WriteChars">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus WriteChars (byte[] buf, out ulong bytes_written);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buf" Type="System.Byte[]" />
+        <Parameter Name="bytes_written" Type="System.UInt64&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="buf">Data buffer to write.</param>
+        <param name="bytes_written">Returns the number of bytes written.</param>
+        <summary>Writes binary data to a channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WriteChars">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus WriteChars (string str, out string remainder);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="remainder" Type="System.String&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="str">Text to write.</param>
+        <param name="remainder">Returns unwritten text.</param>
+        <summary>Writes text to the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="WriteUnichar">
+      <MemberSignature Language="C#" Value="public GLib.IOStatus WriteUnichar (uint thechar);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.IOStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="thechar" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="thechar">A UCS4 character.</param>
+        <summary>Writes a UCS4 character to the channel.</summary>
+        <returns>An operation status value.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+  </Members>
+  <Docs>
+    <summary>IO Channel class.</summary>
+    <remarks>Provides methods to read and write data to an IO channel.</remarks>
+  </Docs>
+</Type>

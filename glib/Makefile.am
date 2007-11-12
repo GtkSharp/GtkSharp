@@ -37,6 +37,7 @@ sources =		 			\
 	Idle.cs					\
 	IgnoreClassInitializersAttribute.cs	\
 	InitiallyUnowned.cs			\
+	IOChannel.cs				\
 	IWrapper.cs				\
 	ListBase.cs				\
 	List.cs					\
@@ -58,6 +59,7 @@ sources =		 			\
 	SignalCallback.cs			\
 	SList.cs				\
 	Source.cs				\
+	Spawn.cs				\
 	Thread.cs				\
 	Timeout.cs				\
 	ToggleRef.cs				\

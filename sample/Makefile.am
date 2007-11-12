@@ -16,7 +16,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -90,6 +90,9 @@ actions.exe: $(srcdir)/Actions.cs
 
 polarfixed.exe: $(srcdir)/PolarFixed.cs $(assemblies)
 	$(CSC) /debug /out:polarfixed.exe $(references) $(srcdir)/PolarFixed.cs
+
+spawn.exe: $(srcdir)/SpawnTests.cs $(assemblies)
+	$(CSC)  /out:spawn.exe $(references) $(srcdir)/SpawnTests.cs
 
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
