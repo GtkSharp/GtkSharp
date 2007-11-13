@@ -72,7 +72,7 @@ namespace GtkSamples {
 				Assembly assm = assemblies [path.Indices [0]];
 				if (path.Indices.Length > 1) {
 					Type t = assm.GetTypes ()[path.Indices [1]];
-					if (path.Indices.Length < 2)
+					if (path.Indices.Length > 2)
 						return t.GetMembers () [path.Indices [2]];
 					else
 						return t;
