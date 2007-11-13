@@ -27,7 +27,6 @@ sources =		 			\
 	EnumWrapper.cs				\
 	ExceptionManager.cs			\
 	FileUtils.cs				\
-	GCallback.cs				\
 	GException.cs				\
 	GInterfaceAdapter.cs			\
 	GInterfaceAttribute.cs			\
