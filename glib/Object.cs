@@ -31,7 +31,7 @@ namespace GLib {
 
 	public class Object : IWrapper, IDisposable {
 
-		IntPtr _obj;
+		IntPtr handle;
 		bool disposed = false;
 		Hashtable data;
 		static Hashtable Objects = new Hashtable();
@@ -40,13 +40,15 @@ namespace GLib {
 
 		~Object ()
 		{
-			lock (PendingDestroys){
-				PendingDestroys.Add (this);
-				lock (typeof (Object)){
-					if (!idle_queued){
-						Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
-						idle_queued = true;
-					}
+			lock (PendingDestroys) {
+				lock (Objects) {
+					if (Objects[Handle] is ToggleRef)
+						PendingDestroys.Add (Objects [Handle]);
+					Objects.Remove (Handle);
+				}
+				if (!idle_queued){
+					Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
+					idle_queued = true;
 				}
 			}
 		}
@@ -56,22 +58,18 @@ namespace GLib {
 		
 		static bool PerformQueuedUnrefs ()
 		{
-			Object [] objects;
+			object [] references;
 
 			lock (PendingDestroys){
-				objects = new Object [PendingDestroys.Count];
-				PendingDestroys.CopyTo (objects, 0);
+				references = new object [PendingDestroys.Count];
+				PendingDestroys.CopyTo (references, 0);
 				PendingDestroys.Clear ();
-			}
-			lock (typeof (Object))
 				idle_queued = false;
-
-			foreach (Object o in objects){
-				if (o._obj == IntPtr.Zero)
-					continue;
-
-				o.Dispose ();
 			}
+
+			foreach (ToggleRef r in references)
+				r.Free ();
+
 			return false;
 		}
 
@@ -82,17 +80,15 @@ namespace GLib {
 
 			disposed = true;
 			try {
-				ToggleRef toggle_ref = Objects [_obj] as ToggleRef;
-				if (toggle_ref == null)
-					g_object_unref (_obj);
-				else
+				ToggleRef toggle_ref = Objects [Handle] as ToggleRef;
+				if (toggle_ref != null)
 					toggle_ref.Free ();
 			} catch (Exception e) {
 				Console.WriteLine ("Exception while disposing a " + this + " in Gtk#");
 				throw e;
 			}
-			Objects.Remove (_obj);
-			_obj = IntPtr.Zero;
+			Objects.Remove (Handle);
+			handle = IntPtr.Zero;
 			GC.SuppressFinalize (this);
 		}
 
@@ -105,34 +101,28 @@ namespace GLib {
 				return null;
 
 			Object obj = null;
-			object reference = Objects[o];
 
-			if (reference is WeakReference) {
-				WeakReference weak_ref = reference as WeakReference;
-				if (weak_ref.IsAlive)
-					obj = weak_ref.Target as Object;
-			} else if (reference is ToggleRef) {
-				ToggleRef toggle_ref = reference as ToggleRef;
-				if (toggle_ref.IsAlive)
+			if (Objects.Contains (o)) {
+				ToggleRef toggle_ref = Objects [o] as ToggleRef;
+				if (toggle_ref != null && toggle_ref.IsAlive)
 					obj = toggle_ref.Target;
 			}
 
-			if (obj != null && obj._obj == o) {
-				lock (PendingDestroys)
-					PendingDestroys.Remove (obj);
+			if (obj != null && obj.Handle == o) {
 				if (owned_ref)
-					g_object_unref (obj._obj);
-				obj.disposed = false;
+					g_object_unref (obj.Handle);
 				return obj;
 			}
 
-			obj = GLib.ObjectManager.CreateObject(o); 
-			if (obj == null)
-				return null;
-
 			if (!owned_ref)
 				g_object_ref (obj.Handle);
-			Objects [o] = new WeakReference (obj);
+
+			obj = GLib.ObjectManager.CreateObject(o); 
+			if (obj == null) {
+				g_object_unref (o);
+				return null;
+			}
+
 			return obj;
 		}
 
@@ -292,22 +282,27 @@ namespace GLib {
 			for (int i = 0; i < names.Length; i++)
 				native_names [i] = GLib.Marshaller.StringToPtrGStrdup (names [i]);
 			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, native_names, vals);
-			Objects [_obj] = new ToggleRef (this);
 			foreach (IntPtr p in native_names)
 				GLib.Marshaller.Free (p);
 		}
 
 		protected virtual IntPtr Raw {
 			get {
-				return _obj;
+				return handle;
 			}
 			set {
-				if (_obj != IntPtr.Zero)
-					Objects.Remove (_obj);
-				_obj = value;
-				if (value == IntPtr.Zero)
+				if (handle == value)
 					return;
-				Objects [value] = new WeakReference (this);
+
+				if (handle != IntPtr.Zero) {
+					ToggleRef tref = Objects [handle] as ToggleRef;
+					if (tref != null)
+						tref.Free ();
+					Objects.Remove (handle);
+				}
+				handle = value;
+				if (value != IntPtr.Zero)
+					Objects [value] = new ToggleRef (this);
 			}
 		}	
 
@@ -334,7 +329,16 @@ namespace GLib {
 
 		public IntPtr Handle {
 			get {
-				return _obj;
+				return handle;
+			}
+		}
+
+		Hashtable signals;
+		internal Hashtable Signals {
+			get {
+				if (signals == null)
+					signals = new Hashtable ();
+				return signals;
 			}
 		}
 
@@ -436,7 +440,6 @@ namespace GLib {
 			return Handle.GetHashCode ();
 		}
 
-		[Obsolete("Can cause instability due to garbage collection of GLib.Objects.")]
 		public Hashtable Data {
 			get { 
 				if (data == null)
@@ -446,9 +449,13 @@ namespace GLib {
 			}
 		}
 
+		Hashtable persistent_data;
 		protected Hashtable PersistentData {
 			get {
-				return WeakObject.Lookup (Handle).Data;
+				if (persistent_data == null)
+					persistent_data = new Hashtable ();
+				
+				return persistent_data;
 			}
 		}
 

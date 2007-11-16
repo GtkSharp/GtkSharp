@@ -67,8 +67,7 @@ sources =		 			\
 	TypeInitializerAttribute.cs		\
 	UnwrappedObject.cs			\
 	ValueArray.cs				\
-	Value.cs				\
-	WeakObject.cs
+	Value.cs
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 dist_sources = $(sources)
