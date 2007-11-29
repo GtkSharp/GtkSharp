@@ -115,7 +115,7 @@ namespace GLib {
 			}
 
 			if (!owned_ref)
-				g_object_ref (obj.Handle);
+				g_object_ref (o);
 
 			obj = GLib.ObjectManager.CreateObject(o); 
 			if (obj == null) {
