@@ -140,12 +140,15 @@ namespace GLib {
 		[CDeclCallback]
 		delegate void voidObjectDelegate (IntPtr handle, IntPtr gch);
 
-		static void voidObjectCallback (IntPtr handle, IntPtr gch)
+		static void voidObjectCallback (IntPtr handle, IntPtr data)
 		{
 			try {
-				if (gch == IntPtr.Zero)
+				if (data == IntPtr.Zero)
 					return;
-				Signal sig = ((GCHandle) gch).Target as Signal;
+				GCHandle gch = (GCHandle) data;
+				if (gch.Target == null)
+					return;
+				Signal sig = gch.Target as Signal;
 				if (sig == null) {
 					ExceptionManager.RaiseUnhandledException (new Exception ("Unknown signal class GC handle received."), false);
 					return;
