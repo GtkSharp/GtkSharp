@@ -32,15 +32,27 @@ namespace GtkSharp.Generation {
 		Parameters parms;
 		bool is_static = false;
 		string mods = String.Empty;
+		string name;
 
 		protected MethodBase (XmlElement elem, ClassBase container_type) 
 		{
 			this.elem = elem;
 			this.container_type = container_type;
+			this.name = elem.GetAttribute ("name");
 			parms = new Parameters (elem ["parameters"]);
 			IsStatic = elem.GetAttribute ("shared") == "true";
 			if (elem.HasAttribute ("new_flag"))
 				mods = "new ";
+		}
+
+		protected string BaseName {
+			get {
+				string name = Name;
+				int idx = Name.LastIndexOf (".");
+				if (idx > 0)
+					name = Name.Substring (idx + 1);
+				return name;
+			}
 		}
 
 		MethodBody body;
@@ -55,6 +67,30 @@ namespace GtkSharp.Generation {
 		public string CName {
 			get {
 				return elem.GetAttribute ("cname");
+			}
+		}
+
+		protected bool HasGetterName {
+			get {
+				string name = BaseName;
+				if (name.Length <= 3)
+					return false;
+				if (name.StartsWith ("Get") || name.StartsWith ("Has"))
+					return Char.IsUpper (name [3]);
+				else if (name.StartsWith ("Is"))
+					return Char.IsUpper (name [2]);
+				else
+					return false;
+			}
+		}
+
+		protected bool HasSetterName {
+			get {
+				string name = BaseName;
+				if (name.Length <= 3)
+					return false;
+
+				return name.StartsWith ("Set") && Char.IsUpper (name [3]);
 			}
 		}
 
@@ -82,6 +118,15 @@ namespace GtkSharp.Generation {
 			}
 			set {
 				mods = value;
+			}
+		}
+
+		public string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
 			}
 		}
 

@@ -42,13 +42,13 @@ namespace GtkSharp.Generation {
 
 		public bool IsGetter {
 			get {
-				return (Name.StartsWith ("Get") || Name.StartsWith ("Has")) && ((!retval.IsVoid && parms.Count == 1) || (retval.IsVoid && parms.Count == 2 && parms [1].PassAs == "out"));
+				return HasGetterName && ((!retval.IsVoid && parms.Count == 1) || (retval.IsVoid && parms.Count == 2 && parms [1].PassAs == "out"));
 			}
 		}
 	
 		public bool IsSetter {
 			get {
-				if (!Name.StartsWith ("Set") || !retval.IsVoid)
+				if (!HasSetterName || !retval.IsVoid)
 					return false;
 
 				if (parms.Count == 2 || (parms.Count == 4 && parms [1].Scope == "notified"))
@@ -61,12 +61,6 @@ namespace GtkSharp.Generation {
 		public string MarshalReturnType {
 			get {
 				return SymbolTable.Table.GetToNativeReturnType (elem["return-type"].GetAttribute("type"));
-			}
-		}
-
-		public string Name {
-			get {
-				return elem.GetAttribute("name");
 			}
 		}
 

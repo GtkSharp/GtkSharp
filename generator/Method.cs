@@ -32,7 +32,6 @@ namespace GtkSharp.Generation {
 		private ReturnValue retval;
 
 		private string call;
-		private string name;
 		private string protection = "public";
 		private bool is_get, is_set;
 		private bool deprecated = false;
@@ -42,9 +41,8 @@ namespace GtkSharp.Generation {
 			this.retval = new ReturnValue (elem["return-type"]);
 			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated"))
 				deprecated = elem.GetAttribute ("deprecated") == "1";
-			this.name = elem.GetAttribute("name");
-			if (name == "GetType")
-				name = "GetGType";
+			if (Name == "GetType")
+				Name = "GetGType";
 		}
 
 		public bool IsDeprecated {
@@ -65,15 +63,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		public string Name {
-			get {
-				return name;
-			}
-			set {
-				name = value;
-			}
-		}
-
 		public string Protection {
 			get {
 				return protection;
@@ -89,16 +78,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		string BaseName {
-			get {
-				string name = Name;
-				int idx = Name.LastIndexOf (".");
-				if (idx > 0)
-					name = Name.Substring (idx + 1);
-				return name;
-			}
-		}
-
 		public override bool Validate ()
 		{
 			if (!retval.Validate () || !base.Validate ()) {
@@ -106,10 +85,9 @@ namespace GtkSharp.Generation {
 				return false;
 			}
 
-			string name = BaseName;
 			Parameters parms = Parameters;
-			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && name.Length > 3 && (name.StartsWith ("Get") || name.StartsWith ("Is") || name.StartsWith ("Has")));
-			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && (name.Length > 3 && name.Substring(0, 3) == "Set"));
+			is_get = ((((parms.IsAccessor && retval.IsVoid) || (parms.Count == 0 && !retval.IsVoid)) || (parms.Count == 0 && !retval.IsVoid)) && HasGetterName);
+			is_set = ((parms.IsAccessor || (parms.VisibleCount == 1 && retval.IsVoid)) && HasSetterName);
 
 			call = "(" + (IsStatic ? "" : container_type.CallByName () + (parms.Count > 0 ? ", " : "")) + Body.GetCallString (is_set) + ")";
 
