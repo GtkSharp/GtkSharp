@@ -131,6 +131,14 @@ foreach $fname (@hdrs) {
 			my @lines = ();
 			$line = <INFILE>;
 			while ($line !~ /^}\s*(\w+);/) {
+				if ($line =~ /\(.*\).*\(/) {
+					while ($line !~ /;/) {
+						chomp ($line);
+						$nxt = <INFILE>;
+						$nxt =~ s/^\s+/ /;
+						$line .= $nxt;
+					}
+				}
 				push @lines, $line;
 				$line = <INFILE>;
 			}
