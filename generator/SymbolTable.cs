@@ -381,6 +381,8 @@ namespace GtkSharp.Generation {
 				return "iface";
 			case "internal":
 				return "_internal";
+			case "where":
+				return "wh3r3";
 			default:
 				break;
 			}
