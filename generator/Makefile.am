@@ -64,5 +64,5 @@ EXTRA_DIST =					\
 	$(dist_sources)
 
 gapi_codegen.exe: $(build_sources)
-	$(CSC) /out:gapi_codegen.exe $(references) $(build_sources)
+	$(CSC) /out:gapi_codegen.exe $(OFF_T_FLAGS) $(references) $(build_sources)
 
