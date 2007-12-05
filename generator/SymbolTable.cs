@@ -73,6 +73,7 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("float", "float", "0.0"));
 			AddType (new SimpleGen ("gdouble", "double", "0.0"));
 			AddType (new SimpleGen ("double", "double", "0.0"));
+			AddType (new SimpleGen ("goffset", "long", "0"));
 			AddType (new SimpleGen ("GQuark", "int", "0"));
 			AddType (new SimpleGen ("GSourceFunc", "GLib.GSourceFunc", "null"));
 
