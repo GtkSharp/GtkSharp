@@ -280,6 +280,8 @@ namespace GtkSharp.Generation {
 				if (node.Name != "interface")
 					continue;
 				XmlElement element = (XmlElement) node;
+				if (element.HasAttribute ("hidden"))
+					continue;
 				if (element.HasAttribute ("cname"))
 					interfaces.Add (element.GetAttribute ("cname"));
 				else if (element.HasAttribute ("name"))

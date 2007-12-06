@@ -2,7 +2,7 @@ SUBDIRS = . glue
 
 pkg = gdk
 SYMBOLS = gdk-symbols.xml
-INCLUDE_API = ../pango/pango-api.xml
+INCLUDE_API = $(srcdir)/../glib/glib-api.xml ../pango/pango-api.xml
 METADATA = Gdk.metadata
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll
 glue_includes = gdk/gdk.h
@@ -45,6 +45,7 @@ customs = 			\
 	Input.custom		\
 	Keymap.custom		\
 	PangoAttrEmbossed.custom\
+	PangoAttrEmbossColor.custom	\
 	PangoAttrStipple.custom \
 	Pixmap.custom		\
 	Pixbuf.custom		\

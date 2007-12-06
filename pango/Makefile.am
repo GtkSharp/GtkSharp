@@ -13,6 +13,8 @@ sources =			\
 	AttrFamily.cs		\
 	AttrFontDesc.cs		\
 	AttrForeground.cs	\
+	AttrGravity.cs		\
+	AttrGravityHint.cs	\
 	AttrLanguage.cs		\
 	AttrLetterSpacing.cs	\
 	AttrRise.cs		\
@@ -28,8 +30,7 @@ sources =			\
 	AttrVariant.cs		\
 	AttrWeight.cs		\
 	Scale.cs		\
-	ScriptIter.cs		\
-	Units.cs
+	ScriptIter.cs
 
 customs =			\
 	Analysis.custom		\
@@ -46,7 +47,8 @@ customs =			\
 	LayoutLine.custom	\
 	LayoutRun.custom	\
 	Matrix.custom		\
-	TabArray.custom
+	TabArray.custom		\
+	Units.custom
 
 add_dist = makefile.win32
 

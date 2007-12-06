@@ -5,6 +5,7 @@
   <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Hash']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Parse']/return-type" name="type">gboolean</attr>
   <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='Parse']/*/*[@type='GdkColor*']" name="pass_as">ref</attr>
+  <attr path="/api/namespace/boxed[@cname='GdkColor']/method[@name='ToString']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkCursor']/constructor[@cname='gdk_cursor_new_from_name']" name="shared">true</attr>
   <attr path="/api/namespace/boxed[@cname='GdkCursor']/field[@name='RefCount']" name="hidden">1</attr>
   <attr path="/api/namespace/boxed[@cname='GdkCursor']/method[@name='Ref']" name="deprecated">1</attr>
@@ -23,6 +24,7 @@
   <attr path="/api/namespace/class[@cname='GdkInput_']/method[@name='Add']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkInput_']/method[@name='AddFull']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkKeyval_']/method[@name='Name']/return-type" name="type">const-gchar*</attr>
+  <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='AddOptionEntriesLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='DevicesList']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='FreeTextList']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='InitCheck']" name="hidden">1</attr>
@@ -31,6 +33,9 @@
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='AddClientMessageFilter']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='StringToCompoundText']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkGlobal']/method[@name='StringToCompoundTextForDisplay']" name="hidden">1</attr>
+  <move-node path="/api/namespace/class[@cname='GdkNotify_']/method">/api/namespace/class[@cname='GdkGlobal']</move-node>
+  <attr path="/api/namespace/class[@cname='GdkNotify_']" name="hidden">1</attr>
+  <attr path="/api/namespace/class/method[@cname='gdk_notify_startup_complete']" name="name">NotifyStartupComplete</attr>
   <attr path="/api/namespace/class[@cname='GdkPango_']" name="name">PangoHelper</attr>
   <attr path="/api/namespace/class[@cname='GdkPixbuf_']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkProperty_']/method[@name='Get']" name="hidden">1</attr>
@@ -38,7 +43,15 @@
   <attr path="/api/namespace/class[@cname='GdkQuery_']" name="hidden">1</attr>
   <attr path="/api/namespace/class[@cname='GdkRgb_']/method[@name='FindColor']/*/*[@name='color']" name="pass_as">ref</attr>
   <attr path="/api/namespace/class[@cname='GdkSelection_']/method[@name='PropertyGet']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkSpawn_']/method/parameters/parameter[@name='argv']" name="null_term_array">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkSpawn_']/method/parameters/parameter[@name='envp']" name="null_term_array">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkSpawn_']/method/parameters/parameter[@name='child_setup']" name="scope">async</attr>
   <attr path="/api/namespace/class[@cname='GdkText_']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_idle']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_idle_full']" name="name">AddIdle</attr>
+  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout']" name="hidden">1</attr>
+  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_add_timeout_full']" name="name">AddTimeout</attr>
+  <attr path="/api/namespace/class[@cname='GdkThreads_']/method[@cname='gdk_threads_set_lock_functions']" name="hidden">1</attr>
   <add-node path="/api/namespace/enum[@cname='GdkModifierType']"><member name="None" value="0" /></add-node>
   <attr path="/api/namespace/enum[@cname='GdkModifierType']/member[@name='ModifierMask']" name="value">ReleaseMask | 0x1fff</attr>
   <attr path="/api/namespace/enum[@cname='GdkWindowClass']/member[@name='Output']" name="name">InputOutput</attr>
@@ -65,6 +78,7 @@
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='AddClientMessageFilter']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='GetPointer']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='ListDevices']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsComposite']" name="name">GetSupportsComposite</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsInputShapes']" name="name">GetSupportsInputShapes</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplay']/method[@name='SupportsShapes']" name="name">GetSupportsShapes</attr>
   <attr path="/api/namespace/object[@cname='GdkDisplayManager']/method[@name='ListDisplays']" name="hidden">1</attr>
@@ -93,19 +107,8 @@
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/constructor[@cname='gdk_pixbuf_new_from_xpm_data']/*/*[@name='data']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='AddAlpha']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='CompositeColorSimple']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='GetFromDrawable']" name="library">libgdk-win32-2.0-0.dll</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='GetFormats']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='GetFromImage']" name="library">libgdk-win32-2.0-0.dll</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='GetPixels']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderThresholdAlpha']" name="library">libgdk-win32-2.0-0.dll</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderToDrawable']" name="library">libgdk-win32-2.0-0.dll</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderToDrawableAlpha']" name="library">libgdk-win32-2.0-0.dll</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMaskForColormap']" name="library">libgdk-win32-2.0-0.dll</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMaskForColormap']/*/*[@name='pixmap_return']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMaskForColormap']/*/*[@name='mask_return']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMask']" name="library">libgdk-win32-2.0-0.dll</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMask']/*/*[@name='pixmap_return']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='RenderPixmapAndMask']/*/*[@name='mask_return']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='Save']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='Savev']/*/*[@type='char**']" name="array">1</attr>
   <attr path="/api/namespace/object[@cname='GdkPixbuf']/method[@name='SaveToBuffer']" name="hidden">1</attr>
@@ -127,17 +130,13 @@
   <attr path="/api/namespace/object[@cname='GdkPixmap']/method[@name='ColormapCreateFromXpm']/*/*[@name='mask']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkPixmap']/method[@name='ColormapCreateFromXpmD']/*/*[@name='mask']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkPixmap']/method[@name='ColormapCreateFromXpmD']/*/*[@name='data']" name="array">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetFontOptionsLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetFontOptions']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetMonitorGeometry']/*/*[@type='GdkRectangle*']" name="pass_as">out</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetResolutionLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetToplevelWindows']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='Height']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='HeightMm']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='ListVisuals']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='SetFontOptionsLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='SetFontOptions']" name="hidden">1</attr>
-  <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='SetResolutionLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='Width']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='WidthMm']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkScreen']/method[@name='GetWindowStack']/return-type" name="element_type">GdkWindow*</attr>
@@ -147,6 +146,7 @@
   <attr path="/api/namespace/object[@cname='GdkWindow']" name="parent">GdkDrawable</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='AddFilter']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='Destroy']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='FreezeToplevelUpdatesLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetChildren']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetFrameExtents']/*/*[@name='rect']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetInternalPaintInfo']/*/*[@type='gint*']" name="pass_as">out</attr>
@@ -155,9 +155,11 @@
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetPointer']/*/*[@type='gint*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetPointer']/*/*[@type='GdkModifierType*']" name="pass_as">out</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetToplevels']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='InvalidateMaybeRecurse']/*/*[@name='child_func']" name="scope">call</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='PeekChildren']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='RemoveFilter']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='SetIconList']" name="hidden">1</attr>
+  <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='ThawToplevelUpdatesLibgtkOnly']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@name='GetUserData']" name="hidden">1</attr>
   <attr path="/api/namespace/object[@cname='GdkWindow']/method[@cname='gdk_window_set_user_data']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkAtom']/method[@name='Name']" name="name">GetName</attr>
@@ -186,6 +188,7 @@
   <attr path="/api/namespace/struct[@cname='GdkPixdata']/method[@name='ToCsource']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkPixmapObject']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkPangoAttrEmbossed']/field[@name='Attr']" name="hidden">1</attr>
+  <attr path="/api/namespace/struct[@cname='GdkPangoAttrEmbossColor']/field[@name='Attr']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkPangoAttrStipple']/field[@name='Attr']" name="hidden">1</attr>
   <attr path="/api/namespace/struct[@cname='GdkRegion']/field" name="access">private</attr>
   <attr path="/api/namespace/struct[@cname='GdkRegion']/method[@name='Destroy']" name="deprecated">1</attr>

@@ -25,7 +25,6 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	[CDeclCallback]
 	public delegate bool GSourceFunc ();
 
 	//

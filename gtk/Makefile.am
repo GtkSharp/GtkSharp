@@ -5,7 +5,7 @@ pkgconfigdir=$(libdir)/pkgconfig
 pkgconfig_DATA=gtk-sharp-2.0.pc
 
 SYMBOLS = gtk-symbols.xml
-INCLUDE_API = ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml
+INCLUDE_API = $(srcdir)/../glib/glib-api.xml ../pango/pango-api.xml ../atk/atk-api.xml ../gdk/gdk-api.xml
 METADATA = Gtk.metadata
 references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll ../atk/atk-sharp.dll ../gdk/gdk-sharp.dll
 glue_includes = gtk/gtk.h
@@ -32,6 +32,7 @@ sources = 				\
 	TreeNodeValueAttribute.cs
 
 customs = 				\
+	AboutDialog.custom		\
 	Accel.custom			\
 	AccelKey.custom			\
 	Action.custom			\
@@ -64,7 +65,6 @@ customs = 				\
 	Entry.custom			\
 	EntryCompletion.custom		\
 	FileChooser.custom		\
-	FileChooserAdapter.custom	\
 	FileChooserButton.custom	\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
@@ -111,6 +111,7 @@ customs = 				\
 	TextBuffer.custom		\
 	TextChildAnchor.custom		\
 	TextIter.custom			\
+	TextMark.custom			\
 	TextTag.custom			\
 	TextView.custom			\
 	Toolbar.custom			\

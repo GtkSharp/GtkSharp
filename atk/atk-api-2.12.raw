@@ -44,6 +44,8 @@
       <member cname="ATK_RELATION_EMBEDDED_BY" name="EmbeddedBy" />
       <member cname="ATK_RELATION_POPUP_FOR" name="PopupFor" />
       <member cname="ATK_RELATION_PARENT_WINDOW_OF" name="ParentWindowOf" />
+      <member cname="ATK_RELATION_DESCRIBED_BY" name="DescribedBy" />
+      <member cname="ATK_RELATION_DESCRIPTION_FOR" name="DescriptionFor" />
       <member cname="ATK_RELATION_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="Role" cname="AtkRole" gtype="atk_role_get_type" type="enum">
@@ -124,6 +126,17 @@
       <member cname="ATK_ROLE_AUTOCOMPLETE" name="Autocomplete" />
       <member cname="ATK_ROLE_EDITBAR" name="Editbar" />
       <member cname="ATK_ROLE_EMBEDDED" name="Embedded" />
+      <member cname="ATK_ROLE_ENTRY" name="Entry" />
+      <member cname="ATK_ROLE_CHART" name="Chart" />
+      <member cname="ATK_ROLE_CAPTION" name="Caption" />
+      <member cname="ATK_ROLE_DOCUMENT_FRAME" name="DocumentFrame" />
+      <member cname="ATK_ROLE_HEADING" name="Heading" />
+      <member cname="ATK_ROLE_PAGE" name="Page" />
+      <member cname="ATK_ROLE_SECTION" name="Section" />
+      <member cname="ATK_ROLE_REDUNDANT_OBJECT" name="RedundantObject" />
+      <member cname="ATK_ROLE_FORM" name="Form" />
+      <member cname="ATK_ROLE_LINK" name="Link" />
+      <member cname="ATK_ROLE_INPUT_METHOD_WINDOW" name="InputMethodWindow" />
       <member cname="ATK_ROLE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="StateType" cname="AtkStateType" gtype="atk_state_type_get_type" type="enum">
@@ -160,6 +173,12 @@
       <member cname="ATK_STATE_INDETERMINATE" name="Indeterminate" />
       <member cname="ATK_STATE_TRUNCATED" name="Truncated" />
       <member cname="ATK_STATE_REQUIRED" name="Required" />
+      <member cname="ATK_STATE_INVALID_ENTRY" name="InvalidEntry" />
+      <member cname="ATK_STATE_SUPPORTS_AUTOCOMPLETION" name="SupportsAutocompletion" />
+      <member cname="ATK_STATE_SELECTABLE_TEXT" name="SelectableText" />
+      <member cname="ATK_STATE_DEFAULT" name="Default" />
+      <member cname="ATK_STATE_ANIMATED" name="Animated" />
+      <member cname="ATK_STATE_VISITED" name="Visited" />
       <member cname="ATK_STATE_LAST_DEFINED" name="LastDefined" />
     </enum>
     <enum name="TextAttribute" cname="AtkTextAttribute" gtype="atk_text_attribute_get_type" type="enum">
@@ -211,7 +230,7 @@
     <callback name="EventListener" cname="AtkEventListener">
       <return-type type="void" />
       <parameters>
-        <parameter type="AtkObject*" name="arg1" />
+        <parameter type="AtkObject*" name="obj" />
       </parameters>
     </callback>
     <callback name="EventListenerInit" cname="AtkEventListenerInit">
@@ -452,6 +471,12 @@
           <parameter type="AtkComponent*" name="component" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetAlpha" cname="get_alpha">
+        <return-type type="gdouble" />
+        <parameters>
+          <parameter type="AtkComponent*" name="component" />
+        </parameters>
+      </virtual_method>
       <method name="AddFocusHandler" cname="atk_component_add_focus_handler">
         <return-type type="guint" />
         <parameters>
@@ -465,6 +490,9 @@
           <parameter type="gint" name="y" />
           <parameter type="AtkCoordType" name="coord_type" />
         </parameters>
+      </method>
+      <method name="GetAlpha" cname="atk_component_get_alpha">
+        <return-type type="gdouble" />
       </method>
       <method name="GetExtents" cname="atk_component_get_extents">
         <return-type type="void" />
@@ -544,6 +572,24 @@
       </method>
     </interface>
     <interface name="Document" cname="AtkDocument">
+      <signal name="LoadComplete" cname="load_complete" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="AtkDocument*" />
+        </parameters>
+      </signal>
+      <signal name="Reload" cname="reload" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="AtkDocument*" />
+        </parameters>
+      </signal>
+      <signal name="LoadStopped" cname="load_stopped" when="LAST">
+        <return-type type="void" />
+        <parameters>
+          <parameter name="inst" type="AtkDocument*" />
+        </parameters>
+      </signal>
       <virtual_method name="GetDocumentType" cname="get_document_type">
         <return-type type="const-gchar*" />
         <parameters>
@@ -556,14 +602,60 @@
           <parameter type="AtkDocument*" name="document" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetDocumentLocale" cname="get_document_locale">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDocumentAttributes" cname="get_document_attributes">
+        <return-type type="AtkAttributeSet*" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="GetDocumentAttributeValue" cname="get_document_attribute_value">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+          <parameter type="const-gchar*" name="attribute_name" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="SetDocumentAttribute" cname="set_document_attribute">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="AtkDocument*" name="document" />
+          <parameter type="const-gchar*" name="attribute_name" />
+          <parameter type="const-gchar*" name="attribute_value" />
+        </parameters>
+      </virtual_method>
+      <method name="GetAttributeValue" cname="atk_document_get_attribute_value">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="attribute_name" />
+        </parameters>
+      </method>
+      <method name="GetAttributes" cname="atk_document_get_attributes">
+        <return-type type="AtkAttributeSet*" />
+      </method>
       <method name="GetDocument" cname="atk_document_get_document">
         <return-type type="gpointer" />
       </method>
       <method name="GetDocumentType" cname="atk_document_get_document_type">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetLocale" cname="atk_document_get_locale">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="GetType" cname="atk_document_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="SetAttributeValue" cname="atk_document_set_attribute_value">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="const-gchar*" name="attribute_name" />
+          <parameter type="const-gchar*" name="attribute_value" />
+        </parameters>
       </method>
     </interface>
     <interface name="EditableText" cname="AtkEditableText">
@@ -676,6 +768,20 @@
         </parameters>
       </method>
     </interface>
+    <interface name="HyperlinkImpl" cname="AtkHyperlinkImpl">
+      <virtual_method name="GetHyperlink" cname="get_hyperlink">
+        <return-type type="AtkHyperlink*" />
+        <parameters>
+          <parameter type="AtkHyperlinkImpl*" name="impl" />
+        </parameters>
+      </virtual_method>
+      <method name="GetHyperlink" cname="atk_hyperlink_impl_get_hyperlink">
+        <return-type type="AtkHyperlink*" />
+      </method>
+      <method name="GetType" cname="atk_hyperlink_impl_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+    </interface>
     <interface name="Hypertext" cname="AtkHypertext">
       <signal name="LinkSelected" cname="link_selected" when="LAST">
         <return-type type="void" />
@@ -754,7 +860,16 @@
           <parameter type="const-gchar*" name="description" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetImageLocale" cname="get_image_locale">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkImage*" name="image" />
+        </parameters>
+      </virtual_method>
       <method name="GetImageDescription" cname="atk_image_get_image_description">
+        <return-type type="const-gchar*" />
+      </method>
+      <method name="GetImageLocale" cname="atk_image_get_image_locale">
         <return-type type="const-gchar*" />
       </method>
       <method name="GetImagePosition" cname="atk_image_get_image_position">
@@ -907,6 +1022,13 @@
           <parameter type="const-gchar*" name="mime_type" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetUri" cname="get_uri">
+        <return-type type="const-gchar*" />
+        <parameters>
+          <parameter type="AtkStreamableContent*" name="streamable" />
+          <parameter type="const-gchar*" name="mime_type" />
+        </parameters>
+      </virtual_method>
       <method name="GetMimeType" cname="atk_streamable_content_get_mime_type">
         <return-type type="const-gchar*" />
         <parameters>
@@ -924,6 +1046,12 @@
       </method>
       <method name="GetType" cname="atk_streamable_content_get_type" shared="true">
         <return-type type="GType" />
+      </method>
+      <method name="GetUri" cname="atk_streamable_content_get_uri">
+        <return-type type="gchar*" />
+        <parameters>
+          <parameter type="const-gchar*" name="mime_type" />
+        </parameters>
       </method>
     </interface>
     <interface name="Table" cname="AtkTable">
@@ -1743,6 +1871,13 @@
           <parameter type="const-GValue*" name="value" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetMinimumIncrement" cname="get_minimum_increment">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkValue*" name="obj" />
+          <parameter type="GValue*" name="value" />
+        </parameters>
+      </virtual_method>
       <method name="GetCurrentValue" cname="atk_value_get_current_value">
         <return-type type="void" />
         <parameters>
@@ -1750,6 +1885,12 @@
         </parameters>
       </method>
       <method name="GetMaximumValue" cname="atk_value_get_maximum_value">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GValue*" name="value" />
+        </parameters>
+      </method>
+      <method name="GetMinimumIncrement" cname="atk_value_get_minimum_increment">
         <return-type type="void" />
         <parameters>
           <parameter type="GValue*" name="value" />
@@ -1883,6 +2024,32 @@
         <return-type type="gboolean" />
       </method>
     </object>
+    <object name="Misc" cname="AtkMisc" parent="GObject">
+      <virtual_method name="ThreadsEnter" cname="threads_enter">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkMisc*" name="misc" />
+        </parameters>
+      </virtual_method>
+      <virtual_method name="ThreadsLeave" cname="threads_leave">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="AtkMisc*" name="misc" />
+        </parameters>
+      </virtual_method>
+      <method name="GetInstance" cname="atk_misc_get_instance" shared="true">
+        <return-type type="const-AtkMisc*" />
+      </method>
+      <method name="GetType" cname="atk_misc_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="ThreadsEnter" cname="atk_misc_threads_enter">
+        <return-type type="void" />
+      </method>
+      <method name="ThreadsLeave" cname="atk_misc_threads_leave">
+        <return-type type="void" />
+      </method>
+    </object>
     <object name="NoOpObject" cname="AtkNoOpObject" parent="AtkObject">
       <implements>
         <interface cname="AtkComponent" />
@@ -1894,6 +2061,7 @@
         <interface cname="AtkText" />
         <interface cname="AtkHypertext" />
         <interface cname="AtkValue" />
+        <interface cname="AtkDocument" />
       </implements>
       <method name="GetType" cname="atk_no_op_object_get_type" shared="true">
         <return-type type="GType" />
@@ -2089,6 +2257,12 @@
           <parameter type="gpointer" name="data" />
         </parameters>
       </virtual_method>
+      <virtual_method name="GetAttributes" cname="get_attributes">
+        <return-type type="AtkAttributeSet*" />
+        <parameters>
+          <parameter type="AtkObject*" name="accessible" />
+        </parameters>
+      </virtual_method>
       <method name="AddRelationship" cname="atk_object_add_relationship">
         <return-type type="gboolean" />
         <parameters>
@@ -2101,6 +2275,9 @@
         <parameters>
           <parameter type="AtkPropertyChangeHandler*" name="handler" />
         </parameters>
+      </method>
+      <method name="GetAttributes" cname="atk_object_get_attributes">
+        <return-type type="AtkAttributeSet*" />
       </method>
       <method name="GetDescription" cname="atk_object_get_description">
         <return-type type="const-gchar*" />
@@ -2528,6 +2705,9 @@
       <method name="GetToolkitVersion" cname="atk_get_toolkit_version" shared="true">
         <return-type type="const-gchar*" />
       </method>
+      <method name="GetVersion" cname="atk_get_version" shared="true">
+        <return-type type="const-gchar*" />
+      </method>
       <method name="RemoveFocusTracker" cname="atk_remove_focus_tracker" shared="true">
         <return-type type="void" />
         <parameters>
@@ -2575,7 +2755,7 @@
       <method name="TrackerInit" cname="atk_focus_tracker_init" shared="true">
         <return-type type="void" />
         <parameters>
-          <parameter type="AtkEventListenerInit" name="add_function" />
+          <parameter type="AtkEventListenerInit" name="init" />
         </parameters>
       </method>
       <method name="TrackerNotify" cname="atk_focus_tracker_notify" shared="true">

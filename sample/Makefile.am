@@ -103,6 +103,8 @@ EXTRA_DIST = 				\
 	Size.cs				\
 	Scribble.cs			\
 	ScribbleXInput.cs		\
+	SpawnTests.cs			\
+	TreeModelDemo.cs		\
 	TreeViewDemo.cs			\
 	ManagedTreeViewDemo.cs		\
 	NodeViewDemo.cs			\

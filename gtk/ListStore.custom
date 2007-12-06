@@ -143,6 +143,29 @@
 			return iter;
 		}
 
+		[DllImport("libgtk-win32-2.0-0.dll")]
+		static extern void gtk_list_store_set_valuesv(IntPtr raw, ref TreeIter iter, int[] columns, GLib.Value[] values, int n_values);
+
+		public void SetValues (TreeIter iter, params object[] values)
+		{
+			int[] columns = new int[values.Length];
+			GLib.Value[] vals = new GLib.Value[values.Length];
+			int n_values = 0;
+
+			for (int i = 0; i < values.Length; i++) {
+				if (values[i] != null) {
+					columns[n_values] = i;
+					vals[n_values] = new GLib.Value (values[i]);
+					n_values++;
+				}
+			}
+
+			gtk_list_store_set_valuesv (Handle, ref iter, columns, vals, n_values);
+
+			for (int i = 0; i < n_values; i++)
+				vals[i].Dispose ();
+		}
+
 		public ListStore (params GLib.GType[] types) : base (IntPtr.Zero)
 		{
 			CreateNativeObject (new string [0], new GLib.Value [0]);

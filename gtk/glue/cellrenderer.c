@@ -89,7 +89,7 @@ GtkCellEditable *
 gtksharp_cellrenderer_invoke_start_editing (GType type, GtkCellRenderer *cell, GdkEvent *event, GtkWidget *widget, const gchar *path, GdkRectangle *background_area, GdkRectangle *cell_area, GtkCellRendererState flags)
 {
 	GtkCellRendererClass *klass = g_type_class_peek (type);
-	klass->start_editing (cell, event, widget, path, background_area, cell_area, flags);
+	return klass->start_editing (cell, event, widget, path, background_area, cell_area, flags);
 }
 
 GtkCellEditable * gtksharp_cellrenderer_base_start_editing (GtkCellRenderer *cell, GdkEvent *event, GtkWidget *widget, const gchar *path, GdkRectangle *background_area, GdkRectangle *cell_area, GtkCellRendererState flags);

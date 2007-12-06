@@ -418,6 +418,7 @@
       <member cname="GDK_WA_VISUAL" name="Visual" value="1 &lt;&lt; 6" />
       <member cname="GDK_WA_WMCLASS" name="Wmclass" value="1 &lt;&lt; 7" />
       <member cname="GDK_WA_NOREDIR" name="Noredir" value="1 &lt;&lt; 8" />
+      <member cname="GDK_WA_TYPE_HINT" name="TypeHint" value="1 &lt;&lt; 9" />
     </enum>
     <enum name="WindowClass" cname="GdkWindowClass" gtype="gdk_window_class_get_type" type="enum">
       <member cname="GDK_INPUT_OUTPUT" name="Output" />
@@ -848,6 +849,9 @@
         </parameters>
       </method>
       <method name="SupportsClipboardPersistence" cname="gdk_display_supports_clipboard_persistence">
+        <return-type type="gboolean" />
+      </method>
+      <method name="SupportsComposite" cname="gdk_display_supports_composite">
         <return-type type="gboolean" />
       </method>
       <method name="SupportsCursorAlpha" cname="gdk_display_supports_cursor_alpha">
@@ -1888,6 +1892,9 @@
       <method name="GetType" cname="gdk_keymap_get_type" shared="true">
         <return-type type="GType" />
       </method>
+      <method name="HaveBidiLayouts" cname="gdk_keymap_have_bidi_layouts">
+        <return-type type="gboolean" />
+      </method>
       <method name="LookupKey" cname="gdk_keymap_lookup_key">
         <return-type type="guint" />
         <parameters>
@@ -2277,6 +2284,9 @@
           <parameter type="gint*" name="win_y" />
         </parameters>
       </method>
+      <method name="Beep" cname="gdk_window_beep">
+        <return-type type="void" />
+      </method>
       <method name="BeginMoveDrag" cname="gdk_window_begin_move_drag">
         <return-type type="void" />
         <parameters>
@@ -2373,6 +2383,9 @@
           <parameter type="GdkDisplay*" name="display" />
           <parameter type="GdkNativeWindow" name="anid" />
         </parameters>
+      </method>
+      <method name="FreezeToplevelUpdatesLibgtkOnly" cname="gdk_window_freeze_toplevel_updates_libgtk_only">
+        <return-type type="void" />
       </method>
       <method name="FreezeUpdates" cname="gdk_window_freeze_updates">
         <return-type type="void" />
@@ -2660,6 +2673,12 @@
       <method name="SetChildShapes" cname="gdk_window_set_child_shapes">
         <return-type type="void" />
       </method>
+      <method name="SetComposited" cname="gdk_window_set_composited">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gboolean" name="composited" />
+        </parameters>
+      </method>
       <method name="SetCursor" cname="gdk_window_set_cursor">
         <return-type type="void" />
         <parameters>
@@ -2759,6 +2778,12 @@
           <parameter type="gboolean" name="modal" />
         </parameters>
       </method>
+      <method name="SetOpacity" cname="gdk_window_set_opacity">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="gdouble" name="opacity" />
+        </parameters>
+      </method>
       <method name="SetOverrideRedirect" cname="gdk_window_set_override_redirect">
         <return-type type="void" />
         <parameters>
@@ -2781,6 +2806,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="gboolean" name="skips_taskbar" />
+        </parameters>
+      </method>
+      <method name="SetStartupId" cname="gdk_window_set_startup_id">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="startup_id" />
         </parameters>
       </method>
       <method name="SetStaticGravities" cname="gdk_window_set_static_gravities">
@@ -2842,6 +2873,9 @@
         <return-type type="void" />
       </method>
       <method name="Stick" cname="gdk_window_stick">
+        <return-type type="void" />
+      </method>
+      <method name="ThawToplevelUpdatesLibgtkOnly" cname="gdk_window_thaw_toplevel_updates_libgtk_only">
         <return-type type="void" />
       </method>
       <method name="ThawUpdates" cname="gdk_window_thaw_updates">
@@ -2936,6 +2970,9 @@
           <parameter type="const-gchar*" name="spec" />
           <parameter type="GdkColor*" name="color" />
         </parameters>
+      </method>
+      <method name="ToString" cname="gdk_color_to_string">
+        <return-type type="gchar*" />
       </method>
       <method name="White" cname="gdk_color_white" deprecated="1" shared="true">
         <return-type type="gint" />
@@ -3301,6 +3338,15 @@
       <field name="Level" cname="level" type="gint" />
     </struct>
     <alias name="NativeWindow" cname="GdkNativeWindow" type="guint32" />
+    <struct name="PangoAttrEmbossColor" cname="GdkPangoAttrEmbossColor" opaque="true">
+      <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
+      <field name="Color" cname="color" type="PangoColor" access="public" writeable="true" />
+      <constructor cname="gdk_pango_attr_emboss_color_new">
+        <parameters>
+          <parameter type="const-GdkColor*" name="color" />
+        </parameters>
+      </constructor>
+    </struct>
     <struct name="PangoAttrEmbossed" cname="GdkPangoAttrEmbossed" opaque="true">
       <field name="Attr" cname="attr" type="PangoAttribute" access="public" writeable="true" />
       <field name="Embossed" cname="embossed" type="gboolean" access="public" writeable="true" />
@@ -3543,6 +3589,7 @@
       <field name="WmclassName" cname="wmclass_name" type="gchar*" />
       <field name="WmclassClass" cname="wmclass_class" type="gchar*" />
       <field name="OverrideRedirect" cname="override_redirect" type="gboolean" />
+      <field name="TypeHint" cname="type_hint" type="GdkWindowTypeHint" />
     </struct>
     <struct name="WindowObject" cname="GdkWindowObject">
       <field name="ParentInstance" cname="parent_instance" type="GdkDrawable" />
@@ -3566,11 +3613,13 @@
       <field name="GuffawGravity" cname="guffaw_gravity" bits="1" type="guint" />
       <field name="InputOnly" cname="input_only" bits="1" type="guint" />
       <field name="ModalHint" cname="modal_hint" bits="1" type="guint" />
+      <field name="Composited" cname="composited" bits="1" type="guint" />
       <field name="Destroyed" cname="destroyed" bits="2" type="guint" />
       <field name="AcceptFocus" cname="accept_focus" bits="1" type="guint" />
       <field name="FocusOnMap" cname="focus_on_map" bits="1" type="guint" />
       <field name="Shaped" cname="shaped" bits="1" type="guint" />
       <field name="EventMask" cname="event_mask" type="GdkEventMask" />
+      <field name="UpdateAndDescendantsFreezeCount" cname="update_and_descendants_freeze_count" type="guint" />
       <method name="GetType" cname="gdk_window_object_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -3664,9 +3713,6 @@
       </method>
       <method name="ListVisuals" cname="gdk_list_visuals" shared="true">
         <return-type type="GList*" />
-      </method>
-      <method name="NotifyStartupComplete" cname="gdk_notify_startup_complete" shared="true">
-        <return-type type="void" />
       </method>
       <method name="ParseArgs" cname="gdk_parse_args" shared="true">
         <return-type type="void" />
@@ -4103,6 +4149,12 @@
           <parameter type="GdkEvent*" name="event" />
         </parameters>
       </method>
+      <method name="RequestMotions" cname="gdk_event_request_motions" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="GdkEventMotion*" name="event" />
+        </parameters>
+      </method>
       <method name="SendClientMessage" cname="gdk_event_send_client_message" shared="true">
         <return-type type="gboolean" />
         <parameters>
@@ -4255,6 +4307,17 @@
         <return-type type="guint" />
         <parameters>
           <parameter type="guint" name="keyval" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Notify" cname="GdkNotify_">
+      <method name="StartupComplete" cname="gdk_notify_startup_complete" shared="true">
+        <return-type type="void" />
+      </method>
+      <method name="StartupCompleteWithId" cname="gdk_notify_startup_complete_with_id" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-gchar*" name="startup_id" />
         </parameters>
       </method>
     </class>
@@ -4758,6 +4821,40 @@
       </method>
     </class>
     <class name="Threads" cname="GdkThreads_">
+      <method name="AddIdle" cname="gdk_threads_add_idle" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="GSourceFunc" name="function" />
+          <parameter type="gpointer" name="data" />
+        </parameters>
+      </method>
+      <method name="AddIdleFull" cname="gdk_threads_add_idle_full" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="gint" name="priority" />
+          <parameter type="GSourceFunc" name="function" />
+          <parameter type="gpointer" name="data" />
+          <parameter type="GDestroyNotify" name="notify" />
+        </parameters>
+      </method>
+      <method name="AddTimeout" cname="gdk_threads_add_timeout" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="guint" name="interval" />
+          <parameter type="GSourceFunc" name="function" />
+          <parameter type="gpointer" name="data" />
+        </parameters>
+      </method>
+      <method name="AddTimeoutFull" cname="gdk_threads_add_timeout_full" shared="true">
+        <return-type type="guint" />
+        <parameters>
+          <parameter type="gint" name="priority" />
+          <parameter type="guint" name="interval" />
+          <parameter type="GSourceFunc" name="function" />
+          <parameter type="gpointer" name="data" />
+          <parameter type="GDestroyNotify" name="notify" />
+        </parameters>
+      </method>
       <method name="Enter" cname="gdk_threads_enter" shared="true">
         <return-type type="void" />
       </method>
@@ -4862,6 +4959,9 @@
           <parameter type="guchar" name="g" />
           <parameter type="guchar" name="b" />
         </parameters>
+      </method>
+      <method name="ApplyEmbeddedOrientation" cname="gdk_pixbuf_apply_embedded_orientation">
+        <return-type type="GdkPixbuf*" />
       </method>
       <method name="Composite" cname="gdk_pixbuf_composite">
         <return-type type="void" />

@@ -1,8 +1,6 @@
-// Pango.Units.cs - Unit to pixel mapping class.
+// Pango.AttrGravityHint - Pango.Attribute for GravityHint
 //
-// Author: Mike Kestner <mkestner@novell.com>
-//
-// Copyright (c) 2005 Novell, Inc.
+// Copyright (c) 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -23,25 +21,22 @@ namespace Pango {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public class Units {
+	public class AttrGravityHint : Attribute {
 
-		private Units () {}
-		
+		[DllImport("libpango-1.0-0.dll")]
+		static extern IntPtr pango_attr_gravity_hint_new (int hint);
+
+		public AttrGravityHint (GravityHint hint) : this (pango_attr_gravity_hint_new ((int) hint)) {}
+
+		internal AttrGravityHint (IntPtr raw) : base (raw) {}
+
 		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_pixels (int units);
+		static extern int pangosharp_attr_int_get_value (IntPtr raw);
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_scale ();
-
-		public static int FromPixels (int pixels)
-		{
-			return pixels * pangosharp_scale ();
+		public GravityHint GravityHint {
+			get {
+				return (GravityHint) pangosharp_attr_int_get_value (Handle);
+			}
 		}
-
-		public static int ToPixels (int units)
-		{
-			return pangosharp_pixels (units);
-		}
-
 	}
 }

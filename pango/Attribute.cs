@@ -1,6 +1,6 @@
 // Pango.Attribute - Attribute "base class"
 //
-// Copyright (c) 2005 Novell, Inc.
+// Copyright (c) 2005, 2007 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -75,6 +75,12 @@ namespace Pango {
 				return new AttrUnderlineColor (raw);
 			case Pango.AttrType.StrikethroughColor:
 				return new AttrStrikethroughColor (raw);
+#endif
+#if GTK_SHARP_2_12
+			case Pango.AttrType.Gravity:
+				return new AttrGravity (raw);
+			case Pango.AttrType.GravityHint:
+				return new AttrGravityHint (raw);
 #endif
 			default:
 				return new Attribute (raw);

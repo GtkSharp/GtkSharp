@@ -371,7 +371,7 @@ namespace GtkSharp.Generation {
 				IGeneratable gen = Generatable;
 				if (gen is IManualMarshaler) {
 					string [] result = new string [4];
-					result [0] = "for (int i = 0; i < native_" + CallName + ".Length; i++) {";
+					result [0] = "for (int i = 0; i < native_" + CallName + ".Length" + (NullTerminated ? " - 1" : "") + "; i++) {";
 					result [1] = "\t" + CallName + " [i] = " + Generatable.FromNative ("native_" + CallName + "[i]") + ";";
 					result [2] = "\t" + (gen as IManualMarshaler).ReleaseNative ("native_" + CallName + "[i]") + ";";
 					result [3] = "}";
