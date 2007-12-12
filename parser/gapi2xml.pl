@@ -22,7 +22,7 @@
 # Boston, MA 02111-1307, USA.
 ##############################################################
 
-$debug=0;
+$debug=$ENV{'GAPI_DEBUG'};
 
 use XML::LibXML;
 
@@ -1035,9 +1035,9 @@ sub parseInitFunc
 			# FIXME: This ignores the bool helper macro thingie.
 		} elsif ($line =~ /g_object_(class|interface)_install_prop/) {
 			my $prop = $line;
-			do {
+			while ($prop !~ /\)\s*;/) {
 				$prop .= $init_lines[++$linenum];
-			} until ($init_lines[$linenum] =~ /\)\s*;/);
+			}
 			addPropElem ($prop, $obj_el, 0);
 			$propcnt++;
 		} elsif ($line =~ /gtk_container_class_install_child_property/) {
