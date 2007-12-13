@@ -394,6 +394,12 @@ namespace GtkSharp.Generation {
 			this.invert = invert;
 		}
 
+		string CountNativeType {
+			get {
+				return SymbolTable.Table.GetMarshalType(count_elem.GetAttribute("type"));
+			}
+		}
+
 		string CountType {
 			get {
 				return SymbolTable.Table.GetCSType(count_elem.GetAttribute("type"));
@@ -417,8 +423,7 @@ namespace GtkSharp.Generation {
 
 		string CallCount (string name)
 		{
-			string result = name + " == null ? 0 : ";
-			result += CountCast + name + ".Length";
+			string result = CountCast + "(" + name + " == null ? 0 : " + name + ".Length)";
 			IGeneratable gen = SymbolTable.Table[count_elem.GetAttribute("type")];
 			return gen.CallByName (result);
 		}
@@ -435,9 +440,9 @@ namespace GtkSharp.Generation {
 		public override string NativeSignature {
 			get {
 				if (invert)
-					return CountType + " " + CountName + ", " + MarshalType + " " + Name;
+					return CountNativeType + " " + CountName + ", " + MarshalType + " " + Name;
 				else
-					return MarshalType + " " + Name + ", " + CountType + " " + CountName;
+					return MarshalType + " " + Name + ", " + CountNativeType + " " + CountName;
 			}
 		}
 	}
