@@ -126,7 +126,11 @@ foreach $fname (@hdrs) {
 				$deprecated = -1;
 			}
 			$ifdeflevel--;
-		} elsif ($line =~ /typedef struct\s*\{/) {
+		} elsif ($line =~ /typedef struct\s*\{?\s*$/) {
+			while ($line !~ /{/) {
+				chomp ($line);
+				$line .= <INFILE>;
+			}
 			my $first_line = $line;
 			my @lines = ();
 			$line = <INFILE>;
