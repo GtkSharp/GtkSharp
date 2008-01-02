@@ -86,3 +86,74 @@
 			}
 		}
 
+		[GLib.CDeclCallback]
+		delegate void MoveFocusSignalDelegate (IntPtr arg0, int arg1, IntPtr gch);
+
+		static void MoveFocusSignalCallback (IntPtr arg0, int arg1, IntPtr gch)
+		{
+			Gtk.MoveFocusArgs args = new Gtk.MoveFocusArgs ();
+			try {
+				GLib.Signal sig = ((GCHandle) gch).Target as GLib.Signal;
+				if (sig == null)
+					throw new Exception("Unknown signal GC handle received " + gch);
+
+				args.Args = new object[1];
+				args.Args[0] = (Gtk.DirectionType) arg1;
+				Gtk.MoveFocusHandler handler = (Gtk.MoveFocusHandler) sig.Handler;
+				handler (GLib.Object.GetObject (arg0), args);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void MoveFocusVMDelegate (IntPtr window, int direction);
+
+		static MoveFocusVMDelegate MoveFocusVMCallback;
+
+		static void movefocus_cb (IntPtr window, int direction)
+		{
+			try {
+				Window window_managed = GLib.Object.GetObject (window, false) as Window;
+				window_managed.OnMoveFocus ((Gtk.DirectionType) direction);
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+
+		private static void OverrideMoveFocus (GLib.GType gtype)
+		{
+			if (MoveFocusVMCallback == null)
+				MoveFocusVMCallback = new MoveFocusVMDelegate (movefocus_cb);
+			OverrideVirtualMethod (gtype, "move_focus", MoveFocusVMCallback);
+		}
+
+		[Obsolete ("Replaced by Keybinding signal on Gtk.Widget")]
+		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Window), ConnectionMethod="OverrideMoveFocus")]
+		protected virtual void OnMoveFocus (Gtk.DirectionType direction)
+		{
+			GLib.Value ret = GLib.Value.Empty;
+			GLib.ValueArray inst_and_params = new GLib.ValueArray (2);
+			GLib.Value[] vals = new GLib.Value [2];
+			vals [0] = new GLib.Value (this);
+			inst_and_params.Append (vals [0]);
+			vals [1] = new GLib.Value (direction);
+			inst_and_params.Append (vals [1]);
+			g_signal_chain_from_overridden (inst_and_params.ArrayPtr, ref ret);
+			foreach (GLib.Value v in vals)
+				v.Dispose ();
+		}
+
+		[Obsolete ("Replaced by Keybinding signal on Gtk.Widget")]
+		[GLib.Signal("move_focus")]
+		public event Gtk.MoveFocusHandler MoveFocus {
+			add {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "move_focus", new MoveFocusSignalDelegate(MoveFocusSignalCallback));
+				sig.AddDelegate (value);
+			}
+			remove {
+				GLib.Signal sig = GLib.Signal.Lookup (this, "move_focus", new MoveFocusSignalDelegate(MoveFocusSignalCallback));
+				sig.RemoveDelegate (value);
+			}
+		}
+

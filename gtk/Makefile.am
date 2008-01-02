@@ -16,6 +16,7 @@ sources = 				\
 	BindingAttribute.cs		\
 	ChildPropertyAttribute.cs	\
 	ITreeNode.cs			\
+	MoveFocusHandler.cs		\
 	NodeCellDataFunc.cs		\
 	NodeSelection.cs		\
 	NodeStore.cs			\
