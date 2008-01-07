@@ -84,6 +84,7 @@ namespace GtkSharp.Generation {
 			AddType (new LPUGen ("size_t"));
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
+			AddType (new LPUGen ("unsigned long"));
 			AddType (new LPUGen ("gsize"));
 #if OFF_T_8
 			AddType (new AliasGen ("off_t", "long"));
