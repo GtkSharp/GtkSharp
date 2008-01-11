@@ -6,7 +6,7 @@ ASSEMBLY_NAME = glib-sharp
 noinst_DATA = $(ASSEMBLY) $(ASSEMBLY).config $(POLICY_ASSEMBLIES)
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glib-sharp-2.0.pc
-gapidir = $(libdir)/pkgconfig
+gapidir = $(datadir)/gapi-2.0
 gapi_DATA = glib-api.xml
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs $(POLICY_ASSEMBLIES) $(POLICY_CONFIGS)
