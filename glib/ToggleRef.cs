@@ -44,7 +44,8 @@ namespace GLib {
 				if (reference is WeakReference) {
 					WeakReference weak = reference as WeakReference;
 					return weak.IsAlive;
-				}
+				} else if (reference == null)
+					return false;
 				return true;
 			}
 		}

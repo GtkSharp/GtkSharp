@@ -79,15 +79,15 @@ namespace GLib {
 				return;
 
 			disposed = true;
+			ToggleRef toggle_ref = Objects [Handle] as ToggleRef;
+			Objects.Remove (Handle);
 			try {
-				ToggleRef toggle_ref = Objects [Handle] as ToggleRef;
 				if (toggle_ref != null)
 					toggle_ref.Free ();
 			} catch (Exception e) {
 				Console.WriteLine ("Exception while disposing a " + this + " in Gtk#");
 				throw e;
 			}
-			Objects.Remove (Handle);
 			handle = IntPtr.Zero;
 			GC.SuppressFinalize (this);
 		}
@@ -296,9 +296,9 @@ namespace GLib {
 
 				if (handle != IntPtr.Zero) {
 					ToggleRef tref = Objects [handle] as ToggleRef;
+					Objects.Remove (handle);
 					if (tref != null)
 						tref.Free ();
-					Objects.Remove (handle);
 				}
 				handle = value;
 				if (value != IntPtr.Zero)
