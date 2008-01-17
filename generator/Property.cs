@@ -105,7 +105,7 @@ namespace GtkSharp.Generation {
 
 			if (IsNew || (container_type.Parent != null && container_type.Parent.GetPropertyRecursively (Name) != null))
 				modifiers = "new ";
-			else if (implementor != null && implementor.Parent.GetPropertyRecursively (Name) != null)
+			else if (implementor != null && implementor.Parent != null && implementor.Parent.GetPropertyRecursively (Name) != null)
 				modifiers = "new ";
 
 			string name = Name;
