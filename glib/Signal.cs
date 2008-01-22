@@ -22,6 +22,7 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	[Flags]
@@ -51,19 +52,33 @@ namespace GLib {
 	public class Signal {
 
 		GCHandle gc_handle;
-		Object obj;
+		ToggleRef tref;
 		string name;
 		uint before_id = UInt32.MaxValue;
 		uint after_id = UInt32.MaxValue;
 		Delegate marshaler;
 
+		~Signal ()
+		{
+			gc_handle.Free ();
+		}
+
 		private Signal (GLib.Object obj, string signal_name, Delegate marshaler)
 		{
-			this.obj = obj;
+			tref = obj.ToggleRef;
 			name = signal_name;
 			this.marshaler = marshaler;
 			gc_handle = GCHandle.Alloc (this, GCHandleType.Weak);
-			obj.Signals [name] = this;
+			tref.Signals [name] = this;
+		}
+
+		internal void Free ()
+		{
+			DisconnectHandler (before_id);
+			DisconnectHandler (after_id);
+			before_handler = after_handler = marshaler = null;
+			gc_handle.Free ();
+			GC.SuppressFinalize (this);
 		}
 
 		public static Signal Lookup (GLib.Object obj, string name)
@@ -73,7 +88,7 @@ namespace GLib {
 
 		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
 		{
-			Signal result = obj.Signals [name] as Signal;
+			Signal result = obj.ToggleRef.Signals [name] as Signal;
 			if (result == null)
 				result = new Signal (obj, name, marshaler);
 			return result as Signal;
@@ -84,7 +99,7 @@ namespace GLib {
 
 		public Delegate Handler {
 			get {
-				InvocationHint hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (obj.Handle), typeof (InvocationHint));
+				InvocationHint hint = (InvocationHint) Marshal.PtrToStructure (g_signal_get_invocation_hint (tref.Handle), typeof (InvocationHint));
 				if (hint.run_type == SignalFlags.RunFirst)
 					return before_handler;
 				else
@@ -95,7 +110,7 @@ namespace GLib {
 		uint Connect (int flags)
 		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			uint id = g_signal_connect_data (obj.Handle, native_name, marshaler, (IntPtr) gc_handle, IntPtr.Zero, flags);
+			uint id = g_signal_connect_data (tref.Handle, native_name, marshaler, (IntPtr) gc_handle, IntPtr.Zero, flags);
 			GLib.Marshaller.Free (native_name);
 			return id;
 		}
@@ -134,13 +149,13 @@ namespace GLib {
 			}
 
 			if (after_id == UInt32.MaxValue && before_id == UInt32.MaxValue)
-				obj.Signals.Remove (name);
+				tref.Signals.Remove (name);
 		}
 
 		void DisconnectHandler (uint handler_id)
 		{
-			if (handler_id != UInt32.MaxValue && g_signal_handler_is_connected (obj.Handle, handler_id))
-				g_signal_handler_disconnect (obj.Handle, handler_id);
+			if (handler_id != UInt32.MaxValue && g_signal_handler_is_connected (tref.Handle, handler_id))
+				g_signal_handler_disconnect (tref.Handle, handler_id);
 		}
 
 		[CDeclCallback]

@@ -22,6 +22,7 @@
 namespace GLib {
 
 	using System;
+	using System.Collections;
 	using System.Runtime.InteropServices;
 
 	internal class ToggleRef {
@@ -29,6 +30,7 @@ namespace GLib {
 		IntPtr handle;
 		object reference;
 		GCHandle gch;
+		Hashtable signals;
 
 		public ToggleRef (GLib.Object target)
 		{
@@ -50,6 +52,20 @@ namespace GLib {
 			}
 		}
 
+		public IntPtr Handle {
+			get {
+				return handle;
+			}
+		}
+
+		public Hashtable Signals {
+			get {
+				if (signals == null)
+					signals = new Hashtable ();
+				return signals;
+			}
+		}
+
 		public GLib.Object Target {
 			get {
 				if (reference is GLib.Object)
@@ -62,6 +78,9 @@ namespace GLib {
 
 		public void Free ()
 		{
+			foreach (Signal s in Signals.Values)
+				s.Free ();
+			Signals.Clear ();
 			g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
 			reference = null;
 			gch.Free ();

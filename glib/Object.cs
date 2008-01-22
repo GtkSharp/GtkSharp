@@ -32,6 +32,7 @@ namespace GLib {
 	public class Object : IWrapper, IDisposable {
 
 		IntPtr handle;
+		ToggleRef tref;
 		bool disposed = false;
 		Hashtable data;
 		static Hashtable Objects = new Hashtable();
@@ -295,14 +296,17 @@ namespace GLib {
 					return;
 
 				if (handle != IntPtr.Zero) {
-					ToggleRef tref = Objects [handle] as ToggleRef;
 					Objects.Remove (handle);
-					if (tref != null)
+					if (tref != null) {
 						tref.Free ();
+						tref = null;
+					}
 				}
 				handle = value;
-				if (value != IntPtr.Zero)
-					Objects [value] = new ToggleRef (this);
+				if (value != IntPtr.Zero) {
+					tref = new ToggleRef (this);
+					Objects [value] = tref;
+				}
 			}
 		}	
 
@@ -327,23 +331,19 @@ namespace GLib {
 			}
 		}
 
+		internal ToggleRef ToggleRef {
+			get {
+				return tref;
+			}
+		}
+
 		public IntPtr Handle {
 			get {
 				return handle;
 			}
 		}
 
-		Hashtable signals;
-		internal Hashtable Signals {
-			get {
-				if (signals == null)
-					signals = new Hashtable ();
-				return signals;
-			}
-		}
-
 		Hashtable before_signals;
-
 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
 		protected Hashtable BeforeSignals {
 			get {
