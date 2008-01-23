@@ -352,38 +352,42 @@
 
 		private void BindFields (object target, Type type)
 		{
-			System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+			System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.DeclaredOnly;
 			if (target != null)
 				flags |= System.Reflection.BindingFlags.Instance;
 			else
 				flags |= System.Reflection.BindingFlags.Static;
 			
-			System.Reflection.FieldInfo[] fields = type.GetFields (flags);
-			if (fields == null)
-				return;
-			
-			foreach (System.Reflection.FieldInfo field in fields)
-			{
-				object[] attrs = field.GetCustomAttributes (typeof (WidgetAttribute), false);
-				if (attrs == null || attrs.Length == 0)
-					continue;
-				// The widget to field binding must be 1:1, so only check
-				// the first attribute.
-				WidgetAttribute attr = (WidgetAttribute) attrs[0];
-				Gtk.Widget widget;
-				if (attr.Specified) 
-					widget = GetWidget (attr.Name);
-				else 
-					widget = GetWidget (field.Name);
+			do {
+				System.Reflection.FieldInfo[] fields = type.GetFields (flags);
+				if (fields == null)
+					return;
+				
+				foreach (System.Reflection.FieldInfo field in fields)
+				{
+					object[] attrs = field.GetCustomAttributes (typeof (WidgetAttribute), false);
+					if (attrs == null || attrs.Length == 0)
+						continue;
+					// The widget to field binding must be 1:1, so only check
+					// the first attribute.
+					WidgetAttribute attr = (WidgetAttribute) attrs[0];
+					Gtk.Widget widget;
+					if (attr.Specified) 
+						widget = GetWidget (attr.Name);
+					else 
+						widget = GetWidget (field.Name);
 
-				if (widget != null)
-					try {
-						field.SetValue (target, widget, flags, null, null);
-					} catch (Exception e) {
-						Console.WriteLine ("Unable to set value for field " + field.Name);
-						throw e;
-					}
+					if (widget != null)
+						try {
+							field.SetValue (target, widget, flags, null, null);
+						} catch (Exception e) {
+							Console.WriteLine ("Unable to set value for field " + field.Name);
+							throw e;
+						}
+				}
+				type = type.BaseType;
 			}
+			while (type != typeof(object) && type != null);
 		}
 		
 		public void BindFields (object target)
