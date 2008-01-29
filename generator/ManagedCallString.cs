@@ -29,7 +29,7 @@ namespace GtkSharp.Generation {
 		
 		ArrayList parms = new ArrayList ();
 		ArrayList special = new ArrayList ();
-		bool has_error;
+		string error_param = null;
 
 		public ManagedCallString (Parameters parms)
 		{
@@ -41,7 +41,7 @@ namespace GtkSharp.Generation {
 					i += 2;
 					
 				else if (p is ErrorParameter) {
-					has_error = true;
+					error_param = p.Name;
 					continue;
 				}
 				this.parms.Add (p);
@@ -59,8 +59,8 @@ namespace GtkSharp.Generation {
 		{
 			string ret = "";
 
-			if (has_error)
-				ret = indent + "error = IntPtr.Zero;\n";
+			if (error_param != null)
+				ret = indent + error_param + " = IntPtr.Zero;\n";
 
 			for (int i = 0; i < parms.Count; i ++) {
 				if ((bool)special[i] == false)
