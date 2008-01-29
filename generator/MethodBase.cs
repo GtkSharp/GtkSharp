@@ -66,7 +66,7 @@ namespace GtkSharp.Generation {
 
 		public string CName {
 			get {
-				return elem.GetAttribute ("cname");
+				return SymbolTable.Table.MangleName (elem.GetAttribute ("cname"));
 			}
 		}
 

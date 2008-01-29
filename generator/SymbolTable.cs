@@ -388,6 +388,10 @@ namespace GtkSharp.Generation {
 				return "_internal";
 			case "where":
 				return "wh3r3";
+			case "foreach":
+				return "for_each";
+			case "remove":
+				return "_remove";
 			default:
 				break;
 			}
