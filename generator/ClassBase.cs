@@ -355,6 +355,8 @@ namespace GtkSharp.Generation {
 			if (check_self && p == null) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
+					if (igen == null)
+						continue;
 					p = igen.GetMethodRecursively (name, true);
 					if (p != null)
 						break;
@@ -392,6 +394,8 @@ namespace GtkSharp.Generation {
 			if (check_self && p == null) {
 				foreach (string iface in interfaces) {
 					ClassBase igen = SymbolTable.Table.GetClassGen (iface);
+					if (igen == null)
+						continue;
 					p = igen.GetSignalRecursively (name, true);
 					if (p != null)
 						break;
