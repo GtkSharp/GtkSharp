@@ -7,8 +7,8 @@
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
   <Docs>
-    <summary>To be added</summary>
-    <remarks>To be added</remarks>
+    <summary>Process spawning methods</summary>
+    <remarks />
     <since version="Gtk# 2.4" />
   </Docs>
   <Base>
@@ -27,11 +27,11 @@
         <Parameter Name="command_line" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
+        <summary>Spawns a process on a Screen using a commandline string.</summary>
         <param name="screen">a <see cref="T:Gdk.Screen" /></param>
         <param name="command_line">a <see cref="T:System.String" /></param>
         <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>To be added</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -40,8 +40,72 @@
       <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
+        <summary>Do not use.</summary>
+        <remarks>No instance methods exist.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnScreen">
+      <MemberSignature Language="C#" Value="public static bool OnScreen (Gdk.Screen screen, string working_directory, string[] argv, string[] envp, GLib.SpawnFlags flags, GLib.SpawnChildSetupFunc child_setup, out int child_pid);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="screen" Type="Gdk.Screen" />
+        <Parameter Name="working_directory" Type="System.String" />
+        <Parameter Name="argv" Type="System.String[]" />
+        <Parameter Name="envp" Type="System.String[]" />
+        <Parameter Name="flags" Type="GLib.SpawnFlags" />
+        <Parameter Name="child_setup" Type="GLib.SpawnChildSetupFunc" />
+        <Parameter Name="child_pid" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="screen">A screen to spawn on.</param>
+        <param name="working_directory">The process working directory.</param>
+        <param name="argv">Argument list, with program at index 0.</param>
+        <param name="envp">List of environment variables.</param>
+        <param name="flags">Spawning flags.</param>
+        <param name="child_setup">Child setup callback.</param>
+        <param name="child_pid">Returns the child process id.</param>
+        <summary>Spawns a process on a screen using argument and environment lists.</summary>
+        <returns>If <see langword="true"/>, the process was spawned successfully.</returns>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnScreenWithPipes">
+      <MemberSignature Language="C#" Value="public static bool OnScreenWithPipes (Gdk.Screen screen, string working_directory, string[] argv, string[] envp, GLib.SpawnFlags flags, GLib.SpawnChildSetupFunc child_setup, out int child_pid, out int standard_input, out int standard_output, out int standard_error);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="screen" Type="Gdk.Screen" />
+        <Parameter Name="working_directory" Type="System.String" />
+        <Parameter Name="argv" Type="System.String[]" />
+        <Parameter Name="envp" Type="System.String[]" />
+        <Parameter Name="flags" Type="GLib.SpawnFlags" />
+        <Parameter Name="child_setup" Type="GLib.SpawnChildSetupFunc" />
+        <Parameter Name="child_pid" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="standard_input" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="standard_output" Type="System.Int32&amp;" RefType="out" />
+        <Parameter Name="standard_error" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="screen">A screen to spawn on.</param>
+        <param name="working_directory">The process working directory.</param>
+        <param name="argv">Argument list, with program at index 0.</param>
+        <param name="envp">List of environment variables.</param>
+        <param name="flags">Spawning flags.</param>
+        <param name="child_setup">Child setup callback.</param>
+        <param name="child_pid">Returns the child process id.</param>
+        <param name="standard_input">Returns a stdin pipe.</param>
+        <param name="standard_output">Returns a stdout pipe.</param>
+        <param name="standard_error">Returns a stderr pipe.</param>
+        <summary>Spawns a process on a screen using argument and environment lists.</summary>
+        <returns>If <see langword="true"/>, the process was spawned successfully.</returns>
+        <remarks />
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
   </Members>
