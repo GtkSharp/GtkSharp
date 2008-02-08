@@ -349,7 +349,7 @@ namespace GtkSharp.Generation {
 					result.Add (String.Format ("\tnative_{0} [i] = {1};", CallName, gen.CallByName (CallName + "[i]")));
 
 				if (NullTerminated)
-					result.Add (String.Format ("native_{0} [cnt_{0} + 1] = IntPtr.Zero;", CallName));
+					result.Add (String.Format ("native_{0} [cnt_{0}] = IntPtr.Zero;", CallName));
 				return (string[]) result.ToArray (typeof (string));
 			}
 		}
