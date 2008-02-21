@@ -33,17 +33,12 @@ namespace GLib {
 	internal class SourceProxy {
 		internal Delegate real_handler;
 		internal Delegate proxy_handler;
+		internal uint ID;
 
 		internal void Remove ()
 		{
-			ArrayList keys = new ArrayList ();
-			lock (Source.source_handlers) {
-				foreach (uint code in Source.source_handlers.Keys)
-					if (Source.source_handlers [code] == this)
-						keys.Add (code);
-				foreach (object key in keys)
-					Source.source_handlers.Remove (key);
-			}
+			lock (Source.source_handlers)
+				Source.source_handlers.Remove (ID);
 			real_handler = null;
 			proxy_handler = null;
 		}

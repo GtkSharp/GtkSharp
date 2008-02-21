@@ -68,11 +68,11 @@ namespace GLib {
 		public static uint Add (IdleHandler hndlr)
 		{
 			IdleProxy p = new IdleProxy (hndlr);
-			uint code = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
+			p.ID = g_idle_add ((IdleHandlerInternal) p.proxy_handler, IntPtr.Zero);
 			lock (Source.source_handlers)
-				Source.source_handlers [code] = p;
+				Source.source_handlers [p.ID] = p;
 
-			return code;
+			return p.ID;
 		}
 		
 		[DllImport("libglib-2.0-0.dll")]

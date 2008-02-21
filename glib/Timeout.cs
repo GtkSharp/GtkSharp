@@ -62,11 +62,11 @@ namespace GLib {
 		{
 			TimeoutProxy p = new TimeoutProxy (hndlr);
 
-			uint code = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+			p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
 			lock (Source.source_handlers)
-				Source.source_handlers [code] = p;
+				Source.source_handlers [p.ID] = p;
 
-			return code;
+			return p.ID;
 		}
 	}
 }
