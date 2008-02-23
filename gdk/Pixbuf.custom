@@ -175,6 +175,37 @@
 			return ret;
 		}
 
+		class DestroyHelper {
+
+			GCHandle gch;
+			GCHandle data_handle;
+			PixbufDestroyNotify notify;
+
+			public DestroyHelper (byte[] data, PixbufDestroyNotify notify)
+			{
+				gch = GCHandle.Alloc (this);
+				data_handle = GCHandle.Alloc (data, GCHandleType.Pinned);
+				this.notify = notify;
+			}
+
+			void ReleaseHandles (byte[] data)
+			{
+				data_handle.Free ();
+				if (notify != null)
+					notify (data);
+				gch.Free ();
+			}
+
+			PixbufDestroyNotify handler;
+			public PixbufDestroyNotify Handler {
+				get {
+					if (handler == null)
+						handler = new PixbufDestroyNotify (ReleaseHandles);
+					return handler;
+				}
+			}
+		}
+
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
 		static extern IntPtr gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkSharp.PixbufDestroyNotifyNative destroy_fn, IntPtr destroy_fn_data);
 
@@ -183,13 +214,18 @@
 			if (GetType () != typeof (Pixbuf)) {
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
-			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (destroy_fn);
+			DestroyHelper helper = new DestroyHelper (data, destroy_fn);
+			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (helper.Handler);
 			Raw = gdk_pixbuf_new_from_data(data, (int) colorspace, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
 			PersistentData ["new_from_data_destroy_fn_wrapper"] = destroy_fn_wrapper;
 		}
 
 		// overload to default the colorspace
 		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : this (data, Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn) {}
+
+		public Pixbuf(byte [] data, bool has_alpha, int bits_per_sample, int width, int height, int rowstride) : this (data, Gdk.Colorspace.Rgb, has_alpha, bits_per_sample, width, height, rowstride, null) {}
+
+		public Pixbuf(byte [] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride) : this (data, colorspace, has_alpha, bits_per_sample, width, height, rowstride, null) {}
 
 		public unsafe Pixbuf(byte[] data, bool copy_pixels) : base (IntPtr.Zero)
 		{
