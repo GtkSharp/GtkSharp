@@ -56,7 +56,7 @@ namespace GtkSharp.Generation {
 
 		public string ReleaseNative (string var_name)
 		{
-			return "GLib.Marshaller.Free (" + var_name + ")";
+			return "Marshal.FreeHGlobal (" + var_name + ")";
 		}
 	}
 }
