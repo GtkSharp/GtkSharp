@@ -1,4 +1,4 @@
-#SUBDIRS = . glue
+SUBDIRS = . glue
 
 pkg = atk
 METADATA = Atk.metadata
@@ -7,7 +7,8 @@ references = ../glib/glib-sharp.dll
 
 sources = 
 
-customs = 
+customs =			\
+	Util.custom
 
 add_dist = makefile.win32
 
