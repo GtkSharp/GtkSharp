@@ -28,15 +28,29 @@ namespace GtkSharp.Generation {
 
 		
 		private XmlElement elem;
+		bool is_null_term;
+		bool is_array;
+		bool elements_owned;
+		bool owned;
+		string ctype = String.Empty;
+		string element_ctype = String.Empty;
 
 		public ReturnValue (XmlElement elem) 
 		{
 			this.elem = elem;
+			if (elem != null) {
+				is_null_term = elem.HasAttribute ("null_term_array");
+				is_array = elem.HasAttribute ("array");
+				elements_owned = elem.GetAttribute ("elements_owned") == "true";
+				owned = elem.GetAttribute ("owned") == "true";
+				ctype = elem.GetAttribute("type");
+				element_ctype = elem.GetAttribute ("element_type");
+			}
 		}
 
 		public string CType {
 			get {
-				return elem == null ? String.Empty : elem.GetAttribute("type");
+				return ctype;
 			}
 		}
 
@@ -48,7 +62,7 @@ namespace GtkSharp.Generation {
 				if (ElementType != String.Empty)
 					return ElementType + "[]";
 
-				return IGen.QualifiedName + (IsArray ? "[]" : String.Empty);
+				return IGen.QualifiedName + (is_array || is_null_term ? "[]" : String.Empty);
 			}
 		}
 
@@ -60,28 +74,10 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		string ElementCType {
-			get {
-				if (elem != null && elem.HasAttribute ("element_type"))
-					return elem.GetAttribute ("element_type");
-
-				return String.Empty;
-			}
-		}
-
-		bool ElementsOwned {
-			get {
-				if (elem != null && elem.GetAttribute ("elements_owned") == "true")
-					return true;
-
-				return false;
-			}
-		}
-
 		string ElementType {
 			get {
-				if (ElementCType.Length > 0)
-					return SymbolTable.Table.GetCSType (ElementCType);
+				if (element_ctype.Length > 0)
+					return SymbolTable.Table.GetCSType (element_ctype);
 
 				return String.Empty;
 			}
@@ -96,12 +92,6 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		bool IsArray {
-			get {
-				return elem == null ? false : elem.HasAttribute ("array");
-			}
-		}
-
 		public bool IsVoid {
 			get {
 				return CSType == "void";
@@ -112,13 +102,9 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				return IGen.MarshalReturnType + (IsArray ? "[]" : String.Empty);
-			}
-		}
-
-		bool Owned {
-			get {
-				return elem.GetAttribute ("owned") == "true";
+				else if (is_null_term)
+					return "IntPtr";
+				return IGen.MarshalReturnType + (is_array ? "[]" : String.Empty);
 			}
 		}
 
@@ -126,7 +112,9 @@ namespace GtkSharp.Generation {
 			get {
 				if (IGen == null)
 					return String.Empty;
-				return IGen.ToNativeReturnType + (IsArray ? "[]" : String.Empty);
+				else if (is_null_term)
+					return "IntPtr"; //FIXME
+				return IGen.ToNativeReturnType + (is_array ? "[]" : String.Empty);
 			}
 		}
 
@@ -137,10 +125,12 @@ namespace GtkSharp.Generation {
 
 			if (ElementType != String.Empty) {
 				string type_str = "typeof (" + ElementType + ")";
-				string args = type_str + ", " + (Owned ? "true" : "false") + ", " + (ElementsOwned ? "true" : "false");
+				string args = type_str + ", " + (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
 				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + args), type_str);
 			} else if (IGen is HandleBase)
-				return ((HandleBase)IGen).FromNative (var, Owned);
+				return ((HandleBase)IGen).FromNative (var, owned);
+			else if (is_null_term)
+				return String.Format ("GLib.Marshaller.NullTermPtrToStringArray ({0}, {1})", var, owned ? "true" : "false");
 			else
 				return IGen.FromNativeReturn (var);
 		}
@@ -151,9 +141,10 @@ namespace GtkSharp.Generation {
 				return String.Empty;
 
 			if (ElementType.Length > 0) {
-				string args = ", typeof (" + ElementType + "), " + (Owned ? "true" : "false") + ", " + (ElementsOwned ? "true" : "false");
+				string args = ", typeof (" + ElementType + "), " + (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
 				var = "new " + IGen.QualifiedName + "(" + var + args + ")";
-			}
+			} else if (is_null_term)
+				return String.Format ("GLib.Marshaller.StringArrayToNullTermPtr ({0})", var);
 
 			if (IGen is IManualMarshaler)
 				return (IGen as IManualMarshaler).AllocNative (var);

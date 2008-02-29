@@ -150,6 +150,33 @@ namespace GLib {
 			return result;
 		}
 
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_strfreev (IntPtr mem);
+
+		public static void StrFreeV (IntPtr null_term_array)
+		{
+			g_strfreev (null_term_array);
+		}
+
+		public static string[] NullTermPtrToStringArray (IntPtr null_term_array, bool owned)
+		{
+			if (null_term_array == IntPtr.Zero)
+				return new string [0];
+
+			int count = 0;
+			System.Collections.ArrayList result = new System.Collections.ArrayList ();
+			IntPtr s = Marshal.ReadIntPtr (null_term_array, count++ * IntPtr.Size);
+			while (s != IntPtr.Zero) {
+				result.Add (Utf8PtrToString (s));
+				s = Marshal.ReadIntPtr (null_term_array, count++ * IntPtr.Size);
+			}
+
+			if (owned)
+				g_strfreev (null_term_array);
+
+			return (string[]) result.ToArray (typeof(string));
+		}
+
 		public static string[] PtrToStringArrayGFree (IntPtr string_array)
 		{
 			if (string_array == IntPtr.Zero)
@@ -179,6 +206,11 @@ namespace GLib {
 
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_malloc(UIntPtr size);
+
+		public static IntPtr Malloc (ulong size)
+		{
+			return g_malloc (new UIntPtr (size));
+		}
 
 		static bool check_sixtyfour () {
 			int szint = Marshal.SizeOf (typeof (int));
