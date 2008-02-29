@@ -132,7 +132,7 @@ namespace GtkDemo
 
 		private void ActionActivated (object sender, EventArgs a)
 		{
-			Action action = sender as Action;
+			Gtk.Action action = sender as Gtk.Action;
 			Console.WriteLine ("Action \"{0}\" activated", action.Name);
 		}
 

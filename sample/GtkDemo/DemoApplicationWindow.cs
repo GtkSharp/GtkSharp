@@ -156,7 +156,7 @@ namespace GtkDemo
 
 		private void ActionActivated (object sender, EventArgs a)
 		{
-			Action action = sender as Action;
+			Gtk.Action action = sender as Gtk.Action;
 			MessageDialog md;
 
 			md = new MessageDialog (this, DialogFlags.DestroyWithParent,

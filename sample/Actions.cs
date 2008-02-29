@@ -189,7 +189,7 @@ namespace GtkSamples {
 
 		static void OnActivate (object obj, EventArgs args)
 		{
-			Action action = (Action)obj;
+			Gtk.Action action = (Gtk.Action)obj;
 			Console.WriteLine ("Action {0} (type={1}) activated",
 					   action.Name, action.GetType ().FullName);
 		}
@@ -218,7 +218,7 @@ namespace GtkSamples {
 
 		static void OnToggleCnp (object obj, EventArgs args)
 		{
-			Action action = (ToggleAction)obj;
+			Gtk.Action action = (ToggleAction)obj;
 			bool sensitive = ((ToggleAction)action).Active;
 			action = group.GetAction ("cut");
 			action.Sensitive = sensitive;
@@ -262,7 +262,7 @@ namespace GtkSamples {
 			for (int i = 0; i < num; i++) {
 				string name = "DynAction" + i;
 				string label = "Dynamic Action " + i;
-				Action action = new Action (name, label);
+				Gtk.Action action = new Gtk.Action (name, label);
 				dynGroup.Add (action);
 				uim.AddUi (mergeId, "/menubar/DynamicMenu", name,
 					   name, UIManagerItemType.Menuitem, false);
@@ -299,7 +299,7 @@ namespace GtkSamples {
 
 		static void OnSelect (object obj, EventArgs args)
 		{
-			Action action = (Action) actions[obj];
+			Gtk.Action action = (Gtk.Action) actions[obj];
 			if (action.Tooltip != null)
 				statusbar.Push (0, action.Tooltip);
 		}
