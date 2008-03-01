@@ -77,6 +77,11 @@ namespace Gdk {
 			}
 		}
 
+		public static Event New (IntPtr raw)
+		{
+			return GetEvent (raw);
+		}
+
 		public static Event GetEvent (IntPtr raw)
 		{
 			if (raw == IntPtr.Zero)
