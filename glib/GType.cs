@@ -138,6 +138,11 @@ namespace GLib {
 			return LookupType (gtype.Val);
 		}
 
+		public static void Init ()
+		{
+			// cctor already calls g_type_init.
+		}
+
 		public static Type LookupType (IntPtr typeid)
 		{
 			if (types.Contains (typeid))
