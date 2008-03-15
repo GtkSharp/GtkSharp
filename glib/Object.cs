@@ -188,7 +188,6 @@ namespace GLib {
 				
 				GInterfaceInfo info = adapter.Info;
 				g_type_add_interface_static (gtype.Val, adapter.GType.Val, ref info);
-				Console.WriteLine (adapter);
 			}
 		}
 
