@@ -541,7 +541,7 @@ namespace GtkSharp.Generation {
 		{
 			int idx = param_list.IndexOf (p);
 
-			if (idx > 0 && p.IsLength && this [idx - 1].IsString)
+			if (idx > 0 && p.IsLength && p.PassAs == String.Empty && this [idx - 1].IsString)
 				return true;
 
 			if (p.IsCount && ((idx > 0 && this [idx - 1].IsArray) ||

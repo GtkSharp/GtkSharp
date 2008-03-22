@@ -42,7 +42,7 @@ namespace GtkSharp.Generation {
 					continue;
 
 				has_cb = has_cb || p.Generatable is CallbackGen;
-				if (p.IsUserData && has_cb && (i == parms.Count - 1)) 
+				if (p.IsUserData && has_cb) 
 					continue;
 
 				if (p.CType == "GError**")

@@ -122,7 +122,7 @@ namespace GtkSharp.Generation {
 					p.CallName = p.Name;
 					result [i] = p.CallString;
 					if (p.IsUserData)
-						result [i] = "IntPtr.Zero"; 
+						result [i] = "__data"; 
 				}
 
 				return String.Join (", ", result);
@@ -139,10 +139,25 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tinternal class " + Name + "Invoker {");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\t" + Name + "Native native_cb;");
+			sw.WriteLine ("\t\tIntPtr __data;");
+			sw.WriteLine ("\t\tGLib.DestroyNotify __notify;");
 			sw.WriteLine ();
-			sw.WriteLine ("\t\tinternal " + Name + "Invoker (" + Name + "Native native_cb)");
+			sw.WriteLine ("\t\t~" + Name + "Invoker ()");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (__notify == null)");
+			sw.WriteLine ("\t\t\t\treturn;");
+			sw.WriteLine ("\t\t\t__notify (__data);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tinternal " + Name + "Invoker (" + Name + "Native native_cb) : this (native_cb, IntPtr.Zero, null) {}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tinternal " + Name + "Invoker (" + Name + "Native native_cb, IntPtr data) : this (native_cb, data, null) {}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tinternal " + Name + "Invoker (" + Name + "Native native_cb, IntPtr data, GLib.DestroyNotify notify)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tthis.native_cb = native_cb;");
+			sw.WriteLine ("\t\t\t__data = data;");
+			sw.WriteLine ("\t\t\t__notify = notify;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tinternal " + QualifiedName + " Handler {");

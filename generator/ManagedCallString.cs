@@ -30,6 +30,8 @@ namespace GtkSharp.Generation {
 		ArrayList parms = new ArrayList ();
 		ArrayList special = new ArrayList ();
 		string error_param = null;
+		string user_data_param = null;
+		string destroy_param = null;
 
 		public ManagedCallString (Parameters parms)
 		{
@@ -37,10 +39,14 @@ namespace GtkSharp.Generation {
 				Parameter p = parms [i];
 				if (p.IsLength && parms [i-1].IsString) 
 					continue;
-				else if (p.Scope == "notified")
+				else if (p.Scope == "notified") {
+					user_data_param = parms[i+1].Name;
+					destroy_param = parms[i+2].Name;
 					i += 2;
-					
-				else if (p is ErrorParameter) {
+				} else if (p.IsUserData && parms [i-1].Generatable is CallbackGen) {
+					user_data_param = p.Name;
+					continue;
+				} else if (p is ErrorParameter) {
 					error_param = p.Name;
 					continue;
 				}
@@ -70,7 +76,12 @@ namespace GtkSharp.Generation {
 				IGeneratable igen = p.Generatable;
 
 				if (igen is CallbackGen) {
-					ret += indent + String.Format ("{0} {1}_invoker = new {0} ({1});\n", (igen as CallbackGen).InvokerName, p.Name);
+					if (user_data_param == null)
+						ret += indent + String.Format ("{0} {1}_invoker = new {0} ({1});\n", (igen as CallbackGen).InvokerName, p.Name);
+					else if (destroy_param == null)
+						ret += indent + String.Format ("{0} {1}_invoker = new {0} ({1}, {2});\n", (igen as CallbackGen).InvokerName, p.Name, user_data_param);
+					else
+						ret += indent + String.Format ("{0} {1}_invoker = new {0} ({1}, {2}, {3});\n", (igen as CallbackGen).InvokerName, p.Name, user_data_param, destroy_param);
 				} else {
 					ret += indent + igen.QualifiedName + " my" + p.Name;
 					if (p.PassAs == "ref")

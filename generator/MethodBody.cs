@@ -52,7 +52,7 @@ namespace GtkSharp.Generation {
 
 				bool is_prop = is_set && i == 0;
 
-				if (i > 0 && parameters [i - 1].IsString && p.IsLength) {
+				if (i > 0 && parameters [i - 1].IsString && p.IsLength && p.PassAs == String.Empty) {
 					string string_name = (i == 1 && is_set) ? "value" : parameters [i - 1].Name;
 					result[i] = igen.CallByName (CastFromInt (p.CSType) + "System.Text.Encoding.UTF8.GetByteCount (" +  string_name + ")");
 					continue;
