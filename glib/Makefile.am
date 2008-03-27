@@ -53,6 +53,7 @@ sources =		 			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
+	Program.cs				\
 	PropertyAttribute.cs			\
 	Signal.cs				\
 	SignalArgs.cs				\
