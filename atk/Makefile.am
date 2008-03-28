@@ -8,6 +8,7 @@ references = ../glib/glib-sharp.dll
 sources = 
 
 customs =			\
+	Object.custom		\
 	Util.custom
 
 add_dist = makefile.win32

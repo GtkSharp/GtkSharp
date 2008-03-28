@@ -1,0 +1,88 @@
+// Object.custom - Atk Object class customizations
+//
+// Author: Andres G. Aragoneses <aaragoneses@novell.com>
+//
+// Copyright (c) 2008 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+		
+		[DllImport("atksharpglue-2")]
+		static extern int atksharp_object_override_get_n_children (IntPtr type, NChildrenDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate int NChildrenDelegate (IntPtr raw);
+		
+		static NChildrenDelegate NChildrenCallback;
+		
+		static int NChildren_cb (IntPtr raw)
+		{
+			try {
+				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
+				return obj.OnGetNChildren();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return 0;
+		}
+		
+		static void OverrideNChildren (GLib.GType gtype)
+		{
+			if (NChildrenCallback == null)
+				NChildrenCallback = new NChildrenDelegate (NChildren_cb);
+			atksharp_object_override_get_n_children (gtype.Val, NChildrenCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Object), ConnectionMethod="OverrideNChildren")]
+		protected virtual int OnGetNChildren() {
+			return 0;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern IntPtr atksharp_object_override_ref_child (IntPtr type, RefChildDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate IntPtr RefChildDelegate (IntPtr raw, int i);
+		
+		static RefChildDelegate RefChildCallback;
+		
+		static IntPtr RefChild_cb (IntPtr raw, int i)
+		{
+			try {
+				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
+				return obj.RefChild(i).Handle;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		
+			return GLib.GType.Invalid.Val;
+		}
+		
+		
+		static void OverrideRefChild (GLib.GType gtype)
+		{
+			if (RefChildCallback == null)
+				RefChildCallback = new RefChildDelegate (RefChild_cb);
+			atksharp_object_override_ref_child (gtype.Val, RefChildCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Object), ConnectionMethod="OverrideRefChild")]
+		public virtual Atk.Object RefChild(int i) {
+			return null;
+		}
+
