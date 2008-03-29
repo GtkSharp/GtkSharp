@@ -1,4 +1,4 @@
-/* util.c : Glue for overriding vms of AtkObject
+/* object.c : Glue for overriding vms of AtkObject
  *
  * Author: Andres G. Aragoneses  <aaragoneses@novell.com>
  * 
