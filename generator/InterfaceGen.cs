@@ -172,6 +172,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tthis.implementor = implementor;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic " + Name + "Adapter (IntPtr handle)");
+			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tthis.handle = handle;");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
 		}
 
 		void GenerateGType (StreamWriter sw)
@@ -188,8 +193,11 @@ namespace GtkSharp.Generation {
 
 		void GenerateHandleProp (StreamWriter sw)
 		{
+			sw.WriteLine ("\t\tIntPtr handle;");
 			sw.WriteLine ("\t\tpublic override IntPtr Handle {");
 			sw.WriteLine ("\t\t\tget {");
+			sw.WriteLine ("\t\t\t\tif (handle != IntPtr.Zero)");
+			sw.WriteLine ("\t\t\t\t\treturn handle;");
 			sw.WriteLine ("\t\t\t\treturn implementor == null ? IntPtr.Zero : implementor.Handle;");
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
@@ -203,6 +211,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t\tGLib.Object obj = GLib.Object.GetObject (handle, owned);");
 			sw.WriteLine ("\t\t\tif (obj is " + Name + "Implementor)");
 			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj as {0}Implementor);", Name);
+			sw.WriteLine ("\t\t\telse if (obj as " + Name + " == null)");
+			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj.Handle);", Name);
 			sw.WriteLine ("\t\t\telse");
 			sw.WriteLine ("\t\t\t\treturn obj as {0};", Name);
 			sw.WriteLine ("\t\t}");
