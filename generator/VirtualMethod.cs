@@ -97,11 +97,11 @@ namespace GtkSharp.Generation {
 				} else
 					sw.WriteLine ("\t\t\t\t" + call_string + ";");
 			} else
-				sw.WriteLine ("\t\t\t\t" + retval.ToNativeType + " __result = " + retval.ToNative (call_string) + ";");
+				sw.WriteLine ("\t\t\t\t" + retval.CSType + " __result = " + call_string + ";");
 			bool fatal = parms.HasOutParam || !retval.IsVoid;
 			sw.Write (call.Finish ("\t\t\t\t"));
 			if (!retval.IsVoid)
-				sw.WriteLine ("\t\t\t\treturn __result;");
+				sw.WriteLine ("\t\t\t\treturn " + retval.ToNative ("__result") + ";");
 
 			sw.WriteLine ("\t\t\t} catch (Exception e) {");
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");

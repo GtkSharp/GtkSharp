@@ -94,7 +94,7 @@ namespace GLib {
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_object_ref (IntPtr raw);
+		static extern IntPtr g_object_ref (IntPtr raw);
 
 		public static Object GetObject(IntPtr o, bool owned_ref)
 		{
@@ -339,6 +339,12 @@ namespace GLib {
 		public IntPtr Handle {
 			get {
 				return handle;
+			}
+		}
+
+		public IntPtr OwnedHandle {
+			get {
+				return g_object_ref (handle);
 			}
 		}
 
