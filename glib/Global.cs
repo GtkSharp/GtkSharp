@@ -1,4 +1,4 @@
-// GLib.Program.cs - GProgram class implementation
+// GLib.Global.cs - Global glib properties and methods.
 //
 // Author: Andres G. Aragoneses <aaragoneses@novell.com>
 //
@@ -25,15 +25,13 @@ namespace GLib {
 	using System.Text;
 	using System.Runtime.InteropServices;
 
-	public class Program
+	public class Global
 	{
 
 		//this is a static class
-		private Program ()
-		{
-		}
+		private Global () {}
 
-		public static string Name {
+		public static string ProgramName {
 			get {
 				return GLib.Marshaller.PtrToStringGFree(g_get_prgname());
 			}

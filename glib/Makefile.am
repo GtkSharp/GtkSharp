@@ -32,6 +32,7 @@ sources =		 			\
 	GException.cs				\
 	GInterfaceAdapter.cs			\
 	GInterfaceAttribute.cs			\
+	Global.cs				\
 	GString.cs				\
 	GType.cs				\
 	GTypeAttribute.cs			\
@@ -53,7 +54,6 @@ sources =		 			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
-	Program.cs				\
 	PropertyAttribute.cs			\
 	Signal.cs				\
 	SignalArgs.cs				\
