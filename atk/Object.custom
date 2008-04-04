@@ -61,16 +61,22 @@
 		
 		static RefChildDelegate RefChildCallback;
 		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_ref (IntPtr handle);
+
 		static IntPtr RefChild_cb (IntPtr raw, int i)
 		{
 			try {
 				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
-				return obj.OnRefChild(i).Handle;
+				Atk.Object child = obj.OnRefChild (i);
+				if (child != null)
+					g_object_ref (child.Handle);
+				return child == null ? IntPtr.Zero : child.Handle;
 			} catch (Exception e) {
 				GLib.ExceptionManager.RaiseUnhandledException (e, false);
 			}
 		
-			return GLib.GType.Invalid.Val;
+			return IntPtr.Zero;
 		}
 		
 		
