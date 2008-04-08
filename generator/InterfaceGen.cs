@@ -209,7 +209,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tpublic static " + Name + " GetObject (IntPtr handle, bool owned)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tGLib.Object obj = GLib.Object.GetObject (handle, owned);");
-			sw.WriteLine ("\t\t\tif (obj is " + Name + "Implementor)");
+			sw.WriteLine ("\t\t\tif (obj == null)");
+			sw.WriteLine ("\t\t\t\treturn null;");
+			sw.WriteLine ("\t\t\telse if (obj is " + Name + "Implementor)");
 			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj as {0}Implementor);", Name);
 			sw.WriteLine ("\t\t\telse if (obj as " + Name + " == null)");
 			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj.Handle);", Name);
