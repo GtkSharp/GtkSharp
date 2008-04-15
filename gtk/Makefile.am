@@ -70,7 +70,6 @@ customs = 				\
 	FileChooserDialog.custom	\
 	FileChooserWidget.custom	\
 	FileSelection.custom		\
-	FileSystemModel.custom		\
 	Frame.custom			\
 	HBox.custom			\
 	HScale.custom			\
