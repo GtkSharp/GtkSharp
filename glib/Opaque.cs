@@ -113,6 +113,14 @@ namespace GLib {
 			}
 		}
 
+		public IntPtr OwnedCopy {
+			get {
+				Opaque result = Copy (Handle);
+				result.Owned = false;
+				return result.Handle;
+			}
+		}
+
 		public bool Owned {
 			get {
 				return owned;

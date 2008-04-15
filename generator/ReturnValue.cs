@@ -150,6 +150,8 @@ namespace GtkSharp.Generation {
 				return (IGen as IManualMarshaler).AllocNative (var);
 			else if (IGen is ObjectGen && owned)
 				return var + " == null ? IntPtr.Zero : " + var + ".OwnedHandle";
+			else if (IGen is OpaqueGen && owned)
+				return var + " == null ? IntPtr.Zero : " + var + ".OwnedCopy";
 			else
 				return IGen.ToNativeReturn (var);
 		}
