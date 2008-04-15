@@ -39,6 +39,9 @@ namespace GLib {
 
 		public static void Free (IntPtr[] ptrs)
 		{
+			if (ptrs == null)
+				return;
+
 			for (int i = 0; i < ptrs.Length; i++)
 				g_free (ptrs [i]);
 		}
@@ -142,7 +145,7 @@ namespace GLib {
 		public static IntPtr[] StringArrayToNullTermPointer (string[] strs)
 		{
 			if (strs == null)
-				return new IntPtr [0];
+				return null;
 			IntPtr[] result = new IntPtr [strs.Length + 1];
 			for (int i = 0; i < strs.Length; i++)
 				result [i] = StringToPtrGStrdup (strs [i]);
