@@ -126,6 +126,7 @@ namespace GtkDemo
 				cr.RelMoveTo (0, fontSize);
 				line++;
 			}
+			(cr as IDisposable).Dispose ();
 			layout = null;
 		}
 

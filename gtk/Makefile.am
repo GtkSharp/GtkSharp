@@ -91,6 +91,7 @@ customs = 				\
 	Notebook.custom			\
 	Object.custom			\
 	Plug.custom			\
+	PrintContext.custom		\
 	Printer.custom			\
 	RadioButton.custom		\
 	RadioMenuItem.custom		\

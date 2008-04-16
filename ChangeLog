@@ -1,3 +1,12 @@
+2008-04-16  Mike Kestner  <mkestner@novell.com>
+
+	* gtk/Gtk.metadata: hide PrintContext.get_CairoContext.
+	* gtk/PrintContext.custom: manual get_cairo_context implementation.
+	Mono.Cairo assumes it is wrapping owned references, so we need to 
+	take a ref out on the returned cairo_t pointer.
+	* sample/GtkDemo/DemoPrinting.cs: dispose the CairoContext in
+	to be a good citizen and avoid warnings.
+
 2008-04-15  Mike Kestner  <mkestner@novell.com>
 
 	* generator/ReturnValue.cs: use new GLib.Opaque.OwnedCopy for owned
