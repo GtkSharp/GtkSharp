@@ -131,15 +131,11 @@ namespace Gtk {
 			return gtk_main_iteration_do (blocking);
 		}
 		
-		public static event EventHandler QuitPrepare;
-
 		[DllImport("libgtk-win32-2.0-0.dll")]
 		static extern void gtk_main_quit ();
 
 		public static void Quit ()
 		{
-			if (QuitPrepare != null)
-				QuitPrepare (null, EventArgs.Empty);
 			gtk_main_quit ();
 		}
 

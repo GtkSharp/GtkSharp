@@ -27,6 +27,7 @@ namespace GLib {
 
 	internal class ToggleRef {
 
+		bool hardened;
 		IntPtr handle;
 		object reference;
 		GCHandle gch;
@@ -81,9 +82,28 @@ namespace GLib {
 			foreach (Signal s in Signals.Values)
 				s.Free ();
 			Signals.Clear ();
-			g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+			if (hardened)
+				g_object_unref (handle);
+			else
+				g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
 			reference = null;
 			gch.Free ();
+		}
+
+		internal void Harden ()
+		{
+			// Added for the benefit of GnomeProgram.  It releases a final ref in
+			// an atexit handler which causes toggle ref notifications to occur after 
+			// our delegates are gone, so we need a mechanism to override the 
+			// notifications.  This method effectively leaks all objects which invoke it, 
+			// but since it is only used by Gnome.Program, which is a singleton object 
+			// with program duration persistence, who cares.
+
+			g_object_ref (handle);
+			g_object_remove_toggle_ref (handle, ToggleNotifyCallback, (IntPtr) gch);
+			if (reference is WeakReference)
+				reference = (reference as WeakReference).Target;
+			hardened = true;
 		}
 
 		void Toggle (bool is_last_ref)
@@ -125,6 +145,9 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_remove_toggle_ref (IntPtr raw, ToggleNotifyHandler notify_cb, IntPtr data);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_ref (IntPtr raw);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_object_unref (IntPtr raw);
