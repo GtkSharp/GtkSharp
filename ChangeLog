@@ -1,3 +1,13 @@
+2008-04-17  Mike Kestner  <mkestner@novell.com>
+
+	* gtk/TreeModelAdapter.custom:
+	* gtk/TreeModelFilter.custom:
+	* gtk/TreeModelSort.custom: reworked patch from Christian Hoff to
+	throw NotImplementedException for SetValue methods.  Those should 
+	never have been added to the interface, and it's better to throw
+	an exception than have infinite recursion kill the program.
+	[Fixes #379542]
+
 2008-04-16  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Gtk.metadata: hide PrintContext.get_CairoContext.
