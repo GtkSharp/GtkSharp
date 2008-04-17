@@ -515,5 +515,10 @@ namespace GLib {
 				return gtksharp_object_get_ref_count (Handle);
 			}
 		}
+
+		internal void Harden ()
+		{
+			tref.Harden ();
+		}
 	}
 }
