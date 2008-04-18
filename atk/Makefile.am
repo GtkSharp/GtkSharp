@@ -8,6 +8,7 @@ references = ../glib/glib-sharp.dll
 sources = 
 
 customs =			\
+	Misc.custom		\
 	Object.custom		\
 	Util.custom
 

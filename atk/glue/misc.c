@@ -1,0 +1,53 @@
+/* misc.c : Glue for overriding vms of AtkMisc
+ *
+ * Author: Mike Kestner  <mkestner@novell.com>
+ * 
+ * Copyright (c) 2008 Novell, Inc.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of version 2 of the Lesser GNU General 
+ * Public License as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include <atk/atk.h>
+
+
+void atksharp_misc_override_threads_enter (GType gtype, gpointer cb);
+
+void 
+atksharp_misc_override_threads_enter (GType gtype, gpointer cb)
+{
+	AtkMiscClass *klass = g_type_class_peek (gtype);
+	if (!klass)
+		klass = g_type_class_ref (gtype);
+	((AtkMiscClass *) klass)->threads_enter = cb;
+}
+
+void atksharp_misc_override_threads_leave (GType gtype, gpointer cb);
+
+void 
+atksharp_misc_override_threads_leave (GType gtype, gpointer cb)
+{
+	AtkMiscClass *klass = g_type_class_peek (gtype);
+	if (!klass)
+		klass = g_type_class_ref (gtype);
+	((AtkMiscClass *) klass)->threads_leave = cb;
+}
+
+void atksharp_misc_set_singleton_instance (AtkMisc *misc);
+
+void 
+atksharp_misc_set_singleton_instance (AtkMisc *misc)
+{
+	atk_misc_instance = misc;
+}
