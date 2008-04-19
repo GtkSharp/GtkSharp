@@ -32,6 +32,6 @@ void    gtksharp_gtk_status_icon_present_menu (GtkStatusIcon *icon, GtkMenu* men
 void    
 gtksharp_gtk_status_icon_present_menu (GtkStatusIcon *icon, GtkMenu* menu, guint button, guint32 activate_time)
 {
-	gtk_menu_popup (menu, NULL, NULL, gtk_status_icon_position_menu, icon, button, time);
+	gtk_menu_popup (menu, NULL, NULL, gtk_status_icon_position_menu, icon, button, activate_time);
 }
 
