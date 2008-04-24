@@ -190,7 +190,49 @@ namespace GLib {
 				return event_handler_delegate;
 			}
 		}
+		
+		public static object Emit (GLib.Object instance, string signal_name, string detail, params object[] args)
+		{
+			uint signal_id = GetSignalId (signal_name, instance);
+			uint gquark = GetGQuarkFromString (detail);
+			GLib.Value[] vals = new GLib.Value [args.Length + 1];
+			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
+			
+			vals [0] = new GLib.Value (instance);
+			inst_and_params.Append (vals [0]);
+			for (int i = 1; i < vals.Length; i++) {
+				vals [i] = new GLib.Value (args [i - 1]);
+				inst_and_params.Append (vals [i]);
+			}
 
+			GLib.Value ret = GLib.Value.Empty;
+
+			g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
+			object ret_obj = ret.Val;
+			
+			foreach (GLib.Value val in vals)
+				val.Dispose ();
+			ret.Dispose ();
+			
+			return ret_obj;
+		}
+		
+		private static uint GetGQuarkFromString (string str) {
+			IntPtr native_string = GLib.Marshaller.StringToPtrGStrdup (str);
+			uint ret = g_quark_from_string (native_string);
+			GLib.Marshaller.Free (native_string);
+			return ret;
+		}
+
+		private static uint GetSignalId (string signal_name, GLib.Object obj)
+		{
+			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
+			uint signal_id = g_signal_lookup (native_name, typeid);
+			GLib.Marshaller.Free (native_name);
+			return signal_id;
+		}
+		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
 
@@ -202,6 +244,19 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
+		
+		//better not to expose g_quark_from_static_string () due to memory allocation issues
+		[DllImport("libglib-2.0-0.dll")]
+		static extern uint g_quark_from_string (IntPtr str);
+		
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
 	}
 }
 
