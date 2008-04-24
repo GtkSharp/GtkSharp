@@ -4,7 +4,7 @@
 //         Mike Kestner <mkestner@ximian.com>
 //
 // Copyright (c) 2003 Moritz Balz
-// Copyright (c) 2004 Novell, Inc.
+// Copyright (c) 2004 - 2008 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
 //
@@ -68,12 +68,20 @@
 		}
 	}
 
+	[DllImport("libgobject-2.0-0.dll")]
+	static extern IntPtr g_object_ref (IntPtr raw);
+
 	[DllImport("libgdk-win32-2.0-0.dll")]
 	static extern void gdk_window_destroy(IntPtr raw);
 
-	public void Destroy() {
+	public void Destroy () 
+	{
+		// native method assumes an outstanding normal ref, but we hold a
+		// toggle ref.  take out a normal ref for it to release,  and let 
+		// Dispose release our toggle ref.
+		g_object_ref (Handle);
 		gdk_window_destroy(Handle);
-		Raw = IntPtr.Zero;
+		Dispose ();
 	}
 
 	public void MoveResize (Gdk.Rectangle rect) {
