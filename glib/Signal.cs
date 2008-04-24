@@ -91,7 +91,7 @@ namespace GLib {
 			Signal result = obj.ToggleRef.Signals [name] as Signal;
 			if (result == null)
 				result = new Signal (obj, name, marshaler);
-			return result as Signal;
+			return result;
 		}
 
 		Delegate before_handler;
