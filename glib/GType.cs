@@ -45,6 +45,8 @@ namespace GLib {
 		public static readonly GType Boolean = new GType ((IntPtr) TypeFundamentals.TypeBoolean);
 		public static readonly GType Int = new GType ((IntPtr) TypeFundamentals.TypeInt);
 		public static readonly GType UInt = new GType ((IntPtr) TypeFundamentals.TypeUInt);
+		public static readonly GType Long = new GType ((IntPtr) TypeFundamentals.TypeLong);
+		public static readonly GType ULong = new GType ((IntPtr) TypeFundamentals.TypeULong);
 		public static readonly GType Int64 = new GType ((IntPtr) TypeFundamentals.TypeInt64);
 		public static readonly GType UInt64 = new GType ((IntPtr) TypeFundamentals.TypeUInt64);
 		public static readonly GType Enum = new GType ((IntPtr) TypeFundamentals.TypeEnum);
@@ -54,6 +56,7 @@ namespace GLib {
 		public static readonly GType String = new GType ((IntPtr) TypeFundamentals.TypeString);
 		public static readonly GType Pointer = new GType ((IntPtr) TypeFundamentals.TypePointer);
 		public static readonly GType Boxed = new GType ((IntPtr) TypeFundamentals.TypeBoxed);
+		public static readonly GType Param = new GType ((IntPtr) TypeFundamentals.TypeParam);
 		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
 
 		static Hashtable types = new Hashtable ();
