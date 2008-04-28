@@ -24,6 +24,7 @@ namespace GLib {
 
 	using System;
 	using System.Collections;
+	using System.Reflection;
 	using System.Runtime.InteropServices;
 
 	[StructLayout (LayoutKind.Sequential)]
@@ -313,7 +314,14 @@ namespace GLib {
 			Type t = GType.LookupType (type);
 			if (t == null)
 				throw new Exception ("Unknown type " + new GType (type).ToString ());
-			return Marshal.PtrToStructure (boxed_ptr, t);
+			else if (t.IsSubclassOf (typeof (GLib.Opaque)))
+				return (GLib.Opaque) this;
+
+			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+			if (mi == null)
+				return Marshal.PtrToStructure (boxed_ptr, t);
+			else
+				return mi.Invoke (null, new object[] {boxed_ptr});
 		}
 
 		public object Val
@@ -340,6 +348,8 @@ namespace GLib {
 					return (string) this;
 				else if (type == GType.Pointer.Val)
 					return (IntPtr) this;
+				else if (type == GType.Param.Val)
+					return g_value_get_param (ref this);
 				else if (type == ManagedValue.GType.Val)
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
 				else if (g_type_is_a (type, GType.Object.Val))
@@ -380,6 +390,8 @@ namespace GLib {
 					IntPtr buf = Marshal.AllocHGlobal (Marshal.SizeOf (value.GetType()));
 					Marshal.StructureToPtr (value, buf, false);
 					g_value_set_pointer (ref this, buf);
+				} else if (type == GType.Param.Val) {
+					g_value_set_param (ref this, (IntPtr) value);
 				} else if (type == ManagedValue.GType.Val) {
 					IntPtr wrapper = ManagedValue.WrapObject (value);
 					g_value_set_boxed (ref this, wrapper);
@@ -439,6 +451,9 @@ namespace GLib {
 		static extern void g_value_set_object (ref Value val, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_param (ref Value val, IntPtr data);
+
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_pointer (ref Value val, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -475,6 +490,9 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_object (ref Value val);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_value_get_param (ref Value val);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_pointer (ref Value val);
