@@ -949,6 +949,7 @@ sub addSignalElem
 	my $method = "";
 	if ($spec =~ /_OFFSET\s*\(\w+,\s*(\w+)\)/) {
 		$method = $1;
+		$sig_elem->setAttribute('field_name', $1);
 	} else {
 		@args = split(/,/, $spec);
 		my $rettype = parseTypeToken ($args[7]);
