@@ -350,7 +350,7 @@ namespace GLib {
 
 		Hashtable before_signals;
 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected Hashtable BeforeSignals {
+		protected internal Hashtable BeforeSignals {
 			get {
 				if (before_signals == null)
 					before_signals = new Hashtable ();
@@ -360,7 +360,7 @@ namespace GLib {
 
 		Hashtable after_signals;
 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
-		protected Hashtable AfterSignals {
+		protected internal Hashtable AfterSignals {
 			get {
 				if (after_signals == null)
 					after_signals = new Hashtable ();
@@ -520,5 +520,12 @@ namespace GLib {
 		{
 			tref.Harden ();
 		}
+
+#if false
+		static Object ()
+		{
+			GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, GLib.Log.PrintTraceLogFunction);
+		}
+#endif
 	}
 }

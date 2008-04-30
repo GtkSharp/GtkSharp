@@ -259,10 +259,8 @@ namespace GtkSharp.Generation {
 
 			GenProperties (gen_info, null);
 
-			foreach (Signal sig in sigs.Values) {
-				sig.GenCallback (sw);
+			foreach (Signal sig in sigs.Values)
 				sig.GenEvent (sw, null, "GLib.Object.GetObject (Handle)");
-			}
 
 			Method temp = methods ["GetType"] as Method;
 			if (temp != null)

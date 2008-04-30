@@ -69,7 +69,9 @@ namespace GLib {
 
 		public GLib.Object Target {
 			get {
-				if (reference is GLib.Object)
+				if (reference == null)
+					return null;
+				else if (reference is GLib.Object)
 					return reference as GLib.Object;
 
 				WeakReference weak = reference as WeakReference;
@@ -77,11 +79,12 @@ namespace GLib {
 			}
 		}
 
-		public void Free ()
-		{
-			foreach (Signal s in Signals.Values)
+  		public void Free ()
+  		{
+			Signal[] signals = new Signal [Signals.Count];
+			Signals.Values.CopyTo (signals, 0);
+			foreach (Signal s in signals)
 				s.Free ();
-			Signals.Clear ();
 			if (hardened)
 				g_object_unref (handle);
 			else

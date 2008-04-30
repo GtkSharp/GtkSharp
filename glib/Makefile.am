@@ -59,6 +59,7 @@ sources =		 			\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\
 	SignalCallback.cs			\
+	SignalClosure.cs			\
 	SList.cs				\
 	Source.cs				\
 	Spawn.cs				\
