@@ -106,7 +106,7 @@ namespace GtkSharp.Generation {
 			foreach (object member in members) {
 				if (member is Signal) {
 					Signal sig = member as Signal;
-					sw.WriteLine ("\t\t\tpublic IntPtr {0};", sig.ClassFieldName);
+					sw.WriteLine ("\t\t\tpublic IntPtr {0};", sig.CName.Replace ("\"", "").Replace ("-", "_"));
 				} else if (member is VirtualMethod) {
 					VirtualMethod vm = member as VirtualMethod;
 					bool has_target = methods [vm.Name] != null;

@@ -123,9 +123,9 @@ namespace GtkSharp.Generation {
                         }
                 }
 
-		public string ClassFieldName {
+		string ClassFieldName {
 			get {
-				return elem.GetAttribute("cname").Replace ("-", "_");
+				return elem.HasAttribute ("field_name") ? elem.GetAttribute("field_name") : String.Empty;
 			}
 		}
 
@@ -282,15 +282,16 @@ namespace GtkSharp.Generation {
 		private void GenDefaultHandlerDelegate (GenerationInfo gen_info, ClassBase implementor)
 		{
 			StreamWriter sw = gen_info.Writer;
-			StreamWriter glue = gen_info.GlueWriter;
+			StreamWriter glue;
 			bool use_glue = false;
-			//bool use_glue = glue != null && implementor == null;
+			//bool use_glue = glue != null && implementor == null && ClassFieldName.Length > 0;
 			string glue_name = String.Empty;
 			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + parms.ImportSignature + ");\n");
 
 			if (use_glue) {
+				glue = gen_info.GlueWriter;
 				glue_name = String.Format ("{0}sharp_{1}_{2}", container_type.NS.ToLower ().Replace (".", "_"), container_type.Name.ToLower (), ClassFieldName);
 				sw.WriteLine ("\t\t[DllImport (\"{0}\")]", gen_info.GluelibName);
 				sw.WriteLine ("\t\tstatic extern void {0} (IntPtr gtype, {1}VMDelegate cb);\n", glue_name, Name);
