@@ -23,6 +23,35 @@
 
 
 		[GLib.CDeclCallback]
+		delegate uint AddGlobalEventListenerNativeDelegate (GLib.Signal.EmissionHookNative hook, IntPtr event_type);
+                
+		static AddGlobalEventListenerDelegate add_global_event_listener_handler;
+		static AddGlobalEventListenerNativeDelegate add_global_event_listener_callback;
+
+		static uint AddGlobalEventListenerCallback (GLib.Signal.EmissionHookNative hook, IntPtr event_type)
+		{
+			try {
+				return add_global_event_listener_handler (new GLib.Signal.EmissionHookMarshaler (hook, IntPtr.Zero).Invoker, GLib.Marshaller.Utf8PtrToString (event_type));
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+			return 0;
+		}
+
+		public delegate uint AddGlobalEventListenerDelegate (GLib.Signal.EmissionHook hook, string event_type);
+
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_util_override_add_global_event_listener (AddGlobalEventListenerNativeDelegate cb);
+		public static AddGlobalEventListenerDelegate AddGlobalEventListenerHandler {
+			set {
+				add_global_event_listener_handler = value;
+				if (add_global_event_listener_callback == null)
+					add_global_event_listener_callback = new AddGlobalEventListenerNativeDelegate (AddGlobalEventListenerCallback);
+				atksharp_util_override_add_global_event_listener (add_global_event_listener_callback);
+			}
+		}
+
+		[GLib.CDeclCallback]
 		delegate void RemoveListenerNativeDelegate (uint listener_id);
                 
 		static RemoveListenerDelegate remove_global_event_listener_handler;
