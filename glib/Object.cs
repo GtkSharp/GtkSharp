@@ -139,6 +139,18 @@ namespace GLib {
 				if (baseinfo == minfo)
 					continue;
 
+				bool ignore = false;
+				for (Type parent = t.BaseType; parent != baseinfo.DeclaringType; parent = parent.BaseType) {
+					MethodInfo pinfo = parent.GetMethod (minfo.Name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly);
+					if (pinfo != null) {
+						ignore = true;
+						break;
+					}
+				}
+
+				if (ignore)
+					continue;
+
 				foreach (object attr in baseinfo.GetCustomAttributes (typeof (DefaultSignalHandlerAttribute), false)) {
 					DefaultSignalHandlerAttribute sigattr = attr as DefaultSignalHandlerAttribute;
 					MethodInfo connector = sigattr.Type.GetMethod (sigattr.ConnectionMethod, BindingFlags.Static | BindingFlags.NonPublic);
@@ -521,11 +533,10 @@ namespace GLib {
 			tref.Harden ();
 		}
 
-#if false
 		static Object ()
 		{
-			GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, GLib.Log.PrintTraceLogFunction);
+			if (Environment.GetEnvironmentVariable ("GTK_SHARP_DEBUG") != null)
+				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, GLib.Log.PrintTraceLogFunction);
 		}
-#endif
 	}
 }
