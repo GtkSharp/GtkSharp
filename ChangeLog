@@ -1,5 +1,22 @@
 2008-05-02  Mike Kestner  <mkestner@novell.com>
 
+	* generator/GenerationInfo.cs:  refactor glue writer implementation
+	so that GlueEnabled means there is a valid glue writer available.
+	Avoids crashes in scenarios where an unwriteable glue path is provided
+	to the generator.  Generate a glue function which scans the type
+	hierarchy of an object for the most-derived unmanaged ancestor so
+	that we can invoke class methods on it, avoiding infinite recursions.
+	* generator/Signal.cs: revamp the default handler vm overriding 
+	mechanism.  When class fields exist which can be directly hooked into,
+	we now generate glue to override and chain up to unmanaged base funcs.
+	This avoids some strangeness in the g_signal_override_class_closure
+	and g_signal_chain_from_overridden reported in #332300 and also lays
+	the groundwork for automated generation of non-signal VMs.
+	* gtk/Gtk.metadata: block signal glue generation for a few types which 
+	don't seem to install headers.
+
+2008-05-02  Mike Kestner  <mkestner@novell.com>
+
 	* glib/Object.cs: Don't bother hooking VM into the class field
 	if another managed ancestor has already done so.  Add a LogFunc
 	printing a stack trace for the GObject log domain if GTK_SHARP_DEBUG

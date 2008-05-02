@@ -219,7 +219,7 @@ namespace GtkSharp.Generation {
 			sw.Close ();
 		}
 
-		private void GenVirtualMethod (StreamWriter sw, ClassBase implementor)
+		private void GenVMDeclaration (StreamWriter sw, ClassBase implementor)
 		{
 			VMSignature vmsig = new VMSignature (parms);
 			sw.WriteLine ("\t\t[GLib.DefaultSignalHandler(Type=typeof(" + (implementor != null ? implementor.QualifiedName : container_type.QualifiedName) + "), ConnectionMethod=\"Override" + Name +"\")]");
@@ -227,6 +227,101 @@ namespace GtkSharp.Generation {
 			if (NeedNew (implementor))
 				sw.Write ("new ");
 			sw.WriteLine ("virtual {0} {1} ({2})", retval.CSType, "On" + Name, vmsig.ToString ());
+		}
+
+		private string CastFromInt (string type)
+		{
+			return type != "int" ? "(" + type + ") " : "";
+		}
+
+		private string GlueCallString {
+			get {
+				string result = "Handle";
+
+				for (int i = 1; i < parms.Count; i++) {
+					Parameter p = parms [i];
+					IGeneratable igen = p.Generatable;
+
+					if (i > 1 && parms [i - 1].IsString && p.IsLength && p.PassAs == String.Empty) {
+						string string_name = parms [i - 1].Name;
+						result += ", " + igen.CallByName (CastFromInt (p.CSType) + "System.Text.Encoding.UTF8.GetByteCount (" +  string_name + ")");
+						continue;
+					}
+
+					p.CallName = p.Name;
+					string call_parm = p.CallString;
+
+					if (p.IsUserData && parms.IsHidden (p) && !parms.HideData && (i == 1 || parms [i - 1].Scope != "notified")) {
+						call_parm = "IntPtr.Zero"; 
+					}
+
+					result += ", " + call_parm;
+				}
+				return result;
+			}
+		}
+
+		private string GlueSignature {
+			get {
+				string result = String.Empty;
+				for (int i = 0; i < parms.Count; i++)
+					result += parms[i].CType.Replace ("const-", "const ") + " " + parms[i].Name + (i == parms.Count-1 ? "" : ", ");
+				return result;
+			}
+		}
+
+		private string DefaultGlueValue {
+			get {
+				string val = retval.DefaultValue;
+				switch (val) {
+				case "null":
+					return "NULL";
+				case "false":
+					return "FALSE";
+				case "true":
+					return "TRUE";
+				default:
+					return val;
+				}
+			}
+		}
+
+		private void GenGlueVirtualMethod (GenerationInfo gen_info)
+		{
+			StreamWriter glue = gen_info.GlueWriter;
+			string glue_name = String.Format ("{0}sharp_{1}_base_{2}", container_type.NS.ToLower ().Replace (".", "_"), container_type.Name.ToLower (), ClassFieldName);
+			glue.WriteLine ("{0} {1} ({2});\n", retval.CType, glue_name, GlueSignature);
+			glue.WriteLine ("{0}\n{1} ({2})", retval.CType, glue_name, GlueSignature);
+			glue.WriteLine ("{");
+			glue.WriteLine ("\t{0}Class *klass = ({0}Class *) get_threshold_class (G_OBJECT ({1}));", container_type.CName, parms[0].Name);
+			glue.Write ("\tif (klass->{0})\n\t\t", ClassFieldName);
+			if (!IsVoid)
+				glue.Write ("return ");
+			glue.Write ("(* klass->{0}) (", ClassFieldName);
+			for (int i = 0; i < parms.Count; i++)
+				glue.Write (parms[i].Name + (i == parms.Count - 1 ? "" : ", "));
+			glue.WriteLine (");");
+			if (!IsVoid)
+				glue.WriteLine ("\treturn " + DefaultGlueValue + ";");
+			glue.WriteLine ("}");
+
+			StreamWriter sw = gen_info.Writer;
+			sw.WriteLine ("\t\t[DllImport (\"{0}\")]", gen_info.GluelibName);
+			sw.WriteLine ("\t\tstatic extern {0} {1} ({2});\n", retval.MarshalType, glue_name, parms.ImportSignature);
+			GenVMDeclaration (sw, null);
+			sw.WriteLine ("\t\t{");
+			MethodBody body = new MethodBody (parms);
+			body.Initialize (gen_info, false, false, String.Empty);
+			sw.WriteLine ("\t\t\t{0}{1} ({2});", IsVoid ? "" : retval.MarshalType + " __ret = ", glue_name, GlueCallString);
+			body.Finish (sw, "");
+			if (!IsVoid)
+				sw.WriteLine ("\t\t\treturn {0};", retval.FromNative ("__ret"));
+			sw.WriteLine ("\t\t}\n");
+		}
+
+		private void GenChainVirtualMethod (StreamWriter sw, ClassBase implementor)
+		{
+			GenVMDeclaration (sw, implementor);
 			sw.WriteLine ("\t\t{");
 			if (IsVoid)
 				sw.WriteLine ("\t\t\tGLib.Value ret = GLib.Value.Empty;");
@@ -283,8 +378,7 @@ namespace GtkSharp.Generation {
 		{
 			StreamWriter sw = gen_info.Writer;
 			StreamWriter glue;
-			bool use_glue = false;
-			//bool use_glue = glue != null && implementor == null && ClassFieldName.Length > 0;
+			bool use_glue = gen_info.GlueEnabled && implementor == null && ClassFieldName.Length > 0;
 			string glue_name = String.Empty;
 			ManagedCallString call = new ManagedCallString (parms);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
@@ -292,7 +386,7 @@ namespace GtkSharp.Generation {
 
 			if (use_glue) {
 				glue = gen_info.GlueWriter;
-				glue_name = String.Format ("{0}sharp_{1}_{2}", container_type.NS.ToLower ().Replace (".", "_"), container_type.Name.ToLower (), ClassFieldName);
+				glue_name = String.Format ("{0}sharp_{1}_override_{2}", container_type.NS.ToLower ().Replace (".", "_"), container_type.Name.ToLower (), ClassFieldName);
 				sw.WriteLine ("\t\t[DllImport (\"{0}\")]", gen_info.GluelibName);
 				sw.WriteLine ("\t\tstatic extern void {0} (IntPtr gtype, {1}VMDelegate cb);\n", glue_name, Name);
 				glue.WriteLine ("void {0} (GType gtype, gpointer cb);\n", glue_name);
@@ -365,7 +459,10 @@ namespace GtkSharp.Generation {
 				GenEventHandler (gen_info);
 
 			GenDefaultHandlerDelegate (gen_info, implementor);
-			GenVirtualMethod (sw, implementor);
+			if (gen_info.GlueEnabled && implementor == null && ClassFieldName.Length > 0)
+				GenGlueVirtualMethod (gen_info);
+			else
+				GenChainVirtualMethod (sw, implementor);
 			GenEvent (sw, implementor, "this");
 			
 			Statistics.SignalCount++;
