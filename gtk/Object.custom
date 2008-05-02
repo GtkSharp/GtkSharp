@@ -97,6 +97,8 @@
 
 		public override void Dispose ()
 		{
+			if (Handle == IntPtr.Zero)
+				return;
 			InternalDestroyed -= NativeDestroyHandler;
 			base.Dispose ();
 		}
@@ -109,12 +111,11 @@
 				return base.Raw;
 			}
 			set {
+				if (value != IntPtr.Zero)
+					g_object_ref_sink (value);
 				base.Raw = value;
-				if (value == IntPtr.Zero)
-					return;
-
-				g_object_ref_sink (value);
-				InternalDestroyed += NativeDestroyHandler;
+				if (value != IntPtr.Zero)
+					InternalDestroyed += NativeDestroyHandler;
 			}
 		}
 
@@ -123,8 +124,10 @@
 
 		public virtual void Destroy ()
 		{
-			if (Handle != IntPtr.Zero)
-				gtk_object_destroy (Handle);
+			if (Handle == IntPtr.Zero)
+				return;
+			InternalDestroyed -= NativeDestroyHandler;
+			gtk_object_destroy (Handle);
 		}
 
 		[DllImport("gtksharpglue-2")]
