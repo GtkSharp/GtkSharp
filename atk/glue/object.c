@@ -22,9 +22,11 @@
 #include <atk/atk.h>
 
 
-gint atksharp_object_override_get_n_children (GType gtype, gpointer cb);
+void atksharp_object_override_get_n_children (GType gtype, gpointer cb);
 
-gint
+void atksharp_object_override_ref_child (GType gtype, gpointer cb);
+
+void
 atksharp_object_override_get_n_children (GType gtype, gpointer cb)
 {
 	AtkObjectClass *klass = g_type_class_peek (gtype);
@@ -33,9 +35,7 @@ atksharp_object_override_get_n_children (GType gtype, gpointer cb)
 	((AtkObjectClass *) klass)->get_n_children = cb;
 }
 
-AtkObject* atksharp_object_override_ref_child (GType gtype, gpointer cb);
-
-AtkObject*
+void
 atksharp_object_override_ref_child (GType gtype, gpointer cb)
 {
 	AtkObjectClass *klass = g_type_class_peek (gtype);
