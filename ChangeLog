@@ -1,5 +1,13 @@
 2008-05-06  Mike Kestner  <mkestner@novell.com>
 
+	* glib/Object.cs: revert the connection optimization from r102349.
+	It breaks under the current CellRenderer implementation which probably
+	can't be reworked compatibly to take advantage of this code.
+	* glib/SignalClosure.cs: use IntPtr.ToInt64 instead of (long) since
+	the cast apparently has issues on bleeding edge mono.
+
+2008-05-06  Mike Kestner  <mkestner@novell.com>
+
 	* gtk/Gtk.metadata: mark Rc.DefaultFiles accessors as null_term_array.
 
 2008-05-02  Mike Kestner  <mkestner@novell.com>

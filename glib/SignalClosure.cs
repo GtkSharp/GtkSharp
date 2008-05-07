@@ -135,7 +135,7 @@ namespace GLib {
 				SignalArgs args = Activator.CreateInstance (closure.args_type, new object [0]) as SignalArgs;
 				args.Args = new object [n_param_vals - 1];
 				for (int i = 1; i < n_param_vals; i++) {
-					IntPtr ptr = new IntPtr ((long)param_values + i * Marshal.SizeOf (typeof (Value)));
+					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf (typeof (Value)));
 					Value val = (Value) Marshal.PtrToStructure (ptr, typeof (Value));
 					args.Args [i - 1] = val.Val;
 				}
