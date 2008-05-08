@@ -316,10 +316,10 @@ foreach $type (sort(keys(%ifaces))) {
 
 	$classdef = $sdefs{$1} if ($ifacetype =~ /struct\s+(\w+)/);
 	if ($initfunc) {
-		parseInitFunc($iface_el, $initfunc);
+		parseInitFunc($iface_el, $initfunc, $classdef);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
-		addVirtualMethods ($classdef, $iface_el);
+		addVirtualMethods ($classdef, $classdef, $iface_el);
 	}
 }
 
@@ -371,7 +371,7 @@ foreach $type (sort(keys(%objects))) {
 
 	# Get the props from the class_init func.
 	if ($initfunc) {
-		parseInitFunc($obj_el, $initfunc);
+		parseInitFunc($obj_el, $initfunc, $classdef);
 	} else {
 		warn "Don't have an init func for $inst.\n" if $debug;
 	}
@@ -988,15 +988,30 @@ sub addSignalElem
 
 sub addVirtualMethods
 {
-	my ($class, $node) = @_;
+	my ($class, $orig_class, $node) = @_;
 	$class =~ s/\n\s*//g;
 	$class =~ s/\/\*.*?\*\///g;
 
+	my $idx = 0;
+	my $ins_sibling = $node->firstChild;
+	while ($ins_sibling && ($ins_sibling->nodeName eq "field" || $ins_sibling->nodeName eq "property")) {
+		$ins_sibling = $ins_sibling->nextSibling ();
+	}
 	while ($class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\)\s*\((.*?)\);/) {
 		$ret = $1 . $2; $cname = $3; $parms = $4;
+		$orig_class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\)\s*\((.*?)\);/;
+		while ($ins_sibling && $3 ne $cname) {
+			$ins_sibling = $ins_sibling->nextSibling ();
+			$orig_class =~ s/;(.*?\));/;/;
+			$orig_class =~ /;\s*(G_CONST_RETURN\s+)?(\S+\s*\**)\s*\(\s*\*\s*(\w+)\)\s*\((.*?)\);/;
+		}
 		if ($cname !~ /reserved/) {
 			$vm_elem = $doc->createElement('virtual_method');
-			$node->appendChild($vm_elem);
+			if ($ins_sibling) {
+				$node->insertBefore($vm_elem, $ins_sibling);
+			} else {
+				$node->appendChild($vm_elem);
+			}
 			$vm_elem->setAttribute('name', StudlyCaps($cname));
 			$vm_elem->setAttribute('cname', $cname);
 			addReturnElem($vm_elem, $ret);
@@ -1005,6 +1020,7 @@ sub addVirtualMethods
 			}
 		}
 		$class =~ s/;\s*(G_CONST_RETURN\s+)?\S+\s*\**\s*\(\s*\*\s*\w+\)\s*\(.*?\);/;/;
+		$orig_class =~ s/;.*?\);/;/;
 	}
 }
 
@@ -1023,7 +1039,8 @@ sub addImplementsElem
 
 sub parseInitFunc
 {
-	my ($obj_el, $initfunc) = @_;
+	my ($obj_el, $initfunc, $classdef) = @_;
+	my $orig_classdef = $classdef;
 
 	my @init_lines = split (/\n/, $initfunc);
 
@@ -1059,7 +1076,7 @@ sub parseInitFunc
 		$linenum++;
 	}
 
-	addVirtualMethods ($classdef, $obj_el);
+	addVirtualMethods ($classdef, $orig_classdef, $obj_el);
 }
 
 sub parseTypeFuncMacro
