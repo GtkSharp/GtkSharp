@@ -94,7 +94,9 @@
 
 		protected void EmitChildrenChanged (ChildrenChangedDetail detail, uint child_index, Atk.Object child)
 		{
-			GLib.Signal.Emit (this, "children-changed", detail.ToString().ToLower(), child_index, child);
+			GLib.Signal.Emit (this, 
+				"children-changed::" + detail.ToString ().ToLower (), 
+				child_index, child);
 		}
 		
 		protected enum ChildrenChangedDetail

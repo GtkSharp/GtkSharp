@@ -37,6 +37,11 @@ namespace GLib {
 			this.val = val;
 		}
 
+		public static GType FromName (string native_name)
+		{
+			return new GType (g_type_from_name (native_name));
+		}
+		
 		public static readonly GType Invalid = new GType ((IntPtr) TypeFundamentals.TypeInvalid);
 		public static readonly GType None = new GType ((IntPtr) TypeFundamentals.TypeNone);
 		public static readonly GType Interface = new GType ((IntPtr) TypeFundamentals.TypeInterface);
@@ -195,6 +200,9 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_name (IntPtr raw);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_from_name (string name);
 
 		public override string ToString ()
 		{

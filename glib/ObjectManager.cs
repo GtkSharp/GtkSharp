@@ -58,7 +58,7 @@ namespace GLib {
 		[Obsolete ("Replaced by GType.Register (GType, Type)")]
 		public static void RegisterType (string native_name, string mangled)
 		{
-			RegisterType (new GType (g_type_from_name (native_name)), Type.GetType (mangled));
+			RegisterType (GType.FromName (native_name), Type.GetType (mangled));
 		}
 
 		[Obsolete ("Replaced by GType.Register (GType, Type)")]
@@ -86,8 +86,5 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_parent (IntPtr typ);
-
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern IntPtr g_type_from_name (string name);
 	}
 }

@@ -1,8 +1,9 @@
 // GLib.Signal.cs - signal marshaling class
 //
 // Authors: Mike Kestner <mkestner@novell.com>
+//          Andrés G. Aragoneses <aaragoneses@novell.com>
 //
-// Copyright (c) 2005 Novell, Inc.
+// Copyright (c) 2005,2008 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -278,10 +279,28 @@ namespace GLib {
 			}
 		}
 
-		public static object Emit (GLib.Object instance, string signal_name, string detail, params object[] args)
+		// format: children-changed::add
+		private static void ParseSignalDetail (string signal_detail, out string signal_name, out uint gquark)
 		{
-			uint signal_id = GetSignalId (signal_name, instance);
-			uint gquark = GetGQuarkFromString (detail);
+			//can't use String.Split because it doesn't accept a string arg (only char) in the 1.x profile
+			int link_pos = signal_detail.IndexOf ("::");
+			if (link_pos < 0) {
+				gquark = 0;
+				signal_name = signal_detail;
+			} else if (link_pos == 0) {
+				throw new FormatException ("Invalid detailed_signal: " + signal_detail);
+			} else {
+				signal_name = signal_detail.Substring (0, link_pos);
+				gquark = GetGQuarkFromString (signal_detail.Substring (link_pos + 2));
+			}
+		}
+		
+		public static object Emit (GLib.Object instance, string detailed_signal, params object[] args)
+		{
+			uint gquark, signal_id;
+			string signal_name;
+			ParseSignalDetail (detailed_signal, out signal_name, out gquark);
+			signal_id = GetSignalId (signal_name, instance);
 			GLib.Value[] vals = new GLib.Value [args.Length + 1];
 			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
 			
@@ -314,10 +333,26 @@ namespace GLib {
 		private static uint GetSignalId (string signal_name, GLib.Object obj)
 		{
 			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
+			return GetSignalId (signal_name, typeid);
+		}
+		
+		private static uint GetSignalId (string signal_name, IntPtr typeid)
+		{
 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
 			uint signal_id = g_signal_lookup (native_name, typeid);
 			GLib.Marshaller.Free (native_name);
 			return signal_id;
+		}
+		
+		public static ulong AddEmissionHook (string detailed_signal, GLib.GType type, EmissionHook handler_func)
+		{
+			uint gquark;
+			string signal_name;
+			ParseSignalDetail (detailed_signal, out signal_name, out gquark);
+			uint signal_id = GetSignalId (signal_name, type.Val);
+			if (signal_id == 0)
+				throw new Exception ("Invalid signal name: " + signal_name);
+			return g_signal_add_emission_hook (signal_id, gquark, new EmissionHookMarshaler (handler_func).Callback, IntPtr.Zero, IntPtr.Zero);
 		}
 		
 		[DllImport("libgobject-2.0-0.dll")]
@@ -335,6 +370,10 @@ namespace GLib {
 		
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
+
 	}
 }
 
