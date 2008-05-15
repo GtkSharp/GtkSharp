@@ -22,4 +22,4 @@ libgladesharpglue.dll: $(libgladesharpglue_2_la_OBJECTS) libgladesharpglue.rc li
 
 CLEANFILES = lib*.a lib*.dll
 
-EXTRA_DIST = makefile.win32 win32dll.c
+EXTRA_DIST = win32dll.c

@@ -13,6 +13,6 @@ customs =			\
 	Object.custom		\
 	Util.custom
 
-add_dist = makefile.win32
+add_dist =
 
 include ../Makefile.include

@@ -18,7 +18,6 @@ libgtksharpglue_2_la_SOURCES =	\
 nodist_libgtksharpglue_2_la_SOURCES = generated.c
 
 # Adding a new glue file?
-# Please remember to update makefile.win32
 
 libgtksharpglue_2_la_LDFLAGS = -module -avoid-version -no-undefined
 
@@ -31,4 +30,4 @@ libgtksharpglue.dll: $(libgtksharpglue_2_la_OBJECTS) libgtksharpglue.rc libgtksh
 
 CLEANFILES = lib*.a lib*.dll
 
-EXTRA_DIST = makefile.win32 win32dll.c
+EXTRA_DIST = win32dll.c

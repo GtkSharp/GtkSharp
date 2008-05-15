@@ -26,8 +26,7 @@ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 EXTRA_DIST =				\
 	$(sources)			\
 	$(ASSEMBLY).config.in		\
-	gtk-dotnet-2.0.pc.in		\
-	makefile.win32
+	gtk-dotnet-2.0.pc.in
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .

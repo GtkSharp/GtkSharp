@@ -23,7 +23,7 @@ customs =				\
 	Interface.custom		\
 	XML.custom
 
-add_dist = makefile.win32 glade-sharp-2.0.pc.in
+add_dist = glade-sharp-2.0.pc.in
 
 include ../Makefile.include
 

@@ -9,7 +9,6 @@ libatksharpglue_2_la_SOURCES = 	\
 	vmglueheaders.h
 
 # Adding a new glue file?
-# Please remember to update makefile.win32
 
 libatksharpglue_2_la_LIBADD = $(ATK_LIBS)
 
@@ -20,4 +19,4 @@ libatksharpglue.dll: $(libatksharpglue_2_la_OBJECTS) libatksharpglue.rc libatksh
 
 CLEANFILES = lib*.a lib*.dll
 
-EXTRA_DIST = makefile.win32 win32dll.c
+EXTRA_DIST = win32dll.c

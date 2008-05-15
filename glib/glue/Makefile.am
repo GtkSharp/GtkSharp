@@ -15,7 +15,6 @@ libglibsharpglue_2_la_SOURCES = 	\
 	thread.c
 
 # Adding a new glue file?
-# Please remember to update makefile.win32
 
 libglibsharpglue_2_la_LIBADD = $(GLIB_LIBS)
 
@@ -26,4 +25,4 @@ libgtksharpglue.dll: $(libgtksharpglue_2_la_OBJECTS) libgtksharpglue.rc libgtksh
 
 CLEANFILES = lib*.a lib*.dll
 
-EXTRA_DIST = makefile.win32 win32dll.c
+EXTRA_DIST = win32dll.c

@@ -12,7 +12,6 @@ sources = 				\
 	gapi-parser.cs
 
 EXTRA_DIST =					\
-	makefile.win32				\
 	$(sources)				\
 	gapi2-parser.in				\
 	gapi_pp.pl				\

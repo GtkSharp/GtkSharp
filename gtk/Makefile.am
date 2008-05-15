@@ -137,7 +137,7 @@ customs = 				\
 	Widget.custom			\
 	Window.custom
 
-add_dist = makefile.win32 gtk-sharp-2.0.pc.in
+add_dist = gtk-sharp-2.0.pc.in
 
 include ../Makefile.include
 

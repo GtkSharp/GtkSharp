@@ -60,7 +60,6 @@ build_sources = $(addprefix $(srcdir)/, $(sources))
 dist_sources = $(sources)
 
 EXTRA_DIST =					\
-	makefile.win32				\
 	$(dist_sources)
 
 gapi_codegen.exe: $(build_sources)

@@ -80,8 +80,7 @@ EXTRA_DIST =				\
 	$(dist_sources)			\
 	$(ASSEMBLY).config.in		\
 	glib-sharp-2.0.pc.in		\
-	glib-api.xml			\
-	makefile.win32
+	glib-api.xml
 
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
