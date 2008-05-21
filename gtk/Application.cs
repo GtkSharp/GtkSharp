@@ -145,7 +145,7 @@ namespace Gtk {
 
 		public static Gdk.Event CurrentEvent {
 			get {
-				return new Gdk.Event (gtk_get_current_event ());
+				return Gdk.Event.GetEvent (gtk_get_current_event ());
 			}
 		}
 
