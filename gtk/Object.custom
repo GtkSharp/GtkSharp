@@ -41,12 +41,11 @@
 		[GLib.DefaultSignalHandler(Type=typeof(Gtk.Object), ConnectionMethod="OverrideDestroyed")]
 		protected virtual void OnDestroyed ()
 		{
-			if (DestroyHandlers [Handle] == null)
-				return;
-
-			EventHandler handler = (EventHandler) DestroyHandlers [Handle];
-			handler (this, EventArgs.Empty);
-			DestroyHandlers [Handle] = null;
+			if (DestroyHandlers.Contains (Handle)) {
+				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
+				handler (this, EventArgs.Empty);
+				DestroyHandlers.Remove (Handle);
+			}
 			Dispose ();
 		}
 
