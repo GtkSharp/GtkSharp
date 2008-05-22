@@ -201,7 +201,12 @@ static SetScrollAdjustmentsDelegate SetScrollAdjustmentsCallback;
 static void SetScrollAdjustments_cb (IntPtr widget, IntPtr hadj, IntPtr vadj)
 {
 	try {
-		Widget obj = GLib.Object.GetObject (widget, false) as Widget;
+		Widget obj;
+		try {
+			obj = GLib.Object.GetObject (widget, false) as Widget;
+		} catch (GLib.MissingIntPtrCtorException) {
+			return;
+		}
 		Gtk.Adjustment h = GLib.Object.GetObject (hadj, false) as Gtk.Adjustment;
 		Gtk.Adjustment v = GLib.Object.GetObject (vadj, false) as Gtk.Adjustment;
 		obj.OnSetScrollAdjustments (h, v);
@@ -232,8 +237,17 @@ static ActivateDelegate ActivateCallback;
 
 static void Activate_cb (IntPtr widget)
 {
-	Widget obj = GLib.Object.GetObject (widget, false) as Widget;
-	obj.OnActivate ();
+	try {
+		Widget obj;
+		try {
+			obj = GLib.Object.GetObject (widget, false) as Widget;
+		} catch (GLib.MissingIntPtrCtorException) {
+			return;
+		}
+		obj.OnActivate ();
+	} catch (Exception e) {
+		GLib.ExceptionManager.RaiseUnhandledException (e, false);
+	}
 }
 
 static void ConnectActivate (GLib.GType gtype)
