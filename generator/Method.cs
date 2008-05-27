@@ -285,9 +285,9 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + "\t\t\t" + retval.CSType + " ret = " + retval.FromNative ("raw_ret") + ";");
 			}
 
-			Body.Finish (sw, indent);
 			if (!IsStatic && implementor != null)
 				implementor.Finish (sw, indent + "\t\t\t");
+			Body.Finish (sw, indent);
 			Body.HandleException (sw, indent);
 
 			if (is_get && Parameters.Count > 0) 

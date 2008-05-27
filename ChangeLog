@@ -1,3 +1,11 @@
+2008-05-27  Mike Kestner  <mkestner@novell.com>
+
+	* generator/Method.cs (GenerateBody): when generating value type
+	methods, we should demarshal the 'this' memory before any ref or
+	out parameters in the event that someone passes 'this' as a param.
+	That will ensure that an updated value coming back from the native
+	side ends up in the memory location.
+
 2008-05-22  Mike Kestner  <mkestner@novell.com>
 
 	* gtk/Widget.custom: guard against MissingIntPtrCtorException in
