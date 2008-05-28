@@ -57,7 +57,11 @@
 			}
 			remove {
 				EventHandler handler = (EventHandler) DestroyHandlers [Handle];
-				DestroyHandlers [Handle] = Delegate.Remove (handler, value);
+				handler = (EventHandler) Delegate.Remove (handler, value);
+				if (handler != null)
+					DestroyHandlers [Handle] = handler;
+				else
+					DestroyHandlers.Remove (Handle);
 			}
 		}
 
