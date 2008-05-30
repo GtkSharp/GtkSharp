@@ -26,7 +26,6 @@
 void     gtksharp_object_unref_if_floating (GObject *obj);
 gboolean gtksharp_object_is_floating (GObject *obj);
 void gtksharp_object_set_floating (GtkObject *obj, gboolean val);
-void gtksharp_object_override_destroy (gpointer cb);
 /* */
 
 void
@@ -49,26 +48,5 @@ gtksharp_object_set_floating (GtkObject *obj, gboolean val)
 		GTK_OBJECT_SET_FLAGS (obj, GTK_FLOATING);
 	else
 		gtk_object_sink (obj);
-}
-
-typedef void (* destroy_func) (GtkObject *obj);
-
-static destroy_func base_destroy;
-static destroy_func managed_destroy;
-
-static void
-my_destroy (GtkObject *obj)
-{
-	(* managed_destroy) (obj);
-	(* base_destroy) (obj);
-}
-
-void 
-gtksharp_object_override_destroy (gpointer cb)
-{
-	GtkObjectClass *klass = (GtkObjectClass *) g_type_class_ref (GTK_TYPE_OBJECT);
-	base_destroy = klass->destroy;
-	managed_destroy = cb;
-	klass->destroy = my_destroy;
 }
 
