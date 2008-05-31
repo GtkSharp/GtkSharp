@@ -188,26 +188,28 @@
 				this.notify = notify;
 			}
 
-			void ReleaseHandles (byte[] data)
+			[GLib.CDeclCallback]
+			public delegate void NativeDelegate (IntPtr buf, IntPtr data);
+
+			void ReleaseHandles (IntPtr buf, IntPtr data)
 			{
-				data_handle.Free ();
 				if (notify != null)
-					notify (data);
+					notify ((byte[])data_handle.Target);
+				data_handle.Free ();
 				gch.Free ();
 			}
 
-			PixbufDestroyNotify handler;
-			public PixbufDestroyNotify Handler {
+			NativeDelegate handler;
+			public NativeDelegate Handler {
 				get {
-					if (handler == null)
-						handler = new PixbufDestroyNotify (ReleaseHandles);
+					handler = new NativeDelegate (ReleaseHandles);
 					return handler;
 				}
 			}
 		}
 
 		[DllImport("libgdk_pixbuf-2.0-0.dll")]
-		static extern IntPtr gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, GdkSharp.PixbufDestroyNotifyNative destroy_fn, IntPtr destroy_fn_data);
+		static extern IntPtr gdk_pixbuf_new_from_data(byte[] data, int colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, DestroyHelper.NativeDelegate destroy_fn, IntPtr destroy_fn_data);
 
 		public Pixbuf (byte[] data, Gdk.Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height, int rowstride, Gdk.PixbufDestroyNotify destroy_fn) : base (IntPtr.Zero)
 		{
@@ -215,9 +217,7 @@
 				throw new InvalidOperationException ("Can't override this constructor.");
 			}
 			DestroyHelper helper = new DestroyHelper (data, destroy_fn);
-			GdkSharp.PixbufDestroyNotifyWrapper destroy_fn_wrapper = new GdkSharp.PixbufDestroyNotifyWrapper (helper.Handler);
-			Raw = gdk_pixbuf_new_from_data(data, (int) colorspace, has_alpha, bits_per_sample, width, height, rowstride, destroy_fn_wrapper.NativeDelegate, IntPtr.Zero);
-			PersistentData ["new_from_data_destroy_fn_wrapper"] = destroy_fn_wrapper;
+			Raw = gdk_pixbuf_new_from_data(data, (int) colorspace, has_alpha, bits_per_sample, width, height, rowstride, helper.Handler, IntPtr.Zero);
 		}
 
 		// overload to default the colorspace
