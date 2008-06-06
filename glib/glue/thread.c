@@ -22,6 +22,8 @@
 
 #include <glib/gthread.h>
 
+gboolean glibsharp_g_thread_supported (void);
+
 gboolean
 glibsharp_g_thread_supported ()
 {
