@@ -16,7 +16,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -97,6 +97,9 @@ spawn.exe: $(srcdir)/SpawnTests.cs $(assemblies)
 assistant.exe: $(srcdir)/Assistant.cs $(assemblies)
 	$(CSC)  /out:assistant.exe $(references) $(srcdir)/Assistant.cs
 
+registerprop.exe: $(srcdir)/PropertyRegistration.cs $(assemblies)
+	$(CSC)  /out:registerprop.exe $(references) $(srcdir)/PropertyRegistration.cs
+
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	Assistant.cs			\
@@ -122,5 +125,6 @@ EXTRA_DIST = 				\
 	cairo-sample.exe.config		\
 	CustomWidget.cs			\
 	Actions.cs			\
+	PropertyRegistration.cs		\
 	PolarFixed.cs
 

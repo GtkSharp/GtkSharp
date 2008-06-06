@@ -22,11 +22,30 @@ namespace GLib {
 	using System;
 
 	public sealed class PropertyAttribute : Attribute {
+
+		string blurb;
+		string nickname;
 		string name;
 
 		public PropertyAttribute (string name)
 		{
 			this.name = name;
+		}
+
+		public PropertyAttribute (string name, string nickname, string blurb)
+		{
+			this.name = name;
+			this.nickname = nickname;
+			this.blurb = blurb;
+		}
+
+		public string Blurb {
+			get {
+				return blurb;
+			}
+			set {
+				blurb = value;
+			}
 		}
 
 		public string Name {
@@ -35,6 +54,15 @@ namespace GLib {
 			}
 			set {
 				name = value;
+			}
+		}
+
+		public string Nickname {
+			get {
+				return nickname;
+			}
+			set {
+				nickname = value;
 			}
 		}
 	}

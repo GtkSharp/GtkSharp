@@ -173,6 +173,95 @@ namespace GLib {
 						minfo.Invoke (null, parms);
 			}
  		}
+		
+		//  Key: The pointer to the ParamSpec of the property
+		//  Value: The corresponding PropertyInfo object
+		static Hashtable properties;
+		static Hashtable Properties {
+			get {
+				if (properties == null)
+					properties = new Hashtable ();
+				return properties;
+			}
+		}
+		
+		[DllImport ("glibsharpglue-2")]
+		static extern void gtksharp_override_property_handlers (IntPtr type, GetPropertyDelegate get_cb, SetPropertyDelegate set_cb);
+
+		[DllImport ("glibsharpglue-2")]
+		static extern IntPtr gtksharp_register_property (IntPtr type, IntPtr name, IntPtr nick, IntPtr blurb, uint property_id, IntPtr property_type, bool can_read, bool can_write);
+
+		static void AddProperties (GType gtype, System.Type t)
+		{
+			uint idx = 1;
+			
+			bool handlers_overridden = false;
+			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
+				foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
+					if(pinfo.GetIndexParameters().Length > 0)
+						throw(new InvalidOperationException(String.Format("GLib.RegisterPropertyAttribute cannot be applied to property {0} of type {1} because the property expects one or more indexed parameters", pinfo.Name, t.FullName)));
+					
+					PropertyAttribute property_attr = attr as PropertyAttribute;
+					if (!handlers_overridden) {
+						gtksharp_override_property_handlers (gtype.Val, GetPropertyHandler, SetPropertyHandler);
+						handlers_overridden = true;
+					}
+
+					IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_attr.Name);
+					IntPtr native_nick = GLib.Marshaller.StringToPtrGStrdup (property_attr.Nickname);
+					IntPtr native_blurb = GLib.Marshaller.StringToPtrGStrdup (property_attr.Blurb);
+
+					IntPtr param_spec = gtksharp_register_property (gtype.Val, native_name, native_nick, native_blurb, idx, ((GType) pinfo.PropertyType).Val, pinfo.CanRead, pinfo.CanWrite);
+
+					GLib.Marshaller.Free (native_name);
+					GLib.Marshaller.Free (native_nick);
+					GLib.Marshaller.Free (native_blurb);
+
+					if (param_spec == IntPtr.Zero)
+						// The GType of the property is not supported
+						throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported", pinfo.Name, t.FullName));
+					
+					Properties.Add (param_spec, pinfo);
+					idx++;
+				}
+			}
+		}
+		
+		[GLib.CDeclCallback]
+		delegate void GetPropertyDelegate (IntPtr GObject, uint property_id, ref GLib.Value value, IntPtr pspec);
+
+		static void GetPropertyCallback (IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
+		{
+			GLib.Object obj = GLib.Object.GetObject (handle, false);
+			value.Val = (Properties [param_spec] as PropertyInfo).GetValue (obj, new object [0]);
+		}
+
+		static GetPropertyDelegate get_property_handler;
+		static GetPropertyDelegate GetPropertyHandler {
+			get {
+				if (get_property_handler == null)
+					get_property_handler = new GetPropertyDelegate (GetPropertyCallback);
+				return get_property_handler;
+			}
+		}
+
+		[GLib.CDeclCallback]
+		delegate void SetPropertyDelegate (IntPtr GObject, uint property_id, ref GLib.Value value, IntPtr pspec);
+
+		static void SetPropertyCallback(IntPtr handle, uint property_id, ref GLib.Value value, IntPtr param_spec)
+		{
+			GLib.Object obj = GLib.Object.GetObject (handle, false);
+			(Properties [param_spec] as PropertyInfo).SetValue (obj, value.Val, new object [0]);
+		}
+
+		static SetPropertyDelegate set_property_handler;
+		static SetPropertyDelegate SetPropertyHandler {
+			get {
+				if (set_property_handler == null)
+					set_property_handler = new SetPropertyDelegate (SetPropertyCallback);
+				return set_property_handler;
+			}
+		}
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_type_add_interface_static (IntPtr gtype, IntPtr iface_type, ref GInterfaceInfo info);
@@ -227,6 +316,7 @@ namespace GLib {
 			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
 			GLib.Marshaller.Free (native_name);
 			GLib.GType.Register (gtype, t);
+			AddProperties (gtype, t);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			AddInterfaces (gtype, t);
