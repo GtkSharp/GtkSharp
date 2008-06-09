@@ -110,7 +110,7 @@
 		static extern void atksharp_object_override_ref_state_set (IntPtr type, RefStateSetDelegate cb);
 		
 		[DllImport("atksharpglue-2")]
-		static extern IntPtr atksharp_object_base_ref_state_set (IntPtr atk_obj);
+		static extern IntPtr atksharp_object_base_ref_state_set (IntPtr atk_obj, IntPtr gtype);
 		
 		[GLib.CDeclCallback]
 		delegate IntPtr RefStateSetDelegate (IntPtr raw);
@@ -142,7 +142,8 @@
 		[GLib.DefaultSignalHandler (Type=typeof(Atk.Object), ConnectionMethod="OverrideRefStateSet")]
 		protected virtual Atk.StateSet OnRefStateSet () 
 		{
-			IntPtr raw = atksharp_object_base_ref_state_set (Handle);
+			IntPtr raw = atksharp_object_base_ref_state_set (Handle, GLib.GType.FromName("AtkObject").Val);
 			return GLib.Object.GetObject (raw, true) as StateSet;
 		}
+		
 		

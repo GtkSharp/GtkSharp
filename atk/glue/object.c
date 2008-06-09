@@ -28,7 +28,7 @@ void atksharp_object_override_ref_child (GType gtype, gpointer cb);
 
 void atksharp_object_override_ref_state_set (GType gtype, gpointer cb);
 
-AtkStateSet* atksharp_object_base_ref_state_set (AtkObject *base);
+AtkStateSet* atksharp_object_base_ref_state_set (AtkObject *base, GType gtype);
 
 
 void
@@ -59,9 +59,11 @@ atksharp_object_override_ref_state_set (GType gtype, gpointer cb)
 }
 
 AtkStateSet*
-atksharp_object_base_ref_state_set (AtkObject *atk_obj)
+atksharp_object_base_ref_state_set (AtkObject *atk_obj, GType gtype)
 {
-	AtkObjectClass *parent = g_type_class_peek_parent (G_OBJECT_GET_CLASS (atk_obj));
+	//FIXME: find a cleaner way of doing this (it comes from a managed call to GType.FromName() :
+	AtkObjectClass *parent = g_type_class_peek (gtype);
+	
 	if (parent->ref_state_set)
 		return (*parent->ref_state_set) (atk_obj);
 	return NULL;
