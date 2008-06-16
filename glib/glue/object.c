@@ -132,15 +132,16 @@ gtksharp_register_property(GType declaring_type, const gchar *name, const gchar 
 	case G_TYPE_POINTER:
 		param_spec = g_param_spec_pointer (name, nick, blurb, flags);
 		break;
-	case G_TYPE_BOXED:
-		param_spec = g_param_spec_boxed (name, nick, blurb, return_type, flags);
-		break;
-	case G_TYPE_OBJECT:
-		param_spec = g_param_spec_object (name, nick, blurb, return_type, flags);
-		break;
 	default:
-		// The property's return type is not supported
-		return NULL;
+		if(return_type == G_TYPE_GTYPE)
+			param_spec = g_param_spec_gtype (name, nick, blurb, G_TYPE_NONE, flags);
+		else if(g_type_is_a (return_type, G_TYPE_BOXED))
+			param_spec = g_param_spec_boxed (name, nick, blurb, return_type, flags);
+		else if(g_type_is_a (return_type, G_TYPE_OBJECT))
+			param_spec = g_param_spec_object (name, nick, blurb, return_type, flags);
+		else
+			// The property's return type is not supported
+			return NULL;
 	}
 
 	g_object_class_install_property (declaring_class, id, param_spec);
