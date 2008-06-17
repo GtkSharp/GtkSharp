@@ -151,6 +151,23 @@ namespace GLib {
 			// cctor already calls g_type_init.
 		}
 
+		static Type FindTypeInReferences (string type_name, Assembly asm, Hashtable visited)
+		{
+			if (visited.Contains (asm))
+				return null;
+
+			visited [asm] = asm;
+			Type result = asm.GetType (type_name);
+			if (result == null)
+				foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
+					Assembly ref_asm = Assembly.Load (ref_name);
+					result = FindTypeInReferences (type_name, ref_asm, visited);
+					if (result != null)
+						break;
+				}
+			return result;
+		}
+
 		public static Type LookupType (IntPtr typeid)
 		{
 			if (types.Contains (typeid))
@@ -159,10 +176,20 @@ namespace GLib {
 			string native_name = Marshaller.Utf8PtrToString (g_type_name (typeid));
 			string type_name = GetQualifiedName (native_name);
 			Type result = null;
-			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ()) {
+			Assembly[] assemblies = (Assembly[]) AppDomain.CurrentDomain.GetAssemblies ().Clone ();
+			foreach (Assembly asm in assemblies) {
 				result = asm.GetType (type_name);
 				if (result != null)
 					break;
+			}
+
+			if (result == null) {
+				Hashtable visited = new Hashtable ();
+				foreach (Assembly asm in assemblies) {
+					result = FindTypeInReferences (type_name, asm, visited);
+					if (result != null)
+						break;
+				}
 			}
 
 			Register (new GType (typeid), result);
