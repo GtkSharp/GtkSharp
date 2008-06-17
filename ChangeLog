@@ -1,5 +1,18 @@
 2008-06-17  Mike Kestner  <mkestner@novell.com>
 
+	* glib/SignalClosure.cs: post back the gvalues after the closure is
+	invoked using a new Update method on GLib.Value.  This only impacts
+	boxed types, since they are the only "value types" passed by ref in
+	the signal marshaling environment.  We can't call set_boxed on the
+	value to update it, since that allocs new memory, we need to marshal
+	the updated struct out to the existing native memory address using
+	g_value_get_boxed.
+	* glib/Value.cs (Update): new update method for writing values to
+	an existing boxed type instance instead of allocating a new native
+	struct.  Fixes #398929.
+
+2008-06-17  Mike Kestner  <mkestner@novell.com>
+
 	* glib/GType.cs (LookupType): traversed referenced assemblies to
 	find types in currently unloaded assemblies.  Fixes #400595.
 

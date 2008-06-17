@@ -134,13 +134,19 @@ namespace GLib {
 
 				SignalArgs args = Activator.CreateInstance (closure.args_type, new object [0]) as SignalArgs;
 				args.Args = new object [n_param_vals - 1];
+				GLib.Value[] vals = new GLib.Value [n_param_vals - 1];
 				for (int i = 1; i < n_param_vals; i++) {
 					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf (typeof (Value)));
-					Value val = (Value) Marshal.PtrToStructure (ptr, typeof (Value));
-					args.Args [i - 1] = val.Val;
+					vals [i - 1] = (Value) Marshal.PtrToStructure (ptr, typeof (Value));
+					args.Args [i - 1] = vals [i - 1].Val;
 				}
 				ClosureInvokedArgs ci_args = new ClosureInvokedArgs (__obj, args);
 				closure.Invoke (ci_args);
+				for (int i = 1; i < n_param_vals; i++) {
+					vals [i - 1].Update (args.Args [i - 1]);
+					IntPtr ptr = new IntPtr (param_values.ToInt64 () + i * Marshal.SizeOf (typeof (Value)));
+					Marshal.StructureToPtr (vals [i - 1], ptr, false);
+				}
 				if (return_val == IntPtr.Zero || args.RetVal == null)
 					return;
 

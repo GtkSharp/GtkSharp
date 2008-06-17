@@ -411,6 +411,12 @@ namespace GLib {
 			}
 		}
 
+		internal void Update (object val)
+		{
+			if (g_type_is_a (type, GType.Boxed.Val) && !(val is IWrapper))
+				Marshal.StructureToPtr (val, g_value_get_boxed (ref this), false);
+		}
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_init (ref GLib.Value val, IntPtr gtype);
 
