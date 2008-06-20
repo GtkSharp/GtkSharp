@@ -58,6 +58,16 @@ namespace GLib {
 			g_value_set_boolean (ref this, val);
 		}
 
+		public Value (byte val) : this (GType.UChar)
+		{
+			g_value_set_uchar (ref this, val);
+		}
+
+		public Value (sbyte val) : this (GType.Char)
+		{
+			g_value_set_char (ref this, val);
+		}
+
 		public Value (int val) : this (GType.Int)
 		{
 			g_value_set_int (ref this, val);
@@ -209,6 +219,16 @@ namespace GLib {
 			return g_value_get_boolean (ref val);
 		}
 
+		public static explicit operator byte (Value val)
+		{
+			return g_value_get_uchar (ref val);
+		}
+
+		public static explicit operator sbyte (Value val)
+		{
+			return g_value_get_char (ref val);
+		}
+
 		public static explicit operator int (Value val)
 		{
 			return g_value_get_int (ref val);
@@ -329,6 +349,10 @@ namespace GLib {
 			get {
 				if (type == GType.Boolean.Val)
 					return (bool) this;
+				else if (type == GType.UChar.Val)
+					return (byte) this;
+				else if (type == GType.Char.Val)
+					return (sbyte) this;
 				else if (type == GType.Int.Val)
 					return (int) this;
 				else if (type == GType.UInt.Val)
@@ -362,6 +386,10 @@ namespace GLib {
 			set {
 				if (type == GType.Boolean.Val)
 					g_value_set_boolean (ref this, (bool) value);
+				else if (type == GType.UChar.Val)
+					g_value_set_uchar (ref this, (byte) value);
+				else if (type == GType.Char.Val)
+					g_value_set_char (ref this, (sbyte) value);
 				else if (type == GType.Int.Val)
 					g_value_set_int (ref this, (int) value);
 				else if (type == GType.UInt.Val)
@@ -436,6 +464,12 @@ namespace GLib {
 		static extern void g_value_set_boolean (ref Value val, bool data);
 
 		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_uchar (ref Value val, byte data);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_value_set_char (ref Value val, sbyte data);
+
+		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boxed (ref Value val, IntPtr data);
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -475,6 +509,12 @@ namespace GLib {
 		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_value_get_boolean (ref Value val);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern byte g_value_get_uchar (ref Value val);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern sbyte g_value_get_char (ref Value val);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_value_get_boxed (ref Value val);
