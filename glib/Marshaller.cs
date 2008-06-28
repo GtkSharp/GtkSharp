@@ -312,12 +312,12 @@ namespace GLib {
 
 		public static IntPtr DateTimeTotime_t (DateTime time)
 		{
-			return new IntPtr (((int)time.Subtract (local_epoch).TotalSeconds) - utc_offset);
+			return new IntPtr (((long)time.Subtract (local_epoch).TotalSeconds) - utc_offset);
 		}
 
 		public static DateTime time_tToDateTime (IntPtr time_t)
 		{
-			return local_epoch.AddSeconds ((int)time_t + utc_offset);
+			return local_epoch.AddSeconds (time_t.ToInt64 () + utc_offset);
 		}
 
 		[DllImport("glibsharpglue-2")]
