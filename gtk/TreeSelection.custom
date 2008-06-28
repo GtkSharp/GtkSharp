@@ -29,10 +29,7 @@
 				return new TreePath [0];
 
 			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
-			TreePath[] result = new TreePath [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				result [i] = (TreePath) list [i];
-			return result;
+			return (TreePath[]) GLib.Marshaller.ListToArray (list, typeof (Gtk.TreePath));
 		}
 
 		[DllImport("libgtk-win32-2.0-0.dll")]
@@ -47,10 +44,7 @@
 				return new TreePath [0];
 
 			GLib.List list = new GLib.List (list_ptr, typeof (Gtk.TreePath));
-			TreePath[] result = new TreePath [list.Count];
-			for (int i = 0; i < list.Count; i++)
-				result [i] = (TreePath) list [i];
-			return result;
+			return (TreePath[]) GLib.Marshaller.ListToArray (list, typeof (Gtk.TreePath));
 		}
 
 		[Obsolete ("Replaced by SelectFunction property.")]
