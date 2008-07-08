@@ -207,76 +207,37 @@ namespace GtkSharp.Generation {
 			GenInvoker (gen_info, sw);
 			sw.WriteLine ("\tinternal class " + Name + "Wrapper {");
 			sw.WriteLine ();
+			ManagedCallString call = new ManagedCallString (parms, false);
 			sw.WriteLine ("\t\tpublic " + retval.MarshalType + " NativeCallback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
+			string unconditional = call.Unconditional ("\t\t\t");
+			if (unconditional.Length > 0)
+				sw.WriteLine (unconditional);
 			sw.WriteLine ("\t\t\ttry {");
+			string call_setup = call.Setup ("\t\t\t\t");
+			if (call_setup.Length > 0)
+				sw.WriteLine (call_setup);
+			if (retval.CSType == "void")
+				sw.WriteLine ("\t\t\t\tmanaged ({0});", call);
+			else
+				sw.WriteLine ("\t\t\t\t{0} __ret = managed ({1});", retval.CSType, call);
+			string finish = call.Finish ("\t\t\t\t");
+			if (finish.Length > 0)
+				sw.WriteLine (finish);
+			sw.WriteLine ("\t\t\t\tif (release_on_call)\n\t\t\t\t\tgch.Free ();");
+			if (retval.CSType != "void")
+				sw.WriteLine ("\t\t\t\treturn {0};", retval.ToNative ("__ret"));
 
-			bool need_sep = false;
-			bool throws_error = false;
-			string call_str = "";
-			string cleanup_str = "";
-			for (int i = 0, idx = 0; i < parms.Count; i++)
-			{
-				Parameter p = parms [i];
-
-				if (p.CType == "GError**") {
-					sw.WriteLine ("\t\t\t\t" + p.Name + " = IntPtr.Zero;");
-					throws_error = true;
-					continue;
-				} else if (parms.IsHidden (p))
-					continue;
-
-				IGeneratable gen = p.Generatable;
-
-				sw.Write("\t\t\t\t" + p.CSType + " _arg" + idx);
-				if (p.PassAs == "out") {
-					sw.WriteLine(";");
-					cleanup_str += "\t\t\t\t" + p.Name + " = " + gen.CallByName ("_arg" + idx) + ";\n";
-				} else
-					sw.WriteLine(" = " + gen.FromNative (p.Name) + ";");
-
-				if (need_sep)
-					call_str += ", ";
-				else
-					need_sep = true;
-				call_str += String.Format ("{0} _arg{1}", p.PassAs, idx);
-				idx++;
-			}
-
-			bool has_out_params = cleanup_str.Length > 0;
-			cleanup_str += "\t\t\t\tif (release_on_call)\n\t\t\t\t\tgch.Free ();\n";
-
-			sw.Write ("\t\t\t\t");
-			string invoke = "managed (" + call_str + ")";
-			if (retval.MarshalType != "void") {
-				sw.Write (retval.MarshalType + " ret = ");
-				cleanup_str += "\t\t\t\treturn ret;\n";
-
-				SymbolTable table = SymbolTable.Table;
-				ClassBase ret_wrapper = table.GetClassGen (retval.CType);
-				if (ret_wrapper != null && ret_wrapper is HandleBase)
-					sw.WriteLine ("(({0}) {1}).Handle;", retval.CSType, invoke);
-				else if (table.IsStruct (retval.CType) || table.IsBoxed (retval.CType)) {
-					// Shoot. I have no idea what to do here.
-					Console.WriteLine ("Struct return type {0} in callback {1}", retval.CType, CName);
-					sw.WriteLine ("IntPtr.Zero;"); 
-				} else if (table.IsEnum (retval.CType))
-					sw.WriteLine ("(int) {0};", invoke);
-				else
-					sw.WriteLine ("({0}) ({1});", retval.MarshalType, table.ToNativeReturn (retval.CType, invoke));
-			} else
-				sw.WriteLine (invoke + ";");
-
-			sw.Write (cleanup_str);
-			bool fatal = (retval.MarshalType != "void" && retval.MarshalType != "bool") || has_out_params || throws_error;
+			/* If the function expects one or more "out" parameters(error parameters are excluded) or has a return value different from void and bool, exceptions
+			*  thrown in the managed function have to be considered fatal meaning that an exception is to be thrown and the function call cannot not return
+			*/
+			bool fatal = (retval.MarshalType != "void" && retval.MarshalType != "bool") || call.HasOutParam;
 			sw.WriteLine ("\t\t\t} catch (Exception e) {");
 			sw.WriteLine ("\t\t\t\tGLib.ExceptionManager.RaiseUnhandledException (e, " + (fatal ? "true" : "false") + ");");
 			if (fatal) {
 				sw.WriteLine ("\t\t\t\t// NOTREACHED: Above call does not return.");
 				sw.WriteLine ("\t\t\t\tthrow e;");
 			} else if (retval.MarshalType == "bool") {
-				if (throws_error)
-					sw.WriteLine ("\t\t\t\terror = IntPtr.Zero;");
 				sw.WriteLine ("\t\t\t\treturn false;");
 			}
 			sw.WriteLine ("\t\t\t}");

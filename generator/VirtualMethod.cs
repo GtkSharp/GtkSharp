@@ -70,7 +70,7 @@ namespace GtkSharp.Generation {
 			if (!Validate ())
 				return;
 
-			ManagedCallString call = new ManagedCallString (parms);
+			ManagedCallString call = new ManagedCallString (parms, true);
 			string type = parms [0].CSType + "Implementor";
 			string name = parms [0].Name;
 			string call_string = "__obj." + Name + " (" + call + ")";
@@ -84,6 +84,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tstatic " + MarshalReturnType + " " + Name + "Callback (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
+			string unconditional = call.Unconditional ("\t\t\t");
+			if (unconditional.Length > 0)
+				sw.WriteLine (unconditional);
 			sw.WriteLine ("\t\t\ttry {");
 			sw.WriteLine ("\t\t\t\t" + type + " __obj = GLib.Object.GetObject (" + name + ", false) as " + type + ";");
 			sw.Write (call.Setup ("\t\t\t\t"));

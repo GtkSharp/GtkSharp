@@ -33,17 +33,17 @@ namespace GtkSharp.Generation {
 		string user_data_param = null;
 		string destroy_param = null;
 
-		public ManagedCallString (Parameters parms)
+		public ManagedCallString (Parameters parms, bool drop_first)
 		{
-			for (int i = 1; i < parms.Count; i ++) {
+			for (int i = drop_first ? 1 : 0; i < parms.Count; i ++) {
 				Parameter p = parms [i];
-				if (p.IsLength && parms [i-1].IsString) 
+				if (p.IsLength && i > 0 && parms [i-1].IsString) 
 					continue;
 				else if (p.Scope == "notified") {
 					user_data_param = parms[i+1].Name;
 					destroy_param = parms[i+2].Name;
 					i += 2;
-				} else if (p.IsUserData && parms [i-1].Generatable is CallbackGen) {
+				} else if (p.IsUserData && (i == parms.Count - 1) && (parms.HideData || parms [i-1].Generatable is CallbackGen)) {
 					user_data_param = p.Name;
 					continue;
 				} else if (p is ErrorParameter) {
@@ -61,12 +61,26 @@ namespace GtkSharp.Generation {
 			}
 		}
 
+		public bool HasOutParam {
+			get {
+				foreach (Parameter p in parms) {
+					if (p.PassAs == "out")
+						return true;
+				}
+				return false;
+			}
+		}
+
+		public string Unconditional (string indent) {
+			string ret = "";
+			if (error_param != null)
+				ret = indent + error_param + " = IntPtr.Zero;\n";
+			return ret;
+		}
+
 		public string Setup (string indent)
 		{
 			string ret = "";
-
-			if (error_param != null)
-				ret = indent + error_param + " = IntPtr.Zero;\n";
 
 			for (int i = 0; i < parms.Count; i ++) {
 				if ((bool)special[i] == false)

@@ -380,7 +380,7 @@ namespace GtkSharp.Generation {
 			StreamWriter glue;
 			bool use_glue = gen_info.GlueEnabled && implementor == null && ClassFieldName.Length > 0;
 			string glue_name = String.Empty;
-			ManagedCallString call = new ManagedCallString (parms);
+			ManagedCallString call = new ManagedCallString (parms, true);
 			sw.WriteLine ("\t\t[GLib.CDeclCallback]");
 			sw.WriteLine ("\t\tdelegate " + retval.ToNativeType + " " + Name + "VMDelegate (" + parms.ImportSignature + ");\n");
 
@@ -402,6 +402,9 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tstatic {0} {1};\n", Name + "VMDelegate", Name + "VMCallback");
 			sw.WriteLine ("\t\tstatic " + retval.ToNativeType + " " + Name.ToLower() + "_cb (" + parms.ImportSignature + ")");
 			sw.WriteLine ("\t\t{");
+			string unconditional = call.Unconditional ("\t\t\t");
+			if (unconditional.Length > 0)
+				sw.WriteLine (unconditional);
 			sw.WriteLine ("\t\t\ttry {");
 			sw.WriteLine ("\t\t\t\t{0} {1}_managed = GLib.Object.GetObject ({1}, false) as {0};", implementor != null ? implementor.Name : container_type.Name, parms[0].Name);
 			sw.Write (call.Setup ("\t\t\t\t"));
