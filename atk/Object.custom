@@ -104,7 +104,11 @@
 			Add,
 			Remove
 		}
-		
+
+		protected void EmitVisibleDataChanged ()
+		{
+			GLib.Signal.Emit (this, "visible-data-changed");
+		}
 		
 		[DllImport("atksharpglue-2")]
 		static extern void atksharp_object_override_ref_state_set (IntPtr type, RefStateSetDelegate cb);

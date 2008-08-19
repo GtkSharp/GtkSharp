@@ -380,6 +380,8 @@ namespace GLib {
 					return (GLib.Object) this;
 				else if (g_type_is_a (type, GType.Boxed.Val))
 					return ToBoxed ();
+				else if (type == IntPtr.Zero)
+					return null;
 				else
 					throw new Exception ("Unknown type " + new GType (type).ToString ());
 			}
