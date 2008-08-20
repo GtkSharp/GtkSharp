@@ -427,7 +427,10 @@ namespace GLib {
 					g_value_set_boxed (ref this, wrapper);
 					ManagedValue.ReleaseWrapper (wrapper);
 				} else if (g_type_is_a (type, GType.Object.Val))
-					g_value_set_object (ref this, ((GLib.Object) value).Handle);
+					if(value is GLib.Object)
+						g_value_set_object (ref this, (value as GLib.Object).Handle);
+					else
+						g_value_set_object (ref this, (value as GLib.GInterfaceAdapter).Handle);
 				else if (g_type_is_a (type, GType.Boxed.Val)) {
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);

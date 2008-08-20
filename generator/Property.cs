@@ -142,6 +142,9 @@ namespace GtkSharp.Generation {
 				sw.WriteLine(indent + "\tGLib.Value val = " + RawGetter (qpname) + ";");
 				if (table.IsOpaque (CType) || table.IsBoxed (CType)) {
 					sw.WriteLine(indent + "\t" + CSType + " ret = (" + CSType + ") val;");
+				} else if (table.IsInterface (CType)) {
+					// Do we have to dispose the GLib.Object from the GLib.Value?
+					sw.WriteLine (indent + "\t{0} ret = {0}Adapter.GetObject ((GLib.Object) val);", CSType);
 				} else {
 					sw.Write(indent + "\t" + CSType + " ret = ");
 					sw.Write ("(" + CSType + ") ");

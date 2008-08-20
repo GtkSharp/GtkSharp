@@ -125,6 +125,7 @@ namespace GtkSharp.Generation {
 		{
 			sw.WriteLine ("\t\tstatic " + Name + "Adapter ()");
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tGLib.GType.Register (_gtype, typeof({0}Adapter));", Name);
 			foreach (VirtualMethod vm in vms) {
 				bool has_target = methods [vm.Name] != null;
 				if (has_target && vm.IsValid)
@@ -183,9 +184,11 @@ namespace GtkSharp.Generation {
 		{
 			Method m = GetMethod ("GetType");
 			m.GenerateImport (sw);
+			sw.WriteLine ("\t\tprivate static GLib.GType _gtype = new GLib.GType ({0} ());", m.CName);
+			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic override GLib.GType GType {");
 			sw.WriteLine ("\t\t\tget {");
-			sw.WriteLine ("\t\t\t\treturn new GLib.GType (" + m.CName +  " ());");
+			sw.WriteLine ("\t\t\t\treturn _gtype;");
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
@@ -209,6 +212,11 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tpublic static " + Name + " GetObject (IntPtr handle, bool owned)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tGLib.Object obj = GLib.Object.GetObject (handle, owned);");
+			sw.WriteLine ("\t\t\treturn GetObject (obj);");
+			sw.WriteLine ("\t\t}");
+			sw.WriteLine ();
+			sw.WriteLine ("\t\tpublic static " + Name + " GetObject (GLib.Object obj)");
+			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (obj == null)");
 			sw.WriteLine ("\t\t\t\treturn null;");
 			sw.WriteLine ("\t\t\telse if (obj is " + Name + "Implementor)");
