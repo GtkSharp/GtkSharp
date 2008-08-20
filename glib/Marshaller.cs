@@ -351,6 +351,18 @@ namespace GLib {
 			return result;
 		}
 
+		public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type)
+		{
+			ListBase list;
+			if (list_type == typeof(GLib.List))
+				list = new GLib.List (list_ptr, elem_type, owned, elements_owned);
+			else
+				list = new GLib.SList (list_ptr, elem_type, owned, elements_owned);
+
+			using (list)
+				return ListToArray (list, elem_type);
+		}
+
 		public static Array ListToArray (ListBase list, System.Type type)
 		{
 			Array result = Array.CreateInstance (type, list.Count);

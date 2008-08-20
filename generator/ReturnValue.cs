@@ -124,9 +124,8 @@ namespace GtkSharp.Generation {
 				return String.Empty;
 
 			if (ElementType != String.Empty) {
-				string type_str = "typeof (" + ElementType + ")";
-				string args = type_str + ", " + (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
-				return String.Format ("({0}[]) GLib.Marshaller.ListToArray ({1}, {2})", ElementType, IGen.FromNativeReturn (var + ", " + args), type_str);
+				string args = (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
+				return String.Format ("({0}[]) GLib.Marshaller.ListPtrToArray ({1}, typeof({2}), {3}, typeof({0}))", ElementType, var, IGen.QualifiedName, args);
 			} else if (IGen is HandleBase)
 				return ((HandleBase)IGen).FromNative (var, owned);
 			else if (is_null_term)
