@@ -614,7 +614,7 @@ namespace GLib {
 		static Object ()
 		{
 			if (Environment.GetEnvironmentVariable ("GTK_SHARP_DEBUG") != null)
-				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, GLib.Log.PrintTraceLogFunction);
+				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, new GLib.LogFunc (GLib.Log.PrintTraceLogFunction));
 		}
 	}
 }

@@ -155,14 +155,14 @@ namespace GLib {
 		void ClosureDisposedCB (object o, EventArgs args)
 		{
 			if (o == before_closure) {
-				before_closure.Disposed -= ClosureDisposedHandler;
-				before_closure.Invoked -= ClosureInvokedCB;
+				before_closure.Disposed -= new EventHandler (ClosureDisposedHandler);
+				before_closure.Invoked -= new ClosureInvokedHandler (ClosureInvokedCB);
 				if (tref.Target != null)
 					tref.Target.BeforeSignals.Remove (name);
 				before_closure = null;
 			} else {
-				after_closure.Disposed -= ClosureDisposedHandler;
-				after_closure.Invoked -= ClosureInvokedCB;
+				after_closure.Disposed -= new EventHandler (ClosureDisposedHandler);
+				after_closure.Invoked -= new ClosureInvokedHandler (ClosureInvokedCB);
 				if (tref.Target != null)
 					tref.Target.AfterSignals.Remove (name);
 				after_closure = null;
