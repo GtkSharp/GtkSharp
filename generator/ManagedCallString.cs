@@ -43,7 +43,7 @@ namespace GtkSharp.Generation {
 					user_data_param = parms[i+1].Name;
 					destroy_param = parms[i+2].Name;
 					i += 2;
-				} else if (p.IsUserData && ((i == parms.Count - 1) || i == parms.Count - 2 && parms[parms.Count - 1] is ErrorParameter) && (parms.HideData || parms [i-1].Generatable is CallbackGen)) {
+				} else if (p.IsUserData && parms.IsHidden (p)) {
 					user_data_param = p.Name;
 					continue;
 				} else if (p is ErrorParameter) {
