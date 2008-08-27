@@ -554,6 +554,8 @@ namespace GtkSharp.Generation {
 			if (HasCB || HideData) {
 				if (p.IsUserData && (idx == Count - 1))
                                         return true;
+				if (p.IsUserData && (idx == Count - 2) && this [Count - 1] is ErrorParameter)
+                                        return true;
 				if (p.IsUserData && idx > 0 &&
 				    this [idx - 1].Generatable is CallbackGen)
 					return true;

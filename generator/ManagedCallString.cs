@@ -35,17 +35,15 @@ namespace GtkSharp.Generation {
 
 		public ManagedCallString (Parameters parms, bool drop_first)
 		{
-			bool has_cb = false;
 			for (int i = drop_first ? 1 : 0; i < parms.Count; i ++) {
 				Parameter p = parms [i];
 				if (p.IsLength && i > 0 && parms [i-1].IsString) 
 					continue;
 				else if (p.Scope == "notified") {
-					has_cb = true;
 					user_data_param = parms[i+1].Name;
 					destroy_param = parms[i+2].Name;
 					i += 2;
-				} else if (p.IsUserData && (parms.HideData || has_cb)) {
+				} else if (p.IsUserData && ((i == parms.Count - 1) || i == parms.Count - 2 && parms[parms.Count - 1] is ErrorParameter) && (parms.HideData || parms [i-1].Generatable is CallbackGen)) {
 					user_data_param = p.Name;
 					continue;
 				} else if (p is ErrorParameter) {
@@ -56,10 +54,9 @@ namespace GtkSharp.Generation {
 
 				if (p.PassAs != String.Empty && (p.Name != p.FromNative (p.Name)))
 					this.special.Add (true);
-				else if (p.Generatable is CallbackGen) {
-					has_cb = true;
+				else if (p.Generatable is CallbackGen)
 					this.special.Add (true);
-				} else
+				else
 					this.special.Add (false);
 			}
 		}

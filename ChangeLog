@@ -1,5 +1,20 @@
 2008-08-27  Mike Kestner  <mkestner@novell.com>
 
+	* generator/ManagedCallString.cs: revert last change.  There are a
+	lot of "broken" callback sigs out there which expose user data because
+	it's not in the last parameter in the list.  I don't think we can 
+	reasonably make a change to hide all those at this point.  This change
+	at least hides all the user_data which comes right before a GError 
+	param at the end of the list.  I need to follow up with a change which
+	handles data parameters in any parameter position, but allows the user
+	to mark "exposed" data params for compatibility reasons.
+	* generator/Parameters.cs: hide data params which are at the end of a
+	list behind an error param.
+	* gtk/Gtk.metadata: mark an array parameter on 
+	TextBufferDeserializeFunc.
+
+2008-08-27  Mike Kestner  <mkestner@novell.com>
+
 	* glib/Signal.cs: multiple dispose guarding for closures.
 
 2008-08-27  Mike Kestner  <mkestner@novell.com>
