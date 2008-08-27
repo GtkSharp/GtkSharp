@@ -160,7 +160,7 @@ namespace GLib {
 				if (tref.Target != null)
 					tref.Target.BeforeSignals.Remove (name);
 				before_closure = null;
-			} else {
+			} else if (o == after_closure) {
 				after_closure.Disposed -= new EventHandler (ClosureDisposedHandler);
 				after_closure.Invoked -= new ClosureInvokedHandler (ClosureInvokedCB);
 				if (tref.Target != null)
