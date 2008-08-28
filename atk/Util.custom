@@ -185,9 +185,13 @@
 		public static GetRootDelegate GetRootHandler {
 			set {
 				get_root_handler = value;
-				if (get_root_callback == null)
-					get_root_callback = new GetRootNativeDelegate (GetRootCallback);
-				atksharp_util_override_get_root (get_root_callback);
+				if (value == null)
+					atksharp_util_override_get_root (null);
+				else {
+					if (get_root_callback == null)
+						get_root_callback = new GetRootNativeDelegate (GetRootCallback);
+					atksharp_util_override_get_root (get_root_callback);
+				}
 			}
 		}
 
