@@ -7,6 +7,7 @@ libglibsharpglue_2_la_SOURCES = 	\
 	error.c			\
 	list.c			\
 	object.c		\
+	signal.c		\
 	slist.c			\
 	type.c			\
 	unichar.c		\

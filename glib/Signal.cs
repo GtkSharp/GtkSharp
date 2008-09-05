@@ -311,15 +311,18 @@ namespace GLib {
 				inst_and_params.Append (vals [i]);
 			}
 
-			GLib.Value ret = GLib.Value.Empty;
-
-			g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
-			object ret_obj = ret.Val;
+			object ret_obj = null;
+			if (glibsharp_signal_get_return_type (signal_id) != GType.None.Val) {
+				GLib.Value ret = GLib.Value.Empty;
+				g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
+				ret_obj = ret.Val;
+				ret.Dispose ();
+			} else
+				g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, IntPtr.Zero);
 			
 			foreach (GLib.Value val in vals)
 				val.Dispose ();
-			ret.Dispose ();
-			
+
 			return ret_obj;
 		}
 		
@@ -360,6 +363,12 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
+		
+		[DllImport("glibsharpglue-2")]
+		static extern IntPtr glibsharp_signal_get_return_type (uint signal_id);
 		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
