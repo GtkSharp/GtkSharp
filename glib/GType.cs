@@ -24,6 +24,7 @@ namespace GLib {
 
 	using System;
 	using System.Collections;
+	using System.IO;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
 
@@ -158,13 +159,19 @@ namespace GLib {
 
 			visited [asm] = asm;
 			Type result = asm.GetType (type_name);
-			if (result == null)
+			if (result == null) {
+				string asm_dir = Path.GetDirectoryName (asm.Location);
 				foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
-					Assembly ref_asm = Assembly.Load (ref_name);
+					Assembly ref_asm;
+					if (File.Exists (Path.Combine (asm_dir, ref_name.Name + ".dll")))
+						ref_asm = Assembly.LoadFrom (Path.Combine (asm_dir, ref_name.Name + ".dll"));
+					else
+						ref_asm = Assembly.Load (ref_name);
 					result = FindTypeInReferences (type_name, ref_asm, visited);
 					if (result != null)
 						break;
 				}
+			}
 			return result;
 		}
 
