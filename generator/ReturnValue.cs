@@ -27,7 +27,6 @@ namespace GtkSharp.Generation {
 	public class ReturnValue  {
 
 		
-		private XmlElement elem;
 		bool is_null_term;
 		bool is_array;
 		bool elements_owned;
@@ -37,7 +36,6 @@ namespace GtkSharp.Generation {
 
 		public ReturnValue (XmlElement elem) 
 		{
-			this.elem = elem;
 			if (elem != null) {
 				is_null_term = elem.HasAttribute ("null_term_array");
 				is_array = elem.HasAttribute ("array");
