@@ -38,10 +38,12 @@ namespace GtkDialogSample
             Application.Init ();
             win = new Window ("Test");
             win.SetDefaultSize (250, 250);
-            win.DeleteEvent += new DeleteEventHandler (on_win_delete);
+            win.DeleteEvent += delegate {
+			Application.Quit ();
+		  }
             
             Button btn = new Button ("Show About");
-            btn.Clicked += new EventHandler (on_btn_clicked);
+            btn.Clicked += on_btn_clicked;
             win.Add (btn);
             
             win.ShowAll ();
@@ -54,7 +56,7 @@ namespace GtkDialogSample
                 ("Sample", win, Gtk.DialogFlags.DestroyWithParent);
             dialog.Modal = true;
             dialog.AddButton ("Close", ResponseType.Close);
-            dialog.Response += new ResponseHandler (on_dialog_response);
+            dialog.Response += on_dialog_response;
             dialog.Run ();
             dialog.Destroy ();
         }
@@ -62,11 +64,6 @@ namespace GtkDialogSample
         void on_dialog_response (object obj, ResponseArgs args)
         {
             Console.WriteLine (args.ResponseId);
-        }
-		
-        void on_win_delete (object obj, DeleteEventArgs args)
-        {
-            Application.Quit ();
         }
     }
 }
@@ -297,9 +294,39 @@ namespace GtkDialogSample
         <param name="flags">dialog characteristic such as modality and destruction policy.</param>
         <param name="button_data">a list of button text/response pairs if desired.</param>
         <remarks>
-            Creates a new <see cref="T:Gtk.Dialog" /> with the specified title and parent widget.
-            The <see cref="T:Gtk.DialogFlags" /> argument can be used to make the dialog modal (<see cref="F:Gtk.DialogFlags.Modal" />)
-            and/or to have it destroyed along with its parent (<see cref="F:Gtk.DialogFlags.DestroyWithParent" />).
+          <para>Creates a new <see cref="T:Gtk.Dialog" /> with the specified title and parent widget.</para>
+          <para>
+The <see cref="T:Gtk.DialogFlags" /> argument can be used to make the dialog modal (<see cref="F:Gtk.DialogFlags.Modal" />)
+and/or to have it destroyed along with its parent (<see cref="F:Gtk.DialogFlags.DestroyWithParent" />).
+</para>
+          <example>
+            <code lang="C#">
+using System;
+using Gtk;
+
+class MainClass
+{
+	public static void Main (string[] args)
+	{
+		Application.Init ();
+
+		// Shows two buttons that use stock icons, and a custom button
+		//    Add button will return 1000
+		//    Delete button will return 2000
+		//    "My Own Butotn" will return 3000
+		Dialog d = new Gtk.Dialog ("What to do?", null, DialogFlags.Modal, 
+					   Stock.Add,    1000,
+					   Stock.Delete, 2000,
+					   "My Own Button", 3000);
+		int response = d.Run ();
+		if (response == (int) ResponseType.DeleteEvent)
+			Console.WriteLine ("The user closed the dialog box");
+		   
+		Console.WriteLine (response);
+	}
+}
+  </code>
+          </example>
         </remarks>
         <since version="Gtk# 2.4" />
       </Docs>
