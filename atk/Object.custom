@@ -150,4 +150,36 @@
 			return GLib.Object.GetObject (raw, true) as StateSet;
 		}
 		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_object_override_get_index_in_parent (IntPtr type, IndexInParentDelegate cb);
 		
+		[GLib.CDeclCallback]
+		delegate int IndexInParentDelegate (IntPtr raw);
+		
+		static IndexInParentDelegate IndexInParentCallback;
+		
+		static int IndexInParent_cb (IntPtr raw)
+		{
+			try {
+				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
+				return obj.OnGetIndexInParent ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return -1;
+		}
+		
+		static void OverrideIndexInParent (GLib.GType gtype)
+		{
+			if (IndexInParentCallback == null)
+				IndexInParentCallback = new IndexInParentDelegate (IndexInParent_cb);
+			atksharp_object_override_get_index_in_parent (gtype.Val, IndexInParentCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Object), ConnectionMethod="OverrideIndexInParent")]
+		protected virtual int OnGetIndexInParent() {
+			return -1;
+		}
+		
+
