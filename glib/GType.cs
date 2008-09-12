@@ -166,13 +166,17 @@ namespace GLib {
 				string asm_dir = Path.GetDirectoryName (asm.Location);
 				foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
 					Assembly ref_asm;
-					if (File.Exists (Path.Combine (asm_dir, ref_name.Name + ".dll")))
-						ref_asm = Assembly.LoadFrom (Path.Combine (asm_dir, ref_name.Name + ".dll"));
-					else
-						ref_asm = Assembly.Load (ref_name);
-					result = FindTypeInReferences (type_name, ref_asm, visited);
-					if (result != null)
-						break;
+					try {
+						if (File.Exists (Path.Combine (asm_dir, ref_name.Name + ".dll")))
+							ref_asm = Assembly.LoadFrom (Path.Combine (asm_dir, ref_name.Name + ".dll"));
+						else
+							ref_asm = Assembly.Load (ref_name);
+						result = FindTypeInReferences (type_name, ref_asm, visited);
+						if (result != null)
+							break;
+					} catch (Exception) {
+						/* Failure to load a referenced assembly is not an error */
+					}
 				}
 			}
 			return result;
