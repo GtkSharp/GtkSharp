@@ -39,8 +39,12 @@ namespace GtkSharp.Generation {
 		public Method (XmlElement elem, ClassBase container_type) : base (elem, container_type)
 		{
 			this.retval = new ReturnValue (elem["return-type"]);
-			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated"))
-				deprecated = elem.GetAttribute ("deprecated") == "1";
+			
+			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated")) {
+				string attr = elem.GetAttribute ("deprecated");
+				deprecated = attr == "1" || attr == "true";
+			}
+			
 			if (Name == "GetType")
 				Name = "GetGType";
 		}

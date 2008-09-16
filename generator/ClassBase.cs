@@ -68,10 +68,15 @@ namespace GtkSharp.Generation {
 
 		protected ClassBase (XmlElement ns, XmlElement elem) : base (ns, elem) {
 					
-			if (elem.HasAttribute ("deprecated"))
-				deprecated = elem.GetAttribute ("deprecated") == "1";
-			if (elem.HasAttribute ("abstract"))
-				isabstract = elem.GetAttribute ("abstract") == "1";
+			if (elem.HasAttribute ("deprecated")) {
+				string attr = elem.GetAttribute ("deprecated");
+				deprecated = attr == "1" || attr == "true";
+			}
+			
+			if (elem.HasAttribute ("abstract")) {
+				string attr = elem.GetAttribute ("abstract");
+				isabstract = attr == "1" || attr == "true";
+			}
 
 			foreach (XmlNode node in elem.ChildNodes) {
 				if (!(node is XmlElement)) continue;

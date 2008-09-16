@@ -58,7 +58,8 @@ namespace GtkSharp.Generation {
 		bool IsDeprecated {
 			get {
 				return !container_type.IsDeprecated &&
-					elem.GetAttribute ("deprecated") == "1";
+					(elem.GetAttribute ("deprecated") == "1" ||
+					 elem.GetAttribute ("deprecated") == "true");
 			}
 		}
 
