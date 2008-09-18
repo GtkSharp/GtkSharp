@@ -34,7 +34,7 @@ namespace GLib {
 		internal bool elements_owned = false;
 		protected System.Type element_type = null;
 
-                abstract internal IntPtr NthData (uint index);
+		abstract internal IntPtr NthData (uint index);
 		abstract internal IntPtr GetData (IntPtr current);
 		abstract internal IntPtr Next (IntPtr current);
 		abstract internal int Length (IntPtr list);
@@ -118,7 +118,7 @@ namespace GLib {
 			object[] orig = new object[Count];
 			int i = 0;
 			foreach (object o in this)
-				orig[i++] = o;
+				orig [i++] = o;
 			
 			orig.CopyTo (array, index); 
 		}
