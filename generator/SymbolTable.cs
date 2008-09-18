@@ -77,15 +77,25 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GQuark", "int", "0"));
 
 			// platform specific integer types.
-			AddType (new LPGen ("ssize_t"));
+#if WIN64LONGS
+			AddType (new SimpleGen ("long", "int", "0"));
+			AddType (new SimpleGen ("glong", "int", "0"));
+			AddType (new SimpleGen ("ulong", "uint", "0"));
+			AddType (new SimpleGen ("gulong", "uint", "0"));
+			AddType (new SimpleGen ("unsigned long", "uint", "0"));
+#else
 			AddType (new LPGen ("long"));
 			AddType (new LPGen ("glong"));
-			AddType (new LPGen ("gssize"));
-			AddType (new LPUGen ("size_t"));
 			AddType (new LPUGen ("ulong"));
 			AddType (new LPUGen ("gulong"));
 			AddType (new LPUGen ("unsigned long"));
+#endif
+
+			AddType (new LPGen ("ssize_t"));
+			AddType (new LPGen ("gssize"));
+			AddType (new LPUGen ("size_t"));
 			AddType (new LPUGen ("gsize"));
+
 #if OFF_T_8
 			AddType (new AliasGen ("off_t", "long"));
 #else
