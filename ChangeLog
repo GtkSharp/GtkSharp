@@ -1,5 +1,14 @@
 2008-09-18  Mike Kestner  <mkestner@novell.com>
 
+	* bootstrap-2.12: bump svn version.
+	* generator/Signal.cs: add a workaround for G_TYPE_POINTER usage
+	in the GtkEditable::text_inserted signal.  The signal parameter
+	received by the closure will be an IntPtr, which we then have to
+	use to read/write the value directly from unmanaged memory.
+	[Fixes #427588]
+
+2008-09-18  Mike Kestner  <mkestner@novell.com>
+
 	* generator/LPGen.cs: remove WIN64LONGS hackery.
 	* generator/LPUGen.cs: remove WIN64LONGS hackery.
 	* generator/SymbolTable.cs: for WIN64LONGS, map them directly to
