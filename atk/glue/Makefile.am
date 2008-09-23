@@ -8,6 +8,8 @@ libatksharpglue_2_la_SOURCES = 	\
 	util.c			\
 	vmglueheaders.h
 
+nodist_libatksharpglue_2_la_SOURCES = generated.c
+
 # Adding a new glue file?
 
 libatksharpglue_2_la_LIBADD = $(ATK_LIBS)

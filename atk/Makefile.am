@@ -5,6 +5,8 @@ METADATA = Atk.metadata
 SYMBOLS =
 references = ../glib/glib-sharp.dll
 
+glue_includes = atk/atk.h
+
 sources = 			\
 	TextChangedDetail.cs
 
