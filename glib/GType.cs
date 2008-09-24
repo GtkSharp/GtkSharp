@@ -160,8 +160,7 @@ namespace GLib {
 			visited [asm] = asm;
 			Type result = asm.GetType (type_name);
 			if (result == null) {
-				if (asm is System.Reflection.Emit.AssemblyBuilder)
-					/* These don't support Location */
+				if (asm.Location == null || asm.Location.Length == 0)
 					return null;
 				string asm_dir = Path.GetDirectoryName (asm.Location);
 				foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
