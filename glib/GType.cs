@@ -152,35 +152,6 @@ namespace GLib {
 			// cctor already calls g_type_init.
 		}
 
-		static Type FindTypeInReferences (string type_name, Assembly asm, Hashtable visited)
-		{
-			if (visited.Contains (asm))
-				return null;
-
-			visited [asm] = asm;
-			Type result = asm.GetType (type_name);
-			if (result == null) {
-				if (asm.Location == null || asm.Location.Length == 0)
-					return null;
-				string asm_dir = Path.GetDirectoryName (asm.Location);
-				foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
-					Assembly ref_asm;
-					try {
-						if (File.Exists (Path.Combine (asm_dir, ref_name.Name + ".dll")))
-							ref_asm = Assembly.LoadFrom (Path.Combine (asm_dir, ref_name.Name + ".dll"));
-						else
-							ref_asm = Assembly.Load (ref_name);
-						result = FindTypeInReferences (type_name, ref_asm, visited);
-						if (result != null)
-							break;
-					} catch (Exception) {
-						/* Failure to load a referenced assembly is not an error */
-					}
-				}
-			}
-			return result;
-		}
-
 		public static Type LookupType (IntPtr typeid)
 		{
 			if (types.Contains (typeid))
@@ -197,9 +168,32 @@ namespace GLib {
 			}
 
 			if (result == null) {
-				Hashtable visited = new Hashtable ();
+				// Because of lazy loading of references, it's possible the type's assembly
+				// needs to be loaded.  We will look for it by name in the references of
+				// the currently loaded assemblies.  Hopefully a recursive traversal is
+				// not needed. We avoid one for now because of problems experienced
+				// in a patch from bug #400595, and a desire to keep memory usage low
+				// by avoiding a complete loading of all dependent assemblies.
+				string ns = type_name.Substring (0, type_name.LastIndexOf ('.'));
+				string asm_name = ns.ToLower ().Replace ('.', '-') + "-sharp";
 				foreach (Assembly asm in assemblies) {
-					result = FindTypeInReferences (type_name, asm, visited);
+					foreach (AssemblyName ref_name in asm.GetReferencedAssemblies ()) {
+						if (ref_name.Name != asm_name)
+							continue;
+						string asm_dir = Path.GetDirectoryName (asm.Location);
+						try {
+							Assembly ref_asm;
+							if (File.Exists (Path.Combine (asm_dir, ref_name.Name + ".dll")))
+								ref_asm = Assembly.LoadFrom (Path.Combine (asm_dir, ref_name.Name + ".dll"));
+							else
+								ref_asm = Assembly.Load (ref_name);
+							result = ref_asm.GetType (type_name);
+							if (result != null)
+								break;
+						} catch (Exception) {
+							/* Failure to load a referenced assembly is not an error */
+						}
+					}
 					if (result != null)
 						break;
 				}

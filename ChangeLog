@@ -1,5 +1,13 @@
 2008-09-24  Mike Kestner  <mkestner@novell.com>
 
+	* glib/GType.cs: kill the FindTypeInReferences recursive loading
+	algorithm and instead do a name-based search through the references
+	of loaded assemblies only.  Fixes the original bug #400595 and it
+	hopefully will have fewer sideeffects that the recursive loading
+	approach.
+
+2008-09-24  Mike Kestner  <mkestner@novell.com>
+
 	* glib/GType.cs: just fail on location null or empty instead of
 	checking the assembly type.  Avoids failures on the ms runtime.
 
