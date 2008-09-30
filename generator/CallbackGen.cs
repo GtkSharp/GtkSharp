@@ -291,7 +291,7 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\tusing System;");
 			sw.WriteLine ();
-			sw.WriteLine ("\tpublic delegate " + retval.CSType + " " + Name + "(" + sig.ToString() + ");");
+			sw.WriteLine ("\t{0} delegate " + retval.CSType + " " + Name + "(" + sig.ToString() + ");", IsInternal ? "internal" : "public");
 			sw.WriteLine ();
 			sw.WriteLine ("}");
 

@@ -302,7 +302,7 @@ namespace GtkSharp.Generation {
 
 			sw.WriteLine ();
 			sw.WriteLine ("\t[GLib.GInterface (typeof (" + Name + "Adapter))]");
-			sw.WriteLine ("\tpublic interface " + Name + "Implementor : GLib.IWrapper {");
+			sw.WriteLine ("\t{0} interface " + Name + "Implementor : GLib.IWrapper {", IsInternal ? "internal" : "public");
 			sw.WriteLine ();
 			Hashtable vm_table = new Hashtable ();
 			foreach (VirtualMethod vm in vms)

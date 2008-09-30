@@ -159,7 +159,7 @@ namespace GtkSharp.Generation {
 			if (IsDeprecated)
 				sw.WriteLine ("\t[Obsolete]");
 			sw.WriteLine ("\t[StructLayout(LayoutKind.Sequential)]");
-			sw.WriteLine ("\tpublic struct " + Name + " {");
+			sw.WriteLine ("\t{0} struct " + Name + " {", IsInternal ? "internal" : "public");
 			sw.WriteLine ();
 
 			need_read_native = false;

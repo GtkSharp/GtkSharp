@@ -44,6 +44,18 @@ namespace GtkSharp.Generation {
 				string attr = elem.GetAttribute ("deprecated");
 				deprecated = attr == "1" || attr == "true";
 			}
+			if (elem.HasAttribute ("accessibility")) {
+				string attr = elem.GetAttribute ("accessibility");
+				switch (attr) {
+					case "public":
+					case "protected":
+					case "internal":
+					case "private":
+					case "protected internal":
+						protection = attr;
+						break;
+				}
+			}
 			
 			if (Name == "GetType")
 				Name = "GetGType";
