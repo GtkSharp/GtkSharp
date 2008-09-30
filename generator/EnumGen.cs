@@ -94,7 +94,8 @@ namespace GtkSharp.Generation {
 			if (Elem.HasAttribute("gtype"))
 				sw.WriteLine ("\t[GLib.GType (typeof (" + NS + "." + Name + "GType))]");
 
-			sw.WriteLine ("\t{0} enum " + Name + enum_type + " {", IsInternal ? "internal" : "public");
+			string access = IsInternal ? "internal" : "public";
+			sw.WriteLine ("\t" + access + " enum " + Name + enum_type + " {");
 			sw.WriteLine ();
 				
 			foreach (string member in members)
