@@ -1,0 +1,293 @@
+// Hyperlink.custom - Atk Hyperlink class customizations
+//
+// Author: Mike Gorse <mgorse@novell.com>
+//
+// Copyright (c) 2008 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_get_uri (IntPtr type, GetUriDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate IntPtr GetUriDelegate (IntPtr raw, int i);
+		
+		static GetUriDelegate GetUriCallback;
+		
+		static IntPtr GetUri_cb (IntPtr raw, int i)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return GLib.Marshaller.StringToPtrGStrdup (obj.OnGetUri (i));
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return IntPtr.Zero;
+		}
+		
+		static void OverrideGetUri (GLib.GType gtype)
+		{
+			if (GetUriCallback == null)
+				GetUriCallback = new GetUriDelegate (GetUri_cb);
+			atksharp_hyperlink_override_get_uri (gtype.Val, GetUriCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideGetUri")]
+		protected virtual string OnGetUri (int i)
+	{
+			return null;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_get_object (IntPtr type, GetObjectDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate IntPtr GetObjectDelegate (IntPtr raw, int i);
+		
+		static GetObjectDelegate GetObjectCallback;
+		
+		static IntPtr GetObject_cb (IntPtr raw, int i)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				Atk.Object ret = obj.OnGetObject (i);
+				return ret == null ? IntPtr.Zero : ret.Handle;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		
+			return IntPtr.Zero;
+		}
+		
+		static void OverrideGetObject (GLib.GType gtype)
+		{
+			if (GetObjectCallback == null)
+				GetObjectCallback = new GetObjectDelegate (GetObject_cb);
+			atksharp_hyperlink_override_get_object (gtype.Val, GetObjectCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideGetObject")]
+		protected virtual Atk.Object OnGetObject (int i)
+		{
+			return null;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_get_end_index (IntPtr type, GetEndIndexDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate int GetEndIndexDelegate (IntPtr raw);
+		
+		static GetEndIndexDelegate GetEndIndexCallback;
+		
+		static int GetEndIndex_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnGetEndIndex ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return -1;
+		}
+		
+		static void OverrideGetEndIndex (GLib.GType gtype)
+		{
+			if (GetEndIndexCallback == null)
+				GetEndIndexCallback = new GetEndIndexDelegate (GetEndIndex_cb);
+			atksharp_hyperlink_override_get_end_index (gtype.Val, GetEndIndexCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideGetEndIndex")]
+		protected virtual int OnGetEndIndex ()
+		{
+			return -1;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_get_start_index (IntPtr type, GetStartIndexDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate int GetStartIndexDelegate (IntPtr raw);
+		
+		static GetStartIndexDelegate GetStartIndexCallback;
+		
+		static int GetStartIndex_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnGetStartIndex ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return -1;
+		}
+		
+		static void OverrideGetStartIndex (GLib.GType gtype)
+		{
+			if (GetStartIndexCallback == null)
+				GetStartIndexCallback = new GetStartIndexDelegate (GetStartIndex_cb);
+			atksharp_hyperlink_override_get_start_index (gtype.Val, GetStartIndexCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideGetStartIndex")]
+		protected virtual int OnGetStartIndex ()
+		{
+			return -1;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_is_valid (IntPtr type, IsValidDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate bool IsValidDelegate (IntPtr raw);
+		
+		static IsValidDelegate IsValidCallback;
+		
+		static bool IsValid_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnIsValid ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return false;
+		}
+		
+		static void OverrideIsValid (GLib.GType gtype)
+		{
+			if (IsValidCallback == null)
+				IsValidCallback = new IsValidDelegate (IsValid_cb);
+			atksharp_hyperlink_override_is_valid (gtype.Val, IsValidCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideIsValid")]
+		protected virtual bool OnIsValid()
+		{
+			return false;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_get_n_anchors (IntPtr type, GetNAnchorsDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate int GetNAnchorsDelegate (IntPtr raw);
+		
+		static GetNAnchorsDelegate GetNAnchorsCallback;
+		
+		static int GetNAnchors_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnGetNAnchors ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return 0;
+		}
+		
+		static void OverrideGetNAnchors (GLib.GType gtype)
+		{
+			if (GetNAnchorsCallback == null)
+				GetNAnchorsCallback = new GetNAnchorsDelegate (GetNAnchors_cb);
+			atksharp_hyperlink_override_get_n_anchors (gtype.Val, GetNAnchorsCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideGetNAnchors")]
+		protected virtual int OnGetNAnchors ()
+		{
+			return 0;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_link_state (IntPtr type, LinkStateDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate uint LinkStateDelegate (IntPtr raw);
+		
+		static LinkStateDelegate LinkStateCallback;
+		
+		static uint LinkState_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnLinkState ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return 0;
+		}
+		
+		static void OverrideLinkState (GLib.GType gtype)
+		{
+			if (LinkStateCallback == null)
+				LinkStateCallback = new LinkStateDelegate (LinkState_cb);
+			atksharp_hyperlink_override_link_state (gtype.Val, LinkStateCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideLinkState")]
+		protected virtual uint OnLinkState ()
+		{
+			return 0;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_hyperlink_override_is_selected_link (IntPtr type, IsSelectedLinkDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate bool IsSelectedLinkDelegate (IntPtr raw);
+		
+		static IsSelectedLinkDelegate IsSelectedLinkCallback;
+		
+		static bool IsSelectedLink_cb (IntPtr raw)
+		{
+			try {
+				Atk.Hyperlink obj = GLib.Object.GetObject (raw, false) as Atk.Hyperlink;
+				return obj.OnIsSelectedLink ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return false;
+		}
+		
+		static void OverrideIsSelectedLink (GLib.GType gtype)
+		{
+			if (IsSelectedLinkCallback == null)
+				IsSelectedLinkCallback = new IsSelectedLinkDelegate (IsSelectedLink_cb);
+			atksharp_hyperlink_override_is_selected_link (gtype.Val, IsSelectedLinkCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.Hyperlink), ConnectionMethod="OverrideIsSelectedLink")]
+		protected virtual bool OnIsSelectedLink ()
+		{
+			return false;
+		}
+		
+		protected void EmitLinkActivated ()
+		{
+			GLib.Signal.Emit (this, "link_activated");
+		}
+		

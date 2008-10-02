@@ -12,6 +12,7 @@ sources = 			\
 
 customs =			\
 	Global.custom		\
+	Hyperlink.custom \
 	Misc.custom		\
 	Object.custom		\
 	TextAdapter.custom	\
