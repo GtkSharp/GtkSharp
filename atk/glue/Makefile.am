@@ -6,6 +6,7 @@ libatksharpglue_2_la_SOURCES = 	\
 	hyperlink.c \
 	misc.c			\
 	object.c		\
+	object_factory.c		\
 	util.c			\
 	vmglueheaders.h
 

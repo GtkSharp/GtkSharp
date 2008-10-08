@@ -1,0 +1,124 @@
+// ObjectFactory.custom - Atk ObjectFactory class customizations
+//
+// Author: Mike Gorse <mgorse@novell.com>
+//
+// Copyright (c) 2008 Novell, Inc.
+//
+// This code is inserted after the automatically generated code.
+//
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of version 2 of the Lesser GNU General 
+// Public License as published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this program; if not, write to the
+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
+
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_object_factory_override_create_accessible (IntPtr type, CreateAccessibleDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate IntPtr CreateAccessibleDelegate (IntPtr raw);
+		
+		static CreateAccessibleDelegate CreateAccessibleCallback;
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_ref (IntPtr handle);
+
+		static IntPtr CreateAccessible_cb (IntPtr raw)
+		{
+			try {
+				Atk.ObjectFactory obj = GLib.Object.GetObject (raw, false) as Atk.ObjectFactory;
+				Atk.Object ret = obj.OnCreateAccessible ();
+				if (ret != null)
+					g_object_ref (ret.Handle);
+				return ret == null ? IntPtr.Zero : ret.Handle;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		
+			return IntPtr.Zero;
+		}
+		
+		static void OverrideCreateAccessible (GLib.GType gtype)
+		{
+			if (CreateAccessibleCallback == null)
+				CreateAccessibleCallback = new CreateAccessibleDelegate (CreateAccessible_cb);
+			atksharp_object_factory_override_create_accessible (gtype.Val, CreateAccessibleCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.ObjectFactory), ConnectionMethod="OverrideCreateAccessible")]
+		protected virtual Atk.Object OnCreateAccessible ()
+		{
+			return null;
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_object_factory_override_invalidate (IntPtr type, InvalidateDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate void InvalidateDelegate (IntPtr raw);
+		
+		static InvalidateDelegate InvalidateCallback;
+		
+		static void Invalidate_cb (IntPtr raw)
+		{
+			try {
+				Atk.ObjectFactory obj = GLib.Object.GetObject (raw, false) as Atk.ObjectFactory;
+				obj.OnInvalidate ();
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+		}
+		
+		static void OverrideInvalidate (GLib.GType gtype)
+		{
+			if (InvalidateCallback == null)
+				InvalidateCallback = new InvalidateDelegate (Invalidate_cb);
+			atksharp_object_factory_override_invalidate (gtype.Val, InvalidateCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.ObjectFactory), ConnectionMethod="OverrideInvalidate")]
+		protected virtual void OnInvalidate ()
+		{
+		}
+		
+		[DllImport("atksharpglue-2")]
+		static extern void atksharp_object_factory_override_get_accessible_type (IntPtr type, GetAccessibleTypeDelegate cb);
+		
+		[GLib.CDeclCallback]
+		delegate IntPtr GetAccessibleTypeDelegate (IntPtr raw);
+		
+		static GetAccessibleTypeDelegate GetAccessibleTypeCallback;
+		
+		static IntPtr GetAccessibleType_cb (IntPtr raw)
+		{
+			try {
+				Atk.ObjectFactory obj = GLib.Object.GetObject (raw, false) as Atk.ObjectFactory;
+				return obj.OnGetAccessibleType ().Val;
+			} catch (Exception e) {
+				GLib.ExceptionManager.RaiseUnhandledException (e, false);
+			}
+
+			return IntPtr.Zero;
+		}
+		
+		static void OverrideGetAccessibleType (GLib.GType gtype)
+		{
+			if (GetAccessibleTypeCallback == null)
+				GetAccessibleTypeCallback = new GetAccessibleTypeDelegate (GetAccessibleType_cb);
+			atksharp_object_factory_override_get_accessible_type (gtype.Val, GetAccessibleTypeCallback);
+		}
+		
+		[GLib.DefaultSignalHandler (Type=typeof(Atk.ObjectFactory), ConnectionMethod="OverrideGetAccessibleType")]
+		protected virtual GLib.GType OnGetAccessibleType ()
+	{
+			return GLib.GType.Invalid;
+		}

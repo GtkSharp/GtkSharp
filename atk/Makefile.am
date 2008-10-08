@@ -15,6 +15,7 @@ customs =			\
 	Hyperlink.custom \
 	Misc.custom		\
 	Object.custom		\
+	ObjectFactory.custom		\
 	TextAdapter.custom	\
 	Util.custom
 
