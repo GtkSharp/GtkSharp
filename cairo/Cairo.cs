@@ -36,7 +36,10 @@ using System.Runtime.InteropServices;
 
 namespace Cairo
 {
-	public static class CairoAPI {
+	public class CairoAPI {
+
+		private CairoAPI () {}
+
 		static public int Version {
 			get {
 				return Cairo.NativeMethods.cairo_version ();

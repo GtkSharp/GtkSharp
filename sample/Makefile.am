@@ -1,5 +1,11 @@
 SUBDIRS = test GtkDemo pixmaps valtest opaquetest
 
+if ENABLE_MONO_CAIRO
+cairo_ref=-r:$(top_builddir)/cairo/Mono.Cairo.dll
+else
+cairo_ref=$(MONO_CAIRO_LIBS)
+endif
+
 if ENABLE_GLADE
 GLADE_TARGETS=glade-viewer.exe glade-test.exe
 GLADE_ASSEMBLY=../glade/glade-sharp.dll
@@ -69,7 +75,7 @@ glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade $(assemblies)
 	$(CSC)  /resource:$(srcdir)/test.glade,test.glade /out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
 cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
-	$(CSC) /out:cairo-sample.exe $(references) /r:Mono.Cairo $(srcdir)/CairoSample.cs
+	$(CSC) /out:cairo-sample.exe $(references) $(cairo_ref) $(srcdir)/CairoSample.cs
 
 testdnd.exe: $(srcdir)/TestDnd.cs $(assemblies)
 	$(CSC) /debug /unsafe /out:testdnd.exe $(references) $(srcdir)/TestDnd.cs

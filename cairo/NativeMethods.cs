@@ -39,8 +39,11 @@ namespace Cairo
 	// sort these so it is easier to find what is missing
 	// http://www.cairographics.org/manual/ix01.html
 
-	public static class NativeMethods
+	public class NativeMethods
 	{
+
+		private NativeMethods () {}
+
 		const string cairo = "libcairo-2.dll";
 		
 		//[DllImport (cairo)]
