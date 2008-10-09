@@ -41,19 +41,19 @@ class Knockout : DrawingArea
 		Surface check = cr.Target.CreateSimilar (Content.Color, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
 		
 		// draw the check
-		Context cr2 = new Context (check);
-		cr2.Operator = Operator.Source;
-		cr2.Color = new Color (0.4, 0.4, 0.4);
-		cr2.Rectangle (0, 0, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
-		cr2.Fill ();
+		using (Context cr2 = new Context (check)) {
+			cr2.Operator = Operator.Source;
+			cr2.Color = new Color (0.4, 0.4, 0.4);
+			cr2.Rectangle (0, 0, 2 * CHECK_SIZE, 2 * CHECK_SIZE);
+			cr2.Fill ();
 
-		cr2.Color = new Color (0.7, 0.7, 0.7);
-		cr2.Rectangle (x, y, CHECK_SIZE, CHECK_SIZE);
-		cr2.Fill ();
+			cr2.Color = new Color (0.7, 0.7, 0.7);
+			cr2.Rectangle (x, y, CHECK_SIZE, CHECK_SIZE);
+			cr2.Fill ();
 
-		cr2.Rectangle (x + CHECK_SIZE, y + CHECK_SIZE, CHECK_SIZE, CHECK_SIZE);
-		cr2.Fill ();
-		//cr2.Destroy ();
+			cr2.Rectangle (x + CHECK_SIZE, y + CHECK_SIZE, CHECK_SIZE, CHECK_SIZE);
+			cr2.Fill ();
+		}
 
 		// Fill the whole surface with the check
 		SurfacePattern check_pattern = new SurfacePattern (check);
@@ -98,33 +98,32 @@ class Knockout : DrawingArea
 		cr.Save ();
 
 		// Draw a black circle on the overlay
-		Context cr_overlay = new Context (overlay);
-		cr_overlay.Color = new Color (0.0, 0.0, 0.0);
-		OvalPath (cr_overlay, xc, yc, radius, radius);
-		cr_overlay.Fill ();
+		using (Context cr_overlay = new Context (overlay)) {
+			cr_overlay.Color = new Color (0.0, 0.0, 0.0);
+			OvalPath (cr_overlay, xc, yc, radius, radius);
+			cr_overlay.Fill ();
 
-		// Draw 3 circles to the punch surface, then cut
-		// that out of the main circle in the overlay
-		Context cr_tmp = new Context (punch);
-		Draw3Circles (cr_tmp, xc, yc, radius, 1.0);
-		//cr_tmp.Destroy ();
+			// Draw 3 circles to the punch surface, then cut
+			// that out of the main circle in the overlay
+			using (Context cr_tmp = new Context (punch))
+				Draw3Circles (cr_tmp, xc, yc, radius, 1.0);
 
-		cr_overlay.Operator = Operator.DestOut;
-		cr_overlay.SetSourceSurface (punch, 0, 0);
-		cr_overlay.Paint ();
+			cr_overlay.Operator = Operator.DestOut;
+			cr_overlay.SetSourceSurface (punch, 0, 0);
+			cr_overlay.Paint ();
 
-		// Now draw the 3 circles in a subgroup again
-		// at half intensity, and use OperatorAdd to join up
-		// without seams.
-		Context cr_circles = new Context (circles);
-		cr_circles.Operator = Operator.Over;
-		Draw3Circles (cr_circles, xc, yc, radius, 0.5);
-		// cr_circles.Destroy ();
+			// Now draw the 3 circles in a subgroup again
+			// at half intensity, and use OperatorAdd to join up
+			// without seams.
+			using (Context cr_circles = new Context (circles)) {
+				cr_circles.Operator = Operator.Over;
+				Draw3Circles (cr_circles, xc, yc, radius, 0.5);
+			}
 
-		cr_overlay.Operator = Operator.Add;
-		cr_overlay.SetSourceSurface (circles, 0, 0);
-		cr_overlay.Paint ();
-		// cr_overlay.Destroy ();
+			cr_overlay.Operator = Operator.Add;
+			cr_overlay.SetSourceSurface (circles, 0, 0);
+			cr_overlay.Paint ();
+		}
 
 		cr.SetSourceSurface (overlay, 0, 0);
 		cr.Paint ();
@@ -136,14 +135,11 @@ class Knockout : DrawingArea
 
 	protected override bool OnExposeEvent (Gdk.EventExpose e)
 	{
-		#if GTK_SHARP_2_8
-		Context cr = Gdk.CairoHelper.Create (e.Window);
-		#else
-		Context cr = Gdk.Graphics.CreateDrawable (e.Window);
-		#endif
-		int w, h;
-		e.Window.GetSize (out w, out h);
-		Draw (cr, w, h);
+		using (Context cr = Gdk.CairoHelper.Create (e.Window)) {
+			int w, h;
+			e.Window.GetSize (out w, out h);
+			Draw (cr, w, h);
+		}
 		return true;
 	}
 

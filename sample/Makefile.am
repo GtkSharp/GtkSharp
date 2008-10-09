@@ -16,7 +16,7 @@ DOTNET_TARGETS=
 DOTNET_ASSEMBLY=
 endif
 
-TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
+TARGETS = polarfixed.exe custom-widget.exe custom-cellrenderer.exe gtk-hello-world.exe button.exe calendar.exe subclass.exe menu.exe size.exe scribble.exe scribble-xinput.exe treeviewdemo.exe managedtreeviewdemo.exe nodeviewdemo.exe treemodeldemo.exe testdnd.exe actions.exe spawn.exe assistant.exe registerprop.exe gexceptiontest.exe cairo-sample.exe $(GLADE_TARGETS) $(DOTNET_TARGETS)
 
 DEBUGS = $(addsuffix .mdb, $(TARGETS))
 
@@ -68,8 +68,8 @@ glade-viewer.exe: $(srcdir)/GladeViewer.cs $(assemblies)
 glade-test.exe: $(srcdir)/GladeTest.cs $(srcdir)/test.glade $(assemblies)
 	$(CSC)  /resource:$(srcdir)/test.glade,test.glade /out:glade-test.exe $(references) $(srcdir)/GladeTest.cs
 
-cairo-sample.exe: $(srcdir)/CairoSample.cs $(srcdir)/GtkCairo.cs $(assemblies)
-	$(CSC) /out:cairo-sample.exe $(references) /r:Mono.Cairo $(srcdir)/CairoSample.cs $(srcdir)/GtkCairo.cs
+cairo-sample.exe: $(srcdir)/CairoSample.cs $(assemblies)
+	$(CSC) /out:cairo-sample.exe $(references) /r:Mono.Cairo $(srcdir)/CairoSample.cs
 
 testdnd.exe: $(srcdir)/TestDnd.cs $(assemblies)
 	$(CSC) /debug /unsafe /out:testdnd.exe $(references) $(srcdir)/TestDnd.cs
@@ -100,6 +100,9 @@ assistant.exe: $(srcdir)/Assistant.cs $(assemblies)
 registerprop.exe: $(srcdir)/PropertyRegistration.cs $(assemblies)
 	$(CSC)  /out:registerprop.exe $(references) $(srcdir)/PropertyRegistration.cs
 
+gexceptiontest.exe: $(srcdir)/GExceptionTest.cs $(assemblies)
+	$(CSC)  /out:gexceptiontest.exe $(references) $(srcdir)/GExceptionTest.cs
+
 EXTRA_DIST = 				\
 	HelloWorld.cs			\
 	Assistant.cs			\
@@ -115,6 +118,7 @@ EXTRA_DIST = 				\
 	TreeViewDemo.cs			\
 	ManagedTreeViewDemo.cs		\
 	NodeViewDemo.cs			\
+	GExceptionTest.cs		\
 	GladeViewer.cs			\
 	GladeTest.cs 			\
 	test.glade			\
@@ -122,7 +126,6 @@ EXTRA_DIST = 				\
 	TestDnd.cs			\
 	CustomCellRenderer.cs		\
 	DrawingSample.cs		\
-	cairo-sample.exe.config		\
 	CustomWidget.cs			\
 	Actions.cs			\
 	PropertyRegistration.cs		\

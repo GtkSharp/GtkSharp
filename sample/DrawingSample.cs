@@ -1,5 +1,5 @@
 //
-// Sample program demostrating using Cairo with Gtk#
+// Sample program demostrating using System.Drawing with Gtk#
 //
 using Gtk;
 using System;
