@@ -1,9 +1,15 @@
 SUBDIRS = . glue
 
+if ENABLE_MONO_CAIRO
+local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
+else
+local_mono_cairo=
+endif
+
 pkg = pango
 METADATA = Pango.metadata
 SYMBOLS = pango-symbols.xml
-references = ../glib/glib-sharp.dll
+references = ../glib/glib-sharp.dll $(local_mono_cairo)
 glue_includes = pango/pango.h
 
 sources =			\
