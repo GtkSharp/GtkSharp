@@ -170,6 +170,8 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ();
 			sw.WriteLine ("\t\tpublic {0}Adapter ({0}Implementor implementor)", Name);
 			sw.WriteLine ("\t\t{");
+			sw.WriteLine ("\t\t\tif (implementor == null)");
+			sw.WriteLine ("\t\t\t\tthrow new ArgumentNullException (\"implementor\");");
 			sw.WriteLine ("\t\t\tthis.implementor = implementor;");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
