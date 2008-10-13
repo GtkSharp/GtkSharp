@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id="gtk__2_0_dev" Language="1033" Version="@VERSION@">
+    <Package Id="4667c06a-0a48-11dd-9af8-001a6bce76fb" InstallerVersion="200" Manufacturer="Mono Project"/>
+
+    <!-- Detect Visual Studio 2003/2008 -->
+    <Property Id="VS2003INSTALLED">
+      <RegistrySearch Id="VS2008RegistrySearch" Root="HKLM" Type="raw"
+                      Key="SOFTWARE\Microsoft\VisualStudio\7.1\Projects\{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}"
+                      Name="ProjectTemplatesDir" />
+    </Property>
+
+    <Property Id="VS2008INSTALLED">
+      <RegistrySearch Id="VS2003RegistrySearch" Root="HKLM" Type="raw"
+                      Key="SOFTWARE\Microsoft\VisualStudio\SxS\VS7\8.0" />
+    </Property>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="MergeRedirectFolder">
+
+        <!-- Install Assembly references into Visual Studio 2003 -->
+        <Component Id="vs2003_references" Guid="c0ac0c22-0a53-11dd-9af8-001a6bce76fb">
+          <!-- If the condition is true, install component -->
+
+          <!-- Install if Visual Studio 2003 is installed -->
+          <!-- (Un)install if already installed
+               (catches the case where Visual Studio was uninstalled first) -->
+          <Condition><![CDATA[VS2003INSTALLED <> "" OR Installed]]></Condition>
+
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\atk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\atk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\gdk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gdk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\glade-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\glade" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\glib-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\glib" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\gtk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gtk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\gtk-dotnet">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gtk-dotnet" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\VisualStudio\7.1\AssemblyFolders\pango-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\pango" />
+          </RegistryKey>
+        </Component>
+    
+        <!-- Install Assembly references into Visual Studio 2008 -->
+        <Component Id="vs2008_references" Guid="287a7bec-0a5c-11dd-9af8-001a6bce76fb">
+          <!-- If the condition is true, install component -->
+
+          <!-- Install if Visual Studio 2008 is installed -->
+          <!-- (Un)install if already installed
+               (catches the case where Visual Studio was uninstalled first) -->
+          <Condition><![CDATA[VS2008INSTALLED <> "" OR Installed]]></Condition>
+
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\atk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\atk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\gdk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gdk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\glade-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\glade" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\glib-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\glib" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\gtk-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gtk" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\gtk-dotnet">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\gtk-dotnet" />
+          </RegistryKey>
+                       
+          <RegistryKey Root="HKLM" Action="createAndRemoveOnUninstall"
+                       Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\pango-sharp">
+            <RegistryValue Type="string" Value="[MergeRedirectFolder]lib\gtk-sharp-2.0\pango" />
+          </RegistryKey>
+        </Component>
+
+      </Directory>
+    </Directory>
+  </Module>
+</Wix>
