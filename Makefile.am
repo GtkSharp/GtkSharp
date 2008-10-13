@@ -13,3 +13,7 @@ EXTRA_DIST = 			\
 
 configure.in: bootstrap.status configure.in.in 
 	$(SHELL) $<
+
+win32-installer: all 
+	candle.exe gtk-sharp-2.0-lib.wxs
+	light.exe gtk-sharp-2.0-lib.wixobj
