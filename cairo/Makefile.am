@@ -1,15 +1,17 @@
 ASSEMBLY_NAME = Mono.Cairo
 ASSEMBLY = $(ASSEMBLY_NAME).dll
+POLICY_ASSEMBLY = policy.1.0.$(ASSEMBLY)
+POLICY_CONFIG = policy.1.0.config
 
 if ENABLE_MONO_CAIRO
-TARGET=$(ASSEMBLY)
+TARGET=$(ASSEMBLY) $(POLICY_ASSEMBLY)
 else
 TARGET=
 endif
 
 noinst_DATA = $(TARGET)
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb gtk-sharp.snk AssemblyInfo.cs
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLY) $(POLICY_CONFIG) gtk-sharp.snk AssemblyInfo.cs
 
 sources = \
 	Antialias.cs \
@@ -63,29 +65,40 @@ sources = \
 
 build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
 
-EXTRA_DIST = $(sources)
-
 gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
 	cp $(top_srcdir)/gtk-sharp.snk .
 
 AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
-	@echo "sed -e "s/@API_VERSION@/1.0.5000.0/" -e "s/\[assembly:GLib.*//" $(top_srcdir)/AssemblyInfo.cs.in > $@"
-	@sed -e "s/@API_VERSION@/1.0.5000.0/" -e "s/\[assembly:GLib.IgnoreClassInitializers\]//" $(top_builddir)/AssemblyInfo.cs > $@
+	@echo "sed -e "s/@API_VERSION@/2.0.0.0/" -e "s/\[assembly:GLib.IgnoreClassInitializers\]//" $(top_builddir)/AssemblyInfo.cs > $@"
+	@sed -e "s/@API_VERSION@/2.0.0.0/" -e "s/\[assembly:GLib.IgnoreClassInitializers\]//" $(top_builddir)/AssemblyInfo.cs > $@
 
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
-	$(GAPI_CDECL_INSERT)
+
+$(POLICY_CONFIG): $(top_builddir)/policy.config
+	@echo "sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@API_VERSION@/2.0.0.0/" -e "s/@POLICY@.0/1.0.5000/" $(top_builddir)/policy.config > $@"
+	@sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@API_VERSION@/2.0.0.0/" -e "s/@POLICY@.0/1.0.5000/" $(top_builddir)/policy.config > $@
+
+$(POLICY_ASSEMBLY): $(POLICY_CONFIG) gtk-sharp.snk
+	echo "Creating policy.1.0.$(ASSEMBLY)";
+	$(AL) -link:$(POLICY_CONFIG) -out:$@ -keyfile:gtk-sharp.snk;
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
 	  echo "$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS)";				\
 	  $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;			\
+	  echo "$(GACUTIL) /i $(POLICY_ASSEMBLY) /f $(GACUTIL_FLAGS)";			\
+	  $(GACUTIL) /i $(POLICY_ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;		\
 	fi
 
 uninstall-local:
 	@if test -n '$(TARGET)'; then							\
 	  echo "$(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";			\
 	  $(GACUTIL) /u $(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;			\
+	  echo "$(GACUTIL) /u policy.1.0.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS)";		\
+	  $(GACUTIL) /u policy.1.0.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;		\
 	fi
+
+EXTRA_DIST = $(sources)
 

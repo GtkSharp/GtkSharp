@@ -165,7 +165,7 @@ AC_SUBST(LIB_PREFIX)
 AC_SUBST(LIB_SUFFIX)
 AC_SUBST(GENERATED_SOURCES)
 
-PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, has_mono_cairo=true, has_mono_cairo=false)
+PKG_CHECK_MODULES(MONO_CAIRO, mono-cairo >= $MONO_REQUIRED_VERSION, enable_mono_cairo=no, enable_mono_cairo=yes)
 AC_SUBST(MONO_CAIRO_LIBS)
 
 GTK_REQUIRED_VERSION=@GTK_REQUIRED_VERSION@
@@ -203,7 +203,7 @@ fi
 AC_SUBST(MDASSEMBLER)
 AC_SUBST(MONODOCER)
 
-AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$has_mono_cairo" = "xfalse")
+AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$enable_mono_cairo" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
 AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
 AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
@@ -270,6 +270,7 @@ echo "   Optional assemblies included in the build:"
 echo ""
 echo "      * glade-sharp.dll: $enable_glade"
 echo "      * gtk-dotnet.dll: $enable_dotnet "
+echo "      * Mono.Cairo.dll: $enable_mono_cairo "
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"
