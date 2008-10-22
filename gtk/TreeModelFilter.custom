@@ -96,7 +96,7 @@
 				args.Args = new object[3];
 				args.Args[0] = arg1 == IntPtr.Zero ? null : (Gtk.TreePath) GLib.Opaque.GetOpaque (arg1, typeof (Gtk.TreePath), false);
 				args.Args[1] = Gtk.TreeIter.New (arg2);
-				int child_cnt = sender.IterNChildren ((TreeIter)args.Args[1]);
+				int child_cnt = arg2 == IntPtr.Zero ? sender.IterNChildren () : sender.IterNChildren ((TreeIter)args.Args[1]);
 				int[] new_order = new int [child_cnt];
 				Marshal.Copy (arg3, new_order, 0, child_cnt);
 				args.Args[2] = new_order;
