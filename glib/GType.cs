@@ -93,6 +93,7 @@ namespace GLib {
 			Register (GType.Float, typeof (float));
 			Register (GType.Double, typeof (double));
 			Register (GType.String, typeof (string));
+			Register (GType.Pointer, typeof (IntPtr));
 			Register (GType.Object, typeof (GLib.Object));
 
 			// One-way mapping
