@@ -169,7 +169,11 @@ namespace GLib {
 					ret = (int) data;
 				else if (element_type.IsValueType)
 					ret = Marshal.PtrToStructure (data, element_type);
-				else
+				else if (element_type.IsInterface) {
+					Type adapter_type = element_type.Assembly.GetType (element_type.FullName + "Adapter");
+					System.Reflection.MethodInfo method = adapter_type.GetMethod ("GetObject", new Type[] {typeof(IntPtr), typeof(bool)});
+					ret = method.Invoke (null, new object[] {data, false});
+				} else
 					ret = Activator.CreateInstance (element_type, new object[] {data});
 
 			} else if (Object.IsObject (data))
