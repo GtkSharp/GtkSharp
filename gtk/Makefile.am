@@ -47,6 +47,7 @@ customs = 				\
 	ActionGroup.custom		\
 	Adjustment.custom		\
 	Bin.custom			\
+	Builder.custom			\
 	Button.custom			\
 	Calendar.custom			\
 	CellRenderer.custom		\
