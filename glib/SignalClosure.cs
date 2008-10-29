@@ -25,7 +25,7 @@ namespace GLib {
 	using System.Collections;
 	using System.Runtime.InteropServices;
 
-	internal  class ClosureInvokedArgs : EventArgs {
+	internal class ClosureInvokedArgs : EventArgs {
 
 		EventArgs args;
 		GLib.Object obj;
@@ -59,6 +59,8 @@ namespace GLib {
 		string name;
 		uint id = UInt32.MaxValue;
 		System.Type args_type;
+		Delegate custom_marshaler;
+		GCHandle gch;
 
 		static Hashtable closures = new Hashtable ();
 
@@ -69,6 +71,16 @@ namespace GLib {
 			handle = obj;
 			name = signal_name;
 			this.args_type = args_type;
+		}
+
+		public SignalClosure (IntPtr obj, string signal_name, Delegate custom_marshaler, Signal signal)
+		{
+			gch = GCHandle.Alloc (signal);
+			raw_closure = g_cclosure_new (custom_marshaler, (IntPtr) gch, Notify);
+			closures [raw_closure] = this;
+			handle = obj;
+			name = signal_name;
+			this.custom_marshaler = custom_marshaler;
 		}
 
 		public event EventHandler Disposed;
@@ -91,6 +103,9 @@ namespace GLib {
 		{
 			Disconnect ();
 			closures.Remove (raw_closure);
+			if (custom_marshaler != null)
+				gch.Free ();
+			custom_marshaler = null;
 			if (Disposed != null)
 				Disposed (this, EventArgs.Empty);
 			GC.SuppressFinalize (this);
@@ -180,6 +195,9 @@ namespace GLib {
 
 		[DllImport("glibsharpglue-2")]
 		static extern IntPtr glibsharp_closure_new (ClosureMarshal marshaler, ClosureNotify notify, IntPtr gch);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr user_data, ClosureNotify notify);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_connect_closure (IntPtr obj, IntPtr name, IntPtr closure, bool is_after);

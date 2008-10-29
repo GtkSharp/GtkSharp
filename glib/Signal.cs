@@ -127,12 +127,14 @@ namespace GLib {
 		Type args_type;
 		SignalClosure before_closure;
 		SignalClosure after_closure;
+		Delegate marshaler;
 
 		private Signal (GLib.Object obj, string signal_name, Delegate marshaler)
 		{
 			tref = obj.ToggleRef;
 			name = signal_name;
 			tref.Signals [name] = this;
+			this.marshaler = marshaler;
 		}
 
 		private Signal (GLib.Object obj, string signal_name, Type args_type)
@@ -207,7 +209,6 @@ namespace GLib {
 			return Lookup (obj, name, typeof (EventArgs));
 		}
 
-		[Obsolete ("Replaced by Lookup (Object obj, string name, Type args_type)")]
 		public static Signal Lookup (GLib.Object obj, string name, Delegate marshaler)
 		{
 			Signal result = obj.ToggleRef.Signals [name] as Signal;
@@ -243,7 +244,10 @@ namespace GLib {
 			if (d.Method.IsDefined (typeof (ConnectBeforeAttribute), false)) {
 				tref.Target.BeforeSignals [name] = Delegate.Combine (tref.Target.BeforeSignals [name] as Delegate, d);
 				if (before_closure == null) {
-					before_closure = new SignalClosure (tref.Handle, name, args_type);
+					if (marshaler == null)
+						before_closure = new SignalClosure (tref.Handle, name, args_type);
+					else
+						before_closure = new SignalClosure (tref.Handle, name, marshaler, this);
 					before_closure.Disposed += ClosureDisposedHandler;
 					before_closure.Invoked += ClosureInvokedHandler;
 					before_closure.Connect (false);
@@ -251,7 +255,10 @@ namespace GLib {
 			} else {
 				tref.Target.AfterSignals [name] = Delegate.Combine (tref.Target.AfterSignals [name] as Delegate, d);
 				if (after_closure == null) {
-					after_closure = new SignalClosure (tref.Handle, name, args_type);
+					if (marshaler == null)
+						after_closure = new SignalClosure (tref.Handle, name, args_type);
+					else
+						after_closure = new SignalClosure (tref.Handle, name, marshaler, this);
 					after_closure.Disposed += ClosureDisposedHandler;
 					after_closure.Invoked += ClosureInvokedHandler;
 					after_closure.Connect (true);
