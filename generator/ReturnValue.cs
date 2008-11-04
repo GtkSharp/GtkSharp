@@ -123,7 +123,10 @@ namespace GtkSharp.Generation {
 
 			if (ElementType != String.Empty) {
 				string args = (owned ? "true" : "false") + ", " + (elements_owned ? "true" : "false");
-				return String.Format ("({0}[]) GLib.Marshaller.ListPtrToArray ({1}, typeof({2}), {3}, typeof({0}))", ElementType, var, IGen.QualifiedName, args);
+				if (IGen.QualifiedName == "GLib.PtrArray")
+					return String.Format ("({0}[]) GLib.Marshaller.PtrArrayToArray ({1}, {2}, typeof({0}))", ElementType, var, args);
+				else
+					return String.Format ("({0}[]) GLib.Marshaller.ListPtrToArray ({1}, typeof({2}), {3}, typeof({0}))", ElementType, var, IGen.QualifiedName, args);
 			} else if (IGen is HandleBase)
 				return ((HandleBase)IGen).FromNative (var, owned);
 			else if (is_null_term)

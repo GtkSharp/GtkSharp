@@ -95,6 +95,7 @@ namespace GLib {
 			Register (GType.String, typeof (string));
 			Register (GType.Pointer, typeof (IntPtr));
 			Register (GType.Object, typeof (GLib.Object));
+			Register (GType.Pointer, typeof (IntPtr));
 
 			// One-way mapping
 			gtypes[typeof (char)] = GType.UInt;

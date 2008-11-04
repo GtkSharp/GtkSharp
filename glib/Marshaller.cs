@@ -363,6 +363,15 @@ namespace GLib {
 				return ListToArray (list, elem_type);
 		}
 
+		public static Array PtrArrayToArray (IntPtr list_ptr, bool owned, bool elements_owned, Type elem_type)
+		{
+			GLib.PtrArray array = new GLib.PtrArray (list_ptr, elem_type, owned, elements_owned);
+			Array ret = Array.CreateInstance (elem_type, array.Count);
+			array.CopyTo (ret, 0);
+			array.Dispose ();
+			return ret;
+		}
+
 		public static Array ListToArray (ListBase list, System.Type type)
 		{
 			Array result = Array.CreateInstance (type, list.Count);

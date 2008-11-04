@@ -55,6 +55,7 @@ sources =		 			\
 	ObjectManager.cs			\
 	Opaque.cs				\
 	PropertyAttribute.cs			\
+	PtrArray.cs				\
 	Signal.cs				\
 	SignalArgs.cs				\
 	SignalAttribute.cs			\

@@ -116,6 +116,7 @@ namespace GtkSharp.Generation {
 			AddType (new ManualGen ("GInitiallyUnowned", "GLib.InitiallyUnowned", "GLib.Object.GetObject ({0})"));
 			AddType (new ManualGen ("GObject", "GLib.Object", "GLib.Object.GetObject ({0})"));
 			AddType (new ManualGen ("GList", "GLib.List"));
+			AddType (new ManualGen ("GPtrArray", "GLib.PtrArray"));
 			AddType (new ManualGen ("GSList", "GLib.SList"));
 			AddType (new MarshalGen ("gunichar", "char", "uint", "GLib.Marshaller.CharToGUnichar ({0})", "GLib.Marshaller.GUnicharToChar ({0})"));
 			AddType (new MarshalGen ("time_t", "System.DateTime", "IntPtr", "GLib.Marshaller.DateTimeTotime_t ({0})", "GLib.Marshaller.time_tToDateTime ({0})"));
@@ -128,7 +129,6 @@ namespace GtkSharp.Generation {
 			AddType (new SimpleGen ("GC", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GError", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GMemChunk", "IntPtr", "IntPtr.Zero"));
-			AddType (new SimpleGen ("GPtrArray", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GTimeVal", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GClosure", "IntPtr", "IntPtr.Zero"));
 			AddType (new SimpleGen ("GArray", "IntPtr", "IntPtr.Zero"));

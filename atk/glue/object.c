@@ -32,6 +32,10 @@ AtkStateSet* atksharp_object_base_ref_state_set (AtkObject *base);
 
 void atksharp_object_override_get_index_in_parent (GType gtype, gpointer cb);
 
+void atksharp_object_override_ref_relation_set (GType gtype, gpointer cb);
+
+AtkRelationSet* atksharp_object_base_ref_relation_set (AtkObject *base);
+
 void
 atksharp_object_override_get_n_children (GType gtype, gpointer cb)
 {
@@ -76,5 +80,24 @@ atksharp_object_override_get_index_in_parent (GType gtype, gpointer cb)
 	if (!klass)
 		klass = g_type_class_ref (gtype);
 	((AtkObjectClass *) klass)->get_index_in_parent = cb;
+}
+
+void
+atksharp_object_override_ref_relation_set (GType gtype, gpointer cb)
+{
+	AtkObjectClass *klass = g_type_class_peek (gtype);
+	if (!klass)
+		klass = g_type_class_ref (gtype);
+	((AtkObjectClass *) klass)->ref_relation_set = cb;
+}
+
+AtkRelationSet*
+atksharp_object_base_ref_relation_set (AtkObject *atk_obj)
+{
+	AtkObjectClass *parent = g_type_class_peek (ATK_TYPE_OBJECT);
+	
+	if (parent->ref_relation_set)
+		return (*parent->ref_relation_set) (atk_obj);
+	return NULL;
 }
 
