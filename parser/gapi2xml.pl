@@ -947,6 +947,7 @@ sub addSignalElem
 	$sig_elem->setAttribute('when', $1) if ($spec =~ /_RUN_(\w+)/);
 
 	my $method = "";
+	$sig_elem->setAttribute('manual', 'true') if ($spec =~ /G_TYPE_POINTER/);
 	if ($spec =~ /_OFFSET\s*\(\w+,\s*(\w+)\)/) {
 		$method = $1;
 		$sig_elem->setAttribute('field_name', $1);
