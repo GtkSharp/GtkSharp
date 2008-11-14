@@ -576,6 +576,16 @@ namespace GLib {
 			GLib.Marshaller.Free (native_name);
 		}
 
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_notify (IntPtr obj, IntPtr property_name);
+
+		protected void Notify (string property_name)
+		{
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_name);
+			g_object_notify (Handle, native_name);
+			GLib.Marshaller.Free (native_name);
+		}
+
 		[DllImport("glibsharpglue-2")]
 		static extern void gtksharp_override_virtual_method (IntPtr gtype, IntPtr name, Delegate cb);
 
