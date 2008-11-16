@@ -25,6 +25,7 @@ sources = 			\
 	EventGrabBroken.cs	\
 	EventKey.cs		\
 	EventMotion.cs		\
+	EventOwnerChange.cs	\
 	EventProperty.cs	\
 	EventProximity.cs	\
 	EventScroll.cs		\
