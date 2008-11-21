@@ -47,5 +47,22 @@ namespace GLib {
 
 		[DllImport("libglib-2.0-0.dll")]
 		static extern IntPtr g_get_prgname ();
+
+		public static string ApplicationName {
+			get {
+				return GLib.Marshaller.PtrToStringGFree(g_get_application_name());	
+			}
+			set {
+				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (value);
+				g_set_application_name (native_name);
+				GLib.Marshaller.Free (native_name);				
+			}
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern void g_set_application_name (IntPtr name);
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_get_application_name ();
 	}
 }
