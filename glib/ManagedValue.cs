@@ -53,7 +53,6 @@ namespace GLib {
 		void Unref ()
 		{
 			if (--ref_count == 0) {
-				Console.WriteLine ("Killing ManagedValue for " + instance);
 				instance = null;
 				gch.Free ();
 			}
