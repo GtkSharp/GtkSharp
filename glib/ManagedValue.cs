@@ -26,7 +26,39 @@ namespace GLib {
 	using GLib;
 	
 	internal class ManagedValue {
+
+		GCHandle gch;
+		object instance;
+		int ref_count = 1;
 		
+		private ManagedValue (object instance)
+		{
+			this.instance = instance;
+			gch = GCHandle.Alloc (this);
+		}
+
+		IntPtr Handle {
+			get { return (IntPtr) gch; }
+		}
+
+		object Instance {
+			get { return instance; }
+		}
+
+		void Ref ()
+		{
+			ref_count++;
+		}
+
+		void Unref ()
+		{
+			if (--ref_count == 0) {
+				Console.WriteLine ("Killing ManagedValue for " + instance);
+				instance = null;
+				gch.Free ();
+			}
+		}
+
 		[CDeclCallback]
 		delegate IntPtr CopyFunc (IntPtr gch);
 		[CDeclCallback]
@@ -54,13 +86,23 @@ namespace GLib {
 			}
 		}
 		
+		static ManagedValue FromHandle (IntPtr ptr)
+		{
+			GCHandle gch = (GCHandle) ptr;
+			ManagedValue val = gch.Target as ManagedValue;
+			if (val == null)
+				throw new Exception ("Unexpected GCHandle received.");
+			return val;
+		}
+
 		static IntPtr Copy (IntPtr ptr)
 		{
 			try {
 				if (ptr == IntPtr.Zero)
 					return ptr;
-				GCHandle gch = (GCHandle) ptr;
-				return (IntPtr) GCHandle.Alloc (gch.Target);
+				ManagedValue val = FromHandle (ptr);
+				val.Ref ();
+				return ptr;
 			} catch (Exception e) {
 				ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -73,8 +115,8 @@ namespace GLib {
 			try {
 				if (ptr == IntPtr.Zero)
 					return;
-				GCHandle gch = (GCHandle) ptr;
-				gch.Free ();
+				ManagedValue val = FromHandle (ptr);
+				val.Unref ();
 			} catch (Exception e) {
 				ExceptionManager.RaiseUnhandledException (e, false);
 			}
@@ -84,14 +126,15 @@ namespace GLib {
 		{
 			if (obj == null)
 				return IntPtr.Zero;
-			return (IntPtr) GCHandle.Alloc (obj);
+			return new ManagedValue (obj).Handle;
 		}
 
 		public static object ObjectForWrapper (IntPtr ptr)
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
-			return ((GCHandle)ptr).Target;
+			ManagedValue val = FromHandle (ptr);
+			return val == null ? null : val.Instance;
 		}
 
 		public static void ReleaseWrapper (IntPtr ptr)
@@ -99,7 +142,8 @@ namespace GLib {
 			if (ptr == IntPtr.Zero)
 				return;
 
-			((GCHandle)ptr).Free ();
+			ManagedValue val = FromHandle (ptr);
+			val.Unref ();
 		}
 	}
 }
