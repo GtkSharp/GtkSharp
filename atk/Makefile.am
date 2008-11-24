@@ -16,6 +16,7 @@ customs =			\
 	Misc.custom		\
 	Object.custom		\
 	ObjectFactory.custom		\
+	SelectionAdapter.custom	\
 	TextAdapter.custom	\
 	Util.custom
 
