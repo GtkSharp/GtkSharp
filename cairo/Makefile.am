@@ -11,7 +11,7 @@ endif
 
 noinst_DATA = $(TARGET)
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLY) $(POLICY_CONFIG) gtk-sharp.snk AssemblyInfo.cs
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLY) gtk-sharp.snk AssemblyInfo.cs
 
 sources = \
 	Antialias.cs \
@@ -76,11 +76,7 @@ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
-$(POLICY_CONFIG): $(top_builddir)/policy.config
-	@echo "sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@API_VERSION@/2.0.0.0/" -e "s/@POLICY@.0/1.0.5000/" $(top_builddir)/policy.config > $@"
-	@sed -e "s/@ASSEMBLY_NAME@/$(ASSEMBLY_NAME)/" -e "s/@API_VERSION@/2.0.0.0/" -e "s/@POLICY@.0/1.0.5000/" $(top_builddir)/policy.config > $@
-
-$(POLICY_ASSEMBLY): $(POLICY_CONFIG) gtk-sharp.snk
+$(POLICY_ASSEMBLY): $(srcdir)/$(POLICY_CONFIG) gtk-sharp.snk
 	echo "Creating policy.1.0.$(ASSEMBLY)";
 	$(AL) -link:$(POLICY_CONFIG) -out:$@ -keyfile:gtk-sharp.snk;
 
@@ -100,5 +96,5 @@ uninstall-local:
 	  $(GACUTIL) /u policy.1.0.$(ASSEMBLY_NAME) $(GACUTIL_FLAGS) || exit 1;		\
 	fi
 
-EXTRA_DIST = $(sources)
+EXTRA_DIST = $(sources) $(POLICY_CONFIG)
 
