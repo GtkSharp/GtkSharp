@@ -1,6 +1,9 @@
 // Image.custom - Customizations to Gtk.Image
 //
-// Copyright (C) 2004 Novell, Inc.
+// Authors: Mike Kestner  <mkestner@novell.com>
+// Authors: Stephane Delcroix  <sdelcroix@novell.com>
+//
+// Copyright (c) 2004-2008 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -88,3 +91,28 @@
 		{
 			return new Image (System.Reflection.Assembly.GetCallingAssembly (), resource);
 		}
+
+		[Obsolete ("Use the Animation property instead")]
+		public Gdk.PixbufAnimation FromAnimation {
+			set {
+				gtk_image_set_from_animation(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+		[Obsolete ("Use the File property instead")]
+		public string FromFile {
+			set {
+				IntPtr native_value = GLib.Marshaller.StringToPtrGStrdup (value);
+				gtk_image_set_from_file(Handle, native_value);
+				GLib.Marshaller.Free (native_value);
+			}
+		}
+
+		[Obsolete ("Use the Pixbuf property instead")]
+		public Gdk.Pixbuf FromPixbuf {
+			set {
+				gtk_image_set_from_pixbuf(Handle, value == null ? IntPtr.Zero : value.Handle);
+			}
+		}
+
+
