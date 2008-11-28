@@ -308,19 +308,6 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic class " + EventArgsName + " : GLib.SignalArgs {");
 			for (int i = 1; i < parms.Count; i++) {
 				sw.WriteLine ("\t\tpublic " + parms[i].CSType + " " + parms[i].StudlyName + "{");
-				if (parms[i].PassAs == "ref" && parms[i].CSType == "int") {
-					// Special hack around GtkEditable::text_inserted G_TYPE_POINTER usage
-					sw.WriteLine ("\t\t\tget {");
-					sw.WriteLine ("\t\t\t\treturn System.Runtime.InteropServices.Marshal.ReadInt32 ((IntPtr) Args[" + (i - 1) + "]);");
-					sw.WriteLine ("\t\t\t}");
-					sw.WriteLine ("\t\t\tset {");
-					sw.WriteLine ("\t\t\t\tSystem.Runtime.InteropServices.Marshal.WriteInt32 ((IntPtr) Args[" + (i - 1) + "], value);");
-					sw.WriteLine ("\t\t\t}");
-					sw.WriteLine ("\t\t}");
-					sw.WriteLine ();
-					continue;
-				}
-
 				if (parms[i].PassAs != "out") {
 					sw.WriteLine ("\t\t\tget {");
 					sw.WriteLine ("\t\t\t\treturn (" + parms[i].CSType + ") Args[" + (i - 1) + "];");
