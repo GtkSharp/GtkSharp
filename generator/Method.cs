@@ -32,7 +32,6 @@ namespace GtkSharp.Generation {
 		private ReturnValue retval;
 
 		private string call;
-		private string protection = "public";
 		private bool is_get, is_set;
 		private bool deprecated = false;
 
@@ -43,18 +42,6 @@ namespace GtkSharp.Generation {
 			if (!container_type.IsDeprecated && elem.HasAttribute ("deprecated")) {
 				string attr = elem.GetAttribute ("deprecated");
 				deprecated = attr == "1" || attr == "true";
-			}
-			if (elem.HasAttribute ("accessibility")) {
-				string attr = elem.GetAttribute ("accessibility");
-				switch (attr) {
-					case "public":
-					case "protected":
-					case "internal":
-					case "private":
-					case "protected internal":
-						protection = attr;
-						break;
-				}
 			}
 			
 			if (Name == "GetType")
@@ -76,15 +63,6 @@ namespace GtkSharp.Generation {
 		public bool IsSetter {
 			get {
 				return is_set;
-			}
-		}
-
-		public string Protection {
-			get {
-				return protection;
-			}
-			set {
-				protection = value;
 			}
 		}
 
@@ -251,8 +229,8 @@ namespace GtkSharp.Generation {
 			if (IsDeprecated)
 				gen_info.Writer.WriteLine("\t\t[Obsolete]");
 			gen_info.Writer.Write("\t\t");
-			if (protection != "")
-				gen_info.Writer.Write("{0} ", protection);
+			if (Protection != "")
+				gen_info.Writer.Write("{0} ", Protection);
 			GenerateDeclCommon (gen_info.Writer, implementor);
 
 			if (is_get || is_set)

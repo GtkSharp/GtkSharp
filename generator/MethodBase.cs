@@ -33,6 +33,7 @@ namespace GtkSharp.Generation {
 		bool is_static = false;
 		string mods = String.Empty;
 		string name;
+		private string protection = "public";
 
 		protected MethodBase (XmlElement elem, ClassBase container_type) 
 		{
@@ -43,6 +44,18 @@ namespace GtkSharp.Generation {
 			IsStatic = elem.GetAttribute ("shared") == "true";
 			if (elem.HasAttribute ("new_flag"))
 				mods = "new ";
+			if (elem.HasAttribute ("accessibility")) {
+				string attr = elem.GetAttribute ("accessibility");
+				switch (attr) {
+					case "public":
+					case "protected":
+					case "internal":
+					case "private":
+					case "protected internal":
+						protection = attr;
+						break;
+				}
+			}
 		}
 
 		protected string BaseName {
@@ -134,6 +147,11 @@ namespace GtkSharp.Generation {
 			get {
 				return parms;
 			}
+		}
+	
+		public string Protection {
+			get { return protection; }
+			set { protection = value; }
 		}
 
 		protected string Safety {

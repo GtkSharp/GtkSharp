@@ -71,7 +71,7 @@ namespace GtkSharp.Generation {
 		void GenerateStatic (GenerationInfo gen_info)
 		{
 			StreamWriter sw = gen_info.Writer;
-			sw.WriteLine("\t\tpublic static " + Safety + Modifiers +  name + " " + StaticName + "(" + Signature + ")");
+			sw.WriteLine("\t\t" + Protection + " static " + Safety + Modifiers +  name + " " + StaticName + "(" + Signature + ")");
 			sw.WriteLine("\t\t{");
 
 			Body.Initialize(gen_info, false, false, ""); 
@@ -100,7 +100,7 @@ namespace GtkSharp.Generation {
 			if (IsStatic)
 				GenerateStatic (gen_info);
 			else {
-				sw.WriteLine("\t\tpublic {0}{1} ({2}) {3}", Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
+				sw.WriteLine("\t\t{0} {1}{2} ({3}) {4}", Protection, Safety, name, Signature.ToString(), needs_chaining ? ": base (IntPtr.Zero)" : "");
 				sw.WriteLine("\t\t{");
 
 				if (needs_chaining) {
