@@ -295,7 +295,7 @@ namespace GLib {
 				gquark = 0;
 				signal_name = signal_detail;
 			} else if (link_pos == 0) {
-				throw new FormatException ("Invalid detailed_signal: " + signal_detail);
+				throw new FormatException ("Invalid detailed signal: " + signal_detail);
 			} else {
 				signal_name = signal_detail.Substring (0, link_pos);
 				gquark = GetGQuarkFromString (signal_detail.Substring (link_pos + 2));
@@ -308,6 +308,8 @@ namespace GLib {
 			string signal_name;
 			ParseSignalDetail (detailed_signal, out signal_name, out gquark);
 			signal_id = GetSignalId (signal_name, instance);
+			if (signal_id <= 0)
+				throw new ArgumentException ("Invalid signal name: " + signal_name);
 			GLib.Value[] vals = new GLib.Value [args.Length + 1];
 			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
 			
@@ -360,7 +362,7 @@ namespace GLib {
 			string signal_name;
 			ParseSignalDetail (detailed_signal, out signal_name, out gquark);
 			uint signal_id = GetSignalId (signal_name, type.Val);
-			if (signal_id == 0)
+			if (signal_id <= 0)
 				throw new Exception ("Invalid signal name: " + signal_name);
 			return g_signal_add_emission_hook (signal_id, gquark, new EmissionHookMarshaler (handler_func).Callback, IntPtr.Zero, IntPtr.Zero);
 		}
