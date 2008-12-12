@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="glib-sharp" version="2.10.0.0">
+  <assembly name="glib-sharp" version="2.12.0.0">
     <attributes>
+      <attribute name="GLib.IgnoreClassInitializersAttribute" />
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
           <property name="KeyFile" value="gtk-sharp.snk" />
@@ -109,6 +110,14 @@
             </constructors>
           </class>
           <class name="ClassInitializerAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="System.ObsoleteAttribute">
+                <properties>
+                  <property name="Message" value="Replaced by TypeInitializerAttribute" />
+                  <property name="IsError" value="False" />
+                </properties>
+              </attribute>
+            </attributes>
             <interfaces>
               <interface name="System.Runtime.InteropServices._Attribute" />
             </interfaces>
@@ -127,6 +136,20 @@
                 <parameters />
               </constructor>
             </constructors>
+          </class>
+          <class name="ConnectFlags" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="System.FlagsAttribute" />
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="After" attrib="32854" fieldtype="GLib.ConnectFlags" value="1" />
+              <field name="Swapped" attrib="32854" fieldtype="GLib.ConnectFlags" value="2" />
+            </fields>
           </class>
           <class name="DefaultSignalHandlerAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
             <interfaces>
@@ -193,6 +216,9 @@
             </properties>
           </class>
           <class name="DestroyNotify" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="GLib.CDeclCallbackAttribute" />
+            </attributes>
             <interfaces>
               <interface name="System.ICloneable" />
               <interface name="System.Runtime.Serialization.ISerializable" />
@@ -294,6 +320,166 @@
               </method>
             </methods>
           </class>
+          <class name="GInterfaceAdapter" type="class" base="System.Object" abstract="true" charset="Ansi" layout="Auto">
+            <constructors>
+              <constructor name=".ctor()" attrib="2180">
+                <parameters />
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="GType" attrib="0" ptype="GLib.GType" params="">
+                <methods>
+                  <method name="get_GType()" attrib="3526" abstract="true" virtual="true" returntype="GLib.GType">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_Handle()" attrib="3526" abstract="true" virtual="true" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="InitHandler" attrib="0" ptype="GLib.GInterfaceInitHandler" params="GLib.GInterfaceInitHandler">
+                <methods>
+                  <method name="set_InitHandler(GLib.GInterfaceInitHandler)" attrib="2180" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="GLib.GInterfaceInitHandler" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="GInterfaceAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="System.AttributeUsageAttribute">
+                <properties>
+                  <property name="AllowMultiple" value="False" />
+                  <property name="Inherited" value="True" />
+                  <property name="ValidOn" value="Interface" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.Runtime.InteropServices._Attribute" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Type)" attrib="2182">
+                <parameters>
+                  <parameter name="adapter_type" position="0" attrib="0" type="System.Type" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="AdapterType" attrib="0" ptype="System.Type" params="">
+                <methods>
+                  <method name="get_AdapterType()" attrib="2182" returntype="System.Type">
+                    <parameters />
+                  </method>
+                  <method name="set_AdapterType(System.Type)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Type" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="GInterfaceInitHandler" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(System.IntPtr, System.IntPtr, System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="iface_ptr" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="data" position="1" attrib="0" type="System.IntPtr" />
+                  <parameter name="callback" position="2" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="3" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke(System.IntPtr, System.IntPtr)" attrib="454" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="iface_ptr" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="data" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="Global" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <properties>
+              <property name="ApplicationName" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_ApplicationName()" attrib="2198" static="true" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_ApplicationName(System.String)" attrib="2198" static="true" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="ProgramName" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_ProgramName()" attrib="2198" static="true" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_ProgramName(System.String)" attrib="2198" static="true" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="GSourceFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="callback" position="0" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="1" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke()" attrib="454" virtual="true" returntype="System.Boolean">
+                <parameters />
+              </method>
+            </methods>
+          </class>
           <class name="GString" type="class" base="System.Object" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
@@ -338,13 +524,16 @@
               <field name="Int64" attrib="54" fieldtype="GLib.GType" />
               <field name="Interface" attrib="54" fieldtype="GLib.GType" />
               <field name="Invalid" attrib="54" fieldtype="GLib.GType" />
+              <field name="Long" attrib="54" fieldtype="GLib.GType" />
               <field name="None" attrib="54" fieldtype="GLib.GType" />
               <field name="Object" attrib="54" fieldtype="GLib.GType" />
+              <field name="Param" attrib="54" fieldtype="GLib.GType" />
               <field name="Pointer" attrib="54" fieldtype="GLib.GType" />
               <field name="String" attrib="54" fieldtype="GLib.GType" />
               <field name="UChar" attrib="54" fieldtype="GLib.GType" />
               <field name="UInt" attrib="54" fieldtype="GLib.GType" />
               <field name="UInt64" attrib="54" fieldtype="GLib.GType" />
+              <field name="ULong" attrib="54" fieldtype="GLib.GType" />
             </fields>
             <constructors>
               <constructor name=".ctor(System.IntPtr)" attrib="2182">
@@ -368,7 +557,15 @@
                   <parameter name="o" position="0" attrib="0" type="System.Object" />
                 </parameters>
               </method>
+              <method name="FromName(System.String)" attrib="150" static="true" returntype="GLib.GType">
+                <parameters>
+                  <parameter name="native_name" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
               <method name="GetHashCode()" attrib="198" virtual="true" returntype="System.Int32">
+                <parameters />
+              </method>
+              <method name="Init()" attrib="150" static="true" returntype="System.Void">
                 <parameters />
               </method>
               <method name="LookupType(System.IntPtr)" attrib="150" static="true" returntype="System.Type">
@@ -466,6 +663,25 @@
               </method>
             </methods>
           </class>
+          <class name="IgnoreClassInitializersAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="System.AttributeUsageAttribute">
+                <properties>
+                  <property name="AllowMultiple" value="False" />
+                  <property name="Inherited" value="True" />
+                  <property name="ValidOn" value="Assembly" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.Runtime.InteropServices._Attribute" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor()" attrib="2182">
+                <parameters />
+              </constructor>
+            </constructors>
+          </class>
           <class name="InitiallyUnowned" type="class" base="GLib.Object" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="GLib.IWrapper" />
@@ -501,6 +717,307 @@
               </property>
             </properties>
           </class>
+          <class name="IOChannel" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.String, System.String)" attrib="2182">
+                <parameters>
+                  <parameter name="filename" position="0" attrib="0" type="System.String" />
+                  <parameter name="mode" position="1" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Int32)" attrib="2182">
+                <parameters>
+                  <parameter name="fd" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="BufferCondition" attrib="0" ptype="GLib.IOCondition" params="">
+                <methods>
+                  <method name="get_BufferCondition()" attrib="2182" returntype="GLib.IOCondition">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Buffered" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_Buffered()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_Buffered(System.Boolean)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="BufferSize" attrib="0" ptype="System.UInt64" params="">
+                <methods>
+                  <method name="get_BufferSize()" attrib="2182" returntype="System.UInt64">
+                    <parameters />
+                  </method>
+                  <method name="set_BufferSize(System.UInt64)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.UInt64" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="CloseOnUnref" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_CloseOnUnref()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_CloseOnUnref(System.Boolean)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Encoding" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_Encoding()" attrib="2182" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_Encoding(System.String)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Flags" attrib="0" ptype="GLib.IOFlags" params="">
+                <methods>
+                  <method name="get_Flags()" attrib="2182" returntype="GLib.IOFlags">
+                    <parameters />
+                  </method>
+                  <method name="set_Flags(GLib.IOFlags)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="GLib.IOFlags" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_Handle()" attrib="2534" virtual="true" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="LineTerminator" attrib="0" ptype="System.Char[]" params="">
+                <methods>
+                  <method name="get_LineTerminator()" attrib="2182" returntype="System.Char[]">
+                    <parameters />
+                  </method>
+                  <method name="set_LineTerminator(System.Char[])" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Char[]" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="UnixFd" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_UnixFd()" attrib="2182" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+            <methods>
+              <method name="AddWatch(System.Int32, GLib.IOCondition, GLib.IOFunc)" attrib="134" returntype="System.UInt32">
+                <parameters>
+                  <parameter name="priority" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="condition" position="1" attrib="0" type="GLib.IOCondition" />
+                  <parameter name="func" position="2" attrib="0" type="GLib.IOFunc" />
+                </parameters>
+              </method>
+              <method name="Dispose()" attrib="486" virtual="true" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="ErrorFromErrno(System.Int32)" attrib="150" static="true" returntype="GLib.IOChannelError">
+                <parameters>
+                  <parameter name="en" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="Flush()" attrib="134" returntype="GLib.IOStatus">
+                <parameters />
+              </method>
+              <method name="FromHandle(System.IntPtr)" attrib="150" static="true" returntype="GLib.IOChannel">
+                <parameters>
+                  <parameter name="handle" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="Init()" attrib="132" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="ReadChars(System.Byte[], out System.UInt64&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="buf" position="0" attrib="0" type="System.Byte[]" />
+                  <parameter name="bytes_read" position="1" attrib="2" type="System.UInt64&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="ReadLine(out System.String&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="str_return" position="0" attrib="2" type="System.String&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="ReadLine(out System.String&amp;, out System.UInt64&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="str_return" position="0" attrib="2" type="System.String&amp;" direction="out" />
+                  <parameter name="terminator_pos" position="1" attrib="2" type="System.UInt64&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="ReadToEnd(out System.String&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="str_return" position="0" attrib="2" type="System.String&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="ReadUnichar(out System.UInt32&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="thechar" position="0" attrib="2" type="System.UInt32&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="SeekPosition(System.Int64, GLib.SeekType)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="offset" position="0" attrib="0" type="System.Int64" />
+                  <parameter name="type" position="1" attrib="0" type="GLib.SeekType" />
+                </parameters>
+              </method>
+              <method name="Shutdown(System.Boolean)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="flush" position="0" attrib="0" type="System.Boolean" />
+                </parameters>
+              </method>
+              <method name="WriteChars(System.String, out System.String&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="str" position="0" attrib="0" type="System.String" />
+                  <parameter name="remainder" position="1" attrib="2" type="System.String&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="WriteChars(System.Byte[], out System.UInt64&amp;)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="buf" position="0" attrib="0" type="System.Byte[]" />
+                  <parameter name="bytes_written" position="1" attrib="2" type="System.UInt64&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="WriteUnichar(System.UInt32)" attrib="134" returntype="GLib.IOStatus">
+                <parameters>
+                  <parameter name="thechar" position="0" attrib="0" type="System.UInt32" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="IOChannelError" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Failed" attrib="32854" fieldtype="GLib.IOChannelError" value="8" />
+              <field name="FileTooBig" attrib="32854" fieldtype="GLib.IOChannelError" value="0" />
+              <field name="Inval" attrib="32854" fieldtype="GLib.IOChannelError" value="1" />
+              <field name="IO" attrib="32854" fieldtype="GLib.IOChannelError" value="2" />
+              <field name="IsDir" attrib="32854" fieldtype="GLib.IOChannelError" value="3" />
+              <field name="NoSpace" attrib="32854" fieldtype="GLib.IOChannelError" value="4" />
+              <field name="Nxio" attrib="32854" fieldtype="GLib.IOChannelError" value="5" />
+              <field name="Overflow" attrib="32854" fieldtype="GLib.IOChannelError" value="6" />
+              <field name="Pipe" attrib="32854" fieldtype="GLib.IOChannelError" value="7" />
+            </fields>
+          </class>
+          <class name="IOCondition" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="System.FlagsAttribute" />
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Err" attrib="32854" fieldtype="GLib.IOCondition" value="8" />
+              <field name="Hup" attrib="32854" fieldtype="GLib.IOCondition" value="16" />
+              <field name="In" attrib="32854" fieldtype="GLib.IOCondition" value="1" />
+              <field name="Nval" attrib="32854" fieldtype="GLib.IOCondition" value="32" />
+              <field name="Out" attrib="32854" fieldtype="GLib.IOCondition" value="4" />
+              <field name="Pri" attrib="32854" fieldtype="GLib.IOCondition" value="2" />
+            </fields>
+          </class>
+          <class name="IOFlags" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="System.FlagsAttribute" />
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Append" attrib="32854" fieldtype="GLib.IOFlags" value="1" />
+              <field name="GetMask" attrib="32854" fieldtype="GLib.IOFlags" value="16" />
+              <field name="IsReadable" attrib="32854" fieldtype="GLib.IOFlags" value="4" />
+              <field name="IsSeekable" attrib="32854" fieldtype="GLib.IOFlags" value="16" />
+              <field name="IsWriteable" attrib="32854" fieldtype="GLib.IOFlags" value="8" />
+              <field name="Mask" attrib="32854" fieldtype="GLib.IOFlags" value="16" />
+              <field name="Nonblock" attrib="32854" fieldtype="GLib.IOFlags" value="2" />
+              <field name="SetMask" attrib="32854" fieldtype="GLib.IOFlags" value="3" />
+            </fields>
+          </class>
+          <class name="IOFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(GLib.IOChannel, GLib.IOCondition, System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="source" position="0" attrib="0" type="GLib.IOChannel" />
+                  <parameter name="condition" position="1" attrib="0" type="GLib.IOCondition" />
+                  <parameter name="callback" position="2" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="3" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke(GLib.IOChannel, GLib.IOCondition)" attrib="454" virtual="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="source" position="0" attrib="0" type="GLib.IOChannel" />
+                  <parameter name="condition" position="1" attrib="0" type="GLib.IOCondition" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="IOStatus" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Again" attrib="32854" fieldtype="GLib.IOStatus" value="3" />
+              <field name="Eof" attrib="32854" fieldtype="GLib.IOStatus" value="2" />
+              <field name="Error" attrib="32854" fieldtype="GLib.IOStatus" value="0" />
+              <field name="Normal" attrib="32854" fieldtype="GLib.IOStatus" value="1" />
+            </fields>
+          </class>
           <class name="IWrapper" type="interface" abstract="true" charset="Ansi" layout="Auto">
             <properties>
               <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
@@ -514,22 +1031,32 @@
           </class>
           <class name="List" type="class" base="GLib.ListBase" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
               <interface name="System.Collections.ICollection" />
               <interface name="System.Collections.IEnumerable" />
-              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
               <interface name="System.ICloneable" />
             </interfaces>
             <constructors>
-              <constructor name=".ctor(System.IntPtr, System.Type)" attrib="2182">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(System.IntPtr, System.Type, System.Boolean, System.Boolean)" attrib="2182">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Object[], System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="elements" position="0" attrib="0" type="System.Object[]" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Array, System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="elements" position="0" attrib="0" type="System.Array" />
                   <parameter name="element_type" position="1" attrib="0" type="System.Type" />
                   <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
                   <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
@@ -543,6 +1070,12 @@
               <constructor name=".ctor(System.Type)" attrib="2182">
                 <parameters>
                   <parameter name="element_type" position="0" attrib="0" type="System.Type" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IntPtr, System.Type)" attrib="2182">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
                 </parameters>
               </constructor>
             </constructors>
@@ -561,10 +1094,10 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
               <interface name="System.Collections.ICollection" />
               <interface name="System.Collections.IEnumerable" />
-              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
               <interface name="System.ICloneable" />
             </interfaces>
             <fields>
@@ -630,6 +1163,11 @@
               <method name="Append(System.String)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="item" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
+              <method name="Append(System.Object)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="item" position="0" attrib="0" type="System.Object" />
                 </parameters>
               </method>
               <method name="Append(System.IntPtr)" attrib="134" returntype="System.Void">
@@ -791,9 +1329,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="All" attrib="32854" fieldtype="GLib.LogLevelFlags" value="255" />
@@ -925,6 +1463,11 @@
                   <parameter name="ptr" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </method>
+              <method name="Free(System.IntPtr[])" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="ptrs" position="0" attrib="0" type="System.IntPtr[]" />
+                </parameters>
+              </method>
               <method name="Free(System.IntPtr)" attrib="150" static="true" returntype="System.Void">
                 <parameters>
                   <parameter name="ptr" position="0" attrib="0" type="System.IntPtr" />
@@ -935,10 +1478,43 @@
                   <parameter name="ucs4_char" position="0" attrib="0" type="System.UInt32" />
                 </parameters>
               </method>
+              <method name="ListPtrToArray(System.IntPtr, System.Type, System.Boolean, System.Boolean, System.Type)" attrib="150" static="true" returntype="System.Array">
+                <parameters>
+                  <parameter name="list_ptr" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="list_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                  <parameter name="elem_type" position="4" attrib="0" type="System.Type" />
+                </parameters>
+              </method>
               <method name="ListToArray(GLib.ListBase, System.Type)" attrib="150" static="true" returntype="System.Array">
                 <parameters>
                   <parameter name="list" position="0" attrib="0" type="GLib.ListBase" />
                   <parameter name="type" position="1" attrib="0" type="System.Type" />
+                </parameters>
+              </method>
+              <method name="Malloc(System.UInt64)" attrib="150" static="true" returntype="System.IntPtr">
+                <parameters>
+                  <parameter name="size" position="0" attrib="0" type="System.UInt64" />
+                </parameters>
+              </method>
+              <method name="NullTermPtrToStringArray(System.IntPtr, System.Boolean)" attrib="150" static="true" returntype="System.String[]">
+                <parameters>
+                  <parameter name="null_term_array" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="owned" position="1" attrib="0" type="System.Boolean" />
+                </parameters>
+              </method>
+              <method name="PtrArrayToArray(System.IntPtr, System.Boolean, System.Boolean, System.Type)" attrib="150" static="true" returntype="System.Array">
+                <parameters>
+                  <parameter name="list_ptr" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="owned" position="1" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elem_type" position="3" attrib="0" type="System.Type" />
+                </parameters>
+              </method>
+              <method name="PtrToStringArrayGFree(System.IntPtr)" attrib="150" static="true" returntype="System.String[]">
+                <parameters>
+                  <parameter name="string_array" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </method>
               <method name="PtrToStringGFree(System.IntPtr[])" attrib="150" static="true" returntype="System.String[]">
@@ -949,6 +1525,16 @@
               <method name="PtrToStringGFree(System.IntPtr)" attrib="150" static="true" returntype="System.String">
                 <parameters>
                   <parameter name="ptr" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="StrFreeV(System.IntPtr)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="null_term_array" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="StringArrayToNullTermPointer(System.String[])" attrib="150" static="true" returntype="System.IntPtr[]">
+                <parameters>
+                  <parameter name="strs" position="0" attrib="0" type="System.String[]" />
                 </parameters>
               </method>
               <method name="StringFormat(System.String, System.Object[])" attrib="150" static="true" returntype="System.String">
@@ -1075,6 +1661,9 @@
                   <parameter name="gtype" position="0" attrib="0" type="GLib.GType" />
                 </parameters>
               </constructor>
+              <constructor name=".ctor()" attrib="2180">
+                <parameters />
+              </constructor>
               <constructor name=".ctor(System.IntPtr)" attrib="2180">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
@@ -1107,7 +1696,7 @@
                   </attribute>
                 </attributes>
                 <methods>
-                  <method name="get_AfterSignals()" attrib="2180" returntype="System.Collections.Hashtable">
+                  <method name="get_AfterSignals()" attrib="2181" returntype="System.Collections.Hashtable">
                     <parameters />
                   </method>
                 </methods>
@@ -1137,20 +1726,12 @@
                   </attribute>
                 </attributes>
                 <methods>
-                  <method name="get_BeforeSignals()" attrib="2180" returntype="System.Collections.Hashtable">
+                  <method name="get_BeforeSignals()" attrib="2181" returntype="System.Collections.Hashtable">
                     <parameters />
                   </method>
                 </methods>
               </property>
               <property name="Data" attrib="0" ptype="System.Collections.Hashtable" params="">
-                <attributes>
-                  <attribute name="System.ObsoleteAttribute">
-                    <properties>
-                      <property name="Message" value="Can cause instability due to garbage collection of GLib.Objects." />
-                      <property name="IsError" value="False" />
-                    </properties>
-                  </attribute>
-                </attributes>
                 <methods>
                   <method name="get_Data()" attrib="2182" returntype="System.Collections.Hashtable">
                     <parameters />
@@ -1167,6 +1748,13 @@
               <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
                 <methods>
                   <method name="get_Handle()" attrib="2534" virtual="true" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="OwnedHandle" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_OwnedHandle()" attrib="2182" returntype="System.IntPtr">
                     <parameters />
                   </method>
                 </methods>
@@ -1260,6 +1848,11 @@
               <method name="LookupGType(System.Type)" attrib="149" static="true" returntype="GLib.GType">
                 <parameters>
                   <parameter name="t" position="0" attrib="0" type="System.Type" />
+                </parameters>
+              </method>
+              <method name="Notify(System.String)" attrib="132" returntype="System.Void">
+                <parameters>
+                  <parameter name="property_name" position="0" attrib="0" type="System.String" />
                 </parameters>
               </method>
               <method name="OverrideVirtualMethod(GLib.GType, System.String, System.Delegate)" attrib="148" static="true" returntype="System.Void">
@@ -1385,6 +1978,13 @@
                   </method>
                 </methods>
               </property>
+              <property name="OwnedCopy" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_OwnedCopy()" attrib="2182" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="Raw" attrib="0" ptype="System.IntPtr" params="">
                 <methods>
                   <method name="get_Raw()" attrib="2180" returntype="System.IntPtr">
@@ -1488,11 +2088,77 @@
               </method>
             </methods>
           </class>
+          <class name="Process" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <fields>
+              <field name="IgnorePipe" attrib="32854" fieldtype="System.Int32" value="2147483647" />
+              <field name="RequestPipe" attrib="32854" fieldtype="System.Int32" value="0" />
+            </fields>
+            <methods>
+              <method name="Close()" attrib="134" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="SpawnAsync(System.String, System.String[], System.String[], GLib.SpawnFlags, GLib.SpawnChildSetupFunc, out GLib.Process&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="working_directory" position="0" attrib="0" type="System.String" />
+                  <parameter name="argv" position="1" attrib="0" type="System.String[]" />
+                  <parameter name="envp" position="2" attrib="0" type="System.String[]" />
+                  <parameter name="flags" position="3" attrib="0" type="GLib.SpawnFlags" />
+                  <parameter name="child_setup" position="4" attrib="0" type="GLib.SpawnChildSetupFunc" />
+                  <parameter name="child_process" position="5" attrib="2" type="GLib.Process&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="SpawnAsyncWithPipes(System.String, System.String[], System.String[], GLib.SpawnFlags, GLib.SpawnChildSetupFunc, out GLib.Process&amp;, System.Int32&amp;, System.Int32&amp;, System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="working_directory" position="0" attrib="0" type="System.String" />
+                  <parameter name="argv" position="1" attrib="0" type="System.String[]" />
+                  <parameter name="envp" position="2" attrib="0" type="System.String[]" />
+                  <parameter name="flags" position="3" attrib="0" type="GLib.SpawnFlags" />
+                  <parameter name="child_setup" position="4" attrib="0" type="GLib.SpawnChildSetupFunc" />
+                  <parameter name="child_process" position="5" attrib="2" type="GLib.Process&amp;" direction="out" />
+                  <parameter name="stdin" position="6" attrib="0" type="System.Int32&amp;" direction="ref" />
+                  <parameter name="stdout" position="7" attrib="0" type="System.Int32&amp;" direction="ref" />
+                  <parameter name="stderr" position="8" attrib="0" type="System.Int32&amp;" direction="ref" />
+                </parameters>
+              </method>
+              <method name="SpawnCommandLineAsync(System.String)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="command_line" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </method>
+              <method name="SpawnCommandLineSync(System.String, out System.String&amp;, out System.String&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="command_line" position="0" attrib="0" type="System.String" />
+                  <parameter name="stdout" position="1" attrib="2" type="System.String&amp;" direction="out" />
+                  <parameter name="stderr" position="2" attrib="2" type="System.String&amp;" direction="out" />
+                  <parameter name="exit_status" position="3" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="SpawnSync(System.String, System.String[], System.String[], GLib.SpawnFlags, GLib.SpawnChildSetupFunc, out System.String&amp;, out System.String&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="working_directory" position="0" attrib="0" type="System.String" />
+                  <parameter name="argv" position="1" attrib="0" type="System.String[]" />
+                  <parameter name="envp" position="2" attrib="0" type="System.String[]" />
+                  <parameter name="flags" position="3" attrib="0" type="GLib.SpawnFlags" />
+                  <parameter name="child_setup" position="4" attrib="0" type="GLib.SpawnChildSetupFunc" />
+                  <parameter name="stdout" position="5" attrib="2" type="System.String&amp;" direction="out" />
+                  <parameter name="stderr" position="6" attrib="2" type="System.String&amp;" direction="out" />
+                  <parameter name="exit_status" position="7" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
           <class name="PropertyAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
             <interfaces>
               <interface name="System.Runtime.InteropServices._Attribute" />
             </interfaces>
             <constructors>
+              <constructor name=".ctor(System.String, System.String, System.String)" attrib="2182">
+                <parameters>
+                  <parameter name="name" position="0" attrib="0" type="System.String" />
+                  <parameter name="nickname" position="1" attrib="0" type="System.String" />
+                  <parameter name="blurb" position="2" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
               <constructor name=".ctor(System.String)" attrib="2182">
                 <parameters>
                   <parameter name="name" position="0" attrib="0" type="System.String" />
@@ -1500,6 +2166,18 @@
               </constructor>
             </constructors>
             <properties>
+              <property name="Blurb" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_Blurb()" attrib="2182" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_Blurb(System.String)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="Name" attrib="0" ptype="System.String" params="">
                 <methods>
                   <method name="get_Name()" attrib="2182" returntype="System.String">
@@ -1512,7 +2190,161 @@
                   </method>
                 </methods>
               </property>
+              <property name="Nickname" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_Nickname()" attrib="2182" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_Nickname(System.String)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
             </properties>
+          </class>
+          <class name="PtrArray" type="class" base="System.Object" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="System.Reflection.DefaultMemberAttribute">
+                <properties>
+                  <property name="MemberName" value="Item" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.Collections.ICollection" />
+              <interface name="System.Collections.IEnumerable" />
+              <interface name="System.IDisposable" />
+              <interface name="System.ICloneable" />
+            </interfaces>
+            <fields>
+              <field name="element_type" attrib="4" fieldtype="System.Type" />
+            </fields>
+            <constructors>
+              <constructor name=".ctor(System.IntPtr, System.Type)" attrib="2182">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt32, System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="n_preallocs" position="0" attrib="0" type="System.UInt32" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="element_type" position="0" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="1" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="2" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="ArrayPtr" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_ArrayPtr()" attrib="2182" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Count" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Count()" attrib="2534" virtual="true" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Handle" attrib="0" ptype="System.IntPtr" params="">
+                <methods>
+                  <method name="get_Handle()" attrib="2534" virtual="true" returntype="System.IntPtr">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="IsSynchronized" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsSynchronized()" attrib="2534" virtual="true" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Item" attrib="0" ptype="System.Object" params="System.Int32">
+                <methods>
+                  <method name="get_Item(System.Int32)" attrib="2182" returntype="System.Object">
+                    <parameters>
+                      <parameter name="index" position="0" attrib="0" type="System.Int32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="SyncRoot" attrib="0" ptype="System.Object" params="">
+                <methods>
+                  <method name="get_SyncRoot()" attrib="2534" virtual="true" returntype="System.Object">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+            <methods>
+              <method name="Add(System.IntPtr)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="Clone()" attrib="486" virtual="true" returntype="System.Object">
+                <parameters />
+              </method>
+              <method name="CopyTo(System.Array, System.Int32)" attrib="486" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="array" position="0" attrib="0" type="System.Array" />
+                  <parameter name="index" position="1" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="Dispose()" attrib="486" virtual="true" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="Finalize()" attrib="196" virtual="true" returntype="System.Void">
+                <parameters />
+              </method>
+              <method name="GetEnumerator()" attrib="486" virtual="true" returntype="System.Collections.IEnumerator">
+                <parameters />
+              </method>
+              <method name="Remove(System.IntPtr)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="data" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
+              <method name="RemoveRange(System.IntPtr, System.UInt32, System.UInt32)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="data" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="index" position="1" attrib="0" type="System.UInt32" />
+                  <parameter name="length" position="2" attrib="0" type="System.UInt32" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="SeekType" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Cur" attrib="32854" fieldtype="GLib.SeekType" value="0" />
+              <field name="End" attrib="32854" fieldtype="GLib.SeekType" value="2" />
+              <field name="Set" attrib="32854" fieldtype="GLib.SeekType" value="1" />
+            </fields>
           </class>
           <class name="Signal" type="class" base="System.Object" charset="Ansi" layout="Auto">
             <properties>
@@ -1530,11 +2362,22 @@
                   <parameter name="d" position="0" attrib="0" type="System.Delegate" />
                 </parameters>
               </method>
-              <method name="Lookup(GLib.Object, System.String, System.Delegate)" attrib="150" static="true" returntype="GLib.Signal">
+              <method name="AddEmissionHook(System.String, GLib.GType, GLib.Signal+EmissionHook)" attrib="150" static="true" returntype="System.UInt64">
                 <parameters>
-                  <parameter name="obj" position="0" attrib="0" type="GLib.Object" />
-                  <parameter name="name" position="1" attrib="0" type="System.String" />
-                  <parameter name="marshaler" position="2" attrib="0" type="System.Delegate" />
+                  <parameter name="detailed_signal" position="0" attrib="0" type="System.String" />
+                  <parameter name="type" position="1" attrib="0" type="GLib.GType" />
+                  <parameter name="handler_func" position="2" attrib="0" type="GLib.Signal+EmissionHook" />
+                </parameters>
+              </method>
+              <method name="Emit(GLib.Object, System.String, System.Object[])" attrib="150" static="true" returntype="System.Object">
+                <parameters>
+                  <parameter name="instance" position="0" attrib="0" type="GLib.Object" />
+                  <parameter name="detailed_signal" position="1" attrib="0" type="System.String" />
+                  <parameter name="args" position="2" attrib="0" type="System.Object[]">
+                    <attributes>
+                      <attribute name="System.ParamArrayAttribute" />
+                    </attributes>
+                  </parameter>
                 </parameters>
               </method>
               <method name="Lookup(GLib.Object, System.String)" attrib="150" static="true" returntype="GLib.Signal">
@@ -1543,12 +2386,163 @@
                   <parameter name="name" position="1" attrib="0" type="System.String" />
                 </parameters>
               </method>
+              <method name="Lookup(GLib.Object, System.String, System.Delegate)" attrib="150" static="true" returntype="GLib.Signal">
+                <parameters>
+                  <parameter name="obj" position="0" attrib="0" type="GLib.Object" />
+                  <parameter name="name" position="1" attrib="0" type="System.String" />
+                  <parameter name="marshaler" position="2" attrib="0" type="System.Delegate" />
+                </parameters>
+              </method>
+              <method name="Lookup(GLib.Object, System.String, System.Type)" attrib="150" static="true" returntype="GLib.Signal">
+                <parameters>
+                  <parameter name="obj" position="0" attrib="0" type="GLib.Object" />
+                  <parameter name="name" position="1" attrib="0" type="System.String" />
+                  <parameter name="args_type" position="2" attrib="0" type="System.Type" />
+                </parameters>
+              </method>
               <method name="RemoveDelegate(System.Delegate)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="d" position="0" attrib="0" type="System.Delegate" />
                 </parameters>
               </method>
             </methods>
+            <classes>
+              <class name="EmissionHook" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+                <interfaces>
+                  <interface name="System.ICloneable" />
+                  <interface name="System.Runtime.Serialization.ISerializable" />
+                </interfaces>
+                <constructors>
+                  <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                    <parameters>
+                      <parameter name="object" position="0" attrib="0" type="System.Object" />
+                      <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                    </parameters>
+                  </constructor>
+                </constructors>
+                <methods>
+                  <method name="BeginInvoke(GLib.Signal+InvocationHint, System.Object[], System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                    <parameters>
+                      <parameter name="ihint" position="0" attrib="0" type="GLib.Signal+InvocationHint" />
+                      <parameter name="inst_and_param_values" position="1" attrib="0" type="System.Object[]" />
+                      <parameter name="callback" position="2" attrib="0" type="System.AsyncCallback" />
+                      <parameter name="object" position="3" attrib="0" type="System.Object" />
+                    </parameters>
+                  </method>
+                  <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Boolean">
+                    <parameters>
+                      <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                    </parameters>
+                  </method>
+                  <method name="Invoke(GLib.Signal+InvocationHint, System.Object[])" attrib="454" virtual="true" returntype="System.Boolean">
+                    <parameters>
+                      <parameter name="ihint" position="0" attrib="0" type="GLib.Signal+InvocationHint" />
+                      <parameter name="inst_and_param_values" position="1" attrib="0" type="System.Object[]" />
+                    </parameters>
+                  </method>
+                </methods>
+              </class>
+              <class name="EmissionHookNative" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+                <attributes>
+                  <attribute name="GLib.CDeclCallbackAttribute" />
+                </attributes>
+                <interfaces>
+                  <interface name="System.ICloneable" />
+                  <interface name="System.Runtime.Serialization.ISerializable" />
+                </interfaces>
+                <constructors>
+                  <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                    <parameters>
+                      <parameter name="object" position="0" attrib="0" type="System.Object" />
+                      <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                    </parameters>
+                  </constructor>
+                </constructors>
+                <methods>
+                  <method name="BeginInvoke(GLib.Signal+InvocationHint&amp;, System.UInt32, System.IntPtr, System.IntPtr, System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                    <parameters>
+                      <parameter name="hint" position="0" attrib="0" type="GLib.Signal+InvocationHint&amp;" direction="ref" />
+                      <parameter name="n_pvals" position="1" attrib="0" type="System.UInt32" />
+                      <parameter name="pvals" position="2" attrib="0" type="System.IntPtr" />
+                      <parameter name="data" position="3" attrib="0" type="System.IntPtr" />
+                      <parameter name="callback" position="4" attrib="0" type="System.AsyncCallback" />
+                      <parameter name="object" position="5" attrib="0" type="System.Object" />
+                    </parameters>
+                  </method>
+                  <method name="EndInvoke(GLib.Signal+InvocationHint&amp;, System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Boolean">
+                    <parameters>
+                      <parameter name="hint" position="0" attrib="0" type="GLib.Signal+InvocationHint&amp;" direction="ref" />
+                      <parameter name="result" position="1" attrib="0" type="System.IAsyncResult" />
+                    </parameters>
+                  </method>
+                  <method name="Invoke(GLib.Signal+InvocationHint&amp;, System.UInt32, System.IntPtr, System.IntPtr)" attrib="454" virtual="true" returntype="System.Boolean">
+                    <parameters>
+                      <parameter name="hint" position="0" attrib="0" type="GLib.Signal+InvocationHint&amp;" direction="ref" />
+                      <parameter name="n_pvals" position="1" attrib="0" type="System.UInt32" />
+                      <parameter name="pvals" position="2" attrib="0" type="System.IntPtr" />
+                      <parameter name="data" position="3" attrib="0" type="System.IntPtr" />
+                    </parameters>
+                  </method>
+                </methods>
+              </class>
+              <class name="EmissionHookMarshaler" type="class" base="System.Object" charset="Ansi" layout="Auto">
+                <constructors>
+                  <constructor name=".ctor(GLib.Signal+EmissionHookNative, System.IntPtr)" attrib="2182">
+                    <parameters>
+                      <parameter name="callback" position="0" attrib="0" type="GLib.Signal+EmissionHookNative" />
+                      <parameter name="user_data" position="1" attrib="0" type="System.IntPtr" />
+                    </parameters>
+                  </constructor>
+                  <constructor name=".ctor(GLib.Signal+EmissionHook)" attrib="2182">
+                    <parameters>
+                      <parameter name="handler" position="0" attrib="0" type="GLib.Signal+EmissionHook" />
+                    </parameters>
+                  </constructor>
+                </constructors>
+                <properties>
+                  <property name="Callback" attrib="0" ptype="GLib.Signal+EmissionHookNative" params="">
+                    <methods>
+                      <method name="get_Callback()" attrib="2182" returntype="GLib.Signal+EmissionHookNative">
+                        <parameters />
+                      </method>
+                    </methods>
+                  </property>
+                  <property name="Invoker" attrib="0" ptype="GLib.Signal+EmissionHook" params="">
+                    <methods>
+                      <method name="get_Invoker()" attrib="2182" returntype="GLib.Signal+EmissionHook">
+                        <parameters />
+                      </method>
+                    </methods>
+                  </property>
+                </properties>
+              </class>
+              <class name="InvocationHint" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
+                <fields>
+                  <field name="detail" attrib="6" fieldtype="System.UInt32" />
+                  <field name="run_type" attrib="6" fieldtype="GLib.Signal+Flags" />
+                  <field name="signal_id" attrib="6" fieldtype="System.UInt32" />
+                </fields>
+              </class>
+              <class name="Flags" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+                <attributes>
+                  <attribute name="System.FlagsAttribute" />
+                </attributes>
+                <interfaces>
+                  <interface name="System.IFormattable" />
+                  <interface name="System.IConvertible" />
+                  <interface name="System.IComparable" />
+                </interfaces>
+                <fields>
+                  <field name="Action" attrib="32854" fieldtype="GLib.Signal+Flags" value="32" />
+                  <field name="Detailed" attrib="32854" fieldtype="GLib.Signal+Flags" value="16" />
+                  <field name="NoHooks" attrib="32854" fieldtype="GLib.Signal+Flags" value="64" />
+                  <field name="NoRecurse" attrib="32854" fieldtype="GLib.Signal+Flags" value="8" />
+                  <field name="RunCleanup" attrib="32854" fieldtype="GLib.Signal+Flags" value="4" />
+                  <field name="RunFirst" attrib="32854" fieldtype="GLib.Signal+Flags" value="1" />
+                  <field name="RunLast" attrib="32854" fieldtype="GLib.Signal+Flags" value="2" />
+                </fields>
+              </class>
+            </classes>
           </class>
           <class name="SignalArgs" type="class" base="System.EventArgs" charset="Ansi" layout="Auto">
             <constructors>
@@ -1690,22 +2684,32 @@
           </class>
           <class name="SList" type="class" base="GLib.ListBase" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
               <interface name="System.Collections.ICollection" />
               <interface name="System.Collections.IEnumerable" />
-              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
               <interface name="System.ICloneable" />
             </interfaces>
             <constructors>
-              <constructor name=".ctor(System.IntPtr, System.Type)" attrib="2182">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(System.IntPtr, System.Type, System.Boolean, System.Boolean)" attrib="2182">
                 <parameters>
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Object[], System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="members" position="0" attrib="0" type="System.Object[]" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
+                  <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Array, System.Type, System.Boolean, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="members" position="0" attrib="0" type="System.Array" />
                   <parameter name="element_type" position="1" attrib="0" type="System.Type" />
                   <parameter name="owned" position="2" attrib="0" type="System.Boolean" />
                   <parameter name="elements_owned" position="3" attrib="0" type="System.Boolean" />
@@ -1719,6 +2723,12 @@
               <constructor name=".ctor(System.Type)" attrib="2182">
                 <parameters>
                   <parameter name="element_type" position="0" attrib="0" type="System.Type" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IntPtr, System.Type)" attrib="2182">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                  <parameter name="element_type" position="1" attrib="0" type="System.Type" />
                 </parameters>
               </constructor>
             </constructors>
@@ -1736,6 +2746,84 @@
                 </parameters>
               </method>
             </methods>
+          </class>
+          <class name="SpawnChildSetupFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="callback" position="0" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="1" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke()" attrib="454" virtual="true" returntype="System.Void">
+                <parameters />
+              </method>
+            </methods>
+          </class>
+          <class name="SpawnError" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Acces" attrib="32854" fieldtype="GLib.SpawnError" value="3" />
+              <field name="Chdir" attrib="32854" fieldtype="GLib.SpawnError" value="2" />
+              <field name="Failed" attrib="32854" fieldtype="GLib.SpawnError" value="19" />
+              <field name="Fork" attrib="32854" fieldtype="GLib.SpawnError" value="0" />
+              <field name="Inval" attrib="32854" fieldtype="GLib.SpawnError" value="16" />
+              <field name="IO" attrib="32854" fieldtype="GLib.SpawnError" value="13" />
+              <field name="IsDir" attrib="32854" fieldtype="GLib.SpawnError" value="17" />
+              <field name="LibBad" attrib="32854" fieldtype="GLib.SpawnError" value="18" />
+              <field name="Loop" attrib="32854" fieldtype="GLib.SpawnError" value="11" />
+              <field name="MFile" attrib="32854" fieldtype="GLib.SpawnError" value="15" />
+              <field name="NameTooLong" attrib="32854" fieldtype="GLib.SpawnError" value="7" />
+              <field name="NFile" attrib="32854" fieldtype="GLib.SpawnError" value="14" />
+              <field name="NoEnt" attrib="32854" fieldtype="GLib.SpawnError" value="8" />
+              <field name="NoExec" attrib="32854" fieldtype="GLib.SpawnError" value="6" />
+              <field name="NoMem" attrib="32854" fieldtype="GLib.SpawnError" value="9" />
+              <field name="NotDir" attrib="32854" fieldtype="GLib.SpawnError" value="10" />
+              <field name="Perm" attrib="32854" fieldtype="GLib.SpawnError" value="4" />
+              <field name="Read" attrib="32854" fieldtype="GLib.SpawnError" value="1" />
+              <field name="TooBig" attrib="32854" fieldtype="GLib.SpawnError" value="5" />
+              <field name="TxtBusy" attrib="32854" fieldtype="GLib.SpawnError" value="12" />
+            </fields>
+          </class>
+          <class name="SpawnFlags" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="System.FlagsAttribute" />
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="ChildInheritsStdin" attrib="32854" fieldtype="GLib.SpawnFlags" value="32" />
+              <field name="DoNotReapChild" attrib="32854" fieldtype="GLib.SpawnFlags" value="2" />
+              <field name="FileAndArgvZero" attrib="32854" fieldtype="GLib.SpawnFlags" value="64" />
+              <field name="LeaveDescriptorsOpen" attrib="32854" fieldtype="GLib.SpawnFlags" value="1" />
+              <field name="SearchPath" attrib="32854" fieldtype="GLib.SpawnFlags" value="4" />
+              <field name="StderrToDevNull" attrib="32854" fieldtype="GLib.SpawnFlags" value="16" />
+              <field name="StdoutToDevNull" attrib="32854" fieldtype="GLib.SpawnFlags" value="8" />
+            </fields>
           </class>
           <class name="Thread" type="class" base="System.Object" charset="Ansi" layout="Auto">
             <properties>
@@ -1812,9 +2900,9 @@
           </class>
           <class name="TypeFundamentals" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="TypeBoolean" attrib="32854" fieldtype="GLib.TypeFundamentals" value="20" />
@@ -1839,6 +2927,54 @@
               <field name="TypeUInt64" attrib="32854" fieldtype="GLib.TypeFundamentals" value="44" />
               <field name="TypeULong" attrib="32854" fieldtype="GLib.TypeFundamentals" value="36" />
             </fields>
+          </class>
+          <class name="TypeInitializerAttribute" type="class" base="System.Attribute" sealed="true" charset="Ansi" layout="Auto">
+            <attributes>
+              <attribute name="System.AttributeUsageAttribute">
+                <properties>
+                  <property name="AllowMultiple" value="False" />
+                  <property name="Inherited" value="True" />
+                  <property name="ValidOn" value="Class" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.Runtime.InteropServices._Attribute" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Type, System.String)" attrib="2182">
+                <parameters>
+                  <parameter name="type" position="0" attrib="0" type="System.Type" />
+                  <parameter name="method_name" position="1" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="MethodName" attrib="0" ptype="System.String" params="">
+                <methods>
+                  <method name="get_MethodName()" attrib="2182" returntype="System.String">
+                    <parameters />
+                  </method>
+                  <method name="set_MethodName(System.String)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Type" attrib="0" ptype="System.Type" params="">
+                <methods>
+                  <method name="get_Type()" attrib="2182" returntype="System.Type">
+                    <parameters />
+                  </method>
+                  <method name="set_Type(System.Type)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Type" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="UnhandledExceptionArgs" type="class" base="System.UnhandledExceptionEventArgs" charset="Ansi" layout="Auto">
             <constructors>
@@ -1933,14 +3069,19 @@
                   <parameter name="type_name" position="1" attrib="0" type="System.String" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.Double)" attrib="2182">
-                <parameters>
-                  <parameter name="val" position="0" attrib="0" type="System.Double" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(System.String)" attrib="2182">
                 <parameters>
                   <parameter name="val" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Single)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.Single" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Double)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.Double" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(GLib.Object)" attrib="2182">
@@ -1968,12 +3109,6 @@
                   <parameter name="val" position="0" attrib="0" type="System.String[]" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(GLib.Object, System.String)" attrib="2182">
-                <parameters>
-                  <parameter name="obj" position="0" attrib="0" type="GLib.Object" />
-                  <parameter name="prop_name" position="1" attrib="0" type="System.String" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(GLib.Object, System.String, GLib.EnumWrapper)" attrib="2182">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -1989,19 +3124,30 @@
                   <parameter name="wrap" position="2" attrib="0" type="GLib.EnumWrapper" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.Single)" attrib="2182">
+              <constructor name=".ctor(GLib.GInterfaceAdapter)" attrib="2182">
                 <parameters>
-                  <parameter name="val" position="0" attrib="0" type="System.Single" />
+                  <parameter name="val" position="0" attrib="0" type="GLib.GInterfaceAdapter" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(GLib.Object, System.String)" attrib="2182">
+                <parameters>
+                  <parameter name="obj" position="0" attrib="0" type="GLib.Object" />
+                  <parameter name="prop_name" position="1" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Byte)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.Byte" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.SByte)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.SByte" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.Boolean)" attrib="2182">
                 <parameters>
                   <parameter name="val" position="0" attrib="0" type="System.Boolean" />
-                </parameters>
-              </constructor>
-              <constructor name=".ctor(System.Int32)" attrib="2182">
-                <parameters>
-                  <parameter name="val" position="0" attrib="0" type="System.Int32" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(GLib.GType)" attrib="2182">
@@ -2014,9 +3160,9 @@
                   <parameter name="obj" position="0" attrib="0" type="System.Object" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.UInt32)" attrib="2182">
+              <constructor name=".ctor(System.Int32)" attrib="2182">
                 <parameters>
-                  <parameter name="val" position="0" attrib="0" type="System.UInt32" />
+                  <parameter name="val" position="0" attrib="0" type="System.Int32" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.UInt64)" attrib="2182">
@@ -2038,14 +3184,19 @@
                   <parameter name="type_name" position="1" attrib="0" type="System.String" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.UInt16)" attrib="2182">
-                <parameters>
-                  <parameter name="val" position="0" attrib="0" type="System.UInt16" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(System.Int64)" attrib="2182">
                 <parameters>
                   <parameter name="val" position="0" attrib="0" type="System.Int64" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt32)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.UInt32" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.UInt16)" attrib="2182">
+                <parameters>
+                  <parameter name="val" position="0" attrib="0" type="System.UInt16" />
                 </parameters>
               </constructor>
             </constructors>
@@ -2083,11 +3234,11 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
               <interface name="System.Collections.ICollection" />
               <interface name="System.Collections.IEnumerable" />
+              <interface name="System.IDisposable" />
               <interface name="System.ICloneable" />
-              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.UInt32)" attrib="2182">

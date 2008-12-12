@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="pango-sharp" version="2.10.0.0">
+  <assembly name="pango-sharp" version="2.12.0.0">
     <attributes>
+      <attribute name="GLib.IgnoreClassInitializersAttribute" />
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
           <property name="KeyFile" value="gtk-sharp.snk" />
@@ -25,9 +26,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Center" attrib="32854" fieldtype="Pango.Alignment" value="1" />
@@ -37,7 +38,10 @@
           </class>
           <class name="Analysis" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
             <fields>
+              <field name="Flags" attrib="6" fieldtype="System.Byte" />
+              <field name="Gravity" attrib="6" fieldtype="System.Byte" />
               <field name="Level" attrib="6" fieldtype="System.Byte" />
+              <field name="Script" attrib="6" fieldtype="System.Byte" />
               <field name="Zero" attrib="22" fieldtype="Pango.Analysis" />
             </fields>
             <properties>
@@ -187,8 +191,8 @@
           </class>
           <class name="AttrBackground" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Color)" attrib="2182">
@@ -246,8 +250,8 @@
           </class>
           <class name="AttrFallback" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Boolean)" attrib="2182">
@@ -268,8 +272,8 @@
           </class>
           <class name="AttrFamily" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.String)" attrib="2182">
@@ -323,8 +327,8 @@
           </class>
           <class name="AttrFontDesc" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.FontDescription)" attrib="2182">
@@ -345,8 +349,8 @@
           </class>
           <class name="AttrForeground" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Color)" attrib="2182">
@@ -372,10 +376,54 @@
               </property>
             </properties>
           </class>
+          <class name="AttrGravity" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.Gravity)" attrib="2182">
+                <parameters>
+                  <parameter name="gravity" position="0" attrib="0" type="Pango.Gravity" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Gravity" attrib="0" ptype="Pango.Gravity" params="">
+                <methods>
+                  <method name="get_Gravity()" attrib="2182" returntype="Pango.Gravity">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
+          <class name="AttrGravityHint" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Pango.GravityHint)" attrib="2182">
+                <parameters>
+                  <parameter name="hint" position="0" attrib="0" type="Pango.GravityHint" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="GravityHint" attrib="0" ptype="Pango.GravityHint" params="">
+                <methods>
+                  <method name="get_GravityHint()" attrib="2182" returntype="Pango.GravityHint">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+            </properties>
+          </class>
           <class name="Attribute" type="class" base="System.Object" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <properties>
               <property name="EndIndex" attrib="0" ptype="System.UInt32" params="">
@@ -512,8 +560,8 @@
           </class>
           <class name="AttrLanguage" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Language)" attrib="2182">
@@ -534,8 +582,8 @@
           </class>
           <class name="AttrLetterSpacing" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Int32)" attrib="2182">
@@ -609,11 +657,6 @@
                   <parameter name="attr" position="0" attrib="0" type="Pango.Attribute" />
                 </parameters>
               </method>
-              <method name="Ref(System.IntPtr)" attrib="196" virtual="true" returntype="System.Void">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
               <method name="Ref()" attrib="134" returntype="Pango.AttrList">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -625,11 +668,21 @@
                 </attributes>
                 <parameters />
               </method>
+              <method name="Ref(System.IntPtr)" attrib="196" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="Splice(Pango.AttrList, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="other" position="0" attrib="0" type="Pango.AttrList" />
                   <parameter name="pos" position="1" attrib="0" type="System.Int32" />
                   <parameter name="len" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="Unref(System.IntPtr)" attrib="196" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </method>
               <method name="Unref()" attrib="134" returntype="System.Void">
@@ -643,17 +696,12 @@
                 </attributes>
                 <parameters />
               </method>
-              <method name="Unref(System.IntPtr)" attrib="196" virtual="true" returntype="System.Void">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
             </methods>
           </class>
           <class name="AttrRise" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Int32)" attrib="2182">
@@ -674,8 +722,8 @@
           </class>
           <class name="AttrScale" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Double)" attrib="2182">
@@ -696,8 +744,8 @@
           </class>
           <class name="AttrShape" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Rectangle, Pango.Rectangle)" attrib="2182">
@@ -726,8 +774,8 @@
           </class>
           <class name="AttrSize" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Int32, System.Boolean)" attrib="2182">
@@ -761,8 +809,8 @@
           </class>
           <class name="AttrStretch" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Stretch)" attrib="2182">
@@ -783,8 +831,8 @@
           </class>
           <class name="AttrStrikethrough" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(System.Boolean)" attrib="2182">
@@ -805,8 +853,8 @@
           </class>
           <class name="AttrStrikethroughColor" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Color)" attrib="2182">
@@ -834,8 +882,8 @@
           </class>
           <class name="AttrStyle" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Style)" attrib="2182">
@@ -863,9 +911,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="AbsoluteSize" attrib="32854" fieldtype="Pango.AttrType" value="20" />
@@ -874,6 +922,8 @@
               <field name="Family" attrib="32854" fieldtype="Pango.AttrType" value="2" />
               <field name="FontDesc" attrib="32854" fieldtype="Pango.AttrType" value="8" />
               <field name="Foreground" attrib="32854" fieldtype="Pango.AttrType" value="9" />
+              <field name="Gravity" attrib="32854" fieldtype="Pango.AttrType" value="21" />
+              <field name="GravityHint" attrib="32854" fieldtype="Pango.AttrType" value="22" />
               <field name="Invalid" attrib="32854" fieldtype="Pango.AttrType" value="0" />
               <field name="Language" attrib="32854" fieldtype="Pango.AttrType" value="1" />
               <field name="LetterSpacing" attrib="32854" fieldtype="Pango.AttrType" value="17" />
@@ -893,8 +943,8 @@
           </class>
           <class name="AttrUnderline" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Underline)" attrib="2182">
@@ -915,8 +965,8 @@
           </class>
           <class name="AttrUnderlineColor" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Color)" attrib="2182">
@@ -944,8 +994,8 @@
           </class>
           <class name="AttrVariant" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Variant)" attrib="2182">
@@ -966,8 +1016,8 @@
           </class>
           <class name="AttrWeight" type="class" base="Pango.Attribute" charset="Ansi" layout="Auto">
             <interfaces>
-              <interface name="GLib.IWrapper" />
               <interface name="System.IDisposable" />
+              <interface name="GLib.IWrapper" />
             </interfaces>
             <constructors>
               <constructor name=".ctor(Pango.Weight)" attrib="2182">
@@ -998,15 +1048,36 @@
                   <parameter name="context" position="0" attrib="0" type="Pango.Context" />
                 </parameters>
               </method>
+              <method name="ContextGetShapeRenderer(Pango.Context, System.IntPtr)" attrib="150" static="true" returntype="Pango.CairoShapeRendererFunc">
+                <parameters>
+                  <parameter name="context" position="0" attrib="0" type="Pango.Context" />
+                  <parameter name="data" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
               <method name="ContextSetResolution(Pango.Context, System.Double)" attrib="150" static="true" returntype="System.Void">
                 <parameters>
                   <parameter name="context" position="0" attrib="0" type="Pango.Context" />
                   <parameter name="dpi" position="1" attrib="0" type="System.Double" />
                 </parameters>
               </method>
+              <method name="ContextSetShapeRenderer(Pango.Context, Pango.CairoShapeRendererFunc)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="context" position="0" attrib="0" type="Pango.Context" />
+                  <parameter name="func" position="1" attrib="0" type="Pango.CairoShapeRendererFunc" />
+                </parameters>
+              </method>
               <method name="CreateLayout(Cairo.Context)" attrib="150" static="true" returntype="Pango.Layout">
                 <parameters>
                   <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                </parameters>
+              </method>
+              <method name="ErrorUnderlinePath(Cairo.Context, System.Double, System.Double, System.Double, System.Double)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="x" position="1" attrib="0" type="System.Double" />
+                  <parameter name="y" position="2" attrib="0" type="System.Double" />
+                  <parameter name="width" position="3" attrib="0" type="System.Double" />
+                  <parameter name="height" position="4" attrib="0" type="System.Double" />
                 </parameters>
               </method>
               <method name="GlyphStringPath(Cairo.Context, Pango.Font, Pango.GlyphString)" attrib="150" static="true" returntype="System.Void">
@@ -1026,6 +1097,15 @@
                 <parameters>
                   <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
                   <parameter name="layout" position="1" attrib="0" type="Pango.Layout" />
+                </parameters>
+              </method>
+              <method name="ShowErrorUnderline(Cairo.Context, System.Double, System.Double, System.Double, System.Double)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="x" position="1" attrib="0" type="System.Double" />
+                  <parameter name="y" position="2" attrib="0" type="System.Double" />
+                  <parameter name="width" position="3" attrib="0" type="System.Double" />
+                  <parameter name="height" position="4" attrib="0" type="System.Double" />
                 </parameters>
               </method>
               <method name="ShowGlyphString(Cairo.Context, Pango.Font, Pango.GlyphString)" attrib="150" static="true" returntype="System.Void">
@@ -1057,6 +1137,43 @@
                 <parameters>
                   <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
                   <parameter name="layout" position="1" attrib="0" type="Pango.Layout" />
+                </parameters>
+              </method>
+            </methods>
+          </class>
+          <class name="CairoShapeRendererFunc" type="delegate" base="System.MulticastDelegate" sealed="true" serializable="true" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="System.ICloneable" />
+              <interface name="System.Runtime.Serialization.ISerializable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.Object, System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="object" position="0" attrib="0" type="System.Object" />
+                  <parameter name="method" position="1" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <methods>
+              <method name="BeginInvoke(Cairo.Context, Pango.Attribute, System.Boolean, System.AsyncCallback, System.Object)" attrib="454" virtual="true" returntype="System.IAsyncResult">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="attr" position="1" attrib="0" type="Pango.Attribute" />
+                  <parameter name="do_path" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="callback" position="3" attrib="0" type="System.AsyncCallback" />
+                  <parameter name="object" position="4" attrib="0" type="System.Object" />
+                </parameters>
+              </method>
+              <method name="EndInvoke(System.IAsyncResult)" attrib="454" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="result" position="0" attrib="0" type="System.IAsyncResult" />
+                </parameters>
+              </method>
+              <method name="Invoke(Cairo.Context, Pango.Attribute, System.Boolean)" attrib="454" virtual="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="cr" position="0" attrib="0" type="Cairo.Context" />
+                  <parameter name="attr" position="1" attrib="0" type="Pango.Attribute" />
+                  <parameter name="do_path" position="2" attrib="0" type="System.Boolean" />
                 </parameters>
               </method>
             </methods>
@@ -1098,6 +1215,9 @@
                 <parameters>
                   <parameter name="spec" position="0" attrib="0" type="System.String" />
                 </parameters>
+              </method>
+              <method name="ToString()" attrib="198" virtual="true" returntype="System.String">
+                <parameters />
               </method>
             </methods>
           </class>
@@ -1142,6 +1262,18 @@
                   </method>
                 </methods>
               </property>
+              <property name="BaseGravity" attrib="0" ptype="Pango.Gravity" params="">
+                <methods>
+                  <method name="get_BaseGravity()" attrib="2182" returntype="Pango.Gravity">
+                    <parameters />
+                  </method>
+                  <method name="set_BaseGravity(Pango.Gravity)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Gravity" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="Families" attrib="0" ptype="Pango.FontFamily[]" params="">
                 <methods>
                   <method name="get_Families()" attrib="2182" returntype="Pango.FontFamily[]">
@@ -1165,6 +1297,25 @@
                 <methods>
                   <method name="get_FontMap()" attrib="2182" returntype="Pango.FontMap">
                     <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Gravity" attrib="0" ptype="Pango.Gravity" params="">
+                <methods>
+                  <method name="get_Gravity()" attrib="2182" returntype="Pango.Gravity">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="GravityHint" attrib="0" ptype="Pango.GravityHint" params="">
+                <methods>
+                  <method name="get_GravityHint()" attrib="2182" returntype="Pango.GravityHint">
+                    <parameters />
+                  </method>
+                  <method name="set_GravityHint(Pango.GravityHint)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.GravityHint" />
+                    </parameters>
                   </method>
                 </methods>
               </property>
@@ -1322,9 +1473,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Approximate" attrib="32854" fieldtype="Pango.CoverageLevel" value="2" />
@@ -1342,9 +1493,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Ltr" attrib="32854" fieldtype="Pango.Direction" value="0" />
@@ -1365,9 +1516,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="End" attrib="32854" fieldtype="Pango.EllipsizeMode" value="3" />
@@ -1450,6 +1601,9 @@
               <method name="Describe()" attrib="134" returntype="Pango.FontDescription">
                 <parameters />
               </method>
+              <method name="DescribeWithAbsoluteSize()" attrib="134" returntype="Pango.FontDescription">
+                <parameters />
+              </method>
               <method name="FindShaper(Pango.Language, System.UInt32)" attrib="134" returntype="Pango.EngineShape">
                 <parameters>
                   <parameter name="language" position="0" attrib="0" type="Pango.Language" />
@@ -1517,6 +1671,18 @@
                   <method name="set_FamilyStatic(System.String)" attrib="2182" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="System.String" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Gravity" attrib="0" ptype="Pango.Gravity" params="">
+                <methods>
+                  <method name="get_Gravity()" attrib="2182" returntype="Pango.Gravity">
+                    <parameters />
+                  </method>
+                  <method name="set_Gravity(Pango.Gravity)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Gravity" />
                     </parameters>
                   </method>
                 </methods>
@@ -1717,6 +1883,13 @@
                   </method>
                 </methods>
               </property>
+              <property name="IsSynthesized" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsSynthesized()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
             </properties>
             <methods>
               <method name="Describe()" attrib="134" returntype="Pango.FontDescription">
@@ -1887,12 +2060,13 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Family" attrib="32854" fieldtype="Pango.FontMask" value="1" />
+              <field name="Gravity" attrib="32854" fieldtype="Pango.FontMask" value="64" />
               <field name="Size" attrib="32854" fieldtype="Pango.FontMask" value="32" />
               <field name="Stretch" attrib="32854" fieldtype="Pango.FontMask" value="16" />
               <field name="Style" attrib="32854" fieldtype="Pango.FontMask" value="2" />
@@ -2111,6 +2285,12 @@
               </constructor>
             </constructors>
             <methods>
+              <method name="ExtentsToPixels(Pango.Rectangle, Pango.Rectangle)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="ink_rect" position="0" attrib="0" type="Pango.Rectangle" />
+                  <parameter name="logical_rect" position="1" attrib="0" type="Pango.Rectangle" />
+                </parameters>
+              </method>
               <method name="FindBaseDir(System.String)" attrib="150" static="true" returntype="Pango.Direction">
                 <parameters>
                   <parameter name="text" position="0" attrib="0" type="System.String" />
@@ -2132,6 +2312,23 @@
                   <parameter name="attrs_len" position="4" attrib="0" type="System.Int32" />
                 </parameters>
               </method>
+              <method name="GravityGetForMatrix(Pango.Matrix)" attrib="150" static="true" returntype="Pango.Gravity">
+                <parameters>
+                  <parameter name="matrix" position="0" attrib="0" type="Pango.Matrix" />
+                </parameters>
+              </method>
+              <method name="GravityGetForScript(Pango.Script, Pango.Gravity, Pango.GravityHint)" attrib="150" static="true" returntype="Pango.Gravity">
+                <parameters>
+                  <parameter name="script" position="0" attrib="0" type="Pango.Script" />
+                  <parameter name="base_gravity" position="1" attrib="0" type="Pango.Gravity" />
+                  <parameter name="hint" position="2" attrib="0" type="Pango.GravityHint" />
+                </parameters>
+              </method>
+              <method name="GravityToRotation(Pango.Gravity)" attrib="150" static="true" returntype="System.Double">
+                <parameters>
+                  <parameter name="gravity" position="0" attrib="0" type="Pango.Gravity" />
+                </parameters>
+              </method>
               <method name="IsZeroWidth(System.Char)" attrib="150" static="true" returntype="System.Boolean">
                 <parameters>
                   <parameter name="ch" position="0" attrib="0" type="System.Char" />
@@ -2146,6 +2343,15 @@
                   <parameter name="length" position="4" attrib="0" type="System.Int32" />
                   <parameter name="attrs" position="5" attrib="0" type="Pango.AttrList" />
                   <parameter name="cached_iter" position="6" attrib="0" type="Pango.AttrIterator" />
+                </parameters>
+              </method>
+              <method name="ParseEnum(GLib.GType, System.String, out System.Int32&amp;, System.Boolean, System.String)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="type" position="0" attrib="0" type="GLib.GType" />
+                  <parameter name="str" position="1" attrib="0" type="System.String" />
+                  <parameter name="value" position="2" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="warn" position="3" attrib="0" type="System.Boolean" />
+                  <parameter name="possible_values" position="4" attrib="0" type="System.String" />
                 </parameters>
               </method>
               <method name="ParseMarkup(System.String, System.Char, out Pango.AttrList&amp;, out System.String&amp;, out System.Char&amp;)" attrib="150" static="true" returntype="System.Boolean">
@@ -2185,6 +2391,18 @@
                   <parameter name="warn" position="2" attrib="0" type="System.Boolean" />
                 </parameters>
               </method>
+              <method name="QuantizeLineGeometry(out System.Int32&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="thickness" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="position" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="ScanInt(System.String&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="pos" position="0" attrib="0" type="System.String&amp;" direction="ref" />
+                  <parameter name="out_param" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
               <method name="ScanInt(System.String, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
                 <attributes>
                   <attribute name="System.ObsoleteAttribute">
@@ -2196,12 +2414,6 @@
                 </attributes>
                 <parameters>
                   <parameter name="pos" position="0" attrib="0" type="System.String" />
-                  <parameter name="out_param" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
-                </parameters>
-              </method>
-              <method name="ScanInt(System.String&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
-                <parameters>
-                  <parameter name="pos" position="0" attrib="0" type="System.String&amp;" direction="ref" />
                   <parameter name="out_param" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
                 </parameters>
               </method>
@@ -2234,6 +2446,16 @@
                 <parameters>
                   <parameter name="ch" position="0" attrib="0" type="System.Char" />
                 </parameters>
+              </method>
+              <method name="VersionCheck(System.Int32, System.Int32, System.Int32)" attrib="150" static="true" returntype="System.String">
+                <parameters>
+                  <parameter name="required_major" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="required_minor" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="required_micro" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="VersionString()" attrib="150" static="true" returntype="System.String">
+                <parameters />
               </method>
             </methods>
           </class>
@@ -2413,6 +2635,13 @@
                   </method>
                 </methods>
               </property>
+              <property name="Width" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_Width()" attrib="2182" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
             </properties>
             <methods>
               <method name="Copy()" attrib="134" returntype="Pango.GlyphString">
@@ -2513,6 +2742,46 @@
                 </parameters>
               </method>
             </methods>
+          </class>
+          <class name="Gravity" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.GravityGType" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Auto" attrib="32854" fieldtype="Pango.Gravity" value="4" />
+              <field name="East" attrib="32854" fieldtype="Pango.Gravity" value="1" />
+              <field name="North" attrib="32854" fieldtype="Pango.Gravity" value="2" />
+              <field name="South" attrib="32854" fieldtype="Pango.Gravity" value="0" />
+              <field name="West" attrib="32854" fieldtype="Pango.Gravity" value="3" />
+            </fields>
+          </class>
+          <class name="GravityHint" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
+            <attributes>
+              <attribute name="GLib.GTypeAttribute">
+                <properties>
+                  <property name="WrapperType" value="Pango.GravityHintGType" />
+                </properties>
+              </attribute>
+            </attributes>
+            <interfaces>
+              <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
+            </interfaces>
+            <fields>
+              <field name="Line" attrib="32854" fieldtype="Pango.GravityHint" value="2" />
+              <field name="Natural" attrib="32854" fieldtype="Pango.GravityHint" value="0" />
+              <field name="Strong" attrib="32854" fieldtype="Pango.GravityHint" value="1" />
+            </fields>
           </class>
           <class name="Item" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
@@ -2652,6 +2921,13 @@
               </constructor>
             </constructors>
             <properties>
+              <property name="Default" attrib="0" ptype="Pango.Language" params="">
+                <methods>
+                  <method name="get_Default()" attrib="2198" static="true" returntype="Pango.Language">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="GType" attrib="0" ptype="GLib.GType" params="">
                 <methods>
                   <method name="get_GType()" attrib="2198" static="true" returntype="GLib.GType">
@@ -2802,6 +3078,20 @@
                   </method>
                 </methods>
               </property>
+              <property name="IsEllipsized" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsEllipsized()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="IsWrapped" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsWrapped()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="Iter" attrib="0" ptype="Pango.LayoutIter" params="">
                 <methods>
                   <method name="get_Iter()" attrib="2182" returntype="Pango.LayoutIter">
@@ -2831,6 +3121,13 @@
               <property name="Lines" attrib="0" ptype="Pango.LayoutLine[]" params="">
                 <methods>
                   <method name="get_Lines()" attrib="2182" returntype="Pango.LayoutLine[]">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="LinesReadOnly" attrib="0" ptype="Pango.LayoutLine[]" params="">
+                <methods>
+                  <method name="get_LinesReadOnly()" attrib="2182" returntype="Pango.LayoutLine[]">
                     <parameters />
                   </method>
                 </methods>
@@ -2885,6 +3182,13 @@
                   </method>
                 </methods>
               </property>
+              <property name="UnknownGlyphsCount" attrib="0" ptype="System.Int32" params="">
+                <methods>
+                  <method name="get_UnknownGlyphsCount()" attrib="2182" returntype="System.Int32">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="Width" attrib="0" ptype="System.Int32" params="">
                 <methods>
                   <method name="get_Width()" attrib="2182" returntype="System.Int32">
@@ -2931,6 +3235,11 @@
                 </parameters>
               </method>
               <method name="GetLine(System.Int32)" attrib="134" returntype="Pango.LayoutLine">
+                <parameters>
+                  <parameter name="line" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="GetLineReadonly(System.Int32)" attrib="134" returntype="Pango.LayoutLine">
                 <parameters>
                   <parameter name="line" position="0" attrib="0" type="System.Int32" />
                 </parameters>
@@ -3044,9 +3353,23 @@
                   </method>
                 </methods>
               </property>
+              <property name="LineReadonly" attrib="0" ptype="Pango.LayoutLine" params="">
+                <methods>
+                  <method name="get_LineReadonly()" attrib="2182" returntype="Pango.LayoutLine">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="Run" attrib="0" ptype="Pango.LayoutRun" params="">
                 <methods>
                   <method name="get_Run()" attrib="2182" returntype="Pango.LayoutRun">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="RunReadonly" attrib="0" ptype="Pango.LayoutRun" params="">
+                <methods>
+                  <method name="get_RunReadonly()" attrib="2182" returntype="Pango.LayoutRun">
                     <parameters />
                   </method>
                 </methods>
@@ -3353,6 +3676,18 @@
                   </method>
                 </methods>
               </property>
+              <property name="IsExpandableSpace" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_IsExpandableSpace()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                  <method name="set_IsExpandableSpace(System.Boolean)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="IsLineBreak" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_IsLineBreak()" attrib="2182" returntype="System.Boolean">
@@ -3516,6 +3851,28 @@
                 <parameters>
                   <parameter name="scale_x" position="0" attrib="0" type="System.Double" />
                   <parameter name="scale_y" position="1" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
+              <method name="TransformDistance(System.Double&amp;, System.Double&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="dx" position="0" attrib="0" type="System.Double&amp;" direction="ref" />
+                  <parameter name="dy" position="1" attrib="0" type="System.Double&amp;" direction="ref" />
+                </parameters>
+              </method>
+              <method name="TransformPixelRectangle(Pango.Rectangle&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="rect" position="0" attrib="0" type="Pango.Rectangle&amp;" direction="ref" />
+                </parameters>
+              </method>
+              <method name="TransformPoint(System.Double&amp;, System.Double&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="x" position="0" attrib="0" type="System.Double&amp;" direction="ref" />
+                  <parameter name="y" position="1" attrib="0" type="System.Double&amp;" direction="ref" />
+                </parameters>
+              </method>
+              <method name="TransformRectangle(Pango.Rectangle&amp;)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="rect" position="0" attrib="0" type="Pango.Rectangle&amp;" direction="ref" />
                 </parameters>
               </method>
               <method name="Translate(System.Double, System.Double)" attrib="134" returntype="System.Void">
@@ -3683,9 +4040,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Background" attrib="32854" fieldtype="Pango.RenderPart" value="1" />
@@ -3760,13 +4117,14 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Arabic" attrib="32854" fieldtype="Pango.Script" value="2" />
               <field name="Armenian" attrib="32854" fieldtype="Pango.Script" value="3" />
+              <field name="Balinese" attrib="32854" fieldtype="Pango.Script" value="62" />
               <field name="Bengali" attrib="32854" fieldtype="Pango.Script" value="4" />
               <field name="Bopomofo" attrib="32854" fieldtype="Pango.Script" value="5" />
               <field name="Braille" attrib="32854" fieldtype="Pango.Script" value="46" />
@@ -3776,6 +4134,7 @@
               <field name="Cherokee" attrib="32854" fieldtype="Pango.Script" value="6" />
               <field name="Common" attrib="32854" fieldtype="Pango.Script" value="0" />
               <field name="Coptic" attrib="32854" fieldtype="Pango.Script" value="7" />
+              <field name="Cuneiform" attrib="32854" fieldtype="Pango.Script" value="63" />
               <field name="Cypriot" attrib="32854" fieldtype="Pango.Script" value="47" />
               <field name="Cyrillic" attrib="32854" fieldtype="Pango.Script" value="8" />
               <field name="Deseret" attrib="32854" fieldtype="Pango.Script" value="9" />
@@ -3806,11 +4165,14 @@
               <field name="Mongolian" attrib="32854" fieldtype="Pango.Script" value="27" />
               <field name="Myanmar" attrib="32854" fieldtype="Pango.Script" value="28" />
               <field name="NewTaiLue" attrib="32854" fieldtype="Pango.Script" value="54" />
+              <field name="Nko" attrib="32854" fieldtype="Pango.Script" value="66" />
               <field name="Ogham" attrib="32854" fieldtype="Pango.Script" value="29" />
               <field name="OldItalic" attrib="32854" fieldtype="Pango.Script" value="30" />
               <field name="OldPersian" attrib="32854" fieldtype="Pango.Script" value="59" />
               <field name="Oriya" attrib="32854" fieldtype="Pango.Script" value="31" />
               <field name="Osmanya" attrib="32854" fieldtype="Pango.Script" value="49" />
+              <field name="PhagsPa" attrib="32854" fieldtype="Pango.Script" value="65" />
+              <field name="Phoenician" attrib="32854" fieldtype="Pango.Script" value="64" />
               <field name="Runic" attrib="32854" fieldtype="Pango.Script" value="32" />
               <field name="Shavian" attrib="32854" fieldtype="Pango.Script" value="50" />
               <field name="Sinhala" attrib="32854" fieldtype="Pango.Script" value="33" />
@@ -3826,6 +4188,7 @@
               <field name="Tibetan" attrib="32854" fieldtype="Pango.Script" value="39" />
               <field name="Tifinagh" attrib="32854" fieldtype="Pango.Script" value="57" />
               <field name="Ugaritic" attrib="32854" fieldtype="Pango.Script" value="53" />
+              <field name="Unknown" attrib="32854" fieldtype="Pango.Script" value="61" />
               <field name="Yi" attrib="32854" fieldtype="Pango.Script" value="41" />
             </fields>
           </class>
@@ -3882,9 +4245,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Condensed" attrib="32854" fieldtype="Pango.Stretch" value="2" />
@@ -3907,9 +4270,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Italic" attrib="32854" fieldtype="Pango.Style" value="2" />
@@ -3926,9 +4289,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Left" attrib="32854" fieldtype="Pango.TabAlign" value="0" />
@@ -4031,9 +4394,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Double" attrib="32854" fieldtype="Pango.Underline" value="2" />
@@ -4045,9 +4408,19 @@
           </class>
           <class name="Units" type="class" base="System.Object" charset="Ansi" layout="Auto">
             <methods>
+              <method name="FromDouble(System.Double)" attrib="150" static="true" returntype="System.Int32">
+                <parameters>
+                  <parameter name="d" position="0" attrib="0" type="System.Double" />
+                </parameters>
+              </method>
               <method name="FromPixels(System.Int32)" attrib="150" static="true" returntype="System.Int32">
                 <parameters>
                   <parameter name="pixels" position="0" attrib="0" type="System.Int32" />
+                </parameters>
+              </method>
+              <method name="ToDouble(System.Int32)" attrib="150" static="true" returntype="System.Double">
+                <parameters>
+                  <parameter name="i" position="0" attrib="0" type="System.Int32" />
                 </parameters>
               </method>
               <method name="ToPixels(System.Int32)" attrib="150" static="true" returntype="System.Int32">
@@ -4066,9 +4439,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Normal" attrib="32854" fieldtype="Pango.Variant" value="0" />
@@ -4084,9 +4457,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Bold" attrib="32854" fieldtype="Pango.Weight" value="700" />
@@ -4107,9 +4480,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Char" attrib="32854" fieldtype="Pango.WrapMode" value="1" />

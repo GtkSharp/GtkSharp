@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <assemblies>
-  <assembly name="gdk-sharp" version="2.10.0.0">
+  <assembly name="gdk-sharp" version="2.12.0.0">
     <attributes>
+      <attribute name="GLib.IgnoreClassInitializersAttribute" />
       <attribute name="System.Reflection.AssemblyKeyFileAttribute">
         <properties>
           <property name="KeyFile" value="gtk-sharp.snk" />
@@ -127,9 +128,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Ignore" attrib="32854" fieldtype="Gdk.AxisUse" value="0" />
@@ -169,9 +170,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="LsbFirst" attrib="32854" fieldtype="Gdk.ByteOrder" value="0" />
@@ -235,9 +236,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Butt" attrib="32854" fieldtype="Gdk.CapStyle" value="1" />
@@ -627,9 +628,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Rgb" attrib="32854" fieldtype="Gdk.Colorspace" value="0" />
@@ -644,9 +645,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Grab" attrib="32854" fieldtype="Gdk.CrossingMode" value="1" />
@@ -780,9 +781,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Arrow" attrib="32854" fieldtype="Gdk.CursorType" value="2" />
@@ -1181,6 +1182,13 @@
                   </method>
                 </methods>
               </property>
+              <property name="SupportsComposite" attrib="0" ptype="System.Boolean" params="">
+                <methods>
+                  <method name="get_SupportsComposite()" attrib="2182" returntype="System.Boolean">
+                    <parameters />
+                  </method>
+                </methods>
+              </property>
               <property name="SupportsInputShapes" attrib="0" ptype="System.Boolean" params="">
                 <methods>
                   <method name="get_SupportsInputShapes()" attrib="2182" returntype="System.Boolean">
@@ -1404,7 +1412,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="default-display" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -1617,9 +1627,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Ask" attrib="32854" fieldtype="Gdk.DragAction" value="32" />
@@ -1764,9 +1774,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Local" attrib="32854" fieldtype="Gdk.DragProtocol" value="6" />
@@ -2415,6 +2425,11 @@
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </method>
+              <method name="New(System.IntPtr)" attrib="150" static="true" returntype="Gdk.Event">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </method>
             </methods>
           </class>
           <class name="EventButton" type="class" base="Gdk.Event" charset="Ansi" layout="Auto">
@@ -2905,6 +2920,11 @@
                   <parameter name="evnt" position="0" attrib="0" type="Gdk.Event" />
                 </parameters>
               </method>
+              <method name="RequestMotions(Gdk.EventMotion)" attrib="150" static="true" returntype="System.Void">
+                <parameters>
+                  <parameter name="evnt" position="0" attrib="0" type="Gdk.EventMotion" />
+                </parameters>
+              </method>
               <method name="SendClientMessage(Gdk.Event, System.UInt32)" attrib="150" static="true" returntype="System.Boolean">
                 <parameters>
                   <parameter name="evnt" position="0" attrib="0" type="Gdk.Event" />
@@ -2997,9 +3017,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="AllEventsMask" attrib="32854" fieldtype="Gdk.EventMask" value="4194302" />
@@ -3103,17 +3123,42 @@
               </property>
             </properties>
           </class>
-          <class name="EventOwnerChange" type="struct" base="System.ValueType" sealed="true" charset="Ansi" layout="Sequential">
-            <fields>
-              <field name="Owner" attrib="6" fieldtype="System.UInt32" />
-              <field name="Reason" attrib="6" fieldtype="Gdk.OwnerChange" />
-              <field name="SelectionTime" attrib="6" fieldtype="System.UInt32" />
-              <field name="SendEvent" attrib="6" fieldtype="System.SByte" />
-              <field name="Time" attrib="6" fieldtype="System.UInt32" />
-              <field name="Type" attrib="6" fieldtype="Gdk.EventType" />
-              <field name="Zero" attrib="22" fieldtype="Gdk.EventOwnerChange" />
-            </fields>
+          <class name="EventOwnerChange" type="class" base="Gdk.Event" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="handle" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
             <properties>
+              <property name="Owner" attrib="0" ptype="System.UInt32" params="">
+                <methods>
+                  <method name="get_Owner()" attrib="2182" returntype="System.UInt32">
+                    <parameters />
+                  </method>
+                  <method name="set_Owner(System.UInt32)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.UInt32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Reason" attrib="0" ptype="Gdk.OwnerChange" params="">
+                <methods>
+                  <method name="get_Reason()" attrib="2182" returntype="Gdk.OwnerChange">
+                    <parameters />
+                  </method>
+                  <method name="set_Reason(Gdk.OwnerChange)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Gdk.OwnerChange" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="Selection" attrib="0" ptype="Gdk.Atom" params="">
                 <methods>
                   <method name="get_Selection()" attrib="2182" returntype="Gdk.Atom">
@@ -3126,26 +3171,31 @@
                   </method>
                 </methods>
               </property>
-              <property name="Window" attrib="0" ptype="Gdk.Window" params="">
+              <property name="SelectionTime" attrib="0" ptype="System.UInt32" params="">
                 <methods>
-                  <method name="get_Window()" attrib="2182" returntype="Gdk.Window">
+                  <method name="get_SelectionTime()" attrib="2182" returntype="System.UInt32">
                     <parameters />
                   </method>
-                  <method name="set_Window(Gdk.Window)" attrib="2182" returntype="System.Void">
+                  <method name="set_SelectionTime(System.UInt32)" attrib="2182" returntype="System.Void">
                     <parameters>
-                      <parameter name="value" position="0" attrib="0" type="Gdk.Window" />
+                      <parameter name="value" position="0" attrib="0" type="System.UInt32" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="Time" attrib="0" ptype="System.UInt32" params="">
+                <methods>
+                  <method name="get_Time()" attrib="2182" returntype="System.UInt32">
+                    <parameters />
+                  </method>
+                  <method name="set_Time(System.UInt32)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.UInt32" />
                     </parameters>
                   </method>
                 </methods>
               </property>
             </properties>
-            <methods>
-              <method name="New(System.IntPtr)" attrib="150" static="true" returntype="Gdk.EventOwnerChange">
-                <parameters>
-                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
-                </parameters>
-              </method>
-            </methods>
           </class>
           <class name="EventProperty" type="class" base="Gdk.Event" charset="Ansi" layout="Auto">
             <interfaces>
@@ -3366,9 +3416,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="ButtonPress" attrib="32854" fieldtype="Gdk.EventType" value="4" />
@@ -3468,9 +3518,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="All" attrib="32854" fieldtype="Gdk.ExtensionMode" value="1" />
@@ -3487,9 +3537,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="OpaqueStippled" attrib="32854" fieldtype="Gdk.Fill" value="3" />
@@ -3507,9 +3557,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="EvenOddRule" attrib="32854" fieldtype="Gdk.FillRule" value="0" />
@@ -3560,9 +3610,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Continue" attrib="32854" fieldtype="Gdk.FilterReturn" value="0" />
@@ -3690,9 +3740,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Font" attrib="32854" fieldtype="Gdk.FontType" value="0" />
@@ -3708,9 +3758,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="And" attrib="32854" fieldtype="Gdk.Function" value="4" />
@@ -4140,9 +4190,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Background" attrib="32854" fieldtype="Gdk.GCValuesMask" value="2" />
@@ -4453,9 +4503,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="AlreadyGrabbed" attrib="32854" fieldtype="Gdk.GrabStatus" value="1" />
@@ -4474,9 +4524,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Center" attrib="32854" fieldtype="Gdk.Gravity" value="5" />
@@ -4672,9 +4722,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Fastest" attrib="32854" fieldtype="Gdk.ImageType" value="2" />
@@ -4753,9 +4803,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Exception" attrib="32854" fieldtype="Gdk.InputCondition" value="4" />
@@ -4809,9 +4859,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Disabled" attrib="32854" fieldtype="Gdk.InputMode" value="0" />
@@ -4828,9 +4878,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Cursor" attrib="32854" fieldtype="Gdk.InputSource" value="3" />
@@ -4848,9 +4898,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Bilinear" attrib="32854" fieldtype="Gdk.InterpType" value="2" />
@@ -4901,9 +4951,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Bevel" attrib="32854" fieldtype="Gdk.JoinStyle" value="2" />
@@ -4913,9 +4963,9 @@
           </class>
           <class name="Key" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="a" attrib="32854" fieldtype="Gdk.Key" value="97" />
@@ -6372,6 +6422,9 @@
                   <parameter name="display" position="0" attrib="0" type="Gdk.Display" />
                 </parameters>
               </method>
+              <method name="HaveBidiLayouts()" attrib="134" returntype="System.Boolean">
+                <parameters />
+              </method>
               <method name="LookupKey(Gdk.KeymapKey)" attrib="134" returntype="System.UInt32">
                 <parameters>
                   <parameter name="key" position="0" attrib="0" type="Gdk.KeymapKey" />
@@ -6487,9 +6540,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="DoubleDash" attrib="32854" fieldtype="Gdk.LineStyle" value="2" />
@@ -6507,9 +6560,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Button1Mask" attrib="32854" fieldtype="Gdk.ModifierType" value="256" />
@@ -6542,9 +6595,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Ancestor" attrib="32854" fieldtype="Gdk.NotifyType" value="0" />
@@ -6564,9 +6617,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="In" attrib="32854" fieldtype="Gdk.OverlapType" value="0" />
@@ -6583,15 +6636,47 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Close" attrib="32854" fieldtype="Gdk.OwnerChange" value="2" />
               <field name="Destroy" attrib="32854" fieldtype="Gdk.OwnerChange" value="1" />
               <field name="NewOwner" attrib="32854" fieldtype="Gdk.OwnerChange" value="0" />
             </fields>
+          </class>
+          <class name="PangoAttrEmbossColor" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
+            <interfaces>
+              <interface name="GLib.IWrapper" />
+              <interface name="System.IDisposable" />
+            </interfaces>
+            <constructors>
+              <constructor name=".ctor(Gdk.Color)" attrib="2182">
+                <parameters>
+                  <parameter name="color" position="0" attrib="0" type="Gdk.Color" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IntPtr)" attrib="2182">
+                <parameters>
+                  <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
+                </parameters>
+              </constructor>
+            </constructors>
+            <properties>
+              <property name="Color" attrib="0" ptype="Pango.Color" params="">
+                <methods>
+                  <method name="get_Color()" attrib="2182" returntype="Pango.Color">
+                    <parameters />
+                  </method>
+                  <method name="set_Color(Pango.Color)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="Pango.Color" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+            </properties>
           </class>
           <class name="PangoAttrEmbossed" type="class" base="GLib.Opaque" charset="Ansi" layout="Auto">
             <interfaces>
@@ -6896,7 +6981,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="screen" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -6933,24 +7020,28 @@
               <interface name="System.IDisposable" />
             </interfaces>
             <constructors>
-              <constructor name=".ctor(System.Reflection.Assembly, System.String, System.Int32, System.Int32)" attrib="2182">
+              <constructor name=".ctor(System.Byte[], System.Int32, System.Int32)" attrib="2182">
                 <parameters>
-                  <parameter name="assembly" position="0" attrib="0" type="System.Reflection.Assembly" />
-                  <parameter name="resource" position="1" attrib="0" type="System.String" />
-                  <parameter name="width" position="2" attrib="0" type="System.Int32" />
-                  <parameter name="height" position="3" attrib="0" type="System.Int32" />
+                  <parameter name="buffer" position="0" attrib="0" type="System.Byte[]" />
+                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.Byte[], Gdk.Colorspace, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, Gdk.PixbufDestroyNotify)" attrib="2182">
+                <parameters>
+                  <parameter name="data" position="0" attrib="0" type="System.Byte[]" />
+                  <parameter name="colorspace" position="1" attrib="0" type="Gdk.Colorspace" />
+                  <parameter name="has_alpha" position="2" attrib="0" type="System.Boolean" />
+                  <parameter name="bits_per_sample" position="3" attrib="0" type="System.Int32" />
+                  <parameter name="width" position="4" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="5" attrib="0" type="System.Int32" />
+                  <parameter name="rowstride" position="6" attrib="0" type="System.Int32" />
+                  <parameter name="destroy_fn" position="7" attrib="0" type="Gdk.PixbufDestroyNotify" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.Byte[])" attrib="2182">
                 <parameters>
                   <parameter name="buffer" position="0" attrib="0" type="System.Byte[]" />
-                </parameters>
-              </constructor>
-              <constructor name=".ctor(System.IO.Stream, System.Int32, System.Int32)" attrib="2182">
-                <parameters>
-                  <parameter name="stream" position="0" attrib="0" type="System.IO.Stream" />
-                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
-                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.Reflection.Assembly, System.String)" attrib="2182">
@@ -6959,11 +7050,12 @@
                   <parameter name="resource" position="1" attrib="0" type="System.String" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.Byte[], System.Int32, System.Int32)" attrib="2182">
+              <constructor name=".ctor(System.Reflection.Assembly, System.String, System.Int32, System.Int32)" attrib="2182">
                 <parameters>
-                  <parameter name="buffer" position="0" attrib="0" type="System.Byte[]" />
-                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
-                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="assembly" position="0" attrib="0" type="System.Reflection.Assembly" />
+                  <parameter name="resource" position="1" attrib="0" type="System.String" />
+                  <parameter name="width" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="3" attrib="0" type="System.Int32" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.Byte[], System.Boolean)" attrib="2182">
@@ -6979,7 +7071,7 @@
                   <parameter name="copy_pixels" position="2" attrib="0" type="System.Boolean" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.Byte[], Gdk.Colorspace, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, Gdk.PixbufDestroyNotify)" attrib="2182">
+              <constructor name=".ctor(System.Byte[], Gdk.Colorspace, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32)" attrib="2182">
                 <parameters>
                   <parameter name="data" position="0" attrib="0" type="System.Byte[]" />
                   <parameter name="colorspace" position="1" attrib="0" type="Gdk.Colorspace" />
@@ -6988,7 +7080,6 @@
                   <parameter name="width" position="4" attrib="0" type="System.Int32" />
                   <parameter name="height" position="5" attrib="0" type="System.Int32" />
                   <parameter name="rowstride" position="6" attrib="0" type="System.Int32" />
-                  <parameter name="destroy_fn" position="7" attrib="0" type="Gdk.PixbufDestroyNotify" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.Byte[], System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, Gdk.PixbufDestroyNotify)" attrib="2182">
@@ -7002,9 +7093,34 @@
                   <parameter name="destroy_fn" position="6" attrib="0" type="Gdk.PixbufDestroyNotify" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.IO.Stream)" attrib="2182">
+              <constructor name=".ctor(System.Byte[], System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32)" attrib="2182">
+                <parameters>
+                  <parameter name="data" position="0" attrib="0" type="System.Byte[]" />
+                  <parameter name="has_alpha" position="1" attrib="0" type="System.Boolean" />
+                  <parameter name="bits_per_sample" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="width" position="3" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="4" attrib="0" type="System.Int32" />
+                  <parameter name="rowstride" position="5" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IO.Stream, System.Int32, System.Int32)" attrib="2182">
                 <parameters>
                   <parameter name="stream" position="0" attrib="0" type="System.IO.Stream" />
+                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.String)" attrib="2182">
+                <parameters>
+                  <parameter name="filename" position="0" attrib="0" type="System.String" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.String, System.Int32, System.Int32, System.Boolean)" attrib="2182">
+                <parameters>
+                  <parameter name="filename" position="0" attrib="0" type="System.String" />
+                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
+                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
+                  <parameter name="preserve_aspect_ratio" position="3" attrib="0" type="System.Boolean" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(Gdk.Colorspace, System.Boolean, System.Int32, System.Int32, System.Int32)" attrib="2182">
@@ -7014,11 +7130,6 @@
                   <parameter name="bits_per_sample" position="2" attrib="0" type="System.Int32" />
                   <parameter name="width" position="3" attrib="0" type="System.Int32" />
                   <parameter name="height" position="4" attrib="0" type="System.Int32" />
-                </parameters>
-              </constructor>
-              <constructor name=".ctor(System.String)" attrib="2182">
-                <parameters>
-                  <parameter name="filename" position="0" attrib="0" type="System.String" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(GLib.GType)" attrib="2180">
@@ -7039,19 +7150,6 @@
                   <parameter name="raw" position="0" attrib="0" type="System.IntPtr" />
                 </parameters>
               </constructor>
-              <constructor name=".ctor(System.String, System.Int32, System.Int32, System.Boolean)" attrib="2182">
-                <parameters>
-                  <parameter name="filename" position="0" attrib="0" type="System.String" />
-                  <parameter name="width" position="1" attrib="0" type="System.Int32" />
-                  <parameter name="height" position="2" attrib="0" type="System.Int32" />
-                  <parameter name="preserve_aspect_ratio" position="3" attrib="0" type="System.Boolean" />
-                </parameters>
-              </constructor>
-              <constructor name=".ctor(System.String[])" attrib="2182">
-                <parameters>
-                  <parameter name="data" position="0" attrib="0" type="System.String[]" />
-                </parameters>
-              </constructor>
               <constructor name=".ctor(Gdk.Pixbuf, System.Int32, System.Int32, System.Int32, System.Int32)" attrib="2182">
                 <parameters>
                   <parameter name="src_pixbuf" position="0" attrib="0" type="Gdk.Pixbuf" />
@@ -7059,6 +7157,16 @@
                   <parameter name="src_y" position="2" attrib="0" type="System.Int32" />
                   <parameter name="width" position="3" attrib="0" type="System.Int32" />
                   <parameter name="height" position="4" attrib="0" type="System.Int32" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.IO.Stream)" attrib="2182">
+                <parameters>
+                  <parameter name="stream" position="0" attrib="0" type="System.IO.Stream" />
+                </parameters>
+              </constructor>
+              <constructor name=".ctor(System.String[])" attrib="2182">
+                <parameters>
+                  <parameter name="data" position="0" attrib="0" type="System.String[]" />
                 </parameters>
               </constructor>
               <constructor name=".ctor(System.String, System.Int32, System.Int32)" attrib="2182">
@@ -7081,7 +7189,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="bits-per-sample" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7095,7 +7205,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="colorspace" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7123,7 +7235,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="has-alpha" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7137,7 +7251,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="height" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7151,7 +7267,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="n-channels" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7172,7 +7290,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="rowstride" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7186,7 +7306,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="width" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -7205,6 +7327,9 @@
                   <parameter name="g" position="2" attrib="0" type="System.Byte" />
                   <parameter name="b" position="3" attrib="0" type="System.Byte" />
                 </parameters>
+              </method>
+              <method name="ApplyEmbeddedOrientation()" attrib="134" returntype="Gdk.Pixbuf">
+                <parameters />
               </method>
               <method name="Clone()" attrib="134" returntype="System.Object">
                 <parameters />
@@ -7460,18 +7585,18 @@
                   <parameter name="type" position="0" attrib="0" type="System.String" />
                 </parameters>
               </method>
-              <method name="SaveToCallback(Gdk.PixbufSaveFunc, System.String)" attrib="134" returntype="System.Void">
-                <parameters>
-                  <parameter name="save_func" position="0" attrib="0" type="Gdk.PixbufSaveFunc" />
-                  <parameter name="type" position="1" attrib="0" type="System.String" />
-                </parameters>
-              </method>
               <method name="SaveToCallback(Gdk.PixbufSaveFunc, System.String, System.String[], System.String[])" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="save_func" position="0" attrib="0" type="Gdk.PixbufSaveFunc" />
                   <parameter name="type" position="1" attrib="0" type="System.String" />
                   <parameter name="option_keys" position="2" attrib="0" type="System.String[]" />
                   <parameter name="option_values" position="3" attrib="0" type="System.String[]" />
+                </parameters>
+              </method>
+              <method name="SaveToCallback(Gdk.PixbufSaveFunc, System.String)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="save_func" position="0" attrib="0" type="Gdk.PixbufSaveFunc" />
+                  <parameter name="type" position="1" attrib="0" type="System.String" />
                 </parameters>
               </method>
               <method name="Savev(System.String, System.String, System.String[], System.String[])" attrib="134" returntype="System.Boolean">
@@ -7525,9 +7650,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Bilevel" attrib="32854" fieldtype="Gdk.PixbufAlphaMode" value="0" />
@@ -7827,9 +7952,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="BadOption" attrib="32854" fieldtype="Gdk.PixbufError" value="2" />
@@ -8039,9 +8164,9 @@
           </class>
           <class name="PixbufFrameAction" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Dispose" attrib="32854" fieldtype="Gdk.PixbufFrameAction" value="1" />
@@ -8386,9 +8511,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Clockwise" attrib="32854" fieldtype="Gdk.PixbufRotation" value="270" />
@@ -8522,9 +8647,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Const" attrib="32854" fieldtype="Gdk.PixdataDumpType" value="1024" />
@@ -8542,9 +8667,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="ColorTypeMask" attrib="32854" fieldtype="Gdk.PixdataType" value="255" />
@@ -8904,9 +9029,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Delete" attrib="32854" fieldtype="Gdk.PropertyState" value="1" />
@@ -8922,9 +9047,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Append" attrib="32854" fieldtype="Gdk.PropMode" value="2" />
@@ -9474,9 +9599,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Max" attrib="32854" fieldtype="Gdk.RgbDither" value="2" />
@@ -9576,7 +9701,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="font-options" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -9637,7 +9764,9 @@
                 <attributes>
                   <attribute name="GLib.PropertyAttribute">
                     <properties>
+                      <property name="Blurb" null="true" />
                       <property name="Name" value="resolution" />
+                      <property name="Nickname" null="true" />
                     </properties>
                   </attribute>
                 </attributes>
@@ -9817,9 +9946,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Down" attrib="32854" fieldtype="Gdk.ScrollDirection" value="1" />
@@ -9922,9 +10051,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Changed" attrib="32854" fieldtype="Gdk.SettingAction" value="1" />
@@ -10115,6 +10244,31 @@
                   <parameter name="command_line" position="1" attrib="0" type="System.String" />
                 </parameters>
               </method>
+              <method name="OnScreen(Gdk.Screen, System.String, System.String[], System.String[], GLib.SpawnFlags, GLib.SpawnChildSetupFunc, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="screen" position="0" attrib="0" type="Gdk.Screen" />
+                  <parameter name="working_directory" position="1" attrib="0" type="System.String" />
+                  <parameter name="argv" position="2" attrib="0" type="System.String[]" />
+                  <parameter name="envp" position="3" attrib="0" type="System.String[]" />
+                  <parameter name="flags" position="4" attrib="0" type="GLib.SpawnFlags" />
+                  <parameter name="child_setup" position="5" attrib="0" type="GLib.SpawnChildSetupFunc" />
+                  <parameter name="child_pid" position="6" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
+              <method name="OnScreenWithPipes(Gdk.Screen, System.String, System.String[], System.String[], GLib.SpawnFlags, GLib.SpawnChildSetupFunc, out System.Int32&amp;, out System.Int32&amp;, out System.Int32&amp;, out System.Int32&amp;)" attrib="150" static="true" returntype="System.Boolean">
+                <parameters>
+                  <parameter name="screen" position="0" attrib="0" type="Gdk.Screen" />
+                  <parameter name="working_directory" position="1" attrib="0" type="System.String" />
+                  <parameter name="argv" position="2" attrib="0" type="System.String[]" />
+                  <parameter name="envp" position="3" attrib="0" type="System.String[]" />
+                  <parameter name="flags" position="4" attrib="0" type="GLib.SpawnFlags" />
+                  <parameter name="child_setup" position="5" attrib="0" type="GLib.SpawnChildSetupFunc" />
+                  <parameter name="child_pid" position="6" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="standard_input" position="7" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="standard_output" position="8" attrib="2" type="System.Int32&amp;" direction="out" />
+                  <parameter name="standard_error" position="9" attrib="2" type="System.Int32&amp;" direction="out" />
+                </parameters>
+              </method>
             </methods>
           </class>
           <class name="Status" type="enum" base="System.Enum" sealed="true" serializable="true" charset="Ansi" layout="Auto" enumtype="System.Reflection.MonoField">
@@ -10126,9 +10280,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Error" attrib="32854" fieldtype="Gdk.Status" value="-1" />
@@ -10147,9 +10301,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="ClipByChildren" attrib="32854" fieldtype="Gdk.SubwindowMode" value="0" />
@@ -10189,6 +10343,19 @@
               </constructor>
             </constructors>
             <methods>
+              <method name="AddIdle(System.Int32, GLib.GSourceFunc)" attrib="150" static="true" returntype="System.UInt32">
+                <parameters>
+                  <parameter name="priority" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="function" position="1" attrib="0" type="GLib.GSourceFunc" />
+                </parameters>
+              </method>
+              <method name="AddTimeout(System.Int32, System.UInt32, GLib.GSourceFunc)" attrib="150" static="true" returntype="System.UInt32">
+                <parameters>
+                  <parameter name="priority" position="0" attrib="0" type="System.Int32" />
+                  <parameter name="interval" position="1" attrib="0" type="System.UInt32" />
+                  <parameter name="function" position="2" attrib="0" type="GLib.GSourceFunc" />
+                </parameters>
+              </method>
               <method name="Enter()" attrib="150" static="true" returntype="System.Void">
                 <parameters />
               </method>
@@ -10241,9 +10408,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="FullyObscured" attrib="32854" fieldtype="Gdk.VisibilityState" value="2" />
@@ -10351,9 +10518,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="DirectColor" attrib="32854" fieldtype="Gdk.VisualType" value="5" />
@@ -10426,6 +10593,15 @@
                 <methods>
                   <method name="get_Children()" attrib="2182" returntype="Gdk.Window[]">
                     <parameters />
+                  </method>
+                </methods>
+              </property>
+              <property name="Composited" attrib="0" ptype="System.Boolean" params="System.Boolean">
+                <methods>
+                  <method name="set_Composited(System.Boolean)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
                   </method>
                 </methods>
               </property>
@@ -10555,6 +10731,15 @@
                   </method>
                 </methods>
               </property>
+              <property name="Opacity" attrib="0" ptype="System.Double" params="System.Double">
+                <methods>
+                  <method name="set_Opacity(System.Double)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.Double" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
               <property name="OverrideRedirect" attrib="0" ptype="System.Boolean" params="System.Boolean">
                 <methods>
                   <method name="set_OverrideRedirect(System.Boolean)" attrib="2182" returntype="System.Void">
@@ -10594,6 +10779,15 @@
                   <method name="set_SkipTaskbarHint(System.Boolean)" attrib="2182" returntype="System.Void">
                     <parameters>
                       <parameter name="value" position="0" attrib="0" type="System.Boolean" />
+                    </parameters>
+                  </method>
+                </methods>
+              </property>
+              <property name="StartupId" attrib="0" ptype="System.String" params="System.String">
+                <methods>
+                  <method name="set_StartupId(System.String)" attrib="2182" returntype="System.Void">
+                    <parameters>
+                      <parameter name="value" position="0" attrib="0" type="System.String" />
                     </parameters>
                   </method>
                 </methods>
@@ -10701,6 +10895,9 @@
                   <parameter name="win_x" position="0" attrib="2" type="System.Int32&amp;" direction="out" />
                   <parameter name="win_y" position="1" attrib="2" type="System.Int32&amp;" direction="out" />
                 </parameters>
+              </method>
+              <method name="Beep()" attrib="134" returntype="System.Void">
+                <parameters />
               </method>
               <method name="BeginMoveDrag(System.Int32, System.Int32, System.Int32, System.UInt32)" attrib="134" returntype="System.Void">
                 <parameters>
@@ -10935,17 +11132,17 @@
                   <parameter name="dy" position="2" attrib="0" type="System.Int32" />
                 </parameters>
               </method>
+              <method name="MoveResize(Gdk.Rectangle)" attrib="134" returntype="System.Void">
+                <parameters>
+                  <parameter name="rect" position="0" attrib="0" type="Gdk.Rectangle" />
+                </parameters>
+              </method>
               <method name="MoveResize(System.Int32, System.Int32, System.Int32, System.Int32)" attrib="134" returntype="System.Void">
                 <parameters>
                   <parameter name="x" position="0" attrib="0" type="System.Int32" />
                   <parameter name="y" position="1" attrib="0" type="System.Int32" />
                   <parameter name="width" position="2" attrib="0" type="System.Int32" />
                   <parameter name="height" position="3" attrib="0" type="System.Int32" />
-                </parameters>
-              </method>
-              <method name="MoveResize(Gdk.Rectangle)" attrib="134" returntype="System.Void">
-                <parameters>
-                  <parameter name="rect" position="0" attrib="0" type="Gdk.Rectangle" />
                 </parameters>
               </method>
               <method name="ProcessAllUpdates()" attrib="150" static="true" returntype="System.Void">
@@ -11091,6 +11288,7 @@
               <field name="Height" attrib="6" fieldtype="System.Int32" />
               <field name="OverrideRedirect" attrib="6" fieldtype="System.Boolean" />
               <field name="Title" attrib="6" fieldtype="System.String" />
+              <field name="TypeHint" attrib="6" fieldtype="Gdk.WindowTypeHint" />
               <field name="Wclass" attrib="6" fieldtype="Gdk.WindowClass" />
               <field name="Width" attrib="6" fieldtype="System.Int32" />
               <field name="WindowType" attrib="6" fieldtype="Gdk.WindowType" />
@@ -11228,15 +11426,16 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Colormap" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="32" />
               <field name="Cursor" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="16" />
               <field name="Noredir" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="256" />
               <field name="Title" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="2" />
+              <field name="TypeHint" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="512" />
               <field name="Visual" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="64" />
               <field name="Wmclass" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="128" />
               <field name="X" attrib="32854" fieldtype="Gdk.WindowAttributesType" value="4" />
@@ -11252,9 +11451,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="InputOnly" attrib="32854" fieldtype="Gdk.WindowClass" value="1" />
@@ -11270,9 +11469,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="East" attrib="32854" fieldtype="Gdk.WindowEdge" value="4" />
@@ -11295,9 +11494,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Aspect" attrib="32854" fieldtype="Gdk.WindowHints" value="16" />
@@ -11321,9 +11520,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Above" attrib="32854" fieldtype="Gdk.WindowState" value="32" />
@@ -11344,9 +11543,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Child" attrib="32854" fieldtype="Gdk.WindowType" value="2" />
@@ -11366,9 +11565,9 @@
               </attribute>
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="Combo" attrib="32854" fieldtype="Gdk.WindowTypeHint" value="12" />
@@ -11392,9 +11591,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="All" attrib="32854" fieldtype="Gdk.WMDecoration" value="1" />
@@ -11411,9 +11610,9 @@
               <attribute name="System.FlagsAttribute" />
             </attributes>
             <interfaces>
-              <interface name="System.IComparable" />
-              <interface name="System.IConvertible" />
               <interface name="System.IFormattable" />
+              <interface name="System.IConvertible" />
+              <interface name="System.IComparable" />
             </interfaces>
             <fields>
               <field name="All" attrib="32854" fieldtype="Gdk.WMFunction" value="1" />
