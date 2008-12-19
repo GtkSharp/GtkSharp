@@ -50,6 +50,13 @@ namespace GLib {
 		}
 	}
 
+	struct GClosure {
+		long fields;
+		IntPtr marshaler;
+		IntPtr data;
+		IntPtr notifiers;
+	}
+
 	internal delegate void ClosureInvokedHandler (object o, ClosureInvokedArgs args);
 
 	internal class SignalClosure : IDisposable {
@@ -66,7 +73,9 @@ namespace GLib {
 
 		public SignalClosure (IntPtr obj, string signal_name, System.Type args_type)
 		{
-			raw_closure = glibsharp_closure_new (Marshaler, Notify, IntPtr.Zero);
+			raw_closure = g_closure_new_simple (Marshal.SizeOf (typeof (GClosure)), IntPtr.Zero);
+			g_closure_set_marshal (raw_closure, Marshaler);
+			g_closure_add_finalize_notifier (raw_closure, IntPtr.Zero, Notify);
 			closures [raw_closure] = this;
 			handle = obj;
 			name = signal_name;
@@ -193,11 +202,17 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr glibsharp_closure_new (ClosureMarshal marshaler, ClosureNotify notify, IntPtr gch);
-
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr user_data, ClosureNotify notify);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_closure_new_simple (int closure_size, IntPtr dummy);
+  
+  		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_closure_set_marshal (IntPtr closure, ClosureMarshal marshaler);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_closure_add_finalize_notifier (IntPtr closure, IntPtr dummy, ClosureNotify notify);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_connect_closure (IntPtr obj, IntPtr name, IntPtr closure, bool is_after);

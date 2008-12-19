@@ -35,8 +35,6 @@ namespace GLib {
 		protected System.Type element_type = null;
 
 		abstract internal IntPtr NthData (uint index);
-		abstract internal IntPtr GetData (IntPtr current);
-		abstract internal IntPtr Next (IntPtr current);
 		abstract internal int Length (IntPtr list);
 		abstract internal void Free (IntPtr list);
 		abstract internal IntPtr Append (IntPtr current, IntPtr raw);
@@ -201,6 +199,18 @@ namespace GLib {
 
 			if (managed)
 				FreeList ();
+		}
+
+		IntPtr GetData (IntPtr current)
+		{
+			// data field is at offset 0 for GList and GSList
+			return Marshal.ReadIntPtr (current);
+		}
+
+		IntPtr Next (IntPtr current)
+		{
+			// next field follows gpointer data field for GList and GSList
+			return Marshal.ReadIntPtr (current, IntPtr.Size);
 		}
 
 		private class ListEnumerator : IEnumerator

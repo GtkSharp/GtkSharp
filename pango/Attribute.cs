@@ -1,6 +1,6 @@
 // Pango.Attribute - Attribute "base class"
 //
-// Copyright (c) 2005, 2007 Novell, Inc.
+// Copyright (c) 2005, 2007, 2008 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -30,12 +30,17 @@ namespace Pango {
 			this.raw = raw;
 		}
 
-		[DllImport("pangosharpglue-2")]
-		static extern Pango.AttrType pangosharp_attribute_get_attr_type (IntPtr raw);
+		static Pango.AttrType GetAttrType (IntPtr raw)
+		{
+			if (raw == IntPtr.Zero)
+				return AttrType.Invalid;
+			IntPtr klass = Marshal.ReadIntPtr (raw);
+			return (AttrType) Marshal.ReadInt32 (klass);
+		}
 
 		public static Attribute GetAttribute (IntPtr raw)
 		{
-			switch (pangosharp_attribute_get_attr_type (raw)) {
+			switch (GetAttrType (raw)) {
 			case Pango.AttrType.Language:
 				return new AttrLanguage (raw);
 			case Pango.AttrType.Family:
@@ -117,38 +122,34 @@ namespace Pango {
 		}
 
 		public Pango.AttrType Type {
-			get {
-				return pangosharp_attribute_get_attr_type (raw);
-			}
+			get { return GetAttrType (raw); }
 		}
 
-		[DllImport("pangosharpglue-2")]
-		static extern uint pangosharp_attribute_get_start_index (IntPtr raw);
+		internal struct NativeStruct {
+			IntPtr klass;
+			public uint start_index;
+			public uint end_index;
+		}
 
-		[DllImport("pangosharpglue-2")]
-		static extern void pangosharp_attribute_set_start_index (IntPtr raw, uint index);
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (raw, typeof(NativeStruct)); }
+		}
 
 		public uint StartIndex {
-			get {
-				return pangosharp_attribute_get_start_index (raw);
-			}
+			get { return Native.start_index; }
 			set {
-				pangosharp_attribute_set_start_index (raw, value);
+				NativeStruct native = Native;
+				native.start_index = value;
+				Marshal.StructureToPtr (native, raw, false);
 			}
 		}
 
-		[DllImport("pangosharpglue-2")]
-		static extern uint pangosharp_attribute_get_end_index (IntPtr raw);
-
-		[DllImport("pangosharpglue-2")]
-		static extern void pangosharp_attribute_set_end_index (IntPtr raw, uint index);
-
 		public uint EndIndex {
-			get {
-				return pangosharp_attribute_get_end_index (raw);
-			}
+			get { return Native.end_index; }
 			set {
-				pangosharp_attribute_set_end_index (raw, value);
+				NativeStruct native = Native;
+				native.end_index = value;
+				Marshal.StructureToPtr (native, raw, false);
 			}
 		}
 

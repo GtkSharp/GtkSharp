@@ -67,15 +67,23 @@ namespace GLib {
 			return ret;
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern UIntPtr glibsharp_strlen (IntPtr mem);
+		static unsafe ulong strlen (IntPtr s)
+		{
+			ulong cnt = 0;
+			byte *b = (byte *)s;
+			while (*b != 0) {
+				b++;
+				cnt++;
+			}
+			return cnt;
+		}
 
 		public static string Utf8PtrToString (IntPtr ptr) 
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			int len = (int) (uint)glibsharp_strlen (ptr);
+			int len = (int) (uint) strlen (ptr);
 			byte[] bytes = new byte [len];
 			Marshal.Copy (ptr, bytes, 0, len);
 			return System.Text.Encoding.UTF8.GetString (bytes);
@@ -320,28 +328,44 @@ namespace GLib {
 			return local_epoch.AddSeconds (time_t.ToInt64 () + utc_offset);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_unichar_to_utf8_string (uint c);
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_malloc0 (UIntPtr size);
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern int g_unichar_to_utf8 (uint c, IntPtr buf);
 
 		public static char GUnicharToChar (uint ucs4_char)
 		{ 
 			if (ucs4_char == 0)
 				return (char) 0;
 
-			IntPtr raw_ret = gtksharp_unichar_to_utf8_string (ucs4_char);
-			string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-			if (ret.Length > 1)
+			string ret = GUnicharToString (ucs4_char);
+			if (ret.Length != 1)
 				throw new ArgumentOutOfRangeException ("ucs4char is not representable by a char.");
 
 			return ret [0];
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern uint glibsharp_utf16_to_unichar (ushort c);
+		public static string GUnicharToString (uint ucs4_char)
+		{ 
+			if (ucs4_char == 0)
+				return String.Empty;
+
+			IntPtr buf = g_malloc0 (new UIntPtr (7));
+			g_unichar_to_utf8 (ucs4_char, buf);
+			return PtrToStringGFree (buf);
+		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern IntPtr g_utf16_to_ucs4 (ref ushort c, IntPtr len, IntPtr d1, IntPtr d2, IntPtr d3);
 
 		public static uint CharToGUnichar (char c)
 		{
-			return glibsharp_utf16_to_unichar ((ushort) c);
+			ushort val = (ushort) c;
+			IntPtr ucs4_str = g_utf16_to_ucs4 (ref val, new IntPtr (1), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			uint result = (uint) Marshal.ReadInt32 (ucs4_str);
+			g_free (ucs4_str);
+			return result;
 		}
 
 		public static IntPtr StructureToPtrAlloc (object o)

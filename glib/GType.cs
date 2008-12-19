@@ -27,11 +27,32 @@ namespace GLib {
 	using System.IO;
 	using System.Reflection;
 	using System.Runtime.InteropServices;
+	using System.Text;
 
 	[StructLayout(LayoutKind.Sequential)]
 	public struct GType {
 
 		IntPtr val;
+
+		struct GTypeInfo {
+			public ushort class_size;
+			IntPtr base_init;
+			IntPtr base_finalize;
+			IntPtr class_init;
+			IntPtr class_finalize;
+			IntPtr class_data;
+			public ushort instance_size;
+			ushort n_preallocs;
+			IntPtr instance_init;
+			IntPtr value_table;
+		}
+
+		struct GTypeQuery {
+			public IntPtr type;
+			public IntPtr type_name;
+			public uint class_size;
+			public uint instance_size;
+		}
 
 		public GType (IntPtr val)
 		{
@@ -75,9 +96,6 @@ namespace GLib {
 			if (type != null)
 				gtypes[type] = native_type;
 		}
-
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern void g_type_init ();
 
 		static GType ()
 		{
@@ -206,17 +224,7 @@ namespace GLib {
 		}
 
 		public IntPtr Val {
-			get {
-				return val;
-			}
-		}
-
-		public override bool Equals (object o)
-		{
-			if (!(o is GType))
-				return false;
-
-			return ((GType) o) == this;
+			get { return val; }
 		}
 
 		public static bool operator == (GType a, GType b)
@@ -229,20 +237,122 @@ namespace GLib {
 			return a.Val != b.Val;
 		}
 
+		public override bool Equals (object o)
+		{
+			if (!(o is GType))
+				return false;
+
+			return ((GType) o) == this;
+		}
+
 		public override int GetHashCode ()
 		{
 			return val.GetHashCode ();
 		}
 
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern IntPtr g_type_name (IntPtr raw);
-		
-		[DllImport("libgobject-2.0-0.dll")]
-		static extern IntPtr g_type_from_name (string name);
-
 		public override string ToString ()
 		{
 			return Marshaller.Utf8PtrToString (g_type_name (val));
 		}
+
+		internal IntPtr ClassPtr {
+			get {
+				IntPtr klass = g_type_class_peek (val);
+				if (val == IntPtr.Zero)
+					klass = g_type_class_ref (val);
+				return klass;
+			}
+		}
+
+		internal void EnsureClass ()
+		{
+			if (g_type_class_peek (val) == IntPtr.Zero)
+				g_type_class_ref (val);
+		}
+
+		static int type_uid;
+		static string BuildEscapedName (System.Type t)
+		{
+			string qn = t.FullName;
+			// Just a random guess
+			StringBuilder sb = new StringBuilder (20 + qn.Length);
+			sb.Append ("__gtksharp_");
+			sb.Append (type_uid++);
+			sb.Append ("_");
+			foreach (char c in qn) {
+				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+					sb.Append (c);
+				else if (c == '.')
+					sb.Append ('_');
+				else if ((uint) c <= byte.MaxValue) {
+					sb.Append ('+');
+					sb.Append (((byte) c).ToString ("x2"));
+				} else {
+					sb.Append ('-');
+					sb.Append (((uint) c).ToString ("x4"));
+				}
+			}
+			return sb.ToString ();
+		}
+
+		internal static GType RegisterGObjectType (System.Type t)
+		{
+			GType parent_gtype = LookupGObjectType (t.BaseType);
+			string name = BuildEscapedName (t);
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			GTypeQuery query;
+			g_type_query (parent_gtype.Val, out query);
+			GTypeInfo info = new GTypeInfo ();
+			info.class_size = (ushort) query.class_size;
+			info.instance_size = (ushort) query.instance_size;
+			GType gtype = new GType (g_type_register_static (parent_gtype.Val, native_name, ref info, 0));
+			GLib.Marshaller.Free (native_name);
+			Register (gtype, t);
+			return gtype;
+		}
+
+		internal static GType LookupGObjectType (System.Type t)
+		{
+			if (gtypes.Contains (t))
+				return (GType) gtypes [t];
+			
+			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+			if (pi != null)
+				return (GType) pi.GetValue (null, null);
+			
+			return GLib.Object.RegisterGType (t);
+		}
+
+		internal static IntPtr ValFromInstancePtr (IntPtr handle)
+		{
+			if (handle == IntPtr.Zero)
+				return IntPtr.Zero;
+
+			// First field of instance is a GTypeClass*.  
+			IntPtr klass = Marshal.ReadIntPtr (handle);
+			// First field of GTypeClass is a GType.
+			return Marshal.ReadIntPtr (klass);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_class_peek (IntPtr gtype);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_class_ref (IntPtr gtype);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_from_name (string name);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_type_init ();
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_name (IntPtr raw);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_type_query (IntPtr type, out GTypeQuery query);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_type_register_static (IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
 	}
 }

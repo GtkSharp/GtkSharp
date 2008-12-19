@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrLetterSpacing (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public int LetterSpacing {
 			get {
-				return pangosharp_attr_int_get_value (Handle);
+				return AttrInt.New (Handle).Value;
 			}
 		}
 	}

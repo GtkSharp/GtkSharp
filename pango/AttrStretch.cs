@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrStretch (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public Pango.Stretch Stretch {
 			get {
-				return (Pango.Stretch)pangosharp_attr_int_get_value (Handle);
+				return (Pango.Stretch) (AttrInt.New (Handle).Value);
 			}
 		}
 	}

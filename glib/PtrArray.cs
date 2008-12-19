@@ -114,12 +114,9 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_ptr_array_get_array (IntPtr raw);
-
 		public IntPtr ArrayPtr {
 			get {
-				return gtksharp_ptr_array_get_array (Handle);
+				return Marshal.ReadIntPtr (Handle);
 			}
 		}
 
@@ -147,18 +144,18 @@ namespace GLib {
 			g_ptr_array_remove_range (Handle, index, length);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern int gtksharp_ptr_array_get_count (IntPtr raw);
+		struct GPtrArray {
+			IntPtr pdata;
+			public uint len;
+		}
 
 		// ICollection
 		public int Count {
 			get {
-				return gtksharp_ptr_array_get_count (Handle);
+				GPtrArray native = (GPtrArray) Marshal.PtrToStructure (Handle, typeof (GPtrArray));
+				return (int) native.len;
 			}
 		}
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_ptr_array_get_nth (IntPtr raw, uint idx);
 
 		public object this [int index] { 
 			get {
@@ -196,7 +193,7 @@ namespace GLib {
 
 		internal IntPtr NthData (uint index)
 		{
-			return gtksharp_ptr_array_get_nth (Handle, index);;
+			return Marshal.ReadIntPtr (ArrayPtr, (int) index * IntPtr.Size);;
 		}
 
 		// Synchronization could be tricky here. Hmm.

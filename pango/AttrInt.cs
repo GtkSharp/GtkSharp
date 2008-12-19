@@ -1,6 +1,6 @@
-// Pango.AttrRise - Pango.Attribute for baseline displacement
+// Pango.AttrInt - Pango.Attribute for integer values
 //
-// Copyright (c) 2005 Novell, Inc.
+// Copyright (c) 2008 Novell, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -21,19 +21,13 @@ namespace Pango {
 	using System;
 	using System.Runtime.InteropServices;
 
-	public class AttrRise : Attribute {
+	internal struct AttrInt {
+		Attribute.NativeStruct attr;
+		public int Value;
 
-		[DllImport("libpango-1.0-0.dll")]
-		static extern IntPtr pango_attr_rise_new (int rise);
-
-		public AttrRise (int rise) : this (pango_attr_rise_new (rise)) {}
-
-		internal AttrRise (IntPtr raw) : base (raw) {}
-
-		public int Rise {
-			get {
-				return AttrInt.New (Handle).Value;
-			}
+		public static AttrInt New (IntPtr raw)
+		{
+			return (AttrInt) Marshal.PtrToStructure (raw, typeof (AttrInt));
 		}
 	}
 }

@@ -101,13 +101,18 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_array_get_array (IntPtr raw);
+		struct NativeStruct {
+			public uint n_values;
+			public IntPtr values;
+			public uint n_prealloced;
+		}
+
+		NativeStruct Native {
+			get { return (NativeStruct) Marshal.PtrToStructure (Handle, typeof(NativeStruct)); }
+		}
 
 		public IntPtr ArrayPtr {
-			get {
-				return gtksharp_value_array_get_array (Handle);
-			}
+			get { return Native.values; }
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
@@ -142,14 +147,9 @@ namespace GLib {
 			g_value_array_remove (Handle, idx);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern int gtksharp_value_array_get_count (IntPtr raw);
-
 		// ICollection
 		public int Count {
-			get {
-				return gtksharp_value_array_get_count (Handle);
-			}
+			get { return (int) Native.n_values; }
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]

@@ -55,6 +55,7 @@ sources =		 			\
 	Object.cs				\
 	ObjectManager.cs			\
 	Opaque.cs				\
+	ParamSpec.cs				\
 	PropertyAttribute.cs			\
 	PtrArray.cs				\
 	Signal.cs				\
@@ -98,7 +99,7 @@ endif
 
 $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
 	@rm -f $(ASSEMBLY).mdb
-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
+	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 	$(GAPI_CDECL_INSERT)
 
 $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk

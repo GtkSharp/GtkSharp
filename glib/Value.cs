@@ -98,9 +98,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (type_name);
-			gtksharp_value_create_from_type_name (ref this, native);
-			GLib.Marshaller.Free (native);
+			g_value_init (ref this, GType.FromName (type_name).Val);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
@@ -133,9 +131,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (type_name);
-			gtksharp_value_create_from_type_name (ref this, native);
-			GLib.Marshaller.Free (native);
+			g_value_init (ref this, GType.FromName (type_name).Val);
 			g_value_set_boxed (ref this, val.Handle);
 		}
 
@@ -153,9 +149,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			IntPtr prop = GLib.Marshaller.StringToPtrGStrdup (prop_name);
-			gtksharp_value_create_from_property (ref this, obj.Handle, prop);
-			GLib.Marshaller.Free (prop);
+			InitForProperty (obj, prop_name);
 		}
 
 		[Obsolete]
@@ -163,9 +157,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (prop_name);
-			gtksharp_value_create_from_type_and_property (ref this, obj.NativeType.Val, native);
-			GLib.Marshaller.Free (native);
+			InitForProperty (obj.NativeType, prop_name);
 			if (wrap.flags)
 				g_value_set_flags (ref this, (uint) (int) wrap); 
 			else
@@ -177,9 +169,7 @@ namespace GLib {
 		{
 			type = IntPtr.Zero;
 			pad_1 = pad_2 = 0;
-			IntPtr native = GLib.Marshaller.StringToPtrGStrdup (prop_name);
-			gtksharp_value_create_from_property (ref this, obj, native);
-			GLib.Marshaller.Free (native);
+			InitForProperty (GLib.Object.GetObject (obj), prop_name);
 			g_value_set_boxed (ref this, val.Handle);
 		}
 
@@ -257,7 +247,7 @@ namespace GLib {
 		[Obsolete ("Replaced by Enum cast")]
 		public static explicit operator EnumWrapper (Value val)
 		{
-			if (glibsharp_value_holds_flags (ref val))
+			if (val.HoldsFlags)
 				return new EnumWrapper ((int)g_value_get_flags (ref val), true);
 			else
 				return new EnumWrapper (g_value_get_enum (ref val), false);
@@ -265,7 +255,7 @@ namespace GLib {
 
 		public static explicit operator Enum (Value val)
 		{
-			if (glibsharp_value_holds_flags (ref val))
+			if (val.HoldsFlags)
 				return (Enum)Enum.ToObject (GType.LookupType (val.type), g_value_get_flags (ref val));
 			else
 				return (Enum)Enum.ToObject (GType.LookupType (val.type), g_value_get_enum (ref val));
@@ -453,20 +443,35 @@ namespace GLib {
 				Marshal.StructureToPtr (val, g_value_get_boxed (ref this), false);
 		}
 
+		bool HoldsFlags {
+			get { return g_type_check_value_holds (ref this, GType.Flags.Val); }
+		}
+
+		void InitForProperty (Object obj, string name)
+		{
+			GType gtype = Object.LookupGType (obj.GetType ());
+			InitForProperty (gtype, name);
+		}
+
+		void InitForProperty (GType gtype, string name)
+		{
+			IntPtr p_name = Marshaller.StringToPtrGStrdup (name);
+			ParamSpec spec = new ParamSpec (g_object_class_find_property (gtype.ClassPtr, p_name));
+			Marshaller.Free (p_name);
+			g_value_init (ref this, spec.ValueType.Val);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_class_find_property (IntPtr klass, IntPtr name);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_type_check_value_holds (ref Value val, IntPtr gtype);
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_init (ref GLib.Value val, IntPtr gtype);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_unset (ref GLib.Value val);
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_property(ref GLib.Value val, IntPtr obj, IntPtr name);
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_type_and_property(ref GLib.Value val, IntPtr gtype, IntPtr name);
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_value_create_from_type_name(ref GLib.Value val, IntPtr type_name);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_value_set_boolean (ref Value val, bool data);
@@ -561,8 +566,6 @@ namespace GLib {
 		static extern int g_value_get_enum (ref Value val);
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_value_get_flags (ref Value val);
-		[DllImport("glibsharpglue-2")]
-		static extern bool glibsharp_value_holds_flags (ref Value val);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);

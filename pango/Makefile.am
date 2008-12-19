@@ -15,12 +15,15 @@ glue_includes = pango/pango.h
 sources =			\
 	Attribute.cs		\
 	AttrBackground.cs	\
+	AttrColor.cs		\
 	AttrFallback.cs		\
 	AttrFamily.cs		\
+	AttrFloat.cs		\
 	AttrFontDesc.cs		\
 	AttrForeground.cs	\
 	AttrGravity.cs		\
 	AttrGravityHint.cs	\
+	AttrInt.cs		\
 	AttrLanguage.cs		\
 	AttrLetterSpacing.cs	\
 	AttrRise.cs		\

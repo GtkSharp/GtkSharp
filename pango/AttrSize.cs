@@ -35,21 +35,23 @@ namespace Pango {
 
 		internal AttrSize (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_size_get_size (IntPtr raw);
+		new struct NativeStruct {
+			Attribute.NativeStruct attr;
+			public int sz;
+			public uint absolute;
+		}
 
 		public int Size {
 			get {
-				return pangosharp_attr_size_get_size (Handle);
+				NativeStruct native = (NativeStruct) Marshal.PtrToStructure (Handle, typeof (NativeStruct));
+				return native.sz;
 			}
 		}
 
-		[DllImport("pangosharpglue-2")]
-		static extern bool pangosharp_attr_size_get_absolute (IntPtr raw);
-
 		public bool Absolute {
 			get {
-				return pangosharp_attr_size_get_absolute (Handle);
+				NativeStruct native = (NativeStruct) Marshal.PtrToStructure (Handle, typeof (NativeStruct));
+				return native.absolute != 0;
 			}
 		}
 	}

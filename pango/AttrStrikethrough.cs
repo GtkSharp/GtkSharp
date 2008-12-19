@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrStrikethrough (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public bool Strikethrough {
 			get {
-				return pangosharp_attr_int_get_value (Handle) != 0;
+				return AttrInt.New (Handle).Value != 0;
 			}
 		}
 	}

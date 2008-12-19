@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrVariant (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public Pango.Variant Variant {
 			get {
-				return (Pango.Variant)pangosharp_attr_int_get_value (Handle);
+				return (Pango.Variant) (AttrInt.New (Handle).Value);
 			}
 		}
 	}

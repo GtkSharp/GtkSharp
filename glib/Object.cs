@@ -184,12 +184,51 @@ namespace GLib {
 				return properties;
 			}
 		}
-		
-		[DllImport ("glibsharpglue-2")]
-		static extern void gtksharp_override_property_handlers (IntPtr type, GetPropertyDelegate get_cb, SetPropertyDelegate set_cb);
 
-		[DllImport ("glibsharpglue-2")]
-		static extern IntPtr gtksharp_register_property (IntPtr type, IntPtr name, IntPtr nick, IntPtr blurb, uint property_id, IntPtr property_type, bool can_read, bool can_write);
+		struct GTypeClass {
+			IntPtr gtype;
+		}
+
+		struct GObjectClass {
+			GTypeClass type_class;
+			IntPtr construct_props;
+			IntPtr constructor_cb;
+			public SetPropertyDelegate set_prop_cb;
+			public GetPropertyDelegate get_prop_cb;
+			IntPtr dispose;
+			IntPtr finalize;
+			IntPtr dispatch_properties_changed;
+			IntPtr notify;
+			IntPtr constructed;
+			IntPtr dummy1;
+			IntPtr dummy2;
+			IntPtr dummy3;
+			IntPtr dummy4;
+			IntPtr dummy5;
+			IntPtr dummy6;
+			IntPtr dummy7;
+		}
+
+		static void OverridePropertyHandlers (GType gtype, GetPropertyDelegate get_cb, SetPropertyDelegate set_cb)
+		{
+			IntPtr class_ptr = gtype.ClassPtr;
+			GObjectClass klass = (GObjectClass) Marshal.PtrToStructure (class_ptr, typeof (GObjectClass));
+			klass.get_prop_cb = get_cb;
+			klass.set_prop_cb = set_cb;
+			Marshal.StructureToPtr (klass, class_ptr, false);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_object_class_install_property (IntPtr klass, uint prop_id, IntPtr param_spec);
+
+		static IntPtr RegisterProperty (GType type, string name, string nick, string blurb, uint property_id, GType property_type, bool can_read, bool can_write)
+		{
+			IntPtr declaring_class = type.ClassPtr;
+			ParamSpec pspec = new ParamSpec (name, nick, blurb, property_type, can_read, can_write);
+
+			g_object_class_install_property (declaring_class, property_id, pspec.Handle);
+			return pspec.Handle;
+		}
 
 		static void AddProperties (GType gtype, System.Type t)
 		{
@@ -203,26 +242,17 @@ namespace GLib {
 					
 					PropertyAttribute property_attr = attr as PropertyAttribute;
 					if (!handlers_overridden) {
-						gtksharp_override_property_handlers (gtype.Val, GetPropertyHandler, SetPropertyHandler);
+						OverridePropertyHandlers (gtype, GetPropertyHandler, SetPropertyHandler);
 						handlers_overridden = true;
 					}
 
-					IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (property_attr.Name);
-					IntPtr native_nick = GLib.Marshaller.StringToPtrGStrdup (property_attr.Nickname);
-					IntPtr native_blurb = GLib.Marshaller.StringToPtrGStrdup (property_attr.Blurb);
-
-					IntPtr param_spec = gtksharp_register_property (gtype.Val, native_name, native_nick, native_blurb, idx, ((GType) pinfo.PropertyType).Val, pinfo.CanRead, pinfo.CanWrite);
-
-					GLib.Marshaller.Free (native_name);
-					GLib.Marshaller.Free (native_nick);
-					GLib.Marshaller.Free (native_blurb);
-
-					if (param_spec == IntPtr.Zero)
-						// The GType of the property is not supported
+					try {
+						IntPtr param_spec = RegisterProperty (gtype, property_attr.Name, property_attr.Nickname, property_attr.Blurb, idx, (GType) pinfo.PropertyType, pinfo.CanRead, pinfo.CanWrite);
+						Properties.Add (param_spec, pinfo);
+						idx++;
+					} catch (ArgumentException) {
 						throw new InvalidOperationException (String.Format ("GLib.PropertyAttribute cannot be applied to property {0} of type {1} because the return type of the property is not supported", pinfo.Name, t.FullName));
-					
-					Properties.Add (param_spec, pinfo);
-					idx++;
+					}
 				}
 			}
 		}
@@ -280,52 +310,16 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_register_type (IntPtr name, IntPtr parent_type);
-
-		static int type_uid;
-		static string BuildEscapedName (System.Type t)
+		protected internal static GType RegisterGType (System.Type t)
 		{
-			string qn = t.FullName;
-			// Just a random guess
-			StringBuilder sb = new StringBuilder (20 + qn.Length);
-			sb.Append ("__gtksharp_");
-			sb.Append (type_uid++);
-			sb.Append ("_");
-			foreach (char c in qn) {
-				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-					sb.Append (c);
-				else if (c == '.')
-					sb.Append ('_');
-				else if ((uint) c <= byte.MaxValue) {
-					sb.Append ('+');
-					sb.Append (((byte) c).ToString ("x2"));
-				} else {
-					sb.Append ('-');
-					sb.Append (((uint) c).ToString ("x4"));
-				}
-			}
-			return sb.ToString ();
-		}
-
-		protected static GType RegisterGType (System.Type t)
-		{
-			GType parent_gtype = LookupGType (t.BaseType);
-			string name = BuildEscapedName (t);
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			GType gtype = new GType (gtksharp_register_type (native_name, parent_gtype.Val));
-			GLib.Marshaller.Free (native_name);
-			GLib.GType.Register (gtype, t);
+			GType gtype = GType.RegisterGObjectType (t);
 			AddProperties (gtype, t);
 			ConnectDefaultHandlers (gtype, t);
 			InvokeClassInitializers (gtype, t);
 			AddInterfaces (gtype, t);
-			g_types[t] = gtype;
 			return gtype;
 		}
 
-
-		static Hashtable g_types = new Hashtable ();
 
 		protected GType LookupGType ()
 		{
@@ -334,14 +328,7 @@ namespace GLib {
 
 		protected internal static GType LookupGType (System.Type t)
 		{
-			if (g_types.Contains (t))
-				return (GType) g_types [t];
-			
-			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
-			if (pi != null)
-				return (GType) pi.GetValue (null, null);
-			
-			return RegisterGType (t);
+			return GType.LookupGObjectType (t);
 		}
 
 		protected Object (IntPtr raw)
@@ -363,17 +350,24 @@ namespace GLib {
 			Raw = g_object_new (gtype.Val, IntPtr.Zero);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_object_newv (IntPtr gtype, int n_params, IntPtr[] names, GLib.Value[] vals);
+		struct GParameter {
+			public IntPtr name;
+			public GLib.Value val;
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_object_newv (IntPtr gtype, int n_params, GParameter[] parms);
 
 		protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals)
 		{
-			IntPtr[] native_names = new IntPtr [names.Length];
-			for (int i = 0; i < names.Length; i++)
-				native_names [i] = GLib.Marshaller.StringToPtrGStrdup (names [i]);
-			Raw = gtksharp_object_newv (LookupGType ().Val, names.Length, native_names, vals);
-			foreach (IntPtr p in native_names)
-				GLib.Marshaller.Free (p);
+			GParameter[] parms = new GParameter [names.Length];
+			for (int i = 0; i < names.Length; i++) {
+				parms [i].name = GLib.Marshaller.StringToPtrGStrdup (names [i]);
+				parms [i].val = vals [i];
+			}
+			Raw = g_object_newv (LookupGType ().Val, parms.Length, parms);
+			foreach (GParameter p in parms)
+				GLib.Marshaller.Free (p.name);
 		}
 
 		protected virtual IntPtr Raw {
@@ -405,12 +399,9 @@ namespace GLib {
 			}
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
-
 		protected string TypeName {
 			get {
-				return Marshaller.Utf8PtrToString (gtksharp_get_type_name (Raw));
+				return NativeType.ToString ();
 			}
 		}
 
@@ -586,33 +577,36 @@ namespace GLib {
 			GLib.Marshaller.Free (native_name);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern void gtksharp_override_virtual_method (IntPtr gtype, IntPtr name, Delegate cb);
-
 		protected static void OverrideVirtualMethod (GType gtype, string name, Delegate cb)
 		{
-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
-			gtksharp_override_virtual_method (gtype.Val, native_name, cb);
-			GLib.Marshaller.Free (native_name);
+			Signal.OverrideDefaultHandler (gtype, name, cb);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
 		protected static extern void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);
 
-		[DllImport("glibsharpglue-2")]
-		static extern bool gtksharp_is_object (IntPtr obj);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_type_check_instance_is_a (IntPtr obj, IntPtr gtype);
 
 		internal static bool IsObject (IntPtr obj)
 		{
-			return gtksharp_is_object (obj);
+			return g_type_check_instance_is_a (obj, GType.Object.Val);
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern int gtksharp_object_get_ref_count (IntPtr obj);
+		struct GTypeInstance {
+			public IntPtr g_class;
+		}
+
+		struct GObject {
+			public GTypeInstance type_instance;
+			public uint ref_count;
+			public IntPtr qdata;
+		}
 
 		protected int RefCount {
 			get {
-				return gtksharp_object_get_ref_count (Handle);
+				GObject native = (GObject) Marshal.PtrToStructure (Handle, typeof (GObject));
+				return (int) native.ref_count;
 			}
 		}
 

@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrGravityHint (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public GravityHint GravityHint {
 			get {
-				return (GravityHint) pangosharp_attr_int_get_value (Handle);
+				return (GravityHint) (AttrInt.New (Handle).Value);
 			}
 		}
 	}

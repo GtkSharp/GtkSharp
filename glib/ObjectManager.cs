@@ -69,7 +69,9 @@ namespace GLib {
 
 		static Type GetTypeOrParent (IntPtr obj)
 		{
-			IntPtr typeid = gtksharp_get_type_id (obj);
+			IntPtr typeid = GType.ValFromInstancePtr (obj);
+			if (typeid == GType.Invalid.Val)
+				return null;
 
 			Type result = GType.LookupType (typeid);
 			while (result == null) {
@@ -80,9 +82,6 @@ namespace GLib {
 			}
 			return result;
 		}
-
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_parent (IntPtr typ);

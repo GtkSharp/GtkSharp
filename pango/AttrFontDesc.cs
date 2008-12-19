@@ -33,13 +33,15 @@ namespace Pango {
 
 		internal AttrFontDesc (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern IntPtr pangosharp_attr_font_desc_get_desc (IntPtr raw);
+		new struct NativeStruct {
+			Attribute.NativeStruct attr;
+			public IntPtr desc;
+		}
 
 		public Pango.FontDescription Desc {
 			get {
-				IntPtr raw_ret = pangosharp_attr_font_desc_get_desc (Handle);
-				return new Pango.FontDescription (raw_ret);
+				NativeStruct native = (NativeStruct) Marshal.PtrToStructure (Handle, typeof (NativeStruct));
+				return new Pango.FontDescription (native.desc);
 			}
 		}
 	}

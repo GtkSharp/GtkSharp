@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrScale (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern double pangosharp_attr_float_get_value (IntPtr raw);
-
 		public double Scale {
 			get {
-				return pangosharp_attr_float_get_value (Handle);
+				return AttrFloat.New (Handle).Value;
 			}
 		}
 	}

@@ -19,17 +19,12 @@
 // Boston, MA 02111-1307, USA.
 
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_unichar_to_utf8_string (int raw);
-
 		[DllImport("libgtk-win32-2.0-0.dll")]
-		static extern int gtk_text_iter_get_char(ref Gtk.TextIter raw);
+		static extern uint gtk_text_iter_get_char(ref Gtk.TextIter raw);
 
 		public string Char { 
 			get {
-				IntPtr raw_ret = gtksharp_unichar_to_utf8_string (gtk_text_iter_get_char (ref this));
-				string ret = GLib.Marshaller.PtrToStringGFree(raw_ret);
-				return ret;
+				return GLib.Marshaller.GUnicharToString (gtk_text_iter_get_char (ref this));
 			}
 		}
 

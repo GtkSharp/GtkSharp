@@ -20,19 +20,13 @@
 
 		private Units () {}
 		
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_pixels (int units);
-
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_scale ();
-
 		public static int FromPixels (int pixels)
 		{
-			return pixels * pangosharp_scale ();
+			return pixels * 1024;
 		}
 
 		public static int ToPixels (int units)
 		{
-			return pangosharp_pixels (units);
+			return (units + 512) >> 10;
 		}
 

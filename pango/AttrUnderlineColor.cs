@@ -32,12 +32,9 @@ namespace Pango {
 
 		internal AttrUnderlineColor (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern Pango.Color pangosharp_attr_color_get_color (IntPtr raw);
-
 		public Pango.Color Color {
 			get {
-				return pangosharp_attr_color_get_color (Handle);
+				return AttrColor.New (Handle).Color;
 			}
 		}
 	}

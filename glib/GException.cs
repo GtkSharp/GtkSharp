@@ -33,11 +33,16 @@ namespace GLib {
 			this.errptr = errptr;
 		}
 
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_error_get_message (IntPtr errptr);
+		struct GError {
+			public int Domain;
+			public int Code;
+			public IntPtr Msg;
+		}
+
 		public override string Message {
 			get {
-				return Marshaller.Utf8PtrToString (gtksharp_error_get_message (errptr));
+				GError err = (GError) Marshal.PtrToStructure (errptr, typeof (GError));
+				return Marshaller.Utf8PtrToString (err.Msg);
 			}
 		}
 

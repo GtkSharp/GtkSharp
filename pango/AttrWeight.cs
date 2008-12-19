@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrWeight (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public Pango.Weight Weight {
 			get {
-				return (Pango.Weight)pangosharp_attr_int_get_value (Handle);
+				return (Pango.Weight) (AttrInt.New (Handle).Value);
 			}
 		}
 	}

@@ -30,12 +30,9 @@ namespace Pango {
 
 		internal AttrUnderline (IntPtr raw) : base (raw) {}
 
-		[DllImport("pangosharpglue-2")]
-		static extern int pangosharp_attr_int_get_value (IntPtr raw);
-
 		public Pango.Underline Underline {
 			get {
-				return (Pango.Underline)pangosharp_attr_int_get_value (Handle);
+				return (Pango.Underline) (AttrInt.New (Handle).Value);
 			}
 		}
 	}

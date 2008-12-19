@@ -52,6 +52,17 @@ namespace GLib {
 			public Flags run_type;
 		}
 
+		[StructLayout (LayoutKind.Sequential)]
+		struct Query {
+			public uint signal_id;
+			public IntPtr signal_name;
+			public IntPtr itype;
+			public Flags signal_flags;
+			public IntPtr return_type;
+			public uint n_params;
+			public IntPtr param_types;
+		}
+
 		[CDeclCallback]
 		public delegate bool EmissionHookNative (ref InvocationHint hint, uint n_pvals, IntPtr pvals, IntPtr data);
 
@@ -321,7 +332,9 @@ namespace GLib {
 			}
 
 			object ret_obj = null;
-			if (glibsharp_signal_get_return_type (signal_id) != GType.None.Val) {
+			Query query;
+			g_signal_query (signal_id, out query);
+			if (query.return_type != GType.None.Val) {
 				GLib.Value ret = GLib.Value.Empty;
 				g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
 				ret_obj = ret.Val;
@@ -344,7 +357,7 @@ namespace GLib {
 
 		private static uint GetSignalId (string signal_name, GLib.Object obj)
 		{
-			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
+			IntPtr typeid = GType.ValFromInstancePtr (obj.Handle);
 			return GetSignalId (signal_name, typeid);
 		}
 		
@@ -367,6 +380,17 @@ namespace GLib {
 			return g_signal_add_emission_hook (signal_id, gquark, new EmissionHookMarshaler (handler_func).Callback, IntPtr.Zero, IntPtr.Zero);
 		}
 		
+		internal static void OverrideDefaultHandler (GType gtype, string name, Delegate cb)
+		{
+			IntPtr closure = g_cclosure_new (cb, IntPtr.Zero, IntPtr.Zero);
+			gtype.EnsureClass ();
+			uint id = GetSignalId (name, gtype.Val);
+			g_signal_override_class_closure (id, gtype.Val, closure);
+		}
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern IntPtr g_cclosure_new (Delegate cb, IntPtr data, IntPtr notify);
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);
 
@@ -376,18 +400,18 @@ namespace GLib {
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, IntPtr return_value);
 		
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr glibsharp_signal_get_return_type (uint signal_id);
-		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
 		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_override_class_closure (uint id, IntPtr gtype, IntPtr closure);
+		
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_query (uint signal_id, out Query query);
+
 		//better not to expose g_quark_from_static_string () due to memory allocation issues
 		[DllImport("libglib-2.0-0.dll")]
 		static extern uint g_quark_from_string (IntPtr str);
-		
-		[DllImport("glibsharpglue-2")]
-		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
 		
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);

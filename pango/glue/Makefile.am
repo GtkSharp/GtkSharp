@@ -1,8 +1,6 @@
 lib_LTLIBRARIES = libpangosharpglue-2.la
 
-libpangosharpglue_2_la_SOURCES =	\
-	attribute.c			\
-	units.c
+libpangosharpglue_2_la_SOURCES =
 
 nodist_libpangosharpglue_2_la_SOURCES = generated.c
 
