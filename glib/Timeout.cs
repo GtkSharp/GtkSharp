@@ -68,6 +68,20 @@ namespace GLib {
 
 			return p.ID;
 		}
+
+		[DllImport("libglib-2.0-0.dll")]
+		static extern uint g_timeout_add_seconds (uint interval, TimeoutHandlerInternal d, IntPtr data);
+
+		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
+		{
+			TimeoutProxy p = new TimeoutProxy (hndlr);
+
+			p.ID = g_timeout_add_seconds (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+			lock (Source.source_handlers)
+				Source.source_handlers [p.ID] = p;
+
+			return p.ID;
+		}
 	}
 }
 
