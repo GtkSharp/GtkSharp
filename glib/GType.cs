@@ -339,9 +339,9 @@ namespace GLib {
 			return g_type_is_a (type, is_a_type.Val);
 		}
 
-		public static bool IsInstance (IntPtr raw, GType type)
+		public bool IsInstance (IntPtr raw)
 		{
-			return GType.Is (ValFromInstancePtr (raw), type);
+			return GType.Is (ValFromInstancePtr (raw), this);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
