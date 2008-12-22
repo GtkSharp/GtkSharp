@@ -334,6 +334,16 @@ namespace GLib {
 			return Marshal.ReadIntPtr (klass);
 		}
 
+		internal static bool Is (IntPtr type, GType is_a_type)
+		{
+			return g_type_is_a (type, is_a_type.Val);
+		}
+
+		public static bool IsInstance (IntPtr raw, GType type)
+		{
+			return GType.Is (ValFromInstancePtr (raw), type);
+		}
+
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_class_peek (IntPtr gtype);
 
@@ -354,5 +364,8 @@ namespace GLib {
 
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern IntPtr g_type_register_static (IntPtr parent, IntPtr name, ref GTypeInfo info, int flags);
+
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern bool g_type_is_a (IntPtr type, IntPtr is_a_type);
 	}
 }
