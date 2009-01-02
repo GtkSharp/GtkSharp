@@ -260,6 +260,12 @@ sample/opaquetest/Makefile
 sample/opaquetest/opaquetest.exe.config
 ])
 
+if test "x$enable_mono_cairo" = "xyes"; then
+  cairo_comment="building local copy"
+else
+  cairo_comment="using system assembly"
+fi
+
 echo "---"
 echo "Configuration summary"
 echo ""
@@ -269,8 +275,8 @@ echo ""
 echo "   Optional assemblies included in the build:"
 echo ""
 echo "      * glade-sharp.dll: $enable_glade"
-echo "      * gtk-dotnet.dll: $enable_dotnet "
-echo "      * Mono.Cairo.dll: $enable_mono_cairo "
+echo "      * gtk-dotnet.dll: $enable_dotnet"
+echo "      * Mono.Cairo.dll: $cairo_comment"
 echo ""
 echo "      NOTE: if any of the above say 'no' you may install the"
 echo "            corresponding development packages for them, rerun"
