@@ -258,7 +258,7 @@ namespace GLib {
 		internal IntPtr ClassPtr {
 			get {
 				IntPtr klass = g_type_class_peek (val);
-				if (val == IntPtr.Zero)
+				if (klass == IntPtr.Zero)
 					klass = g_type_class_ref (val);
 				return klass;
 			}
