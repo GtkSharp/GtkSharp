@@ -32,6 +32,7 @@ namespace GtkSharp.Generation {
 		public override void Generate (GenerationInfo gen_info)
 		{
 			Method copy = methods["Copy"] as Method;
+			Method free = methods["Free"] as Method;
 			methods.Remove ("Copy");
 			methods.Remove ("Free");
 
@@ -58,6 +59,14 @@ namespace GtkSharp.Generation {
 				sw.WriteLine ();
 				sw.WriteLine ("\t\t[Obsolete(\"This is a no-op\")]");
 				sw.WriteLine ("\t\tpublic " + QualifiedName + " Copy() {");
+				sw.WriteLine ("\t\t\treturn this;");
+				sw.WriteLine ("\t\t}");
+			}
+
+			if (free != null && free.IsDeprecated) {
+				sw.WriteLine ();
+				sw.WriteLine ("\t\t[Obsolete(\"This is a no-op\")]");
+				sw.WriteLine ("\t\tpublic " + QualifiedName + " Free () {");
 				sw.WriteLine ("\t\t\treturn this;");
 				sw.WriteLine ("\t\t}");
 			}

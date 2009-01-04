@@ -5,9 +5,9 @@ local_mono_cairo=
 endif
 
 assemblies = \
-	$(top_builddir)/glib/glib-sharp.dll $(top_builddir)/pango/pango-sharp.dll \
-	$(top_builddir)/atk/atk-sharp.dll $(top_builddir)/gdk/gdk-sharp.dll \
-	$(top_builddir)/gtk/gtk-sharp.dll $(local_mono_cairo)
+	$(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll \
+	$(top_builddir)/pango/pango-sharp.dll $(top_builddir)/atk/atk-sharp.dll \
+	$(top_builddir)/gdk/gdk-sharp.dll $(top_builddir)/gtk/gtk-sharp.dll $(local_mono_cairo)
 
 references = $(addprefix /r:, $(assemblies)) @MONO_CAIRO_LIBS@
 TARGETS = GtkDemo.exe

@@ -37,6 +37,27 @@
       <member cname="PANGO_ATTR_GRAVITY" name="Gravity" />
       <member cname="PANGO_ATTR_GRAVITY_HINT" name="GravityHint" />
     </enum>
+    <enum name="BidiType" cname="PangoBidiType" gtype="pango_bidi_type_get_type" type="enum">
+      <member cname="PANGO_BIDI_TYPE_L" name="L" />
+      <member cname="PANGO_BIDI_TYPE_LRE" name="Lre" />
+      <member cname="PANGO_BIDI_TYPE_LRO" name="Lro" />
+      <member cname="PANGO_BIDI_TYPE_R" name="R" />
+      <member cname="PANGO_BIDI_TYPE_AL" name="Al" />
+      <member cname="PANGO_BIDI_TYPE_RLE" name="Rle" />
+      <member cname="PANGO_BIDI_TYPE_RLO" name="Rlo" />
+      <member cname="PANGO_BIDI_TYPE_PDF" name="Pdf" />
+      <member cname="PANGO_BIDI_TYPE_EN" name="En" />
+      <member cname="PANGO_BIDI_TYPE_ES" name="Es" />
+      <member cname="PANGO_BIDI_TYPE_ET" name="Et" />
+      <member cname="PANGO_BIDI_TYPE_AN" name="An" />
+      <member cname="PANGO_BIDI_TYPE_CS" name="Cs" />
+      <member cname="PANGO_BIDI_TYPE_NSM" name="Nsm" />
+      <member cname="PANGO_BIDI_TYPE_BN" name="Bn" />
+      <member cname="PANGO_BIDI_TYPE_B" name="B" />
+      <member cname="PANGO_BIDI_TYPE_S" name="S" />
+      <member cname="PANGO_BIDI_TYPE_WS" name="Ws" />
+      <member cname="PANGO_BIDI_TYPE_ON" name="On" />
+    </enum>
     <enum name="CoverageLevel" cname="PangoCoverageLevel" gtype="pango_coverage_level_get_type" type="enum">
       <member cname="PANGO_COVERAGE_NONE" name="None" />
       <member cname="PANGO_COVERAGE_FALLBACK" name="Fallback" />
@@ -154,6 +175,17 @@
       <member cname="PANGO_SCRIPT_PHOENICIAN" name="Phoenician" />
       <member cname="PANGO_SCRIPT_PHAGS_PA" name="PhagsPa" />
       <member cname="PANGO_SCRIPT_NKO" name="Nko" />
+      <member cname="PANGO_SCRIPT_KAYAH_LI" name="KayahLi" />
+      <member cname="PANGO_SCRIPT_LEPCHA" name="Lepcha" />
+      <member cname="PANGO_SCRIPT_REJANG" name="Rejang" />
+      <member cname="PANGO_SCRIPT_SUNDANESE" name="Sundanese" />
+      <member cname="PANGO_SCRIPT_SAURASHTRA" name="Saurashtra" />
+      <member cname="PANGO_SCRIPT_CHAM" name="Cham" />
+      <member cname="PANGO_SCRIPT_OL_CHIKI" name="OlChiki" />
+      <member cname="PANGO_SCRIPT_VAI" name="Vai" />
+      <member cname="PANGO_SCRIPT_CARIAN" name="Carian" />
+      <member cname="PANGO_SCRIPT_LYCIAN" name="Lycian" />
+      <member cname="PANGO_SCRIPT_LYDIAN" name="Lydian" />
     </enum>
     <enum name="Stretch" cname="PangoStretch" gtype="pango_stretch_get_type" type="enum">
       <member cname="PANGO_STRETCH_ULTRA_CONDENSED" name="UltraCondensed" />
@@ -245,7 +277,7 @@
       </method>
     </object>
     <object name="CairoFontMap" cname="PangoCairoFontMap">
-      <method name="CreateContext" cname="pango_cairo_font_map_create_context">
+      <method name="CreateContext" cname="pango_cairo_font_map_create_context" deprecated="1">
         <return-type type="PangoContext*" />
       </method>
       <method name="GetDefault" cname="pango_cairo_font_map_get_default" shared="true">
@@ -266,6 +298,9 @@
           <parameter type="cairo_font_type_t" name="fonttype" />
         </parameters>
       </constructor>
+      <method name="SetDefault" cname="pango_cairo_font_map_set_default">
+        <return-type type="void" />
+      </method>
       <method name="SetResolution" cname="pango_cairo_font_map_set_resolution">
         <return-type type="void" />
         <parameters>
@@ -328,6 +363,7 @@
           <parameter type="PangoLanguage*" name="language" />
         </parameters>
       </method>
+      <constructor cname="pango_context_new" />
       <method name="SetBaseDir" cname="pango_context_set_base_dir">
         <return-type type="void" />
         <parameters>
@@ -344,6 +380,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-PangoFontDescription*" name="desc" />
+        </parameters>
+      </method>
+      <method name="SetFontMap" cname="pango_context_set_font_map">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoFontMap*" name="font_map" />
         </parameters>
       </method>
       <method name="SetGravityHint" cname="pango_context_set_gravity_hint">
@@ -474,6 +516,9 @@
       </method>
     </object>
     <object name="FontMap" cname="PangoFontMap" parent="GObject">
+      <method name="CreateContext" cname="pango_font_map_create_context">
+        <return-type type="PangoContext*" />
+      </method>
       <method name="GetType" cname="pango_font_map_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -501,7 +546,7 @@
       </method>
     </object>
     <object name="FT2FontMap" cname="PangoFT2FontMap" parent="PangoFcFontMap">
-      <method name="CreateContext" cname="pango_ft2_font_map_create_context">
+      <method name="CreateContext" cname="pango_ft2_font_map_create_context" deprecated="1">
         <return-type type="PangoContext*" />
       </method>
       <method name="ForDisplay" cname="pango_ft2_font_map_for_display" deprecated="1" shared="true">
@@ -546,6 +591,9 @@
       <method name="GetAutoDir" cname="pango_layout_get_auto_dir">
         <return-type type="gboolean" />
       </method>
+      <method name="GetBaseline" cname="pango_layout_get_baseline">
+        <return-type type="int" />
+      </method>
       <method name="GetContext" cname="pango_layout_get_context">
         <return-type type="PangoContext*" />
       </method>
@@ -569,6 +617,9 @@
       </method>
       <method name="GetFontDescription" cname="pango_layout_get_font_description">
         <return-type type="const-PangoFontDescription*" />
+      </method>
+      <method name="GetHeight" cname="pango_layout_get_height">
+        <return-type type="int" />
       </method>
       <method name="GetIndent" cname="pango_layout_get_indent">
         <return-type type="int" />
@@ -718,6 +769,12 @@
         <return-type type="void" />
         <parameters>
           <parameter type="const-PangoFontDescription*" name="desc" />
+        </parameters>
+      </method>
+      <method name="SetHeight" cname="pango_layout_set_height">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="int" name="height" />
         </parameters>
       </method>
       <method name="SetIndent" cname="pango_layout_set_indent">
@@ -890,6 +947,16 @@
           <parameter type="PangoLayoutRun*" name="run" />
         </parameters>
       </virtual_method>
+      <virtual_method name="DrawGlyphItem" cname="draw_glyph_item">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoRenderer*" name="renderer" />
+          <parameter type="const-char*" name="text" />
+          <parameter type="PangoGlyphItem*" name="glyph_item" />
+          <parameter type="int" name="x" />
+          <parameter type="int" name="y" />
+        </parameters>
+      </virtual_method>
       <method name="Activate" cname="pango_renderer_activate">
         <return-type type="void" />
       </method>
@@ -912,6 +979,15 @@
           <parameter type="PangoGlyph" name="glyph" />
           <parameter type="double" name="x" />
           <parameter type="double" name="y" />
+        </parameters>
+      </method>
+      <method name="DrawGlyphItem" cname="pango_renderer_draw_glyph_item">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-char*" name="text" />
+          <parameter type="PangoGlyphItem*" name="glyph_item" />
+          <parameter type="int" name="x" />
+          <parameter type="int" name="y" />
         </parameters>
       </method>
       <method name="DrawGlyphs" cname="pango_renderer_draw_glyphs">
@@ -966,6 +1042,12 @@
         <parameters>
           <parameter type="PangoRenderPart" name="part" />
         </parameters>
+      </method>
+      <method name="GetLayout" cname="pango_renderer_get_layout">
+        <return-type type="PangoLayout*" />
+      </method>
+      <method name="GetLayoutLine" cname="pango_renderer_get_layout_line">
+        <return-type type="PangoLayoutLine*" />
       </method>
       <method name="GetMatrix" cname="pango_renderer_get_matrix">
         <return-type type="const-PangoMatrix*" />
@@ -1197,6 +1279,12 @@
         <return-type type="gboolean" />
         <parameters>
           <parameter type="const-PangoAttribute*" name="attr2" />
+        </parameters>
+      </method>
+      <method name="Init" cname="pango_attribute_init">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="const-PangoAttrClass*" name="klass" />
         </parameters>
       </method>
     </struct>
@@ -1460,7 +1548,7 @@
       <field name="Geometry" cname="geometry" type="PangoGlyphGeometry" />
       <field name="Attr" cname="attr" type="PangoGlyphVisAttr" />
     </struct>
-    <struct name="GlyphItem" cname="PangoGlyphItem">
+    <boxed name="GlyphItem" cname="PangoGlyphItem">
       <field name="Item" cname="item" type="PangoItem*" />
       <field name="Glyphs" cname="glyphs" type="PangoGlyphString*" />
       <method name="ApplyAttrs" cname="pango_glyph_item_apply_attrs">
@@ -1470,8 +1558,14 @@
           <parameter type="PangoAttrList*" name="list" />
         </parameters>
       </method>
+      <method name="Copy" cname="pango_glyph_item_copy">
+        <return-type type="PangoGlyphItem*" owned="true" />
+      </method>
       <method name="Free" cname="pango_glyph_item_free">
         <return-type type="void" />
+      </method>
+      <method name="GetType" cname="pango_glyph_item_get_type" shared="true">
+        <return-type type="GType" />
       </method>
       <method name="LetterSpace" cname="pango_glyph_item_letter_space">
         <return-type type="void" />
@@ -1488,7 +1582,46 @@
           <parameter type="int" name="split_index" />
         </parameters>
       </method>
-    </struct>
+    </boxed>
+    <boxed name="GlyphItemIter" cname="PangoGlyphItemIter">
+      <field name="GlyphItem" cname="glyph_item" type="PangoGlyphItem*" />
+      <field name="Text" cname="text" type="const-gchar*" />
+      <field name="StartGlyph" cname="start_glyph" type="int" />
+      <field name="StartIndex" cname="start_index" type="int" />
+      <field name="StartChar" cname="start_char" type="int" />
+      <field name="EndGlyph" cname="end_glyph" type="int" />
+      <field name="EndIndex" cname="end_index" type="int" />
+      <field name="EndChar" cname="end_char" type="int" />
+      <method name="Copy" cname="pango_glyph_item_iter_copy">
+        <return-type type="PangoGlyphItemIter*" owned="true" />
+      </method>
+      <method name="Free" cname="pango_glyph_item_iter_free">
+        <return-type type="void" />
+      </method>
+      <method name="GetType" cname="pango_glyph_item_iter_get_type" shared="true">
+        <return-type type="GType" />
+      </method>
+      <method name="InitEnd" cname="pango_glyph_item_iter_init_end">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="PangoGlyphItem*" name="glyph_item" />
+          <parameter type="const-char*" name="text" />
+        </parameters>
+      </method>
+      <method name="InitStart" cname="pango_glyph_item_iter_init_start">
+        <return-type type="gboolean" />
+        <parameters>
+          <parameter type="PangoGlyphItem*" name="glyph_item" />
+          <parameter type="const-char*" name="text" />
+        </parameters>
+      </method>
+      <method name="NextCluster" cname="pango_glyph_item_iter_next_cluster">
+        <return-type type="gboolean" />
+      </method>
+      <method name="PrevCluster" cname="pango_glyph_item_iter_prev_cluster">
+        <return-type type="gboolean" />
+      </method>
+    </boxed>
     <boxed name="GlyphString" cname="PangoGlyphString" opaque="true">
       <field name="NumGlyphs" cname="num_glyphs" type="gint" access="public" writeable="true" />
       <field name="Glyphs" cname="glyphs" type="PangoGlyphInfo*" access="public" writeable="true" />
@@ -1603,6 +1736,12 @@
       <method name="GetSampleString" cname="pango_language_get_sample_string">
         <return-type type="const-char*" />
       </method>
+      <method name="GetScripts" cname="pango_language_get_scripts">
+        <return-type type="const-PangoScript*" />
+        <parameters>
+          <parameter type="int*" name="num_scripts" />
+        </parameters>
+      </method>
       <method name="GetType" cname="pango_language_get_type" shared="true">
         <return-type type="GType" />
       </method>
@@ -1618,10 +1757,16 @@
           <parameter type="const-char*" name="range_list" />
         </parameters>
       </method>
+      <method name="ToString" cname="pango_language_to_string">
+        <return-type type="const-char*" />
+      </method>
     </boxed>
     <boxed name="LayoutIter" cname="PangoLayoutIter" opaque="true">
       <method name="AtLastLine" cname="pango_layout_iter_at_last_line">
         <return-type type="gboolean" />
+      </method>
+      <method name="Copy" cname="pango_layout_iter_copy">
+        <return-type type="PangoLayoutIter*" owned="true" />
       </method>
       <method name="Free" cname="pango_layout_iter_free">
         <return-type type="void" />
@@ -1644,6 +1789,9 @@
       </method>
       <method name="GetIndex" cname="pango_layout_iter_get_index">
         <return-type type="int" />
+      </method>
+      <method name="GetLayout" cname="pango_layout_iter_get_layout">
+        <return-type type="PangoLayout*" />
       </method>
       <method name="GetLayoutExtents" cname="pango_layout_iter_get_layout_extents">
         <return-type type="void" />
@@ -1774,6 +1922,7 @@
       <field name="IsSentenceEnd" cname="is_sentence_end" bits="1" type="guint" />
       <field name="BackspaceDeletesCharacter" cname="backspace_deletes_character" bits="1" type="guint" />
       <field name="IsExpandableSpace" cname="is_expandable_space" bits="1" type="guint" />
+      <field name="IsWordBoundary" cname="is_word_boundary" bits="1" type="guint" />
     </struct>
     <boxed name="Matrix" cname="PangoMatrix">
       <field name="Xx" cname="xx" type="double" />
@@ -2045,6 +2194,12 @@
           <parameter type="PangoStyle" name="style" />
         </parameters>
       </method>
+      <method name="TypeGetName" cname="pango_attr_type_get_name" shared="true">
+        <return-type type="const-char*" />
+        <parameters>
+          <parameter type="PangoAttrType" name="type" />
+        </parameters>
+      </method>
       <method name="TypeRegister" cname="pango_attr_type_register" shared="true">
         <return-type type="PangoAttrType" />
         <parameters>
@@ -2078,140 +2233,18 @@
         </parameters>
       </method>
     </class>
-    <class name="Cairo" cname="PangoCairo_">
-      <method name="ContextGetFontOptions" cname="pango_cairo_context_get_font_options" shared="true">
-        <return-type type="const-cairo_font_options_t*" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="ContextGetResolution" cname="pango_cairo_context_get_resolution" shared="true">
-        <return-type type="double" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="ContextGetShapeRenderer" cname="pango_cairo_context_get_shape_renderer" shared="true">
-        <return-type type="PangoCairoShapeRendererFunc" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-          <parameter type="gpointer*" name="data" />
-        </parameters>
-      </method>
-      <method name="ContextSetFontOptions" cname="pango_cairo_context_set_font_options" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-          <parameter type="const-cairo_font_options_t*" name="options" />
-        </parameters>
-      </method>
-      <method name="ContextSetResolution" cname="pango_cairo_context_set_resolution" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-          <parameter type="double" name="dpi" />
-        </parameters>
-      </method>
-      <method name="ContextSetShapeRenderer" cname="pango_cairo_context_set_shape_renderer" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="PangoContext*" name="context" />
-          <parameter type="PangoCairoShapeRendererFunc" name="func" />
-          <parameter type="gpointer" name="data" />
-          <parameter type="GDestroyNotify" name="dnotify" />
-        </parameters>
-      </method>
-      <method name="CreateLayout" cname="pango_cairo_create_layout" shared="true">
-        <return-type type="PangoLayout*" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-        </parameters>
-      </method>
-      <method name="ErrorUnderlinePath" cname="pango_cairo_error_underline_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="double" name="x" />
-          <parameter type="double" name="y" />
-          <parameter type="double" name="width" />
-          <parameter type="double" name="height" />
-        </parameters>
-      </method>
-      <method name="GlyphStringPath" cname="pango_cairo_glyph_string_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyphString*" name="glyphs" />
-        </parameters>
-      </method>
-      <method name="LayoutLinePath" cname="pango_cairo_layout_line_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayoutLine*" name="line" />
-        </parameters>
-      </method>
-      <method name="LayoutPath" cname="pango_cairo_layout_path" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-        </parameters>
-      </method>
-      <method name="ShowErrorUnderline" cname="pango_cairo_show_error_underline" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="double" name="x" />
-          <parameter type="double" name="y" />
-          <parameter type="double" name="width" />
-          <parameter type="double" name="height" />
-        </parameters>
-      </method>
-      <method name="ShowGlyphString" cname="pango_cairo_show_glyph_string" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoFont*" name="font" />
-          <parameter type="PangoGlyphString*" name="glyphs" />
-        </parameters>
-      </method>
-      <method name="ShowLayout" cname="pango_cairo_show_layout" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-        </parameters>
-      </method>
-      <method name="ShowLayoutLine" cname="pango_cairo_show_layout_line" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayoutLine*" name="line" />
-        </parameters>
-      </method>
-      <method name="UpdateContext" cname="pango_cairo_update_context" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoContext*" name="context" />
-        </parameters>
-      </method>
-      <method name="UpdateLayout" cname="pango_cairo_update_layout" shared="true">
-        <return-type type="void" />
-        <parameters>
-          <parameter type="cairo_t*" name="cr" />
-          <parameter type="PangoLayout*" name="layout" />
-        </parameters>
-      </method>
-    </class>
     <class name="Global" cname="PangoGlobal">
+      <method name="BidiTypeForUnichar" cname="pango_bidi_type_for_unichar" shared="true">
+        <return-type type="PangoBidiType" />
+        <parameters>
+          <parameter type="gunichar" name="ch" />
+        </parameters>
+      </method>
       <method name="ExtentsToPixels" cname="pango_extents_to_pixels" shared="true">
         <return-type type="void" />
         <parameters>
-          <parameter type="PangoRectangle*" name="ink_rect" />
-          <parameter type="PangoRectangle*" name="logical_rect" />
+          <parameter type="PangoRectangle*" name="inclusive" />
+          <parameter type="PangoRectangle*" name="nearest" />
         </parameters>
       </method>
       <method name="FindBaseDir" cname="pango_find_base_dir" shared="true">
@@ -2415,6 +2448,148 @@
         <return-type type="PangoDirection" />
         <parameters>
           <parameter type="gunichar" name="ch" />
+        </parameters>
+      </method>
+    </class>
+    <class name="Cairo" cname="PangoCairo_">
+      <method name="ContextGetFontOptions" cname="pango_cairo_context_get_font_options" shared="true">
+        <return-type type="const-cairo_font_options_t*" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="ContextGetResolution" cname="pango_cairo_context_get_resolution" shared="true">
+        <return-type type="double" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="ContextGetShapeRenderer" cname="pango_cairo_context_get_shape_renderer" shared="true">
+        <return-type type="PangoCairoShapeRendererFunc" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+          <parameter type="gpointer*" name="data" />
+        </parameters>
+      </method>
+      <method name="ContextSetFontOptions" cname="pango_cairo_context_set_font_options" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+          <parameter type="const-cairo_font_options_t*" name="options" />
+        </parameters>
+      </method>
+      <method name="ContextSetResolution" cname="pango_cairo_context_set_resolution" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+          <parameter type="double" name="dpi" />
+        </parameters>
+      </method>
+      <method name="ContextSetShapeRenderer" cname="pango_cairo_context_set_shape_renderer" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="PangoContext*" name="context" />
+          <parameter type="PangoCairoShapeRendererFunc" name="func" />
+          <parameter type="gpointer" name="data" />
+          <parameter type="GDestroyNotify" name="dnotify" />
+        </parameters>
+      </method>
+      <method name="CreateContext" cname="pango_cairo_create_context" shared="true">
+        <return-type type="PangoContext*" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+        </parameters>
+      </method>
+      <method name="CreateLayout" cname="pango_cairo_create_layout" shared="true">
+        <return-type type="PangoLayout*" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+        </parameters>
+      </method>
+      <method name="ErrorUnderlinePath" cname="pango_cairo_error_underline_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="double" name="x" />
+          <parameter type="double" name="y" />
+          <parameter type="double" name="width" />
+          <parameter type="double" name="height" />
+        </parameters>
+      </method>
+      <method name="GlyphStringPath" cname="pango_cairo_glyph_string_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
+        </parameters>
+      </method>
+      <method name="LayoutLinePath" cname="pango_cairo_layout_line_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayoutLine*" name="line" />
+        </parameters>
+      </method>
+      <method name="LayoutPath" cname="pango_cairo_layout_path" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
+        </parameters>
+      </method>
+      <method name="ShowErrorUnderline" cname="pango_cairo_show_error_underline" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="double" name="x" />
+          <parameter type="double" name="y" />
+          <parameter type="double" name="width" />
+          <parameter type="double" name="height" />
+        </parameters>
+      </method>
+      <method name="ShowGlyphItem" cname="pango_cairo_show_glyph_item" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="const-char*" name="text" />
+          <parameter type="PangoGlyphItem*" name="glyph_item" />
+        </parameters>
+      </method>
+      <method name="ShowGlyphString" cname="pango_cairo_show_glyph_string" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoFont*" name="font" />
+          <parameter type="PangoGlyphString*" name="glyphs" />
+        </parameters>
+      </method>
+      <method name="ShowLayout" cname="pango_cairo_show_layout" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
+        </parameters>
+      </method>
+      <method name="ShowLayoutLine" cname="pango_cairo_show_layout_line" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayoutLine*" name="line" />
+        </parameters>
+      </method>
+      <method name="UpdateContext" cname="pango_cairo_update_context" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoContext*" name="context" />
+        </parameters>
+      </method>
+      <method name="UpdateLayout" cname="pango_cairo_update_layout" shared="true">
+        <return-type type="void" />
+        <parameters>
+          <parameter type="cairo_t*" name="cr" />
+          <parameter type="PangoLayout*" name="layout" />
         </parameters>
       </method>
     </class>

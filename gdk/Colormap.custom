@@ -1,11 +1,8 @@
-// Gtk.ColorSelectionDialog.custom - Gtk ColorSelectionDialog class customizations
+// Gdk.Colormap.custom - Colormap customizations
 //
-// Author: Duncan Mak  (duncan@ximian.com)
-//
-// Copyright (C) 2002 Ximian, Inc. 
+// Copyright (c) 2009 Novell, Inc.
 //
 // This code is inserted after the automatically generated code.
-//
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of version 2 of the Lesser GNU General 
@@ -22,16 +19,12 @@
 // Boston, MA 02111-1307, USA.
 
 
-[Obsolete ("Do not use this class. It will cause your app to crash in mysterious ways.")]
-public class ColorSelectionButton : Gtk.Button {
-	private ColorSelectionDialog color_sel;
+		public int AllocColors (Gdk.Color[] colors, int n_colors, bool writeable, bool best_match, bool[] success)
+		{
+			return gdk_colormap_alloc_colors (Handle, colors, n_colors, writeable, best_match, success);
+		}
 
-	public ColorSelectionDialog ColorSelectionDialog {
-		get { return color_sel; }
-	}
-
-	public ColorSelectionButton (ColorSelectionDialog cs, IntPtr raw) : base (raw) {
-		color_sel = cs;
-	}
-}
-
+		public void FreeColors (Gdk.Color[] colors, int n_colors)
+		{
+			gdk_colormap_free_colors (Handle, colors, n_colors);
+		}

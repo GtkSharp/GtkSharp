@@ -296,7 +296,6 @@ foreach $cbname (sort(keys(%fpdefs))) {
 	}
 }
 
-
 ##############################################################
 # Parse the interfaces list.   
 ##############################################################
@@ -475,8 +474,7 @@ foreach $define (sort (keys (%defines))) {
 ##############################################################
 
 if ($ARGV[1]) {
-	open(XMLFILE, ">$ARGV[1]") || 
-				die "Couldn't open $ARGV[1] for writing.\n";
+	open(XMLFILE, ">$ARGV[1]") || die "Couldn't open $ARGV[1] for writing.\n";
 	print XMLFILE $doc->toString();
 	close(XMLFILE);
 } else {
@@ -503,6 +501,7 @@ sub addFieldElems
 			$field = $2;
 		}
 		next if ($field !~ /\S/);
+		$field =~ s/GSEAL\s*\((.*)\)/\1/g;
 		$field =~ s/\s+(\*+)/\1 /g;
 		$field =~ s/(const\s+)?(\w+)\*\s+const\*/const \2\*/g;
 		$field =~ s/(\w+)\s+const\s*\*/const \1\*/g;

@@ -4,7 +4,6 @@ libgtksharpglue_2_la_SOURCES =	\
 	adjustment.c		\
 	cellrenderer.c		\
 	clipboard.c		\
-	colorseldialog.c	\
 	container.c		\
 	nodestore.c		\
 	object.c		\

@@ -8,9 +8,9 @@ endif
 
 pkg = gdk
 SYMBOLS = gdk-symbols.xml
-INCLUDE_API = $(srcdir)/../glib/glib-api.xml ../pango/pango-api.xml
+INCLUDE_API = $(srcdir)/../glib/glib-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
 METADATA = Gdk.metadata
-references = ../glib/glib-sharp.dll ../pango/pango-sharp.dll $(local_mono_cairo)
+references = $(top_builddir)/glib/glib-sharp.dll $(top_builddir)/gio/gio-sharp.dll $(top_builddir)/pango/pango-sharp.dll $(local_mono_cairo)
 glue_includes = gdk/gdk.h
 
 sources = 			\
@@ -40,6 +40,7 @@ sources = 			\
 customs = 			\
 	Atom.custom		\
 	Color.custom		\
+	Colormap.custom		\
 	Device.custom		\
 	DeviceAxis.custom	\
 	Display.custom		\

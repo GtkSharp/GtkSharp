@@ -62,7 +62,11 @@ namespace GtkSharp.Generation {
 		protected string cstype;
 		public string CSType {
 			get {
-				if (cstype == null)
+				if (Getter != null)
+					return Getter.Signature.IsAccessor ? Getter.Signature.AccessorType : Getter.ReturnType;
+				else if (Setter != null)
+					return Setter.Signature.Types;
+				else if (cstype == null)
 					cstype = SymbolTable.Table.GetCSType (CType);
 				return cstype;
 			}
@@ -80,33 +84,23 @@ namespace GtkSharp.Generation {
 			}
 		}
 
-		Method getter;
 		protected Method Getter {
 			get {
-				if (getter == null) {
-					getter = container_type.GetMethod ("Get" + Name);
-					if (getter != null && getter.Name == "Get" + Name &&
-					    getter.IsGetter)
-						cstype = getter.ReturnType;
-					else
-						getter = null;
-				}
-				return getter;
+				Method getter = container_type.GetMethod ("Get" + Name);
+				if (getter != null && getter.Name == "Get" + Name && getter.IsGetter)
+					return getter;
+				else
+					return null;
 			}
 		}
 
-		Method setter;
 		protected Method Setter {
 			get {
-				if (setter == null) {
-					setter = container_type.GetMethod ("Set" + Name);
-					if (setter != null && setter.Name == "Set" + Name &&
-					    setter.IsSetter)
-						cstype = setter.Signature.Types;
-					else
-						setter = null;
-				}
-				return setter;
+				Method setter = container_type.GetMethod ("Set" + Name);
+				if (setter != null && setter.Name == "Set" + Name && setter.IsSetter && (Getter == null || setter.Signature.Types == CSType))
+					return setter;
+				else
+					return null;
 			}
 		}
 
