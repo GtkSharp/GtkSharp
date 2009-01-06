@@ -334,14 +334,14 @@ namespace GLib {
 			return Marshal.ReadIntPtr (klass);
 		}
 
-		internal bool IsA (IntPtr type)
+		internal static bool Is (IntPtr type, GType is_a_type)
 		{
-			return g_type_is_a (type, Val);
+			return g_type_is_a (type, is_a_type.Val);
 		}
 
 		public bool IsInstance (IntPtr raw)
 		{
-			return IsA (ValFromInstancePtr (raw));
+			return GType.Is (ValFromInstancePtr (raw), this);
 		}
 
 		[DllImport("libgobject-2.0-0.dll")]
