@@ -2,13 +2,28 @@
   <TypeSignature Language="C#" Value="public class Process" />
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>Process class.</summary>
+    <remarks>Methods for spawning child processes.</remarks>
+  </Docs>
   <Members>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public void Close ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Closes a process.</summary>
+        <remarks>Processes spawned with <see cref="M:GLib.SpawnFlags.DoNotReapChild" /> must use this method to ensure zombie processes are not stranded.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="IgnorePipe">
       <MemberSignature Language="C#" Value="public const int IgnorePipe = 2147483647;" />
       <MemberType>Field</MemberType>
@@ -31,138 +46,6 @@
       <Docs>
         <summary>RequestPipe field.</summary>
         <remarks>Pass this value to <see cref="M:GLib.Process.SpawnAsyncWithPipes" /> to request a request a pipe descriptor be returned in the parameter.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SpawnCommandLineAsync">
-      <MemberSignature Language="C#" Value="public static bool SpawnCommandLineAsync (string command_line);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="command_line" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="command_line">The command line with arguments.</param>
-        <summary>Spawns a child process asynchronously.</summary>
-        <returns>A boolean value indicating spawning success.</returns>
-        <remarks />
-        <remarks>
-          <para>This method does not wait for the child process to complete before returning. It is a convenience method for the more detailed <see cref="M:GLib.Process.SpawnAsync" /> method.</para>
-          <para>
-            <example>
-              <code lang="C#">
-...
-try {
-	GLib.Process.SpawnCommandLineAsync ("echo \"[Async echo process running]\"");
-} catch (GException e) {
-	Console.WriteLine ("Exception in Spawn operation: " + e);
-}
-...
-            </code>
-            </example>
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SpawnCommandLineSync">
-      <MemberSignature Language="C#" Value="public static bool SpawnCommandLineSync (string command_line, out string stdout, out string stderr, out int exit_status);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="command_line" Type="System.String" />
-        <Parameter Name="stdout" Type="System.String&amp;" RefType="out" />
-        <Parameter Name="stderr" Type="System.String&amp;" RefType="out" />
-        <Parameter Name="exit_status" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="command_line">The command line with arguments.</param>
-        <param name="stdout">Returns the stdout output of the child process as a string.</param>
-        <param name="stderr">Returns the stderr output of the child process as a string.</param>
-        <param name="exit_status">Returns the exit code returned by the process.</param>
-        <summary>Spawns a child process synchronously.</summary>
-        <returns>A boolean value indicating spawning success.</returns>
-        <remarks>
-          <para>The method waits for the child process to complete prior to returning. This is a convenience method for the more detailed <see cref="M:GLib.Process.SpawnSync" /> method.</para>
-          <para>
-            <example>
-              <code lang="C#">
-...
-try {
-	string stdout, stderr;
-	int exit_status;
-	GLib.Process.SpawnCommandLineSync ("pwd", out stdout, out stderr, out exit_status);
-	Console.Write ("pwd exit_status=" + exit_status + " output: " + stdout);
-} catch (GException e) {
-	Console.WriteLine ("Exception in Spawn operation: " + e);
-}
-...
-            </code>
-            </example>
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SpawnSync">
-      <MemberSignature Language="C#" Value="public static bool SpawnSync (string working_directory, string[] argv, string[] envp, GLib.SpawnFlags flags, GLib.SpawnChildSetupFunc child_setup, out string stdout, out string stderr, out int exit_status);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="working_directory" Type="System.String" />
-        <Parameter Name="argv" Type="System.String[]" />
-        <Parameter Name="envp" Type="System.String[]" />
-        <Parameter Name="flags" Type="GLib.SpawnFlags" />
-        <Parameter Name="child_setup" Type="GLib.SpawnChildSetupFunc" />
-        <Parameter Name="stdout" Type="System.String&amp;" RefType="out" />
-        <Parameter Name="stderr" Type="System.String&amp;" RefType="out" />
-        <Parameter Name="exit_status" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="working_directory">The directory in which to execute the process, or <see langword="null" /> to use the current directory of the parent process.</param>
-        <param name="argv">A string array containing the program name in the first element.</param>
-        <param name="envp">An array of environment values in the form 'var=value', or <see langword="null" />.</param>
-        <param name="flags">Process spawning configuration flags.</param>
-        <param name="child_setup">A child process setup callback, or <see langword="null" />.</param>
-        <param name="stdout">Returns the stdout output of the child process as a string.</param>
-        <param name="stderr">Returns the stderr output of the child process as a string.</param>
-        <param name="exit_status">Returns the exit code of the child process.</param>
-        <summary>Spawns a child process synchronously.</summary>
-        <returns>A boolean value indicating spawning success.</returns>
-        <remarks>
-          <para>The method waits for the child process to complete prior to returning.</para>
-          <para>
-            <example>
-              <code lang="C#">
-...
-try {
-	string stdout, stderr;
-	int exit_status;
-	GLib.Process.SpawnSync ("/usr", new string[] {"pwd"}, null, GLib.SpawnFlags.SearchPath, null, out stdout, out stderr, out exit_status);
-	Console.Write ("pwd exit_status=" + exit_status + " output: " + stdout);
-} catch (GException e) {
-	Console.WriteLine ("Exception in Spawn operation: " + e);
-}
-...
-            </code>
-            </example>
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Close">
-      <MemberSignature Language="C#" Value="public void Close ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Closes a process.</summary>
-        <remarks>Processes spawned with <see cref="M:GLib.SpawnFlags.DoNotReapChild" /> must use this method to ensure zombie processes are not stranded.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SpawnAsync">
@@ -294,9 +177,125 @@ public class SpawnTest  {
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="SpawnCommandLineAsync">
+      <MemberSignature Language="C#" Value="public static bool SpawnCommandLineAsync (string command_line);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="command_line" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="command_line">The command line with arguments.</param>
+        <summary>Spawns a child process asynchronously.</summary>
+        <returns>A boolean value indicating spawning success.</returns>
+        <remarks />
+        <remarks>
+          <para>This method does not wait for the child process to complete before returning. It is a convenience method for the more detailed <see cref="M:GLib.Process.SpawnAsync" /> method.</para>
+          <para>
+            <example>
+              <code lang="C#">
+...
+try {
+	GLib.Process.SpawnCommandLineAsync ("echo \"[Async echo process running]\"");
+} catch (GException e) {
+	Console.WriteLine ("Exception in Spawn operation: " + e);
+}
+...
+            </code>
+            </example>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SpawnCommandLineSync">
+      <MemberSignature Language="C#" Value="public static bool SpawnCommandLineSync (string command_line, out string stdout, out string stderr, out int exit_status);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="command_line" Type="System.String" />
+        <Parameter Name="stdout" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="stderr" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="exit_status" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="command_line">The command line with arguments.</param>
+        <param name="stdout">Returns the stdout output of the child process as a string.</param>
+        <param name="stderr">Returns the stderr output of the child process as a string.</param>
+        <param name="exit_status">Returns the exit code returned by the process.</param>
+        <summary>Spawns a child process synchronously.</summary>
+        <returns>A boolean value indicating spawning success.</returns>
+        <remarks>
+          <para>The method waits for the child process to complete prior to returning. This is a convenience method for the more detailed <see cref="M:GLib.Process.SpawnSync" /> method.</para>
+          <para>
+            <example>
+              <code lang="C#">
+...
+try {
+	string stdout, stderr;
+	int exit_status;
+	GLib.Process.SpawnCommandLineSync ("pwd", out stdout, out stderr, out exit_status);
+	Console.Write ("pwd exit_status=" + exit_status + " output: " + stdout);
+} catch (GException e) {
+	Console.WriteLine ("Exception in Spawn operation: " + e);
+}
+...
+            </code>
+            </example>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SpawnSync">
+      <MemberSignature Language="C#" Value="public static bool SpawnSync (string working_directory, string[] argv, string[] envp, GLib.SpawnFlags flags, GLib.SpawnChildSetupFunc child_setup, out string stdout, out string stderr, out int exit_status);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="working_directory" Type="System.String" />
+        <Parameter Name="argv" Type="System.String[]" />
+        <Parameter Name="envp" Type="System.String[]" />
+        <Parameter Name="flags" Type="GLib.SpawnFlags" />
+        <Parameter Name="child_setup" Type="GLib.SpawnChildSetupFunc" />
+        <Parameter Name="stdout" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="stderr" Type="System.String&amp;" RefType="out" />
+        <Parameter Name="exit_status" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="working_directory">The directory in which to execute the process, or <see langword="null" /> to use the current directory of the parent process.</param>
+        <param name="argv">A string array containing the program name in the first element.</param>
+        <param name="envp">An array of environment values in the form 'var=value', or <see langword="null" />.</param>
+        <param name="flags">Process spawning configuration flags.</param>
+        <param name="child_setup">A child process setup callback, or <see langword="null" />.</param>
+        <param name="stdout">Returns the stdout output of the child process as a string.</param>
+        <param name="stderr">Returns the stderr output of the child process as a string.</param>
+        <param name="exit_status">Returns the exit code of the child process.</param>
+        <summary>Spawns a child process synchronously.</summary>
+        <returns>A boolean value indicating spawning success.</returns>
+        <remarks>
+          <para>The method waits for the child process to complete prior to returning.</para>
+          <para>
+            <example>
+              <code lang="C#">
+...
+try {
+	string stdout, stderr;
+	int exit_status;
+	GLib.Process.SpawnSync ("/usr", new string[] {"pwd"}, null, GLib.SpawnFlags.SearchPath, null, out stdout, out stderr, out exit_status);
+	Console.Write ("pwd exit_status=" + exit_status + " output: " + stdout);
+} catch (GException e) {
+	Console.WriteLine ("Exception in Spawn operation: " + e);
+}
+...
+            </code>
+            </example>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
   </Members>
-  <Docs>
-    <summary>Process class.</summary>
-    <remarks>Methods for spawning child processes.</remarks>
-  </Docs>
 </Type>

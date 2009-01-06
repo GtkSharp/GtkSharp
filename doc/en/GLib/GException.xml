@@ -4,18 +4,17 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Exception emitted by GError receipt from native methods.</summary>
-    <remarks>When a native method takes a GError parameter to report failures in method invocation, if the GError parameter is set after method invocation this Exception is thrown to report the error.</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Exception</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Exception emitted by GError receipt from native methods.</summary>
+    <remarks>When a native method takes a GError parameter to report failures in method invocation, if the GError parameter is set after method invocation this Exception is thrown to report the error.</remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public GException (IntPtr errptr);" />
@@ -25,9 +24,33 @@
         <Parameter Name="errptr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor.</summary>
         <param name="errptr">a handle to the native GError pointer.</param>
+        <summary>Internal constructor.</summary>
         <remarks>This constructor is public so that generated code in assemblies outside of glib-sharp.dll can access it, but it should not be necessary to use it from application code.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~GException ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Finalizer.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Message">
+      <MemberSignature Language="C#" Value="public override string Message { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Error message.</summary>
+        <value>a string containing the native gerror msg.</value>
+        <remarks />
       </Docs>
     </Member>
   </Members>

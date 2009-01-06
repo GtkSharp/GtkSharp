@@ -4,13 +4,8 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Base class for all of Gtk#.</summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
@@ -22,48 +17,185 @@
       <InterfaceName>System.IDisposable</InterfaceName>
     </Interface>
   </Interfaces>
+  <Docs>
+    <summary>Base class for all of Gtk#.</summary>
+    <remarks />
+  </Docs>
   <Members>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Object ();" />
+      <MemberType>Constructor</MemberType>
+      <Parameters />
+      <Docs>
+        <summary>Protected constructor.</summary>
+        <remarks>Chain to this constructor causes a native type to be registered and a native object instance to be constructed.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Object (GLib.GType gtype);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="gtype" Type="GLib.GType" />
+      </Parameters>
+      <Docs>
+        <param name="gtype">The <see cref="T:GLib.GType" /> to register with the GLib type system.</param>
+        <summary>Creates a new <see cref="T:GLib.Object" /> instance, using the GLib-provided type.</summary>
+        <remarks>
+          <para>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.
+</para>
+          <para>
+    This is typically used to construct a new object that must be registered with the C-based GObject type system.  An <see cref="T:GLib.GType" /> is usually registered from the static constructor for the class.
+</para>
+        </remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Object (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">The pointer to the native C object.</param>
+        <summary>Constructs the object from a C-based pointer to the GLib object.</summary>
+        <remarks>
+          <para>
+This constructor is used to associate a C-based GLib object with its equivalent object in the managed world.   
+</para>
+          <para>
+This method is called by the generated classes by the Gtk# framework.
+</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddNotification">
+      <MemberSignature Language="C#" Value="public void AddNotification (GLib.NotifyHandler handler);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="handler" Type="GLib.NotifyHandler" />
+      </Parameters>
       <Docs>
-        <summary>Disposes of the raw object.</summary>
-        <remarks>Only override this if the Raw object should not be unreferenced when the object is garbage collected.</remarks>
+        <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when a GObject property changes</param>
+        <summary>Request property-change notifications for all GObject properties</summary>
+        <remarks>This connects to the GObject "notify" signal with no detail argument, to receive notifications when any property changes.</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="AddNotification">
+      <MemberSignature Language="C#" Value="public void AddNotification (string property, GLib.NotifyHandler handler);" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The raw GObject reference associated with this object.</summary>
-        <value>an object of type <see cref="T:System.IntPtr" /></value>
-        <remarks>Subclasses can use Raw property for read/write access.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Raw">
-      <MemberSignature Language="C#" Value="protected virtual IntPtr Raw { set; get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
+        <Parameter Name="property" Type="System.String" />
+        <Parameter Name="handler" Type="GLib.NotifyHandler" />
       </Parameters>
       <Docs>
-        <summary>The raw GObject reference associated with this wrapper.</summary>
-        <value>an object of type <see cref="T:System.IntPtr" /></value>
-        <remarks>	Only subclasses of Object can access this read/write property.  For public read-only access, use the Handle property. This property should only be used from constructors to set a native object pointer instantiated by the constructor. The constructor should chain to base (IntPtr.Zero) on the base class to ensure that no other native objects are instantiated for the class.</remarks>
+        <param name="property">the property to watch (the underlying GObject property name, not the managed wrapper property)</param>
+        <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when <paramref name="property" /> changes</param>
+        <summary>Request property-change notifications</summary>
+        <remarks>This connects to the GObject "notify" signal with a detail argument of <paramref name="property" />, to receive notifications when that property changes.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="AfterHandlers">
+      <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList AfterHandlers { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.EventHandlerList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="AfterSignals">
+      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable AfterSignals { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Hashtable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="BeforeHandlers">
+      <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList BeforeHandlers { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.EventHandlerList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="BeforeSignals">
+      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable BeforeSignals { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Hashtable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="CreateNativeObject">
+      <MemberSignature Language="C#" Value="protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="names" Type="System.String[]" />
+        <Parameter Name="vals" Type="GLib.Value[]" />
+      </Parameters>
+      <Docs>
+        <param name="names">an array of (GObject) property names</param>
+        <param name="vals">the values for the properties identified by <paramref name="names" /></param>
+        <summary>Creates the GObject underlying a managed <see cref="T:GLib.Object" /> subclass</summary>
+        <remarks>This is the method used by managed <see cref="T:GLib.Object" /> subclasses (as opposed to classes that are just wrappers around C-based objects) to create their underlying GObject. It will be invoked for you automatically by when you chain to your subclass's base class constructor.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Data">
-      <MemberSignature Language="C#" Value="public System.Collections.Hashtable Data { get; };" />
+      <MemberSignature Language="C#" Value="public System.Collections.Hashtable Data { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Collections.Hashtable</ReturnType>
@@ -81,35 +213,59 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetObject">
-      <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o, bool owned_ref);" />
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public virtual void Dispose ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>GLib.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="o" Type="System.IntPtr" />
-        <Parameter Name="owned_ref" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <summary>Used to obtain a CLI typed object associated with a given raw object pointer.</summary>
-        <param name="o">a <see cref="T:System.IntPtr" /></param>
-        <param name="owned_ref">a <see cref="T:System.Boolean" /></param>
-        <returns>a <see cref="T:GLib.Object" /></returns>
-        <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return GObject references.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
+        <summary>Disposes of the raw object.</summary>
+        <remarks>Only override this if the Raw object should not be unreferenced when the object is garbage collected.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~Object ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Finalizer.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="g_signal_chain_from_overridden">
+      <MemberSignature Language="C#" Value="protected static void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IntPtr" />
+        <Parameter Name="retval" Type="GLib.Value&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="args">a <see cref="T:System.IntPtr" /></param>
+        <param name="retval">a <see cref="T:GLib.Value" /></param>
         <summary>To be added</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets a hash value.</summary>
+        <returns>integer hash value.</returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetObject">
@@ -122,10 +278,114 @@
         <Parameter Name="o" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="o">a <see cref="T:System.IntPtr" /></param>
+        <summary>To be added</summary>
         <returns>a <see cref="T:GLib.Object" /></returns>
         <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public static GLib.Object GetObject (IntPtr o, bool owned_ref);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.IntPtr" />
+        <Parameter Name="owned_ref" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="o">a <see cref="T:System.IntPtr" /></param>
+        <param name="owned_ref">a <see cref="T:System.Boolean" /></param>
+        <summary>Used to obtain a CLI typed object associated with a given raw object pointer.</summary>
+        <returns>a <see cref="T:GLib.Object" /></returns>
+        <remarks>This method is primarily used to wrap object references that are returned by either the signal system or raw class methods that return GObject references.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetProperty">
+      <MemberSignature Language="C#" Value="protected GLib.Value GetProperty (string name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.Value</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">a <see cref="T:System.String" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:GLib.Value" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The raw GObject reference associated with this object.</summary>
+        <value>an object of type <see cref="T:System.IntPtr" /></value>
+        <remarks>Subclasses can use Raw property for read/write access.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupGType">
+      <MemberSignature Language="C#" Value="protected GLib.GType LookupGType ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:GLib.GType" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupGType">
+      <MemberSignature Language="C#" Value="protected static GLib.GType LookupGType (Type t);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="t" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="t">a managed object type.</param>
+        <summary>Gets a gtype for a given managed object type.</summary>
+        <returns>the native type.</returns>
+        <remarks />
+        <since version="Gtk# 2.14" />
+      </Docs>
+    </Member>
+    <Member MemberName="Notify">
+      <MemberSignature Language="C#" Value="protected void Notify (string property_name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="property_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="property_name">the name of a property on the underlying GObject.</param>
+        <summary>Emits a GObject "notify" signal for the property specified by <paramref name="property_name" />.</summary>
+        <remarks>This method is used to notify consumers of the underlying GObject that something about the GObject property specified by <paramref name="property_name" /> has changed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="OverrideVirtualMethod">
@@ -140,119 +400,55 @@
         <Parameter Name="cb" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="gtype">a <see cref="T:GLib.GType" /></param>
         <param name="name">a <see cref="T:System.String" /></param>
         <param name="cb">a <see cref="T:System.Delegate" /></param>
+        <summary>To be added</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Object (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="OwnedHandle">
+      <MemberSignature Language="C#" Value="public IntPtr OwnedHandle { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets an owned ref to the native object.</summary>
+        <value>an object pointer.</value>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="PersistentData">
+      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable PersistentData { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.Hashtable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Data hash to persistently store managed objects.</summary>
+        <value>a <see cref="T:System.Collections.Hashtable" /></value>
+        <remarks>This data hash is persistent until the native object is destroyed and can therefore outlast a GLib.Object wrapper class.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Raw">
+      <MemberSignature Language="C#" Value="protected virtual IntPtr Raw { set; get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
       <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>Creates a new <see cref="T:GLib.Object" /> instance, using the GLib-provided type.</summary>
-        <param name="gtype">The <see cref="T:GLib.GType" /> to register with the GLib type system.</param>
-        <remarks>
-          <para>This is a constructor used by derivative types of <see cref="T:GLib.Object" /> that would have their own GLib.GType assigned to it.  This is not typically used by C# code.
-</para>
-          <para>
-    This is typically used to construct a new object that must be registered with the C-based GObject type system.  An <see cref="T:GLib.GType" /> is usually registered from the static constructor for the class.
-</para>
-        </remarks>
+        <summary>The raw GObject reference associated with this wrapper.</summary>
+        <value>an object of type <see cref="T:System.IntPtr" /></value>
+        <remarks>	Only subclasses of Object can access this read/write property.  For public read-only access, use the Handle property. This property should only be used from constructors to set a native object pointer instantiated by the constructor. The constructor should chain to base (IntPtr.Zero) on the base class to ensure that no other native objects are instantiated for the class.</remarks>
       </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="TypeName">
-      <MemberSignature Language="C#" Value="protected string TypeName { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.String" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BeforeSignals">
-      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable BeforeSignals { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Collections.Hashtable</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Collections.Hashtable" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="AfterSignals">
-      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable AfterSignals { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Collections.Hashtable</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.Collections.Hashtable" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="BeforeHandlers">
-      <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList BeforeHandlers { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.ComponentModel.EventHandlerList</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="AfterHandlers">
-      <MemberSignature Language="C#" Value="protected System.ComponentModel.EventHandlerList AfterHandlers { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.ComponentModel.EventHandlerList</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added</summary>
-        <value>a <see cref="T:System.ComponentModel.EventHandlerList" /></value>
-        <remarks>To be added</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("Replaced by GLib.Signal marshaling mechanism.")</AttributeName>
-        </Attribute>
-      </Attributes>
     </Member>
     <Member MemberName="RefCount">
-      <MemberSignature Language="C#" Value="protected int RefCount { get; };" />
+      <MemberSignature Language="C#" Value="protected int RefCount { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -273,147 +469,14 @@
         <Parameter Name="t" Type="System.Type" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="t">a <see cref="T:System.Type" /></param>
-        <returns>a <see cref="T:GLib.GType" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="g_signal_chain_from_overridden">
-      <MemberSignature Language="C#" Value="protected static void g_signal_chain_from_overridden (IntPtr args, ref GLib.Value retval);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="args" Type="System.IntPtr" />
-        <Parameter Name="retval" Type="GLib.Value&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="args">a <see cref="T:System.IntPtr" /></param>
-        <param name="retval">a <see cref="T:GLib.Value" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LookupGType">
-      <MemberSignature Language="C#" Value="protected GLib.GType LookupGType ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
         <summary>To be added</summary>
         <returns>a <see cref="T:GLib.GType" /></returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="CreateNativeObject">
-      <MemberSignature Language="C#" Value="protected virtual void CreateNativeObject (string[] names, GLib.Value[] vals);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="names" Type="System.String[]" />
-        <Parameter Name="vals" Type="GLib.Value[]" />
-      </Parameters>
-      <Docs>
-        <summary>Creates the GObject underlying a managed <see cref="T:GLib.Object" /> subclass</summary>
-        <param name="names">an array of (GObject) property names</param>
-        <param name="vals">the values for the properties identified by <paramref name="names" /></param>
-        <remarks>This is the method used by managed <see cref="T:GLib.Object" /> subclasses (as opposed to classes that are just wrappers around C-based objects) to create their underlying GObject. It will be invoked for you automatically by when you chain to your subclass's base class constructor.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetProperty">
-      <MemberSignature Language="C#" Value="protected GLib.Value GetProperty (string name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.Value</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:GLib.Value" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetProperty">
-      <MemberSignature Language="C#" Value="protected void SetProperty (string name, GLib.Value val);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="val" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="name">a <see cref="T:System.String" /></param>
-        <param name="val">a <see cref="T:GLib.Value" /></param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Notify">
-      <MemberSignature Language="C#" Value="protected void Notify (string property_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Emits a GObject "notify" signal for the property specified by <paramref name="property_name" />.</summary>
-        <param name="property_name">the name of a property on the underlying GObject.</param>
-        <remarks>This method is used to notify consumers of the underlying GObject that something about the GObject property specified by <paramref name="property_name" /> has changed.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Object (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Constructs the object from a C-based pointer to the GLib object.</summary>
-        <param name="raw">The pointer to the native C object.</param>
-        <remarks>
-          <para>
-This constructor is used to associate a C-based GLib object with its equivalent object in the managed world.   
-</para>
-          <para>
-This method is called by the generated classes by the Gtk# framework.
-</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AddNotification">
-      <MemberSignature Language="C#" Value="public void AddNotification (string property, GLib.NotifyHandler handler);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="property" Type="System.String" />
-        <Parameter Name="handler" Type="GLib.NotifyHandler" />
-      </Parameters>
-      <Docs>
-        <summary>Request property-change notifications</summary>
-        <param name="property">the property to watch (the underlying GObject property name, not the managed wrapper property)</param>
-        <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when <paramref name="property" /> changes</param>
-        <remarks>This connects to the GObject "notify" signal with a detail argument of <paramref name="property" />, to receive notifications when that property changes.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="AddNotification">
-      <MemberSignature Language="C#" Value="public void AddNotification (GLib.NotifyHandler handler);" />
+    <Member MemberName="RemoveNotification">
+      <MemberSignature Language="C#" Value="public void RemoveNotification (GLib.NotifyHandler handler);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -422,9 +485,9 @@ This method is called by the generated classes by the Gtk# framework.
         <Parameter Name="handler" Type="GLib.NotifyHandler" />
       </Parameters>
       <Docs>
-        <summary>Request property-change notifications for all GObject properties</summary>
-        <param name="handler">a <see cref="T:GLib.NotifyHandler" /> to invoke when a GObject property changes</param>
-        <remarks>This connects to the GObject "notify" signal with no detail argument, to receive notifications when any property changes.</remarks>
+        <param name="handler">the <see cref="T:GLib.NotifyHandler" /></param>
+        <summary>Cancels property-change notifications</summary>
+        <remarks>This disconnects from generic property change notifications. (This only affects notifications created with the corresponding generic version of <see cref="M:GLib.Object.AddNotification" />. It does not remove notifications for specific properties.)</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
@@ -439,49 +502,40 @@ This method is called by the generated classes by the Gtk# framework.
         <Parameter Name="handler" Type="GLib.NotifyHandler" />
       </Parameters>
       <Docs>
-        <summary>Cancels property-change notifictions for the indicated property</summary>
         <param name="property">the property</param>
         <param name="handler">the <see cref="T:GLib.NotifyHandler" /></param>
+        <summary>Cancels property-change notifictions for the indicated property</summary>
         <remarks>This disconnects from notifications for <paramref name="property" />.</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="RemoveNotification">
-      <MemberSignature Language="C#" Value="public void RemoveNotification (GLib.NotifyHandler handler);" />
+    <Member MemberName="SetProperty">
+      <MemberSignature Language="C#" Value="protected void SetProperty (string name, GLib.Value val);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="handler" Type="GLib.NotifyHandler" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="val" Type="GLib.Value" />
       </Parameters>
       <Docs>
-        <summary>Cancels property-change notifications</summary>
-        <param name="handler">the <see cref="T:GLib.NotifyHandler" /></param>
-        <remarks>This disconnects from generic property change notifications. (This only affects notifications created with the corresponding generic version of <see cref="M:GLib.Object.AddNotification" />. It does not remove notifications for specific properties.)</remarks>
-        <since version="Gtk# 2.4" />
+        <param name="name">a <see cref="T:System.String" /></param>
+        <param name="val">a <see cref="T:GLib.Value" /></param>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="PersistentData">
-      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable PersistentData { get; };" />
+    <Member MemberName="TypeName">
+      <MemberSignature Language="C#" Value="protected string TypeName { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>System.Collections.Hashtable</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Data hash to persistently store managed objects.</summary>
-        <value>a <see cref="T:System.Collections.Hashtable" /></value>
-        <remarks>This data hash is persistent until the native object is destroyed and can therefore outlast a GLib.Object wrapper class.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected Object ();" />
-      <MemberType>Constructor</MemberType>
-      <Parameters />
-      <Docs>
-        <summary>Protected constructor.</summary>
-        <remarks>Chain to this constructor causes a native type to be registered and a native object instance to be constructed.</remarks>
+        <summary>To be added</summary>
+        <value>a <see cref="T:System.String" /></value>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>

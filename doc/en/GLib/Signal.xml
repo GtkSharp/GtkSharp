@@ -3,19 +3,94 @@
   <AssemblyInfo>
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>[00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00 71 EB 6C 55 75 52 9C BF 72 44 F7 A6 EA 05 62 84 F9 EA E0 3B CF F2 CC 13 2C 9C 49 0A B3 09 EA B0 B5 6B CE 44 9D F5 03 D9 C0 A8 1E 52 05 85 CD BE 70 E2 FB 90 43 4B AC 04 FA 62 22 A8 00 98 B7 A1 A7 B3 AF 99 1A 41 23 24 BB 43 25 F6 B8 65 BB 64 EB F6 D1 C2 06 D5 73 2D DF BC 70 A7 38 9E E5 3E 0C 24 6E 32 79 74 1A D0 05 03 E4 98 42 E1 9B F3 7B 19 8B 40 21 26 CB 36 89 C2 EA 64 96 A4 7C B4]</AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Signal Binding</summary>
     <remarks>Used by GLib.Object subclasses to bind events to native GObject properties.</remarks>
     <since version="Gtk# 2.4" />
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
+    <Member MemberName="AddDelegate">
+      <MemberSignature Language="C#" Value="public void AddDelegate (Delegate d);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="d" Type="System.Delegate" />
+      </Parameters>
+      <Docs>
+        <param name="d">a <see cref="T:System.Delegate" /></param>
+        <summary>Adds a delegate to the signal.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="AddEmissionHook">
+      <MemberSignature Language="C#" Value="public static ulong AddEmissionHook (string detailed_signal, GLib.GType type, GLib.Signal.EmissionHook handler_func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt64</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="detailed_signal" Type="System.String" />
+        <Parameter Name="type" Type="GLib.GType" />
+        <Parameter Name="handler_func" Type="GLib.Signal+EmissionHook" />
+      </Parameters>
+      <Docs>
+        <param name="detailed_signal">detailed signal name.</param>
+        <param name="type">native type containing signal.</param>
+        <param name="handler_func">callback.</param>
+        <summary>Installs an emission hook into the native signal emission.</summary>
+        <returns>an unsigned long.</returns>
+        <remarks>Power user feature.  For more information, consult the gtk+ documentation.</remarks>
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Emit">
+      <MemberSignature Language="C#" Value="public static object Emit (GLib.Object instance, string detailed_signal, object[] args);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instance" Type="GLib.Object" />
+        <Parameter Name="detailed_signal" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="instance">object instance.</param>
+        <param name="detailed_signal">detailed signal name.</param>
+        <param name="args">arguments to the signal emission.</param>
+        <summary>Emits a native signal on an object.</summary>
+        <returns>The return of the native emission.</returns>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="Handler">
+      <MemberSignature Language="C#" Value="public Delegate Handler { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Delegate</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets the handler to invoke for a signal.</summary>
+        <value>a <see cref="T:System.Delegate" /></value>
+        <remarks>Only use this property within a marshaling callback.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Lookup">
       <MemberSignature Language="C#" Value="public static GLib.Signal Lookup (GLib.Object obj, string name);" />
       <MemberType>Method</MemberType>
@@ -27,9 +102,9 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Gets the signal marshaler for a property on an object.</summary>
         <param name="obj">a <see cref="T:GLib.Object" /></param>
         <param name="name">The signal name to look up.</param>
+        <summary>Gets the signal marshaler for a property on an object.</summary>
         <returns>a <see cref="T:GLib.Signal" /></returns>
         <remarks>This overload is used for <see cref="T:System.EventHandler" /> events, which are marshaled internally.</remarks>
       </Docs>
@@ -46,27 +121,33 @@
         <Parameter Name="marshaler" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <summary>Gets the signal marshaler for a property on an object.</summary>
         <param name="obj">a <see cref="T:GLib.Object" /></param>
         <param name="name">The signal name to look up.</param>
         <param name="marshaler">The callback which marshals signal arguments and invokes handlers.</param>
+        <summary>Gets the signal marshaler for a property on an object.</summary>
         <returns>a <see cref="T:GLib.Signal" /></returns>
         <remarks>If the desired event is an <see cref="T:System.EventHandler" />, there is a convenience overload that doesn't require a marshaling callback.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="AddDelegate">
-      <MemberSignature Language="C#" Value="public void AddDelegate (Delegate d);" />
+    <Member MemberName="Lookup">
+      <MemberSignature Language="C#" Value="public static GLib.Signal Lookup (GLib.Object obj, string name, Type args_type);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>GLib.Signal</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="d" Type="System.Delegate" />
+        <Parameter Name="obj" Type="GLib.Object" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="args_type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <summary>Adds a delegate to the signal.</summary>
-        <param name="d">a <see cref="T:System.Delegate" /></param>
+        <param name="obj">a <see cref="T:GLib.Object" /></param>
+        <param name="name">The signal name to look up.</param>
+        <param name="args_type">event argument type.</param>
+        <summary>Gets the marshaler for a signal on an object.</summary>
+        <returns>a <see cref="T:GLib.Signal" /></returns>
         <remarks />
+        <since version="Gtk# 2.12" />
       </Docs>
     </Member>
     <Member MemberName="RemoveDelegate">
@@ -79,22 +160,9 @@
         <Parameter Name="d" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <summary>Removes a delegate from the signal.</summary>
         <param name="d">a <see cref="T:System.Delegate" /></param>
+        <summary>Removes a delegate from the signal.</summary>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Handler">
-      <MemberSignature Language="C#" Value="public Delegate Handler { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Delegate</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets the handler to invoke for a signal.</summary>
-        <value>a <see cref="T:System.Delegate" /></value>
-        <remarks>Only use this property within a marshaling callback.</remarks>
       </Docs>
     </Member>
   </Members>

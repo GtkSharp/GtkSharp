@@ -4,9 +4,13 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.ListBase</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>A list class used by Gtk</summary>
     <remarks>
@@ -41,11 +45,6 @@
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.ListBase</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public List (IntPtr raw);" />
@@ -55,8 +54,8 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Constructs a List</summary>
         <param name="raw">A handle to a <see cref="T:GLib.List" />.</param>
+        <summary>Constructs a List</summary>
         <remarks>
           <para>
             <see cref="T:GLib.List" /> objects are constructed by passing an unmanaged
@@ -68,6 +67,30 @@
 	    of the classes or structures kept in the list.  If you
 	    plan on tracking the type information, use the <see cref="M:GLib.List.List(IntPtr,Type)" /> method.
 	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public List (Type element_type);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="element_type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="element_type">a <see cref="T:System.Type" /></param>
+        <summary>Constructs a list of objects of a given type.</summary>
+        <remarks>
+          <example>
+            <code lang="C#">
+	Gtk.Widget a = new Gtk.Widget((IntPtr) 0);
+		Gtk.Widget b = new Gtk.Widget((IntPtr) 0);
+		
+		GLib.List l = new GLib.List (typeof (Gtk.Widget));
+        l.Append (a.Handle);
+        l.Append (b.Handle);
+  </code>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -99,27 +122,21 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public List (Type element_type);" />
+      <MemberSignature Language="C#" Value="public List (Array elements, Type element_type, bool owned, bool elements_owned);" />
       <MemberType>Constructor</MemberType>
-      <ReturnValue />
       <Parameters>
+        <Parameter Name="elements" Type="System.Array" />
         <Parameter Name="element_type" Type="System.Type" />
+        <Parameter Name="owned" Type="System.Boolean" />
+        <Parameter Name="elements_owned" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Constructs a list of objects of a given type.</summary>
-        <param name="element_type">a <see cref="T:System.Type" /></param>
-        <remarks>
-          <example>
-            <code lang="C#">
-	Gtk.Widget a = new Gtk.Widget((IntPtr) 0);
-		Gtk.Widget b = new Gtk.Widget((IntPtr) 0);
-		
-		GLib.List l = new GLib.List (typeof (Gtk.Widget));
-        l.Append (a.Handle);
-        l.Append (b.Handle);
-  </code>
-          </example>
-        </remarks>
+        <param name="elements">Array on elements to build the list.</param>
+        <param name="element_type">The Type of the elements.</param>
+        <param name="owned">Indicates if the list reference must be released on finalization.</param>
+        <param name="elements_owned">Indicates if the list members must be released on finalization.</param>
+        <summary>Public constructor.</summary>
+        <remarks>Constructs a native GList containing a set of member objects.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -160,22 +177,18 @@
         <remarks>Constructs a native GList containing a set of member objects.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public List (Array elements, Type element_type, bool owned, bool elements_owned);" />
-      <MemberType>Constructor</MemberType>
-      <Parameters>
-        <Parameter Name="elements" Type="System.Array" />
-        <Parameter Name="element_type" Type="System.Type" />
-        <Parameter Name="owned" Type="System.Boolean" />
-        <Parameter Name="elements_owned" Type="System.Boolean" />
-      </Parameters>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public override object Clone ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
       <Docs>
-        <param name="elements">Array on elements to build the list.</param>
-        <param name="element_type">The Type of the elements.</param>
-        <param name="owned">Indicates if the list reference must be released on finalization.</param>
-        <param name="elements_owned">Indicates if the list members must be released on finalization.</param>
-        <summary>Public constructor.</summary>
-        <remarks>Constructs a native GList containing a set of member objects.</remarks>
+        <summary>Clones a list.</summary>
+        <returns>a new native list.</returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
   </Members>

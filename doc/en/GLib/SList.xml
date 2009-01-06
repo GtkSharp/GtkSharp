@@ -4,19 +4,18 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Wrapper class for GSList.</summary>
-    <remarks>
-    </remarks>
-  </Docs>
   <Base>
     <BaseTypeName>GLib.ListBase</BaseTypeName>
   </Base>
   <Interfaces>
   </Interfaces>
+  <Docs>
+    <summary>Wrapper class for GSList.</summary>
+    <remarks>
+    </remarks>
+  </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public SList (IntPtr raw);" />
@@ -26,11 +25,24 @@
         <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Internal constructor</summary>
         <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
         <remarks>
           <para>This is an internal constructor, and should not be used by user code.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SList (Type element_type);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="element_type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="element_type">the <see cref="T:System.Type" /> of the list elements.</param>
+        <summary>Public Constructor.</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -51,16 +63,21 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SList (Type element_type);" />
+      <MemberSignature Language="C#" Value="public SList (Array members, Type element_type, bool owned, bool elements_owned);" />
       <MemberType>Constructor</MemberType>
-      <ReturnValue />
       <Parameters>
+        <Parameter Name="members" Type="System.Array" />
         <Parameter Name="element_type" Type="System.Type" />
+        <Parameter Name="owned" Type="System.Boolean" />
+        <Parameter Name="elements_owned" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Public Constructor.</summary>
-        <param name="element_type">the <see cref="T:System.Type" /> of the list elements.</param>
-        <remarks />
+        <param name="members">An array of list member objects.</param>
+        <param name="element_type">The type of the members.</param>
+        <param name="owned">Indicates if the list reference must be released on finalization.</param>
+        <param name="elements_owned">Indicates if the list members must be released on finalization.</param>
+        <summary>Public constructor.</summary>
+        <remarks>Constructs a native GList containing a set of member objects.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -101,22 +118,18 @@
         <remarks>Constructs a native GList containing a set of member objects.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SList (Array members, Type element_type, bool owned, bool elements_owned);" />
-      <MemberType>Constructor</MemberType>
-      <Parameters>
-        <Parameter Name="members" Type="System.Array" />
-        <Parameter Name="element_type" Type="System.Type" />
-        <Parameter Name="owned" Type="System.Boolean" />
-        <Parameter Name="elements_owned" Type="System.Boolean" />
-      </Parameters>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public override object Clone ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
       <Docs>
-        <param name="members">An array of list member objects.</param>
-        <param name="element_type">The type of the members.</param>
-        <param name="owned">Indicates if the list reference must be released on finalization.</param>
-        <param name="elements_owned">Indicates if the list members must be released on finalization.</param>
-        <summary>Public constructor.</summary>
-        <remarks>Constructs a native GList containing a set of member objects.</remarks>
+        <summary>Clones a list.</summary>
+        <returns>a cloned list.</returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
   </Members>

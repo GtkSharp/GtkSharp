@@ -4,14 +4,8 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Base class for GList and GSList.</summary>
-    <remarks>
-    </remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
@@ -29,23 +23,56 @@
       <InterfaceName>System.IDisposable</InterfaceName>
     </Interface>
   </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
+  <Docs>
+    <summary>Base class for GList and GSList.</summary>
+    <remarks>
+    </remarks>
+  </Docs>
   <Members>
-    <Member MemberName="element_type">
-      <MemberSignature Language="C#" Value="protected Type element_type;" />
-      <MemberType>Field</MemberType>
+    <Member MemberName="Append">
+      <MemberSignature Language="C#" Value="public void Append (IntPtr raw);" />
+      <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Type</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
       <Docs>
-        <summary>The <see cref="T:System.Type" /> of the elements of the list.</summary>
+        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Appends an element to the end of the list.</summary>
         <remarks>
-          <see cref="T:GLib.Object" /> subclasses are handled automatically, so it is not necessary to set this field for lists of <see cref="T:GLib.Object" />.</remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Append">
+      <MemberSignature Language="C#" Value="public void Append (object item);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="item">An item to be appended to the list.</param>
+        <summary>Appends an item to the List.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Append">
+      <MemberSignature Language="C#" Value="public void Append (string item);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="item">an object of type <see cref="T:System.String" /></param>
+        <summary>Appends an element to the end of the list.</summary>
+        <remarks>This is a convenience overload to append a <see cref="T:System.String" /> to the end of a list.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -61,6 +88,36 @@
         <remarks>Produces a copy of the list.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="CopyTo">
+      <MemberSignature Language="C#" Value="public void CopyTo (Array array, int index);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Array" />
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="array">an <see cref="T:System.Array" /> to copy to.</param>
+        <param name="index">the index to start copying at in <paramref name="array" />.</param>
+        <summary>Copies the list to a typed array.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Count">
+      <MemberSignature Language="C#" Value="public int Count { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The number of elements in the list.</summary>
+        <value>the number of elements in the list as an <see cref="T:System.Int32" /></value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Dispose">
       <MemberSignature Language="C#" Value="public void Dispose ();" />
       <MemberType>Method</MemberType>
@@ -73,108 +130,75 @@
         <remarks>If <see cref="M:GLib.ListBase.Managed" /> is set, this frees the native list.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="CopyTo">
-      <MemberSignature Language="C#" Value="public void CopyTo (Array array, int index);" />
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="array" Type="System.Array" />
-        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Copies the list to a typed array.</summary>
-        <param name="array">an <see cref="T:System.Array" /> to copy to.</param>
-        <param name="index">the index to start copying at in <paramref name="array" />.</param>
+        <param name="disposing">a <see cref="T:System.Boolean" /></param>
+        <summary>Disposes the list.</summary>
+        <remarks>If the <see cref="M:GLib.ListBase.Managed" /> property is set, the underlying native list is freed.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="element_type">
+      <MemberSignature Language="C#" Value="protected Type element_type;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The <see cref="T:System.Type" /> of the elements of the list.</summary>
         <remarks>
-        </remarks>
+          <see cref="T:GLib.Object" /> subclasses are handled automatically, so it is not necessary to set this field for lists of <see cref="T:GLib.Object" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Prepend">
-      <MemberSignature Language="C#" Value="public void Prepend (IntPtr raw);" />
+    <Member MemberName="Empty">
+      <MemberSignature Language="C#" Value="public void Empty ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Prepends an element to the front of the list.</summary>
-        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <remarks>This is faster than <see cref="M:GLib.ListBase.Append" />.</remarks>
+        <summary>Empties the list.</summary>
+        <remarks>Empties, and frees the list, as well as all of its children</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="Append">
-      <MemberSignature Language="C#" Value="public void Append (IntPtr raw);" />
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~ListBase ();" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <summary>Appends an element to the end of the list.</summary>
-        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Append">
-      <MemberSignature Language="C#" Value="public void Append (string item);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="item" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Appends an element to the end of the list.</summary>
-        <param name="item">an object of type <see cref="T:System.String" /></param>
-        <remarks>This is a convenience overload to append a <see cref="T:System.String" /> to the end of a list.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SyncRoot">
-      <MemberSignature Language="C#" Value="public object SyncRoot { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Synchronization root.</summary>
-        <value>always <see langword="null" /></value>
-        <remarks>Always returns <see langword="null" /> since this type is never synchronized.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsSynchronized">
-      <MemberSignature Language="C#" Value="public bool IsSynchronized { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Indicates if the list is synchronized.</summary>
-        <value>always <see langword="false" /></value>
-        <remarks>Always returns false. </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public int Count { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The number of elements in the list.</summary>
-        <value>the number of elements in the list as an <see cref="T:System.Int32" /></value>
+        <summary>Finalizer.</summary>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="GetEnumerator">
+      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets an <see cref="T:System.Collections.IEnumerator" /> to enumerate the list elements.</summary>
+        <returns>a <see cref="T:System.Collections.IEnumerator" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Handle">
-      <MemberSignature Language="C#" Value="public IntPtr Handle { get; };" />
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
@@ -186,8 +210,36 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="IsSynchronized">
+      <MemberSignature Language="C#" Value="public bool IsSynchronized { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Indicates if the list is synchronized.</summary>
+        <value>always <see langword="false" /></value>
+        <remarks>Always returns false. </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public object this[int index] { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index">a <see cref="T:System.Int32" /> representing the 0 indexed offset to the member.</param>
+        <summary>Indexer for list members.</summary>
+        <value>the list member at <paramref name="index" /> as an <see cref="T:System.Object" />.</value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Managed">
-      <MemberSignature Language="C#" Value="public bool Managed { set; };" />
+      <MemberSignature Language="C#" Value="public bool Managed { set; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -205,77 +257,31 @@
         </Attribute>
       </Attributes>
     </Member>
-    <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Gets an <see cref="T:System.Collections.IEnumerator" /> to enumerate the list elements.</summary>
-        <returns>a <see cref="T:System.Collections.IEnumerator" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+    <Member MemberName="Prepend">
+      <MemberSignature Language="C#" Value="public void Prepend (IntPtr raw);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
+        <Parameter Name="raw" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <summary>Disposes the list.</summary>
-        <param name="disposing">a <see cref="T:System.Boolean" /></param>
-        <remarks>If the <see cref="M:GLib.ListBase.Managed" /> property is set, the underlying native list is freed.</remarks>
+        <param name="raw">an object of type <see cref="T:System.IntPtr" /></param>
+        <summary>Prepends an element to the front of the list.</summary>
+        <remarks>This is faster than <see cref="M:GLib.ListBase.Append" />.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[int index] { get; };" />
+    <Member MemberName="SyncRoot">
+      <MemberSignature Language="C#" Value="public object SyncRoot { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
       <Docs>
-        <summary>Indexer for list members.</summary>
-        <param name="index">a <see cref="T:System.Int32" /> representing the 0 indexed offset to the member.</param>
-        <value>the list member at <paramref name="index" /> as an <see cref="T:System.Object" />.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Empty">
-      <MemberSignature Language="C#" Value="public void Empty ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>Empties the list.</summary>
-        <remarks>Empties, and frees the list, as well as all of its children</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Append">
-      <MemberSignature Language="C#" Value="public void Append (object item);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="item" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="item">An item to be appended to the list.</param>
-        <summary>Appends an item to the List.</summary>
-        <remarks />
+        <summary>Synchronization root.</summary>
+        <value>always <see langword="null" /></value>
+        <remarks>Always returns <see langword="null" /> since this type is never synchronized.</remarks>
       </Docs>
     </Member>
   </Members>

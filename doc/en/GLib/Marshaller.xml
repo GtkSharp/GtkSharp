@@ -4,66 +4,17 @@
     <AssemblyName>glib-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Marshalling utilities</summary>
-    <remarks>Utility class for internal wrapper use</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>Marshalling utilities</summary>
+    <remarks>Utility class for internal wrapper use</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="PtrToStringGFree">
-      <MemberSignature Language="C#" Value="public static string PtrToStringGFree (IntPtr ptr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ptr" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals a utf8 string from native memory and frees the native string.</summary>
-        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="PtrToStringGFree">
-      <MemberSignature Language="C#" Value="public static string[] PtrToStringGFree (IntPtr[] ptrs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ptrs" Type="System.IntPtr[]" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals an array of utf8 string from native memory and frees the native strings.</summary>
-        <param name="ptrs">a <see cref="T:System.IntPtr[]" /></param>
-        <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="StringToPtrGStrdup">
-      <MemberSignature Language="C#" Value="public static IntPtr StringToPtrGStrdup (string str);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="str" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Marshal a string to a native Utf8 string using GLib memory allocation.</summary>
-        <param name="str">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:System.IntPtr" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
     <Member MemberName="ArgvToArrayPtr">
       <MemberSignature Language="C#" Value="public static IntPtr ArgvToArrayPtr (string[] args);" />
       <MemberType>Method</MemberType>
@@ -74,11 +25,16 @@
         <Parameter Name="args" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <summary>Obsolete.</summary>
         <param name="args">a <see cref="T:System.String" /></param>
+        <summary>Obsolete.</summary>
         <returns>a <see cref="T:System.IntPtr" /></returns>
         <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
       </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
+        </Attribute>
+      </Attributes>
     </Member>
     <Member MemberName="ArrayPtrToArgv">
       <MemberSignature Language="C#" Value="public static string[] ArrayPtrToArgv (IntPtr array, int argc);" />
@@ -91,11 +47,33 @@
         <Parameter Name="argc" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Obsolete.</summary>
         <param name="array">a <see cref="T:System.IntPtr" /></param>
         <param name="argc">a <see cref="T:System.Int32" /></param>
+        <summary>Obsolete.</summary>
         <returns>a <see cref="T:System.String[]" /></returns>
         <remarks>Replaced by <see cref="T:GLib.Argv" /></remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use GLib.Argv instead to avoid leaks.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="CharToGUnichar">
+      <MemberSignature Language="C#" Value="public static uint CharToGUnichar (char c);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="c" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="c">a <see cref="T:System.Char" /></param>
+        <summary>Marshals a UTF16 char to a UCS4 character represented as an uint.</summary>
+        <returns>a <see cref="T:System.UInt32" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DateTimeTotime_t">
@@ -108,152 +86,10 @@
         <Parameter Name="time" Type="System.DateTime" />
       </Parameters>
       <Docs>
-        <summary>Marshals DateTime structures to native time_t values.</summary>
         <param name="time">a <see cref="T:System.DateTime" /></param>
+        <summary>Marshals DateTime structures to native time_t values.</summary>
         <returns>a <see cref="T:System.IntPtr" /></returns>
         <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="time_tToDateTime">
-      <MemberSignature Language="C#" Value="public static DateTime time_tToDateTime (IntPtr time_t);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.DateTime</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="time_t" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals native time_t values to DateTime values.</summary>
-        <param name="time_t">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:System.DateTime" /></returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="GUnicharToChar">
-      <MemberSignature Language="C#" Value="public static char GUnicharToChar (uint ucs4_char);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Char</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ucs4_char" Type="System.UInt32" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals a UCS4 character represented as an uint to a UTF16 char.</summary>
-        <param name="ucs4_char">a <see cref="T:System.UInt32" /></param>
-        <returns>a <see cref="T:System.Char" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CharToGUnichar">
-      <MemberSignature Language="C#" Value="public static uint CharToGUnichar (char c);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.UInt32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="c" Type="System.Char" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals a UTF16 char to a UCS4 character represented as an uint.</summary>
-        <param name="c">a <see cref="T:System.Char" /></param>
-        <returns>a <see cref="T:System.UInt32" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StringFormat">
-      <MemberSignature Language="C#" Value="public static string StringFormat (string format, object[] args);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="format" Type="System.String" />
-        <Parameter Name="args" Type="System.Object[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <summary>Wrapper for marshalling between String.Format-style methods and printf-style ones</summary>
-        <param name="format">a <see cref="M:System.Format" />-style format string</param>
-        <param name="args">arguments for <paramref name="format" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks>This is a wrapper for marshalling between managed String.Format-style methods and unmanaged printf-style ones. The managed function should take a <see cref="T:System.String" /> format, and a <see langword="params" /> array of <see cref="T:System.Object" />, and pass that to <see cref="M:GLib.Marshaller.StringFormat" />. <see cref="M:GLib.Marshaller.StringFormat" /> will format the data, and then make sure that any percent signs in the result are doubled so that they can safely be passed to an unmanaged method that expects a printf-style string (and following arguments).</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Utf8PtrToString">
-      <MemberSignature Language="C#" Value="public static string Utf8PtrToString (IntPtr ptr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ptr" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals a native Utf8 string to a managed string.</summary>
-        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:System.String" /></returns>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Utf8PtrToString">
-      <MemberSignature Language="C#" Value="public static string[] Utf8PtrToString (IntPtr[] ptrs);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ptrs" Type="System.IntPtr[]" />
-      </Parameters>
-      <Docs>
-        <summary>Marshals an array of native Utf8 strings to an array of managed strings.</summary>
-        <param name="ptrs">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:System.String[]" /></returns>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="StructureToPtrAlloc">
-      <MemberSignature Language="C#" Value="public static IntPtr StructureToPtrAlloc (object o);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="o" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="o">the structure to marshal</param>
-        <summary>Marshals a structure to newly-allocated memory.</summary>
-        <returns>a pointer to the newly-allocated memory</returns>
-        <remarks>This is like <see cref="M:System.Runtime.InteropServices.Marshal.StructureToPtr" /> except that it allocates the memory for the unmanaged copy itself. You should free the memory with <see cref="M:System.Runtime.InteropServices.Marshal.FreeHGlobal" /> when you are done with it.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Free">
-      <MemberSignature Language="C#" Value="public static void Free (IntPtr ptr);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ptr" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Free a native pointer allocated by GLib.</summary>
-        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
-        <remarks />
-        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="FilenamePtrToString">
@@ -290,38 +126,18 @@
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="StringToFilenamePtr">
-      <MemberSignature Language="C#" Value="public static IntPtr StringToFilenamePtr (string str);" />
+    <Member MemberName="Free">
+      <MemberSignature Language="C#" Value="public static void Free (IntPtr ptr);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.IntPtr</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="ptr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="str">A managed string to be marshaled.</param>
-        <summary>Marshals a string to a filename encoded native pointer.</summary>
-        <returns>A pointer to a newly allocated native string.</returns>
-        <remarks />
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="ListToArray">
-      <MemberSignature Language="C#" Value="public static Array ListToArray (GLib.ListBase list, Type type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Array</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="list" Type="GLib.ListBase" />
-        <Parameter Name="type" Type="System.Type" />
-      </Parameters>
-      <Docs>
-        <param name="list">The list to be marshaled.</param>
-        <param name="type">The type of the list elements.</param>
-        <summary>Marshals a native list to a typed array.</summary>
-        <returns>An array of <paramref name="type" />.</returns>
+        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
+        <summary>Free a native pointer allocated by GLib.</summary>
         <remarks />
         <since version="Gtk# 2.4" />
       </Docs>
@@ -341,36 +157,82 @@
         <remarks />
       </Docs>
     </Member>
-    <Member MemberName="PtrToStringArrayGFree">
-      <MemberSignature Language="C#" Value="public static string[] PtrToStringArrayGFree (IntPtr string_array);" />
+    <Member MemberName="GUnicharToChar">
+      <MemberSignature Language="C#" Value="public static char GUnicharToChar (uint ucs4_char);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.String[]</ReturnType>
+        <ReturnType>System.Char</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="string_array" Type="System.IntPtr" />
+        <Parameter Name="ucs4_char" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <param name="string_array">Pointer to a null-terminated string array.</param>
-        <summary>Marshal a null-terminated string array to a managed array.</summary>
-        <returns>A string array.</returns>
-        <remarks />
+        <param name="ucs4_char">a <see cref="T:System.UInt32" /></param>
+        <summary>Marshals a UCS4 character represented as an uint to a UTF16 char.</summary>
+        <returns>a <see cref="T:System.Char" /></returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
-    <Member MemberName="StringArrayToNullTermPointer">
-      <MemberSignature Language="C#" Value="public static IntPtr[] StringArrayToNullTermPointer (string[] strs);" />
+    <Member MemberName="GUnicharToString">
+      <MemberSignature Language="C#" Value="public static string GUnicharToString (uint ucs4_char);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.IntPtr[]</ReturnType>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="strs" Type="System.String[]" />
+        <Parameter Name="ucs4_char" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <param name="strs">an array of strings.</param>
-        <summary>Marshals a managed string array to a native null-terminated array.</summary>
-        <returns>An array of native string pointers.</returns>
+        <param name="ucs4_char">a <see cref="T:System.UInt32" /></param>
+        <summary>Marshals a UCS4 character represented as an uint to a string.</summary>
+        <returns>a <see cref="T:System.String" /></returns>
         <remarks />
+        <since version="Gtk# 2.14" />
+      </Docs>
+    </Member>
+    <Member MemberName="ListPtrToArray">
+      <MemberSignature Language="C#" Value="public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Array</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="list_ptr" Type="System.IntPtr" />
+        <Parameter Name="list_type" Type="System.Type" />
+        <Parameter Name="owned" Type="System.Boolean" />
+        <Parameter Name="elements_owned" Type="System.Boolean" />
+        <Parameter Name="elem_type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="list_ptr">the native list pointer.</param>
+        <param name="list_type">the managed type of the list, eg <see cref="T:GLib.List" /> or <see cref="T:GLib.SList" />.</param>
+        <param name="owned">indicates if the native list being marshaled should be released.</param>
+        <param name="elements_owned">indicates if the list members should be released.</param>
+        <param name="elem_type">the managed type of the list members.</param>
+        <summary>Marshals a list pointer to a managed array.</summary>
+        <returns>a managed array.</returns>
+        <remarks />
+        <since version="Gtk# 2.10" />
+      </Docs>
+    </Member>
+    <Member MemberName="ListToArray">
+      <MemberSignature Language="C#" Value="public static Array ListToArray (GLib.ListBase list, Type type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Array</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="list" Type="GLib.ListBase" />
+        <Parameter Name="type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="list">The list to be marshaled.</param>
+        <param name="type">The type of the list elements.</param>
+        <summary>Marshals a native list to a typed array.</summary>
+        <returns>An array of <paramref name="type" />.</returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="Malloc">
@@ -407,6 +269,77 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="PtrArrayToArray">
+      <MemberSignature Language="C#" Value="public static Array PtrArrayToArray (IntPtr list_ptr, bool owned, bool elements_owned, Type elem_type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Array</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="list_ptr" Type="System.IntPtr" />
+        <Parameter Name="owned" Type="System.Boolean" />
+        <Parameter Name="elements_owned" Type="System.Boolean" />
+        <Parameter Name="elem_type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="list_ptr">a pointer to a native GPtrArray.</param>
+        <param name="owned">indicates if the native array should be released.</param>
+        <param name="elements_owned">indicates if the native members should be released.</param>
+        <param name="elem_type">the managed type of the array elements.</param>
+        <summary>Marshals a native GPtrArray to a managed array.</summary>
+        <returns>a managed array.</returns>
+        <remarks />
+        <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="PtrToStringArrayGFree">
+      <MemberSignature Language="C#" Value="public static string[] PtrToStringArrayGFree (IntPtr string_array);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="string_array" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="string_array">Pointer to a null-terminated string array.</param>
+        <summary>Marshal a null-terminated string array to a managed array.</summary>
+        <returns>A string array.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PtrToStringGFree">
+      <MemberSignature Language="C#" Value="public static string PtrToStringGFree (IntPtr ptr);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptr" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
+        <summary>Marshals a utf8 string from native memory and frees the native string.</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PtrToStringGFree">
+      <MemberSignature Language="C#" Value="public static string[] PtrToStringGFree (IntPtr[] ptrs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptrs" Type="System.IntPtr[]" />
+      </Parameters>
+      <Docs>
+        <param name="ptrs">a <see cref="T:System.IntPtr[]" /></param>
+        <summary>Marshals an array of utf8 string from native memory and frees the native strings.</summary>
+        <returns>a <see cref="T:System.String[]" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="StrFreeV">
       <MemberSignature Language="C#" Value="public static void StrFreeV (IntPtr null_term_array);" />
       <MemberType>Method</MemberType>
@@ -420,6 +353,147 @@
         <param name="null_term_array">Pointer to a native null-terminated string array.</param>
         <summary>Frees a string array, including its member strings.</summary>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="StringArrayToNullTermPointer">
+      <MemberSignature Language="C#" Value="public static IntPtr[] StringArrayToNullTermPointer (string[] strs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="strs" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="strs">an array of strings.</param>
+        <summary>Marshals a managed string array to a native null-terminated array.</summary>
+        <returns>An array of native string pointers.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="StringFormat">
+      <MemberSignature Language="C#" Value="public static string StringFormat (string format, object[] args);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="format">a <see cref="M:System.Format" />-style format string</param>
+        <param name="args">arguments for <paramref name="format" /></param>
+        <summary>Wrapper for marshalling between String.Format-style methods and printf-style ones</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks>This is a wrapper for marshalling between managed String.Format-style methods and unmanaged printf-style ones. The managed function should take a <see cref="T:System.String" /> format, and a <see langword="params" /> array of <see cref="T:System.Object" />, and pass that to <see cref="M:GLib.Marshaller.StringFormat" />. <see cref="M:GLib.Marshaller.StringFormat" /> will format the data, and then make sure that any percent signs in the result are doubled so that they can safely be passed to an unmanaged method that expects a printf-style string (and following arguments).</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="StringToFilenamePtr">
+      <MemberSignature Language="C#" Value="public static IntPtr StringToFilenamePtr (string str);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">A managed string to be marshaled.</param>
+        <summary>Marshals a string to a filename encoded native pointer.</summary>
+        <returns>A pointer to a newly allocated native string.</returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="StringToPtrGStrdup">
+      <MemberSignature Language="C#" Value="public static IntPtr StringToPtrGStrdup (string str);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="str">a <see cref="T:System.String" /></param>
+        <summary>Marshal a string to a native Utf8 string using GLib memory allocation.</summary>
+        <returns>a <see cref="T:System.IntPtr" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="StructureToPtrAlloc">
+      <MemberSignature Language="C#" Value="public static IntPtr StructureToPtrAlloc (object o);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="o" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="o">the structure to marshal</param>
+        <summary>Marshals a structure to newly-allocated memory.</summary>
+        <returns>a pointer to the newly-allocated memory</returns>
+        <remarks>This is like <see cref="M:System.Runtime.InteropServices.Marshal.StructureToPtr" /> except that it allocates the memory for the unmanaged copy itself. You should free the memory with <see cref="M:System.Runtime.InteropServices.Marshal.FreeHGlobal" /> when you are done with it.</remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="time_tToDateTime">
+      <MemberSignature Language="C#" Value="public static DateTime time_tToDateTime (IntPtr time_t);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.DateTime</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="time_t" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="time_t">a <see cref="T:System.IntPtr" /></param>
+        <summary>Marshals native time_t values to DateTime values.</summary>
+        <returns>a <see cref="T:System.DateTime" /></returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Utf8PtrToString">
+      <MemberSignature Language="C#" Value="public static string Utf8PtrToString (IntPtr ptr);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptr" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="ptr">a <see cref="T:System.IntPtr" /></param>
+        <summary>Marshals a native Utf8 string to a managed string.</summary>
+        <returns>a <see cref="T:System.String" /></returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="Utf8PtrToString">
+      <MemberSignature Language="C#" Value="public static string[] Utf8PtrToString (IntPtr[] ptrs);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ptrs" Type="System.IntPtr[]" />
+      </Parameters>
+      <Docs>
+        <param name="ptrs">a <see cref="T:System.IntPtr" /></param>
+        <summary>Marshals an array of native Utf8 strings to an array of managed strings.</summary>
+        <returns>a <see cref="T:System.String[]" /></returns>
+        <remarks />
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
   </Members>
