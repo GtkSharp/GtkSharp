@@ -351,8 +351,8 @@ namespace GLib {
 					return (long) this;
 				else if (type == GType.UInt64.Val)
 					return (ulong) this;
-				else if (GType.Is (type, GType.Enum) ||
-					 GType.Is (type, GType.Flags))
+				else if (GType.Enum.IsA (type) ||
+					 GType.Flags.IsA (type))
 					return (Enum) this;
 				else if (type == GType.Float.Val)
 					return (float) this;
@@ -366,9 +366,9 @@ namespace GLib {
 					return g_value_get_param (ref this);
 				else if (type == ManagedValue.GType.Val)
 					return ManagedValue.ObjectForWrapper (g_value_get_boxed (ref this));
-				else if (GType.Is (type, GType.Object))
+				else if (GType.Object.IsA (type))
 					return (GLib.Object) this;
-				else if (GType.Is (type, GType.Boxed))
+				else if (GType.Boxed.IsA (type))
 					return ToBoxed ();
 				else if (type == IntPtr.Zero)
 					return null;
@@ -390,9 +390,9 @@ namespace GLib {
 					g_value_set_int64 (ref this, (long) value);
 				else if (type == GType.UInt64.Val)
 					g_value_set_uint64 (ref this, (ulong) value);
-				else if (GType.Is (type, GType.Enum))
+				else if (GType.Enum.IsA (type))
 					g_value_set_enum (ref this, (int)value);
-				else if (GType.Is (type, GType.Flags))
+				else if (GType.Flags.IsA (type))
 					g_value_set_flags (ref this, (uint)(int)value);
 				else if (type == GType.Float.Val)
 					g_value_set_float (ref this, (float) value);
@@ -419,12 +419,12 @@ namespace GLib {
 					IntPtr wrapper = ManagedValue.WrapObject (value);
 					g_value_set_boxed (ref this, wrapper);
 					ManagedValue.ReleaseWrapper (wrapper);
-				} else if (GType.Is (type, GType.Object))
+				} else if (GType.Object.IsA (type))
 					if(value is GLib.Object)
 						g_value_set_object (ref this, (value as GLib.Object).Handle);
 					else
 						g_value_set_object (ref this, (value as GLib.GInterfaceAdapter).Handle);
-				else if (GType.Is (type, GType.Boxed)) {
+				else if (GType.Boxed.IsA (type)) {
 					if (value is IWrapper) {
 						g_value_set_boxed (ref this, ((IWrapper)value).Handle);
 						return;
@@ -439,7 +439,7 @@ namespace GLib {
 
 		internal void Update (object val)
 		{
-			if (GType.Is (type, GType.Boxed) && !(val is IWrapper))
+			if (GType.Boxed.IsA (type) && !(val is IWrapper))
 				Marshal.StructureToPtr (val, g_value_get_boxed (ref this), false);
 		}
 
