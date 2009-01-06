@@ -196,17 +196,15 @@ PKG_CHECK_MODULES(GLADE, libglade-2.0 >= $GLADE_REQUIRED_VERSION, enable_glade=y
 AC_SUBST(GLADE_CFLAGS)
 AC_SUBST(GLADE_LIBS)
 
-AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
-AC_PATH_PROG(MONODOCER, monodocer, no)
-if test "x$MONODOCER" = "xno" -o "x$MDASSEMBLER" = "xno"; then
+AC_PATH_PROG(MDOC, mdoc, no)
+if test "x$MDOC" = "xno"; then
   enable_monodoc=no
   doc_sources_dir=
 else
   enable_monodoc=yes
   doc_sources_dir="`pkg-config --variable=sourcesdir monodoc`"
 fi
-AC_SUBST(MDASSEMBLER)
-AC_SUBST(MONODOCER)
+AC_SUBST(MDOC)
 
 AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$enable_mono_cairo" = "xyes")
 AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")

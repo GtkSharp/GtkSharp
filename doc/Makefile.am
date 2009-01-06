@@ -1,23 +1,21 @@
-ASSEMBLIES = 				\
-	glib-sharp.dll			\
-	pango-sharp.dll			\
-	atk-sharp.dll			\
-	gdk-sharp.dll			\
-	gtk-sharp.dll			\
-	glade-sharp.dll			\
-	gnome-vfs-sharp.dll		\
-	art-sharp.dll			\
-	gnome-sharp.dll			\
-	gconf-sharp.dll			\
-	gconf-sharp-peditors.dll	\
-	gtkhtml-sharp.dll		\
-	rsvg-sharp.dll			\
-	vte-sharp.dll			\
-	gtk-dotnet.dll
+ASSEMBLIES = 					\
+	lib/glib-sharp.dll			\
+	lib/pango-sharp.dll			\
+	lib/atk-sharp.dll			\
+	lib/gdk-sharp.dll			\
+	lib/gtk-sharp.dll			\
+	lib/glade-sharp.dll			\
+	lib/gnome-vfs-sharp.dll			\
+	lib/art-sharp.dll			\
+	lib/gnome-sharp.dll			\
+	lib/gconf-sharp.dll			\
+	lib/gconf-sharp-peditors.dll		\
+	lib/gtkhtml-sharp.dll			\
+	lib/rsvg2-sharp.dll			\
+	lib/vte-sharp.dll			\
+	lib/gtk-dotnet.dll
 
-UPDATE_ASSEMBLIES = $(addprefix -assembly:lib/, $(ASSEMBLIES))
-
-UPDATER = $(MONODOCER) -path:en -pretty $(UPDATE_ASSEMBLIES)
+UPDATER = $(MDOC) update --out=en -pretty --fno-assembly-versions --since="Gtk# 2.14" $(ASSEMBLIES)
 
 if ENABLE_MONODOC
 SOURCESDIR=$(prefix)/lib/monodoc/sources
@@ -33,7 +31,7 @@ monodoc_DATA=$(TARGETS)
 assemble: gtk-sharp-docs.zip gtk-sharp-docs.tree
 
 gtk-sharp-docs.zip gtk-sharp-docs.tree: $(srcdir)/en/*/*.xml $(srcdir)/en/*.xml
-	$(MDASSEMBLER) --ecma $(srcdir)/en -o gtk-sharp-docs
+	$(MDOC) assemble -o gtk-sharp-docs $(srcdir)/en
 
 get-assemblies:
 	echo "assumes gnome-sharp and gtk-sharp checkouts in same parent"
@@ -44,12 +42,14 @@ get-assemblies:
 	cp $(top_builddir)/../gnome-sharp/*/*.dll.config lib
 	cp $(top_builddir)/../gnome-sharp/gconf/*/*.dll lib
 	cp $(top_builddir)/../gnome-sharp/gconf/*/*.dll.config lib
+	cp $(top_builddir)/../gnome-desktop-sharp/*/*.dll lib
+	cp $(top_builddir)/../gnome-desktop-sharp/*/*.dll.config lib
 
 update: get-assemblies
-	$(UPDATER)
+	$(MDOC) update --out=en --fno-assembly-versions --since="Gtk# 2.14" $(ASSEMBLIES)
 
 update-delete: get-assemblies
-	$(UPDATER) --delete
+	$(MDOC) update --out=en --fno-assembly-versions --delete --since="Gtk# 2.14" $(ASSEMBLIES)
 
 CLEANFILES = gtk-sharp-docs.zip gtk-sharp-docs.tree lib
 
