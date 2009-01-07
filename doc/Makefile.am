@@ -1,5 +1,6 @@
 ASSEMBLIES = 					\
 	lib/glib-sharp.dll			\
+	lib/gio-sharp.dll			\
 	lib/pango-sharp.dll			\
 	lib/atk-sharp.dll			\
 	lib/gdk-sharp.dll			\
