@@ -4,18 +4,17 @@
     <AssemblyName>gconf-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the &lt;link location="node:gtk-sharp/programming/threads"&gt;Gtk# Thread Programming&lt;/link&gt; for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.EventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Arguments of the GConf Notify event that was called due to a GConf key being added, removed or updated.</summary>
     <remarks>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.EventArgs</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public NotifyEventArgs (string key, object val);" />
@@ -26,14 +25,27 @@
         <Parameter Name="val" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>This constructor is called to initialize a NotifyEventArgs with the key/value that was updated, removed or added in GConf</summary>
         <param name="key">a <see cref="T:System.String" /></param>
         <param name="val">a <see cref="T:System.Object" /></param>
+        <summary>This constructor is called to initialize a NotifyEventArgs with the key/value that was updated, removed or added in GConf</summary>
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Key">
+      <MemberSignature Language="C#" Value="public string Key { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>This NotifyEventArgs property refers to the key which value modification, addition or removal cause the event to be raised.</summary>
+        <value>a string for the key name</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Value">
-      <MemberSignature Language="C#" Value="public object Value { get; };" />
+      <MemberSignature Language="C#" Value="public object Value { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
@@ -42,19 +54,6 @@
         <summary>This NotifyEventArgs property refers to the GConf Value from an entry which modification, addition or removal cause the event to be raised.
 </summary>
         <value>the object stored in the GConf which modification, removal or addition cause the event to be raised.</value>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Key">
-      <MemberSignature Language="C#" Value="public string Key { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>This NotifyEventArgs property refers to the key which value modification, addition or removal cause the event to be raised.</summary>
-        <value>a string for the key name</value>
         <remarks>
         </remarks>
       </Docs>

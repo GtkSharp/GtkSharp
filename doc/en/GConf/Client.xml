@@ -4,9 +4,12 @@
     <AssemblyName>gconf-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the &lt;link location="node:gtk-sharp/programming/threads"&gt;Gtk# Thread Programming&lt;/link&gt; for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GConf.ClientBase</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Basic functions to initialize GConf and get/set values.</summary>
     <remarks>The following example attempts to retrieve a setting from GConf, and set a default value otherwise.</remarks>
@@ -27,38 +30,15 @@ catch (GConf.NoSuchKeyException)
 	  </code>
     </example>
   </Docs>
-  <Base>
-    <BaseTypeName>GConf.ClientBase</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="SuggestSync">
-      <MemberSignature Language="C#" Value="public void SuggestSync ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Client ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters />
       <Docs>
-        <summary>Suggests that you have just finished a block of changes, and it would be an optimal time to sync to permanent storage.</summary>
-        <remarks>This function is just a "hint" provided to maximize efficiency and minimize data loss.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveNotify">
-      <MemberSignature Language="C#" Value="public void RemoveNotify (string dir, GConf.NotifyEventHandler notify);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="dir" Type="System.String" />
-        <Parameter Name="notify" Type="GConf.NotifyEventHandler" />
-      </Parameters>
-      <Docs>
-        <summary>Removes a notification request.</summary>
-        <param name="dir">an object of type <see cref="T:System.String" /></param>
-        <param name="notify">an object of type <see cref="T:GConf.NotifyEventHandler" /></param>
-        <remarks />
+        <summary>Creates a new <see cref="T:GConf.Client" />.</summary>
+        <remarks>This is the default constructor for <see cref="T:GConf.Client" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddNotify">
@@ -72,21 +52,56 @@ catch (GConf.NoSuchKeyException)
         <Parameter Name="notify" Type="GConf.NotifyEventHandler" />
       </Parameters>
       <Docs>
-        <summary>Registers a notification request.</summary>
         <param name="dir">an object of type <see cref="T:System.String" /></param>
         <param name="notify">an object of type <see cref="T:GConf.NotifyEventHandler" /></param>
+        <summary>Registers a notification request.</summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Client ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
+    <Member MemberName="Get">
+      <MemberSignature Language="C#" Value="public override object Get (string key);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="key">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveNotify">
+      <MemberSignature Language="C#" Value="public void RemoveNotify (string dir, GConf.NotifyEventHandler notify);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dir" Type="System.String" />
+        <Parameter Name="notify" Type="GConf.NotifyEventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="dir">an object of type <see cref="T:System.String" /></param>
+        <param name="notify">an object of type <see cref="T:GConf.NotifyEventHandler" /></param>
+        <summary>Removes a notification request.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SuggestSync">
+      <MemberSignature Language="C#" Value="public void SuggestSync ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new <see cref="T:GConf.Client" />.</summary>
-        <remarks>This is the default constructor for <see cref="T:GConf.Client" />.</remarks>
+        <summary>Suggests that you have just finished a block of changes, and it would be an optimal time to sync to permanent storage.</summary>
+        <remarks>This function is just a "hint" provided to maximize efficiency and minimize data loss.</remarks>
       </Docs>
     </Member>
   </Members>
