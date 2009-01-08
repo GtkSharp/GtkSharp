@@ -377,6 +377,7 @@ namespace GLib {
 
 		public static Array ListPtrToArray (IntPtr list_ptr, Type list_type, bool owned, bool elements_owned, Type elem_type)
 		{
+			Type array_type = elem_type == typeof (ListBase.FilenameString) ? typeof (string) : elem_type;
 			ListBase list;
 			if (list_type == typeof(GLib.List))
 				list = new GLib.List (list_ptr, elem_type, owned, elements_owned);
@@ -384,7 +385,7 @@ namespace GLib {
 				list = new GLib.SList (list_ptr, elem_type, owned, elements_owned);
 
 			using (list)
-				return ListToArray (list, elem_type);
+				return ListToArray (list, array_type);
 		}
 
 		public static Array PtrArrayToArray (IntPtr list_ptr, bool owned, bool elements_owned, Type elem_type)

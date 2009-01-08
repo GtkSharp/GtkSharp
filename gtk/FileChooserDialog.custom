@@ -66,25 +66,3 @@
 				AddButton ((string) button_data [i], (int) button_data [i + 1]);
 		}
 
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_file_chooser_get_filenames (IntPtr raw);
-
-		public string[] Filenames {
-			get {
-				IntPtr raw_ret = gtk_file_chooser_get_filenames (Handle);
-				GLib.SList list = new GLib.SList (raw_ret, typeof (GLib.ListBase.FilenameString), true, true);
-				return (string[]) GLib.Marshaller.ListToArray (list, typeof (string));
-			}
-		}
-
-		[DllImport ("libgtk-win32-2.0-0.dll")]
-		static extern IntPtr gtk_file_chooser_list_shortcut_folders (IntPtr raw);
-
-		public string[] ShortcutFolders {
-			get {
-				IntPtr raw_ret = gtk_file_chooser_list_shortcut_folders (Handle);
-				GLib.SList list = new GLib.SList (raw_ret, typeof (GLib.ListBase.FilenameString), true, true);
-				return (string[]) GLib.Marshaller.ListToArray (list, typeof (string));
-			}
-		}
-

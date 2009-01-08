@@ -72,10 +72,7 @@ customs = 				\
 	Drag.custom			\
 	Entry.custom			\
 	EntryCompletion.custom		\
-	FileChooser.custom		\
-	FileChooserButton.custom	\
 	FileChooserDialog.custom	\
-	FileChooserWidget.custom	\
 	FileSelection.custom		\
 	Frame.custom			\
 	HBox.custom			\
