@@ -8,8 +8,14 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>
+      <see cref="T:GLib.MountOperation" />: Authentication methods for mountable locations.</summary>
+    <remarks>
+      <para>
+        <see cref="T:GLib.MountOperation" /> provides a mechanism for authenticating mountable operations, such as loop mounting files, hard drive partitions or server locations.</para>
+      <para>Mounting operations are handed a <see cref="T:GLib.MountOperation" /> that then can use if they require any privileges or authentication for their volumes to be mounted (e.g. a hard disk partition or an encrypted filesystem), or if they are implementing a remote server protocol which requires user credentials such as FTP or WebDAV.</para>
+      <para>Users should instantiate a subclass of this that implements all the various callbacks to show the required dialogs, such as <see cref="T:Gtk.MountOperation" />.</para>
+    </remarks>
     <since version="Gtk# 2.14" />
   </Docs>
   <Members>
@@ -18,8 +24,8 @@
       <MemberType>Constructor</MemberType>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates a new mount operation.</summary>
+        <remarks>This is not normally used, instead you instantiate a subclass of this, such as <see cref="T:Gtk.MountOperation" />.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -66,9 +72,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Wether to use an anonymous user when authenticating.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Default to False.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -84,7 +90,9 @@
         <ReturnType>GLib.AskPasswordHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Emitted when a mount operation asks the user for a password.
+
+</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -101,7 +109,7 @@
         <ReturnType>GLib.AskQuestionHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Emitted when asking the user a question and gives a list of choices for the user to choose from.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -118,9 +126,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The index of the user's choice when a question is asked.</summary>
+        <value>The index of the user's choice when a question is asked during the mount operation.</value>
+        <remarks>
+          <para>Allowed values: &gt;= 0</para>
+          <para> Default value: 0</para>
+          <para>See also <see cref="E:GLib.MountOperation.AskQuestion" />.</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -136,9 +148,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The domain to use for the mount operation.</summary>
+        <value>The domain to use for the mount operation.</value>
+        <remarks>Default value: null.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -152,8 +164,8 @@
         <Parameter Name="result" Type="GLib.MountOperationResult" />
       </Parameters>
       <Docs>
-        <param name="result">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="result">A <see cref="T:GLib.MountOperationResult" /></param>
+        <summary>Emits the <see cref="M:GLib.MountOperation.Reply" /> signal.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -193,7 +205,7 @@
         <param name="default_user">To be added.</param>
         <param name="default_domain">To be added.</param>
         <param name="flags">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Default handler for the <see cref="M:GLib.MountOperation.AskPassword" /> event.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -216,7 +228,7 @@
       <Docs>
         <param name="message">To be added.</param>
         <param name="choices">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Default handler for the <see cref="M:GLib.MountOperation.AskQuestion" /> event.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -237,7 +249,7 @@
       </Parameters>
       <Docs>
         <param name="result">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Default handler for the <see cref="M:GLib.MountOperation.Reply" /> event.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -254,9 +266,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The password that is used for authentication</summary>
+        <value>The password that is used for authentication when carrying out the mount operation.</value>
+        <remarks>Default value: null.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -272,9 +284,9 @@
         <ReturnType>GLib.PasswordSave</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Ff and how the password information should be saved.</summary>
+        <value>Determines if and how the password information should be saved.</value>
+        <remarks>Default value: <see cref="M:GLib.PasswordSave.Never" /></remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -290,7 +302,7 @@
         <ReturnType>GLib.ReplyHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Emitted when the user has replied to the mount operation.</summary>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -307,9 +319,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The user name that is used for authentication.</summary>
+        <value>The user name that is used for authentication when carrying out the mount operation.</value>
+        <remarks>Default value: null.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
