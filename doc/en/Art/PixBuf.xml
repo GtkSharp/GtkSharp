@@ -4,23 +4,22 @@
     <AssemblyName>art-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>This structure encapsulates a buffer of pixels, that can be in several specific pixel buffer formats.</summary>
-    <remarks>To be added</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>This structure encapsulates a buffer of pixels, that can be in several specific pixel buffer formats.</summary>
+    <remarks>To be added</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf Zero;" />
+    <Member MemberName="BitsPerSample">
+      <MemberSignature Language="C#" Value="public int BitsPerSample;" />
       <MemberType>Field</MemberType>
       <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters>
       </Parameters>
@@ -29,20 +28,16 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
+    <Member MemberName="Destroy">
+      <MemberSignature Language="C#" Value="public Art.DestroyNotify Destroy { get; }" />
+      <MemberType>Property</MemberType>
       <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
+        <ReturnType>Art.DestroyNotify</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
       <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Art.PixBuf" /></returns>
-        <remarks>To be added</remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Duplicate">
@@ -56,6 +51,19 @@
         <summary>Creates a deep clone of the current instance.</summary>
         <returns>A fresh deep copy of the current instance.</returns>
         <remarks>Event the buffer that was given to create this buffer is copied, and its dealocation is then done by the new instance on its destruction, independently of who is responsible to free the curren buffer.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Format">
+      <MemberSignature Language="C#" Value="public Art.PixFormat Format;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixFormat</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Free">
@@ -82,200 +90,8 @@
         <remarks>Its deprecated.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="NewConstRgb">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewConstRgb (out byte pixels, int width, int height, int rowstride);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGB PixBuf.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="NewConstRgba">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewConstRgba (out byte pixels, int width, int height, int rowstride);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGBA PixBuf.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGBA.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="NewRgb">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgb (out byte pixels, int width, int height, int rowstride);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGB PixBuf.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
-        <remarks>On destruction, the created instance will free the memory used by given buffer in pixels.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NewRgbDnotify">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgbDnotify (out byte pixels, int width, int height, int rowstride, IntPtr dfunc_data, Art.DestroyNotify dfunc);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-        <Parameter Name="dfunc_data" Type="System.IntPtr" />
-        <Parameter Name="dfunc" Type="Art.DestroyNotify" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGB PixBuf that invokes the given delegate on destruction.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <param name="dfunc_data">The data that will be given to dfunc on its invocation.</param>
-        <param name="dfunc">The delegate that is going to be invoked when the PixBuf gets destroyed.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB that invokes a delegate on its destruction.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="NewRgba">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgba (out byte pixels, int width, int height, int rowstride);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGBA PixBuf.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
-        <remarks>On destruction, the created instance will free the memory used by given buffer in pixels.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NewRgbaDnotify">
-      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgbaDnotify (out byte pixels, int width, int height, int rowstride, IntPtr dfunc_data, Art.DestroyNotify dfunc);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixBuf</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
-        <Parameter Name="width" Type="System.Int32" />
-        <Parameter Name="height" Type="System.Int32" />
-        <Parameter Name="rowstride" Type="System.Int32" />
-        <Parameter Name="dfunc_data" Type="System.IntPtr" />
-        <Parameter Name="dfunc" Type="Art.DestroyNotify" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new RGBA PixBuf that invokes the given delegate on destruction.</summary>
-        <param name="pixels">The buffer containing the actual pixel data.</param>
-        <param name="width">The width of the pixbuf.</param>
-        <param name="height">The height of the pixbuf.</param>
-        <param name="rowstride">The row stride of the pixbuf.</param>
-        <param name="dfunc_data">The data that will be given to dfunc on its invocation.</param>
-        <param name="dfunc">The delegate that is going to be invoked when the PixBuf gets destroyed.</param>
-        <returns>A newly created <see cref="T:Art.PixBuf" /> RGBA that invokes a delegate on its destruction.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Format">
-      <MemberSignature Language="C#" Value="public Art.PixFormat Format;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.PixFormat</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NChannels">
-      <MemberSignature Language="C#" Value="public int NChannels;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="HasAlpha">
       <MemberSignature Language="C#" Value="public int HasAlpha;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BitsPerSample">
-      <MemberSignature Language="C#" Value="public int BitsPerSample;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Width">
-      <MemberSignature Language="C#" Value="public int Width;" />
       <MemberType>Field</MemberType>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -300,6 +116,175 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
+    <Member MemberName="NChannels">
+      <MemberSignature Language="C#" Value="public int NChannels;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf New (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Art.PixBuf" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NewConstRgb">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewConstRgb (out byte pixels, int width, int height, int rowstride);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <summary>Creates a new RGB PixBuf.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NewConstRgba">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewConstRgba (out byte pixels, int width, int height, int rowstride);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <summary>Creates a new RGBA PixBuf.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGBA.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NewRgb">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgb (out byte pixels, int width, int height, int rowstride);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <summary>Creates a new RGB PixBuf.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
+        <remarks>On destruction, the created instance will free the memory used by given buffer in pixels.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NewRgba">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgba (out byte pixels, int width, int height, int rowstride);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <summary>Creates a new RGBA PixBuf.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB.</returns>
+        <remarks>On destruction, the created instance will free the memory used by given buffer in pixels.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NewRgbaDnotify">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgbaDnotify (out byte pixels, int width, int height, int rowstride, IntPtr dfunc_data, Art.DestroyNotify dfunc);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+        <Parameter Name="dfunc_data" Type="System.IntPtr" />
+        <Parameter Name="dfunc" Type="Art.DestroyNotify" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <param name="dfunc_data">The data that will be given to dfunc on its invocation.</param>
+        <param name="dfunc">The delegate that is going to be invoked when the PixBuf gets destroyed.</param>
+        <summary>Creates a new RGBA PixBuf that invokes the given delegate on destruction.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGBA that invokes a delegate on its destruction.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="NewRgbDnotify">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf NewRgbDnotify (out byte pixels, int width, int height, int rowstride, IntPtr dfunc_data, Art.DestroyNotify dfunc);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pixels" Type="System.Byte&amp;" RefType="out" />
+        <Parameter Name="width" Type="System.Int32" />
+        <Parameter Name="height" Type="System.Int32" />
+        <Parameter Name="rowstride" Type="System.Int32" />
+        <Parameter Name="dfunc_data" Type="System.IntPtr" />
+        <Parameter Name="dfunc" Type="Art.DestroyNotify" />
+      </Parameters>
+      <Docs>
+        <param name="pixels">The buffer containing the actual pixel data.</param>
+        <param name="width">The width of the pixbuf.</param>
+        <param name="height">The height of the pixbuf.</param>
+        <param name="rowstride">The row stride of the pixbuf.</param>
+        <param name="dfunc_data">The data that will be given to dfunc on its invocation.</param>
+        <param name="dfunc">The delegate that is going to be invoked when the PixBuf gets destroyed.</param>
+        <summary>Creates a new RGB PixBuf that invokes the given delegate on destruction.</summary>
+        <returns>A newly created <see cref="T:Art.PixBuf" /> RGB that invokes a delegate on its destruction.</returns>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Rowstride">
       <MemberSignature Language="C#" Value="public int Rowstride;" />
       <MemberType>Field</MemberType>
@@ -313,16 +298,30 @@
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Destroy">
-      <MemberSignature Language="C#" Value="public Art.DestroyNotify Destroy { get; };" />
-      <MemberType>Property</MemberType>
+    <Member MemberName="Width">
+      <MemberSignature Language="C#" Value="public int Width;" />
+      <MemberType>Field</MemberType>
       <ReturnValue>
-        <ReturnType>Art.DestroyNotify</ReturnType>
+        <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
+      <Parameters>
+      </Parameters>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Zero">
+      <MemberSignature Language="C#" Value="public static Art.PixBuf Zero;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.PixBuf</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>

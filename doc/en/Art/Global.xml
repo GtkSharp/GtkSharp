@@ -4,18 +4,27 @@
     <AssemblyName>art-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Global API elements for <see cref="N:Art" /></summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>Global API elements for <see cref="N:Art" /></summary>
+    <remarks />
+  </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Global ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>Default constructor</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="BezierToVec">
       <MemberSignature Language="C#" Value="public static Art.Point BezierToVec (double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, Art.Point p, int level);" />
       <MemberType>Method</MemberType>
@@ -35,7 +44,6 @@
         <Parameter Name="level" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="x0">a <see cref="T:System.Double" /></param>
         <param name="y0">a <see cref="T:System.Double" /></param>
         <param name="x1">a <see cref="T:System.Double" /></param>
@@ -46,6 +54,7 @@
         <param name="y3">a <see cref="T:System.Double" /></param>
         <param name="p">a <see cref="T:Art.Point" /></param>
         <param name="level">a <see cref="T:System.Int32" /></param>
+        <summary>To be added</summary>
         <returns>a <see cref="T:Art.Point" /></returns>
         <remarks>To be added</remarks>
       </Docs>
@@ -61,43 +70,11 @@
         <Parameter Name="flatness" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>To be added</summary>
         <param name="bez">a <see cref="T:Art.Bpath" /></param>
         <param name="flatness">a <see cref="T:System.Double" /></param>
+        <summary>To be added</summary>
         <returns>a <see cref="T:Art.Vpath" /></returns>
         <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Global ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>Default constructor</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="RectListFromUta">
-      <MemberSignature Language="C#" Value="public static Art.IRect RectListFromUta (Art.Uta uta, int max_width, int max_height, out int p_nrects);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.IRect</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="uta" Type="Art.Uta" />
-        <Parameter Name="max_width" Type="System.Int32" />
-        <Parameter Name="max_height" Type="System.Int32" />
-        <Parameter Name="p_nrects" Type="System.Int32&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <summary>Decomposes a UTA into a list of rectangles.</summary>
-        <param name="uta">The given UTA.</param>
-        <param name="max_width">The maximum width of the resulting rectangles.</param>
-        <param name="max_height">The maximum height of the resulting rectangles.</param>
-        <param name="p_nrects">The number of rectangles generated. Should be an out. Its unnecessary.</param>
-        <returns>It should return a IRect[]. Yup, a bug. </returns>
-        <remarks>This routine provides a precise implementation, meaning that the rectangles cover exactly the same are as the uta.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GraySvpAa">
@@ -115,15 +92,37 @@
         <Parameter Name="rowstride" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <summary>Renders the Sorted Vector Path into the given byte[].</summary>
         <param name="svp">The given Sorted Vector Path.</param>
         <param name="x0">The left coordinate of the viewport.</param>
         <param name="y0">The top coordinate of the viewport.</param>
         <param name="x1">The right coordinate of the viewport.</param>
         <param name="y1">The bottom coordinate of the viewport.</param>
         <param name="rowstride">The row stride of the pixel buffer.</param>
+        <summary>Renders the Sorted Vector Path into the given byte[].</summary>
         <returns>The function is void, it should get the byte[] were to render... Its a bug.</returns>
         <remarks>Is only renders inside the area of the viewport.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RectListFromUta">
+      <MemberSignature Language="C#" Value="public static Art.IRect RectListFromUta (Art.Uta uta, int max_width, int max_height, out int p_nrects);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.IRect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uta" Type="Art.Uta" />
+        <Parameter Name="max_width" Type="System.Int32" />
+        <Parameter Name="max_height" Type="System.Int32" />
+        <Parameter Name="p_nrects" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="uta">The given UTA.</param>
+        <param name="max_width">The maximum width of the resulting rectangles.</param>
+        <param name="max_height">The maximum height of the resulting rectangles.</param>
+        <param name="p_nrects">The number of rectangles generated. Should be an out. Its unnecessary.</param>
+        <summary>Decomposes a UTA into a list of rectangles.</summary>
+        <returns>It should return a IRect[]. Yup, a bug. </returns>
+        <remarks>This routine provides a precise implementation, meaning that the rectangles cover exactly the same are as the uta.</remarks>
       </Docs>
     </Member>
   </Members>

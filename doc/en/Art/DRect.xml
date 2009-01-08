@@ -4,92 +4,32 @@
     <AssemblyName>art-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>A Structure that suports rectangle with double coordinates.</summary>
-    <remarks />
-  </Docs>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>A Structure that suports rectangle with double coordinates.</summary>
+    <remarks />
+  </Docs>
   <Members>
-    <Member MemberName="Zero">
-      <MemberSignature Language="C#" Value="public static Art.DRect Zero;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.DRect</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="New">
-      <MemberSignature Language="C#" Value="public static Art.DRect New (IntPtr raw);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Art.DRect</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="raw">a <see cref="T:System.IntPtr" /></param>
-        <returns>a <see cref="T:Art.DRect" /></returns>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ToIrect">
-      <MemberSignature Language="C#" Value="public static void ToIrect (Art.IRect dst, Art.DRect src);" />
+    <Member MemberName="AffineTransform">
+      <MemberSignature Language="C#" Value="public void AffineTransform (Art.DRect src, double[] matrix);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="dst" Type="Art.IRect" />
         <Parameter Name="src" Type="Art.DRect" />
+        <Parameter Name="matrix" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Converts the src rectangle into a interger one.</summary>
-        <param name="dst">The newly created integer rectangle (<see cref="T:Art.IRect" />).</param>
-        <param name="src">The source rectangle (<see cref="T:Art.DRect" />).</param>
-        <remarks>The rouding is done using floor for x0 and y0 and ceil for x1 and y1.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Svp">
-      <MemberSignature Language="C#" Value="public void Svp (Art.SVP svp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="svp" Type="Art.SVP" />
-      </Parameters>
-      <Docs>
-        <summary>Finds the bounding box os a sorted vector path.</summary>
-        <param name="svp">The Sorted Vector Path.</param>
-        <remarks>The result is used to initialize the current instance.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SvpUnion">
-      <MemberSignature Language="C#" Value="public void SvpUnion (Art.SVP svp);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="svp" Type="Art.SVP" />
-      </Parameters>
-      <Docs>
-        <summary>Finds the bounding box to the Sorted Vector Path and then unifies the resulting rectangle with the current instance.</summary>
-        <param name="svp">a <see cref="T:Art.SVP" /></param>
-        <remarks>The result is used to initialize the current instance.</remarks>
+        <param name="src">The source rectangle used to apply the transformation.</param>
+        <param name="matrix">A <see cref="T:System.Double[]" /> with 6 elements containing the transformation's matrix.</param>
+        <summary>Applies an affine transformation to the src rectangle and initializes this one with the result.</summary>
+        <remarks>It finds the smallest rectangle enclosing the transformed src. The result is exactly the affine transformation of src when the matrix specifies an rectilinear affine transformation. otherwise its a conservative approximation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -102,8 +42,8 @@
         <Parameter Name="src" Type="Art.DRect" />
       </Parameters>
       <Docs>
-        <summary>Copies the values of the given rectangle, into this one.</summary>
         <param name="src">The <see cref="T:Art.DRect" /> that is going to init the current one.</param>
+        <summary>Copies the values of the given rectangle, into this one.</summary>
         <remarks>The current rectangle will be a clone of the given one.</remarks>
       </Docs>
     </Member>
@@ -120,40 +60,6 @@
         <remarks>For the rectangle to be empty, x1 has to be smaller or equal to x0, or y0 smaller or equal to y1.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Union">
-      <MemberSignature Language="C#" Value="public void Union (Art.DRect src1, Art.DRect src2);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="src1" Type="Art.DRect" />
-        <Parameter Name="src2" Type="Art.DRect" />
-      </Parameters>
-      <Docs>
-        <summary>Finds the union of two rectangles and initializes the current one with the result.</summary>
-        <param name="src1">The first source rectangle used.</param>
-        <param name="src2">The second source rectangle used.</param>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AffineTransform">
-      <MemberSignature Language="C#" Value="public void AffineTransform (Art.DRect src, double[] matrix);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="src" Type="Art.DRect" />
-        <Parameter Name="matrix" Type="System.Double[]" />
-      </Parameters>
-      <Docs>
-        <summary>Applies an affine transformation to the src rectangle and initializes this one with the result.</summary>
-        <param name="src">The source rectangle used to apply the transformation.</param>
-        <param name="matrix">A <see cref="T:System.Double[]" /> with 6 elements containing the transformation's matrix.</param>
-        <remarks>It finds the smallest rectangle enclosing the transformed src. The result is exactly the affine transformation of src when the matrix specifies an rectilinear affine transformation. otherwise its a conservative approximation.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="Intersect">
       <MemberSignature Language="C#" Value="public void Intersect (Art.DRect src1, Art.DRect src2);" />
       <MemberType>Method</MemberType>
@@ -165,10 +71,90 @@
         <Parameter Name="src2" Type="Art.DRect" />
       </Parameters>
       <Docs>
-        <summary>Finds the intersection of two rectangles and initializes the current one with the result.</summary>
         <param name="src1">The first source rectangle used.</param>
         <param name="src2">The second source rectangle used.</param>
+        <summary>Finds the intersection of two rectangles and initializes the current one with the result.</summary>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="New">
+      <MemberSignature Language="C#" Value="public static Art.DRect New (IntPtr raw);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.DRect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">a <see cref="T:System.IntPtr" /></param>
+        <summary>To be added</summary>
+        <returns>a <see cref="T:Art.DRect" /></returns>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Svp">
+      <MemberSignature Language="C#" Value="public void Svp (Art.SVP svp);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="svp" Type="Art.SVP" />
+      </Parameters>
+      <Docs>
+        <param name="svp">The Sorted Vector Path.</param>
+        <summary>Finds the bounding box os a sorted vector path.</summary>
+        <remarks>The result is used to initialize the current instance.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SvpUnion">
+      <MemberSignature Language="C#" Value="public void SvpUnion (Art.SVP svp);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="svp" Type="Art.SVP" />
+      </Parameters>
+      <Docs>
+        <param name="svp">a <see cref="T:Art.SVP" /></param>
+        <summary>Finds the bounding box to the Sorted Vector Path and then unifies the resulting rectangle with the current instance.</summary>
+        <remarks>The result is used to initialize the current instance.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToIrect">
+      <MemberSignature Language="C#" Value="public static void ToIrect (Art.IRect dst, Art.DRect src);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dst" Type="Art.IRect" />
+        <Parameter Name="src" Type="Art.DRect" />
+      </Parameters>
+      <Docs>
+        <param name="dst">The newly created integer rectangle (<see cref="T:Art.IRect" />).</param>
+        <param name="src">The source rectangle (<see cref="T:Art.DRect" />).</param>
+        <summary>Converts the src rectangle into a interger one.</summary>
+        <remarks>The rouding is done using floor for x0 and y0 and ceil for x1 and y1.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Union">
+      <MemberSignature Language="C#" Value="public void Union (Art.DRect src1, Art.DRect src2);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="src1" Type="Art.DRect" />
+        <Parameter Name="src2" Type="Art.DRect" />
+      </Parameters>
+      <Docs>
+        <param name="src1">The first source rectangle used.</param>
+        <param name="src2">The second source rectangle used.</param>
+        <summary>Finds the union of two rectangles and initializes the current one with the result.</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="X0">
@@ -181,19 +167,6 @@
       </Parameters>
       <Docs>
         <summary>The first coordinate of the rectangle on the X axis.</summary>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Y0">
-      <MemberSignature Language="C#" Value="public double Y0;" />
-      <MemberType>Field</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Double</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
-        <summary>The first coordinate of the rectangle on the Y axis.</summary>
         <remarks />
       </Docs>
     </Member>
@@ -210,6 +183,19 @@
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="Y0">
+      <MemberSignature Language="C#" Value="public double Y0;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>The first coordinate of the rectangle on the Y axis.</summary>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Y1">
       <MemberSignature Language="C#" Value="public double Y1;" />
       <MemberType>Field</MemberType>
@@ -221,6 +207,19 @@
       <Docs>
         <summary>The second coordinate of the rectangle on the Y axis.</summary>
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="Zero">
+      <MemberSignature Language="C#" Value="public static Art.DRect Zero;" />
+      <MemberType>Field</MemberType>
+      <ReturnValue>
+        <ReturnType>Art.DRect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
   </Members>

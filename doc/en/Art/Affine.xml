@@ -4,33 +4,45 @@
     <AssemblyName>art-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.20.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
-  <Docs>
-    <summary>Defines an affine transformation</summary>
-    <remarks>To be added</remarks>
-  </Docs>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
   </Base>
   <Interfaces />
+  <Docs>
+    <summary>Defines an affine transformation</summary>
+    <remarks>To be added</remarks>
+  </Docs>
   <Members>
-    <Member MemberName="Rotate">
-      <MemberSignature Language="C#" Value="public static void Rotate (double[] dst, double theta);" />
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Affine ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
+      <Docs>
+        <summary>To be added</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Equal">
+      <MemberSignature Language="C#" Value="public static bool Equal (double[] matrix1, double[] matrix2);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="dst" Type="System.Double[]" />
-        <Parameter Name="theta" Type="System.Double" />
+        <Parameter Name="matrix1" Type="System.Double[]" />
+        <Parameter Name="matrix2" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Sets up a rotation matrix.</summary>
-        <param name="dst">Where to store the resulting affine transformation.</param>
-        <param name="theta">Rotation angle in degrees.</param>
-        <remarks>To be added</remarks>
+        <param name="matrix1">An affine transformation.</param>
+        <param name="matrix2">Another affine transformation.</param>
+        <summary>Determine if two matrices are equal.</summary>
+        <returns>
+          <see langword="true" /> if the matrices are equal.</returns>
+        <remarks>Equality is verified with epsilon-tolerance for roundoff errors.</remarks>
+        <since version="Gtk# 2.4" />
       </Docs>
     </Member>
     <Member MemberName="Expansion">
@@ -43,25 +55,10 @@
         <Parameter Name="src" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Finds the expansion factor, i.e. the square root of the factor by which the affine transform affects area.</summary>
         <param name="src">The affine transformation.</param>
+        <summary>Finds the expansion factor, i.e. the square root of the factor by which the affine transform affects area.</summary>
         <returns>The expansion factor.</returns>
         <remarks>In an affine transform composed of scaling, rotation, shearing, and translation, returns the amount of scaling.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Identity">
-      <MemberSignature Language="C#" Value="public static void Identity (double[] dst);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="dst" Type="System.Double[]" />
-      </Parameters>
-      <Docs>
-        <summary>Set up the identity matrix.</summary>
-        <param name="dst">Where to store the resulting affine transform.</param>
-        <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Flip">
@@ -77,30 +74,28 @@
         <Parameter Name="vert" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <summary>Flips the affine transform.</summary>
         <param name="dst_affine">Where to store the resulting affine transform.</param>
         <param name="src_affine">The original affine transformation.</param>
         <param name="horz">Whether or not to flip horizontally.</param>
         <param name="vert">Whether or not to flip vertically.</param>
+        <summary>Flips the affine transform.</summary>
         <remarks>Both horz and vert false results in a simple copy operation. True for both results in an 180 degree rotation.</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="ToStringArray">
-      <MemberSignature Language="C#" Value="public static void ToStringArray (string[] str, double[] src);" />
+    <Member MemberName="Identity">
+      <MemberSignature Language="C#" Value="public static void Identity (double[] dst);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="str" Type="System.String[]" />
-        <Parameter Name="src" Type="System.Double[]" />
+        <Parameter Name="dst" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Converts an affine transform into a bit of PostScript code that implements the transform.</summary>
-        <param name="str">The resulting string.</param>
-        <param name="src">The affine transform.</param>
-        <remarks>Special cases of scaling, rotation, and translation are detected, and the corresponding PostScript operators used (this greatly aids understanding the output generated). The identity transform is mapped to the null string.</remarks>
+        <param name="dst">Where to store the resulting affine transform.</param>
+        <summary>Set up the identity matrix.</summary>
+        <remarks>To be added</remarks>
       </Docs>
     </Member>
     <Member MemberName="Invert">
@@ -114,9 +109,9 @@
         <Parameter Name="src_affine" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Sets up the inverse of the given transformation.</summary>
         <param name="dst_affine">Where the resulting affine is stored.</param>
         <param name="src_affine">The original affine transformation.</param>
+        <summary>Sets up the inverse of the given transformation.</summary>
         <remarks>The inverse is in the classical sense; src_affine multiplied with dst_affine, or dst_affine multiplied with src_affine will be (to within roundoff error) the identify affine. See <see cref="M:Art.Affine.Identity(double[])" /></remarks>
       </Docs>
     </Member>
@@ -132,27 +127,28 @@
         <Parameter Name="src2" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Multiplies two affine transforms together, i.e. the resulting dst is equivalent to doing first src1 then src2.</summary>
         <param name="dst">Where to store the resulting affine transform.</param>
         <param name="src1">The first affine transform to multiply.</param>
         <param name="src2">The second affine transform to multiply.</param>
+        <summary>Multiplies two affine transforms together, i.e. the resulting dst is equivalent to doing first src1 then src2.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Shear">
-      <MemberSignature Language="C#" Value="public static void Shear (double[] dst, double theta);" />
+    <Member MemberName="Point">
+      <MemberSignature Language="C#" Value="public static Art.Point Point (Art.Point src, double[] affine);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>Art.Point</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="dst" Type="System.Double[]" />
-        <Parameter Name="theta" Type="System.Double" />
+        <Parameter Name="src" Type="Art.Point" />
+        <Parameter Name="affine" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Setup a shearing matrix</summary>
-        <param name="dst">Where to store the resulting affine transformation.</param>
-        <param name="theta">Shear angle in degrees.</param>
+        <param name="src">The original point.</param>
+        <param name="affine">The affine transform.</param>
+        <summary>Apply an affine transform to an <see cref="T:Art.Point" />.</summary>
+        <returns>The resulting point after performing the transform.</returns>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -166,50 +162,28 @@
         <Parameter Name="src" Type="System.Double[]" />
       </Parameters>
       <Docs>
-        <summary>Determines wether a matrix is rectilinear, i.e. grid-aligned rectangles are transformed to other grid-aligned rectangles.</summary>
         <param name="src">The affine transformation to test.</param>
+        <summary>Determines wether a matrix is rectilinear, i.e. grid-aligned rectangles are transformed to other grid-aligned rectangles.</summary>
         <returns>
           <see langword="true" /> if the matrix is rectilinear.</returns>
         <remarks>The implementation has epsilon-tolerance for roundoff errors.</remarks>
         <since version="Gtk# 2.4" />
       </Docs>
     </Member>
-    <Member MemberName="Equal">
-      <MemberSignature Language="C#" Value="public static bool Equal (double[] matrix1, double[] matrix2);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="matrix1" Type="System.Double[]" />
-        <Parameter Name="matrix2" Type="System.Double[]" />
-      </Parameters>
-      <Docs>
-        <summary>Determine if two matrices are equal.</summary>
-        <param name="matrix1">An affine transformation.</param>
-        <param name="matrix2">Another affine transformation.</param>
-        <returns>
-          <see langword="true" /> if the matrices are equal.</returns>
-        <remarks>Equality is verified with epsilon-tolerance for roundoff errors.</remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="Translate">
-      <MemberSignature Language="C#" Value="public static void Translate (double[] dst, double tx, double ty);" />
+    <Member MemberName="Rotate">
+      <MemberSignature Language="C#" Value="public static void Rotate (double[] dst, double theta);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="dst" Type="System.Double[]" />
-        <Parameter Name="tx" Type="System.Double" />
-        <Parameter Name="ty" Type="System.Double" />
+        <Parameter Name="theta" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Sets up a translation matrix.</summary>
-        <param name="dst">Where to store the resulting affine transform.</param>
-        <param name="tx">X translation amount.</param>
-        <param name="ty">Y translation amount.</param>
+        <param name="dst">Where to store the resulting affine transformation.</param>
+        <param name="theta">Rotation angle in degrees.</param>
+        <summary>Sets up a rotation matrix.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
@@ -225,38 +199,63 @@
         <Parameter Name="sy" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Sets up a scaling matrix.</summary>
         <param name="dst">Where to store the resulting affine transform.</param>
         <param name="sx">X scale factor.</param>
         <param name="sy">Y scale factor.</param>
+        <summary>Sets up a scaling matrix.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Affine ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
-      <Docs>
-        <summary>To be added</summary>
-        <remarks>To be added</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Point">
-      <MemberSignature Language="C#" Value="public static Art.Point Point (Art.Point src, double[] affine);" />
+    <Member MemberName="Shear">
+      <MemberSignature Language="C#" Value="public static void Shear (double[] dst, double theta);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
-        <ReturnType>Art.Point</ReturnType>
+        <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="src" Type="Art.Point" />
-        <Parameter Name="affine" Type="System.Double[]" />
+        <Parameter Name="dst" Type="System.Double[]" />
+        <Parameter Name="theta" Type="System.Double" />
       </Parameters>
       <Docs>
-        <summary>Apply an affine transform to an <see cref="T:Art.Point" />.</summary>
-        <param name="src">The original point.</param>
-        <param name="affine">The affine transform.</param>
-        <returns>The resulting point after performing the transform.</returns>
+        <param name="dst">Where to store the resulting affine transformation.</param>
+        <param name="theta">Shear angle in degrees.</param>
+        <summary>Setup a shearing matrix</summary>
+        <remarks>To be added</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToStringArray">
+      <MemberSignature Language="C#" Value="public static void ToStringArray (string[] str, double[] src);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="str" Type="System.String[]" />
+        <Parameter Name="src" Type="System.Double[]" />
+      </Parameters>
+      <Docs>
+        <param name="str">The resulting string.</param>
+        <param name="src">The affine transform.</param>
+        <summary>Converts an affine transform into a bit of PostScript code that implements the transform.</summary>
+        <remarks>Special cases of scaling, rotation, and translation are detected, and the corresponding PostScript operators used (this greatly aids understanding the output generated). The identity transform is mapped to the null string.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Translate">
+      <MemberSignature Language="C#" Value="public static void Translate (double[] dst, double tx, double ty);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dst" Type="System.Double[]" />
+        <Parameter Name="tx" Type="System.Double" />
+        <Parameter Name="ty" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="dst">Where to store the resulting affine transform.</param>
+        <param name="tx">X translation amount.</param>
+        <param name="ty">Y translation amount.</param>
+        <summary>Sets up a translation matrix.</summary>
         <remarks>To be added</remarks>
       </Docs>
     </Member>
