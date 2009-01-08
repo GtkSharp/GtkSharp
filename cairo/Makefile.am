@@ -11,10 +11,11 @@ endif
 
 noinst_DATA = $(TARGET)
 
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLY) gtk-sharp.snk AssemblyInfo.cs
+CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb $(POLICY_ASSEMBLY) mono.snk
 
 sources = \
 	Antialias.cs \
+	AssemblyInfo.cs \
 	Cairo.cs \
 	Content.cs \
 	Context.cs \
@@ -63,22 +64,18 @@ sources = \
 	XlibSurface.cs \
 	#
 
-build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+build_sources = $(addprefix $(srcdir)/, $(sources))
 
-gtk-sharp.snk: $(top_srcdir)/gtk-sharp.snk
-	cp $(top_srcdir)/gtk-sharp.snk .
+mono.snk: $(top_srcdir)/mono.snk
+	cp $(top_srcdir)/mono.snk .
 
-AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
-	@echo "sed -e "s/@API_VERSION@/2.0.0.0/" -e "s/\[assembly:GLib.IgnoreClassInitializers\]//" $(top_builddir)/AssemblyInfo.cs > $@"
-	@sed -e "s/@API_VERSION@/2.0.0.0/" -e "s/\[assembly:GLib.IgnoreClassInitializers\]//" $(top_builddir)/AssemblyInfo.cs > $@
-
-$(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
+$(ASSEMBLY): $(build_sources) mono.snk
 	@rm -f $(ASSEMBLY).mdb
 	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 
-$(POLICY_ASSEMBLY): $(srcdir)/$(POLICY_CONFIG) gtk-sharp.snk
+$(POLICY_ASSEMBLY): $(srcdir)/$(POLICY_CONFIG) mono.snk
 	echo "Creating policy.1.0.$(ASSEMBLY)";
-	$(AL) -link:$(POLICY_CONFIG) -out:$@ -keyfile:gtk-sharp.snk;
+	$(AL) -link:$(POLICY_CONFIG) -out:$@ -keyfile:mono.snk;
 
 install-data-local:
 	@if test -n '$(TARGET)'; then							\
