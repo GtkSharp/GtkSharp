@@ -9,8 +9,21 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>This interface provides application information and launch contexts. See <see cref="T:GLib.AppInfoAdapter" /> for a concrete implementation and usage.</summary>
-    <remarks>To be added.</remarks>
+    <summary>This interface provides application information and launch contexts. See <see cref="T:GLib.DesktopAppInfo" /> and <see cref="T:GLib.AppInfoAdapter" /> for concretes implementations and usage.</summary>
+    <remarks>The following code sample lists all the application installed on your system:
+
+<example><code lang="C#">
+public class TestAppInfo
+{
+    static void Main (string[] args)
+    {
+        GLib.GType.Init ();
+
+        foreach (AppInfo appinfo in AppInfoAdapter.All)
+            Console.WriteLine ("\t{0}: {1}, {2} ", appinfo.Name, appinfo.Descritpion, appinfo.Executable);
+    }
+}
+  </code></example></remarks>
     <since version="Gtk# 2.14" />
   </Docs>
   <Members>
@@ -25,9 +38,14 @@
       </Parameters>
       <Docs>
         <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Adds a content type to the application.</summary>
+        <returns>Always returns True. Throw a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Adds a content type to the application information to indicate the application is capable of opening files with the given content type.</para>
+          <para>
+This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.
+</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -38,8 +56,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If a supported content type can be removed from an application.</summary>
+        <value>True if it is possible to remove supported content types from the application, False if not.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -148,11 +166,16 @@ Eye of Gnome:	Browse and rotate images
         <Parameter Name="launch_context" Type="GLib.AppLaunchContext" />
       </Parameters>
       <Docs>
-        <param name="files">To be added.</param>
-        <param name="launch_context">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="files">A <see cref="T:GLib.List" /> of <see cref="T:GLib.File" /> objects, or null to launch the application without arguments.</param>
+        <param name="launch_context">An <see cref="T:GLib.AppLauchContext" />, or null.</param>
+        <summary>Launches the application.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Launches the application. Passes files to the launched application as arguments, using the optional launch_context to get information about the details of the launcher (like what screen it is on). Throws a <see cref="T:GLib.GException" /> on error.</para>
+          <para>To lauch the application without arguments pass a null files list.</para>
+          <para>Note that even if the launch is successful the application launched can fail to start if it runs into problems during startup. There is no way to detect this.</para>
+          <para>Some URIs can be changed when passed through a GFile (for instance unsupported uris with strange formats like mailto:), so if you have a textual uri you want to pass in as argument, consider using <see cref="M:GLib.AppInfo.LaunchUris" /> instead.</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -167,11 +190,15 @@ Eye of Gnome:	Browse and rotate images
         <Parameter Name="launch_context" Type="GLib.AppLaunchContext" />
       </Parameters>
       <Docs>
-        <param name="uris">To be added.</param>
-        <param name="launch_context">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="uris">A <see cref="T:GLib.List" /> of <see cref="T:System.String" /> containing URIs to launch, or null.</param>
+        <param name="launch_context">A <see cref="T:GLib.AppLaunchContext" />, or null.</param>
+        <summary>Launches the application.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>
+          <para>Launches the application. Passes uris to the launched application as arguments, using the optional launch_context to get information about the details of the launcher (like what screen it is on). On error, throws a <see cref="T:GLib.GException" /></para>
+          <para>To lauch the application without arguments pass a NULL uris list.</para>
+          <para>Note that even if the launch is successful the application launched can fail to start if it runs into problems during startup. There is no way to detect this.</para>
+        </remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -198,10 +225,10 @@ Eye of Gnome:	Browse and rotate images
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="content_type">A <see cref="T:System.String" /> containing a content type. On Unix, content types are mimetypes, so "image/jpeg" is a valid content type.</param>
+        <summary>Removes a supported type from an application, if possible.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, but throws on any error. Checking <see cref="M:GLib.AppInfo.CanRemoveSupportsType" /> first will avoid some exceptions, but that doesn't mean it won't throw at all.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -215,10 +242,10 @@ Eye of Gnome:	Browse and rotate images
         <Parameter Name="extension" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="extension">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="extension">A <see cref="T:System.String" /> containing the file extension (without the dot).</param>
+        <summary>Sets the application as the default handler for the given file extension.</summary>
+        <returns>Always returns True. Throws a <see cref="T:GLib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -232,10 +259,10 @@ Eye of Gnome:	Browse and rotate images
         <Parameter Name="content_type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="content_type">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="content_type">A <see cref="T:System.String" /> containing the content type.</param>
+        <summary>Sets the application as the default handler for a given type.</summary>
+        <returns>Always returns True. Throws a <see cref="T:Glib.GException" /> if something went wrong.</returns>
+        <remarks>This method always returns True, or throw a <see cref="T:GLib.GException" /> if something went wrong.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
     </Member>
@@ -246,8 +273,8 @@ Eye of Gnome:	Browse and rotate images
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application info should be shown in menus that list available applications.</summary>
+        <value>True if the application should be shown, False otherwise.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -259,8 +286,8 @@ Eye of Gnome:	Browse and rotate images
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application accepts files as arguments.</summary>
+        <value>True if the application supports files.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
@@ -272,8 +299,8 @@ Eye of Gnome:	Browse and rotate images
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>If the application supports reading files and directories from URIs.</summary>
+        <value>True if the application supports URIs.</value>
         <remarks>To be added.</remarks>
         <since version="Gtk# 2.14" />
       </Docs>
