@@ -1,5 +1,14 @@
 2009-01-08  Mike Kestner  <mkestner@novell.com>
 
+	* generator/InterfaceGen.cs: generate Adapters for consume_only ifaces
+	too.  This seems unusual, but is primarily to produce at least one
+	'generic' implementation of every interface and a GetObject method
+	so that the marshaling code can always return an object which
+	implements the interface, even if no public object wrapper exists for
+	the underlying c GObject type.
+
+2009-01-08  Mike Kestner  <mkestner@novell.com>
+
 	* generator/ReturnValue.cs: map gfilename* list elements to type
 	ListBase.FilenameString so they are marshaled correctly.
 	* glib/Marshaller.cs: handle FilenameStrings in ListPtrToArray.

@@ -65,10 +65,7 @@ namespace GtkSharp.Generation {
 
 		public override string FromNative (string var, bool owned)
 		{
-			if (IsConsumeOnly)
-				return "GLib.Object.GetObject (" + var + ", " + (owned ? "true" : "false") + ") as " + QualifiedName;
-			else
-				return QualifiedName + "Adapter.GetObject (" + var + ", " + (owned ? "true" : "false") + ")";
+			return QualifiedName + "Adapter.GetObject (" + var + ", " + (owned ? "true" : "false") + ")";
 		}
 
 		public override bool ValidateForSubclass ()
@@ -161,20 +158,22 @@ namespace GtkSharp.Generation {
 
 		void GenerateCtors (StreamWriter sw)
 		{
-			sw.WriteLine ("\t\tpublic " + Name + "Adapter ()");
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tInitHandler = new GLib.GInterfaceInitHandler (Initialize);");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
-			sw.WriteLine ("\t\t{0}Implementor implementor;", Name);
-			sw.WriteLine ();
-			sw.WriteLine ("\t\tpublic {0}Adapter ({0}Implementor implementor)", Name);
-			sw.WriteLine ("\t\t{");
-			sw.WriteLine ("\t\t\tif (implementor == null)");
-			sw.WriteLine ("\t\t\t\tthrow new ArgumentNullException (\"implementor\");");
-			sw.WriteLine ("\t\t\tthis.implementor = implementor;");
-			sw.WriteLine ("\t\t}");
-			sw.WriteLine ();
+			if (!IsConsumeOnly) {
+				sw.WriteLine ("\t\tpublic " + Name + "Adapter ()");
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\tInitHandler = new GLib.GInterfaceInitHandler (Initialize);");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+				sw.WriteLine ("\t\t{0}Implementor implementor;", Name);
+				sw.WriteLine ();
+				sw.WriteLine ("\t\tpublic {0}Adapter ({0}Implementor implementor)", Name);
+				sw.WriteLine ("\t\t{");
+				sw.WriteLine ("\t\t\tif (implementor == null)");
+				sw.WriteLine ("\t\t\t\tthrow new ArgumentNullException (\"implementor\");");
+				sw.WriteLine ("\t\t\tthis.implementor = implementor;");
+				sw.WriteLine ("\t\t}");
+				sw.WriteLine ();
+			}
 			sw.WriteLine ("\t\tpublic " + Name + "Adapter (IntPtr handle)");
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (!_gtype.IsInstance (handle))");
@@ -203,9 +202,13 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\tIntPtr handle;");
 			sw.WriteLine ("\t\tpublic override IntPtr Handle {");
 			sw.WriteLine ("\t\t\tget {");
-			sw.WriteLine ("\t\t\t\tif (handle != IntPtr.Zero)");
-			sw.WriteLine ("\t\t\t\t\treturn handle;");
-			sw.WriteLine ("\t\t\t\treturn implementor == null ? IntPtr.Zero : implementor.Handle;");
+			if (IsConsumeOnly) {
+				sw.WriteLine ("\t\t\t\treturn handle;");
+			} else {
+				sw.WriteLine ("\t\t\t\tif (handle != IntPtr.Zero)");
+				sw.WriteLine ("\t\t\t\t\treturn handle;");
+				sw.WriteLine ("\t\t\t\treturn implementor == null ? IntPtr.Zero : implementor.Handle;");
+			}
 			sw.WriteLine ("\t\t\t}");
 			sw.WriteLine ("\t\t}");
 			sw.WriteLine ();
@@ -223,8 +226,10 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\t\t{");
 			sw.WriteLine ("\t\t\tif (obj == null)");
 			sw.WriteLine ("\t\t\t\treturn null;");
-			sw.WriteLine ("\t\t\telse if (obj is " + Name + "Implementor)");
-			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj as {0}Implementor);", Name);
+			if (!IsConsumeOnly) {
+				sw.WriteLine ("\t\t\telse if (obj is " + Name + "Implementor)");
+				sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj as {0}Implementor);", Name);
+			}
 			sw.WriteLine ("\t\t\telse if (obj as " + Name + " == null)");
 			sw.WriteLine ("\t\t\t\treturn new {0}Adapter (obj.Handle);", Name);
 			sw.WriteLine ("\t\t\telse");
@@ -245,9 +250,6 @@ namespace GtkSharp.Generation {
 
 		void GenerateAdapter (GenerationInfo gen_info)
 		{
-			if (IsConsumeOnly)
-				return;
-
 			StreamWriter sw = gen_info.Writer = gen_info.OpenStream (Name + "Adapter");
 
 			sw.WriteLine ("namespace " + NS + " {");
@@ -259,15 +261,18 @@ namespace GtkSharp.Generation {
 			sw.WriteLine ("\tpublic class " + Name + "Adapter : GLib.GInterfaceAdapter, " + QualifiedName + " {");
 			sw.WriteLine ();
 
-			GenerateIfaceStruct (sw);
-			GenerateStaticCtor (sw);
-			GenerateCallbacks (sw);
-			GenerateInitialize (sw);
+			if (!IsConsumeOnly) {
+				GenerateIfaceStruct (sw);
+				GenerateStaticCtor (sw);
+				GenerateCallbacks (sw);
+				GenerateInitialize (sw);
+			}
 			GenerateCtors (sw);
 			GenerateGType (sw);
 			GenerateHandleProp (sw);
 			GenerateGetObject (sw);
-			GenerateImplementorProp (sw);
+			if (!IsConsumeOnly)
+				GenerateImplementorProp (sw);
 
 			GenProperties (gen_info, null);
 
