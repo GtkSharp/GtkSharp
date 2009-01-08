@@ -4,9 +4,13 @@
     <AssemblyName>glade-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>GLib.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+  </Interfaces>
   <Docs>
     <summary>Allows dynamic loading of user interfaces from XML descriptions</summary>
     <remarks>
@@ -64,139 +68,157 @@ public class GladeApp
       </example>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>GLib.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Reflection.DefaultMember("Item")</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName="GetWidgetTree">
-      <MemberSignature Language="C#" Value="public static Glade.XML GetWidgetTree (Gtk.Widget w);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.XML</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected XML (GLib.GType gtype);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="w" Type="Gtk.Widget" />
+        <Parameter Name="gtype" Type="GLib.GType" />
       </Parameters>
       <Docs>
-        <summary>Get the parent <see cref="T:Glade.XML" /> widget</summary>
-        <param name="w">a <see cref="T:Gtk.Widget" /></param>
-        <returns>
-	  the <see cref="T:Glade.XML" /> object that built <paramref name="w" />, or <see langword="null" /> if <paramref name="w" /> is not built from Glade
-	</returns>
+        <param name="gtype">a <see cref="T:GLib.GType" /></param>
+        <summary>Protected Constructor.</summary>
+        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (IntPtr raw);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="raw" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="raw">Pointer to the C object.</param>
+        <summary>Internal constructor</summary>
+        <remarks>
+          <para>This is an internal constructor, and should not be used by user code.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (string resource_name, string root);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="resource_name" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="resource_name">a <see cref="T:System.String" /></param>
+        <param name="root">a <see cref="T:System.String" /></param>
+        <summary>Creates an Glade.XML object from a resource and root object.</summary>
+        <remarks>This is a convenience overload for <see cref="C:Glade.XML(System.Reflection.Assembly,System.String,System.String,System.String)" /> with the 1st and 4th arguments being <see langword="null" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (System.IO.Stream s, string root, string domain);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters>
+        <Parameter Name="s" Type="System.IO.Stream" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="s">a <see cref="T:System.IO.Stream" /></param>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <summary>
+          Creates an <see cref="T:Glade.XML" /> object from a
+          <see cref="T:System.IO.Stream" /></summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="GetWidgetName">
-      <MemberSignature Language="C#" Value="public static string GetWidgetName (Gtk.Widget w);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (string fname, string root, string domain);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="w" Type="Gtk.Widget" />
+        <Parameter Name="fname" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Gets the name of a Glade-built widget</summary>
-        <param name="w">a <see cref="T:Gtk.Widget" /> built from Glade</param>
-        <returns>the name of the <paramref name="w" /></returns>
+        <param name="fname">the filename</param>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <summary>Creates an <see cref="T:Glade.XML" /> from a file </summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="CustomHandler">
-      <MemberSignature Language="C#" Value="public static Glade.XMLCustomWidgetHandler CustomHandler { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.XMLCustomWidgetHandler</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Allows you to override the default behaviour when a Custom widget is found in an interface.</summary>
-        <value>a <see cref="T:Glade.XMLCustomWidgetHandler" /></value>
-        <remarks>
-          <para>
-	    Setting this property allows you to override the default
-	    behaviour when a Custom widget is found in an
-	    interface. This could be used by a language binding to
-	    call some other function, or to limit what functions can
-	    be called to create custom widgets
-	  </para>
-        </remarks>
-        <since version="Gtk# 2.4" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetCustomHandler">
-      <MemberSignature Language="C#" Value="public static void SetCustomHandler (Glade.XMLCustomWidgetHandler handler);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="handler" Type="Glade.XMLCustomWidgetHandler" />
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource_name" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Deprecated: Replaced by the <see cref="M:Glade.XML.CustomHandler" /> property.</summary>
-        <param name="handler">the custom widget handler</param>
-        <remarks>Deprecated: Replaced by the <see cref="M:Glade.XML.CustomHandler" /> property.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BindFields">
-      <MemberSignature Language="C#" Value="public void BindFields (Type type);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="System.Type" />
-      </Parameters>
-      <Docs>
-        <summary>To be added</summary>
-        <param name="type">an object of type <see cref="T:System.Type" /></param>
+        <param name="assembly">
+          an <see cref="T:System.Reflection.Assembly" />, or
+          <see langword="null" /> to use the current assembly
+        </param>
+        <param name="resource_name">the name of the resource in <paramref name="assembly" /></param>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <summary>
+        Creates an <see cref="T:Glade.XML" /> object from an
+        <see cref="T:System.Reflection.Assembly" /></summary>
         <remarks>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="BindFields">
-      <MemberSignature Language="C#" Value="public void BindFields (object target);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XML (string buffer, int size, string root, string domain);" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
       <Parameters>
-        <Parameter Name="target" Type="System.Object" />
+        <Parameter Name="buffer" Type="System.String" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Binds the widgets declared in the Glade interface specification, to argument's suitable fields. These fields should be marked with the <see cref="T:Glade.WidgetAttribute" /> attributes. Any signal declared in the interface specification should be connected using <see cref="M:Glade.XML.SignalConnectFull" /> (for detailed control of signal connection) or <see cref="M:Glade.XML.SignalAutoconnect" />, the mirror image
-of this method.</summary>
-        <param name="target">The object whose fields are to be bound to the <see cref="T:Glade.XML" /> object <see cref="T:System.Object" /></param>
+        <param name="buffer">
+          a string containing the content of the glade XML file
+        </param>
+        <param name="size">the length of <paramref name="buffer" /></param>
+        <param name="root">
+          the widget node to start building from, or <see langword="null" />.
+        </param>
+        <param name="domain">
+          the translation domain for the XML file
+          (<see langword="null" /> is the default)
+        </param>
+        <summary>Creates an <see cref="T:Glade.XML" /> object from a buffer</summary>
         <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Autoconnect">
-      <MemberSignature Language="C#" Value="public void Autoconnect (Type handler_class);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="handler_class" Type="System.Type" />
-      </Parameters>
-      <Docs>
-        <summary>Automatically connect signals</summary>
-        <param name="handler_class">a <see cref="T:System.Type" /> with handler methods</param>
-        <remarks>
-          <para>
-	    Connects the signals defined in the glade file with static handler methods provided by the given <see cref="T:System.Type" />,
-	    <paramref name="handler_class" />.
-	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -210,8 +232,8 @@ of this method.</summary>
         <Parameter Name="handler" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>Automatically connect signals</summary>
         <param name="handler">an <see cref="T:System.Object" /> with handler methods</param>
+        <summary>Automatically connect signals</summary>
         <remarks>
           <para>
 	    Connects the signals definied in the glade file with static handler methods provided by the given object, <paramref name="handler" />.
@@ -219,149 +241,55 @@ of this method.</summary>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="SetCommonParams">
-      <MemberSignature Language="C#" Value="public void SetCommonParams (Gtk.Widget widget, Glade.WidgetInfo info);" />
+    <Member MemberName="Autoconnect">
+      <MemberSignature Language="C#" Value="public void Autoconnect (Type handler_class);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="info" Type="Glade.WidgetInfo" />
+        <Parameter Name="handler_class" Type="System.Type" />
       </Parameters>
       <Docs>
-        <summary>
-	  Sets the common parameters on a widget, and is responsible for
-	  inserting it into the <see cref="T:Glade.XML" /> object's internal structures.
-	</summary>
-        <param name="widget">the widget to set parameters on</param>
-        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for <paramref name="widget" /></param>
-        <remarks>
-          <para>
-	    Sets the common parameters on <see cref="widget" />, and is responsible
-	    for inserting it into the <see cref="T:Glade.XML" /> object's internal
-	    structures.  It will also add the children to this widget.
-	    Usually this function is only called by
-	    <see cref="T:Glade.XML.BuildWidget(Glade.WidgetInfo)" />, but is exposed for difficult
-	    cases, such as setting up <see cref="T:Gtk.Toolbar" /> buttons and the like.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HandleInternalChild">
-      <MemberSignature Language="C#" Value="public void HandleInternalChild (Gtk.Widget parent, Glade.ChildInfo child_info);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="parent" Type="Gtk.Widget" />
-        <Parameter Name="child_info" Type="Glade.ChildInfo" />
-      </Parameters>
-      <Docs>
-        <summary>
-	  This function is intended to be called by the build_children
-	  callback for container widgets.
-	</summary>
-        <param name="parent">the parent widget</param>
-        <param name="child_info">the <see cref="T:Glade.ChildInfo" /> structure for the child</param>
-        <remarks>
-          <para>
-	     This function is intended to be called by the
-	     build_children callback for container widgets.  If the
-	     build_children callback encounters a child with the
-	     internal-child attribute set, then it should call this
-	     function to handle it and then continue on to the next
-	     child.
-	  </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SignalAutoconnect">
-      <MemberSignature Language="C#" Value="public void SignalAutoconnect ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
+        <param name="handler_class">a <see cref="T:System.Type" /> with handler methods</param>
         <summary>Automatically connect signals</summary>
         <remarks>
           <para>
-            This method uses gmodule's introspective features to look
-            at the application's symbol table.  From here it tries to
-            match the signal handler names given in the interface
-            description with symbols in the application and connects
-            the signals.
-          </para>
+	    Connects the signals defined in the glade file with static handler methods provided by the given <see cref="T:System.Type" />,
+	    <paramref name="handler_class" />.
+	  </para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="Construct">
-      <MemberSignature Language="C#" Value="public bool Construct (string fname, string root, string domain);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="fname" Type="System.String" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-          This routine can be used by bindings (such as gtk--) to help
-          construct a <see cref="T:Glade.XML" /> object, if it is
-          needed.
-        </summary>
-        <param name="fname">the XML filename</param>
-        <param name="root">the root widget node, or <see langword="null" /></param>
-        <param name="domain">the translation domain, or <see langword="null" /></param>
-        <returns>
-          <see langword="true" /> if construction succeeded</returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="EnsureAccel">
-      <MemberSignature Language="C#" Value="public Gtk.AccelGroup EnsureAccel ();" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.AccelGroup</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-           This function is used to get the current
-           <see cref="T:Gtk.AccelGroup" />. If there isn't one, a new one
-           is created and bound to the current toplevel window (if a
-           toplevel has been set).
-        </summary>
-        <returns>the current <see cref="T:Gtk.AccelGroup" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetPackingProperty">
-      <MemberSignature Language="C#" Value="public void SetPackingProperty (Gtk.Widget parent, Gtk.Widget child, string name, string value);" />
+    <Member MemberName="BindFields">
+      <MemberSignature Language="C#" Value="public void BindFields (object target);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="parent" Type="Gtk.Widget" />
-        <Parameter Name="child" Type="Gtk.Widget" />
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="value" Type="System.String" />
+        <Parameter Name="target" Type="System.Object" />
       </Parameters>
       <Docs>
-        <summary>
-          This sets the packing property on container <paramref name="parent" /> of widget <paramref name="child" /> with
-          <paramref name="name" /> to <paramref name="value" /></summary>
-        <param name="parent">the container widget.</param>
-        <param name="child">the contained child</param>
-        <param name="name">the name of the property</param>
-        <param name="value">its stringified value</param>
+        <param name="target">The object whose fields are to be bound to the <see cref="T:Glade.XML" /> object <see cref="T:System.Object" /></param>
+        <summary>Binds the widgets declared in the Glade interface specification, to argument's suitable fields. These fields should be marked with the <see cref="T:Glade.WidgetAttribute" /> attributes. Any signal declared in the interface specification should be connected using <see cref="M:Glade.XML.SignalConnectFull" /> (for detailed control of signal connection) or <see cref="M:Glade.XML.SignalAutoconnect" />, the mirror image
+of this method.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BindFields">
+      <MemberSignature Language="C#" Value="public void BindFields (Type type);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="type">an object of type <see cref="T:System.Type" /></param>
+        <summary>To be added</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -376,11 +304,11 @@ of this method.</summary>
         <Parameter Name="info" Type="Glade.WidgetInfo" />
       </Parameters>
       <Docs>
+        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for the widget.</param>
         <summary>
           This function is not intended for people who just use
           libglade.
         </summary>
-        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for the widget.</param>
         <returns>the newly created widget.</returns>
         <remarks>
           <para>
@@ -402,449 +330,30 @@ of this method.</summary>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="RelativeFile">
-      <MemberSignature Language="C#" Value="public string RelativeFile (string filename);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="filename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-          This function resolves a relative pathname, using the
-          directory of the XML file as a base.
-        </summary>
-        <param name="filename">a filename</param>
-        <returns>The absolute filename</returns>
-        <remarks>
-          <para>
-            This function resolves a relative pathname, using the
-            directory of the XML file as a base.  If the pathname is
-            absolute, then the original filename is returned.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SignalAutoconnectFull">
-      <MemberSignature Language="C#" Value="public void SignalAutoconnectFull (Glade.XMLConnectFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
-      </Parameters>
-      <Docs>
-        <summary>
-          This function is similar to <see cref="M:Glade.XML.SignalConnectFull(System.String,Glade.XMLConnectFunc)" />
-          except that it will try to connect all signals in the
-          interface, not just a single named handler.  It can be
-          thought of the interpeted language binding version of
-          <see cref="M:Glade.XML.SignalAutoconnect" />, except that it does not
-          require gmodule to function correctly.
-        </summary>
-        <param name="func">the function used to connect the signals.</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HandleWidgetProp">
-      <MemberSignature Language="C#" Value="public void HandleWidgetProp (Gtk.Widget widget, string prop_name, string value_name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="widget" Type="Gtk.Widget" />
-        <Parameter Name="prop_name" Type="System.String" />
-        <Parameter Name="value_name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Used to set properties on <see cref="T:Gtk.Widget" />s</summary>
-        <param name="widget">the property the widget to set the property on.</param>
-        <param name="prop_name">the name of the property.</param>
-        <param name="value_name">the name of the widget used as the value for the property.</param>
-        <remarks>
-          <para>
-            Some widgets have properties of type <see cref="T:Gtk.Widget" />.  These are
-            represented as the widget name in the glade file.  When
-            constructing the interface, the widget specified as the
-            value for a property may not exist yet.
-          </para>
-          <para>
-            Rather than setting the property directly, this function
-            should be used.  It will perform the name to <see cref="T:Gtk.Widget" /> conversion,
-            and if the widget is yet to be constructed, defer setting the
-            property until the widget is constructed.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetWidget">
-      <MemberSignature Language="C#" Value="public Gtk.Widget GetWidget (string name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Retrieves a widget stored in the <see cref="T:Glade.XML" /> by name
-        </summary>
-        <param name="name">the name of the widget to retrieve from the xml file</param>
-        <returns>
-          the widget specified by <paramref name="name" /> or
-          <see langword="null" /> if no Widgets of that name exists
-        </returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetValueFromString">
-      <MemberSignature Language="C#" Value="public bool SetValueFromString (IntPtr pspec, string str1ng, GLib.Value value);" />
+    <Member MemberName="Construct">
+      <MemberSignature Language="C#" Value="public bool Construct (string fname, string root, string domain);" />
       <MemberType>Method</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="pspec" Type="System.IntPtr" />
-        <Parameter Name="str1ng" Type="System.String" />
-        <Parameter Name="value" Type="GLib.Value" />
-      </Parameters>
-      <Docs>
-        <summary>GParamSpec needs to be wrapped</summary>
-        <param name="pspec">a <see cref="T:System.IntPtr" />" /&gt;</param>
-        <param name="str1ng">a <see cref="T:System.String" /></param>
-        <param name="value">a <see cref="T:GLib.Value" /></param>
-        <returns>a <see cref="T:System.Boolean" /></returns>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SignalConnectFull">
-      <MemberSignature Language="C#" Value="public void SignalConnectFull (string handler_name, Glade.XMLConnectFunc func);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="handler_name" Type="System.String" />
-        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
-      </Parameters>
-      <Docs>
-        <summary>
-          This function is similar to <see cref="M:Glade.XML.SignalAutoConnect" />, except
-          that it allows you to give an arbitrary function that will
-          be used for actually connecting the signals.  This is mainly
-          useful for writers of interpreted language bindings, or
-          applications where you need more control over the signal
-          connection process.
-        </summary>
-        <param name="handler_name">the name of the signal handler that we want to connect.</param>
-        <param name="func">the function to use to connect the signals.</param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (IntPtr raw);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="raw" Type="System.IntPtr" />
-      </Parameters>
-      <Docs>
-        <summary>Internal constructor</summary>
-        <param name="raw">Pointer to the C object.</param>
-        <remarks>
-          <para>This is an internal constructor, and should not be used by user code.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (string fname, string root, string domain);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
       <Parameters>
         <Parameter Name="fname" Type="System.String" />
         <Parameter Name="root" Type="System.String" />
         <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>Creates an <see cref="T:Glade.XML" /> from a file </summary>
-        <param name="fname">the filename</param>
-        <param name="root">
-          the widget node to start building from, or <see langword="null" />.
-        </param>
-        <param name="domain">
-          the translation domain for the XML file
-          (<see langword="null" /> is the default)
-        </param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (string buffer, int size, string root, string domain);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="buffer" Type="System.String" />
-        <Parameter Name="size" Type="System.Int32" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates an <see cref="T:Glade.XML" /> object from a buffer</summary>
-        <param name="buffer">
-          a string containing the content of the glade XML file
-        </param>
-        <param name="size">the length of <paramref name="buffer" /></param>
-        <param name="root">
-          the widget node to start building from, or <see langword="null" />.
-        </param>
-        <param name="domain">
-          the translation domain for the XML file
-          (<see langword="null" /> is the default)
-        </param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Filename">
-      <MemberSignature Language="C#" Value="public string Filename { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>the filename of the <see cref="T:Glade.XML" /> object</summary>
-        <value>the filename that this Glade XML object is created from</value>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Toplevel">
-      <MemberSignature Language="C#" Value="public Gtk.Window Toplevel { set; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Window</ReturnType>
-      </ReturnValue>
-      <Parameters>
-      </Parameters>
-      <Docs>
+        <param name="fname">the XML filename</param>
+        <param name="root">the root widget node, or <see langword="null" /></param>
+        <param name="domain">the translation domain, or <see langword="null" /></param>
         <summary>
-          This is used while the tree is being built to set the toplevel window that
-          is currently being built.
+          This routine can be used by bindings (such as gtk--) to help
+          construct a <see cref="T:Glade.XML" /> object, if it is
+          needed.
         </summary>
-        <value>an object of type <see cref="T:Gtk.Window" /></value>
-        <remarks>
-          <para>
-            This is used while the tree is being built to set the
-            toplevel window that is currently being built.  It is
-            mainly used to enable <see cref="T:Gtk.AccelGroup" />'s to be bound to the
-            correct window, but could have other uses.
-          </para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (System.IO.Stream s, string root, string domain);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="s" Type="System.IO.Stream" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-          Creates an <see cref="T:Glade.XML" /> object from a
-          <see cref="T:System.IO.Stream" /></summary>
-        <param name="s">a <see cref="T:System.IO.Stream" /></param>
-        <param name="root">
-          the widget node to start building from, or <see langword="null" />.
-        </param>
-        <param name="domain">
-          the translation domain for the XML file
-          (<see langword="null" /> is the default)
-        </param>
+        <returns>
+          <see langword="true" /> if construction succeeded</returns>
         <remarks>
         </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (System.Reflection.Assembly assembly, string resource_name, string root, string domain);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
-        <Parameter Name="resource_name" Type="System.String" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>
-        Creates an <see cref="T:Glade.XML" /> object from an
-        <see cref="T:System.Reflection.Assembly" /></summary>
-        <param name="assembly">
-          an <see cref="T:System.Reflection.Assembly" />, or
-          <see langword="null" /> to use the current assembly
-        </param>
-        <param name="resource_name">the name of the resource in <paramref name="assembly" /></param>
-        <param name="root">
-          the widget node to start building from, or <see langword="null" />.
-        </param>
-        <param name="domain">
-          the translation domain for the XML file
-          (<see langword="null" /> is the default)
-        </param>
-        <remarks>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="FromStream">
-      <MemberSignature Language="C#" Value="public static Glade.XML FromStream (System.IO.Stream stream, string root, string domain);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.XML</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="stream" Type="System.IO.Stream" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates a new <see cref="T:Glade.XML" /> from a stream.</summary>
-        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.XML" /></returns>
-        <remarks>Reads the contents of the stream and parses it. It must be in correct Glade format</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="FromAssembly">
-      <MemberSignature Language="C#" Value="public static Glade.XML FromAssembly (System.Reflection.Assembly assembly, string resource_name, string root, string domain);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.XML</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
-        <Parameter Name="resource_name" Type="System.String" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Returns a new <see cref="T:Glade.XML" /> from a resource in an assembly.</summary>
-        <param name="assembly">a <see cref="T:System.Reflection.Assembly" /></param>
-        <param name="resource_name">a <see cref="T:System.String" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.XML" /></returns>
-        <remarks>Reads the contents of the resource in the given assembly and parses it. If the assembly is null, the current assembly will be used. It must be in correct Glade format</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="FromAssembly">
-      <MemberSignature Language="C#" Value="public static Glade.XML FromAssembly (string resource_name, string root, string domain);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.XML</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="resource_name" Type="System.String" />
-        <Parameter Name="root" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Returns a new <see cref="T:Glade.XML" /> from a resource in the current assembly.</summary>
-        <param name="resource_name">a <see cref="T:System.String" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.XML" /></returns>
-        <remarks>Reads the contents of the resource in the current assembly and parses it. If the assembly is null, the current assembly will be used. It must be in correct Glade format</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GType">
-      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>GLib.GType</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>GType Property.</summary>
-        <value>a <see cref="T:GLib.GType" /></value>
-        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Glade.XML" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected XML (GLib.GType gtype);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="gtype" Type="GLib.GType" />
-      </Parameters>
-      <Docs>
-        <summary>Protected Constructor.</summary>
-        <param name="gtype">a <see cref="T:GLib.GType" /></param>
-        <remarks>Chain to this constructor if you have manually registered a native <see cref="T:GLib.GType" /> value for your subclass.</remarks>
-      </Docs>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete</AttributeName>
-        </Attribute>
-      </Attributes>
-    </Member>
-    <Member MemberName="GetWidgetPrefix">
-      <MemberSignature Language="C#" Value="public Gtk.Widget[] GetWidgetPrefix (string name);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Retrieves a <see cref="T:GLib.List" /> of widgets whose name share the same prefix.</summary>
-        <param name="name">The beginning of a widget name.</param>
-        <returns>An array of widgets whose name starts with <paramref name="name" />.</returns>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XML (string resource_name, string root);" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters>
-        <Parameter Name="resource_name" Type="System.String" />
-        <Parameter Name="root" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Creates an Glade.XML object from a resource and root object.</summary>
-        <param name="resource_name">a <see cref="T:System.String" /></param>
-        <param name="root">a <see cref="T:System.String" /></param>
-        <remarks>This is a convenience overload for <see cref="C:Glade.XML(System.Reflection.Assembly,System.String,System.String,System.String)" /> with the 1st and 4th arguments being <see langword="null" />.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public Gtk.Widget this[string name] { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>Gtk.Widget</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="name">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstructFromBuffer">
@@ -868,6 +377,496 @@ of this method.</summary>
         <returns>boolean representing success.</returns>
         <remarks />
         <since version="Gtk# 2.12" />
+      </Docs>
+    </Member>
+    <Member MemberName="CustomHandler">
+      <MemberSignature Language="C#" Value="public static Glade.XMLCustomWidgetHandler CustomHandler { set; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.XMLCustomWidgetHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Allows you to override the default behaviour when a Custom widget is found in an interface.</summary>
+        <value>a <see cref="T:Glade.XMLCustomWidgetHandler" /></value>
+        <remarks>
+          <para>
+	    Setting this property allows you to override the default
+	    behaviour when a Custom widget is found in an
+	    interface. This could be used by a language binding to
+	    call some other function, or to limit what functions can
+	    be called to create custom widgets
+	  </para>
+        </remarks>
+        <since version="Gtk# 2.4" />
+      </Docs>
+    </Member>
+    <Member MemberName="EnsureAccel">
+      <MemberSignature Language="C#" Value="public Gtk.AccelGroup EnsureAccel ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.AccelGroup</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+           This function is used to get the current
+           <see cref="T:Gtk.AccelGroup" />. If there isn't one, a new one
+           is created and bound to the current toplevel window (if a
+           toplevel has been set).
+        </summary>
+        <returns>the current <see cref="T:Gtk.AccelGroup" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Filename">
+      <MemberSignature Language="C#" Value="public string Filename { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>the filename of the <see cref="T:Glade.XML" /> object</summary>
+        <value>the filename that this Glade XML object is created from</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromAssembly">
+      <MemberSignature Language="C#" Value="public static Glade.XML FromAssembly (string resource_name, string root, string domain);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.XML</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resource_name" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="resource_name">a <see cref="T:System.String" /></param>
+        <param name="root">a <see cref="T:System.String" /></param>
+        <param name="domain">a <see cref="T:System.String" /></param>
+        <summary>Returns a new <see cref="T:Glade.XML" /> from a resource in the current assembly.</summary>
+        <returns>a <see cref="T:Glade.XML" /></returns>
+        <remarks>Reads the contents of the resource in the current assembly and parses it. If the assembly is null, the current assembly will be used. It must be in correct Glade format</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromAssembly">
+      <MemberSignature Language="C#" Value="public static Glade.XML FromAssembly (System.Reflection.Assembly assembly, string resource_name, string root, string domain);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.XML</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+        <Parameter Name="resource_name" Type="System.String" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">a <see cref="T:System.Reflection.Assembly" /></param>
+        <param name="resource_name">a <see cref="T:System.String" /></param>
+        <param name="root">a <see cref="T:System.String" /></param>
+        <param name="domain">a <see cref="T:System.String" /></param>
+        <summary>Returns a new <see cref="T:Glade.XML" /> from a resource in an assembly.</summary>
+        <returns>a <see cref="T:Glade.XML" /></returns>
+        <remarks>Reads the contents of the resource in the given assembly and parses it. If the assembly is null, the current assembly will be used. It must be in correct Glade format</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromStream">
+      <MemberSignature Language="C#" Value="public static Glade.XML FromStream (System.IO.Stream stream, string root, string domain);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.XML</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="root" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="stream">a <see cref="T:System.IO.Stream" /></param>
+        <param name="root">a <see cref="T:System.String" /></param>
+        <param name="domain">a <see cref="T:System.String" /></param>
+        <summary>Creates a new <see cref="T:Glade.XML" /> from a stream.</summary>
+        <returns>a <see cref="T:Glade.XML" /></returns>
+        <remarks>Reads the contents of the stream and parses it. It must be in correct Glade format</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetWidget">
+      <MemberSignature Language="C#" Value="public Gtk.Widget GetWidget (string name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">the name of the widget to retrieve from the xml file</param>
+        <summary>
+          Retrieves a widget stored in the <see cref="T:Glade.XML" /> by name
+        </summary>
+        <returns>
+          the widget specified by <paramref name="name" /> or
+          <see langword="null" /> if no Widgets of that name exists
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetWidgetName">
+      <MemberSignature Language="C#" Value="public static string GetWidgetName (Gtk.Widget w);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="w" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="w">a <see cref="T:Gtk.Widget" /> built from Glade</param>
+        <summary>Gets the name of a Glade-built widget</summary>
+        <returns>the name of the <paramref name="w" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetWidgetPrefix">
+      <MemberSignature Language="C#" Value="public Gtk.Widget[] GetWidgetPrefix (string name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">The beginning of a widget name.</param>
+        <summary>Retrieves a <see cref="T:GLib.List" /> of widgets whose name share the same prefix.</summary>
+        <returns>An array of widgets whose name starts with <paramref name="name" />.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetWidgetTree">
+      <MemberSignature Language="C#" Value="public static Glade.XML GetWidgetTree (Gtk.Widget w);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.XML</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="w" Type="Gtk.Widget" />
+      </Parameters>
+      <Docs>
+        <param name="w">a <see cref="T:Gtk.Widget" /></param>
+        <summary>Get the parent <see cref="T:Glade.XML" /> widget</summary>
+        <returns>
+	  the <see cref="T:Glade.XML" /> object that built <paramref name="w" />, or <see langword="null" /> if <paramref name="w" /> is not built from Glade
+	</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GType">
+      <MemberSignature Language="C#" Value="public static GLib.GType GType { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>GLib.GType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>GType Property.</summary>
+        <value>a <see cref="T:GLib.GType" /></value>
+        <remarks>Returns the native <see cref="T:GLib.GType" /> value for <see cref="T:Glade.XML" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HandleInternalChild">
+      <MemberSignature Language="C#" Value="public void HandleInternalChild (Gtk.Widget parent, Glade.ChildInfo child_info);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parent" Type="Gtk.Widget" />
+        <Parameter Name="child_info" Type="Glade.ChildInfo" />
+      </Parameters>
+      <Docs>
+        <param name="parent">the parent widget</param>
+        <param name="child_info">the <see cref="T:Glade.ChildInfo" /> structure for the child</param>
+        <summary>
+	  This function is intended to be called by the build_children
+	  callback for container widgets.
+	</summary>
+        <remarks>
+          <para>
+	     This function is intended to be called by the
+	     build_children callback for container widgets.  If the
+	     build_children callback encounters a child with the
+	     internal-child attribute set, then it should call this
+	     function to handle it and then continue on to the next
+	     child.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HandleWidgetProp">
+      <MemberSignature Language="C#" Value="public void HandleWidgetProp (Gtk.Widget widget, string prop_name, string value_name);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="prop_name" Type="System.String" />
+        <Parameter Name="value_name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="widget">the property the widget to set the property on.</param>
+        <param name="prop_name">the name of the property.</param>
+        <param name="value_name">the name of the widget used as the value for the property.</param>
+        <summary>Used to set properties on <see cref="T:Gtk.Widget" />s</summary>
+        <remarks>
+          <para>
+            Some widgets have properties of type <see cref="T:Gtk.Widget" />.  These are
+            represented as the widget name in the glade file.  When
+            constructing the interface, the widget specified as the
+            value for a property may not exist yet.
+          </para>
+          <para>
+            Rather than setting the property directly, this function
+            should be used.  It will perform the name to <see cref="T:Gtk.Widget" /> conversion,
+            and if the widget is yet to be constructed, defer setting the
+            property until the widget is constructed.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public Gtk.Widget this[string name] { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Widget</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RelativeFile">
+      <MemberSignature Language="C#" Value="public string RelativeFile (string filename);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">a filename</param>
+        <summary>
+          This function resolves a relative pathname, using the
+          directory of the XML file as a base.
+        </summary>
+        <returns>The absolute filename</returns>
+        <remarks>
+          <para>
+            This function resolves a relative pathname, using the
+            directory of the XML file as a base.  If the pathname is
+            absolute, then the original filename is returned.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCommonParams">
+      <MemberSignature Language="C#" Value="public void SetCommonParams (Gtk.Widget widget, Glade.WidgetInfo info);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="widget" Type="Gtk.Widget" />
+        <Parameter Name="info" Type="Glade.WidgetInfo" />
+      </Parameters>
+      <Docs>
+        <param name="widget">the widget to set parameters on</param>
+        <param name="info">the <see cref="T:Glade.WidgetInfo" /> structure for <paramref name="widget" /></param>
+        <summary>
+	  Sets the common parameters on a widget, and is responsible for
+	  inserting it into the <see cref="T:Glade.XML" /> object's internal structures.
+	</summary>
+        <remarks>
+          <para>
+	    Sets the common parameters on <see cref="widget" />, and is responsible
+	    for inserting it into the <see cref="T:Glade.XML" /> object's internal
+	    structures.  It will also add the children to this widget.
+	    Usually this function is only called by
+	    <see cref="T:Glade.XML.BuildWidget(Glade.WidgetInfo)" />, but is exposed for difficult
+	    cases, such as setting up <see cref="T:Gtk.Toolbar" /> buttons and the like.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCustomHandler">
+      <MemberSignature Language="C#" Value="public static void SetCustomHandler (Glade.XMLCustomWidgetHandler handler);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="Glade.XMLCustomWidgetHandler" />
+      </Parameters>
+      <Docs>
+        <param name="handler">the custom widget handler</param>
+        <summary>Deprecated: Replaced by the <see cref="M:Glade.XML.CustomHandler" /> property.</summary>
+        <remarks>Deprecated: Replaced by the <see cref="M:Glade.XML.CustomHandler" /> property.</remarks>
+      </Docs>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by CustomHandler property.")</AttributeName>
+        </Attribute>
+      </Attributes>
+    </Member>
+    <Member MemberName="SetPackingProperty">
+      <MemberSignature Language="C#" Value="public void SetPackingProperty (Gtk.Widget parent, Gtk.Widget child, string name, string value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parent" Type="Gtk.Widget" />
+        <Parameter Name="child" Type="Gtk.Widget" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="parent">the container widget.</param>
+        <param name="child">the contained child</param>
+        <param name="name">the name of the property</param>
+        <param name="value">its stringified value</param>
+        <summary>
+          This sets the packing property on container <paramref name="parent" /> of widget <paramref name="child" /> with
+          <paramref name="name" /> to <paramref name="value" /></summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetValueFromString">
+      <MemberSignature Language="C#" Value="public bool SetValueFromString (IntPtr pspec, string str1ng, GLib.Value value);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="pspec" Type="System.IntPtr" />
+        <Parameter Name="str1ng" Type="System.String" />
+        <Parameter Name="value" Type="GLib.Value" />
+      </Parameters>
+      <Docs>
+        <param name="pspec">a <see cref="T:System.IntPtr" />" /&gt;</param>
+        <param name="str1ng">a <see cref="T:System.String" /></param>
+        <param name="value">a <see cref="T:GLib.Value" /></param>
+        <summary>GParamSpec needs to be wrapped</summary>
+        <returns>a <see cref="T:System.Boolean" /></returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignalAutoconnect">
+      <MemberSignature Language="C#" Value="public void SignalAutoconnect ();" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Automatically connect signals</summary>
+        <remarks>
+          <para>
+            This method uses gmodule's introspective features to look
+            at the application's symbol table.  From here it tries to
+            match the signal handler names given in the interface
+            description with symbols in the application and connects
+            the signals.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignalAutoconnectFull">
+      <MemberSignature Language="C#" Value="public void SignalAutoconnectFull (Glade.XMLConnectFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
+      </Parameters>
+      <Docs>
+        <param name="func">the function used to connect the signals.</param>
+        <summary>
+          This function is similar to <see cref="M:Glade.XML.SignalConnectFull(System.String,Glade.XMLConnectFunc)" />
+          except that it will try to connect all signals in the
+          interface, not just a single named handler.  It can be
+          thought of the interpeted language binding version of
+          <see cref="M:Glade.XML.SignalAutoconnect" />, except that it does not
+          require gmodule to function correctly.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignalConnectFull">
+      <MemberSignature Language="C#" Value="public void SignalConnectFull (string handler_name, Glade.XMLConnectFunc func);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler_name" Type="System.String" />
+        <Parameter Name="func" Type="Glade.XMLConnectFunc" />
+      </Parameters>
+      <Docs>
+        <param name="handler_name">the name of the signal handler that we want to connect.</param>
+        <param name="func">the function to use to connect the signals.</param>
+        <summary>
+          This function is similar to <see cref="M:Glade.XML.SignalAutoConnect" />, except
+          that it allows you to give an arbitrary function that will
+          be used for actually connecting the signals.  This is mainly
+          useful for writers of interpreted language bindings, or
+          applications where you need more control over the signal
+          connection process.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Toplevel">
+      <MemberSignature Language="C#" Value="public Gtk.Window Toplevel { set; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>Gtk.Window</ReturnType>
+      </ReturnValue>
+      <Parameters>
+      </Parameters>
+      <Docs>
+        <summary>
+          This is used while the tree is being built to set the toplevel window that
+          is currently being built.
+        </summary>
+        <value>an object of type <see cref="T:Gtk.Window" /></value>
+        <remarks>
+          <para>
+            This is used while the tree is being built to set the
+            toplevel window that is currently being built.  It is
+            mainly used to enable <see cref="T:Gtk.AccelGroup" />'s to be bound to the
+            correct window, but could have other uses.
+          </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

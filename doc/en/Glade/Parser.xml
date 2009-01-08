@@ -4,9 +4,12 @@
     <AssemblyName>glade-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the <link location="node:gtk-sharp/programming/threads">Gtk# Thread Programming</link> for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
   <Docs>
     <summary>Glade's parser used to turn XML into its internal format.</summary>
     <remarks>Parser class loads / parses the .glade files from memory [buffer], or a file in disk.
@@ -16,27 +19,15 @@ its connections and properties etc.
 
 </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
   <Members>
-    <Member MemberName="ParseFile">
-      <MemberSignature Language="C#" Value="public static Glade.Interface ParseFile (string file, string domain);" />
-      <MemberType>Method</MemberType>
-      <ReturnValue>
-        <ReturnType>Glade.Interface</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="file" Type="System.String" />
-        <Parameter Name="domain" Type="System.String" />
-      </Parameters>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Parser ();" />
+      <MemberType>Constructor</MemberType>
+      <ReturnValue />
+      <Parameters />
       <Docs>
-        <summary>This function parses a Glade XML interface file to a <see cref="T:Glade.Interface" /> object (which is libglade's internal representation of the interface data).</summary>
-        <param name="file">a <see cref="T:System.String" /></param>
-        <param name="domain">a <see cref="T:System.String" /></param>
-        <returns>a <see cref="T:Glade.Interface" /></returns>
-        <remarks>Generally, user code will not need to call this function. Instead, it should go through the <see cref="T:Glade.XML" /> interfaces.</remarks>
+        <summary>Default constructor</summary>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="ParseBuffer">
@@ -50,9 +41,9 @@ its connections and properties etc.
         <Parameter Name="domain" Type="System.String" />
       </Parameters>
       <Docs>
-        <summary>This function is similar to <see cref="M:Glade.Parser.ParseFile()" />, except that it parses XML data from a buffer in memory.</summary>
         <param name="buffer">a <see cref="T:System.String" /></param>
         <param name="domain">a <see cref="T:System.String" /></param>
+        <summary>This function is similar to <see cref="M:Glade.Parser.ParseFile()" />, except that it parses XML data from a buffer in memory.</summary>
         <returns>a <see cref="T:Glade.Interface" /></returns>
         <remarks>This could be used to embed an interface into the executable, for instance.
 <para>
@@ -60,14 +51,22 @@ Generally, user code will not need to call this function. Instead, it should go 
 </para></remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Parser ();" />
-      <MemberType>Constructor</MemberType>
-      <ReturnValue />
-      <Parameters />
+    <Member MemberName="ParseFile">
+      <MemberSignature Language="C#" Value="public static Glade.Interface ParseFile (string file, string domain);" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>Glade.Interface</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="domain" Type="System.String" />
+      </Parameters>
       <Docs>
-        <summary>Default constructor</summary>
-        <remarks />
+        <param name="file">a <see cref="T:System.String" /></param>
+        <param name="domain">a <see cref="T:System.String" /></param>
+        <summary>This function parses a Glade XML interface file to a <see cref="T:Glade.Interface" /> object (which is libglade's internal representation of the interface data).</summary>
+        <returns>a <see cref="T:Glade.Interface" /></returns>
+        <remarks>Generally, user code will not need to call this function. Instead, it should go through the <see cref="T:Glade.XML" /> interfaces.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -4,9 +4,17 @@
     <AssemblyName>glade-sharp</AssemblyName>
     <AssemblyPublicKey>
     </AssemblyPublicKey>
-    <AssemblyVersion>2.12.0.0</AssemblyVersion>
   </AssemblyInfo>
   <ThreadSafetyStatement>Gtk# is thread aware, but not thread safe; See the &lt;link location="node:gtk-sharp/programming/threads"&gt;Gtk# Thread Programming&lt;/link&gt; for details.</ThreadSafetyStatement>
+  <Base>
+    <BaseTypeName>System.Attribute</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.AttributeUsage(System.AttributeTargets.Field)</AttributeName>
+    </Attribute>
+  </Attributes>
   <Docs>
     <summary>Marks a widget for auto-binding</summary>
     <remarks>
@@ -33,41 +41,7 @@
       </para>
     </remarks>
   </Docs>
-  <Base>
-    <BaseTypeName>System.Attribute</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.AttributeUsage(System.AttributeTargets.Field)</AttributeName>
-    </Attribute>
-  </Attributes>
   <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public WidgetAttribute (string name);" />
-      <MemberType>Constructor</MemberType>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <summary>Flags a <see cref="T:Gtk.Widget" /> to be auto-connected</summary>
-        <param name="name">The name of the widget in the Glade file
-	    that this widget should be mapped to</param>
-        <remarks>
-          <para>
-	      This will bind the widget whose name in the Glade
-	      designer is <paramref name="name" /> to the field that
-	      the attribute is attached to.  If the field name is the
-	      same as the widget name in the Glade designer, you can
-	      avoid the name parameter.
-	    </para>
-          <para>
-	      For the binding to take place, the <see cref="M:Glade.XML.Autoconnect()" /> method has to be invoked
-		on either the class or the instance.
-	    </para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public WidgetAttribute ();" />
       <MemberType>Constructor</MemberType>
@@ -90,8 +64,46 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public WidgetAttribute (string name);" />
+      <MemberType>Constructor</MemberType>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">The name of the widget in the Glade file
+	    that this widget should be mapped to</param>
+        <summary>Flags a <see cref="T:Gtk.Widget" /> to be auto-connected</summary>
+        <remarks>
+          <para>
+	      This will bind the widget whose name in the Glade
+	      designer is <paramref name="name" /> to the field that
+	      the attribute is attached to.  If the field name is the
+	      same as the widget name in the Glade designer, you can
+	      avoid the name parameter.
+	    </para>
+          <para>
+	      For the binding to take place, the <see cref="M:Glade.XML.Autoconnect()" /> method has to be invoked
+		on either the class or the instance.
+	    </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberType>Property</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The name of the widget targetted</summary>
+        <value>The name of the widget targeted in the Glade
+	  definition file.</value>
+        <remarks />
+      </Docs>
+    </Member>
     <Member MemberName="Specified">
-      <MemberSignature Language="C#" Value="public bool Specified { get; };" />
+      <MemberSignature Language="C#" Value="public bool Specified { get; }" />
       <MemberType>Property</MemberType>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -101,19 +113,6 @@
         <value>This returns <see langword="true" /> if a specific
 	  widget name was requested to be bound, or <see langword="false" /> if the runtime has to use the field name
 	  as the Glade name.</value>
-        <remarks />
-      </Docs>
-    </Member>
-    <Member MemberName="Name">
-      <MemberSignature Language="C#" Value="public string Name { get; };" />
-      <MemberType>Property</MemberType>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The name of the widget targetted</summary>
-        <value>The name of the widget targeted in the Glade
-	  definition file.</value>
         <remarks />
       </Docs>
     </Member>
